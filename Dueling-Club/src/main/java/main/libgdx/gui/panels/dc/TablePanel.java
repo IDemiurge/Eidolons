@@ -30,6 +30,11 @@ public class TablePanel extends Container<Table> {
         super.setActor(inner);
     }
 
+    @Override
+    public void clear() {
+        inner.clear();
+    }
+
     public void addEmptyCol(int val) {
         Actor a = new Actor();
         a.setWidth(val);

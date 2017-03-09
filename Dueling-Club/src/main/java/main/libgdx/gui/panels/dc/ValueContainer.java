@@ -22,6 +22,10 @@ public class ValueContainer extends Container<Table> {
         init(texture, name, value);
     }
 
+    public ValueContainer(TextureRegion texture) {
+        init(texture, null, null);
+    }
+
     public ValueContainer(TextureRegion texture, String value) {
         init(texture, null, value);
     }
@@ -49,10 +53,12 @@ public class ValueContainer extends Container<Table> {
                 table.row();
             }
         }
-        this.value = new Container<>(new Label(value, StyleHolder.getDefaultLabelStyle()));
-        table.add(this.value);
-        if (isVertical()) {
-            table.row();
+        if (value != null) {
+            this.value = new Container<>(new Label(value, StyleHolder.getDefaultLabelStyle()));
+            table.add(this.value);
+            if (isVertical()) {
+                table.row();
+            }
         }
         setActor(table);
         configure();

@@ -1,6 +1,6 @@
 package main.libgdx.gui.panels.dc.unitinfo;
 
-public interface UnitInfoMainParamSource {
+public interface MainParamDataSource {
     String getStrength();
 
     String getVitality();

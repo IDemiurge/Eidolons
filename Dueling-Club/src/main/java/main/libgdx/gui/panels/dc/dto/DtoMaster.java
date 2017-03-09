@@ -17,13 +17,11 @@ import java.util.Collection;
 public class DtoMaster {
 
     public static IconGridDTO getIconGrid(Collection<? extends Entity> items) {
-
         IconGridDTO grid = new IconGridDTO();
         items.forEach(e -> {
             grid.add(e.getName(), TextureCache.getOrCreate(e.getImagePath()));
         });
         return grid;
-
     }
 
 

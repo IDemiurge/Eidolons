@@ -25,6 +25,10 @@ public class UnitInfoPanel extends Container<TablePanel> {
     private MainParamPanel mainParamPanel;
     private ResourcePanel resourcePanel;
     private AvatarPanel avatarPanel;
+    private InitiativeAndActionPointsPanel pointsPanel;
+    private EffectAndAbilitiesPanel effectAndAbilitiesPanel;
+    private MainAttributesPanel attributesPanel;
+    private ResistInfoTabsPanel resistTabs;
 
     public UnitInfoPanel() {
         TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/background.png");
@@ -74,17 +78,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
 
         addElement(mainParamPanel.left().bottom());
 
-
-        List<TextureRegion> abils = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            abils.add(TextureCache.getOrCreateR("/UI/abils.jpg"));
-        }
-        List<TextureRegion> effects = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            effects.add(TextureCache.getOrCreateR("/UI/buffs.jpg"));
-        }
-
-        EffectAndAbilitiesPanel effectAndAbilitiesPanel = new EffectAndAbilitiesPanel(abils, effects);
+        effectAndAbilitiesPanel = new EffectAndAbilitiesPanel();
 
         addElement(effectAndAbilitiesPanel.left().bottom());
 
@@ -95,10 +89,13 @@ public class UnitInfoPanel extends Container<TablePanel> {
         avatarPanel = new AvatarPanel();
         addElement(avatarPanel);
 
-        InitiativeAndActionPointsPanel pointsPanel = new InitiativeAndActionPointsPanel("50/50", "9999");
+        pointsPanel = new InitiativeAndActionPointsPanel();
         addElement(pointsPanel);
 
         addPanelSeparator();
+
+        attributesPanel = new MainAttributesPanel();
+        addElement(attributesPanel.pad(10, 10, 0, 10).fill().left().bottom());
 
         List<ValueContainer> armorParams = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
@@ -112,19 +109,8 @@ public class UnitInfoPanel extends Container<TablePanel> {
 
         addPanelSeparator();
 
-        List<ValueContainer> resists = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            resists.add(new ValueContainer(TextureCache.getOrCreateR("UI/value icons/resistance.jpg"), "146%"));
-        }
-
-        ResistPanel resistPanel = new ResistPanel(resists);
-        InfoPanelTabsPanel tabsPanel = new InfoPanelTabsPanel();
-
-        tabsPanel.addTab(resistPanel, "Resistance");
-        tabsPanel.addTab(resistPanel, "Another resistance");
-        tabsPanel.addTab(resistPanel, "MORE RESISTANCE");
-        tabsPanel.resetCheckedTab();
-        addElement(tabsPanel);
+        resistTabs = new ResistInfoTabsPanel();
+        addElement(resistTabs);
 
         addCol();
 
@@ -192,7 +178,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                System.out.println("mouse exit form");
+                //System.out.println("mouse exit form");
             }
 
             @Override
@@ -210,9 +196,14 @@ public class UnitInfoPanel extends Container<TablePanel> {
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
+        //todo replace this with child.forEach
         mainParamPanel.setUserObject(userObject);
         resourcePanel.setUserObject(userObject);
         avatarPanel.setUserObject(userObject);
+        pointsPanel.setUserObject(userObject);
+        effectAndAbilitiesPanel.setUserObject(userObject);
+        attributesPanel.setUserObject(userObject);
+        resistTabs.setUserObject(userObject);
         updatePanel = true;
     }
 

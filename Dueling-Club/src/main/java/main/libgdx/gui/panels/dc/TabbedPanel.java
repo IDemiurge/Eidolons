@@ -6,15 +6,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import main.libgdx.StyleHolder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class TabbedPanel extends Container<Table> {
+    protected HashMap<String, Container> tabsToNamesMap;
     private List<Container> tabs = new ArrayList<>();
     private ButtonGroup<Button> buttonGroup = new ButtonGroup();
     private Table buttonLayout;
     private Container<Container> panelLayout;
 
     public TabbedPanel() {
+        tabsToNamesMap = new HashMap<>();
         buttonGroup.setMaxCheckCount(1);
         buttonGroup.setMinCheckCount(1);
         fill();
@@ -64,6 +67,7 @@ public class TabbedPanel extends Container<Table> {
         panelLayout.setActor(container);
         panelLayout.fill().align(container.getAlign());
         buttonGroup.setChecked(tabName);
+        tabsToNamesMap.put(tabName, container);
     }
 
     public void resetCheckedTab() {
