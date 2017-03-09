@@ -40,6 +40,7 @@ public class DC_KeyManager
     private static final int ITEM_MASK = KeyEvent.ALT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK;
     public static CONTROLLER DEFAULT_CONTROLLER;
     G_PagePanel<?> p;
+    GlobalController globalController = new GlobalController();
     private Map<String, Integer> stdActionKeyMap;
     private Map<String, Integer> stdModeKeyMap;
     private Map<String, Integer> addMoveActionKeyMap;
@@ -48,7 +49,6 @@ public class DC_KeyManager
     private DC_GameManager mngr;
     private ACTION_TYPE action_group = ActionEnums.ACTION_TYPE.STANDARD;
     private Controller controller;
-    GlobalController globalController=  new GlobalController();
     public DC_KeyManager(DC_GameManager mngr) {
         this.mngr = mngr;
         stdActionKeyMap = new ConcurrentHashMap<>();
@@ -216,12 +216,12 @@ public class DC_KeyManager
         if (checkControllerHotkey(keyMod, CHAR)) {
             return;
         }
-        if (globalController!=null )
-                if (globalController.charTyped(CHAR))
-                    return ;
-            if (controller != null) {
-                try {
-                    if (controller.charTyped(CHAR)) {
+        if (globalController != null)
+            if (globalController.charTyped(CHAR))
+                return;
+        if (controller != null) {
+            try {
+                if (controller.charTyped(CHAR)) {
                     return;
                 }
             } catch (Exception e) {
