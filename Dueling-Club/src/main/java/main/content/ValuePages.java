@@ -1,6 +1,5 @@
 package main.content;
 
-import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -8,6 +7,8 @@ import main.content.values.properties.PROPERTY;
 import java.lang.reflect.Field;
 
 import static main.content.PARAMS.*;
+import static main.content.values.parameters.G_PARAMS.DURATION;
+import static main.content.values.parameters.G_PARAMS.RADIUS;
 
 public class ValuePages {
     public static final VALUE[] DESCRIPTION = {G_PROPS.DESCRIPTION};
@@ -47,12 +48,12 @@ public class ValuePages {
     };
     public static final VALUE[] GENERIC_DC_HEADER = {
             // G_PROPS.ASPECT,
-            // PARAMS.LEVEL,
+            // LEVEL,
             // G_PROPS.PRINCIPLES,
             // G_PROPS.DESCRIPTION,
             // G_PROPS.PASSIVES,
             // G_PROPS.ACTIVES,
-            // PARAMS.FORMULA,
+            // FORMULA,
 
             // G_PROPS.PASSIVES,
             // PROPS.SKILLS,
@@ -102,7 +103,7 @@ public class ValuePages {
     // INFO LEVELS
     public static final VALUE[] UNIT_PROPERTIES = {G_PROPS.MAIN_HAND_ITEM, G_PROPS.OFF_HAND_ITEM,
             G_PROPS.ARMOR_ITEM, PROPS.INVENTORY, PROPS.QUICK_ITEMS, PROPS.JEWELRY,
-            // PARAMS.QUICK_SLOTS_REMAINING,
+            // QUICK_SLOTS_REMAINING,
             PROPS.SKILLS, PROPS.CLASSES, PROPS.FIRST_CLASS, PROPS.SECOND_CLASS,
 
             PROPS.KNOWN_SPELLS, PROPS.LEARNED_SPELLS, PROPS.MEMORIZED_SPELLS,
@@ -212,8 +213,8 @@ public class ValuePages {
             DISCIPLINE_MASTERY,
 
             MEDITATION_MASTERY, DETECTION_MASTERY, STEALTH_MASTERY,
-            // PARAMS.ENCHANTER_MASTERY,
-            // PARAMS.JEWELER_MASTERY,
+            // ENCHANTER_MASTERY,
+            // JEWELER_MASTERY,
     };
     public static final PARAMETER[] MASTERIES = {
             ATHLETICS_MASTERY,
@@ -232,8 +233,8 @@ public class ValuePages {
             ARMORER_MASTERY,
             ITEM_MASTERY,
             DISCIPLINE_MASTERY,
-            // PARAMS.MARKSMANSHIP_MASTERY,
-            // PARAMS.SHIELD_MASTERY,
+            // MARKSMANSHIP_MASTERY,
+            // SHIELD_MASTERY,
             STEALTH_MASTERY, DETECTION_MASTERY,
 
             TACTICS_MASTERY, LEADERSHIP_MASTERY,
@@ -275,8 +276,7 @@ public class ValuePages {
             PSIONIC_RESISTANCE, DEATH_RESISTANCE,};
 
     public static final PARAMETER[] MAGIC_RESISTANCES = {DEATH_RESISTANCE,
-            FIRE_RESISTANCE, WATER_RESISTANCE, AIR_RESISTANCE,
-            EARTH_RESISTANCE, CHAOS_RESISTANCE, ARCANE_RESISTANCE, HOLY_RESISTANCE, SHADOW_RESISTANCE, POISON_RESISTANCE,};
+            FIRE_RESISTANCE, CHAOS_RESISTANCE, ARCANE_RESISTANCE, HOLY_RESISTANCE, SHADOW_RESISTANCE, POISON_RESISTANCE,};
     public static final PARAMETER[] PHYSICAL_RESISTANCES = {PIERCING_RESISTANCE,
             BLUDGEONING_RESISTANCE, SLASHING_RESISTANCE,};
 
@@ -288,64 +288,38 @@ public class ValuePages {
 
             CHAOS_RESISTANCE, ARCANE_RESISTANCE, HOLY_RESISTANCE, SHADOW_RESISTANCE, PSIONIC_RESISTANCE, DEATH_RESISTANCE,
 
-            PARAMS.PIERCING_RESISTANCE,
-            PARAMS.BLUDGEONING_RESISTANCE,
-            PARAMS.SLASHING_RESISTANCE,
-            PARAMS.POISON_RESISTANCE,
-
-    };
-    public static final PARAMETER[] ARMOR_VS_DAMAGE_TYPES = {
-
-            PARAMS.FIRE_ARMOR, PARAMS.COLD_ARMOR, PARAMS.ACID_ARMOR,
-            PARAMS.LIGHTNING_ARMOR, PARAMS.SONIC_ARMOR, PARAMS.LIGHT_ARMOR,
-
-            PARAMS.CHAOS_ARMOR, PARAMS.ARCANE_ARMOR, PARAMS.HOLY_ARMOR,
-            PARAMS.SHADOW_ARMOR, PARAMS.PSIONIC_ARMOR, PARAMS.DEATH_ARMOR,
-
-            PARAMS.PIERCING_ARMOR,
-            PARAMS.BLUDGEONING_ARMOR,
-            PARAMS.SLASHING_ARMOR,
-
-    };
-    public static final PARAMETER[] DURABILITY_VS_DAMAGE_TYPES = {
-
-            PARAMS.FIRE_DURABILITY_MOD, PARAMS.COLD_DURABILITY_MOD, PARAMS.ACID_DURABILITY_MOD,
-            PARAMS.LIGHTNING_DURABILITY_MOD, PARAMS.SONIC_DURABILITY_MOD, PARAMS.LIGHT_DURABILITY_MOD,
-
-            PARAMS.CHAOS_DURABILITY_MOD, PARAMS.ARCANE_DURABILITY_MOD, PARAMS.HOLY_DURABILITY_MOD,
-            PARAMS.SHADOW_DURABILITY_MOD, PARAMS.PSIONIC_DURABILITY_MOD, PARAMS.DEATH_DURABILITY_MOD,
-
-            PARAMS.PIERCING_DURABILITY_MOD,
-            PARAMS.BLUDGEONING_DURABILITY_MOD,
-            PARAMS.SLASHING_DURABILITY_MOD,
+            PIERCING_RESISTANCE,
+            BLUDGEONING_RESISTANCE,
+            SLASHING_RESISTANCE,
+            POISON_RESISTANCE,
 
     };
 
     public static final PARAMETER[] ARMOR_VS_DAMAGE_TYPES = {
 
-            PARAMS.FIRE_ARMOR, PARAMS.COLD_ARMOR, PARAMS.ACID_ARMOR,
-            PARAMS.LIGHTNING_ARMOR, PARAMS.SONIC_ARMOR, PARAMS.LIGHT_ARMOR,
+            FIRE_ARMOR, COLD_ARMOR, ACID_ARMOR,
+            LIGHTNING_ARMOR, SONIC_ARMOR, LIGHT_ARMOR,
 
-            PARAMS.CHAOS_ARMOR, PARAMS.ARCANE_ARMOR, PARAMS.HOLY_ARMOR,
-            PARAMS.SHADOW_ARMOR, PARAMS.PSIONIC_ARMOR, PARAMS.DEATH_ARMOR,
+            CHAOS_ARMOR, ARCANE_ARMOR, HOLY_ARMOR,
+            SHADOW_ARMOR, PSIONIC_ARMOR, DEATH_ARMOR,
 
-            PARAMS.PIERCING_ARMOR,
-            PARAMS.BLUDGEONING_ARMOR,
-            PARAMS.SLASHING_ARMOR,
+            PIERCING_ARMOR,
+            BLUDGEONING_ARMOR,
+            SLASHING_ARMOR,
 
     };
 
     public static final PARAMETER[] DURABILITY_VS_DAMAGE_TYPES = {
 
-            PARAMS.FIRE_DURABILITY_MOD, PARAMS.COLD_DURABILITY_MOD, PARAMS.ACID_DURABILITY_MOD,
-            PARAMS.LIGHTNING_DURABILITY_MOD, PARAMS.SONIC_DURABILITY_MOD, PARAMS.LIGHT_DURABILITY_MOD,
+            FIRE_DURABILITY_MOD, COLD_DURABILITY_MOD, ACID_DURABILITY_MOD,
+            LIGHTNING_DURABILITY_MOD, SONIC_DURABILITY_MOD, LIGHT_DURABILITY_MOD,
 
-            PARAMS.CHAOS_DURABILITY_MOD, PARAMS.ARCANE_DURABILITY_MOD, PARAMS.HOLY_DURABILITY_MOD,
-            PARAMS.SHADOW_DURABILITY_MOD, PARAMS.PSIONIC_DURABILITY_MOD, PARAMS.DEATH_DURABILITY_MOD,
+            CHAOS_DURABILITY_MOD, ARCANE_DURABILITY_MOD, HOLY_DURABILITY_MOD,
+            SHADOW_DURABILITY_MOD, PSIONIC_DURABILITY_MOD, DEATH_DURABILITY_MOD,
 
-            PARAMS.PIERCING_DURABILITY_MOD,
-            PARAMS.BLUDGEONING_DURABILITY_MOD,
-            PARAMS.SLASHING_DURABILITY_MOD,
+            PIERCING_DURABILITY_MOD,
+            BLUDGEONING_DURABILITY_MOD,
+            SLASHING_DURABILITY_MOD,
 
     };
 
@@ -384,23 +358,23 @@ public class ValuePages {
             GOLD_MOD, XP_GAIN_MOD, XP_LEVEL_MOD,
             IDENTITY_POINTS_PER_LEVEL, STARTING_IDENTITY_POINTS,
 
-            // PARAMS.STRENGTH_PER_LEVEL,
-            // PARAMS.VITALITY_PER_LEVEL,
-            // PARAMS.AGILITY_PER_LEVEL,
-            // PARAMS.DEXTERITY_PER_LEVEL,
-            // PARAMS.WILLPOWER_PER_LEVEL,
-            // PARAMS.INTELLIGENCE_PER_LEVEL,
-            // PARAMS.WISDOM_PER_LEVEL,
-            // PARAMS.KNOWLEDGE_PER_LEVEL,
-            // PARAMS.SPELLPOWER_PER_LEVEL,
-            // PARAMS.CHARISMA_PER_LEVEL,
+            // STRENGTH_PER_LEVEL,
+            // VITALITY_PER_LEVEL,
+            // AGILITY_PER_LEVEL,
+            // DEXTERITY_PER_LEVEL,
+            // WILLPOWER_PER_LEVEL,
+            // INTELLIGENCE_PER_LEVEL,
+            // WISDOM_PER_LEVEL,
+            // KNOWLEDGE_PER_LEVEL,
+            // SPELLPOWER_PER_LEVEL,
+            // CHARISMA_PER_LEVEL,
 
     };
     public static final PARAMETER[] SNEAK_MODS = {SNEAK_DAMAGE_MOD,
             SNEAK_ATTACK_MOD, SNEAK_DEFENSE_MOD, SNEAK_ARMOR_MOD,
-            // PARAMS.SNEAK_DAMAGE_BONUS,
-            // PARAMS.SNEAK_ATTACK_BONUS, PARAMS.SNEAK_DEFENSE_PENETRATION,
-            // PARAMS.SNEAK_ARMOR_PENETRATION
+            // SNEAK_DAMAGE_BONUS,
+            // SNEAK_ATTACK_BONUS, SNEAK_DEFENSE_PENETRATION,
+            // SNEAK_ARMOR_PENETRATION
 
     };
     // else?
@@ -423,10 +397,10 @@ public class ValuePages {
     };
     public static final VALUE[] ACTION_PARAMS_DC2 = {STR_DMG_MODIFIER,
             AGI_DMG_MODIFIER, INT_DMG_MODIFIER, SP_DMG_MODIFIER,
-            CRITICAL_MOD, IMPACT_AREA, G_PARAMS.RADIUS, AUTO_ATTACK_RANGE,
+            CRITICAL_MOD, IMPACT_AREA,  RADIUS, AUTO_ATTACK_RANGE,
             SIDE_DAMAGE_MOD, DIAGONAL_DAMAGE_MOD, SIDE_ATTACK_MOD,
             DIAGONAL_ATTACK_MOD
-            // G_PARAMS.DURATION
+            // G_DURATION
 
     };
     // attack/defense/damage/str/agi... mods, costs, damage type,
@@ -445,19 +419,19 @@ public class ValuePages {
             LONG_REACH_ATTACK_MOD, LONG_REACH_DAMAGE_MOD,
 
     };
-    public static final VALUE[] ACTION_PARAMS = {G_PARAMS.RADIUS, RANGE, COOLDOWN,
-            G_PARAMS.DURATION};
+    public static final VALUE[] ACTION_PARAMS = {RADIUS, RANGE, COOLDOWN,
+            DURATION};
     public static final VALUE[] SPELL_PARAMETERS = {CIRCLE, SPELL_DIFFICULTY,
-            G_PARAMS.DURATION, G_PARAMS.RADIUS, RANGE, COOLDOWN,
+            DURATION, RADIUS, RANGE, COOLDOWN,
             SPELLPOWER_MOD, FORCE, FORCE_SPELLPOWER_MOD,
             FORCE_DAMAGE_MOD, FORCE_KNOCK_MOD, FORCE_PUSH_MOD, XP_COST,
 
     };
     public static final VALUE[] QUICK_ITEM_PARAMETERS = {CHARGES, COOLDOWN,
             AP_COST, STA_COST, ESS_COST, FOC_COST, FOC_REQ,
-            ENDURANCE_COST, G_PARAMS.DURATION, RANGE, G_PARAMS.RADIUS,
-            // PARAMS.SPELLPOWER_BONUS,
-            // PARAMS.SPELLPOWER_MOD,
+            ENDURANCE_COST, DURATION, RANGE, RADIUS,
+            // SPELLPOWER_BONUS,
+            // SPELLPOWER_MOD,
     };
     public static final VALUE[] ITEM_PARAMETERS = {WEIGHT, GOLD_COST,
 
@@ -618,9 +592,9 @@ public class ValuePages {
     // VALUE
     // ICONS?
     public static final PARAMETER[] BACKGROUND_PARAMS = {
-            // PARAMS.TOUGHNESS,
-            // PARAMS.ENDURANCE, PARAMS.STAMINA, PARAMS.ESSENCE,
-            // PARAMS.STARTING_FOCUS, PARAMS.SPIRIT,
+            // TOUGHNESS,
+            // ENDURANCE, STAMINA, ESSENCE,
+            // STARTING_FOCUS, SPIRIT,
             WEIGHT, CARRYING_CAPACITY, SIGHT_RANGE, SIDE_SIGHT_PENALTY,
             DETECTION, STEALTH,};
     public static final PARAMETER[] BACKGROUND_PARAMS_ADDITIONAL = {XP, GOLD,
@@ -628,11 +602,11 @@ public class ValuePages {
 
             FREE_MASTERIES, MASTERY_POINTS_PER_LEVEL, ATTR_POINTS_PER_LEVEL,
             GIRTH,
-            // PARAMS.MEMORIZATION_CAP,
-            // PARAMS.XP_GAIN_MOD,
-            // PARAMS.XP_LEVEL_MOD,
-            // PARAMS.XP_COST_REDUCTION,
-            // PARAMS.GOLD_COST_REDUCTION,
+            // MEMORIZATION_CAP,
+            // XP_GAIN_MOD,
+            // XP_LEVEL_MOD,
+            // XP_COST_REDUCTION,
+            // GOLD_COST_REDUCTION,
 
     };
     public static final PROPERTY[] BACKGROUND_PROPS = {G_PROPS.BACKGROUND,
@@ -710,10 +684,10 @@ public class ValuePages {
             {
                     INITIATIVE_MODIFIER, INITIATIVE,
                     STARTING_FOCUS,
-//      PARAMS.BASE_MORALE,
+//      BASE_MORALE,
                     ENDURANCE_REGEN, STAMINA_REGEN,
                     TOUGHNESS_RECOVERY,
-//      PARAMS.UNCONSCIOUS_THRESHOLD
+//      UNCONSCIOUS_THRESHOLD
             },
             {
                     SIGHT_RANGE, SIDE_SIGHT_PENALTY,
@@ -763,8 +737,8 @@ public class ValuePages {
     private static final VALUE[] DC_SPELL_PARAMETERS = {
 
             AP_COST, STA_COST, ESS_COST, ENDURANCE_COST, FOC_COST,
-            FOC_REQ, RANGE, G_PARAMS.RADIUS, SPELLPOWER_MOD,
-            G_PARAMS.DURATION, COOLDOWN, C_COOLDOWN,
+            FOC_REQ, RANGE,  RADIUS, SPELLPOWER_MOD,
+             DURATION, COOLDOWN, C_COOLDOWN,
 
     };
     public static final VALUE[][] ALT_SPELL_PAGES = {DESCRIPTION, DC_SPELL_PARAMETERS,
@@ -893,8 +867,8 @@ public class ValuePages {
         // TODO revamp value_page usage?
         // List<MultiParameter> armorGradeMultiParams =
         // DC_ContentManager.getArmorGradeMultiParams();
-        // ARMOR_GRADES = armorGradeMultiParams.toArray(new
-        // VALUE[armorGradeMultiParams.size()]);
+        // ARMOR_GRADES = armorGradeMultitoArray(new
+        // VALUE[armorGradeMultisize()]);
     }
 
     static {

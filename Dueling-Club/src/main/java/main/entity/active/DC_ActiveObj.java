@@ -8,6 +8,7 @@ import main.content.PROPS;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
+import main.content.enums.entity.ActionEnums.ACTION_TAGS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.SpellEnums.RESISTANCE_TYPE;
@@ -594,6 +595,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return getChecker().isRanged();
     }
 
+    public boolean isRangedTouch() {
+        return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.RANGED_TOUCH.toString());
+    }
     @Override
     public boolean isMissile() {
         return getChecker().isMissile();

@@ -97,7 +97,6 @@ public class DC_UnitAction extends DC_ActiveObj {
         return checkProperty(G_PROPS.ACTION_TAGS, SpellEnums.SPELL_TAGS.CHANNELING.toString());
     }
 
-    @Override
     public boolean isRangedTouch() {
         return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED_TOUCH.toString());
     }

@@ -7,7 +7,6 @@ import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.enums.entity.ActionEnums;
-import main.content.enums.entity.ActionEnums.ACTION_TAGS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.SpellEnums;
@@ -168,7 +167,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     }
 
     public boolean isRangedTouch() {
-        return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.RANGED_TOUCH.toString());
+        return getEntity().isRangedTouch();
     }
 
     public boolean isAttackAny() {
