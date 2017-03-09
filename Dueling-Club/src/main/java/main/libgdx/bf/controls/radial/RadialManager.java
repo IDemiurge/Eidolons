@@ -36,8 +36,7 @@ import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 public class RadialManager {
 
     public static Texture getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
-        Ref ref = obj.getOwnerObj().getRef().
-                getTargetingRef(target);
+        Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
         return getTextureForActive(obj, ref);
     }
 

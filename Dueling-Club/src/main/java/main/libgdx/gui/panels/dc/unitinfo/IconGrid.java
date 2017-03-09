@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.gui.panels.dc.TablePanel;
+import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.texture.TextureCache;
 
 import java.util.Iterator;
@@ -13,7 +14,7 @@ import java.util.List;
 public class IconGrid extends TablePanel {
     private static String cellBackImage = "/UI/empty32.jpg";
 
-    public IconGrid(List<TextureRegion> images, int w, int h) {
+    public IconGrid(List<ValueContainer> images, int w, int h) {
         rowDirection = TOP_RIGHT;
 
         if (rowDirection != TOP_DOWN || rowDirection != DOWN_TOP) {
@@ -24,17 +25,15 @@ public class IconGrid extends TablePanel {
 
         TextureRegion emptyCell = new TextureRegion(TextureCache.getOrCreate(cellBackImage));
 
-        Iterator<TextureRegion> iter = images.iterator();
+        Iterator<ValueContainer> iter = images.iterator();
         for (int y = 0; y < w; y++) {
             addCol();
             for (int x = 0; x < h; x++) {
-                TextureRegion region;
                 if (iter.hasNext()) {
-                    region = iter.next();
+                    addElement(new Container<>(iter.next()).fill().left().bottom());
                 } else {
-                    region = emptyCell;
+                    addElement(new Container<>(new Image(emptyCell)).fill().left().bottom());
                 }
-                addElement(new Container(new Image(region)).fill().left().bottom());
             }
         }
 

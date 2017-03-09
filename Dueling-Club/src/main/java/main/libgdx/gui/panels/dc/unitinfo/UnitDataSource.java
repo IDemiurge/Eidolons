@@ -1,11 +1,29 @@
 package main.libgdx.gui.panels.dc.unitinfo;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.PARAMS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.entity.obj.DC_Obj;
 import main.libgdx.texture.TextureCache;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
-public class UnitDataSource implements UnitInfoMainParamSource, ResourceSource, AvatarDataSource {
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static main.content.ValuePages.*;
+import static main.libgdx.texture.TextureCache.getOrCreateR;
+
+public class UnitDataSource implements
+        MainParamDataSource, ResourceSource,
+        AvatarDataSource, InitiativeAndActionPointsSource,
+        EffectsAndAbilitiesSource, MainWeaponDataSource, OffWeaponDataSource,
+        ArmorDataSource, DefenceDataSource, MainAttributesSource,
+        ResistSource {
     private DC_Obj unit;
 
     public UnitDataSource(DC_Obj unit) {
@@ -116,11 +134,90 @@ public class UnitDataSource implements UnitInfoMainParamSource, ResourceSource, 
 
     @Override
     public String getParam1() {
-        return unit.getValue("Race");
+        return "Level: " + unit.getParam("Level");
     }
 
     @Override
     public String getParam2() {
-        return unit.getParam("Level");
+        return unit.getValue("Race");
+    }
+
+    @Override
+    public String getInitiative() {
+        int c = unit.getIntParam(PARAMS.C_INITIATIVE);
+        int m = unit.getIntParam(PARAMS.INITIATIVE);
+        return c + "/" + m;
+    }
+
+    @Override
+    public String getActionPoints() {
+        int c = unit.getIntParam(PARAMS.C_N_OF_ACTIONS);
+        int m = unit.getIntParam(PARAMS.N_OF_ACTIONS);
+        return c + "/" + m;
+    }
+
+    @Override
+    public List<Pair<TextureRegion, String>> getEffects() {
+        return unit.getBuffs().stream()
+                .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
+                .map(obj -> new ImmutablePair<>(getOrCreateR(obj.getType().getProperty(G_PROPS.IMAGE)), obj.getName()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Pair<TextureRegion, String>> getAbilities() {
+        return unit.getPassives().stream()
+                .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
+                .map(obj -> new ImmutablePair<>(getOrCreateR(obj.getType().getProperty(G_PROPS.IMAGE)), obj.getName()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getResistance() {
+        return String.valueOf(unit.getIntParam(PARAMS.RESISTANCE));
+    }
+
+    @Override
+    public String getDefense() {
+        return String.valueOf(unit.getIntParam(PARAMS.DEFENSE));
+    }
+
+    @Override
+    public String getArmor() {
+        return String.valueOf(unit.getIntParam(PARAMS.ARMOR));
+    }
+
+    @Override
+    public String getFortitude() {
+        return String.valueOf(unit.getIntParam(PARAMS.FORTITUDE));
+    }
+
+    @Override
+    public String getSpirit() {
+        return String.valueOf(unit.getIntParam(PARAMS.SPIRIT));
+    }
+
+    @Override
+    public List<Pair<PARAMETER, String>> getMagickResists() {
+        return Arrays.stream(RESISTANCES).map(p -> {
+            String ps = String.valueOf(unit.getIntParam(p));
+            return new ImmutablePair<>(p, ps);
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Pair<PARAMETER, String>> getArmorResists() {
+        return Arrays.stream(ARMOR_VS_DAMAGE_TYPES).map(p -> {
+            String ps = String.valueOf(unit.getIntParam(p));
+            return new ImmutablePair<>(p, ps);
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Pair<PARAMETER, String>> getDurabilityResists() {
+        return Arrays.stream(DURABILITY_VS_DAMAGE_TYPES).map(p -> {
+            String ps = String.valueOf(unit.getIntParam(p));
+            return new ImmutablePair<>(p, ps);
+        }).collect(Collectors.toList());
     }
 }
