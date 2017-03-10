@@ -16,7 +16,7 @@ import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.TargetRunnable;
-import main.libgdx.gui.panels.dc.unitinfo.UnitDataSource;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
