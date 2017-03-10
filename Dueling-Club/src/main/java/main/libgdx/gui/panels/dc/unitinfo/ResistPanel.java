@@ -1,6 +1,7 @@
 package main.libgdx.gui.panels.dc.unitinfo;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.values.parameters.PARAMETER;
 import main.libgdx.gui.panels.dc.TablePanel;
@@ -13,41 +14,40 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static main.content.ValuePages.RESISTANCES;
-import static main.content.enums.GenericEnums.DAMAGE_TYPE.values;
+import static main.content.enums.GenericEnums.DAMAGE_TYPE;
+import static main.content.enums.GenericEnums.DAMAGE_TYPE.*;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.images.ImageManager.getDamageTypeImagePath;
 
 public class ResistPanel extends TablePanel {
 
-    private Map<String, ValueContainer> map;
+    private Map<GenericEnums.DAMAGE_TYPE, ValueContainer> map;
 
     public ResistPanel() {
 
         map = new HashMap<>();
 
-        GenericEnums.DAMAGE_TYPE[] damageTypes = values();
+        DAMAGE_TYPE[] damageTypes = values();
         Map<String, GenericEnums.DAMAGE_TYPE> damageTypeMap = new HashMap<>();
         for (int i = 0; i < damageTypes.length; i++) {
-            GenericEnums.DAMAGE_TYPE damageType = damageTypes[i];
+            DAMAGE_TYPE damageType = damageTypes[i];
             damageTypeMap.put(damageType.getName().toLowerCase(), damageType);
         }
 
-        List<Pair<TextureRegion, String>> pairs =
+        List<Pair<TextureRegion, GenericEnums.DAMAGE_TYPE>> pairs =
                 Arrays.stream(RESISTANCES)
-                        .map(parameter -> parameter.name().replace("_RESISTANCE", "").toLowerCase())
-                        .filter(parameter -> damageTypeMap.containsKey(parameter))
                         .map(parameter -> {
-                            GenericEnums.DAMAGE_TYPE damageType = damageTypeMap.get(parameter);
+                            DAMAGE_TYPE damageType = getFromParams((PARAMS) parameter);
                             TextureRegion textureRegion = getOrCreateR(getDamageTypeImagePath(damageType.getName()));
-                            return new ImmutablePair<>(textureRegion, parameter);
+                            return new ImmutablePair<>(textureRegion, damageType);
                         }).collect(Collectors.toList());
 
-        Iterator<Pair<TextureRegion, String>> iter = pairs.iterator();
+        Iterator<Pair<TextureRegion, GenericEnums.DAMAGE_TYPE>> iter = pairs.iterator();
         for (int i = 0; i < 3; i++) {
             addCol();
             for (int j = 0; j < 6; j++) {
                 if (iter.hasNext()) {
-                    Pair<TextureRegion, String> p = iter.next();
+                    Pair<TextureRegion, GenericEnums.DAMAGE_TYPE> p = iter.next();
                     ValueContainer valueContainer = new ValueContainer(p.getLeft(), "");
                     map.put(p.getRight(), valueContainer);
                     addElement(valueContainer.fill().left().bottom().pad(0, 10, 10, 0));
@@ -59,6 +59,93 @@ public class ResistPanel extends TablePanel {
         fill().center().bottom();
     }
 
+    private static DAMAGE_TYPE getFromParams(PARAMS parameter) {
+        DAMAGE_TYPE damageType = null;
+        switch (parameter) {
+            case FIRE_RESISTANCE:
+            case FIRE_ARMOR:
+            case FIRE_DURABILITY_MOD:
+                damageType = FIRE;
+                break;
+            case COLD_RESISTANCE:
+            case COLD_ARMOR:
+            case COLD_DURABILITY_MOD:
+                damageType = COLD;
+                break;
+            case ACID_RESISTANCE:
+            case ACID_ARMOR:
+            case ACID_DURABILITY_MOD:
+                damageType = ACID;
+                break;
+            case LIGHTNING_RESISTANCE:
+            case LIGHTNING_ARMOR:
+            case LIGHTNING_DURABILITY_MOD:
+                damageType = LIGHTNING;
+                break;
+            case SONIC_RESISTANCE:
+            case SONIC_ARMOR:
+            case SONIC_DURABILITY_MOD:
+                damageType = SONIC;
+                break;
+            case LIGHT_RESISTANCE:
+            case LIGHT_ARMOR:
+            case LIGHT_DURABILITY_MOD:
+                damageType = LIGHT;
+                break;
+            case CHAOS_RESISTANCE:
+            case CHAOS_ARMOR:
+            case CHAOS_DURABILITY_MOD:
+                damageType = CHAOS;
+                break;
+            case ARCANE_RESISTANCE:
+            case ARCANE_ARMOR:
+            case ARCANE_DURABILITY_MOD:
+                damageType = ARCANE;
+                break;
+            case HOLY_RESISTANCE:
+            case HOLY_ARMOR:
+            case HOLY_DURABILITY_MOD:
+                damageType = HOLY;
+                break;
+            case SHADOW_RESISTANCE:
+            case SHADOW_ARMOR:
+            case SHADOW_DURABILITY_MOD:
+                damageType = SHADOW;
+                break;
+            case PSIONIC_RESISTANCE:
+            case PSIONIC_ARMOR:
+            case PSIONIC_DURABILITY_MOD:
+                damageType = PSIONIC;
+                break;
+            case DEATH_RESISTANCE:
+            case DEATH_ARMOR:
+            case DEATH_DURABILITY_MOD:
+                damageType = DEATH;
+                break;
+            case PIERCING_RESISTANCE:
+            case PIERCING_ARMOR:
+            case PIERCING_DURABILITY_MOD:
+                damageType = PIERCING;
+                break;
+            case BLUDGEONING_RESISTANCE:
+            case BLUDGEONING_ARMOR:
+            case BLUDGEONING_DURABILITY_MOD:
+                damageType = BLUDGEONING;
+                break;
+            case SLASHING_RESISTANCE:
+            case SLASHING_ARMOR:
+            case SLASHING_DURABILITY_MOD:
+                damageType = SLASHING;
+                break;
+            case POISON_RESISTANCE:
+                //case POISON_ARMOR:
+                //case POISON_DURABILITY_MOD:
+                damageType = POISON;
+                break;
+        }
+        return damageType;
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -67,9 +154,10 @@ public class ResistPanel extends TablePanel {
             Supplier<List<Pair<PARAMETER, String>>> source = (Supplier) getUserObject();
 
             source.get().forEach(pair -> {
-                String ps = pair.getLeft().name().replace("_RESISTANCE", "").toLowerCase();
-                if (map.containsKey(ps)) {
-                    map.get(ps).updateValue(pair.getRight());
+                PARAMS param = (PARAMS) pair.getLeft();
+                DAMAGE_TYPE damageType = getFromParams(param);
+                if (map.containsKey(damageType)) {
+                    map.get(damageType).updateValue(pair.getRight());
                 }
             });
 
