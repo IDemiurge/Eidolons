@@ -12,6 +12,7 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
+@Deprecated//for now
 public class WeaponDetailView extends Container<Image> {
     public WeaponDetailView(TextureRegion icon) {
         setActor(new Image(icon));
