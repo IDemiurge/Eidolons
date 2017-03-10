@@ -48,7 +48,7 @@ public class ResistPanel extends TablePanel {
             for (int j = 0; j < 6; j++) {
                 if (iter.hasNext()) {
                     Pair<TextureRegion, GenericEnums.DAMAGE_TYPE> p = iter.next();
-                    ValueContainer valueContainer = new ValueContainer(p.getLeft(), "");
+                    ValueContainer valueContainer = new ValueContainer(p.getLeft(), "n/a");
                     map.put(p.getRight(), valueContainer);
                     addElement(valueContainer.fill().left().bottom().pad(0, 10, 10, 0));
                 }

@@ -36,5 +36,8 @@ public class StatsPanel extends TablePanel {
 
         setHeight(getPrefHeight());
         fill().center().bottom();
+
+
+//        UNIT_INFO_PARAMS_SIMPLE;
     }
 }

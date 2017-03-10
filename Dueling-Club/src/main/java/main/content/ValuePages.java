@@ -671,13 +671,6 @@ public class ValuePages {
             REDEMPTION_MASTERY, CELESTIAL_MASTERY, BENEDICTION_MASTERY,
             WARP_MASTERY, DESTRUCTION_MASTERY, DEMONOLOGY_MASTERY,};
 
-    public static final PARAMETER[] MAIN_UNIT_INFO_PARAMETERS = {
-            RESISTANCE,
-            DEFENSE,
-            ARMOR,
-            FORTITUDE,
-            SPIRIT,
-    };
     public static final VALUE[][] UNIT_INFO_PARAMS_GENERAL = {
             {
                     INITIATIVE_MODIFIER, INITIATIVE,
@@ -851,6 +844,14 @@ public class ValuePages {
                     RESISTANCE_PENETRATION,
             },
     };
+
+    public static final VALUE[][][] UNIT_INFO_PARAMS_SIMPLE = {
+            UNIT_INFO_PARAMS_GENERAL,
+            UNIT_INFO_PARAMS_COMBAT,
+            UNIT_INFO_PARAMS_MAGIC,
+            UNIT_INFO_PARAMS_MISC
+    };
+
     public static final VALUE[][][] UNIT_INFO_PARAMS = {
             UNIT_INFO_PARAMS_GENERAL,
             UNIT_INFO_PARAMS_COMBAT,
