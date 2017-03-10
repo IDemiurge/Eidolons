@@ -1,16 +1,20 @@
-package main.libgdx.gui.panels.dc.unitinfo;
+package main.libgdx.gui.panels.dc.unitinfo.datasource;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
+import main.entity.item.DC_WeaponObj;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.unit.Unit;
+import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.texture.TextureCache;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -219,5 +223,92 @@ public class UnitDataSource implements
             String ps = String.valueOf(unit.getIntParam(p));
             return new ImmutablePair<>(p, ps);
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public ValueContainer getOffWeapon() {
+        Unit unit = (Unit) this.unit;
+        DC_WeaponObj mainWeapon = unit.getSecondWeapon();
+
+        return getWeaponValueContainer(mainWeapon);
+    }
+
+    @Override
+    public List<ValueContainer> getOffWeaponDetailInfo() {
+        Unit unit = (Unit) this.unit;
+        DC_WeaponObj weapon = unit.getWeapon(true);
+
+        return getWeaponDetail(weapon);
+    }
+
+    @Override
+    public ValueContainer getNaturalOffWeapon() {
+        Unit unit = (Unit) this.unit;
+        DC_WeaponObj mainWeapon = unit.getNaturalWeapon(true);
+
+        return getWeaponValueContainer(mainWeapon);
+    }
+
+    @Override
+    public List<ValueContainer> getNaturalOffWeaponDetailInfo() {
+        Unit unit = (Unit) this.unit;
+        DC_WeaponObj weapon = unit.getNaturalWeapon(true);
+
+        return getWeaponDetail(weapon);
+    }
+
+    @Override
+    public ValueContainer getMainWeapon() {
+        Unit unit = (Unit) this.unit;
+        DC_WeaponObj mainWeapon = unit.getMainWeapon();
+
+        return getWeaponValueContainer(mainWeapon);
+    }
+
+    @Override
+    public List<ValueContainer> getMainWeaponDetailInfo() {
+        Unit unit = (Unit) this.unit;
+        DC_WeaponObj mainWeapon = unit.getMainWeapon();
+
+        return getWeaponDetail(mainWeapon);
+    }
+
+    @Override
+    public ValueContainer getNaturalMainWeapon() {
+        Unit unit = (Unit) this.unit;
+        DC_WeaponObj weapon = unit.getNaturalWeapon(false);
+
+        return getWeaponValueContainer(weapon);
+    }
+
+
+    @Override
+    public List<ValueContainer> getNaturalMainWeaponDetailInfo() {
+        Unit unit = (Unit) this.unit;
+        DC_WeaponObj weapon = unit.getNaturalWeapon(false);
+
+        return getWeaponDetail(weapon);
+    }
+
+    private List<ValueContainer> getWeaponDetail(DC_WeaponObj weapon) {
+        List<ValueContainer> result = new ArrayList<>();
+
+        if (weapon != null) {
+            weapon.getAttackActions()
+                    .forEach(el -> result.add(new ValueContainer(getOrCreateR(el.getImagePath()))));
+        }
+
+        return result;
+    }
+
+    private ValueContainer getWeaponValueContainer(DC_WeaponObj weapon) {
+        TextureRegion image;
+        if (weapon != null) {
+            image = getOrCreateR(weapon.getImagePath());
+        } else {
+            image = getOrCreateR("UI/components/2017/generic/inventory/empty weapon.png");
+        }
+
+        return new ValueContainer(image);
     }
 }

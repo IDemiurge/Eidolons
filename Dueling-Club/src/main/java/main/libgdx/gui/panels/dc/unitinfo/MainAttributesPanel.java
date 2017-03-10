@@ -2,6 +2,7 @@ package main.libgdx.gui.panels.dc.unitinfo;
 
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.VerticalValueContainer;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.MainAttributesSource;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 

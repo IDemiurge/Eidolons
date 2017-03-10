@@ -33,6 +33,7 @@ public class TablePanel extends Container<Table> {
     @Override
     public void clear() {
         inner.clear();
+        cols.clear();
     }
 
     public void addEmptyCol(int val) {

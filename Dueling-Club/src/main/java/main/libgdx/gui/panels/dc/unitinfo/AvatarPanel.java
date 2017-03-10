@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.TablePanel;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.AvatarDataSource;
 import main.libgdx.texture.TextureCache;
 
 public class AvatarPanel extends TablePanel {

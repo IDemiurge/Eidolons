@@ -1,4 +1,4 @@
-package main.libgdx.gui.panels.dc.unitinfo;
+package main.libgdx.gui.panels.dc.unitinfo.datasource;
 
 import com.badlogic.gdx.graphics.Texture;
 

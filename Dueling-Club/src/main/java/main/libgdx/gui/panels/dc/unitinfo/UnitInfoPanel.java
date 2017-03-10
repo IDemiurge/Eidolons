@@ -29,6 +29,8 @@ public class UnitInfoPanel extends Container<TablePanel> {
     private EffectAndAbilitiesPanel effectAndAbilitiesPanel;
     private MainAttributesPanel attributesPanel;
     private ResistInfoTabsPanel resistTabs;
+    private OffWeaponPanel offWeaponPanel;
+    private MainWeaponPanel mainWeaponPanel;
 
     public UnitInfoPanel() {
         TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/background.png");
@@ -63,7 +65,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
     }
 
     private void initInnerPanels() {
-        MainWeaponPanel mainWeaponPanel = new MainWeaponPanel();
+        mainWeaponPanel = new MainWeaponPanel();
         addElement(mainWeaponPanel);
 
         List<VerticalValueContainer> resourceValues = new ArrayList<>();
@@ -114,7 +116,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
 
         addCol();
 
-        OffWeaponPanel offWeaponPanel = new OffWeaponPanel();
+        offWeaponPanel = new OffWeaponPanel();
         addElement(offWeaponPanel);
 
         InfoPanelTabsPanel tabsPanel2 = new InfoPanelTabsPanel();
@@ -204,6 +206,8 @@ public class UnitInfoPanel extends Container<TablePanel> {
         effectAndAbilitiesPanel.setUserObject(userObject);
         attributesPanel.setUserObject(userObject);
         resistTabs.setUserObject(userObject);
+        offWeaponPanel.setUserObject(userObject);
+        mainWeaponPanel.setUserObject(userObject);
         updatePanel = true;
     }
 

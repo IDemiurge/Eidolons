@@ -1,5 +1,7 @@
 package main.libgdx.gui.panels.dc.unitinfo;
 
+import main.libgdx.gui.panels.dc.unitinfo.datasource.ResistSource;
+
 import java.util.function.Supplier;
 
 public class ResistInfoTabsPanel extends InfoPanelTabsPanel {

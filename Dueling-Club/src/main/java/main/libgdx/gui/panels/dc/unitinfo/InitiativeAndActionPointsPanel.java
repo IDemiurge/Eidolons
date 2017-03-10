@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.VerticalValueContainer;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.InitiativeAndActionPointsSource;
 import main.libgdx.texture.TextureCache;
 
 public class InitiativeAndActionPointsPanel extends TablePanel {

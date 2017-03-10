@@ -1,4 +1,4 @@
-package main.libgdx.gui.panels.dc.unitinfo;
+package main.libgdx.gui.panels.dc.unitinfo.datasource;
 
 import main.content.values.parameters.PARAMETER;
 import org.apache.commons.lang3.tuple.Pair;
