@@ -82,7 +82,6 @@ public class Unit extends DC_UnitModel {
 
     private DC_Masteries masteries;
     private DC_Attributes attrs;
-    private boolean dynamicValuesReady = false;
 
     private List<DC_SpellObj> spells;
     private boolean initialized;
@@ -302,57 +301,8 @@ public class Unit extends DC_UnitModel {
 
     @Override
     public void afterEffects() {
-        getResetter().resetHeroValues();
-        if (game.isSimulation()) {
-            initSpellbook();
-        }
+        getResetter().afterEffectsApplied();
 
-        getResetter().resetMorale();
-        if (!dynamicValuesReady && !game.isSimulation()) {
-            addDynamicValues();
-            dynamicValuesReady = true; // TODO recalc by percentage in wc3 style
-            resetPercentages();
-        }
-
-        getCalculator().calculatePower();
-        getCalculator().calculateWeight();
-        getCalculator().calculateRemainingMemory();
-
-        if (!game.isSimulation()) { // TODO perhaps I should apply and display
-            // them!
-            if (!getGame().getRules().getStaminaRule().apply(this)) {
-                setInfiniteValue(PARAMS.STAMINA, 0.2f);
-            }
-            if (!getGame().getRules().getFocusRule().apply(this)) {
-                setInfiniteValue(PARAMS.FOCUS, 1);
-            }
-            if (!getGame().getRules().getMoraleRule().apply(this)) {
-                setInfiniteValue(PARAMS.MORALE, 0.5f);
-            }
-            if (!getGame().getRules().getWeightRule().apply(this)) {
-                setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);
-            }
-            getGame().getRules().getWatchRule().updateWatchStatus(this);
-            getGame().getRules().getWoundsRule().apply(this);
-
-
-//            recalculateInitiative();
-        } else {
-            afterBuffRuleEffects();
-        }
-
-        if (game.isSimulation()) {
-            getResetter().resetSpells();
-            return;
-        }
-        if (getGame().getInventoryManager() != null) {
-            if (getGame().getInventoryManager().isActive()) {
-                return;
-            }
-        }
-        getResetter().resetSpells();
-        getResetter().resetQuickItemActives();
-        getResetter().resetActives();
     }
     public List<DC_ItemActiveObj> getQuickItemActives() {
         if (!ListMaster.isNotEmpty(getQuickItems())) {
@@ -373,26 +323,10 @@ public class Unit extends DC_UnitModel {
     }
 
     public void afterBuffRuleEffects() {
-        if (secondWeapon != null) {
-            setParam(PARAMS.OFF_HAND_ATTACK, getIntParam(PARAMS.ATTACK));
-            secondWeapon.applyMasteryBonus();
-
-        } else if (getNaturalWeapon(true) != null) {
-            setParam(PARAMS.OFF_HAND_ATTACK, getIntParam(PARAMS.ATTACK));
-            getNaturalWeapon(true).applyUnarmedMasteryBonus();
-        }
-        getCalculator().calculateDamage(true, true);
-        if (weapon != null) {
-            weapon.applyMasteryBonus();
-        } else if (getNaturalWeapon(false) != null) {
-            getNaturalWeapon(false).applyUnarmedMasteryBonus();
-        }
-        getCalculator().calculateDamage(false, true);
-
-        getResetter().applyMods();
+        getResetter().afterBuffRuleEffects();
     }
 
-    private void setInfiniteValue(PARAMS param, float mod) {
+    public void setInfiniteValue(PARAMS param, float mod) {
         setParam(param, (int) (DC_Formulas.INFINITE_VALUE * mod));
         setParam(ContentManager.getCurrentParam(param), getIntParam(param));
     }

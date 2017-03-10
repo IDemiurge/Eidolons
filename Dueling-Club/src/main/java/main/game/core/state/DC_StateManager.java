@@ -56,7 +56,7 @@ public class DC_StateManager extends StateManager {
 //        unit. resetRawValues();
 //        applyEffects(Effect.BASE_LAYER);
 //
-//        afterEffects();
+//        afterEffectsApplied();
 //        applyEffects(Effect.SECOND_LAYER);
 //        applyEffects(Effect.BUFF_RULE);
 //
@@ -110,7 +110,7 @@ public class DC_StateManager extends StateManager {
 
     protected void applyMods() {
         for (Unit obj : getGame().getUnits()) {
-            obj.afterBuffRuleEffects();
+            applyMods(obj);
         }
     }
 

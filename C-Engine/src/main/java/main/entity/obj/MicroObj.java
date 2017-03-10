@@ -126,7 +126,7 @@ public class MicroObj extends Obj {
 
     @Override
     public void resetPercentages() {
-        // TODO Auto-generated method stub
+        getResetter().resetPercentages();
 
     }
 

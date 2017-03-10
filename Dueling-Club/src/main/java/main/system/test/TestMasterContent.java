@@ -74,13 +74,15 @@ public class TestMasterContent {
 
     private static String GRAPHICS_TEST_LIST = "Light;Haze;Force Field;" +
             "Summon Vampire Bat;Blink";
-    private static String TEST_LIST = "Raise Skeleton;Light;Haze;" +
+    private static String TEST_LIST =
+//     "Raise Skeleton;" +
+     "Light;Haze;" +
             "Leap into Darkness;Blink;Summon Vampire Bat;"
             // + "Enchant Weapon;"
             // + "Enchant Armor;"
             + "Arcane Bolt;Ray of Arcanum;Time Warp;"
             // + "Sorcerous Flames;"
-            + "Force Field;Raise Skeleton;" +
+            + "Force Field;" +
             // "Arms of Faith;Armor of Faith;Resurrection;"+
             "Mass Terror;Mass Confusion;Mass Madness;" + "Conjure Weapon;Conjure Armor;" + ""
             // + "Awaken Treant;"

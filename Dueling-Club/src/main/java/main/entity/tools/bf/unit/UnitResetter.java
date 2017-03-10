@@ -442,4 +442,76 @@ public class UnitResetter extends EntityResetter<Unit> {
             getEntity().modifyParameter(PARAMS.C_TOUGHNESS, amount, getIntParam(PARAMS.TOUGHNESS));
         }
     }
+
+    public void afterEffectsApplied() {
+        resetHeroValues();
+        if (game.isSimulation()) {
+            getInitializer().  initSpellbook();
+        }
+
+        resetMorale();
+        if (! getInitializer().dynamicValuesReady && !game.isSimulation()) {
+           getInitializer(). addDynamicValues();
+            getInitializer().dynamicValuesReady = true; // TODO recalc by percentage in wc3 style
+            getEntity().resetPercentages();
+        }
+
+        getCalculator().calculatePower();
+        getCalculator().calculateWeight();
+        getCalculator().calculateRemainingMemory();
+
+        if (!game.isSimulation()) { // TODO perhaps I should apply and display
+            // them!
+            if (!getGame().getRules().getStaminaRule().apply(getEntity())) {
+              getEntity().  setInfiniteValue(PARAMS.STAMINA, 0.2f);
+            }
+            if (!getGame().getRules().getFocusRule().apply(getEntity())) {
+                getEntity(). setInfiniteValue(PARAMS.FOCUS, 1);
+            }
+            if (!getGame().getRules().getMoraleRule().apply(getEntity())) {
+                getEntity().  setInfiniteValue(PARAMS.MORALE, 0.5f);
+            }
+            if (!getGame().getRules().getWeightRule().apply(getEntity())) {
+                getEntity().  setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);
+            }
+            getGame().getRules().getWatchRule().updateWatchStatus(getEntity());
+            getGame().getRules().getWoundsRule().apply(getEntity());
+
+
+//            recalculateInitiative();
+        } else {
+            afterBuffRuleEffects();
+        }
+
+        if (game.isSimulation()) {
+            resetSpells();
+            return;
+        }
+        if (getGame().getInventoryManager() != null) {
+            if (getGame().getInventoryManager().isActive()) {
+                return;
+            }
+        }
+        resetSpells();
+        resetQuickItemActives();
+        resetActives();
+    }
+    public void afterBuffRuleEffects() {
+        if (getEntity(). getSecondWeapon() != null) {
+            setParam(PARAMS.OFF_HAND_ATTACK, getIntParam(PARAMS.ATTACK));
+            getEntity().getSecondWeapon().applyMasteryBonus();
+
+        } else if (getEntity().getNaturalWeapon(true) != null) {
+            setParam(PARAMS.OFF_HAND_ATTACK, getIntParam(PARAMS.ATTACK));
+            getEntity().getNaturalWeapon(true).applyUnarmedMasteryBonus();
+        }
+        getCalculator().calculateAndSetDamage(true );
+        if (getEntity().getMainWeapon() != null) {
+            getEntity().getMainWeapon().applyMasteryBonus();
+        } else if (getEntity().getNaturalWeapon(false) != null) {
+            getEntity().getNaturalWeapon(false).applyUnarmedMasteryBonus();
+        }
+        getCalculator().calculateAndSetDamage(false );
+            applyMods();
+    }
 }

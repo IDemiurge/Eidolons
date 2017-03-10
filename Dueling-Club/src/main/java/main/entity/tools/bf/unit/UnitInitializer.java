@@ -48,6 +48,7 @@ import java.util.Map;
  */
 public class UnitInitializer extends EntityInitializer<Unit> {
     public boolean initialized;
+    public boolean dynamicValuesReady ;
 
     public UnitInitializer(Unit entity, EntityMaster<Unit> entityMaster) {
         super(entity, entityMaster);
