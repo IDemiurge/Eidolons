@@ -302,22 +302,22 @@ public class UnitDataSource implements
 
     @Override
     public List<List<ValueContainer>> getGeneralStats() {
-        return getStatsValueContainers(UNIT_INFO_PARAMS_GENERAL);
+        return getStatsValueContainers(main.content.UNIT_INFO_PARAMS.UNIT_INFO_PARAMS_GENERAL);
     }
 
     @Override
     public List<List<ValueContainer>> getCombatStats() {
-        return getStatsValueContainers(UNIT_INFO_PARAMS_COMBAT);
+        return getStatsValueContainers(main.content.UNIT_INFO_PARAMS.UNIT_INFO_PARAMS_COMBAT);
     }
 
     @Override
     public List<List<ValueContainer>> getMagicStats() {
-        return getStatsValueContainers(UNIT_INFO_PARAMS_MAGIC);
+        return getStatsValueContainers(main.content.UNIT_INFO_PARAMS.UNIT_INFO_PARAMS_MAGIC);
     }
 
     @Override
     public List<List<ValueContainer>> getMiscStats() {
-        return getStatsValueContainers(UNIT_INFO_PARAMS_MISC);
+        return getStatsValueContainers(main.content.UNIT_INFO_PARAMS.UNIT_INFO_PARAMS_MISC);
     }
 
 

@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import main.entity.obj.unit.Unit;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.lighting.LightingManager;
-import main.libgdx.old.framework.InfoDialog;
 import main.system.GuiEventManager;
 import main.system.graphics.MigMaster;
 
@@ -26,7 +25,7 @@ public class DialogDisplay extends Group {
             Unit unit = (Unit) obj.get();
             clearChildren();
             try {
-                dialog = new InfoDialog(unit);
+//                dialog = new InfoDialog(unit);
             } catch (Exception e) {
                 e.printStackTrace();
                 closedDialog();

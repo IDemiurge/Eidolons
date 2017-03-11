@@ -2,10 +2,7 @@ package main.libgdx.old.framework;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import main.content.DC_ContentManager;
-import main.content.PARAMS;
-import main.content.VALUE;
-import main.content.ValuePages;
+import main.content.*;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -143,8 +140,8 @@ public class InfoDialog extends Dialog {
         List<Triple<String, String, Actor>> list = new LinkedList<>();
 //        add ( new Triple<>(text, null,
 //         new Container(LAYOUT.VERTICAL, null , fxAndAbils, res)));
-        Iterator<String> iterator = Arrays.stream(ValuePages.INFO_TABLE_NAMES).iterator();
-        Arrays.stream(ValuePages.UNIT_INFO_PARAMS).forEach(arrays -> {
+        Iterator<String> iterator = Arrays.stream(UNIT_INFO_PARAMS.INFO_TABLE_NAMES).iterator();
+        Arrays.stream(UNIT_INFO_PARAMS.UNIT_INFO_PARAMS).forEach(arrays -> {
             List<ValueContainer> comps = new LinkedList<>();
             Arrays.stream(arrays).forEach(s -> {
                 comps.add(new ValueContainer(unit, 4, 4, () -> Arrays.asList(s)));
