@@ -395,7 +395,7 @@ public class ValuePages {
     };
     public static final VALUE[] ACTION_PARAMS_DC2 = {STR_DMG_MODIFIER,
             AGI_DMG_MODIFIER, INT_DMG_MODIFIER, SP_DMG_MODIFIER,
-            CRITICAL_MOD, IMPACT_AREA,  RADIUS, AUTO_ATTACK_RANGE,
+            CRITICAL_MOD, IMPACT_AREA, RADIUS, AUTO_ATTACK_RANGE,
             SIDE_DAMAGE_MOD, DIAGONAL_DAMAGE_MOD, SIDE_ATTACK_MOD,
             DIAGONAL_ATTACK_MOD
             // G_DURATION
@@ -671,7 +671,7 @@ public class ValuePages {
             REDEMPTION_MASTERY, CELESTIAL_MASTERY, BENEDICTION_MASTERY,
             WARP_MASTERY, DESTRUCTION_MASTERY, DEMONOLOGY_MASTERY,};
 
-    public static final VALUE[][] UNIT_INFO_PARAMS_GENERAL = {
+    public static final PARAMS[][] UNIT_INFO_PARAMS_GENERAL = {
             {
                     INITIATIVE_MODIFIER, INITIATIVE,
                     STARTING_FOCUS,
@@ -695,41 +695,63 @@ public class ValuePages {
             },
 
     };
-    public static final VALUE[][] UNIT_INFO_PARAMS_COMBAT = {
+    public static final PARAMS[][] UNIT_INFO_PARAMS_COMBAT = {
             {
-
                     ATTACK_AP_PENALTY, ATTACK_STA_PENALTY,
                     MOVE_AP_PENALTY, MOVE_STA_PENALTY,
-
                     DIAGONAL_ATTACK_MOD, DIAGONAL_DAMAGE_MOD,
                     SIDE_ATTACK_MOD, SIDE_DAMAGE_MOD,
             },
             {
-
                     CRITICAL_MOD, AUTO_CRIT_CHANCE,
                     CLOSE_QUARTERS_ATTACK_MOD, CLOSE_QUARTERS_DAMAGE_MOD,
                     LONG_REACH_ATTACK_MOD, LONG_REACH_DAMAGE_MOD,
-                    COUNTER_MOD, LONG_REACH_DAMAGE_MOD,
-
+                    COUNTER_MOD, LONG_REACH_DAMAGE_MOD
             },
             {
-
                     ARMOR_PENETRATION, BLOCK_PENETRATION,
                     DEFENSE_PENETRATION, PARRY_PENETRATION,
                     ACCURACY, EVASION,
-                    BLOCK_CHANCE, PARRY_CHANCE,
-
-
+                    BLOCK_CHANCE, PARRY_CHANCE
             },
     };
+
+    public static final PARAMS[][] UNIT_INFO_PARAMS_MAGIC = {
+            {
+                    RESISTANCE_PENETRATION,
+            },
+    };
+
+    public static final PARAMS[][] UNIT_INFO_PARAMS_MISC = {
+            {
+                    QUICK_SLOTS, ITEM_COST_MOD,
+                    DETECTION, STEALTH,
+                    SNEAK_DEFENSE_PENETRATION, SNEAK_ARMOR_PENETRATION,
+                    SNEAK_ATTACK_MOD, SNEAK_DAMAGE_MOD,
+            },
+            {
+                    CADENCE_AP_MOD, CADENCE_ATTACK_MOD,
+                    CADENCE_BONUS, CADENCE_DAMAGE_MOD,
+                    CADENCE_DEFENSE_MOD, CADENCE_FOCUS_BOOST,
+                    CADENCE_STA_MOD, CADENCE_RETAINMENT_CHANCE,
+            },
+            {
+                    WATCH_DEFENSE_MOD, WATCH_ATTACK_MOD,
+                    WATCH_AP_PENALTY_MOD, WATCH_DETECTION_MOD,
+                    WATCH_ATTACK_OTHERS_MOD, WATCH_DEFENSE_OTHERS_MOD,
+                    WATCHED_ATTACK_MOD,
+            },
+
+    };
+
     public static final String[] INFO_TABLE_NAMES = {
             "Physical", "Combat", "Magic", "Misc", "Rolls", "Mods"
     };
     private static final VALUE[] DC_SPELL_PARAMETERS = {
 
             AP_COST, STA_COST, ESS_COST, ENDURANCE_COST, FOC_COST,
-            FOC_REQ, RANGE,  RADIUS, SPELLPOWER_MOD,
-             DURATION, COOLDOWN, C_COOLDOWN,
+            FOC_REQ, RANGE, RADIUS, SPELLPOWER_MOD,
+            DURATION, COOLDOWN, C_COOLDOWN,
 
     };
     public static final VALUE[][] ALT_SPELL_PAGES = {DESCRIPTION, DC_SPELL_PARAMETERS,
@@ -798,27 +820,6 @@ public class ValuePages {
                     PASS_PASSAGE_CHANCE_MOD,
             },
     };
-    private static final VALUE[][] UNIT_INFO_PARAMS_MISC = {
-            {
-                    QUICK_SLOTS, ITEM_COST_MOD,
-                    DETECTION, STEALTH,
-                    SNEAK_DEFENSE_PENETRATION, SNEAK_ARMOR_PENETRATION,
-                    SNEAK_ATTACK_MOD, SNEAK_DAMAGE_MOD,
-            },
-            {
-                    CADENCE_AP_MOD, CADENCE_ATTACK_MOD,
-                    CADENCE_BONUS, CADENCE_DAMAGE_MOD,
-                    CADENCE_DEFENSE_MOD, CADENCE_FOCUS_BOOST,
-                    CADENCE_STA_MOD, CADENCE_RETAINMENT_CHANCE,
-            },
-            {
-                    WATCH_DEFENSE_MOD, WATCH_ATTACK_MOD,
-                    WATCH_AP_PENALTY_MOD, WATCH_DETECTION_MOD,
-                    WATCH_ATTACK_OTHERS_MOD, WATCH_DEFENSE_OTHERS_MOD,
-                    WATCHED_ATTACK_MOD,
-            },
-
-    };
     private static final VALUE[][] UNIT_INFO_PARAMS_ROLLS = {
             {
                     REACTION_ROLL_SAVE_BONUS, REACTION_ROLL_BEAT_BONUS,
@@ -838,18 +839,6 @@ public class ValuePages {
                     FAITH_ROLL_SAVE_BONUS, FAITH_ROLL_BEAT_BONUS,
                     DETECTION_ROLL_SAVE_BONUS, DETECTION_ROLL_BEAT_BONUS,
             },
-    };
-    private static final VALUE[][] UNIT_INFO_PARAMS_MAGIC = {
-            {
-                    RESISTANCE_PENETRATION,
-            },
-    };
-
-    public static final VALUE[][][] UNIT_INFO_PARAMS_SIMPLE = {
-            UNIT_INFO_PARAMS_GENERAL,
-            UNIT_INFO_PARAMS_COMBAT,
-            UNIT_INFO_PARAMS_MAGIC,
-            UNIT_INFO_PARAMS_MISC
     };
 
     public static final VALUE[][][] UNIT_INFO_PARAMS = {

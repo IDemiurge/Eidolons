@@ -26,8 +26,7 @@ public class UnitDataSource implements
         MainParamDataSource, ResourceSource,
         AvatarDataSource, InitiativeAndActionPointsSource,
         EffectsAndAbilitiesSource, MainWeaponDataSource, OffWeaponDataSource,
-        ArmorDataSource, DefenceDataSource, MainAttributesSource,
-        ResistSource {
+        MainAttributesSource, ResistSource, StatsDataSource {
     private DC_Obj unit;
 
     public UnitDataSource(DC_Obj unit) {
@@ -301,6 +300,27 @@ public class UnitDataSource implements
         return result;
     }
 
+    @Override
+    public List<List<ValueContainer>> getGeneralStats() {
+        return getStatsValueContainers(UNIT_INFO_PARAMS_GENERAL);
+    }
+
+    @Override
+    public List<List<ValueContainer>> getCombatStats() {
+        return getStatsValueContainers(UNIT_INFO_PARAMS_COMBAT);
+    }
+
+    @Override
+    public List<List<ValueContainer>> getMagicStats() {
+        return getStatsValueContainers(UNIT_INFO_PARAMS_MAGIC);
+    }
+
+    @Override
+    public List<List<ValueContainer>> getMiscStats() {
+        return getStatsValueContainers(UNIT_INFO_PARAMS_MISC);
+    }
+
+
     private ValueContainer getWeaponValueContainer(DC_WeaponObj weapon) {
         TextureRegion image;
         if (weapon != null) {
@@ -310,5 +330,19 @@ public class UnitDataSource implements
         }
 
         return new ValueContainer(image);
+    }
+
+    private List<List<ValueContainer>> getStatsValueContainers(PARAMS[][] unitInfoParamsGeneral) {
+        List<List<ValueContainer>> values = new ArrayList<>();
+        Arrays.stream(unitInfoParamsGeneral)
+                .forEach(ps -> values.add(
+                        Arrays.stream(ps)
+                                .map(p -> {
+                                    String value = String.valueOf(unit.getIntParam(p));
+                                    String name = p.getName();
+                                    return new ValueContainer(name, value);
+                                }).collect(Collectors.toList())
+                ));
+        return values;
     }
 }
