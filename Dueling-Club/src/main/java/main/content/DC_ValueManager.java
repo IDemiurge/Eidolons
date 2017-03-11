@@ -16,7 +16,7 @@ public class DC_ValueManager implements ValueManager {
 
     private static VALUE_GROUP getValueGroup(String string) {
         VALUE_GROUP template = new EnumMaster<VALUE_GROUP>().retrieveEnumConst(VALUE_GROUP.class,
-         StringMaster.cropValueGroup(string));
+                StringMaster.cropValueGroup(string));
         return (template);
     }
 
@@ -90,7 +90,7 @@ public class DC_ValueManager implements ValueManager {
 
         HIGH_ARTS(PARAMS.CONJURATION_MASTERY, PARAMS.CELESTIAL_MASTERY, PARAMS.ENCHANTMENT_MASTERY, PARAMS.ELEMENTAL_MASTERY,
 
-         PARAMS.NECROMANCY_MASTERY),
+                PARAMS.NECROMANCY_MASTERY),
 
         MAGIC_SKILLS(PARAMS.WIZARDRY_MASTERY, PARAMS.SPELLCRAFT_MASTERY),
 

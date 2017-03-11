@@ -31,6 +31,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
     private ResistInfoTabsPanel resistTabs;
     private OffWeaponPanel offWeaponPanel;
     private MainWeaponPanel mainWeaponPanel;
+    private StatsTabsPanel statsTabsPanel;
 
     public UnitInfoPanel() {
         TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/background.png");
@@ -112,48 +113,15 @@ public class UnitInfoPanel extends Container<TablePanel> {
         addPanelSeparator();
 
         resistTabs = new ResistInfoTabsPanel();
-        addElement(resistTabs);
+        addElement(new Container(resistTabs).fill().left().bottom());
 
         addCol();
 
         offWeaponPanel = new OffWeaponPanel();
         addElement(offWeaponPanel);
 
-        InfoPanelTabsPanel tabsPanel2 = new InfoPanelTabsPanel();
-
-
-        List<ValueContainer> statsValues = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            ValueContainer valueContainer = new ValueContainer("Combat param" + i, "9000");
-            valueContainer.setBorder(TextureCache.getOrCreateR("UI/components/infopanel/simple_value_border.png"), true);
-            statsValues.add(valueContainer);
-        }
-
-        //StatsPanel statsPanel = new StatsPanel(statsValues);
-
-        List<ValueContainer> statsValues2 = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            ValueContainer valueContainer = new ValueContainer("Magic param" + i, "9000");
-            valueContainer.setBorder(TextureCache.getOrCreateR("UI/components/infopanel/simple_value_border.png"), true);
-            statsValues2.add(valueContainer);
-        }
-        //StatsPanel statsPanel2 = new StatsPanel(statsValues);
-
-        List<ValueContainer> statsValues3 = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            ValueContainer valueContainer = new ValueContainer("Misc param" + i, "9000");
-            valueContainer.setBorder(TextureCache.getOrCreateR("UI/components/infopanel/simple_value_border.png"), true);
-            statsValues3.add(valueContainer);
-        }
-        StatsPanel statsPanel3 = new StatsPanel(statsValues, statsValues2, statsValues3);
-
-
-        tabsPanel2.addTab(statsPanel3, "Combat");
-/*        tabsPanel2.addTab(statsPanel2, "Magic");
-        tabsPanel2.addTab(statsPanel3, "Misc");*/
-
-        tabsPanel2.resetCheckedTab();
-        addElement(tabsPanel2);
+        statsTabsPanel = new StatsTabsPanel();
+        addElement(new Container(statsTabsPanel).fill().left().bottom());
     }
 
     private void addCol() {
@@ -208,6 +176,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         resistTabs.setUserObject(userObject);
         offWeaponPanel.setUserObject(userObject);
         mainWeaponPanel.setUserObject(userObject);
+        statsTabsPanel.setUserObject(userObject);
         updatePanel = true;
     }
 

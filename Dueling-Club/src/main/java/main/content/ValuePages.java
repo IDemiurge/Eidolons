@@ -686,7 +686,7 @@ public class ValuePages {
      REDEMPTION_MASTERY, CELESTIAL_MASTERY, BENEDICTION_MASTERY,
      WARP_MASTERY, DESTRUCTION_MASTERY, DEMONOLOGY_MASTERY,};
 
-    public static final VALUE[][] UNIT_INFO_PARAMS_GENERAL = {
+    public static final PARAMS[][] UNIT_INFO_PARAMS_GENERAL = {
      {
       INITIATIVE_MODIFIER, INITIATIVE,
       STARTING_FOCUS,
@@ -710,7 +710,7 @@ public class ValuePages {
      },
 
     };
-    public static final VALUE[][] UNIT_INFO_PARAMS_COMBAT = {
+    public static final PARAMS[][] UNIT_INFO_PARAMS_COMBAT = {
      {
 
       ATTACK_AP_PENALTY, ATTACK_STA_PENALTY,
@@ -870,7 +870,7 @@ public class ValuePages {
       PASS_PASSAGE_CHANCE_MOD,
      },
     };
-    private static final VALUE[][] UNIT_INFO_PARAMS_MISC = {
+    public static final PARAMS[][] UNIT_INFO_PARAMS_MISC = {
      {
       QUICK_SLOTS, ITEM_COST_MOD,
       DETECTION, STEALTH,
@@ -911,7 +911,7 @@ public class ValuePages {
       DETECTION_ROLL_SAVE_BONUS, DETECTION_ROLL_BEAT_BONUS,
      },
     };
-    private static final VALUE[][] UNIT_INFO_PARAMS_MAGIC = {
+    public   static final PARAMS[][] UNIT_INFO_PARAMS_MAGIC = {
      {
       RESISTANCE_PENETRATION,
       ESSENCE_REGEN,
