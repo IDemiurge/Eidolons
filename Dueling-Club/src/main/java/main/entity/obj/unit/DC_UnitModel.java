@@ -46,6 +46,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager;
+import main.system.math.MathMaster;
 import main.system.text.ToolTipMaster;
 import main.test.debug.DebugMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -179,7 +180,14 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public void addDynamicValues() {
         super.addDynamicValues();
-        getInitializer().addDynamicValues();
+        if (getChecker().isHero()) {
+            setParam(PARAMS.IDENTITY_POINTS, getIntParam(PARAMS.STARTING_IDENTITY_POINTS));
+        } else if (!getChecker().isBfObj()) {
+            int xp = MathMaster.getFractionValueCentimal(getIntParam(PARAMS.TOTAL_XP),
+             getIntParam(PARAMS.XP_LEVEL_MOD));
+            // for training
+            setParam(PARAMS.XP, xp);
+        }
     }
 
 

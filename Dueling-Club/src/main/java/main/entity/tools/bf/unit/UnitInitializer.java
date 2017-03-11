@@ -36,7 +36,6 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
-import main.system.math.MathMaster;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -76,15 +75,8 @@ public class UnitInitializer extends EntityInitializer<Unit> {
 
 
     public void addDynamicValues() {
+getEntity().addDynamicValues();
 
-        if (getChecker().isHero()) {
-            setParam(PARAMS.IDENTITY_POINTS, getIntParam(PARAMS.STARTING_IDENTITY_POINTS));
-        } else if (!getChecker().isBfObj()) {
-            int xp = MathMaster.getFractionValueCentimal(getIntParam(PARAMS.TOTAL_XP),
-             getIntParam(PARAMS.XP_LEVEL_MOD));
-            // for training
-            setParam(PARAMS.XP, xp);
-        }
     }
 
     @Override

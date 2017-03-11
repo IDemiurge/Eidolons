@@ -79,7 +79,7 @@ public class UnitResetter extends EntityResetter<Unit> {
             facing = (new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(FACING_DIRECTION.class,
              name));
             if (facing == null) {
-                if (getEntity(). getDirection() != null) {
+                if (getEntity().getDirection() != null) {
                     FacingMaster.getFacingFromDirection(getEntity().getDirection());
                 } else if (getRef().getObj(KEYS.SUMMONER) != null) {
                     facing = ((DC_UnitModel) getRef().getObj(KEYS.SUMMONER)).getFacing();
@@ -89,8 +89,9 @@ public class UnitResetter extends EntityResetter<Unit> {
             }
 
         }
-       getEntity(). setFacing(facing);
+        getEntity().setFacing(facing);
     }
+
     @Override
     public void toBase() {
 //        getEntity().setMode(STD_MODES.NORMAL); ??
@@ -446,13 +447,13 @@ public class UnitResetter extends EntityResetter<Unit> {
     public void afterEffectsApplied() {
         resetHeroValues();
         if (game.isSimulation()) {
-            getInitializer().  initSpellbook();
+            getInitializer().initSpellbook();
         }
 
         resetMorale();
-        if (! getInitializer().dynamicValuesReady && !game.isSimulation()) {
-           getInitializer(). addDynamicValues();
-            getInitializer().dynamicValuesReady = true; // TODO recalc by percentage in wc3 style
+        if (!getInitializer().dynamicValuesReady && !game.isSimulation()) {
+            getInitializer().addDynamicValues();
+            getInitializer().dynamicValuesReady = true;
             getEntity().resetPercentages();
         }
 
@@ -463,16 +464,16 @@ public class UnitResetter extends EntityResetter<Unit> {
         if (!game.isSimulation()) { // TODO perhaps I should apply and display
             // them!
             if (!getGame().getRules().getStaminaRule().apply(getEntity())) {
-              getEntity().  setInfiniteValue(PARAMS.STAMINA, 0.2f);
+                getEntity().setInfiniteValue(PARAMS.STAMINA, 0.2f);
             }
             if (!getGame().getRules().getFocusRule().apply(getEntity())) {
-                getEntity(). setInfiniteValue(PARAMS.FOCUS, 1);
+                getEntity().setInfiniteValue(PARAMS.FOCUS, 1);
             }
             if (!getGame().getRules().getMoraleRule().apply(getEntity())) {
-                getEntity().  setInfiniteValue(PARAMS.MORALE, 0.5f);
+                getEntity().setInfiniteValue(PARAMS.MORALE, 0.5f);
             }
             if (!getGame().getRules().getWeightRule().apply(getEntity())) {
-                getEntity().  setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);
+                getEntity().setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);
             }
             getGame().getRules().getWatchRule().updateWatchStatus(getEntity());
             getGame().getRules().getWoundsRule().apply(getEntity());
@@ -496,8 +497,9 @@ public class UnitResetter extends EntityResetter<Unit> {
         resetQuickItemActives();
         resetActives();
     }
+
     public void afterBuffRuleEffects() {
-        if (getEntity(). getSecondWeapon() != null) {
+        if (getEntity().getSecondWeapon() != null) {
             setParam(PARAMS.OFF_HAND_ATTACK, getIntParam(PARAMS.ATTACK));
             getEntity().getSecondWeapon().applyMasteryBonus();
 
@@ -505,13 +507,13 @@ public class UnitResetter extends EntityResetter<Unit> {
             setParam(PARAMS.OFF_HAND_ATTACK, getIntParam(PARAMS.ATTACK));
             getEntity().getNaturalWeapon(true).applyUnarmedMasteryBonus();
         }
-        getCalculator().calculateAndSetDamage(true );
+        getCalculator().calculateAndSetDamage(true);
         if (getEntity().getMainWeapon() != null) {
             getEntity().getMainWeapon().applyMasteryBonus();
         } else if (getEntity().getNaturalWeapon(false) != null) {
             getEntity().getNaturalWeapon(false).applyUnarmedMasteryBonus();
         }
-        getCalculator().calculateAndSetDamage(false );
-            applyMods();
+        getCalculator().calculateAndSetDamage(false);
+        applyMods();
     }
 }
