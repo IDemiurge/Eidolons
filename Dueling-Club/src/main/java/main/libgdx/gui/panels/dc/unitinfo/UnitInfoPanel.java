@@ -113,7 +113,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         addPanelSeparator();
 
         resistTabs = new ResistInfoTabsPanel();
-        addElement(resistTabs);
+        addElement(new Container(resistTabs).fill().left().bottom());
 
         addCol();
 
@@ -121,7 +121,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         addElement(offWeaponPanel);
 
         statsTabsPanel = new StatsTabsPanel();
-        addElement(statsTabsPanel);
+        addElement(new Container(statsTabsPanel).fill().left().bottom());
     }
 
     private void addCol() {

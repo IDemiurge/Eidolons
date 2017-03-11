@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
@@ -15,7 +16,6 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 public class StatsPanel extends TablePanel {
     public StatsPanel() {
         fill().center().bottom();
-        debug();
     }
 
     @Override
@@ -26,9 +26,10 @@ public class StatsPanel extends TablePanel {
             clear();
 
             List<List<ValueContainer>> valueContainers = ((Supplier<List<List<ValueContainer>>>) getUserObject()).get();
-
+            List<TablePanel> miniTables = new ArrayList<>();
             for (int i = 0; i < valueContainers.size(); i++) {
                 TablePanel tablePanel = new TablePanel();
+                miniTables.add(tablePanel);
                 tablePanel.setHeight(getPrefHeight());
                 tablePanel.fill().center().bottom();
 
@@ -59,7 +60,6 @@ public class StatsPanel extends TablePanel {
                 addElement(new Container<>(a).fill().left().bottom());
             }
 
-            pack();
             setHeight(getPrefHeight());
             updatePanel = false;
         }

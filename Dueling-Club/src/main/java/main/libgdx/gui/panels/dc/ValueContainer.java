@@ -55,6 +55,7 @@ public class ValueContainer extends Container<Table> {
         }
         if (value != null) {
             this.value = new Container<>(new Label(value, StyleHolder.getDefaultLabelStyle()));
+            this.value.fill().center();
             table.add(this.value);
             if (isVertical()) {
                 table.row();

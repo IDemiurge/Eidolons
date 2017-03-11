@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TabbedPanel extends Container<Table> {
+public class TabbedPanel extends Table {
     protected HashMap<String, Container> tabsToNamesMap;
     private List<Container> tabs = new ArrayList<>();
     private ButtonGroup<Button> buttonGroup = new ButtonGroup();
@@ -20,7 +20,7 @@ public class TabbedPanel extends Container<Table> {
         tabsToNamesMap = new HashMap<>();
         buttonGroup.setMaxCheckCount(1);
         buttonGroup.setMinCheckCount(1);
-        fill();
+        setFillParent(true);
         left().bottom();
     }
 
@@ -28,17 +28,12 @@ public class TabbedPanel extends Container<Table> {
         buttonLayout = new Table();
         //buttonLayout.setDebug(true);
         buttonLayout.left();
-        Table container = new Table();
-        container.add(buttonLayout).fill().left().height(h);
+        add(buttonLayout).fill().bottom().left().height(h);
 
-        container.row();
+        row();
         panelLayout = new Container<>();
-        panelLayout.height(getPrefHeight());
-        panelLayout.width(getPrefWidth());
-        panelLayout.fill().bottom().center();
-        container.add(panelLayout).fill().bottom().center().height(prefHeight);
-
-        super.setActor(container);
+        panelLayout.fill().bottom().left();
+        add(panelLayout).fill().bottom().left();
     }
 
     public void addTab(Container container, String tabName) {
@@ -62,10 +57,9 @@ public class TabbedPanel extends Container<Table> {
 
         tabs.add(container);
 
-        container.setFillParent(true);
-        container.setHeight(getHeight() - b.getHeight());
         panelLayout.setActor(container);
-        panelLayout.fill().align(container.getAlign());
+        panelLayout.fill().left().bottom();
+        panelLayout.align(container.getAlign());
         buttonGroup.setChecked(tabName);
         tabsToNamesMap.put(tabName, container);
     }
@@ -76,18 +70,6 @@ public class TabbedPanel extends Container<Table> {
             buttonGroup.getButtons().first().setChecked(true);
             panelLayout.setActor(tabs.get(0));
         }
-    }
-
-    @Override
-    @Deprecated
-    public Table getActor() {
-        throw new UnsupportedOperationException("Do not use this!");
-    }
-
-    @Override
-    @Deprecated
-    public void setActor(Table actor) {
-        throw new UnsupportedOperationException("Use TabbedPanel#addElement.");
     }
 
     protected TextButton.TextButtonStyle getButtonStyle() {
