@@ -18,6 +18,8 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.FacingMaster;
+import main.game.logic.combat.CriticalAttackRule;
+import main.game.logic.combat.DefenseVsAttackRule;
 import main.rules.action.WatchRule;
 import main.rules.combat.ForceRule;
 import main.rules.perk.RangeRule;
@@ -194,9 +196,9 @@ public class AttackCalculator {
 
     private Integer getAttackDefenseDamageBonus(Attack attack, Integer amount, Unit attacker,
                                                 Unit attacked, DC_ActiveObj action, boolean offhand) {
-        int attackValue = DC_AttackMaster.getAttackValue(offhand, attacker, attacked, action);
+        int attackValue = DefenseVsAttackRule.getAttackValue(offhand, attacker, attacked, action);
         // TODO
-        int defense = DC_AttackMaster.getDefenseValue(attacker, attacked, action);
+        int defense = DefenseVsAttackRule.getDefenseValue(attacker, attacked, action);
         int diff = attackValue - defense;
         boolean negative = false;
         if (diff < 0) {
@@ -230,11 +232,10 @@ public class AttackCalculator {
         if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.CRITICAL_IMMUNE)) {
             return 0;
         }
-        int mod = 100 + attacker.getIntParam(PARAMS.CRITICAL_MOD);
-        int factor = MathMaster.getFractionValueCentimal(DC_Formulas.DEFAULT_CRITICAL_FACTOR, mod);
-        mod -= attacked.getIntParam(PARAMS.CRITICAL_REDUCTION);
+        int mod = CriticalAttackRule.
+         getCriticalDamagePercentage(action, attacked);
 
-        int bonus = MathMaster.getFractionValueCentimal(amount, factor);
+        int bonus = MathMaster.applyMod(amount, mod)-amount;
         if (!precalc) {
             if (attack.getAnimation() != null) {
                 attack.getAnimation().addPhase(

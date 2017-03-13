@@ -26,6 +26,10 @@ import main.system.math.roll.RollMaster;
 public class ForceRule {
     public static final int ROLL_FACTOR = 50;
     private static final int DAMAGE_FACTOR = 100;
+    private static final float PUSH_DISTANCE_COEFFICIENT = 0.1F;
+    private static final float KNOCK_MAX_WEIGHT_COEFFICIENT = 0.25F;
+    private static final float KNOCK_ALWAYS_WEIGHT_COEFFICIENT = 0.05F;
+    private static final float INTERRUPT_MAX_WEIGHT_COEFFICIENT = 0.5F;
 
     // or spell!
     public static int getForceFromAttack(DC_ActiveObj attack) {
@@ -41,38 +45,39 @@ public class ForceRule {
         }
         Integer weightModifier = getAttackerWeightModifier(attack, weapon);
         double strengthModifier = getStrengthModifier(attack, weapon);
-        int force = (int) Math.round(weightModifier * strengthModifier);
         int weaponWeightBonus = weapon.getIntParam(PARAMS.WEIGHT)
-                * attack.getIntParam(PARAMS.FORCE_MOD_WEAPON_WEIGHT);
-        force += weaponWeightBonus;
+         * attack.getIntParam(PARAMS.FORCE_MOD_WEAPON_WEIGHT);
 
+        int force = (int) Math.round(weightModifier * strengthModifier);
+        force += weaponWeightBonus;
         force = force * attack.getIntParam(PARAMS.FORCE_MOD) / 100;
         attack.setParam(PARAMS.FORCE, force);
 
         LogMaster.log(1, "getForceFromAttack = weightModifier"
-                + weightModifier + "*strengthModifier" + "strengthModifier "
-                + "+ weaponWeightBonus " + weaponWeightBonus + "* "
-                + new Float(attack.getIntParam(PARAMS.FORCE_MOD)) / 100 + " = " + force);
+         + weightModifier + "*strengthModifier" + "strengthModifier "
+         + "+ weaponWeightBonus " + weaponWeightBonus + "* "
+         + new Float(attack.getIntParam(PARAMS.FORCE_MOD)) / 100 + " = " + force);
         return force;
 
     }
 
     private static double getStrengthModifier(DC_ActiveObj attack, Obj weapon) {
-        return Math.min(Math.sqrt(attack.getOwnerObj().getIntParam(PARAMS.STRENGTH)), weapon
-                .getIntParam(PARAMS.FORCE_MAX_STRENGTH_MOD));
+        return Math.min(Math.sqrt(attack.getOwnerObj().
+         getIntParam(PARAMS.STRENGTH)), weapon
+         .getIntParam(PARAMS.FORCE_MAX_STRENGTH_MOD));
     }
 
     private static int getAttackerWeightModifier(DC_ActiveObj attack, Obj weapon) {
         return attack.getOwnerObj().getIntParam(PARAMS.WEIGHT)
-                * MathMaster.applyModIfNotZero(weapon.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT),
-                attack.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT)) / 100;
+         * MathMaster.applyModIfNotZero(weapon.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT),
+         attack.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT)) / 100;
     }
 
     private static int getForceFromSpell(DC_ActiveObj spell) {
         int force =
-                // new Formula(spell.getProp(PROPS.FO)).getInt(ref);
-                spell.getIntParam(PARAMS.FORCE, true) + spell.getOwnerObj().getIntParam(PARAMS.SPELLPOWER)
-                        * spell.getIntParam(PARAMS.FORCE_SPELLPOWER_MOD);
+         // new Formula(spell.getProp(PROPS.FO)).getInt(ref);
+         spell.getIntParam(PARAMS.FORCE, true) + spell.getOwnerObj().getIntParam(PARAMS.SPELLPOWER)
+          * spell.getIntParam(PARAMS.FORCE_SPELLPOWER_MOD);
         return force;
     }
 
@@ -81,13 +86,23 @@ public class ForceRule {
         if (!RuleMaster.isRuleOn(RULE.FORCE)) {
             return;
         }
-        int force = getForce(action);
+        int force = getForce(action, true);
         if (force == 0) {
             return;
         }
         Unit target = (Unit) action.getRef().getTargetObj();
         Unit source = (Unit) action.getRef().getSourceObj();
-        Boolean result = RollMaster.rollForceKnockdown(target, action, force);
+        Boolean result = null;
+        //TODO DEXTERITY ROLL TO AVOID ALL?
+        if (target.getIntParam(PARAMS.TOTAL_WEIGHT) < getMinWeightKnock(action)) {
+            result = RollMaster.rollForceKnockdown(target, action, force);
+       if (BooleanMaster.isFalse(result))
+           result= null ; //ALWAYS INTERRUPT AT LEAST
+        } else if (target.getIntParam(PARAMS.TOTAL_WEIGHT) > getMaxWeightKnock(action)) {
+            result = false;
+        } else {
+            result = RollMaster.rollForceKnockdown(target, action, force);
+        }
         if (isTestMode()) {
             result = true;
         }
@@ -97,6 +112,7 @@ public class ForceRule {
         } else if (result) {
             KnockdownRule.knockdown(target);
         }
+
         applyPush(force, action, source, target);
         if (action.isSpell()) {
             applyDamage(force, action, source, target);
@@ -109,18 +125,19 @@ public class ForceRule {
     }
 
     private static int getForce(DC_ActiveObj attack) {
+        return getForce(attack, false);
+    }
+
+    private static int getForce(DC_ActiveObj attack, boolean recalc) {
+        if (!recalc) {
+            return attack.getIntParam(PARAMS.FORCE);
+        }
         if (attack instanceof DC_SpellObj) {
             return getForceFromSpell(attack);
         }
         return getForceFromAttack(attack);
     }
 
-    private static int getPushDistance(int force, Unit target) {
-        int distance = Math.round(force / 10 / target.getIntParam(PARAMS.TOTAL_WEIGHT));
-        LogMaster.log(1, "getPushDistance = " + force + "/10/"
-                + target.getIntParam(PARAMS.TOTAL_WEIGHT) + " = " + distance);
-        return distance;
-    }
 
     public static int getDamage(DC_ActiveObj action, Unit attacker, Unit attacked) {
         if (!RuleMaster.isRuleOn(RULE.FORCE)) {
@@ -134,12 +151,12 @@ public class ForceRule {
         int damage = Math.round(force / DAMAGE_FACTOR);
         damage = damage
 
-                * attack.getIntParam(PARAMS.FORCE_DAMAGE_MOD)
-                / 100
+         * attack.getIntParam(PARAMS.FORCE_DAMAGE_MOD)
+         / 100
 
-                + damage
-                * (attacked.getIntParam(PARAMS.FORCE_DAMAGE_MOD) - source
-                .getIntParam(PARAMS.FORCE_PROTECTION)) / 100;
+         + damage
+         * (attacked.getIntParam(PARAMS.FORCE_DAMAGE_MOD) - source
+         .getIntParam(PARAMS.FORCE_PROTECTION)) / 100;
         return damage;
     }
 
@@ -153,13 +170,14 @@ public class ForceRule {
             // cell
         }
         int distance = getPushDistance(MathMaster.applyModIfNotZero(force, attack
-                .getFinalModParam(PARAMS.FORCE_PUSH_MOD)), target);
+         .getFinalModParam(PARAMS.FORCE_PUSH_MOD)), target);
 
         if (distance == 0) {
             if (isTestMode()) {
                 distance = 1;
+            } else {
+                return;
             }
-            return;
         }
         if (d.isDiagonal()) {
             distance = (int) Math.round(Math.sqrt(distance));
@@ -185,7 +203,7 @@ public class ForceRule {
         Ref ref = attack.getRef().getCopy();
         ref.setTarget(target.getId());
         new MoveEffect("target", new Formula("" + x_displacement), new Formula("" + y_displacement))
-                .apply(ref);
+         .apply(ref);
 
         // roll dexterity against Fall Down
 
@@ -213,20 +231,36 @@ public class ForceRule {
         new DealDamageEffect(new Formula(damage + ""), GenericEnums.DAMAGE_TYPE.BLUDGEONING).apply(ref);
     }
 
-    public static void tryKnockdown(int force, DC_ActiveObj attack, Unit source,
-                                    Unit target, boolean pushed) {
-        // Boolean result = RollMaster.rollForceKnockdown(target, attack,
-        // force);
-        // if (pushed) {
-        //
-        // } else {
-        // if (result == null)
-        // return;
-        // }
-        KnockdownRule.knockdown(target);
-        // reduce stamina, initiative, focus and ap
-        // KnockdownRule.checkApplyProneEffect(unit)
 
+    private static int getPushDistance(int force, Unit target) {
+        int distance = Math.round(force * PUSH_DISTANCE_COEFFICIENT / target.getIntParam(PARAMS.TOTAL_WEIGHT));
+        LogMaster.log(1, "getPushDistance = " + force + "/10/"
+         + target.getIntParam(PARAMS.TOTAL_WEIGHT) + " = " + distance);
+        return distance;
     }
+
+    public static int getMaxWeightPush(DC_ActiveObj action) {
+        int force = getForce(action);
+        force = MathMaster.applyMod(force,
+         action.getIntParam(PARAMS.FORCE_PUSH_MOD));
+        return Math.round(force * PUSH_DISTANCE_COEFFICIENT
+         * 1.5f //round
+        );
+    }
+
+    public static int getMaxWeightKnock(DC_ActiveObj action) {
+        int force = getForce(action);
+        force = MathMaster.applyMod(force,
+         action.getIntParam(PARAMS.FORCE_KNOCK_MOD));
+        return (int) (KNOCK_MAX_WEIGHT_COEFFICIENT * force);
+    }
+
+    public static int getMinWeightKnock(DC_ActiveObj action) {
+        int force = getForce(action);
+        force = MathMaster.applyMod(force,
+         action.getIntParam(PARAMS.FORCE_KNOCK_MOD));
+        return (int) (KNOCK_ALWAYS_WEIGHT_COEFFICIENT * force);
+    }
+
 
 }

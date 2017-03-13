@@ -16,6 +16,7 @@ import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.enums.system.AiEnums.AI_LOGIC;
+import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.elements.costs.Costs;
 import main.elements.targeting.Targeting;
@@ -34,7 +35,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.PhaseAnimation;
 import main.system.graphics.SpriteAnimated;
-import main.system.math.MathMaster;
+import main.system.math.ModMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -463,10 +464,14 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
 
-    public Integer getFinalModParam(PARAMS mod) {
-        return MathMaster.applyModIfNotZero(getIntParam(mod), getOwnerObj().getIntParam(mod));
+    public Integer getFinalModParam(PARAMETER mod) {
+        return
+         ModMaster.getFinalModForAction(this, mod);
     }
-
+    public int getFinalBonusParam(PARAMS bonus) {
+        return
+         ModMaster.getFinalBonusForAction(this, bonus);
+    }
 
     public boolean isAttackOrStandardAttack() {
         return isAttack() || isStandardAttack();
@@ -815,5 +820,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public Boolean isCancelled() {
         return getHandler().isCancelled();
     }
+
 
 }

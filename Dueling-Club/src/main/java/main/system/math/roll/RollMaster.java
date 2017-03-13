@@ -75,6 +75,7 @@ public class RollMaster {
     public static String getStdFormula(ROLL_TYPES roll_type, Boolean success) {
         String formulas = "";
         switch (roll_type) {
+            case FORCE:
             case DISARM_TRAP:
                 formulas = STD_DISARM_TRAP;
                 break;
@@ -455,7 +456,8 @@ public class RollMaster {
 
         // Ref ref = Ref.getSelfTargetingRefCopy(target);
         // ref.setSource(attack.getRef().getSource());
-        Boolean result = new Roll(GenericEnums.ROLL_TYPES.FORCE, success, fail, 25).roll(attack.getRef());
+        Boolean result = new Roll(GenericEnums.ROLL_TYPES.FORCE, success, fail, 25)
+         .roll(attack.getRef());
         if (result == null) {
 
         }

@@ -13,6 +13,7 @@ import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
+import main.game.logic.combat.DefenseVsAttackRule;
 import main.rules.mechanics.DurabilityRule;
 import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.RandomWizard;
@@ -347,8 +348,8 @@ public class ArmorMaster {
 
         }
 
-        int attack = DC_AttackMaster.getAttackValue(offhand, attacker, attacked, action); // sneak?
-        int defense = DC_AttackMaster.getDefenseValue(attacker, attacked, action);
+        int attack = DefenseVsAttackRule.getAttackValue(offhand, attacker, attacked, action); // sneak?
+        int defense = DefenseVsAttackRule.getDefenseValue(attacker, attacked, action);
         boolean sneak = false;// sneakCondition.check(attacker);
         // boolean watched_attacker=false;// watchCondition.check(attacker)
         // boolean watched_target=false;// watchCondition.check(attacked)

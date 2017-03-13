@@ -72,6 +72,18 @@ public class DC_ValueManager implements ValueManager {
         return false;
     }
 
+    public static boolean isCentimalModParam(PARAMS p) {
+        if (StringMaster.getInteger(p.getDefaultValue())==100)
+            return true;
+        return false;
+    }
+
+    public static int getMod(Integer mod, PARAMS p) {
+        if (StringMaster.getInteger(p.getDefaultValue())==0)
+            return 100+mod;
+        return mod;
+    }
+
     public enum VALUE_GROUP {
         MAGIC(ValuePages.MASTERIES_MAGIC_SCHOOLS),
 

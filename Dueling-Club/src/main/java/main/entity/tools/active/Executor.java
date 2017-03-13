@@ -11,6 +11,7 @@ import main.entity.obj.Obj;
 import main.game.core.Eidolons;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE_GROUP;
 import main.rules.action.StackingRule;
@@ -99,7 +100,7 @@ public class Executor extends ActiveHandler {
     public boolean activate() {
 
         reset();
-
+        ActionTooltipMaster.test(getEntity());
         getTargeter().initTarget();
         if (interrupted)
             return result;
