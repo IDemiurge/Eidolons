@@ -5,6 +5,7 @@ import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.oneshot.DealDamageEffect;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
@@ -144,7 +145,12 @@ public class DamageCalculator {
         return amount;
 
     }
-
+    public static boolean isUnblockable(Ref ref) {
+        if (isPeriodic(ref))return true;
+        return StringMaster.compare(ref.getValue(KEYS.DAMAGE_SOURCE),
+         DAMAGE_MODIFIER.UNBLOCKABLE
+          .toString());
+    }
     static boolean isPeriodic(Ref ref) {
         return StringMaster.compare(ref.getValue(KEYS.DAMAGE_SOURCE),
          GenericEnums.DAMAGE_MODIFIER.PERIODIC
@@ -170,10 +176,7 @@ public class DamageCalculator {
                                        int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
 
         if (!endurance) {
-            if (isPeriodic(ref)) {
-                // PhaseAnimation animation = getAttackAnimation(ref, attacked);
-                // animation.addPhaseArgs(PHASE_TYPE.REDUCTION_NATURAL, 0, 0,
-                // 0);
+            if (isEnduranceOnly(ref)) {
                 return 0;
             }
         }
@@ -296,5 +299,6 @@ public class DamageCalculator {
         }
         return false;
     }
+
 
 }

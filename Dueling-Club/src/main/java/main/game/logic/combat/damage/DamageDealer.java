@@ -26,55 +26,7 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
  * Created by JustMe on 3/14/2017.
  */
 public class DamageDealer {
-    public static int dealDamage(Ref ref, boolean magical, DAMAGE_TYPE dmg_type) {
-        Event event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_PHYSICAL_DAMAGE, ref);
-        if (!event.fire()) {
-            return -1;
-        }
-        int amount = ref.getAmount();
-        if (amount <= 0) {
-            return 0;// sure?
-        }
-        ref = Ref.getCopy(ref);
-        DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
-        Unit attacker = (Unit) ref.getSourceObj();
-        Unit attacked = (Unit) ref.getTargetObj();
-        if (dmg_type == null) {
-            dmg_type = active.getEnergyType();
-        }
 
-
-        int blocked = 0;
-        if (!DamageCalculator.isPeriodic(ref)) {
-            if (ref.getSource() != ref.getTarget()) {
-                blocked = getArmorReduction(amount, attacked, attacker, active);
-            }
-        }
-
-        int t_damage = DamageCalculator.calculateToughnessDamage(attacked, attacker, amount, magical, ref, blocked,
-         dmg_type);
-        int e_damage = DamageCalculator.calculateEnduranceDamage(attacked, attacker, amount, magical, ref, blocked,
-         dmg_type);
-        PhaseAnimator.handleDamageAnimAndLog(ref, attacked ,magical, dmg_type);
-
-        ref.setAmount(e_damage);
-        // TODO separate event types?
-        if (!new Event(magical ? STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_ENDURANCE_DAMAGE
-         : STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_ENDURANCE_DAMAGE, ref).fire()) {
-            return 0;
-        }
-        ref.setAmount(t_damage);
-        if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_TOUGHNESS_DAMAGE, ref).fire()) {
-            return 0;
-        }
-
-        int result = dealPureDamage(attacked, attacker, t_damage, e_damage, ref);
-        new Event(magical ? STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_SPELL_DAMAGE
-         : STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PHYSICAL_DAMAGE, ref).fire();
-
-        attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked, amount);
-        return result;
-    }
 
     public static int dealDamageOfType(DAMAGE_TYPE damage_type, Unit targetObj, Ref ref,
                                        int amount) {
@@ -97,12 +49,12 @@ public class DamageDealer {
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
         int damageLeft;
         int damageDealt = 0;
-        if (damage_type == DAMAGE_TYPE.PURE || damage_type == DAMAGE_TYPE.POISON) {
+        if (damage_type == DAMAGE_TYPE.PURE) {
             damageDealt = dealPureDamage(targetObj, attacker, amount,
-             (DamageCalculator.isEnduranceOnly(ref) ? null
+             (DamageCalculator.isEnduranceOnly(ref) ? 0
               : amount), ref);
         } else {
-            dealDamage(ref, !isAttack(ref), damage_type);
+            damageDealt = dealDamage(ref, !isAttack(ref), damage_type);
         }
 
         damageLeft = amount - damageDealt;
@@ -120,6 +72,58 @@ public class DamageDealer {
         return damageLeft;
 
     }
+
+    private static int dealDamage(Ref ref, boolean magical, DAMAGE_TYPE dmg_type) {
+        Event event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_PHYSICAL_DAMAGE, ref);
+        if (!event.fire()) {
+            return -1;
+        }
+        int amount = ref.getAmount();
+        if (amount <= 0) {
+            return 0;// sure?
+        }
+        ref = Ref.getCopy(ref);
+        DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
+        Unit attacker = (Unit) ref.getSourceObj();
+        Unit attacked = (Unit) ref.getTargetObj();
+        if (dmg_type == null) {
+            dmg_type = active.getEnergyType();
+        }
+
+
+        int blocked = 0;
+        if (!DamageCalculator.isUnblockable(ref)) {
+            if (ref.getSource() != ref.getTarget()) {
+                blocked = getArmorReduction(amount, attacked, attacker, active);
+            }
+        }
+
+        int t_damage = DamageCalculator.calculateToughnessDamage(attacked, attacker, amount, magical, ref, blocked,
+         dmg_type);
+        int e_damage = DamageCalculator.calculateEnduranceDamage(attacked, attacker, amount, magical, ref, blocked,
+         dmg_type);
+        PhaseAnimator.handleDamageAnimAndLog(ref, attacked, magical, dmg_type);
+
+        ref.setAmount(e_damage);
+        // TODO separate event types?
+        if (!new Event(magical ? STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_ENDURANCE_DAMAGE
+         : STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_ENDURANCE_DAMAGE, ref).fire()) {
+            return 0;
+        }
+        ref.setAmount(t_damage);
+        if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_TOUGHNESS_DAMAGE, ref).fire()) {
+            return 0;
+        }
+
+        int result = dealPureDamage(attacked, attacker, t_damage, e_damage, ref);
+        new Event(magical ?
+         STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_SPELL_DAMAGE
+         : STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PHYSICAL_DAMAGE, ref).fire();
+
+        attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked, amount);
+        return result;
+    }
+
 
     protected static boolean processDamageEvent(DAMAGE_TYPE damage_type, Ref ref, int amount,
                                                 EVENT_TYPE event_type) {
@@ -165,7 +169,7 @@ public class DamageDealer {
     }
 
     private static int dealPureDamage(Unit attacked, Unit attacker, Integer endurance_dmg,
-                                     Integer toughness_dmg, Ref ref) {
+                                      Integer toughness_dmg, Ref ref) {
         // apply Absorption here?
 
         boolean enduranceOnly = false;

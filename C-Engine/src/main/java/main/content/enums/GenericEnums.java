@@ -84,8 +84,8 @@ public class GenericEnums {
     }
 
     public enum DAMAGE_MODIFIER {
-        VORPAL, PERIODIC, QUIET
-, UNBLOCKABLE, ENDURANCE_ONLY
+        VORPAL, PERIODIC, QUIET,
+        UNBLOCKABLE, ENDURANCE_ONLY
     }
 
     public enum DAMAGE_TYPE {
