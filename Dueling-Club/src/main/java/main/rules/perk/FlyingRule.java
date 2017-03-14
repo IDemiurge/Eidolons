@@ -11,11 +11,9 @@ public class FlyingRule {
     private static final int MOVE_STA_COST_REDUCTION = -50;
     private static final int MOVE_AP_COST_REDUCTION = -35;
 
-    public static int getModifiedAttackValue(int attack, Boolean flying_mod) {
-        return attack + getAttackModifierd(attack, flying_mod);
-    }
 
-    public static int getAttackModifierd(int attack, Boolean flying_mod) {
+
+    public static int getAttackBonus(int attack, Boolean flying_mod) {
 
         if (BooleanMaster.isTrue(flying_mod)) {
             return MathMaster.getFractionValueCentimal(attack, FLYING_ATTACK_MOD);

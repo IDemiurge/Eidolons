@@ -464,7 +464,9 @@ public class ItemGenerator {
                 }
             }
             if (p == PARAMS.DICE) {
-                amount = newType.getIntParam(p) * modifier; // TODO
+                amount =
+//                 newType.getIntParam(p) *
+                 modifier; // TODO DICE ALREADY USED, DIE_SIZE TO BE SET FOR WEAPONS!
             } else if (p == PARAMS.ARMOR_MODIFIER) {
                 // TODO *NEW
                 amount = newType.getIntParam(PARAMS.ARMOR_LAYERS) * modifier * ARMOR_MODIFIER;

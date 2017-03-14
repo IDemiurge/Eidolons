@@ -19,10 +19,7 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.test.frontend.FAST_DC;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static main.system.GuiEventType.*;
 
@@ -56,12 +53,13 @@ public class GridMouseListener extends ClickListener {
                         .filter(entry -> entry.getValue() == uv).findFirst()
                         .get().getKey();
 
-                Map<String, String> tooltipStatMap = new HashMap<>();
+                Map<String, String> tooltipStatMap = new LinkedHashMap<>();
                 List<ToolTipRecordOption> recordOptions = new ArrayList<>();
 
                 tooltipStatMap.put(PARAMS.C_TOUGHNESS.getName(), "Toughness");
                 tooltipStatMap.put("C_Endurance", "Endurance");
                 tooltipStatMap.put("C_N_Of_Actions", "N_Of_Actions");
+                tooltipStatMap.put("C_N_Of_Counters", "N_Of_Counters");
 
                 tooltipStatMap.entrySet().forEach(entry -> {
                     ToolTipManager.ToolTipRecordOption recordOption = new ToolTipManager.ToolTipRecordOption();
