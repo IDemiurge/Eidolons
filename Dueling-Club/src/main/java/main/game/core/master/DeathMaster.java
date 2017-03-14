@@ -8,7 +8,7 @@ import main.entity.obj.Attachment;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.attack.DamageMaster;
+import main.game.logic.combat.damage.DamageDealer;
 import main.game.core.game.DC_Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -127,7 +127,7 @@ public class DeathMaster extends Master {
         for (DC_TYPE TYPE : C_OBJ_TYPE.BF_OBJ.getTypes()) {
             for (Obj unit : getState().getObjMaps().get(TYPE).values()) {
                 if (!unit.isDead()) {
-                    if (DamageMaster.checkDead((BattleFieldObject) unit)) {
+                    if (DamageDealer.checkDead((BattleFieldObject) unit)) {
                         unit.kill(unit, true, false);
                     }
                 }

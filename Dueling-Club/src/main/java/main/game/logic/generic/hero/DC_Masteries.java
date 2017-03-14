@@ -1,7 +1,7 @@
 package main.game.logic.generic.hero;
 
 import main.ability.effects.Effect.MOD;
-import main.ability.effects.oneshot.common.ModifyValueEffect;
+import main.ability.effects.common.ModifyValueEffect;
 import main.content.ContentManager;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;

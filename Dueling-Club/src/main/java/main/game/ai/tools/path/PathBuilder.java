@@ -1,9 +1,9 @@
 package main.game.ai.tools.path;
 
 import main.ability.conditions.special.SneakCondition;
-import main.ability.effects.ChangeFacingEffect;
+import main.ability.effects.oneshot.mechanic.ChangeFacingEffect;
 import main.ability.effects.Effect;
-import main.ability.effects.SelfMoveEffect;
+import main.ability.effects.oneshot.move.SelfMoveEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;

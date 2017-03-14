@@ -1,9 +1,9 @@
 package main.ability.effects.special;
 
-import main.ability.effects.oneshot.MicroEffect;
+import main.ability.effects.MicroEffect;
 import main.content.enums.entity.UnitEnums;
 import main.entity.obj.Obj;
-
+@Deprecated
 public class ManipulateSpellEffect extends MicroEffect {
 
     private SPELL_MANIPULATION type;

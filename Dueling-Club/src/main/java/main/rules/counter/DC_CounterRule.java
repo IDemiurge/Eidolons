@@ -1,12 +1,12 @@
 package main.rules.counter;
 
-import main.ability.effects.AddBuffEffect;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.continuous.CustomTargetEffect;
-import main.ability.effects.oneshot.common.ModifyCounterEffect;
-import main.ability.effects.oneshot.special.AddStatusEffect;
+import main.ability.effects.oneshot.mechanic.ModifyCounterEffect;
+import main.ability.effects.common.AddStatusEffect;
 import main.ability.targeting.TemplateAutoTargeting;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;

@@ -1,10 +1,11 @@
 package main.ability.effects.special;
 
-import main.ability.effects.oneshot.MicroEffect;
+import main.ability.effects.MicroEffect;
 
 /**
  * @author JustMe
  */
+@Deprecated
 public class PackEffect extends MicroEffect {
 
     @Override

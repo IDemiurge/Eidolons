@@ -4,7 +4,7 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.continuous.CustomTargetEffect;
-import main.ability.effects.oneshot.common.ModifyValueEffect;
+import main.ability.effects.common.ModifyValueEffect;
 import main.content.DC_ValueManager.VALUE_GROUP;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;

@@ -2,8 +2,8 @@ package main.rules.mechanics;
 
 import main.ability.conditions.req.ItemCondition;
 import main.ability.effects.Effects;
-import main.ability.effects.oneshot.common.ConditionalEffect;
-import main.ability.effects.standard.DurabilityReductionEffect;
+import main.ability.effects.container.ConditionalEffect;
+import main.ability.effects.oneshot.rule.DurabilityReductionEffect;
 import main.content.DC_ContentManager;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ItemEnums;

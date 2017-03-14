@@ -1,6 +1,6 @@
 package main.rules.action;
 
-import main.ability.effects.oneshot.special.AddStatusEffect;
+import main.ability.effects.common.AddStatusEffect;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;

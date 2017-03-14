@@ -1,7 +1,6 @@
 package main.ability.effects.common;
 
 import main.ability.effects.DC_Effect;
-import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.system.math.Formula;
 

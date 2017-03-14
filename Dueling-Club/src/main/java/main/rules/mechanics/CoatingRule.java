@@ -9,7 +9,7 @@ import main.entity.active.DC_ItemActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.attack.Attack;
+import main.game.logic.combat.attack.Attack;
 import main.system.math.MathMaster;
 
 public class CoatingRule {

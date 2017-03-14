@@ -1,7 +1,7 @@
 package main.ability.effects.containers.customtarget;
 
 import main.ability.effects.Effect;
-import main.ability.effects.oneshot.common.SpecialTargetingEffect;
+import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.enums.GenericEnums;
 import main.data.DataManager;
 import main.elements.conditions.Conditions;

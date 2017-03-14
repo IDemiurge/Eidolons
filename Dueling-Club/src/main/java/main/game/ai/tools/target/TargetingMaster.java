@@ -2,7 +2,7 @@ package main.game.ai.tools.target;
 
 import main.ability.Ability;
 import main.ability.effects.Effect;
-import main.ability.effects.oneshot.common.SpecialTargetingEffect;
+import main.ability.effects.container.SpecialTargetingEffect;
 import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.active.DC_ActiveObj;

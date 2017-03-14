@@ -1,7 +1,7 @@
 package main.rules.combat;
 
 import main.ability.effects.Effect.MOD;
-import main.ability.effects.oneshot.common.ModifyCounterEffect;
+import main.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Conditions;

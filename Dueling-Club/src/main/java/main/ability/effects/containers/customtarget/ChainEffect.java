@@ -1,7 +1,7 @@
 package main.ability.effects.containers.customtarget;
 
 import main.ability.effects.Effect;
-import main.ability.effects.oneshot.common.SpecialTargetingEffect;
+import main.ability.effects.container.SpecialTargetingEffect;
 import main.elements.conditions.Conditions;
 import main.system.math.Formula;
 import main.test.Unimplemented;

@@ -5,10 +5,19 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.entity.Ref;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.AnimPhase.PHASE_TYPE;
+import main.system.graphics.AttackAnimation;
+import main.system.graphics.PhaseAnimation;
+import main.system.text.EntryNodeMaster.ENTRY_TYPE;
+import main.system.text.LogEntryNode;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,6 +46,25 @@ public class PhaseAnimator extends Group {
 
     public static PhaseAnimator getInstance() {
         return instance;
+    }
+
+    public static AttackAnimation getAttackAnimation(Ref ref, Unit obj) {
+        return (AttackAnimation) obj.getGame().getAnimationManager().getAnimation(
+         AttackAnimation.generateKey((DC_ActiveObj) ref.getActive()));
+    }
+
+    public static PhaseAnimation getActionAnimation(Ref ref, Unit obj) {
+        return obj.getGame().getAnimationManager().getAnimation(
+         ((DC_ActiveObj) ref.getActive()).getAnimationKey());
+    }
+
+    public static PhaseAnimation getAnimation(Ref ref, Unit obj) {
+        PhaseAnimation a = getAttackAnimation(ref, obj);
+        if (a != null) {
+            return a;
+        }
+
+        return getActionAnimation(ref, obj);
     }
 
     public void init() {
@@ -149,5 +177,19 @@ public class PhaseAnimator extends Group {
 
     public void setOn(boolean on) {
         this.on = on;
+    }
+
+    public static void handleDamageAnimAndLog(Ref ref, Unit attacked, boolean magical, DAMAGE_TYPE dmg_type) {
+        LogEntryNode entry = attacked.getGame().getLogManager().newLogEntryNode(true,
+         ENTRY_TYPE.DAMAGE);
+        PhaseAnimation animation = magical ? PhaseAnimator.getActionAnimation(ref, attacked)
+         : PhaseAnimator.getAttackAnimation(ref,
+         attacked);
+
+        entry.addLinkedAnimations(animation);
+        entry.setAnimPhasesToPlay(PHASE_TYPE.DAMAGE_DEALT);
+//active.getAnimator(). TODO
+        if (animation != null)
+            animation.addPhaseArgs(true, PHASE_TYPE.REDUCTION_NATURAL, dmg_type);
     }
 }

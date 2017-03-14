@@ -4,7 +4,7 @@ import main.ability.AddSpecialEffects;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.Effects;
-import main.ability.effects.oneshot.common.ModifyValueEffect;
+import main.ability.effects.common.ModifyValueEffect;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.DC_ContentManager;
 import main.content.PROPS;

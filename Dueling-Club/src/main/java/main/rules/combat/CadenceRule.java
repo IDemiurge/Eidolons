@@ -1,13 +1,13 @@
 package main.rules.combat;
 
 import main.ability.ActiveAbility;
-import main.ability.effects.AddBuffEffect;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
-import main.ability.effects.RemoveBuffEffect;
+import main.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.ability.effects.continuous.CustomTargetEffect;
-import main.ability.effects.oneshot.common.AddTriggerEffect;
-import main.ability.effects.oneshot.common.ModifyValueEffect;
+import main.ability.effects.attachment.AddTriggerEffect;
+import main.ability.effects.common.ModifyValueEffect;
 import main.ability.targeting.TemplateAutoTargeting;
 import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums;

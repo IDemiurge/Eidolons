@@ -1,8 +1,8 @@
 package main.ability.effects.continuous;
 
 import main.ability.effects.Effect;
-import main.ability.effects.oneshot.ContainerEffect;
-import main.ability.effects.oneshot.MicroEffect;
+import main.ability.effects.ContainerEffect;
+import main.ability.effects.MicroEffect;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;

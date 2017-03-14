@@ -2,8 +2,8 @@ package main.rules.buff;
 
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
-import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.ability.effects.special.ImmobilizeEffect;
+import main.ability.effects.common.ModifyValueEffect;
+import main.ability.effects.oneshot.status.ImmobilizeEffect;
 import main.content.PARAMS;
 import main.content.VALUE;
 import main.content.ValuePages;

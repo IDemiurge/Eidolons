@@ -1,8 +1,8 @@
 package main.libgdx.anims.std;
 
-import main.ability.effects.DealDamageEffect;
+import main.ability.effects.oneshot.DealDamageEffect;
 import main.ability.effects.Effect;
-import main.ability.effects.oneshot.common.ModifyValueEffect;
+import main.ability.effects.common.ModifyValueEffect;
 import main.data.filesys.PathFinder;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;

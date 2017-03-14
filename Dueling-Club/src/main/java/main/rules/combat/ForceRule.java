@@ -1,7 +1,7 @@
 package main.rules.combat;
 
-import main.ability.effects.DealDamageEffect;
-import main.ability.effects.MoveEffect;
+import main.ability.effects.oneshot.DealDamageEffect;
+import main.ability.effects.oneshot.move.MoveEffect;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.entity.Entity;

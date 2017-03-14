@@ -1,7 +1,7 @@
 package main.ability.effects.common;
 
-import main.ability.effects.oneshot.special.InstantDeathEffect;
-
+import main.ability.effects.oneshot.InstantDeathEffect;
+@Deprecated
 public class FleeEffect extends InstantDeathEffect {
 
     public FleeEffect() {

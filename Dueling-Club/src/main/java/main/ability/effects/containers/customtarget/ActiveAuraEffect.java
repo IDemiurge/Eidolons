@@ -4,7 +4,7 @@ import main.ability.Ability;
 import main.ability.ActiveAbility;
 import main.ability.effects.DC_Effect;
 import main.ability.effects.Effect;
-import main.ability.effects.oneshot.common.AddTriggerEffect;
+import main.ability.effects.attachment.AddTriggerEffect;
 import main.content.C_OBJ_TYPE;
 import main.elements.conditions.*;
 import main.elements.targeting.AutoTargeting;

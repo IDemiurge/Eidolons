@@ -4,7 +4,7 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.continuous.CustomTargetEffect;
-import main.ability.effects.oneshot.common.ModifyValueEffect;
+import main.ability.effects.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -19,7 +19,7 @@ import main.game.core.game.DC_Game;
 public class BlazeRule extends DamageCounterRule {
 
     private static final Integer THRESHOLD = 10;
-    private static final int REDUCTION = 2;
+    private static final int REDUCTION = -2;
     private static final int INCREASE = 2;
     private static final String DAMAGE_PER_COUNTER = "3";
     private static final String DURABILITY_PER_COUNTER = "(-0.25)";
@@ -76,13 +76,13 @@ public class BlazeRule extends DamageCounterRule {
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         if (checkAblaze(unit)) {
-            return REDUCTION;
+            return INCREASE;
         }
-        return INCREASE;
+        return REDUCTION;
     }
 
     private boolean checkAblaze(Unit unit) {
-        return getNumberOfCounters(unit) <= THRESHOLD;
+        return getNumberOfCounters(unit) >= THRESHOLD;
     }
 
     @Override

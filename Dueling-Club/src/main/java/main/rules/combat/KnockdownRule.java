@@ -1,11 +1,11 @@
 package main.rules.combat;
 
-import main.ability.effects.AddBuffEffect;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
 import main.ability.effects.Effects;
-import main.ability.effects.oneshot.common.ModifyPropertyEffect;
-import main.ability.effects.oneshot.common.ModifyValueEffect;
+import main.ability.effects.common.ModifyPropertyEffect;
+import main.ability.effects.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;

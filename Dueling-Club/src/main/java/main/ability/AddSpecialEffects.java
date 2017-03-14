@@ -2,8 +2,8 @@ package main.ability;
 
 import main.ability.effects.Effect;
 import main.ability.effects.containers.AbilityEffect;
-import main.ability.effects.oneshot.MicroEffect;
-import main.ability.effects.oneshot.common.AddTriggerEffect;
+import main.ability.effects.MicroEffect;
+import main.ability.effects.attachment.AddTriggerEffect;
 import main.elements.conditions.RefCondition;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;

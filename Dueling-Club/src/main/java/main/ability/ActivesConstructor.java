@@ -2,7 +2,8 @@ package main.ability;
 
 import main.ability.conditions.special.GraveCondition;
 import main.ability.effects.*;
-import main.ability.effects.containers.RollEffect;
+import main.ability.effects.attachment.AddBuffEffect;
+import main.ability.effects.oneshot.mechanic.RollEffect;
 import main.ability.effects.containers.customtarget.RayEffect;
 import main.ability.effects.containers.customtarget.WaveEffect;
 import main.ability.effects.containers.customtarget.ZoneEffect;

@@ -1,6 +1,6 @@
 package main.game.ai.tools.target;
 
-import main.ability.effects.oneshot.common.ModifyCounterEffect;
+import main.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import main.entity.active.DC_ActiveObj;
 
 public class SpellAnalyzer {

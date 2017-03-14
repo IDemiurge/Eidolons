@@ -1,7 +1,7 @@
 package main.libgdx.anims.text;
 
 import com.badlogic.gdx.graphics.Color;
-import main.ability.effects.ModeEffect;
+import main.ability.effects.oneshot.mechanic.ModeEffect;
 import main.ability.effects.common.ModifyStatusEffect;
 import main.elements.costs.Cost;
 import main.entity.Entity;

@@ -1,7 +1,7 @@
 package main.game.ai.tools.future;
 
-import main.ability.effects.AttackEffect;
-import main.ability.effects.DealDamageEffect;
+import main.ability.effects.oneshot.attack.AttackEffect;
+import main.ability.effects.oneshot.DealDamageEffect;
 import main.ability.effects.Effect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -9,8 +9,8 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.tools.target.EffectFinder;
-import main.game.battlefield.attack.Attack;
-import main.game.battlefield.attack.DamageMaster;
+import main.game.logic.combat.attack.Attack;
+import main.game.logic.combat.damage.DamageCalculator;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.List;
@@ -49,12 +49,12 @@ public class FutureBuilder {
                 ref.setValue(KEYS.DAMAGE_TYPE, ((DealDamageEffect) e).getDamage_type().toString());
             }
 
-            damage = DamageMaster.getDamage(ref);
+            damage = DamageCalculator.getDamage(ref);
 
         } else {
             Attack attack = ((AttackEffect) e).initAttack();
             // attack.setAttacked((DC_HeroObj) targetObj);
-            damage = DamageMaster.getDamage(attack);
+            damage = DamageCalculator.getDamage(attack);
         }
         // active.toBase();
         LogMaster.log(1, active.getName() + " on " + targetObj.getName()

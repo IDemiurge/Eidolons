@@ -1,7 +1,7 @@
 package main.ability.effects.containers.customtarget;
 
 import main.ability.effects.Effect;
-import main.ability.effects.oneshot.common.SpecialTargetingEffect;
+import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.C_OBJ_TYPE;
 import main.content.values.parameters.G_PARAMS;
 import main.data.ability.AE_ConstrArgs;

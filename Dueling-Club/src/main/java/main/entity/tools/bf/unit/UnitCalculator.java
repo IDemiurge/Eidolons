@@ -9,8 +9,8 @@ import main.entity.obj.unit.Unit;
 import main.entity.tools.EntityCalculator;
 import main.entity.tools.EntityMaster;
 import main.entity.type.ObjType;
-import main.game.battlefield.attack.DC_AttackMaster;
 import main.game.core.game.DC_Game;
+import main.game.logic.combat.damage.DamageCalculator;
 import main.system.auxiliary.StringMaster;
 import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;
@@ -90,7 +90,7 @@ public class UnitCalculator extends EntityCalculator<Unit> {
     }
 
     public Integer calculateDamage(boolean offhand, boolean set) {
-        int dmg = DC_AttackMaster.getUnitAttackDamage(getEntity(), offhand);
+        int dmg = DamageCalculator.getUnitAttackDamage(getEntity(), offhand);
         Integer mod;
         mod = getIntParam((offhand) ? PARAMS.OFFHAND_DAMAGE_MOD : PARAMS.DAMAGE_MOD);
         if (mod != 0) {
@@ -116,7 +116,19 @@ public class UnitCalculator extends EntityCalculator<Unit> {
         PARAMS maxDamage = (offhand) ? PARAMS.OFF_HAND_MAX_DAMAGE : PARAMS.MAX_DAMAGE;
         if (set)
             setParam(maxDamage, dmg + dieSize);
+
+        if (isDiceAccountedElsewhere()){ //TODO review this
+            Integer min = getIntParam(minDamage);
+            setParameter(damage, min);
+            setParameter(maxDamage,min);
+            return min ;
+        }
+
         return MathMaster.getAverage(dmg, dmg + dieSize);
+    }
+
+    private boolean isDiceAccountedElsewhere() {
+        return true;
     }
 
     // Java 8 collections methods?

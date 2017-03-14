@@ -1,9 +1,9 @@
 package main.rules.action;
 
-import main.ability.effects.RemoveBuffEffect;
+import main.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.ability.effects.common.SpectrumEffect;
-import main.ability.effects.standard.WatchActionEffect;
-import main.ability.effects.standard.WatchBuffEffect;
+import main.ability.effects.oneshot.rule.WatchActionEffect;
+import main.ability.effects.oneshot.rule.WatchBuffEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
@@ -168,11 +168,17 @@ public class WatchRule implements ActionRule {
     }
 
     public static boolean checkWatched(Unit watcher, DC_Obj watched) {
+        if (isTestMode())
+            return true;
         List<DC_Obj> list = getWatchersMap().get(watcher);
         if (list != null) {
             return list.contains(watched);
         }
         return false;
+    }
+
+    private static boolean isTestMode() {
+   return false;
     }
 
     private static WatchBuffEffect getWatchBuffEffect(Unit watcher, List<DC_Obj> list) {

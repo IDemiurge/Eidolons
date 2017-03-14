@@ -1,9 +1,9 @@
 package main.rules.perk;
 
 import main.ability.effects.DC_Effect;
-import main.ability.effects.DelayedEffect;
+import main.ability.effects.oneshot.mechanic.DelayedEffect;
 import main.ability.effects.Effect;
-import main.ability.effects.RemoveBuffEffect;
+import main.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.*;
 import main.elements.conditions.standard.GroupCondition;

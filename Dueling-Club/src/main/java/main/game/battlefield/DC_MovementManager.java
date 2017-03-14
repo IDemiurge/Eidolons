@@ -1,7 +1,7 @@
 package main.game.battlefield;
 
-import main.ability.effects.MoveEffect;
-import main.ability.effects.SelfMoveEffect;
+import main.ability.effects.oneshot.move.MoveEffect;
+import main.ability.effects.oneshot.move.SelfMoveEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.AiEnums;

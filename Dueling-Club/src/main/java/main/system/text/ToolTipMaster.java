@@ -25,7 +25,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.ai.tools.future.FutureBuilder;
 import main.game.ai.tools.target.AI_SpellMaster;
-import main.game.battlefield.attack.DamageMaster;
+import main.game.logic.combat.damage.DamageCalculator;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.rules.RuleMaster.RULE;
@@ -137,7 +137,7 @@ public class ToolTipMaster {
                 // ++ damage type
                 tooltip += "avrg. damage: " + damage; // MIN-MAX is really in
                 // order
-                if (DamageMaster.isLethal(damage, target)) {
+                if (DamageCalculator.isLethal(damage, target)) {
                     tooltip += "(lethal)"; // TODO possibly lethal
                 } else {
                     if (attack) {

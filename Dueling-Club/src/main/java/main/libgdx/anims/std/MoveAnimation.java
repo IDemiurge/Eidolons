@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import javafx.util.Pair;
-import main.ability.effects.MoveEffect;
+import main.ability.effects.oneshot.move.MoveEffect;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.game.ai.tools.target.EffectFinder;

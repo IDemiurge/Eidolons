@@ -1,7 +1,7 @@
 package main.game.logic.macro.travel;
 
 import main.ability.effects.Effect.MOD;
-import main.ability.effects.oneshot.common.ModifyValueEffect;
+import main.ability.effects.common.ModifyValueEffect;
 import main.client.cc.logic.spells.DivinationMaster;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
 import main.content.values.parameters.MACRO_PARAMS;

@@ -1,6 +1,6 @@
 package main.game.core.master;
 
-import main.ability.effects.AddBuffEffect;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;

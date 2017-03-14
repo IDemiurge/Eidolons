@@ -1,7 +1,7 @@
 package main.entity.active;
 
 import main.ability.effects.Effect;
-import main.ability.effects.ModeEffect;
+import main.ability.effects.oneshot.mechanic.ModeEffect;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.SpellEnums;

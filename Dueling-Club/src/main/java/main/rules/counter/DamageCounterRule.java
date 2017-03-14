@@ -1,7 +1,8 @@
 package main.rules.counter;
 
-import main.ability.effects.DealDamageEffect;
+import main.ability.effects.oneshot.DealDamageEffect;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
@@ -28,6 +29,11 @@ public abstract class DamageCounterRule extends DC_CounterRule {
 
     public abstract boolean isEnduranceOnly();
 
+    public    boolean isUnblockable() {
+   return true;
+    }
+
+
     public boolean apply(Unit unit) {
         if (!check(unit)) {
             return false;
@@ -36,11 +42,15 @@ public abstract class DamageCounterRule extends DC_CounterRule {
         Ref ref = Ref.getSelfTargetingRefCopy(unit);
         ref.setPeriodic(true);
         ref.setImage(getImage());
-        return new DealDamageEffect(new Formula(getCounterRef() + " * ("
-                + getDamagePerCounterFormula() + ")"),
+        return new DealDamageEffect(getDamageType().toString(),
 
-                getDamageType().toString(),
-                isEnduranceOnly() ? GenericEnums.DAMAGE_MODIFIER.PERIODIC : null).apply(ref);
+         new Formula(getCounterRef() + " * ("
+         + getDamagePerCounterFormula() + ")"),
+
+         GenericEnums.DAMAGE_MODIFIER.PERIODIC,
+         (isEnduranceOnly() ? DAMAGE_MODIFIER.ENDURANCE_ONLY : null),
+         (isUnblockable() ? DAMAGE_MODIFIER.UNBLOCKABLE : null))
+         .apply(ref);
     }
 
 }

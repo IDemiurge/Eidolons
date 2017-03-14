@@ -1,12 +1,12 @@
 package main.swing.generic.services.dialog;
 
-import main.ability.effects.AttackEffect;
+import main.ability.effects.oneshot.attack.AttackEffect;
 import main.ability.effects.Effect;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.tools.future.FutureBuilder;
 import main.game.ai.tools.target.EffectFinder;
-import main.game.battlefield.attack.AttackCalculator;
+import main.game.logic.combat.attack.AttackCalculator;
 
 import java.util.List;
 

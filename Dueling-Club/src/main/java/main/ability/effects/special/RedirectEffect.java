@@ -1,8 +1,11 @@
 package main.ability.effects.special;
 
-import main.ability.effects.oneshot.MicroEffect;
+import main.ability.effects.TriggeredEffect;
+import main.ability.effects.MicroEffect;
+import main.test.Unimplemented;
 
-public class RedirectEffect extends MicroEffect {
+@Unimplemented
+public class RedirectEffect extends MicroEffect implements TriggeredEffect{
 
     private BIND_FILTER filter;
 

@@ -1,12 +1,14 @@
 package main.swing.generic.services.dialog;
 
-import main.ability.effects.AttackEffect;
+import main.ability.effects.oneshot.attack.AttackEffect;
 import main.ability.effects.Effect;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.tools.future.FutureBuilder;
 import main.game.ai.tools.target.EffectFinder;
-import main.game.battlefield.attack.*;
+import main.game.logic.combat.attack.*;
+import main.game.logic.combat.damage.Damage;
+import main.game.logic.combat.damage.DamageCalculator;
 import main.swing.PointX;
 import main.swing.builders.DC_Builder;
 import main.system.graphics.*;
@@ -84,7 +86,7 @@ public class AttackChoicePanel extends ChoicePanel<DC_ActiveObj> {
         attack.setDamage(calculator.calculateFinalDamage());
 
         // animation.setPhase(PHASE_TYPE.DAMAGE_FORMULA);
-        List<Damage> rawDamage = DC_AttackMaster.precalculateRawDamage(attack);
+        List<Damage> rawDamage = DamageCalculator.precalculateRawDamage(attack);
         attack.setRawDamage(rawDamage);
         animation.addPhase(new AnimPhase(PHASE_TYPE.PRE_ATTACK, attack, rawDamage), 0);
         calculator.addSubPhase();
@@ -222,7 +224,7 @@ public class AttackChoicePanel extends ChoicePanel<DC_ActiveObj> {
                 tooltip += ", % for ";
             }
 
-            if (DamageMaster.isLethal(damage, target)) {
+            if (DamageCalculator.isLethal(damage, target)) {
                 tooltip += "(lethal)"; // TODO possibly lethal
             } else {
                 if (((Unit) target).canCounter(t)) {

@@ -1,6 +1,5 @@
 package main.ability.effects.common;
 
-import main.ability.effects.oneshot.common.ModifyPropertyEffect;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.values.properties.G_PROPS;
 

@@ -1,6 +1,6 @@
 package main.ability.conditions.special;
 
-import main.ability.effects.AttackEffect;
+import main.ability.effects.oneshot.attack.AttackEffect;
 import main.elements.conditions.MicroCondition;
 import main.game.ai.tools.target.EffectFinder;
 

@@ -24,7 +24,7 @@ import main.entity.tools.EntityResetter;
 import main.game.ai.tools.ParamAnalyzer;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.FacingMaster;
-import main.game.battlefield.attack.ResistMaster;
+import main.game.logic.combat.damage.ResistMaster;
 import main.game.core.game.DC_Game;
 import main.rules.action.EngagedRule;
 import main.rules.rpg.IntegrityRule;

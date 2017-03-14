@@ -11,7 +11,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
-import main.game.battlefield.attack.Attack;
+import main.game.logic.combat.attack.Attack;
 import main.game.core.game.DC_Game;
 
 public class CleaveRule {

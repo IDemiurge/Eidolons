@@ -1,6 +1,6 @@
 package main.entity.tools.active.action;
 
-import main.ability.effects.ModeEffect;
+import main.ability.effects.oneshot.mechanic.ModeEffect;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.DistanceCondition;

@@ -1,10 +1,6 @@
 package main.ability.effects.continuous;
 
-import main.ability.effects.Effect;
-import main.ability.effects.Effects;
-import main.ability.effects.oneshot.ContainerEffect;
-import main.ability.effects.oneshot.MicroEffect;
-import main.ability.effects.oneshot.common.AttachmentEffect;
+import main.ability.effects.*;
 import main.content.ContentManager;
 import main.entity.Ref;
 import main.entity.obj.Attachment;
@@ -29,9 +25,14 @@ public class ContinuousEffect extends MicroEffect {
     }
 
     public static Effect transformEffectToContinuous(Effect effect) {
+if (effect instanceof OneshotEffect)
+    throw new RuntimeException("OneshotEffect cannot be made Continuous!");
+
 
         if ((effect instanceof Effects)) {
             for (Effect e : ((Effects) effect)) {
+                if (effect instanceof OneshotEffect)
+                    throw new RuntimeException("OneshotEffect cannot be made Continuous!");
                 if (!(e instanceof ContinuousEffect) && !(e instanceof AttachmentEffect)) {
                     {
                         ((Effects) effect).remove(e);

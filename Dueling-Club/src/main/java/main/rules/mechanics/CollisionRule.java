@@ -1,6 +1,6 @@
 package main.rules.mechanics;
 
-import main.ability.effects.DealDamageEffect;
+import main.ability.effects.oneshot.DealDamageEffect;
 import main.content.enums.GenericEnums;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;

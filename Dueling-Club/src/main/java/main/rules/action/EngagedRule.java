@@ -10,7 +10,7 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.AI_Manager;
-import main.game.battlefield.attack.Attack;
+import main.game.logic.combat.attack.Attack;
 import main.game.core.game.DC_Game;
 import main.rules.attack.AttackOfOpportunityRule;
 import main.swing.generic.services.dialog.DialogMaster;

@@ -1,6 +1,6 @@
 package main.system.math.roll;
 
-import main.ability.effects.containers.RollEffect;
+import main.ability.effects.oneshot.mechanic.RollEffect;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;

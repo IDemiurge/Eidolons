@@ -3,7 +3,7 @@ package main.ability.effects.containers;
 import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
-import main.ability.effects.oneshot.MicroEffect;
+import main.ability.effects.MicroEffect;
 import main.game.ai.tools.target.EffectFinder;
 import main.system.auxiliary.StringMaster;
 

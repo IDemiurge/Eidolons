@@ -1,11 +1,11 @@
 package main.rules.old;
 
-import main.ability.effects.AddBuffEffect;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect;
-import main.ability.effects.RemoveBuffEffect;
-import main.ability.effects.oneshot.common.ConditionalEffect;
-import main.ability.effects.oneshot.common.IfElseEffect;
-import main.ability.effects.oneshot.common.OwnershipChangeEffect;
+import main.ability.effects.oneshot.buff.RemoveBuffEffect;
+import main.ability.effects.container.ConditionalEffect;
+import main.ability.effects.container.IfElseEffect;
+import main.ability.effects.common.OwnershipChangeEffect;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NumericCondition;

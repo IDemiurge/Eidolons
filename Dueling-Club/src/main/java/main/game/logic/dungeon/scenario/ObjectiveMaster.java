@@ -3,7 +3,7 @@ package main.game.logic.dungeon.scenario;
 import main.ability.Abilities;
 import main.ability.Ability;
 import main.ability.ActiveAbility;
-import main.ability.effects.meta.EndGameEffect;
+import main.ability.effects.special.meta.EndGameEffect;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.ObjComparison;

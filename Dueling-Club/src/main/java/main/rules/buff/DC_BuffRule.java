@@ -1,6 +1,6 @@
 package main.rules.buff;
 
-import main.ability.effects.AddBuffEffect;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect;
 import main.content.DC_TYPE;
 import main.content.VALUE;

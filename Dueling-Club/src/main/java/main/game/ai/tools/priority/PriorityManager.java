@@ -2,7 +2,7 @@ package main.game.ai.tools.priority;
 
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
-import main.ability.effects.containers.RollEffect;
+import main.ability.effects.oneshot.mechanic.RollEffect;
 import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.elements.costs.Costs;

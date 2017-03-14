@@ -3,15 +3,18 @@ package main.game.ai.tools.priority;
 import main.ability.effects.*;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
-import main.ability.effects.common.RaiseEffect;
-import main.ability.effects.common.SummonEffect;
-import main.ability.effects.containers.RollEffect;
-import main.ability.effects.oneshot.common.ModifyCounterEffect;
-import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.ability.effects.oneshot.common.OwnershipChangeEffect;
-import main.ability.effects.oneshot.special.InstantDeathEffect;
-import main.ability.effects.special.BehaviorModeEffect;
-import main.ability.effects.special.DrainEffect;
+import main.ability.effects.attachment.AddBuffEffect;
+import main.ability.effects.oneshot.DealDamageEffect;
+import main.ability.effects.oneshot.attack.AttackEffect;
+import main.ability.effects.oneshot.unit.RaiseEffect;
+import main.ability.effects.oneshot.unit.SummonEffect;
+import main.ability.effects.oneshot.mechanic.RollEffect;
+import main.ability.effects.oneshot.mechanic.ModifyCounterEffect;
+import main.ability.effects.common.ModifyValueEffect;
+import main.ability.effects.common.OwnershipChangeEffect;
+import main.ability.effects.oneshot.InstantDeathEffect;
+import main.ability.effects.continuous.BehaviorModeEffect;
+import main.ability.effects.oneshot.mechanic.DrainEffect;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.*;
 import main.content.enums.GenericEnums;
@@ -58,7 +61,7 @@ import main.game.ai.tools.target.EffectFinder;
 import main.game.ai.tools.target.SpellAnalyzer;
 import main.game.ai.tools.target.TargetingMaster;
 import main.game.battlefield.Coordinates;
-import main.game.battlefield.attack.DamageMaster;
+import main.game.logic.combat.damage.DamageCalculator;
 import main.game.core.master.BuffMaster;
 import main.game.logic.generic.DC_ActionManager;
 import main.game.logic.generic.DC_ActionManager.STD_MODE_ACTIONS;
@@ -1155,7 +1158,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 e1.printStackTrace();
             }
         }
-        if (DamageMaster.isLethal(damage, targetObj)) {
+        if (DamageCalculator.isLethal(damage, targetObj)) {
             if (checkKillPrioritized(targetObj, action))
 
             {

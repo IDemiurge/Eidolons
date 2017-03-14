@@ -1,7 +1,7 @@
 package main.rules.round;
 
-import main.ability.effects.AddBuffEffect;
-import main.ability.effects.oneshot.special.AddStatusEffect;
+import main.ability.effects.attachment.AddBuffEffect;
+import main.ability.effects.common.AddStatusEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;

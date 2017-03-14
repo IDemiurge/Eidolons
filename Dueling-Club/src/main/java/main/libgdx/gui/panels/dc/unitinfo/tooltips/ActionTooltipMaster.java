@@ -6,8 +6,8 @@ import main.content.UNIT_INFO_PARAMS;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
-import main.game.logic.combat.CriticalAttackRule;
-import main.game.logic.combat.DefenseVsAttackRule;
+import main.game.logic.combat.attack.CriticalAttackRule;
+import main.game.logic.combat.attack.DefenseVsAttackRule;
 import main.rules.combat.ForceRule;
 import main.system.math.MathMaster;
 import main.system.math.ModMaster;
@@ -37,7 +37,7 @@ public class ActionTooltipMaster {
     }
 
     public static String getStringForParameter(PARAMS p, DC_ActiveObj action) {
-    if (p!= PARAMS.FORCE) {
+    if (p!= PARAMS.FORCE && p!= PARAMS.BASE_DAMAGE) {
         if (action.getIntParam(p) == 0) {
             return null; //don't show any text!
         }
@@ -64,7 +64,7 @@ public class ActionTooltipMaster {
                 return getAccuracyDescription(action);
             case CRITICAL_MOD:
                 return getCriticalDescription(action);
-            case SNEAK_DAMAGE_MOD:
+            case SNEAK_DEFENSE_MOD:
                 return getSneakDescription(action);
             case FORCE_KNOCK_MOD:
                 return getForcePushDescription(action);
@@ -86,8 +86,9 @@ public class ActionTooltipMaster {
     }
 
     private static String getForceMaxStrengthDescription(DC_ActiveObj action) {
-        return null;
-    }
+        return "Strength limit for Force: " +
+         action.getIntParam(PARAMS.FORCE_MAX_STRENGTH_MOD);
+    } //TODO rework
 
     private static String getForceDamageDescription(DC_ActiveObj action) {
         DAMAGE_TYPE type = DAMAGE_TYPE.BLUDGEONING;
@@ -151,8 +152,8 @@ public class ActionTooltipMaster {
          100 - ModMaster.getFinalModForAction(action, PARAMS.SNEAK_ARMOR_MOD)) +
          "% Armor Penetration, ";
         String defense = String.valueOf(
-         ModMaster.getFinalModForAction(action, PARAMS.SNEAK_DEFENSE_MOD)) +
-         "% Defense";
+         100-ModMaster.getFinalModForAction(action, PARAMS.SNEAK_DEFENSE_MOD)) +
+         "% Defense Penetration";
         return "Sneak: " +
          damage +
          attack +

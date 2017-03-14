@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import main.ability.effects.Effect;
-import main.ability.effects.oneshot.common.SpecialTargetingEffect;
+import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.values.parameters.G_PARAMS;
 import main.entity.Entity;
 import main.entity.Ref;

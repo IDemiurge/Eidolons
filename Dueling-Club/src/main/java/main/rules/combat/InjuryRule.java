@@ -1,7 +1,7 @@
 package main.rules.combat;
 
 import main.ability.effects.Effects;
-import main.ability.effects.common.InjuryEffect;
+import main.ability.effects.oneshot.rule.InjuryEffect;
 import main.content.CONTENT_CONSTS2.INJURY;
 import main.content.CONTENT_CONSTS2.INJURY_TYPE;
 import main.content.PROPS;

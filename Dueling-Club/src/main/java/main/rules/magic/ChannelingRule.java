@@ -2,10 +2,10 @@ package main.rules.magic;
 
 import main.ability.ActiveAbility;
 import main.ability.effects.Effects;
-import main.ability.effects.ModeEffect;
-import main.ability.effects.RemoveBuffEffect;
-import main.ability.effects.oneshot.common.AddTriggerEffect;
-import main.ability.effects.oneshot.special.CastSpellEffect;
+import main.ability.effects.oneshot.mechanic.ModeEffect;
+import main.ability.effects.oneshot.buff.RemoveBuffEffect;
+import main.ability.effects.attachment.AddTriggerEffect;
+import main.ability.effects.oneshot.activation.CastSpellEffect;
 import main.content.PROPS;
 import main.content.mode.STD_MODES;
 import main.content.values.properties.G_PROPS;

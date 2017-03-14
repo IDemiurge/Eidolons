@@ -1,7 +1,7 @@
 package main.game.ai.tools;
 
 import main.ability.conditions.WaitingFilterCondition;
-import main.ability.effects.common.RaiseEffect;
+import main.ability.effects.oneshot.unit.RaiseEffect;
 import main.content.DC_TYPE;
 import main.content.enums.rules.VisionEnums;
 import main.data.XList;

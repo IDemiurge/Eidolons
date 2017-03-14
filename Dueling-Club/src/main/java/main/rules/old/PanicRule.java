@@ -1,8 +1,8 @@
 package main.rules.old;
 
 import main.ability.conditions.StatusCheckCondition;
-import main.ability.effects.AddBuffEffect;
-import main.ability.effects.special.ImmobilizeEffect;
+import main.ability.effects.attachment.AddBuffEffect;
+import main.ability.effects.oneshot.status.ImmobilizeEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Condition;
