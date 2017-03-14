@@ -164,7 +164,7 @@ public class DamageDealer {
         return (event.fire());
     }
 
-    public static int dealPureDamage(Unit attacked, Unit attacker, Integer endurance_dmg,
+    private static int dealPureDamage(Unit attacked, Unit attacker, Integer endurance_dmg,
                                      Integer toughness_dmg, Ref ref) {
         // apply Absorption here?
 
@@ -271,12 +271,6 @@ public class DamageDealer {
         return DamageCalculator.getArmorReduction(base_damage, attacked, attacker, action, false);
     }
 
-    public static int dealDamageOfType(DAMAGE_TYPE damage_type, Unit targetObj,
-                                       Unit attacker, int amount) {
-        Ref ref = Ref.getSelfTargetingRefNew(targetObj);
-        ref.setSource(attacker.getId());
-        return dealDamageOfType(damage_type, targetObj, ref, amount);
-    }
 
     protected static boolean isAttack(Ref ref) {
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
