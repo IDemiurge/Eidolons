@@ -8,7 +8,6 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.unit.Unit;
 import main.game.logic.combat.damage.Damage;
-import main.game.logic.combat.damage.DamageCalculator;
 import main.rules.attack.InstantAttackRule.INSTANT_ATTACK_TYPE;
 import main.system.graphics.AttackAnimation;
 
@@ -94,7 +93,7 @@ public class Attack {
     }
 
     public Integer getPrecalculatedDamageAmount() {
-        return DamageCalculator.calculateAttackDamage(this, true);
+        return new AttackCalculator(this, true).calculateFinalDamage();
     }
 
     public DAMAGE_TYPE getDamageType() {

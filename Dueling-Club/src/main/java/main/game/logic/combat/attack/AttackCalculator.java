@@ -362,6 +362,8 @@ public class AttackCalculator {
                 + actionAtkMod : actionAtkMod;
         int armor_pen = action.getIntParam(PARAMS.ARMOR_PENETRATION);
         int armor_mod = action.getIntParam(PARAMS.ARMOR_MOD);
+
+
         if (action.isThrow()) {
             atk_mod= applyVisibilityPenalty( atk_mod);
         } else if (action.isRanged()) {
@@ -404,7 +406,7 @@ public class AttackCalculator {
     private int applyVisibilityPenalty( int atk_mod) {
         int penalty = 0;
         if (attacked.getUnitVisionStatus() == VisionEnums.UNIT_TO_UNIT_VISION.IN_SIGHT) {
-            // as opposed to IN_CLEAR_SIGHT
+            // as opposed to IN_PLAIN_SIGHT
             penalty = applyParamMod(-20, (PARAMS.RANGED_PENALTY_MOD));
         } else
         if (attacked.getUnitVisionStatus() == VisionEnums.UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {

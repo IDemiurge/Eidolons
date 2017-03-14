@@ -80,15 +80,15 @@ public class UnitCalculator extends EntityCalculator<Unit> {
 
     }
 
-
+    @Deprecated
     public Integer calculateAndSetDamage(boolean offhand) {
         return calculateDamage(offhand, true);
     }
-
+    @Deprecated
     public Integer calculateDamage(boolean offhand) {
         return calculateDamage(offhand, false);
     }
-
+    @Deprecated
     public Integer calculateDamage(boolean offhand, boolean set) {
         int dmg = DamageCalculator.getUnitAttackDamage(getEntity(), offhand);
         Integer mod;

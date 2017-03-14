@@ -184,7 +184,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     protected Ref checkForRefReplacement() {
         String s = getStr();
         if (s.startsWith("{")) {
-            s = s.replaceFirst("{", "");
+//            s = s.replaceFirst("{", ""); TODO 
         }
         if (StringMaster.compareByChar(StringMaster.getSegment(0, s, "_"), "EVENT", true)) {
             // setStr(getStr().replace(EVENT_PREFIX, "")); [OPTIMIZED]

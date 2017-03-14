@@ -118,7 +118,8 @@ public class AttackEffect extends MicroEffect  implements OneshotEffect {
         }
 
         try {
-            return ((DC_Game) getGame()).getAttackMaster().attack(getAttack(), ref, free,
+            return ((DC_Game) getGame()).getAttackMaster()
+             .attack(getAttack(), ref, free,
                     canCounter, onHit, onKill, offhand, counter, attacker.hasDoubleStrike()); // UNIT_TAKES_DAMAGE
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,7 +140,8 @@ public class AttackEffect extends MicroEffect  implements OneshotEffect {
     }
 
     public Attack initAttack() {
-        return new Attack(ref, offhand, counter, canCounter, free, onHit, onKill);
+        return new Attack(ref, offhand, counter, canCounter,
+         free, onHit, onKill);
     }
 
     public boolean isFree() {

@@ -1,9 +1,8 @@
 package main.game.logic.combat.attack;
 
-import main.ability.conditions.special.SneakCondition;
-import main.ability.effects.oneshot.attack.AttackEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
+import main.ability.effects.oneshot.attack.AttackEffect;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
@@ -12,15 +11,14 @@ import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
-import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.unit.Unit;
-import main.game.ai.tools.target.EffectFinder;
 import main.game.core.game.DC_Game;
+import main.game.core.master.EffectMaster;
 import main.game.logic.combat.damage.Damage;
 import main.game.logic.combat.damage.DamageCalculator;
 import main.game.logic.combat.damage.DamageDealer;
@@ -48,7 +46,6 @@ import main.system.text.LogEntryNode;
 import java.util.List;
 
 public class DC_AttackMaster {
-    private static ConditionImpl sneakCondition;
     private DC_Game game;
 
     // private static boolean precalc;
@@ -60,52 +57,7 @@ public class DC_AttackMaster {
         this.game = game;
     }
 
-    public static AttackEffect getAttackEffect(ActiveObj action) {
-        AttackEffect effect = (AttackEffect) EffectFinder.getEffectsOfClass((DC_ActiveObj) action,
-                AttackEffect.class).get(0);
-        return effect;
-    }
-
-    public static Attack getAttackFromAction(DC_ActiveObj attackAction) {
-        return getAttackEffect(attackAction).getAttack();
-    }
-
-    private static void log(String message) {
-        log(DC_Game.game, message);
-    }
-
-    private static void log(DC_Game game, String message) {
-        // if (!precalc)
-        game.getLogManager().log(message);
-    }
-
-    public static DC_WeaponObj getAttackWeapon(Ref ref, boolean offhand) {
-        return (DC_WeaponObj) (offhand ? ref.getObj(KEYS.OFFHAND) : ref.getObj(KEYS.WEAPON));
-    }
-
-    public static DC_WeaponObj getAttackWeapon(Ref ref) {
-        return getAttackWeapon(ref, ref.getActive().isOffhand());
-    }
-
-    public static boolean checkSneak(Ref ref) {
-        if (sneakCondition == null) {
-            sneakCondition = new SneakCondition();
-        }
-        return sneakCondition.check(ref);
-    }
-
-    private static boolean checkWeapon(Ref ref) {
-        return ref.getObj(KEYS.WEAPON) != null;
-    }
-
-    public boolean attack(Attack attack) {
-        Boolean doubleAttack = attack.isDouble();
-        return attack(attack, attack.getRef(), attack.isFree(), attack.isCanCounter(), attack
-                        .getOnHit(), attack.getOnKill(), attack.isOffhand(), attack.isCounter(),
-                doubleAttack);
-
-    }
-
+    //TODO
     public boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter, Effect onHit,
                           Effect onKill, boolean offhand, boolean counter, Boolean doubleAttack) {
         boolean result = attack(attack, ref, free, canCounter, onHit, onKill, offhand, counter);
@@ -117,9 +69,16 @@ public class DC_AttackMaster {
         }
         return result;
     }
+    public boolean attack(Attack attack) {
+        Boolean doubleAttack = attack.isDouble();
+        return attack(attack, attack.getRef(), attack.isFree(), attack.isCanCounter(), attack
+          .getOnHit(), attack.getOnKill(), attack.isOffhand(), attack.isCounter(),
+         doubleAttack);
 
-    public boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter, Effect onHit,
-                          Effect onKill, boolean offhand, boolean counter) {
+    }
+
+    private boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter, Effect onHit,
+                           Effect onKill, boolean offhand, boolean counter) {
         ENTRY_TYPE type = ENTRY_TYPE.ATTACK;
         boolean extraAttack = true;
         if (attack.getAction().isCounterMode()) {
@@ -132,10 +91,10 @@ public class DC_AttackMaster {
             extraAttack = false;
         }
         LogEntryNode entry = game.getLogManager().newLogEntryNode(type,
-                attack.getAttacker().getName(), attack.getAttacked().getName(), attack.getAction());
+         attack.getAttacker().getName(), attack.getAttacked().getName(), attack.getAction());
         Boolean result;
         try {
-            attack.setSneak(checkSneak(ref));
+            attack.setSneak(SneakRule.checkSneak(ref));
 
             AttackAnimation animation = null;
             if (attack.getAction().getAnimation() instanceof AttackAnimation) {
@@ -147,11 +106,7 @@ public class DC_AttackMaster {
             if (ref.getGroup() != null) {
                 // animation = new MultiAttackAnimation(attack, ref.getGroup());
             }
-            // (AttackAnimation) game.getAnimationManager().getAnimation(
-            // attack.getAction().getAnimationKey());
             attack.setAnimation(animation);
-            // attack.getAnimation().setAttack(attack);
-            // new AttackAnimation(attack);
             game.getAnimationManager().newAnimation(animation);
             if (entry != null) {
                 entry.setLinkedAnimation(animation);
@@ -164,7 +119,7 @@ public class DC_AttackMaster {
             if (result == null) { // first strike
 
                 ActiveObj action = tryCounter(attack, false);
-                AttackEffect effect = getAttackEffect(action);
+                AttackEffect effect = EffectMaster.getAttackEffect(action);
                 waitForAttackAnimation(effect.getAttack());
                 attackNow(attack, ref, free, false, onHit, onKill, offhand, counter);
 
@@ -194,10 +149,34 @@ public class DC_AttackMaster {
         return result;
     }
 
+
+    public static Attack getAttackFromAction(DC_ActiveObj attackAction) {
+        return EffectMaster.getAttackEffect(attackAction).getAttack();
+    }
+
+    private static void log(String message) {
+        log(DC_Game.game, message);
+    }
+
+    private static void log(DC_Game game, String message) {
+        // if (!precalc)
+        game.getLogManager().log(message);
+    }
+
+    public static DC_WeaponObj getAttackWeapon(Ref ref, boolean offhand) {
+        return (DC_WeaponObj) (offhand ? ref.getObj(KEYS.OFFHAND) : ref.getObj(KEYS.WEAPON));
+    }
+
+
+    private static boolean checkWeapon(Ref ref) {
+        return ref.getObj(KEYS.WEAPON) != null;
+    }
+
+
     /**
      * @return null  if attack has been delayed by target's first strike; false if target is killed; true otherwise
      */
-    public Boolean attackNow(Attack attack, Ref ref, boolean free, boolean canCounter,
+    private Boolean attackNow(Attack attack, Ref ref, boolean free, boolean canCounter,
                              Effect onHit, Effect onKill, boolean offhand, boolean isCounter) {
         if (!(ref.getTargetObj() instanceof Unit)) {
             return true;
@@ -340,10 +319,11 @@ public class DC_AttackMaster {
         }
         Integer final_amount = attack.getDamage();
         if (final_amount == Attack.DAMAGE_NOT_SET) {
-            final_amount = DamageCalculator.calculateAttackDamage(attack);
+            AttackCalculator calculator = new AttackCalculator(attack, false);
+            final_amount = calculator.calculateFinalDamage();
         }
         // TODO different for multiDamageType
-        List<Damage> rawDamage = DamageCalculator.precalculateRawDamage(attack);
+        List<Damage> rawDamage = DamageCalculator.precalculateRawDamageForDisplay(attack);
         attack.setRawDamage(rawDamage);
         attack.getAnimation().addPhase(new AnimPhase(PHASE_TYPE.PRE_ATTACK, attack, rawDamage), 0);
 
@@ -529,7 +509,7 @@ public class DC_AttackMaster {
         return true;
     }
 
-    // precalculateRawDamage
+    // precalculateRawDamageForDisplay
     private boolean canParry(Attack attack) {
         // if (!RuleMaster.isParryOn())return false;
         if (attack.getAttacked().getIntParam(PARAMS.PARRY_CHANCE) <= 0) {

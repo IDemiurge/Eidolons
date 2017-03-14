@@ -7,7 +7,6 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_GameManager;
 import main.game.logic.event.Event;
@@ -16,7 +15,6 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.libgdx.anims.phased.PhaseAnimator;
-import main.rules.round.UnconsciousRule;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.PhaseAnimation;
@@ -241,7 +239,7 @@ public class DamageDealer {
         }
         int damageDealt = Math.max(actual_e_damage, actual_t_damage);
 
-        boolean dead = checkDead(attacked);
+        boolean dead = DamageCalculator.isDead(attacked);
         try {
             PhaseAnimation animation = PhaseAnimator.getAnimation(ref, attacked);
             if (animation != null) {
@@ -279,19 +277,6 @@ public class DamageDealer {
     protected static boolean isAttack(Ref ref) {
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
         if (active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean checkDead(BattleFieldObject unit) {
-        if (unit instanceof Unit) {
-            return UnconsciousRule.checkUnitDies((Unit) unit);
-        }
-        if (0 >= unit.getIntParam(PARAMS.C_ENDURANCE)) {
-            return true;
-        }
-        if (0 >= unit.getIntParam(PARAMS.C_TOUGHNESS)) {
             return true;
         }
         return false;

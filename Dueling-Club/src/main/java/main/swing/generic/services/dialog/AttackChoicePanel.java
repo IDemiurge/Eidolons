@@ -86,7 +86,7 @@ public class AttackChoicePanel extends ChoicePanel<DC_ActiveObj> {
         attack.setDamage(calculator.calculateFinalDamage());
 
         // animation.setPhase(PHASE_TYPE.DAMAGE_FORMULA);
-        List<Damage> rawDamage = DamageCalculator.precalculateRawDamage(attack);
+        List<Damage> rawDamage = DamageCalculator.precalculateRawDamageForDisplay(attack);
         attack.setRawDamage(rawDamage);
         animation.addPhase(new AnimPhase(PHASE_TYPE.PRE_ATTACK, attack, rawDamage), 0);
         calculator.addSubPhase();

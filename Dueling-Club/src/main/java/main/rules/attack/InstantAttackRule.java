@@ -10,6 +10,7 @@ import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.DC_MovementManager;
 import main.game.battlefield.FacingMaster;
+import main.game.core.master.EffectMaster;
 import main.game.logic.combat.attack.Attack;
 import main.game.logic.combat.attack.DC_AttackMaster;
 import main.rules.RuleMaster;
@@ -118,7 +119,7 @@ public class InstantAttackRule {
             LogMaster.log(1, "*** Instant attack successful! " + attack);
         }
         INSTANT_ATTACK_TYPE type = getInstantAttackType(unit, action);
-        DC_AttackMaster.getAttackEffect(attack).getAttack().setInstantAttackType(type);
+        EffectMaster.getAttackEffect(attack).getAttack().setInstantAttackType(type);
         if (type.isWakeUpAlert()) {
             AlertRule.wakeUp(unit);
         }
