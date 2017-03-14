@@ -7,8 +7,10 @@ import main.ability.effects.oneshot.DealDamageEffect;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.data.DataManager;
 import main.entity.Ref;
+import main.entity.Ref.KEYS;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.unit.Unit;
@@ -53,9 +55,11 @@ public class DealDamageEffectTest {
         int origToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
         int origEndurance = target.getIntParam(PARAMS.C_ENDURANCE);
 
-        Effect eff = new DealDamageEffect(new Formula("50"), GenericEnums.DAMAGE_TYPE.BLUDGEONING);
+        Effect eff = new DealDamageEffect(new Formula("50"),
+         GenericEnums.DAMAGE_TYPE.BLUDGEONING.getName(), DAMAGE_MODIFIER.UNBLOCKABLE);
         Ref ref = new Ref(source);
         ref.setTarget(target.getId());
+        ref.setID(KEYS.ACTIVE, source.getAction("Attack").getId());
         eff.apply(ref);
 
         assert(target.getIntParam(PARAMS.C_TOUGHNESS) < origToughness);
