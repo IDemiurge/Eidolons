@@ -164,21 +164,21 @@ public class DamageDealer {
         return (event.fire());
     }
 
-    public static int dealPureDamage(Unit attacked, Unit attacker, Integer e_damage,
-                                     Integer t_damage, Ref ref) {
+    public static int dealPureDamage(Unit attacked, Unit attacker, Integer endurance_dmg,
+                                     Integer toughness_dmg, Ref ref) {
         // apply Absorption here?
 
         boolean enduranceOnly = false;
-        if (t_damage == null) {
+        if (toughness_dmg == null) {
             enduranceOnly = true;
-            t_damage = 0;
+            toughness_dmg = 0;
         }
         // TODO if not started already
         attacked.getGame().getLogManager().newLogEntryNode(true, ENTRY_TYPE.DAMAGE);
 
-        LogMaster.log(1, t_damage + " / " + e_damage + " damage being dealt to "
+        LogMaster.log(1, toughness_dmg + " / " + endurance_dmg + " damage being dealt to "
          + attacked.toString());
-        attacked.getGame().getLogManager().logDamageDealt(t_damage, e_damage, attacker, attacked);
+        attacked.getGame().getLogManager().logDamageDealt(toughness_dmg, endurance_dmg, attacker, attacked);
 
         ref.setTarget(attacked.getId());
         ref.setSource(attacker.getId());
@@ -187,25 +187,25 @@ public class DamageDealer {
         boolean result;
         int actual_t_damage = 0;
 
-        if (t_damage > 0) {
+        if (toughness_dmg > 0) {
             if (!enduranceOnly) {
 
                 event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_TOUGHNESS_DAMAGE, ref);
-                ref.setAmount(t_damage);
+                ref.setAmount(toughness_dmg);
                 result = event.fire();
                 if (DC_GameManager.checkInterrupted(ref)) {
                     return 0;
                 }
-                t_damage = ref.getAmount(); // triggers may have changed the
+                toughness_dmg = ref.getAmount(); // triggers may have changed the
                 // amount!
-                actual_t_damage = Math.min(attacked.getIntParam(PARAMS.C_TOUGHNESS), t_damage);
+                actual_t_damage = Math.min(attacked.getIntParam(PARAMS.C_TOUGHNESS), toughness_dmg);
                 ref.setAmount(actual_t_damage);
                 // for cleave and other sensitive effects
 
                 //TODO ?? int t_dmg_remaining = actual_t_damage
                 // - attacked.getIntParam(PARAMS.C_TOUGHNESS);
                 if (result) {
-                    attacked.modifyParameter(PARAMS.C_TOUGHNESS, -t_damage);
+                    attacked.modifyParameter(PARAMS.C_TOUGHNESS, -toughness_dmg);
                 }
                 event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_DEALT_TOUGHNESS_DAMAGE, ref);
                 result = event.fire();
@@ -214,8 +214,8 @@ public class DamageDealer {
         }
 
         int actual_e_damage = 0;
-        if (e_damage > 0) {
-            ref.setAmount(e_damage);
+        if (endurance_dmg > 0) {
+            ref.setAmount(endurance_dmg);
             event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_ENDURANCE_DAMAGE, ref);
 
             result = event.fire();
@@ -224,12 +224,12 @@ public class DamageDealer {
                 return 0;
             }
 
-            e_damage = ref.getAmount();
-            actual_e_damage = Math.min(attacked.getIntParam(PARAMS.C_ENDURANCE), e_damage);
+            endurance_dmg = ref.getAmount();
+            actual_e_damage = Math.min(attacked.getIntParam(PARAMS.C_ENDURANCE), endurance_dmg);
             ref.setAmount(actual_e_damage);
 
             if (result) {
-                attacked.modifyParameter(PARAMS.C_ENDURANCE, -e_damage);
+                attacked.modifyParameter(PARAMS.C_ENDURANCE, -endurance_dmg);
             }
             event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_DEALT_ENDURANCE_DAMAGE, ref);
             result = event.fire();
@@ -241,7 +241,7 @@ public class DamageDealer {
         try {
             PhaseAnimation animation = PhaseAnimator.getAnimation(ref, attacked);
             if (animation != null) {
-                animation.addPhaseArgs(PHASE_TYPE.DAMAGE_DEALT, t_damage, e_damage, ref
+                animation.addPhaseArgs(PHASE_TYPE.DAMAGE_DEALT, toughness_dmg, endurance_dmg, ref
                  .getDamageType());
             }
         } catch (Exception e) {
@@ -258,7 +258,7 @@ public class DamageDealer {
             // if (DC_GameManager.checkInterrupted(ref))
             // return 0; ???
         }
-        LogMaster.log(1, t_damage + " / " + e_damage + " damage has been dealt to "
+        LogMaster.log(1, toughness_dmg + " / " + endurance_dmg + " damage has been dealt to "
          + attacked.toString());
         attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked,
          damageDealt);
