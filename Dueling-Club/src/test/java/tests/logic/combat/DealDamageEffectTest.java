@@ -19,6 +19,9 @@ import main.system.math.Formula;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+
+
 /**
  * Created by JustMe on 3/6/2017.
  */
@@ -55,6 +58,8 @@ public class DealDamageEffectTest {
         int origToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
         int origEndurance = target.getIntParam(PARAMS.C_ENDURANCE);
 
+
+
         Effect eff = new DealDamageEffect(new Formula("50"),
          GenericEnums.DAMAGE_TYPE.BLUDGEONING.getName(), DAMAGE_MODIFIER.UNBLOCKABLE);
         Ref ref = new Ref(source);
@@ -63,8 +68,8 @@ public class DealDamageEffectTest {
         eff.apply(ref);
         Integer newToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
         Integer newEndurance = target.getIntParam(PARAMS.C_ENDURANCE);
-        assert(newToughness < origToughness);
-        assert(newEndurance < origEndurance);
+        assertTrue(newToughness < origToughness);
+        assertTrue(newEndurance < origEndurance);
 
 
     }
