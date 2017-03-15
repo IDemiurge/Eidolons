@@ -8,7 +8,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.BuffObj;
 import main.entity.tools.DC_ObjMaster;
 import main.entity.tools.EntityMaster;
-import main.entity.type.BuffType;
+import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.core.game.MicroGame;
 import main.game.core.master.BuffMaster;
@@ -17,9 +17,15 @@ import main.system.auxiliary.StringMaster;
 
 public class DC_BuffObj extends BuffObj {
 
-    public DC_BuffObj(BuffType type, Player owner, MicroGame game, Ref ref, Effect effect,
+    public DC_BuffObj(ObjType type, Player owner, MicroGame game, Ref ref, Effect effect,
                       int duration, Condition retainCondition) {
         super(type, owner, game, ref, effect, duration, retainCondition);
+
+    }
+    public DC_BuffObj(DC_BuffObj buff) {
+        this(buff.type, buff.owner,
+         buff.getGame(), buff.ref, buff.effect,
+         buff.duration, buff.getRetainConditions());
 
     }
 

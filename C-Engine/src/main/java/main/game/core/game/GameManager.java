@@ -4,7 +4,6 @@ import main.ability.Interruptable;
 import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.EffectImpl;
-import main.ability.effects.continuous.ContinuousEffect;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
@@ -27,8 +26,6 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import static main.system.GuiEventType.INGAME_EVENT_TRIGGERED;
@@ -179,46 +176,12 @@ public abstract class GameManager implements GenericGameManager {
         LogMaster.log(LogMaster.CORE_DEBUG, "trigger added!");
     }
 
-    protected void attachTrigger(Trigger trigger) {
-        Obj source = trigger.getRef().getObj(KEYS.BUFF);
-        if (source == null) {
-            source = trigger.getRef().getObj(KEYS.ABILITY);
-        }
-        Attachment attachment;
-        if (source instanceof Attachment) { // passive ability?
-            attachment = (Attachment) source;
-
-            List<Trigger> list = getState().getAttachedTriggers().get(source);
-            // TODO what if the trigger has a different BASIS than buff?
-            if (list == null) {
-                list = new LinkedList<>();
-                getState().getAttachedTriggers().put(attachment, list);
-            }
-            list.add(trigger);
-        } else {
-            LogMaster.log(1, "UNATTACHED TRIGGER: " + trigger);
-        }
-
-    }
-
-    public List<Attachment> getAttachments(Obj obj) {
-        return getState().getAttachmentsMap().get(obj);
-    }
-
-    public boolean isSpellpoolInitialized() {
-        return spellBookInitialized;
-    }
 
     public void setSbInitialized(boolean sbInitialized) {
         this.spellBookInitialized = sbInitialized;
     }
 
     public abstract void reset();
-
-    public boolean enactAI() {
-        return ai.makeTurn();
-
-    }
 
     public AI getAI() {
         return ai;
@@ -229,16 +192,8 @@ public abstract class GameManager implements GenericGameManager {
 
     }
 
-    public boolean isActivatingPassives() {
-        return activatingPassives;
-    }
-
     public void setActivatingPassives(boolean b) {
         this.activatingPassives = b;
-    }
-
-    public boolean isActivatingAction() {
-        return getActivatingAction() != null;
     }
 
     public void resetValues() {

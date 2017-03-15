@@ -1,6 +1,7 @@
 package main.logic;
 
 import main.content.OBJ_TYPE;
+import main.data.ConcurrentMap;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_GameMaster;
@@ -105,7 +106,7 @@ public class AT_Simulation extends Game {
         @Override
         protected void initTypeMaps() {
             for (OBJ_TYPE TYPE : AT_OBJ_TYPE.values()) {
-                getObjMaps().put(TYPE, new HashMap<>());
+                getObjMaps().put(TYPE, new ConcurrentMap<>());
             }
         }
 

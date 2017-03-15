@@ -11,6 +11,7 @@ import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.BuffType;
+import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.MessageManager;
@@ -38,7 +39,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     private Boolean negative;
     private Effect dispelEffects;
 
-    public BuffObj(BuffType type, Player owner, MicroGame game, Ref ref, Effect effect,
+    public BuffObj(ObjType type, Player owner, MicroGame game, Ref ref, Effect effect,
                    int duration, Condition retainCondition) {
         super(type, owner, game, ref);
         this.retainConditions = retainCondition;
@@ -50,7 +51,8 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         }
         this.basis = game.getObjectById(ref.getBasis());
         addDynamicValues();
-        setTransient(type.isTransient());
+//     if   instance
+        setTransient(((BuffType)type).isTransient());
         if (checkBool(GenericEnums.STD_BOOLS.INVISIBLE_BUFF)) {
             visible = false;
         }

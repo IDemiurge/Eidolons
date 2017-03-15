@@ -113,4 +113,9 @@ public class PassiveAbilityObj extends AbilityObj implements Attachment {
 
     }
 
+    @Override
+    public Obj getBasis() {
+        return getRef().getObj(KEYS.BASIS);
+    }
+
 }

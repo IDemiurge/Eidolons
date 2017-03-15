@@ -443,14 +443,9 @@ public class DC_Game extends MicroGame {
     public void destruct() {
         state.getObjMaps().clear();
         state.getObjects().clear();
-        state.getAttachedEffects().clear();
-        state.getAttachedObjects().clear();
-        state.getAttachedTriggers().clear();
         state.getAttachments().clear();
-        state.getAttachmentsMap().clear();
         state.getTriggers().clear();
-        state.getTypeMaps().clear();
-        state.getTypes().clear();
+        state.getTypeMap().clear();
         getUnits().clear();
         getStructures().clear();
         getCells().clear();

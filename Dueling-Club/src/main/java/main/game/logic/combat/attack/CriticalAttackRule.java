@@ -1,6 +1,5 @@
 package main.game.logic.combat.attack;
 
-import main.content.DC_ValueManager;
 import main.content.PARAMS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
@@ -20,8 +19,8 @@ public class CriticalAttackRule {
     }
 
     public static int getCriticalDamagePercentage(DC_ActiveObj action, Unit attacked) {
-        int mod = DC_ValueManager.getMod(
-         action.getFinalModParam(PARAMS.CRITICAL_MOD), PARAMS.CRITICAL_MOD);
+        int mod =
+         action.getFinalModParam(PARAMS.CRITICAL_MOD);
 //        int factor =
 //         MathMaster.getFractionValueCentimal(
 //          DC_Formulas.DEFAULT_CRITICAL_FACTOR, mod);

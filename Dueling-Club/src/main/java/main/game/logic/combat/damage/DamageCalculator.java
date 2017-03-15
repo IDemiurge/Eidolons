@@ -97,8 +97,9 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
         }
         amount -= applyAverageShieldReduction(amount, attacked, attacker, attack.getAction(),
          attack.getWeapon(), attack.getDamageType());
-        amount -= DamageDealer.getArmorReduction(amount, attacked, attacker,
-         attack.getAction());
+        amount -=  DamageCalculator.getArmorReduction(amount,
+         attacked, attacker, attack.getAction(), false);
+
 
         if (attack.getAction().isAttack()) {
             return amount;
@@ -119,9 +120,7 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
     }
 
     private static int applyPercentReduction(int base_damage, int percent) {
-        return MathMaster.applyMod(base_damage, percent);
-//        int damage = base_damage - Math.round(base_damage * percent / 100);
-//        return damage;
+        return base_damage -MathMaster.applyMod(base_damage, percent);
     }
 
     public static int getDamage(Ref ref) {

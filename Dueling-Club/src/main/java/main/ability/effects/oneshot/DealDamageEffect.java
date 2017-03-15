@@ -125,7 +125,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
 
     private int applyReductions(Unit targetObj, int amount, DC_ActiveObj active, boolean spell) {
         if (checkDamageMod(DAMAGE_MODIFIER.UNBLOCKABLE))
-            return 0;
+            return amount;
 
         if (getGame().getArmorMaster().checkCanShieldBlock(active, targetObj)) {
             int shieldBlock = getGame().getArmorMaster().getShieldDamageBlocked(amount, targetObj,

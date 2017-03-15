@@ -259,7 +259,7 @@ public abstract class Game  implements Serializable { // extends Entity? ;) Prop
         // + type.getId());
         type.setGame(this);
         type.setRef(new Ref(this, type.getId()));
-        state.getTypes().put(type.getId(), type);
+        state.getTypeMap().put(type.getId(), type);
         type.setInitialized(true);
     }
 

@@ -12,6 +12,23 @@ import main.system.auxiliary.StringMaster;
  * Created by JustMe on 2/14/2017.
  */
 public class MetaEnums {
+
+
+    public enum DC_OBJ_CLASSES{
+        Unit,
+        Structure,
+        DC_WeaponObj,
+        DC_ArmorObj,
+        DC_QuickItemObj,
+        DC_ItemActiveObj,
+        DC_UnitAction,
+        DC_SpellObj,
+        DC_FeatObj,
+        DC_BuffObj,
+        DC_Cell,
+        Wave,
+    }
+
     public enum CUSTOM_VALUES {
         COST_REDUCTION_VERBATIM_SPELLS,
         COST_REDUCTION_MEMORIZED_SPELLS,

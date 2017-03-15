@@ -32,16 +32,11 @@ public abstract class GameState {
     protected boolean interrupted = false;
     protected Map<Integer, Obj> objMap = new ConcurrentMap<>();
     protected Map<OBJ_TYPE, Map<Integer, Obj>> objMaps = new ConcurrentMap<>();
-    protected Map<OBJ_TYPE, Map<Integer, ObjType>> typeMaps = new ConcurrentMap<>();
     protected Map<Integer, ObjType> typeMap = new ConcurrentMap<>();
-    protected Map<Attachment, List<Effect>> attachedEffects = new ConcurrentMap<>();
-    protected Map<Attachment, List<Trigger>> attachedTriggers = new ConcurrentMap<>();
-    protected Map<Attachment, List<Obj>> attachedObjects = new ConcurrentMap<>();
     protected Map<Obj, List<Attachment>> attachmentsMap = new ConcurrentMap<>();
     protected DequeImpl<Trigger> triggers = new DequeImpl<>();
     protected DequeImpl<Rule> triggerRules = new DequeImpl<>();
     protected DequeImpl<Effect> effects = new DequeImpl<>();
-    protected Map<Integer, Effect> effectsMap = new ConcurrentMap<>();
     protected DequeImpl<Attachment> attachments = new DequeImpl<>();
     //TODO remove spaghetti!
     protected StateManager manager;
@@ -59,17 +54,12 @@ public abstract class GameState {
     public void init() {
         objMap = new ConcurrentMap<>();
         objMaps = new HashMap<>();
-        typeMaps = new HashMap<>();
         typeMap = new ConcurrentMap<>();
 
-        attachedEffects = new HashMap<>();
-        attachedTriggers = new HashMap<>();
-        attachedObjects = new HashMap<>();
         attachmentsMap = new HashMap<>();
 
         triggers = new DequeImpl<>();
         effects = new DequeImpl<>();
-        effectsMap = new ConcurrentMap<>();
         attachments = new DequeImpl<>();
     }
 
@@ -102,9 +92,6 @@ public abstract class GameState {
         return objMap;
     }
 
-    public Map<Integer, ObjType> getTypes() {
-        return typeMap;
-    }
 
     public void removeTrigger(Trigger trigger) {
         LogMaster.log(LogMaster.TRIGGER_DEBUG, "Trigger removed: " + trigger);
@@ -129,9 +116,7 @@ public abstract class GameState {
     }
 
 
-    public Map<OBJ_TYPE, Map<Integer, ObjType>> getTypeMaps() {
-        return typeMaps;
-    }
+
 
     public Map<OBJ_TYPE, Map<Integer, Obj>> getObjMaps() {
         return objMaps;
@@ -141,20 +126,6 @@ public abstract class GameState {
         return attachmentsMap;
     }
 
-
-    public Map<Attachment, List<Effect>> getAttachedEffects() {
-        return attachedEffects;
-    }
-
-
-    public Map<Attachment, List<Trigger>> getAttachedTriggers() {
-        return attachedTriggers;
-    }
-
-
-    public Map<Attachment, List<Obj>> getAttachedObjects() {
-        return attachedObjects;
-    }
 
 
     public void addAttachment(Attachment attachment) {
@@ -177,14 +148,6 @@ public abstract class GameState {
         this.dirty = dirty;
     }
 
-    protected boolean checkObjDirty() {
-        boolean result = false;
-        for (Obj obj : getObjects().values()) {
-            result |= obj.isDirty();
-        }
-        return result;
-
-    }
 
     public boolean isInterrupted() {
         return interrupted;
@@ -240,9 +203,6 @@ public abstract class GameState {
         manager.addEffect(effect);
     }
 
-    public ObjType getTypeById(Integer id) {
-        return manager.getTypeById(id);
-    }
 
     public void setManager(StateManager manager) {
         this.manager = manager;

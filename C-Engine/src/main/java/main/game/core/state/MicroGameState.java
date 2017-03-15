@@ -2,6 +2,7 @@ package main.game.core.state;
 
 import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.data.ConcurrentMap;
 import main.entity.obj.Obj;
 import main.game.core.game.MicroGame;
 
@@ -27,7 +28,7 @@ public abstract class MicroGameState extends GameState {
     protected void initTypeMaps() {
         for (OBJ_TYPE TYPE : DC_TYPE.values()) {
 
-            getObjMaps().put(TYPE, new HashMap<>());
+            getObjMaps().put(TYPE, new ConcurrentMap<>());
         }
     }
 
@@ -37,10 +38,7 @@ public abstract class MicroGameState extends GameState {
         string += effects.size() + "EFFECTS: " + effects + "\n";
         string += triggers.size() + "TRIGGERS: " + triggers + "\n";
         string += attachments.size() + "ATTACHMENTS: " + attachments + "\n";
-        string += attachedEffects.size() + "ATTACHED EFFECTS: "
-                + attachedEffects + "\n";
-        string += attachedTriggers.size() + "ATTACHED TRIGGERS: "
-                + attachedTriggers + "\n";
+
         return string;
     }
 

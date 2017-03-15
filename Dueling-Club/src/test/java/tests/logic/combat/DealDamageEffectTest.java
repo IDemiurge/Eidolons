@@ -61,9 +61,10 @@ public class DealDamageEffectTest {
         ref.setTarget(target.getId());
         ref.setID(KEYS.ACTIVE, source.getAction("Attack").getId());
         eff.apply(ref);
-
-        assert(target.getIntParam(PARAMS.C_TOUGHNESS) < origToughness);
-        assert(target.getIntParam(PARAMS.C_ENDURANCE) < origEndurance);
+        Integer newToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
+        Integer newEndurance = target.getIntParam(PARAMS.C_ENDURANCE);
+        assert(newToughness < origToughness);
+        assert(newEndurance < origEndurance);
 
 
     }

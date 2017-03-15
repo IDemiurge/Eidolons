@@ -168,9 +168,13 @@ public class DC_ContentManager extends ContentManager {
     private static Map<PRINCIPLES, PARAMETER> identityMap = new HashMap<>();
     private static String focusMasteries;
     private static String focusClassGroups;
+    private static LinkedList<PARAMETER> dynamicParams=    new LinkedList<>() ;
 
     static {
-
+        Arrays.stream(PARAMS.values()).forEach(param -> {
+            if (param.isDynamic())
+            dynamicParams.add(param);
+        });
         // DEFAULT_VALUES
         // ArrayMaster.join();
         // BG_PARAMS
@@ -919,6 +923,10 @@ public class DC_ContentManager extends ContentManager {
     public static PARAMETER getArmorParamForDmgType(DAMAGE_TYPE dmg_type) {
         // cache!
         return ContentManager.getPARAM(dmg_type.name() + "_ARMOR");
+    }
+
+    public static LinkedList<PARAMETER> getDynamicParams() {
+        return dynamicParams;
     }
 
     public void init() {

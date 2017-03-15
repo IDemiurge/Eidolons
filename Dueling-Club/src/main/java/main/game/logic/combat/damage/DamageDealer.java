@@ -92,7 +92,9 @@ public class DamageDealer {
         int blocked = 0;
         if (!DamageCalculator.isUnblockable(ref)) {
             if (ref.getSource() != ref.getTarget()) {
-                blocked = getArmorReduction(amount, attacked, attacker, active);
+                blocked =  DamageCalculator.getArmorReduction(
+                  amount, attacked, attacker, active, false);
+
             }
         }
 
@@ -268,10 +270,7 @@ public class DamageDealer {
         return damageDealt;
     }
 
-    protected static int getArmorReduction(int base_damage, Unit attacked, Unit attacker,
-                                           DC_ActiveObj action) {
-        return DamageCalculator.getArmorReduction(base_damage, attacked, attacker, action, false);
-    }
+
 
 
     protected static boolean isAttack(Ref ref) {

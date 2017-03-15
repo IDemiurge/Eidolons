@@ -22,4 +22,6 @@ public interface Attachment {
     boolean isTransient();
 
     void setTransient(boolean b);
+
+    Obj getBasis();
 }
