@@ -125,6 +125,7 @@ public class DamageDealer {
 
     protected static boolean processDamageEvent(DAMAGE_TYPE damage_type, Ref ref, int amount,
                                                 EVENT_TYPE event_type) {
+        if (damage_type!=null )
         ref.setValue(KEYS.DAMAGE_TYPE, damage_type.toString());
         ref.setAmount(amount);
         KEYS key = null;
