@@ -59,7 +59,11 @@ public class DC_AttackMaster {
         this.game = game;
     }
 
-
+/**
+ *
+ * Apply attack object to actually deal damage.
+ *
+ * */
     public boolean attack(Attack attack) {
         Boolean doubleAttack = attack.isDoubleStrike();
 
@@ -77,6 +81,8 @@ public class DC_AttackMaster {
         return result;
 
     }
+
+
 
     private boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter, Effect onHit,
                            Effect onKill, boolean offhand, boolean counter)
@@ -257,6 +263,9 @@ public class DC_AttackMaster {
                 event.getRef().getEffect().setInterrupted(false);
                 dodged = true;
             }
+
+
+
             if (!dodged)
             dodged = DefenseVsAttackRule.checkDodgedOrCrit(attack);
 
@@ -512,9 +521,6 @@ public class DC_AttackMaster {
             return false;
         }
         if (attack.isSneak()) {
-            return false;
-        }
-        if (attack.isCritical()) {
             return false;
         }
         if (attack.isRanged()) {

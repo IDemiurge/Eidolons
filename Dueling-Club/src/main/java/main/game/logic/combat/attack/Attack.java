@@ -26,6 +26,8 @@ public class Attack {
     private boolean ranged;
     private boolean critical;
     private boolean dodged;
+
+    private boolean parried;
     private boolean lethal;
     private Effect onHit;
     private Effect onKill;
@@ -370,4 +372,15 @@ public class Attack {
     public void setDoubleStrike(boolean doubleStrike) {
         this.doubleStrike = doubleStrike;
     }
+
+
+
+    public boolean isParried() {
+        return parried;
+    }
+
+    public void setParried(boolean parried) {
+        this.parried = parried;
+    }
+
 }
