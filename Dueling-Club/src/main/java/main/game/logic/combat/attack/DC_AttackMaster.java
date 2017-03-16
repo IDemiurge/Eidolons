@@ -567,7 +567,7 @@ public class DC_AttackMaster {
                     + " from " + attack.getAttacker().getNameIfKnown()
                     + StringMaster.wrapInParenthesis(chanceRounded + "%"));
             game.getLogManager().doneLogEntryNode();
-            if (!isParryTest()) {
+            if (!RuleMaster.isRuleTestOn(RULE.PARRYING)) {
                 return false;
             }
         }
