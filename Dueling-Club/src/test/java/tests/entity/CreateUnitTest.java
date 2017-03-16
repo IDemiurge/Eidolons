@@ -13,6 +13,8 @@ import main.entity.type.ObjType;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Created by JustMe on 3/6/2017.
  */
@@ -44,32 +46,29 @@ public class CreateUnitTest{
 
 
     @Test
-    public void testUnitTest() {
+    public void testToBase() {
 
-        assert (entity!=null );
-        assert (entity.getName().equals(typeName));
+        assertTrue (entity!=null );
+        assertTrue (entity.getName().equals(typeName));
         entity.setParam(PARAMS.ACID_ARMOR, entity.getType().getParam(PARAMS.ACID_ARMOR)+5);
         entity.toBase();
-        assert (entity.getParam(PARAMS.ACID_ARMOR) == entity.getType().getParam(PARAMS.ACID_ARMOR));
-
-
-
+        assertTrue (entity.getParam(PARAMS.ACID_ARMOR) == entity.getType().getParam(PARAMS.ACID_ARMOR));
 
     }
 
     @Test
     public void testAssignSkill() {
 
-        assert (entity!=null );
-        assert (entity.getName().equals(typeName));
+        assertTrue (entity!=null );
+        assertTrue (entity.getName().equals(typeName));
         int temp = entity.getIntParam(PARAMS.TOUGHNESS);
         assert(!entity.getSkills().contains(skill));
         entity.getSkills().add(skill);
         entity.fullReset(judi.game);
-        assert(entity.getSkills().contains(skill));
+        assertTrue(entity.getSkills().contains(skill));
         System.out.println(temp);
         System.out.println(entity.getIntParam(PARAMS.TOUGHNESS));
-        assert(temp < entity.getIntParam(PARAMS.TOUGHNESS));
+        assertTrue(temp < entity.getIntParam(PARAMS.TOUGHNESS));
 
     }
 
@@ -91,7 +90,7 @@ public class CreateUnitTest{
         System.out.println(temp);
         System.out.println(entity.getCalculator().calculateDamage(false));
 
-        assert(temp < entity.getCalculator().calculateDamage(false));
+        assertTrue(temp < entity.getCalculator().calculateDamage(false));
 
 
 
