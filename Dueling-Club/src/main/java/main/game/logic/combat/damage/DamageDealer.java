@@ -131,16 +131,18 @@ public class DamageDealer {
         KEYS key = null;
         PARAMETER statsParam = null;
         boolean add = false;
+
         if (event_type == STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_DAMAGE) {
             key = KEYS.DAMAGE_AMOUNT;
             statsParam = PARAMS.DAMAGE_LAST_AMOUNT;
-        } else {
-            EventType type = (EventType) event_type;
-            if (type.getType().equals(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE)) {
+        } else
+
+            if (event_type.equals(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE)) {
                 key = KEYS.DAMAGE_DEALT;
                 statsParam = PARAMS.DAMAGE_LAST_DEALT;
             }
-            if (type.getType().equals(CONSTRUCTED_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_DAMAGE_OF_TYPE)) {
+            else {
+            if (((EventType) event_type).getType().equals(CONSTRUCTED_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_DAMAGE_OF_TYPE)) {
                 key = KEYS.DAMAGE_TOTAL;
                 statsParam = PARAMS.DAMAGE_TOTAL;
                 add = true;
