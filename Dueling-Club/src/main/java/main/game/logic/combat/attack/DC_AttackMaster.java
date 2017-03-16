@@ -25,6 +25,8 @@ import main.game.logic.combat.damage.DamageDealer;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventMaster;
+import main.rules.RuleMaster;
+import main.rules.RuleMaster.RULE;
 import main.rules.action.StackingRule;
 import main.rules.combat.CleaveRule;
 import main.rules.combat.ForceRule;
@@ -67,7 +69,7 @@ public class DC_AttackMaster {
             return result;
         }
         if (doubleAttack) {
-            result = attack(attack, attack.getRef(), attack.isFree(), attack.isCanCounter(), attack
+            result = attack(attack, attack.getRef(), attack.isFree(), false, attack
                     .getOnHit(), attack.getOnKill(), attack.isOffhand(), attack.isCounter());
         }
 
@@ -543,7 +545,7 @@ public class DC_AttackMaster {
     private boolean tryParry(Attack attack) {
         // TODO could return and Integer for dmg reduction or -1 if all
         // absorbed!
-        if (!isParryTest()) {
+        if (!RuleMaster.isRuleTestOn(RULE.PARRYING)) {
             if (!canParry(attack)) {
                 return false;
             }
@@ -606,10 +608,6 @@ public class DC_AttackMaster {
         // game.getLogManager().doneLogEntryNode(); ???
         return true;
 
-    }
-
-    private boolean isParryTest() {
-        return false;
     }
 
     // similarly for parry!

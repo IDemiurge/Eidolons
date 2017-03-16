@@ -82,6 +82,8 @@ public class RuleMaster implements Controller {
     }
 
     public static RULE_SCOPE getScopeForRule(RULE r) {
+        if (r.scope!=null )
+            return r.scope;
         switch (r) {
             case FORCE:
             case INJURY:
@@ -289,24 +291,12 @@ public class RuleMaster implements Controller {
         overrideMap.put(obj, b);
     }
 
-    public enum GENERAL_RULES {
-
-    }
-
     public enum COMBAT_RULES {
         UNCONSCIOUS, FOCUS, MORALE, MORALE_KILL, STAMINA, WOUNDS, BLEEDING, WEIGHT,
     }
 
-    public enum SPELLCASTING_RULES {
-
-    }
-
     public enum COUNTER_RULES {
 
-    }
-
-    public enum TURN_RULES {
-        BLEEDING, POISON, DISEASE, FOCUS, MORALE,
     }
 
     public enum FEATURE {
@@ -314,16 +304,14 @@ public class RuleMaster implements Controller {
         int featureLevel;
     }
 
-    public enum RULE_GROUP {
-        BUFF_RULES, PARAM_RULES, PARAM_BUFF_RULES, COUNTER_RULES, EXTRA_ATTACKS,
-    }
+    public enum GENERAL_RULES {
 
-    public enum RULE_SCOPE {
-        TEST, BASIC, FULL,
     }
 
     public enum RULE {
-        FORCE, ATTACK_OF_OPPORTUNITY, INSTANT_ATTACK, COUNTER_ATTACK, TIME, VISIBILITY, CLEAR_SHOT,
+        FORCE, ATTACK_OF_OPPORTUNITY, INSTANT_ATTACK,
+        COUNTER_ATTACK, TIME, VISIBILITY, CLEAR_SHOT,
+        PARRYING,
         // C
         DURABILITY,
         UNCONSCIOUS,
@@ -337,9 +325,14 @@ public class RuleMaster implements Controller {
         INJURY,;
 
         String tooltip;
+        RULE_SCOPE scope;
+
+        RULE(RULE_SCOPE scope) {
+            this.scope = scope;
+        }
 
         RULE() {
-
+//scope = RULE_SCOPE.BASIC; TODO
         }
 
         RULE(String tooltip) {
@@ -353,6 +346,22 @@ public class RuleMaster implements Controller {
         public void setTooltip(String tooltip) {
             this.tooltip = tooltip;
         }
+    }
+
+    public enum RULE_GROUP {
+        BUFF_RULES, PARAM_RULES, PARAM_BUFF_RULES, COUNTER_RULES, EXTRA_ATTACKS,
+    }
+
+    public enum RULE_SCOPE {
+        TEST, BASIC, FULL,
+    }
+
+    public enum SPELLCASTING_RULES {
+
+    }
+
+    public enum TURN_RULES {
+        BLEEDING, POISON, DISEASE, FOCUS, MORALE,
     }
 
 }
