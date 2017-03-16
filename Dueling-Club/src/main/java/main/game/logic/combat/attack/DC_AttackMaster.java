@@ -57,28 +57,28 @@ public class DC_AttackMaster {
         this.game = game;
     }
 
-    //TODO
-    public boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter, Effect onHit,
-                          Effect onKill, boolean offhand, boolean counter, Boolean doubleAttack) {
-        boolean result = attack(attack, ref, free, canCounter, onHit, onKill, offhand, counter);
+
+    public boolean attack(Attack attack) {
+        Boolean doubleAttack = attack.isDoubleStrike();
+
+        boolean result = attack(attack, attack.getRef(), attack.isFree(), attack.isCanCounter(), attack
+                .getOnHit(), attack.getOnKill(), attack.isOffhand(), attack.isCounter());
         if (doubleAttack == null) {
             return result;
         }
         if (doubleAttack) {
-            result = attack(attack, ref, free, canCounter, onHit, onKill, offhand, counter);
+            result = attack(attack, attack.getRef(), attack.isFree(), attack.isCanCounter(), attack
+                    .getOnHit(), attack.getOnKill(), attack.isOffhand(), attack.isCounter());
         }
+
+
         return result;
-    }
-    public boolean attack(Attack attack) {
-        Boolean doubleAttack = attack.isDouble();
-        return attack(attack, attack.getRef(), attack.isFree(), attack.isCanCounter(), attack
-          .getOnHit(), attack.getOnKill(), attack.isOffhand(), attack.isCounter(),
-         doubleAttack);
 
     }
 
     private boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter, Effect onHit,
-                           Effect onKill, boolean offhand, boolean counter) {
+                           Effect onKill, boolean offhand, boolean counter)
+    {
         ENTRY_TYPE type = ENTRY_TYPE.ATTACK;
         boolean extraAttack = true;
         if (attack.getAction().isCounterMode()) {

@@ -117,10 +117,13 @@ public class AttackEffect extends MicroEffect  implements OneshotEffect {
             }
         }
 
+        getAttack().setDoubleStrike(attacker.hasDoubleStrike());
         try {
+
+
+
             return ((DC_Game) getGame()).getAttackMaster()
-             .attack(getAttack(), ref, free,
-                    canCounter, onHit, onKill, offhand, counter, attacker.hasDoubleStrike()); // UNIT_TAKES_DAMAGE
+             .attack(getAttack()); // UNIT_TAKES_DAMAGE
         } catch (Exception e) {
             e.printStackTrace();
             return false;
