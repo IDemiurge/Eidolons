@@ -68,6 +68,7 @@ public class DealDamageEffectTest {
         eff.apply(ref);
         Integer newToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
         Integer newEndurance = target.getIntParam(PARAMS.C_ENDURANCE);
+
         assertTrue(newToughness < origToughness);
         assertTrue(newEndurance < origEndurance);
 

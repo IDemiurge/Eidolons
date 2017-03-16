@@ -43,6 +43,7 @@ public class Attack {
     private int damageDealt;
     private INSTANT_ATTACK_TYPE instantAttackType;
     private DC_WeaponObj weapon;
+    private boolean doubleStrike;
 
     public Attack(Ref ref, boolean offhand, boolean counter, boolean canCounter, boolean free,
                   Effect onHit, Effect onKill) {
@@ -355,8 +356,8 @@ public class Attack {
         this.triggered = triggered;
     }
 
-    public boolean isDouble() {
-        return attacker.hasDoubleStrike();
+    public boolean isDoubleStrike() {
+        return doubleStrike;
     }
 
     public void reset() {
@@ -366,4 +367,7 @@ public class Attack {
 
     }
 
+    public void setDoubleStrike(boolean doubleStrike) {
+        this.doubleStrike = doubleStrike;
+    }
 }
