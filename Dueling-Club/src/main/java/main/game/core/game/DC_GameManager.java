@@ -21,7 +21,6 @@ import main.game.core.Eidolons;
 import main.game.core.master.*;
 import main.game.core.state.DC_GameState;
 import main.game.core.state.DC_StateManager;
-import main.game.core.state.MicroGameState;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -63,7 +62,7 @@ public class DC_GameManager extends GameManager {
     private DeathMaster deathMaster;
     private ObjCreator objCreator;
 
-    public DC_GameManager(MicroGameState state, DC_Game game) {
+    public DC_GameManager(DC_GameState state, DC_Game game) {
         super(state, game);
         Manager.init(game, state, this);
 
@@ -146,6 +145,8 @@ public class DC_GameManager extends GameManager {
 
         ColorManager.setCurrentColor(ColorManager.getDarkerColor(ColorManager.getAltAspectColor(obj
                 .getType()), 80));
+
+        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTIVE_UNIT_SELECTED, getActiveObj());
         return true;
     }
 
@@ -186,7 +187,7 @@ public class DC_GameManager extends GameManager {
             return;
         }
         getGameMaster().getUnitCache().clear();
-        getStateManager().resetAll();
+        getStateManager().resetAllSynchronized();
         checkForChanges(true);
 
         resetWallMap();

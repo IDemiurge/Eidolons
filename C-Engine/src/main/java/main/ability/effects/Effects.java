@@ -195,16 +195,16 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
     }
 
     @Override
-    public void modifyFormula(Object mod) {
+    public void appendFormulaByMod(Object mod) {
         for (Effect e : this.effects) {
-            e.modifyFormula(mod);
+            e.appendFormulaByMod(mod);
         }
     }
 
     @Override
-    public void appendFormula(Object mod) {
+    public void addToFormula(Object mod) {
         for (Effect e : this.effects) {
-            e.appendFormula(mod);
+            e.addToFormula(mod);
         }
     }
 

@@ -368,7 +368,7 @@ public class SpawnManager {
             } else {
                 facing = getPositioner().getFacingForEnemy(unit.getCoordinates());
             }
-            ((BattleFieldObject) unit).setFacing(facing);
+            ((BattleFieldObject) unit).resetFacing(facing);
         }
         DC_ObjInitializer.initializePartyPositions(partyData, list);
         if (!custom) {
@@ -474,7 +474,7 @@ public class SpawnManager {
             // }
 
             if (party.getPartyCoordinates() == null) {
-                hero.setFacing(getPositioner().getPartyMemberFacing(hero.getCoordinates()));
+                hero.resetFacing(getPositioner().getPartyMemberFacing(hero.getCoordinates()));
             }
 
             hero.setOriginalOwner(game.getPlayer(true));
@@ -623,7 +623,7 @@ public class SpawnManager {
             Unit unit = (Unit) game.createUnit(type, c, wave.getOwner());
             UnitTrainingMaster.train(unit);
 
-            unit.setFacing(facing);
+            unit.resetFacing(facing);
             wave.addUnit(unit);
         }
         if (!PartyManager.checkMergeParty(wave)) {

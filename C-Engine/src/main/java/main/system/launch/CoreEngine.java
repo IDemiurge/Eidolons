@@ -13,6 +13,8 @@ import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.sound.SoundMaster;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -34,7 +36,7 @@ public class CoreEngine {
     private static boolean writingLogFilesOn;
     private static boolean arcaneTower = false;
     private static boolean graphicTestMode = true;
-    private static boolean graphicsOff=true;
+    private static boolean graphicsOff;
     private static boolean guiTestMode;
     private static boolean actionTargetingFiltersOff;
 
@@ -226,6 +228,11 @@ public class CoreEngine {
 
     public static void setGraphicsOff(boolean graphicsOff) {
         CoreEngine.graphicsOff = graphicsOff;
+        if (graphicsOff){
+
+            WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
+            WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
+        }
     }
 
     public static boolean isActionTargetingFiltersOff() {

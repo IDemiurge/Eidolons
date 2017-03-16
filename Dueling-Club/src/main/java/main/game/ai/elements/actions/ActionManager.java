@@ -117,7 +117,7 @@ public class ActionManager extends AiHandler {
             e.printStackTrace();
         } finally {
             unit.setCoordinates(originalCoordinates);
-            unit.setFacing(originalFacing);
+            unit.resetFacing(originalFacing);
         }
         Action action;
         ActionSequence sequence = null;

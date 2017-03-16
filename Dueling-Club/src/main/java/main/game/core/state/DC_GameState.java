@@ -23,6 +23,11 @@ public class DC_GameState extends MicroGameState {
     }
 
     @Override
+    public  DC_StateManager getManager() {
+        return (DC_StateManager) super.getManager();
+    }
+
+    @Override
     public String toString() {
         String string = super.toString();
         string += getGame().getUnits().size() + "UNITS: " + getGame().getUnits() + "\n";

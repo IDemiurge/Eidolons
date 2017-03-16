@@ -37,7 +37,7 @@ public class DC_BuffObj extends BuffObj {
     @Override
     public boolean applyEffect() {
         getEffect().resetOriginalFormula();
-        getEffect().appendFormula("1+" + StringMaster.getValueRef(KEYS.BUFF, PARAMS.BUFF_STACKS));
+        getEffect().multiplyFormula("1+" + StringMaster.getValueRef(KEYS.BUFF, PARAMS.BUFF_STACKS));
         return super.applyEffect();
     }
 

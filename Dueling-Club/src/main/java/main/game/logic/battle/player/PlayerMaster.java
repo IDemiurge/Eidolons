@@ -12,12 +12,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class PlayerMaster {
-    public static final FLAG_COLOR[] playerColors = {FLAG_COLOR.BLUE, FLAG_COLOR.RED,
+    public   final FLAG_COLOR[] playerColors = {FLAG_COLOR.BLUE, FLAG_COLOR.RED,
             FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};
-    public static final List<FLAG_COLOR> playerColorsList = new ListMaster<FLAG_COLOR>()
+    public   final List<FLAG_COLOR> playerColorsList = new ListMaster<FLAG_COLOR>()
             .getList(playerColors);
-    public static List<FLAG_COLOR> unusedPlayerColorsList = new ListMaster<FLAG_COLOR>()
-            .getList(playerColors);
+    public  List<FLAG_COLOR> unusedPlayerColorsList ;
     DC_Player neutral;
     DC_Player me;
     List<DC_Player> players = new LinkedList<>();
@@ -39,6 +38,8 @@ public class PlayerMaster {
     }
 
     public void initPlayerFlags() {
+        unusedPlayerColorsList = new ListMaster<FLAG_COLOR>()
+         .getList(playerColors);
         for (DC_Player player : players) {
             initPlayerFlag(player);
         }

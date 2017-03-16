@@ -80,6 +80,9 @@ public class Anim extends Group implements Animation {
     public Anim(Entity active, AnimData params) {
         data = params;
         this.active = active;
+        if (active==null ) {
+            ref = new Ref();
+        }
         this.ref = active.getRef().getCopy();
         textureSupplier = () -> getTexture();
         reset();

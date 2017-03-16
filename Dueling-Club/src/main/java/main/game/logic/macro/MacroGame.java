@@ -125,7 +125,7 @@ public class MacroGame extends Game {
 
     @Override
     public void start(boolean host) {
-        getManager().getStateManager().resetAll();
+        getManager().getStateManager().resetAllSynchronized();
 
     }
 

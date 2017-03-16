@@ -56,8 +56,6 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -155,7 +153,7 @@ public class Unit extends DC_UnitModel {
             e.printStackTrace();
         }
 
-        WaitMaster.receiveInput(WAIT_OPERATIONS.UNIT_OBJ_INIT, true);
+//        WaitMaster.receiveInput(WAIT_OPERATIONS.UNIT_OBJ_INIT, true);
     }
 
     public void saveRanks(boolean skills) {
@@ -1191,5 +1189,11 @@ public class Unit extends DC_UnitModel {
 
     public boolean isConstructAlways() {
         return true;
+    }
+
+    @Override
+    public void resetFacing() {
+//   TODO bugged? used to work
+//     getResetter().resetFacing();
     }
 }

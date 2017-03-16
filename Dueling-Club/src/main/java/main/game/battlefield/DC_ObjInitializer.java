@@ -298,7 +298,7 @@ public class DC_ObjInitializer {
 
                 if (!game.isOffline()) {
                     if (!game.isHost()) {
-                        unit.setFacing(unit.getGame().getArenaManager().getSpawnManager()
+                        unit.resetFacing(unit.getGame().getArenaManager().getSpawnManager()
                                 .getMultiplayerFacingForUnit(unit));
                     }
                 } else if (FAST_DC.isRunning()) {

@@ -313,13 +313,18 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     }
 
     @Override
-    public void modifyFormula(Object mod) {
+    public void appendFormulaByMod(Object mod) {
         setFormula(new Formula(getFormula().getAppendedByModifier(mod) + ""));
+
+    }
+    @Override
+    public void multiplyFormula(Object mod) {
+        setFormula(new Formula(getFormula().getAppendedByMultiplier(mod) + ""));
 
     }
 
     @Override
-    public void appendFormula(Object mod) {
+    public void addToFormula(Object mod) {
         setFormula(
 
                 new Formula(StringMaster.wrapInParenthesis(getFormulaString()) + "+" + mod));

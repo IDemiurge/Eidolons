@@ -116,7 +116,8 @@ public class ArmorMaster {
                         attacked, damage, blocked);
                 int durabilityLost = reduceDurability(blocked, armorObj, spell, dmg_type, attacker
                         .getActiveWeapon(offhand), damage);
-                if (!shield) {
+                if (!simulation)
+                    if (!shield) {
                     PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
                             Attack.getAnimationKey(action));
                     animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_ARMOR, blockedPercentage,

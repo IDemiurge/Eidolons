@@ -19,9 +19,9 @@ public class AiExecutor {
             if (!action.getActive().isChanneling())
                 if (ref.getTargetObj() == null)
                     if (!(action.getActive().getTargeting()
-                     instanceof SelectiveTargeting)) {
+                     instanceof SelectiveTargeting)) { result = true;
                         action.getActive().getHandler().activateOnActionThread();
-                        result = true;
+
                     }
             if (!result) {
                 action.getActive().getHandler().activateOn(ref);

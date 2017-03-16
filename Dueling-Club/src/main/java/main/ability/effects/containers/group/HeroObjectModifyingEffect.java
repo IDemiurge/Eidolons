@@ -153,7 +153,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
 
             for (Effect e : modEffects.getEffects()) {
                 e.resetOriginalFormula();
-                e.modifyFormula(getFormula().toString());
+                e.appendFormulaByMod(getFormula().toString());
             }
 
             if (buff) {

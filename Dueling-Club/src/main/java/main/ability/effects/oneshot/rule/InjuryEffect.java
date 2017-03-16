@@ -59,7 +59,7 @@ public class InjuryEffect extends DC_Effect  implements OneshotEffect {
         Effects effects = EffectFinder.initParamModEffects(injury.getModString(), ref);
         // TODO ++ PROPS
         if (mod != 100) {
-            effects.modifyFormula(mod);
+            effects.appendFormulaByMod(mod);
         }
         effects.apply(ref);
         return true;

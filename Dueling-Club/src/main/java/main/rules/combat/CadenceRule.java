@@ -121,14 +121,14 @@ public class CadenceRule {
         ModifyValueEffect valueEffect = new ModifyValueEffect(PARAMS.AP_COST,
                 MOD.MODIFY_BY_PERCENT, cadence);
         DC_WeaponObj weapon = unit.getActiveWeapon(offhand);
-        valueEffect.modifyFormula(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
+        valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
         effects.add(valueEffect);
         cadence = unit.getParam(PARAMS.CADENCE_STA_MOD);
         if (cadence.isEmpty()) {
             cadence = DC_Formulas.DEFAULT_CADENCE_STA_MOD + "";
         }
         valueEffect = new ModifyValueEffect(PARAMS.STA_COST, MOD.MODIFY_BY_PERCENT, cadence);
-        valueEffect.modifyFormula(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
+        valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
 
         effects.add(valueEffect);
         effects.add(new ModifyValueEffect(PARAMS.DAMAGE_MOD, MOD.MODIFY_BY_PERCENT, unit

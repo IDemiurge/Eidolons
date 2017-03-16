@@ -355,6 +355,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     public void setFacing(FACING_DIRECTION direction) {
         this.facing = direction;
+    }
+        public void resetFacing(FACING_DIRECTION direction) {
+        this.facing = direction;
         resetFacing();
     }
 }

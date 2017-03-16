@@ -98,7 +98,7 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
         amount -= applyAverageShieldReduction(amount, attacked, attacker, attack.getAction(),
          attack.getWeapon(), attack.getDamageType());
         amount -=  DamageCalculator.getArmorReduction(amount,
-         attacked, attacker, attack.getAction(), false);
+         attacked, attacker, attack.getAction(), true);
 
 
         if (attack.getAction().isAttack()) {
@@ -253,7 +253,7 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
     }
 
 
-    @Deprecated
+
     private static int applyAverageShieldReduction(int amount, Unit attacked,
                                                    Unit attacker, DC_ActiveObj action, DC_WeaponObj weapon, DAMAGE_TYPE damage_type) {
         if (!attacked.getGame().getArmorSimulator().checkCanShieldBlock(action, attacked)) {

@@ -25,21 +25,53 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by JustMe on 2/15/2017.
  */
 public class DC_StateManager extends StateManager {
 
+    private StatesKeeper keeper;
     private OBJ_TYPE[] toBaseIgnoredTypes = {DC_TYPE.SPELLS, DC_TYPE.ACTIONS};
+    private boolean savingOn = true;
 
-    public DC_StateManager(GameState state) {
+    private Lock resetLock = new ReentrantLock();
+    private volatile boolean resetting = false;
+
+    public DC_StateManager(DC_GameState state) {
+        this(state, false);
+    }
+
+    public DC_StateManager(DC_GameState state, boolean clone) {
         super(state);
+        if (clone) keeper = state.getGame().getState().getManager().getKeeper();
+        else keeper = new StatesKeeper(getGame());
+    }
+
+    public StatesKeeper getKeeper() {
+        return keeper;
     }
 
     @Override
-    public void resetAll() {
-        super.resetAll();
+    public void resetAllSynchronized() {
+        if (!resetting) {
+            try {
+                resetLock.lock();
+                if (!resetting) {
+                    resetAll();
+                    resetting = true;
+                }
+            } finally {
+                resetLock.unlock();
+            }
+        }
+    }
+
+    private void resetAll() {
+
+        super.resetAllSynchronized();
         if (getGame().isStarted()) {
             try {
                 checkCellBuffs();
@@ -47,7 +79,11 @@ public class DC_StateManager extends StateManager {
                 e.printStackTrace();
             }
         }
+        if (savingOn)
+            keeper.save();
     }
+
+
 //    public void resetUnit (Unit unit) {
 //        unit.toBase();
 //        checkCounterRules();
@@ -64,16 +100,16 @@ public class DC_StateManager extends StateManager {
 //        unit. resetCurrentValues();
 //    }
 
-    public void reset (Unit unit) {
+    public void reset(Unit unit) {
         toBase(unit);
         checkCounterRules(unit);
         applyEffects(unit, Effect.ZERO_LAYER);
         resetUnitObjects(unit);
         resetRawValues(unit);
-        applyEffects(unit,Effect.BASE_LAYER);
+        applyEffects(unit, Effect.BASE_LAYER);
         afterEffects(unit);
-        applyEffects(unit,Effect.SECOND_LAYER);
-        applyEffects(unit,Effect.BUFF_RULE);
+        applyEffects(unit, Effect.SECOND_LAYER);
+        applyEffects(unit, Effect.BUFF_RULE);
         checkContinuousRules(unit);
         applyMods(unit);
         resetCurrentValues(unit);
@@ -179,7 +215,7 @@ public class DC_StateManager extends StateManager {
             e.printStackTrace();
         }
 
-        resetAll();
+        resetAllSynchronized();
         if (game.isStarted()) {
             getGameManager().resetValues();
             IlluminationRule.initLightEmission(getGame());

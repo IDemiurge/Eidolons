@@ -219,7 +219,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
                 for (Effect ef : a.getEffects()) {
                     try {
                         ef.resetOriginalFormula();
-                        ef.modifyFormula(100 + mod);
+                        ef.appendFormulaByMod(100 + mod);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -44,7 +44,7 @@ public abstract class StateManager {
         return state;
     }
 
-    public void resetAll() {
+    public void resetAllSynchronized() {
         state.getTriggers().clear();
         getManager().checkForChanges(false);
         allToBase();
@@ -190,7 +190,7 @@ public abstract class StateManager {
          .getSimpleName()
          + " effect added : " + state.getEffects().size() + state.effects);
         // if (game.isStarted())
-        // resetAll();
+        // resetAllSynchronized();
     }
 
 

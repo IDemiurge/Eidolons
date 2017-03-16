@@ -231,7 +231,7 @@ public class PositionChoiceView extends ChoiceView<Unit> implements MouseListene
         for (Unit hero : data) {
             if (hero != null) {
                 hero.setCoordinates(partyCoordinates.get(hero));
-                hero.setFacing(getFacing(hero.getCoordinates()));
+                hero.resetFacing(getFacing(hero.getCoordinates()));
             }
         }
     }

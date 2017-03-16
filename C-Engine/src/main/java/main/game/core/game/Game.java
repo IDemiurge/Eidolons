@@ -66,7 +66,7 @@ public abstract class Game  implements Serializable { // extends Entity? ;) Prop
     private GameGUI Gui;
     private boolean running;
     private boolean dummyMode;
-
+    private boolean cloningMode;
     public Game() {
 
     }
@@ -355,4 +355,11 @@ public abstract class Game  implements Serializable { // extends Entity? ;) Prop
         return !isOffline();
     }
 
+    public void setCloningMode(boolean cloningMode) {
+        this.cloningMode = cloningMode;
+    }
+
+    public boolean isCloningMode() {
+        return cloningMode;
+    }
 }

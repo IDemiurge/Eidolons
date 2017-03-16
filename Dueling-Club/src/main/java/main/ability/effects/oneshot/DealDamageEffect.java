@@ -73,7 +73,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
 
         initDamageType();
 
-        amount = applyReductions(targetObj, amount, active, spell);
+        amount = getReducedDamage(targetObj, amount, active, spell);
 
         LogMaster.log(LogMaster.COMBAT_DEBUG, "Effect is dealing damage: "
          + amount + " to " + ref.getTargetObj().toString());
@@ -123,7 +123,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
         }
     }
 
-    private int applyReductions(Unit targetObj, int amount, DC_ActiveObj active, boolean spell) {
+    private int getReducedDamage(Unit targetObj, int amount, DC_ActiveObj active, boolean spell) {
         if (checkDamageMod(DAMAGE_MODIFIER.UNBLOCKABLE))
             return amount;
 

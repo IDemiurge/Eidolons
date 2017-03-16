@@ -65,8 +65,6 @@ public class DamageDealer {
             }
         }
 
-        new Event(CONSTRUCTED_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_DAMAGE_OF_TYPE,
-         damage_type.toString(), ref).fire(); // TODO
         return damageLeft;
 
     }
@@ -137,7 +135,7 @@ public class DamageDealer {
             statsParam = PARAMS.DAMAGE_LAST_AMOUNT;
         } else {
             EventType type = (EventType) event_type;
-            if (type.getType().equals(CONSTRUCTED_EVENT_TYPE.UNIT_IS_DEALT_DAMAGE_OF_TYPE)) {
+            if (type.getType().equals(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE)) {
                 key = KEYS.DAMAGE_DEALT;
                 statsParam = PARAMS.DAMAGE_LAST_DEALT;
             }
@@ -266,7 +264,7 @@ public class DamageDealer {
          + attacked.toString());
         attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked,
          damageDealt);
-
+        processDamageEvent(null , ref, damageDealt,STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE );
         return damageDealt;
     }
 

@@ -251,18 +251,12 @@ public class DC_AttackMaster {
         }
         // initializeFullModifiers(attack.isSneak(), offhand, action, ref);
         Boolean dodged = false;
-        while (true) {
-
             if (ref.getEffect().isInterrupted()) {
                 event.getRef().getEffect().setInterrupted(false);
                 dodged = true;
             }
-            if (dodged) {
-                break;
-            }
+            if (!dodged)
             dodged = DefenseVsAttackRule.checkDodgedOrCrit(attack);
-            break;
-        }
 
         // BEFORE_ATTACK,
         // BEFORE_HIT

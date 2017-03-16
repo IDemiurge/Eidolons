@@ -46,6 +46,7 @@ import main.game.battlefield.DC_ObjInitializer;
 import main.game.core.game.DC_Game;
 import main.game.core.state.DC_GameState;
 import main.game.core.state.StateCloner;
+import main.game.core.state.StatesKeeper;
 import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.arena.Wave;
 import main.game.logic.battle.player.DC_Player;
@@ -424,6 +425,9 @@ public class DebugMaster {
                 case TEST_CLONE_STATE:
                     StateCloner.test();
                     break;
+                case TEST_LOAD_STATE:
+                    StatesKeeper.testLoad();
+                    return null ;
 
                 case RUN_AUTO_TESTS:
                     AutoTestMaster.runTests();
@@ -1329,7 +1333,8 @@ public class DebugMaster {
         // GAME
 
         //
-TEST_CLONE_STATE,
+        TEST_CLONE_STATE,
+        TEST_LOAD_STATE,
         END_TURN(true),
         // UNIT
         ADD_UNIT(true),

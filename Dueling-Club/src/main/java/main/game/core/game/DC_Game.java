@@ -32,8 +32,6 @@ import main.game.ai.AI_Manager;
 import main.game.ai.tools.DC_Analyzer;
 import main.game.battlefield.*;
 import main.game.battlefield.Coordinates.DIRECTION;
-import main.game.logic.combat.damage.ArmorMaster;
-import main.game.logic.combat.attack.DC_AttackMaster;
 import main.game.battlefield.map.DC_Map;
 import main.game.battlefield.options.UIOptions;
 import main.game.battlefield.pathing.PathingManager;
@@ -44,13 +42,14 @@ import main.game.core.state.DC_StateManager;
 import main.game.logic.arcade.ArcadeManager;
 import main.game.logic.arcade.ArenaArcadeMaster;
 import main.game.logic.arena.ArenaManager;
-import main.game.logic.battle.Battle;
 import main.game.logic.battle.BattleManager;
 import main.game.logic.battle.BattleOptions;
 import main.game.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
 import main.game.logic.battle.player.PlayerMaster;
 import main.game.logic.battle.turn.DC_TurnManager;
+import main.game.logic.combat.attack.DC_AttackMaster;
+import main.game.logic.combat.damage.ArmorMaster;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.DungeonMaster;
 import main.game.logic.generic.DC_ActionManager;
@@ -119,7 +118,6 @@ public class DC_Game extends MicroGame {
     private boolean AI_ON = true;
     private Thread gameLoopThread;
     private DC_Rules rules;
-    private Battle battle;
     private DC_Map map;
     private GAME_MODES gameMode;
     private GAME_TYPE gameType;
@@ -137,7 +135,6 @@ public class DC_Game extends MicroGame {
     private Boolean hostClient;
     private NetGame netGame;
     private boolean dummyPlus;
-    private List structures;
 
     public DC_Game(Player player1, Player player2, GameConnector connector, HostedGame hostedGame,
                    PartyData partyData1, PartyData partyData2) {
@@ -265,7 +262,6 @@ public class DC_Game extends MicroGame {
         arenaManager = new ArenaManager(this);
         arenaManager.init();
         battleManager = new BattleManager(this);
-        this.battle = arenaManager.getBattle();
         this.map = arenaManager.getMap();
 
         player1 = arenaManager.getPlayer();
@@ -958,6 +954,8 @@ public class DC_Game extends MicroGame {
                                              c) {
         return getObjectByCoordinate(c, false);
     }
+
+
 
     public enum GAME_TYPE {
         SCENARIO, ARCADE, SKIRMISH,

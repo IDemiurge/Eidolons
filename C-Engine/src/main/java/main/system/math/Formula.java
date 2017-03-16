@@ -294,7 +294,14 @@ public class Formula implements MyMathObj {
         return new Formula("((" + this.formula + ")" + "*" + "(" + mod.toString() + "))/100");
     }
 
-    public Formula getAppendedByFactor(Object mod) {
+    public Formula getAppendedByMultiplier(Object mod) {
+        if (mod == null) {
+            return this;
+        }
+        return new Formula("(" + this.formula + ")" + "*" + "(" + mod.toString() + ")");
+
+    }
+        public Formula getAppendedByFactor(Object mod) {
         if (mod == null) {
             return this;
         }

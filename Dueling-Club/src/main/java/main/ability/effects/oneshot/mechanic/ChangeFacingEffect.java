@@ -54,7 +54,7 @@ public class ChangeFacingEffect extends MicroEffect  implements OneshotEffect {
             newDirection = FacingMaster.rotate(oldDirection, isClockwise());
         }
 
-        obj.setFacing(newDirection);
+        obj.resetFacing(newDirection);
         game.fireEvent(new Event(getEventTypeDone(), ref));
         return true;
     }

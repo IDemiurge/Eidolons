@@ -42,6 +42,7 @@ public abstract class GameState {
     protected StateManager manager;
     protected Game game;
     private int round = ROUND_NOT_SET;
+    private boolean cloned;
 
     public GameState(Game game) {
         this.game = game;
@@ -106,7 +107,7 @@ public abstract class GameState {
         }
 
         // setDirty(true);
-        // resetAll();
+        // resetAllSynchronized();
     }
 
     public void removeObject(Integer id) {
@@ -206,5 +207,13 @@ public abstract class GameState {
 
     public void setManager(StateManager manager) {
         this.manager = manager;
+    }
+
+    public void setCloned(boolean cloned) {
+        this.cloned = cloned;
+    }
+
+    public boolean isCloned() {
+        return cloned;
     }
 }

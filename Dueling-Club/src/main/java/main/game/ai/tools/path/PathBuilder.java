@@ -103,13 +103,13 @@ public class PathBuilder extends AiHandler {
 
     private void resetUnit() {
         unit.setCoordinates(originalCoordinate);
-        unit.setFacing(originalFacing);
+        unit.resetFacing(originalFacing);
 
     }
 
     private void adjustUnit() {
         unit.setCoordinates(c_coordinate);
-        unit.setFacing(c_facing);
+        unit.resetFacing(c_facing);
         unit.getGame().getRules().getStackingRule().clearCache();
     }
 
@@ -514,7 +514,7 @@ public class PathBuilder extends AiHandler {
     }
 
     private void checkAddFaceTurn() {
-        unit.setFacing(c_facing);
+        unit.resetFacing(c_facing);
         unit.setCoordinates(c_coordinate);
         if (ReasonMaster.checkReasonCannotTarget(FILTER_REASON.FACING, targetAction)) {
             List<Action> sequence = TurnSequenceConstructor.getTurnSequence(targetAction);
@@ -522,7 +522,7 @@ public class PathBuilder extends AiHandler {
                 path.add(new Choice(c_coordinate, a));
             }
         }
-        unit.setFacing(originalFacing);
+        unit.resetFacing(originalFacing);
         unit.setCoordinates(originalCoordinate);
     }
 

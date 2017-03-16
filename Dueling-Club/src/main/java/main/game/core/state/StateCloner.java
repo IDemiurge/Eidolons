@@ -31,6 +31,7 @@ import main.game.logic.arena.Wave;
 import main.game.logic.battle.player.DC_Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.Chronos;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -40,13 +41,15 @@ import java.util.Map;
  * Created by JustMe on 3/15/2017.
  */
 public class StateCloner {
-    DC_Game game = Eidolons.game;
+    DC_Game game  ;
 
-    //after each reset()
-    //at what moment? certainly not after effectsApply
+    public StateCloner(DC_Game game) {
+        this.game = game;
+    }
 
     public static void test() {
-        StateCloner cloner = new StateCloner();
+        Chronos.setOn(true);
+        StateCloner cloner = new StateCloner(Eidolons.game);
         DC_GameState clone = cloner.clone(cloner.game.getState());
         main.system.auxiliary.log.LogMaster.log(1, Eidolons.game.getState() + "\n VS \n" + clone);
         Eidolons.game.setState(clone);
@@ -54,18 +57,28 @@ public class StateCloner {
 
     public DC_GameState clone(DC_GameState state) {
 //game's fields - units, structures - ???
-        DC_GameState clone = new DC_GameState(game);
-        clone.setManager( game.getState().getManager());
-
+        game.setCloningMode(true);
+        DC_GameState clone = null;
+        try {
+            Chronos.mark("clone");
+            clone = new DC_GameState(game);
+            clone.setManager(new DC_StateManager(clone,true));
 //        FlattenedState
-        cloneMaps(state, clone);
-        constructObjMap(clone); //TODO why need TYPE-split maps?
-        cloneEffects(state, clone);
-        cloneTriggers(state, clone);
-        copyTypeMap(state, clone);
-        cloneAttachments(state, clone);
+            cloneMaps(state, clone);
+            constructObjMap(clone); //TODO why need TYPE-split maps?
+            cloneEffects(state, clone);
+            cloneTriggers(state, clone);
+            copyTypeMap(state, clone);
+            cloneAttachments(state, clone);
+            clone.setCloned(true);
 //  triggerRules ??
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            return state;
+        } finally {
+            game.setCloningMode(false);
+            Chronos.logTimeElapsedForMark("clone");
+        }
         //TODO things that are kept in MASTERS - dungeon, graveyard, battle-stats,
         return clone;
     }
@@ -82,7 +95,7 @@ public class StateCloner {
         for (OBJ_TYPE TYPE : state.getObjMaps().keySet()) {
             Map<Integer, Obj> cloneMap = getObjMap();
             Map<Integer, Obj> map = state.getObjMaps().get(TYPE);
-            if (map==null )continue;
+            if (map == null) continue;
             for (Obj e : map.values()) {
                 Obj cloneObj = cloneObj(e);
                 cloneMap.put(cloneObj.getId(), cloneObj);
@@ -142,11 +155,14 @@ public class StateCloner {
         else {
             //TODO
         }
-if (e instanceof ContinuousEffect){
-    cloneEffect = (Effect) ((ContinuousEffect) e).getEffect().getConstruct().construct();
-    cloneEffect = ContinuousEffect.transformEffectToContinuous(cloneEffect);
-}
-        if (cloneEffect==null )
+        if (e instanceof ContinuousEffect) {
+            e=((ContinuousEffect) e).getEffect();
+            if (e.getConstruct() == null)
+                return ContinuousEffect.transformEffectToContinuous(e);
+            cloneEffect = (Effect) e.getConstruct().construct();
+            cloneEffect = ContinuousEffect.transformEffectToContinuous(cloneEffect);
+        }
+        if (cloneEffect == null)
             return e;
         return cloneEffect;
     }
@@ -199,59 +215,60 @@ if (e instanceof ContinuousEffect){
     private Obj getInstance(Obj e) {
         DC_OBJ_CLASSES c = new EnumMaster<DC_OBJ_CLASSES>()
          .retrieveEnumConst(DC_OBJ_CLASSES.class, e.getClass().getSimpleName());
-       if(c!=null)
-         switch (c) {
-            case Unit:
-                return new Unit((Unit) e);
-            case Structure:
-                return new Structure(e.getType(), e.getOwner(), game, e.getRef().getCopy());
-            case DC_WeaponObj:
-                return new DC_WeaponObj(
-                 e.getType(), e.getOwner(), game, e.getRef().getCopy());
-            case DC_ArmorObj:
-                return new DC_ArmorObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
-            case DC_QuickItemObj:
-                return new DC_QuickItemObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
-            case DC_ItemActiveObj:
-                return new DC_ItemActiveObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
-            case DC_UnitAction:
-                return new DC_UnitAction(e.getType(), e.getOwner(), game, e.getRef().getCopy());
-            case DC_SpellObj:
-                return new DC_SpellObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
-            case DC_FeatObj:
-                return new DC_FeatObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
-            case DC_BuffObj:
-                return new DC_BuffObj(
-                 (DC_BuffObj) e);
-            case DC_Cell:
-                Cell cell = (Cell) e;
-                return new DC_Cell(
-                 e.getType(), e.getX(), e.getY(), game, e.getRef().getCopy()
-                 ,
+        if (c != null)
+            switch (c) {
+                case Unit:
+                    return new Unit((Unit) e);
+                case Structure:
+                    return new Structure(e.getType(), e.getOwner(), game, e.getRef().getCopy());
+                case DC_WeaponObj:
+                    return new DC_WeaponObj(
+                     e.getType(), e.getOwner(), game, e.getRef().getCopy());
+                case DC_ArmorObj:
+                    return new DC_ArmorObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
+                case DC_QuickItemObj:
+                    return new DC_QuickItemObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
+                case DC_ItemActiveObj:
+                    return new DC_ItemActiveObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
+                case DC_UnitAction:
+                    return new DC_UnitAction(e.getType(), e.getOwner(), game, e.getRef().getCopy());
+                case DC_SpellObj:
+                    return new DC_SpellObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
+                case DC_FeatObj:
+                    return new DC_FeatObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
+                case DC_BuffObj:
+                    return new DC_BuffObj(
+                     (DC_BuffObj) e);
+                case DC_Cell:
+//                Cell cell = (Cell) e;
+                    return new DC_Cell(
+                     e.getType(), e.getX(), e.getY(), game, e.getRef().getCopy()
+                     ,
 //                 cell.
-                 game.getDungeon());
-            case Wave:
-                return new Wave(e.getType(), game, e.getRef().getCopy(), (DC_Player) e.getOwner());
-        }
-    switch(    e.getOBJ_TYPE_ENUM()){
-        case ABILS:
-            return (Obj) AbilityConstructor.newAbility(e.getName(), e.getRef().getSourceObj(), e instanceof PassiveAbilityObj);
-        case PARTY:
-            return new PartyObj(e.getType(), ((PartyObj) e).getLeader());
+                     game.getDungeon());
+
+                case Wave:
+                    return new Wave(e.getType(), game, e.getRef().getCopy(), (DC_Player) e.getOwner());
+            }
+        switch (e.getOBJ_TYPE_ENUM()) {
+            case ABILS:
+                return (Obj) AbilityConstructor.newAbility(e.getName(), e.getRef().getSourceObj(), e instanceof PassiveAbilityObj);
+            case PARTY:
+                return new PartyObj(e.getType(), ((PartyObj) e).getLeader());
 
 //        case JEWELRY:
 //            return new DC_JewelryObj();
-        case DEITIES:
-            break;
-        case ENCOUNTERS:
-            break;
-        case DUNGEONS:
-            break;
-        case FACTIONS:
-            break;
-        case ARCADES:
-            break;
-    }
+            case DEITIES:
+                break;
+            case ENCOUNTERS:
+                break;
+            case DUNGEONS:
+                break;
+            case FACTIONS:
+                break;
+            case ARCADES:
+                break;
+        }
         return null;
     }
 

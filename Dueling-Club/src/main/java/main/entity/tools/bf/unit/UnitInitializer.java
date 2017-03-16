@@ -89,7 +89,7 @@ getEntity().addDynamicValues();
 
     }
     protected void addDefaultFacing() {
-        getEntity().setFacing(
+        getEntity().resetFacing(
          DC_MovementManager.getDefaultFacingDirection(getEntity(). getOwner().isMe()));
         getEntity().resetFacing();
     }

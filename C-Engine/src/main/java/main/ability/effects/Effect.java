@@ -74,7 +74,7 @@ public interface Effect extends Interruptable, Referred,
 
     void resetOriginalFormula();
 
-    void modifyFormula(Object mod);
+    void appendFormulaByMod(Object mod);
 
     boolean isContinuousWrapped();
 
@@ -96,7 +96,9 @@ public interface Effect extends Interruptable, Referred,
 
     String getTooltip();
 
-    void appendFormula(Object mod);
+    void multiplyFormula(Object mod);
+
+    void addToFormula(Object mod);
 
     void remove();
 

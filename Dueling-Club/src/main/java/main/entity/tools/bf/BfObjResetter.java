@@ -37,6 +37,6 @@ public class BfObjResetter extends EntityResetter<BattleFieldObject> {
             }
 
         }
-        getEntity(). setFacing(facing);
+        getEntity().resetFacing(facing);
     }
 }
