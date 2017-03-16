@@ -573,7 +573,7 @@ public class DC_AttackMaster {
                     + " from " + attack.getAttacker().getNameIfKnown()
                     + StringMaster.wrapInParenthesis(chanceRounded + "%"));
             game.getLogManager().doneLogEntryNode();
-            if (!isParryTest()) {
+            if (!RuleMaster.isRuleTestOn(RULE.PARRYING)) {
                 return false;
             }
         }
@@ -641,8 +641,9 @@ public class DC_AttackMaster {
         ActiveObj counter = null;
 
         if (!attack.isCounter() &&
-                (isCounterAttackTest() ||
-                        (attack.isCanCounter() && attack.getAttacked().canCounter(attack.getAction())))
+                (RuleMaster.isRuleTestOn(RULE.COUNTER_ATTACK) ||
+                        (attack.isCanCounter() &&
+                         attack.getAttacked().canCounter(attack.getAction())))
                 ) {
             counter = counter(attack.getAction(), attack.getAttacked());
         }
@@ -651,9 +652,6 @@ public class DC_AttackMaster {
 
     }
 
-    private boolean isCounterAttackTest() {
-        return true;
-    }
 
     private ActiveObj counter(DC_ActiveObj action, Unit attacked) {
         return game.getActionManager().activateCounterAttack(action,
