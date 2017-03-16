@@ -8,7 +8,6 @@ import main.test.PresetLauncher.LAUNCH;
 import main.test.debug.GameLauncher;
 import main.test.debug.GameLauncher.CODE;
 import res.JUnitResources;
-import tests.JUnitTests;
 
 /**
  * Created by JustMe on 3/6/2017.
@@ -16,7 +15,6 @@ import tests.JUnitTests;
 public class JUnitDcInitializer {
 
     public static DC_Game game;
-    private  JUnitTests tests;
 
 
 

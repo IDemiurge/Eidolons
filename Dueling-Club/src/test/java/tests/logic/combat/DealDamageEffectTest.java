@@ -52,8 +52,8 @@ public class DealDamageEffectTest {
     @Test
     public void dealDamageEffectTest() {
 
-        assert (source !=null );
-        assert (target !=null );
+        assertTrue (source !=null );
+        assertTrue (target !=null );
 
         int origToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
         int origEndurance = target.getIntParam(PARAMS.C_ENDURANCE);
