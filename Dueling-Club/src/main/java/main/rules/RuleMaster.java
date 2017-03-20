@@ -112,10 +112,10 @@ public class RuleMaster implements Controller {
     }
 
     public static boolean isRuleTestOn(RULE rule) {
-        if (BooleanMaster.isFalse(mapTest.get(rule))) {
-            return false;
+        if (BooleanMaster.isTrue(mapTest.get(rule))) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     public static boolean isRuleOn(RULE rule) {

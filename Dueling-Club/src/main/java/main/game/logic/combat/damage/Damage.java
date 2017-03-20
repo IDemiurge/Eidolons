@@ -35,6 +35,8 @@ public class Damage {
         this.dmg_type=damage_type;
         this.amount = amount;
         this.ref = ref;
+        attacked= (Unit) ref.getTargetObj();
+        attacked= (Unit) ref.getSourceObj();
     }
 
 

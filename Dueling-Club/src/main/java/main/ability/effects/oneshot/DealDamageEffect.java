@@ -3,7 +3,6 @@ package main.ability.effects.oneshot;
 import main.ability.effects.DC_Effect;
 import main.ability.effects.OneshotEffect;
 import main.content.enums.GenericEnums;
-import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.data.ability.OmittedConstructor;
@@ -12,7 +11,10 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.game.logic.combat.damage.*;
+import main.game.logic.combat.damage.ArmorMaster;
+import main.game.logic.combat.damage.Damage;
+import main.game.logic.combat.damage.DamageDealer;
+import main.game.logic.combat.damage.DamageFactory;
 import main.game.logic.combat.mechanics.ForceRule;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -21,7 +23,6 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class DealDamageEffect extends DC_Effect implements OneshotEffect {
     private DAMAGE_TYPE damage_type;
@@ -169,10 +170,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
     }
 
     private Damage getDamageObject(int amount) {
-        List<Damage> list = DamageCalculator.getBonusDamageList(ref, isMagical() ? DAMAGE_CASE.SPELL : DAMAGE_CASE.ACTION);
-        if (!list.isEmpty())
-            damageObject = new MultiDamage(damage_type, ref, amount, list);
-        else damageObject = new Damage(damage_type, ref, amount);
+       damageObject =  DamageFactory.getDamageFromEffect(this, amount);
 
         return damageObject;
     }
