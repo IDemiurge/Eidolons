@@ -15,7 +15,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.rules.action.WatchRule;
-import main.rules.combat.ForceRule;
+import main.game.logic.combat.mechanics.ForceRule;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;

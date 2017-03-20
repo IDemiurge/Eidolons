@@ -8,6 +8,7 @@ import main.content.enums.GenericEnums.RESIST_GRADE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.obj.unit.Unit;
 import main.system.auxiliary.EnumMaster;
+import main.system.math.DC_MathManager;
 
 public class ResistMaster {
 
@@ -30,5 +31,17 @@ public class ResistMaster {
             }
         }
 
+    }
+
+    public static int getResistanceForDamageType(Unit attacked,
+                                                  Unit attacker, DAMAGE_TYPE type) {
+        if (type == null) {
+            return 0;
+        }
+        int resistance = DC_MathManager.getDamageTypeResistance(attacked, type);
+        if (type.isMagical()) {
+            resistance -= attacker.getIntParam(PARAMS.RESISTANCE_PENETRATION);
+        }
+        return resistance;
     }
 }

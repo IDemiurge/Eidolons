@@ -1,4 +1,4 @@
-package main.rules.attack;
+package main.game.logic.combat.attack.extra_attack;
 
 import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums;

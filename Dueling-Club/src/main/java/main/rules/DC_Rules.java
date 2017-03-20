@@ -3,6 +3,8 @@ package main.rules;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.game.core.game.GameRules;
+import main.game.logic.combat.mechanics.BleedingRule;
+import main.game.logic.combat.mechanics.MoraleKillingRule;
 import main.game.logic.event.Rule;
 import main.rules.action.*;
 import main.rules.buff.*;

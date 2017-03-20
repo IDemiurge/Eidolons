@@ -5,6 +5,7 @@ import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.oneshot.DealDamageEffect;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
@@ -13,6 +14,7 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.BattleFieldObject;
+import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.tools.target.EffectFinder;
@@ -23,7 +25,6 @@ import main.rules.round.UnconsciousRule;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.PhaseAnimation;
-import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;
 
 import java.util.LinkedList;
@@ -31,12 +32,21 @@ import java.util.List;
 
 /**
  * Created by JustMe on 3/14/2017.
+ * <p>
+ * Calculates final Endurance/Toughness losses that unit receives from Damage
+ * Also calculates damage for AI FutureBuilder, Unit's displayed value and PhaseAnimations
  */
 public class DamageCalculator {
 
-protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
-                                        int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
+    protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
+                                                  int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
         return calculateDamage(false, attacked, attacker, base_damage, magical, ref, blocked,
+         damage_type);
+    }
+
+    protected static int calculateEnduranceDamage(Unit attacked, Unit attacker,
+                                                  int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
+        return calculateDamage(true, attacked, attacker, base_damage, magical, ref, blocked,
          damage_type);
     }
 
@@ -49,10 +59,11 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
             }
         }
 
-        int i = base_damage - blocked;
-        int resistance = getResistanceForDamageType(i, attacked, attacker, damage_type);
-        i = applyPercentReduction(i, resistance);
+        int amount = base_damage - blocked;
+        int resistance = ResistMaster.getResistanceForDamageType(attacked, attacker, damage_type);
+        amount = amount - MathMaster.applyMod(amount, resistance);
         int armor = ArmorMaster.getArmorValue(attacked, damage_type);
+        //applies natural armor
         PhaseAnimation animation = magical ? PhaseAnimator.getActionAnimation(ref, attacker) : PhaseAnimator.getAttackAnimation(ref,
          attacked);
         if (animation != null) {
@@ -61,28 +72,15 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
                  - blocked);
             }
         }
-        return Math.max(0, i - armor);
+        return Math.max(0, amount - armor);
     }
 
-    protected static int calculateEnduranceDamage(Unit attacked, Unit attacker,
-                                        int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
-        return calculateDamage(true, attacked, attacker, base_damage, magical, ref, blocked,
-         damage_type);
-    }
-
-    protected static int getArmorReduction(int base_damage, Unit attacked, Unit attacker,
-                                 DC_ActiveObj action, boolean simulation) {
-        // if (attacked.checkPassive(STANDARD_PASSIVES.IMMATERIAL)
-        // || attacker.checkPassive(STANDARD_PASSIVES.IMMATERIAL))
-        // return applySpellArmorReduction(base_damage, attacked, attacker);
-        if (attacked.getArmor() == null) {
-            return 0;
-        }
-        int blocked = (simulation ? attacked.getGame().getArmorSimulator() : attacked.getGame()
-         .getArmorMaster()).getArmorBlockDamage(base_damage, attacked, attacker, action);
-        return Math.min(base_damage, blocked);
-    }
-
+    /**
+     * Calculates damage for AI's FutureBuilder (AttackEffect)
+     *
+     * @param attack
+     * @return
+     */
     public static int getDamage(Attack attack) {
         Unit attacked = attack.getAttacked();
         Unit attacker = attack.getAttacker();
@@ -95,11 +93,12 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
         if (dmg_type == DAMAGE_TYPE.PURE || dmg_type == DAMAGE_TYPE.POISON) {
             return amount;
         }
-        amount -= applyAverageShieldReduction(amount, attacked, attacker, attack.getAction(),
-         attack.getWeapon(), attack.getDamageType());
-        amount -=  DamageCalculator.getArmorReduction(amount,
-         attacked, attacker, attack.getAction(), true);
+        amount -= // applyAverageShieldReduction
+         attacked.getGame().getArmorSimulator().getShieldDamageBlocked(amount,
+          attacked, attacker, attack.getAction(), attack.getWeapon(), attack.getDamageType());
 
+        amount -= attacked.getGame()
+         .getArmorSimulator().getArmorBlockDamage(amount, attacked, attacker, attack.getAction());
 
         if (attack.getAction().isAttack()) {
             return amount;
@@ -107,22 +106,12 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
         return amount;
     }
 
-    private static int getResistanceForDamageType(int amount, Unit attacked,
-                                                  Unit attacker, DAMAGE_TYPE type) {
-        if (type == null) {
-            return 0;
-        }
-        int resistance = DC_MathManager.getDamageTypeResistance(attacked, type);
-        if (type.isMagical()) {
-            resistance -= attacker.getIntParam(PARAMS.RESISTANCE_PENETRATION);
-        }
-        return resistance;
-    }
-
-    private static int applyPercentReduction(int base_damage, int percent) {
-        return base_damage -MathMaster.applyMod(base_damage, percent);
-    }
-
+    /**
+     * Calculates damage for AI's FutureBuilder (DealDamageEffect)
+     *
+     * @param ref
+     * @return
+     */
     public static int getDamage(Ref ref) {
         int amount = ref.getAmount();
         // if (ref.getActive().isSpell())
@@ -138,7 +127,7 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
         Damage damage = new Damage(damageType, amount, sourceObj, (Unit) ref.getTargetObj());
         int blocked = sourceObj.getGame().getArmorSimulator().getArmorBlockDamage(damage);
         amount -= blocked;
-        amount = getResistanceForDamageType(amount, (Unit) ref.getTargetObj(), sourceObj,
+        amount = ResistMaster.getResistanceForDamageType((Unit) ref.getTargetObj(), sourceObj,
          damageType);
 
         return amount;// applySpellArmorReduction(amount, (DC_HeroObj)
@@ -160,11 +149,12 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
     }
 
     public static boolean isUnblockable(Ref ref) {
-        if (isPeriodic(ref))return true;
+        if (isPeriodic(ref)) return true;
         return StringMaster.compare(ref.getValue(KEYS.DAMAGE_SOURCE),
          DAMAGE_MODIFIER.UNBLOCKABLE
           .toString());
     }
+
     static boolean isPeriodic(Ref ref) {
         return StringMaster.compare(ref.getValue(KEYS.DAMAGE_SOURCE),
          GenericEnums.DAMAGE_MODIFIER.PERIODIC
@@ -176,6 +166,7 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
          GenericEnums.DAMAGE_MODIFIER.ENDURANCE_ONLY
           .toString());
     }
+
     public static boolean isLethal(int damage, Obj targetObj) {
         if (damage >= targetObj.getIntParam(PARAMS.C_TOUGHNESS)) {
             return true;
@@ -186,6 +177,34 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
         return false;
     }
 
+    public static List<Damage> getBonusDamageList(Ref ref, DAMAGE_CASE CASE) {
+        List<Damage> list = new LinkedList<>();
+        //TODO make BonusDamage all add to source?
+        DC_Obj obj = (DC_Obj) ref.getSourceObj();
+        for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
+            if (e == CASE)
+                list.add(obj.getBonusDamage().get(e));
+        }
+        obj = (DC_Obj) ref.getObj(KEYS.ACTIVE);
+        for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
+            if (e == CASE)
+                list.add(obj.getBonusDamage().get(e));
+        }
+
+            obj = (DC_Obj) ref.getObj(KEYS.WEAPON);
+            for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
+                if (e == CASE)
+                    list.add(obj.getBonusDamage().get(e));
+            }
+        return list;
+    }
+
+    /**
+     * Calculates and creates Damage Objects of each DAMAGE_TYPE present for PhaseAnimations
+     *
+     * @param attack
+     * @return
+     */
     public static List<Damage> precalculateRawDamageForDisplay(Attack attack) {
 
         List<Damage> list = new LinkedList<>();
@@ -209,7 +228,7 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
             // TODO ++ PARAM MOD
             for (Effect dmgEffect : EffectFinder.getEffectsOfClass(e, DealDamageEffect.class)) {
                 int amount = dmgEffect.getFormula().getInt(attack.getRef());
-                DAMAGE_TYPE damageType = ((DealDamageEffect) dmgEffect).getDamage_type();
+                DAMAGE_TYPE damageType = ((DealDamageEffect) dmgEffect).getDamageType();
                 list.add(new Damage(damageType, amount, attack.getAttacked(), attack.getAttacker()));
             }
         }
@@ -237,6 +256,12 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
 
         return amount;
     }
+
+    /**
+     * @param unit
+     * @param offhand
+     * @return Displayed damage value for units (average)
+     */
     @Deprecated
     public static Integer getUnitAttackDamage(Unit unit, boolean offhand) {
         int amount = unit.getIntParam(PARAMS.BASE_DAMAGE);
@@ -253,15 +278,4 @@ protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
     }
 
 
-
-    private static int applyAverageShieldReduction(int amount, Unit attacked,
-                                                   Unit attacker, DC_ActiveObj action, DC_WeaponObj weapon, DAMAGE_TYPE damage_type) {
-        if (!attacked.getGame().getArmorSimulator().checkCanShieldBlock(action, attacked)) {
-            return 0;
-        }
-        int blocked = attacked.getGame().getArmorSimulator().getShieldDamageBlocked(amount,
-         attacked, attacker, action, weapon, damage_type);
-
-        return blocked;
-    }
 }

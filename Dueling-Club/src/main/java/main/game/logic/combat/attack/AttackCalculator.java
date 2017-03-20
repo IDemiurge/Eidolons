@@ -19,7 +19,7 @@ import main.entity.obj.unit.Unit;
 import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.FacingMaster;
 import main.rules.action.WatchRule;
-import main.rules.combat.ForceRule;
+import main.game.logic.combat.mechanics.ForceRule;
 import main.rules.perk.RangeRule;
 import main.system.DC_Formulas;
 import main.system.auxiliary.RandomWizard;
@@ -241,7 +241,9 @@ public class AttackCalculator {
     }
 
     //TODO final formula:
-    // base_damage +
+    // amount = (base_damage + totalBonus)*mod
+    // totalBonus = rollDice + force + attributeDamageBonuses
+    // totalMod = action/weapon/unit dmg_mod
     private Integer applyDamageBonuses() {
         amount = attacker.getIntParam(PARAMS.BASE_DAMAGE);
         bonusMap.put(MOD_IDENTIFIER.UNIT, amount);
@@ -256,6 +258,12 @@ public class AttackCalculator {
         bonusMap.put(MOD_IDENTIFIER.FORCE, bonus);
         totalBonus += bonus;
 
+        bonus = action.getIntParam(PARAMS.DAMAGE_BONUS);
+        bonus += getAttributeDamageBonuses(action, attacker, PHASE_TYPE.ATTACK_WEAPON_MODS,
+         actionMap);
+        bonusMap.put(MOD_IDENTIFIER.ACTION, bonus);
+        totalBonus += bonus;
+
         // ACTION
         int mod = action.getIntParam(PARAMS.DAMAGE_MOD) - 100;
         if (mod > 0) {
@@ -266,13 +274,7 @@ public class AttackCalculator {
         } // TODO [QUICK FIX] - why 50 becomes 150?!
         modMap.put(MOD_IDENTIFIER.ACTION, mod);
         totalMod += mod;
-        bonus = action.getIntParam(PARAMS.DAMAGE_BONUS);
 
-        bonus += getAttributeDamageBonuses(action, attacker, PHASE_TYPE.ATTACK_WEAPON_MODS,
-                actionMap);
-
-        bonusMap.put(MOD_IDENTIFIER.ACTION, bonus);
-        totalBonus += bonus;
 
         // WEAPON
         mod = weapon.getIntParam(PARAMS.DAMAGE_MOD) - 100;

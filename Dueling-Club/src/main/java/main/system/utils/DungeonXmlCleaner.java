@@ -1,4 +1,4 @@
-package main.test.utils;
+package main.system.utils;
 
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;

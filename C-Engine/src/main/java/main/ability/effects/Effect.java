@@ -146,7 +146,7 @@ public interface Effect extends Interruptable, Referred,
         BEFORE_ATTACK,
         BEFORE_HIT,
         ON_ATTACK,
-        ON_HIT,
+        ON_HIT, //melee only
         ON_KILL,
         ON_DEATH,
         ON_CRIT,

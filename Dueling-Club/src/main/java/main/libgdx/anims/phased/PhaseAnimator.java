@@ -10,9 +10,13 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
+import main.game.logic.combat.attack.Attack;
+import main.game.logic.combat.damage.Damage;
+import main.game.logic.combat.damage.DamageCalculator;
 import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.AttackAnimation;
 import main.system.graphics.PhaseAnimation;
@@ -191,5 +195,11 @@ public class PhaseAnimator extends Group {
 //active.getAnimator(). TODO
         if (animation != null)
             animation.addPhaseArgs(true, PHASE_TYPE.REDUCTION_NATURAL, dmg_type);
+    }
+
+    public void initAttackAnimRawDamage(Attack attack) {
+        List<Damage> rawDamage = DamageCalculator.precalculateRawDamageForDisplay(attack);
+        attack.setRawDamage(rawDamage);
+        attack.getAnimation().addPhase(new AnimPhase(PHASE_TYPE.PRE_ATTACK, attack, rawDamage), 0);
     }
 }

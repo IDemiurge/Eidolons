@@ -252,7 +252,7 @@ public class AttackAnimation extends ActionAnimation {
         }
         int x = p.x;
         for (Damage dmg : rawDamage) {
-            int damage = dmg.getDamage();
+            int damage = dmg.getAmount();
             if (damage >= 0) {
                 DAMAGE_TYPE dmg_type = dmg.getDmg_type();
                 image = ImageManager.getDamageTypeImage(dmg_type.getName());

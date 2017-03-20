@@ -1,4 +1,4 @@
-package main.rules.combat;
+package main.game.logic.combat.mechanics;
 
 import main.ability.effects.oneshot.DealDamageEffect;
 import main.ability.effects.oneshot.move.MoveEffect;
@@ -15,6 +15,7 @@ import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE;
+import main.rules.combat.KnockdownRule;
 import main.rules.mechanics.InterruptRule;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.LogMaster;

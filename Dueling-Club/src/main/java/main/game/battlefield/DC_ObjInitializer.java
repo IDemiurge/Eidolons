@@ -206,7 +206,8 @@ public class DC_ObjInitializer {
                 }
 
                 Coordinates c = null;
-                if (!item.contains("null=")) {
+                if (item.contains("("))
+                    if (!item.contains("null=")) {
                     try {
                         c = getCoordinatesFromObjString(item, alt);
                     } catch (Exception e) {

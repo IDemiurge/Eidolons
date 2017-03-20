@@ -83,7 +83,12 @@ public class GenericEnums {
         // buff-debuff into SPELL by default...
     }
 
-    public enum DAMAGE_MODIFIER {
+    public enum DAMAGE_CASE {
+        SPELL,
+        ATTACK,
+        ACTION,
+    }
+        public enum DAMAGE_MODIFIER {
         VORPAL, PERIODIC, QUIET,
         UNBLOCKABLE, ENDURANCE_ONLY
     }

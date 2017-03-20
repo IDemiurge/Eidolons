@@ -283,6 +283,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     @Override
     public String toString() {
+
         return StringMaster.getPossessive(getOwnerObj().getNameIfKnown()) + " " + getName();
     }
 

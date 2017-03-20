@@ -19,11 +19,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AI_Manager extends AiMaster {
     static Set<Action> brokenActions = new HashSet<>();
     private static GroupAI customGroup;
     private static boolean running;
+    private   ExecutorService executorService;
     private Map<Unit, UnitAI> aiMap = new XLinkedMap<>();
     private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
 
@@ -39,9 +42,10 @@ public class AI_Manager extends AiMaster {
 
 
     public boolean makeAction(final Unit unit) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+        getExecutorService().execute(() -> {
                 Action action = null;
                 running = true;
                 setUnit(unit);
@@ -79,14 +83,20 @@ public class AI_Manager extends AiMaster {
                         // TODO block action, and try again!
                     }
                 }
-            }
-        }, unit.getName() + " AI Thread").start();
+
+//            WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_COMPLETE);
+         });
+//        , unit.getName() + " AI Thread").start();
 
         return true;
 
     }
 
-
+    public   ExecutorService getExecutorService() {
+        if (executorService == null)
+            executorService = Executors.newSingleThreadExecutor();
+        return executorService;
+    }
 
 
     public static Unit chooseEnemyToEngage(Unit obj, List<Unit> units) {

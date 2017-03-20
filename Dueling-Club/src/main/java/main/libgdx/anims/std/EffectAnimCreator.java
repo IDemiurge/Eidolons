@@ -144,7 +144,7 @@ public class EffectAnimCreator {
         if (e instanceof DealDamageEffect) {
             return PathFinder.getSfxPath() + "damage\\"
                     + "fire"
-//         + ((DealDamageEffect) e).getDamage_type().toString()
+//         + ((DealDamageEffect) e).getDamageType().toString()
                     ;
         }
         return null;
@@ -156,7 +156,7 @@ public class EffectAnimCreator {
         {
             return PathFinder.getSpritesPath() + "damage\\"
                     + "fire"
-//             +  ((DealDamageEffect) e).getDamage_type().toString()
+//             +  ((DealDamageEffect) e).getDamageType().toString()
                     + ".png";
         }
         return null;

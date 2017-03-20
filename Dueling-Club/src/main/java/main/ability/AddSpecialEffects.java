@@ -63,7 +63,7 @@ public class AddSpecialEffects extends MicroEffect {
     }
 
     private AddTriggerEffect getTriggerEffect() {
-
+//TODO MISSING CASES
 
         switch (case_type) {
             case ON_KILL:

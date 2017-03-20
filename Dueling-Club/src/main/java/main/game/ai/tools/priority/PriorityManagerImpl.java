@@ -66,7 +66,7 @@ import main.game.core.master.BuffMaster;
 import main.game.logic.generic.DC_ActionManager;
 import main.game.logic.generic.DC_ActionManager.STD_MODE_ACTIONS;
 import main.rules.UnitAnalyzer;
-import main.rules.attack.AttackOfOpportunityRule;
+import main.game.logic.combat.attack.extra_attack.AttackOfOpportunityRule;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;

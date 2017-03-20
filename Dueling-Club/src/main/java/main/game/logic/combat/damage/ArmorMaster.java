@@ -1,5 +1,6 @@
 package main.game.logic.combat.damage;
 
+import main.ability.effects.oneshot.DealDamageEffect;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
@@ -13,8 +14,8 @@ import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.game.logic.combat.attack.DefenseVsAttackRule;
 import main.game.logic.combat.attack.Attack;
+import main.game.logic.combat.attack.DefenseVsAttackRule;
 import main.rules.mechanics.DurabilityRule;
 import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.RandomWizard;
@@ -46,22 +47,46 @@ public class ArmorMaster {
         return obj.getIntParam(DC_ContentManager.getArmorParamForDmgType(dmg_type));
     }
 
-    public static boolean isArmorUnequipAllowed(Unit hero) {
-        if (hero.getGame().isSimulation()) {
-            return true;
-        }
-        return false;
-    }
 
     public int getArmorBlockDamage(Damage damage) {
         return getArmorBlockDamage(damage.shield, damage.spell, damage.canCritOrBlock,
-                damage.average, damage.damage, damage.attacked, damage.attacker, damage.offhand,
+                damage.average, damage.amount, damage.attacked, damage.attacker, damage.offhand,
                 damage.dmg_type, damage.action);
     }
 
-    public int getArmorBlockDamage(boolean shield, boolean spell, boolean canCritOrBlock,
-                                   boolean average, Integer damage, Unit attacked, Unit attacker,
-                                   boolean offhand, DAMAGE_TYPE dmg_type, DC_ActiveObj action) {
+
+    public int getArmorBlockDamage(int damage, Unit attacked, Unit attacker,
+                                   DC_ActiveObj action) {
+
+
+        if (attacked.getArmor() == null) {
+            return 0;
+        }
+        boolean offhand = action.isOffhand();
+        int blocked = getArmorBlockDamage(false, action instanceof DC_SpellObj, !action.isZone(), action
+         .isZone(), damage, attacked, attacker, offhand, getDamageType(action, attacker
+         .getActiveWeapon(offhand)), action);
+       return  Math.min(damage, blocked);
+    }
+
+    // for spells/special actions
+    public int getArmorBlockForActionDamage(int amount, DAMAGE_TYPE damage_type,
+                                            Unit targetObj, DC_ActiveObj action) {
+        boolean zone = (action.isZone());
+        boolean canCritOrBlock = !zone;
+        boolean average = zone;
+        if (!zone) {
+            if (!action.isMissile() || !damage_type.isNatural()) {
+                canCritOrBlock = false; // TODO astral?
+            }
+        }
+        return getArmorBlockDamage(false, action instanceof DC_SpellObj, canCritOrBlock, average,
+                amount, targetObj, action.getOwnerObj(), action.isOffhand(),
+                action.getEnergyType(), action);
+    }
+    private int getArmorBlockDamage(boolean shield, boolean spell, boolean canCritOrBlock,
+                                    boolean average, Integer damage, Unit attacked, Unit attacker,
+                                    boolean offhand, DAMAGE_TYPE dmg_type, DC_ActiveObj action) {
         /*
          * if blocks, apply armor's resistance values too
 		 */
@@ -83,7 +108,7 @@ public class ArmorMaster {
             canCritOrBlock = true;
         }
         int blockedPercentage = getBlockPercentage(shield, spell, canCritOrBlock, average,
-                armorObj, offhand, attacker, attacked, action);
+         armorObj, offhand, attacker, attacked, action);
 
         // action.getGame().getLogManager().newLogEntryNode(type, args)
         // TODO ??? damage =
@@ -101,28 +126,28 @@ public class ArmorMaster {
         }
         if (!simulation) {
             String entry = armorObj.getName() + " takes " + blockedPercentage + "% of "
-                    + action.getName() + StringMaster.wrapInParenthesis(name) + " absorbing "
-                    + blocked + " " + dmg_type.getName() + " damage";
+             + action.getName() + StringMaster.wrapInParenthesis(name) + " absorbing "
+             + blocked + " " + dmg_type.getName() + " damage";
             if (blockedPercentage == 0 || blocked == 0) {
                 entry = attacker.getNameIfKnown()
-                        + " penetrates "
-                        + armorObj.getName()
-                        + " with "
-                        + name
-                        + (action.getName().equals("Attack") ? "" : StringMaster
-                        .wrapInParenthesis(action.getName())) + "!";
+                 + " penetrates "
+                 + armorObj.getName()
+                 + " with "
+                 + name
+                 + (action.getName().equals("Attack") ? "" : StringMaster
+                 .wrapInParenthesis(action.getName())) + "!";
             } else {
                 DC_SoundMaster.playAttackImpactSound(attacker.getActiveWeapon(offhand), attacker,
-                        attacked, damage, blocked);
+                 attacked, damage, blocked);
                 int durabilityLost = reduceDurability(blocked, armorObj, spell, dmg_type, attacker
-                        .getActiveWeapon(offhand), damage);
+                 .getActiveWeapon(offhand), damage);
                 if (!simulation)
                     if (!shield) {
-                    PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
-                            Attack.getAnimationKey(action));
-                    animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_ARMOR, blockedPercentage,
-                            blocked, durabilityLost, damage, dmg_type, armorObj));
-                }
+                        PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
+                         Attack.getAnimationKey(action));
+                        animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_ARMOR, blockedPercentage,
+                         blocked, durabilityLost, damage, dmg_type, armorObj));
+                    }
 
             }
             if (!simulation) {
@@ -134,58 +159,27 @@ public class ArmorMaster {
         return blocked;
     }
 
-    public int getArmorBlockDamage(int damage, Unit attacked, Unit attacker,
-                                   DC_ActiveObj action) {
-        // TODO Auto-generated method stub
-        boolean offhand = action.isOffhand();
-        return getArmorBlockDamage(false, action instanceof DC_SpellObj, !action.isZone(), action
-                .isZone(), damage, attacked, attacker, offhand, getDamageType(action, attacker
-                .getActiveWeapon(offhand)), action);
-    }
 
-    // private Integer getReducedDamageForArmorResistances(int
-    // blockedPercentage,
-    // DC_ArmorObj armorObj, Integer damage, DAMAGE_TYPE dmg_type) {
-    // // TODO special?
-    // return damage;
-    // }
+    public static int getShieldReducedAmountForDealDamageEffect(
+     DealDamageEffect effect,
+     Unit targetObj, int amount, DC_ActiveObj active ) {
 
-    private DAMAGE_TYPE getDamageType(DC_ActiveObj action, DC_WeaponObj weapon) {
-        DAMAGE_TYPE dmg_type = action.getDamageType();
-        if (dmg_type == null) {
-            dmg_type = weapon.getDamageType();
-        }
-        return dmg_type;
-    }
-
-    // for spells/spec effect actions TODO rename
-    public int getArmorDamageEffectBlocked(int amount, DAMAGE_TYPE damage_type,
-                                           Unit targetObj, DC_ActiveObj action) {
-        boolean zone = (action.isZone());
-        boolean canCritOrBlock = !zone;
-        boolean average = zone;
-        if (!zone) {
-            if (!action.isMissile() || !damage_type.isNatural()) {
-                canCritOrBlock = false; // TODO astral?
-            }
-        }
-        return getArmorBlockDamage(false, action instanceof DC_SpellObj, canCritOrBlock, average,
-                amount, targetObj, action.getOwnerObj(), action.isOffhand(),
-                action.getEnergyType(), action);
-    }
-
-    private int reduceDurability(int blocked, DC_HeroSlotItem armorObj, boolean spell,
-                                 DAMAGE_TYPE damage_type, DC_WeaponObj weapon, int damage) {
-
-        if (!spell) {
-            return DurabilityRule.physicalDamage(damage, blocked, damage_type, armorObj, weapon,
-                    simulation);
-        } else {
-            return DurabilityRule.spellDamage(damage, blocked, damage_type, armorObj, simulation);
+        if (effect.getGame().getArmorMaster().checkCanShieldBlock(active, targetObj)) {
+            int shieldBlock = effect.getGame().getArmorMaster().getShieldDamageBlocked(amount, targetObj,
+             (Unit)  effect. getRef()     .getSourceObj(), active, null,  effect.getDamageType());
+            // event?
+            amount -= shieldBlock;
         }
 
-    }
 
+        return amount;
+    }
+    public static boolean isArmorUnequipAllowed(Unit hero) {
+        if (hero.getGame().isSimulation()) {
+            return true;
+        }
+        return false;
+    }
     public Integer getShieldBlockValue(int amount, DC_WeaponObj shield, Unit attacked,
                                        Unit attacker, DC_WeaponObj weapon, DC_ActiveObj action, boolean zone) {
         DAMAGE_TYPE dmg_type = action.getDamageType();
@@ -234,6 +228,9 @@ public class ArmorMaster {
 
     public int getShieldDamageBlocked(Integer damage, Unit attacked, Unit attacker,
                                       DC_ActiveObj action, DC_WeaponObj weapon, DAMAGE_TYPE damage_type) {
+        if (checkCanShieldBlock(action, attacked)) {
+            return 0;
+        }
         DC_WeaponObj shield = (DC_WeaponObj) attacked.getRef().getObj(KEYS.OFFHAND);
         String message;
         boolean spell = action.isSpell();
@@ -278,17 +275,6 @@ public class ArmorMaster {
             DC_SoundMaster.playBlockedSound(attacker, attacked, shield, weapon, blockValue, damage);
             // shield.reduceDurabilityForDamage(damage, blockValue,
             // durabilityMod);
-
-            // if (blockValue > damage) {
-            // message = attacked.getName() + " uses " + shield.getName() +
-            // " to block ";
-            // log(StringMaster.getMessagePrefix(false,
-            // attacked.getOwner().isMe())
-            // + message);
-            // action.getGame().getLogManager().log(LOG.GAME_INFO, message,
-            // ENTRY_TYPE.DAMAGE);
-            // return damage;
-            // }
             PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
                     Attack.getAnimationKey(action));
             animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_SHIELD, chance, blockValue,
@@ -396,6 +382,26 @@ public class ArmorMaster {
         int percentageBlocked = RandomWizard.getRandomIntBetween(minimum, maximum);
 
         return percentageBlocked;
+    }
+
+    private int reduceDurability(int blocked, DC_HeroSlotItem armorObj, boolean spell,
+                                 DAMAGE_TYPE damage_type, DC_WeaponObj weapon, int damage) {
+
+        if (spell) {
+            return DurabilityRule.spellDamage(damage, blocked, damage_type, armorObj, simulation);
+        } else {
+            return DurabilityRule.physicalDamage(damage, blocked, damage_type, armorObj, weapon,
+             simulation);
+        }
+
+    }
+
+    private DAMAGE_TYPE getDamageType(DC_ActiveObj action, DC_WeaponObj weapon) {
+        DAMAGE_TYPE dmg_type = action.getDamageType();
+        if (dmg_type == null) {
+            dmg_type = weapon.getDamageType();
+        }
+        return dmg_type;
     }
 
 }

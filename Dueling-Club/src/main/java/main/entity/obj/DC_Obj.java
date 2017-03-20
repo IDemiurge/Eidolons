@@ -8,6 +8,7 @@ import main.ability.effects.common.ModifyValueEffect;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.DC_ContentManager;
 import main.content.PROPS;
+import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
@@ -17,6 +18,7 @@ import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.*;
 import main.content.values.properties.G_PROPS;
+import main.data.XLinkedMap;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
@@ -31,6 +33,7 @@ import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
+import main.game.logic.combat.damage.Damage;
 import main.rules.action.PerceptionRule.PERCEPTION_STATUS;
 import main.rules.action.PerceptionRule.PERCEPTION_STATUS_PLAYER;
 import main.system.auxiliary.EnumMaster;
@@ -39,12 +42,12 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.PhaseAnimation;
 import main.system.launch.CoreEngine;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public abstract class DC_Obj extends MicroObj {
 
     protected Map<SPECIAL_EFFECTS_CASE, Effect> specialEffects;
+    protected Map<DAMAGE_CASE, Damage> bonusDamage;
     protected UNIT_TO_PLAYER_VISION activeVisionStatus;
     protected UNIT_TO_UNIT_VISION activeUnitVisionStatus;
     protected PERCEPTION_STATUS_PLAYER playerPerceptionStatus;
@@ -223,19 +226,21 @@ public abstract class DC_Obj extends MicroObj {
 
     public Map<SPECIAL_EFFECTS_CASE, Effect> getSpecialEffects() {
         if (specialEffects == null) {
-            initSpecialEffects();
+            specialEffects = new XLinkedMap<>();
         }
         return specialEffects;
+    }
+    public Map<DAMAGE_CASE, Damage> getBonusDamage() {
+        if (bonusDamage == null) {
+            bonusDamage = new XLinkedMap<>();
+        }
+        return bonusDamage;
     }
 
     public void setSpecialEffects(Map<SPECIAL_EFFECTS_CASE, Effect> specialEffects) {
         this.specialEffects = specialEffects;
     }
 
-    public void initSpecialEffects() {
-        specialEffects = new HashMap<>();
-
-    }
 
     public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type,
                                     BattleFieldObject target, Ref REF) {

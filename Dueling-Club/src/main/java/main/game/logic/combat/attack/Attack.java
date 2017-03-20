@@ -8,7 +8,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.unit.Unit;
 import main.game.logic.combat.damage.Damage;
-import main.rules.attack.InstantAttackRule.INSTANT_ATTACK_TYPE;
+import main.game.logic.combat.attack.extra_attack.InstantAttackRule.INSTANT_ATTACK_TYPE;
 import main.system.graphics.AttackAnimation;
 
 import java.util.List;

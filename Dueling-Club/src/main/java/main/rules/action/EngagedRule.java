@@ -12,7 +12,7 @@ import main.entity.obj.unit.Unit;
 import main.game.ai.AI_Manager;
 import main.game.logic.combat.attack.Attack;
 import main.game.core.game.DC_Game;
-import main.rules.attack.AttackOfOpportunityRule;
+import main.game.logic.combat.attack.extra_attack.AttackOfOpportunityRule;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;

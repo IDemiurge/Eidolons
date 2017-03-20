@@ -45,8 +45,8 @@ public class FutureBuilder {
         e.setRef(ref);
         if (e instanceof DealDamageEffect) {
             ref.setAmount(e.getFormula().getInt(ref));
-            if (((DealDamageEffect) e).getDamage_type() != null) {
-                ref.setValue(KEYS.DAMAGE_TYPE, ((DealDamageEffect) e).getDamage_type().toString());
+            if (((DealDamageEffect) e).getDamageType() != null) {
+                ref.setValue(KEYS.DAMAGE_TYPE, ((DealDamageEffect) e).getDamageType().toString());
             }
 
             damage = DamageCalculator.getDamage(ref);

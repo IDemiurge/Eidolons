@@ -29,7 +29,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
-
+import main.content.enums.GenericEnums. DAMAGE_CASE;
 import java.util.Arrays;
 
 public enum ARGS implements Argument {
@@ -123,6 +123,7 @@ public enum ARGS implements Argument {
     ORDER_TYPE(main.content.CONTENT_CONSTS2.ORDER_TYPE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
 
     INJURY(INJURY.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
+    DAMAGE_CASE(DAMAGE_CASE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     UNKNOWN(Object.class),;
 
     private AE_ELEMENT_TYPE ELEMENT_TYPE;

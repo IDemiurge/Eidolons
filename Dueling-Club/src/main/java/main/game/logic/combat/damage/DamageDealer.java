@@ -22,16 +22,75 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 /**
  * Created by JustMe on 3/14/2017.
+ * Handles the process of damage dealing for AttackEffect and DealDamageEffect
  */
 public class DamageDealer {
 
 
-    public static int dealDamageOfType(DAMAGE_TYPE damage_type, Unit targetObj, Ref ref,
+    /**
+     * Accepts Damage Object that encapsulates all necessary data
+     *
+     * @param damage
+     * @return
+     */
+    public static int dealDamageOfType(Damage damage) {
+        int result = dealDamageOfType(damage.getDmg_type(),
+         damage.getAttacked()
+         , damage.getRef(), damage.getAmount());
+        if (damage instanceof MultiDamage) {
+            int bonus = dealBonusDamage(  (MultiDamage) damage,result);
+            result += bonus;
+        }
+
+        return result;
+    }
+
+    /**
+     *
+     * @param damage
+     * @param dealt damage already dealt by main Damage object
+     * @return
+     */
+    private static int dealBonusDamage(MultiDamage damage, int dealt) {
+        int bonus = 0;
+        for (Damage dmg : damage.getAdditionalDamage()) {
+
+            dmg.getRef().setQuiet(true);
+            if (dmg instanceof ConditionalDamage) {
+                //TODO
+            }
+            if (dmg instanceof FormulaDamage) {
+                if (((FormulaDamage) dmg).isPercentage()) {
+                    int percent =   dmg.getAmount();
+                    if (((FormulaDamage) dmg).isFromRaw())
+                    {
+                        dmg.amount = damage.amount * percent / 100;
+                    }
+                    else {
+                        dmg.amount = dealt * percent / 100;
+                    }
+                }
+            }
+
+            bonus += dealDamageOfType(dmg);
+        }
+        return bonus;
+    }
+
+    /**
+     * This method accepts amount of damage already reduced by everything <b>except Resistance and Armor</b>  (defense, shield...)
+     *
+     * @param damage_type enum const, null will be set to active.getEnergyType()
+     * @param targetObj   unit to deal dmg to
+     * @param ref         contains all the other info we may need
+     * @param amount      total amount of damage to be reduced by Resistance and Armor (unless damage_type==PURE) and dealt as PURE
+     * @return
+     */
+    private static int dealDamageOfType(DAMAGE_TYPE damage_type, Unit targetObj, Ref ref,
                                        int amount) {
         Unit attacker = (Unit) ref.getSourceObj();
-        // if (global_damage_mod != 0)
-        // amount *= OptionsMaster.getGameOptions.getOption(global_damage_mod) /
-        // 100;
+        // if (global_damage_mod != 0) IDEA - Difficulty modifier
+        // amount *= OptionsMaster.getGameOptions.getOption(global_damage_mod)/100;
         if (!processDamageEvent(damage_type, ref, amount,
          STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_DAMAGE)) {
             return -1;
@@ -69,14 +128,17 @@ public class DamageDealer {
 
     }
 
+    //proceeds to deal the damage - to toughness and endurance separately and with appropriate events
     private static int dealDamage(Ref ref, boolean magical, DAMAGE_TYPE dmg_type) {
-        Event event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_PHYSICAL_DAMAGE, ref);
+        Event event = new Event(
+         magical ? STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_SPELL_DAMAGE :
+          STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_PHYSICAL_DAMAGE, ref);
         if (!event.fire()) {
             return -1;
         }
         int amount = ref.getAmount();
         if (amount <= 0) {
-            return 0;// sure?
+            return 0;
         }
         ref = Ref.getCopy(ref);
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
@@ -90,9 +152,14 @@ public class DamageDealer {
         int blocked = 0;
         if (!DamageCalculator.isUnblockable(ref)) {
             if (ref.getSource() != ref.getTarget()) {
-                blocked =  DamageCalculator.getArmorReduction(
-                  amount, attacked, attacker, active, false);
-
+                if (isAttack(ref))
+                    blocked = attacked.getGame()
+                     .getArmorMaster().getArmorBlockDamage(amount,
+                      attacked, attacker, active);
+                else
+                    blocked = attacked.getGame()
+                     .getArmorMaster().getArmorBlockForActionDamage(amount, dmg_type,
+                      attacker, active);
             }
         }
 
@@ -104,29 +171,33 @@ public class DamageDealer {
 
         ref.setAmount(e_damage);
         // TODO separate event types?
-        if (!new Event(magical ? STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_ENDURANCE_DAMAGE
+        if (!new Event(magical ? STANDARD_EVENT_TYPE.UNIT_IS_DEALT_MAGICAL_ENDURANCE_DAMAGE
          : STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_ENDURANCE_DAMAGE, ref).fire()) {
             return 0;
         }
         ref.setAmount(t_damage);
-        if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_TOUGHNESS_DAMAGE, ref).fire()) {
+        if (!new Event(magical ? STANDARD_EVENT_TYPE.UNIT_IS_DEALT_MAGICAL_TOUGHNESS_DAMAGE
+         : STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_TOUGHNESS_DAMAGE, ref).fire()) {
             return 0;
         }
 
         int result = dealPureDamage(attacked, attacker, t_damage, e_damage, ref);
+        ref.setAmount(result);
         new Event(magical ?
          STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_SPELL_DAMAGE
          : STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PHYSICAL_DAMAGE, ref).fire();
+
 
         attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked, amount);
         return result;
     }
 
 
+    // writes values to appropriate parameters of the damage-dealing action, checks event-interruptions
     protected static boolean processDamageEvent(DAMAGE_TYPE damage_type, Ref ref, int amount,
                                                 EVENT_TYPE event_type) {
-        if (damage_type!=null )
-        ref.setValue(KEYS.DAMAGE_TYPE, damage_type.toString());
+        if (damage_type != null)
+            ref.setValue(KEYS.DAMAGE_TYPE, damage_type.toString());
         ref.setAmount(amount);
         KEYS key = null;
         PARAMETER statsParam = null;
@@ -135,13 +206,10 @@ public class DamageDealer {
         if (event_type == STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_DAMAGE) {
             key = KEYS.DAMAGE_AMOUNT;
             statsParam = PARAMS.DAMAGE_LAST_AMOUNT;
-        } else
-
-            if (event_type.equals(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE)) {
-                key = KEYS.DAMAGE_DEALT;
-                statsParam = PARAMS.DAMAGE_LAST_DEALT;
-            }
-            else {
+        } else if (event_type.equals(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE)) {
+            key = KEYS.DAMAGE_DEALT;
+            statsParam = PARAMS.DAMAGE_LAST_DEALT;
+        } else {
             if (((EventType) event_type).getType().equals(CONSTRUCTED_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_DAMAGE_OF_TYPE)) {
                 key = KEYS.DAMAGE_TOTAL;
                 statsParam = PARAMS.DAMAGE_TOTAL;
@@ -267,11 +335,9 @@ public class DamageDealer {
          + attacked.toString());
         attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked,
          damageDealt);
-        processDamageEvent(null , ref, damageDealt,STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE );
+        processDamageEvent(null, ref, damageDealt, STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE);
         return damageDealt;
     }
-
-
 
 
     protected static boolean isAttack(Ref ref) {

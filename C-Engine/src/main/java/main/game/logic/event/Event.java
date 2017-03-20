@@ -124,7 +124,7 @@ public class Event implements Referred {
         COSTS_HAVE_BEEN_PAID,
         COSTS_ARE_BEING_PAID,
         ACTION_ACTIVATED,
-        ACTION_COMPLETE,
+        UNIT_ACTION_COMPLETE,
         HOSTILE_ACTION,
         ABILITY_BEING_RESOLVED,
         //ATTACKS
@@ -168,7 +168,6 @@ public class Event implements Referred {
         UNIT_TURN_STARTED,
         UNIT_NEW_ROUND_STARTED,
         UNIT_NEW_ROUND_BEING_STARTED,
-        UNIT_ACTION_COMPLETE,
 
         UNIT_IS_BEING_KILLED,
         UNIT_BEING_MOVED,
@@ -214,6 +213,8 @@ public class Event implements Referred {
         UNIT_HAS_BEEN_DEALT_SPELL_DAMAGE,
         UNIT_IS_DEALT_PHYSICAL_TOUGHNESS_DAMAGE,
         UNIT_IS_DEALT_PHYSICAL_ENDURANCE_DAMAGE,
+        UNIT_IS_DEALT_MAGICAL_ENDURANCE_DAMAGE,
+        UNIT_IS_DEALT_MAGICAL_TOUGHNESS_DAMAGE,
         UNIT_HAS_BEEN_DEALT_PURE_DAMAGE;
         private String arg = "";
 

@@ -93,10 +93,10 @@ public class GridPanel extends Group {
         int y = 0;
         for (GridCell[] cellRow : (cells)) {
             for (GridCell cell : cellRow) {
-                x++;
                 float gamma =
                         Eidolons.game.getVisionMaster().getGammaMaster().getGammaForCell(x, y);
                 cell.setGamma(gamma);
+                x++;
             }
             y++;
         }

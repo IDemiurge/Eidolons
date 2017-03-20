@@ -6,17 +6,17 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
+import main.entity.active.DC_ItemActiveObj;
 import main.entity.obj.Active;
 import main.entity.obj.Obj;
 import main.game.core.Eidolons;
+import main.game.logic.combat.attack.extra_attack.AttackOfOpportunityRule;
+import main.game.logic.combat.attack.extra_attack.ExtraAttacksRule;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE_GROUP;
 import main.rules.action.StackingRule;
-import main.rules.attack.AttackOfOpportunityRule;
-import main.rules.attack.ExtraAttacksRule;
 import main.rules.combat.ChargeRule;
 import main.rules.mechanics.ConcealmentRule;
 import main.rules.perk.EvasionRule;
@@ -99,17 +99,25 @@ public class Executor extends ActiveHandler {
 
     public boolean activate() {
 
+        log(getEntity() + " activates", false);
+        if (getEntity() instanceof DC_ItemActiveObj){
+            reset();
+        }
         reset();
-        ActionTooltipMaster.test(getEntity());
+//        try {
+//            ActionTooltipMaster.test(getEntity());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         getTargeter().initTarget();
         if (interrupted)
-            return result;
+            return interrupted();
         beingActivated();
         if (interrupted)
-            return result;
-        activated();
+            return interrupted();
+        initActivation();
         if (interrupted)
-            return result;
+            return interrupted();
         resolve();
         if (!BooleanMaster.isTrue(cancelled))
             payCosts();
@@ -122,6 +130,12 @@ public class Executor extends ActiveHandler {
 
         activationOver();
 
+        return result;
+    }
+
+    private boolean interrupted() {
+        log(getEntity().getNameAndCoordinate() + " is interrupted", false);
+        activationOver();
         return result;
     }
 
@@ -172,7 +186,7 @@ public class Executor extends ActiveHandler {
     }
 
 
-    private void activated() {
+    private void initActivation() {
         fireEvent(STANDARD_EVENT_TYPE.ACTION_ACTIVATED, true);
         ownerObj.getRef().setID(KEYS.ACTIVE, getId());
         triggered = getRef().isTriggered();
@@ -186,12 +200,13 @@ public class Executor extends ActiveHandler {
 
 
     private void resolve() {
+        log(getEntity() + " resolves", false);
         addStdPassives();
         getAction().activatePassives();
 //        setResistanceChecked(false); ??
 
         GuiEventManager.trigger(GuiEventType.ACTION_BEING_RESOLVED,
-                new EventCallbackParam(getAction()));
+         new EventCallbackParam(getAction()));
         getMaster().getAnimator().addResolvesPhase();
 
         if (getAction().getAbilities() != null) {
@@ -244,7 +259,7 @@ public class Executor extends ActiveHandler {
         }
         if (!StringMaster.isEmpty(getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES))) {
             ownerObj.addProperty(G_PROPS.STANDARD_PASSIVES,
-                    getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
+             getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
         }
     }
 
@@ -281,11 +296,14 @@ public class Executor extends ActiveHandler {
     public void activationOver() {
         getGame().getManager().setActivatingAction(null);
 //        if (result) TODO !!! always!
-            actionComplete();
+        actionComplete();
     }
 
+
+
     public void actionComplete() {
-        fireEvent(STANDARD_EVENT_TYPE.ACTION_COMPLETE, false);
+        log(getEntity() + " done", false);
+        fireEvent(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, false);
         getMaster().getLogger().logCompletion();
         getGame().getManager().applyActionRules(getAction());
         try {

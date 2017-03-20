@@ -1,4 +1,4 @@
-package main.rules.combat;
+package main.game.logic.combat.mechanics;
 
 import main.ability.ActiveAbility;
 import main.ability.effects.attachment.AddBuffEffect;

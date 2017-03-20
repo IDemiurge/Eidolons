@@ -8,7 +8,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
 import main.game.logic.combat.attack.CriticalAttackRule;
 import main.game.logic.combat.attack.DefenseVsAttackRule;
-import main.rules.combat.ForceRule;
+import main.game.logic.combat.mechanics.ForceRule;
 import main.system.math.MathMaster;
 import main.system.math.ModMaster;
 
@@ -37,18 +37,18 @@ public class ActionTooltipMaster {
     }
 
     public static String getStringForParameter(PARAMS p, DC_ActiveObj action) {
-    if (p!= PARAMS.FORCE && p!= PARAMS.BASE_DAMAGE) {
-        if (action.getIntParam(p) == 0) {
-            return null; //don't show any text!
-        }
-        if (DC_ValueManager.isCentimalModParam(p))
-            if (action.getIntParam(p) == 100) {
+        if (p != PARAMS.FORCE && p != PARAMS.BASE_DAMAGE) {
+            if (action.getIntParam(p) == 0) {
+                return null; //don't show any text!
+            }
+            if (DC_ValueManager.isCentimalModParam(p))
+                if (action.getIntParam(p) == 100) {
+                    return null;
+                }
+            if (p.getDefaultValue().equals(action.getParam(p))) {
                 return null;
             }
-        if (p.getDefaultValue().equals(action.getParam(p))) {
-            return null;
         }
-    }
         switch (p) {
             case BASE_DAMAGE:
                 return getDamageText(action);
@@ -81,7 +81,8 @@ public class ActionTooltipMaster {
             case ARMOR_MOD:
                 return getArmorModDescription(action);
             case IMPACT_AREA:
-                return getAreaOfImpactDescription(action);}
+                return getAreaOfImpactDescription(action);
+        }
         return null;
     }
 
@@ -93,7 +94,7 @@ public class ActionTooltipMaster {
     private static String getForceDamageDescription(DC_ActiveObj action) {
         DAMAGE_TYPE type = DAMAGE_TYPE.BLUDGEONING;
         return "+ Inflicts " +
-         action.getIntParam(PARAMS.FORCE_DAMAGE_MOD)+"% of Force as " +
+         action.getIntParam(PARAMS.FORCE_DAMAGE_MOD) + "% of Force as " +
          type.getName() +
          " damage";
 
@@ -103,12 +104,13 @@ public class ActionTooltipMaster {
         return "";
 
     }
+
     private static String getAreaOfImpactDescription(DC_ActiveObj action) {
         Integer area = action.getIntParam(PARAMS.IMPACT_AREA);
         return "Impact Area " +
-         area+": " +
+         area + ": " +
          "Can fully ignore Armor with Cover<" +
-         (100-area) +         "%";
+         (100 - area) + "%";
     }
 
     private static String getArmorPenetrationDescription(DC_ActiveObj action) {
@@ -116,20 +118,22 @@ public class ActionTooltipMaster {
 
     }
 
-    public static  void test(DC_ActiveObj action) {
+    public static void test(DC_ActiveObj action) {
         test(action, UNIT_INFO_PARAMS.ACTION_TOOLTIP_PARAMS_TABLE);
         test(action, UNIT_INFO_PARAMS.ACTION_TOOLTIP_PARAMS_TEXT);
     }
-        public static  void test(DC_ActiveObj action, PARAMS[] params) {
-        for (PARAMS p : params){
-            main.system.auxiliary.log.LogMaster.log(1, " "
-             + getStringForParameter(p, action)
-            );
+
+    public static void test(DC_ActiveObj action, PARAMS[] params) {
+        for (PARAMS p : params) {
+            String s = getStringForParameter(p, action);
+            if (s != null)
+                main.system.auxiliary.log.LogMaster.log(1, " " + s);
         }
     }
+
     private static String getBleedDescription(DC_ActiveObj action) {
 
-        return "Bleeding: Inflicts " + action.getIntParam(PARAMS.BLEEDING_MOD)+"% Bleed Counters";
+        return "Bleeding: Inflicts " + action.getIntParam(PARAMS.BLEEDING_MOD) + "% Bleed Counters";
 
     }
 
@@ -152,7 +156,7 @@ public class ActionTooltipMaster {
          100 - ModMaster.getFinalModForAction(action, PARAMS.SNEAK_ARMOR_MOD)) +
          "% Armor Penetration, ";
         String defense = String.valueOf(
-         100-ModMaster.getFinalModForAction(action, PARAMS.SNEAK_DEFENSE_MOD)) +
+         100 - ModMaster.getFinalModForAction(action, PARAMS.SNEAK_DEFENSE_MOD)) +
          "% Defense Penetration";
         return "Sneak: " +
          damage +

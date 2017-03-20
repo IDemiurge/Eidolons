@@ -1,4 +1,4 @@
-package main.rules.attack;
+package main.game.logic.combat.attack.extra_attack;
 
 import main.ability.conditions.VisibilityCondition;
 import main.content.PROPS;

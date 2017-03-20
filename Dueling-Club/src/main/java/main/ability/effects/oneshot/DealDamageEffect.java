@@ -3,6 +3,7 @@ package main.ability.effects.oneshot;
 import main.ability.effects.DC_Effect;
 import main.ability.effects.OneshotEffect;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.data.ability.OmittedConstructor;
@@ -11,8 +12,8 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.game.logic.combat.damage.DamageDealer;
-import main.rules.combat.ForceRule;
+import main.game.logic.combat.damage.*;
+import main.game.logic.combat.mechanics.ForceRule;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
@@ -20,12 +21,14 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class DealDamageEffect extends DC_Effect implements OneshotEffect {
     private DAMAGE_TYPE damage_type;
     private boolean magical = true;
     private DAMAGE_MODIFIER damage_mod;
     private DAMAGE_MODIFIER[] damage_mods; //will override damage_mod
+    private Damage damageObject;
 
     // private int damage_dealt = 0;
 
@@ -66,21 +69,31 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
         if (!(ref.getTargetObj() instanceof Unit)) {
             return true; // TODO if cell, apply damage to corpses?
         }
+        if (checkDamageMod(DAMAGE_MODIFIER.QUIET)) {
+            getRef().setQuiet(true);
+        } else {
+            getRef().setQuiet(false);
+        }
+
         Unit targetObj = (Unit) ref.getTargetObj();
         int amount = formula.getAppendedByModifier(ref.getFormula()).getInt(ref);
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
         boolean spell = active instanceof DC_SpellObj;
 
         initDamageType();
-
-        amount = getReducedDamage(targetObj, amount, active, spell);
+        if (!checkDamageMod(DAMAGE_MODIFIER.UNBLOCKABLE))
+            amount = ArmorMaster.getShieldReducedAmountForDealDamageEffect(this, targetObj, amount, active);
 
         LogMaster.log(LogMaster.COMBAT_DEBUG, "Effect is dealing damage: "
          + amount + " to " + ref.getTargetObj().toString());
         saveDamageModsToRef();
 
         ref.setValue(KEYS.DAMAGE_TYPE, damage_type.getName());
-        int damage = DamageDealer.dealDamageOfType(damage_type, targetObj, ref, amount);
+
+        int damage = DamageDealer.dealDamageOfType(
+         getDamageObject(amount)
+//         damage_type, targetObj, ref, amount
+        );
 
         // if (active.getIntParam(PARAMS.FORCE) == 0) // ONLY MAIN SPELL'S
         // DAMAGE
@@ -95,23 +108,8 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
             }
         }
 
-        // if (damageSprite == null)
-        // damageSprite = new DamageSprite(this);
-        // damageSprite.animate(ref);
 
         return true;
-
-        // if (magical) {
-        //
-        // DamageMaster
-        // .spellDamage((DC_HeroObj ) ref.getTargetObj(), ref, amount);
-        // } else {
-        // DamageMaster
-        // .attack_damage((DC_HeroObj ) ref.getTargetObj(), (DC_HeroObj ) ref
-        // .getSourceObj(), amount);
-        // }
-
-        // return true;
 
     }
 
@@ -123,35 +121,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
         }
     }
 
-    private int getReducedDamage(Unit targetObj, int amount, DC_ActiveObj active, boolean spell) {
-        if (checkDamageMod(DAMAGE_MODIFIER.UNBLOCKABLE))
-            return amount;
-
-        if (getGame().getArmorMaster().checkCanShieldBlock(active, targetObj)) {
-            int shieldBlock = getGame().getArmorMaster().getShieldDamageBlocked(amount, targetObj,
-             (Unit) ref.getSourceObj(), active, null, damage_type);
-            // event?
-            amount -= shieldBlock;
-        }
-        if (checkDamageMod(GenericEnums.DAMAGE_MODIFIER.QUIET)) {
-            ref.setQuiet(true);
-        } else {
-            ref.setQuiet(false);
-        }
-        if (spell) {
-            // DC_SpellObj spellObj = (DC_SpellObj) active;
-            // getGame().getLogManager().newLogEntryNode(true,
-            // ENTRY_TYPE.SPELL_DAMAGE, spellObj);
-            // getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.SPELL_DAMAGE);
-        }
-        int blocked = getGame().getArmorMaster().getArmorDamageEffectBlocked(amount, damage_type,
-         targetObj, active);
-
-        amount -= blocked;
-        return amount;
-    }
-
-    private boolean checkDamageMod(DAMAGE_MODIFIER unblockable) {
+    public boolean checkDamageMod(DAMAGE_MODIFIER unblockable) {
         if (damage_mod == unblockable)
             return true;
         if (damage_mods != null) {
@@ -185,7 +155,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
         return string;
     }
 
-    public DAMAGE_TYPE getDamage_type() {
+    public DAMAGE_TYPE getDamageType() {
         return damage_type;
     }
 
@@ -197,4 +167,15 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
     public DAMAGE_MODIFIER getDamage_mod() {
         return damage_mod;
     }
+
+    private Damage getDamageObject(int amount) {
+        List<Damage> list = DamageCalculator.getBonusDamageList(ref, isMagical() ? DAMAGE_CASE.SPELL : DAMAGE_CASE.ACTION);
+        if (!list.isEmpty())
+            damageObject = new MultiDamage(damage_type, ref, amount, list);
+        else damageObject = new Damage(damage_type, ref, amount);
+
+        return damageObject;
+    }
+
+
 }

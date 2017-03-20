@@ -57,7 +57,9 @@ public class Targeter extends ActiveHandler {
 
         }
     }
-
+    public Ref getRef() {
+        return getEntity().getRef().getSourceObj(). getRef();
+    }
     public boolean selectTarget(Ref ref) {
         if (isForcePresetTarget()) {
             return true;
@@ -73,7 +75,6 @@ public class Targeter extends ActiveHandler {
         if (getTargeting() instanceof SelectiveTargeting && getOwnerObj().isAiControlled()) {
             Integer id = TargetingMaster.selectTargetForAction(getEntity());
             if (id != null) {
-                getRef().setTarget(id);
                 result = true;
             }
         } else {
@@ -84,7 +85,8 @@ public class Targeter extends ActiveHandler {
         } else {
             getHandler().setCancelled(true);
         }
-
+if (result)
+    getEntity(). getRef().setTarget(getRef().getTarget());
         return result;
 
     }

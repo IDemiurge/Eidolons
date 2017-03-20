@@ -34,7 +34,15 @@ public class EntityHandler<E extends Entity> {
     public String toString() {
         return StringMaster.getPossessive(getEntity().getName()) + " " + getClass().getSimpleName();
     }
+    protected void log(String string, boolean gameLog) {
+        if (gameLog)
+            getGame().getLogManager().log(string);
+        main.system.auxiliary.log.LogMaster.log(getLogChannel(),string);
+    }
 
+    protected int getLogChannel() {
+        return 1;
+    }
     public E getEntity() {
         return entity;
     }

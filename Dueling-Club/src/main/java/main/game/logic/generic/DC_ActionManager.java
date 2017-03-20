@@ -42,7 +42,7 @@ import main.game.logic.dungeon.special.TrapMaster;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.FEATURE;
 import main.rules.UnitAnalyzer;
-import main.rules.attack.ExtraAttacksRule;
+import main.game.logic.combat.attack.extra_attack.ExtraAttacksRule;
 import main.rules.mechanics.FleeRule;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
