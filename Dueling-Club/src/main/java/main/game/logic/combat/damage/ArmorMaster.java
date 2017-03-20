@@ -49,9 +49,10 @@ public class ArmorMaster {
 
 
     public int getArmorBlockDamage(Damage damage) {
-        return getArmorBlockDamage(damage.shield, damage.spell, damage.canCritOrBlock,
-                damage.average, damage.amount, damage.attacked, damage.attacker, damage.offhand,
-                damage.dmg_type, damage.action);
+        return getArmorBlockDamage(false, damage.isSpell(), damage.canCritOrBlock(),
+         damage.isAverage(), damage.getAmount(), damage.getAttacked(), damage.getAttacker(),
+         damage.isOffhand(),
+         damage.getDmg_type(), damage.getAction());
     }
 
 

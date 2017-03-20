@@ -29,8 +29,8 @@ public class FormulaDamage extends  Damage {
 
     @Override
     public Integer getAmount() {
-        amount = formula.getInt(getRef());
-        return amount;
+        setAmount(formula.getInt(getRef()));
+        return getAmount();
 
     }
 

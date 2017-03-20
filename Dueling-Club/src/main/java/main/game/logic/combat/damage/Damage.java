@@ -1,24 +1,26 @@
 package main.game.logic.combat.damage;
 
+import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 
 public class Damage {
-    public boolean shield;
-    public boolean spell;
-    public boolean canCritOrBlock;
-    public boolean average;
-    public Integer amount;
-    public Unit attacked;
-    public Unit attacker;
-    public boolean offhand;
-    public DAMAGE_TYPE dmg_type;
-    public DC_ActiveObj action;
-    public Ref ref;
+    private boolean spell;
+    private boolean attack;
+    private boolean average;
+    private Integer amount;
+    private Unit attacked;
+    private Unit attacker;
+    private boolean offhand;
+    private DAMAGE_TYPE dmg_type;
+    private DAMAGE_MODIFIER[] modifiers;
+    private DC_ActiveObj action;
+    private Ref ref;
 
-    public Damage() {
+
+    private Damage() {
 
     }
 
@@ -35,17 +37,63 @@ public class Damage {
         this.ref = ref;
     }
 
-    public boolean isShield() {
-        return shield;
-    }
 
+    public boolean canCritOrBlock() {
+return true;// TODO
+    }
     public boolean isSpell() {
         return spell;
     }
 
-    public boolean isCanCritOrBlock() {
-        return canCritOrBlock;
+    public void setSpell(boolean spell) {
+        this.spell = spell;
     }
+
+    public boolean isAttack() {
+        return attack;
+    }
+
+    public void setAttack(boolean attack) {
+        this.attack = attack;
+    }
+
+    public DAMAGE_MODIFIER[] getModifiers() {
+        return modifiers;
+    }
+
+    public void setModifiers(DAMAGE_MODIFIER[] modifiers) {
+        this.modifiers = modifiers;
+    }
+
+    public void setAverage(boolean average) {
+        this.average = average;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public void setAttacked(Unit attacked) {
+        this.attacked = attacked;
+    }
+
+    public void setAttacker(Unit attacker) {
+        this.attacker = attacker;
+    }
+
+    public void setOffhand(boolean offhand) {
+        this.offhand = offhand;
+    }
+
+    public void setDmg_type(DAMAGE_TYPE dmg_type) {
+        this.dmg_type = dmg_type;
+    }
+
+    public void setAction(DC_ActiveObj action) {
+        this.action = action;
+    }
+
+
 
     public boolean isAverage() {
         return average;
@@ -82,4 +130,5 @@ public class Damage {
     public void setRef(Ref ref) {
         this.ref = ref;
     }
+
 }

@@ -15,6 +15,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.libgdx.anims.phased.PhaseAnimator;
+import main.rules.round.UnconsciousRule;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.PhaseAnimation;
@@ -64,10 +65,10 @@ public class DamageDealer {
                     int percent =   dmg.getAmount();
                     if (((FormulaDamage) dmg).isFromRaw())
                     {
-                        dmg.amount = damage.amount * percent / 100;
+                        dmg.setAmount(damage.getAmount() * percent / 100);
                     }
                     else {
-                        dmg.amount = dealt * percent / 100;
+                        dmg.setAmount(dealt * percent / 100);
                     }
                 }
             }
@@ -84,7 +85,7 @@ public class DamageDealer {
      * @param targetObj   unit to deal dmg to
      * @param ref         contains all the other info we may need
      * @param amount      total amount of damage to be reduced by Resistance and Armor (unless damage_type==PURE) and dealt as PURE
-     * @return
+     * @return actual amount of damage dealt ( max(min(Toughness*(1-DEATH_BARRIER), Toughness dmg),min(Endurance, Endurance dmg))
      */
     private static int dealDamageOfType(DAMAGE_TYPE damage_type, Unit targetObj, Ref ref,
                                        int amount) {
@@ -104,7 +105,6 @@ public class DamageDealer {
             return 0;
         }
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
-        int damageLeft;
         int damageDealt = 0;
         if (damage_type == DAMAGE_TYPE.PURE) {
             damageDealt = dealPureDamage(targetObj, attacker, amount,
@@ -114,17 +114,15 @@ public class DamageDealer {
             damageDealt = dealDamage(ref, !isAttack(ref), damage_type);
         }
 
-        damageLeft = amount - damageDealt;
-
         if (!ref.isQuiet()) {
             try {
                 active.getRef().setValue(KEYS.DAMAGE_DEALT, damageDealt + "");
             } catch (Exception e) {
-
+e.printStackTrace();
             }
         }
 
-        return damageLeft;
+        return damageDealt;
 
     }
 
@@ -271,7 +269,10 @@ public class DamageDealer {
                 }
                 toughness_dmg = ref.getAmount(); // triggers may have changed the
                 // amount!
-                actual_t_damage = Math.min(attacked.getIntParam(PARAMS.C_TOUGHNESS), toughness_dmg);
+                actual_t_damage = Math.min(
+                 attacked.getIntParam(PARAMS.C_TOUGHNESS)
+                 * (100+UnconsciousRule.DEFAULT_DEATH_BARRIER)/100
+                 , toughness_dmg);
                 ref.setAmount(actual_t_damage);
                 // for cleave and other sensitive effects
 

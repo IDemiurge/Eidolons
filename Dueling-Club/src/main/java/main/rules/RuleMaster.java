@@ -311,7 +311,7 @@ public class RuleMaster implements Controller {
     public enum RULE {
         FORCE, ATTACK_OF_OPPORTUNITY, INSTANT_ATTACK,
         COUNTER_ATTACK, TIME, VISIBILITY, CLEAR_SHOT,
-        PARRYING(RULE_SCOPE.TEST),
+        PARRYING(RULE_SCOPE.FULL),
         // C
         DURABILITY,
         UNCONSCIOUS,

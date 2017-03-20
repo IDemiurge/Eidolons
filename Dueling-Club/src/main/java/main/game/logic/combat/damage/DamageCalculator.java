@@ -125,7 +125,8 @@ public class DamageCalculator {
         }
         Unit sourceObj = (Unit) ref.getSourceObj();
         Damage damage = new Damage(damageType, amount, sourceObj, (Unit) ref.getTargetObj());
-        int blocked = sourceObj.getGame().getArmorSimulator().getArmorBlockDamage(damage);
+        int blocked = sourceObj.getGame().getArmorSimulator().
+         getArmorBlockDamage(damage);
         amount -= blocked;
         amount = ResistMaster.getResistanceForDamageType((Unit) ref.getTargetObj(), sourceObj,
          damageType);

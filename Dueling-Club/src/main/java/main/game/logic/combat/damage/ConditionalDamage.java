@@ -7,6 +7,7 @@ import main.entity.Ref;
 /**
  * Created by JustMe on 3/18/2017.
  */
+@Deprecated
 public class ConditionalDamage extends  Damage{
     Condition condition;
 

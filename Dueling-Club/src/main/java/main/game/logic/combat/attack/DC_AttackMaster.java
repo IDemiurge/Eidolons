@@ -5,7 +5,6 @@ import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.oneshot.attack.AttackEffect;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
-import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
@@ -20,9 +19,8 @@ import main.game.core.game.DC_Game;
 import main.game.core.master.EffectMaster;
 import main.game.logic.combat.attack.extra_attack.CounterAttackRule;
 import main.game.logic.combat.damage.Damage;
-import main.game.logic.combat.damage.DamageCalculator;
 import main.game.logic.combat.damage.DamageDealer;
-import main.game.logic.combat.damage.MultiDamage;
+import main.game.logic.combat.damage.DamageFactory;
 import main.game.logic.combat.mechanics.ForceRule;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -42,8 +40,6 @@ import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.text.LogEntryNode;
-
-import java.util.List;
 
 public class DC_AttackMaster {
     private ParryRule parryRule;
@@ -395,9 +391,10 @@ public class DC_AttackMaster {
         attack.setDamage(final_amount);
         if (checkAttackEventsInterrupt(attack, ref))
             return true;
-    List<Damage> list = DamageCalculator.getBonusDamageList(ref, DAMAGE_CASE.ATTACK);
-        Damage damageObj = new MultiDamage(dmg_type, ref, final_amount,list);
-      int damageDealt = DamageDealer.dealDamageOfType(
+        Damage damageObj = DamageFactory.getDamageForAttack(
+         dmg_type, ref, final_amount
+        );
+    int damageDealt = DamageDealer.dealDamageOfType(
          damageObj);
         attack.damageDealt(damageDealt);
 

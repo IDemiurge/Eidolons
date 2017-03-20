@@ -100,6 +100,9 @@ public class UnitResetter extends EntityResetter<Unit> {
         if (getEntity().getSpecialEffects() != null) {
             getEntity().getSpecialEffects().clear();
         }
+        if (getEntity().getBonusDamage() != null) {
+            getEntity().getBonusDamage().clear();
+        }
         super.toBase();
 
         if (game.isSimulation()) {

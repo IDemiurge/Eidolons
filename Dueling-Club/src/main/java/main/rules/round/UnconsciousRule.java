@@ -38,12 +38,12 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     public static final Integer DEFAULT_FOCUS_REQ = 25;
     // ++ only regen part of toughness ...
-    private static final int DEFAULT_DEATH_BARRIER = 35;
-    private static final int DEFAULT_ANNIHILATION_BARRIER = 100;
-    private static final String BUFF_NAME = null;
-    private static final int MIN_FOCUS_REQ = 5;
-    private static final Integer AP_PENALTY = 2;
-    private static final Integer INITIATIVE_PENALTY = 75;
+    public static final int DEFAULT_DEATH_BARRIER = 35;
+    public static final int DEFAULT_ANNIHILATION_BARRIER = 100;
+    public static final String BUFF_NAME = null;
+    public static final int MIN_FOCUS_REQ = 5;
+    public static final Integer AP_PENALTY = 2;
+    public static final Integer INITIATIVE_PENALTY = 75;
 
     public UnconsciousRule(DC_Game game) {
         super(game);
