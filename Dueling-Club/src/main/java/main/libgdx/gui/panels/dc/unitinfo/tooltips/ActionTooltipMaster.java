@@ -8,6 +8,7 @@ import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
+import main.game.logic.combat.attack.AttackCalculator.MOD_IDENTIFIER;
 import main.game.logic.combat.attack.CriticalAttackRule;
 import main.game.logic.combat.attack.DefenseVsAttackRule;
 import main.game.logic.combat.mechanics.ForceRule;
@@ -20,10 +21,6 @@ import main.system.math.ModMaster;
  */
 public class ActionTooltipMaster {
 
-
-    //    public int getRange3(DC_ActiveObj action){
-//        return action.getIntParam(PARAMS.AUTO_ATTACK_RANGE)+1;
-//    }
     private static String getDiceText(DC_ActiveObj action) {
         DC_WeaponObj weapon = action.getActiveWeapon();
         int dieSize = weapon.getMaterial().getModifier();
@@ -39,12 +36,47 @@ public class ActionTooltipMaster {
         return damage + " + " + getDiceText(action);
     }
 
-    public static String getStringForValueTable(VALUE value, DC_ActiveObj action) {
+    public static String getIconPathForTableRow(VALUE value) {
+
+        if (value instanceof PARAMS) {
+            PARAMS p = (PARAMS) value;
+
+            switch (p) {
+                case COUNTER_MOD:
+                    return MOD_IDENTIFIER.COUNTER_ATTACK.getImagePath();
+                case AOO_ATTACK_MOD:
+                    return MOD_IDENTIFIER.AOO.getImagePath();
+                case INSTANT_ATTACK_MOD:
+                    return MOD_IDENTIFIER.INSTANT_ATTACK.getImagePath();
+                case SIDE_ATTACK_MOD:
+                    return MOD_IDENTIFIER.SIDE_ATTACK.getImagePath();
+                case DIAGONAL_ATTACK_MOD:
+                    return MOD_IDENTIFIER.DIAGONAL_ATTACK.getImagePath();
+                case CLOSE_QUARTERS_ATTACK_MOD:
+                    return MOD_IDENTIFIER.CLOSE_QUARTERS.getImagePath();
+                case LONG_REACH_ATTACK_MOD:
+                    return MOD_IDENTIFIER.LONG_REACH.getImagePath();
+            }
+        }
+        return ImageManager.getValueIconPath(value);
+    }
+
+//    public static String getStringForHeader(VALUE value, DC_ActiveObj action) {
+//
+//    }
+//    public static String getStringForRow(VALUE value, DC_ActiveObj action) {
+//
+//    }
+
+    public static boolean isParamDisplayedAsCustomString(PARAMS p) {
+        return p== PARAMS.DAMAGE;
+    }
+        public static String getStringForValueTable(VALUE value, DC_ActiveObj action) {
         if (value == G_PROPS.NAME)
             return action.getName();
         if (value instanceof PARAMS) {
             PARAMS p = (PARAMS) value;
-            if (p != PARAMS.FORCE && p != PARAMS.BASE_DAMAGE) {
+            if (isIgnoreIfZero(p) ) {
                 if (action.getIntParam(p) == 0) {
                     return null; //don't show any text!
                 }
@@ -57,6 +89,13 @@ public class ActionTooltipMaster {
                 }
             }
             switch (p) {
+                case CLOSE_QUARTERS_DAMAGE_MOD:
+                    return (getRange0(action));
+                case DAMAGE_MOD:
+                    return (getRange1(action));
+                case LONG_REACH_DAMAGE_MOD:
+                    return (getRange2(action));
+
                 case DAMAGE_BONUS:
                 case ATTACK:
                     return ImageManager.getValueIconPath(p);
@@ -64,8 +103,6 @@ public class ActionTooltipMaster {
                     return "Base";
                 case DAMAGE:
                     return getDamageText(action);
-                case DIE_SIZE:
-                    return getDiceText(action);
                 case COUNTER_MOD:
                 case COUNTER_ATTACK_MOD:
                     return "Counter";
@@ -105,8 +142,12 @@ public class ActionTooltipMaster {
                     return getAreaOfImpactDescription(action);
             }
         }
-            return null;
+        return null;
 
+    }
+
+        private static boolean isIgnoreIfZero(PARAMS p) {
+        return p != PARAMS.FORCE && p != PARAMS.BASE_DAMAGE;
     }
 
     private static String getForceMaxStrengthDescription(DC_ActiveObj action) {
@@ -203,7 +244,6 @@ public class ActionTooltipMaster {
          "lb, always win vs < " + weight_min + "lb (or Interrupt)" + roll_info;
     }
 
-
     private static String getCriticalDescription(DC_ActiveObj action) {
         int attack = action.getOwnerObj().getIntParam(action.isOffhand() ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK);
         int defense = action.getOwnerObj().getIntParam(PARAMS.DEFENSE); // last hit unit? 5*level? same as unit's?
@@ -240,6 +280,18 @@ public class ActionTooltipMaster {
          chance +
          " chance to miss targets with " +
          defense + " defense";
+    }
+
+    public static String getRange0(DC_ActiveObj action) {
+        return "0";
+    }
+
+    public static String getRange1(DC_ActiveObj action) {
+        return String.valueOf(action.getIntParam(PARAMS.RANGE)); //AUTO_ATTACK_?
+    }
+
+    public static String getRange2(DC_ActiveObj action) {
+        return String.valueOf(action.getIntParam(PARAMS.RANGE) + 1) + "+";
     }
 
 }

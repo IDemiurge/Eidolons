@@ -760,6 +760,10 @@ public class AttackCalculator {
 
         }
 
+        public String getImagePath() {
+            return imagePath;
+        }
+
         MOD_IDENTIFIER(String path) {
             this.imagePath = path;
         }
