@@ -8,6 +8,7 @@ import main.system.auxiliary.StringMaster;
 import java.util.HashMap;
 import java.util.Map;
 
+// Qualitative properties ..*what?*
 public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     // INSTEAD OF 'ACTIVES'!
     // AGE(null, "chars"),
