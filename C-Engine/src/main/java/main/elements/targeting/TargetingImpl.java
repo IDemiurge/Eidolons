@@ -4,13 +4,13 @@ import main.elements.Filter;
 import main.elements.conditions.Conditions;
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import main.system.math.MyMathObj;
+import main.system.math.Formula;
 
 public abstract class TargetingImpl implements Targeting
 // , Component
 {
     protected Filter<Obj> filter;
-    protected MyMathObj numberOfTargets;
+    protected Formula numberOfTargets;
     protected boolean friendlyFire;
     protected boolean modsAdded;
     protected Ref ref;

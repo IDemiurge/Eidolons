@@ -8,42 +8,40 @@ import main.game.core.game.Game;
 public abstract class DynamicValue implements Referred {
 
     protected Ref ref;
-    protected String value_ref;
-    protected String str;
-    protected String obj_ref;
+    protected String value_string;
+    protected String fullString;
+    protected String obj_string;
     protected Entity entity;
     protected Game game;
-    protected Integer source;
-    protected Integer target;
     protected boolean base;
 
-    public DynamicValue(String valueString) {
-        if (valueString.contains("@")) {
-            valueString = valueString.replace("@", "");
+    public DynamicValue(String fullString) {
+        if (fullString.contains("@")) {
+            fullString = fullString.replace("@", "");
             base = true;
         }
 
-        if (valueString.contains("_") && (base || valueString.contains("{"))) {
-            valueString = valueString.replace("{", "").replace("}", "");
-            if (Ref.isKey(valueString)) {
-                this.value_ref = valueString;
+        if (fullString.contains("_") && (base || fullString.contains("{"))) {
+            fullString = fullString.replace("{", "").replace("}", "");
+            if (Ref.isKey(fullString)) {
+                this.value_string = fullString;
             } else {
-                String s[] = valueString.split("_");
+                String s[] = fullString.split("_");
 
-                obj_ref = s[0];
-                this.value_ref = valueString.substring(valueString.indexOf("_") + 1);
+                obj_string = s[0];
+                this.value_string = fullString.substring(fullString.indexOf("_") + 1);
             }
         } else {
-            str = valueString;
+            this.fullString = fullString;
         }
     }
 
     public DynamicValue() {
     }
 
-    public DynamicValue(String value_ref, String obj_ref, boolean base) {
-        this.value_ref = value_ref;
-        this.obj_ref = obj_ref;
+    public DynamicValue(String value_string, String obj_string, boolean base) {
+        this.value_string = value_string;
+        this.obj_string = obj_string;
         this.base = base;
     }
 
@@ -56,8 +54,6 @@ public abstract class DynamicValue implements Referred {
     public void setRef(Ref ref) {
         this.ref = ref;
         this.game = ref.getGame();
-        this.source = ref.getSource();
-        this.target = ref.getTarget();
         this.base = ref.isBase();
 
     }
@@ -66,16 +62,12 @@ public abstract class DynamicValue implements Referred {
 
     }
 
-    public String getValue_ref() {
-        return value_ref;
+    public String getValue_string() {
+        return value_string;
     }
 
-    public String getStr() {
-        return str;
-    }
-
-    public String getObj_ref() {
-        return obj_ref;
+    public String getFullString() {
+        return fullString;
     }
 
     public Entity getEntity() {
@@ -84,14 +76,6 @@ public abstract class DynamicValue implements Referred {
 
     public Game getGame() {
         return game;
-    }
-
-    public Integer getSource() {
-        return source;
-    }
-
-    public Integer getTarget() {
-        return target;
     }
 
     public boolean isBase() {

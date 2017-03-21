@@ -279,13 +279,12 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     }
 
     private boolean modify(Obj obj, Map<PARAMETER, String> map) {
-        formula.setRef(ref);
         Double amount;
 
         if (staticAmount == null) {
             try {
                 if (checkStaticallyParsed()) {
-                    staticAmount = formula.getDouble();
+                    staticAmount = formula.getDouble(ref);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -314,7 +313,6 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         int min_max_amount = initMinMaxAmount(obj, intAmount);
 
         double final_amount = 0;
-        ref.setValue(param);
         switch (mod_type) {
 
             case MODIFY_BY_PERCENT: {

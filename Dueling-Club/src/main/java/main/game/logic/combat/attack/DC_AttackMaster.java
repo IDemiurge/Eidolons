@@ -400,7 +400,7 @@ public class DC_AttackMaster {
         Damage damageObj = DamageFactory.getDamageForAttack(
          dmg_type, ref, final_amount
         );
-    int damageDealt = DamageDealer.dealDamageOfType(
+    int damageDealt = DamageDealer.dealDamage(
          damageObj);
         attack.damageDealt(damageDealt);
 

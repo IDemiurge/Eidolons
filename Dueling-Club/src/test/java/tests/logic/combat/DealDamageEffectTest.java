@@ -94,7 +94,7 @@ public class DealDamageEffectTest {
 
         Damage dmg = DamageFactory.getDamageFromEffect(eff,25);
         dmg.getRef().setTarget(target.getId());
-        DamageDealer.dealDamageOfType(dmg);
+        DamageDealer.dealDamage(dmg);
 
 
         Integer newToughness = target.getIntParam(PARAMS.C_TOUGHNESS);

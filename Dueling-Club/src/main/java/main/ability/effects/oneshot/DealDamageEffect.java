@@ -11,10 +11,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.game.logic.combat.damage.ArmorMaster;
-import main.game.logic.combat.damage.Damage;
-import main.game.logic.combat.damage.DamageDealer;
-import main.game.logic.combat.damage.DamageFactory;
+import main.game.logic.combat.damage.*;
 import main.game.logic.combat.mechanics.ForceRule;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -29,9 +26,6 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
     private boolean magical = true;
     private DAMAGE_MODIFIER damage_mod;
     private DAMAGE_MODIFIER[] damage_mods; //will override damage_mod
-    private Damage damageObject;
-
-    // private int damage_dealt = 0;
 
     // damage type?!
     public DealDamageEffect(Formula formula) {
@@ -77,7 +71,8 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
         }
 
         Unit targetObj = (Unit) ref.getTargetObj();
-        int amount = formula.getAppendedByModifier(ref.getFormula()).getInt(ref);
+        int amount = formula.getAppendedByModifier(ref.getValue(KEYS.FORMULA))
+         .getInt(ref);
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
         boolean spell = active instanceof DC_SpellObj;
 
@@ -91,7 +86,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
 
         ref.setValue(KEYS.DAMAGE_TYPE, damage_type.getName());
 
-        int damage = DamageDealer.dealDamageOfType(
+        int damage = DamageDealer.dealDamage(
          getDamageObject(amount)
 //         damage_type, targetObj, ref, amount
         );
@@ -99,7 +94,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
         // if (active.getIntParam(PARAMS.FORCE) == 0) // ONLY MAIN SPELL'S
         // DAMAGE
         if (damage > 0) {
-            if (!ref.isPeriodic()) {
+            if (!checkDamageMod(DAMAGE_MODIFIER.PERIODIC)) {
                 if (!ref.isTriggered()) {
                     if (!active.isAttack()) {
                         ForceRule.applyForceEffects(active);
@@ -116,9 +111,9 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
 
     private void saveDamageModsToRef() {
         if (damage_mods != null) {
-            ref.setValue(KEYS.DAMAGE_SOURCE, StringMaster.constructStringContainer(Arrays.asList(damage_mods)));
+            ref.setValue(KEYS.DAMAGE_MODS, StringMaster.constructStringContainer(Arrays.asList(damage_mods)));
         } else if (damage_mod != null) {
-            ref.setValue(KEYS.DAMAGE_SOURCE, damage_mod.toString());
+            ref.setValue(KEYS.DAMAGE_MODS, damage_mod.toString());
         }
     }
 
@@ -170,9 +165,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
     }
 
     private Damage getDamageObject(int amount) {
-       damageObject =  DamageFactory.getDamageFromEffect(this, amount);
-
-        return damageObject;
+     return   DamageFactory.getDamageFromEffect(this, amount);
     }
 
 

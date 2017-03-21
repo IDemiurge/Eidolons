@@ -1,7 +1,6 @@
 package main.entity;
 
 import main.ability.effects.Effect;
-import main.content.VALUE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
@@ -15,7 +14,6 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.math.Formula;
 import main.system.net.data.DataUnit;
 
 import java.io.Serializable;
@@ -29,15 +27,20 @@ import java.util.HashMap;
  * To activate on a given object, set ref’s {target} key, otherwise Active's Targeting will select()
  */
 public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
-    public static final String SOURCE = "source";
-    public static final String PAYEE = "payee";
-    protected static final long serialVersionUID = 1L;
+
+//    Map<KEYS,String> map;
+    /*
+    TARGET_WEAPON example
+    ref replacement is there exactly to avoid putting the whole thing into map!
+
+     */
+
+    protected static final long serialVersionUID = 1L; //why was it necessary?
     protected static final String MULTI_TARGET = KEYS.TARGET.name() + "#";
     public Game game;
     public Event event;
     public boolean base;
-    protected GroupImpl group; // id
-    // GroupImpl!
+    protected GroupImpl group;
     protected String str;
     protected Player player;
     protected Effect effect;
@@ -45,10 +48,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     protected boolean debug;
     protected boolean triggered;
 
-    protected VALUE value;
 
-    protected boolean periodic;
-    private Formula formula;
     private ActiveObj animationActive;
     private boolean animationDisabled;
     private Entity infoEntity;
@@ -157,8 +157,6 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         ref.setBase(base);
         ref.setGame(game);
         ref.setEffect(effect);
-        ref.setValue(value);
-        ref.setPeriodic(periodic);
         ref.setTriggered(triggered);
         ref.setDebug(debug);
         ref.setAnimationActive(animationActive);
@@ -175,16 +173,16 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     }
 
 
-
     protected String formatKeyString(String key) {
         // return key;
         return key.toUpperCase();
         // [OPTIMIZED]
     }
+
     protected Ref checkForRefReplacement() {
         String s = getStr();
         if (s.startsWith("{")) {
-            s =StringMaster.replaceFirst( s,"{", "");
+            s = StringMaster.replaceFirst(s, "{", "");
         }
         if (StringMaster.compareByChar(StringMaster.getSegment(0, s, "_"), "EVENT", true)) {
             // setStr(getStr().replace(EVENT_PREFIX, "")); [OPTIMIZED]
@@ -248,7 +246,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
                 int i = Integer.valueOf(getStr().replace(MULTI_TARGET, ""));
 
                 LogMaster.log(LogMaster.CORE_DEBUG_1, "multi targeting effect, selecting target #"
-                        + i + group);
+                 + i + group);
 
                 if (i > 0) {
                     i--;
@@ -387,7 +385,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     public Obj getLastRemovedObj(KEYS string) {
         try {
             return game.getObjectById(StringMaster.getInteger(getRemovedValues()
-                    .get(string.toString())));
+             .get(string.toString())));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -494,7 +492,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
             return null;
         }
         return new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class,
-                getValue(KEYS.DAMAGE_TYPE));
+         getValue(KEYS.DAMAGE_TYPE));
     }
 
     public boolean isAnimationDisabled() {
@@ -518,35 +516,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         this.animationActive = animationActive;
     }
 
-    public VALUE getValue() {
-        return value;
-    }
 
-    public void setValue(VALUE v) {
-        this.value = v;
-
-    }
-
-    public boolean isPeriodic() {
-        return periodic;
-    }
-
-    public void setPeriodic(boolean periodic) {
-        this.periodic = periodic;
-    }
-
-    public void setImage(String image) {
-        setValue(KEYS.IMAGE.toString(), image);
-
-    }
-
-    public Formula getFormula() {
-        return formula;
-    }
-
-    public void setFormula(Formula formula) {
-        this.formula = formula;
-    }
 
     public boolean isDebug() {
         return debug;
@@ -562,10 +532,10 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         return ref;
     }
 
+    //
     public enum KEYS {
-        GAME,
         THIS,
-        AMOUNT,
+
         TARGET,
         SOURCE,
         MATCH,
@@ -587,10 +557,6 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         EVENT_ABILITY,
         // ++ EFFECT
         BUFF,
-        DAMAGE_SOURCE,
-        DAMAGE_MODS,
-        DAMAGE_TYPE,
-        STRING,
         SUMMONED,
         TARGET2,
         PAYEE,
@@ -603,9 +569,17 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         AMMO,
         RANGED,
         KILLER,
+
+        //non-id
+        AMOUNT,
+        FORMULA,
+        DAMAGE_MODS,
+        DAMAGE_TYPE,
+        STRING,
         DAMAGE_TOTAL,
         DAMAGE_AMOUNT,
         DAMAGE_DEALT,
+
         IMAGE,
         OBJECTIVE,
     }

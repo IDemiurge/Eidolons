@@ -75,10 +75,10 @@ public class ItemCondition extends MicroCondition {
         String string = item.getProp(prop);
         return new StringComparison(string, val, strict).check(ref);
 
-        // String prop2 = ref.getObj(obj_ref).getProp(slot);
+        // String prop2 = ref.getObj(obj_string).getProp(slot);
         // if (StringMaster.isEmpty(prop2)) {
         // try {
-        // prop2 = "" + ref.getObj(obj_ref).getRef().getObj(slot).getId();
+        // prop2 = "" + ref.getObj(obj_string).getRef().getObj(slot).getId();
         // } catch (Exception e) {
         // return false;
         // }

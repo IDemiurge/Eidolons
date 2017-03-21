@@ -46,8 +46,6 @@ public class MacroRef extends Ref {
         ref.setBase(base);
         ref.setGame(game);
         ref.setEffect(effect);
-        ref.setValue(value);
-        ref.setPeriodic(periodic);
         ref.setTriggered(triggered);
         ref.setAmount(getAmount());
         return ref;

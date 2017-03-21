@@ -16,8 +16,8 @@ public class Property extends DynamicValue {
     private boolean strict;
 
     public Property(String obj_ref, String value_ref) {
-        this.value_ref = value_ref;
-        this.obj_ref = obj_ref;
+        this.value_string = value_ref;
+        this.obj_string = obj_ref;
         base = false;
     }
 
@@ -42,48 +42,48 @@ public class Property extends DynamicValue {
 
     }
 
-    public String getStr() {
+    public String getFullString() {
         if (autovar) {
             return FunctionManager.evaluateFunction(ref, FUNCTIONS.AUTOVAR,
                     string);
         }
-        if (obj_ref == null) {
-            if (str == null) {
-                return ref.getValue(value_ref);
+        if (obj_string == null) {
+            if (fullString == null) {
+                return ref.getValue(value_string);
             }
-            return str;
+            return fullString;
         }
 
-        entity = ref.getObj(obj_ref);
+        entity = ref.getObj(obj_string);
         if (entity == null) {
-            entity = ref.getType(obj_ref);
+            entity = ref.getType(obj_string);
         }
 
         if (entity == null) {
-            if (obj_ref.equalsIgnoreCase("EVENT")) {
+            if (obj_string.equalsIgnoreCase("EVENT")) {
                 Ref REF = ref.getEvent().getRef();
-                if (!value_ref.contains(StringMaster.FORMULA_REF_SEPARATOR)
-                        && REF.getValue(value_ref) != null) {
-                    return REF.getValue(value_ref);
+                if (!value_string.contains(StringMaster.FORMULA_REF_SEPARATOR)
+                        && REF.getValue(value_string) != null) {
+                    return REF.getValue(value_string);
                 } else {
                     return new Property(
-                            StringMaster.wrapInCurlyBraces(value_ref))
+                            StringMaster.wrapInCurlyBraces(value_string))
                             .getStr(REF);
                 }
 
             }
-            return ref.getValue(value_ref);
+            return ref.getValue(value_string);
         }
         String str = (strict) ? entity.getProperty(
-                ContentManager.getPROP(value_ref, true), base) : entity
-                .getProperty(ContentManager.getPROP(value_ref), base);
+                ContentManager.getPROP(value_string, true), base) : entity
+                .getProperty(ContentManager.getPROP(value_string), base);
 
         return str;
     }
 
     public String getStr(Ref ref) {
         setRef(ref);
-        String str = getStr();
+        String str = getFullString();
         if (str == null) {
             return "";
         }
@@ -92,10 +92,10 @@ public class Property extends DynamicValue {
 
     @Override
     public String toString() {
-        if (str != null) {
-            return str;
+        if (fullString != null) {
+            return fullString;
         }
-        return obj_ref + value_ref;
+        return obj_string + value_string;
     }
 
     public boolean isStrict() {

@@ -40,8 +40,6 @@ public abstract class DamageCounterRule extends DC_CounterRule {
         }
 
         Ref ref = Ref.getSelfTargetingRefCopy(unit);
-        ref.setPeriodic(true);
-        ref.setImage(getImage());
         return new DealDamageEffect(getDamageType().toString(),
 
          new Formula(getCounterRef() + " * ("

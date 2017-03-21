@@ -70,6 +70,7 @@ return true;// TODO
 
     public void setModifiers(DAMAGE_MODIFIER[] modifiers) {
         this.modifiers = modifiers;
+
     }
 
     public void setAverage(boolean average) {

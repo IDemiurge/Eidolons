@@ -603,7 +603,7 @@ public class ConditionMaster {
     }
 
     public enum CONDITION_TEMPLATES {
-        STRING("string", "str", "has"),
+        STRING("string", "fullString", "has"),
         STRING_STRICT("strStrict", "strEqual", "strict"),
         CONTAINER("contains"),
         CONTAINER_STRICT("containerStrict"),

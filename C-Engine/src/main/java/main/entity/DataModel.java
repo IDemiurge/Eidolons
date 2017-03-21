@@ -33,6 +33,8 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.entity.CounterMaster;
 import main.system.images.ImageManager;
 import main.system.math.Formula;
+import main.system.math.FormulaFactory;
+import main.system.math.FormulaMaster;
 import main.system.math.MathMaster;
 
 import javax.swing.*;
@@ -302,7 +304,7 @@ public abstract class DataModel {
         if (string.equals("")) {
             return 0;
         }
-        result = StringMaster.getInteger(string);
+        result = FormulaMaster.getInt(string, ref);
         getIntegerMap(base).put(param, result);
         return result; // return new Formula(string).getInt(ref);
         // try {
@@ -597,7 +599,7 @@ public abstract class DataModel {
                 return true;
             }
         }
-        Number amount = new Formula(amountString).evaluate();
+        Number amount = new Formula(amountString).evaluate(ref);
 
         LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
                 + param.getName() + " by " + amount);
@@ -617,9 +619,10 @@ public abstract class DataModel {
             if (!prevValue.isEmpty()) {
                 try {
 
-                    newValue = Formula.getFormulaByAppend(prevValue, amount).evaluate();
+                    newValue = FormulaFactory.getFormulaByAppend(prevValue,
+                     amount).evaluate(ref);
                 } catch (Exception e) {
-                    setParam(param, Formula.getFormulaByAppend(prevValue, amount).toString(),
+                    setParam(param, FormulaFactory.getFormulaByAppend(prevValue, amount).toString(),
                             quietly);
                     return true;
                 }

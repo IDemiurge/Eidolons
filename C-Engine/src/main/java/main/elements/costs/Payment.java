@@ -31,7 +31,7 @@ public class Payment implements Serializable {
     }
 
     public boolean pay(Obj payee, Ref ref) {
-        Number n = amountFormula.evaluate();
+        Number n = amountFormula.evaluate(ref);
 
         if (n instanceof Double) {
             this.ref = ref;

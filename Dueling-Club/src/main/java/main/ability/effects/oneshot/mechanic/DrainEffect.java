@@ -4,6 +4,7 @@ import main.ability.effects.OneshotEffect;
 import main.ability.effects.common.ModifyValueEffect;
 import main.content.ContentManager;
 import main.content.values.parameters.PARAMETER;
+import main.game.logic.combat.damage.ResistMaster;
 import main.system.math.Formula;
 
 public class DrainEffect extends ModifyValueEffect  implements OneshotEffect {
@@ -40,7 +41,7 @@ public class DrainEffect extends ModifyValueEffect  implements OneshotEffect {
         if (resistanceApplies) // resistance rule (mod) should take care of
         // this!
         {
-            formula.addResistance();
+            ResistMaster.addResistance(formula);
         }
         super.applyThis();
 

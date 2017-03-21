@@ -3,6 +3,7 @@ package main.elements.costs;
 import main.content.values.parameters.PARAMETER;
 import main.elements.ReferredElement;
 import main.entity.Ref;
+import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 
@@ -20,7 +21,7 @@ public class CostImpl extends ReferredElement implements Cost, Serializable {
     protected CostRequirements requirements;
     protected List<Payment> toPay = new LinkedList<>();
     protected boolean variable = false;
-    protected String key = Ref.SOURCE;
+    protected String key = KEYS.SOURCE.toString();
     protected ActiveObj activeObj;
     protected String reason;
     boolean paidAlt = false;
@@ -60,7 +61,7 @@ public class CostImpl extends ReferredElement implements Cost, Serializable {
     @Override
     public boolean pay(Ref ref) {
         setRef(ref);
-        ref.setID(Ref.PAYEE, ref.getId(key));
+        ref.setID(KEYS.PAYEE, ref.getId(key));
         Obj payee = ref.getGame().getObjectById(ref.getId(key));
 
         boolean result = true;
@@ -106,7 +107,7 @@ public class CostImpl extends ReferredElement implements Cost, Serializable {
     @Override
     public void setRef(Ref REF) {
         super.setRef(REF);
-        ref.setID(Ref.PAYEE, ref.getId(key));
+        ref.setID(KEYS.PAYEE, ref.getId(key));
         if (getActiveId() != null) {
 
             ref.setID(Ref.KEYS.ACTIVE, getActiveId());

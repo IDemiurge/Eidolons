@@ -143,19 +143,19 @@ public class DamageCalculator {
 
     public static boolean isUnblockable(Ref ref) {
         if (isPeriodic(ref)) return true;
-        return StringMaster.compare(ref.getValue(KEYS.DAMAGE_SOURCE),
+        return StringMaster.compare(ref.getValue(KEYS.DAMAGE_MODS),
          DAMAGE_MODIFIER.UNBLOCKABLE
           .toString());
     }
 
     static boolean isPeriodic(Ref ref) {
-        return StringMaster.compare(ref.getValue(KEYS.DAMAGE_SOURCE),
+        return StringMaster.compare(ref.getValue(KEYS.DAMAGE_MODS),
          GenericEnums.DAMAGE_MODIFIER.PERIODIC
           .toString());
     }
 
     public static boolean isEnduranceOnly(Ref ref) {
-        return StringMaster.compare(ref.getValue(KEYS.DAMAGE_SOURCE),
+        return StringMaster.compare(ref.getValue(KEYS.DAMAGE_MODS),
          GenericEnums.DAMAGE_MODIFIER.ENDURANCE_ONLY
           .toString());
     }

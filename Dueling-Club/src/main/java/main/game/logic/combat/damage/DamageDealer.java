@@ -39,7 +39,10 @@ public class DamageDealer {
     // if it conflicts with private methods, public one has prio.
     //#2: why I do not have target in deal damage of type. that would be much more logical!
     // Maybe damage is created before I know whom it will hit!
-    public static int dealDamageOfType(Damage damage) {
+
+    //#1 done
+    //#2 done
+    public static int dealDamage(Damage damage) {
         int result = dealDamageOfType(damage.getDmgType(),
          damage.getAttacked()
          , damage.getRef(), damage.getAmount());
@@ -52,6 +55,11 @@ public class DamageDealer {
         return result;
     }
 
+    public static int dealDamage(Damage damage, Unit target) {
+        damage.getRef().setTarget(target.getId());
+        damage.setAttacked(target);
+        return dealDamage(damage);
+    }
     /**
      *
      * @param multiDamage
@@ -79,7 +87,7 @@ public class DamageDealer {
                     }
                 }
             }
-            int damageDealt = dealDamageOfType(bonusDamage);
+            int damageDealt = dealDamage(bonusDamage);
             main.system.auxiliary.log.LogMaster.log(1, "Bonus damage dealt: " + damageDealt
              + StringMaster.wrapInParenthesis(bonusDamage.getDmgType().getName()));
             bonus += damageDealt ;

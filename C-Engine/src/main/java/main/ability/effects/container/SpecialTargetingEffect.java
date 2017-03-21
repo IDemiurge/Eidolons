@@ -7,6 +7,7 @@ import main.data.ability.OmittedConstructor;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.standard.ZLevelCondition;
 import main.elements.targeting.AutoTargeting;
+import main.entity.Ref.KEYS;
 import main.game.battlefield.Coordinates;
 import main.system.math.Formula;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -62,7 +63,7 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
 
     @Override
     public boolean applyThis() {
-        ref.setFormula(reductionFormula);
+        ref.setValue(KEYS.FORMULA, reductionFormula.toString());
         initTargeting();
         if (isZLevelDependent()) {
             getFilteringConditions().add(new ZLevelCondition(true));

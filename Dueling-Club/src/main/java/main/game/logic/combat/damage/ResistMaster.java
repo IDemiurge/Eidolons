@@ -9,6 +9,7 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.obj.unit.Unit;
 import main.system.auxiliary.EnumMaster;
 import main.system.math.DC_MathManager;
+import main.system.math.Formula;
 
 public class ResistMaster {
 
@@ -43,5 +44,13 @@ public class ResistMaster {
             resistance -= attacker.getIntParam(PARAMS.RESISTANCE_PENETRATION);
         }
         return resistance;
+    }
+
+    private static final String RESISTANCE = "{TARGET_RESISTANCE}";
+    public static void addResistance(Formula formula) {
+             formula.setFormula( "((" +  formula + ")*100-" +
+              formula + "*" + RESISTANCE + ")/100"
+);
+
     }
 }

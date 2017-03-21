@@ -17,8 +17,8 @@ public class Parameter extends DynamicValue {
     }
 
     public Parameter(String obj_ref, String value, boolean base) {
-        this.value_ref = value;
-        this.obj_ref = obj_ref;
+        this.value_string = value;
+        this.obj_string = obj_ref;
         this.base = base;
     }
 
@@ -33,55 +33,55 @@ public class Parameter extends DynamicValue {
     }
 
     public int getInt() {
-        if (obj_ref == null) {
+        if (obj_string == null) {
             Integer result = null;
             try {
-                result = ref.getInteger(value_ref);
+                result = ref.getInteger(value_string);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             if (result == null) {
-                obj_ref = KEYS.SOURCE.toString();
+                obj_string = KEYS.SOURCE.toString();
             } else {
                 return result;
             }
         }
         // else
-        if (obj_ref.equalsIgnoreCase(Ref.KEYS.EVENT.name())) {
-            if (ref.getEvent().getRef().getInteger(value_ref) != null) {
-                return Integer.valueOf(ref.getEvent().getRef().getInteger(value_ref));
+        if (obj_string.equalsIgnoreCase(Ref.KEYS.EVENT.name())) {
+            if (ref.getEvent().getRef().getInteger(value_string) != null) {
+                return Integer.valueOf(ref.getEvent().getRef().getInteger(value_string));
             }
-            return new Formula(value_ref).wrapObjRef().getInt(ref.getEvent().getRef());
+            return new Formula(value_string).wrapObjRef().getInt(ref.getEvent().getRef());
         }
-        Integer id = ref.getId(obj_ref);
+        Integer id = ref.getId(obj_string);
 
-        LogMaster.log(0, "Queried Obj: " + obj_ref);
+        LogMaster.log(0, "Queried Obj: " + obj_string);
         entity = game.getObjectById(id);
         if (entity == null) {
             entity = game.getTypeById(id);
             if (entity == null) {
-                LogMaster.log(0, obj_ref + "'s " + value_ref
+                LogMaster.log(0, obj_string + "'s " + value_string
                         + " - Queried Obj not found; ref: " + ref);
                 return 0;
             }
         }
-        if (value_ref.equalsIgnoreCase(StringMaster.MASTERY)) {
+        if (value_string.equalsIgnoreCase(StringMaster.MASTERY)) {
             return (int) AUTOVAR.MASTERY.evaluate(entity, null);
             // return FunctionManager.FUNCTIONS.AV.evaluate(ref, value_ref, );
         } else {
-            param = (ContentManager.getPARAM(value_ref));
+            param = (ContentManager.getPARAM(value_string));
 
             if (getParam() == null) {
-                param = (ContentManager.getPARAM(value_ref + " Mastery"));
+                param = (ContentManager.getPARAM(value_string + " Mastery"));
             }
             if (getParam() == null) {
-                return entity.getCounter(value_ref);
+                return entity.getCounter(value_string);
             }
         }
 
         LogMaster.log(0, "Retrieving " + getParam() + " from " +
 
-                obj_ref);
+         obj_string);
         int x;
 
         x = Integer.valueOf((entity).getIntParam(getParam(), ref.isBase()));

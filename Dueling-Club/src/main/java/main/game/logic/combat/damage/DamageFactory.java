@@ -3,6 +3,7 @@ package main.game.logic.combat.damage;
 import main.ability.effects.continuous.BonusDamageEffect;
 import main.ability.effects.oneshot.DealDamageEffect;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
+import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
@@ -67,7 +68,10 @@ public class DamageFactory {
         }
         damage.setDmgType(effect.getType());
         damage.setRef(effect.getRef());
-//TODO         damage.setModifiers( );
+        DAMAGE_MODIFIER[] modifiers={
+         DAMAGE_MODIFIER.UNBLOCKABLE
+        };
+        damage.setModifiers(modifiers );
 
         if (effect.getConditions() != null)
             damage = new ConditionalDamage(damage, effect.getConditions());

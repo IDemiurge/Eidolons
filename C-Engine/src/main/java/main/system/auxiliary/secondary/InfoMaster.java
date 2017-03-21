@@ -118,7 +118,7 @@ public class InfoMaster {
     }
 
     public static String getModifiedParamReasonString(String comparedValue, String value) {
-        PARAMETER p = ContentManager.getPARAM(new Parameter(comparedValue).getValue_ref());
+        PARAMETER p = ContentManager.getPARAM(new Parameter(comparedValue).getValue_string());
         return getParamReasonString(value, p);
 
     }

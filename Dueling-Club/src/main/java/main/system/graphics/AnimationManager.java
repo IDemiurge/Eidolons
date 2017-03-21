@@ -1,11 +1,6 @@
 package main.system.graphics;
 
-import main.content.PARAMS;
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.values.parameters.G_PARAMS;
-import main.content.values.parameters.Param;
 import main.entity.Ref;
-import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
@@ -21,7 +16,6 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.FontMaster.FONT;
-import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
@@ -388,7 +382,7 @@ public class AnimationManager {
         }
         list.add(ref);
     }
-
+@Deprecated
     public void animateValuesModified(Obj target) {
         List<Ref> list = modifiedValues.get(target);
         if (list == null) {
@@ -396,61 +390,39 @@ public class AnimationManager {
         }
         int i = 0;
         for (Ref ref : list) {
-            animateValueModification(ref, i);
+//            animateValueModification(ref, i);
             i++;
         }
     }
 
     // TODO ++ animate counter mods! use small icons too :)
-    public void animateValueModification(Ref ref, int i) {
-        if (ref.getValue() instanceof G_PARAMS) {
-            return;
-        }
-        if (ref.getValue() instanceof Param) {
-            return;
-        }
-        if (ref.getAmount() == null) {
-            return;
-        }
-        PARAMS p = (PARAMS) ref.getValue();
-        Color c = p.getColor();
-        String text = ref.getAmount() + "";
-        if (ref.getAmount() > 0) {
-            text = "+" + ref.getAmount();
-        }
-        // TODO coordinates! by i
-        Point pt = OBJ_COMP_CENTER;
-        if (i != 0) {
+//    public void animateValueModification(Ref ref, int i) {
+//        if (ref.getValue() instanceof G_PARAMS) {
+//            return;
+//        }
+//        if (ref.getValue() instanceof Param) {
+//            return;
+//        }
+//        if (ref.getAmount() == null) {
+//            return;
+//        }
+//        PARAMS p = (PARAMS) ref.getValue();
+//        Color c = p.getColor();
+//        String text = ref.getAmount() + "";
+//        if (ref.getAmount() > 0) {
+//            text = "+" + ref.getAmount();
+//        }
+//        // TODO coordinates! by i
+//        Point pt = OBJ_COMP_CENTER;
+//        if (i != 0) {
+//
+//        }
+//
+//        addTextOverlay(text, ref, damageDelay, c, pt); // TODO increase for
+//        // bigger dmg?
+//    }
 
-        }
 
-        addTextOverlay(text, ref, damageDelay, c, pt); // TODO increase for
-        // bigger dmg?
-    }
-
-    public void damageDealt(int t_amount, int e_amount, Ref ref, DAMAGE_TYPE type, boolean lethal) {
-        CellComp comp = getComp(ref.getTargetObj());
-        if (lethal) {
-            //comp.deadenIcon();
-        }
-
-        addTextOverlayCenter("-" + t_amount, ref, damageDelay, ColorManager.RED); // TODO
-        // increase
-        // for
-        // bigger
-        // dmg?
-        if (ref.getObj(KEYS.ACTIVE) != null) {
-
-            ImageIcon img = ref.getObj(KEYS.ACTIVE).getIcon();
-            // if (ref.isPeriodic()) {
-            if (ImageManager.isImage(ref.getValue(KEYS.IMAGE.toString()))) {
-                img = ImageManager.getIcon(ref.getValue(KEYS.IMAGE.toString()));
-            }
-            if (ImageManager.isValidIcon(img)) {
-                setOverlayingImage(ref.getTargetObj(), img.getImage());
-            }
-        }
-    }
 
     private void addTextOverlayCenter(String amount, Ref ref, int delay, Color c) {
         addTextOverlay(amount, ref, delay, c, OBJ_COMP_CENTER);
