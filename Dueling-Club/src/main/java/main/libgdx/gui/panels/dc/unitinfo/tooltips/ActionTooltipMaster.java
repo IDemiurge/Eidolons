@@ -3,12 +3,15 @@ package main.libgdx.gui.panels.dc.unitinfo.tooltips;
 import main.content.DC_ValueManager;
 import main.content.PARAMS;
 import main.content.UNIT_INFO_PARAMS;
+import main.content.VALUE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
 import main.game.logic.combat.attack.CriticalAttackRule;
 import main.game.logic.combat.attack.DefenseVsAttackRule;
 import main.game.logic.combat.mechanics.ForceRule;
+import main.system.images.ImageManager;
 import main.system.math.MathMaster;
 import main.system.math.ModMaster;
 
@@ -36,54 +39,74 @@ public class ActionTooltipMaster {
         return damage + " + " + getDiceText(action);
     }
 
-    public static String getStringForParameter(PARAMS p, DC_ActiveObj action) {
-        if (p != PARAMS.FORCE && p != PARAMS.BASE_DAMAGE) {
-            if (action.getIntParam(p) == 0) {
-                return null; //don't show any text!
-            }
-            if (DC_ValueManager.isCentimalModParam(p))
-                if (action.getIntParam(p) == 100) {
+    public static String getStringForValueTable(VALUE value, DC_ActiveObj action) {
+        if (value == G_PROPS.NAME)
+            return action.getName();
+        if (value instanceof PARAMS) {
+            PARAMS p = (PARAMS) value;
+            if (p != PARAMS.FORCE && p != PARAMS.BASE_DAMAGE) {
+                if (action.getIntParam(p) == 0) {
+                    return null; //don't show any text!
+                }
+                if (DC_ValueManager.isCentimalModParam(p))
+                    if (action.getIntParam(p) == 100) {
+                        return null;
+                    }
+                if (p.getDefaultValue().equals(action.getParam(p))) {
                     return null;
                 }
-            if (p.getDefaultValue().equals(action.getParam(p))) {
-                return null;
+            }
+            switch (p) {
+                case DAMAGE_BONUS:
+                case ATTACK:
+                    return ImageManager.getValueIconPath(p);
+                case BASE_DAMAGE:
+                    return "Base";
+                case DAMAGE:
+                    return getDamageText(action);
+                case DIE_SIZE:
+                    return getDiceText(action);
+                case COUNTER_MOD:
+                case COUNTER_ATTACK_MOD:
+                    return "Counter";
+                case INSTANT_ATTACK_MOD:
+                case INSTANT_DAMAGE_MOD:
+                    return "Instant";
+                case AOO_ATTACK_MOD:
+                case AOO_DAMAGE_MOD:
+                    return "Opportunity";
+                case SIDE_DAMAGE_MOD:
+                case SIDE_ATTACK_MOD:
+                    return "To a Side";
+                case DIAGONAL_DAMAGE_MOD:
+                case DIAGONAL_ATTACK_MOD:
+                    return "Diagonal";
+                case ACCURACY:
+                    return getAccuracyDescription(action);
+                case CRITICAL_MOD:
+                    return getCriticalDescription(action);
+                case SNEAK_DEFENSE_MOD:
+                    return getSneakDescription(action);
+                case FORCE_KNOCK_MOD:
+                    return getForcePushDescription(action);
+                case FORCE_PUSH_MOD:
+                    return getForceKnockDescription(action);
+                case FORCE_DAMAGE_MOD:
+                    return getForceDamageDescription(action);
+                case FORCE_MAX_STRENGTH_MOD:
+                    return getForceMaxStrengthDescription(action);
+                case BLEEDING_MOD:
+                    return getBleedDescription(action);
+                case ARMOR_PENETRATION:
+                    return getArmorPenetrationDescription(action);
+                case ARMOR_MOD:
+                    return getArmorModDescription(action);
+                case IMPACT_AREA:
+                    return getAreaOfImpactDescription(action);
             }
         }
-        switch (p) {
-            case BASE_DAMAGE:
-                return getDamageText(action);
-            case DIE_SIZE:
-                return getDiceText(action);
-            case COUNTER_MOD:
-                return "Counter";
-            case INSTANT_ATTACK_MOD:
-                return "Instant";
-            case AOO_ATTACK_MOD:
-                return "Opportunity";
-            case ACCURACY:
-                return getAccuracyDescription(action);
-            case CRITICAL_MOD:
-                return getCriticalDescription(action);
-            case SNEAK_DEFENSE_MOD:
-                return getSneakDescription(action);
-            case FORCE_KNOCK_MOD:
-                return getForcePushDescription(action);
-            case FORCE_PUSH_MOD:
-                return getForceKnockDescription(action);
-            case FORCE_DAMAGE_MOD:
-                return getForceDamageDescription(action);
-            case FORCE_MAX_STRENGTH_MOD:
-                return getForceMaxStrengthDescription(action);
-            case BLEEDING_MOD:
-                return getBleedDescription(action);
-            case ARMOR_PENETRATION:
-                return getArmorPenetrationDescription(action);
-            case ARMOR_MOD:
-                return getArmorModDescription(action);
-            case IMPACT_AREA:
-                return getAreaOfImpactDescription(action);
-        }
-        return null;
+            return null;
+
     }
 
     private static String getForceMaxStrengthDescription(DC_ActiveObj action) {
@@ -125,7 +148,7 @@ public class ActionTooltipMaster {
 
     public static void test(DC_ActiveObj action, PARAMS[] params) {
         for (PARAMS p : params) {
-            String s = getStringForParameter(p, action);
+            String s = getStringForValueTable(p, action);
             if (s != null)
                 main.system.auxiliary.log.LogMaster.log(1, " " + s);
         }

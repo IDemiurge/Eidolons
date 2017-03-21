@@ -49,12 +49,12 @@ public class FutureBuilder {
                 ref.setValue(KEYS.DAMAGE_TYPE, ((DealDamageEffect) e).getDamageType().toString());
             }
 
-            damage = DamageCalculator.getDamage(ref);
+            damage = DamageCalculator.precalculateDamage(ref);
 
         } else {
             Attack attack = ((AttackEffect) e).initAttack();
             // attack.setAttacked((DC_HeroObj) targetObj);
-            damage = DamageCalculator.getDamage(attack);
+            damage = DamageCalculator.precalculateDamage(attack);
         }
         // active.toBase();
         LogMaster.log(1, active.getName() + " on " + targetObj.getName()

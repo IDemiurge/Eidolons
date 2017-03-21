@@ -80,7 +80,7 @@ public class DamageCalculator {
      * @param attack
      * @return
      */
-    public static int getDamage(Attack attack) {
+    public static int precalculateDamage(Attack attack) {
         Unit attacked = attack.getAttacked();
         Unit attacker = attack.getAttacker();
         if (!attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.SNEAK_IMMUNE)) {
@@ -111,7 +111,7 @@ public class DamageCalculator {
      * @param ref
      * @return
      */
-    public static int getDamage(Ref ref) {
+    public static int precalculateDamage(Ref ref) {
         Unit sourceObj = (Unit) ref.getSourceObj();
         Damage damage = DamageFactory.getDamageForPrecalculate(ref);
         int amount = damage.getAmount();

@@ -40,7 +40,7 @@ public class Damage {
     public void setRef(Ref ref) {
         this.ref = ref;
         attacked= (Unit) ref.getTargetObj();
-        attacked= (Unit) ref.getSourceObj();
+        attacker= (Unit) ref.getSourceObj();
     }
 
     public boolean canCritOrBlock() {

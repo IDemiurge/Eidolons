@@ -30,6 +30,9 @@ public class DamageFactory {
         damageObject.setRef(effect.getRef());
         return damageObject;
     }
+//    public static MultiDamage getDamageForMultiDamageTest(DAMAGE_TYPE dmg_type,
+//                                                 Ref ref, Integer amount) {
+//    }
 
     public static MultiDamage getDamageForAttack(DAMAGE_TYPE dmg_type,
                                                  Ref ref, Integer amount) {

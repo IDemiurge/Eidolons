@@ -1,6 +1,7 @@
 package main.content;
 
 import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 
 import static main.content.PARAMS.*;
 
@@ -207,8 +208,23 @@ public enum UNIT_INFO_PARAMS {
 
 
 
+    public static final VALUE[] ACTION_TOOLTIP_PARAMS_TABLE_HEADER = {
+     G_PROPS. NAME,
+     DAMAGE_BONUS,
+     ATTACK,
+    };
+
+    public static final VALUE[] ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES = {
+     BASE_DAMAGE,
+     COUNTER_MOD,
+     INSTANT_DAMAGE_MOD,
+     AOO_DAMAGE_MOD,
+     SIDE_DAMAGE_MOD,
+     DIAGONAL_DAMAGE_MOD,
+    };
+
     public static final PARAMS[] ACTION_TOOLTIP_PARAMS_TABLE = {
-     BASE_DAMAGE,ATTACK,
+     DAMAGE,ATTACK,
      COUNTER_MOD, COUNTER_ATTACK_MOD,
      INSTANT_DAMAGE_MOD, INSTANT_ATTACK_MOD,
      AOO_DAMAGE_MOD, AOO_ATTACK_MOD,
