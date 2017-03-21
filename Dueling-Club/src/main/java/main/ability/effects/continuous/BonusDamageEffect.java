@@ -7,8 +7,10 @@ import main.elements.conditions.Condition;
 import main.entity.obj.DC_Obj;
 import main.game.logic.combat.damage.ConditionalDamage;
 import main.game.logic.combat.damage.Damage;
+import main.game.logic.combat.damage.DamageFactory;
 import main.game.logic.combat.damage.FormulaDamage;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 
 /**
@@ -68,10 +70,7 @@ public class BonusDamageEffect extends DC_Effect{
 
 
     public Damage getDamage() {
-       damage=  new FormulaDamage(type, ref, formula, percentage);
-        ((FormulaDamage)damage).setFromRaw(fromRaw);
-        if (conditions!=null )
-            damage = new ConditionalDamage(damage, conditions);
+       damage= DamageFactory.getDamageForBonusEffect(this);
         return damage;
     }
 

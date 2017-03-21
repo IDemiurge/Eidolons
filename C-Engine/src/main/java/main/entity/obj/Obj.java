@@ -97,6 +97,10 @@ public class Obj extends Entity {
         for (Active abil : passives) {
             try {
                 if (abil != null) {
+//                    if () TODO currently, passives are just applied each time, no continuous effects...
+//                    if (abil instanceof PassiveAbilityObj){
+//                        getGame().getManager().addAttachment((PassiveAbilityObj)abil, this);
+//                    }
                     abil.setRef(getRef());
                     abil.activate();
                 }

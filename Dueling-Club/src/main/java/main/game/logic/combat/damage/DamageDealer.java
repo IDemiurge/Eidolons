@@ -16,6 +16,7 @@ import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.rules.round.UnconsciousRule;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.PhaseAnimation;
@@ -35,9 +36,10 @@ public class DamageDealer {
      * @return
      */
     public static int dealDamageOfType(Damage damage) {
-        int result = dealDamageOfType(damage.getDmg_type(),
+        int result = dealDamageOfType(damage.getDmgType(),
          damage.getAttacked()
          , damage.getRef(), damage.getAmount());
+
         if (damage instanceof MultiDamage) {
             int bonus = dealBonusDamage(  (MultiDamage) damage,result);
             result += bonus;
@@ -48,32 +50,36 @@ public class DamageDealer {
 
     /**
      *
-     * @param damage
+     * @param multiDamage
      * @param dealt damage already dealt by main Damage object
      * @return
      */
-    private static int dealBonusDamage(MultiDamage damage, int dealt) {
+    private static int dealBonusDamage(MultiDamage multiDamage, int dealt) {
         int bonus = 0;
-        for (Damage dmg : damage.getAdditionalDamage()) {
-
-            dmg.getRef().setQuiet(true);
-            if (dmg instanceof ConditionalDamage) {
+        for (Damage bonusDamage : multiDamage.getAdditionalDamage()) {
+            bonusDamage.setAction(multiDamage.getAction());
+            bonusDamage.setRef(multiDamage.getRef());
+            bonusDamage.getRef().setQuiet(true);
+            if (bonusDamage instanceof ConditionalDamage) {
                 //TODO
             }
-            if (dmg instanceof FormulaDamage) {
-                if (((FormulaDamage) dmg).isPercentage()) {
-                    int percent =   dmg.getAmount();
-                    if (((FormulaDamage) dmg).isFromRaw())
+            if (bonusDamage instanceof FormulaDamage) {
+                if (((FormulaDamage) bonusDamage).isPercentage()) {
+                    int percent =   bonusDamage.getAmount();
+                    if (((FormulaDamage) bonusDamage).isFromRaw())
                     {
-                        dmg.setAmount(damage.getAmount() * percent / 100);
+                        bonusDamage.setAmount(multiDamage.getAmount() * percent / 100);
                     }
                     else {
-                        dmg.setAmount(dealt * percent / 100);
+                        bonusDamage.setAmount(dealt * percent / 100);
                     }
                 }
             }
+            int damageDealt = dealDamageOfType(bonusDamage);
+            main.system.auxiliary.log.LogMaster.log(1, "Bonus damage dealt: " + damageDealt
+             + StringMaster.wrapInParenthesis(bonusDamage.getDmgType().getName()));
+            bonus += damageDealt ;
 
-            bonus += dealDamageOfType(dmg);
         }
         return bonus;
     }

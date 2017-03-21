@@ -254,7 +254,7 @@ public class AttackAnimation extends ActionAnimation {
         for (Damage dmg : rawDamage) {
             int damage = dmg.getAmount();
             if (damage >= 0) {
-                DAMAGE_TYPE dmg_type = dmg.getDmg_type();
+                DAMAGE_TYPE dmg_type = dmg.getDmgType();
                 image = ImageManager.getDamageTypeImage(dmg_type.getName());
                 Font font = getFontNegative();
                 int max = Math.max(image.getWidth(null), FontMaster.getFontHeight(font));

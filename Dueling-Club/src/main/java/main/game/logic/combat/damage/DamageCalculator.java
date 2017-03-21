@@ -11,7 +11,6 @@ import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
@@ -113,23 +112,16 @@ public class DamageCalculator {
      * @return
      */
     public static int getDamage(Ref ref) {
-        int amount = ref.getAmount();
-        // if (ref.getActive().isSpell())
-
-        DAMAGE_TYPE damageType = ref.getDamageType();
-        if (damageType == null) {
-            if (ref.getActive() instanceof DC_ActiveObj) {
-                DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
-                damageType = activeObj.getDamageType();
-            }
-        }
         Unit sourceObj = (Unit) ref.getSourceObj();
-        Damage damage = new Damage(damageType, amount, sourceObj, (Unit) ref.getTargetObj());
+        Damage damage = DamageFactory.getDamageForPrecalculate(ref);
+        int amount = damage.getAmount();
+        DAMAGE_TYPE damageType = damage.getDmgType();
         int blocked = sourceObj.getGame().getArmorSimulator().
          getArmorBlockDamage(damage);
         amount -= blocked;
-        amount = ResistMaster.getResistanceForDamageType((Unit) ref.getTargetObj(), sourceObj,
-         damageType);
+        amount -= amount * ResistMaster.getResistanceForDamageType(
+         (Unit) ref.getTargetObj(), sourceObj,
+         damageType)/100;
 
         return amount;// applySpellArmorReduction(amount, (DC_HeroObj)
         // ref.getTargetObj(), ref.getSourceObj());
@@ -209,8 +201,7 @@ public class DamageCalculator {
     public static List<Damage> precalculateRawDamageForDisplay(Attack attack) {
 
         List<Damage> list = new LinkedList<>();
-        list.add(new Damage(attack.getDamageType(), attack.getDamage(), attack.getAttacked(),
-         attack.getAttacker()));
+        list.add(DamageFactory.getDamageFromAttack(attack));
 
         List<Effect> effects = new LinkedList<>();
         if (attack.getWeapon().getSpecialEffects() != null) {
@@ -229,8 +220,7 @@ public class DamageCalculator {
             // TODO ++ PARAM MOD
             for (Effect dmgEffect : EffectFinder.getEffectsOfClass(e, DealDamageEffect.class)) {
                 int amount = dmgEffect.getFormula().getInt(attack.getRef());
-                DAMAGE_TYPE damageType = ((DealDamageEffect) dmgEffect).getDamageType();
-                list.add(new Damage(damageType, amount, attack.getAttacked(), attack.getAttacker()));
+                list.add(DamageFactory.getDamageFromEffect((DealDamageEffect) dmgEffect, amount));
             }
         }
         // TODO display target's ON_HIT? PARAM_MODS?

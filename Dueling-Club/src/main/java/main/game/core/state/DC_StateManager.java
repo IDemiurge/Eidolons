@@ -61,7 +61,7 @@ public class DC_StateManager extends StateManager {
                 resetLock.lock();
                 if (!resetting) {
                     resetAll();
-                    resetting = true;
+                    resetting = false;
                 }
             } finally {
                 resetLock.unlock();

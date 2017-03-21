@@ -7,38 +7,41 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 
 public class Damage {
-    private boolean spell;
-    private boolean attack;
-    private boolean average;
-    private Integer amount;
-    private Unit attacked;
-    private Unit attacker;
-    private boolean offhand;
-    private DAMAGE_TYPE dmg_type;
-    private DAMAGE_MODIFIER[] modifiers;
-    private DC_ActiveObj action;
-    private Ref ref;
+    protected boolean spell;
+    protected boolean attack;
+    protected boolean average;
+    protected Integer amount;
+    protected Unit attacked;
+    protected Unit attacker;
+    protected boolean offhand;
+    protected DAMAGE_TYPE dmg_type;
+    protected DAMAGE_MODIFIER[] modifiers;
+    protected DC_ActiveObj action;
+    protected Ref ref;
 
 
-    private Damage() {
+    protected Damage() {
 
     }
 
-    public Damage(DAMAGE_TYPE damageType, int amount, Unit attacker, Unit attacked) {
-        this.attacker = attacker;
-        this.attacked = attacked;
-        this.dmg_type = damageType;
-        this.amount = amount;
-    }
+//    public Damage(DAMAGE_TYPE damageType, int amount, Unit attacker, Unit attacked) {
+//        this.attacker = attacker;
+//        this.attacked = attacked;
+//        this.dmg_type = damageType;
+//        this.amount = amount;
+//    }
+//
+//    public Damage(DAMAGE_TYPE damage_type, Ref ref, int amount) {
+//        this.dmg_type=damage_type;
+//        this.amount = amount;
+//        this.ref = ref;
+//    }
 
-    public Damage(DAMAGE_TYPE damage_type, Ref ref, int amount) {
-        this.dmg_type=damage_type;
-        this.amount = amount;
+    public void setRef(Ref ref) {
         this.ref = ref;
         attacked= (Unit) ref.getTargetObj();
         attacked= (Unit) ref.getSourceObj();
     }
-
 
     public boolean canCritOrBlock() {
 return true;// TODO
@@ -87,7 +90,7 @@ return true;// TODO
         this.offhand = offhand;
     }
 
-    public void setDmg_type(DAMAGE_TYPE dmg_type) {
+    public void setDmgType(DAMAGE_TYPE dmg_type) {
         this.dmg_type = dmg_type;
     }
 
@@ -117,7 +120,7 @@ return true;// TODO
         return offhand;
     }
 
-    public DAMAGE_TYPE getDmg_type() {
+    public DAMAGE_TYPE getDmgType() {
         return dmg_type;
     }
 
@@ -129,8 +132,5 @@ return true;// TODO
         return ref;
     }
 
-    public void setRef(Ref ref) {
-        this.ref = ref;
-    }
 
 }

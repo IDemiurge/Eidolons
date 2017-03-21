@@ -52,7 +52,7 @@ public class ArmorMaster {
         return getArmorBlockDamage(false, damage.isSpell(), damage.canCritOrBlock(),
          damage.isAverage(), damage.getAmount(), damage.getAttacked(), damage.getAttacker(),
          damage.isOffhand(),
-         damage.getDmg_type(), damage.getAction());
+         damage.getDmgType(), damage.getAction());
     }
 
 

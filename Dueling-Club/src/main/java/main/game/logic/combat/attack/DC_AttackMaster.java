@@ -133,10 +133,16 @@ public class DC_AttackMaster {
             if (entry.getType() == ENTRY_TYPE.INSTANT_ATTACK) {
                 // TODO add triggering action!
             }
+
+            main.system.auxiliary.log.LogMaster.log(1,
+             attack.getAttacker()+ " attacks " +
+              attack.getAttacked()+
+              " with " + attack.getAction());
             result = attackNow(attack, ref, free, canCounter, onHit, onKill, offhand, counter);
             boolean countered = false;
             if (result == null) { // first strike
-
+                main.system.auxiliary.log.LogMaster.log(1,
+                 "Counter attack with first strike against " + attack.getAction() );
                 ActiveObj action = counterRule.tryCounter(attack, false);
                 AttackEffect effect = EffectMaster.getAttackEffect(action);
                 waitForAttackAnimation(effect.getAttack());

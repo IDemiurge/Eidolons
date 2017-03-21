@@ -156,6 +156,7 @@ public class TargetingMaster extends AiHandler {
         Obj target = null;
         int max_priority = Integer.MIN_VALUE;
         Set<Obj> objects = null;
+        a.getTargeting().getFilter().setRef(a.getRef());
         try {
             objects = a.getTargeting().getFilter().getObjects();
         } catch (Exception e) {
