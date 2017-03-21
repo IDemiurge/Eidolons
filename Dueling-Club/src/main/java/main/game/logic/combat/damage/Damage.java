@@ -43,9 +43,11 @@ public class Damage {
         attacker= (Unit) ref.getSourceObj();
     }
 
+    @Deprecated
     public boolean canCritOrBlock() {
 return true;// TODO
     }
+
     public boolean isSpell() {
         return spell;
     }

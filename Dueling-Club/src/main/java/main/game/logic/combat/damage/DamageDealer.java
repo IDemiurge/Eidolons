@@ -35,6 +35,10 @@ public class DamageDealer {
      * @param damage
      * @return
      */
+    //REVIEW0321 why is the name "OfType" when just a damage object is given? It should be deal Dmg.
+    // if it conflicts with private methods, public one has prio.
+    //#2: why I do not have target in deal damage of type. that would be much more logical!
+    // Maybe damage is created before I know whom it will hit!
     public static int dealDamageOfType(Damage damage) {
         int result = dealDamageOfType(damage.getDmgType(),
          damage.getAttacked()

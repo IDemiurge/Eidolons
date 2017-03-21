@@ -15,6 +15,9 @@ import main.entity.item.DC_WeaponObj;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.logic.combat.damage.Damage;
+import main.game.logic.combat.damage.DamageDealer;
+import main.game.logic.combat.damage.DamageFactory;
 import main.system.math.Formula;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,6 +69,34 @@ public class DealDamageEffectTest {
         ref.setTarget(target.getId());
         ref.setID(KEYS.ACTIVE, source.getAction("Attack").getId());
         eff.apply(ref);
+        Integer newToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
+        Integer newEndurance = target.getIntParam(PARAMS.C_ENDURANCE);
+
+        assertTrue(newToughness < origToughness);
+        assertTrue(newEndurance < origEndurance);
+
+
+    }
+
+    @Test
+    public void dealDamageObjectTest() {
+
+        assertTrue (source !=null );
+        assertTrue (target !=null );
+
+        int origToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
+        int origEndurance = target.getIntParam(PARAMS.C_ENDURANCE);
+
+
+
+        DealDamageEffect eff = new DealDamageEffect(new Formula("50"),
+                GenericEnums.DAMAGE_TYPE.BLUDGEONING.getName(), DAMAGE_MODIFIER.UNBLOCKABLE);
+
+        Damage dmg = DamageFactory.getDamageFromEffect(eff,25);
+        dmg.getRef().setTarget(target.getId());
+        DamageDealer.dealDamageOfType(dmg);
+
+
         Integer newToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
         Integer newEndurance = target.getIntParam(PARAMS.C_ENDURANCE);
 

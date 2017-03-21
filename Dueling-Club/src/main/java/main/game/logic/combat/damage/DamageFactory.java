@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Created by JustMe on 3/20/2017.
  */
+//REVIEW0321 why no comments on public methods. at least explain
 public class DamageFactory {
 
     public static Damage getDamageFromEffect(DealDamageEffect effect, int amount) {
@@ -34,6 +35,7 @@ public class DamageFactory {
 //                                                 Ref ref, Integer amount) {
 //    }
 
+    //TODO what is the amount?! can the same attack have different amounts? dont they come like from the weapon, unit, position..
     public static MultiDamage getDamageForAttack(DAMAGE_TYPE dmg_type,
                                                  Ref ref, Integer amount) {
         List<Damage> list =
