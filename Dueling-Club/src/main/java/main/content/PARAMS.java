@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+//Quantative properties of ..*what?*
 public enum PARAMS implements PARAMETER {
     MAX_DEPTH(null, "", false, 3, "dungeons"),
     MIN_DEPTH(null, "", false, 1, "dungeons"),
