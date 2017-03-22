@@ -70,11 +70,8 @@ public class TablePanel extends Container<Table> {
 
     private void createNewCol() {
         lastCol = new Table();
-        lastCol.setHeight(getPrefHeight());
+        //lastCol.setHeight(getPrefHeight());
         cols.add(lastCol);
-        cols.forEach(el -> {
-            el.setWidth(getPrefWidth() / cols.size());
-        });
         inner.add(lastCol);
     }
 
