@@ -130,19 +130,22 @@ public class GameScreen implements Screen {
 
     private void initGui() {
         guiStage = new Stage();
-        guiStage.addActor(radialMenu = new RadialMenu());
-        guiStage.addActor(toolTipManager = new ToolTipManager());
 
         InitiativePanel initiativePanel = new InitiativePanel();
         initiativePanel.setPosition(0, Gdx.graphics.getHeight() - initiativePanel.getHeight());
         guiStage.addActor(initiativePanel);
 
-        LogPanel ld = new LogPanel();
-        guiStage.addActor(ld);
-        ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
+
         UnitInfoPanel infoPanel = new UnitInfoPanel();
         guiStage.addActor(infoPanel);
         infoPanel.setPosition(0, 0);
+        guiStage.addActor(toolTipManager = new ToolTipManager());
+
+        guiStage.addActor(radialMenu = new RadialMenu());
+
+        LogPanel ld = new LogPanel();
+        guiStage.addActor(ld);
+        ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
     }
 
     private void bindEvents() {

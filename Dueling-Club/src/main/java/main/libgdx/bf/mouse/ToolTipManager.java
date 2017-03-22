@@ -6,79 +6,93 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import main.libgdx.StyleHolder;
-import main.libgdx.texture.TextureCache;
+import main.libgdx.gui.dialog.ToolTip;
+import main.libgdx.gui.dialog.ToolTipBackgroundHolder;
 import main.system.GuiEventManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static main.libgdx.bf.mouse.ToolTipManager.ToolTip.getCurMaxVal;
+import static main.libgdx.bf.mouse.ToolTipManager.InnerToolTip.getCurMaxVal;
+import static main.libgdx.gui.dialog.ToolTipBackgroundHolder.*;
 import static main.system.GuiEventType.SHOW_TOOLTIP;
 
-public class ToolTipManager extends Group {
-
-    private final TextureRegion top;
-    private final TextureRegion middle;
-    private final TextureRegion bot;
-    private final TextureRegion single;
-    private List<ToolTip> toolTips;
+public class ToolTipManager extends Container {
+    private List<InnerToolTip> innerToolTips;
 
     public ToolTipManager() {
-        Texture imageTexture = TextureCache.getOrCreate("UI\\components\\VALUE_BOX_BIG111.png");
-        single = new TextureRegion(imageTexture, 0, 0, 240, 45);
-        top = new TextureRegion(imageTexture, 0, 45, 240, 45);
-        middle = new TextureRegion(imageTexture, 0, 90, 240, 45);
-        bot = new TextureRegion(imageTexture, 0, 135, 240, 45);
 
-        toolTips = new ArrayList<>();
+        innerToolTips = new ArrayList<>();
 
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
-            List<ToolTipRecordOption> options = (List<ToolTipRecordOption>) event.get();
-            if (options == null) {
-                toolTips.forEach(this::removeActor);
+            Object object = event.get();
+            if (object == null) {
+                innerToolTips.clear();
+                setActor(null);
             } else {
-                init(options);
+                if (object instanceof ToolTip) {
+                    init((ToolTip) object);
+                } else {
+                    init((List<ToolTipRecordOption>) object);
+                }
             }
         });
     }
 
     private boolean isEquals(String... names) {
         int hashCode = Objects.hash((Object[]) names);
-        int curHashCode = Objects.hash(toolTips.toArray());
+        int curHashCode = Objects.hash(innerToolTips.toArray());
         return hashCode == curHashCode;
+    }
+
+    private void init(main.libgdx.gui.dialog.ToolTip toolTip) {
+        setActor(toolTip);
+        Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        v2 = getStage().screenToStageCoordinates(v2);
+        setPosition(v2.x, v2.y);
     }
 
     private void init(List<ToolTipRecordOption> options) {
         ToolTipRecordOption recordOption = options.get(0);
         //todo make working cache check before remove this ugly hack
-        if (true == false && toolTips.size() == options.size() && isEquals(recordOption.name)) {
-            ToolTip toolTip = toolTips.get(0);
-            toolTip.updateVal(getCurMaxVal(recordOption.curVal, recordOption.maxVal));
+        if (true == false && innerToolTips.size() == options.size() && isEquals(recordOption.name)) {
+            InnerToolTip innerToolTip = innerToolTips.get(0);
+            innerToolTip.updateVal(getCurMaxVal(recordOption.curVal, recordOption.maxVal));
         } else {
-            toolTips.forEach(this::removeActor);
-            toolTips.clear();
+            innerToolTips.forEach(this::removeActor);
+            innerToolTips.clear();
             recordOption = options.get(0);
             int offsetY = (options.size() - 1) * 45;
             if (options.size() == 1) {
-                offsetY = addToolTipOffset(single, offsetY, recordOption);
+                offsetY = addToolTipOffset(getSingle(), offsetY, recordOption);
             } else {
-                offsetY = addToolTipOffset(top, offsetY, recordOption);
+                offsetY = addToolTipOffset(ToolTipBackgroundHolder.getTop(), offsetY, recordOption);
 
                 if (options.size() > 2) {
                     for (int i = 1; i < options.size() - 1; i++) {
                         recordOption = options.get(i);
-                        offsetY = addToolTipOffset(middle, offsetY, recordOption);
+                        offsetY = addToolTipOffset(getMid(), offsetY, recordOption);
                     }
                 }
 
                 recordOption = options.get(options.size() - 1);
-                offsetY = addToolTipOffset(bot, offsetY, recordOption);
+                offsetY = addToolTipOffset(getBot(), offsetY, recordOption);
             }
         }
+
+        Table table = new Table();
+        innerToolTips.forEach(el->{
+            table.row().fill().left().bottom();
+            table.add(el);
+        });
+
+        setActor(table);
 
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
@@ -86,11 +100,9 @@ public class ToolTipManager extends Group {
     }
 
     private int addToolTipOffset(TextureRegion region, int offset, ToolTipRecordOption option) {
-        ToolTip toolTip = new ToolTip(region, option.recordImage, option.name, option.curVal, option.maxVal);
-        toolTip.setY(offset);
-        toolTips.add(toolTip);
-        addActor(toolTip);
-        offset -= 45;
+        InnerToolTip innerToolTip = new InnerToolTip(region, option.recordImage, option.name, option.curVal, option.maxVal);
+        innerToolTip.setHeight(45);
+        innerToolTips.add(innerToolTip);
         return offset;
     }
 
@@ -99,14 +111,14 @@ public class ToolTipManager extends Group {
         return null;//this is untouchable element
     }
 
-    public static class ToolTip extends Group {
+    public static class InnerToolTip extends Group {
         private Image image = null;
         private Label name;
         private Label val;
         private int offsetX = 10;
         private Image back;
 
-        public ToolTip(TextureRegion backTexture, Texture imageTex, String nameVal, int curVal, int maxVal) {
+        public InnerToolTip(TextureRegion backTexture, Texture imageTex, String nameVal, int curVal, int maxVal) {
             back = new Image(backTexture);
             setHeight(back.getHeight());
             setWidth(back.getWidth());
@@ -153,12 +165,6 @@ public class ToolTipManager extends Group {
         public void updateVal(String sval) {
             val = new Label(sval, StyleHolder.getDefaultLabelStyle());
         }
-    }
-
-    public static class ToolTipOption {
-        public int x;
-        public int y;
-        public List<ToolTipRecordOption> recordOptions = new ArrayList<>();
     }
 
     public static class ToolTipRecordOption {

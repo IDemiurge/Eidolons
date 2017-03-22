@@ -3,22 +3,31 @@ package main.libgdx.gui.panels.dc.unitinfo.datasource;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.PARAMS;
+import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
+import main.libgdx.gui.dialog.ActionToolTip;
+import main.libgdx.gui.dialog.ToolTip;
+import main.libgdx.gui.dialog.ValueTooltip;
+import main.libgdx.gui.dialog.WeaponToolTip;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
 import main.libgdx.texture.TextureCache;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static main.content.PARAMS.BASE_DAMAGE;
+import static main.content.PARAMS.COUNTER_MOD;
+import static main.content.PARAMS.INSTANT_DAMAGE_MOD;
+import static main.content.UNIT_INFO_PARAMS.*;
 import static main.content.ValuePages.*;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
@@ -294,7 +303,58 @@ public class UnitDataSource implements
 
         if (weapon != null) {
             weapon.getAttackActions()
-                    .forEach(el -> result.add(new ValueContainer(getOrCreateR(el.getImagePath()))));
+                    .forEach(el -> {
+                        final ValueContainer valueContainer = new ValueContainer(getOrCreateR(el.getImagePath()));
+
+                        Map<VALUE, List<MultiValueContainer>> map = new HashMap<>();
+
+                        for (VALUE rowName : ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES) {
+                            List<MultiValueContainer> list = new ArrayList<>();
+
+                            for (int i = 0; i < ACTION_TOOLTIP_PARAMS_TABLE_HEADER.length; i++) {
+                                VALUE p = ACTION_TOOLTIP_PARAMS_TABLE_HEADER[i];
+                                String value = weapon.getValue(p);
+                                String name = p.getName();
+                                final MultiValueContainer tooltipContainer = new MultiValueContainer(name, value);
+                                list.add(tooltipContainer);
+                            }
+                            map.put(BASE_DAMAGE, list);
+
+                            list = new ArrayList<>();
+
+                            for (int i = 0; i < ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES.length; i++) {
+                                VALUE p = ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES[i];
+                                String value = weapon.getValue(p);
+                                String name = p.getName();
+                                final MultiValueContainer tooltipContainer = new MultiValueContainer(name, value);
+                                list.add(tooltipContainer);
+                            }
+
+                            map.put(COUNTER_MOD, list);
+
+                            list = new ArrayList<>();
+
+                            for (int i = 0; i < ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES.length; i++) {
+                                VALUE p = ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES[i];
+                                String value = weapon.getValue(p);
+                                String name = p.getName();
+                                final MultiValueContainer tooltipContainer = new MultiValueContainer(name, value);
+                                list.add(tooltipContainer);
+                            }
+
+                            map.put(INSTANT_DAMAGE_MOD, list);
+
+                            list = new ArrayList<>();
+
+                        }
+
+
+
+                        ToolTip toolTip = new ActionToolTip();
+                        toolTip.setUserObject((Supplier) () -> map);
+                        valueContainer.addListener(toolTip.getController());
+                        result.add(valueContainer);
+                    });
         }
 
         return result;
@@ -302,22 +362,22 @@ public class UnitDataSource implements
 
     @Override
     public List<List<ValueContainer>> getGeneralStats() {
-        return getStatsValueContainers(main.content.UNIT_INFO_PARAMS.UNIT_INFO_PARAMS_GENERAL);
+        return getStatsValueContainers(UNIT_INFO_PARAMS_GENERAL);
     }
 
     @Override
     public List<List<ValueContainer>> getCombatStats() {
-        return getStatsValueContainers(main.content.UNIT_INFO_PARAMS.UNIT_INFO_PARAMS_COMBAT);
+        return getStatsValueContainers(UNIT_INFO_PARAMS_COMBAT);
     }
 
     @Override
     public List<List<ValueContainer>> getMagicStats() {
-        return getStatsValueContainers(main.content.UNIT_INFO_PARAMS.UNIT_INFO_PARAMS_MAGIC);
+        return getStatsValueContainers(UNIT_INFO_PARAMS_MAGIC);
     }
 
     @Override
     public List<List<ValueContainer>> getMiscStats() {
-        return getStatsValueContainers(main.content.UNIT_INFO_PARAMS.UNIT_INFO_PARAMS_MISC);
+        return getStatsValueContainers(UNIT_INFO_PARAMS_MISC);
     }
 
 
@@ -329,7 +389,25 @@ public class UnitDataSource implements
             image = getOrCreateR("UI/components/2017/generic/inventory/empty weapon.png");
         }
 
-        return new ValueContainer(image);
+        ValueContainer valueContainer = new ValueContainer(image);
+
+        if (weapon != null) {
+            List<ValueContainer> list = new ArrayList<>();
+
+            for (int i = 0; i < WEAPON_DC_INFO_PARAMS.length; i++) {
+                PARAMS p = WEAPON_DC_INFO_PARAMS[i];
+                String value = String.valueOf(weapon.getIntParam(p));
+                String name = p.getName();
+                final ValueContainer tooltipContainer = new ValueContainer(name, value);
+                tooltipContainer.pad(10);
+                list.add(tooltipContainer);
+            }
+
+            ToolTip toolTip = new WeaponToolTip();
+            toolTip.setUserObject((Supplier) () -> list);
+            valueContainer.addListener(toolTip.getController());
+        }
+        return valueContainer;
     }
 
     private List<List<ValueContainer>> getStatsValueContainers(PARAMS[][] unitInfoParamsGeneral) {
@@ -340,7 +418,11 @@ public class UnitDataSource implements
                                 .map(p -> {
                                     String value = String.valueOf(unit.getIntParam(p));
                                     String name = p.getName();
-                                    return new ValueContainer(name, value);
+                                    ValueContainer valueContainer = new ValueContainer(name, value);
+                                    ValueTooltip valueTooltip = new ValueTooltip();
+                                    valueTooltip.setUserObject((Supplier) () -> Arrays.asList(new ValueContainer(name, value)));
+                                    valueContainer.addListener(valueTooltip.getController());
+                                    return valueContainer;
                                 }).collect(Collectors.toList())
                 ));
         return values;

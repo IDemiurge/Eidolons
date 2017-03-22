@@ -14,9 +14,13 @@ public class ValueContainer extends Container<Table> {
     private boolean hideNameOnSmallSize = false;
     private boolean showTooltip = false;
 
-    private Container<Image> image;
-    private Container<Label> name;
-    private Container<Label> value;
+    protected Container<Image> image;
+    protected Container<Label> name;
+    protected Container value;
+
+    protected ValueContainer() {
+
+    }
 
     public ValueContainer(TextureRegion texture, String name, String value) {
         init(texture, name, value);
@@ -34,33 +38,43 @@ public class ValueContainer extends Container<Table> {
         init(null, name, value);
     }
 
-    private void init(TextureRegion texture, String name, String value) {
+    protected void init(TextureRegion texture, String name, String value) {
         fill().left().bottom();
         Table table = new Table();
         table.setFillParent(true);
         table.left().bottom();
+
+        this.image = new Container<>();
+        table.add(this.image);
+        if (isVertical()) {
+            table.row();
+        }
         if (texture != null) {
-            this.image = new Container<>(new Image(texture));
-            table.add(this.image);
-            if (isVertical()) {
-                table.row();
-            }
+            this.image.setActor(new Image(texture));
         }
+
+        this.name = new Container<>();
+        table.add(this.name);
+        if (isVertical()) {
+            table.row();
+        }
+
         if (name != null) {
-            this.name = new Container<>(new Label(name, StyleHolder.getDefaultLabelStyle()));
-            table.add(this.name);
-            if (isVertical()) {
-                table.row();
-            }
+            this.name.setActor(new Label(name, StyleHolder.getDefaultLabelStyle()));
         }
+
+        this.value = new Container();
+        this.value.fill().center();
+        table.add(this.value);
+
+        if (isVertical()) {
+            table.row();
+        }
+
         if (value != null) {
-            this.value = new Container<>(new Label(value, StyleHolder.getDefaultLabelStyle()));
-            this.value.fill().center();
-            table.add(this.value);
-            if (isVertical()) {
-                table.row();
-            }
+            this.value.setActor(new Label(value, StyleHolder.getDefaultLabelStyle()));
         }
+
         setActor(table);
         configure();
     }
@@ -89,9 +103,11 @@ public class ValueContainer extends Container<Table> {
 
     private void configure() {
         if (image != null) {
-            image.getActor().setFillParent(true);
-            image.width(image.getActor().getWidth());
-            image.height(image.getActor().getHeight());
+            if (image.getActor() != null) {
+                image.getActor().setFillParent(true);
+                image.width(image.getActor().getWidth());
+                image.height(image.getActor().getHeight());
+            }
             if (isVertical()) {
                 image.padBottom(3);
             } else {
@@ -115,7 +131,11 @@ public class ValueContainer extends Container<Table> {
     }
 
     public void updateValue(String val) {
-        value.getActor().setText(val);
+        if (!(value.getActor() instanceof Label)) {
+            value.setActor(new Label(val, StyleHolder.getDefaultLabelStyle()));
+        } else {
+            ((Label) value.getActor()).setText(val);
+        }
     }
 
     public void setHideIconOnSmallSize(boolean hideIconOnSmallSize) {
