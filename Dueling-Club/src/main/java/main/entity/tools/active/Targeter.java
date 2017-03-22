@@ -31,6 +31,7 @@ public class Targeter extends ActiveHandler {
     protected Obj presetTarget;
     protected boolean forcePresetTarget;
     private TARGETING_MODE targetingMode;
+    private Ref ref;
 
     public Targeter(DC_ActiveObj entity, ActiveMaster entityMaster) {
         super(entity, entityMaster);
@@ -38,16 +39,14 @@ public class Targeter extends ActiveHandler {
 
     public void initTarget() {
 
-
         if (presetTarget != null) { //TODO figure out when to get source's ref and when not!!!
-            getEntity(). getRef().setTarget(presetTarget.getId());
              getRef().setTarget(presetTarget.getId());
         } else {
             if (getEntity().getTargeting() != null) {
                 if (!isForcePresetTarget()) {
                     if (!selectTarget(getRef())) {
-                        getHandler().result = false;
-                        getHandler().interrupted = true;
+                        getHandler().setResult(false);
+                        getHandler().setInterrupted(true);
                     }
                 } else {
                     if (getRef().getTargetObj() == null) {
@@ -57,11 +56,21 @@ public class Targeter extends ActiveHandler {
             }
 
         }
+
+        getEntity().setRef(getRef());
     }
     public Ref getRef() {
-        return getEntity().getRef().getSourceObj(). getRef();
+        if (ref == null )
+            ref = getEntity().getOwnerObj(). getRef();
+        return ref;
     }
+
+    public void setRef(Ref ref) {
+        this.ref = ref;
+    }
+
     public boolean selectTarget(Ref ref) {
+        setRef(ref);
         if (isForcePresetTarget()) {
             return true;
         }
@@ -87,7 +96,9 @@ public class Targeter extends ActiveHandler {
             getHandler().setCancelled(true);
         }
 if (result)
-    getEntity(). getRef().setTarget(getRef().getTarget());
+    getRef().setTarget(getRef().getTarget());
+
+        getEntity().setRef(getRef());
         return result;
 
     }

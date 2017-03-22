@@ -26,22 +26,21 @@ import java.util.Map;
  * Ref object is passed on activate(Ref ref) from the source entity to Active entity.
  * To activate on a given object, set ref’s {target} key, otherwise Active's Targeting will select()
  */
-public class Ref  implements Cloneable, Serializable {
+public class Ref implements Cloneable, Serializable {
 
-    protected Map<KEYS,String> values= new HashMap<>();
-    protected Map<KEYS, String> removedValues;
+    protected static final long serialVersionUID = 1L; //why was it necessary?
+    protected static final String MULTI_TARGET = KEYS.TARGET.name() + "#";
 
     /*
     TARGET_WEAPON example
     ref replacement is there exactly to avoid putting the whole thing into map!
 
      */
-
-    protected static final long serialVersionUID = 1L; //why was it necessary?
-    protected static final String MULTI_TARGET = KEYS.TARGET.name() + "#";
     public Game game;
     public Event event;
     public boolean base;
+    protected Map<KEYS, String> values = new HashMap<>();
+    protected Map<KEYS, String> removedValues;
     protected GroupImpl group;
     protected String str;
     protected Player player;
@@ -70,14 +69,44 @@ public class Ref  implements Cloneable, Serializable {
     }
 
 
-    public void setValue(String name, String value) {
-        setValue( new EnumMaster<KEYS>().retrieveEnumConst(KEYS.class, name ), value);
-
+    public Ref(Game game) {
+        this.game = game;
     }
-   
+
+    public Ref(Entity entity) {
+        this(entity.getGame(), entity.getId());
+    }
+
+
+    public static Ref getCopy(Ref ref) {
+        if (ref == null) {
+            return new Ref(Game.game);
+        }
+        return (Ref) ref.clone();
+    }
+
+    public static boolean isKey(String key) {
+        return (new SearchMaster<KEYS>().find(key, Arrays.asList(KEYS.values()), true) != null);
+    }
+
+    public static Ref getSelfTargetingRefCopy(Obj obj) {
+        Ref REF = obj.getRef().getCopy();
+        REF.setTarget(obj.getId());
+        return REF;
+    }
+
+    public String getValue(KEYS key) {
+        return values.get(key);
+    }
+
+    public String getValue(String name) {
+        return getValue(getKey(name)
+        );
+    }
+
     public void setValue(KEYS name, String value) {
         getValues().put(name, value);
-        if (value ==null ){
+        if (value == null) {
             removeValue(name);
         }
     }
@@ -94,57 +123,36 @@ public class Ref  implements Cloneable, Serializable {
         return removedValues;
     }
 
-
-   
-    public String getValue(KEYS key) {
-        return values.get(key);
-    }
-
-   
-    public String getValue(String name) {
-        return getValue( new EnumMaster<KEYS>().retrieveEnumConst(KEYS.class, name ));
+    public Obj getObj(KEYS key) {
+        return game.getObjectById(getId(key));
     }
 
 
-
-
-    public Ref(Game game) {
-        this.game = game;
+    public Integer getId(String key) {
+        return getInteger(key);
     }
 
-    public Ref(Entity entity) {
-        this(entity.getGame(), entity.getId());
+    public void setID(String key, Integer id) {
+
+        setStr(formatKeyString(key));
+        Ref ref = checkForRefReplacement();
+
+        if (id == null) {
+            ((ref == null) ? this : ref).setValue(getKey(getStr()), null);
+        } else {
+            ((ref == null) ? this : ref).setValue(getKey(getStr()), id.toString());
+        }
     }
 
-   
+
+    private KEYS getKey(String name) {
+        return new EnumMaster<KEYS>().retrieveEnumConst(KEYS.class, name);
+    }
+
+
     public Map<KEYS, String> getValues() {
         return values;
     }
-
-    public static Ref getCopy(Ref ref) {
-        if (ref == null) {
-            return new Ref(Game.game);
-        }
-        return (Ref) ref.clone();
-    }
-
-    public static Ref getSelfTargetingRefNew(Obj obj) {
-        Ref REF = new Ref(obj.getGame(), obj.getRef().getSource());
-        REF.setTarget(obj.getId());
-        return REF;
-    }
-
-    public static boolean isKey(String key) {
-        return (new SearchMaster<KEYS>().find(key, Arrays.asList(KEYS.values()), true) != null);
-    }
-
-    public static Ref getSelfTargetingRefCopy(Obj obj) {
-        Ref REF = obj.getRef().getCopy();
-        REF.setTarget(obj.getId());
-        return REF;
-    }
-
-
 
     public String toString() {
         if (game == null || values == null) {
@@ -183,7 +191,7 @@ public class Ref  implements Cloneable, Serializable {
 
     }
 
-   
+
     public Object clone() {
         Ref ref = new Ref();
         ref.cloneMaps(this);
@@ -262,10 +270,6 @@ public class Ref  implements Cloneable, Serializable {
         }
     }
 
-    public Integer getId(String key) {
-        return getInteger(key);
-    }
-
     public Integer getInteger(String key) {
         setStr(formatKeyString(key));
         // if (!getStr().equals(formatKeyString(key)))
@@ -299,39 +303,26 @@ public class Ref  implements Cloneable, Serializable {
     }
 
     public Integer getSource() {
-        return getId(KEYS.SOURCE.name());
+        return getId(KEYS.SOURCE);
 
     }
 
     public void setSource(Integer id) {
-        setID(KEYS.SOURCE.name(), id);
+        setID(KEYS.SOURCE, id);
     }
 
     public Integer getTarget() {
-        return getId(KEYS.TARGET.name());
+        return getId(KEYS.TARGET);
 
     }
 
     //
 
     public void setTarget(Integer this_target) {
-        setID(KEYS.TARGET.name(), this_target);
+        setID(KEYS.TARGET, this_target);
 
     }
 
-
-    public void setID(String key, Integer id) {
-
-        setStr(formatKeyString(key));
-        Ref ref = checkForRefReplacement();
-
-        if (id == null) {
-//            ((ref == null) ? this : ref).setValue(getStr(), null);
-            ((ref == null) ? this : ref).setValue(key, null);
-        } else {
-            ((ref == null) ? this : ref).setValue(getStr(), id.toString());
-        }
-    }
 
     public Ref getCopy() {
         return (Ref) clone();
@@ -383,7 +374,7 @@ public class Ref  implements Cloneable, Serializable {
     }
 
     public void setBasis(Integer basis) {
-        setID(KEYS.BASIS.name(), basis);
+        setID(KEYS.BASIS, basis);
     }
 
     public Integer getThis() {
@@ -428,6 +419,7 @@ public class Ref  implements Cloneable, Serializable {
         }
     }
 
+
     public ObjType getType(String string) {
         try {
             return game.getTypeById(getId(string));
@@ -437,17 +429,15 @@ public class Ref  implements Cloneable, Serializable {
     }
 
     public Obj getTargetObj() {
-        return getObj(KEYS.TARGET.name());
+        return getObj(KEYS.TARGET);
     }
 
-    public void setValue(KEYS key, Integer id) {
-        setValue(key, String.valueOf(id));
-    }
-        public void setID(KEYS key, Integer id) {
+
+    public void setID(KEYS key, Integer id) {
         if (key == null) {
             return;
         }
-        setID(key.name(), id);
+        setValue(key, String.valueOf(id));
     }
 
     public Effect getEffect() {
@@ -459,12 +449,9 @@ public class Ref  implements Cloneable, Serializable {
     }
 
     public Integer getId(KEYS key) {
-        return getId(key.name());
+        return getInteger(key.name());
     }
 
-    public Obj getObj(KEYS key) {
-        return getObj(key.name());
-    }
 
     public boolean checkInterrupted() {
 
@@ -483,15 +470,12 @@ public class Ref  implements Cloneable, Serializable {
         return getObj(KEYS.MATCH);
     }
 
-    public Entity getEntity(String str) {
-        if (getObj(str) != null) {
-            return getObj(str);
-        }
-        return getType((str));
-    }
 
     public Entity getEntity(KEYS key) {
-        return getEntity((key.toString()));
+        if (getObj(key) != null) {
+            return getObj(key);
+        }
+        return getType((key.name()));
     }
 
     public boolean isQuiet() {
@@ -554,7 +538,6 @@ public class Ref  implements Cloneable, Serializable {
     public void setAnimationActive(ActiveObj animationActive) {
         this.animationActive = animationActive;
     }
-
 
 
     public boolean isDebug() {

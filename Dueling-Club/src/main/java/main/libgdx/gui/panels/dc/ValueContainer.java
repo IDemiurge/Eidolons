@@ -112,15 +112,23 @@ public class ValueContainer extends Container<Table> {
 
             text.replace("Modifier", "Mod");
             text.replace("Damage", "Dmg");
-            text.replace("Capacity", "Cap");
-            text.replace("Protection", "Prot");
+            text.replace("Capacity", "Cap.");
+            text.replace("Protection", "Prot.");
+            text.replace("Penalty", "Pen.");
             text.replace("Restoration", "Rest");
-            text.replace("Close Quarters", "C.Q.");
-            text.replace("Long Reach", "L.R.");
-            text.replace("Defense", "Def");
-            text.replace("Sneak", "Sn.");
-            text.replace("Cadence", "Ca.");
-            text.replace("Watch", "W.");
+            text.replace("Concentration", "Concentr");
+            text.replace("Memorization", "Memorize");
+            text.replace("Retainment Chance", "Retain %");
+            text.replace("Retainment", "Retain");
+            text.replace("Close Quarters", "Close");
+            text.replace("Long Reach", "Long");
+            text.replace("Defense", "Def.");
+            text.replace("Sneak", "Snk.");
+            text.replace("Cadence", "Cad.");
+            text.replace("Watch Attack", "W. Atk");
+            text.replace("Watch", "Wtch.");
+            text.replace("Penetration", "Penetr.");
+            text.replace("Diagonal", "Diag.");
 
         }
     }

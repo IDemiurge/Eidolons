@@ -7,6 +7,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_ItemActiveObj;
+import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.Active;
 import main.entity.obj.Obj;
 import main.game.core.Eidolons;
@@ -44,8 +45,8 @@ import java.util.List;
  * events
  */
 public class Executor extends ActiveHandler {
-    boolean interrupted;
-    boolean result;
+    private boolean interrupted;
+    private boolean result;
     private Activator activator;
     private Targeter targeter;
     private List<DC_ActiveObj> pendingAttacksOpportunity;
@@ -82,6 +83,7 @@ public class Executor extends ActiveHandler {
     public void activateOn(Ref ref) {
         targeter.setForcePresetTarget(true);
         getEntity().setRef(ref);
+        getTargeter().setRef(ref);
         activateOnActionThread();
     }
 
@@ -101,7 +103,11 @@ public class Executor extends ActiveHandler {
 
         log(getEntity().getOwnerObj()  + " activates "+  getEntity(), true);
         if (getEntity() instanceof DC_ItemActiveObj){
-            reset();
+            DC_QuickItemObj item = ((DC_ItemActiveObj) getEntity()).getItem();
+            if (item.isAmmo()){
+                getEntity().getOwnerObj().getRef().setID(KEYS.AMMO,item.getId() );
+            }
+
         }
         reset();
 //        try {
@@ -110,13 +116,13 @@ public class Executor extends ActiveHandler {
 //            e.printStackTrace();
 //        }
         getTargeter().initTarget();
-        if (interrupted)
+        if (isInterrupted())
             return interrupted();
         beingActivated();
-        if (interrupted)
+        if (isInterrupted())
             return interrupted();
         initActivation();
-        if (interrupted)
+        if (isInterrupted())
             return interrupted();
         resolve();
         if (!BooleanMaster.isTrue(cancelled))
@@ -130,13 +136,13 @@ public class Executor extends ActiveHandler {
 
         activationOver();
 
-        return result;
+        return isResult();
     }
 
     private boolean interrupted() {
         log(getEntity().getNameAndCoordinate() + " is interrupted", false);
         activationOver();
-        return result;
+        return isResult();
     }
 
 
@@ -155,12 +161,12 @@ public class Executor extends ActiveHandler {
         } else if (!checkExtraAttacksDoNotInterrupt(getLogger().getEntryType())) {
             // TODO NEW ENTRY AOO?
             payCosts();
-            result = false;
+            setResult(false);
         } else {
 //            activated(ref); TODO
         }
         if (getChecker().isCancellable()) {
-            result = checkExtraAttacksDoNotInterrupt(getLogger().getEntryType());
+            setResult(checkExtraAttacksDoNotInterrupt(getLogger().getEntryType()));
         }
 
 
@@ -175,8 +181,8 @@ public class Executor extends ActiveHandler {
                 ConcealmentRule.logMissed(game.getLogManager(), getAction());
             }
             if (missed) {
-                result = false;
-                interrupted = true;
+                setResult(false);
+                setInterrupted(true);
                 StackingRule.actionMissed(getAction());
             }
         }
@@ -211,7 +217,7 @@ public class Executor extends ActiveHandler {
 
         if (getAction().getAbilities() != null) {
             try {
-                result = getAction().getAbilities().activatedOn(getRef());
+                setResult(getAction().getAbilities().activatedOn(getRef()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -220,11 +226,11 @@ public class Executor extends ActiveHandler {
         {
             for (Active active : getAction().getActives()) {
                 try {
-                    result &= active.activatedOn(getRef());
+                    setResult(isResult() & active.activatedOn(getRef()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (!result) {
+                if (!isResult()) {
                     break;// TODO if cancelled!
                 }
                 if (!game.isStarted()) {
@@ -248,8 +254,8 @@ public class Executor extends ActiveHandler {
     }
 
     private void reset() {
-        interrupted = false;
-        result = false;
+        setInterrupted(false);
+        setResult(false);
     }
 
 
@@ -288,7 +294,7 @@ public class Executor extends ActiveHandler {
     private void fireEvent(STANDARD_EVENT_TYPE type, boolean interrupting) {
         boolean result = getGame().fireEvent(new Event(type, getRef()));
         if (interrupting)
-            interrupted = !result;
+            setInterrupted(!result);
 //        if (cancel)
 //            this.result=result;
     }
@@ -302,7 +308,7 @@ public class Executor extends ActiveHandler {
 
 
     public void actionComplete() {
-        if (result)
+        if (isResult())
             log(getEntity() + " done", false);
         else
         log(getEntity() + " failed", false);
@@ -452,5 +458,21 @@ public class Executor extends ActiveHandler {
         if (isCounterMode()) return true;
         if (isInstantMode()) return true;
         return false;
+    }
+
+    public boolean isInterrupted() {
+        return interrupted;
+    }
+
+    public void setInterrupted(boolean interrupted) {
+        this.interrupted = interrupted;
+    }
+
+    public boolean isResult() {
+        return result;
+    }
+
+    public void setResult(boolean result) {
+        this.result = result;
     }
 }
