@@ -303,48 +303,6 @@ public class UnitDataSource implements
                     .forEach(el -> {
                         final ValueContainer valueContainer = new ValueContainer(getOrCreateR(el.getImagePath()));
 
-/*                        Map<VALUE, List<MultiValueContainer>> map = new HashMap<>();
-
-                        for (VALUE rowName : ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES) {
-                            List<MultiValueContainer> list = new ArrayList<>();
-
-                            for (int i = 0; i < ACTION_TOOLTIP_PARAMS_TABLE_HEADER.length; i+=2) {
-                                VALUE p = ACTION_TOOLTIP_PARAMS_TABLE_HEADER[i];
-                                String value = weapon.getValue(p);
-                                String name = p.getName();
-                                final MultiValueContainer tooltipContainer = new MultiValueContainer(name, value);
-                                list.add(tooltipContainer);
-                            }
-                            map.put(BASE_DAMAGE, list);
-
-                            list = new ArrayList<>();
-
-                            for (int i = 0; i < ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES.length; i+=2) {
-                                VALUE p = ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES[i];
-                                String value = weapon.getValue(p);
-                                String name = p.getName();
-                                final MultiValueContainer tooltipContainer = new MultiValueContainer(name, value);
-                                list.add(tooltipContainer);
-                            }
-
-                            map.put(COUNTER_MOD, list);
-
-                            list = new ArrayList<>();
-
-                            for (int i = 0; i < ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES.length; i+=2) {
-                                VALUE p = ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES[i];
-                                String value = weapon.getValue(p);
-                                String name = p.getName();
-                                final MultiValueContainer tooltipContainer = new MultiValueContainer(name, value);
-                                list.add(tooltipContainer);
-                            }
-
-                            map.put(INSTANT_DAMAGE_MOD, list);
-
-                            list = new ArrayList<>();
-
-                        }*/
-
 
 
                         ToolTip toolTip = new ActionToolTip();

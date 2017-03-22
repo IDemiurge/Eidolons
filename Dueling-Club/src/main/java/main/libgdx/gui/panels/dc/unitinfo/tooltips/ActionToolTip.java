@@ -10,13 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static main.content.PARAMS.*;
 import static main.libgdx.texture.TextureCache.getOrCreate;
 
 public class ActionToolTip extends ToolTip<Supplier<Map<VALUE, List<MultiValueContainer>>>> {
     @Override
     public void updateAct() {
-        final Map<VALUE, List<MultiValueContainer>> paramsListMap = getUserObject().get();
+/*        final Map<VALUE, List<MultiValueContainer>> paramsListMap = getUserObject().get();
 
         for (MultiValueContainer valueTooltip : paramsListMap.get(BASE_DAMAGE)) {
              inner.addElement(valueTooltip);
@@ -30,7 +29,7 @@ public class ActionToolTip extends ToolTip<Supplier<Map<VALUE, List<MultiValueCo
         for (MultiValueContainer valueTooltip : paramsListMap.get(INSTANT_DAMAGE_MOD)) {
             inner.addElement(valueTooltip);
 
-        }
+        }*/
     }
 
     @Override
