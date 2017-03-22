@@ -30,7 +30,7 @@ import static main.content.UNIT_INFO_PARAMS.*;
 import static main.content.UNIT_INFO_PARAMS.ActionToolTipSections.*;
 import static main.content.ValuePages.*;
 import static main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster.getIconPathForTableRow;
-import static main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster.getStringForValueTable;
+import static main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster.getStringForTableValue;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class UnitDataSource implements
@@ -44,16 +44,17 @@ public class UnitDataSource implements
         this.unit = unit;
     }
 
-    private static List<MultiValueContainer> extractActionValues(DC_UnitAction el, VALUE[] baseKeys) {
+    private static List<MultiValueContainer> extractActionValues(DC_UnitAction el
+     , VALUE[] baseKeys) {
         List<MultiValueContainer> list = new ArrayList<>();
-        Pair<VALUE, VALUE> pair;
+        Pair<PARAMS, PARAMS> pair;
         for (VALUE key : baseKeys) {
             pair = ACTION_TOOLTIPS_PARAMS_MAP.get(key);
 
-            String name = getStringForValueTable(key, el);
+            String name = getStringForTableValue(key, el);
             String imagePath = getIconPathForTableRow(key);
-            final String leftVal = getStringForValueTable(pair.getLeft(), el);
-            final String rightVal = getStringForValueTable(pair.getRight(), el);
+            final String leftVal =ActionTooltipMaster.getValueForTableParam(pair.getLeft(), el);
+            final String rightVal =ActionTooltipMaster.getValueForTableParam(pair.getRight(), el);
             MultiValueContainer mvc;
             if (StringUtils.isEmpty(imagePath)) {
                 mvc = new MultiValueContainer(name, leftVal, rightVal);
@@ -330,9 +331,9 @@ public class UnitDataSource implements
 
                         Map<ActionToolTipSections, List<MultiValueContainer>> map = new HashMap<>();
 
-                        Pair<VALUE, VALUE> pair = ACTION_TOOLTIPS_PARAMS_MAP.get(ACTION_TOOLTIP_HEADER_KEY);
+                        Pair<PARAMS, PARAMS> pair = ACTION_TOOLTIPS_PARAMS_MAP.get(ACTION_TOOLTIP_HEADER_KEY);
                         {
-                            String name = getStringForValueTable(ACTION_TOOLTIP_HEADER_KEY, el);
+                            String name = getStringForTableValue(ACTION_TOOLTIP_HEADER_KEY, el);
                             final String leftImage = ActionTooltipMaster.getIconPathForTableRow(pair.getLeft());
                             final String rightImage = ActionTooltipMaster.getIconPathForTableRow(pair.getRight());
                             MultiValueContainer mvc = new MultiValueContainer(name, leftImage, rightImage);
@@ -348,7 +349,7 @@ public class UnitDataSource implements
                         List/*<List<MultiValueContainer>>*/ textsList = new ArrayList<>();
                         for (PARAMS[] params : ACTION_TOOLTIP_PARAMS_TEXT) {
                             textsList.add(Arrays.stream(params).map(p ->
-                                    new ValueContainer(getStringForValueTable(p, el), "")
+                                    new ValueContainer(getStringForTableValue(p, el), "")
                             ).collect(Collectors.toList()));
                         }
                         map.put(TEXT, textsList);

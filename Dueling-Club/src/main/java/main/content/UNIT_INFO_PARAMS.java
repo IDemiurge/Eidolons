@@ -254,10 +254,10 @@ public interface UNIT_INFO_PARAMS {
             FOC_REQ,
             FOC_COST,
     };
-    Map<VALUE, Pair<VALUE, VALUE>> ACTION_TOOLTIPS_PARAMS_MAP = _buildMap();
+    Map<VALUE, Pair<PARAMS, PARAMS>> ACTION_TOOLTIPS_PARAMS_MAP = _buildMap();
 
-    static Map<VALUE, Pair<VALUE, VALUE>> _buildMap() {
-        Map<VALUE, Pair<VALUE, VALUE>> map = new HashMap<>();
+    static Map<VALUE, Pair<PARAMS, PARAMS>> _buildMap() {
+        Map<VALUE, Pair<PARAMS, PARAMS>> map = new HashMap<>();
 
         map.put(G_PROPS.NAME, new ImmutablePair<>(DAMAGE_BONUS, ATTACK));
         map.put(BASE_DAMAGE, new ImmutablePair<>(DAMAGE, ATTACK));

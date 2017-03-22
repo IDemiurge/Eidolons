@@ -70,7 +70,13 @@ public class ActionTooltipMaster {
     public static boolean isParamDisplayedAsCustomString(PARAMS p) {
         return p== PARAMS.DAMAGE;
     }
-        public static String getStringForValueTable(VALUE value, DC_ActiveObj action) {
+    public static String getValueForTableParam(PARAMS value, DC_ActiveObj action) {
+        if (isParamDisplayedAsCustomString(value))
+            return getStringForTableValue(value, action);
+        return action.getParam(value);
+    }
+
+        public static String getStringForTableValue(VALUE value, DC_ActiveObj action) {
         if (value == G_PROPS.NAME)
             return action.getName();
         if (value instanceof PARAMS) {
@@ -184,7 +190,7 @@ public class ActionTooltipMaster {
 
     public static void test(DC_ActiveObj action, PARAMS[] params) {
         for (PARAMS p : params) {
-            String s = getStringForValueTable(p, action);
+            String s = getStringForTableValue(p, action);
             if (s != null)
                 main.system.auxiliary.log.LogMaster.log(1, " " + s);
         }

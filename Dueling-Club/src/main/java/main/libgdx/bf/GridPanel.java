@@ -154,7 +154,7 @@ public class GridPanel extends Group {
            if (Eidolons.game.getVisionMaster().  getVisibilityMaster().isOutlinesOn())
             updateOutlines();
 
-            updateGamma();
+//            updateGamma();
 //            updateGraves();
         });
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
