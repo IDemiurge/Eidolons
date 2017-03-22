@@ -181,7 +181,6 @@ public class UnitInfoPanel extends Container<TablePanel> {
                 setVisible(false);
             } else {
                 setVisible(true);
-
             }
             updatePanel = false;
         }
