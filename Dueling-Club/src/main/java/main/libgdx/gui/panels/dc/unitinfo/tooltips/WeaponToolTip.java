@@ -1,7 +1,8 @@
-package main.libgdx.gui.dialog;
+package main.libgdx.gui.panels.dc.unitinfo.tooltips;
 
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.ValueContainer;
 
 import java.util.List;

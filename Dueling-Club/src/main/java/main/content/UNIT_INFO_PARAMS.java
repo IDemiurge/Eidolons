@@ -2,6 +2,11 @@ package main.content;
 
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static main.content.PARAMS.*;
 
@@ -204,64 +209,44 @@ public interface UNIT_INFO_PARAMS {
     //                                   <><><><><>
 
 
-    VALUE[] ACTION_TOOLTIP_PARAMS_TABLE_HEADER = {
-            G_PROPS.NAME,
-            DAMAGE_BONUS,
-            ATTACK,
-    };
-
-    VALUE[] ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES = {
+    VALUE ACTION_TOOLTIP_HEADER_KEY = G_PROPS.NAME;
+    VALUE[] ACTION_TOOLTIP_BASE_KEYS = {
             BASE_DAMAGE,
             COUNTER_MOD,
             INSTANT_DAMAGE_MOD,
             AOO_DAMAGE_MOD,
-    };
-
-    VALUE[] ACTION_TOOLTIP_PARAMS_TABLE_TEXT_ROW_NAMES = {
             SIDE_DAMAGE_MOD,
-            DIAGONAL_DAMAGE_MOD,
+            DIAGONAL_DAMAGE_MOD
     };
 
-    PARAMS[] ACTION_TOOLTIP_PARAMS_TABLE = {
-            DAMAGE, ATTACK,
-            COUNTER_MOD, COUNTER_ATTACK_MOD,
-            INSTANT_DAMAGE_MOD, INSTANT_ATTACK_MOD,
-            AOO_DAMAGE_MOD, AOO_ATTACK_MOD,
-            SIDE_DAMAGE_MOD, SIDE_ATTACK_MOD,
-            DIAGONAL_DAMAGE_MOD, DIAGONAL_ATTACK_MOD,
-    };
-
-    PARAMS[] ACTION_TOOLTIP_PARAMS_RANGE_ROW_NAMES = {
+    VALUE[] ACTION_TOOLTIP_RANGE_KEYS = {
             CLOSE_QUARTERS_DAMAGE_MOD,
             DAMAGE_MOD,
             LONG_REACH_DAMAGE_MOD,
     };
-    PARAMS[] ACTION_TOOLTIP_PARAMS_RANGE = {
-            CLOSE_QUARTERS_DAMAGE_MOD, CLOSE_QUARTERS_ATTACK_MOD,
-            DAMAGE_MOD, ATTACK_MOD,
-            LONG_REACH_DAMAGE_MOD, LONG_REACH_ATTACK_MOD,
-    };
-    PARAMS[] ACTION_TOOLTIP_PARAMS_TEXT = {
-            CRITICAL_MOD,
-            ACCURACY,
-            ARMOR_MOD,
-            IMPACT_AREA,
 
-            SNEAK_DEFENSE_MOD,
-            BLEEDING_MOD,
-            DURABILITY_DAMAGE_MOD,
+    Map<VALUE, Pair<VALUE, VALUE>> ACTION_TOOLTIPS_PARAMS_MAP = _buildMap();
+    PARAMS[][] ACTION_TOOLTIP_PARAMS_TEXT = {
+            {
+                    CRITICAL_MOD,
+                    ACCURACY,
+                    ARMOR_MOD,
+                    IMPACT_AREA
+            },
 
-            FORCE,
-            FORCE_KNOCK_MOD,
-            FORCE_PUSH_MOD,
-            FORCE_DAMAGE_MOD,
+            {
+                    SNEAK_DEFENSE_MOD,
+                    BLEEDING_MOD,
+                    DURABILITY_DAMAGE_MOD
+            },
 
-    };
-    PARAMETER[] ACTION_TOOLTIP_PARAMS_ATTR_DMG_MODS = {
-            STR_DMG_MODIFIER,
-            AGI_DMG_MODIFIER,
-            INT_DMG_MODIFIER,
-            SP_DMG_MODIFIER,
+            {
+                    FORCE,
+                    FORCE_KNOCK_MOD,
+                    FORCE_PUSH_MOD,
+                    FORCE_DAMAGE_MOD
+            },
+
     };
     PARAMETER[] ACTION_TOOLTIP_PARAMS_COSTS = {
             AP_COST,
@@ -270,5 +255,24 @@ public interface UNIT_INFO_PARAMS {
             FOC_REQ,
             FOC_COST,
     };
+
+    static Map<VALUE, Pair<VALUE, VALUE>> _buildMap() {
+        Map<VALUE, Pair<VALUE, VALUE>> map = new HashMap<>();
+
+        map.put(G_PROPS.NAME, new ImmutablePair<>(DAMAGE_BONUS, ATTACK));
+        map.put(BASE_DAMAGE, new ImmutablePair<>(DAMAGE, ATTACK));
+        map.put(COUNTER_MOD, new ImmutablePair<>(COUNTER_MOD, COUNTER_ATTACK_MOD));
+        map.put(INSTANT_DAMAGE_MOD, new ImmutablePair<>(INSTANT_DAMAGE_MOD, INSTANT_ATTACK_MOD));
+        map.put(AOO_DAMAGE_MOD, new ImmutablePair<>(AOO_DAMAGE_MOD, AOO_ATTACK_MOD));
+        map.put(SIDE_DAMAGE_MOD, new ImmutablePair<>(SIDE_DAMAGE_MOD, SIDE_ATTACK_MOD));
+        map.put(DIAGONAL_DAMAGE_MOD, new ImmutablePair<>(DIAGONAL_DAMAGE_MOD, DIAGONAL_ATTACK_MOD));
+
+
+        map.put(CLOSE_QUARTERS_DAMAGE_MOD, new ImmutablePair<>(CLOSE_QUARTERS_DAMAGE_MOD, CLOSE_QUARTERS_ATTACK_MOD));
+        map.put(DAMAGE_MOD, new ImmutablePair<>(DAMAGE_MOD, ATTACK_MOD));
+        map.put(LONG_REACH_DAMAGE_MOD, new ImmutablePair<>(LONG_REACH_DAMAGE_MOD, LONG_REACH_ATTACK_MOD));
+
+        return map;
+    }
 
 }

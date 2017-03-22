@@ -1,17 +1,16 @@
-package main.libgdx.gui.dialog;
+package main.libgdx.gui.panels.dc.unitinfo.tooltips;
 
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.content.VALUE;
+import main.libgdx.gui.dialog.ToolTip;
 import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static main.content.PARAMS.BASE_DAMAGE;
-import static main.content.PARAMS.COUNTER_MOD;
-import static main.content.PARAMS.INSTANT_DAMAGE_MOD;
+import static main.content.PARAMS.*;
 import static main.libgdx.texture.TextureCache.getOrCreate;
 
 public class ActionToolTip extends ToolTip<Supplier<Map<VALUE, List<MultiValueContainer>>>> {

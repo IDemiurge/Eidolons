@@ -3,30 +3,27 @@ package main.libgdx.gui.panels.dc.unitinfo.datasource;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.PARAMS;
-import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.libgdx.gui.dialog.ActionToolTip;
 import main.libgdx.gui.dialog.ToolTip;
 import main.libgdx.gui.dialog.ValueTooltip;
-import main.libgdx.gui.dialog.WeaponToolTip;
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionToolTip;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTip;
 import main.libgdx.texture.TextureCache;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static main.content.PARAMS.BASE_DAMAGE;
-import static main.content.PARAMS.COUNTER_MOD;
-import static main.content.PARAMS.INSTANT_DAMAGE_MOD;
 import static main.content.UNIT_INFO_PARAMS.*;
 import static main.content.ValuePages.*;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
@@ -306,12 +303,12 @@ public class UnitDataSource implements
                     .forEach(el -> {
                         final ValueContainer valueContainer = new ValueContainer(getOrCreateR(el.getImagePath()));
 
-                        Map<VALUE, List<MultiValueContainer>> map = new HashMap<>();
+/*                        Map<VALUE, List<MultiValueContainer>> map = new HashMap<>();
 
                         for (VALUE rowName : ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES) {
                             List<MultiValueContainer> list = new ArrayList<>();
 
-                            for (int i = 0; i < ACTION_TOOLTIP_PARAMS_TABLE_HEADER.length; i++) {
+                            for (int i = 0; i < ACTION_TOOLTIP_PARAMS_TABLE_HEADER.length; i+=2) {
                                 VALUE p = ACTION_TOOLTIP_PARAMS_TABLE_HEADER[i];
                                 String value = weapon.getValue(p);
                                 String name = p.getName();
@@ -322,7 +319,7 @@ public class UnitDataSource implements
 
                             list = new ArrayList<>();
 
-                            for (int i = 0; i < ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES.length; i++) {
+                            for (int i = 0; i < ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES.length; i+=2) {
                                 VALUE p = ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES[i];
                                 String value = weapon.getValue(p);
                                 String name = p.getName();
@@ -334,7 +331,7 @@ public class UnitDataSource implements
 
                             list = new ArrayList<>();
 
-                            for (int i = 0; i < ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES.length; i++) {
+                            for (int i = 0; i < ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES.length; i+=2) {
                                 VALUE p = ACTION_TOOLTIP_PARAMS_TABLE_ROW_NAMES[i];
                                 String value = weapon.getValue(p);
                                 String name = p.getName();
@@ -346,12 +343,12 @@ public class UnitDataSource implements
 
                             list = new ArrayList<>();
 
-                        }
+                        }*/
 
 
 
                         ToolTip toolTip = new ActionToolTip();
-                        toolTip.setUserObject((Supplier) () -> map);
+                        toolTip.setUserObject((Supplier) () -> null);
                         valueContainer.addListener(toolTip.getController());
                         result.add(valueContainer);
                     });
