@@ -99,7 +99,7 @@ public class Executor extends ActiveHandler {
 
     public boolean activate() {
 
-        log(getEntity() + " activates", false);
+        log(getEntity().getOwnerObj()  + " activates "+  getEntity(), true);
         if (getEntity() instanceof DC_ItemActiveObj){
             reset();
         }
@@ -302,7 +302,10 @@ public class Executor extends ActiveHandler {
 
 
     public void actionComplete() {
-        log(getEntity() + " done", false);
+        if (result)
+            log(getEntity() + " done", false);
+        else
+        log(getEntity() + " failed", false);
         fireEvent(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, false);
         getMaster().getLogger().logCompletion();
         getGame().getManager().applyActionRules(getAction());

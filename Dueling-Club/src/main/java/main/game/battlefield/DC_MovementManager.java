@@ -73,7 +73,14 @@ public class DC_MovementManager implements MovementManager {
 
     public static Action getFirstAction(Unit unit, Coordinates coordinates) {
         List<ActionPath> paths = instance.buildPath(unit, coordinates);
-        ActionPath path = paths.get(0);
+        ActionPath path =paths.get(0);
+        for (ActionPath p : paths){
+            if (p.getActions().get(0).getActive().isTurn())
+            {
+                path = p;
+                break;
+            }
+        }
         return path.getActions().get(0);
     }
 
