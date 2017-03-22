@@ -159,6 +159,11 @@ public class DamageCalculator {
          GenericEnums.DAMAGE_MODIFIER.ENDURANCE_ONLY
           .toString());
     }
+    public static boolean isArmorAveraged(Ref ref) {
+        return StringMaster.compare(ref.getValue(KEYS.DAMAGE_MODS),
+         DAMAGE_MODIFIER.ARMOR_AVERAGED
+          .toString());
+    }
 
     public static boolean isLethal(int damage, Obj targetObj) {
         if (damage >= targetObj.getIntParam(PARAMS.C_TOUGHNESS)) {

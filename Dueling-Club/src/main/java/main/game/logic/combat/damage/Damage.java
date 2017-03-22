@@ -3,16 +3,19 @@ package main.game.logic.combat.damage;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
+import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
+import main.system.auxiliary.StringMaster;
+
+import java.util.Arrays;
 
 public class Damage {
     protected boolean spell;
     protected boolean attack;
-    protected boolean average;
     protected Integer amount;
-    protected Unit attacked;
-    protected Unit attacker;
+    protected Unit target;
+    protected Unit source;
     protected boolean offhand;
     protected DAMAGE_TYPE dmg_type;
     protected DAMAGE_MODIFIER[] modifiers;
@@ -39,8 +42,8 @@ public class Damage {
 
     public void setRef(Ref ref) {
         this.ref = ref;
-        attacked= (Unit) ref.getTargetObj();
-        attacker= (Unit) ref.getSourceObj();
+        target = (Unit) ref.getTargetObj();
+        source = (Unit) ref.getSourceObj();
     }
 
     @Deprecated
@@ -70,23 +73,23 @@ return true;// TODO
 
     public void setModifiers(DAMAGE_MODIFIER[] modifiers) {
         this.modifiers = modifiers;
-
+        if (ref!= null) {
+        ref.setValue(KEYS.DAMAGE_MODS, StringMaster
+         .constructStringContainer(Arrays.asList(modifiers)));
+        }
     }
 
-    public void setAverage(boolean average) {
-        this.average = average;
-    }
 
     public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
-    public void setAttacked(Unit attacked) {
-        this.attacked = attacked;
+    public void setTarget(Unit target) {
+        this.target = target;
     }
 
-    public void setAttacker(Unit attacker) {
-        this.attacker = attacker;
+    public void setSource(Unit source) {
+        this.source = source;
     }
 
     public void setOffhand(boolean offhand) {
@@ -104,19 +107,19 @@ return true;// TODO
 
 
     public boolean isAverage() {
-        return average;
+        return DamageCalculator.isArmorAveraged(getRef());
     }
 
     public Integer getAmount() {
         return amount;
     }
 
-    public Unit getAttacked() {
-        return attacked;
+    public Unit getTarget() {
+        return target;
     }
 
-    public Unit getAttacker() {
-        return attacker;
+    public Unit getSource() {
+        return source;
     }
 
     public boolean isOffhand() {

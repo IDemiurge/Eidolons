@@ -28,7 +28,7 @@ public class RangedAttackAnim extends AttackAnim {
 
     public RangedAttackAnim(Entity active) {
         super(active);
-        this.anims = GET();
+        this.anims = getAnimTemplates();
         //draw bow on the source, ammo as missile
 
         //another actor? separate sprite?
@@ -41,7 +41,7 @@ public class RangedAttackAnim extends AttackAnim {
         }
     }
 
-    private ATK_ANIMS[] GET() {
+    private ATK_ANIMS[] getAnimTemplates() {
         List<ATK_ANIMS> list = new LinkedList<>();
         switch (weapon.getWeaponGroup()) {
             case CROSSBOWS:

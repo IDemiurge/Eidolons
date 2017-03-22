@@ -75,9 +75,9 @@ public abstract class Communicator {
      * getRef().setTarget(id) ...
      */
     public abstract boolean transmitActivateCommand(Active activeObj, Ref ref);
-
+@Deprecated
     protected Ref getRef(String string) {
-        Ref ref = new Ref(string);
+        Ref ref = null ;//new Ref(string);
         ref.setGame(game);
         return ref;
     }

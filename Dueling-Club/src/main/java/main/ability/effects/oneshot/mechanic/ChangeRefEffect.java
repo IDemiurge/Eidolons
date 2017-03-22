@@ -41,7 +41,7 @@ public class ChangeRefEffect extends MicroEffect implements OneshotEffect {
         if (add_remove) {
             ref.getTargetObj().getRef().setID(key, id);
         } else {
-            ref.setValue(key, null);
+            ref.removeValue(key);
         }
         // ref.getTargetObj().getRef().setValue(key, null); ???
 

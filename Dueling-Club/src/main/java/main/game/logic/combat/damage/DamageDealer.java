@@ -44,7 +44,7 @@ public class DamageDealer {
     //#2 done
     public static int dealDamage(Damage damage) {
         int result = dealDamageOfType(damage.getDmgType(),
-         damage.getAttacked()
+         damage.getTarget()
          , damage.getRef(), damage.getAmount());
 
         if (damage instanceof MultiDamage) {
@@ -57,7 +57,7 @@ public class DamageDealer {
 
     public static int dealDamage(Damage damage, Unit target) {
         damage.getRef().setTarget(target.getId());
-        damage.setAttacked(target);
+        damage.setTarget(target);
         return dealDamage(damage);
     }
     /**

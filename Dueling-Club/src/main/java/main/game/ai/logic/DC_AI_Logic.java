@@ -62,7 +62,8 @@ public abstract class DC_AI_Logic implements AI_Logic {
             }
         }
         ref.setTarget(target);
-        args[1] = ref.getData();
+        args[1] = ref.getValues(); //TODO to string
+
         // main.system.auxiliary.LogMaster.log(LogMaster.AI_DEBUG, unit +
         // " has "
         // + args);

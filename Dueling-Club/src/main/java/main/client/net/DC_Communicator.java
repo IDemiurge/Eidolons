@@ -24,13 +24,14 @@ public class DC_Communicator extends Communicator {
         getConnectionHandler().send(COMMAND.DEBUG + StringMaster.NETCODE_SEPARATOR + data);
 
     }
-
+@Deprecated
     @Override
     public boolean transmitActivateCommand(Active active, Ref ref) {
         DC_ActiveObj activeObj = (DC_ActiveObj) active;
         String data = COMMAND.ACTIVATE.name() + CMD_SEPARATOR + ACTIVATED_OBJ
                 + StringMaster.getPairSeparator() + activeObj.getId() + ARG_SEPARATOR
-                + ref.getData();
+             //TODO map to string
+                + ref.getValues();
         LogMaster.log(2, "command data sent: " + data);
         getConnectionHandler().send(COMMAND.ACTIVATE + StringMaster.NETCODE_SEPARATOR + data);
         // check response?

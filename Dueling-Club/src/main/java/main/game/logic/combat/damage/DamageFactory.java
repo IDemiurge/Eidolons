@@ -69,7 +69,8 @@ public class DamageFactory {
         damage.setDmgType(effect.getType());
         damage.setRef(effect.getRef());
         DAMAGE_MODIFIER[] modifiers={
-         DAMAGE_MODIFIER.UNBLOCKABLE
+         DAMAGE_MODIFIER.UNBLOCKABLE,
+         DAMAGE_MODIFIER.ARMOR_AVERAGED
         };
         damage.setModifiers(modifiers );
 

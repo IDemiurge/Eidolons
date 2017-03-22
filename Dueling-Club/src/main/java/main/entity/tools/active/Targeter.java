@@ -169,7 +169,7 @@ if (result)
             }
             return false;
         }
-        Ref REF = getRef().getCopy();
+        Ref REF =getEntity(). getRef().getCopy();
         REF.setMatch(id);
         if (targeting instanceof MultiTargeting) {
             // TODO ??

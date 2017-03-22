@@ -2,7 +2,7 @@ package main.entity;
 
 import main.ability.effects.Effect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.entity.Ref.KEYS;
+import main.data.ConcurrentMap;
 import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
@@ -14,11 +14,11 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.net.data.DataUnit;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Stores all the relevant ID's. Used to find proper Entities with getObj(KEYS key).
@@ -26,9 +26,11 @@ import java.util.HashMap;
  * Ref object is passed on activate(Ref ref) from the source entity to Active entity.
  * To activate on a given object, set ref’s {target} key, otherwise Active's Targeting will select()
  */
-public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
+public class Ref  implements Cloneable, Serializable {
 
-//    Map<KEYS,String> map;
+    protected Map<KEYS,String> values= new HashMap<>();
+    protected Map<KEYS, String> removedValues;
+
     /*
     TARGET_WEAPON example
     ref replacement is there exactly to avoid putting the whole thing into map!
@@ -61,14 +63,50 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         setValue(KEYS.SUMMONER, summonerId + "");
     }
 
-    public Ref(String string) {
-        super(string);
-    }
 
     public Ref(Game game, Integer source) {
         this.game = game;
         setSource(source);
     }
+
+
+    public void setValue(String name, String value) {
+        setValue( new EnumMaster<KEYS>().retrieveEnumConst(KEYS.class, name ), value);
+
+    }
+   
+    public void setValue(KEYS name, String value) {
+        getValues().put(name, value);
+        if (value ==null ){
+            removeValue(name);
+        }
+    }
+
+    public void removeValue(KEYS name) {
+        values.remove(name);
+        getRemovedValues().put(name, values.get(name));
+    }
+
+    public Map<KEYS, String> getRemovedValues() {
+        if (removedValues == null) {
+            removedValues = new ConcurrentMap<>();
+        }
+        return removedValues;
+    }
+
+
+   
+    public String getValue(KEYS key) {
+        return values.get(key);
+    }
+
+   
+    public String getValue(String name) {
+        return getValue( new EnumMaster<KEYS>().retrieveEnumConst(KEYS.class, name ));
+    }
+
+
+
 
     public Ref(Game game) {
         this.game = game;
@@ -78,6 +116,10 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         this(entity.getGame(), entity.getId());
     }
 
+   
+    public Map<KEYS, String> getValues() {
+        return values;
+    }
 
     public static Ref getCopy(Ref ref) {
         if (ref == null) {
@@ -102,20 +144,14 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         return REF;
     }
 
-    public String getData() {
-        String result = super.getData();
-        // if (GroupImpl != null)
-        // result += GroupImpl.toString();
-        return result;
 
-    }
 
     public String toString() {
         if (game == null || values == null) {
             return "invalid ref!";
         }
         String result = "REF values: ";
-        for (String key : values.keySet()) {
+        for (KEYS key : values.keySet()) {
             String value;
             Integer id;
             try {
@@ -147,7 +183,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
 
     }
 
-    @Override
+   
     public Object clone() {
         Ref ref = new Ref();
         ref.cloneMaps(this);
@@ -220,7 +256,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
 
     public void setAmount(Integer amount) {
         if (amount == null) {
-            setValue(KEYS.AMOUNT, null);
+            setID(KEYS.AMOUNT, null); //TODO ?
         } else {
             setValue(KEYS.AMOUNT, String.valueOf(amount));
         }
@@ -404,7 +440,10 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         return getObj(KEYS.TARGET.name());
     }
 
-    public void setID(KEYS key, Integer id) {
+    public void setValue(KEYS key, Integer id) {
+        setValue(key, String.valueOf(id));
+    }
+        public void setID(KEYS key, Integer id) {
         if (key == null) {
             return;
         }
