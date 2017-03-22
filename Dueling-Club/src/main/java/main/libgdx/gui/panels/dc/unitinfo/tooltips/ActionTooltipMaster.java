@@ -140,6 +140,7 @@ public class ActionTooltipMaster {
                 case IMPACT_AREA:
                     return getAreaOfImpactDescription(action);
             }
+            return action.getParam(p);
         }
         return null;
 
