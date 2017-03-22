@@ -14,7 +14,7 @@ public class ArmorPanel extends TablePanel {
             addCol();
             for (int j = 0; j < 4; j++) {
                 if (iter.hasNext()) {
-                    addElement(iter.next().fill().left().bottom().pad(0, 10, 10, 0));
+                    addElement(iter.next().left().bottom().pad(0, 10, 10, 0));
                 }
             }
         }

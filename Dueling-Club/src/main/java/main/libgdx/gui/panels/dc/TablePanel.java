@@ -39,7 +39,7 @@ public class TablePanel extends Container<Table> {
     public void addEmptyCol(int val) {
         Actor a = new Actor();
         a.setWidth(val);
-        addElement(new Container(a).fill().left().bottom());
+        addElement(new Container<>(a).left().bottom());
 
         addCol();
     }
@@ -55,7 +55,6 @@ public class TablePanel extends Container<Table> {
             createNewCol();
         }
         el.fill();
-        //el.setDebug(true);
         lastCol.add(el).fill();
         if (rowDirection == TOP_DOWN) {
             lastCol.row();

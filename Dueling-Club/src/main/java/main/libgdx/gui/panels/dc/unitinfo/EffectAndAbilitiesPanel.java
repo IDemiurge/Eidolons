@@ -32,20 +32,24 @@ public class EffectAndAbilitiesPanel extends TablePanel {
             EffectsAndAbilitiesSource source = (EffectsAndAbilitiesSource) getUserObject();
 
             List<ValueContainer> effects = source.getEffects().stream()
-                    .map(textureStringPair -> new ValueContainer(textureStringPair.getLeft())) //skip text value for now, its for tooltip description
-                    .collect(Collectors.toList());
+                    .map(textureStringPair -> {
+                        final ValueContainer valueContainer = new ValueContainer(textureStringPair.getLeft());
+                        return valueContainer;
+                    }).collect(Collectors.toList());
 
             IconGrid effectsGrid = new IconGrid(effects, 4, 3);
-            addElement(effectsGrid.fill().left().bottom().pad(0, 30, 20, 0));
+            addElement(effectsGrid.center());
 
             addCol();
 
             List<ValueContainer> abils = source.getAbilities().stream()
-                    .map(textureStringPair -> new ValueContainer(textureStringPair.getLeft())) //skip text value for now, its for tooltip description
-                    .collect(Collectors.toList());
+                    .map(textureStringPair -> {
+                        final ValueContainer valueContainer = new ValueContainer(textureStringPair.getLeft());
+                        return valueContainer;
+                    }).collect(Collectors.toList());
 
             IconGrid abilsGrid = new IconGrid(abils, 4, 3);
-            addElement(abilsGrid.fill().left().bottom().pad(0, 50, 20, 0));
+            addElement(abilsGrid.center());
 
             updatePanel = false;
         }

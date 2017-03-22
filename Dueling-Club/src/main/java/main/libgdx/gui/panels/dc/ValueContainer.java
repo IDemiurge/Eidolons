@@ -10,13 +10,10 @@ import main.libgdx.StyleHolder;
 
 public class ValueContainer extends Container<Table> {
     private static final int SMALL_NAME_SIZE = 3;
-    private boolean hideIconOnSmallSize = false;
-    private boolean hideNameOnSmallSize = false;
-    private boolean showTooltip = false;
-
     protected Container<Image> image;
     protected Container<Label> name;
     protected Container value;
+    private boolean singleImageMode = false;
 
     protected ValueContainer() {
 
@@ -27,6 +24,7 @@ public class ValueContainer extends Container<Table> {
     }
 
     public ValueContainer(TextureRegion texture) {
+        singleImageMode = true;
         init(texture, null, null);
     }
 
@@ -102,26 +100,26 @@ public class ValueContainer extends Container<Table> {
     }
 
     private void configure() {
-        if (image != null) {
-            if (image.getActor() != null) {
-                image.getActor().setFillParent(true);
-                image.width(image.getActor().getWidth());
-                image.height(image.getActor().getHeight());
-            }
+        if (image.getActor() != null) {
+            image.getActor().setFillParent(true);
+            image.width(image.getActor().getWidth());
+            image.height(image.getActor().getHeight());
+        }
+        if (!singleImageMode) {
             if (isVertical()) {
                 image.padBottom(3);
             } else {
                 image.padLeft(3);
             }
         }
-        if (name != null) {
+        if (name.getActor() != null) {
             if (isVertical()) {
                 name.padBottom(3);
             } else {
                 name.padLeft(3);
             }
         }
-        if (value != null) {
+        if (value.getActor() != null) {
             if (isVertical()) {
                 value.padBottom(3);
             } else {
@@ -136,21 +134,6 @@ public class ValueContainer extends Container<Table> {
         } else {
             ((Label) value.getActor()).setText(val);
         }
-    }
-
-    public void setHideIconOnSmallSize(boolean hideIconOnSmallSize) {
-        this.hideIconOnSmallSize = hideIconOnSmallSize;
-        configure();
-    }
-
-    public void setHideNameOnSmallSize(boolean hideNameOnSmallSize) {
-        this.hideNameOnSmallSize = hideNameOnSmallSize;
-        configure();
-    }
-
-    public void setShowTooltip(boolean showTooltip) {
-        this.showTooltip = showTooltip;
-        configure();
     }
 
     protected boolean isVertical() {

@@ -23,7 +23,7 @@ public class InitiativeAndActionPointsPanel extends TablePanel {
         innerTable.add(initiativeContainer).fill().left().bottom();
         innerTable.add(actionContainer).fill().right().bottom();
 
-        addElement(new Container(innerTable).fill().center().bottom());
+        addElement(new Container(innerTable).center().bottom());
     }
 
     @Override
