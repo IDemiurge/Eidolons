@@ -2,7 +2,6 @@ package main.libgdx.gui.panels.dc.unitinfo.tooltips;
 
 import main.content.DC_ValueManager;
 import main.content.PARAMS;
-import main.content.UNIT_INFO_PARAMS;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.values.properties.G_PROPS;
@@ -182,10 +181,7 @@ public class ActionTooltipMaster {
 
     }
 
-    public static void test(DC_ActiveObj action) {
-        test(action, UNIT_INFO_PARAMS.ACTION_TOOLTIP_PARAMS_TABLE);
-        test(action, UNIT_INFO_PARAMS.ACTION_TOOLTIP_PARAMS_TEXT);
-    }
+
 
     public static void test(DC_ActiveObj action, PARAMS[] params) {
         for (PARAMS p : params) {
