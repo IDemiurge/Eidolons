@@ -523,14 +523,16 @@ public enum PARAMS implements PARAMETER {
     FORCE_MOD_WEAPON_WEIGHT(null, "", false, 100, "actions"),
     FORCE_MAX_STRENGTH_MOD(true, null, "", false, 4, "actions"),
     // FORCE_CUSTOM_FORMULA(null, "", false, 0, "actions"),
-    FORCE_SPELLPOWER_MOD(true, null, "", false, 0, "actions", "spells"),
-    SIDE_DAMAGE_MOD(true, null, "", false, 0, "actions", "weapons", "chars", "units"),
-    DIAGONAL_DAMAGE_MOD(true, null, "", false, 0, "actions", "weapons", "chars", "units"),
-    SIDE_ATTACK_MOD(true, null, "", false, 0, "actions", "weapons", "chars", "units"),
-    DIAGONAL_ATTACK_MOD(true, null, "", false, 0, "actions", "weapons", "chars", "units"),
-    LONG_REACH_ATTACK_MOD(true, null, "", false, 0, "actions", "weapons", "chars", "units"),
-    LONG_REACH_DAMAGE_MOD(true, null, "", false, 0, "actions", "weapons", "chars", "units"),
-    COUNTER_MOD(true, null, "", false, DC_Formulas.DEF_COUNTER_MOD, "actions", "weapons", "chars", "units"),
+    FORCE_SPELLPOWER_MOD(true, null, "", false, 100, "actions", "spells"),
+    SIDE_DAMAGE_MOD(true, null, "", false, 100, "actions", "weapons", "chars", "units"),
+    DIAGONAL_DAMAGE_MOD(true, null, "", false, 100, "actions", "weapons", "chars", "units"),
+    SIDE_ATTACK_MOD(true, null, "", false, 100, "actions", "weapons", "chars", "units"),
+    DIAGONAL_ATTACK_MOD(true, null, "", false, 100, "actions", "weapons", "chars", "units"),
+    LONG_REACH_ATTACK_MOD(true, null, "", false, 100, "actions", "weapons", "chars", "units"),
+    LONG_REACH_DAMAGE_MOD(true, null, "", false, 100, "actions", "weapons", "chars", "units"),
+    CLOSE_QUARTERS_DAMAGE_MOD(true, null, "Close Quarters Damage mod", false, 100, "actions", "chars", "units", "weapons"),
+    CLOSE_QUARTERS_ATTACK_MOD(true, null, "Close Quarters Attack mod", false, 100, "actions", "chars", "units", "weapons"),
+
 
     PASSAGE_ATTACK_MOD(true, null, null, false, 0, "chars", "units"),
     ENGAGEMENT_ATTACK_MOD(true, null, null, false, 0, "chars", "units"),
@@ -567,12 +569,13 @@ public enum PARAMS implements PARAMETER {
     INSTANT_DEFENSE_MOD(true, null, null, false, 0, "actions", "chars", "units"),
 
     AOO_DAMAGE_MOD(true, null, null, false, 100, "actions", "chars", "units"),
-    AOO_ATTACK_MOD(true, null, null, false, 0, "actions", "chars", "units"),
-    AOO_DEFENSE_MOD(true, null, null, false, 0, "actions", "chars", "units"),
+    AOO_ATTACK_MOD(true, null, null, false, 100, "actions", "chars", "units"),
+    AOO_DEFENSE_MOD(true, null, null, false, 100, "actions", "chars", "units"),
 
     // COUNTER_DAMAGE_MOD(true,null, null, false, 0, "chars", "units"),
-    COUNTER_ATTACK_MOD(true, null, null, false, 0, "actions", "chars", "units"),
-    COUNTER_DEFENSE_MOD(true, null, null, false, 0, "actions", "chars", "units"),
+    COUNTER_MOD(true, null, "", false, 100, "actions", "weapons", "chars", "units"),
+    COUNTER_ATTACK_MOD(true, null, null, false, 100, "actions", "chars", "units"),
+    COUNTER_DEFENSE_MOD(true, null, null, false, 100, "actions", "chars", "units"),
 
     ENGAGED_AOO_DAMAGE_MOD(true, null, null, false, 100, "actions", "chars", "units"),
     ENGAGED_AOO_ATTACK_MOD(true, null, null, false, 100, "actions", "chars", "units"),
@@ -591,8 +594,6 @@ public enum PARAMS implements PARAMETER {
     SNEAK_DEFENSE_PENETRATION(null, "SNEAK_DEFENSE_PENETRATION", false, 0, "actions", "chars", "units"),
     SNEAK_ARMOR_PENETRATION(null, "SNEAK_DEFENSE_PENETRATION", false, 0, "actions", "chars", "units"),
 
-    CLOSE_QUARTERS_DAMAGE_MOD(true, null, "Close Quarters Damage mod", false, 0, "actions", "chars", "units", "weapons"),
-    CLOSE_QUARTERS_ATTACK_MOD(true, null, "Close Quarters Attack mod", false, 0, "actions", "chars", "units", "weapons"),
     // UNIT
     IMPACT_AREA(null, "", false, 0, "weapons", "spells", "actions"),
     RANGE("Range ", "Maximum distance", false, 1,

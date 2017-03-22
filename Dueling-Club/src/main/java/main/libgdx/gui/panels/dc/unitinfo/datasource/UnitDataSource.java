@@ -18,6 +18,7 @@ import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionToolTip;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTip;
 import main.libgdx.texture.TextureCache;
+import main.system.images.ImageManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -56,7 +57,7 @@ public class UnitDataSource implements
             final String leftVal =ActionTooltipMaster.getValueForTableParam(pair.getLeft(), el);
             final String rightVal =ActionTooltipMaster.getValueForTableParam(pair.getRight(), el);
             MultiValueContainer mvc;
-            if (StringUtils.isEmpty(imagePath)) {
+            if (!ImageManager.isImage(imagePath) ){
                 mvc = new MultiValueContainer(name, leftVal, rightVal);
             } else {
                 mvc = new MultiValueContainer(getOrCreateR(imagePath), name, leftVal, rightVal);
@@ -349,7 +350,9 @@ public class UnitDataSource implements
                         List/*<List<MultiValueContainer>>*/ textsList = new ArrayList<>();
                         for (PARAMS[] params : ACTION_TOOLTIP_PARAMS_TEXT) {
                             textsList.add(Arrays.stream(params).map(p ->
-                                    new ValueContainer(getStringForTableValue(p, el), "")
+                                    new ValueContainer(
+                                     ActionTooltipMaster.
+                                      getTextForTableValue(p, el), "")
                             ).collect(Collectors.toList()));
                         }
                         map.put(TEXT, textsList);

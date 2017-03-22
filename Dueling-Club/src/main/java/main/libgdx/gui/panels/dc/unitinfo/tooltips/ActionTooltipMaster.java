@@ -44,16 +44,22 @@ public class ActionTooltipMaster {
                 case COUNTER_MOD:
                     return MOD_IDENTIFIER.COUNTER_ATTACK.getImagePath();
                 case AOO_ATTACK_MOD:
+                case AOO_DAMAGE_MOD:
                     return MOD_IDENTIFIER.AOO.getImagePath();
                 case INSTANT_ATTACK_MOD:
+                case INSTANT_DAMAGE_MOD:
                     return MOD_IDENTIFIER.INSTANT_ATTACK.getImagePath();
                 case SIDE_ATTACK_MOD:
+                case SIDE_DAMAGE_MOD:
                     return MOD_IDENTIFIER.SIDE_ATTACK.getImagePath();
                 case DIAGONAL_ATTACK_MOD:
+                case DIAGONAL_DAMAGE_MOD:
                     return MOD_IDENTIFIER.DIAGONAL_ATTACK.getImagePath();
                 case CLOSE_QUARTERS_ATTACK_MOD:
+                case CLOSE_QUARTERS_DAMAGE_MOD:
                     return MOD_IDENTIFIER.CLOSE_QUARTERS.getImagePath();
                 case LONG_REACH_ATTACK_MOD:
+                case LONG_REACH_DAMAGE_MOD:
                     return MOD_IDENTIFIER.LONG_REACH.getImagePath();
             }
         }
@@ -68,31 +74,61 @@ public class ActionTooltipMaster {
 //    }
 
     public static boolean isParamDisplayedAsCustomString(PARAMS p) {
-        return p== PARAMS.DAMAGE;
+        return p == PARAMS.DAMAGE || p == PARAMS.ATTACK;
     }
+
     public static String getValueForTableParam(PARAMS value, DC_ActiveObj action) {
         if (isParamDisplayedAsCustomString(value))
-            return getStringForTableValue(value, action);
+            try {
+                return getStringForTableValue(value, action);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        if (DC_ValueManager.isCentimalModParam(value))
+            if (action.getIntParam(value) == 0) {
+                return "100";
+            }
         return action.getParam(value);
     }
 
-        public static String getStringForTableValue(VALUE value, DC_ActiveObj action) {
+    public static String getTextForTableValue(VALUE value,
+                                              DC_ActiveObj action) {
+        if (value instanceof PARAMS) {
+            PARAMS p = (PARAMS) value;
+//            if (isIgnoreIfZero(p) ) {
+//
+//            }
+            if (DC_ValueManager.isCentimalModParam(p))
+                if (action.getIntParam(p) == 100) {
+                    return null;
+                }
+            if (action.getIntParam(p) == 0) {
+                return null; //don't show any text!
+            }
+
+            if (p.getDefaultValue().equals(action.getParam(p))) {
+                return null;
+            }
+        }
+        return getStringForTableValue(value, action);
+    }
+
+    public static String getStringForTableValue(VALUE value, DC_ActiveObj action) {
+        try {
+            return tryGetStringForTableValue(value, action);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "ERROR";
+    }
+
+    public static String tryGetStringForTableValue(VALUE value, DC_ActiveObj action) {
         if (value == G_PROPS.NAME)
             return action.getName();
         if (value instanceof PARAMS) {
+
             PARAMS p = (PARAMS) value;
-            if (isIgnoreIfZero(p) ) {
-                if (action.getIntParam(p) == 0) {
-                    return null; //don't show any text!
-                }
-                if (DC_ValueManager.isCentimalModParam(p))
-                    if (action.getIntParam(p) == 100) {
-                        return null;
-                    }
-                if (p.getDefaultValue().equals(action.getParam(p))) {
-                    return null;
-                }
-            }
+
             switch (p) {
                 case CLOSE_QUARTERS_DAMAGE_MOD:
                     return (getRange0(action));
@@ -101,9 +137,13 @@ public class ActionTooltipMaster {
                 case LONG_REACH_DAMAGE_MOD:
                     return (getRange2(action));
 
-                case DAMAGE_BONUS:
-                case ATTACK:
+                case DAMAGE_BONUS: //TODO ????
                     return ImageManager.getValueIconPath(p);
+                case ATTACK:
+                    //TODO getAttack
+                    return
+                     String.valueOf(MathMaster.applyMod(action.getOwnerObj().getIntParam(p),
+                     action.getIntParam(PARAMS.ATTACK_MOD)));
                 case BASE_DAMAGE:
                     return "Base";
                 case DAMAGE:
@@ -152,7 +192,7 @@ public class ActionTooltipMaster {
 
     }
 
-        private static boolean isIgnoreIfZero(PARAMS p) {
+    private static boolean isIgnoreIfZero(PARAMS p) {
         return p != PARAMS.FORCE && p != PARAMS.BASE_DAMAGE;
     }
 
