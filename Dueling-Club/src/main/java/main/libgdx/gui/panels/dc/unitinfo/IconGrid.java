@@ -30,7 +30,7 @@ public class IconGrid extends TablePanel {
             addCol();
             for (int x = 0; x < h; x++) {
                 if (iter.hasNext()) {
-                    addElement(new Container<>(iter.next()).left().bottom());
+                    addElement(new Container<>(iter.next()).left().bottom().width(32).height(32));
                 } else {
                     addElement(new Container<>(new Image(emptyCell)).left().bottom().width(32).height(32));
                 }
