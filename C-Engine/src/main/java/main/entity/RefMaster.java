@@ -5,6 +5,11 @@ package main.entity;
  */
 public class RefMaster {
 
+//    public static Ref getSelfTargetingRefNew(Obj obj) {
+//        Ref REF = new Ref(obj.getGame(), obj.getRef().getSource());
+//        REF.setTarget(obj.getId());
+//        return REF;
+//    }
 //    public Object clone() {
 //        Ref ref = new Ref();
 //        ref.cloneMaps(this);
