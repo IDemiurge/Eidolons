@@ -3,29 +3,34 @@ package main.libgdx.gui.panels.dc.unitinfo.datasource;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.PARAMS;
+import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
+import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.libgdx.gui.dialog.ToolTip;
 import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionToolTip;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTip;
 import main.libgdx.texture.TextureCache;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static main.content.UNIT_INFO_PARAMS.*;
+import static main.content.UNIT_INFO_PARAMS.ActionToolTipSections.*;
 import static main.content.ValuePages.*;
+import static main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster.getIconPathForTableRow;
+import static main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster.getStringForValueTable;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class UnitDataSource implements
@@ -37,6 +42,27 @@ public class UnitDataSource implements
 
     public UnitDataSource(DC_Obj unit) {
         this.unit = unit;
+    }
+
+    private static List<MultiValueContainer> extractActionValues(DC_UnitAction el, VALUE[] baseKeys) {
+        List<MultiValueContainer> list = new ArrayList<>();
+        Pair<VALUE, VALUE> pair;
+        for (VALUE key : baseKeys) {
+            pair = ACTION_TOOLTIPS_PARAMS_MAP.get(key);
+
+            String name = getStringForValueTable(key, el);
+            String imagePath = getIconPathForTableRow(key);
+            final String leftVal = getStringForValueTable(pair.getLeft(), el);
+            final String rightVal = getStringForValueTable(pair.getRight(), el);
+            MultiValueContainer mvc;
+            if (StringUtils.isEmpty(imagePath)) {
+                mvc = new MultiValueContainer(name, leftVal, rightVal);
+            } else {
+                mvc = new MultiValueContainer(getOrCreateR(imagePath), name, leftVal, rightVal);
+            }
+            list.add(mvc);
+        }
+        return list;
     }
 
     @Override
@@ -286,7 +312,6 @@ public class UnitDataSource implements
         return getWeaponValueContainer(weapon);
     }
 
-
     @Override
     public List<ValueContainer> getNaturalMainWeaponDetailInfo() {
         Unit unit = (Unit) this.unit;
@@ -303,10 +328,33 @@ public class UnitDataSource implements
                     .forEach(el -> {
                         final ValueContainer valueContainer = new ValueContainer(getOrCreateR(el.getImagePath()));
 
+                        Map<ActionToolTipSections, List<MultiValueContainer>> map = new HashMap<>();
 
+                        Pair<VALUE, VALUE> pair = ACTION_TOOLTIPS_PARAMS_MAP.get(ACTION_TOOLTIP_HEADER_KEY);
+                        {
+                            String name = getStringForValueTable(ACTION_TOOLTIP_HEADER_KEY, el);
+                            final String leftImage = ActionTooltipMaster.getIconPathForTableRow(pair.getLeft());
+                            final String rightImage = ActionTooltipMaster.getIconPathForTableRow(pair.getRight());
+                            MultiValueContainer mvc = new MultiValueContainer(name, leftImage, rightImage);
+                            map.put(HEAD, Arrays.asList(mvc));
+                        }
+
+                        VALUE[] baseKeys = ACTION_TOOLTIP_BASE_KEYS;
+                        map.put(BASE, extractActionValues(el, baseKeys));
+
+                        baseKeys = ACTION_TOOLTIP_RANGE_KEYS;
+                        map.put(RANGE, extractActionValues(el, baseKeys));
+
+                        List/*<List<MultiValueContainer>>*/ textsList = new ArrayList<>();
+                        for (PARAMS[] params : ACTION_TOOLTIP_PARAMS_TEXT) {
+                            textsList.add(Arrays.stream(params).map(p ->
+                                    new ValueContainer(getStringForValueTable(p, el), "")
+                            ).collect(Collectors.toList()));
+                        }
+                        map.put(TEXT, textsList);
 
                         ToolTip toolTip = new ActionToolTip();
-                        toolTip.setUserObject((Supplier) () -> null);
+                        toolTip.setUserObject((Supplier) () -> map);
                         valueContainer.addListener(toolTip.getController());
                         result.add(valueContainer);
                     });
