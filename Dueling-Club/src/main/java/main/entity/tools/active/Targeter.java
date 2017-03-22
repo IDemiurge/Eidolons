@@ -61,7 +61,7 @@ public class Targeter extends ActiveHandler {
     }
     public Ref getRef() {
         if (ref == null )
-            ref = getEntity().getOwnerObj(). getRef();
+            ref = getEntity(). getRef();
         return ref;
     }
 

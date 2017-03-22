@@ -3,6 +3,7 @@ package main.entity;
 import main.ability.effects.Effect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.data.ConcurrentMap;
+import main.data.XLinkedMap;
 import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
@@ -39,7 +40,7 @@ public class Ref implements Cloneable, Serializable {
     public Game game;
     public Event event;
     public boolean base;
-    protected Map<KEYS, String> values = new HashMap<>();
+    protected Map<KEYS, String> values = new XLinkedMap<>();
     protected Map<KEYS, String> removedValues;
     protected GroupImpl group;
     protected String str;
@@ -158,7 +159,7 @@ public class Ref implements Cloneable, Serializable {
         if (game == null || values == null) {
             return "invalid ref!";
         }
-        String result = "REF values: ";
+        String result = "REF values: \n";
         for (KEYS key : values.keySet()) {
             String value;
             Integer id;
@@ -171,10 +172,12 @@ public class Ref implements Cloneable, Serializable {
             if (id != null) {
                 Obj obj = game.getObjectById(id);
                 if (obj != null) {
-                    result += key + " = " + obj + ";";
-                    continue;
+                    result += key + " = " + obj ;
                 }
-                result += key + " = " + value;
+                else {
+                    result += key + " = " + value;
+                }
+                result = result + ";" + "\n";
             }
         }
 

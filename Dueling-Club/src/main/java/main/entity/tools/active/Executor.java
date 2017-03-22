@@ -101,20 +101,10 @@ public class Executor extends ActiveHandler {
 
     public boolean activate() {
 
-        log(getEntity().getOwnerObj()  + " activates "+  getEntity(), true);
-        if (getEntity() instanceof DC_ItemActiveObj){
-            DC_QuickItemObj item = ((DC_ItemActiveObj) getEntity()).getItem();
-            if (item.isAmmo()){
-                getEntity().getOwnerObj().getRef().setID(KEYS.AMMO,item.getId() );
-            }
+        log(getAction().getOwnerObj()  + " activates "+  getAction(), true);
 
-        }
         reset();
-//        try {
-//            ActionTooltipMaster.test(getEntity());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        syncActionRefWithSource();
         getTargeter().initTarget();
         if (isInterrupted())
             return interrupted();
@@ -139,8 +129,18 @@ public class Executor extends ActiveHandler {
         return isResult();
     }
 
+    private void syncActionRefWithSource() {
+        if (getAction() instanceof DC_ItemActiveObj){
+            DC_QuickItemObj item = ((DC_ItemActiveObj) getAction()).getItem();
+            if (item.isAmmo()){
+                getAction().getOwnerObj().getRef().setID(KEYS.AMMO,item.getId() );
+            }
+        }
+        getAction().setRef(getAction().getOwnerObj().getRef());
+    }
+
     private boolean interrupted() {
-        log(getEntity().getNameAndCoordinate() + " is interrupted", false);
+        log(getAction().getNameAndCoordinate() + " is interrupted", false);
         activationOver();
         return isResult();
     }
@@ -206,7 +206,7 @@ public class Executor extends ActiveHandler {
 
 
     private void resolve() {
-        log(getEntity() + " resolves", false);
+        log(getAction() + " resolves", false);
         addStdPassives();
         getAction().activatePassives();
 //        setResistanceChecked(false); ??
@@ -217,7 +217,9 @@ public class Executor extends ActiveHandler {
 
         if (getAction().getAbilities() != null) {
             try {
-                setResult(getAction().getAbilities().activatedOn(getRef()));
+                setResult(getAction().getAbilities().activatedOn(
+//                 getTargeter(). TODO would this be ok?
+                 getRef()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -260,7 +262,7 @@ public class Executor extends ActiveHandler {
 
 
     private void addStdPassives() {
-        if (!StringMaster.isEmpty(getEntity().getProperty(G_PROPS.STANDARD_PASSIVES))) {
+        if (!StringMaster.isEmpty(getAction().getProperty(G_PROPS.STANDARD_PASSIVES))) {
             ownerObj.addProperty(G_PROPS.STANDARD_PASSIVES, getAction().getProperty(G_PROPS.STANDARD_PASSIVES));
         }
         if (!StringMaster.isEmpty(getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES))) {
@@ -309,9 +311,9 @@ public class Executor extends ActiveHandler {
 
     public void actionComplete() {
         if (isResult())
-            log(getEntity() + " done", false);
+            log(getAction() + " done", false);
         else
-        log(getEntity() + " failed", false);
+        log(getAction() + " failed", false);
         fireEvent(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, false);
         getMaster().getLogger().logCompletion();
         getGame().getManager().applyActionRules(getAction());

@@ -4,6 +4,7 @@ import main.entity.Ref;
 import main.entity.Referred;
 import main.game.core.game.Game;
 
+
 public class ReferredElement implements Referred {
 
     protected Ref ref;
