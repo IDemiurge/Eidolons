@@ -48,7 +48,8 @@ public class StatsPanel extends TablePanel {
                         if (iter.hasNext()) {
                             ValueContainer next = iter.next();
                             next.setBorder(getOrCreateR("UI/components/infopanel/simple_value_border.png"), true);
-                            tablePanel.addElement(next.fill().left().bottom().pad(0, 0, 0, 0));
+                            next.cropName();
+                            tablePanel.addElement(next.fill().left().bottom());
                         }
                     }
                 }

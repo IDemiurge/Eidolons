@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.values.parameters.PARAMETER;
+import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -26,13 +27,6 @@ public class ResistPanel extends TablePanel {
     public ResistPanel() {
 
         map = new HashMap<>();
-
-        DAMAGE_TYPE[] damageTypes = values();
-        Map<String, GenericEnums.DAMAGE_TYPE> damageTypeMap = new HashMap<>();
-        for (int i = 0; i < damageTypes.length; i++) {
-            DAMAGE_TYPE damageType = damageTypes[i];
-            damageTypeMap.put(damageType.getName().toLowerCase(), damageType);
-        }
 
         List<Pair<TextureRegion, GenericEnums.DAMAGE_TYPE>> pairs =
                 Arrays.stream(RESISTANCES)
@@ -157,7 +151,12 @@ public class ResistPanel extends TablePanel {
                 PARAMS param = (PARAMS) pair.getLeft();
                 DAMAGE_TYPE damageType = getFromParams(param);
                 if (map.containsKey(damageType)) {
-                    map.get(damageType).updateValue(pair.getRight());
+                    final ValueContainer container = map.get(damageType);
+                    ValueTooltip valueTooltip = new ValueTooltip();
+                    valueTooltip.setUserObject((Supplier) () ->
+                            Arrays.asList(new ValueContainer(param.getName(), "")));
+                    container.addListener(valueTooltip.getController());
+                    container.updateValue(pair.getRight() + "%");
                 }
             });
 

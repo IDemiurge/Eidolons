@@ -24,10 +24,6 @@ public class ResourcePanel extends TablePanel {
         TextureRegion textureRegion = new TextureRegion(TextureCache.getOrCreate("/UI/components/infopanel/main_resource_panel.png"));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         background(drawable);
-        setWidth(textureRegion.getRegionWidth());
-        setHeight(textureRegion.getRegionHeight());
-        maxWidth(getWidth());
-        maxHeight(getHeight());
 
         toughness = new VerticalValueContainer(getOrCreateR("UI/value icons/toughness.png"), "Toughness", "");
         addElement(toughness.fill().left().bottom().pad(0, 10, 10, 25));

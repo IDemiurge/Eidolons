@@ -2,8 +2,11 @@ package main.libgdx.gui.panels.dc;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +42,7 @@ public class TablePanel extends Container<Table> {
     public void addEmptyCol(int val) {
         Actor a = new Actor();
         a.setWidth(val);
-        addElement(new Container(a).fill().left().bottom());
+        addElement(new Container<>(a).left().bottom());
 
         addCol();
     }
@@ -50,25 +53,25 @@ public class TablePanel extends Container<Table> {
         updatePanel = true;
     }
 
-    public void addElement(Container el) {
+    public Cell<Container> addElement(Container el) {
         if (cols.size() == 0) {
             createNewCol();
         }
         el.fill();
-        //el.setDebug(true);
-        lastCol.add(el).fill();
+        final Cell<Container> cell = lastCol.add(el);
+        cell.fill();
+        //cell.pad(el.getTop(), el.getPadLeft(), el.getPadBottom(), el.getPadRight());
+        //el.pad(0);
         if (rowDirection == TOP_DOWN) {
             lastCol.row();
         }
+        return cell; //fuck incapsulation
     }
 
     private void createNewCol() {
         lastCol = new Table();
-        lastCol.setHeight(getPrefHeight());
+        //lastCol.setHeight(getPrefHeight());
         cols.add(lastCol);
-        cols.forEach(el -> {
-            el.setWidth(getPrefWidth() / cols.size());
-        });
         inner.add(lastCol);
     }
 
@@ -101,5 +104,15 @@ public class TablePanel extends Container<Table> {
     @Deprecated
     public void setActor(Table actor) {
         throw new UnsupportedOperationException("Use TablePanel#addElement.");
+    }
+
+    @Override
+    public Container<Table> background(Drawable background) {
+        if (background instanceof TextureRegionDrawable) {
+            final TextureRegionDrawable drawable = ((TextureRegionDrawable) background);
+            width(drawable.getRegion().getRegionWidth());
+            height(drawable.getRegion().getRegionHeight());
+        }
+        return super.background(background);
     }
 }

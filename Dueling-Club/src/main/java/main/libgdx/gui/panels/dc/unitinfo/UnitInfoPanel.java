@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.panels.dc.VerticalValueContainer;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -69,20 +68,14 @@ public class UnitInfoPanel extends Container<TablePanel> {
         mainWeaponPanel = new MainWeaponPanel();
         addElement(mainWeaponPanel);
 
-        List<VerticalValueContainer> resourceValues = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            resourceValues.add(new VerticalValueContainer(TextureCache.getOrCreateR("UI/value icons/morale.png"), "param" + i, "146%"));
-        }
-
         resourcePanel = new ResourcePanel();
         addElement(resourcePanel.left().bottom());
 
         mainParamPanel = new MainParamPanel();
-
         addElement(mainParamPanel.left().bottom());
 
         effectAndAbilitiesPanel = new EffectAndAbilitiesPanel();
-
+        effectAndAbilitiesPanel.debug();
         addElement(effectAndAbilitiesPanel.left().bottom());
 
 

@@ -37,13 +37,13 @@ public class AvatarPanel extends TablePanel {
         addElement(avatarContainer);
 
         nameLabel = new Label("name", StyleHolder.getDefaultLabelStyle());
-        addElement(new Container<>(nameLabel).fill().center().bottom());
+        addElement(new Container<>(nameLabel).center().bottom());
 
         param1Label = new Label("param1", StyleHolder.getDefaultLabelStyle());
-        addElement(new Container<>(param1Label).fill().center().bottom());
+        addElement(new Container<>(param1Label).center().bottom());
 
         param2Label = new Label("param2", StyleHolder.getDefaultLabelStyle());
-        addElement(new Container<>(param2Label).fill().center().bottom());
+        addElement(new Container<>(param2Label).center().bottom());
     }
 
     @Override
