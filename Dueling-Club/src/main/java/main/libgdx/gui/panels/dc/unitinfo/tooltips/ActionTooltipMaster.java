@@ -181,8 +181,6 @@ public class ActionTooltipMaster {
 
     }
 
-
-
     public static void test(DC_ActiveObj action, PARAMS[] params) {
         for (PARAMS p : params) {
             String s = getStringForValueTable(p, action);

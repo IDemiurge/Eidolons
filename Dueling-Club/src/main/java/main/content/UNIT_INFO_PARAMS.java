@@ -225,7 +225,6 @@ public interface UNIT_INFO_PARAMS {
             LONG_REACH_DAMAGE_MOD,
     };
 
-    Map<VALUE, Pair<VALUE, VALUE>> ACTION_TOOLTIPS_PARAMS_MAP = _buildMap();
     PARAMS[][] ACTION_TOOLTIP_PARAMS_TEXT = {
             {
                     CRITICAL_MOD,
@@ -255,6 +254,7 @@ public interface UNIT_INFO_PARAMS {
             FOC_REQ,
             FOC_COST,
     };
+    Map<VALUE, Pair<VALUE, VALUE>> ACTION_TOOLTIPS_PARAMS_MAP = _buildMap();
 
     static Map<VALUE, Pair<VALUE, VALUE>> _buildMap() {
         Map<VALUE, Pair<VALUE, VALUE>> map = new HashMap<>();
@@ -273,6 +273,10 @@ public interface UNIT_INFO_PARAMS {
         map.put(LONG_REACH_DAMAGE_MOD, new ImmutablePair<>(LONG_REACH_DAMAGE_MOD, LONG_REACH_ATTACK_MOD));
 
         return map;
+    }
+
+    enum ActionToolTipSections {
+        HEAD, BASE, RANGE, TEXT
     }
 
 }

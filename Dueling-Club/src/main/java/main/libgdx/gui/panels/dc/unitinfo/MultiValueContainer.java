@@ -6,9 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import main.libgdx.gui.panels.dc.ValueContainer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static main.libgdx.StyleHolder.getDefaultLabelStyle;
 
 public class MultiValueContainer extends ValueContainer {
+
+    private List<Container> values = new ArrayList<>();
 
     public MultiValueContainer(TextureRegion texture, String name, String... value) {
         init(texture, name, value);
@@ -18,7 +23,7 @@ public class MultiValueContainer extends ValueContainer {
         init(texture, null, (String[]) null);
     }
 
-    public MultiValueContainer(TextureRegion texture, String... value) {
+    public MultiValueContainer(TextureRegion texture, String[] value) {
         init(texture, null, value);
 
     }
@@ -34,11 +39,23 @@ public class MultiValueContainer extends ValueContainer {
             //super.init() initialize value field as empty Container
             this.value.setActor(table);
             for (String value : values) {
-                table.add(new Container<>(new Label(value, getDefaultLabelStyle())));
+                Container<Label> labelContainer = new Container<>(new Label(value, getDefaultLabelStyle()));
+                this.values.add(labelContainer);
+                table.add(labelContainer);
                 if (isVertical()) {
                     table.row();
                 }
             }
         }
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        values.clear();
+    }
+
+    public List getValues() {
+        return values;
     }
 }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.StringBuilder;
 import main.libgdx.StyleHolder;
+import org.apache.commons.lang3.StringUtils;
 
 public class ValueContainer extends Container<Table> {
     private static final int SMALL_NAME_SIZE = 3;
@@ -118,18 +119,26 @@ public class ValueContainer extends Container<Table> {
             text.replace("Restoration", "Rest");
             text.replace("Concentration", "Concentr");
             text.replace("Memorization", "Memorize");
-            text.replace("Retainment Chance", "Retain %");
             text.replace("Retainment", "Retain");
             text.replace("Close Quarters", "Close");
             text.replace("Long Reach", "Long");
             text.replace("Defense", "Def.");
             text.replace("Sneak", "Snk.");
             text.replace("Cadence", "Cad.");
-            text.replace("Watch Attack", "W. Atk");
-            text.replace("Watch", "Wtch.");
+            text.replace("Watch", "W.");
+            text.replace("Attack", "Attk");
             text.replace("Penetration", "Penetr.");
             text.replace("Diagonal", "Diag.");
 
+            if (StringUtils.contains(text, "Chance")) {
+                text.replace("Chance", "");
+                if (value.getActor() != null) {
+                    if (value.getActor() instanceof Label) {
+                        final Label actor = (Label) value.getActor();
+                        actor.getText().append("%");
+                    }
+                }
+            }
         }
     }
 

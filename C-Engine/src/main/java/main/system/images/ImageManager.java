@@ -1,6 +1,6 @@
 package main.system.images;
 
-import main.content.CONTENT_CONSTS.*;
+import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.content.enums.GenericEnums;
@@ -21,10 +21,13 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.swing.SwingMaster;
-import main.system.graphics.ColorManager.FLAG_COLOR;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.Loop;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.ColorManager.FLAG_COLOR;
 import main.system.graphics.GuiManager;
 import main.system.graphics.MigMaster;
 import main.system.launch.CoreEngine;
@@ -51,6 +54,7 @@ public class ImageManager {
     public static final BORDER BORDER_ENEMY_HIGHLIGHT = BORDER.HIGHLIGHTED_RED;
     public static final int CENTERED = -999;
     public static final String VALUE_ICONS_PATH = "UI\\value icons\\";
+    public static final String DEAD_ICON = "UI\\dead.png";
     private static final String EMPTY_LIST_ITEM = "UI\\EMPTY_ITEM.jpg";
     private static final String EMPTY_LIST_ITEM_ALT = "UI\\EMPTY_ITEM_ALT.jpg";
     private static final String EMPTY_LIST_ITEM_SMALL = "UI\\EMPTY_ITEM_SMALL.jpg";
@@ -62,7 +66,6 @@ public class ImageManager {
     private static final String CONCEALED_CELL = "UI\\HIDDEN_CELL.png";
     private static final String UNSEEN_CELL = "UI\\UNDETECTED_CELL.png";
     private static final String CELL = "UI\\EMPTY CELL2.png";
-    public static final String DEAD_ICON = "UI\\dead.png";
     private static final BORDER ALLY_TARGET = BORDER.HIGHLIGHTED_BLUE;
     private static final String DEFAULT_IMAGE_PATH = "UI\\Empty1.jpg";
     private static final int MAX_TYPE_ICON_SIZE = 256;
@@ -78,7 +81,7 @@ public class ImageManager {
             return false;
         }
     };
-    private static Map<String, CustomImageIcon> iconCache = new HashMap<  >();
+    private static Map<String, CustomImageIcon> iconCache = new HashMap<>();
     private static Map<String, ImageIcon> sizedImageStringCache = new HashMap<>();
     private static Map<String, Image> sizedImageCache = new HashMap<>();
     private static Map<String, Image[]> sprites = new HashMap<>();
@@ -431,7 +434,7 @@ public class ImageManager {
         if (forward) {
             path += vertical ? "up" : "right";
         } else
-            // TODO swap up/down?!
+        // TODO swap up/down?!
         {
             path += vertical ? "down" : "left";
         }
@@ -669,16 +672,16 @@ public class ImageManager {
         return null;
     }
 
-    public static String getValueIconPath(VALUE value
-      ) {
+    public static String getValueIconPath(VALUE value) {
         Image img = getValueIcon(value);
         if (img == null) {
             return "";
         }
-return ((CustomImage)img).getImgPath();
+        return ((CustomImage) img).getImgPath();
 
     }
-        public static Image getValueIcon(VALUE value, boolean glowIconForDynamicIfAvailable) {
+
+    public static Image getValueIcon(VALUE value, boolean glowIconForDynamicIfAvailable) {
         Image icon;
         String imgPath = VALUE_ICONS_PATH;
         String name = value.getName().toLowerCase();
@@ -710,9 +713,9 @@ return ((CustomImage)img).getImgPath();
                 }
             }
         }
-            if (!mastery) {
-                name = name.replaceFirst("c ", "");
-            }
+        if (!mastery) {
+            name = name.replaceFirst("c ", "");
+        }
         imgPath += name + "."; // free format
         icon = getImage(imgPath);
         if (!isValidImage(icon)) {
