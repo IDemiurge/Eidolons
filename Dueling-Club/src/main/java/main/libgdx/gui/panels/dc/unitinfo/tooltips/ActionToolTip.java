@@ -87,15 +87,18 @@ public class ActionToolTip extends ToolTip<Supplier<Map<ActionToolTipSections, L
         NinePatchDrawable ninePatchDrawable =
                 new NinePatchDrawable(new NinePatch(getOrCreate("UI/components/tooltip_background.9.png")));
         baseTable.setBackground(ninePatchDrawable);
+        baseTable.maxWidth(282);
 
         ninePatchDrawable =
                 new NinePatchDrawable(new NinePatch(getOrCreate("UI/components/tooltip_background.9.png")));
         rangeTable.setBackground(ninePatchDrawable);
+        rangeTable.maxWidth(282);
 
         textTables.forEach(tablePanel -> {
             NinePatchDrawable npd =
                     new NinePatchDrawable(new NinePatch(getOrCreate("UI/components/tooltip_background.9.png")));
             tablePanel.setBackground(npd);
+            tablePanel.maxWidth(282);
         });
     }
 }

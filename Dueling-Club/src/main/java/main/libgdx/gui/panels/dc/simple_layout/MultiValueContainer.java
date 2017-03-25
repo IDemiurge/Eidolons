@@ -1,4 +1,4 @@
-package main.libgdx.gui.panels.dc.unitinfo;
+package main.libgdx.gui.panels.dc.simple_layout;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -34,7 +34,7 @@ public class MultiValueContainer extends ValueContainer {
 
     protected void init(TextureRegion texture, String name, String[] values) {
         super.init(texture, name, null);
-        if (values != null){
+        if (values != null) {
             Table table = new Table();
             //super.init() initialize value field as empty Container
             this.valueContainer.setActor(table);

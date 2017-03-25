@@ -1,7 +1,7 @@
 package main.libgdx.gui.dialog;
 
 import main.entity.active.DC_ActiveObj;
-import main.libgdx.gui.panels.generic.Container;
+import main.libgdx.old.generic.Container;
 
 /**
  * Created by JustMe on 1/5/2017.

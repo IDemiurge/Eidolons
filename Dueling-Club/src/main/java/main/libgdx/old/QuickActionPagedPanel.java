@@ -2,7 +2,7 @@ package main.libgdx.old;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import main.libgdx.gui.panels.generic.PagedListPanel;
+import main.libgdx.old.generic.PagedListPanel;
 
 /**
  * Created with IntelliJ IDEA.

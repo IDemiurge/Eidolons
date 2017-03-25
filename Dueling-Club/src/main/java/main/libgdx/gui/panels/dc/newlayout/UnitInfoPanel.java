@@ -1,6 +1,7 @@
-package main.libgdx.gui.panels.dc.unitinfo;
+package main.libgdx.gui.panels.dc.newlayout;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.unitinfo.*;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -18,7 +19,7 @@ import main.system.GuiEventType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UnitInfoPanel extends Container<TablePanel> {
+public class UnitInfoPanel extends NewTable {
     private Actor outside;
     private boolean updatePanel;
     private MainParamPanel mainParamPanel;
@@ -30,14 +31,15 @@ public class UnitInfoPanel extends Container<TablePanel> {
     private ResistInfoTabsPanel resistTabs;
     private OffWeaponPanel offWeaponPanel;
     private MainWeaponPanel mainWeaponPanel;
-    private main.libgdx.gui.panels.dc.newlayout.StatsTabsPanel statsTabsPanel;
+    private StatsTabsPanel statsTabsPanel;
 
     public UnitInfoPanel() {
         TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/background.png");
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
-        background(drawable);
-        setWidth(textureRegion.getRegionWidth());
-        setHeight(Gdx.graphics.getHeight());
+        setBackground(drawable);
+        init(new float[]{36, 28, 36}, 1, AlignW.LEFT, AlignH.TOP);
+
+        setSize(textureRegion.getRegionWidth(), Gdx.graphics.getHeight());
 
         outside = new Actor();
         outside.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -50,48 +52,52 @@ public class UnitInfoPanel extends Container<TablePanel> {
             }
         });
 
-        TablePanel tablePanel = new TablePanel();
-        tablePanel.fill();
-        fill().left().bottom().pad(20);
-        setActor(tablePanel);
 
         initInnerPanels();
 
         initListeners();
 
         setVisible(false);
-        setClip(true);
         setTouchable(Touchable.enabled);
     }
 
     private void initInnerPanels() {
+        NewTable left = new NewTable(new float[]{100}, 5, AlignW.LEFT, AlignH.BOTTOM);
+        left.setName("LEFT");
+        addAt(0, 0, left).setH(getHeight());
+
+        NewTable mid = new NewTable(new float[]{100}, 7, AlignW.CENTER, AlignH.TOP);
+        mid.setName("MID");
+        addAt(1, 0, mid).setH(getHeight());
+
+        NewTable right = new NewTable(new float[]{100}, 3, AlignW.CENTER, AlignH.CENTER);
+        right.setName("RIGHT");
+        addAt(2, 0, right).setH(getHeight());
+
         mainWeaponPanel = new MainWeaponPanel();
-        addElement(mainWeaponPanel);
+        mainWeaponPanel.debug();
+        left.addAt(0, 1, mainWeaponPanel);
 
         resourcePanel = new ResourcePanel();
-        addElement(resourcePanel.left().bottom());
+        left.addAt(0, 2, resourcePanel);
 
         mainParamPanel = new MainParamPanel();
-        addElement(mainParamPanel.left().bottom());
+        left.addAt(0, 3, mainParamPanel);
 
         effectAndAbilitiesPanel = new EffectAndAbilitiesPanel();
-        effectAndAbilitiesPanel.debug();
-        addElement(effectAndAbilitiesPanel.left().bottom());
-
-
-        addCol();
-
+        left.addAt(0, 4, mainParamPanel);
+        //------------------------------
 
         avatarPanel = new AvatarPanel();
-        addElement(avatarPanel);
+        mid.addAt(0, 0, avatarPanel).setH(262);
 
         pointsPanel = new InitiativeAndActionPointsPanel();
-        addElement(pointsPanel);
+        mid.addAt(0, 1, avatarPanel).setH(60);
 
-        addPanelSeparator();
+        mid.addAt(0, 2, getPanelSeparator()).setH(30);
 
         attributesPanel = new MainAttributesPanel();
-        addElement(attributesPanel.pad(10, 10, 0, 10).fill().left().bottom());
+        mid.addAt(0, 3, attributesPanel).setH(60);
 
         List<ValueContainer> armorParams = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
@@ -101,28 +107,20 @@ public class UnitInfoPanel extends Container<TablePanel> {
         }
 
         ArmorPanel armorPanel = new ArmorPanel(armorParams);
-        addElement(armorPanel);
+        mid.addAt(0, 4, armorPanel);
 
-        addPanelSeparator();
+        mid.addAt(0, 5, getPanelSeparator()).setH(30);
 
         resistTabs = new ResistInfoTabsPanel();
-        addElement(new Container(resistTabs).fill().left().bottom());
+        mid.addAt(0, 6, resistTabs);
 
-        addCol();
 
         offWeaponPanel = new OffWeaponPanel();
-        addElement(offWeaponPanel);
+        right.addAt(0, 1, offWeaponPanel);
 
-        statsTabsPanel = new main.libgdx.gui.panels.dc.newlayout.StatsTabsPanel();
-        addElement(new Container(statsTabsPanel).fill());
-    }
+        statsTabsPanel = new StatsTabsPanel();
+        right.addAt(0, 2, statsTabsPanel);
 
-    private void addCol() {
-        getActor().addCol();
-    }
-
-    private <T extends Container> void addElement(T panel) {
-        getActor().addElement(panel);
     }
 
     private void initListeners() {
@@ -186,12 +184,17 @@ public class UnitInfoPanel extends Container<TablePanel> {
         }
     }
 
-    private void addPanelSeparator() {
+    private Container<Image> getPanelSeparator() {
         Container<Image> panelSeparator = new Container<>();
         Image image = new Image(TextureCache.getOrCreateR("/UI/components/infopanel/panel_separator.png"));
         panelSeparator.setActor(image);
         panelSeparator.fill().center().bottom();
-        addElement(panelSeparator);
+        return panelSeparator;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
     }
 
     @Override
