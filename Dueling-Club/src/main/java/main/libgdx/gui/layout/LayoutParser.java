@@ -1,7 +1,7 @@
 package main.libgdx.gui.layout;
 
-import main.libgdx.gui.panels.generic.Comp;
-import main.libgdx.gui.panels.generic.Container;
+import main.libgdx.old.generic.Comp;
+import main.libgdx.old.generic.Container;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.MigMaster;
 

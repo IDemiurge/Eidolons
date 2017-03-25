@@ -1,4 +1,4 @@
-package main.libgdx.gui.panels.dc.unitinfo;
+package main.libgdx.gui.panels.dc.simple_layout;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -6,11 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import main.libgdx.gui.panels.dc.TablePanel;
-import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -20,17 +19,6 @@ import java.util.List;
 
 public class UnitInfoPanel extends Container<TablePanel> {
     private Actor outside;
-    private boolean updatePanel;
-    private MainParamPanel mainParamPanel;
-    private ResourcePanel resourcePanel;
-    private AvatarPanel avatarPanel;
-    private InitiativeAndActionPointsPanel pointsPanel;
-    private EffectAndAbilitiesPanel effectAndAbilitiesPanel;
-    private MainAttributesPanel attributesPanel;
-    private ResistInfoTabsPanel resistTabs;
-    private OffWeaponPanel offWeaponPanel;
-    private MainWeaponPanel mainWeaponPanel;
-    private main.libgdx.gui.panels.dc.newlayout.StatsTabsPanel statsTabsPanel;
 
     public UnitInfoPanel() {
         TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/background.png");
@@ -51,7 +39,6 @@ public class UnitInfoPanel extends Container<TablePanel> {
         });
 
         TablePanel tablePanel = new TablePanel();
-        tablePanel.fill();
         fill().left().bottom().pad(20);
         setActor(tablePanel);
 
@@ -65,33 +52,41 @@ public class UnitInfoPanel extends Container<TablePanel> {
     }
 
     private void initInnerPanels() {
-        mainWeaponPanel = new MainWeaponPanel();
-        addElement(mainWeaponPanel);
+        TablePanel left = new TablePanel();
+        MainWeaponPanel mainWeaponPanel = new MainWeaponPanel();
+        left.addElement(mainWeaponPanel).minHeight(184);
+        left.row();
 
-        resourcePanel = new ResourcePanel();
-        addElement(resourcePanel.left().bottom());
+        ResourcePanel resourcePanel = new ResourcePanel();
+        left.addElement(resourcePanel).minHeight(210);
+        left.row();
 
-        mainParamPanel = new MainParamPanel();
-        addElement(mainParamPanel.left().bottom());
+        MainParamPanel mainParamPanel = new MainParamPanel();
+        left.addElement(mainParamPanel);
+        left.row();
 
-        effectAndAbilitiesPanel = new EffectAndAbilitiesPanel();
-        effectAndAbilitiesPanel.debug();
-        addElement(effectAndAbilitiesPanel.left().bottom());
+        EffectAndAbilitiesPanel effectAndAbilitiesPanel = new EffectAndAbilitiesPanel();
+        left.addElement(effectAndAbilitiesPanel);
+        left.row();
 
+        addElement(left).maxWidth(360);
 
-        addCol();
+        TablePanel mid = new TablePanel();
 
+        AvatarPanel avatarPanel = new AvatarPanel();
+        mid.addElement(avatarPanel);
+        mid.row();
 
-        avatarPanel = new AvatarPanel();
-        addElement(avatarPanel);
+        InitiativeAndActionPointsPanel pointsPanel = new InitiativeAndActionPointsPanel();
+        mid.addElement(pointsPanel);
+        mid.row();
 
-        pointsPanel = new InitiativeAndActionPointsPanel();
-        addElement(pointsPanel);
+        mid.addElement(getPanelSeparator()).expand().center();
+        mid.row();
 
-        addPanelSeparator();
-
-        attributesPanel = new MainAttributesPanel();
-        addElement(attributesPanel.pad(10, 10, 0, 10).fill().left().bottom());
+        MainAttributesPanel attributesPanel = new MainAttributesPanel();
+        mid.addElement(attributesPanel.pad(10, 10, 0, 10).fill().left().bottom());
+        mid.row();
 
         List<ValueContainer> armorParams = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
@@ -101,28 +96,32 @@ public class UnitInfoPanel extends Container<TablePanel> {
         }
 
         ArmorPanel armorPanel = new ArmorPanel(armorParams);
-        addElement(armorPanel);
+        mid.addElement(armorPanel);
+        mid.row();
 
-        addPanelSeparator();
+        mid.addElement(getPanelSeparator()).expand().center();
+        mid.row();
 
-        resistTabs = new ResistInfoTabsPanel();
-        addElement(new Container(resistTabs).fill().left().bottom());
+        ResistInfoTabsPanel resistTabs = new ResistInfoTabsPanel();
+        mid.addElement(resistTabs);
+        mid.row();
+        addElement(mid);
 
-        addCol();
+        TablePanel right = new TablePanel();
 
-        offWeaponPanel = new OffWeaponPanel();
-        addElement(offWeaponPanel);
+        OffWeaponPanel offWeaponPanel = new OffWeaponPanel();
+        right.addElement(offWeaponPanel).minHeight(184).top();
+        right.row();
 
-        statsTabsPanel = new main.libgdx.gui.panels.dc.newlayout.StatsTabsPanel();
-        addElement(new Container(statsTabsPanel).fill());
+        StatsTabsPanel statsTabsPanel = new StatsTabsPanel();
+        right.addElement(statsTabsPanel).grow().top();
+        right.row();
+
+        addElement(right).maxWidth(360);
     }
 
-    private void addCol() {
-        getActor().addCol();
-    }
-
-    private <T extends Container> void addElement(T panel) {
-        getActor().addElement(panel);
+    private <T extends Actor> Cell addElement(T panel) {
+        return getActor().addElement(panel).expand().left().bottom();
     }
 
     private void initListeners() {
@@ -160,38 +159,14 @@ public class UnitInfoPanel extends Container<TablePanel> {
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
         //todo replace this with child.forEach
-        mainParamPanel.setUserObject(userObject);
-        resourcePanel.setUserObject(userObject);
-        avatarPanel.setUserObject(userObject);
-        pointsPanel.setUserObject(userObject);
-        effectAndAbilitiesPanel.setUserObject(userObject);
-        attributesPanel.setUserObject(userObject);
-        resistTabs.setUserObject(userObject);
-        offWeaponPanel.setUserObject(userObject);
-        mainWeaponPanel.setUserObject(userObject);
-        statsTabsPanel.setUserObject(userObject);
-        updatePanel = true;
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-        if (updatePanel) {
-            if (getUserObject() == null) {
-                setVisible(false);
-            } else {
-                setVisible(true);
-            }
-            updatePanel = false;
+        getChildren().forEach(ch -> ch.setUserObject(userObject));
+        if (userObject != null) {
+            setVisible(true);
         }
     }
 
-    private void addPanelSeparator() {
-        Container<Image> panelSeparator = new Container<>();
-        Image image = new Image(TextureCache.getOrCreateR("/UI/components/infopanel/panel_separator.png"));
-        panelSeparator.setActor(image);
-        panelSeparator.fill().center().bottom();
-        addElement(panelSeparator);
+    private Image getPanelSeparator() {
+        return new Image(TextureCache.getOrCreateR("/UI/components/infopanel/panel_separator.png"));
     }
 
     @Override

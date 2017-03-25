@@ -41,6 +41,12 @@
         </dependency>
 
         <dependency>
+            <groupId>net.sf.cssbox</groupId>
+            <artifactId>cssbox</artifactId>
+            <version>4.12</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx</artifactId>
             <version>${libgdx.version}</version>

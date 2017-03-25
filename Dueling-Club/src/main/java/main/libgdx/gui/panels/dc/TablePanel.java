@@ -58,7 +58,7 @@ public class TablePanel extends Container<Table> {
             createNewCol();
         }
         el.fill();
-        final Cell<Container> cell = lastCol.add(el);
+        final Cell<Container> cell = lastCol.add(el).expand();
         cell.fill();
         //cell.pad(el.getTop(), el.getPadLeft(), el.getPadBottom(), el.getPadRight());
         //el.pad(0);

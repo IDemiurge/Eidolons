@@ -51,7 +51,8 @@ public class ToolTipManager extends Container {
         return hashCode == curHashCode;
     }
 
-    private void init(main.libgdx.gui.dialog.ToolTip toolTip) {
+    private void init(ToolTip toolTip) {
+        toolTip.top().left();
         setActor(toolTip);
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
