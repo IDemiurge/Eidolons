@@ -309,8 +309,13 @@ public class RuleMaster implements Controller {
     }
 
     public enum RULE {
-        FORCE, ATTACK_OF_OPPORTUNITY, INSTANT_ATTACK,
-        COUNTER_ATTACK, TIME, VISIBILITY, CLEAR_SHOT,
+        FORCE(RULE_SCOPE.TEST),
+        ATTACK_OF_OPPORTUNITY,
+        INSTANT_ATTACK(RULE_SCOPE.TEST),
+        COUNTER_ATTACK,
+        TIME,
+        VISIBILITY,
+        CLEAR_SHOT,
         PARRYING(RULE_SCOPE.FULL),
         // C
         DURABILITY,

@@ -19,7 +19,6 @@ import main.entity.obj.unit.Unit;
 import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.FacingMaster;
 import main.rules.action.WatchRule;
-import main.game.logic.combat.mechanics.ForceRule;
 import main.rules.perk.RangeRule;
 import main.system.DC_Formulas;
 import main.system.auxiliary.RandomWizard;
@@ -254,9 +253,9 @@ public class AttackCalculator {
         bonusMap.put(MOD_IDENTIFIER.RANDOM, bonus);
         totalBonus += bonus;
         // FORCE
-        bonus = ForceRule.getDamage(action, attacker, attacked);
-        bonusMap.put(MOD_IDENTIFIER.FORCE, bonus);
-        totalBonus += bonus;
+//        bonus = ForceRule.getDamage(action, attacker, attacked);
+//        bonusMap.put(MOD_IDENTIFIER.FORCE, bonus);
+//        totalBonus += bonus;
 
         bonus = action.getIntParam(PARAMS.DAMAGE_BONUS);
         bonus += getAttributeDamageBonuses(action, attacker, PHASE_TYPE.ATTACK_WEAPON_MODS,

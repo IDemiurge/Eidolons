@@ -85,7 +85,7 @@ public class RadialManager {
                 ));
             }
 
-            if (dcActiveObj.isAttack()) {
+            if (dcActiveObj.isAttackGeneric()) {
                 configureAttackNode(target, attacks, dcActiveObj);
             }
 

@@ -133,8 +133,8 @@ public class UnitDataSource implements
 
     @Override
     public String getStamina() {
-        int c = unit.getIntParam(PARAMS.C_TOUGHNESS);
-        int m = unit.getIntParam(PARAMS.TOUGHNESS);
+        int c = unit.getIntParam(PARAMS.C_STAMINA);
+        int m = unit.getIntParam(PARAMS.STAMINA);
         return c + "/" + m;
     }
 

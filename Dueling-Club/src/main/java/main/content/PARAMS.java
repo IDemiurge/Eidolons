@@ -513,12 +513,12 @@ public enum PARAMS implements PARAMETER {
 
     BLEEDING_MOD(true, null, "", false, 0, "actions", "weapons", "chars", "units"),
     FORCE(null, "", false, 0, "actions", "spells"),
-    FORCE_MOD(true, null, "", false, 0, "actions", "spells", "weapons", "chars", "units"),
-    FORCE_KNOCK_MOD(true, null, "", false, 0, "actions", "spells", "weapons", "chars", "units"),
-    FORCE_PUSH_MOD(true, null, "", false, 0, "actions", "spells", "weapons", "chars", "units"),
+    FORCE_MOD(true, null, "", false, 100, "actions", "spells", "weapons", "chars", "units"),
+    FORCE_KNOCK_MOD(true, null, "", false, 100, "actions", "spells", "weapons", "chars", "units"),
+    FORCE_PUSH_MOD(true, null, "", false, 100, "actions", "spells", "weapons", "chars", "units"),
     FORCE_PROTECTION(null, "", false, 0, "armor", "chars", "units"),
-    FORCE_DAMAGE_MOD(true, null, "", false, 0, "actions", "spells", "weapons", "chars", "units"),
-    FORCE_SPELL_DAMAGE_MOD(true, null, "", false, 0, "chars", "units"),
+    FORCE_DAMAGE_MOD(true, null, "", false, 100, "actions", "spells", "weapons", "chars", "units"),
+    FORCE_SPELL_DAMAGE_MOD(true, null, "", false, 100, "chars", "units"),
     FORCE_MOD_SOURCE_WEIGHT(null, "", false, 100, "actions", "weapons", "chars", "units"),
     FORCE_MOD_WEAPON_WEIGHT(null, "", false, 100, "actions"),
     FORCE_MAX_STRENGTH_MOD(true, null, "", false, 4, "actions"),
@@ -565,8 +565,8 @@ public enum PARAMS implements PARAMETER {
     WATCH_DETECTION_MOD(true, null, null, false, 0, "chars", "units"),
 
     INSTANT_DAMAGE_MOD(true, null, null, false, 100, "actions", "chars", "units"),
-    INSTANT_ATTACK_MOD(true, null, null, false, 0, "actions", "chars", "units"),
-    INSTANT_DEFENSE_MOD(true, null, null, false, 0, "actions", "chars", "units"),
+    INSTANT_ATTACK_MOD(true, null, null, false, 100, "actions", "chars", "units"),
+    INSTANT_DEFENSE_MOD(true, null, null, false, 100, "actions", "chars", "units"),
 
     AOO_DAMAGE_MOD(true, null, null, false, 100, "actions", "chars", "units"),
     AOO_ATTACK_MOD(true, null, null, false, 100, "actions", "chars", "units"),

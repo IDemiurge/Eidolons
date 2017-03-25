@@ -1,19 +1,16 @@
 package main.elements.triggers;
 
 import main.ability.Ability;
-import main.content.ContentManager;
-import main.elements.ReferredElement;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
-import main.entity.obj.BuffObj;
-import main.entity.obj.Obj;
+import main.game.core.game.Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.List;
 
-public class Trigger extends ReferredElement {
+public class Trigger {
     protected Condition conditions;
     protected Integer basis;
     protected List<EVENT_TYPE> eventTypes;
@@ -22,33 +19,22 @@ public class Trigger extends ReferredElement {
     protected boolean replacing = false;
     protected boolean altering = false;
     private boolean saving = false;
-    private int duration = ContentManager.INFINITE_VALUE;
-    private boolean oneShot = false;
+    private boolean removeAfterTriggers = false;
     private boolean forceTargeting = true;
     private Condition retainCondition;
+    private Game game;
+    private Event event;
 
     public Trigger(EVENT_TYPE eventType, Condition conditions, Ability abilities) {
         // construct abilities?
         this.conditions = conditions;
         this.eventType = eventType;
         this.abilities = abilities;
-        setRef(abilities.getRef());
-
-        Obj buff = ref.getObj("buff");
-        if (buff != null) {
-            this.duration = ((BuffObj) buff).getDuration();
-        }
+        game = abilities.getRef().getGame();
         abilities.getEffects().setTrigger(this);
-
-        // ref.setID(KEYS.TRIGGER.name(), id);
+basis =abilities.getRef().getTarget();
     }
 
-    // if (ref.getGame().getObjectById(ref.getAbility()) instanceof
-    // PassiveAbility) {
-    // basis = ref.getAbility();
-    // } else {
-    // basis = ref.getTarget();
-    // } // if the ability would be removed, trigger will be removed too
     @Override
     public String toString() {
         return "Trigger: " + abilities.getEffects().toString() + " on " + eventType.toString();
@@ -56,12 +42,14 @@ public class Trigger extends ReferredElement {
 
     public boolean trigger() {
         LogMaster.log(LogMaster.TRIGGER_DEBUG, toString()
-                + " has been triggered!");
+         + " has been triggered!");
         abilities.setForceTargeting(forceTargeting);
-        if (oneShot) {
+        if (removeAfterTriggers) {
             remove();
         }
-        boolean result = abilities.activatedOn(ref);
+        Ref REF = abilities.getRef().getCopy();
+        REF.setEvent(event);
+        boolean result = abilities.activatedOn(REF);
         if (result && game.isStarted()) {
             // if (
             game.getManager().checkForChanges(true);
@@ -72,6 +60,8 @@ public class Trigger extends ReferredElement {
     }
 
     public boolean check(Event event) {
+
+        Ref ref = event.getRef();
         if (retainCondition != null) {
             if (!retainCondition.check(ref)) {
                 remove();
@@ -82,7 +72,7 @@ public class Trigger extends ReferredElement {
             return false;
         }
         LogMaster.log(LogMaster.CORE_DEBUG, "checking trigger for event: "
-                + event.getType().name());
+         + event.getType().name());
         // return true;
         if (eventType.equals((event.getType()))) {
             ref.setEvent(event);
@@ -92,6 +82,7 @@ public class Trigger extends ReferredElement {
             ref.getGame().getManager().setTriggerBeingChecked(true);
             try {
                 if (conditions.check(ref)) {
+                    this.event=event;
                     ref.getGame().getManager().setTriggerBeingActivated(true);
                     return trigger();
                 } else {
@@ -122,16 +113,6 @@ public class Trigger extends ReferredElement {
         return eventType;
     }
 
-    @Override
-    public Ref getRef() {
-        return ref;
-    }
-
-    @Override
-    public void setRef(Ref ref) {
-        super.setRef(ref);
-        this.ref.setTriggered(true);
-    }
 
     // @Override
     // public Integer getBasis() {
@@ -165,15 +146,15 @@ public class Trigger extends ReferredElement {
     }
 
     private void remove() {
-        ref.getGame().getState().removeTrigger(this);
+        game.getState().removeTrigger(this);
     }
 
-    public boolean isOneShot() {
-        return oneShot;
+    public boolean isRemoveAfterTriggers() {
+        return removeAfterTriggers;
     }
 
-    public void setOneShot(boolean b) {
-        this.oneShot = b;
+    public void setRemoveAfterTriggers(boolean b) {
+        this.removeAfterTriggers = b;
     }
 
     public synchronized Condition getConditions() {

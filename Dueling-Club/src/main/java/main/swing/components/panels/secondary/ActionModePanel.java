@@ -242,7 +242,7 @@ public class ActionModePanel extends G_Panel implements MouseListener {
 
             // info panel or quick info tooltip
         } else {
-            if (action.isAttack()) {
+            if (action.isAttackGeneric()) {
                 if (toggleAttack(e, subAction)) {
                     refresh();
                     return;
@@ -253,7 +253,7 @@ public class ActionModePanel extends G_Panel implements MouseListener {
                         getModeFromSubAction(subAction));
                 DC_SoundMaster.playSoundForModeToggle(on_off, action,
                         getModeFromSubAction(subAction));
-                // if (action.isAttack()) {
+                // if (action.isAttackGeneric()) {
                 // tooltip = (subAction).getName();
                 // action.getOwnerObj().setPreferredAttackAction(on_off ?
                 // subAction

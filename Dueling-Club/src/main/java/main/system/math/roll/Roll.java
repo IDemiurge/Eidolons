@@ -26,15 +26,14 @@ public class Roll {
         this.drawRange = drawRange;
     }
 
-    public void setRolledValue1(int rolledValue) {
-        this.rolledValue2 = rolledValue;
-    }
 
     public Boolean roll(Ref ref) {
         boolean result = RollMaster.roll(type, success, fail, ref);
         if (drawRange > 0) {
-            if (100 - Math.min(RollMaster.getRolledValue2() / RollMaster.getRolledValue(),
-                    RollMaster.getRolledValue() / RollMaster.getRolledValue2()) * 100 <= drawRange) {
+            int val1 = Math.max(1, RollMaster.getRolledValue());
+            int val2 = Math.max(1, RollMaster.getRolledValue2());
+            if (100 - Math.min( val1/ val2,             val2/ val1)
+             * 100 <= drawRange) {
                 return null;
             }
         }

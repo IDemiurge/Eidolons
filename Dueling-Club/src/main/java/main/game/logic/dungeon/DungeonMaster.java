@@ -232,8 +232,10 @@ public class DungeonMaster {
     private ObjType pickRandomDungeon() {
         ObjType type;
         List<ObjType> list = DataManager.getTypes(DC_TYPE.DUNGEONS);
-        FilterMaster.filterByProp(list, G_PROPS.WORKSPACE_GROUP.getName(), MetaEnums.WORKSPACE_GROUP.COMPLETE
-                + "");
+        FilterMaster.filterByProp(list,
+         G_PROPS.WORKSPACE_GROUP.getName(),
+         MetaEnums.WORKSPACE_GROUP.FOCUS
+                + ""+ MetaEnums.WORKSPACE_GROUP.COMPLETE);
         if (list.isEmpty()) {
             list = DataManager.getTypes(DC_TYPE.DUNGEONS);
             FilterMaster.filterByProp(list, G_PROPS.WORKSPACE_GROUP.getName(),

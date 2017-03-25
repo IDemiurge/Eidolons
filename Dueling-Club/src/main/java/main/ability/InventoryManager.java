@@ -24,8 +24,6 @@ import main.swing.frames.PickUpWindow;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import javax.swing.*;
-
 public class InventoryManager {
 
     public static final WAIT_OPERATIONS OPERATION = WAIT_OPERATIONS.DIALOGUE_DONE;
@@ -121,19 +119,21 @@ public class InventoryManager {
         // if (window == null)
         window = (pickUp) ? new PickUpWindow(this, hero, nOfOperations) : new InventoryWindow(this,
                 hero, nOfOperations);
+window.open();
+
 
         // else {
         // window.setHero(hero);
         // window.setNumberOfOperations(nOfOperations);
         // window.refresh();
         // }
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                window.open();
-            }
-        });
+//        SwingUtilities.invokeLater(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                window.open();
+//            }
+//        });
 
         return (boolean) WaitMaster.waitForInput(OPERATION);
     }

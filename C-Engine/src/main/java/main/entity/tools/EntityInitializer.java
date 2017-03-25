@@ -22,7 +22,6 @@ public   class EntityInitializer<E extends Entity> extends EntityHandler<E> {
     public void init() {
         getEntity().addToState();
         getEntity(). cloneMaps(getType());
-//        addDynamicValues();
         setParam(G_PARAMS.TURN_CREATED, game.getState().getRound());
     }
 

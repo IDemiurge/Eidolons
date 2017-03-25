@@ -32,6 +32,7 @@ public class Targeter extends ActiveHandler {
     protected boolean forcePresetTarget;
     private TARGETING_MODE targetingMode;
     private Ref ref;
+    private boolean targetingInitialized;
 
     public Targeter(DC_ActiveObj entity, ActiveMaster entityMaster) {
         super(entity, entityMaster);
@@ -107,7 +108,7 @@ if (result)
         return getAction().getTargeting();
     }
 
-    protected void initTargetingMode() {
+    protected void initTargetingMode() { if (targetingInitialized)return ;
         if (targetingMode == null) {
             targetingMode = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(
                     TARGETING_MODE.class, getType().getProperty(G_PROPS.TARGETING_MODE));
@@ -116,7 +117,7 @@ if (result)
         if (targetingMode == null) {
             targetingMode = AbilityEnums.TARGETING_MODE.MULTI;
         }
-        ActivesConstructor.constructActive(targetingMode, getEntity());
+        ActivesConstructor.constructActive(targetingMode, getEntity());targetingInitialized=true;
 //        if (targeting == null) {
 //            LogMaster.log(LOG_CHANNELS.CONSTRUCTION_DEBUG,
 //             "null targeting for " + getName() + targetingMode + abilities);

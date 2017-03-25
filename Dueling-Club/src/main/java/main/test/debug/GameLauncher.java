@@ -220,7 +220,9 @@ public class GameLauncher {
             DUMMY_MODE = PresetLauncher.getLaunch().dummy_pp;
             DEBUG_MODE = PresetLauncher.getLaunch().debugMode;
             FAST_MODE = PresetLauncher.getLaunch().fast;
-
+            if (PresetLauncher.getLaunch().ruleScope!=null ) {
+                RuleMaster.setScope(PresetLauncher.getLaunch().ruleScope);
+            }
             ItemGenerator.setGenerationOn(!PresetLauncher.getLaunch().itemGenerationOff);
             TestMasterContent.setForceFree(PresetLauncher.getLaunch().freeActions);
 
@@ -250,7 +252,6 @@ UnitTrainingMaster.setRandom(!PresetLauncher.getLaunch().deterministicUnitTraini
                 }
 
                 DungeonMaster.RANDOM_DUNGEON = true;
-                CoreEngine.animationTestMode = true;
                 TestMasterContent.test_on = false;
             }
             if (getSUPER_FAST_MODE()) {

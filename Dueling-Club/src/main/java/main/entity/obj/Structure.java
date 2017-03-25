@@ -2,8 +2,8 @@ package main.entity.obj;
 
 import main.entity.Ref;
 import main.entity.tools.EntityMaster;
-import main.entity.tools.bf.BfObjMaster;
-import main.entity.tools.bf.BfObjResetter;
+import main.entity.tools.bf.structure.StructureMaster;
+import main.entity.tools.bf.structure.StructureResetter;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.core.game.DC_Game;
@@ -27,12 +27,12 @@ public class Structure extends BattleFieldObject {
 
     @Override
     protected EntityMaster initMaster() {
-        return new BfObjMaster(this);
+        return new StructureMaster(this);
     }
 
     @Override
-    public BfObjResetter getResetter() {
-        return (BfObjResetter) super.getResetter();
+    public StructureResetter getResetter() {
+        return (StructureResetter) super.getResetter();
     }
 
     public boolean isBfObj() {
@@ -44,6 +44,6 @@ public class Structure extends BattleFieldObject {
     }
 
     public void resetFacing() {
-        getResetter().resetFacing();
+//        getResetter().resetFacing();
     }
 }

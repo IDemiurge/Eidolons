@@ -20,7 +20,7 @@ import main.system.threading.WaitMaster;
 
 import java.awt.*;
 
-public abstract class OperationWindow extends G_Dialog {
+public abstract class OperationWindow extends G_Dialog implements OperationDialog{
     protected static final String OK = "Done";
     protected static final String CANCEL = "Cancel";
     protected static final String INV = "Inventory";
@@ -53,7 +53,8 @@ public abstract class OperationWindow extends G_Dialog {
 
     protected abstract HeroItemTab getComponent();
 
-    protected String getPoolTooltip() {
+    @Override
+    public String getPoolTooltip() {
         return OPERATION_TOOLTIP;
     }
 
@@ -62,7 +63,7 @@ public abstract class OperationWindow extends G_Dialog {
         super.init();
         refresh();
     }
-
+    @Override
     public void refresh() {
         getComponent().setHero(heroModel);
         getComponent().refresh();
@@ -70,12 +71,14 @@ public abstract class OperationWindow extends G_Dialog {
         operationsPool.setText(getPoolText());
     }
 
+    @Override
     public void open() {
         operationsData = "";
         cachedValue = cell.getProperty(PROPS.DROPPED_ITEMS);
         show();
     }
 
+    @Override
     public void done() {
         InventoryManager.updateType(getHero());
         WaitMaster.receiveInput(InventoryManager.OPERATION, true);
@@ -83,6 +86,7 @@ public abstract class OperationWindow extends G_Dialog {
         close();
     }
 
+    @Override
     public String getOperationsData() {
         if (operationsData == null) {
             operationsData = "";
@@ -90,6 +94,7 @@ public abstract class OperationWindow extends G_Dialog {
         return operationsData;
     }
 
+    @Override
     public void cancel() {
         cell.setProperty(PROPS.DROPPED_ITEMS, cachedValue);
         inventoryManager.resetHero(getHero(), bufferedType);
@@ -133,14 +138,17 @@ public abstract class OperationWindow extends G_Dialog {
         return panel;
     }
 
-    protected String getPoolText() {
+    @Override
+    public String getPoolText() {
         return getNumberOfOperations() + " left";
     }
 
+    @Override
     public Unit getHero() {
         return hero;
     }
 
+    @Override
     public void setHero(Unit hero) {
         this.hero = hero;
         InventoryManager.updateType(hero);
@@ -150,10 +158,12 @@ public abstract class OperationWindow extends G_Dialog {
         CharacterCreator.getHeroManager().addHero(heroModel);
     }
 
+    @Override
     public int getNumberOfOperations() {
         return nOfOperations;
     }
 
+    @Override
     public void setNumberOfOperations(int nOfOperations) {
         this.nOfOperations = nOfOperations;
         if (operationsPool != null) {

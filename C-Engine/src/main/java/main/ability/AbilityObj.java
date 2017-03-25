@@ -229,7 +229,7 @@ public class AbilityObj extends Obj implements ActiveObj, Interruptable {
     }
 
     @Override
-    public boolean isAttack() {
+    public boolean isAttackGeneric() {
         return false;
     }
 

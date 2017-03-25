@@ -171,7 +171,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
     }
 
     @Override
-    public boolean isAttack() {
+    public boolean isAttackGeneric() {
         return false;
     }
 

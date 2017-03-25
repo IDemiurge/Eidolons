@@ -22,6 +22,7 @@ import main.libgdx.anims.sprite.SpriteAnimationFactory;
 import main.libgdx.bf.GridConst;
 import main.system.auxiliary.data.FileManager;
 import main.system.math.PositionMaster;
+import main.system.test.TestMasterContent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -76,7 +77,8 @@ public class AttackAnim extends ActionAnim {
         String path = PathFinder.getSpritesPath() + "weapons\\"
                 + (weapon.isNatural() ? "natural\\" : "")
                 + (weapon.isRanged() ? "ranged\\" : "")
-                + (weapon.isAmmo() ? "ammo\\" : "");
+         + (weapon.isAmmo() ? "ammo\\" : "")
+         + (TestMasterContent. isArtifact(weapon) ? "artifact\\" : "");
         String file = FileManager.findFirstFile(path, weapon.getName(), false);
         if (file == null) {
             file = FileManager.findFirstFile(path, weapon.getProperty(G_PROPS.BASE_TYPE), false);

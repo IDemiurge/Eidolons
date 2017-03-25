@@ -267,7 +267,7 @@ public class InstantAttackRule {
     }
 
     private static boolean checkAttackCanBeInstant(DC_UnitAction attack) {
-        if (attack.isAttack()) {
+        if (attack.isAttackGeneric()) {
             return false;
         }
         return attack.isMelee();

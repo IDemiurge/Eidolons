@@ -2,7 +2,11 @@ package main.game.core.game;
 
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.battlefield.Coordinates;
 import main.system.auxiliary.log.LogMaster;
+
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * Created by JustMe on 2/15/2017.
@@ -35,5 +39,9 @@ public class GameMaster {
 
     public ObjType getTypeById(Integer id) {
         return game.getManager().getStateManager().getTypeById(id);
+    }
+
+    public Collection<Obj> getUnitsForCoordinates(Set<Coordinates> coordinates) {
+        return null ;
     }
 }

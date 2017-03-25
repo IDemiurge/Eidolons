@@ -42,7 +42,7 @@ public interface ActiveObj extends Cancellable, Active, OBJ {
 
     void initAnimation();
 
-    boolean isAttack();
+    boolean isAttackGeneric();
 
     boolean isBlocked();
 

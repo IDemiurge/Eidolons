@@ -38,16 +38,18 @@ import main.rules.action.PerceptionRule.PERCEPTION_STATUS;
 import main.rules.action.PerceptionRule.PERCEPTION_STATUS_PLAYER;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.PhaseAnimation;
 import main.system.launch.CoreEngine;
 
+import java.util.List;
 import java.util.Map;
 
 public abstract class DC_Obj extends MicroObj {
 
     protected Map<SPECIAL_EFFECTS_CASE, Effect> specialEffects;
-    protected Map<DAMAGE_CASE, Damage> bonusDamage;
+    protected Map<DAMAGE_CASE,  List<Damage>> bonusDamage;
     protected UNIT_TO_PLAYER_VISION activeVisionStatus;
     protected UNIT_TO_UNIT_VISION activeUnitVisionStatus;
     protected PERCEPTION_STATUS_PLAYER playerPerceptionStatus;
@@ -230,7 +232,10 @@ public abstract class DC_Obj extends MicroObj {
         }
         return specialEffects;
     }
-    public Map<DAMAGE_CASE, Damage> getBonusDamage() {
+    public  void addBonusDamage(DAMAGE_CASE c, Damage d) {
+        MapMaster.addToListMap(getBonusDamage(), c, d);
+    }
+        public Map<DAMAGE_CASE, List<Damage>> getBonusDamage() {
         if (bonusDamage == null) {
             bonusDamage = new XLinkedMap<>();
         }
@@ -261,7 +266,8 @@ public abstract class DC_Obj extends MicroObj {
         effect.apply(ref);
     }
 
-    public void addSpecialEffect(SPECIAL_EFFECTS_CASE case_type, Effect effects) {
+    public void addSpecialEffect(SPECIAL_EFFECTS_CASE case_type,
+                                 Effect effects) {
         if (effects instanceof Effects) {
             Effects effects_ = (Effects) effects;
             for (Effect e : effects_.getEffects()) {

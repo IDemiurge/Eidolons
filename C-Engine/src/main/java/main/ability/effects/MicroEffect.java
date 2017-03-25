@@ -1,6 +1,5 @@
 package main.ability.effects;
 
-import main.ability.effects.EffectImpl;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.game.core.game.MicroGame;
@@ -93,7 +92,7 @@ public abstract class MicroEffect extends EffectImpl {
             return false;
         }
 
-        return activeObj.isAttack();
+        return activeObj.isAttackGeneric();
 
     }
 

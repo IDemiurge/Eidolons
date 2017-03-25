@@ -18,7 +18,15 @@ import java.util.List;
 //REVIEW0321 why no comments on public methods. at least explain
 public class DamageFactory {
 
-    public static Damage getDamageFromEffect(DealDamageEffect effect, int amount) {
+    public static Damage getGenericDamage(DAMAGE_TYPE damageType,
+                                          int amount, Ref ref) {
+        Damage damageObject=new Damage();
+        damageObject.setAmount(amount);
+        damageObject.setDmgType(damageType);
+        damageObject.setRef(ref);
+        return damageObject;
+    }
+        public static Damage getDamageFromEffect(DealDamageEffect effect,  int amount) {
         Damage damageObject;
         List<Damage> list =
          DamageCalculator.getBonusDamageList(effect.getRef(), effect.isMagical()

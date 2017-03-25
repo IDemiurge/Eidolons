@@ -22,8 +22,15 @@ public class ActionTooltipMaster {
 
     private static String getDiceText(DC_ActiveObj action) {
         DC_WeaponObj weapon = action.getActiveWeapon();
-        int dieSize = weapon.getMaterial().getModifier();
-        Integer dice = weapon.getIntParam(PARAMS.DICE);
+        int dieSize =
+         MathMaster.applyMod(
+          weapon.getIntParam(PARAMS.DIE_SIZE),
+          action.getFinalModParam(PARAMS.DAMAGE_MOD));
+        Integer dice =
+         MathMaster.applyMod(
+          weapon.getIntParam(PARAMS.DICE),
+          action.getFinalModParam(PARAMS.DAMAGE_MOD));
+
         return dice + "d" + dieSize;
     }
 

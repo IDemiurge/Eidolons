@@ -18,4 +18,8 @@ public class ConfigMaster {
     public void readConfig() {
 
     }
+
+    public boolean getValue(String key) {
+        return false;
+    }
 }
