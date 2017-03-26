@@ -137,7 +137,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 event.stop();
-                return false;
+                return true;
             }
 
             @Override
