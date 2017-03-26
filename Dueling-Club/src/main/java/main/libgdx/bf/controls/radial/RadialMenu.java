@@ -186,6 +186,10 @@ public class RadialMenu extends Group {
                     return true;
                 }
 
+                @Override
+                public boolean mouseMoved(InputEvent event, float x, float y) {
+                    return true;
+                }
             });
         }
 
