@@ -29,7 +29,7 @@ public class ToolTipManager extends Container {
     public ToolTipManager() {
 
         innerToolTips = new ArrayList<>();
-
+        fill().top().left();
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
             Object object = event.get();
             if (object == null) {

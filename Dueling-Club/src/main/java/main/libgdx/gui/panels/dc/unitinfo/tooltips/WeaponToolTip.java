@@ -6,6 +6,7 @@ import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.ValueContainer;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import static main.libgdx.texture.TextureCache.getOrCreate;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
@@ -13,10 +14,8 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 public class WeaponToolTip extends ValueTooltip {
 
     @Override
-    public void updateAct() {
-        clear();
-
-        final List<ValueContainer> valueContainers = getUserObject().get();
+    public void updateAct(float delta) {
+        final List<ValueContainer> valueContainers = ((Supplier<List<ValueContainer>>) getUserObject()).get();
 
         final int size = valueContainers.size();
         int halfSize = size / 2;
@@ -24,23 +23,23 @@ public class WeaponToolTip extends ValueTooltip {
             halfSize++;
         }
 
-        addRow(valueContainers.subList(0, halfSize - 1));
-        addRow(valueContainers.subList(halfSize - 1, valueContainers.size()));
-
-    }
-
-    public void addRow(List<ValueContainer> list) {
-        inner.addCol();
-        for (ValueContainer valueContainer : list) {
+        for (int i = 0; i < halfSize; i++) {
+            ValueContainer valueContainer = valueContainers.get(i);
             valueContainer.setBorder(getOrCreateR("UI/components/infopanel/simple_value_border.png"));
-            inner.addElement(valueContainer);
+            addElement(valueContainer);
+            final int i1 = i + halfSize;
+            if (i1 < valueContainers.size()) {
+                valueContainer = valueContainers.get(i);
+                valueContainer.setBorder(getOrCreateR("UI/components/infopanel/simple_value_border.png"));
+                addElement(valueContainer);
+            }
+
+            row();
         }
     }
 
     @Override
-    public void postUpdateAct() {
-        inner.pad(20);
-
+    public void afterUpdateAct(float delta) {
         NinePatchDrawable ninePatchDrawable =
                 new NinePatchDrawable(new NinePatch(getOrCreate("UI/components/tooltip_background.9.png")));
         setBackground(ninePatchDrawable);
