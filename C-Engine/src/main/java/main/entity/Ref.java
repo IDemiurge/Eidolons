@@ -51,9 +51,9 @@ public class Ref implements Cloneable, Serializable {
     protected boolean triggered;
 
 
-    private ActiveObj animationActive;
-    private boolean animationDisabled;
-    private Entity infoEntity;
+    protected ActiveObj animationActive;
+    protected boolean animationDisabled;
+    protected Entity infoEntity;
 
     public Ref() {
         this.game = Game.game;
@@ -151,7 +151,7 @@ public class Ref implements Cloneable, Serializable {
     }
 
 
-    private KEYS getKey(String name) {
+    protected KEYS getKey(String name) {
         return new EnumMaster<KEYS>().retrieveEnumConst(KEYS.class, name);
     }
 

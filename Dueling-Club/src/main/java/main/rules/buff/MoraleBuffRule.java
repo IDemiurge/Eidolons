@@ -20,20 +20,20 @@ import main.rules.RuleMaster.COMBAT_RULES;
 import main.system.auxiliary.StringMaster;
 
 public class MoraleBuffRule extends DC_BuffRule {
-    private String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Panic.getName(),
+    public static final  String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Panic.getName(),
             // STD_TYPE_NAMES.Terrified.getName(), // panic -> auto-run away,
             // disable
             // counters
             MetaEnums.STD_BUFF_NAMES.Fearful.getName(), MetaEnums.STD_BUFF_NAMES.Inspired.getName()};
-    private String[] formulas = {"1", "10", "100",}; // make
+    public static final  String[] formulas = {"1", "10", "100",}; // make
     // fearful
     // and
     // treason
     // stack?
-    private String parameterString = PARAMS.SPIRIT.getName() + StringMaster.AND_SEPARATOR
+    public static final  String parameterString = PARAMS.SPIRIT.getName() + StringMaster.AND_SEPARATOR
             + PARAMS.INITIATIVE_MODIFIER.getName() + StringMaster.AND_SEPARATOR
             + PARAMS.RESISTANCE.getName();
-    private String parameterStringPanic = PARAMS.SPIRIT.getName() + StringMaster.AND_SEPARATOR
+    public static final  String parameterStringPanic = PARAMS.SPIRIT.getName() + StringMaster.AND_SEPARATOR
             + PARAMS.RESISTANCE.getName();
 
     // reverse means MORE THAN {THIS} and

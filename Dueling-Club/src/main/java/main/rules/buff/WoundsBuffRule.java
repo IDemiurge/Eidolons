@@ -24,11 +24,11 @@ import main.system.auxiliary.StringMaster;
  * @author JustMe
  */
 public class WoundsBuffRule extends DC_BuffRule {
-    private static final String BERSERK_WOUNDS_DAMAGE_MOD = "50";
+    public static final String BERSERK_WOUNDS_DAMAGE_MOD = "50";
 
-    private String[] formulas = {getMaxEndurance() + "/10", getMaxEndurance() + "/5"};
+    public static final  String[] formulas = {"{SOURCE_ENDURANCE}/10", "{SOURCE_ENDURANCE}/5"};
 
-    private String[] buffTypeNames = {MetaEnums.STD_BUFF_NAMES.Critically_Wounded.getName(),
+    public static final  String[] buffTypeNames = {MetaEnums.STD_BUFF_NAMES.Critically_Wounded.getName(),
             MetaEnums.STD_BUFF_NAMES.Wounded.getName(),};
 
     public WoundsBuffRule(MicroGame game) {
@@ -85,9 +85,6 @@ public class WoundsBuffRule extends DC_BuffRule {
         return 1;
     }
 
-    private String getMaxEndurance() {
-        return StringMaster.getValueRef(KEYS.SOURCE, PARAMS.ENDURANCE);
-    }
 
     @Override
     protected VALUE getValue() {

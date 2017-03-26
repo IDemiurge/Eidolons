@@ -31,9 +31,9 @@ public class WeightBuffRule extends DC_BuffRule {
     private static final String PARAMETERS_MODIFIED_2 =
             StringMaster.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MAIN), StringMaster.AND_SEPARATOR);
 
-    private String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Immobilized.getName(), // TODO
+    public static final  String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Immobilized.getName(), // TODO
             MetaEnums.STD_BUFF_NAMES.Overburdened.getName(), MetaEnums.STD_BUFF_NAMES.Encumbered.getName(),};
-    private String[] conditionFormulas = {getCarryingCapacity() + "*2",
+    public static final  String[] conditionFormulas = {getCarryingCapacity() + "*2",
             getCarryingCapacity() + "*3/2", getCarryingCapacity(),};
 
 

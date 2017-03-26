@@ -309,7 +309,7 @@ public class RuleMaster implements Controller {
     }
 
     public enum RULE {
-        FORCE(RULE_SCOPE.TEST),
+        FORCE(RULE_SCOPE.FULL),
         ATTACK_OF_OPPORTUNITY,
         INSTANT_ATTACK(RULE_SCOPE.TEST),
         COUNTER_ATTACK,

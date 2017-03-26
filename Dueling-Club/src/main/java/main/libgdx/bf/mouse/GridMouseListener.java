@@ -58,8 +58,10 @@ public class GridMouseListener extends ClickListener {
 
                 tooltipStatMap.put(PARAMS.C_TOUGHNESS.getName(), "Toughness");
                 tooltipStatMap.put("C_Endurance", "Endurance");
-                tooltipStatMap.put("C_N_Of_Actions", "N_Of_Actions");
-                tooltipStatMap.put("C_N_Of_Counters", "N_Of_Counters");
+                if (hero.getIntParam(PARAMS.N_OF_ACTIONS)>0)
+                    tooltipStatMap.put(PARAMS.C_N_OF_ACTIONS.getName(), PARAMS.N_OF_ACTIONS.getName());
+                if (hero.getIntParam(PARAMS.N_OF_COUNTERS)>0)
+                    tooltipStatMap.put(PARAMS.C_N_OF_COUNTERS.getName(), PARAMS.N_OF_COUNTERS.getName());
 
                 tooltipStatMap.entrySet().forEach(entry -> {
                     ToolTipManager.ToolTipRecordOption recordOption = new ToolTipManager.ToolTipRecordOption();
@@ -85,7 +87,7 @@ public class GridMouseListener extends ClickListener {
                      hero.getDirection();
                     recordOptions.add(recordOption);
                 }
-                if (a instanceof OverlayView) {
+                if (hero.getIntParam(PARAMS.LIGHT_EMISSION)>0) {
                     recordOption = new ToolTipManager.ToolTipRecordOption();
                     recordOption.name = "LIGHT_EMISSION";
                     recordOption.curVal = hero.getIntParam(PARAMS.LIGHT_EMISSION);

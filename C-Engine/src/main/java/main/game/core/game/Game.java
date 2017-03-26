@@ -71,6 +71,8 @@ public abstract class Game  implements Serializable { // extends Entity? ;) Prop
 
     }
 
+
+
     public Obj getObjectById(Integer id) {
         return master.getObjectById(id);
     }

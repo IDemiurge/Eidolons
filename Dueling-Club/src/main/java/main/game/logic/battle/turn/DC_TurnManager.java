@@ -87,12 +87,15 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         return false;
     }
 
-    public boolean doUnitAction() {
-        // game.getState().newRound();
+
+
+    public void newRound() {
+    }
+
+    public boolean nextAction() {
         resetQueue();
 
         if (getUnitQueue().isEmpty()) {
-
             return false;
         }
 
@@ -101,11 +104,15 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         result = chooseUnit();
 
         game.getActionManager().resetCostsInNewThread();
-
-
         resetDisplayedQueue();
         result &= activeUnit.turnStarted();
-        if (!result) {
+        return result;
+    }
+
+    public boolean doUnitAction() {
+        // game.getState().newRound();
+
+        if (!nextAction()) {
             return true; // if killed or immobilized...
         }
         // if (game.isStarted())
@@ -225,6 +232,10 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         this.activeUnit = activeUnit;
     }
 
+    public Unit chooseActiveUnit() {
+        chooseUnit();
+        return activeUnit;
+    }
     private boolean chooseUnit() {
 
         setActiveUnit(unitQueue.peek());
@@ -240,7 +251,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 
 //            WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
             LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
-                    + "Active unit: " + getActiveUnit());
+             + "Active unit: " + getActiveUnit());
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, new EventCallbackParam(activeUnit));
         } catch (Exception e) {
             e.printStackTrace();
@@ -266,8 +277,8 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         if (isStarted()) {
             if (!playerHasActiveUnits()) {
                 LogMaster
-                        .log(1,
-                                "************** GAME PAUSED WHILE NO UNITS UNDER PLAYER CONTROL **************");
+                 .log(1,
+                  "************** GAME PAUSED WHILE NO UNITS UNDER PLAYER CONTROL **************");
             }
 
             while (!playerHasActiveUnits()) {

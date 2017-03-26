@@ -117,7 +117,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public void activateOn(Obj t) {
-        getMaster().getHandler().activateOn(t);
+        getMaster().getHandler().activateOn((DC_Obj) t);
     }
 
 

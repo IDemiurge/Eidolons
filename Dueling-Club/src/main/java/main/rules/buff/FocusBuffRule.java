@@ -19,9 +19,9 @@ import main.rules.RuleMaster.COMBAT_RULES;
 import main.system.auxiliary.StringMaster;
 
 public class FocusBuffRule extends DC_BuffRule {
-    private String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Discombobulated.getName(),
+    public static final  String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Discombobulated.getName(),
             MetaEnums.STD_BUFF_NAMES.Dizzy.getName(), MetaEnums.STD_BUFF_NAMES.Razorsharp.getName()};
-    private String[] formulas = {"1", "10", "50",};
+    public static final String[] formulas = {"1", "10", "50",};
 
     // reverse means MORE THAN {THIS} and
     public FocusBuffRule(MicroGame game) {

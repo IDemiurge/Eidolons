@@ -21,13 +21,13 @@ import static org.junit.Assert.assertTrue;
 public class CreateUnitTest{
 
 
-    private String typeName = "Pirate";
-    private String skillName = "Greater Strength";
-    private String itemName = "inferior bronze dagger";
-    private JUnitDcInitializer judi;
-    private Unit entity;
-    private DC_FeatObj skill;
-    private DC_WeaponObj dagger;
+    protected String typeName = "Pirate";
+    protected String skillName = "Greater Strength";
+    protected String itemName = "inferior bronze dagger";
+    protected JUnitDcInitializer judi;
+    protected Unit entity;
+    protected DC_FeatObj skill;
+    protected DC_WeaponObj dagger;
 
 
 
