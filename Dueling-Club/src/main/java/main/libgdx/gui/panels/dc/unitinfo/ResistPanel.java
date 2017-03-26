@@ -2,7 +2,6 @@ package main.libgdx.gui.panels.dc.unitinfo;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.PARAMS;
-import main.content.enums.GenericEnums;
 import main.content.values.parameters.PARAMETER;
 import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.TablePanel;
@@ -22,13 +21,13 @@ import static main.system.images.ImageManager.getDamageTypeImagePath;
 
 public class ResistPanel extends TablePanel {
 
-    private Map<GenericEnums.DAMAGE_TYPE, ValueContainer> map;
+    private Map<DAMAGE_TYPE, ValueContainer> map;
 
     public ResistPanel() {
 
         map = new HashMap<>();
 
-        List<Pair<TextureRegion, GenericEnums.DAMAGE_TYPE>> pairs =
+        List<Pair<TextureRegion, DAMAGE_TYPE>> pairs =
                 Arrays.stream(RESISTANCES)
                         .map(parameter -> {
                             DAMAGE_TYPE damageType = getFromParams((PARAMS) parameter);
@@ -36,21 +35,24 @@ public class ResistPanel extends TablePanel {
                             return new ImmutablePair<>(textureRegion, damageType);
                         }).collect(Collectors.toList());
 
-        Iterator<Pair<TextureRegion, GenericEnums.DAMAGE_TYPE>> iter = pairs.iterator();
-        for (int i = 0; i < 3; i++) {
-            addCol();
-            for (int j = 0; j < 6; j++) {
-                if (iter.hasNext()) {
-                    Pair<TextureRegion, GenericEnums.DAMAGE_TYPE> p = iter.next();
-                    ValueContainer valueContainer = new ValueContainer(p.getLeft(), "n/a");
-                    map.put(p.getRight(), valueContainer);
-                    addElement(valueContainer.fill().left().bottom().pad(0, 10, 10, 0));
-                }
-            }
-        }
+        Iterator<Pair<TextureRegion, DAMAGE_TYPE>> iter = pairs.iterator();
 
-        setHeight(getPrefHeight());
-        fill().center().bottom();
+        for (int j = 0; j < 6; j++) {
+            final int j6 = j + 6;
+            final int j12 = j + 12;
+
+            addContainer(pairs.get(j));
+
+            if (j6 < pairs.size()) {
+                addContainer(pairs.get(j6));
+            }
+
+            if (j12 < pairs.size()) {
+                addContainer(pairs.get(j12));
+            }
+
+            row();
+        }
     }
 
     private static DAMAGE_TYPE getFromParams(PARAMS parameter) {
@@ -140,27 +142,27 @@ public class ResistPanel extends TablePanel {
         return damageType;
     }
 
+    void addContainer(Pair<TextureRegion, DAMAGE_TYPE> pair) {
+        ValueContainer valueContainer = new ValueContainer(pair.getLeft(), "n/a");
+        map.put(pair.getRight(), valueContainer);
+        addElement(valueContainer);
+    }
+
     @Override
-    public void act(float delta) {
-        super.act(delta);
+    public void updateAct(float delta) {
+        Supplier<List<Pair<PARAMETER, String>>> source = (Supplier) getUserObject();
 
-        if (updatePanel) {
-            Supplier<List<Pair<PARAMETER, String>>> source = (Supplier) getUserObject();
-
-            source.get().forEach(pair -> {
-                PARAMS param = (PARAMS) pair.getLeft();
-                DAMAGE_TYPE damageType = getFromParams(param);
-                if (map.containsKey(damageType)) {
-                    final ValueContainer container = map.get(damageType);
-                    ValueTooltip valueTooltip = new ValueTooltip();
-                    valueTooltip.setUserObject((Supplier) () ->
-                            Arrays.asList(new ValueContainer(param.getName(), "")));
-                    container.addListener(valueTooltip.getController());
-                    container.updateValue(pair.getRight() + "%");
-                }
-            });
-
-            updatePanel = false;
-        }
+        source.get().forEach(pair -> {
+            PARAMS param = (PARAMS) pair.getLeft();
+            DAMAGE_TYPE damageType = getFromParams(param);
+            if (map.containsKey(damageType)) {
+                final ValueContainer container = map.get(damageType);
+                ValueTooltip valueTooltip = new ValueTooltip();
+                valueTooltip.setUserObject((Supplier) () ->
+                        Arrays.asList(new ValueContainer(param.getName(), "")));
+                container.addListener(valueTooltip.getController());
+                container.updateValue(pair.getRight() + "%");
+            }
+        });
     }
 }

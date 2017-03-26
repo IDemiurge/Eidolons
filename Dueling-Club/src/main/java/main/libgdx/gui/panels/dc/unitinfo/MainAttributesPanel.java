@@ -33,20 +33,13 @@ public class MainAttributesPanel extends TablePanel {
     }
 
     @Override
-    public void act(float delta) {
-        super.act(delta);
+    public void updateAct(float delta) {
+        MainAttributesSource source = (MainAttributesSource) getUserObject();
 
-        if (updatePanel) {
-
-            MainAttributesSource source = (MainAttributesSource) getUserObject();
-
-            resistance.updateValue(source.getResistance());
-            defense.updateValue(source.getDefense());
-            armor.updateValue(source.getArmor());
-            fortitude.updateValue(source.getFortitude());
-            spirit.updateValue(source.getSpirit());
-
-            updatePanel = false;
-        }
+        resistance.updateValue(source.getResistance());
+        defense.updateValue(source.getDefense());
+        armor.updateValue(source.getArmor());
+        fortitude.updateValue(source.getFortitude());
+        spirit.updateValue(source.getSpirit());
     }
 }

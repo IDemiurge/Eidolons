@@ -11,32 +11,26 @@ public class OffWeaponPanel extends TablePanel {
         super();
         TextureRegion textureRegion = new TextureRegion(TextureCache.getOrCreate("/UI/components/infopanel/off_weapon.png"));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
-        background(drawable);
-        setWidth(textureRegion.getRegionWidth());
-        setHeight(textureRegion.getRegionHeight());
-        maxWidth(getWidth());
-        maxHeight(getHeight());
-        rowDirection = TOP_LEFT;
-        fill().left().bottom();
+        setBackground(drawable);
+
+        pad(50, 10, 5, 10);
     }
 
     @Override
-    public void act(float delta) {
-        super.act(delta);
+    public void updateAct(float delta) {
+        clear();
+        OffWeaponDataSource source = (OffWeaponDataSource) getUserObject();
 
-        if (updatePanel) {
-            clear();
-            OffWeaponDataSource source = (OffWeaponDataSource) getUserObject();
+        add(source.getOffWeapon()).expand(1, 1).fill(0, 1).right().padLeft(5);
+        for (main.libgdx.gui.panels.dc.ValueContainer valueContainer : source.getOffWeaponDetailInfo()) {
+            addElement(valueContainer).expand(0, 0).fill(false).right().bottom().padLeft(5);
+        }
 
-            addElement(source.getOffWeapon());
-            source.getOffWeaponDetailInfo().forEach(this::addElement);
+        row();
 
-            addCol();
-
-            addElement(source.getNaturalOffWeapon());
-            source.getNaturalOffWeaponDetailInfo().forEach(this::addElement);
-
-            updatePanel = false;
+        add(source.getNaturalOffWeapon()).expand(1, 1).fill(0, 1).right().padLeft(5);
+        for (main.libgdx.gui.panels.dc.ValueContainer valueContainer : source.getNaturalOffWeaponDetailInfo()) {
+            addElement(valueContainer).expand(0, 0).fill(false).right().bottom().padLeft(5);
         }
     }
 }

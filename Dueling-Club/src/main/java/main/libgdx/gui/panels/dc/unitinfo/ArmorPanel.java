@@ -10,13 +10,14 @@ public class ArmorPanel extends TablePanel {
     public ArmorPanel(List<ValueContainer> values) {
 
         Iterator<ValueContainer> iter = values.iterator();
-        for (int i = 0; i < 2; i++) {
-            addCol();
-            for (int j = 0; j < 4; j++) {
+
+        for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < 2; i++) {
                 if (iter.hasNext()) {
-                    addElement(iter.next().left().bottom().pad(0, 10, 10, 0));
+                    addElement(iter.next());
                 }
             }
+            row();
         }
     }
 }

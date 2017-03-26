@@ -368,22 +368,22 @@ public class UnitDataSource implements
     }
 
     @Override
-    public List<List<main.libgdx.gui.panels.dc.simple_layout.ValueContainer>> getGeneralStats() {
+    public List<List<ValueContainer>> getGeneralStats() {
         return getStatsValueContainers(UNIT_INFO_PARAMS_GENERAL);
     }
 
     @Override
-    public List<List<main.libgdx.gui.panels.dc.simple_layout.ValueContainer>> getCombatStats() {
+    public List<List<ValueContainer>> getCombatStats() {
         return getStatsValueContainers(UNIT_INFO_PARAMS_COMBAT);
     }
 
     @Override
-    public List<List<main.libgdx.gui.panels.dc.simple_layout.ValueContainer>> getMagicStats() {
+    public List<List<ValueContainer>> getMagicStats() {
         return getStatsValueContainers(UNIT_INFO_PARAMS_MAGIC);
     }
 
     @Override
-    public List<List<main.libgdx.gui.panels.dc.simple_layout.ValueContainer>> getMiscStats() {
+    public List<List<ValueContainer>> getMiscStats() {
         return getStatsValueContainers(UNIT_INFO_PARAMS_MISC);
     }
 
@@ -417,15 +417,15 @@ public class UnitDataSource implements
         return valueContainer;
     }
 
-    private List<List<main.libgdx.gui.panels.dc.simple_layout.ValueContainer>> getStatsValueContainers(PARAMS[][] unitInfoParamsGeneral) {
-        List<List<main.libgdx.gui.panels.dc.simple_layout.ValueContainer>> values = new ArrayList<>();
+    private List<List<ValueContainer>> getStatsValueContainers(PARAMS[][] unitInfoParamsGeneral) {
+        List<List<ValueContainer>> values = new ArrayList<>();
         Arrays.stream(unitInfoParamsGeneral)
                 .forEach(ps -> values.add(
                         Arrays.stream(ps)
                                 .map(p -> {
                                     String value = String.valueOf(unit.getIntParam(p));
                                     String name = p.getName();
-                                    main.libgdx.gui.panels.dc.simple_layout.ValueContainer valueContainer = new main.libgdx.gui.panels.dc.simple_layout.ValueContainer(name, value);
+                                    ValueContainer valueContainer = new ValueContainer(name, value);
                                     ValueTooltip valueTooltip = new ValueTooltip();
                                     valueTooltip.setUserObject((Supplier) () -> Arrays.asList(new ValueContainer(name, value)));
                                     valueContainer.addListener(valueTooltip.getController());

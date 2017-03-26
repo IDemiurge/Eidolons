@@ -15,39 +15,33 @@ public class EffectAndAbilitiesPanel extends TablePanel {
     public EffectAndAbilitiesPanel() {
         TextureRegion textureRegion = new TextureRegion(TextureCache.getOrCreate("/UI/components/infopanel/effects_and_abilities_panel.png"));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
-        background(drawable);
+        setBackground(drawable);
     }
 
     @Override
-    public void act(float delta) {
-        super.act(delta);
+    public void updateAct(float delta) {
+        clear();
 
-        if (updatePanel) {
-            clear();
+        EffectsAndAbilitiesSource source = (EffectsAndAbilitiesSource) getUserObject();
 
-            EffectsAndAbilitiesSource source = (EffectsAndAbilitiesSource) getUserObject();
+        List<ValueContainer> effects = source.getEffects().stream()
+                .map(textureStringPair -> {
+                    final ValueContainer valueContainer = new ValueContainer(textureStringPair.getLeft());
+                    return valueContainer;
+                }).collect(Collectors.toList());
 
-            List<ValueContainer> effects = source.getEffects().stream()
-                    .map(textureStringPair -> {
-                        final ValueContainer valueContainer = new ValueContainer(textureStringPair.getLeft());
-                        return valueContainer;
-                    }).collect(Collectors.toList());
+        final int h = 3;
+        final int w = 4;
+        IconGrid effectsGrid = new IconGrid(effects, w, h);
+        addElement(effectsGrid).size(32 * w, 32 * h);
 
-            IconGrid effectsGrid = new IconGrid(effects, 4, 3);
-            addElement(effectsGrid.center());
+        List<ValueContainer> abils = source.getAbilities().stream()
+                .map(textureStringPair -> {
+                    final ValueContainer valueContainer = new ValueContainer(textureStringPair.getLeft());
+                    return valueContainer;
+                }).collect(Collectors.toList());
 
-            addCol();
-
-            List<ValueContainer> abils = source.getAbilities().stream()
-                    .map(textureStringPair -> {
-                        final ValueContainer valueContainer = new ValueContainer(textureStringPair.getLeft());
-                        return valueContainer;
-                    }).collect(Collectors.toList());
-
-            IconGrid abilsGrid = new IconGrid(abils, 4, 3);
-            addElement(abilsGrid.center());
-
-            updatePanel = false;
-        }
+        IconGrid abilsGrid = new IconGrid(abils, w, h);
+        addElement(abilsGrid).size(32 * w, 32 * h);
     }
 }

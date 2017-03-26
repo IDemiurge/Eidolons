@@ -1,9 +1,9 @@
 package main.libgdx.gui.panels.dc;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TablePanel extends Container<Table> {
+public class TablePanel<T extends Actor> extends Table {
 
     protected static final int TOP_RIGHT = 0;
     protected static final int TOP_LEFT = 1;
@@ -20,73 +20,30 @@ public class TablePanel extends Container<Table> {
     protected static final int DOWN_LEFT = 4;
     protected static final int DOWN_RIGHT = 5;
     protected int rowDirection = TOP_DOWN;
-    protected boolean updatePanel;
-    private Table inner;
-    private Table lastCol;
+    protected boolean updateRequired;
+    private Cell lastCell;
     private List<Table> cols;
 
     public TablePanel() {
         cols = new ArrayList<>();
-        inner = new Table();
-        inner.left().bottom();
-        fill().left().bottom();
-        super.setActor(inner);
+
     }
 
     @Override
     public void clear() {
-        inner.clear();
         cols.clear();
-    }
-
-    public void addEmptyCol(int val) {
-        Actor a = new Actor();
-        a.setWidth(val);
-        addElement(new Container<>(a).left().bottom());
-
-        addCol();
+        super.clear();
     }
 
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
-        updatePanel = true;
+        getChildren().forEach(ch -> ch.setUserObject(userObject));
+        updateRequired = true;
     }
 
-    public Cell<Container> addElement(Container el) {
-        if (cols.size() == 0) {
-            createNewCol();
-        }
-        el.fill();
-        final Cell<Container> cell = lastCol.add(el).expand();
-        cell.fill();
-        //cell.pad(el.getTop(), el.getPadLeft(), el.getPadBottom(), el.getPadRight());
-        //el.pad(0);
-        if (rowDirection == TOP_DOWN) {
-            lastCol.row();
-        }
-        return cell; //fuck incapsulation
-    }
-
-    private void createNewCol() {
-        lastCol = new Table();
-        //lastCol.setHeight(getPrefHeight());
-        cols.add(lastCol);
-        inner.add(lastCol);
-    }
-
-    public void addCol() {
-        if (cols.size() == 0) {
-            createNewCol();
-        }
-
-        if (rowDirection == TOP_DOWN) {
-            createNewCol();
-        }
-
-        if (rowDirection == TOP_RIGHT || rowDirection == TOP_LEFT) {
-            lastCol.row();
-        }
+    public Cell<T> addElement(T el) {
+        return add(el).grow();
     }
 
     @Override
@@ -95,24 +52,30 @@ public class TablePanel extends Container<Table> {
     }
 
     @Override
-    @Deprecated
-    public Table getActor() {
-        throw new UnsupportedOperationException("Do not use this!");
-    }
-
-    @Override
-    @Deprecated
-    public void setActor(Table actor) {
-        throw new UnsupportedOperationException("Use TablePanel#addElement.");
-    }
-
-    @Override
-    public Container<Table> background(Drawable background) {
+    public void setBackground(Drawable background) {
         if (background instanceof TextureRegionDrawable) {
             final TextureRegionDrawable drawable = ((TextureRegionDrawable) background);
-            width(drawable.getRegion().getRegionWidth());
-            height(drawable.getRegion().getRegionHeight());
+            final TextureRegion region = drawable.getRegion();
+            setSize(region.getRegionWidth(), region.getRegionHeight());
         }
-        return super.background(background);
+        super.setBackground(background);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (updateRequired) {
+            updateAct(delta);
+            afterUpdateAct(delta);
+            updateRequired = false;
+        }
+    }
+
+    public void afterUpdateAct(float delta) {
+
+    }
+
+    public void updateAct(float delta) {
+
     }
 }

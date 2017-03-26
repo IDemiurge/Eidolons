@@ -23,47 +23,41 @@ public class ResourcePanel extends TablePanel {
     public ResourcePanel() {
         TextureRegion textureRegion = new TextureRegion(TextureCache.getOrCreate("/UI/components/infopanel/main_resource_panel.png"));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
-        background(drawable);
+        setBackground(drawable);
+
+        pad(16, 20, 16, 20);
 
         toughness = new VerticalValueContainer(getOrCreateR("UI/value icons/toughness.png"), "Toughness", "");
-        addElement(toughness.fill().left().bottom().pad(0, 10, 10, 25));
-
-        morale = new VerticalValueContainer(getOrCreateR("UI/value icons/morale.png"), "Morale", "");
-        addElement(morale.fill().left().bottom().pad(0, 10, 10, 25));
-
-        addCol();
+        addElement(toughness).grow();
 
         endurance = new VerticalValueContainer(getOrCreateR("UI/value icons/endurance.png"), "Endurance", "");
-        addElement(endurance.fill().left().bottom().pad(0, 10, 10, 25));
-
-        essence = new VerticalValueContainer(getOrCreateR("UI/value icons/essence.png"), "Essence", "");
-        addElement(essence.fill().left().bottom().pad(0, 10, 10, 25));
-
-        addCol();
+        addElement(endurance).grow();
 
         stamina = new VerticalValueContainer(getOrCreateR("UI/value icons/stamina.png"), "Stamina", "");
-        addElement(stamina.fill().left().bottom().pad(0, 10, 10, 25));
+        addElement(stamina).grow();
+
+        row().padTop(18);
+
+        morale = new VerticalValueContainer(getOrCreateR("UI/value icons/morale.png"), "Morale", "");
+        addElement(morale).grow();
+
+        essence = new VerticalValueContainer(getOrCreateR("UI/value icons/essence.png"), "Essence", "");
+        addElement(essence).grow();
 
         focus = new VerticalValueContainer(getOrCreateR("UI/value icons/focus.png"), "Focus", "");
-        addElement(focus.fill().left().bottom().pad(0, 10, 10, 25));
+        addElement(focus).grow();
     }
 
     @Override
-    public void act(float delta) {
-        super.act(delta);
-        if (updatePanel) {
+    public void updateAct(float delta) {
+        ResourceSource source = (ResourceSource) getUserObject();
 
-            ResourceSource source = (ResourceSource) getUserObject();
+        toughness.updateValue(source.getToughness());
+        endurance.updateValue(source.getEndurance());
+        stamina.updateValue(source.getStamina());
 
-            toughness.updateValue(source.getToughness());
-            endurance.updateValue(source.getEndurance());
-            stamina.updateValue(source.getStamina());
-
-            morale.updateValue(source.getMorale());
-            essence.updateValue(source.getEssence());
-            focus.updateValue(source.getFocus());
-
-            updatePanel = false;
-        }
+        morale.updateValue(source.getMorale());
+        essence.updateValue(source.getEssence());
+        focus.updateValue(source.getFocus());
     }
 }
