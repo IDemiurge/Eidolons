@@ -22,14 +22,15 @@ import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.gui.dialog.DialogDisplay;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.LogPanel;
+import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
+import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
 
 import static main.libgdx.bf.controls.radial.RadialManager.createNew;
-import static main.system.GuiEventType.CREATE_RADIAL_MENU;
-import static main.system.GuiEventType.GRID_CREATED;
+import static main.system.GuiEventType.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -134,8 +135,7 @@ public class GameScreen implements Screen {
         initiativePanel.setPosition(0, Gdx.graphics.getHeight() - initiativePanel.getHeight());
         guiStage.addActor(initiativePanel);
 
-        //main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel infoPanel = new main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel();
-        main.libgdx.gui.panels.dc.simple_layout.UnitInfoPanel infoPanel = new main.libgdx.gui.panels.dc.simple_layout.UnitInfoPanel();
+        UnitInfoPanel infoPanel = new UnitInfoPanel();
         guiStage.addActor(infoPanel);
         infoPanel.setPosition(0, 0);
 
@@ -157,7 +157,7 @@ public class GameScreen implements Screen {
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
             DC_Obj dc_obj = (DC_Obj) obj.get();
-
+            GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(null));
             if (Gdx.input.isButtonPressed(0) || Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
             } else {

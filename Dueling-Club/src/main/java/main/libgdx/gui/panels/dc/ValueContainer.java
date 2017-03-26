@@ -1,20 +1,20 @@
 package main.libgdx.gui.panels.dc;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.StringBuilder;
 import main.libgdx.StyleHolder;
 import org.apache.commons.lang3.StringUtils;
 
-public class ValueContainer extends Container<Table> {
+public class ValueContainer extends TablePanel {
     private static final int SMALL_NAME_SIZE = 3;
-    protected Container<Image> imageContainer;
-    protected Container<Label> nameContainer;
-    protected Container valueContainer;
+    protected Cell<Image> imageContainer;
+    protected Cell<Label> nameContainer;
+    protected Cell<Label> valueContainer;
     private boolean singleImageMode = false;
 
     protected ValueContainer() {
@@ -39,46 +39,42 @@ public class ValueContainer extends Container<Table> {
     }
 
     protected void init(TextureRegion texture, String name, String value) {
-        fill().left().bottom();
-        Table table = new Table();
-        table.setFillParent(true);
-        table.left().bottom();
+        imageContainer = addElement(null);
 
-        this.imageContainer = new Container<>();
-        table.add(this.imageContainer);
-        if (isVertical()) {
-            table.row();
-        }
         if (texture != null) {
-            this.imageContainer.setActor(new Image(texture));
+            imageContainer.setActor(new Image(texture))
+                    .height(texture.getRegionHeight())
+                    .width(texture.getRegionWidth())
+                    .center();
+        } else {
+            imageContainer.fill(false).expand(0, 0);
         }
 
-        this.nameContainer = new Container<>();
-        table.add(this.nameContainer);
         if (isVertical()) {
-            table.row();
+            row();
+        }
+
+        this.nameContainer = addElement(null);
+        if (isVertical()) {
+            row();
         }
 
         if (name != null) {
-            this.nameContainer.setActor(new Label(name, StyleHolder.getDefaultLabelStyle()));
+            nameContainer.setActor(new Label(name, StyleHolder.getDefaultLabelStyle())).grow().center();
         }
 
-        this.valueContainer = new Container();
-        this.valueContainer.fill().center();
-        table.add(this.valueContainer);
+        valueContainer = addElement(null);
 
         if (isVertical()) {
-            table.row();
+            row();
         }
 
         if (value != null) {
-            final Label label = new Label(value, StyleHolder.getDefaultLabelStyle());
-            this.valueContainer.setActor(label);
-            this.valueContainer.width(30);
+            valueContainer.setActor(new Label(value, StyleHolder.getDefaultLabelStyle())).grow().center();
         }
 
-        setActor(table);
-        configure();
+        setNameAlignment(Align.center);
+        setValueAlignment(Align.center);
     }
 
     public void setBorder(TextureRegion region) {
@@ -91,7 +87,7 @@ public class ValueContainer extends Container<Table> {
         if (!wrapEach) {
             background(drawable);
         } else {
-            if (imageContainer.getActor() != null) {
+          /*  if (imageContainer.getActor() != null) {
                 imageContainer.setBackground(drawable);
             }
             if (nameContainer.getActor() != null) {
@@ -99,12 +95,8 @@ public class ValueContainer extends Container<Table> {
             }
             if (valueContainer.getActor() != null) {
                 valueContainer.setBackground(drawable);
-            }
+            }*/
         }
-    }
-
-    public float getNameSize() {
-        return nameContainer.getWidth();
     }
 
     public void cropName() {
@@ -142,35 +134,6 @@ public class ValueContainer extends Container<Table> {
         }
     }
 
-    private void configure() {
-        if (imageContainer.getActor() != null) {
-            imageContainer.getActor().setFillParent(true);
-            imageContainer.width(imageContainer.getActor().getWidth());
-            imageContainer.height(imageContainer.getActor().getHeight());
-        }
-        if (!singleImageMode) {
-            if (isVertical()) {
-                imageContainer.padBottom(3);
-            } else {
-                imageContainer.padLeft(3);
-            }
-        }
-        if (nameContainer.getActor() != null) {
-            if (isVertical()) {
-                nameContainer.padBottom(3);
-            } else {
-                nameContainer.padLeft(3);
-            }
-        }
-        if (valueContainer.getActor() != null) {
-            if (isVertical()) {
-                valueContainer.padBottom(3);
-            } else {
-                valueContainer.padLeft(3);
-            }
-        }
-    }
-
     public void updateValue(String val) {
         if (!(valueContainer.getActor() instanceof Label)) {
             valueContainer.setActor(new Label(val, StyleHolder.getDefaultLabelStyle()));
@@ -181,6 +144,18 @@ public class ValueContainer extends Container<Table> {
 
     protected boolean isVertical() {
         return false;
+    }
+
+    public void setNameAlignment(int align) {
+        if (nameContainer.getActor() != null) {
+            nameContainer.getActor().setAlignment(align);
+        }
+    }
+
+    public void setValueAlignment(int align) {
+        if (valueContainer.getActor() != null) {
+            valueContainer.getActor().setAlignment(align);
+        }
     }
 }
 

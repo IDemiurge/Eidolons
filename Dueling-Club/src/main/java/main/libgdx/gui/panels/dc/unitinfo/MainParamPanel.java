@@ -26,63 +26,63 @@ public class MainParamPanel extends TablePanel {
     public MainParamPanel() {
         TextureRegion textureRegion = getOrCreateR("/UI/components/infopanel/main_param_panel.png");
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
-        background(drawable);
-        setWidth(textureRegion.getRegionWidth());
-        setHeight(textureRegion.getRegionHeight());
+        setBackground(drawable);
+
+        pad(20, 10, 20, 10);
 
         strength = new ValueContainer(getOrCreateR("UI/value icons/attributes/strength.png"), "Strength", "");
-        addElement(strength.left().bottom().pad(0, 10, 0, 25));
-
-        vitality = new ValueContainer(getOrCreateR("UI/value icons/attributes/vitality.png"), "Vitality", "");
-        addElement(vitality.left().bottom().pad(0, 10, 0, 25));
-
-        agility = new ValueContainer(getOrCreateR("UI/value icons/attributes/agility.png"), "Agility", "");
-        addElement(agility.left().bottom().pad(0, 10, 0, 25));
-
-        dexterity = new ValueContainer(getOrCreateR("UI/value icons/attributes/dexterity.png"), "Dexterity", "");
-        addElement(dexterity.left().bottom().pad(0, 10, 0, 25));
-
-        willpower = new ValueContainer(getOrCreateR("UI/value icons/attributes/willpower.png"), "Willpower", "");
-        addElement(willpower.left().bottom().pad(0, 10, 0, 25));
-
-        addCol();
+        addElement(strength);
 
         spellpower = new ValueContainer(getOrCreateR("UI/value icons/attributes/spellpower.png"), "Spellpower", "");
-        addElement(spellpower.left().bottom().pad(0, 10, 0, 25));
+        addElement(spellpower);
+
+        row();
+
+        vitality = new ValueContainer(getOrCreateR("UI/value icons/attributes/vitality.png"), "Vitality", "");
+        addElement(vitality);
 
         intelligence = new ValueContainer(getOrCreateR("UI/value icons/attributes/intelligence.png"), "Intelligence", "");
-        addElement(intelligence.left().bottom().pad(0, 10, 0, 25));
+        addElement(intelligence);
+
+        row();
+
+        agility = new ValueContainer(getOrCreateR("UI/value icons/attributes/agility.png"), "Agility", "");
+        addElement(agility);
 
         knowledge = new ValueContainer(getOrCreateR("UI/value icons/attributes/knowledge.png"), "Knowledge", "");
-        addElement(knowledge.left().bottom().pad(0, 10, 0, 25));
+        addElement(knowledge);
+
+        row();
+
+        dexterity = new ValueContainer(getOrCreateR("UI/value icons/attributes/dexterity.png"), "Dexterity", "");
+        addElement(dexterity);
 
         wisdom = new ValueContainer(getOrCreateR("UI/value icons/attributes/wisdom.png"), "Wisdom", "");
-        addElement(wisdom.left().bottom().pad(0, 10, 0, 25));
+        addElement(wisdom);
+
+        row();
+
+        willpower = new ValueContainer(getOrCreateR("UI/value icons/attributes/willpower.png"), "Willpower", "");
+        addElement(willpower);
 
         charisma = new ValueContainer(getOrCreateR("UI/value icons/attributes/charisma.png"), "Charisma", "");
-        addElement(charisma.left().bottom().pad(0, 10, 0, 25));
+        addElement(charisma);
     }
 
     @Override
-    public void act(float delta) {
-        super.act(delta);
+    public void updateAct(float delta) {
+        MainParamDataSource source = (MainParamDataSource) getUserObject();
 
-        if (updatePanel) {
-            MainParamDataSource source = (MainParamDataSource) getUserObject();
+        strength.updateValue(source.getStrength());
+        vitality.updateValue(source.getVitality());
+        agility.updateValue(source.getAgility());
+        dexterity.updateValue(source.getDexterity());
+        willpower.updateValue(source.getWillpower());
 
-            strength.updateValue(source.getStrength());
-            vitality.updateValue(source.getVitality());
-            agility.updateValue(source.getAgility());
-            dexterity.updateValue(source.getDexterity());
-            willpower.updateValue(source.getWillpower());
-
-            spellpower.updateValue(source.getSpellpower());
-            intelligence.updateValue(source.getIntelligence());
-            knowledge.updateValue(source.getKnowledge());
-            wisdom.updateValue(source.getWisdom());
-            charisma.updateValue(source.getCharisma());
-
-            updatePanel = false;
-        }
+        spellpower.updateValue(source.getSpellpower());
+        intelligence.updateValue(source.getIntelligence());
+        knowledge.updateValue(source.getKnowledge());
+        wisdom.updateValue(source.getWisdom());
+        charisma.updateValue(source.getCharisma());
     }
 }

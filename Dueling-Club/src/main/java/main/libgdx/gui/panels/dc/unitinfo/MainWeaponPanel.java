@@ -12,33 +12,26 @@ public class MainWeaponPanel extends TablePanel {
         TextureRegion textureRegion = new
                 TextureRegion(TextureCache.getOrCreate("/UI/components/infopanel/main_weapon.png"));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
-        background(drawable);
-        setWidth(textureRegion.getRegionWidth());
-        setHeight(textureRegion.getRegionHeight());
-        maxWidth(getWidth());
-        maxHeight(getHeight());
-        rowDirection = TOP_LEFT;
-        fill().right().bottom();
+        setBackground(drawable);
+
+        pad(50, 10, 5, 10);
     }
 
     @Override
-    public void act(float delta) {
-        super.act(delta);
+    public void updateAct(float delta) {
+        clear();
+        MainWeaponDataSource source = (MainWeaponDataSource) getUserObject();
 
-        if (updatePanel) {
-            clear();
-            MainWeaponDataSource source = (MainWeaponDataSource) getUserObject();
-
-            source.getMainWeaponDetailInfo().forEach(this::addElement);
-            addElement(source.getMainWeapon());
-
-            addCol();
-
-            source.getNaturalMainWeaponDetailInfo().forEach(this::addElement);
-            addElement(source.getNaturalMainWeapon());
-
-            updatePanel = false;
+        for (main.libgdx.gui.panels.dc.ValueContainer valueContainer : source.getMainWeaponDetailInfo()) {
+            addElement(valueContainer).expand(0, 0).fill(false).right().bottom().padLeft(5);
         }
-    }
+        add(source.getMainWeapon()).expand(1, 1).fill(0, 1).right().padLeft(5);
 
+        row();
+
+        for (main.libgdx.gui.panels.dc.ValueContainer valueContainer : source.getNaturalMainWeaponDetailInfo()) {
+            addElement(valueContainer).expand(0, 0).fill(false).right().bottom().padLeft(5);
+        }
+        add(source.getNaturalMainWeapon()).expand(1, 1).fill(0, 1).right().padLeft(5);
+    }
 }

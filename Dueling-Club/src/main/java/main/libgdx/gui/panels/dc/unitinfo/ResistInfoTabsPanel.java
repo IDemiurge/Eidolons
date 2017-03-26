@@ -4,7 +4,7 @@ import main.libgdx.gui.panels.dc.unitinfo.datasource.ResistSource;
 
 import java.util.function.Supplier;
 
-public class ResistInfoTabsPanel extends InfoPanelTabsPanel {
+public class ResistInfoTabsPanel extends InfoPanelTabsPanel<ResistPanel> {
 
     public ResistInfoTabsPanel() {
         super();

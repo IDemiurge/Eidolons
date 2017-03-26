@@ -4,7 +4,7 @@ import main.libgdx.gui.panels.dc.unitinfo.datasource.StatsDataSource;
 
 import java.util.function.Supplier;
 
-public class StatsTabsPanel extends InfoPanelTabsPanel {
+public class StatsTabsPanel extends InfoPanelTabsPanel<StatsPanel> {
 
     private static final String GENERAL = "General";
     private static final String COMBAT = "Combat";
@@ -13,7 +13,6 @@ public class StatsTabsPanel extends InfoPanelTabsPanel {
 
     public StatsTabsPanel() {
         super();
-
         addTab(new StatsPanel(), GENERAL);
         addTab(new StatsPanel(), COMBAT);
         addTab(new StatsPanel(), MAGIC);

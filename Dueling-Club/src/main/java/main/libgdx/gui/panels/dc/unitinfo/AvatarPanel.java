@@ -1,17 +1,18 @@
 package main.libgdx.gui.panels.dc.unitinfo;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.AvatarDataSource;
 import main.libgdx.texture.TextureCache;
 
 public class AvatarPanel extends TablePanel {
-    private final Container<Image> avatarContainer;
+    private final Cell<Image> avatarContainer;
     private final Label param2Label;
     private final Label param1Label;
     private final Label nameLabel;
@@ -19,46 +20,31 @@ public class AvatarPanel extends TablePanel {
     public AvatarPanel() {
         TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/avatar-panel.png");
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
-        background(drawable);
-        setWidth(textureRegion.getRegionWidth());
-        setHeight(textureRegion.getRegionHeight());
-        maxWidth(getWidth());
-        maxHeight(getHeight());
-
-        addEmptyCol(60);
+        setBackground(drawable);
 
         Image avatarImage = new Image();
-        avatarContainer = new Container<>(avatarImage);
-        avatarContainer.fill().left().bottom();
-        avatarContainer.setWidth(128);
-        avatarContainer.setHeight(128);
-        avatarContainer.setPosition(62, 150);
-
-        addElement(avatarContainer);
-
+        avatarContainer = addElement(avatarImage).fill().pad(22, 60, 20, 55);
+        row();
         nameLabel = new Label("name", StyleHolder.getDefaultLabelStyle());
-        addElement(new Container<>(nameLabel).center().bottom());
-
+        nameLabel.setAlignment(Align.center);
+        addElement(nameLabel).expand();
+        row();
         param1Label = new Label("param1", StyleHolder.getDefaultLabelStyle());
-        addElement(new Container<>(param1Label).center().bottom());
-
+        param1Label.setAlignment(Align.center);
+        addElement(param1Label).expand();
+        row();
         param2Label = new Label("param2", StyleHolder.getDefaultLabelStyle());
-        addElement(new Container<>(param2Label).center().bottom());
+        param1Label.setAlignment(Align.center);
+        addElement(param2Label).expand();
     }
 
     @Override
-    public void act(float delta) {
-        super.act(delta);
+    public void updateAct(float delta) {
+        AvatarDataSource source = (AvatarDataSource) getUserObject();
 
-        if (updatePanel) {
-            AvatarDataSource source = (AvatarDataSource) getUserObject();
-
-            avatarContainer.setActor(new Image(source.getAvatar()));
-            nameLabel.setText(source.getName());
-            param1Label.setText(source.getParam1());
-            param2Label.setText(source.getParam2());
-
-            updatePanel = false;
-        }
+        avatarContainer.setActor(new Image(source.getAvatar()));
+        nameLabel.setText(source.getName());
+        param1Label.setText(source.getParam1());
+        param2Label.setText(source.getParam2());
     }
 }

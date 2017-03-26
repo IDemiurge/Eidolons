@@ -3,20 +3,15 @@ package main.libgdx.gui.dialog;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
-public abstract class ToolTip<T> extends Container<TablePanel> {
-
-    protected boolean updateRequired;
-
-    protected TablePanel inner;
+public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
 
     public ToolTip() {
-        setActor(inner = new TablePanel());
+
     }
 
     public InputListener getController() {
@@ -38,30 +33,4 @@ public abstract class ToolTip<T> extends Container<TablePanel> {
             }
         };
     }
-
-    @Override
-    public void setUserObject(Object userObject) {
-        super.setUserObject(userObject);
-        updateRequired = true;
-    }
-
-    @Override
-    public T getUserObject() {
-        return (T) super.getUserObject();
-    }
-
-    public abstract void updateAct();
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-
-        if (updateRequired) {
-            updateAct();
-            postUpdateAct();
-            updateRequired = false;
-        }
-    }
-
-    protected abstract void postUpdateAct();
 }

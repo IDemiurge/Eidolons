@@ -2,12 +2,13 @@ package main.libgdx.gui.panels.dc.unitinfo;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.gui.panels.dc.TabbedPanel;
 import main.libgdx.texture.TextureCache;
 
-public class InfoPanelTabsPanel extends TabbedPanel {
+public class InfoPanelTabsPanel<T extends Actor> extends TabbedPanel<T> {
 
     @Override
     protected TextButton.TextButtonStyle getButtonStyle() {

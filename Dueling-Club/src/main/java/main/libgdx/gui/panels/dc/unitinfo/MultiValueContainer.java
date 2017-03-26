@@ -34,7 +34,7 @@ public class MultiValueContainer extends ValueContainer {
 
     protected void init(TextureRegion texture, String name, String[] values) {
         super.init(texture, name, null);
-        if (values != null){
+        if (values != null) {
             Table table = new Table();
             //super.init() initialize value field as empty Container
             this.valueContainer.setActor(table);
