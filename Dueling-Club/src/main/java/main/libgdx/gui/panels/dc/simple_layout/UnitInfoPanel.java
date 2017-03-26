@@ -54,7 +54,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
     private void initInnerPanels() {
         TablePanel left = new TablePanel();
         MainWeaponPanel mainWeaponPanel = new MainWeaponPanel();
-        left.addElement(mainWeaponPanel).minHeight(184);
+        left.addElement(mainWeaponPanel).height(184);
         left.row();
 
         ResourcePanel resourcePanel = new ResourcePanel();
@@ -62,7 +62,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         left.row();
 
         MainParamPanel mainParamPanel = new MainParamPanel();
-        left.addElement(mainParamPanel);
+        left.addElement(mainParamPanel).minHeight(214);
         left.row();
 
         EffectAndAbilitiesPanel effectAndAbilitiesPanel = new EffectAndAbilitiesPanel();
@@ -85,7 +85,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         mid.row();
 
         MainAttributesPanel attributesPanel = new MainAttributesPanel();
-        mid.addElement(attributesPanel.pad(10, 10, 0, 10).fill().left().bottom());
+        mid.addElement(attributesPanel).expand().center();
         mid.row();
 
         List<ValueContainer> armorParams = new ArrayList<>();
@@ -110,7 +110,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         TablePanel right = new TablePanel();
 
         OffWeaponPanel offWeaponPanel = new OffWeaponPanel();
-        right.addElement(offWeaponPanel).minHeight(184).top();
+        right.addElement(offWeaponPanel).height(184).top();
         right.row();
 
         StatsTabsPanel statsTabsPanel = new StatsTabsPanel();

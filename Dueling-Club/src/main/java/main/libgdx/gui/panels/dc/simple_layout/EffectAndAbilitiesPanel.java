@@ -28,8 +28,10 @@ public class EffectAndAbilitiesPanel extends TablePanel {
                     return valueContainer;
                 }).collect(Collectors.toList());
 
-        IconGrid effectsGrid = new IconGrid(effects, 4, 3);
-        addElement(effectsGrid.center());
+        final int h = 3;
+        final int w = 4;
+        IconGrid effectsGrid = new IconGrid(effects, w, h);
+        addElement(effectsGrid).size(32 * w, 32 * h);
 
         List<ValueContainer> abils = source.getAbilities().stream()
                 .map(textureStringPair -> {
@@ -37,7 +39,7 @@ public class EffectAndAbilitiesPanel extends TablePanel {
                     return valueContainer;
                 }).collect(Collectors.toList());
 
-        IconGrid abilsGrid = new IconGrid(abils, 4, 3);
-        addElement(abilsGrid.center());
+        IconGrid abilsGrid = new IconGrid(abils, w, h);
+        addElement(abilsGrid).size(32 * w, 32 * h);
     }
 }

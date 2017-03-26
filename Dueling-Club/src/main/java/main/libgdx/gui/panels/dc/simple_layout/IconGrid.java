@@ -12,27 +12,20 @@ public class IconGrid extends TablePanel {
     private static String cellBackImage = "/UI/empty32.jpg";
 
     public IconGrid(List<ValueContainer> images, int w, int h) {
-        rowDirection = TOP_RIGHT;
-
-        if (rowDirection != TOP_DOWN || rowDirection != DOWN_TOP) {
-            int b = w;
-            w = h;
-            h = b;
-        }
 
         TextureRegion emptyCell = new TextureRegion(TextureCache.getOrCreate(cellBackImage));
 
         Iterator<ValueContainer> iter = images.iterator();
-        for (int y = 0; y < w; y++) {
-            for (int x = 0; x < h; x++) {
+        for (int x = 0; x < h; x++) {
+            for (int y = 0; y < w; y++) {
                 if (iter.hasNext()) {
-                    addElement(iter.next()).left().bottom();
+                    addElement(iter.next());
                 } else {
-                    addElement(new Image(emptyCell)).left().bottom();
+                    addElement(new Image(emptyCell));
                 }
             }
+            row();
         }
-
     }
 
     @Override

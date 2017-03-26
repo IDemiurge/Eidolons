@@ -35,12 +35,6 @@ public class TablePanel<T extends Actor> extends Table {
         super.clear();
     }
 
-    public void addEmptyCol(int val) {
-        Actor a = new Actor();
-        a.setWidth(val);
-        lastCell = add(a).grow();
-    }
-
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);

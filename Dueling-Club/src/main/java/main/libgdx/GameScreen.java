@@ -134,7 +134,6 @@ public class GameScreen implements Screen {
         initiativePanel.setPosition(0, Gdx.graphics.getHeight() - initiativePanel.getHeight());
         guiStage.addActor(initiativePanel);
 
-        //main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel infoPanel = new main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel();
         main.libgdx.gui.panels.dc.simple_layout.UnitInfoPanel infoPanel = new main.libgdx.gui.panels.dc.simple_layout.UnitInfoPanel();
         guiStage.addActor(infoPanel);
         infoPanel.setPosition(0, 0);

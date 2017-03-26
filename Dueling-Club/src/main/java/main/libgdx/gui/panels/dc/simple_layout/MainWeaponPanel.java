@@ -12,6 +12,8 @@ public class MainWeaponPanel extends TablePanel {
                 TextureRegion(TextureCache.getOrCreate("/UI/components/infopanel/main_weapon.png"));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
+
+        pad(50, 10, 5, 10);
     }
 
     @Override
@@ -19,12 +21,16 @@ public class MainWeaponPanel extends TablePanel {
         clear();
         MainWeaponDataSource source = (MainWeaponDataSource) getUserObject();
 
-        source.getMainWeaponDetailInfo().forEach(this::addElement);
-        addElement(source.getMainWeapon());
+        for (main.libgdx.gui.panels.dc.ValueContainer valueContainer : source.getMainWeaponDetailInfo()) {
+            addElement(valueContainer).expand(0, 0).fill(false).right().bottom().padLeft(5);
+        }
+        add(source.getMainWeapon()).expand(1, 1).fill(0, 1).right().padLeft(5);
 
         row();
 
-        source.getNaturalMainWeaponDetailInfo().forEach(this::addElement);
-        addElement(source.getNaturalMainWeapon());
+        for (main.libgdx.gui.panels.dc.ValueContainer valueContainer : source.getNaturalMainWeaponDetailInfo()) {
+            addElement(valueContainer).expand(0, 0).fill(false).right().bottom().padLeft(5);
+        }
+        add(source.getNaturalMainWeapon()).expand(1, 1).fill(0, 1).right().padLeft(5);
     }
 }

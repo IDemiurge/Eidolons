@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.StringBuilder;
 import main.libgdx.StyleHolder;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +46,8 @@ public class ValueContainer extends TablePanel {
                     .height(texture.getRegionHeight())
                     .width(texture.getRegionWidth())
                     .center();
+        } else {
+            imageContainer.fill(false).expand(0, 0);
         }
 
         if (isVertical()) {
@@ -60,17 +63,18 @@ public class ValueContainer extends TablePanel {
             nameContainer.setActor(new Label(name, StyleHolder.getDefaultLabelStyle())).grow().center();
         }
 
-        this.valueContainer = addElement(null);
+        valueContainer = addElement(null);
 
         if (isVertical()) {
             row();
         }
 
         if (value != null) {
-            this.valueContainer.setActor(new Label(value, StyleHolder.getDefaultLabelStyle())).grow().center();
+            valueContainer.setActor(new Label(value, StyleHolder.getDefaultLabelStyle())).grow().center();
         }
 
-        configure();
+        setNameAlignment(Align.center);
+        setValueAlignment(Align.center);
     }
 
     public void setBorder(TextureRegion region) {
@@ -83,8 +87,8 @@ public class ValueContainer extends TablePanel {
         if (!wrapEach) {
             background(drawable);
         } else {
-/*            if (imageContainer.getActor() != null) {
-                imageContainer.background(drawable);
+          /*  if (imageContainer.getActor() != null) {
+                imageContainer.setBackground(drawable);
             }
             if (nameContainer.getActor() != null) {
                 nameContainer.setBackground(drawable);
@@ -130,35 +134,6 @@ public class ValueContainer extends TablePanel {
         }
     }
 
-    private void configure() {
-/*        if (imageContainer.getActor() != null) {
-            imageContainer.getActor().setFillParent(true);
-            imageContainer.width(imageContainer.getActor().getWidth());
-            imageContainer.height(imageContainer.getActor().getHeight());
-        }*/
-        if (!singleImageMode) {
-            if (isVertical()) {
-                imageContainer.padBottom(3);
-            } else {
-                imageContainer.padLeft(3);
-            }
-        }
-        if (nameContainer.getActor() != null) {
-            if (isVertical()) {
-                nameContainer.padBottom(3);
-            } else {
-                nameContainer.padLeft(3);
-            }
-        }
-        if (valueContainer.getActor() != null) {
-            if (isVertical()) {
-                valueContainer.padBottom(3);
-            } else {
-                valueContainer.padLeft(3);
-            }
-        }
-    }
-
     public void updateValue(String val) {
         if (!(valueContainer.getActor() instanceof Label)) {
             valueContainer.setActor(new Label(val, StyleHolder.getDefaultLabelStyle()));
@@ -172,11 +147,15 @@ public class ValueContainer extends TablePanel {
     }
 
     public void setNameAlignment(int align) {
-        nameContainer.getActor().setAlignment(align);
+        if (nameContainer.getActor() != null) {
+            nameContainer.getActor().setAlignment(align);
+        }
     }
 
     public void setValueAlignment(int align) {
-        valueContainer.getActor().setAlignment(align);
+        if (valueContainer.getActor() != null) {
+            valueContainer.getActor().setAlignment(align);
+        }
     }
 }
 

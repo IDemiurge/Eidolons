@@ -1,6 +1,6 @@
 package main.libgdx.gui.panels.dc.unitinfo.datasource;
 
-import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.simple_layout.ValueContainer;
 
 import java.util.List;
 
