@@ -132,11 +132,7 @@ public class Unit extends DC_UnitModel {
 
     @Override
     public void init() {
-        try {
-            super.init();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        super.init();
         try {
             initDeity();
         } catch (Exception e) {
@@ -766,6 +762,10 @@ public class Unit extends DC_UnitModel {
         }
         if (weapon != null) {
             weapon.applySpecialEffects(case_type, target, REF);
+        }
+        DC_Obj  action = (DC_Obj) ref.getActive();
+        if (action != null) {
+            action.applySpecialEffects(case_type, target, REF);
         }
         super.applySpecialEffects(case_type, target, REF);
     }

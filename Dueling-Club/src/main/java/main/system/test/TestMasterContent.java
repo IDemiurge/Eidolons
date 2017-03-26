@@ -6,6 +6,7 @@ import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
+import main.entity.item.DC_WeaponObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.entity.type.SpellType;
@@ -458,6 +459,14 @@ public class TestMasterContent {
             }
         }
         return StringMaster.constructContainer(list);
+    }
+
+    public static boolean isArtifact(DC_WeaponObj weapon) {
+        if (weapon.isNatural())
+            return false;
+        if (weapon.isShield())
+            return false;
+        return weapon.isMelee();
     }
 
     public enum TEST_PROFILES {

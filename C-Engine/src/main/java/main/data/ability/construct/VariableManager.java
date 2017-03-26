@@ -219,7 +219,8 @@ public class VariableManager {
         return value.replace(getVarPart(value), "");
     }
 
-    public static Object getAutoVarValue(String varName, Entity entity, String stringArg) {
+    public static Object getAutoVarValue(String varName,
+                                         Entity entity, String stringArg) {
         AUTOVAR VAR = getAutoVarType(varName);
         return VAR.evaluate(entity, stringArg);
 

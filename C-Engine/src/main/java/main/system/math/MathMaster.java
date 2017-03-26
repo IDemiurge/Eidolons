@@ -259,4 +259,10 @@ public abstract class MathMaster {
 
     public abstract Integer evaluateSummonEnergyCost(Entity obj, String s);
 
+    public static int applyMods(int amount, Integer... mods) {
+       for (int mod : mods){
+           amount = applyMod(amount, mod);
+       }
+        return amount;
+    }
 }

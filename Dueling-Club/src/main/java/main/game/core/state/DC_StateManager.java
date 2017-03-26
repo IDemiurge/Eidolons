@@ -21,6 +21,7 @@ import main.rules.counter.DC_CounterRule;
 import main.rules.counter.DamageCounterRule;
 import main.rules.mechanics.IlluminationRule;
 import main.rules.round.RoundRule;
+import main.system.config.ConfigMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.Arrays;
@@ -35,7 +36,7 @@ public class DC_StateManager extends StateManager {
 
     private StatesKeeper keeper;
     private OBJ_TYPE[] toBaseIgnoredTypes = {DC_TYPE.SPELLS, DC_TYPE.ACTIONS};
-    private boolean savingOn = true;
+    private boolean savingOn = ConfigMaster.getInstance().getValue("SAVING_ON_DEFAULT");
 
     private Lock resetLock = new ReentrantLock();
     private volatile boolean resetting = false;

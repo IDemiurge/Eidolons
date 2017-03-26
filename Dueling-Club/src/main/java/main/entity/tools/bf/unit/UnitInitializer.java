@@ -4,11 +4,8 @@ import com.graphbuilder.math.ExpressionParseException;
 import main.client.cc.logic.spells.LibraryManager;
 import main.client.cc.logic.spells.SpellUpgradeMaster;
 import main.content.*;
-import main.content.enums.GenericEnums;
-import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.rules.VisionEnums;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.mode.MODE;
 import main.content.mode.ModeImpl;
@@ -22,10 +19,9 @@ import main.data.ability.construct.VariableManager;
 import main.entity.item.*;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.unit.Unit;
-import main.entity.tools.EntityInitializer;
 import main.entity.tools.EntityMaster;
+import main.entity.tools.bf.BfObjInitializer;
 import main.entity.type.ObjType;
-import main.game.battlefield.DC_MovementManager;
 import main.game.core.game.DC_Game;
 import main.game.logic.generic.hero.DC_Attributes;
 import main.game.logic.generic.hero.DC_Masteries;
@@ -45,9 +41,7 @@ import java.util.Map;
 /**
  * Created by JustMe on 2/26/2017.
  */
-public class UnitInitializer extends EntityInitializer<Unit> {
-    public boolean initialized;
-    public boolean dynamicValuesReady ;
+public class UnitInitializer extends BfObjInitializer<Unit> {
 
     public UnitInitializer(Unit entity, EntityMaster<Unit> entityMaster) {
         super(entity, entityMaster);
@@ -74,53 +68,6 @@ public class UnitInitializer extends EntityInitializer<Unit> {
     }
 
 
-    public void addDynamicValues() {
-getEntity().addDynamicValues();
-
-    }
-
-    @Override
-    public void init() {
-        super.init();
-
-        addDefaultValues();
-        addDynamicValues();
-        // construct();
-
-    }
-    protected void addDefaultFacing() {
-        getEntity().resetFacing(
-         DC_MovementManager.getDefaultFacingDirection(getEntity(). getOwner().isMe()));
-        getEntity().resetFacing();
-    }
-
-
-
-    public void addDefaultValues() {
-getEntity().        setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN);
-          addDefaultFacing();
-        if (getChecker().isBfObj()) {
-            addBfObjDefaults();
-        }
-    }
-    protected void addBfObjDefaults() {
-        if (checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.INDESTRUCTIBLE)) {
-            getType().addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.INDESTRUCTIBLE.toString());
-        }
-        if (checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.PASSABLE)) {
-            getType().addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.PASSABLE.toString());
-        }
-
-        getType().addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.LEAVES_NO_CORPSE.toString());
-
-        setParam(PARAMS.C_MORALE, 0);
-        setParam(PARAMS.C_STAMINA, 0);
-        setParam(PARAMS.C_FOCUS, 0);
-        setParam(PARAMS.C_ESSENCE, 0);
-        // type.addProperty(G_PROPS.STANDARD_PASSIVES,
-        // STANDARD_PASSIVES.SNEAK_IMMUNE.toString());
-
-    }
     public void initMode() {
         String name = getProperty(G_PROPS.MODE);
          MODE mode = (new EnumMaster<STD_MODES>().retrieveEnumConst(STD_MODES.class, name));

@@ -15,7 +15,6 @@ public class DataUnit<T extends Enum<T>> {
     public static final String TRUE = "TRUE";
     protected Class<? extends Enum<T>> enumClass;
     protected Map<String, String> values = new ConcurrentMap<>();
-    protected Map<String, String> removedValues;
     // Map<T, String>
     protected String[] relevantValues;
 
@@ -70,16 +69,10 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public String removeValue(String name) {
-        getRemovedValues().put(name, values.get(name));
         return values.remove(name);
     }
 
-    public Map<String, String> getRemovedValues() {
-        if (removedValues == null) {
-            removedValues = new ConcurrentMap<>();
-        }
-        return removedValues;
-    }
+
 
     public void setValue(T name, String value) {
         if (value == null) {

@@ -1,8 +1,8 @@
-package main.entity.tools.bf;
+package main.entity.tools.bf.structure;
 
 import main.content.PROPS;
 import main.entity.Ref.KEYS;
-import main.entity.obj.BattleFieldObject;
+import main.entity.obj.Structure;
 import main.entity.obj.unit.DC_UnitModel;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.EntityResetter;
@@ -13,11 +13,17 @@ import main.system.auxiliary.EnumMaster;
 /**
  * Created by JustMe on 3/5/2017.
  */
-public class BfObjResetter extends EntityResetter<BattleFieldObject> {
+public class StructureResetter extends EntityResetter<Structure> {
 
-    public BfObjResetter(BattleFieldObject entity, EntityMaster<BattleFieldObject> entityMaster) {
+    public StructureResetter(Structure entity, EntityMaster<Structure> entityMaster) {
         super(entity, entityMaster);
     }
+
+    @Override
+    public void toBase() {
+        super.toBase();
+    }
+
     public void resetFacing() {
         FACING_DIRECTION facing = null;
         if (facing != null) {
@@ -37,6 +43,7 @@ public class BfObjResetter extends EntityResetter<BattleFieldObject> {
             }
 
         }
-        getEntity().resetFacing(facing);
+        getEntity().setFacing(facing);
+//        getEntity().resetFacing(facing);
     }
 }

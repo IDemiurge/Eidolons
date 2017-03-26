@@ -63,6 +63,7 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
 
     @Override
     public boolean applyThis() {
+        if (reductionFormula!=null )
         ref.setValue(KEYS.FORMULA, reductionFormula.toString());
         initTargeting();
         if (isZLevelDependent()) {

@@ -97,7 +97,7 @@ public class ActionExecutor extends Executor {
                     return super.getTargeting();
                 }
 
-                if (getAction().isAttack()) {
+                if (getAction().isAttackGeneric()) {
                     Conditions conditions = new OrConditions();
                     int maxRange = 0;
                     for (DC_ActiveObj attack : getAction().getSubActions()) {
@@ -143,7 +143,7 @@ public class ActionExecutor extends Executor {
 
             @Override
             public boolean canBeActivated(Ref ref, boolean first) {
-                if (getAction().isAttack()) {
+                if (getAction().isAttackGeneric()) {
                     for (DC_ActiveObj attack : getAction().getSubActions()) {
                         if (attack.canBeActivated(ref, true)) {
                             return true;

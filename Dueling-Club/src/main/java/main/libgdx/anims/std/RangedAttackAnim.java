@@ -34,7 +34,8 @@ public class RangedAttackAnim extends AttackAnim {
         //another actor? separate sprite?
         rangedWeaponImage = TextureCache.getOrCreate(getRangedWeaponImage(getActive()));
         ammo = weapon.getRef().getObj(KEYS.AMMO);
-        ammo = weapon.getRef().getLastRemovedObj(KEYS.AMMO);
+//        if (ammo ==null )
+//        ammo = weapon.getRef().getLastRemovedObj(KEYS.AMMO);
         if (ammo instanceof DC_QuickItemObj) {
             ammo = ((DC_QuickItemObj) ammo).getWrappedWeapon();
 

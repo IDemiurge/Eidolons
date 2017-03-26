@@ -34,6 +34,8 @@ public class Activator extends ActiveHandler {
     }
 
     public boolean canBeActivated(Ref ref, boolean first) {
+        if (getMaster().getGame().getTestMaster().isActionFree(getEntity().getName()))
+            return true;
         if (!first || broken) {
             if (canActivate != null) {
 
@@ -103,7 +105,7 @@ public class Activator extends ActiveHandler {
         if (mode == null) {
             return null;
         }
-        if (getChecker().isAttack()) {
+        if (getChecker().isAttackGeneric()) {
             return (DC_UnitAction) game.getActionManager().getAction(mode, ownerObj);
         }
         return (DC_UnitAction) game.getActionManager().getAction(mode + " " + getName(), ownerObj);

@@ -420,7 +420,7 @@ public class ToolTipMaster {
 
     private TextItem initActionTooltip(DC_ActiveObj activeObj, boolean info, Point p) {
         Costs costs = activeObj.getCosts();
-        if (activeObj.isAttack()) {
+        if (activeObj.isAttackGeneric()) {
             if (activeObj.getModeAction() != null)// TODO ??
             {
                 costs = activeObj.getModeAction().getCosts();

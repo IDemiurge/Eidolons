@@ -12,7 +12,6 @@ import main.game.logic.dungeon.DungeonMaster;
 import main.libgdx.anims.controls.EmitterController;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.anims.particles.lighting.LightingManager;
-import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE_SCOPE;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
@@ -40,7 +39,7 @@ public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
             "AI", "Gui", "Logic", "Recent", "New", "Anims",
             "Emitters",
-            "Last", "Profiling"
+            "Last",  "Light","Profiling"
 
     };
     public static int PRESET_OPTION = -1;
@@ -77,7 +76,10 @@ public class PresetLauncher {
         }
         Preset p = null;
         if (isInitLaunch)
-            initLaunch(LAUNCH_OPTIONS[i]);
+            launch=initLaunch(LAUNCH_OPTIONS[i]);
+        if (launch != null)
+            return customInit(launch);
+        else
         switch (LAUNCH_OPTIONS[i]) {
             case "Last":
                 Preset lastPreset = PresetMaster.loadLastPreset();
@@ -85,27 +87,6 @@ public class PresetLauncher {
                 UnitTrainingMaster.setRandom(false);
                 PresetMaster.setPreset(lastPreset);
                 break;
-            case "Light":
-                LightingManager.setLightOn(true);
-                LightingManager.setTestMode(true);
-                p = PresetMaster.loadPreset("Light Test.xml");
-                CoreEngine.setActionTargetingFiltersOff(true);
-            case "Emitters":
-                ParticleManager.setAmbienceOn(true);
-//                if (p==null )
-//                    p = PresetMaster.loadPreset("Emitters Test.xml");
-                EmitterController.setTestMode(true);
-                FAST_DC.getGameLauncher().DUMMY_MODE = true;
-                FAST_DC.getGameLauncher().DUMMY_PP = true;
-                CoreEngine.setActionTargetingFiltersOff(true);
-            case "Gui":
-                if (p == null) {
-                    p = PresetMaster.loadPreset("Graphics Test.xml");
-                }
-                CoreEngine.setGuiTestMode(true);
-                PresetMaster.setPreset(p);
-                CoreEngine.setActionTargetingFiltersOff(true);
-                return true;
             case "Recent":
                 chooseRecentPreset();
                 break;
@@ -114,29 +95,6 @@ public class PresetLauncher {
                 FAST_DC.getGameLauncher().DUMMY_PP = false;
                 UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
                 return null;
-            case "AI":
-                FAST_DC.getGameLauncher().DUMMY_MODE = false;
-                FAST_DC.getGameLauncher().DUMMY_PP = false;
-                RuleMaster.setScope(RULE_SCOPE.FULL);
-                p = PresetMaster.loadPreset("ai.xml");
-                PresetMaster.setPreset(p);
-
-                return null;
-            case "Logic":
-                FAST_DC.getGameLauncher().DUMMY_MODE = true;
-                FAST_DC.getGameLauncher().DUMMY_PP = true;
-                FAST_DC.getGameLauncher().setFAST_MODE(true);
-                RuleMaster.setScope(RULE_SCOPE.TEST);
-                return true;
-            case "Anims":
-                EmitterController.overrideKeys = true;
-                FAST_DC.getGameLauncher().DUMMY_MODE = true;
-                FAST_DC.getGameLauncher().DUMMY_PP = true;
-                FAST_DC.getGameLauncher().setFAST_MODE(true);
-                TestMasterContent.setImmortal(false);
-
-                CoreEngine.setActionTargetingFiltersOff(true);
-                return true;
             case "Superfast":
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;
                 FAST_DC.getGameLauncher().DUMMY_PP = true;
@@ -150,6 +108,31 @@ public class PresetLauncher {
         }
 
         return null;
+    }
+
+    private static boolean customInit(LAUNCH launch) {
+        switch (launch){
+            case Emitters:
+                ParticleManager.setAmbienceOn(true);
+                EmitterController.setTestMode(true);
+                CoreEngine.setActionTargetingFiltersOff(true);
+                return true;
+            case Anims:
+                CoreEngine.animationTestMode=true;
+                EmitterController.overrideKeys = true;
+                TestMasterContent.setImmortal(false);
+                CoreEngine.setActionTargetingFiltersOff(true);
+                return true;
+            case Gui:
+                CoreEngine.setGuiTestMode(true);
+                return true;
+            case Light:
+                LightingManager.setLightOn(true);
+                LightingManager.setTestMode(true);
+                CoreEngine.setActionTargetingFiltersOff(true);
+                return true;
+        }
+        return false;
     }
 
     public static LAUNCH getLaunch() {
@@ -346,11 +329,12 @@ public class PresetLauncher {
     }
 
     public enum LAUNCH {
-        AI("ai.xml", RULE_SCOPE.FULL, false),
+        AI("ai.xml", RULE_SCOPE.TEST, false),
         Gui("graphics test.xml", RULE_SCOPE.BASIC, true),
         Logic("ai full.xml", RULE_SCOPE.FULL, true),
-        Anims(true),
+        Anims(null , RULE_SCOPE.BASIC, true),
         Emitters(true),
+        Light("light preview.xml", RULE_SCOPE.BASIC, true),
         JUnit(),
         Profiling(true)
         ;

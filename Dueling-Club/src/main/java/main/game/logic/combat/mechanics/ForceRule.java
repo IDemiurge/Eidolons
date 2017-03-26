@@ -1,9 +1,16 @@
 package main.game.logic.combat.mechanics;
 
+import main.ability.effects.Effect;
+import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
+import main.ability.effects.Effects;
 import main.ability.effects.oneshot.DealDamageEffect;
+import main.ability.effects.oneshot.attack.force.ForceEffect;
+import main.ability.effects.oneshot.attack.force.KnockdownEffect;
 import main.ability.effects.oneshot.move.MoveEffect;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_CASE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -13,6 +20,8 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
+import main.game.logic.combat.damage.Damage;
+import main.game.logic.combat.damage.DamageFactory;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE;
 import main.rules.combat.KnockdownRule;
@@ -46,32 +55,31 @@ public class ForceRule {
         }
         Integer weightModifier = getAttackerWeightModifier(attack, weapon);
         double strengthModifier = getStrengthModifier(attack, weapon);
-        int weaponWeightBonus = weapon.getIntParam(PARAMS.WEIGHT)
-         * attack.getIntParam(PARAMS.FORCE_MOD_WEAPON_WEIGHT);
 
-        int force = (int) Math.round(weightModifier * strengthModifier);
-        force += weaponWeightBonus;
-        force = force * attack.getIntParam(PARAMS.FORCE_MOD) / 100;
+
+        int force = weightModifier + (int) strengthModifier;
+        force = MathMaster.applyModIfNotZero(force, attack.getIntParam(PARAMS.FORCE_MOD));
         attack.setParam(PARAMS.FORCE, force);
 
         LogMaster.log(1, "getForceFromAttack = weightModifier"
-         + weightModifier + "*strengthModifier" + "strengthModifier "
-         + "+ weaponWeightBonus " + weaponWeightBonus + "* "
+         + weightModifier + "+strengthModifier* "
          + new Float(attack.getIntParam(PARAMS.FORCE_MOD)) / 100 + " = " + force);
         return force;
 
     }
 
     private static double getStrengthModifier(DC_ActiveObj attack, Obj weapon) {
-        return Math.min(Math.sqrt(attack.getOwnerObj().
-         getIntParam(PARAMS.STRENGTH)), weapon
-         .getIntParam(PARAMS.FORCE_MAX_STRENGTH_MOD));
+        int strength = attack.getOwnerObj().getIntParam(PARAMS.STRENGTH);
+        int weight = weapon.getIntParam(PARAMS.WEIGHT);
+        return MathMaster.applyModIfNotZero(
+         Math.min(weight * weight * 2, weight * strength)
+         , attack.getIntParam(PARAMS.FORCE_MOD_WEAPON_WEIGHT));
     }
 
     private static int getAttackerWeightModifier(DC_ActiveObj attack, Obj weapon) {
-        return attack.getOwnerObj().getIntParam(PARAMS.WEIGHT)
-         * MathMaster.applyModIfNotZero(weapon.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT),
-         attack.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT)) / 100;
+        return MathMaster.applyMods(attack.getOwnerObj().getIntParam(PARAMS.WEIGHT)
+         , weapon.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT),
+         attack.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT));
     }
 
     private static int getForceFromSpell(DC_ActiveObj spell) {
@@ -91,14 +99,18 @@ public class ForceRule {
         if (force == 0) {
             return;
         }
+        applyForceEffects(force, action);
+    }
+
+    public static void applyForceEffects(int force, DC_ActiveObj action) {
         Unit target = (Unit) action.getRef().getTargetObj();
         Unit source = (Unit) action.getRef().getSourceObj();
         Boolean result = null;
         //TODO DEXTERITY ROLL TO AVOID ALL?
         if (target.getIntParam(PARAMS.TOTAL_WEIGHT) < getMinWeightKnock(action)) {
             result = RollMaster.rollForceKnockdown(target, action, force);
-       if (BooleanMaster.isFalse(result))
-           result= null ; //ALWAYS INTERRUPT AT LEAST
+            if (BooleanMaster.isFalse(result))
+                result = null; //ALWAYS INTERRUPT AT LEAST
         } else if (target.getIntParam(PARAMS.TOTAL_WEIGHT) > getMaxWeightKnock(action)) {
             result = false;
         } else {
@@ -137,6 +149,57 @@ public class ForceRule {
             return getForceFromSpell(attack);
         }
         return getForceFromAttack(attack);
+    }
+
+
+    public static void addForceEffects(DC_ActiveObj action) {
+        Unit source = action.getOwnerObj();
+        Unit target = (Unit) action.getRef().getTargetObj();
+        Damage dmg = getDamageObject(action, source, target);
+
+        Effect effects = getForceEffects(action);
+        if (effects != null) {
+            action.addSpecialEffect(
+             action.isSpell() ? SPECIAL_EFFECTS_CASE.SPELL_IMPACT :
+              SPECIAL_EFFECTS_CASE.ON_ATTACK,
+             effects);
+        }
+
+        if (dmg != null) {
+            action.addBonusDamage(action.isSpell() ? DAMAGE_CASE.SPELL : DAMAGE_CASE.ATTACK, dmg);
+        }
+
+    }
+
+    private static Effect getForceEffects(DC_ActiveObj action) {
+        String force = String.valueOf(getForce(action));
+        KnockdownEffect e = new KnockdownEffect(force);
+//        PushEffect e1 = new PushEffect(force);
+//        InterruptionEffect e2 = new InterruptionEffect(force);
+        Effects effects = new Effects();
+//        if ()
+//            effects.add(e);
+        effects.add(new ForceEffect(force, action.isAttackAny()));
+        return effects;
+
+    }
+
+    public static Damage getDamageObject(DC_ActiveObj action, Unit attacker, Unit attacked) {
+        int amount = getDamage(action, attacker, attacked);
+        if (amount <= 0) return null;
+        DAMAGE_TYPE type = getForceDamageType(action);
+        return DamageFactory.getGenericDamage(
+         type, amount, new Ref(attacker, attacked));
+    }
+
+    private static DAMAGE_TYPE getForceDamageType
+     (DC_ActiveObj action) {
+        if (!action.getDamageType().isMagical())
+            return DAMAGE_TYPE.BLUDGEONING;
+        if (action.getDamageType().isNatural())
+            return DAMAGE_TYPE.SONIC;
+
+        return DAMAGE_TYPE.PSIONIC;
     }
 
 

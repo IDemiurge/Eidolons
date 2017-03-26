@@ -171,7 +171,7 @@ public abstract class MicroGame extends Game {
     }
 
     public Collection<Obj> getUnitsForCoordinates(Set<Coordinates> coordinates) {
-        return null;
+        return getMaster().getUnitsForCoordinates(coordinates);
     }
 
 }

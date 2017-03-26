@@ -50,8 +50,8 @@ public class GridMouseListener extends ClickListener {
             if (a != null && a instanceof BaseView) {
                 BaseView uv = (BaseView) a;
                 BattleFieldObject hero = unitViewMap.entrySet().stream()
-                        .filter(entry -> entry.getValue() == uv).findFirst()
-                        .get().getKey();
+                 .filter(entry -> entry.getValue() == uv).findFirst()
+                 .get().getKey();
 
                 Map<String, String> tooltipStatMap = new LinkedHashMap<>();
                 List<ToolTipRecordOption> recordOptions = new ArrayList<>();
@@ -77,11 +77,14 @@ public class GridMouseListener extends ClickListener {
                 recordOption = new ToolTipManager.ToolTipRecordOption();
                 recordOption.name = hero.getCoordinates().toString();
                 recordOptions.add(recordOption);
-
-                recordOption = new ToolTipManager.ToolTipRecordOption();
-                recordOption.name = "direction: " + hero.getFacing().getDirection();
-                recordOptions.add(recordOption);
-
+                if (hero.getFacing() != null || hero.getDirection() != null) {
+                    recordOption = new ToolTipManager.ToolTipRecordOption();
+                    recordOption.name = "direction: ";
+                    recordOption.name += hero.getFacing() != null ?
+                     hero.getFacing().getDirection() :
+                     hero.getDirection();
+                    recordOptions.add(recordOption);
+                }
                 if (a instanceof OverlayView) {
                     recordOption = new ToolTipManager.ToolTipRecordOption();
                     recordOption.name = "LIGHT_EMISSION";
@@ -130,8 +133,8 @@ public class GridMouseListener extends ClickListener {
                 Actor unit = cell.getInnerDrawable().hit(x, y, true);
                 if (unit != null && unit instanceof BaseView) {
                     BattleFieldObject obj = unitViewMap.entrySet()
-                            .stream().filter(entry -> entry.getValue() == unit).findFirst()
-                            .get().getKey();
+                     .stream().filter(entry -> entry.getValue() == unit).findFirst()
+                     .get().getKey();
 
                     switch (event.getButton()) {
                         case Input.Buttons.RIGHT:

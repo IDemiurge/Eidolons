@@ -127,7 +127,7 @@ public class TypeBuilder {
             }
             PARAMETER param = ContentManager.getPARAM(child.getNodeName());
             if (param == null) {
-                LogMaster.log(1, "no such param: " + child.getNodeName());
+//                LogMaster.log(1, "no such param: " + child.getNodeName());
                 continue;
             }
 

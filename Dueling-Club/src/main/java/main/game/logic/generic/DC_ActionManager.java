@@ -375,7 +375,7 @@ public class DC_ActionManager implements ActionManager {
             if (!StringMaster.isEmpty(action.getActionMode())) {
                 continue;
             }
-            if (action.isAttack()) {
+            if (action.isAttackGeneric()) {
                 continue;
             }
             List<DC_ActiveObj> subActions = new LinkedList<>();

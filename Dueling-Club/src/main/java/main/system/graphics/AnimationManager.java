@@ -587,7 +587,7 @@ public class AnimationManager {
     }
 
     public PhaseAnimation getActionAnimation(DC_ActiveObj action) {
-        if (action.isAttack()) {
+        if (action.isAttackGeneric()) {
             return null;
         }
         if (action.getRef().getGroup() != null) {

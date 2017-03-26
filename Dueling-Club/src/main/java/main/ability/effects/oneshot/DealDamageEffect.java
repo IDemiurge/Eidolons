@@ -96,7 +96,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
         if (damage > 0) {
             if (!checkDamageMod(DAMAGE_MODIFIER.PERIODIC)) {
                 if (!ref.isTriggered()) {
-                    if (!active.isAttack()) {
+                    if (!active.isAttackGeneric()) {
                         ForceRule.applyForceEffects(active);
                     }
 

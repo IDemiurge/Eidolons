@@ -134,7 +134,7 @@ public class AbilityImpl extends ReferredElement implements Ability {
 
     @Override
     public void setRef(Ref ref) {
-        // CLONE?!
+        // does not clone
         this.game = ref.getGame();
         this.ref = ref;
     }

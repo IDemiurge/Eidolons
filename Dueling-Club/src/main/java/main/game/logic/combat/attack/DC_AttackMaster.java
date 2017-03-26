@@ -397,6 +397,9 @@ public class DC_AttackMaster {
         attack.setDamage(final_amount);
         if (checkAttackEventsInterrupt(attack, ref))
             return true;
+
+        ForceRule.addForceEffects(action);
+
         Damage damageObj = DamageFactory.getDamageForAttack(
          dmg_type, ref, final_amount
         );
@@ -430,7 +433,6 @@ public class DC_AttackMaster {
             e.printStackTrace();
         }
 
-        ForceRule.applyForceEffects(action);
         InjuryRule.applyInjuryRule(action);
         if (attack.isCritical()) {
             checkEffectsInterrupt(attacked, attacker, SPECIAL_EFFECTS_CASE.ON_CRIT_SELF, ref,

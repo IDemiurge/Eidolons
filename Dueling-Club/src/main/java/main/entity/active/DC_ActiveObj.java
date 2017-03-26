@@ -475,7 +475,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isAttackOrStandardAttack() {
-        return isAttack() || isStandardAttack();
+        return isAttackGeneric() || isStandardAttack();
     }
 
     public boolean isAutoSelectionOn() {
@@ -587,8 +587,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     @Override
-    public boolean isAttack() {
-        return getChecker().isAttack();
+    public boolean isAttackGeneric() {
+        return getChecker().isAttackGeneric();
     }
 
     @Override

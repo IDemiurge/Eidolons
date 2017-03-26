@@ -35,7 +35,7 @@ public class DelayedEffect extends AddTriggerEffect  implements OneshotEffect {
     @Override
     public boolean applyThis() {
         boolean result = super.applyThis();
-        trigger.setOneShot(true);
+        trigger.setRemoveAfterTriggers(true);
         return result;
     }
 }

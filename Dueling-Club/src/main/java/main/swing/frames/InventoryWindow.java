@@ -23,7 +23,7 @@ public class InventoryWindow extends OperationWindow {
         return tabComp;
     }
 
-    protected String getPoolText() {
+    public String getPoolText() {
         return getNumberOfOperations() + " left";
     }
 

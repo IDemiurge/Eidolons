@@ -100,7 +100,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     }
 
 
-    public boolean isAttack() {
+    public boolean isAttackGeneric() {
         return getName().equals(DC_ActionManager.ATTACK)
                 || getName().equals(DC_ActionManager.OFFHAND_ATTACK);
     }
@@ -171,12 +171,12 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     }
 
     public boolean isAttackAny() {
-        return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK || isAttack() || isStandardAttack();
+        return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK || isAttackGeneric() || isStandardAttack();
     }
 
 
     public boolean isCancelDefault() {
-        if (isAttack()) {
+        if (isAttackGeneric()) {
             return true;
         }
         return checkBool(GenericEnums.STD_BOOLS.CANCEL_FOR_FALSE);
@@ -188,7 +188,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     }
 
     public boolean isSubActionOnly() {
-        return isAttack();
+        return isAttackGeneric();
     }
 
     public boolean isSpell() {

@@ -79,6 +79,8 @@ public abstract class ConditionImpl extends ReferredElement implements Condition
 
     // public abstract boolean check();
 
+
+
     @Override
     public abstract boolean check();
 

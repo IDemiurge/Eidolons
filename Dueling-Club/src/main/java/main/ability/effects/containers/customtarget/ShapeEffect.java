@@ -64,7 +64,7 @@ public abstract class ShapeEffect extends SpecialTargetingEffect {
         if (notSelf) {
             FilterMaster.applyFilter(objects, FILTERS.NOT_SELF, ref, false);
         }
-        if (targetType.equals(DC_TYPE.TERRAIN)) {
+        if (targetType.equals(DC_TYPE.TERRAIN)) { // C_TYPE equals if contains() !
             objects.addAll(game.getCellsForCoordinates(coordinates));
         }
         targeting = new AutoTargeting(new GroupImpl(objects));

@@ -77,6 +77,11 @@ public class Ref implements Cloneable, Serializable {
     public Ref(Entity entity) {
         this(entity.getGame(), entity.getId());
     }
+    public Ref(Entity entity,Entity target) {
+        this(entity.getGame(),
+         entity.getId());
+        setTarget(target.getId());
+    }
 
 
     public static Ref getCopy(Ref ref) {
@@ -412,10 +417,10 @@ public class Ref implements Cloneable, Serializable {
         }
     }
 
-    public Obj getLastRemovedObj(KEYS string) {
+    public Obj getLastRemovedObj(KEYS key) {
         try {
             return game.getObjectById(StringMaster.getInteger(getRemovedValues()
-             .get(string.toString())));
+             .get(key)));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -558,7 +563,8 @@ public class Ref implements Cloneable, Serializable {
     }
 
     //
-    public enum KEYS {
+
+        public enum KEYS {
         THIS,
 
         TARGET,

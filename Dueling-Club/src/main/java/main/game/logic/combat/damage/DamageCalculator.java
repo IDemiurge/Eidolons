@@ -99,7 +99,7 @@ public class DamageCalculator {
         amount -= attacked.getGame()
          .getArmorSimulator().getArmorBlockDamage(amount, attacked, attacker, attack.getAction());
 
-        if (attack.getAction().isAttack()) {
+        if (attack.getAction().isAttackGeneric()) {
             return amount;
         }
         return amount;
@@ -181,18 +181,18 @@ public class DamageCalculator {
         DC_Obj obj = (DC_Obj) ref.getSourceObj();
         for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
             if (e == CASE)
-                list.add(obj.getBonusDamage().get(e));
+                list.addAll(obj.getBonusDamage().get(e));
         }
         obj = (DC_Obj) ref.getObj(KEYS.ACTIVE);
         for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
             if (e == CASE)
-                list.add(obj.getBonusDamage().get(e));
+                list.addAll(obj.getBonusDamage().get(e));
         }
 
             obj = (DC_Obj) ref.getObj(KEYS.WEAPON);
             for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
                 if (e == CASE)
-                    list.add(obj.getBonusDamage().get(e));
+                    list.addAll(obj.getBonusDamage().get(e));
             }
         return list;
     }
