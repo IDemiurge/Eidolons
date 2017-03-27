@@ -2,11 +2,15 @@ package main.libgdx.gui.panels.dc.unitinfo;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import main.libgdx.gui.panels.dc.TabbedPanel;
 import main.libgdx.gui.panels.dc.TablePanel;
+import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.MainWeaponDataSource;
 import main.libgdx.texture.TextureCache;
 
-public class MainWeaponPanel extends TablePanel {
+import java.util.List;
+
+public class MainWeaponPanel extends TabbedPanel {
     public MainWeaponPanel() {
         super();
         TextureRegion textureRegion = new
@@ -22,16 +26,37 @@ public class MainWeaponPanel extends TablePanel {
         clear();
         MainWeaponDataSource source = (MainWeaponDataSource) getUserObject();
 
-        for (main.libgdx.gui.panels.dc.ValueContainer valueContainer : source.getMainWeaponDetailInfo()) {
-            addElement(valueContainer).expand(0, 0).fill(false).right().bottom().padLeft(5);
-        }
-        add(source.getMainWeapon()).expand(1, 1).fill(0, 1).right().padLeft(5);
+        TablePanel weapon = new TablePanel();
+        final List<ValueContainer> mainWeaponInfo = source.getMainWeaponDetailInfo();
+        final List<ValueContainer> naturalWeaponInfo = source.getNaturalMainWeaponDetailInfo();
 
-        row();
-
-        for (main.libgdx.gui.panels.dc.ValueContainer valueContainer : source.getNaturalMainWeaponDetailInfo()) {
-            addElement(valueContainer).expand(0, 0).fill(false).right().bottom().padLeft(5);
+        for (ValueContainer valueContainer : mainWeaponInfo) {
+            weapon.addElement(valueContainer).padLeft(5);
         }
-        add(source.getNaturalMainWeapon()).expand(1, 1).fill(0, 1).right().padLeft(5);
+
+/*        final int sizeDiff = naturalWeaponInfo.size() - mainWeaponInfo.size();
+        if (sizeDiff > 0){
+            for (int i = 0; i < sizeDiff; i++) {
+                addElement(null).expand(0, 0).fill(true);
+            }
+        }*/
+
+
+        weapon.addElement(source.getMainWeapon()).padLeft(5);
+
+        addTab(weapon, "weapon");
+
+        weapon = new TablePanel();
+
+        for (ValueContainer valueContainer : naturalWeaponInfo) {
+            weapon.addElement(valueContainer).padLeft(5);
+        }
+
+
+        weapon.addElement(source.getNaturalMainWeapon()).padLeft(5);
+
+        addTab(weapon, "unarmed");
+
+        resetCheckedTab();
     }
 }
