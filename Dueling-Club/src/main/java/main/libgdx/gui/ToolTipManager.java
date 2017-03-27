@@ -53,7 +53,11 @@ public class ToolTipManager extends Container {
 
     private void init(ToolTip toolTip) {
         toolTip.top().left();
+        final float toolTipWidth = toolTip.getWidth();
         setActor(toolTip);
+        if (toolTipWidth != 0) {
+            width(toolTipWidth);
+        }
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setPosition(v2.x + 10, v2.y);
