@@ -11,13 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.gui.panels.dc.TablePanel;
-import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class UnitInfoPanel extends Container<TablePanel> {
     private Actor outside;
@@ -90,14 +86,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         mid.addElement(attributesPanel).expand().center();
         mid.row();
 
-        List<ValueContainer> armorParams = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            ValueContainer valueContainer = new ValueContainer("param" + i, "14/88");
-            valueContainer.setBorder(TextureCache.getOrCreateR("UI/components/infopanel/simple_value_border.png"));
-            armorParams.add(valueContainer);
-        }
-
-        ArmorPanel armorPanel = new ArmorPanel(armorParams);
+        ArmorPanel armorPanel = new ArmorPanel();
         mid.addElement(armorPanel);
         mid.row();
 

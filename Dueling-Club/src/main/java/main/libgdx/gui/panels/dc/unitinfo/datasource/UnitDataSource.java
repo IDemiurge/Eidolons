@@ -318,12 +318,21 @@ public class UnitDataSource implements
     @Override
     public ValueContainer getArmorObj() {
         final DC_ArmorObj armor = unit.getArmor();
-        final ValueContainer container = new ValueContainer(getOrCreateR(armor.getImagePath()));
 
-        ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(new ValueContainer("", "This is my armor. There are many like it, but this one is mine.\n" +
-                "My armor is my best friend. It is my life. \n" +
-                "Without me, my armor is useless. Without my armor, I am useless."));
+
+        final ValueContainer container;
+
+        if (armor != null) {
+            container = new ValueContainer(getOrCreateR(armor.getImagePath()));
+
+            ValueTooltip tooltip = new ValueTooltip();
+            tooltip.setUserObject(new ValueContainer("", "This is my armor. There are many like it, but this one is mine.\n" +
+                    "My armor is my best friend. It is my life. \n" +
+                    "Without me, my armor is useless. Without my armor, I am useless."));
+            container.addListener(tooltip.getController());
+        } else {
+            container = new ValueContainer(getOrCreateR("/mini/item/armor/empty.jpg"));
+        }
 
         return container;
     }
@@ -331,15 +340,17 @@ public class UnitDataSource implements
     @Override
     public List<ValueContainer> getParamValues() {
         final DC_ArmorObj armor = unit.getArmor();
-        final String cd = armor.getStrParam(PARAMS.C_DURABILITY);
-        final String d = armor.getStrParam(PARAMS.DURABILITY);
         List<ValueContainer> values = new ArrayList<>();
+        if (armor != null) {
+            final String cd = armor.getStrParam(PARAMS.C_DURABILITY);
+            final String d = armor.getStrParam(PARAMS.DURABILITY);
 
-        values.add(new ValueContainer(PARAMS.DURABILITY.getName(), d + "/" + cd));
+            values.add(new ValueContainer(PARAMS.DURABILITY.getName(), d + "/" + cd));
 
-        final String cover = armor.getStrParam(PARAMS.COVER_PERCENTAGE);
+            final String cover = armor.getStrParam(PARAMS.COVER_PERCENTAGE);
 
-        values.add(new ValueContainer(PARAMS.COVER_PERCENTAGE.getName(), cover));
+            values.add(new ValueContainer(PARAMS.COVER_PERCENTAGE.getName(), cover));
+        }
 
         return values;
     }
