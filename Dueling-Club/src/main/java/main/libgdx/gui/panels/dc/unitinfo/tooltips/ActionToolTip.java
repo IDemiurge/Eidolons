@@ -74,7 +74,6 @@ public class ActionToolTip extends ToolTip {
         for (Object o : list) {
             List<ValueContainer> valueContainers = (List<ValueContainer>) o;
             TablePanel panel = new TablePanel();
-            panel.debug();
             textTables.add(panel);
             for (ValueContainer container : valueContainers) {
                 container.wrapNames();

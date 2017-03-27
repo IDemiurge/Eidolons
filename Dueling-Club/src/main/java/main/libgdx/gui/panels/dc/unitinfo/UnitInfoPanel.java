@@ -101,13 +101,14 @@ public class UnitInfoPanel extends Container<TablePanel> {
         TablePanel right = new TablePanel();
 
         OffWeaponPanel offWeaponPanel = new OffWeaponPanel();
-        right.addElement(offWeaponPanel).height(184).top();
+        right.add(offWeaponPanel).height(184).top();
         right.row();
 
         StatsTabsPanel statsTabsPanel = new StatsTabsPanel();
-        right.addElement(statsTabsPanel).grow().top();
+        right.addElement(statsTabsPanel).grow().fill(1, 0).top();
         right.row();
 
+        right.addElement(null);
         addElement(right).maxWidth(360);
     }
 
