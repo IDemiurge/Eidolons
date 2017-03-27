@@ -16,7 +16,6 @@ public class WeaponToolTip extends ValueTooltip {
     @Override
     public void updateAct(float delta) {
         final List<ValueContainer> valueContainers = ((Supplier<List<ValueContainer>>) getUserObject()).get();
-        debug();
         final int size = valueContainers.size();
         int halfSize = size / 2;
         if (size % 2 != 0) {
