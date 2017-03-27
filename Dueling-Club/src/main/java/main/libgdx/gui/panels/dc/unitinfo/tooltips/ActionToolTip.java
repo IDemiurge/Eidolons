@@ -1,11 +1,11 @@
 package main.libgdx.gui.panels.dc.unitinfo.tooltips;
 
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.content.UNIT_INFO_PARAMS.ActionToolTipSections;
+import main.libgdx.gui.NinePathFactory;
 import main.libgdx.gui.dialog.ToolTip;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import static main.content.UNIT_INFO_PARAMS.ActionToolTipSections.*;
-import static main.libgdx.texture.TextureCache.getOrCreate;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class ActionToolTip extends ToolTip {
@@ -88,18 +87,12 @@ public class ActionToolTip extends ToolTip {
 
     @Override
     public void afterUpdateAct(float delta) {
-        NinePatchDrawable ninePatchDrawable =
-                new NinePatchDrawable(new NinePatch(getOrCreate("UI/components/tooltip_background.9.png")));
-        baseTable.setBackground(ninePatchDrawable);
+        baseTable.setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
 
-        ninePatchDrawable =
-                new NinePatchDrawable(new NinePatch(getOrCreate("UI/components/tooltip_background.9.png")));
-        rangeTable.setBackground(ninePatchDrawable);
+        rangeTable.setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
 
         textTables.forEach(tablePanel -> {
-            NinePatchDrawable npd =
-                    new NinePatchDrawable(new NinePatch(getOrCreate("UI/components/tooltip_background.9.png")));
-            tablePanel.setBackground(npd);
+            tablePanel.setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
         });
     }
 }

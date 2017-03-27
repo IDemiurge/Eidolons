@@ -1,14 +1,13 @@
 package main.libgdx.gui.panels.dc.unitinfo.tooltips;
 
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import main.libgdx.gui.NinePathFactory;
 import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.ValueContainer;
 
 import java.util.List;
 import java.util.function.Supplier;
 
-import static main.libgdx.texture.TextureCache.getOrCreate;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class WeaponToolTip extends ValueTooltip {
@@ -40,8 +39,6 @@ public class WeaponToolTip extends ValueTooltip {
 
     @Override
     public void afterUpdateAct(float delta) {
-        NinePatchDrawable ninePatchDrawable =
-                new NinePatchDrawable(new NinePatch(getOrCreate("UI/components/tooltip_background.9.png")));
-        setBackground(ninePatchDrawable);
+        setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
     }
 }
