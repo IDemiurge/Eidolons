@@ -47,5 +47,6 @@ public class ValueTooltip extends ToolTip {
         TextureRegionDrawable drawable = new TextureRegionDrawable(texture);
         recordOption.setBackground(drawable);
         recordOption.setHeight(45);
+        recordOption.setValueOffset(5);
     }
 }

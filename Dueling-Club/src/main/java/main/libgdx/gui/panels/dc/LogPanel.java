@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import main.libgdx.bf.mouse.MovableHeader;
 import main.libgdx.gui.dialog.LogMessage;
 import main.libgdx.gui.dialog.LogMessageBuilder;
 import main.libgdx.texture.TextureCache;

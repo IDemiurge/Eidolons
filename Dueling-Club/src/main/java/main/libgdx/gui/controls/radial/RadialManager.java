@@ -1,4 +1,4 @@
-package main.libgdx.bf.controls.radial;
+package main.libgdx.gui.controls.radial;
 
 import com.badlogic.gdx.graphics.Texture;
 import main.content.C_OBJ_TYPE;
@@ -102,15 +102,17 @@ public class RadialManager {
         List<RadialMenu.CreatorNode> list = new LinkedList<>();
 
         if (C_OBJ_TYPE.UNITS_CHARS.equals(target.getOBJ_TYPE_ENUM())) {
-            RadialMenu.CreatorNode examine = new RadialMenu.CreatorNode();
-            examine.texture = examineTexture;
-            examine.action = () -> {
-                GuiEventManager.trigger(
-                        GuiEventType.SHOW_UNIT_INFO_PANEL,
-                        new EventCallbackParam<>(new UnitDataSource(target)));
-            };
-            examine.name = "examine";
-            list.add(examine);
+            if (target instanceof Unit) {
+                RadialMenu.CreatorNode examine = new RadialMenu.CreatorNode();
+                examine.texture = examineTexture;
+                examine.action = () -> {
+                    GuiEventManager.trigger(
+                            GuiEventType.SHOW_UNIT_INFO_PANEL,
+                            new EventCallbackParam<>(new UnitDataSource(((Unit) target))));
+                };
+                examine.name = "examine";
+                list.add(examine);
+            }
         }
 
         RadialMenu.CreatorNode attM = new RadialMenu.CreatorNode();

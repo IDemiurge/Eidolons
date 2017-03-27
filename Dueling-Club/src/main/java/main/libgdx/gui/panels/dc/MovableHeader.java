@@ -1,4 +1,4 @@
-package main.libgdx.bf.mouse;
+package main.libgdx.gui.panels.dc;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 

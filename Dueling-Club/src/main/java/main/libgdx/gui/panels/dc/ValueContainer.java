@@ -11,11 +11,9 @@ import main.libgdx.StyleHolder;
 import org.apache.commons.lang3.StringUtils;
 
 public class ValueContainer extends TablePanel {
-    private static final int SMALL_NAME_SIZE = 3;
     protected Cell<Image> imageContainer;
     protected Cell<Label> nameContainer;
     protected Cell<Label> valueContainer;
-    private boolean singleImageMode = false;
 
     protected ValueContainer() {
 
@@ -26,7 +24,6 @@ public class ValueContainer extends TablePanel {
     }
 
     public ValueContainer(TextureRegion texture) {
-        singleImageMode = true;
         init(texture, null, null);
     }
 
@@ -156,6 +153,10 @@ public class ValueContainer extends TablePanel {
         if (valueContainer.getActor() != null) {
             valueContainer.getActor().setAlignment(align);
         }
+    }
+
+    public void setValueOffset(int offset) {
+        valueContainer.padLeft(offset);
     }
 }
 

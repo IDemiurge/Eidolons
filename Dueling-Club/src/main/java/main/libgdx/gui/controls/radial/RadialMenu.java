@@ -1,4 +1,4 @@
-package main.libgdx.bf.controls.radial;
+package main.libgdx.gui.controls.radial;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

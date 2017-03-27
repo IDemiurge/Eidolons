@@ -4,9 +4,8 @@ import main.libgdx.gui.panels.dc.ValueContainer;
 
 import java.util.List;
 
-public interface EffectsAndAbilitiesSource {
+public interface ArmorDataSource {
+    ValueContainer getArmorObj();
 
-    List<ValueContainer> getEffects();
-
-    List<ValueContainer> getAbilities();
+    List<ValueContainer> getParamValues();
 }

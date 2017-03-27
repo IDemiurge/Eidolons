@@ -8,7 +8,6 @@ import main.libgdx.gui.panels.dc.unitinfo.datasource.EffectsAndAbilitiesSource;
 import main.libgdx.texture.TextureCache;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class EffectAndAbilitiesPanel extends TablePanel {
 
@@ -24,23 +23,14 @@ public class EffectAndAbilitiesPanel extends TablePanel {
 
         EffectsAndAbilitiesSource source = (EffectsAndAbilitiesSource) getUserObject();
 
-        List<ValueContainer> effects = source.getEffects().stream()
-                .map(textureStringPair -> {
-                    final ValueContainer valueContainer = new ValueContainer(textureStringPair.getLeft());
-                    return valueContainer;
-                }).collect(Collectors.toList());
-
         final int h = 3;
         final int w = 4;
+
+        List<ValueContainer> effects = source.getEffects();
         IconGrid effectsGrid = new IconGrid(effects, w, h);
         addElement(effectsGrid).size(32 * w, 32 * h);
 
-        List<ValueContainer> abils = source.getAbilities().stream()
-                .map(textureStringPair -> {
-                    final ValueContainer valueContainer = new ValueContainer(textureStringPair.getLeft());
-                    return valueContainer;
-                }).collect(Collectors.toList());
-
+        List<ValueContainer> abils = source.getAbilities();
         IconGrid abilsGrid = new IconGrid(abils, w, h);
         addElement(abilsGrid).size(32 * w, 32 * h);
     }

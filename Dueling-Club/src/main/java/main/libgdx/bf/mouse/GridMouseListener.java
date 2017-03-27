@@ -13,13 +13,17 @@ import main.game.battlefield.Coordinates;
 import main.game.core.Eidolons;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.*;
-import main.libgdx.bf.mouse.ToolTipManager.ToolTipRecordOption;
+import main.libgdx.gui.ToolTipManager;
+import main.libgdx.gui.ToolTipManager.ToolTipRecordOption;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.test.frontend.FAST_DC;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static main.system.GuiEventType.*;
 
