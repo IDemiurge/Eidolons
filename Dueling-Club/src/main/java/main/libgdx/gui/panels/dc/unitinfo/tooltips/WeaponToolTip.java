@@ -13,6 +13,10 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class WeaponToolTip extends ValueTooltip {
 
+    public WeaponToolTip() {
+        setWidth(400);
+    }
+
     @Override
     public void updateAct(float delta) {
         final List<ValueContainer> valueContainers = ((Supplier<List<ValueContainer>>) getUserObject()).get();
