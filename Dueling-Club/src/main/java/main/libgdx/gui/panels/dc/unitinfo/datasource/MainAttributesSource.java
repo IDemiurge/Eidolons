@@ -1,13 +1,15 @@
 package main.libgdx.gui.panels.dc.unitinfo.datasource;
 
+import main.libgdx.gui.panels.dc.VerticalValueContainer;
+
 public interface MainAttributesSource {
-    String getResistance();
+    VerticalValueContainer getResistance();
 
-    String getDefense();
+    VerticalValueContainer getDefense();
 
-    String getArmor();
+    VerticalValueContainer getArmor();
 
-    String getFortitude();
+    VerticalValueContainer getFortitude();
 
-    String getSpirit();
+    VerticalValueContainer getSpirit();
 }

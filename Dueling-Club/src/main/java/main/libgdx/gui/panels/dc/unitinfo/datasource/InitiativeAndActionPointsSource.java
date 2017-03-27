@@ -1,7 +1,9 @@
 package main.libgdx.gui.panels.dc.unitinfo.datasource;
 
-public interface InitiativeAndActionPointsSource {
-    String getInitiative();
+import main.libgdx.gui.panels.dc.ValueContainer;
 
-    String getActionPoints();
+public interface InitiativeAndActionPointsSource {
+    ValueContainer getInitiative();
+
+    ValueContainer getActionPoints();
 }

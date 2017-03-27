@@ -13,15 +13,7 @@ import java.util.List;
 
 public class TablePanel<T extends Actor> extends Table {
 
-    protected static final int TOP_RIGHT = 0;
-    protected static final int TOP_LEFT = 1;
-    protected static final int TOP_DOWN = 2;
-    protected static final int DOWN_TOP = 3;
-    protected static final int DOWN_LEFT = 4;
-    protected static final int DOWN_RIGHT = 5;
-    protected int rowDirection = TOP_DOWN;
     protected boolean updateRequired;
-    private Cell lastCell;
     private List<Table> cols;
 
     public TablePanel() {

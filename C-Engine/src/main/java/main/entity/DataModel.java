@@ -282,6 +282,10 @@ public abstract class DataModel {
         return getIntParam(p);
     }
 
+    public String getStrParam(PARAMETER param) {
+        return String.valueOf(getIntParam(param));
+    }
+
     public Integer getIntParam(PARAMETER param) {
         return getIntParam(param, false);
     }
@@ -620,7 +624,7 @@ public abstract class DataModel {
                 try {
 
                     newValue = FormulaFactory.getFormulaByAppend(prevValue,
-                     amount).evaluate(ref);
+                            amount).evaluate(ref);
                 } catch (Exception e) {
                     setParam(param, FormulaFactory.getFormulaByAppend(prevValue, amount).toString(),
                             quietly);

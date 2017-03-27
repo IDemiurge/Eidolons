@@ -15,10 +15,10 @@ import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.Background;
 import main.libgdx.bf.GridPanel;
-import main.libgdx.bf.controls.radial.DebugRadialManager;
-import main.libgdx.bf.controls.radial.RadialMenu;
 import main.libgdx.bf.mouse.InputController;
-import main.libgdx.bf.mouse.ToolTipManager;
+import main.libgdx.gui.ToolTipManager;
+import main.libgdx.gui.controls.radial.DebugRadialManager;
+import main.libgdx.gui.controls.radial.RadialMenu;
 import main.libgdx.gui.dialog.DialogDisplay;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.LogPanel;
@@ -29,7 +29,7 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
 
-import static main.libgdx.bf.controls.radial.RadialManager.createNew;
+import static main.libgdx.gui.controls.radial.RadialManager.createNew;
 import static main.system.GuiEventType.*;
 
 /**

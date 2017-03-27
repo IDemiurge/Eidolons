@@ -7,12 +7,14 @@ import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.active.DC_UnitAction;
+import main.entity.item.DC_ArmorObj;
 import main.entity.item.DC_WeaponObj;
-import main.entity.obj.DC_Obj;
+import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.libgdx.gui.dialog.ToolTip;
 import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.VerticalValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionToolTip;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster;
@@ -24,6 +26,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -38,15 +41,16 @@ public class UnitDataSource implements
         MainParamDataSource, ResourceSource,
         AvatarDataSource, InitiativeAndActionPointsSource,
         EffectsAndAbilitiesSource, MainWeaponDataSource, OffWeaponDataSource,
-        MainAttributesSource, ResistSource, StatsDataSource {
-    private DC_Obj unit;
+        MainAttributesSource, ResistSource, StatsDataSource,
+        ArmorDataSource {
+    private Unit unit;
 
-    public UnitDataSource(DC_Obj unit) {
+    public UnitDataSource(Unit unit) {
         this.unit = unit;
     }
 
     private static List<MultiValueContainer> extractActionValues(DC_UnitAction el
-     , VALUE[] baseKeys) {
+            , VALUE[] baseKeys) {
         List<MultiValueContainer> list = new ArrayList<>();
         Pair<PARAMS, PARAMS> pair;
         for (VALUE key : baseKeys) {
@@ -54,10 +58,10 @@ public class UnitDataSource implements
 
             String name = getStringForTableValue(key, el);
             String imagePath = getIconPathForTableRow(key);
-            final String leftVal =ActionTooltipMaster.getValueForTableParam(pair.getLeft(), el);
-            final String rightVal =ActionTooltipMaster.getValueForTableParam(pair.getRight(), el);
+            final String leftVal = ActionTooltipMaster.getValueForTableParam(pair.getLeft(), el);
+            final String rightVal = ActionTooltipMaster.getValueForTableParam(pair.getRight(), el);
             MultiValueContainer mvc;
-            if (!ImageManager.isImage(imagePath) ){
+            if (!ImageManager.isImage(imagePath)) {
                 mvc = new MultiValueContainer(name, leftVal, rightVal);
             } else {
                 mvc = new MultiValueContainer(getOrCreateR(imagePath), name, leftVal, rightVal);
@@ -69,52 +73,52 @@ public class UnitDataSource implements
 
     @Override
     public String getStrength() {
-        return String.valueOf(unit.getIntParam(PARAMS.STRENGTH));
+        return unit.getStrParam(PARAMS.STRENGTH);
     }
 
     @Override
     public String getVitality() {
-        return String.valueOf(unit.getIntParam(PARAMS.VITALITY));
+        return unit.getStrParam(PARAMS.VITALITY);
     }
 
     @Override
     public String getAgility() {
-        return String.valueOf(unit.getIntParam(PARAMS.AGILITY));
+        return unit.getStrParam(PARAMS.AGILITY);
     }
 
     @Override
     public String getDexterity() {
-        return String.valueOf(unit.getIntParam(PARAMS.DEXTERITY));
+        return unit.getStrParam(PARAMS.DEXTERITY);
     }
 
     @Override
     public String getWillpower() {
-        return String.valueOf(unit.getIntParam(PARAMS.WILLPOWER));
+        return unit.getStrParam(PARAMS.WILLPOWER);
     }
 
     @Override
     public String getSpellpower() {
-        return String.valueOf(unit.getIntParam(PARAMS.SPELLPOWER));
+        return unit.getStrParam(PARAMS.SPELLPOWER);
     }
 
     @Override
     public String getIntelligence() {
-        return String.valueOf(unit.getIntParam(PARAMS.INTELLIGENCE));
+        return unit.getStrParam(PARAMS.INTELLIGENCE);
     }
 
     @Override
     public String getKnowledge() {
-        return String.valueOf(unit.getIntParam(PARAMS.KNOWLEDGE));
+        return unit.getStrParam(PARAMS.KNOWLEDGE);
     }
 
     @Override
     public String getWisdom() {
-        return String.valueOf(unit.getIntParam(PARAMS.WISDOM));
+        return unit.getStrParam(PARAMS.WISDOM);
     }
 
     @Override
     public String getCharisma() {
-        return String.valueOf(unit.getIntParam(PARAMS.CHARISMA));
+        return unit.getStrParam(PARAMS.CHARISMA);
     }
 
     @Override
@@ -180,64 +184,181 @@ public class UnitDataSource implements
     }
 
     @Override
-    public String getInitiative() {
+    public ValueContainer getInitiative() {
         int c = unit.getIntParam(PARAMS.C_INITIATIVE);
         int m = unit.getIntParam(PARAMS.INITIATIVE);
-        return c + "/" + m;
+        final String value = c + "/" + m;
+
+        VerticalValueContainer container = new VerticalValueContainer(getOrCreateR("UI/value icons/n_of_counters_s.png"), value);
+
+        ValueTooltip toolTip = new ValueTooltip();
+        toolTip.setUserObject(new ValueContainer(PARAMS.INITIATIVE.getName(), value));
+        container.addListener(toolTip.getController());
+
+        return container;
     }
 
     @Override
-    public String getActionPoints() {
+    public ValueContainer getActionPoints() {
         int c = unit.getIntParam(PARAMS.C_N_OF_ACTIONS);
         int m = unit.getIntParam(PARAMS.N_OF_ACTIONS);
-        return c + "/" + m;
+        final String value = c + "/" + m;
+
+        VerticalValueContainer container = new VerticalValueContainer(getOrCreateR("UI/value icons/n_of_actions_s.png"), value);
+
+        ValueTooltip toolTip = new ValueTooltip();
+        toolTip.setUserObject(new ValueContainer(PARAMS.N_OF_ACTIONS.getName(), value));
+        container.addListener(toolTip.getController());
+
+        return container;
     }
 
     @Override
-    public List<Pair<TextureRegion, String>> getEffects() {
+    public List<ValueContainer> getEffects() {
         return unit.getBuffs().stream()
                 .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-                .map(obj -> new ImmutablePair<>(getOrCreateR(obj.getType().getProperty(G_PROPS.IMAGE)), obj.getName()))
+                .map(getObjValueContainerMapper())
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Pair<TextureRegion, String>> getAbilities() {
+    public List<ValueContainer> getAbilities() {
         return unit.getPassives().stream()
                 .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-                .map(obj -> new ImmutablePair<>(getOrCreateR(obj.getType().getProperty(G_PROPS.IMAGE)), obj.getName()))
+                .map(getObjValueContainerMapper())
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public String getResistance() {
-        return String.valueOf(unit.getIntParam(PARAMS.RESISTANCE));
+    private <T extends Obj> Function<T, ValueContainer> getObjValueContainerMapper() {
+        return obj -> {
+            final ValueContainer container = new ValueContainer(getOrCreateR(obj.getType().getProperty(G_PROPS.IMAGE)));
+
+            ToolTip toolTip = new ValueTooltip();
+            toolTip.setUserObject(new ValueContainer(obj.getName(), ""));
+            container.addListener(toolTip.getController());
+
+            return container;
+        };
     }
 
     @Override
-    public String getDefense() {
-        return String.valueOf(unit.getIntParam(PARAMS.DEFENSE));
+    public VerticalValueContainer getResistance() {
+        final String param = unit.getStrParam(PARAMS.RESISTANCE);
+        final VerticalValueContainer container =
+                new VerticalValueContainer(
+                        getOrCreateR("UI/value icons/resistance.jpg"),
+                        param);
+
+        ValueTooltip tooltip = new ValueTooltip();
+        tooltip.setUserObject(new ValueContainer(PARAMS.RESISTANCE.getName(), param));
+        container.addListener(tooltip.getController());
+
+        return container;
     }
 
     @Override
-    public String getArmor() {
-        return String.valueOf(unit.getIntParam(PARAMS.ARMOR));
+    public VerticalValueContainer getDefense() {
+        final String param = unit.getStrParam(PARAMS.DEFENSE);
+        final VerticalValueContainer container =
+                new VerticalValueContainer(
+                        getOrCreateR("UI/value icons/Defense.jpg"),
+                        param);
+
+        ValueTooltip tooltip = new ValueTooltip();
+        tooltip.setUserObject(new ValueContainer(PARAMS.DEFENSE.getName(), param));
+        container.addListener(tooltip.getController());
+
+        return container;
     }
 
     @Override
-    public String getFortitude() {
-        return String.valueOf(unit.getIntParam(PARAMS.FORTITUDE));
+    public VerticalValueContainer getFortitude() {
+        final String param = unit.getStrParam(PARAMS.FORTITUDE);
+        final VerticalValueContainer container =
+                new VerticalValueContainer(
+                        getOrCreateR("UI/value icons/Fortitude.jpg"),
+                        param);
+        ValueTooltip tooltip = new ValueTooltip();
+        tooltip.setUserObject(new ValueContainer(PARAMS.FORTITUDE.getName(), param));
+        container.addListener(tooltip.getController());
+
+        return container;
     }
 
     @Override
-    public String getSpirit() {
-        return String.valueOf(unit.getIntParam(PARAMS.SPIRIT));
+    public VerticalValueContainer getSpirit() {
+        final String param = unit.getStrParam(PARAMS.SPIRIT);
+        final VerticalValueContainer container =
+                new VerticalValueContainer(
+                        getOrCreateR("UI/value icons/spirit.jpg"),
+                        param);
+
+        ValueTooltip tooltip = new ValueTooltip();
+        tooltip.setUserObject(new ValueContainer(PARAMS.SPIRIT.getName(), param));
+        container.addListener(tooltip.getController());
+        return container;
+    }
+
+    @Override
+    public VerticalValueContainer getArmor() {
+        final String param = unit.getStrParam(PARAMS.ARMOR);
+        final VerticalValueContainer container =
+                new VerticalValueContainer(
+                        getOrCreateR("UI/value icons/armor.jpg"),
+                        param);
+
+        ValueTooltip tooltip = new ValueTooltip();
+        tooltip.setUserObject(new ValueContainer(PARAMS.ARMOR.getName(), param));
+        container.addListener(tooltip.getController());
+
+        container.addListener(tooltip.getController());
+        return container;
+    }
+
+    @Override
+    public ValueContainer getArmorObj() {
+        final DC_ArmorObj armor = unit.getArmor();
+
+
+        final ValueContainer container;
+
+        if (armor != null) {
+            container = new ValueContainer(getOrCreateR(armor.getImagePath()));
+
+            ValueTooltip tooltip = new ValueTooltip();
+            tooltip.setUserObject(new ValueContainer("", "This is my armor. There are many like it, but this one is mine.\n" +
+                    "My armor is my best friend. It is my life. \n" +
+                    "Without me, my armor is useless. Without my armor, I am useless."));
+            container.addListener(tooltip.getController());
+        } else {
+            container = new ValueContainer(getOrCreateR("/mini/item/armor/empty.jpg"));
+        }
+
+        return container;
+    }
+
+    @Override
+    public List<ValueContainer> getParamValues() {
+        final DC_ArmorObj armor = unit.getArmor();
+        List<ValueContainer> values = new ArrayList<>();
+        if (armor != null) {
+            final String cd = armor.getStrParam(PARAMS.C_DURABILITY);
+            final String d = armor.getStrParam(PARAMS.DURABILITY);
+
+            values.add(new ValueContainer(PARAMS.DURABILITY.getName(), d + "/" + cd));
+
+            final String cover = armor.getStrParam(PARAMS.COVER_PERCENTAGE);
+
+            values.add(new ValueContainer(PARAMS.COVER_PERCENTAGE.getName(), cover));
+        }
+
+        return values;
     }
 
     @Override
     public List<Pair<PARAMETER, String>> getMagickResists() {
         return Arrays.stream(RESISTANCES).map(p -> {
-            String ps = String.valueOf(unit.getIntParam(p));
+            String ps = unit.getStrParam(p);
             return new ImmutablePair<>(p, ps);
         }).collect(Collectors.toList());
     }
@@ -245,7 +366,7 @@ public class UnitDataSource implements
     @Override
     public List<Pair<PARAMETER, String>> getArmorResists() {
         return Arrays.stream(ARMOR_VS_DAMAGE_TYPES).map(p -> {
-            String ps = String.valueOf(unit.getIntParam(p));
+            String ps = unit.getStrParam(p);
             return new ImmutablePair<>(p, ps);
         }).collect(Collectors.toList());
     }
@@ -253,14 +374,13 @@ public class UnitDataSource implements
     @Override
     public List<Pair<PARAMETER, String>> getDurabilityResists() {
         return Arrays.stream(DURABILITY_VS_DAMAGE_TYPES).map(p -> {
-            String ps = String.valueOf(unit.getIntParam(p));
+            String ps = unit.getStrParam(p);
             return new ImmutablePair<>(p, ps);
         }).collect(Collectors.toList());
     }
 
     @Override
     public ValueContainer getOffWeapon() {
-        Unit unit = (Unit) this.unit;
         DC_WeaponObj mainWeapon = unit.getSecondWeapon();
 
         return getWeaponValueContainer(mainWeapon);
@@ -268,7 +388,6 @@ public class UnitDataSource implements
 
     @Override
     public List<ValueContainer> getOffWeaponDetailInfo() {
-        Unit unit = (Unit) this.unit;
         DC_WeaponObj weapon = unit.getWeapon(true);
 
         return getWeaponDetail(weapon);
@@ -276,7 +395,6 @@ public class UnitDataSource implements
 
     @Override
     public ValueContainer getNaturalOffWeapon() {
-        Unit unit = (Unit) this.unit;
         DC_WeaponObj mainWeapon = unit.getNaturalWeapon(true);
 
         return getWeaponValueContainer(mainWeapon);
@@ -284,7 +402,6 @@ public class UnitDataSource implements
 
     @Override
     public List<ValueContainer> getNaturalOffWeaponDetailInfo() {
-        Unit unit = (Unit) this.unit;
         DC_WeaponObj weapon = unit.getNaturalWeapon(true);
 
         return getWeaponDetail(weapon);
@@ -292,7 +409,6 @@ public class UnitDataSource implements
 
     @Override
     public ValueContainer getMainWeapon() {
-        Unit unit = (Unit) this.unit;
         DC_WeaponObj mainWeapon = unit.getMainWeapon();
 
         return getWeaponValueContainer(mainWeapon);
@@ -300,7 +416,6 @@ public class UnitDataSource implements
 
     @Override
     public List<ValueContainer> getMainWeaponDetailInfo() {
-        Unit unit = (Unit) this.unit;
         DC_WeaponObj mainWeapon = unit.getMainWeapon();
 
         return getWeaponDetail(mainWeapon);
@@ -308,7 +423,6 @@ public class UnitDataSource implements
 
     @Override
     public ValueContainer getNaturalMainWeapon() {
-        Unit unit = (Unit) this.unit;
         DC_WeaponObj weapon = unit.getNaturalWeapon(false);
 
         return getWeaponValueContainer(weapon);
@@ -316,7 +430,6 @@ public class UnitDataSource implements
 
     @Override
     public List<ValueContainer> getNaturalMainWeaponDetailInfo() {
-        Unit unit = (Unit) this.unit;
         DC_WeaponObj weapon = unit.getNaturalWeapon(false);
 
         return getWeaponDetail(weapon);
@@ -351,8 +464,8 @@ public class UnitDataSource implements
                         for (PARAMS[] params : ACTION_TOOLTIP_PARAMS_TEXT) {
                             textsList.add(Arrays.stream(params).map(p ->
                                     new ValueContainer(
-                                     ActionTooltipMaster.
-                                      getTextForTableValue(p, el), "")
+                                            ActionTooltipMaster.
+                                                    getTextForTableValue(p, el), "")
                             ).collect(Collectors.toList()));
                         }
                         map.put(TEXT, textsList);
@@ -423,11 +536,11 @@ public class UnitDataSource implements
                 .forEach(ps -> values.add(
                         Arrays.stream(ps)
                                 .map(p -> {
-                                    String value = String.valueOf(unit.getIntParam(p));
+                                    String value = unit.getStrParam(p);
                                     String name = p.getName();
                                     ValueContainer valueContainer = new ValueContainer(name, value);
                                     ValueTooltip valueTooltip = new ValueTooltip();
-                                    valueTooltip.setUserObject((Supplier) () -> Arrays.asList(new ValueContainer(name, value)));
+                                    valueTooltip.setUserObject(new ValueContainer(name, value));
                                     valueContainer.addListener(valueTooltip.getController());
                                     return valueContainer;
                                 }).collect(Collectors.toList())

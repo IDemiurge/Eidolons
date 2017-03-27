@@ -2,22 +2,28 @@ package main.libgdx.gui.panels.dc.unitinfo;
 
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.ArmorDataSource;
 
-import java.util.Iterator;
-import java.util.List;
+import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class ArmorPanel extends TablePanel {
-    public ArmorPanel(List<ValueContainer> values) {
+    public ArmorPanel() {
+    }
 
-        Iterator<ValueContainer> iter = values.iterator();
+    @Override
+    public void updateAct(float delta) {
+        clear();
 
-        for (int j = 0; j < 4; j++) {
-            for (int i = 0; i < 2; i++) {
-                if (iter.hasNext()) {
-                    addElement(iter.next());
-                }
-            }
+        final ArmorDataSource source = (ArmorDataSource) getUserObject();
+
+        addElement(source.getArmorObj()).center().fill(false);
+        row();
+
+        for (ValueContainer valueContainer : source.getParamValues()) {
+            valueContainer.setBorder(getOrCreateR("UI/components/infopanel/simple_value_border.png"));
+            addElement(valueContainer);
             row();
         }
+
     }
 }

@@ -1,4 +1,4 @@
-package main.libgdx.bf.mouse;
+package main.libgdx.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static main.libgdx.bf.mouse.ToolTipManager.InnerToolTip.getCurMaxVal;
+import static main.libgdx.gui.ToolTipManager.InnerToolTip.getCurMaxVal;
 import static main.libgdx.gui.dialog.ToolTipBackgroundHolder.*;
 import static main.system.GuiEventType.SHOW_TOOLTIP;
 
@@ -56,7 +56,7 @@ public class ToolTipManager extends Container {
         setActor(toolTip);
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
-        setPosition(v2.x, v2.y);
+        setPosition(v2.x + 10, v2.y);
     }
 
     private void init(List<ToolTipRecordOption> options) {
@@ -88,7 +88,7 @@ public class ToolTipManager extends Container {
         }
 
         Table table = new Table();
-        innerToolTips.forEach(el->{
+        innerToolTips.forEach(el -> {
             table.row().fill().left().bottom();
             table.add(el);
         });

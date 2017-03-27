@@ -1,4 +1,4 @@
-package main.libgdx.bf.controls.radial;
+package main.libgdx.gui.controls.radial;
 
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
