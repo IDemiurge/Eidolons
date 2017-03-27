@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
-
 /**
  * Created by Nyx on 3/16/2017.
  */

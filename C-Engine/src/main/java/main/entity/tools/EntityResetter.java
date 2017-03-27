@@ -124,4 +124,7 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
 
     public void resetPercentages() {
     }
+
+    public void reset() {
+    }
 }

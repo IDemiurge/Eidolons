@@ -487,6 +487,6 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public void reset() {
-//        getResetter().reset();
+        getResetter().reset();
     }
 }

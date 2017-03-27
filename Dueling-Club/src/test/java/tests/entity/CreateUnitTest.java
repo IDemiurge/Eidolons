@@ -12,22 +12,23 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import org.junit.Before;
 import org.junit.Test;
+import tests.GenericTest;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by JustMe on 3/6/2017.
  */
-public class CreateUnitTest{
+public class CreateUnitTest extends GenericTest {
 
 
-    private String typeName = "Pirate";
-    private String skillName = "Greater Strength";
-    private String itemName = "inferior bronze dagger";
-    private JUnitDcInitializer judi;
-    private Unit entity;
-    private DC_FeatObj skill;
-    private DC_WeaponObj dagger;
+    protected String typeName = "Pirate";
+    protected String skillName = "Greater Strength";
+    protected String itemName = "inferior bronze dagger";
+    protected JUnitDcInitializer judi;
+    protected Unit entity;
+    protected DC_FeatObj skill;
+    protected DC_WeaponObj dagger;
 
 
 

@@ -2,6 +2,7 @@ package main.game.logic.battle.turn;
 
 import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
+import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
 import main.rules.mechanics.WaitRule;
 import main.system.EventCallbackParam;
@@ -87,12 +88,13 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         return false;
     }
 
-    public boolean doUnitAction() {
-        // game.getState().newRound();
+
+
+
+    public boolean nextAction() {
         resetQueue();
 
         if (getUnitQueue().isEmpty()) {
-
             return false;
         }
 
@@ -101,11 +103,15 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         result = chooseUnit();
 
         game.getActionManager().resetCostsInNewThread();
-
-
         resetDisplayedQueue();
         result &= activeUnit.turnStarted();
-        if (!result) {
+        return result;
+    }
+
+    public boolean doUnitAction() {
+        // game.getState().newRound();
+
+        if (!nextAction()) {
             return true; // if killed or immobilized...
         }
         // if (game.isStarted())
@@ -157,7 +163,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     }
 
 
-    private void resetInitiative(boolean first) {
+    public void resetInitiative(boolean first) {
         for (Unit unit : game.getUnits()) {
             resetInitiative(unit, first);
 //            int before = unit.getIntParam(PARAMS.C_INITIATIVE);
@@ -225,6 +231,10 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         this.activeUnit = activeUnit;
     }
 
+    public Unit chooseActiveUnit() {
+        chooseUnit();
+        return activeUnit;
+    }
     private boolean chooseUnit() {
 
         setActiveUnit(unitQueue.peek());
@@ -240,7 +250,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 
 //            WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
             LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
-                    + "Active unit: " + getActiveUnit());
+             + "Active unit: " + getActiveUnit());
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, new EventCallbackParam(activeUnit));
         } catch (Exception e) {
             e.printStackTrace();
@@ -253,11 +263,11 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         return game.getRules().getTimeRule().getTimePercentageRemaining();
     }
 
-    @Override
-    public boolean makeTurn() {
+    public void newRound() {
+
         resetInitiative(true);
+//        resetQueue();
         game.getRules().getTimeRule().newRound();
-        Boolean result = false;
         if (game.isStarted()) {
             SoundMaster.playStandardSound(STD_SOUNDS.DEATH);
         } else {
@@ -266,8 +276,8 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         if (isStarted()) {
             if (!playerHasActiveUnits()) {
                 LogMaster
-                        .log(1,
-                                "************** GAME PAUSED WHILE NO UNITS UNDER PLAYER CONTROL **************");
+                 .log(1,
+                  "************** GAME PAUSED WHILE NO UNITS UNDER PLAYER CONTROL **************");
             }
 
             while (!playerHasActiveUnits()) {
@@ -275,6 +285,13 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
                 resetQueue();
             }
         }
+    }
+    @Override
+    public boolean makeTurn() {
+        newRound();
+        if (GameLoop.isEnabled())
+            return true;
+        Boolean result = false;
         while (true) {
             try {
                 result = doUnitAction();

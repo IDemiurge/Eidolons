@@ -33,6 +33,9 @@ public class WaitMaster {
     }
 
     public static Object waitForInput(WAIT_OPERATIONS operation) {
+        if (operation== WAIT_OPERATIONS.ACTION_COMPLETE){
+            operation=  WAIT_OPERATIONS.ACTION_COMPLETE;
+        }
         if (getCompleteOperations().contains(operation)) {
             return true;
         }
@@ -125,7 +128,7 @@ public class WaitMaster {
         MAP_CLICK,
         DIALOGUE_DONE,
         AUTO_TEST_INPUT,
-        ACTIVE_UNIT_SELECTED, GDX_READY
+        ACTIVE_UNIT_SELECTED, PLAYER_ACTION_SELECTION, GDX_READY
     }
 
 }

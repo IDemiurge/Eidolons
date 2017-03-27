@@ -5,10 +5,11 @@ import main.game.core.game.DC_Game;
 import main.game.core.game.GameRules;
 import main.game.logic.combat.mechanics.BleedingRule;
 import main.game.logic.combat.mechanics.MoraleKillingRule;
-import main.game.logic.event.Rule;
 import main.rules.action.*;
 import main.rules.buff.*;
-import main.rules.combat.*;
+import main.rules.combat.CleaveRule;
+import main.rules.combat.KnockdownRule;
+import main.rules.combat.TrampleRule;
 import main.rules.counter.*;
 import main.rules.mechanics.DurabilityRule;
 import main.rules.mechanics.WaitRule;
@@ -17,7 +18,7 @@ import main.system.datatypes.DequeImpl;
 
 public class DC_Rules implements GameRules {
 
-    protected DequeImpl<Rule> buffRules = new DequeImpl<>();
+    protected DequeImpl<DC_BuffRule> buffRules = new DequeImpl<>();
     protected DequeImpl<DamageCounterRule> damageRules = new DequeImpl<>();
 
 
@@ -166,59 +167,56 @@ public class DC_Rules implements GameRules {
         this.game = game;
     }
 
-    public synchronized DequeImpl<Rule> getBuffRules() {
+    public  DequeImpl<DC_BuffRule> getBuffRules() {
         return buffRules;
     }
+ 
 
-    public synchronized void setBuffRules(DequeImpl<Rule> buffRules) {
-        this.buffRules = buffRules;
-    }
-
-    public synchronized MoraleBuffRule getMoraleRule() {
+    public  MoraleBuffRule getMoraleRule() {
         return moraleBuffRule;
     }
 
-    public synchronized void setMoraleRule(MoraleBuffRule moraleRule) {
+    public  void setMoraleRule(MoraleBuffRule moraleRule) {
         this.moraleBuffRule = moraleRule;
     }
 
-    public synchronized StaminaBuffRule getStaminaRule() {
+    public  StaminaBuffRule getStaminaRule() {
         return staminaRule;
     }
 
-    public synchronized void setStaminaRule(StaminaBuffRule staminaRule) {
+    public  void setStaminaRule(StaminaBuffRule staminaRule) {
         this.staminaRule = staminaRule;
     }
 
-    public synchronized WeightBuffRule getWeightRule() {
+    public  WeightBuffRule getWeightRule() {
         return weightRule;
     }
 
-    public synchronized void setWeightRule(WeightBuffRule weightRule) {
+    public  void setWeightRule(WeightBuffRule weightRule) {
         this.weightRule = weightRule;
     }
 
-    public synchronized FocusBuffRule getFocusRule() {
+    public  FocusBuffRule getFocusRule() {
         return focusBuffRule;
     }
 
-    public synchronized void setFocusRule(FocusBuffRule focusRule) {
+    public  void setFocusRule(FocusBuffRule focusRule) {
         this.focusBuffRule = focusRule;
     }
 
-    public synchronized DurabilityRule getDurabilityRule() {
+    public  DurabilityRule getDurabilityRule() {
         return durabilityRule;
     }
 
-    public synchronized void setDurabilityRule(DurabilityRule durabilityRule) {
+    public  void setDurabilityRule(DurabilityRule durabilityRule) {
         this.durabilityRule = durabilityRule;
     }
 
-    public synchronized TimeRule getTimeRule() {
+    public  TimeRule getTimeRule() {
         return lateActionsRule;
     }
 
-    public synchronized void setLateActionsRule(TimeRule lateActionsRule) {
+    public  void setLateActionsRule(TimeRule lateActionsRule) {
         this.lateActionsRule = lateActionsRule;
     }
 
@@ -226,27 +224,27 @@ public class DC_Rules implements GameRules {
         return roundRules;
     }
 
-    public synchronized DequeImpl<DamageCounterRule> getDamageRules() {
+    public  DequeImpl<DamageCounterRule> getDamageRules() {
         return damageRules;
     }
 
-    public synchronized void setDamageRules(DequeImpl<DamageCounterRule> damageRules) {
+    public  void setDamageRules(DequeImpl<DamageCounterRule> damageRules) {
         this.damageRules = damageRules;
     }
 
-    public synchronized BleedingCounterRule getBleedingRule() {
+    public  BleedingCounterRule getBleedingRule() {
         return bleedingRule;
     }
 
-    public synchronized void setBleedingRule(BleedingCounterRule bleedingRule) {
+    public  void setBleedingRule(BleedingCounterRule bleedingRule) {
         this.bleedingRule = bleedingRule;
     }
 
-    public synchronized WoundsBuffRule getWoundsRule() {
+    public  WoundsBuffRule getWoundsRule() {
         return woundsRule;
     }
 
-    public synchronized void setWoundsRule(WoundsBuffRule woundsRule) {
+    public  void setWoundsRule(WoundsBuffRule woundsRule) {
         this.woundsRule = woundsRule;
     }
 

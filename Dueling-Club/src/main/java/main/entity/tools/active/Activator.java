@@ -171,7 +171,7 @@ public class Activator extends ActiveHandler {
         try {
             if (canBeActivated(getRef(), true)) {
                 getHandler().activateOn(triggeringAction.getOwnerObj());
-            }
+          return true;  }
 
         } catch (Exception e) {
             e.printStackTrace();

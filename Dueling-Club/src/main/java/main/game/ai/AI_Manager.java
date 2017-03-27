@@ -40,32 +40,35 @@ public class AI_Manager extends AiMaster {
         game.getPlayer(false).setPlayerAI(new PlayerAI(getType()));
     }
 
-
+    public Action getAction(Unit unit) {
+        Action action = null;
+        running = true;
+        setUnit(unit);
+        try {
+            action = actionManager.chooseAction(getAI(unit));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            running = false;
+        }
+        if (action == null) {
+            running = true;
+            try {
+                action = actionManager.getForcedAction(getAI(unit));
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                running = false;
+            }
+        }
+        return action;
+    }
     public boolean makeAction(final Unit unit) {
 //        new Thread(new Runnable() {
 //            @Override
 //            public void run() {
         getExecutorService().execute(() -> {
-                Action action = null;
-                running = true;
-                setUnit(unit);
-                try {
-                    action = actionManager.chooseAction(getAI(unit));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    running = false;
-                }
-                if (action == null) {
-                    running = true;
-                    try {
-                        action = actionManager.getForcedAction(getAI(unit));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        running = false;
-                    }
-                }
+            Action action = getAction(unit);
                 if (action == null) {
                     game.getManager().freezeUnit(unit);
                     game.getManager().unitActionCompleted(null, true);
@@ -173,5 +176,6 @@ public class AI_Manager extends AiMaster {
     public void setType(PLAYER_AI_TYPE type) {
         this.type = type;
     }
+
 
 }

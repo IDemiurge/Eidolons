@@ -19,7 +19,14 @@ public class ConfigMaster {
 
     }
 
-    public boolean getValue(String key) {
+    public int getInt(String key) {
+        return 1;
+    }
+        public Object getValue(String key) {
+        return false;
+    }
+
+    public boolean getBoolean(String saving_on_default) {
         return false;
     }
 }

@@ -69,6 +69,17 @@ public class UnitResetter extends EntityResetter<Unit> {
         return (DC_Game) super.getGame();
     }
 
+    @Override
+    public void reset() {
+        super.reset();
+        toBase();
+//TODO
+        resetObjects();
+        resetHeroValues();
+        afterEffectsApplied();
+        afterBuffRuleEffects();
+
+    }
 
     public void resetFacing() {
         FACING_DIRECTION facing = null;

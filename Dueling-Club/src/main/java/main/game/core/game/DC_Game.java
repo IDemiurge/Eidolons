@@ -37,6 +37,7 @@ import main.game.battlefield.options.UIOptions;
 import main.game.battlefield.pathing.PathingManager;
 import main.game.battlefield.vision.VisionManager;
 import main.game.battlefield.vision.VisionMaster;
+import main.game.core.GameLoop;
 import main.game.core.state.DC_GameState;
 import main.game.core.state.DC_StateManager;
 import main.game.logic.arcade.ArcadeManager;
@@ -135,6 +136,7 @@ public class DC_Game extends MicroGame {
     private Boolean hostClient;
     private NetGame netGame;
     private boolean dummyPlus;
+    private GameLoop loop;
 
     public DC_Game(Player player1, Player player2, GameConnector connector, HostedGame hostedGame,
                    PartyData partyData1, PartyData partyData2) {
@@ -391,12 +393,19 @@ public class DC_Game extends MicroGame {
 
     private void startGameLoop() {
         setRunning(true);
+
         if (getGameLoopThread() == null) {
             setGameLoopThread(new Thread(() -> {
                 if (!CoreEngine.isGraphicsOff()) {
                     WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
                 }
-
+                if (GameLoop.isEnabled())
+                {
+                    loop = new GameLoop(this);
+                    loop.start();
+                    main.system.auxiliary.log.LogMaster.log(1,"Game Loop exit " );
+                    return;
+                }
                 while (true) {
                     try {
                         getStateManager().newRound();
@@ -428,7 +437,7 @@ public class DC_Game extends MicroGame {
 
     @Override
     public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
-        Unit unit = ((Unit) super.createUnit(type, x, y, owner, ref.getCopy()));
+        BattleFieldObject unit = ((BattleFieldObject) super.createUnit(type, x, y, owner, ref.getCopy()));
         game.getState().addObject(unit);
         unit.toBase();
         unit.resetObjects();
@@ -955,6 +964,13 @@ public class DC_Game extends MicroGame {
         return getObjectByCoordinate(c, false);
     }
 
+    public GameLoop getLoop() {
+        return loop;
+    }
+
+    public void setLoop(GameLoop loop) {
+        this.loop = loop;
+    }
 
 
     public enum GAME_TYPE {

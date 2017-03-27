@@ -19,9 +19,9 @@ import main.rules.RuleMaster.COMBAT_RULES;
 import main.system.auxiliary.StringMaster;
 
 public class StaminaBuffRule extends DC_BuffRule {
-    private String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Exhausted.getName(),
+    public static final  String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Exhausted.getName(),
             MetaEnums.STD_BUFF_NAMES.Fatigued.getName(), MetaEnums.STD_BUFF_NAMES.Energized.getName()};
-    private String[] formulas = {"1", "10", "100",};
+    public static final  String[] formulas = {"1", "10", "100",};
 
     public StaminaBuffRule(MicroGame game) {
         super(game);

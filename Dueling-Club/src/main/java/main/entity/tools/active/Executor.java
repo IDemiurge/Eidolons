@@ -9,8 +9,10 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_ItemActiveObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.Active;
-import main.entity.obj.Obj;
+import main.entity.obj.DC_Obj;
 import main.game.core.Eidolons;
+import main.game.core.GameLoop;
+import main.game.logic.action.context.Context;
 import main.game.logic.combat.attack.extra_attack.AttackOfOpportunityRule;
 import main.game.logic.combat.attack.extra_attack.ExtraAttacksRule;
 import main.game.logic.event.Event;
@@ -27,6 +29,8 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -64,6 +68,8 @@ public class Executor extends ActiveHandler {
     private boolean triggered;
     private boolean resistanceChecked;
     private int timeCost;
+    private boolean contextMode;
+    private Boolean endTurn;
 
 
     public Executor(DC_ActiveObj active, ActiveMaster entityMaster) {
@@ -80,28 +86,58 @@ public class Executor extends ActiveHandler {
         return new Activator(active, entityMaster);
     }
 
-    public void activateOn(Ref ref) {
-        targeter.setForcePresetTarget(true);
-        getEntity().setRef(ref);
-        getTargeter().setRef(ref);
-        activateOnActionThread();
+    public Boolean activateOn(Context context) {
+        if (context.getTargetObj() != null) {
+            Ref ref = getAction().getRef();
+            ref.setTarget(context.getTarget());
+            targeter.setForcePresetTarget(true);
+            getTargeter().setRef(ref);
+        }
+        contextMode = true;
+        activate();
+        return endTurn;
     }
 
-    public void activateOn(Obj t) {
-        targeter.presetTarget = t;
-        activateOnActionThread();
+    public void activateOn(Ref ref) {
+        targeter.setForcePresetTarget(true);
 
+        if (!GameLoop.isEnabled()) {
+            getEntity().setRef(ref);
+            getTargeter().setRef(ref);
+            activateOnActionThread();
+            return;
+        }
+
+        getGame().getLoop().setContext(new Context(ref));
+        getGame().getLoop().setAction(getAction());
+        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION, true);
+    }
+
+    public void activateOn(DC_Obj t) {
+        targeter.presetTarget = t;
+        if (!GameLoop.isEnabled()) {
+            activateOnActionThread();
+            return;
+        }
+        getGame().getLoop().setTarget(t);
+        getGame().getLoop().setAction(getAction());
+        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION, true);
     }
 
     public void activateOnActionThread() {
-        Eidolons.getActionThread().setExecutor(this);
-        Eidolons.getExecutorService().execute(Eidolons.getActionThread());
+        if (!GameLoop.isEnabled()) {
+            Eidolons.getActionThread().setExecutor(this);
+            Eidolons.getExecutorService().execute(Eidolons.getActionThread());
+            return;
+        }
+        getGame().getLoop().setAction(getAction());
+        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION, true);
     }
 
 
     public boolean activate() {
 
-        log(getAction().getOwnerObj()  + " activates "+  getAction(), true);
+        log(getAction().getOwnerObj() + " activates " + getAction(), true);
 
         reset();
         syncActionRefWithSource();
@@ -130,10 +166,10 @@ public class Executor extends ActiveHandler {
     }
 
     private void syncActionRefWithSource() {
-        if (getAction() instanceof DC_ItemActiveObj){
+        if (getAction() instanceof DC_ItemActiveObj) {
             DC_QuickItemObj item = ((DC_ItemActiveObj) getAction()).getItem();
-            if (item.isAmmo()){
-                getAction().getOwnerObj().getRef().setID(KEYS.AMMO,item.getId() );
+            if (item.isAmmo()) {
+                getAction().getOwnerObj().getRef().setID(KEYS.AMMO, item.getId());
             }
         }
         getAction().setRef(getAction().getOwnerObj().getRef());
@@ -308,12 +344,11 @@ public class Executor extends ActiveHandler {
     }
 
 
-
     public void actionComplete() {
         if (isResult())
             log(getAction() + " done", false);
         else
-        log(getAction() + " failed", false);
+            log(getAction() + " failed", false);
         fireEvent(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, false);
         getMaster().getLogger().logCompletion();
         getGame().getManager().applyActionRules(getAction());
@@ -323,7 +358,7 @@ public class Executor extends ActiveHandler {
             e.printStackTrace();
         }
 
-        Boolean endTurn = getGame().getRules().getTimeRule().actionComplete(getAction(), timeCost);
+        endTurn = getGame().getRules().getTimeRule().actionComplete(getAction(), timeCost);
         if (!endTurn) {
             game.getManager().reset();
             if (ChargeRule.checkRetainUnitTurn(getAction())) {

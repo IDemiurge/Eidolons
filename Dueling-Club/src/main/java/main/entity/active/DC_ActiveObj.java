@@ -30,6 +30,7 @@ import main.entity.tools.active.*;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
+import main.game.logic.combat.damage.Damage;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -65,6 +66,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     private boolean autoSelectionOn = false;
     private boolean continuous;
     private boolean resistanceChecked;
+    private Damage damageDealt;
 
     public DC_ActiveObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -117,7 +119,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public void activateOn(Obj t) {
-        getMaster().getHandler().activateOn(t);
+        getMaster().getHandler().activateOn((DC_Obj) t);
     }
 
 
@@ -823,4 +825,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
 
+    public Damage getDamageDealt() {
+        return damageDealt;
+    }
+
+    public void setDamageDealt(Damage damageDealt) {
+        this.damageDealt = damageDealt;
+    }
 }
