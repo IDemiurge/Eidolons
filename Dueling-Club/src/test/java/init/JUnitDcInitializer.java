@@ -14,7 +14,7 @@ import res.JUnitResources;
  */
 public class JUnitDcInitializer {
 
-    public static DC_Game game;
+    public   DC_Game game;
 
 
 
@@ -35,5 +35,6 @@ public class JUnitDcInitializer {
         GameLauncher launcher = new GameLauncher(null , null);
         game = launcher.initDC_Game();
         game.start(true); //TODO
+          game.setStarted(true);
     }
 }

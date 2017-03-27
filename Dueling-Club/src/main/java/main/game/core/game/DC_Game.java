@@ -403,6 +403,7 @@ public class DC_Game extends MicroGame {
                 {
                     loop = new GameLoop(this);
                     loop.start();
+                    setStarted(true);
                     main.system.auxiliary.log.LogMaster.log(1,"Game Loop exit " );
                     return;
                 }

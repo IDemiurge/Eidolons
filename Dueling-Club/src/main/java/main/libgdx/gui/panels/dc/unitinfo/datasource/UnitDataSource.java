@@ -39,7 +39,7 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class UnitDataSource implements
         MainParamDataSource, ResourceSource,
-        AvatarDataSource, InitiativeAndActionPointsSource,
+        AvatarDataSource, CounterAndActionPointsSource,
         EffectsAndAbilitiesSource, MainWeaponDataSource, OffWeaponDataSource,
         MainAttributesSource, ResistSource, StatsDataSource,
         ArmorDataSource {
@@ -170,26 +170,31 @@ public class UnitDataSource implements
 
     @Override
     public String getName() {
-        return unit.getName();
+        return unit.getNameIfKnown();
     }
 
     @Override
     public String getParam1() {
-        return "Level: " + unit.getParam("Level");
+        return "Level " + unit.getParam("Level");
     }
 
     @Override
     public String getParam2() {
-        return unit.getValue("Race");
+        if (unit.checkProperty(G_PROPS.RACE))
+        return
+         unit.getValue(G_PROPS.RACE);
+        return
+         unit.getValue(G_PROPS.GROUP);
     }
 
     @Override
-    public ValueContainer getInitiative() {
-        int c = unit.getIntParam(PARAMS.C_INITIATIVE);
-        int m = unit.getIntParam(PARAMS.INITIATIVE);
+    public ValueContainer getCounterPoints() {
+        int c = unit.getIntParam(PARAMS.C_N_OF_COUNTERS);
+        int m = unit.getIntParam(PARAMS.N_OF_COUNTERS);
         final String value = c + "/" + m;
 
-        VerticalValueContainer container = new VerticalValueContainer(getOrCreateR("UI/value icons/n_of_counters_s.png"), value);
+        VerticalValueContainer container = new VerticalValueContainer(
+         getOrCreateR("UI/value icons/n_of_counters_s.png"), value);
 
         ValueTooltip toolTip = new ValueTooltip();
         toolTip.setUserObject(new ValueContainer(PARAMS.INITIATIVE.getName(), value));

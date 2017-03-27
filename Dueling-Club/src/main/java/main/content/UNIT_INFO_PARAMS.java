@@ -11,7 +11,16 @@ import java.util.Map;
 import static main.content.PARAMS.*;
 
 public interface UNIT_INFO_PARAMS {
+    public static final PARAMETER[] COSTS = {AP_COST, STA_COST, ESS_COST,
+     FOC_COST, FOC_REQ, ENDURANCE_COST, CP_COST,
 
+    };
+    public static final PARAMETER[] COSTS_ICON_PARAMS = {N_OF_ACTIONS, STAMINA,
+     ESSENCE,
+     FOCUS, FOCUS,
+     ENDURANCE, N_OF_COUNTERS,
+
+    };
     PARAMS[] ARMOR_DC_INFO_PARAMS = {
      PARAMS.ARMOR, PARAMS.C_DURABILITY,
      PARAMS.COVER_PERCENTAGE,  PARAMS.HARDNESS,
