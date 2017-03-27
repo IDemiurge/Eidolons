@@ -12,13 +12,14 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import org.junit.Before;
 import org.junit.Test;
+import tests.GenericTest;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by JustMe on 3/6/2017.
  */
-public class CreateUnitTest{
+public class CreateUnitTest extends GenericTest {
 
 
     protected String typeName = "Pirate";

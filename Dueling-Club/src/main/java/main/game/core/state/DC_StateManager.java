@@ -36,7 +36,8 @@ public class DC_StateManager extends StateManager {
 
     private StatesKeeper keeper;
     private OBJ_TYPE[] toBaseIgnoredTypes = {DC_TYPE.SPELLS, DC_TYPE.ACTIONS};
-    private boolean savingOn = ConfigMaster.getInstance().getValue("SAVING_ON_DEFAULT");
+    private boolean savingOn = ConfigMaster.getInstance()
+     .getBoolean("SAVING_ON_DEFAULT");
 
     private Lock resetLock = new ReentrantLock();
     private volatile boolean resetting = false;
@@ -216,7 +217,13 @@ public class DC_StateManager extends StateManager {
             e.printStackTrace();
         }
 
-        resetAllSynchronized();
+        if (game.isStarted())
+        {
+            getGameManager().reset();
+        }
+        else {
+            resetAllSynchronized();
+        }
         if (game.isStarted()) {
             getGameManager().resetValues();
             IlluminationRule.initLightEmission(getGame());
@@ -229,14 +236,11 @@ public class DC_StateManager extends StateManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             game.getTurnManager().makeTurn();
-            try {
-                getGameManager().refreshAll();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            getGameManager().refreshAll();
         }
-        getGameManager().reset();
+//        getGameManager().reset();
         game.getLogManager().doneLogEntryNode();
         // if (!activePlayer.isMe())
     }

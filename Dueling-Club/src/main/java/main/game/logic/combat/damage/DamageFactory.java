@@ -20,13 +20,14 @@ public class DamageFactory {
 
     public static Damage getGenericDamage(DAMAGE_TYPE damageType,
                                           int amount, Ref ref) {
-        Damage damageObject=new Damage();
+        Damage damageObject = new Damage();
         damageObject.setAmount(amount);
         damageObject.setDmgType(damageType);
         damageObject.setRef(ref);
         return damageObject;
     }
-        public static Damage getDamageFromEffect(DealDamageEffect effect,  int amount) {
+
+    public static Damage getDamageFromEffect(DealDamageEffect effect, int amount) {
         Damage damageObject;
         List<Damage> list =
          DamageCalculator.getBonusDamageList(effect.getRef(), effect.isMagical()
@@ -76,11 +77,11 @@ public class DamageFactory {
         }
         damage.setDmgType(effect.getType());
         damage.setRef(effect.getRef());
-        DAMAGE_MODIFIER[] modifiers={
+        DAMAGE_MODIFIER[] modifiers = {
          DAMAGE_MODIFIER.UNBLOCKABLE,
          DAMAGE_MODIFIER.ARMOR_AVERAGED
         };
-        damage.setModifiers(modifiers );
+        damage.setModifiers(modifiers);
 
         if (effect.getConditions() != null)
             damage = new ConditionalDamage(damage, effect.getConditions());
@@ -103,5 +104,13 @@ public class DamageFactory {
         dmg.setAmount(amount);
         dmg.setDmgType(damageType);
         return dmg;
+    }
+
+    public static MultiDamage getMultiDamage(Damage damage) {
+        MultiDamage d = new MultiDamage();
+        d.setAmount(damage.amount)        ;
+        d.setRef(damage.getRef());
+        d.setDmgType(damage.getDmgType());
+        return d;
     }
 }

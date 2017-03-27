@@ -33,6 +33,9 @@ public class WaitMaster {
     }
 
     public static Object waitForInput(WAIT_OPERATIONS operation) {
+        if (operation== WAIT_OPERATIONS.ACTION_COMPLETE){
+            operation=  WAIT_OPERATIONS.ACTION_COMPLETE;
+        }
         if (getCompleteOperations().contains(operation)) {
             return true;
         }

@@ -393,18 +393,19 @@ public class DC_Game extends MicroGame {
 
     private void startGameLoop() {
         setRunning(true);
-        if (GameLoop.isEnabled())
-        {
-            loop = new GameLoop(this);
-            loop.start();
-            return;
-        }
+
         if (getGameLoopThread() == null) {
             setGameLoopThread(new Thread(() -> {
                 if (!CoreEngine.isGraphicsOff()) {
                     WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
                 }
-
+                if (GameLoop.isEnabled())
+                {
+                    loop = new GameLoop(this);
+                    loop.start();
+                    main.system.auxiliary.log.LogMaster.log(1,"Game Loop exit " );
+                    return;
+                }
                 while (true) {
                     try {
                         getStateManager().newRound();

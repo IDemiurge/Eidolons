@@ -2,6 +2,7 @@ package main.game.logic.battle.turn;
 
 import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
+import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
 import main.rules.mechanics.WaitRule;
 import main.system.EventCallbackParam;
@@ -89,8 +90,6 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 
 
 
-    public void newRound() {
-    }
 
     public boolean nextAction() {
         resetQueue();
@@ -164,7 +163,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     }
 
 
-    private void resetInitiative(boolean first) {
+    public void resetInitiative(boolean first) {
         for (Unit unit : game.getUnits()) {
             resetInitiative(unit, first);
 //            int before = unit.getIntParam(PARAMS.C_INITIATIVE);
@@ -264,11 +263,11 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         return game.getRules().getTimeRule().getTimePercentageRemaining();
     }
 
-    @Override
-    public boolean makeTurn() {
+    public void newRound() {
+
         resetInitiative(true);
+//        resetQueue();
         game.getRules().getTimeRule().newRound();
-        Boolean result = false;
         if (game.isStarted()) {
             SoundMaster.playStandardSound(STD_SOUNDS.DEATH);
         } else {
@@ -286,6 +285,13 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
                 resetQueue();
             }
         }
+    }
+    @Override
+    public boolean makeTurn() {
+        newRound();
+        if (GameLoop.isEnabled())
+            return true;
+        Boolean result = false;
         while (true) {
             try {
                 result = doUnitAction();

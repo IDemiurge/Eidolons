@@ -15,6 +15,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.libgdx.anims.phased.PhaseAnimator;
+import main.libgdx.anims.text.FloatingTextMaster;
 import main.rules.round.UnconsciousRule;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -35,20 +36,17 @@ public class DamageDealer {
      * @param damage
      * @return
      */
-    //REVIEW0321 why is the name "OfType" when just a damage object is given? It should be deal Dmg.
-    // if it conflicts with private methods, public one has prio.
-    //#2: why I do not have target in deal damage of type. that would be much more logical!
-    // Maybe damage is created before I know whom it will hit!
-
-    //#1 done
-    //#2 done
     public static int dealDamage(Damage damage) {
+        return dealDamage(damage, false);
+    }
+
+    private static int dealDamage(Damage damage, boolean isBonusDamage) {
         int result = dealDamageOfType(damage.getDmgType(),
          damage.getTarget()
-         , damage.getRef(), damage.getAmount());
+         , damage.getRef(), damage.getAmount(), isBonusDamage);
 
         if (damage instanceof MultiDamage) {
-            int bonus = dealBonusDamage(  (MultiDamage) damage,result);
+            int bonus = dealBonusDamage((MultiDamage) damage, result);
             result += bonus;
         }
 
@@ -58,16 +56,17 @@ public class DamageDealer {
     public static int dealDamage(Damage damage, Unit target) {
         damage.getRef().setTarget(target.getId());
         damage.setTarget(target);
-        return dealDamage(damage);
+        return dealDamage(damage, false);
     }
+
     /**
-     *
      * @param multiDamage
-     * @param dealt damage already dealt by main Damage object
+     * @param dealt       damage already dealt by main Damage object
      * @return
      */
     private static int dealBonusDamage(MultiDamage multiDamage, int dealt) {
         int bonus = 0;
+        FloatingTextMaster.getInstance();
         for (Damage bonusDamage : multiDamage.getAdditionalDamage()) {
             bonusDamage.setAction(multiDamage.getAction());
             bonusDamage.setRef(multiDamage.getRef());
@@ -77,20 +76,18 @@ public class DamageDealer {
             }
             if (bonusDamage instanceof FormulaDamage) {
                 if (((FormulaDamage) bonusDamage).isPercentage()) {
-                    int percent =   bonusDamage.getAmount();
-                    if (((FormulaDamage) bonusDamage).isFromRaw())
-                    {
+                    int percent = bonusDamage.getAmount();
+                    if (((FormulaDamage) bonusDamage).isFromRaw()) {
                         bonusDamage.setAmount(multiDamage.getAmount() * percent / 100);
-                    }
-                    else {
+                    } else {
                         bonusDamage.setAmount(dealt * percent / 100);
                     }
                 }
             }
-            int damageDealt = dealDamage(bonusDamage);
+            int damageDealt = dealDamage(bonusDamage, true);
             main.system.auxiliary.log.LogMaster.log(1, "Bonus damage dealt: " + damageDealt
              + StringMaster.wrapInParenthesis(bonusDamage.getDmgType().getName()));
-            bonus += damageDealt ;
+            bonus += damageDealt;
 
         }
         return bonus;
@@ -106,7 +103,7 @@ public class DamageDealer {
      * @return actual amount of damage dealt ( max(min(Toughness*(1-DEATH_BARRIER), Toughness dmg),min(Endurance, Endurance dmg))
      */
     private static int dealDamageOfType(DAMAGE_TYPE damage_type, Unit targetObj, Ref ref,
-                                       int amount) {
+                                        int amount, boolean bonus) {
         Unit attacker = (Unit) ref.getSourceObj();
         // if (global_damage_mod != 0) IDEA - Difficulty modifier
         // amount *= OptionsMaster.getGameOptions.getOption(global_damage_mod)/100;
@@ -136,10 +133,10 @@ public class DamageDealer {
             try {
                 active.getRef().setValue(KEYS.DAMAGE_DEALT, damageDealt + "");
             } catch (Exception e) {
-e.printStackTrace();
+                e.printStackTrace();
             }
         }
-
+        addDamageDealt(active, damage_type, damageDealt, !bonus);
         return damageDealt;
 
     }
@@ -208,9 +205,29 @@ e.printStackTrace();
         return result;
     }
 
+    // for floatingText anims
+    protected static void addDamageDealt(DC_ActiveObj active, DAMAGE_TYPE damage_type,
+                                         int amount, boolean main) {
+        if (main) {
+            active.setDamageDealt(DamageFactory.getGenericDamage(damage_type, amount, active.getRef()));
+            return;
+        }
+
+        MultiDamage multiDamage = null;
+        if (active.getDamageDealt() instanceof MultiDamage) {
+            multiDamage = (MultiDamage) active.getDamageDealt();
+        } else
+            multiDamage =  DamageFactory.getMultiDamage(active.getDamageDealt());
+
+        multiDamage.getAdditionalDamage().add(DamageFactory.
+         getGenericDamage(damage_type, amount, active.getRef()));
+
+        active.setDamageDealt(multiDamage);
+    }
 
     // writes values to appropriate parameters of the damage-dealing action, checks event-interruptions
-    protected static boolean processDamageEvent(DAMAGE_TYPE damage_type, Ref ref, int amount,
+    protected static boolean processDamageEvent(DAMAGE_TYPE damage_type, Ref ref,
+                                                int amount,
                                                 EVENT_TYPE event_type) {
         if (damage_type != null)
             ref.setValue(KEYS.DAMAGE_TYPE, damage_type.toString());
@@ -249,6 +266,8 @@ e.printStackTrace();
                 e.printStackTrace();
             }
         }
+
+
         Event event = new Event(event_type, ref);
         return (event.fire());
     }
@@ -263,6 +282,7 @@ e.printStackTrace();
             toughness_dmg = 0;
         }
         // TODO if not started already
+
         attacked.getGame().getLogManager().newLogEntryNode(true, ENTRY_TYPE.DAMAGE);
 
         LogMaster.log(1, toughness_dmg + " / " + endurance_dmg + " damage being dealt to "
@@ -289,7 +309,7 @@ e.printStackTrace();
                 // amount!
                 actual_t_damage = Math.min(
                  attacked.getIntParam(PARAMS.C_TOUGHNESS)
-                 * (100+UnconsciousRule.DEFAULT_DEATH_BARRIER)/100
+                  * (100 + UnconsciousRule.DEFAULT_DEATH_BARRIER) / 100
                  , toughness_dmg);
                 ref.setAmount(actual_t_damage);
                 // for cleave and other sensitive effects

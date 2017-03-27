@@ -5,15 +5,16 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import main.content.PARAMS;
 import main.data.filesys.PathFinder;
-import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
+import main.game.logic.combat.damage.Damage;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.text.FloatingText;
+import main.libgdx.anims.text.FloatingTextMaster;
 import main.system.images.ImageManager;
 
 import java.util.function.Supplier;
@@ -35,7 +36,7 @@ public class HitAnim extends ActionAnim {
                         active.getDamageType() == null ? "Physical" : active.getDamageType().getName()));
     }
 
-    public HitAnim(Entity active, AnimData params, boolean blood, Color c,
+    public HitAnim(DC_ActiveObj active, AnimData params, boolean blood, Color c,
                    Supplier<String> floatingTextSupplier,
                    Supplier<String> imageSupplier) {
         super(active, params);
@@ -57,6 +58,9 @@ public class HitAnim extends ActionAnim {
                 new FloatingText(
                         floatingTextSupplier, imageSupplier
                         , c);
+
+
+
         part = ANIM_PART.IMPACT;
 
     }
@@ -78,6 +82,8 @@ public class HitAnim extends ActionAnim {
         super.start();
         floatingText.init(GameScreen.getInstance().getAnimsStage()
                 , destination, 0, 128, 1.5f);
+        Damage damage = getActive().getDamageDealt();
+        FloatingTextMaster.getInstance().initFloatTextForDamage(damage, this);
     }
 
     private String getTargetSuffix(Obj targetObj) {

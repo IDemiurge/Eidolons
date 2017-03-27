@@ -14,7 +14,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
  * Created by JustMe on 3/23/2017.
  */
 public class GameLoop {
-    private static boolean enabled;
+    private static boolean enabled=true;
     Unit activeUnit;
     private DC_ActiveObj action;
     //    private  Ref ref;
@@ -43,10 +43,11 @@ public class GameLoop {
 
     private void roundLoop() {
         while (true) {
-            activeUnit = game.getTurnManager().chooseActiveUnit();
-            if (activeUnit == null) break;
             if (!game.getTurnManager().nextAction())
-                continue;
+            continue;
+            activeUnit = game.getTurnManager().getActiveUnit();
+            if (activeUnit == null) break;
+
             makeAction();
         }
     }
@@ -63,7 +64,8 @@ public class GameLoop {
         if (BooleanMaster.isFalse(result))
             game.getManager().endTurn();
         else {
-            // TODO ?
+            game.getTurnManager().
+             resetInitiative(false);
         }
     }
 

@@ -26,7 +26,8 @@ import main.system.auxiliary.StringMaster;
 public class WoundsBuffRule extends DC_BuffRule {
     public static final String BERSERK_WOUNDS_DAMAGE_MOD = "50";
 
-    public static final  String[] formulas = {"{SOURCE_ENDURANCE}/10", "{SOURCE_ENDURANCE}/5"};
+    public static final  String[] formulas = {
+     "{SOURCE_ENDURANCE}/10", "{SOURCE_ENDURANCE}/5"};
 
     public static final  String[] buffTypeNames = {MetaEnums.STD_BUFF_NAMES.Critically_Wounded.getName(),
             MetaEnums.STD_BUFF_NAMES.Wounded.getName(),};
