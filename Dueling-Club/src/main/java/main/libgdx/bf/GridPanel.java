@@ -19,6 +19,7 @@ import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.bf.mouse.GridMouseListener;
 import main.libgdx.gui.panels.dc.InitiativePanelParam;
+import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionPanelDataSource;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -67,18 +68,18 @@ public class GridPanel extends Group {
 
     public void updateOutlines() {
         unitMap.keySet().forEach(obj -> {
-            if (!obj.isOverlaying()){
-            OUTLINE_TYPE outline = obj.getOutlineType();
-            UnitView uv = (UnitView) unitMap.get(obj);
+            if (!obj.isOverlaying()) {
+                OUTLINE_TYPE outline = obj.getOutlineType();
+                UnitView uv = (UnitView) unitMap.get(obj);
 
-            Texture texture = null;
-            if (outline != null) {
-                texture = TextureCache.getOrCreate(
-                        Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
+                Texture texture = null;
+                if (outline != null) {
+                    texture = TextureCache.getOrCreate(
+                            Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
+                }
+
+                uv.setOutlineTexture(texture);
             }
-
-            uv.setOutlineTexture(texture);
-        }
         });
     }
 
@@ -134,14 +135,8 @@ public class GridPanel extends Group {
         }
         bindEvents();
 
-        /*
-        LIGHT_EMISSION
-         ILLUMINATION
-           CONCEALMENT*/
-
         setHeight(cells[0][0].getHeight() * rows);
         setWidth(cells[0][0].getWidth() * cols);
-
 
         addListener(new GridMouseListener(this, cells, unitMap));
         return this;
@@ -151,15 +146,14 @@ public class GridPanel extends Group {
 
 
         GuiEventManager.bind(UPDATE_GUI, obj -> {
-           if (Eidolons.game.getVisionMaster().  getVisibilityMaster().isOutlinesOn())
-            updateOutlines();
+            if (Eidolons.game.getVisionMaster().getVisibilityMaster().isOutlinesOn())
+                updateOutlines();
 
 //            updateGamma();
 //            updateGraves();
         });
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
-            Pair<Set<DC_Obj>, TargetRunnable> p =
-                    (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
+            Pair<Set<DC_Obj>, TargetRunnable> p = (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = unitMap.get(obj1);
@@ -200,8 +194,7 @@ public class GridPanel extends Group {
                     || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
 //                (r.getEffect() instanceof ChangeFacingEffect) nice try
             {
-                BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET
-                );
+                BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET);
                 BaseView view = unitMap.get(hero);
                 if (view instanceof UnitView) {
                     UnitView unitView = ((UnitView) view);
@@ -214,8 +207,7 @@ public class GridPanel extends Group {
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
 
                 if (!DeathAnim.isOn() || ref.isDebug()) {
-                    GuiEventManager.trigger(DESTROY_UNIT_MODEL,
-                            new EventCallbackParam(ref.getTargetObj()));
+                    GuiEventManager.trigger(DESTROY_UNIT_MODEL, new EventCallbackParam(ref.getTargetObj()));
                 }
 //                else //TODO make it work instead of onFinishEvents!
 //                AnimMaster.getInstance(). onDone(event,p ->
@@ -287,17 +279,21 @@ public class GridPanel extends Group {
             BattleFieldObject hero = (BattleFieldObject) obj.get();
             BaseView view = unitMap.get(hero);
             if (view == null) {
-                System.out.println("unitMap not initiatilized at ACTIVE_UNIT_SELECTED! "
-                );
+                System.out.println("unitMap not initiatilized at ACTIVE_UNIT_SELECTED!");
                 return;
             }
             if (view.getParent() instanceof GridCellContainer) {
                 ((GridCellContainer) view.getParent()).popupUnitView(view);
             }
+
             if (hero.isMine()) {
                 GuiEventManager.trigger(SHOW_GREEN_BORDER, new EventCallbackParam(view));
+
+                GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL,
+                        new EventCallbackParam(new ActionPanelDataSource((Unit) hero)));
             } else {
                 GuiEventManager.trigger(SHOW_RED_BORDER, new EventCallbackParam(view));
+                GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL, new EventCallbackParam(null));
             }
         });
 
@@ -331,7 +327,8 @@ public class GridPanel extends Group {
                     }
                 }
 
-                GridCellContainer cellContainer = new GridCellContainer(emptyImage, coordinates.getX(), coordinates.getY()).init();
+                GridCellContainer cellContainer =
+                        new GridCellContainer(emptyImage, coordinates.getX(), coordinates.getY()).init();
                 cellContainer.setObjects(options);
                 cellContainer.setOverlays(overlays);
 

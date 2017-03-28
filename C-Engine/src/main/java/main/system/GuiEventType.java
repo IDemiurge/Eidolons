@@ -32,6 +32,8 @@ public enum GuiEventType {
 
     SHOW_UNIT_INFO_PANEL,
 
+    UPDATE_QUICK_SLOT_PANEL,
+
     SHOW_GREEN_BORDER,
     SHOW_RED_BORDER,
     SHOW_BLUE_BORDERS,
