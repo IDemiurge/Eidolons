@@ -37,7 +37,7 @@ import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
 
 public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
-            "AI", "Gui", "Logic", "Recent", "New", "Anims",
+            "AI", "Gui", "Playtest", "Recent", "New", "Anims", "Usability",
             "Emitters",
             "Last",  "Light","Profiling"
 
@@ -48,7 +48,7 @@ public class PresetLauncher {
 
     static {
         LAUNCH.AI.graphicsTest = false;
-        LAUNCH.Logic.graphicsTest = false;
+        LAUNCH.Playtest.graphicsTest = false;
 
         LAUNCH.Gui.visionHacked = true;
         LAUNCH.Anims.visionHacked = true;
@@ -331,12 +331,13 @@ public class PresetLauncher {
     public enum LAUNCH {
         AI("ai.xml", RULE_SCOPE.TEST, false),
         Gui("graphics test.xml", RULE_SCOPE.BASIC, true),
-        Logic("ai full.xml", RULE_SCOPE.FULL, true),
+        Playtest("ai full.xml", RULE_SCOPE.FULL, null ),
         Anims(null , RULE_SCOPE.BASIC, true),
         Emitters(true),
         Light("light preview.xml", RULE_SCOPE.BASIC, true),
         JUnit(),
-        Profiling(true)
+        Profiling(true),
+        Usability ("Usability.xml", RULE_SCOPE.FULL, null )
         ;
         public Boolean immortal;
         public CONTROLLER controller;
@@ -366,20 +367,23 @@ public class PresetLauncher {
 
         }
 
-        LAUNCH(String preset, RULE_SCOPE ruleScope, boolean dummyPlus) {
+        LAUNCH(String preset, RULE_SCOPE ruleScope, Boolean dummyPlus) {
             this.preset = preset;
             this.ruleScope = ruleScope;
-            if (dummyPlus) {
-                initDummyFlags();
-            }
+            if (dummyPlus!=null )
+                if (dummyPlus) {
+                    initDummyPlusFlags();
+                } else {
+                    initDummyFlags();
+                }
         }
 
-        LAUNCH(boolean dummyPlus) {
+        LAUNCH(Boolean dummyPlus) {
+            if (dummyPlus!=null )
             if (dummyPlus) {
                 initDummyPlusFlags();
             } else {
                 initDummyFlags();
-
             }
         }
 

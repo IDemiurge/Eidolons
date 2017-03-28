@@ -75,7 +75,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         mid.addElement(avatarPanel);
         mid.row();
 
-        InitiativeAndActionPointsPanel pointsPanel = new InitiativeAndActionPointsPanel();
+        CounterAndActionPointsPanel pointsPanel = new CounterAndActionPointsPanel();
         mid.addElement(pointsPanel);
         mid.row();
 

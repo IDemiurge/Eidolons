@@ -64,27 +64,29 @@ public class BuffRulesTest extends CreateUnitTest {
     @Test
     public void buffRuleTest() {
         int i = 0; //root_params
-        for (DC_BuffRule rule : judi.game.getRules().getBuffRules()) {
+        for (PARAMS root_param : root_params) {
 //also test rule's state?
 
             Integer initial = entity.getIntParam(reduced_params[i]);
-            entity.setParam(root_params[i],
+            entity.setParam(root_param,
              new Formula(value_low[i]).getInt(new Ref(entity)));
-            judi.game.getManager().reset();
+            judi.game.getStateManager().reset(entity);
             Integer reduced = entity.getIntParam(reduced_params[i]);
 
-            if (isReductionOn(root_params[i]))
-                assertAndLog( initial,reduced  );
+            if (isReductionOn(root_param))
+                assertAndLog( initial,reduced,root_param+" rule"   );
 
-            if (!isIncreaseOn(root_params[i]))
-                continue;
-
+            if (!isIncreaseOn(root_param))
+            {
+                i++;   continue;
+            }
+            if (reduced_params[i]!= increased_params[i])
             initial = entity.getIntParam(increased_params[i]);
-            entity.setParam(root_params[i], new Formula(value_high[i]).getInt(new Ref(entity))
+            entity.setParam(root_param, new Formula(value_high[i]).getInt(new Ref(entity))
             );
-            judi.game.getManager().reset();
+            judi.game.getStateManager().reset(entity);
             Integer increased = entity.getIntParam(increased_params[i]);
-            assertAndLog( increased,initial  );
+            assertAndLog( increased,initial,root_param+" rule"  );
             i++;
         }
 

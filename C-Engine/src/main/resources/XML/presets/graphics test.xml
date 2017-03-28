@@ -1,1 +1,1 @@
-FIRST_DUNGEON=BATTLE\Mograve Keep.xml,PLAYER_UNITS=Thief(7-5);Demon Carnifex(7-5);Bandit Archer(7-6);,
+FIRST_DUNGEON=BATTLE\Mograve Keep.xml,PLAYER_UNITS=Bandit Archer(7-5);,ENEMIES=Ravenguard Crossbowman(5-3);Shieldman(6-4);

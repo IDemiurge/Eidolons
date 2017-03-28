@@ -141,7 +141,7 @@ public class DC_Game extends MicroGame {
     public DC_Game(Player player1, Player player2, GameConnector connector, HostedGame hostedGame,
                    PartyData partyData1, PartyData partyData2) {
         this(player1, player2, hostedGame.getTitle(), partyData1.getObjData(), partyData2
-                .getObjData());
+         .getObjData());
         this.setHostedGame(hostedGame);
         setHost(hostedGame.isHost());
         this.setConnector(connector);
@@ -172,7 +172,7 @@ public class DC_Game extends MicroGame {
 
     public DC_Game(DC_GameData data) {
         this(data.getPlayer1(), data.getPlayer2(), data.getName(), data.getPlayerUnitData(), data
-                .getPlayer2UnitData());
+         .getPlayer2UnitData());
         this.data = data;
     }
 
@@ -340,27 +340,6 @@ public class DC_Game extends MicroGame {
 
         this.manager.setSbInitialized(true);
         turnManager.init();
-        if (!CoreEngine.isSwingOn()) {
-//            WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
-//            WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
-        } else if (!battlefield.isInitialized())
-        // gui starts building while logic is getting ready TODO
-        {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    try {
-                        battlefield.init();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    battlefield.setInitialized(true);
-                }
-            });
-        } else
-        // when is this really called? TODO
-        {
-            battlefield.init();
-        }
 
         if (isDebugMode()) {
             debugMaster = new DebugMaster(getState(), getBattleField().getBuilder());
@@ -399,25 +378,14 @@ public class DC_Game extends MicroGame {
                 if (!CoreEngine.isGraphicsOff()) {
                     WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
                 }
-                if (GameLoop.isEnabled())
-                {
-                    loop = new GameLoop(this);
-                    loop.start();
-                    main.system.auxiliary.log.LogMaster.log(1,"Game Loop exit " );
-                    return;
-                }
-                while (true) {
-                    try {
-                        getStateManager().newRound();
-                        Thread.sleep(0);//release remains time quota
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, "Game Loop"));
+                loop = new GameLoop(this);
+                loop.start();
+                setStarted(true);
+                main.system.auxiliary.log.LogMaster.log(1,"Game Loop exit " );
+                return;
+
+            }   ,"Game Loop"));
             getGameLoopThread().start();
-        } else {
-            WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, false);
         }
 
     }
@@ -960,7 +928,7 @@ public class DC_Game extends MicroGame {
     }
 
     public Obj getObjectByCoordinate(Coordinates
-                                             c) {
+                                      c) {
         return getObjectByCoordinate(c, false);
     }
 

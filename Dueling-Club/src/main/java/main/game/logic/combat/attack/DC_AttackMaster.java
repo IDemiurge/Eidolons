@@ -96,7 +96,8 @@ public class DC_AttackMaster {
 
     }
 
-    private boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter, Effect onHit,
+    private boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter,
+                           Effect onHit,
                            Effect onKill, boolean offhand, boolean counter) {
         ENTRY_TYPE type = ENTRY_TYPE.ATTACK;
         boolean extraAttack = true;
@@ -280,13 +281,13 @@ public class DC_AttackMaster {
             if (attacker.isDead()) {
                 return true;
             }
-            if (attacked.isDead()) {
-                if (onKill != null) {
-                    onKill.apply(ref);
-                }
-                attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH, attacker, ref);
-                return true;
-            }
+//            if (attacked.isDead()) {  // now in unit.kill()
+//                if (onKill != null) {
+//                    onKill.apply(ref);
+//                }
+//                attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH, attacker, ref);
+//                return true;
+//            }
         } else {
             if (dodged) {
                 log(attacked.getName() + " has dodged an attack from " + attacker.getNameIfKnown());
@@ -317,11 +318,13 @@ public class DC_AttackMaster {
             }
         }
         attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.BEFORE_HIT, attacker, ref);
-        if (!checkDeathEffects(attacked, attacker, onKill, ref, SPECIAL_EFFECTS_CASE.ON_DEATH)) {
+        if (  attacked.isDead()){
+//         !checkDeathEffects(attacked, attacker, onKill, ref, SPECIAL_EFFECTS_CASE.ON_DEATH)) {
             return true;
         }
         attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.BEFORE_ATTACK, attacked, ref);
-        if (!checkDeathEffects(attacker, attacked, onKill, ref, SPECIAL_EFFECTS_CASE.ON_DEATH)) {
+        if (attacked.isDead()){
+            //!checkDeathEffects(attacker, attacked, onKill, ref, SPECIAL_EFFECTS_CASE.ON_DEATH)) {
             return true;
         }
         Integer final_amount = attack.getDamage();
@@ -439,20 +442,20 @@ public class DC_AttackMaster {
              offhand);
             checkEffectsInterrupt(attacker, attacked, SPECIAL_EFFECTS_CASE.ON_CRIT, ref, offhand);
         }
-        if (attacked.isDead()) {
-            if (onKill != null) {
-                onKill.apply(ref);
-            }
-            attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH, attacker, ref); // e.g.
-            // retribution
-            if (attacker.isDead()) {
-                attack.setLethal(true);
-                return true;
-            }
-            // attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL,
-            // attacker, ref); // already applied in DC_UnitObj.kill()
-
-        }
+//        if (attacked.isDead()) { TODO in unit.kill()
+//            if (onKill != null) {
+//                onKill.apply(ref);
+//            }
+//            attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH, attacker, ref); // e.g.
+//            // retribution
+//            if (attacker.isDead()) {
+//                attack.setLethal(true);
+//                return true;
+//            }
+//            // attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL,
+//            // attacker, ref); // already applied in DC_UnitObj.kill()
+//
+//        }
 
         // if (canCounter)
         // if ((!countered) || attacker.hasDoubleCounter())

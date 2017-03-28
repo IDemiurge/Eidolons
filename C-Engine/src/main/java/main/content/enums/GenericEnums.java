@@ -117,7 +117,7 @@ public class GenericEnums {
 
         //
         // chopping = bludg||slash ;
-        PHYSICAL(false),
+        PHYSICAL(),
         PURE(false),
         MAGICAL(false),
         // ASTRAL(false),

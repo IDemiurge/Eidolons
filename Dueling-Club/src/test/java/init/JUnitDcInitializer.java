@@ -14,7 +14,7 @@ import res.JUnitResources;
  */
 public class JUnitDcInitializer {
 
-    public static DC_Game game;
+    public   DC_Game game;
 
 
 
@@ -32,8 +32,11 @@ public class JUnitDcInitializer {
 //            launch.itemGenerationOff=true; TODO other flags
         launch.ENEMY_CODE= CODE.NONE;
         launch.PARTY_CODE=CODE.NONE;
+
         GameLauncher launcher = new GameLauncher(null , null);
-        game = launcher.initDC_Game();
+      launcher.PLAYER_PARTY="";
+      game = launcher.initDC_Game();
         game.start(true); //TODO
+          game.setStarted(true);
     }
 }
