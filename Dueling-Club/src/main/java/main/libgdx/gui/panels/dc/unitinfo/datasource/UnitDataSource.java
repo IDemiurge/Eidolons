@@ -462,11 +462,16 @@ public class UnitDataSource implements
 
                         List/*<List<MultiValueContainer>>*/ textsList = new ArrayList<>();
                         for (PARAMS[] params : ACTION_TOOLTIP_PARAMS_TEXT) {
-                            textsList.add(Arrays.stream(params).map(p ->
-                                    new ValueContainer(
-                                            ActionTooltipMaster.
-                                                    getTextForTableValue(p, el), "")
-                            ).collect(Collectors.toList()));
+                            textsList.add(Arrays.stream(params).map(p -> {
+                                        final String textForTableValue = ActionTooltipMaster.
+                                                getTextForTableValue(p, el);
+                                        if (StringUtils.isEmpty(textForTableValue)) {
+                                            return null;
+                                        } else {
+                                            return new ValueContainer(textForTableValue, "");
+                                        }
+                                    }
+                            ).filter(Objects::nonNull).collect(Collectors.toList()));
                         }
                         map.put(TEXT, textsList);
 
