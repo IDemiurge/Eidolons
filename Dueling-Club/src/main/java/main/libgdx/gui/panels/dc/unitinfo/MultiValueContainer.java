@@ -13,7 +13,7 @@ import static main.libgdx.StyleHolder.getDefaultLabelStyle;
 
 public class MultiValueContainer extends ValueContainer {
 
-    private List<Container> values = new ArrayList<>();
+    private List<Container<Label>> values = new ArrayList<>();
 
     public MultiValueContainer(TextureRegion texture, String name, String... value) {
         init(texture, name, value);
@@ -57,5 +57,18 @@ public class MultiValueContainer extends ValueContainer {
 
     public List getValues() {
         return values;
+    }
+
+    public List<ValueContainer> separate() {
+        List<ValueContainer> result = new ArrayList<>();
+        if (imageContainer.getActor() != null) {
+            result.add(new ValueContainer(imageContainer.getActor()));
+        } else {
+            result.add(null);
+        }
+        result.add(new ValueContainer(nameContainer.getActor()));
+        values.forEach(el -> result.add(new ValueContainer(el.getActor())));
+
+        return result;
     }
 }

@@ -36,20 +36,23 @@ public class ActionToolTip extends ToolTip {
         final TextureRegion leftImage = getOrCreateR(values.get(0).getActor().getText().toString());
         final TextureRegion rightImage = getOrCreateR(values.get(1).getActor().getText().toString());
 
-        TablePanel headerTable = new TablePanel();
-        headerTable.addElement(new ValueContainer(rightImage));
-        headerTable.addElement(new ValueContainer(leftImage));
-        headerTable.addElement(new ValueContainer(valueContainer.getName(), ""));
-
 
         baseTable = new TablePanel();
-        baseTable.addElement(headerTable);
+        baseTable.addElement(null).expand(0, 0).fill(false);
+
+        baseTable.addElement(new ValueContainer(valueContainer.getName(), ""));
+        baseTable.addElement(new ValueContainer(leftImage));
+        baseTable.addElement(new ValueContainer(rightImage));
+        baseTable.row();
 
         list = paramsListMap.get(BASE);
 
         for (Object o : list) {
             MultiValueContainer container = (MultiValueContainer) o;
-            baseTable.addElement(container);
+            final List<ValueContainer> separated = container.separate();
+            separated.forEach(el -> {
+                baseTable.addElement(el);
+            });
             baseTable.row();
         }
 
@@ -59,7 +62,10 @@ public class ActionToolTip extends ToolTip {
 
         for (Object o : list) {
             MultiValueContainer container = (MultiValueContainer) o;
-            rangeTable.addElement(container);
+            final List<ValueContainer> separated = container.separate();
+            separated.forEach(el -> {
+                rangeTable.addElement(el);
+            });
             rangeTable.row();
         }
 
@@ -68,19 +74,21 @@ public class ActionToolTip extends ToolTip {
         for (Object o : list) {
             List<ValueContainer> valueContainers = (List<ValueContainer>) o;
             TablePanel panel = new TablePanel();
+            panel.debug();
             textTables.add(panel);
             for (ValueContainer container : valueContainers) {
+                container.wrapNames();
                 panel.addElement(container);
                 panel.row();
             }
         }
 
-        addElement(baseTable).width(282).pad(0, 0, 5, 0);
+        addElement(baseTable).width(282).pad(0, 0, 3, 0);
         row();
-        addElement(rangeTable).width(282).pad(0, 0, 5, 0);
+        addElement(rangeTable).width(282).pad(0, 0, 3, 0);
         row();
         textTables.forEach(el -> {
-            addElement(el).width(282).pad(0, 0, 5, 0);
+            addElement(el).width(282).pad(0, 0, 3, 0);
             row();
         });
     }

@@ -27,12 +27,20 @@ public class ValueContainer extends TablePanel {
         init(texture, null, null);
     }
 
+    public ValueContainer(Image image) {
+        imageContainer = addElement(image).size(image.getImageWidth(), image.getImageHeight()).center();
+    }
+
     public ValueContainer(TextureRegion texture, String value) {
         init(texture, null, value);
     }
 
     public ValueContainer(String name, String value) {
         init(null, name, value);
+    }
+
+    public ValueContainer(Label actor) {
+        init(null, actor.getText().toString(), "");
     }
 
     protected void init(TextureRegion texture, String name, String value) {
@@ -66,7 +74,7 @@ public class ValueContainer extends TablePanel {
             row();
         }
 
-        if (value != null) {
+        if (StringUtils.isNotEmpty(value)) {
             valueContainer.setActor(new Label(value, StyleHolder.getDefaultLabelStyle())).grow().center();
         }
 
@@ -157,6 +165,12 @@ public class ValueContainer extends TablePanel {
 
     public void setValueOffset(int offset) {
         valueContainer.padLeft(offset);
+    }
+
+    public void wrapNames() {
+        if (nameContainer.getActor() != null) {
+            nameContainer.getActor().setWrap(true);
+        }
     }
 }
 
