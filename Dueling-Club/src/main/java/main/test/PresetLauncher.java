@@ -330,14 +330,14 @@ public class PresetLauncher {
 
     public enum LAUNCH {
         AI("ai.xml", RULE_SCOPE.TEST, false),
-        Gui("graphics test.xml", RULE_SCOPE.BASIC, true),
-        Playtest("ai full.xml", RULE_SCOPE.FULL, null),
+        Gui("graphics test.xml", RULE_SCOPE.BASIC, null ),
+        Playtest("ai full.xml", RULE_SCOPE.FULL, null ),
         Anims(null , RULE_SCOPE.BASIC, true),
         Emitters(true),
         Light("light preview.xml", RULE_SCOPE.BASIC, true),
         JUnit(),
         Profiling(true),
-        Usability("Usability.xml", RULE_SCOPE.FULL, null)
+        Usability ("Usability.xml", RULE_SCOPE.FULL, null )
         ;
         public Boolean immortal;
         public CONTROLLER controller;
@@ -370,7 +370,7 @@ public class PresetLauncher {
         LAUNCH(String preset, RULE_SCOPE ruleScope, Boolean dummyPlus) {
             this.preset = preset;
             this.ruleScope = ruleScope;
-            if (dummyPlus != null)
+            if (dummyPlus!=null )
                 if (dummyPlus) {
                     initDummyPlusFlags();
                 } else {
@@ -379,7 +379,7 @@ public class PresetLauncher {
         }
 
         LAUNCH(Boolean dummyPlus) {
-            if (dummyPlus != null)
+            if (dummyPlus!=null )
             if (dummyPlus) {
                 initDummyPlusFlags();
             } else {
