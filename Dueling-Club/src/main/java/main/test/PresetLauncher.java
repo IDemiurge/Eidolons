@@ -330,7 +330,7 @@ public class PresetLauncher {
 
     public enum LAUNCH {
         AI("ai.xml", RULE_SCOPE.TEST, false),
-        Gui("graphics test.xml", RULE_SCOPE.BASIC, true),
+        Gui("graphics test.xml", RULE_SCOPE.BASIC, null ),
         Playtest("ai full.xml", RULE_SCOPE.FULL, null ),
         Anims(null , RULE_SCOPE.BASIC, true),
         Emitters(true),
