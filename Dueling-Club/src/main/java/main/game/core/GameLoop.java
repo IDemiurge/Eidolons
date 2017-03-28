@@ -47,12 +47,22 @@ public class GameLoop {
             continue;
             activeUnit = game.getTurnManager().getActiveUnit();
             if (activeUnit == null) break;
-
-            makeAction();
+Boolean result =false;
+           try{
+               result = makeAction();
+           }catch(Exception e){
+               e.printStackTrace();
+           }
+            if (BooleanMaster.isFalse(result))
+                game.getManager().endTurn();
+            else {
+                game.getTurnManager().
+                 resetInitiative(false);
+            }
         }
     }
 
-    private void makeAction() {
+    private Boolean makeAction() {
 
         if (game.getManager().getActiveObj().isAiControlled()) {
             waitForAI();
@@ -60,13 +70,8 @@ public class GameLoop {
             waitForPlayerInput();
         }
 
-        Boolean result = activateAction();
-        if (BooleanMaster.isFalse(result))
-            game.getManager().endTurn();
-        else {
-            game.getTurnManager().
-             resetInitiative(false);
-        }
+       return activateAction();
+
     }
 
     private void waitForAI() {

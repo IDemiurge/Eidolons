@@ -1,14 +1,10 @@
 package main.ability;
 
 import main.ability.effects.Effect;
-import main.ability.effects.containers.AbilityEffect;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.attachment.AddTriggerEffect;
-import main.elements.conditions.RefCondition;
-import main.elements.targeting.FixedTargeting;
-import main.entity.Ref.KEYS;
+import main.ability.effects.containers.AbilityEffect;
 import main.entity.obj.DC_Obj;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
 
@@ -68,13 +64,14 @@ public class AddSpecialEffects extends MicroEffect {
         switch (case_type) {
             case ON_KILL:
             case ON_DEATH:
-                return new AddTriggerEffect(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED,
-                        new RefCondition(
-                                case_type == SPECIAL_EFFECTS_CASE.ON_DEATH ?
-                                        KEYS.EVENT_TARGET : KEYS.EVENT_SOURCE,
-                                KEYS.SOURCE, true),
-                        new ActiveAbility(new FixedTargeting(KEYS.TARGET), getEffects())
-                );
+                // now in unit.kill()
+//                return new AddTriggerEffect(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED,
+//                        new RefCondition(
+//                                case_type == SPECIAL_EFFECTS_CASE.ON_DEATH ?
+//                                        KEYS.EVENT_TARGET : KEYS.EVENT_SOURCE,
+//                                KEYS.SOURCE, true),
+//                        new ActiveAbility(new FixedTargeting(KEYS.TARGET), getEffects())
+//                );
             case SPELL_IMPACT:
                 break;
             case SPELL_HIT:

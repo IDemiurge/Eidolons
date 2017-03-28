@@ -71,13 +71,7 @@ public class UnitResetter extends EntityResetter<Unit> {
 
     @Override
     public void reset() {
-        super.reset();
-        toBase();
-//TODO
-        resetObjects();
-        resetHeroValues();
-        afterEffectsApplied();
-        afterBuffRuleEffects();
+        getGame().getStateManager().reset(getEntity());
 
     }
 

@@ -56,7 +56,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     protected Costs channelingActivateCosts;
     protected Costs channelingResolveCosts;
     protected List<DC_ActiveObj> subActions;
-    private Executor executor;
     private RESISTANCE_TYPE resistType;
     private DAMAGE_TYPE energyType;
     private ACTION_TYPE_GROUPS actionTypeGroup;
@@ -77,7 +76,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     @Override
     public EntityMaster initMaster() {
         ActiveMaster master = new ActiveMaster(this);
-        executor = master.getHandler();
         return master;
 
     }
@@ -509,16 +507,16 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     //exec
 
     public void addPendingAttackOpportunity(DC_ActiveObj attack) {
-        executor.addPendingAttackOpportunity(attack);
+        getHandler().addPendingAttackOpportunity(attack);
 
     }
 
     public boolean isFailedLast() {
-        return this.executor.isFailedLast();
+        return  getHandler().isFailedLast();
     }
 
     public void setFailedLast(boolean failedLast) {
-        this.executor.setFailedLast(failedLast);
+        getHandler().setFailedLast(failedLast);
     }
 
 

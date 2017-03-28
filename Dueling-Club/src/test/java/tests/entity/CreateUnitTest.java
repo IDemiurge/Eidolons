@@ -1,6 +1,5 @@
 package tests.entity;
 
-import init.JUnitDcInitializer;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.data.DataManager;
@@ -19,7 +18,6 @@ import static org.junit.Assert.assertTrue;
 public class CreateUnitTest extends GenericTest {
 
 
-    protected JUnitDcInitializer judi;
     protected String typeName = "Pirate";
     protected Unit entity;
 
@@ -27,7 +25,6 @@ public class CreateUnitTest extends GenericTest {
 
     @Before
     public void createEntity() {
-        judi = new JUnitDcInitializer();
         ObjType type= DataManager.getType(typeName, DC_TYPE.UNITS);
         entity = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
 

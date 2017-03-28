@@ -217,7 +217,7 @@ public class GameLauncher {
                 VISION_HACK = PresetLauncher.getLaunch().visionHacked;
             }
             DUMMY_MODE = PresetLauncher.getLaunch().dummy;
-            DUMMY_MODE = PresetLauncher.getLaunch().dummy_pp;
+            DUMMY_PP = PresetLauncher.getLaunch().dummy_pp;
             DEBUG_MODE = PresetLauncher.getLaunch().debugMode;
             FAST_MODE = PresetLauncher.getLaunch().fast;
             if (PresetLauncher.getLaunch().ruleScope!=null ) {
