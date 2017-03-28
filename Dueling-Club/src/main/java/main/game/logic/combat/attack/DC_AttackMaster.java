@@ -318,12 +318,12 @@ public class DC_AttackMaster {
             }
         }
         attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.BEFORE_HIT, attacker, ref);
-        if (  attacked.isDead()){
+        if (attacked.isDead()) {
 //         !checkDeathEffects(attacked, attacker, onKill, ref, SPECIAL_EFFECTS_CASE.ON_DEATH)) {
             return true;
         }
         attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.BEFORE_ATTACK, attacked, ref);
-        if (attacked.isDead()){
+        if (attacked.isDead()) {
             //!checkDeathEffects(attacker, attacked, onKill, ref, SPECIAL_EFFECTS_CASE.ON_DEATH)) {
             return true;
         }

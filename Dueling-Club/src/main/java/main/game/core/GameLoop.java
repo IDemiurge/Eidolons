@@ -47,17 +47,17 @@ public class GameLoop {
             continue;
             activeUnit = game.getTurnManager().getActiveUnit();
             if (activeUnit == null) break;
-Boolean result =false;
-           try{
-               result = makeAction();
-           }catch(Exception e){
-               e.printStackTrace();
-           }
+            Boolean result = false;
+            try {
+                result = makeAction();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (BooleanMaster.isFalse(result))
                 game.getManager().endTurn();
             else {
                 game.getTurnManager().
-                 resetInitiative(false);
+                        resetInitiative(false);
             }
         }
     }
@@ -70,7 +70,7 @@ Boolean result =false;
             waitForPlayerInput();
         }
 
-       return activateAction();
+        return activateAction();
 
     }
 

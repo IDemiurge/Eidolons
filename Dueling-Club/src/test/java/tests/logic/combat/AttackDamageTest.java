@@ -21,9 +21,9 @@ public class AttackDamageTest extends TwoUnitsTest {
         Attack attack = DC_AttackMaster.getAttackFromAction(action);
         int precalc = DamageCalculator.precalculateDamage(attack);
 //        DamageFactory.getDamageFromAttack(attack);
-        assertEqualAndLog(   action.getDamageDealt().getAmount() , precalc,
-         action+ " dmg precalc",
-         action+ " Damage Dealt");
+        assertEqualAndLog(action.getDamageDealt().getAmount(), precalc,
+                action + " dmg precalc",
+                action + " Damage Dealt");
 
     }
 }

@@ -10,13 +10,13 @@ import org.junit.Before;
 /**
  * Created by JustMe on 3/28/2017.
  */
-public class TwoUnitsTest extends  CreateUnitTest {
+public class TwoUnitsTest extends CreateUnitTest {
     protected Unit entity2;
-    protected String typeName2="Thief";
+    protected String typeName2 = "Thief";
 
     @Before
     public void createSecondEntity() {
-        ObjType type= DataManager.getType(typeName2, DC_TYPE.UNITS);
+        ObjType type = DataManager.getType(typeName2, DC_TYPE.UNITS);
         entity2 = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
 
     }

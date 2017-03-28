@@ -298,7 +298,7 @@ public class ForceRule {
 
     private static int getPushDistance(int force, Unit target) {
         int distance = Math.round(force * PUSH_DISTANCE_COEFFICIENT /
-         (1+target.getIntParam(PARAMS.TOTAL_WEIGHT)));
+                (1 + target.getIntParam(PARAMS.TOTAL_WEIGHT)));
         LogMaster.log(1, "getPushDistance = " + force + "/10/"
          + target.getIntParam(PARAMS.TOTAL_WEIGHT) + " = " + distance);
         return distance;

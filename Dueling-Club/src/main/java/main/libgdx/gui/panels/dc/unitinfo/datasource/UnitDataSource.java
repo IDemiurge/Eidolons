@@ -181,10 +181,10 @@ public class UnitDataSource implements
     @Override
     public String getParam2() {
         if (unit.checkProperty(G_PROPS.RACE))
+            return
+                    unit.getValue(G_PROPS.RACE);
         return
-         unit.getValue(G_PROPS.RACE);
-        return
-         unit.getValue(G_PROPS.GROUP);
+                unit.getValue(G_PROPS.GROUP);
     }
 
     @Override
@@ -194,7 +194,7 @@ public class UnitDataSource implements
         final String value = c + "/" + m;
 
         VerticalValueContainer container = new VerticalValueContainer(
-         getOrCreateR("UI/value icons/n_of_counters_s.png"), value);
+                getOrCreateR("UI/value icons/n_of_counters_s.png"), value);
 
         ValueTooltip toolTip = new ValueTooltip();
         toolTip.setUserObject(new ValueContainer(PARAMS.INITIATIVE.getName(), value));
