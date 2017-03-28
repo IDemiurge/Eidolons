@@ -22,6 +22,7 @@ import main.libgdx.gui.controls.radial.RadialMenu;
 import main.libgdx.gui.dialog.DialogDisplay;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.LogPanel;
+import main.libgdx.gui.panels.dc.actionpanel.ActionPanelController;
 import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -134,6 +135,10 @@ public class GameScreen implements Screen {
         InitiativePanel initiativePanel = new InitiativePanel();
         initiativePanel.setPosition(0, Gdx.graphics.getHeight() - initiativePanel.getHeight());
         guiStage.addActor(initiativePanel);
+
+        ActionPanelController actionPanelController = new ActionPanelController();
+        actionPanelController.setPosition(0, 0);
+        guiStage.addActor(actionPanelController);
 
         UnitInfoPanel infoPanel = new UnitInfoPanel();
         guiStage.addActor(infoPanel);

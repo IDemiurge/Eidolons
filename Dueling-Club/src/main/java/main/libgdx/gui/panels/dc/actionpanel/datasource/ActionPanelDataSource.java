@@ -2,7 +2,9 @@ package main.libgdx.gui.panels.dc.actionpanel.datasource;
 
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.unit.Unit;
+import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
@@ -18,23 +20,21 @@ public class ActionPanelDataSource implements QuickSlotsDataSource {
     }
 
     @Override
-    public List<ActionDataSource> getQuickSlotActions() {
-        List<ActionDataSource> list = new ArrayList<>();
+    public List<ActionValueContainer> getQuickSlotActions() {
+        List<ActionValueContainer> list = new ArrayList<>();
         final DequeImpl<DC_QuickItemObj> items = unit.getQuickItems();
 
         for (DC_QuickItemObj item : items) {
-            final ActionDataSource dataSource = new ActionDataSource() {
-                @Override
-                public ValueContainer getValue() {
-                    return new ValueContainer(getOrCreateR(item.getImagePath()));
-                }
-
-                @Override
-                public void doAction() {
-                    item.activate();
-                }
-            };
-            list.add(dataSource);
+            final ActionValueContainer valueContainer =
+                    new ActionValueContainer(
+                            getOrCreateR(item.getImagePath()),
+                            () -> {
+                                item.activate();
+                            });
+            ValueTooltip tooltip = new ValueTooltip();
+            tooltip.setUserObject(new ValueContainer(item.getName(), ""));
+            valueContainer.addListener(tooltip.getController());
+            list.add(valueContainer);
         }
 
         for (int i = 0; i < unit.getRemainingQuickSlots(); i++) {

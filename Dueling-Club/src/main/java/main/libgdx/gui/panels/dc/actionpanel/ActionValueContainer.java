@@ -6,12 +6,28 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.libgdx.gui.panels.dc.ValueContainer;
 
 public class ActionValueContainer extends ValueContainer {
-    private Runnable action;
 
-    @Override
-    protected void init(TextureRegion texture, String name, String value) {
-        super.init(texture, name, value);
+    public ActionValueContainer(TextureRegion texture, String name, String value, Runnable action) {
+        super(texture, name, value);
+        bindAction(action);
+    }
 
+    public ActionValueContainer(TextureRegion texture, Runnable action) {
+        super(texture);
+        bindAction(action);
+    }
+
+    public ActionValueContainer(TextureRegion texture, String value, Runnable action) {
+        super(texture, value);
+        bindAction(action);
+    }
+
+    public ActionValueContainer(String name, String value, Runnable action) {
+        super(name, value);
+        bindAction(action);
+    }
+
+    private void bindAction(Runnable action) {
         addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -20,10 +36,5 @@ public class ActionValueContainer extends ValueContainer {
                 }
             }
         });
-    }
-
-    public ActionValueContainer setAction(Runnable action) {
-        this.action = action;
-        return this;
     }
 }

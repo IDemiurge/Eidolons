@@ -10,6 +10,10 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class QuickSlotPanel extends TablePanel {
 
+    public QuickSlotPanel() {
+        left().bottom();
+    }
+
     @Override
     public void updateAct(float delta) {
         clear();
@@ -21,9 +25,9 @@ public class QuickSlotPanel extends TablePanel {
         for (int i = 0; i < tempLimit; i++) {
             final ActionValueContainer valueContainer = sources.get(i);
             if (valueContainer != null) {
-                add(valueContainer);
+                add(valueContainer).left().bottom();
             } else {
-                add(new ValueContainer(getOrCreateR("UI/empty_pack.jpg")));
+                add(new ValueContainer(getOrCreateR("UI/empty_pack.jpg"))).left().bottom();
             }
         }
     }
