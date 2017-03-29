@@ -35,6 +35,12 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
         panelLayout = addElement(null);
     }
 
+    @Override
+    public void clear() {
+        super.clear();
+        initContainer();
+    }
+
     public void addTab(T actor, String tabName) {
         TextButton b = new TextButton(tabName, getButtonStyle());
 

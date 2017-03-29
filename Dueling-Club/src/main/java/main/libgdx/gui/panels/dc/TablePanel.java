@@ -8,23 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TablePanel<T extends Actor> extends Table {
 
     protected boolean updateRequired;
-    private List<Table> cols;
 
     public TablePanel() {
-        cols = new ArrayList<>();
-
-    }
-
-    @Override
-    public void clear() {
-        cols.clear();
-        super.clear();
     }
 
     @Override
