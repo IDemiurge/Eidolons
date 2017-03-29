@@ -24,16 +24,16 @@ public class GenericTest {
 
     public void assertEqualAndLog(int v1, int v2, String comment1, String comment2) {
         System.out.println(
-         "Assert: " + comment1 + " = " + v1 + " equal to " + comment2 + " = " + v2);
+                "Assert: " + comment1 + " = " + v1 + " equal to " + comment2 + " = " + v2);
         boolean result = v1 == v2;
         assertTrue(result);
     }
 
     public void assertAndLog(
 //         Boolean greater_less_equal,
-     int greater, int than, String comment) {
+            int greater, int than, String comment) {
         System.out.println(comment +
-         "; Assert: " + greater + " greater than " + than);
+                "; Assert: " + greater + " greater than " + than);
         boolean result = greater > than;
         assertTrue(result);
     }

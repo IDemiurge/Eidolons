@@ -512,7 +512,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isFailedLast() {
-        return  getHandler().isFailedLast();
+        return getHandler().isFailedLast();
     }
 
     public void setFailedLast(boolean failedLast) {

@@ -18,16 +18,17 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by JustMe on 3/28/2017.
  */
-public class WeaponSkillTest extends  CreateUnitTest {
+public class WeaponSkillTest extends CreateUnitTest {
 
     protected String skillName = "Greater Strength";
     protected String itemName = "inferior bronze dagger";
     protected DC_FeatObj skill;
     protected DC_WeaponObj dagger;
+
     @Before
     public void createEntity() {
         judi = new JUnitDcInitializer();
-        ObjType type= DataManager.getType(typeName, DC_TYPE.UNITS);
+        ObjType type = DataManager.getType(typeName, DC_TYPE.UNITS);
         entity = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
         skill = new DC_FeatObj(DataManager.getType(skillName, DC_TYPE.SKILLS), entity.getRef());
         dagger = new DC_WeaponObj(DataManager.getType(itemName, DC_TYPE.WEAPONS), entity);
@@ -37,10 +38,10 @@ public class WeaponSkillTest extends  CreateUnitTest {
     @Test
     public void testAssignSkill() {
 
-        assertTrue (entity!=null );
-        assertTrue (entity.getName().equals(typeName));
+        assertTrue(entity != null);
+        assertTrue(entity.getName().equals(typeName));
         int temp = entity.getIntParam(PARAMS.TOUGHNESS);
-        assert(!entity.getSkills().contains(skill));
+        assert (!entity.getSkills().contains(skill));
         entity.getSkills().add(skill);
         entity.fullReset(judi.game);
         assertTrue(entity.getSkills().contains(skill));
@@ -54,7 +55,7 @@ public class WeaponSkillTest extends  CreateUnitTest {
     @Test
     public void testEquipWeapon() {
 
-        assert (dagger!=null );
+        assert (dagger != null);
         assert (dagger.getName().equalsIgnoreCase(itemName));
 
 
@@ -69,7 +70,6 @@ public class WeaponSkillTest extends  CreateUnitTest {
         System.out.println(entity.getCalculator().calculateDamage(false));
 
         assertTrue(temp < entity.getCalculator().calculateDamage(false));
-
 
 
     }

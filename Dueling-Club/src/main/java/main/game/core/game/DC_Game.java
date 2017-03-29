@@ -141,7 +141,7 @@ public class DC_Game extends MicroGame {
     public DC_Game(Player player1, Player player2, GameConnector connector, HostedGame hostedGame,
                    PartyData partyData1, PartyData partyData2) {
         this(player1, player2, hostedGame.getTitle(), partyData1.getObjData(), partyData2
-         .getObjData());
+                .getObjData());
         this.setHostedGame(hostedGame);
         setHost(hostedGame.isHost());
         this.setConnector(connector);
@@ -172,7 +172,7 @@ public class DC_Game extends MicroGame {
 
     public DC_Game(DC_GameData data) {
         this(data.getPlayer1(), data.getPlayer2(), data.getName(), data.getPlayerUnitData(), data
-         .getPlayer2UnitData());
+                .getPlayer2UnitData());
         this.data = data;
     }
 
@@ -381,10 +381,10 @@ public class DC_Game extends MicroGame {
                 loop = new GameLoop(this);
                 loop.start();
                 setStarted(true);
-                main.system.auxiliary.log.LogMaster.log(1,"Game Loop exit " );
+                main.system.auxiliary.log.LogMaster.log(1, "Game Loop exit ");
                 return;
 
-            }   ,"Game Loop"));
+            }, "Game Loop"));
             getGameLoopThread().start();
         }
 
@@ -928,7 +928,7 @@ public class DC_Game extends MicroGame {
     }
 
     public Obj getObjectByCoordinate(Coordinates
-                                      c) {
+                                             c) {
         return getObjectByCoordinate(c, false);
     }
 

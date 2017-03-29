@@ -13,7 +13,7 @@ public class CounterAndActionPointsPanel extends TablePanel {
         clear();
 
         CounterAndActionPointsSource source =
-         (CounterAndActionPointsSource) getUserObject();
+                (CounterAndActionPointsSource) getUserObject();
 
         addElement(source.getCounterPoints()).fill(0, 0).left();
         addElement(source.getActionPoints()).fill(0, 0).right();

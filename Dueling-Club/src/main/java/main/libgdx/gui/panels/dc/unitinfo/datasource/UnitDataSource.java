@@ -71,6 +71,18 @@ public class UnitDataSource implements
         return list;
     }
 
+    public static <T extends Obj> Function<T, ValueContainer> getObjValueContainerMapper() {
+        return obj -> {
+            final ValueContainer container = new ValueContainer(getOrCreateR(obj.getType().getProperty(G_PROPS.IMAGE)));
+
+            ToolTip toolTip = new ValueTooltip();
+            toolTip.setUserObject(new ValueContainer(obj.getName(), ""));
+            container.addListener(toolTip.getController());
+
+            return container;
+        };
+    }
+
     @Override
     public String getStrength() {
         return unit.getStrParam(PARAMS.STRENGTH);
@@ -181,10 +193,10 @@ public class UnitDataSource implements
     @Override
     public String getParam2() {
         if (unit.checkProperty(G_PROPS.RACE))
+            return
+                    unit.getValue(G_PROPS.RACE);
         return
-         unit.getValue(G_PROPS.RACE);
-        return
-         unit.getValue(G_PROPS.GROUP);
+                unit.getValue(G_PROPS.GROUP);
     }
 
     @Override
@@ -194,7 +206,7 @@ public class UnitDataSource implements
         final String value = c + "/" + m;
 
         VerticalValueContainer container = new VerticalValueContainer(
-         getOrCreateR("UI/value icons/n_of_counters_s.png"), value);
+                getOrCreateR("UI/value icons/n_of_counters_s.png"), value);
 
         ValueTooltip toolTip = new ValueTooltip();
         toolTip.setUserObject(new ValueContainer(PARAMS.INITIATIVE.getName(), value));
@@ -232,18 +244,6 @@ public class UnitDataSource implements
                 .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
                 .map(getObjValueContainerMapper())
                 .collect(Collectors.toList());
-    }
-
-    private <T extends Obj> Function<T, ValueContainer> getObjValueContainerMapper() {
-        return obj -> {
-            final ValueContainer container = new ValueContainer(getOrCreateR(obj.getType().getProperty(G_PROPS.IMAGE)));
-
-            ToolTip toolTip = new ValueTooltip();
-            toolTip.setUserObject(new ValueContainer(obj.getName(), ""));
-            container.addListener(toolTip.getController());
-
-            return container;
-        };
     }
 
     @Override
