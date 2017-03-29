@@ -8,30 +8,33 @@ import main.system.GuiEventManager;
 import static main.system.GuiEventType.UPDATE_QUICK_SLOT_PANEL;
 
 public class ActionPanelController extends Group {
+    private final static int IMAGE_SIZE = 60;
     private QuickSlotPanel quickSlotPanel;
     private ActionModPanel actionModPanel;
     private SpellPanel spellPanel;
     private EffectsPanel effectsPanel;
 
     public ActionPanelController() {
-        quickSlotPanel = new QuickSlotPanel();
+        quickSlotPanel = new QuickSlotPanel(IMAGE_SIZE);
         final int quickSlotOffset = 70;
-        quickSlotPanel.setPosition(quickSlotOffset, -64);
+        quickSlotPanel.setPosition(quickSlotOffset, 0);
         addActor(quickSlotPanel);
 
-        final int actionOffset = quickSlotOffset + (64 * 6) + 5;
-        actionModPanel = new ActionModPanel();
-        actionModPanel.setPosition(actionOffset, -64);
+        final int actionOffset = quickSlotOffset + (IMAGE_SIZE * 6) + 5;
+        actionModPanel = new ActionModPanel(IMAGE_SIZE);
+        actionModPanel.setPosition(actionOffset, 0);
         addActor(actionModPanel);
 
-        spellPanel = new SpellPanel();
-        final int spellOffset = actionOffset + (64 * 6) + 5;
-        spellPanel.setPosition(spellOffset, -64);
+        spellPanel = new SpellPanel(IMAGE_SIZE);
+        final int spellOffset = actionOffset + (IMAGE_SIZE * 6) + 5;
+        spellPanel.setPosition(spellOffset, 0);
         addActor(spellPanel);
 
         effectsPanel = new EffectsPanel();
-        effectsPanel.setPosition(actionOffset, 0);
+        effectsPanel.setPosition(actionOffset, IMAGE_SIZE);
         addActor(effectsPanel);
+
+        setY(-IMAGE_SIZE);
 
         initListeners();
     }
@@ -40,30 +43,15 @@ public class ActionPanelController extends Group {
         GuiEventManager.bind(UPDATE_QUICK_SLOT_PANEL, obj -> {
             final QuickSlotsDataSource source = (QuickSlotsDataSource) obj.get();
             if (source != null) {
-                if (quickSlotPanel.getY() < 0) {
-                    quickSlotPanel.setY(0);
+                if (getY() < 0) {
+                    setY(0);
                 }
                 quickSlotPanel.setUserObject(source);
-
-                if (actionModPanel.getY() < 0) {
-                    actionModPanel.setY(0);
-                }
                 actionModPanel.setUserObject(source);
-
-                if (spellPanel.getY() < 0) {
-                    spellPanel.setY(0);
-                }
                 spellPanel.setUserObject(source);
-
-                if (effectsPanel.getY() < 64) {
-                    effectsPanel.setY(64);
-                }
                 effectsPanel.setUserObject(source);
             } else {
-                quickSlotPanel.setY(-64);
-                actionModPanel.setY(-64);
-                spellPanel.setY(-64);
-                effectsPanel.setY(0);
+                setY(-IMAGE_SIZE);
             }
         });
     }

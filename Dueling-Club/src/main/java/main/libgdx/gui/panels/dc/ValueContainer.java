@@ -172,5 +172,14 @@ public class ValueContainer extends TablePanel {
             nameContainer.getActor().setWrap(true);
         }
     }
+
+    public void overrideImageSize(int w, int h) {
+        if (imageContainer.getActor() != null) {
+            w = Math.max(0, w);
+            h = Math.max(0, h);
+
+            imageContainer.size(w, h);
+        }
+    }
 }
 

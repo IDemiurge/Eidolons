@@ -1,6 +1,5 @@
 package main.libgdx.gui.panels.dc.actionpanel;
 
-import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.SpellDataSource;
 
@@ -8,9 +7,13 @@ import java.util.List;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
-public class SpellPanel extends TablePanel {
+public class SpellPanel extends BaseSlotPanel {
     public SpellPanel() {
-        left().bottom();
+        super(0);
+    }
+
+    public SpellPanel(int imageSize) {
+        super(imageSize);
     }
 
     @Override
@@ -22,16 +25,13 @@ public class SpellPanel extends TablePanel {
         final List<ActionValueContainer> sources = source.getSpells();
         final int tempLimit = Math.min(sources.size(), 6);
         for (int i = 0; i < tempLimit; i++) {
-            final ActionValueContainer valueContainer = sources.get(i);
-            if (valueContainer != null) {
-                add(valueContainer).left().bottom();
-            } else {
-                add(new ValueContainer(getOrCreateR("UI/EMPTY_LIST_ITEM.jpg"))).left().bottom();
-            }
+            addValueContainer(sources.get(i), getOrCreateR("UI/EMPTY_LIST_ITEM.jpg"));
         }
 
         for (int i = tempLimit; i < 6; i++) {
-            add(new ValueContainer(getOrCreateR("UI/EMPTY_LIST_ITEM.jpg"))).left().bottom();
+            final ValueContainer container = new ValueContainer(getOrCreateR("UI/EMPTY_LIST_ITEM.jpg"));
+            container.overrideImageSize(imageSize, imageSize);
+            add(container).left().bottom();
         }
     }
 }
