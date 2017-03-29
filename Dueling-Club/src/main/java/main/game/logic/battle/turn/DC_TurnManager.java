@@ -91,11 +91,11 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 
 
 
-    public boolean nextAction() {
+    public Boolean nextAction() {
         resetQueue();
 
         if (getUnitQueue().isEmpty()) {
-            return false;
+            resetDisplayedQueue();  return null ;
         }
 
         boolean result;
@@ -231,12 +231,8 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         this.activeUnit = activeUnit;
     }
 
-    public Unit chooseActiveUnit() {
-        chooseUnit();
-        return activeUnit;
-    }
-    private boolean chooseUnit() {
 
+    private boolean chooseUnit() {
         setActiveUnit(unitQueue.peek());
         try {
             if (!game.getManager().activeSelect(getActiveUnit())) {

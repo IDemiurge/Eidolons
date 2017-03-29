@@ -6,6 +6,7 @@ import main.entity.obj.unit.Unit;
 import main.game.ai.elements.actions.Action;
 import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context;
+import main.rules.combat.ChargeRule;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -14,7 +15,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
  * Created by JustMe on 3/23/2017.
  */
 public class GameLoop {
-    private static boolean enabled=true;
+    private static boolean enabled = true;
     Unit activeUnit;
     private DC_ActiveObj action;
     //    private  Ref ref;
@@ -43,23 +44,46 @@ public class GameLoop {
 
     private void roundLoop() {
         while (true) {
-            if (!game.getTurnManager().nextAction())
-            continue;
+            Boolean result = game.getTurnManager().nextAction();
+            if (result == null)
+                break;
+            if (!result)
+                continue;
             activeUnit = game.getTurnManager().getActiveUnit();
             if (activeUnit == null) break;
-Boolean result =false;
-           try{
-               result = makeAction();
-           }catch(Exception e){
-               e.printStackTrace();
-           }
-            if (BooleanMaster.isFalse(result))
-                game.getManager().endTurn();
+
+            try {
+                result = makeAction();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (!result) {
+                // TODO ???
+            }
+            int timeCost = action.getHandler().getTimeCost();
+            Boolean endTurn = getGame().getRules().getTimeRule().actionComplete(action, timeCost);
+            if (!endTurn) {
+                game.getManager().reset();
+                if (ChargeRule.checkRetainUnitTurn(action)) {
+                    endTurn = null;
+                }
+            }
+
+            getGame().getManager().unitActionCompleted(action, endTurn);
+
+
+            if (BooleanMaster.isTrue(endTurn))
+                break;
             else {
                 game.getTurnManager().
                  resetInitiative(false);
             }
         }
+        game.getManager().endTurn();
+    }
+
+    public DC_Game getGame() {
+        return game;
     }
 
     private Boolean makeAction() {
@@ -70,7 +94,7 @@ Boolean result =false;
             waitForPlayerInput();
         }
 
-       return activateAction();
+        return activateAction();
 
     }
 

@@ -60,7 +60,8 @@ public class WaitEffect extends MicroEffect implements OneshotEffect{
     }
 
     protected Condition getConditions() {
-        return new RefCondition(KEYS.EVENT_SOURCE, KEYS.TARGET2, false);
+        return new RefCondition(KEYS.EVENT_SOURCE,
+         KEYS.TARGET2, false);
     }
 
     protected Ability getAbility(Ref ref) {

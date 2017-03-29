@@ -438,7 +438,7 @@ public class VariableManager {
                 Entity entity = obj.getRef().getInfoEntity();
                 if (entity == null) {
                     entity = obj.getRef().getEntity(KEYS.SKILL);
-                    if (obj.getGame().isSimulation()) {
+                    if (entity == null||obj.getGame().isSimulation()) {
                         entity = obj.getRef().getEntity(KEYS.ACTIVE);
                         if (entity == null) {
                             entity = obj.getRef().getEntity(KEYS.INFO);

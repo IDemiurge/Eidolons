@@ -61,7 +61,8 @@ basis =abilities.getRef().getTarget();
 
     public boolean check(Event event) {
 
-        Ref ref = event.getRef();
+        Ref ref = getAbilities().getRef();
+        ref.setEvent(event);
         if (retainCondition != null) {
             if (!retainCondition.check(ref)) {
                 remove();

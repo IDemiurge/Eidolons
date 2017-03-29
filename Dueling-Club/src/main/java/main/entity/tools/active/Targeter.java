@@ -197,7 +197,7 @@ if (result)
                     return true;
                 }
             }
-        }
+        }getEntity(). getRef().getSourceObj().getRef() .setInfoEntity(getEntity());
         result = targeting.getFilter().getConditions().check(REF);
         map2.put(id, result);
         return result;

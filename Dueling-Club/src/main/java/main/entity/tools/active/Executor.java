@@ -20,7 +20,6 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE_GROUP;
 import main.rules.action.StackingRule;
-import main.rules.combat.ChargeRule;
 import main.rules.mechanics.ConcealmentRule;
 import main.rules.perk.EvasionRule;
 import main.system.EventCallbackParam;
@@ -69,7 +68,6 @@ public class Executor extends ActiveHandler {
     private boolean resistanceChecked;
     private int timeCost;
     private boolean contextMode;
-    private Boolean endTurn;
 
 
     public Executor(DC_ActiveObj active, ActiveMaster entityMaster) {
@@ -95,7 +93,7 @@ public class Executor extends ActiveHandler {
         }
         contextMode = true;
         activate();
-        return endTurn;
+        return result;
     }
 
     public void activateOn(Ref ref) {
@@ -358,18 +356,7 @@ public class Executor extends ActiveHandler {
             e.printStackTrace();
         }
 
-        endTurn = getGame().getRules().getTimeRule().actionComplete(getAction(), timeCost);
-        if (!endTurn) {
-            game.getManager().reset();
-            if (ChargeRule.checkRetainUnitTurn(getAction())) {
-                endTurn = null;
-            }
-        }
-        if (endTurn != null) {
-            endTurn = !endTurn;
-        }
-        getAnimator().waitForAnimation();
-        getGame().getManager().unitActionCompleted(getAction(), endTurn);
+//        getAnimator().waitForAnimation();
 
     }
 
@@ -469,9 +456,7 @@ public class Executor extends ActiveHandler {
         return timeCost;
     }
 
-    public void setTimeCost(int timeCost) {
-        this.timeCost = timeCost;
-    }
+
 
     public void setCancelled(Boolean cancelled) {
         this.cancelled = cancelled;
