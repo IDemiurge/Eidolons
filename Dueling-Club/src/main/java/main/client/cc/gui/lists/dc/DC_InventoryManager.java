@@ -3,6 +3,7 @@ package main.client.cc.gui.lists.dc;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.lists.HeroListPanel;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
@@ -20,10 +21,40 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
  *
  * @author JustMe
  */
-public class InvListManager extends DC_ItemListManager {
-    public InvListManager(DC_Game game) {
-        super(game, true);
+public class DC_InventoryManager implements InventoryManager {
+
+    protected Integer numberOfOperations;
+    private Unit hero;
+    private OBJ_TYPE TYPE;
+
+    public DC_InventoryManager(DC_Game game) {
+        this(game.getManager().getActiveObj());
     }
+    public DC_InventoryManager(Unit unit) {
+        this.setHero(unit);
+        this.TYPE =  DC_TYPE.ITEMS;
+    }
+
+    @Override
+    public boolean hasOperations(int n) {
+        return getNumberOfOperations() >= n;
+    }
+
+    @Override
+    public boolean hasOperations() {
+        return getNumberOfOperations() > 0;
+    }
+
+    @Override
+    public Integer getNumberOfOperations() {
+        return numberOfOperations;
+    }
+
+    @Override
+    public void setNumberOfOperations(Integer numberOfOperations) {
+        this.numberOfOperations = numberOfOperations;
+    }
+
 
     public void processOperationCommand(String string) {
         for (String substring : StringMaster.openContainer(string)) {
@@ -41,7 +72,7 @@ public class InvListManager extends DC_ItemListManager {
         DC_HeroItemObj item;
         if (operation == OPERATIONS.PICK_UP) {
             item = unit.getGame().getDroppedItemManager().findDroppedItem(typeName,
-                    unit.getCoordinates());
+             unit.getCoordinates());
         }
 
         Boolean mode = null;
@@ -79,12 +110,9 @@ public class InvListManager extends DC_ItemListManager {
 
     }
 
-    @Override
-    public boolean operationDone(OPERATIONS operation, String string) {
-        return operationDone(1, operation, string);
-    }
 
-    protected boolean addType(ObjType type, HeroListPanel hlp, boolean alt) {
+    @Override
+    public boolean addType(ObjType type, HeroListPanel hlp, boolean alt) {
         if (!hasOperations()) {
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
             return false;
@@ -100,9 +128,16 @@ public class InvListManager extends DC_ItemListManager {
         return true;
     }
 
+
+    @Override
+    public boolean operationDone(OPERATIONS operation, String string) {
+        return operationDone(1, operation, string);
+    }
+
     @Override
     public boolean operationDone(int n, OPERATIONS operation, String string) {
-        boolean result = super.operationDone(n, operation, string);
+        setNumberOfOperations(getNumberOfOperations() - n);
+        boolean result =hasOperations();
         getHero().getGame().getInventoryManager().getWindow()
                 .appendOperationData(operation, string);
 
@@ -112,7 +147,7 @@ public class InvListManager extends DC_ItemListManager {
     }
 
     @Override
-    protected void removeType(Entity type, HeroListPanel hlp, PROPERTY p) {
+    public void removeType(Entity type, HeroListPanel hlp, PROPERTY p) {
         if (!hasOperations()) {
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
             return;
@@ -129,6 +164,15 @@ public class InvListManager extends DC_ItemListManager {
             }
         }
         operationDone(operations, type.getName());
+    }
+
+    @Override
+    public Unit getHero() {
+        return hero;
+    }
+
+    public void setHero(Unit hero) {
+        this.hero = hero;
     }
 
     public enum OPERATIONS {

@@ -1,6 +1,6 @@
 package main.ability.effects.oneshot.unit;
 
-import main.ability.InventoryManager;
+import main.ability.InventoryTransactionManager;
 import main.ability.effects.DC_Effect;
 import main.ability.effects.OneshotEffect;
 import main.content.PARAMS;
@@ -24,7 +24,7 @@ public class ResurrectEffect extends DC_Effect  implements OneshotEffect {
 
     public boolean applyThis() {
         Unit target = (Unit) ref.getTargetObj();
-        InventoryManager.equipOriginalItems(target, target);
+        InventoryTransactionManager.equipOriginalItems(target, target);
         target.removeStatus(UnitEnums.STATUS.DEAD);
 
         getGame().getBattleField().createUnit(target);

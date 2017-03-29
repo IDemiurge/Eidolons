@@ -1,6 +1,6 @@
 package main.swing.frames;
 
-import main.ability.InventoryManager;
+import main.ability.InventoryTransactionManager;
 import main.client.cc.gui.tabs.HeroItemTab;
 import main.client.cc.gui.tabs.operation.ItemSwapPanel;
 import main.entity.obj.unit.Unit;
@@ -10,7 +10,7 @@ public class PickUpWindow extends OperationWindow {
 
     private ItemSwapPanel tabComp;
 
-    public PickUpWindow(InventoryManager inventoryManager, Unit hero,
+    public PickUpWindow(InventoryTransactionManager inventoryManager, Unit hero,
                         Integer nOfOperations) {
         super(inventoryManager, hero, nOfOperations);
     }

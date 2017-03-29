@@ -3,7 +3,6 @@ package main.client.cc.gui.tabs.operation;
 import main.client.cc.gui.MainViewPanel.HERO_VIEWS;
 import main.client.cc.gui.lists.ItemListManager;
 import main.client.cc.gui.pages.HC_PagedListPanel;
-import main.client.cc.gui.pages.HC_PagedListPanel.HC_LISTS;
 import main.client.cc.gui.tabs.HeroItemTab;
 import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPE;
@@ -74,15 +73,17 @@ public class ItemSwapPanel extends HeroItemTab {
 
     @Override
     protected void initComps() {
-        itemPool = new HC_PagedListPanel(HC_LISTS.INVENTORY, hero,
-                getSwapManager(), droppedItemData, TITLE);
-        getSwapManager().add(itemPool);
+//        itemPool = new HC_PagedListPanel(HC_LISTS.INVENTORY, hero,
+//                getSwapManager(), droppedItemData, TITLE);
+//        getSwapManager().add(itemPool);
         super.initComps();
     }
 
     @Override
     protected ItemListManager getItemManager() {
-        return getSwapManager();
+//        return getSwapManager();
+
+        return null;
     }
 
     protected boolean isReady() {

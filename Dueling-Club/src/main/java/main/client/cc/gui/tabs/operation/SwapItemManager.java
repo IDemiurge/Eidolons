@@ -2,7 +2,7 @@ package main.client.cc.gui.tabs.operation;
 
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.lists.HeroListPanel;
-import main.client.cc.gui.lists.dc.InvListManager;
+import main.client.cc.gui.lists.dc.DC_InventoryManager;
 import main.content.C_OBJ_TYPE;
 import main.content.PROPS;
 import main.content.values.properties.PROPERTY;
@@ -14,14 +14,14 @@ import main.system.ObjUtilities;
 
 //will it support Undo?
 
-public class SwapItemManager extends InvListManager {
+public class SwapItemManager extends DC_InventoryManager {
 
     public SwapItemManager(DC_Game game) {
         super(game);
     }
 
     @Override
-    protected void removeType(Entity type, HeroListPanel hlp, PROPERTY p) {
+    public void removeType(Entity type, HeroListPanel hlp, PROPERTY p) {
         if (!hasOperations()) {
             return;
         }
@@ -38,7 +38,7 @@ public class SwapItemManager extends InvListManager {
     }
 
     @Override
-    protected boolean addType(ObjType type, HeroListPanel hlp, boolean alt) {
+    public boolean addType(ObjType type, HeroListPanel hlp, boolean alt) {
         if (!hasOperations()) {
             return false;
         }

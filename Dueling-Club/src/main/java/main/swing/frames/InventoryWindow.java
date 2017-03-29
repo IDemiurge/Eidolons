@@ -1,6 +1,6 @@
 package main.swing.frames;
 
-import main.ability.InventoryManager;
+import main.ability.InventoryTransactionManager;
 import main.client.cc.gui.tabs.HeroItemTab;
 import main.client.cc.gui.tabs.ItemsTab;
 import main.entity.obj.unit.Unit;
@@ -10,7 +10,7 @@ public class InventoryWindow extends OperationWindow {
 
     protected ItemsTab tabComp;
 
-    public InventoryWindow(InventoryManager inventoryManager, Unit hero,
+    public InventoryWindow(InventoryTransactionManager inventoryManager, Unit hero,
                            Integer nOfOperations) {
         super(inventoryManager, hero, nOfOperations);
     }

@@ -3,8 +3,6 @@ package main.client.cc.gui.tabs.lists;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.MainPanel;
 import main.client.cc.gui.lists.ItemListManager;
-import main.client.cc.gui.lists.dc.InvListManager;
-import main.client.cc.gui.lists.dc.InvListManager.OPERATIONS;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ItemEnums;
@@ -189,12 +187,12 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
 
             int n = armor ? 2 : 1;
 
-            if (itemListManager instanceof InvListManager) {
-                if (!((InvListManager) itemListManager).hasOperations(n)) {
-                    SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
-                    return;
-                }
-            }
+//            if (itemListManager instanceof DC_InventoryManager) {
+//                if (!((DC_InventoryManager) itemListManager).hasOperations(n)) {
+//                    SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+//                    return;
+//                }
+//            }
 
             CharacterCreator.getHeroManager().removeSlotItem(
                     hero,
@@ -202,11 +200,11 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
                             clickedItem));
             itemMap.remove(clickedItem);
             clickedItem.refresh();
-            if (itemListManager instanceof InvListManager) {
-                ((InvListManager) itemListManager).operationDone(n, OPERATIONS.UNEQUIP, clickedItem
-                        .getValue().getName());
-
-            }
+//            if (itemListManager instanceof DC_InventoryManager) {
+//                ((DC_InventoryManager) itemListManager).operationDone(n, OPERATIONS.UNEQUIP, clickedItem
+//                        .getValue().getName());
+//
+//            }
 
         } else {
             for (ListItem<Entity> item : itemMap.values()) {

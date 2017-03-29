@@ -1,6 +1,6 @@
 package main.ability.effects.oneshot.unit;
 
-import main.ability.InventoryManager;
+import main.ability.InventoryTransactionManager;
 import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effects;
 import main.ability.effects.common.ModifyValueEffect;
@@ -174,7 +174,7 @@ public class RaiseEffect extends SummonEffect {
     }
 
     private void equipOriginalItems() {
-        InventoryManager.equipOriginalItems((Unit) unit, corpse);
+        InventoryTransactionManager.equipOriginalItems((Unit) unit, corpse);
         // TODO ideally, they should remain *on* unless looted...
 
     }

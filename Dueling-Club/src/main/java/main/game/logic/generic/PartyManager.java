@@ -1,6 +1,6 @@
 package main.game.logic.generic;
 
-import main.ability.InventoryManager;
+import main.ability.InventoryTransactionManager;
 import main.client.cc.CharacterCreator;
 import main.client.cc.logic.HeroCreator;
 import main.client.cc.logic.HeroLevelManager;
@@ -121,7 +121,7 @@ public class PartyManager {
     }
 
     private static void prepareType(ObjType type) {
-        for (PROPERTY prop : InventoryManager.INV_PROPS) {
+        for (PROPERTY prop : InventoryTransactionManager.INV_PROPS) {
             String propValue = type.getProperty(prop);
             List<String> items = StringMaster.openContainer(propValue);
             for (String item : items) {

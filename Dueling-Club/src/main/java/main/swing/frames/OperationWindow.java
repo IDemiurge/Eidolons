@@ -1,8 +1,8 @@
 package main.swing.frames;
 
-import main.ability.InventoryManager;
+import main.ability.InventoryTransactionManager;
 import main.client.cc.CharacterCreator;
-import main.client.cc.gui.lists.dc.InvListManager.OPERATIONS;
+import main.client.cc.gui.lists.dc.DC_InventoryManager.OPERATIONS;
 import main.client.cc.gui.misc.PoolComp;
 import main.client.cc.gui.tabs.HeroItemTab;
 import main.content.PROPS;
@@ -27,7 +27,7 @@ public abstract class OperationWindow extends G_Dialog implements OperationDialo
     protected static final String OPERATION_TOOLTIP = " item actions left";
     protected G_Panel panel;
     protected Unit heroModel;
-    protected InventoryManager inventoryManager;
+    protected InventoryTransactionManager inventoryManager;
     protected Unit hero;
     protected int nOfOperations;
     protected ObjType bufferedType;
@@ -36,7 +36,7 @@ public abstract class OperationWindow extends G_Dialog implements OperationDialo
     private String cachedValue;
     private String operationsData;
 
-    public OperationWindow(InventoryManager inventoryManager, Unit hero, Integer nOfOperations) {
+    public OperationWindow(InventoryTransactionManager inventoryManager, Unit hero, Integer nOfOperations) {
         this.setNumberOfOperations(nOfOperations);
         this.inventoryManager = inventoryManager;
         this.setHero(hero);
@@ -80,8 +80,8 @@ public abstract class OperationWindow extends G_Dialog implements OperationDialo
 
     @Override
     public void done() {
-        InventoryManager.updateType(getHero());
-        WaitMaster.receiveInput(InventoryManager.OPERATION, true);
+        InventoryTransactionManager.updateType(getHero());
+        WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
         CharacterCreator.getHeroManager().removeHero(heroModel);
         close();
     }
@@ -98,7 +98,7 @@ public abstract class OperationWindow extends G_Dialog implements OperationDialo
     public void cancel() {
         cell.setProperty(PROPS.DROPPED_ITEMS, cachedValue);
         inventoryManager.resetHero(getHero(), bufferedType);
-        WaitMaster.receiveInput(InventoryManager.OPERATION, false);
+        WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, false);
         getFrame().setVisible(false);
         CharacterCreator.getHeroManager().removeHero(heroModel);
     }
@@ -151,7 +151,7 @@ public abstract class OperationWindow extends G_Dialog implements OperationDialo
     @Override
     public void setHero(Unit hero) {
         this.hero = hero;
-        InventoryManager.updateType(hero);
+        InventoryTransactionManager.updateType(hero);
         bufferedType = hero.getType();
         heroModel = hero;
         inventoryManager.getInvListManager().setHero(heroModel);

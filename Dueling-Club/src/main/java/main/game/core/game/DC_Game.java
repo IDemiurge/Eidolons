@@ -1,7 +1,7 @@
 package main.game.core.game;
 
 import main.ability.ActionGenerator;
-import main.ability.InventoryManager;
+import main.ability.InventoryTransactionManager;
 import main.ability.UnitTrainingMaster;
 import main.ability.effects.DC_EffectManager;
 import main.client.cc.logic.items.ItemGenerator;
@@ -107,7 +107,7 @@ public class DC_Game extends MicroGame {
     private GuiMaster guiMaster;
     private ArenaArcadeMaster arenaArcadeMaster;
     private BattleOptions arenaOptions;
-    private InventoryManager inventoryManager;
+    private InventoryTransactionManager inventoryManager;
     private ArcadeManager arcadeManager;
     private AI_Manager aiManager;
     private AnimationManager animationManager;
@@ -260,7 +260,7 @@ public class DC_Game extends MicroGame {
 
     public void battleInit() {
 
-        inventoryManager = new InventoryManager(this);
+        inventoryManager = new InventoryTransactionManager(this);
         arenaManager = new ArenaManager(this);
         arenaManager.init();
         battleManager = new BattleManager(this);
@@ -651,7 +651,7 @@ public class DC_Game extends MicroGame {
     // return getObjectByCoordinate(c, false);
     // }
 
-    public InventoryManager getInventoryManager() {
+    public InventoryTransactionManager getInventoryManager() {
 
         return inventoryManager;
     }

@@ -3,7 +3,7 @@ package main.ability;
 import main.client.cc.CharacterCreator;
 import main.client.cc.DC_HeroManager;
 import main.client.cc.HeroManager;
-import main.client.cc.gui.lists.dc.InvListManager;
+import main.client.cc.gui.lists.dc.DC_InventoryManager;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.content.enums.entity.ItemEnums;
@@ -24,19 +24,19 @@ import main.swing.frames.PickUpWindow;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-public class InventoryManager {
+public class InventoryTransactionManager {
 
     public static final WAIT_OPERATIONS OPERATION = WAIT_OPERATIONS.DIALOGUE_DONE;
     public static final PROPERTY[] INV_PROPS = {PROPS.QUICK_ITEMS, PROPS.INVENTORY,
             G_PROPS.MAIN_HAND_ITEM, G_PROPS.ARMOR_ITEM, G_PROPS.OFF_HAND_ITEM, PROPS.JEWELRY,};
-    private InvListManager invListManager;
+    private DC_InventoryManager invListManager;
     private OperationWindow window;
     private HeroManager heroManager;
 
-    public InventoryManager(DC_Game game) {
+    public InventoryTransactionManager(DC_Game game) {
         heroManager = new DC_HeroManager(game);
         CharacterCreator.setDC_HeroManager(heroManager);
-        setInvListManager(new InvListManager(game));
+        setInvListManager(new DC_InventoryManager(game));
     }
 
     public static void updateType(Unit hero) {
@@ -138,11 +138,11 @@ window.open();
         return (boolean) WaitMaster.waitForInput(OPERATION);
     }
 
-    public InvListManager getInvListManager() {
+    public DC_InventoryManager getInvListManager() {
         return invListManager;
     }
 
-    public void setInvListManager(InvListManager invListManager) {
+    public void setInvListManager(DC_InventoryManager invListManager) {
         this.invListManager = invListManager;
     }
 

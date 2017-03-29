@@ -1,7 +1,7 @@
 package main.libgdx.gui.dialog;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
-import main.ability.InventoryManager;
+import main.ability.InventoryTransactionManager;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.misc.PoolComp;
 import main.content.PROPS;
@@ -17,7 +17,7 @@ import main.system.threading.WaitMaster;
 public class InventoryDialog extends Group implements OperationDialog{
 
     protected Unit heroModel;
-    protected InventoryManager inventoryManager;
+    protected InventoryTransactionManager inventoryManager;
     protected Unit hero;
     protected int nOfOperations;
     protected ObjType bufferedType;
@@ -45,8 +45,8 @@ public class InventoryDialog extends Group implements OperationDialog{
 
     @Override
     public void done() {
-        InventoryManager.updateType(getHero());
-        WaitMaster.receiveInput(InventoryManager.OPERATION, true);
+        InventoryTransactionManager.updateType(getHero());
+        WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
         CharacterCreator.getHeroManager().removeHero(heroModel);
         setVisible(false);
     }
@@ -63,7 +63,7 @@ public class InventoryDialog extends Group implements OperationDialog{
     public void cancel() {
         cell.setProperty(PROPS.DROPPED_ITEMS, cachedValue);
         inventoryManager.resetHero(getHero(), bufferedType);
-        WaitMaster.receiveInput(InventoryManager.OPERATION, false);
+        WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, false);
         setVisible(false);
         CharacterCreator.getHeroManager().removeHero(heroModel);
     }

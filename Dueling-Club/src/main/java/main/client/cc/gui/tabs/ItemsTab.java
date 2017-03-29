@@ -3,7 +3,7 @@ package main.client.cc.gui.tabs;
 import main.client.cc.gui.MainViewPanel;
 import main.client.cc.gui.MainViewPanel.HERO_VIEWS;
 import main.client.cc.gui.lists.ItemListManager;
-import main.client.cc.gui.lists.dc.InvListManager;
+import main.client.cc.gui.lists.dc.DC_InventoryManager;
 import main.client.cc.gui.misc.PoolComp;
 import main.client.cc.gui.tabs.lists.ActionInfoList;
 import main.client.cc.gui.tabs.lists.HeroItemSlots;
@@ -42,17 +42,16 @@ public class ItemsTab extends HeroItemTab {
         }
     }
 
-    public ItemsTab(Unit hero, InvListManager invListManager) {
+    public ItemsTab(Unit hero, DC_InventoryManager invListManager) {
         this(null, hero);
 
     }
 
     @Override
     protected ItemListManager getItemManager() {
-        if (game.isSimulation()) {
+//        if (game.isSimulation())
             return super.getItemManager();
-        }
-        return game.getInventoryManager().getInvListManager();
+//        return game.getInventoryManager().getInvListManager(); for swing
     }
 
     public void refresh() {
