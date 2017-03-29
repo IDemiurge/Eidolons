@@ -79,7 +79,7 @@ public class ActionPanelDataSource implements
                     final ActionValueContainer container = new ActionValueContainer(
                             getOrCreateR(el.getImagePath()),
                             () -> {
-                                el.activate();
+                                el.invokeClicked();
                             }
                     );
 
