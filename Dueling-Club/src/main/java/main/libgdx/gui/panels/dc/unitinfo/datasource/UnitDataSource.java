@@ -71,6 +71,18 @@ public class UnitDataSource implements
         return list;
     }
 
+    public static <T extends Obj> Function<T, ValueContainer> getObjValueContainerMapper() {
+        return obj -> {
+            final ValueContainer container = new ValueContainer(getOrCreateR(obj.getType().getProperty(G_PROPS.IMAGE)));
+
+            ToolTip toolTip = new ValueTooltip();
+            toolTip.setUserObject(new ValueContainer(obj.getName(), ""));
+            container.addListener(toolTip.getController());
+
+            return container;
+        };
+    }
+
     @Override
     public String getStrength() {
         return unit.getStrParam(PARAMS.STRENGTH);
@@ -232,18 +244,6 @@ public class UnitDataSource implements
                 .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
                 .map(getObjValueContainerMapper())
                 .collect(Collectors.toList());
-    }
-
-    private <T extends Obj> Function<T, ValueContainer> getObjValueContainerMapper() {
-        return obj -> {
-            final ValueContainer container = new ValueContainer(getOrCreateR(obj.getType().getProperty(G_PROPS.IMAGE)));
-
-            ToolTip toolTip = new ValueTooltip();
-            toolTip.setUserObject(new ValueContainer(obj.getName(), ""));
-            container.addListener(toolTip.getController());
-
-            return container;
-        };
     }
 
     @Override
