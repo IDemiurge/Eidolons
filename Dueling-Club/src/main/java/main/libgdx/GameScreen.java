@@ -23,6 +23,7 @@ import main.libgdx.gui.dialog.DialogDisplay;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.LogPanel;
 import main.libgdx.gui.panels.dc.actionpanel.ActionPanelController;
+import main.libgdx.gui.panels.dc.inventory.InventoryPanel;
 import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -143,6 +144,10 @@ public class GameScreen implements Screen {
         UnitInfoPanel infoPanel = new UnitInfoPanel();
         guiStage.addActor(infoPanel);
         infoPanel.setPosition(0, 0);
+
+        InventoryPanel inventoryPanel = new InventoryPanel();
+        guiStage.addActor(inventoryPanel);
+        inventoryPanel.setPosition(0, 0);
 
         guiStage.addActor(toolTipManager = new ToolTipManager());
 
