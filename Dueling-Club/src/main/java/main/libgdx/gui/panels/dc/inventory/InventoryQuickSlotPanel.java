@@ -9,10 +9,9 @@ public class InventoryQuickSlotPanel extends TablePanel {
 
 
     public InventoryQuickSlotPanel() {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 8; i++) {
             addElement(new ValueContainer(getOrCreateR("UI/empty_pack.jpg")))
-                    .fill(1, 0).expand(1, 0).center();
-            row();
+                    .fill(0, 1).expand(0, 1).center();
         }
     }
 
