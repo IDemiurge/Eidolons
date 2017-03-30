@@ -11,6 +11,7 @@ import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.SpellEnums.RESISTANCE_TYPE;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -21,6 +22,7 @@ import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
 import main.game.logic.combat.damage.Damage;
+import main.game.logic.combat.damage.DamageCalculator;
 import main.game.logic.combat.damage.DamageFactory;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE;
@@ -127,9 +129,9 @@ public class ForceRule {
         }
 
         applyPush(force, action, source, target);
-        if (action.isSpell()) {
-            applyDamage(force, action, source, target);
-        }
+//        if (action.isSpell()) {
+//            applyDamage(force, action, source, target);
+//        }
     }
 
     private static boolean isTestMode() {
@@ -153,6 +155,8 @@ public class ForceRule {
 
 
     public static void addForceEffects(DC_ActiveObj action) {
+        if (!isForceEnabled(action))
+            return ;
         Unit source = action.getOwnerObj();
         Unit target = (Unit) action.getRef().getTargetObj();
         Damage dmg = getDamageObject(action, source, target);
@@ -169,6 +173,30 @@ public class ForceRule {
             action.addBonusDamage(action.isSpell() ? DAMAGE_CASE.SPELL : DAMAGE_CASE.ATTACK, dmg);
         }
 
+    }
+
+    private static boolean isForceEnabled(DC_ActiveObj action) {
+
+        if (action.isAttackAny()){
+            return true;
+        }
+
+        if (action.isSpell()) {
+            Ref ref = action.getRef();
+            //TODO won't be initialized here yet!!!
+            DC_SpellObj spell = (DC_SpellObj) action;
+            if (spell.isDamageSpell())
+                if (spell.isMissile())
+                    if (spell.getResistanceType()== RESISTANCE_TYPE.REDUCE_DAMAGE)
+            if (!DamageCalculator.isPeriodic(ref)) {
+                if (!ref.isTriggered()) {
+                        return true;
+
+                }
+            }
+            }
+
+        return false;
     }
 
     private static Effect getForceEffects(DC_ActiveObj action) {

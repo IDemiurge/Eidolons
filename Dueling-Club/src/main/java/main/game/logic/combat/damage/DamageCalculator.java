@@ -148,7 +148,7 @@ public class DamageCalculator {
           .toString());
     }
 
-    static boolean isPeriodic(Ref ref) {
+   public static boolean isPeriodic(Ref ref) {
         return StringMaster.compare(ref.getValue(KEYS.DAMAGE_MODS),
          GenericEnums.DAMAGE_MODIFIER.PERIODIC
           .toString());
@@ -159,6 +159,7 @@ public class DamageCalculator {
          GenericEnums.DAMAGE_MODIFIER.ENDURANCE_ONLY
           .toString());
     }
+
     public static boolean isArmorAveraged(Ref ref) {
         return StringMaster.compare(ref.getValue(KEYS.DAMAGE_MODS),
          DAMAGE_MODIFIER.ARMOR_AVERAGED

@@ -21,7 +21,6 @@ import main.game.logic.combat.attack.extra_attack.CounterAttackRule;
 import main.game.logic.combat.damage.Damage;
 import main.game.logic.combat.damage.DamageDealer;
 import main.game.logic.combat.damage.DamageFactory;
-import main.game.logic.combat.mechanics.ForceRule;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventMaster;
@@ -401,7 +400,7 @@ public class DC_AttackMaster {
         if (checkAttackEventsInterrupt(attack, ref))
             return true;
 
-        ForceRule.addForceEffects(action);
+//        ForceRule.addForceEffects(action); now in executor.resolve() for all actions
 
         Damage damageObj = DamageFactory.getDamageForAttack(
          dmg_type, ref, final_amount

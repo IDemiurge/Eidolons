@@ -15,6 +15,7 @@ import main.game.core.GameLoop;
 import main.game.logic.action.context.Context;
 import main.game.logic.combat.attack.extra_attack.AttackOfOpportunityRule;
 import main.game.logic.combat.attack.extra_attack.ExtraAttacksRule;
+import main.game.logic.combat.mechanics.ForceRule;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.RuleMaster;
@@ -112,9 +113,7 @@ public class Executor extends ActiveHandler {
     }
 
     public void activateOn(DC_Obj t) {
-        if (
-         Thread.currentThread()== getGame().getGameLoopThread())
-        {
+        if (Thread.currentThread() == getGame().getGameLoopThread()) {
             targeter.presetTarget = t;
             activate();
             return;
@@ -141,7 +140,7 @@ public class Executor extends ActiveHandler {
 
         reset();
         syncActionRefWithSource();
-         getTargeter().initTarget();
+        getTargeter().initTarget();
         if (isInterrupted())
             return interrupted();
         beingActivated();
@@ -244,6 +243,7 @@ public class Executor extends ActiveHandler {
     private void resolve() {
         log(getAction() + " resolves", false);
         addStdPassives();
+        ForceRule.addForceEffects(getAction());
         getAction().activatePassives();
 //        setResistanceChecked(false); ??
 
@@ -457,7 +457,6 @@ public class Executor extends ActiveHandler {
     public int getTimeCost() {
         return timeCost;
     }
-
 
 
     public void setCancelled(Boolean cancelled) {

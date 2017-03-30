@@ -17,7 +17,14 @@ public class Context extends Ref {
         super(source);
         this. source = source;
         this. target = target;
+        setTarget(target.getId());
     }
+
+    @Override
+    public Obj getTargetObj() {
+        return target;
+    }
+
     public Context(Ref ref){
         
         cloneMaps(ref );

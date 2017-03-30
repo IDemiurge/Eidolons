@@ -2,6 +2,8 @@ package main.entity.active;
 
 import main.ability.Abilities;
 import main.ability.Interruptable;
+import main.ability.effects.attachment.AddBuffEffect;
+import main.ability.effects.oneshot.DealDamageEffect;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.PROPS;
@@ -28,6 +30,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.active.*;
 import main.entity.type.ObjType;
+import main.game.ai.tools.target.EffectFinder;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.combat.damage.Damage;
@@ -135,14 +138,31 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return energyType;
     }
 
+    public boolean isDamageSpell() {
+        return EffectFinder.getFirstEffectOfClass(this,
+         DealDamageEffect.class) != null;
+    }
     public RESISTANCE_TYPE getResistanceType() {
         if (resistType == null) {
             resistType = (new EnumMaster<RESISTANCE_TYPE>().retrieveEnumConst(
                     RESISTANCE_TYPE.class, getProperty(PROPS.RESISTANCE_TYPE)));
         }
+
+        if (resistType == null) {
+            if (isDamageSpell())
+                return RESISTANCE_TYPE.REDUCE_DAMAGE;
+            if (isDebuffSpell())
+                return RESISTANCE_TYPE.REDUCE_DURATION;
+
+            return RESISTANCE_TYPE.CHANCE_TO_BLOCK;
+        }
         return resistType;
     }
 
+    public boolean isDebuffSpell() {
+        return EffectFinder.getFirstEffectOfClass(this,
+         AddBuffEffect.class) != null;
+    }
 
     @Override
     public boolean hasSprite() {
@@ -404,9 +424,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
 
-    public RESISTANCE_TYPE getResistType() {
-        return resistType;
-    }
 
     public TARGETING_MODE getTargetingMode() {
         return getTargeter().getTargetingMode();
