@@ -496,8 +496,8 @@ public class UnitResetter extends EntityResetter<Unit> {
             resetSpells();
             return;
         }
-        if (getGame().getInventoryManager() != null) {
-            if (getGame().getInventoryManager().isActive()) {
+        if (getGame().getInventoryTransactionManager() != null) {
+            if (getGame().getInventoryTransactionManager().isActive()) {
                 return;
             }
         }

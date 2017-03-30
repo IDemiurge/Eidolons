@@ -799,6 +799,9 @@ public class Unit extends DC_UnitModel {
         }
         return result;
     }
+    public List<AbilityObj> getPassivesFiltered() {
+        return null ;
+    }
 
     public List<DC_HeroSlotItem> getSlotItems() {
         ListMaster<DC_HeroSlotItem> listMaster = new ListMaster<>();

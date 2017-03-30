@@ -1,6 +1,7 @@
 package main.libgdx.gui.panels.dc.actionpanel.datasource;
 
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_QuickItemObj;
@@ -18,12 +19,12 @@ import java.util.stream.Collectors;
 import static main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource.getObjValueContainerMapper;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
-public class ActionPanelDataSource implements
-        QuickSlotsDataSource, ActionModDataSource, SpellDataSource,
+public class PanelActionsDataSource implements
+        QuickSlotsDataSource, ModeActionsDataSource, SpellDataSource,
         EffectsAndAbilitiesSource {
     private Unit unit;
 
-    public ActionPanelDataSource(Unit unit) {
+    public PanelActionsDataSource(Unit unit) {
         this.unit = unit;
     }
 
@@ -46,7 +47,7 @@ public class ActionPanelDataSource implements
         final ActionValueContainer valueContainer = new ActionValueContainer(
                 getOrCreateR(key.getImagePath()),
                 () -> {
-                    key.activate();
+                    key.invokeClicked();
                 }
         );
         valueContainer.addListener(getToolTipController(key.getName()));
@@ -54,8 +55,8 @@ public class ActionPanelDataSource implements
     }
 
     @Override
-    public List<ActionValueContainer> getActionMods() {
-        return unit.getActionModeMap().keySet().stream()
+    public List<ActionValueContainer> getModeActions() {
+        return unit.getActionMap().get(ACTION_TYPE.MODE).stream()
                 .map(this::getActionValueContainer)
                 .collect(Collectors.toList());
     }
@@ -64,7 +65,7 @@ public class ActionPanelDataSource implements
         final ActionValueContainer valueContainer = new ActionValueContainer(
                 getOrCreateR(key.getImagePath()),
                 () -> {
-                    key.activate();
+                    key.invokeClicked();
                 }
         );
         valueContainer.addListener(getToolTipController(key.getName()));

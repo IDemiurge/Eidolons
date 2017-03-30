@@ -184,7 +184,6 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         if (wrapped) {
             activatePassives();
         }
-        boolean result = false;
         if (canBeActivated()) {
             setRef(ref.getSourceObj().getRef());
             ref.getSourceObj().getRef().setID(KEYS.ITEM, getId());
@@ -196,7 +195,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
                 getActive().setRef(ref);
             }
             ref.setID(KEYS.ACTIVE, getActive().getId());
-            result = getActive().activate();
+              getActive().activate();
             if (getActive().isCancelled() != null) {
                 if (getActive().isCancelled()) {
                     return false;
@@ -210,7 +209,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
             }
         }
 
-        return result;
+        return true;
     }
 
     @Override

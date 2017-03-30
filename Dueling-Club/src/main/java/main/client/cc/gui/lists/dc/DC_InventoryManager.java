@@ -1,11 +1,11 @@
 package main.client.cc.gui.lists.dc;
 
 import main.client.cc.CharacterCreator;
-import main.client.cc.gui.lists.HeroListPanel;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.PROPS;
 import main.content.values.properties.PROPERTY;
+import main.elements.conditions.RequirementsManager;
 import main.entity.Entity;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.obj.unit.Unit;
@@ -21,36 +21,35 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
  *
  * @author JustMe
  */
-public class DC_InventoryManager implements InventoryManager {
+public class DC_InventoryManager   {
 
+    private   DC_Game game;
     protected Integer numberOfOperations;
     private Unit hero;
     private OBJ_TYPE TYPE;
 
     public DC_InventoryManager(DC_Game game) {
-        this(game.getManager().getActiveObj());
-    }
-    public DC_InventoryManager(Unit unit) {
-        this.setHero(unit);
         this.TYPE =  DC_TYPE.ITEMS;
+        this.game =game;
     }
 
-    @Override
+
+   
     public boolean hasOperations(int n) {
         return getNumberOfOperations() >= n;
     }
 
-    @Override
+   
     public boolean hasOperations() {
         return getNumberOfOperations() > 0;
     }
 
-    @Override
+   
     public Integer getNumberOfOperations() {
         return numberOfOperations;
     }
 
-    @Override
+   
     public void setNumberOfOperations(Integer numberOfOperations) {
         this.numberOfOperations = numberOfOperations;
     }
@@ -66,7 +65,26 @@ public class DC_InventoryManager implements InventoryManager {
 
     }
 
-    public void execute(OPERATIONS operation, String typeName) {
+    public boolean tryExecuteOperation(OPERATIONS operation, String typeName) {
+        if (!canDoOperation(operation, typeName)) {
+            return  false;
+        }
+        execute(operation, typeName);
+        return true;
+    }
+
+    private boolean canDoOperation(OPERATIONS operation, String typeName) {
+        Entity type = null;
+        String s = CharacterCreator.getHeroManager()
+         .checkRequirements(getHero(), type, RequirementsManager.NORMAL_MODE);
+        // if (s != null) {
+
+
+
+        return true;
+    }
+
+    private void execute(OPERATIONS operation, String typeName) {
         Unit unit = getHero();
         boolean alt = false;
         DC_HeroItemObj item;
@@ -111,64 +129,58 @@ public class DC_InventoryManager implements InventoryManager {
     }
 
 
-    @Override
-    public boolean addType(ObjType type, HeroListPanel hlp, boolean alt) {
-        if (!hasOperations()) {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
-            return false;
-        }
-        // String s = CharacterCreator.getHeroManager()
-        // .checkRequirements(getHero(), type, false);
-        // if (s != null) {
-        // Err.info(s);
-        // return false;
-        // } TODO dynamic ATTR/MSTR reqs?
-        int result = CharacterCreator.getHeroManager().addSlotItem(getHero(), type, alt);
-        operationDone(result, OPERATIONS.EQUIP, type.getName());
-        return true;
-    }
-
-
-    @Override
+   
     public boolean operationDone(OPERATIONS operation, String string) {
         return operationDone(1, operation, string);
     }
 
-    @Override
+   
     public boolean operationDone(int n, OPERATIONS operation, String string) {
         setNumberOfOperations(getNumberOfOperations() - n);
         boolean result =hasOperations();
-        getHero().getGame().getInventoryManager().getWindow()
-                .appendOperationData(operation, string);
+        getHero().getGame().getInventoryTransactionManager().getWindow()
+         .appendOperationData(operation, string);
 
-        getHero().getGame().getInventoryManager().getWindow().setNumberOfOperations(
-                numberOfOperations);
+        getHero().getGame().getInventoryTransactionManager().getWindow().setNumberOfOperations(
+         numberOfOperations);
         return result;
     }
 
-    @Override
-    public void removeType(Entity type, HeroListPanel hlp, PROPERTY p) {
+    public boolean addType(ObjType itemType,   boolean alt) {
+        if (!hasOperations()) {
+            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+            return false;
+        }
+        int result = CharacterCreator.getHeroManager().addSlotItem(getHero(), itemType, alt);
+        operationDone(result, OPERATIONS.EQUIP, itemType.getName());
+        return true;
+    }
+
+
+    public void removeType(Entity item,  PROPERTY p) {
         if (!hasOperations()) {
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
             return;
         }
         OPERATIONS operations = OPERATIONS.UNEQUIP;
         if (p == PROPS.INVENTORY) {
-            CharacterCreator.getHeroManager().removeItem(getHero(), type, p, TYPE, true);
+            CharacterCreator.getHeroManager().removeItem(getHero(), item, p, TYPE, true);
         } else {
-            if (type.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
-                CharacterCreator.getHeroManager().removeJewelryItem(getHero(), type);
+            if (item.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
+                CharacterCreator.getHeroManager().removeJewelryItem(getHero(), item);
             } else if (p == PROPS.QUICK_ITEMS) {
-                CharacterCreator.getHeroManager().removeQuickSlotItem(getHero(), type);
+                CharacterCreator.getHeroManager().removeQuickSlotItem(getHero(), item);
                 operations = OPERATIONS.UNEQUIP_QUICK_SLOT;
             }
         }
-        operationDone(operations, type.getName());
+        operationDone(operations, item.getName());
     }
 
-    @Override
+   
     public Unit getHero() {
-        return hero;
+        if (hero==null )
+            return game.getManager().getActiveObj();
+            return hero;
     }
 
     public void setHero(Unit hero) {

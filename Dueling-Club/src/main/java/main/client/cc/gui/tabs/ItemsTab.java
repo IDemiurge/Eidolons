@@ -51,7 +51,7 @@ public class ItemsTab extends HeroItemTab {
     protected ItemListManager getItemManager() {
 //        if (game.isSimulation())
             return super.getItemManager();
-//        return game.getInventoryManager().getInvListManager(); for swing
+//        return game.getInventoryTransactionManager().getInvListManager(); for swing
     }
 
     public void refresh() {

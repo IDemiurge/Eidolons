@@ -10,7 +10,7 @@ import static main.system.GuiEventType.UPDATE_QUICK_SLOT_PANEL;
 public class ActionPanelController extends Group {
     private final static int IMAGE_SIZE = 60;
     private QuickSlotPanel quickSlotPanel;
-    private ActionModPanel actionModPanel;
+    private ModeActionsPanel modeActionsPanel;
     private SpellPanel spellPanel;
     private EffectsPanel effectsPanel;
 
@@ -21,9 +21,9 @@ public class ActionPanelController extends Group {
         addActor(quickSlotPanel);
 
         final int actionOffset = quickSlotOffset + (IMAGE_SIZE * 6) + 5;
-        actionModPanel = new ActionModPanel(IMAGE_SIZE);
-        actionModPanel.setPosition(actionOffset, 0);
-        addActor(actionModPanel);
+        modeActionsPanel = new ModeActionsPanel(IMAGE_SIZE);
+        modeActionsPanel.setPosition(actionOffset, 0);
+        addActor(modeActionsPanel);
 
         spellPanel = new SpellPanel(IMAGE_SIZE);
         final int spellOffset = actionOffset + (IMAGE_SIZE * 6) + 5;
@@ -47,7 +47,7 @@ public class ActionPanelController extends Group {
                     setY(0);
                 }
                 quickSlotPanel.setUserObject(source);
-                actionModPanel.setUserObject(source);
+                modeActionsPanel.setUserObject(source);
                 spellPanel.setUserObject(source);
                 effectsPanel.setUserObject(source);
             } else {

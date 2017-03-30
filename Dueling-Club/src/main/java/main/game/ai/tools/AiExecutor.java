@@ -20,7 +20,7 @@ public class AiExecutor {
                 if (ref.getTargetObj() == null)
                     if (!(action.getActive().getTargeting()
                      instanceof SelectiveTargeting)) { result = true;
-                        action.getActive().getHandler().activateOnActionThread();
+                        action.getActive().getHandler().activateOnGameLoopThread();
 
                     }
             if (!result) {

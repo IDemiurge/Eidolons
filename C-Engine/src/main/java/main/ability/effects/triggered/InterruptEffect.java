@@ -25,6 +25,8 @@ public class InterruptEffect extends MicroEffect implements TriggeredEffect{
         //
         // return true;
         // }
+        if (ref.getEvent()==null )
+         return false;
         Ref REF = ref.getEvent().getRef();
         Interruptable i = REF.getEffect();
         // if (OBJ_REF != null) {

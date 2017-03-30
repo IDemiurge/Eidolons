@@ -101,8 +101,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
      * default self-activation
      */
     public boolean activate() {
-        return getMaster().getHandler().activate();
-
+         getMaster().getHandler().activateOnGameLoopThread();
+        return true;
     }
 
     @Override
@@ -248,7 +248,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             getActivator().cannotActivate();
             return;
         }
-        getHandler().activateOnActionThread();
+        getHandler().activateOnGameLoopThread();
 //        activate();
 //     TODO is any of it useful?
 //   boolean dont = ownerObj.checkUncontrollable();

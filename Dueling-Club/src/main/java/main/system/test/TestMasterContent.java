@@ -67,11 +67,11 @@ public class TestMasterContent {
     private static String FIX_LIST = "";
     private static String POLISH_LIST = "";
     private static String ANIM_TEST_LIST = //Gust of Wind
-            "Searing Light;Sorcerous Flame;Ray of Arcanum;Chaos Shockwave;" +
+            "Searing Light;Summon Vampire Bat;Sorcerous Flame;Ray of Arcanum;Chaos Shockwave;" +
                     "Fire Bolt;Chaos Bolt;" +
                     "Light;Haze;" +
                     "Scare;Freeze;" +
-                    "Scorching Light;Summon Vampire Bat";
+                    "Scorching Light";
 
     private static String GRAPHICS_TEST_LIST = "Light;Haze;Force Field;" +
             "Summon Vampire Bat;Blink";
