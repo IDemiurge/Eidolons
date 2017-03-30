@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 
 import static main.content.UNIT_INFO_PARAMS.*;
 import static main.content.UNIT_INFO_PARAMS.ActionToolTipSections.*;
+import static main.content.UNIT_INFO_PARAMS.ActionToolTipSections.COSTS;
 import static main.content.ValuePages.*;
 import static main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster.getIconPathForTableRow;
 import static main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster.getStringForTableValue;
@@ -479,6 +480,24 @@ public class UnitDataSource implements
                             ).filter(Objects::nonNull).collect(Collectors.toList()));
                         }
                         map.put(TEXT, textsList);
+
+                        List costsList = new ArrayList<>();
+                        for (int i = 0, costsLength = RESOURCE_COSTS.length; i < costsLength; i++) {
+                            PARAMETER cost = RESOURCE_COSTS[i];
+                            final Integer param = el.getIntParam(cost);
+                            if (param > 0) {
+                                final String iconPath = ImageManager.getValueIconPath(COSTS_ICON_PARAMS[i]);
+                                costsList.add(new ValueContainer(getOrCreateR(iconPath), String.valueOf(param)));
+                            }
+                        }
+
+                        final Integer reqRes = el.getIntParam(MIN_REQ_RES_FOR_USE.getLeft());
+                        if (reqRes > 0) {
+                            final String iconPath = ImageManager.getValueIconPath(MIN_REQ_RES_FOR_USE.getRight());
+                            costsList.add(new ValueContainer(getOrCreateR(iconPath), "> " + reqRes));
+                        }
+
+                        map.put(COSTS, costsList);
 
                         ToolTip toolTip = new ActionToolTip();
                         toolTip.setUserObject((Supplier) () -> map);

@@ -27,6 +27,10 @@ public class ActionToolTip extends ToolTip {
 
     @Override
     public void updateAct(float delta) {
+        clear();
+
+        TablePanel left = new TablePanel();
+
         final Map<ActionToolTipSections, List> paramsListMap = ((Supplier<Map<ActionToolTipSections, List>>) getUserObject()).get();
 
         List list = paramsListMap.get(HEAD);
@@ -82,14 +86,21 @@ public class ActionToolTip extends ToolTip {
             }
         }
 
-        addElement(baseTable).width(282).pad(0, 0, 3, 0);
-        row();
-        addElement(rangeTable).width(282).pad(0, 0, 3, 0);
-        row();
+        left.addElement(baseTable).width(282).pad(0, 0, 3, 0);
+        left.row();
+        left.addElement(rangeTable).width(282).pad(0, 0, 3, 0);
+        left.row();
         textTables.forEach(el -> {
-            addElement(el).width(282).pad(0, 0, 3, 0);
-            row();
+            left.addElement(el).width(282).pad(0, 0, 3, 0);
+            left.row();
         });
+
+        addElement(left);
+
+        CostsPanel costsPanel = new CostsPanel();
+        costsPanel.setUserObject(paramsListMap.get(COSTS));
+
+        addElement(costsPanel);
     }
 
     @Override

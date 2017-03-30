@@ -11,24 +11,26 @@ import java.util.Map;
 import static main.content.PARAMS.*;
 
 public interface UNIT_INFO_PARAMS {
-    public static final PARAMETER[] COSTS = {AP_COST, STA_COST, ESS_COST,
-            FOC_COST, FOC_REQ, ENDURANCE_COST, CP_COST,
-
+    PARAMETER[] RESOURCE_COSTS = {
+            AP_COST, STA_COST, ESS_COST,
+            FOC_COST, ENDURANCE_COST, CP_COST,
     };
-    public static final PARAMETER[] COSTS_ICON_PARAMS = {N_OF_ACTIONS, STAMINA,
-            ESSENCE,
-            FOCUS, FOCUS,
-            ENDURANCE, N_OF_COUNTERS,
 
+    Pair<PARAMETER, PARAMETER> MIN_REQ_RES_FOR_USE = new ImmutablePair<>(FOC_REQ, FOCUS);
+
+    PARAMETER[] COSTS_ICON_PARAMS = {
+            N_OF_ACTIONS, STAMINA,
+            ESSENCE, FOCUS,
+            ENDURANCE, N_OF_COUNTERS,
     };
     PARAMS[] ARMOR_DC_INFO_PARAMS = {
-     PARAMS.ARMOR, PARAMS.C_DURABILITY,
-     PARAMS.COVER_PERCENTAGE,  PARAMS.HARDNESS,
-     PARAMS.ARMOR_LAYERS, PARAMS.WEIGHT,
+            PARAMS.ARMOR, PARAMS.C_DURABILITY,
+            PARAMS.COVER_PERCENTAGE, PARAMS.HARDNESS,
+            PARAMS.ARMOR_LAYERS, PARAMS.WEIGHT,
 
 
     };
-     PARAMS[] WEAPON_DC_INFO_PARAMS = {
+    PARAMS[] WEAPON_DC_INFO_PARAMS = {
             DAMAGE_BONUS, DAMAGE_MOD,
             DICE, DIE_SIZE,
             ATTACK_BONUS, ATTACK_MOD,
@@ -292,7 +294,7 @@ public interface UNIT_INFO_PARAMS {
     }
 
     enum ActionToolTipSections {
-        HEAD, BASE, RANGE, TEXT
+        HEAD, BASE, RANGE, TEXT, COSTS
     }
 
 }
