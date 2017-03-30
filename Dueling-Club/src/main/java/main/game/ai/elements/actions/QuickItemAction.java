@@ -17,16 +17,16 @@ public class QuickItemAction extends Action {
         this.item = item;
     }
 
-    @Override
-    public boolean activate() {
-        if (ref.getTargetObj() != null) {
-            active.setForcePresetTarget(true);
-        }
-
-        getActive().setRef(ref);
-        boolean result = item.activate();
-
-        return result;
-    }
+//    @Override
+//    public boolean activate() {
+//        if (ref.getTargetObj() != null) {
+//            active.setForcePresetTarget(true);
+//        }
+//
+//        getActive().setRef(ref);
+//        boolean result = item.activate();
+//
+//        return result;
+//    }
 
 }

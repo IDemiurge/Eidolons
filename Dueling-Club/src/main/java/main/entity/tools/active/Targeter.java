@@ -42,6 +42,7 @@ public class Targeter extends ActiveHandler {
 
         if (presetTarget != null) { //TODO figure out when to get source's ref and when not!!!
              getRef().setTarget(presetTarget.getId());
+      presetTarget=null ;
         } else {
             if (getEntity().getTargeting() != null) {
                 if (!isForcePresetTarget()) {

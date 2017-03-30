@@ -35,7 +35,7 @@ public class CoreEngine {
     private static boolean enumCachingOn = true;
     private static boolean writingLogFilesOn;
     private static boolean arcaneTower = false;
-    private static boolean graphicTestMode = true;
+    private static boolean graphicTestMode = false;
     private static boolean graphicsOff;
     private static boolean guiTestMode;
     private static boolean actionTargetingFiltersOff;

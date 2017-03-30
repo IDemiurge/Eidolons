@@ -4,6 +4,7 @@ import main.ability.ActionGenerator;
 import main.ability.InventoryTransactionManager;
 import main.ability.UnitTrainingMaster;
 import main.ability.effects.DC_EffectManager;
+import main.client.cc.gui.lists.dc.DC_InventoryManager;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.cc.logic.party.PartyObj;
 import main.client.cc.logic.spells.SpellGenerator;
@@ -107,7 +108,8 @@ public class DC_Game extends MicroGame {
     private GuiMaster guiMaster;
     private ArenaArcadeMaster arenaArcadeMaster;
     private BattleOptions arenaOptions;
-    private InventoryTransactionManager inventoryManager;
+    private InventoryTransactionManager inventoryTransactionManager;
+    private DC_InventoryManager inventoryManager;
     private ArcadeManager arcadeManager;
     private AI_Manager aiManager;
     private AnimationManager animationManager;
@@ -137,6 +139,7 @@ public class DC_Game extends MicroGame {
     private NetGame netGame;
     private boolean dummyPlus;
     private GameLoop loop;
+     ;
 
     public DC_Game(Player player1, Player player2, GameConnector connector, HostedGame hostedGame,
                    PartyData partyData1, PartyData partyData2) {
@@ -260,7 +263,8 @@ public class DC_Game extends MicroGame {
 
     public void battleInit() {
 
-        inventoryManager = new InventoryTransactionManager(this);
+        inventoryTransactionManager = new InventoryTransactionManager(this);
+        inventoryManager = new DC_InventoryManager(this);
         arenaManager = new ArenaManager(this);
         arenaManager.init();
         battleManager = new BattleManager(this);
@@ -651,9 +655,9 @@ public class DC_Game extends MicroGame {
     // return getObjectByCoordinate(c, false);
     // }
 
-    public InventoryTransactionManager getInventoryManager() {
+    public InventoryTransactionManager getInventoryTransactionManager() {
 
-        return inventoryManager;
+        return inventoryTransactionManager;
     }
 
 
@@ -920,6 +924,10 @@ public class DC_Game extends MicroGame {
         list.addAll(getStructures());
 
         return list;
+    }
+
+    public DC_InventoryManager getInventoryManager() {
+        return inventoryManager;
     }
 
     @Override

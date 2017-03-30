@@ -28,15 +28,15 @@ public class InventoryTransactionManager {
 
     public static final WAIT_OPERATIONS OPERATION = WAIT_OPERATIONS.DIALOGUE_DONE;
     public static final PROPERTY[] INV_PROPS = {PROPS.QUICK_ITEMS, PROPS.INVENTORY,
-            G_PROPS.MAIN_HAND_ITEM, G_PROPS.ARMOR_ITEM, G_PROPS.OFF_HAND_ITEM, PROPS.JEWELRY,};
-    private DC_InventoryManager invListManager;
+     G_PROPS.MAIN_HAND_ITEM, G_PROPS.ARMOR_ITEM, G_PROPS.OFF_HAND_ITEM, PROPS.JEWELRY,};
+    private DC_Game game;
     private OperationWindow window;
     private HeroManager heroManager;
 
     public InventoryTransactionManager(DC_Game game) {
         heroManager = new DC_HeroManager(game);
         CharacterCreator.setDC_HeroManager(heroManager);
-        setInvListManager(new DC_InventoryManager(game));
+        this.game = game;
     }
 
     public static void updateType(Unit hero) {
@@ -67,7 +67,7 @@ public class InventoryTransactionManager {
 
     public static void equipOriginalItems(Unit to, Obj from) {
         for (Obj i : to.getGame().getDroppedItemManager().getDroppedItems(
-                to.getGame().getCellByCoordinate(to.getCoordinates()))) {
+         to.getGame().getCellByCoordinate(to.getCoordinates()))) {
             if (i.getRef().getSourceObj() == from) {
                 ITEM_SLOT slot = null;
 
@@ -86,8 +86,8 @@ public class InventoryTransactionManager {
 
                         DC_WeaponObj weaponObj = (DC_WeaponObj) i;
                         if (weaponObj.getWeaponClass() == ItemEnums.WEAPON_CLASS.MAIN_HAND_ONLY
-                                || weaponObj.getWeaponClass() == ItemEnums.WEAPON_CLASS.TWO_HANDED
-                                || weaponObj.getWeaponClass() == ItemEnums.WEAPON_CLASS.DOUBLE) {
+                         || weaponObj.getWeaponClass() == ItemEnums.WEAPON_CLASS.TWO_HANDED
+                         || weaponObj.getWeaponClass() == ItemEnums.WEAPON_CLASS.DOUBLE) {
                             slot = ItemEnums.ITEM_SLOT.MAIN_HAND;
                         } else if (to.getMainWeapon() != null) {
                             slot = ItemEnums.ITEM_SLOT.OFF_HAND;
@@ -118,8 +118,8 @@ public class InventoryTransactionManager {
     public boolean showInvWindow(Unit hero, Integer nOfOperations, boolean pickUp) {
         // if (window == null)
         window = (pickUp) ? new PickUpWindow(this, hero, nOfOperations) : new InventoryWindow(this,
-                hero, nOfOperations);
-window.open();
+         hero, nOfOperations);
+        window.open();
 
 
         // else {
@@ -139,12 +139,9 @@ window.open();
     }
 
     public DC_InventoryManager getInvListManager() {
-        return invListManager;
+        return game.getInventoryManager();
     }
 
-    public void setInvListManager(DC_InventoryManager invListManager) {
-        this.invListManager = invListManager;
-    }
 
     public void resetHero(Unit hero, ObjType bufferedType) {
 

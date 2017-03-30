@@ -233,8 +233,8 @@ public class HeroManager {
     }
 
     protected void refreshInvWindow() {
-        if (game.getInventoryManager().getWindow() != null) {
-            game.getInventoryManager().getWindow().refresh();
+        if (game.getInventoryTransactionManager().getWindow() != null) {
+            game.getInventoryTransactionManager().getWindow().refresh();
         }
     }
 
@@ -804,7 +804,7 @@ public class HeroManager {
             AbilityConstructor.constructActives(hero);
         }
         refresh(hero);
-        // game.getInventoryManager().getInvListManager().operationDone();
+        // game.getInventoryTransactionManager().getInvListManager().operationDone();
     }
 
     public void removeQuickSlotItem(Unit hero, Entity type) {

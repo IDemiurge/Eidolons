@@ -37,12 +37,12 @@ public class GameLoop {
 
     public void start() {
         while (true) {
-            game.getStateManager().newRound();
             roundLoop();
         }
     }
 
     private void roundLoop() {
+        game.getStateManager().newRound();
         while (true) {
             Boolean result = game.getTurnManager().nextAction();
             if (result == null)
@@ -87,7 +87,8 @@ public class GameLoop {
     }
 
     private Boolean makeAction() {
-
+        context  = null;
+        target  = null;
         if (game.getManager().getActiveObj().isAiControlled()) {
             waitForAI();
         } else {

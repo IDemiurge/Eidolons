@@ -27,6 +27,7 @@ import main.libgdx.gui.panels.dc.inventory.InventoryPanel;
 import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
@@ -144,11 +145,11 @@ public class GameScreen implements Screen {
         UnitInfoPanel infoPanel = new UnitInfoPanel();
         guiStage.addActor(infoPanel);
         infoPanel.setPosition(0, 0);
-
-        InventoryPanel inventoryPanel = new InventoryPanel();
-        guiStage.addActor(inventoryPanel);
-        inventoryPanel.setPosition(0, 0);
-
+        if (CoreEngine.isGraphicTestMode()) {
+            InventoryPanel inventoryPanel = new InventoryPanel();
+            guiStage.addActor(inventoryPanel);
+            inventoryPanel.setPosition(0, 0);
+        }
         guiStage.addActor(toolTipManager = new ToolTipManager());
 
         guiStage.addActor(radialMenu = new RadialMenu());

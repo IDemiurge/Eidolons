@@ -47,8 +47,7 @@ public class PresetLauncher {
     private static boolean isInitLaunch = true;
 
     static {
-        LAUNCH.AI.graphicsTest = false;
-        LAUNCH.Playtest.graphicsTest = false;
+        LAUNCH.Gui.graphicsTest = true;
 
         LAUNCH.Gui.visionHacked = true;
         LAUNCH.Anims.visionHacked = true;
@@ -345,7 +344,7 @@ public class PresetLauncher {
         public String dungeonType;
         public String dungeonPath;
         public RULE_SCOPE ruleScope;
-        public boolean graphicsTest = true;
+        public boolean graphicsTest = false;
         public boolean debugMode;
         public boolean dummy;
         public boolean dummy_pp;

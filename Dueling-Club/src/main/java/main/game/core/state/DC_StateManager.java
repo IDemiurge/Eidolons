@@ -195,7 +195,6 @@ public class DC_StateManager extends StateManager {
             e.printStackTrace();
         }
         getGame().getLogManager().doneLogEntryNode();
-        newRound();
 
     }
 

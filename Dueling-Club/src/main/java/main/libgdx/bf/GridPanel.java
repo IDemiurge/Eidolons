@@ -19,7 +19,7 @@ import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.bf.mouse.GridMouseListener;
 import main.libgdx.gui.panels.dc.InitiativePanelParam;
-import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionPanelDataSource;
+import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -290,7 +290,7 @@ public class GridPanel extends Group {
                 GuiEventManager.trigger(SHOW_GREEN_BORDER, new EventCallbackParam(view));
 
                 GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL,
-                        new EventCallbackParam(new ActionPanelDataSource((Unit) hero)));
+                        new EventCallbackParam(new PanelActionsDataSource((Unit) hero)));
             } else {
                 GuiEventManager.trigger(SHOW_RED_BORDER, new EventCallbackParam(view));
                 GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL, new EventCallbackParam(null));

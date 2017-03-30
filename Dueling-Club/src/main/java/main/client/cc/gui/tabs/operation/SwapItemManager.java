@@ -1,7 +1,6 @@
 package main.client.cc.gui.tabs.operation;
 
 import main.client.cc.CharacterCreator;
-import main.client.cc.gui.lists.HeroListPanel;
 import main.client.cc.gui.lists.dc.DC_InventoryManager;
 import main.content.C_OBJ_TYPE;
 import main.content.PROPS;
@@ -21,7 +20,7 @@ public class SwapItemManager extends DC_InventoryManager {
     }
 
     @Override
-    public void removeType(Entity type, HeroListPanel hlp, PROPERTY p) {
+    public void removeType(Entity type,   PROPERTY p) {
         if (!hasOperations()) {
             return;
         }
@@ -38,7 +37,7 @@ public class SwapItemManager extends DC_InventoryManager {
     }
 
     @Override
-    public boolean addType(ObjType type, HeroListPanel hlp, boolean alt) {
+    public boolean addType(ObjType type,   boolean alt) {
         if (!hasOperations()) {
             return false;
         }

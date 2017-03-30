@@ -352,7 +352,9 @@ public class DC_GameManager extends GameManager {
         if (!CoreEngine.isSwingOn()) {
             Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
                 if (ref.getActive() instanceof DC_ActiveObj) {
-                    ((DC_ActiveObj) ref.getActive()).activateOn(t);
+//                    ((DC_ActiveObj) ref.getActive()).activateOn(t);
+//                    WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, t.getId());
+t.invokeClicked();
                 }
             });
             GuiEventManager.trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
@@ -384,7 +386,7 @@ public class DC_GameManager extends GameManager {
 
         Integer id = selectAwait();
         if (id == 0) {
-            if (ref.getTarget() != 0) {
+            if (ref.getTarget() != null ) {
                 return ref.getTarget();
             }
         }

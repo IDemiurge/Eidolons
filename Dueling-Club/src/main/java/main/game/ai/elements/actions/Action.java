@@ -135,25 +135,6 @@ public class Action {
         this.active = active;
     }
 
-    public boolean activate() {
-        if (ref.getTargetObj() == null) {
-            if (!(getActive().getTargeting() instanceof SelectiveTargeting)) {
-                // TODO
-                // target =ActionManager.forceSelectTarget(this);
-                getActive().selectTarget(ref);
-            }
-
-        }
-        boolean result;
-
-        if (getActive().isChanneling()) {
-            result = getActive().activate();
-        } else {
-            result = getActive().activatedOn(ref);
-        }
-        getActive().actionComplete();
-        return result;
-    }
 
     public boolean isSingle() {
 

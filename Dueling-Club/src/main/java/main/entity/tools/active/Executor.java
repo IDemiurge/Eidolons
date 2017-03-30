@@ -102,7 +102,7 @@ public class Executor extends ActiveHandler {
         if (!GameLoop.isEnabled()) {
             getEntity().setRef(ref);
             getTargeter().setRef(ref);
-            activateOnActionThread();
+            activateOnGameLoopThread();
             return;
         }
 
@@ -112,9 +112,11 @@ public class Executor extends ActiveHandler {
     }
 
     public void activateOn(DC_Obj t) {
-        targeter.presetTarget = t;
-        if (!GameLoop.isEnabled()) {
-            activateOnActionThread();
+        if (
+         Thread.currentThread()== getGame().getGameLoopThread())
+        {
+            targeter.presetTarget = t;
+            activate();
             return;
         }
         getGame().getLoop().setTarget(t);
@@ -122,7 +124,7 @@ public class Executor extends ActiveHandler {
         WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION, true);
     }
 
-    public void activateOnActionThread() {
+    public void activateOnGameLoopThread() {
         if (!GameLoop.isEnabled()) {
             Eidolons.getActionThread().setExecutor(this);
             Eidolons.getExecutorService().execute(Eidolons.getActionThread());
@@ -139,7 +141,7 @@ public class Executor extends ActiveHandler {
 
         reset();
         syncActionRefWithSource();
-        getTargeter().initTarget();
+         getTargeter().initTarget();
         if (isInterrupted())
             return interrupted();
         beingActivated();
