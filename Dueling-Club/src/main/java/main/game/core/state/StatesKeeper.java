@@ -52,4 +52,7 @@ public class StatesKeeper {
 
     }
 
+    public StateCloner getCloner() {
+        return cloner;
+    }
 }

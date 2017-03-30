@@ -2,13 +2,34 @@ package main.libgdx.gui.panels.dc.inventory;
 
 import main.client.cc.gui.lists.dc.DC_InventoryManager.OPERATIONS;
 import main.entity.Entity;
+import main.entity.obj.unit.Unit;
 import main.game.core.Eidolons;
 
 /**
  * Created by JustMe on 3/30/2017.
  */
 public class InventoryClickHandler {
+
     //IDEA: FOR NON-COMBAT, DROP == SELL!
+    Unit unit;
+    Unit buffer;
+
+    public InventoryClickHandler(Unit unit) {
+        this.unit = unit;
+//        buffer = unit.getGame().getState().getManager()
+//         .getKeeper().getCloner().clone()
+
+//        InventoryTransactionManager.updateType(hero);
+//        bufferedType = hero.getType();
+//        heroModel = hero;
+//        inventoryManager.getInvListManager().setHero(heroModel);
+//        CharacterCreator.getHeroManager().addHero(heroModel);
+
+
+//        operationsData = "";
+//        cachedValue = cell.getProperty(PROPS.DROPPED_ITEMS);
+    }
+
     public boolean cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick,
                                boolean altClick, Entity cellContents) {
 
@@ -21,7 +42,40 @@ public class InventoryClickHandler {
       return   Eidolons.game.getInventoryManager().tryExecuteOperation(operation, arg);
 
     }
+public boolean itemDragAndDropped(CELL_TYPE cell_type,
+ Entity cellContents, Entity droppedItem
+){
 
+    return false;
+}
+
+    public void undoClicked(){
+//        inventoryManager.getInvListManager().setNumberOfOperations(getNumberOfOperations());
+
+    }
+    public void doneClicked(){
+//        InventoryTransactionManager.updateType(getHero());
+//        WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
+//        CharacterCreator.getHeroManager().removeHero(heroModel);
+    }
+    public void cancelClicked(){
+
+//        cell.setProperty(PROPS.DROPPED_ITEMS, cachedValue);
+//        WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, false);
+//        CharacterCreator.getHeroManager().removeHero(heroModel);
+    }
+    public boolean isUndoEnabled(){
+
+        return true;
+    }
+    public boolean isDoneEnabled(){
+
+        return true;
+    }
+    public boolean isCancelEnabled(){
+
+        return true;
+    }
     private String getArg(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
         return cellContents.getName();
     }

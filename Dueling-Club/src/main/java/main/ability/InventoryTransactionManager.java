@@ -41,9 +41,9 @@ public class InventoryTransactionManager {
 
     public static void updateType(Unit hero) {
         hero.setType(new ObjType(hero.getType()));
-        // TODO init type?
+
         ObjType type = hero.getType();
-        hero.getGame().initType(type);
+        hero.getGame().initType(type);// TODO init type?
         for (PROPERTY prop : INV_PROPS) {
 
             type.copyValue(prop, hero);
