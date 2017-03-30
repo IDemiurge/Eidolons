@@ -8,15 +8,17 @@ import main.game.core.Eidolons;
  * Created by JustMe on 3/30/2017.
  */
 public class InventoryClickHandler {
-    public void cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick,
-                            boolean altClick     , Entity cellContents) {
+    //IDEA: FOR NON-COMBAT, DROP == SELL!
+    public boolean cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick,
+                               boolean altClick, Entity cellContents) {
 
-        OPERATIONS operation=getOperation(cell_type, clickCount, rightClick,
+        OPERATIONS operation = getOperation(cell_type, clickCount, rightClick,
          altClick, cellContents);
-        String arg=getArg(cell_type, clickCount, rightClick,
+        if (operation == null) return false;
+        String arg = getArg(cell_type, clickCount, rightClick,
          altClick, cellContents);
-        Eidolons.game.getInventoryManager().tryExecuteOperation(operation, arg);
-
+        if (arg == null) return false;
+      return   Eidolons.game.getInventoryManager().tryExecuteOperation(operation, arg);
 
     }
 
@@ -24,26 +26,36 @@ public class InventoryClickHandler {
         return cellContents.getName();
     }
 
-    public OPERATIONS getOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick,
-                            boolean altClick     , Entity cellContents) {
+    private OPERATIONS getOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick,
+                                    boolean altClick, Entity cellContents) {
+        if (cellContents == null) return null;
         switch (cell_type) {
             case AMULET:
-                break;
             case RING:
-                break;
             case QUICK_SLOT:
-                break;
             case WEAPON_MAIN:
-                break;
             case WEAPON_OFFHAND:
-                break;
+                if (altClick)
+                    return OPERATIONS.DROP;
+                if (rightClick || clickCount > 1)
+                    return OPERATIONS.UNEQUIP;
+                return null ;
+
             case ARMOR:
+                //check can be unequipped
+
                 break;
             case INVENTORY:
-                break;
+                if (altClick)
+                    return OPERATIONS.EQUIP_QUICK_SLOT;
+                if (rightClick)
+                    return OPERATIONS.DROP;
+                if (clickCount > 1)
+                    return OPERATIONS.EQUIP;
         }
         return null;
     }
+
     public enum CELL_TYPE {
         AMULET,
         RING, QUICK_SLOT,
