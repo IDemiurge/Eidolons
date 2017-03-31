@@ -150,9 +150,9 @@ public class ResistPanel extends TablePanel {
 
     @Override
     public void updateAct(float delta) {
-        Supplier<List<Pair<PARAMETER, String>>> source = (Supplier) getUserObject();
+        List<Pair<PARAMETER, String>> source = ((Supplier<List<Pair<PARAMETER, String>>>) getUserObject()).get();
 
-        source.get().forEach(pair -> {
+        source.forEach(pair -> {
             PARAMS param = (PARAMS) pair.getLeft();
             DAMAGE_TYPE damageType = getFromParams(param);
             if (map.containsKey(damageType)) {

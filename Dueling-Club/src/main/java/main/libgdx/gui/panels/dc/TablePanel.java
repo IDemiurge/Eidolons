@@ -46,6 +46,7 @@ public class TablePanel<T extends Actor> extends Table {
         super.act(delta);
         if (updateRequired) {
             updateAct(delta);
+            invalidate();
             afterUpdateAct(delta);
             updateRequired = false;
         }
