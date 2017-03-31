@@ -112,7 +112,8 @@ public boolean itemDragAndDropped(CELL_TYPE cell_type,
 
     public enum CELL_TYPE {
         AMULET,
-        RING, QUICK_SLOT,
+        RING,
+        QUICK_SLOT,
         WEAPON_MAIN,
         WEAPON_OFFHAND,
         ARMOR,

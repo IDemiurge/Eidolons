@@ -90,7 +90,7 @@ public class DC_InventoryManager   {
         DC_HeroItemObj item;
         if (operation == OPERATIONS.PICK_UP) {
             item = unit.getGame().getDroppedItemManager().findDroppedItem(typeName,
-             unit.getCoordinates());
+             unit.getCoordinates()); // TODO finish
         }
 
         Boolean mode = null;

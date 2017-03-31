@@ -344,7 +344,7 @@ public class PresetLauncher {
         public String dungeonType;
         public String dungeonPath;
         public RULE_SCOPE ruleScope;
-        public boolean graphicsTest = false;
+        public boolean graphicsTest  ;
         public boolean debugMode;
         public boolean dummy;
         public boolean dummy_pp;
