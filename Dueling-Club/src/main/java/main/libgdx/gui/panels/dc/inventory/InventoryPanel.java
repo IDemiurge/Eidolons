@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
@@ -114,5 +115,22 @@ public class InventoryPanel extends TablePanel {
         applyButton.setActor(new Button(StyleHolder.getCustomButtonStyle("UI/components/small/ok.png")));
         cancelButton.setActor(new Button(StyleHolder.getCustomButtonStyle("UI/components/small/no.png")));
         revertButton.setActor(new Button(StyleHolder.getCustomButtonStyle("UI/components/small/back2.png")));
+    }
+
+    @Override
+    public void afterUpdateAct(float delta) {
+        clear();
+        super.afterUpdateAct(delta);
+
+        final EquipDataSource source = (EquipDataSource) getUserObject();
+
+        mainWeapon.setActor(source.mainWeapon());
+        offWeapon.setActor(source.offWeapon());
+
+        avatarPanel.setActor(source.avatar());
+
+        armorSlot.setActor(source.armor());
+
+        amuletSlot.setActor(source.amulet());
     }
 }

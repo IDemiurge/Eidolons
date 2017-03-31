@@ -19,4 +19,9 @@ public class RingSlotsPanel extends TablePanel {
     public void clear() {
 
     }
+
+    @Override
+    public void afterUpdateAct(float delta) {
+
+    }
 }
