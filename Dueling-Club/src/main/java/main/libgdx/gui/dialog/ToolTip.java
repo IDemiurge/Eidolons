@@ -8,10 +8,6 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Supplier;
-
 public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
 
     public ToolTip() {
@@ -39,21 +35,7 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
     }
 
     @Override
-    public void setUserObject(Object userObject) {
-        if (userObject instanceof Supplier) {
-            setUserObject((Supplier) userObject);
-        } else if (userObject instanceof List) {
-            setUserObject((List) userObject);
-        } else {
-            setUserObject(Arrays.asList(userObject));
-        }
-    }
-
-    public void setUserObject(Supplier userObject) {
-        super.setUserObject(userObject);
-    }
-
-    public void setUserObject(List list) {
-        super.setUserObject((Supplier) () -> list);
+    public Object getUserObject() {
+        return super.getUserObject();
     }
 }

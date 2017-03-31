@@ -3,6 +3,7 @@ package main.libgdx.bf.mouse;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -13,15 +14,14 @@ import main.game.battlefield.Coordinates;
 import main.game.core.Eidolons;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.*;
-import main.libgdx.gui.ToolTipManager;
-import main.libgdx.gui.ToolTipManager.ToolTipRecordOption;
+import main.libgdx.gui.dialog.ValueTooltip;
+import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.test.frontend.FAST_DC;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +41,10 @@ public class GridMouseListener extends ClickListener {
         this.unitViewMap = unitViewMap;
     }
 
+    private static String getPathFromName(String name) {
+        return "UI\\value icons\\" + name.replaceAll("_", " ") + ".png";
+    }
+
     @Override
     public boolean mouseMoved(InputEvent event, float x, float y) {
         gridPanel.getStage().setScrollFocus(gridPanel);
@@ -54,64 +58,60 @@ public class GridMouseListener extends ClickListener {
             if (a != null && a instanceof BaseView) {
                 BaseView uv = (BaseView) a;
                 BattleFieldObject hero = unitViewMap.entrySet().stream()
-                 .filter(entry -> entry.getValue() == uv).findFirst()
-                 .get().getKey();
+                        .filter(entry -> entry.getValue() == uv).findFirst()
+                        .get().getKey();
 
-                Map<String, String> tooltipStatMap = new LinkedHashMap<>();
-                List<ToolTipRecordOption> recordOptions = new ArrayList<>();
+                List<ValueContainer> values = new ArrayList<>();
 
-                tooltipStatMap.put(PARAMS.C_TOUGHNESS.getName(), "Toughness");
-                tooltipStatMap.put("C_Endurance", "Endurance");
-                if (hero.getIntParam(PARAMS.N_OF_ACTIONS)>0)
-                    tooltipStatMap.put(PARAMS.C_N_OF_ACTIONS.getName(), PARAMS.N_OF_ACTIONS.getName());
-                if (hero.getIntParam(PARAMS.N_OF_COUNTERS)>0)
-                    tooltipStatMap.put(PARAMS.C_N_OF_COUNTERS.getName(), PARAMS.N_OF_COUNTERS.getName());
+                values.add(new ValueContainer(hero.getName(), ""));
 
-                tooltipStatMap.entrySet().forEach(entry -> {
-                    ToolTipManager.ToolTipRecordOption recordOption = new ToolTipManager.ToolTipRecordOption();
-                    recordOption.curVal = hero.getIntParam(entry.getKey());
-                    recordOption.maxVal = hero.getIntParam(entry.getValue());
-                    recordOption.name = entry.getValue();
-                    recordOption.recordImage = TextureCache.getOrCreate("UI\\value icons\\" + entry.getValue().replaceAll("_", " ") + ".png");
-                    recordOptions.add(recordOption);
-                });
+                values.add(getValueContainer(hero, PARAMS.C_TOUGHNESS, PARAMS.TOUGHNESS));
+                values.add(getValueContainer(hero, PARAMS.C_ENDURANCE, PARAMS.ENDURANCE));
 
-                ToolTipManager.ToolTipRecordOption recordOption = new ToolTipManager.ToolTipRecordOption();
-                recordOption.name = hero.getName();
-                recordOptions.add(0, recordOption);
+                if (hero.getIntParam(PARAMS.N_OF_ACTIONS) > 0) {
+                    values.add(getValueContainer(hero, PARAMS.C_N_OF_ACTIONS, PARAMS.N_OF_ACTIONS));
+                }
+                if (hero.getIntParam(PARAMS.N_OF_COUNTERS) > 0) {
+                    values.add(getValueContainer(hero, PARAMS.C_N_OF_COUNTERS, PARAMS.N_OF_COUNTERS));
+                }
 
-                recordOption = new ToolTipManager.ToolTipRecordOption();
-                recordOption.name = hero.getCoordinates().toString();
-                recordOptions.add(recordOption);
+                values.add(new ValueContainer("coord:", hero.getCoordinates().toString()));
+
                 if (hero.getFacing() != null || hero.getDirection() != null) {
-                    recordOption = new ToolTipManager.ToolTipRecordOption();
-                    recordOption.name = "direction: ";
-                    recordOption.name += hero.getFacing() != null ?
-                     hero.getFacing().getDirection() :
-                     hero.getDirection();
-                    recordOptions.add(recordOption);
+                    final String name = "direction: " + (hero.getFacing() != null ?
+                            hero.getFacing().getDirection() :
+                            hero.getDirection());
+                    values.add(new ValueContainer(name, hero.getCoordinates().toString()));
                 }
-                if (hero.getIntParam(PARAMS.LIGHT_EMISSION)>0) {
-                    recordOption = new ToolTipManager.ToolTipRecordOption();
-                    recordOption.name = "LIGHT_EMISSION";
-                    recordOption.curVal = hero.getIntParam(PARAMS.LIGHT_EMISSION);
-                    recordOptions.add(recordOption);
+
+                if (hero.getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
+                    values.add(new ValueContainer("LIGHT_EMISSION", hero.getStrParam(PARAMS.LIGHT_EMISSION)));
                 }
+
                 if (hero.getCustomParamMap() != null) {
                     hero.getCustomParamMap().keySet().forEach(counter -> {
-                        ToolTipRecordOption option = new ToolTipRecordOption();
-                        option.name = counter + " " + hero.getCustomParamMap().get(counter);
-                        recordOptions.add(option);
+                        final String name = counter + " " + hero.getCustomParamMap().get(counter);
+                        values.add(new ValueContainer(name, ""));
                     });
                 }
 
-                GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(recordOptions));
+                final ValueTooltip tooltip = new ValueTooltip();
+                tooltip.setUserObject(values);
+                GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(tooltip));
                 GuiEventManager.trigger(MOUSE_HOVER, new EventCallbackParam(hero));
                 return true;
             }
         }
         GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(null));
         return false;
+    }
+
+    private ValueContainer getValueContainer(BattleFieldObject hero, PARAMS cur, PARAMS max) {
+        final Integer cv = hero.getIntParam(max);
+        final Integer v = hero.getIntParam(cur);
+        final String name = PARAMS.TOUGHNESS.getName();
+        final TextureRegion iconTexture = TextureCache.getOrCreateR(getPathFromName(name));
+        return new ValueContainer(iconTexture, name, v + "/" + cv);
     }
 
     @Override
@@ -139,8 +139,8 @@ public class GridMouseListener extends ClickListener {
                 Actor unit = cell.getInnerDrawable().hit(x, y, true);
                 if (unit != null && unit instanceof BaseView) {
                     BattleFieldObject obj = unitViewMap.entrySet()
-                     .stream().filter(entry -> entry.getValue() == unit).findFirst()
-                     .get().getKey();
+                            .stream().filter(entry -> entry.getValue() == unit).findFirst()
+                            .get().getKey();
 
                     switch (event.getButton()) {
                         case Input.Buttons.RIGHT:

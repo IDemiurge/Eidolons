@@ -7,7 +7,6 @@ import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.ValueContainer;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
@@ -19,7 +18,7 @@ public class WeaponToolTip extends ValueTooltip {
 
     @Override
     public void updateAct(float delta) {
-        final List<ValueContainer> valueContainers = ((Supplier<List<ValueContainer>>) getUserObject()).get();
+        final List<ValueContainer> valueContainers = (List<ValueContainer>) getUserObject();
         final int size = valueContainers.size();
         int halfSize = size / 2;
         if (size % 2 != 0) {
@@ -47,6 +46,7 @@ public class WeaponToolTip extends ValueTooltip {
 
     @Override
     public void afterUpdateAct(float delta) {
+        super.afterUpdateAct(delta);
         setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
     }
 }

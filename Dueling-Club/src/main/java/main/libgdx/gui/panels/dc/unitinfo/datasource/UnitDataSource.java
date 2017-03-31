@@ -16,23 +16,21 @@ import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.VerticalValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
-import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionToolTip;
-import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster;
-import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTip;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.*;
 import main.libgdx.texture.TextureCache;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static main.content.UNIT_INFO_PARAMS.*;
-import static main.content.UNIT_INFO_PARAMS.ActionToolTipSections.*;
-import static main.content.UNIT_INFO_PARAMS.ActionToolTipSections.COSTS;
 import static main.content.ValuePages.*;
 import static main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster.getIconPathForTableRow;
 import static main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster.getStringForTableValue;
@@ -77,11 +75,30 @@ public class UnitDataSource implements
             final ValueContainer container = new ValueContainer(getOrCreateR(obj.getType().getProperty(G_PROPS.IMAGE)));
 
             ToolTip toolTip = new ValueTooltip();
-            toolTip.setUserObject(new ValueContainer(obj.getName(), ""));
+            toolTip.setUserObject(Arrays.asList(new ValueContainer(obj.getName(), "")));
             container.addListener(toolTip.getController());
 
             return container;
         };
+    }
+
+    public static List<ValueContainer> getActionCostList(DC_UnitAction el) {
+        List<ValueContainer> costsList = new ArrayList<>();
+        for (int i = 0, costsLength = RESOURCE_COSTS.length; i < costsLength; i++) {
+            PARAMETER cost = RESOURCE_COSTS[i];
+            final Integer param = el.getIntParam(cost);
+            if (param > 0) {
+                final String iconPath = ImageManager.getValueIconPath(COSTS_ICON_PARAMS[i]);
+                costsList.add(new ValueContainer(getOrCreateR(iconPath), String.valueOf(param)));
+            }
+        }
+
+        final Integer reqRes = el.getIntParam(MIN_REQ_RES_FOR_USE.getLeft());
+        if (reqRes > 0) {
+            final String iconPath = ImageManager.getValueIconPath(MIN_REQ_RES_FOR_USE.getRight());
+            costsList.add(new ValueContainer(getOrCreateR(iconPath), "> " + reqRes));
+        }
+        return costsList;
     }
 
     @Override
@@ -210,7 +227,7 @@ public class UnitDataSource implements
                 getOrCreateR("UI/value icons/n_of_counters_s.png"), value);
 
         ValueTooltip toolTip = new ValueTooltip();
-        toolTip.setUserObject(new ValueContainer(PARAMS.INITIATIVE.getName(), value));
+        toolTip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.INITIATIVE.getName(), value)));
         container.addListener(toolTip.getController());
 
         return container;
@@ -225,7 +242,7 @@ public class UnitDataSource implements
         VerticalValueContainer container = new VerticalValueContainer(getOrCreateR("UI/value icons/n_of_actions_s.png"), value);
 
         ValueTooltip toolTip = new ValueTooltip();
-        toolTip.setUserObject(new ValueContainer(PARAMS.N_OF_ACTIONS.getName(), value));
+        toolTip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.N_OF_ACTIONS.getName(), value)));
         container.addListener(toolTip.getController());
 
         return container;
@@ -256,7 +273,7 @@ public class UnitDataSource implements
                         param);
 
         ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(new ValueContainer(PARAMS.RESISTANCE.getName(), param));
+        tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.RESISTANCE.getName(), param)));
         container.addListener(tooltip.getController());
 
         return container;
@@ -271,7 +288,7 @@ public class UnitDataSource implements
                         param);
 
         ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(new ValueContainer(PARAMS.DEFENSE.getName(), param));
+        tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.DEFENSE.getName(), param)));
         container.addListener(tooltip.getController());
 
         return container;
@@ -285,7 +302,7 @@ public class UnitDataSource implements
                         getOrCreateR("UI/value icons/Fortitude.jpg"),
                         param);
         ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(new ValueContainer(PARAMS.FORTITUDE.getName(), param));
+        tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.FORTITUDE.getName(), param)));
         container.addListener(tooltip.getController());
 
         return container;
@@ -300,7 +317,7 @@ public class UnitDataSource implements
                         param);
 
         ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(new ValueContainer(PARAMS.SPIRIT.getName(), param));
+        tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.SPIRIT.getName(), param)));
         container.addListener(tooltip.getController());
         return container;
     }
@@ -314,7 +331,7 @@ public class UnitDataSource implements
                         param);
 
         ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(new ValueContainer(PARAMS.ARMOR.getName(), param));
+        tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.ARMOR.getName(), param)));
         container.addListener(tooltip.getController());
 
         container.addListener(tooltip.getController());
@@ -332,9 +349,9 @@ public class UnitDataSource implements
             container = new ValueContainer(getOrCreateR(armor.getImagePath()));
 
             ValueTooltip tooltip = new ValueTooltip();
-            tooltip.setUserObject(new ValueContainer("", "This is my armor. There are many like it, but this one is mine.\n" +
+            tooltip.setUserObject(Arrays.asList(new ValueContainer("", "This is my armor. There are many like it, but this one is mine.\n" +
                     "My armor is my best friend. It is my life. \n" +
-                    "Without me, my armor is useless. Without my armor, I am useless."));
+                    "Without me, my armor is useless. Without my armor, I am useless.")));
             container.addListener(tooltip.getController());
         } else {
             container = new ValueContainer(getOrCreateR("/mini/item/armor/empty.jpg"));
@@ -449,22 +466,17 @@ public class UnitDataSource implements
                     .forEach(el -> {
                         final ValueContainer valueContainer = new ValueContainer(getOrCreateR(el.getImagePath()));
 
-                        Map<ActionToolTipSections, List<MultiValueContainer>> map = new HashMap<>();
-
                         Pair<PARAMS, PARAMS> pair = ACTION_TOOLTIPS_PARAMS_MAP.get(ACTION_TOOLTIP_HEADER_KEY);
-                        {
-                            String name = getStringForTableValue(ACTION_TOOLTIP_HEADER_KEY, el);
-                            final String leftImage = ActionTooltipMaster.getIconPathForTableRow(pair.getLeft());
-                            final String rightImage = ActionTooltipMaster.getIconPathForTableRow(pair.getRight());
-                            MultiValueContainer mvc = new MultiValueContainer(name, leftImage, rightImage);
-                            map.put(HEAD, Arrays.asList(mvc));
-                        }
+                        String name = getStringForTableValue(ACTION_TOOLTIP_HEADER_KEY, el);
+                        final String leftImage = ActionTooltipMaster.getIconPathForTableRow(pair.getLeft());
+                        final String rightImage = ActionTooltipMaster.getIconPathForTableRow(pair.getRight());
+                        MultiValueContainer head = new MultiValueContainer(name, leftImage, rightImage);
 
                         VALUE[] baseKeys = ACTION_TOOLTIP_BASE_KEYS;
-                        map.put(BASE, extractActionValues(el, baseKeys));
+                        final List<MultiValueContainer> base = extractActionValues(el, baseKeys);
 
                         baseKeys = ACTION_TOOLTIP_RANGE_KEYS;
-                        map.put(RANGE, extractActionValues(el, baseKeys));
+                        final List<MultiValueContainer> range = extractActionValues(el, baseKeys);
 
                         List/*<List<MultiValueContainer>>*/ textsList = new ArrayList<>();
                         for (PARAMS[] params : ACTION_TOOLTIP_PARAMS_TEXT) {
@@ -479,28 +491,34 @@ public class UnitDataSource implements
                                     }
                             ).filter(Objects::nonNull).collect(Collectors.toList()));
                         }
-                        map.put(TEXT, textsList);
-
-                        List costsList = new ArrayList<>();
-                        for (int i = 0, costsLength = RESOURCE_COSTS.length; i < costsLength; i++) {
-                            PARAMETER cost = RESOURCE_COSTS[i];
-                            final Integer param = el.getIntParam(cost);
-                            if (param > 0) {
-                                final String iconPath = ImageManager.getValueIconPath(COSTS_ICON_PARAMS[i]);
-                                costsList.add(new ValueContainer(getOrCreateR(iconPath), String.valueOf(param)));
-                            }
-                        }
-
-                        final Integer reqRes = el.getIntParam(MIN_REQ_RES_FOR_USE.getLeft());
-                        if (reqRes > 0) {
-                            final String iconPath = ImageManager.getValueIconPath(MIN_REQ_RES_FOR_USE.getRight());
-                            costsList.add(new ValueContainer(getOrCreateR(iconPath), "> " + reqRes));
-                        }
-
-                        map.put(COSTS, costsList);
 
                         ToolTip toolTip = new ActionToolTip();
-                        toolTip.setUserObject((Supplier) () -> map);
+                        toolTip.setUserObject(new ActionTooltipSource() {
+                            @Override
+                            public MultiValueContainer getHead() {
+                                return head;
+                            }
+
+                            @Override
+                            public List<MultiValueContainer> getBase() {
+                                return base;
+                            }
+
+                            @Override
+                            public List<MultiValueContainer> getRange() {
+                                return range;
+                            }
+
+                            @Override
+                            public List<List<ValueContainer>> getText() {
+                                return textsList;
+                            }
+
+                            @Override
+                            public CostTableSource getCostsSource() {
+                                return () -> getActionCostList(el);
+                            }
+                        });
                         valueContainer.addListener(toolTip.getController());
                         result.add(valueContainer);
                     });
@@ -553,7 +571,7 @@ public class UnitDataSource implements
             }
 
             ToolTip toolTip = new WeaponToolTip();
-            toolTip.setUserObject((Supplier) () -> list);
+            toolTip.setUserObject(list);
             valueContainer.addListener(toolTip.getController());
         }
         return valueContainer;
@@ -569,7 +587,7 @@ public class UnitDataSource implements
                                     String name = p.getName();
                                     ValueContainer valueContainer = new ValueContainer(name, value);
                                     ValueTooltip valueTooltip = new ValueTooltip();
-                                    valueTooltip.setUserObject(new ValueContainer(name, value));
+                                    valueTooltip.setUserObject(Arrays.asList(new ValueContainer(name, value)));
                                     valueContainer.addListener(valueTooltip.getController());
                                     return valueContainer;
                                 }).collect(Collectors.toList())
