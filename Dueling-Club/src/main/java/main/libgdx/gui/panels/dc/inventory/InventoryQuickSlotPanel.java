@@ -32,10 +32,5 @@ public class InventoryQuickSlotPanel extends TablePanel {
 
             addElement(valueContainer).fill(0, 1).expand(0, 1).center();
         }
-
-        for (int i = maxLength; i < 8; i++) {
-            addElement(new ValueContainer(getOrCreateR("UI/disabled_pack.jpg")))
-                    .fill(0, 1).expand(0, 1).center();
-        }
     }
 }
