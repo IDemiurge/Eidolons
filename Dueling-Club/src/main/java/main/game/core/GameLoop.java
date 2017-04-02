@@ -11,17 +11,22 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
+//REVIEW again a class with no comments at all.
+// Is there only one way to implement a game loop, which everyone knows? I dont think so.
 /**
  * Created by JustMe on 3/23/2017.
  */
 public class GameLoop {
     private static boolean enabled = true;
+
+    //REVIEW02042017 Why do we need the 4 fields below?
     Unit activeUnit;
     private DC_ActiveObj action;
-    //    private  Ref ref;
     private DC_Obj target;
-    private DC_Game game;
     private Context context;
+
+
+    private DC_Game game;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -58,7 +63,7 @@ public class GameLoop {
                 e.printStackTrace();
             }
             if (!result) {
-                // TODO ???
+                // TODO what???
             }
             int timeCost = action.getHandler().getTimeCost();
             Boolean endTurn = getGame().getRules().getTimeRule().actionComplete(action, timeCost);
