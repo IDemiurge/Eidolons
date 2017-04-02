@@ -1,7 +1,7 @@
 package main.libgdx.gui.panels.dc.actionpanel;
 
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.panels.dc.actionpanel.datasource.QuickSlotsDataSource;
+import main.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class QuickSlotPanel extends BaseSlotPanel {
     public void updateAct(float delta) {
         clear();
 
-        final QuickSlotsDataSource source = (QuickSlotsDataSource) getUserObject();
+        final ActiveQuickSlotsDataSource source = (ActiveQuickSlotsDataSource) getUserObject();
 
         final List<ActionValueContainer> sources = source.getQuickSlotActions();
         final int tempLimit = Math.min(sources.size(), 6);

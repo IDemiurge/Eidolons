@@ -96,6 +96,9 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         if (!constructed) {
             ref.setID(KEYS.ACTIVE, getId());
         } else {
+            if (getActive() == null) {
+                generateWrappedActive();
+            }else
             ref.setID(KEYS.ACTIVE, getActive().getId()); // TODO for parsing?
         }
         super.construct();

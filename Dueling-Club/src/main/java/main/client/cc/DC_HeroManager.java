@@ -7,6 +7,7 @@ import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.item.DC_HeroItemObj;
+import main.entity.item.DC_JewelryObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
@@ -23,13 +24,15 @@ public class DC_HeroManager extends HeroManager {
 
     @Override
     protected int addJewelryItem(Unit hero, Entity type) {
-        DC_HeroItemObj item = (DC_HeroItemObj) ObjUtilities
-                .findObjByType(type, hero.getInventory());
+        DC_HeroItemObj item =null ;
+        if (type instanceof DC_JewelryObj)item= (DC_HeroItemObj) type;
+       else  item =(DC_HeroItemObj) ObjUtilities
+         .findObjByType(type, hero.getInventory());
         int result = super.addJewelryItem(hero, type);
         if (result == 0) {
             return 0;
         }
-        hero.addJewelryItem(item);
+        hero.addJewelryItem((DC_JewelryObj) item);
         hero.removeFromInventory(item);
         update(hero);
         return result;
@@ -47,7 +50,7 @@ public class DC_HeroManager extends HeroManager {
     public boolean addItem(Unit hero, Entity type, OBJ_TYPE TYPE, PROPERTY PROP) {
         Obj cell = game.getCellByCoordinate(hero.getCoordinates());
         DC_HeroItemObj item = (DC_HeroItemObj) ObjUtilities.findObjByType(type, hero.getGame()
-                .getDroppedItemManager().getDroppedItems(cell));
+         .getDroppedItemManager().getDroppedItems(cell));
         boolean result = hero.getGame().getDroppedItemManager().pickUp(cell, item);
         if (!result) {
             return false;
@@ -112,8 +115,8 @@ public class DC_HeroManager extends HeroManager {
                 // } else
                 if (itemObj instanceof DC_WeaponObj) {
                     hero.getQuickItems().add(
-                            new DC_QuickItemObj(itemObj.getType(), hero.getOwner(), game, hero
-                                    .getRef(), true));
+                     new DC_QuickItemObj(itemObj.getType(), hero.getOwner(), game, hero
+                      .getRef(), true));
                 } else {
                     hero.getQuickItems().add((DC_QuickItemObj) itemObj);
                 }
@@ -134,15 +137,20 @@ public class DC_HeroManager extends HeroManager {
             }
             result++;
         }
+        DC_HeroItemObj slotItem = null;
+        if (type instanceof DC_HeroItemObj) {
+            slotItem = (DC_HeroItemObj) type;
+        } else
+            for (DC_HeroItemObj item : hero.getInventory()) {
+                if (item.getType() == type) {
+                    slotItem = item;
+                    break;
+                }
+            }// item
+        hero.setItem(slotItem, slot);
+        hero.removeFromInventory(slotItem);
+        result++;
 
-        for (DC_HeroItemObj item : hero.getInventory()) {
-            if (item.getType() == type) {
-                hero.setItem(item, slot);
-                hero.removeFromInventory(item);
-                result++;
-                break;
-            }
-        }// item
         if (result > 0) {
             update(hero);
         }

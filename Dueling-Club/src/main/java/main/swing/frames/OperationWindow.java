@@ -67,7 +67,7 @@ public abstract class OperationWindow extends G_Dialog implements OperationDialo
     public void refresh() {
         getComponent().setHero(heroModel);
         getComponent().refresh();
-        inventoryManager.getInvListManager().setNumberOfOperations(getNumberOfOperations());
+        inventoryManager.getInvListManager().setOperationsLeft(getNumberOfOperations());
         operationsPool.setText(getPoolText());
     }
 

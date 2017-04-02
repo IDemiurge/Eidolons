@@ -1,7 +1,7 @@
 package main.libgdx.gui.panels.dc.actionpanel;
 
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.panels.dc.actionpanel.datasource.ModeActionsDataSource;
+import main.libgdx.gui.panels.dc.actionpanel.datasource.UnitActionsDataSource;
 
 import java.util.List;
 
@@ -21,9 +21,9 @@ public class ModeActionsPanel extends BaseSlotPanel {
     public void updateAct(float delta) {
         clear();
 
-        final ModeActionsDataSource source = (ModeActionsDataSource) getUserObject();
+        final UnitActionsDataSource source = (UnitActionsDataSource) getUserObject();
 
-        final List<ActionValueContainer> sources = source.getModeActions();
+        final List<ActionValueContainer> sources = source.getDisplayedActions();
         final int tempLimit = Math.min(sources.size(), 6);
         for (int i = 0; i < tempLimit; i++) {
             addValueContainer(sources.get(i), getOrCreateR("UI/EMPTY_LIST_ITEM.jpg"));

@@ -302,7 +302,7 @@ public class UnitShop {
             }
         } else {
             if (item instanceof DC_JewelryObj) {
-                unit.addJewelryItem(item);
+                unit.addJewelryItem((DC_JewelryObj) item);
             } else {
                 if (item instanceof DC_QuickItemObj) {
                     unit.getQuickItems().add((DC_QuickItemObj) item);

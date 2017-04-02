@@ -5,7 +5,6 @@ import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.PROPS;
 import main.content.values.properties.PROPERTY;
-import main.elements.conditions.RequirementsManager;
 import main.entity.Entity;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.obj.unit.Unit;
@@ -21,78 +20,122 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
  *
  * @author JustMe
  */
-public class DC_InventoryManager   {
+public class DC_InventoryManager {
 
-    private   DC_Game game;
-    protected Integer numberOfOperations;
+    protected Integer operationsLeft;
+    protected Integer operationsPool;
+    private DC_Game game;
     private Unit hero;
     private OBJ_TYPE TYPE;
 
     public DC_InventoryManager(DC_Game game) {
-        this.TYPE =  DC_TYPE.ITEMS;
-        this.game =game;
+        this.TYPE = DC_TYPE.ITEMS;
+        this.game = game;
     }
 
 
-   
     public boolean hasOperations(int n) {
-        return getNumberOfOperations() >= n;
+        return getOperationsLeft() >= n;
     }
 
-   
+
     public boolean hasOperations() {
-        return getNumberOfOperations() > 0;
+        return getOperationsLeft() > 0;
     }
 
-   
-    public Integer getNumberOfOperations() {
-        return numberOfOperations;
+
+    public Integer getOperationsLeft() {
+        return operationsLeft;
     }
 
-   
-    public void setNumberOfOperations(Integer numberOfOperations) {
-        this.numberOfOperations = numberOfOperations;
+
+    public void setOperationsLeft(Integer operationsLeft) {
+        this.operationsLeft = operationsLeft;
     }
 
+    public Integer getOperationsPool() {
+        return operationsPool;
+    }
+
+    public void setOperationsPool(Integer operationsPool) {
+        this.operationsPool = operationsPool;
+        setOperationsLeft(operationsPool);
+    }
 
     public void processOperationCommand(String string) {
         for (String substring : StringMaster.openContainer(string)) {
             OPERATIONS operation = new EnumMaster<OPERATIONS>().retrieveEnumConst(OPERATIONS.class,
-                    substring.split(StringMaster.PAIR_SEPARATOR)[0]);
+             substring.split(StringMaster.PAIR_SEPARATOR)[0]);
             String typeName = (substring.split(StringMaster.PAIR_SEPARATOR)[1]);
             execute(operation, typeName);
         }
-
     }
-
-    public boolean tryExecuteOperation(OPERATIONS operation, String typeName) {
-        if (!canDoOperation(operation, typeName)) {
-            return  false;
-        }
-        execute(operation, typeName);
-        return true;
-    }
-
-    private boolean canDoOperation(OPERATIONS operation, String typeName) {
-        Entity type = null;
-        String s = CharacterCreator.getHeroManager()
-         .checkRequirements(getHero(), type, RequirementsManager.NORMAL_MODE);
-        // if (s != null) {
-
-
-
-        return true;
-    }
-
     private void execute(OPERATIONS operation, String typeName) {
-        Unit unit = getHero();
-        boolean alt = false;
-        DC_HeroItemObj item;
-        if (operation == OPERATIONS.PICK_UP) {
-            item = unit.getGame().getDroppedItemManager().findDroppedItem(typeName,
-             unit.getCoordinates()); // TODO finish
+        DC_HeroItemObj item = getHero().findItem(typeName, getMode(operation));
+        execute(operation, item.getType());
+    }
+    public boolean tryExecuteOperation(OPERATIONS operation, Entity type) {
+        if (!canDoOperation(operation, type)) {
+            return false;
+        }
+        try {
+            execute(operation, type);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
 
+
+        return true;
+    }
+
+    private boolean canDoOperation(OPERATIONS operation, Entity type) {
+        if (!hasOperations())
+            return false;
+//        String s = CharacterCreator.getHeroManager()
+//         .checkRequirements(getHero(), type, RequirementsManager.NORMAL_MODE);
+        // if (s != null) {
+        return true;
+    }
+
+
+
+    private void execute(OPERATIONS operation, Entity type) {
+        boolean alt = false;
+//        if (operation == OPERATIONS.PICK_UP) {
+//            item = unit.getGame().getDroppedItemManager().findDroppedItem(typeName,
+//             unit.getCoordinates()); // TODO finish
+//        }
+        DC_HeroItemObj item = getHero().
+         findItem(type.getName(),
+          getMode(operation));
+        boolean drop = false;
+        switch (operation) {
+            case EQUIP:
+                CharacterCreator.getHeroManager().addSlotItem(getHero(), type, alt);
+                break;
+            case DROP:
+                drop = true;
+            case UNEQUIP:
+                getHero().unequip(item, drop);
+                break;
+            case EQUIP_QUICK_SLOT:
+                // CharacterCreator.getHeroManager().addItem(unit, type,
+                // OBJ_TYPES.ITEMS, PROPS.QUICK_ITEMS, true);
+                CharacterCreator.getHeroManager().addQuickItem(getHero(), type);
+                break;
+            case PICK_UP:
+                game.getDroppedItemManager().pickUp(getHero(), type);
+                break;
+
+            case UNEQUIP_QUICK_SLOT:
+                CharacterCreator.getHeroManager().removeQuickSlotItem(getHero(), type);
+                break;
+        }
+        operationDone(1, operation, type.getName());
+    }
+
+    private Boolean getMode(OPERATIONS operation) {
         Boolean mode = null;
         if (operation == OPERATIONS.UNEQUIP_QUICK_SLOT) {
             mode = true;
@@ -100,53 +143,25 @@ public class DC_InventoryManager   {
         if (operation == OPERATIONS.EQUIP || operation == OPERATIONS.EQUIP_QUICK_SLOT) {
             mode = false;
         }
-
-        item = unit.findItem(typeName, mode);
-        Entity type = item.getType();
-        switch (operation) {
-            case EQUIP:
-                CharacterCreator.getHeroManager().addSlotItem(getHero(), type, alt);
-                break;
-            case DROP:
-                unit.getGame().getDroppedItemManager().drop(item, unit);
-                break;
-            case EQUIP_QUICK_SLOT:
-                // CharacterCreator.getHeroManager().addItem(unit, type,
-                // OBJ_TYPES.ITEMS, PROPS.QUICK_ITEMS, true);
-                CharacterCreator.getHeroManager().addQuickItem(unit, type);
-                break;
-            case PICK_UP:
-                unit.getGame().getDroppedItemManager().pickUp(unit, type);
-                break;
-            case UNEQUIP:
-                unit.unequip(item, false);
-                break;
-            case UNEQUIP_QUICK_SLOT:
-                CharacterCreator.getHeroManager().removeQuickSlotItem(unit, type);
-                break;
-        }
-
-    }
+        return mode;  }
 
 
-   
     public boolean operationDone(OPERATIONS operation, String string) {
         return operationDone(1, operation, string);
     }
 
-   
-    public boolean operationDone(int n, OPERATIONS operation, String string) {
-        setNumberOfOperations(getNumberOfOperations() - n);
-        boolean result =hasOperations();
-        getHero().getGame().getInventoryTransactionManager().getWindow()
-         .appendOperationData(operation, string);
 
-        getHero().getGame().getInventoryTransactionManager().getWindow().setNumberOfOperations(
-         numberOfOperations);
+    public boolean operationDone(int n, OPERATIONS operation, String string) {
+        setOperationsLeft(getOperationsLeft() - n);
+        boolean result = hasOperations();
+//        game.getInventoryTransactionManager().getWindow()
+//         .appendOperationData(operation, string);
+//        game.getInventoryTransactionManager().getWindow().setNumberOfOperations(
+//         operationsLeft);
         return result;
     }
 
-    public boolean addType(ObjType itemType,   boolean alt) {
+    public boolean addType(ObjType itemType, boolean alt) {
         if (!hasOperations()) {
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
             return false;
@@ -157,7 +172,7 @@ public class DC_InventoryManager   {
     }
 
 
-    public void removeType(Entity item,  PROPERTY p) {
+    public void removeType(Entity item, PROPERTY p) {
         if (!hasOperations()) {
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
             return;
@@ -176,11 +191,11 @@ public class DC_InventoryManager   {
         operationDone(operations, item.getName());
     }
 
-   
+
     public Unit getHero() {
-        if (hero==null )
+        if (hero == null)
             return game.getManager().getActiveObj();
-            return hero;
+        return hero;
     }
 
     public void setHero(Unit hero) {

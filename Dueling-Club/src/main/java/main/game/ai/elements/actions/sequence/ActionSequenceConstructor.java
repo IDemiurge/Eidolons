@@ -16,7 +16,7 @@ import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.ActionFactory;
 import main.game.ai.elements.actions.AiUnitActionMaster;
-import main.game.ai.elements.actions.QuickItemAction;
+import main.game.ai.elements.actions.AiQuickItemAction;
 import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.elements.goal.Goal;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
@@ -265,10 +265,10 @@ public class ActionSequenceConstructor extends AiHandler {
         return list;
     }
 
-    private List<QuickItemAction> getRangedReloadAction(Action action) {
+    private List<AiQuickItemAction> getRangedReloadAction(Action action) {
         Obj weapon = action.getActive().getRef().getObj(KEYS.RANGED);
         WEAPON_GROUP weapon_group = null;
-        List<QuickItemAction> list = new ArrayList<>();
+        List<AiQuickItemAction> list = new ArrayList<>();
         if (weapon instanceof DC_WeaponObj) {
             DC_WeaponObj dc_WeaponObj = (DC_WeaponObj) weapon;
             if (dc_WeaponObj.getWeaponGroup() == ItemEnums.WEAPON_GROUP.BOWS) {
@@ -284,7 +284,7 @@ public class ActionSequenceConstructor extends AiHandler {
                 }
                 ammo.construct();
                 if (ammo.getWrappedWeapon().getWeaponGroup() == weapon_group) {
-                    QuickItemAction qia = new QuickItemAction(ammo);
+                    AiQuickItemAction qia = new AiQuickItemAction(ammo);
                     if (qia.canBeActivated()) {
                         list.add(qia);
                     }
@@ -358,7 +358,7 @@ public class ActionSequenceConstructor extends AiHandler {
                     if (ReasonMaster.checkReasonCannotActivate(targetAction,
                             SPECIAL_REQUIREMENTS.REF_NOT_EMPTY.getText(KEYS.RANGED.toString(),
                                     KEYS.AMMO.toString()))) {
-                        List<QuickItemAction> reloadActions = getRangedReloadAction(targetAction);
+                        List<AiQuickItemAction> reloadActions = getRangedReloadAction(targetAction);
                         // will then split- ActionManager.splitRangedSequence()
                         if (reloadActions.isEmpty()) {
                             return list;

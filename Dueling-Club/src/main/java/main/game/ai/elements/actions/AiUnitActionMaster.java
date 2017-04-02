@@ -28,11 +28,11 @@ public class AiUnitActionMaster {
     public static List<ActionSequence> splitRangedSequence(ActionSequence sequence) {
         ArrayList<ActionSequence> list = new ArrayList<>();
         for (Action a : sequence.getActions()) {
-            if (a instanceof QuickItemAction) {
+            if (a instanceof AiQuickItemAction) {
                 ArrayList<Action> actions = new ArrayList<>();
                 actions.add(a);
                 for (Action a1 : sequence.getActions()) {
-                    if (!(a1 instanceof QuickItemAction)) {
+                    if (!(a1 instanceof AiQuickItemAction)) {
                         actions.add(a1);
                     }
                 }

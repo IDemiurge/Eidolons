@@ -14,6 +14,7 @@ import main.system.datatypes.DequeImpl;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ import static main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource.getOb
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class PanelActionsDataSource implements
-        QuickSlotsDataSource, ModeActionsDataSource, SpellDataSource,
+ ActiveQuickSlotsDataSource, UnitActionsDataSource, SpellDataSource,
         EffectsAndAbilitiesSource {
     private Unit unit;
 
@@ -61,8 +62,22 @@ public class PanelActionsDataSource implements
     }
 
     @Override
+    public List<ActionValueContainer> getDisplayedActions() {
+         List<ActionValueContainer> list = new LinkedList<>();
+        list.addAll(getModeActions());
+        list.addAll(getSpecialActions());
+         return list;
+    }
+
+    private  List<ActionValueContainer> getSpecialActions() {
+        return getActions(ACTION_TYPE.SPECIAL_ACTION);
+    }
+
     public List<ActionValueContainer> getModeActions() {
-        return unit.getActionMap().get(ACTION_TYPE.MODE).stream()
+        return getActions(ACTION_TYPE.MODE);
+    }
+        public List<ActionValueContainer> getActions(ACTION_TYPE type) {
+        return unit.getActionMap().get(type).stream()
                 .map(key -> {
                     final ActionValueContainer valueContainer = new ActionValueContainer(
                             getOrCreateR(key.getImagePath()),

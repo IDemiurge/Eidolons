@@ -1,6 +1,13 @@
 package main.ability.effects.oneshot.dialog;
 
+import main.ability.InventoryTransactionManager;
+import main.entity.obj.unit.Unit;
+import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.math.Formula;
+import main.system.threading.WaitMaster;
 
 public class InventoryDialogEffect extends DialogEffect {
     protected Formula numberOfOperations;
@@ -16,9 +23,18 @@ public class InventoryDialogEffect extends DialogEffect {
     }
 
     @Override
+    public boolean applyThis() {
+        Integer operations = numberOfOperations.getInt(ref);
+        getGame().getInventoryManager().setOperationsPool(operations);
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY_DIALOG,
+         new EventCallbackParam(new InventoryDataSource((Unit) ref.getSourceObj())));
+        return (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
+    }
+
+    @Override
     protected String getOperationsData() {
         return hero.getGame().getInventoryTransactionManager()
-                .getWindow().getOperationsData();
+         .getWindow().getOperationsData();
     }
 
     @Override
@@ -34,10 +50,10 @@ public class InventoryDialogEffect extends DialogEffect {
 
     @Override
     protected void processOperationCommand(String string) {
-        hero.getGame().getInventoryManager().setHero(hero );
+        hero.getGame().getInventoryManager().setHero(hero);
         hero.getGame().getInventoryTransactionManager().getInvListManager()
-                .processOperationCommand(string);
-        hero.getGame().getInventoryManager().setHero(null );
+         .processOperationCommand(string);
+        hero.getGame().getInventoryManager().setHero(null);
 
     }
 

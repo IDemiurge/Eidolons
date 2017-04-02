@@ -75,7 +75,7 @@ public class Unit extends DC_UnitModel {
     private DequeImpl<DC_FeatObj> skills;
     private DequeImpl<DC_FeatObj> classes;
     private DequeImpl<DC_QuickItemObj> quickItems;
-    private DequeImpl<DC_HeroItemObj> jewelry;
+    private DequeImpl<DC_JewelryObj> jewelry;
     private DequeImpl<DC_HeroItemObj> inventory;
 
     private DC_Masteries masteries;
@@ -703,18 +703,18 @@ public class Unit extends DC_UnitModel {
                 getProperty(G_PROPS.BACKGROUND));
     }
 
-    public DequeImpl<DC_HeroItemObj> getJewelry() {
+    public DequeImpl<DC_JewelryObj> getJewelry() {
         if (jewelry == null) {
             jewelry = new DequeImpl<>();
         }
         return jewelry;
     }
 
-    public void setJewelry(DequeImpl<DC_HeroItemObj> jewelry) {
+    public void setJewelry(DequeImpl<DC_JewelryObj> jewelry) {
         this.jewelry = jewelry;
     }
 
-    public void addJewelryItem(DC_HeroItemObj item) {
+    public void addJewelryItem(DC_JewelryObj item) {
         getJewelry().add(item);
         item.setRef(ref);
     }
@@ -1011,7 +1011,7 @@ public class Unit extends DC_UnitModel {
             return new ListMaster<DC_HeroSlotItem>().findType(typeName, new LinkedList<>(
                     getSlotItems()));
         }
-        DC_HeroItemObj item = quick_inv_slot ? new ListMaster<DC_HeroItemObj>().findType(typeName,
+        DC_HeroItemObj item = !quick_inv_slot ? new ListMaster<DC_HeroItemObj>().findType(typeName,
                 new LinkedList<>(getInventory())) : new ListMaster<DC_QuickItemObj>().findType(
                 typeName, new LinkedList<>(getQuickItems()));
         return item;
@@ -1198,5 +1198,21 @@ public class Unit extends DC_UnitModel {
     public void resetFacing() {
 //   TODO bugged? used to work
 //     getResetter().resetFacing();
+    }
+
+    public List<DC_JewelryObj > getRings() {
+        List<DC_JewelryObj> list = new LinkedList<>(getJewelry());
+        for ( DC_JewelryObj j : getJewelry()){
+            if(j.isAmulet())
+                list.remove(j);
+        }
+        return list ;
+    }
+    public DC_JewelryObj getAmulet() {
+        for ( DC_JewelryObj j : getJewelry()){
+            if(j.isAmulet())
+                return j;
+        }
+        return null ;
     }
 }

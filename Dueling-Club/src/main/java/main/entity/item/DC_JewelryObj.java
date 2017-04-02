@@ -2,7 +2,9 @@ package main.entity.item;
 
 import main.content.ContentManager;
 import main.content.DC_TYPE;
+import main.content.enums.entity.ItemEnums.JEWELRY_TYPE;
 import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
@@ -20,6 +22,10 @@ public class DC_JewelryObj extends DC_HeroItemObj {
                 new PARAMETER[ContentManager.getParamsForType("chars", false)
                         .size()]);
 
+    }
+
+    public boolean isAmulet () {
+        return checkProperty(G_PROPS.JEWELRY_TYPE, JEWELRY_TYPE.AMULET .toString());
     }
 
     protected PARAMETER getDurabilityParam() {

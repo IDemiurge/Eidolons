@@ -24,8 +24,8 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_SpellObj;
-import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_HeroSlotItem;
+import main.entity.item.DC_JewelryObj;
 import main.entity.obj.Attachment;
 import main.entity.obj.BuffObj;
 import main.entity.obj.attach.DC_FeatObj;
@@ -139,8 +139,18 @@ public class HeroManager {
         Stack<ObjType> stack = new Stack<>();
         typeStacks.put(hero, stack);
     }
-
-    public void stepBack(Unit hero) {
+// for DC
+    public boolean undo(Unit hero) {
+        Stack<ObjType> stack = typeStacks.get(hero);
+        if (ListMaster.isNotEmpty(stack)) {
+            Entity type = stack.pop();
+            applyChangedType(true, hero, type);
+            return true;
+        }
+        return false;
+    }
+    // for HC
+        public void stepBack(Unit hero) {
         if (!game.isSimulation()) {
             return;
         }
@@ -431,7 +441,8 @@ public class HeroManager {
 
     private List<ObjType> getSortedJewelry(Unit hero) {
         List<ObjType> sortedJewelryData = JewelrySlots
-                .getSortedJewelryData(new ListMaster<DC_HeroItemObj>().convertToTypeList(hero
+                .getSortedJewelryData(new ListMaster<DC_JewelryObj>().convertToTypeList(
+                 hero
                         .getJewelry()));
         return sortedJewelryData;
     }
@@ -448,15 +459,21 @@ public class HeroManager {
 
     }
 
-    protected boolean isQuickItem(Entity type) {
+    public static boolean isQuickItem(Entity type) {
         // what about small weapons?!
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS) {
             return true;
         }
+        if (isQuickSlotWeapon(type))
+            return true;
+        return false;
+    }
+
+    public static boolean isQuickSlotWeapon(Entity type) {
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) {
             if (type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.SMALL + "")
-                    || type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.TINY + "")
-                    || type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
+             || type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.TINY + "")
+             || type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
                 return true;
             }
         }

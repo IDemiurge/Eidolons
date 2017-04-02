@@ -508,7 +508,12 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public DC_WeaponObj getActiveWeapon() {
-        if (!isThrow())
+        if (isThrow()){
+            if (this instanceof DC_ItemActiveObj){
+                return ((DC_ItemActiveObj) this).getItem().getWrappedWeapon();
+            }
+        }
+        else
         if (isRanged()) {
             return (DC_WeaponObj) getRef().getObj(KEYS.RANGED);
         }

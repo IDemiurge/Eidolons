@@ -3,16 +3,16 @@ package main.game.ai.elements.actions;
 import main.entity.Ref;
 import main.entity.item.DC_QuickItemObj;
 
-public class QuickItemAction extends Action {
+public class AiQuickItemAction extends Action {
 
     private DC_QuickItemObj item;
 
-    public QuickItemAction(DC_QuickItemObj item) {
+    public AiQuickItemAction(DC_QuickItemObj item) {
         this(item, item.getRef());
 
     }
 
-    public QuickItemAction(DC_QuickItemObj item, Ref ref) {
+    public AiQuickItemAction(DC_QuickItemObj item, Ref ref) {
         super(item.getActive(), ref);
         this.item = item;
     }

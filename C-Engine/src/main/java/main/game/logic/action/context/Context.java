@@ -17,7 +17,9 @@ public class Context extends Ref {
         super(source);
         this. source = source;
         this. target = target;
-        setTarget(target.getId());
+        if (target != null) {
+            setTarget(target.getId());
+        }
     }
 
     @Override

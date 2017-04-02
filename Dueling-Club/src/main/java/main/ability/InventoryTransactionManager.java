@@ -124,7 +124,7 @@ public class InventoryTransactionManager {
 
         // else {
         // window.setHero(hero);
-        // window.setNumberOfOperations(nOfOperations);
+        // window.setOperationsLeft(nOfOperations);
         // window.refresh();
         // }
 //        SwingUtilities.invokeLater(new Runnable() {

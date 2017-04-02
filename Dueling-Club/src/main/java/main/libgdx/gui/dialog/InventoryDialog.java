@@ -1,103 +1,134 @@
 package main.libgdx.gui.dialog;
 
-import com.badlogic.gdx.scenes.scene2d.Group;
-import main.ability.InventoryTransactionManager;
-import main.client.cc.CharacterCreator;
-import main.client.cc.gui.misc.PoolComp;
-import main.content.PROPS;
-import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.Unit;
-import main.entity.type.ObjType;
-import main.swing.frames.OperationDialog;
-import main.system.threading.WaitMaster;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import main.game.core.Eidolons;
+import main.libgdx.StyleHolder;
+import main.libgdx.gui.panels.dc.TablePanel;
+import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
+import main.libgdx.gui.panels.dc.inventory.InventoryPanel;
+import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 
 /**
  * Created by JustMe on 1/6/2017.
  */
-public class InventoryDialog extends Group implements OperationDialog{
+public class InventoryDialog extends TablePanel  {
 
-    protected Unit heroModel;
-    protected InventoryTransactionManager inventoryManager;
-    protected Unit hero;
-    protected int nOfOperations;
-    protected ObjType bufferedType;
-    protected PoolComp operationsPool;
-    protected DC_Obj cell;
-    private String cachedValue;
-    private String operationsData;
+    InventoryPanel inventoryPanel;
+    InventoryClickHandler handler;
+    //TODO extract all below this into *DIALOG*, the rest is same for HC inventory
+    private Cell<Actor> actionPointsText;
+    private Cell<Actor> doneButton;
+    private Cell<Actor> cancelButton;
+    private Cell<Actor> undoButton;
 
-//    InventoryPanel inventoryPanel;
+    public InventoryDialog(InventoryPanel inventoryPanel, InventoryClickHandler handler) {
+        this.inventoryPanel = inventoryPanel;
+        this.handler = handler;
 
-    public void refresh() {
-//        inventoryPanel.setHero(heroModel);
-//        inventoryPanel.refresh();
-        inventoryManager.getInvListManager().setNumberOfOperations(getNumberOfOperations());
-        operationsPool.setText(getPoolText());
+        addElement(inventoryPanel).pad(0, 20, 20, 20);
+        final TablePanel<Actor> lower = new TablePanel<>();
+        addElement(lower).pad(0, 20, 20, 20);
+
+        actionPointsText = lower.addElement(null).left();
+        undoButton = lower.addElement(null).fill(false).expand(0, 0)
+         .right().pad(20, 0, 20, 0).size(50, 50);
+        cancelButton = lower.addElement(null).fill(false).expand(0, 0)
+         .right().pad(20, 10, 20, 0).size(50, 50);
+        doneButton = lower.addElement(null).fill(false).expand(0, 0)
+         .right().pad(20, 10, 20, 10).size(50, 50);
+        initButtons();
+        initButtonListeners(handler);
+
     }
 
-    @Override
-    public void open() {
-        operationsData = "";
-        cachedValue = cell.getProperty(PROPS.DROPPED_ITEMS);
-        setVisible(true);
-    }
-
-
-    @Override
-    public void done() {
-        InventoryTransactionManager.updateType(getHero());
-        WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
-        CharacterCreator.getHeroManager().removeHero(heroModel);
-        setVisible(false);
-    }
-
-    @Override
-    public String getOperationsData() {
-        if (operationsData == null) {
-            operationsData = "";
+    public void initButtonListeners(InventoryClickHandler handler) {
+//        undoButton.getActor().removeListener()
+        if (undoButton.getActor() instanceof Button) {
+//            ((Button) undoButton.getActor()).
+            undoButton.getActor().addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    handler.undoClicked();
+                }
+            });
         }
-        return operationsData;
+        doneButton.getActor().addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                handler.doneClicked();
+            }
+        });
+        cancelButton.getActor().addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                handler.cancelClicked();
+            }
+        });
     }
 
     @Override
-    public void cancel() {
-        cell.setProperty(PROPS.DROPPED_ITEMS, cachedValue);
-        inventoryManager.resetHero(getHero(), bufferedType);
-        WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, false);
-        setVisible(false);
-        CharacterCreator.getHeroManager().removeHero(heroModel);
+    public void afterUpdateAct(float delta) {
+       if (!updateRequired)
+           return ;
+        actionPointsText.setActor(new ValueContainer("Actions available:", getOperationsString()) {
+            @Override
+            public void afterUpdateAct(float delta) {
+                valueContainer.setActor(new Label(getOperationsString(),
+                 StyleHolder.getDefaultLabelStyle()));
+                super.afterUpdateAct(delta);
+            }
+        });
+       initButtons();
+    }
+
+    private void initButtons() {
+        doneButton.setActor(new Button(StyleHolder.getCustomButtonStyle
+                             ("UI/components/small/ok.png")) {
+                                public boolean isDisabled() {
+                                    Object obj = getUserObject();
+                                    if (obj instanceof InventoryDataSource) {
+                                        return !((InventoryDataSource) obj).
+                                         getHandler().isDoneEnabled();
+                                    }
+                                    return super.isDisabled();
+
+                                }
+                            }
+        );
+        cancelButton.setActor(new Button(StyleHolder.getCustomButtonStyle
+         ("UI/components/small/no.png")){
+            public boolean isDisabled() {
+                Object obj = getUserObject();
+                if (obj instanceof InventoryDataSource) {
+                    return !((InventoryDataSource) obj).
+                     getHandler().isCancelEnabled();
+                }
+                return super.isDisabled();
+
+            }
+        });
+
+        undoButton.setActor(new Button(StyleHolder.getCustomButtonStyle
+         ("UI/components/small/back2.png")){
+            public boolean isDisabled() {
+                Object obj = getUserObject();
+                if (obj instanceof InventoryDataSource) {
+                    return !((InventoryDataSource) obj).
+                     getHandler().isUndoEnabled();
+                }
+                return super.isDisabled();
+
+            }
+        });
+    }
+
+    public   String getOperationsString() {
+        return Eidolons.game.getInventoryManager().getOperationsLeft() + "/" +
+         Eidolons.game.getInventoryManager().getOperationsPool();
     }
 
 
-    @Override
-    public String getPoolTooltip() {
-        return null;
-    }
-
-
-
-    @Override
-    public String getPoolText() {
-        return null;
-    }
-
-    @Override
-    public Unit getHero() {
-        return null;
-    }
-
-    @Override
-    public void setHero(Unit hero) {
-
-    }
-
-    @Override
-    public int getNumberOfOperations() {
-        return 0;
-    }
-
-    @Override
-    public void setNumberOfOperations(int nOfOperations) {
-
-    }
 }

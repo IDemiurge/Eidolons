@@ -17,7 +17,7 @@ public class ActionFactory {
     public static Action newAction(DC_ActiveObj action, Ref ref) {
         if (action instanceof DC_ItemActiveObj) {
             DC_ItemActiveObj itemActiveObj = (DC_ItemActiveObj) action;
-            return new QuickItemAction(itemActiveObj.getItem(), ref);
+            return new AiQuickItemAction(itemActiveObj.getItem(), ref);
         }
         // my change!
 

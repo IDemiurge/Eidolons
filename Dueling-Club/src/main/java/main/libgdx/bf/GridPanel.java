@@ -20,12 +20,14 @@ import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.bf.mouse.GridMouseListener;
 import main.libgdx.gui.panels.dc.InitiativePanelParam;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
+import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
@@ -291,6 +293,14 @@ public class GridPanel extends Group {
 
                 GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL,
                         new EventCallbackParam(new PanelActionsDataSource((Unit) hero)));
+
+                if (CoreEngine.isGuiTestMode()) {
+
+                   Eidolons.game.getInventoryManager().setOperationsPool(2);
+                    GuiEventManager.trigger(SHOW_INVENTORY_DIALOG,
+                     new EventCallbackParam(new InventoryDataSource((Unit) hero)));
+                }
+
             } else {
                 GuiEventManager.trigger(SHOW_RED_BORDER, new EventCallbackParam(view));
                 GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL, new EventCallbackParam(null));

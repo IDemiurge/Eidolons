@@ -4,7 +4,7 @@ import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 
 import java.util.List;
 
-public interface QuickSlotsDataSource {
+public interface UnitActionsDataSource {
 
-    List<ActionValueContainer> getQuickSlotActions();
+    List<ActionValueContainer> getDisplayedActions();
 }

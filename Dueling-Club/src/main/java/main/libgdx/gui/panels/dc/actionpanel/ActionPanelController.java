@@ -2,7 +2,7 @@ package main.libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import main.libgdx.gui.panels.dc.actionpanel.datasource.QuickSlotsDataSource;
+import main.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
 import main.system.GuiEventManager;
 
 import static main.system.GuiEventType.UPDATE_QUICK_SLOT_PANEL;
@@ -41,7 +41,7 @@ public class ActionPanelController extends Group {
 
     private void initListeners() {
         GuiEventManager.bind(UPDATE_QUICK_SLOT_PANEL, obj -> {
-            final QuickSlotsDataSource source = (QuickSlotsDataSource) obj.get();
+            final ActiveQuickSlotsDataSource source = (ActiveQuickSlotsDataSource) obj.get();
             if (source != null) {
                 if (getY() < 0) {
                     setY(0);

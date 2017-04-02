@@ -585,7 +585,6 @@ public class DC_ActionManager implements ActionManager {
         actives.add(newAction(MOVE_LEFT, unit));
         actives.add(newAction(MOVE_RIGHT, unit));
         actives.add(newAction(MOVE_BACK, unit));
-        actives.add(newAction(SEARCH_MODE, unit));
 
         if (!unit.isHuge() && !unit.checkPassive(UnitEnums.STANDARD_PASSIVES.CLUMSY)) {
             actives.add(newAction(CLUMSY_LEAP, unit));
@@ -644,6 +643,9 @@ public class DC_ActionManager implements ActionManager {
                 actives.add(getEnterAction(unit, e));
             }
         }
+
+        actives.add(newAction(SEARCH_MODE, unit));
+
         // for (Entity e : LockMaster.getObjectsToUnlock(unit)) {
         // actives.add(getUnlockAction(unit, e));
         // }

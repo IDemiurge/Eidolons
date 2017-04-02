@@ -403,7 +403,8 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
         getEntity().getJewelry().clear();
         for (DC_HeroItemObj e : items) {
-            getEntity().getJewelry().add(e);
+            if (e instanceof DC_JewelryObj)
+            getEntity().getJewelry().add((DC_JewelryObj) e);
         }
 
     }

@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import main.entity.obj.DC_Obj;
 import main.game.core.game.DC_Game;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.ParticleManager;
@@ -16,23 +15,14 @@ import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.Background;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.mouse.InputController;
-import main.libgdx.gui.ToolTipManager;
-import main.libgdx.gui.controls.radial.DebugRadialManager;
-import main.libgdx.gui.controls.radial.RadialMenu;
 import main.libgdx.gui.dialog.DialogDisplay;
-import main.libgdx.gui.panels.dc.InitiativePanel;
-import main.libgdx.gui.panels.dc.LogPanel;
-import main.libgdx.gui.panels.dc.actionpanel.ActionPanelController;
-import main.libgdx.gui.panels.dc.inventory.InventoryPanel;
-import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
-import main.system.EventCallbackParam;
+import main.libgdx.stage.GuiStage;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
 
-import static main.libgdx.gui.controls.radial.RadialManager.createNew;
-import static main.system.GuiEventType.*;
+import static main.system.GuiEventType.GRID_CREATED;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,7 +33,6 @@ import static main.system.GuiEventType.*;
 public class GameScreen implements Screen {
     public static OrthographicCamera camera;
     private static GameScreen instance;
-    protected ToolTipManager toolTipManager;
     private Stage gridStage;
     private Stage guiStage;
     private Stage dialogStage;
@@ -52,7 +41,6 @@ public class GameScreen implements Screen {
     private Stage phaseAnimsStage;
     private Background background;
     private GridPanel gridPanel;
-    private RadialMenu radialMenu;
     private SpriteBatch batch;
     private OrthographicCamera cam;
     private InputController controller;
@@ -131,31 +119,8 @@ public class GameScreen implements Screen {
     }
 
     private void initGui() {
-        guiStage = new Stage();
+        guiStage = new GuiStage();
 
-        InitiativePanel initiativePanel = new InitiativePanel();
-        initiativePanel.setPosition(0, Gdx.graphics.getHeight() - initiativePanel.getHeight());
-        guiStage.addActor(initiativePanel);
-
-        ActionPanelController actionPanelController = new ActionPanelController();
-        actionPanelController.setPosition(0, 0);
-        guiStage.addActor(actionPanelController);
-
-        UnitInfoPanel infoPanel = new UnitInfoPanel();
-        guiStage.addActor(infoPanel);
-        infoPanel.setPosition(0, 0);
-
-        InventoryPanel inventoryPanel = new InventoryPanel();
-        guiStage.addActor(inventoryPanel);
-        inventoryPanel.setPosition(0, Gdx.graphics.getHeight() - inventoryPanel.getHeight());
-
-        guiStage.addActor(toolTipManager = new ToolTipManager());
-
-        guiStage.addActor(radialMenu = new RadialMenu());
-
-        LogPanel ld = new LogPanel();
-        guiStage.addActor(ld);
-        ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
     }
 
     private void bindEvents() {
@@ -165,15 +130,7 @@ public class GameScreen implements Screen {
             gridStage.addActor(gridPanel);
         });
 
-        GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
-            DC_Obj dc_obj = (DC_Obj) obj.get();
-            GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(null));
-            if (Gdx.input.isButtonPressed(0) || Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-                radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
-            } else {
-                radialMenu.init(createNew(dc_obj));
-            }
-        });
+
     }
 
     @Override

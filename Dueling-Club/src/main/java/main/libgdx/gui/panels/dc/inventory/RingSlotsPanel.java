@@ -2,21 +2,51 @@ package main.libgdx.gui.panels.dc.inventory;
 
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
+import main.libgdx.gui.panels.dc.inventory.containers.InventoryValueContainer;
+import main.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
+
+import java.util.List;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class RingSlotsPanel extends TablePanel {
+    boolean left;
 
-    public RingSlotsPanel() {
-        addElement(new ValueContainer(getOrCreateR("UI/components/ring_empty_slot.png")));
-        addElement(new ValueContainer(getOrCreateR("UI/components/ring_empty_slot.png")));
-        row();
-        addElement(new ValueContainer(getOrCreateR("UI/components/ring_empty_slot.png")));
-        addElement(new ValueContainer(getOrCreateR("UI/components/ring_empty_slot.png")));
+    public RingSlotsPanel(boolean left) {
+        this.left = left;
+//        addElement(new ValueContainer(getOrCreateR(CELL_TYPE.RING.getSlotImagePath())));
+//        addElement(new ValueContainer(getOrCreateR(CELL_TYPE.RING.getSlotImagePath())));
+//        row();
+//        addElement(new ValueContainer(getOrCreateR(
+//         CELL_TYPE.RING.getSlotImagePath())));
+//        addElement(new ValueContainer(getOrCreateR(CELL_TYPE.RING.getSlotImagePath())));
     }
 
-    @Override
-    public void clear() {
+//    @Override
+//    public void clear() {
+//
+//    }
 
+    @Override
+    public void afterUpdateAct(float delta) {
+        clear();
+        super.afterUpdateAct(delta);
+        final List<InventoryValueContainer> rings =
+         ((EquipDataSource) getUserObject()).rings();
+
+        int a = 0;
+        for (int i = 0; i < 8; i++) {
+            if (i % 2 == (left ? 1 : 0)) continue;
+            a++;
+            ValueContainer valueContainer = rings.get(i);
+            if (valueContainer == null) {
+                valueContainer = new ValueContainer(getOrCreateR(CELL_TYPE.RING.getSlotImagePath()));
+            }
+            add(valueContainer).expand(0, 0);
+            if ((a  ) % 2 == 0) {
+                row();
+            }
+        }
     }
 }

@@ -18,7 +18,7 @@ public class PickUpWindow extends OperationWindow {
     @Override
     public void init() {
         super.init();
-        tabComp.getSwapManager().setNumberOfOperations(getNumberOfOperations());
+        tabComp.getSwapManager().setOperationsLeft(getNumberOfOperations());
     }
 
     @Override
