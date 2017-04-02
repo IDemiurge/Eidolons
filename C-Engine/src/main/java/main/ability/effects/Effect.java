@@ -34,11 +34,9 @@ public interface Effect extends Interruptable, Referred,
 
     void setReconstruct(boolean reconstruct);
 
-    boolean isAltering();
 
     void setAltering(boolean altering);
 
-    boolean isAltered();
 
     void setAltered(boolean altered);
 
@@ -60,7 +58,6 @@ public interface Effect extends Interruptable, Referred,
 
     void initLayer();
 
-    void setConcurrent(boolean b);
 
     boolean isCopied();
 

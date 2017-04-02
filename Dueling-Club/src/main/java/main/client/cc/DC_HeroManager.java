@@ -148,6 +148,11 @@ public class DC_HeroManager extends HeroManager {
             result++;
         }
         DC_HeroItemObj slotItem = null;
+        DC_QuickItemObj quick = null ;
+        if (type instanceof DC_QuickItemObj) {
+              quick = ((DC_QuickItemObj) type);
+            slotItem =quick.getWrappedWeapon();
+        }
         if (type instanceof DC_HeroItemObj) {
             slotItem = (DC_HeroItemObj) type;
         } else
@@ -158,9 +163,11 @@ public class DC_HeroManager extends HeroManager {
                 }
             }// item
         hero.setItem(slotItem, slot);
-//        if () TODO
-//            hero.removeQuickItem(slotItem);
+        if (quick != null) {
+            hero.removeQuickItem(quick);
+        }  else
         hero.removeFromInventory(slotItem);
+
         result++;
 
         if (result > 0) {

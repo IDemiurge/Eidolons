@@ -35,6 +35,8 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import java.util.LinkedList;
 import java.util.List;
 
+//REVIEW 40 public methods and not a single one (or did I miss something?) has comments...
+//First of all - what is the purpose of the whole class? in plain english please.
 /**
  * Created by JustMe on 2/21/2017.
  * <p>

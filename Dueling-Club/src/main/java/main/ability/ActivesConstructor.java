@@ -483,15 +483,6 @@ public class ActivesConstructor {
                 }
                 break;
 
-            case ALL_ENEMIES:
-                effects.setConcurrent(true);
-                break;
-            case ALL_ALLIES:
-                effects.setConcurrent(true);
-                break;
-            case ALL:
-                effects.setConcurrent(true);
-                break;
             case NOVA:
                 // TODO
                 effects = new Effects(new ZoneEffect(effects, radius, allyOrEnemyOnly, true));

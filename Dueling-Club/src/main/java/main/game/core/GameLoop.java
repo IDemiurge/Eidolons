@@ -18,7 +18,6 @@ public class GameLoop {
     private static boolean enabled = true;
     Unit activeUnit;
     private DC_ActiveObj action;
-    //    private  Ref ref;
     private DC_Obj target;
     private DC_Game game;
     private Context context;
@@ -74,7 +73,7 @@ public class GameLoop {
             roundLoop();
         }
     }
-
+//
     private void roundLoop() {
         game.getStateManager().newRound();
         while (true) {

@@ -48,7 +48,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     // ?Ability ability;
     protected Integer target;
     protected Integer source;
-    protected Integer groupTarget;
     protected boolean altered = false;
     protected boolean interrupted = false;
     protected boolean altering = false;
@@ -58,7 +57,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     protected Trigger trigger;
     private boolean ignoreGroupTargeting;
     private GroupImpl targetGroup;
-    private boolean concurrent;
     private boolean irresistible;
     private int layer = Effect.BASE_LAYER;
     private boolean reconstruct;
@@ -194,17 +192,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             boolean result = true;
             for (Integer id : groupIds) {
 
-                if (isConcurrent()) {
-                    LogMaster.log("applying concurrently: " + this);
-                    final int targetId = id;
-                    new Thread(new Runnable() {
-                        public void run() {
-                            applyConcurrently(targetId);
-                        }
 
-                    }).start();
-                    continue;
-                }
 
                 if (isInterrupted()) {
                     break;
@@ -485,13 +473,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         this.targetGroup = targetGroup;
     }
 
-    public boolean isConcurrent() {
-        return concurrent;
-    }
 
-    public void setConcurrent(boolean concurrent) {
-        this.concurrent = concurrent;
-    }
 
     public boolean isContinuousWrapped() {
         if (this instanceof ContinuousEffect) {
