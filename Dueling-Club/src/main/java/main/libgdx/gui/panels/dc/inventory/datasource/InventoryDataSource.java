@@ -1,5 +1,6 @@
 package main.libgdx.gui.panels.dc.inventory.datasource;
 
+import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
@@ -7,6 +8,7 @@ import main.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import main.libgdx.gui.panels.dc.inventory.containers.InventoryValueContainer;
 import main.libgdx.gui.panels.dc.inventory.containers.InventoryValueContainerFactory;
 import main.system.auxiliary.data.ListMaster;
+import main.system.datatypes.DequeImpl;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -61,7 +63,7 @@ public class InventoryDataSource implements QuickSlotDataSource,
 
     @Override
     public List<InventoryValueContainer> rings() {
-        List<InventoryValueContainer> list = factory.getList(unit.getJewelry(),
+        List<InventoryValueContainer> list = factory.getList(  unit.getRings(),
          CELL_TYPE.RING);
         ListMaster.fillWithNullElements(list, 8);
         return list;

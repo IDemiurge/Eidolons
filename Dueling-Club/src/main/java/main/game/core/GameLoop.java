@@ -23,6 +23,40 @@ public class GameLoop {
     private DC_Game game;
     private Context context;
 
+
+//    ActionInput input;
+//    public class ActionInput{
+//        private DC_ActiveObj action;
+//        private DC_Obj target;
+//        private Context context;
+        //        public ActionInput(DC_ActiveObj action, DC_Obj target, Context context) {
+//            this.action = action;
+//            this.target = target;
+//            this.context = context;
+//        }
+//
+//        public ActionInput(DC_ActiveObj action, Context context) {
+//            this.action = action;
+//            this.context = context;
+//        }
+//
+//        public ActionInput(DC_ActiveObj action, DC_Obj target) {
+//            this.action = action;
+//            this.target = target;
+//        }
+//
+//        public DC_ActiveObj getAction() {
+//            return action;
+//        }
+//
+//        public DC_Obj getTarget() {
+//            return target;
+//        }
+//
+//        public Context getContext() {
+//            return context;
+//        }
+//    }
     public GameLoop(DC_Game game) {
         this.game = game;
     }

@@ -78,8 +78,11 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             case QUICK_SLOT:
                 if (rightClick)
                     return OPERATIONS.UNEQUIP_QUICK_SLOT;
-                if (clickCount > 1 && HeroManager.isQuickSlotWeapon(cellContents))
-                    return OPERATIONS.EQUIP;
+                if (clickCount > 1) {
+                    if (HeroManager.isQuickSlotWeapon(cellContents))
+                        return OPERATIONS.EQUIP;
+                    else return OPERATIONS.UNEQUIP_QUICK_SLOT;
+                }
                 if (altClick)
                     return OPERATIONS.DROP;
                 return null;

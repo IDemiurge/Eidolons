@@ -111,7 +111,7 @@ public class Unit extends DC_UnitModel {
 
     public Unit(Unit hero) {
         this(new ObjType(hero.getType(), true), hero.getX(), hero.getY(), hero.getOriginalOwner(),
-                hero.getGame(), hero.getRef().getCopy());
+         hero.getGame(), hero.getRef().getCopy());
         // transfer all buffs and other dynamic stuff?
     }
 
@@ -122,7 +122,6 @@ public class Unit extends DC_UnitModel {
     public Unit(ObjType type, DC_Game game) {
         this(type, 0, 0, DC_Player.NEUTRAL, game, new Ref(game));
     }
-
 
 
     @Override
@@ -194,7 +193,7 @@ public class Unit extends DC_UnitModel {
     public DC_FeatObj getFeat(boolean skill, ObjType type) {
         if (game.isSimulation()) {
             return (DC_FeatObj) getGame().getSimulationObj(this, type,
-                    skill ? PROPS.SKILLS : PROPS.CLASSES);
+             skill ? PROPS.SKILLS : PROPS.CLASSES);
         }
         return null;// TODO
     }
@@ -271,8 +270,6 @@ public class Unit extends DC_UnitModel {
     }
 
 
-
-
     public void addPassive(STANDARD_PASSIVES passive) {
         addPassive(passive.getName());
     }
@@ -298,6 +295,7 @@ public class Unit extends DC_UnitModel {
         getResetter().afterEffectsApplied();
 
     }
+
     public List<DC_ItemActiveObj> getQuickItemActives() {
         if (!ListMaster.isNotEmpty(getQuickItems())) {
             return new LinkedList<>();
@@ -334,8 +332,6 @@ public class Unit extends DC_UnitModel {
         }
         return super.getParamRounded(param, base);
     }
-
-
 
 
     // isPassivesReady
@@ -484,7 +480,7 @@ public class Unit extends DC_UnitModel {
     public boolean isQuickSlotsFull() {
         if (game.isSimulation()) {
             return getIntParam(PARAMS.QUICK_SLOTS) <= StringMaster.openContainer(
-                    getProperty(PROPS.QUICK_ITEMS)).size();
+             getProperty(PROPS.QUICK_ITEMS)).size();
         }
         if (quickItems == null) {
             return false;
@@ -700,7 +696,7 @@ public class Unit extends DC_UnitModel {
 
     public BACKGROUND getBackground() {
         return new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class,
-                getProperty(G_PROPS.BACKGROUND));
+         getProperty(G_PROPS.BACKGROUND));
     }
 
     public DequeImpl<DC_JewelryObj> getJewelry() {
@@ -763,7 +759,7 @@ public class Unit extends DC_UnitModel {
         if (weapon != null) {
             weapon.applySpecialEffects(case_type, target, REF);
         }
-        DC_Obj  action = (DC_Obj) ref.getActive();
+        DC_Obj action = (DC_Obj) ref.getActive();
         if (action != null) {
             action.applySpecialEffects(case_type, target, REF);
         }
@@ -773,12 +769,25 @@ public class Unit extends DC_UnitModel {
     public void unequip(DC_HeroItemObj item, Boolean drop) {
         if (getWeapon(false) == item) {
             unequip(ItemEnums.ITEM_SLOT.MAIN_HAND, drop);
+            return;
         } else if (getWeapon(true) == item) {
             unequip(ItemEnums.ITEM_SLOT.OFF_HAND, drop);
+            return;
         } else if (getArmor() == item) {
             unequip(ItemEnums.ITEM_SLOT.ARMOR, drop);
+            return;
         }
 
+        if (getQuickItems().contains(item)) {
+            removeQuickItem((DC_QuickItemObj) item);
+            addItemToInventory(item);
+        } else if (getJewelry().contains(item)) {
+            removeJewelryItem(item);
+            addItemToInventory(item);
+
+        }
+        if (drop)
+            dropItemFromInventory(item);
     }
 
     @Override
@@ -799,8 +808,9 @@ public class Unit extends DC_UnitModel {
         }
         return result;
     }
+
     public List<AbilityObj> getPassivesFiltered() {
-        return null ;
+        return null;
     }
 
     public List<DC_HeroSlotItem> getSlotItems() {
@@ -894,7 +904,7 @@ public class Unit extends DC_UnitModel {
     public MACRO_MODES getMacroMode() {
         if (macroMode == null) {
             macroMode = new EnumMaster<MACRO_MODES>().retrieveEnumConst(MACRO_MODES.class,
-                    getProperty(MACRO_PROPS.MACRO_MODE));
+             getProperty(MACRO_PROPS.MACRO_MODE));
         }
         return macroMode;
     }
@@ -911,7 +921,7 @@ public class Unit extends DC_UnitModel {
     public GENDER getGender() {
         if (gender == null) {
             gender = new EnumMaster<GENDER>().retrieveEnumConst(GENDER.class,
-                    getProperty(G_PROPS.GENDER));
+             getProperty(G_PROPS.GENDER));
         }
         return gender;
     }
@@ -1009,11 +1019,11 @@ public class Unit extends DC_UnitModel {
     public DC_HeroItemObj findItem(String typeName, Boolean quick_inv_slot) {
         if (quick_inv_slot == null) {
             return new ListMaster<DC_HeroSlotItem>().findType(typeName, new LinkedList<>(
-                    getSlotItems()));
+             getSlotItems()));
         }
         DC_HeroItemObj item = !quick_inv_slot ? new ListMaster<DC_HeroItemObj>().findType(typeName,
-                new LinkedList<>(getInventory())) : new ListMaster<DC_QuickItemObj>().findType(
-                typeName, new LinkedList<>(getQuickItems()));
+         new LinkedList<>(getInventory())) : new ListMaster<DC_QuickItemObj>().findType(
+         typeName, new LinkedList<>(getQuickItems()));
         return item;
     }
 
@@ -1049,6 +1059,7 @@ public class Unit extends DC_UnitModel {
     public void setBackgroundType(ObjType backgroundType) {
         this.backgroundType = backgroundType;
     }
+
     public Map<DC_ActiveObj, String> getActionModeMap() {
         if (actionModeMap == null) {
             actionModeMap = new HashMap<>();
@@ -1200,19 +1211,20 @@ public class Unit extends DC_UnitModel {
 //     getResetter().resetFacing();
     }
 
-    public List<DC_JewelryObj > getRings() {
-        List<DC_JewelryObj> list = new LinkedList<>(getJewelry());
-        for ( DC_JewelryObj j : getJewelry()){
-            if(j.isAmulet())
+    public DequeImpl<DC_JewelryObj> getRings() {
+        DequeImpl<DC_JewelryObj> list = new DequeImpl<>(getJewelry());
+        for (DC_JewelryObj j : getJewelry()) {
+            if (j.isAmulet())
                 list.remove(j);
         }
-        return list ;
+        return list;
     }
+
     public DC_JewelryObj getAmulet() {
-        for ( DC_JewelryObj j : getJewelry()){
-            if(j.isAmulet())
+        for (DC_JewelryObj j : getJewelry()) {
+            if (j.isAmulet())
                 return j;
         }
-        return null ;
+        return null;
     }
 }

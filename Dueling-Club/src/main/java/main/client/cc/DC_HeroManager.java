@@ -24,9 +24,9 @@ public class DC_HeroManager extends HeroManager {
 
     @Override
     protected int addJewelryItem(Unit hero, Entity type) {
-        DC_HeroItemObj item =null ;
-        if (type instanceof DC_JewelryObj)item= (DC_HeroItemObj) type;
-       else  item =(DC_HeroItemObj) ObjUtilities
+        DC_HeroItemObj item = null;
+        if (type instanceof DC_JewelryObj) item = (DC_HeroItemObj) type;
+        else item = (DC_HeroItemObj) ObjUtilities
          .findObjByType(type, hero.getInventory());
         int result = super.addJewelryItem(hero, type);
         if (result == 0) {
@@ -91,41 +91,51 @@ public class DC_HeroManager extends HeroManager {
 
     @Override
     public void removeQuickSlotItem(Unit hero, Entity type) {
+        DC_QuickItemObj item = null;
+        if (type instanceof DC_QuickItemObj)
+            item = (DC_QuickItemObj) type;
         for (DC_QuickItemObj itemObj : hero.getQuickItems()) {
             if (itemObj.getType() == type) {
-                hero.removeQuickItem(itemObj);
-                hero.addItemToInventory(itemObj);
+                item = itemObj;
                 break;
             }
         }
+        hero.removeQuickItem(item);
+        hero.addItemToInventory(item);
         // if (hero.getQuickItems().isEmpty())
         // hero.setQuickItems(null); //in DC_HeroObj for now
         update(hero);
     }
 
+    private int addQuickItem_(Unit hero, DC_HeroItemObj itemObj) {
+        hero.removeFromInventory(itemObj);
+        // if (itemObj instanceof Trap) {
+        // } else
+        if (itemObj instanceof DC_WeaponObj) {
+            hero.getQuickItems().add(
+             new DC_QuickItemObj(itemObj.getType(), hero.getOwner(), game, hero
+              .getRef(), true));
+        } else {
+            hero.getQuickItems().add((DC_QuickItemObj) itemObj);
+        }
+        update(hero);
+        return 1;
+    }
     @Override
     public int addQuickItem(Unit hero, Entity type) {
         if (hero.isQuickSlotsFull()) {
             return 0;
         }
+        if (type instanceof DC_HeroItemObj)
+            return addQuickItem_(hero, (DC_HeroItemObj) type);
         for (DC_HeroItemObj itemObj : hero.getInventory()) {
             if (itemObj.getType() == type) {
-                hero.removeFromInventory(itemObj);
-                // if (itemObj instanceof Trap) {
-                // } else
-                if (itemObj instanceof DC_WeaponObj) {
-                    hero.getQuickItems().add(
-                     new DC_QuickItemObj(itemObj.getType(), hero.getOwner(), game, hero
-                      .getRef(), true));
-                } else {
-                    hero.getQuickItems().add((DC_QuickItemObj) itemObj);
-                }
-                update(hero);
-                return 1;
+                return addQuickItem_(hero, itemObj);
             }
         }
         return 0;
     }
+
 
     @Override
     public int setHeroItem(Unit hero, ITEM_SLOT slot, Entity type) {
@@ -148,6 +158,8 @@ public class DC_HeroManager extends HeroManager {
                 }
             }// item
         hero.setItem(slotItem, slot);
+//        if () TODO
+//            hero.removeQuickItem(slotItem);
         hero.removeFromInventory(slotItem);
         result++;
 

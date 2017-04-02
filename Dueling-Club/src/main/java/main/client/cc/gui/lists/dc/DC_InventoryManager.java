@@ -106,9 +106,11 @@ public class DC_InventoryManager {
 //            item = unit.getGame().getDroppedItemManager().findDroppedItem(typeName,
 //             unit.getCoordinates()); // TODO finish
 //        }
-        DC_HeroItemObj item = getHero().
-         findItem(type.getName(),
-          getMode(operation));
+        DC_HeroItemObj item =null ;
+        item = (DC_HeroItemObj) type;
+//        getHero().
+//         findItem(type.getName(),
+//          getMode(operation));
         boolean drop = false;
         switch (operation) {
             case EQUIP:

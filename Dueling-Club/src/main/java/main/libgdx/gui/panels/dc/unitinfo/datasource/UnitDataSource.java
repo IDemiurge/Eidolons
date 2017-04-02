@@ -15,6 +15,7 @@ import main.libgdx.gui.dialog.ToolTip;
 import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.VerticalValueContainer;
+import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.*;
 import main.libgdx.texture.TextureCache;
@@ -553,7 +554,8 @@ public class UnitDataSource implements
         if (weapon != null) {
             image = getOrCreateR(weapon.getImagePath());
         } else {
-            image = getOrCreateR("UI/components/2017/generic/inventory/empty weapon.png");
+            image = getOrCreateR((weapon.isMainHand() ?CELL_TYPE.WEAPON_MAIN :
+             CELL_TYPE.WEAPON_OFFHAND).getSlotImagePath());
         }
 
         ValueContainer valueContainer = new ValueContainer(image);
