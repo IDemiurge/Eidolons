@@ -12,7 +12,7 @@ import main.system.datatypes.DequeImpl;
  */
 
 public interface TurnManager {
-    boolean makeTurn();
+    void newRound();
 
     DequeImpl<? extends Obj> getUnitQueue();
 

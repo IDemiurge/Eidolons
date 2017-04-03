@@ -23,7 +23,6 @@ public class InventoryQuickSlotPanel extends TablePanel {
         final List<InventoryValueContainer> quickSlots =
          ((QuickSlotDataSource) getUserObject()).getQuickSlots();
 
-
         int maxLength = Math.min(8, quickSlots.size());
 
         for (int i = 0; i < maxLength; i++) {

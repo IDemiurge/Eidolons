@@ -87,10 +87,10 @@ public class CadenceRule {
         Boolean offhand = null;
         if (action.checkProperty(PROP, MAIN_HAND)) {
             offhand = false;
-        }
+        } else
         if (action.checkProperty(PROP, OFF_HAND)) {
             offhand = true;
-        }
+        } else
         if (singleCadence)
         // offhand = !action.isOffhand();
         {
@@ -131,8 +131,10 @@ public class CadenceRule {
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
 
         effects.add(valueEffect);
+        if (unit.getIntParam(PARAMS.CADENCE_DAMAGE_MOD) > 0)
         effects.add(new ModifyValueEffect(PARAMS.DAMAGE_MOD, MOD.MODIFY_BY_PERCENT, unit
                 .getParam(PARAMS.CADENCE_DAMAGE_MOD)));
+        if (unit.getIntParam(PARAMS.CADENCE_ATTACK_MOD) > 0)
         effects.add(new ModifyValueEffect(PARAMS.ATTACK_MOD, MOD.MODIFY_BY_PERCENT, unit
                 .getParam(PARAMS.CADENCE_ATTACK_MOD)));
         String buffTypeName = (!offhand) ? buffTypeNameOffHand : buffTypeNameMainHand;

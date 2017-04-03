@@ -10,7 +10,6 @@ import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.DC_MovementManager;
 import main.game.battlefield.FacingMaster;
-import main.game.core.GameLoop;
 import main.game.core.master.EffectMaster;
 import main.game.logic.combat.attack.Attack;
 import main.game.logic.combat.attack.DC_AttackMaster;
@@ -23,8 +22,6 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.math.PositionMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -126,8 +123,6 @@ public class InstantAttackRule {
         if (type.isWakeUpAlert()) {
             AlertRule.wakeUp(unit);
         }
-if (!GameLoop.isEnabled())
-    WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_COMPLETE);
         return checkInterrupt(type, attack, action);
         // TODO when does it "interrupt"?
     }

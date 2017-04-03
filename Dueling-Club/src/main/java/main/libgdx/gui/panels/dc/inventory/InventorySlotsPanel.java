@@ -12,7 +12,7 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 public class InventorySlotsPanel extends TablePanel {
 
     private static final int ROWS = 3;
-    private static final int COLUMNS = 8;
+    private static final int COLUMNS = 7;
     public static final int SIZE = ROWS*COLUMNS;
 
     public InventorySlotsPanel() {

@@ -2,7 +2,6 @@ package main.game.logic.battle.turn;
 
 import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
-import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
 import main.rules.mechanics.WaitRule;
 import main.system.EventCallbackParam;
@@ -22,7 +21,6 @@ import main.test.frontend.FAST_DC;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ConcurrentModificationException;
 
 import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
 
@@ -282,46 +280,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
             }
         }
     }
-    @Override
-    public boolean makeTurn() {
-        newRound();
-        if (GameLoop.isEnabled())
-            return true;
-        Boolean result = false;
-        while (true) {
-            try {
-                result = doUnitAction();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                game.getManager().setActivatingAction(null);
-            }
-            if (result == null) {
-                retainActiveUnit = true;
-            } else {
-                retainActiveUnit = false;
-                if (!result) {
-                    break;
-                }
-            }
-        }
 
-        try {
-            game.getManager().endTurn();
-        } catch (Exception e) {
-            if (e instanceof ConcurrentModificationException) {
-                e.printStackTrace();
-            } else {
-                e.printStackTrace();
-            }
-        }
-        try {
-            game.getStateManager().newRound();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result; // game "loop" exits?
-    }
 
     private boolean isStarted() {
         return game.getState().getRound() > 1;

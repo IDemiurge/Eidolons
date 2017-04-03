@@ -1,7 +1,5 @@
 package main.game.core;
 
-import main.entity.active.DC_ActiveObj;
-import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.elements.actions.Action;
 import main.game.core.game.DC_Game;
@@ -11,61 +9,17 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
+
 /**
  * Created by JustMe on 3/23/2017.
  */
 public class GameLoop {
-    private static boolean enabled = true;
-    Unit activeUnit;
-    private DC_ActiveObj action;
-    private DC_Obj target;
+    private Unit activeUnit;
+    private ActionInput input;
     private DC_Game game;
-    private Context context;
 
-
-//    ActionInput input;
-//    public class ActionInput{
-//        private DC_ActiveObj action;
-//        private DC_Obj target;
-//        private Context context;
-        //        public ActionInput(DC_ActiveObj action, DC_Obj target, Context context) {
-//            this.action = action;
-//            this.target = target;
-//            this.context = context;
-//        }
-//
-//        public ActionInput(DC_ActiveObj action, Context context) {
-//            this.action = action;
-//            this.context = context;
-//        }
-//
-//        public ActionInput(DC_ActiveObj action, DC_Obj target) {
-//            this.action = action;
-//            this.target = target;
-//        }
-//
-//        public DC_ActiveObj getAction() {
-//            return action;
-//        }
-//
-//        public DC_Obj getTarget() {
-//            return target;
-//        }
-//
-//        public Context getContext() {
-//            return context;
-//        }
-//    }
     public GameLoop(DC_Game game) {
         this.game = game;
-    }
-
-    public static boolean isEnabled() {
-        return enabled;
-    }
-
-    public static void setEnabled(boolean enabled) {
-        GameLoop.enabled = enabled;
     }
 
     public void start() {
@@ -73,7 +27,8 @@ public class GameLoop {
             roundLoop();
         }
     }
-//
+
+    //
     private void roundLoop() {
         game.getStateManager().newRound();
         while (true) {
@@ -93,16 +48,16 @@ public class GameLoop {
             if (!result) {
                 // TODO ???
             }
-            int timeCost = action.getHandler().getTimeCost();
-            Boolean endTurn = getGame().getRules().getTimeRule().actionComplete(action, timeCost);
+            int timeCost = input.getAction().getHandler().getTimeCost();
+            Boolean endTurn = getGame().getRules().getTimeRule().actionComplete(input.getAction(), timeCost);
             if (!endTurn) {
                 game.getManager().reset();
-                if (ChargeRule.checkRetainUnitTurn(action)) {
+                if (ChargeRule.checkRetainUnitTurn(input.getAction())) {
                     endTurn = null;
                 }
             }
 
-            getGame().getManager().unitActionCompleted(action, endTurn);
+            getGame().getManager().unitActionCompleted(input.getAction(), endTurn);
 
 
             if (BooleanMaster.isTrue(endTurn))
@@ -120,8 +75,7 @@ public class GameLoop {
     }
 
     private Boolean makeAction() {
-        context  = null;
-        target  = null;
+        input = null;
         if (game.getManager().getActiveObj().isAiControlled()) {
             waitForAI();
         } else {
@@ -135,37 +89,19 @@ public class GameLoop {
     private void waitForAI() {
         Action aiAction =
          game.getAiManager().getAction(game.getManager().getActiveObj());
-        action = aiAction.getActive();
-        context = new Context(aiAction.getRef());
+        input = new ActionInput(aiAction.getActive(), new Context(aiAction.getRef()));
     }
+
 
     private Boolean activateAction() {
-        if (context == null) {
-            context = new Context(game.getManager().getActiveObj(), target);
-        }
-        return activateAction(action, context);
-
-    }
-
-    private Boolean activateAction(DC_ActiveObj action, Context context) {
-        return action.getHandler().activateOn(context);
+        return input.getAction().getHandler().activateOn(input.getContext());
 
     }
 
 
     private void waitForPlayerInput() {
-        WaitMaster.waitForInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION);
+        input = (ActionInput) WaitMaster.waitForInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION);
     }
 
-    public void setAction(DC_ActiveObj action) {
-        this.action = action;
-    }
 
-    public void setTarget(DC_Obj target) {
-        this.target = target;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
 }
