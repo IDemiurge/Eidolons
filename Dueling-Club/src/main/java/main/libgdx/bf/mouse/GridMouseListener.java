@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import main.content.PARAMS;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
@@ -63,7 +64,9 @@ public class GridMouseListener extends ClickListener {
 
                 List<ValueContainer> values = new ArrayList<>();
 
-                values.add(new ValueContainer(hero.getName(), ""));
+                final ValueContainer nameContainer = new ValueContainer(hero.getName(), "");
+                nameContainer.setNameAlignment(Align.left);
+                values.add(nameContainer);
 
                 values.add(getValueContainer(hero, PARAMS.C_TOUGHNESS, PARAMS.TOUGHNESS));
                 values.add(getValueContainer(hero, PARAMS.C_ENDURANCE, PARAMS.ENDURANCE));
@@ -75,27 +78,44 @@ public class GridMouseListener extends ClickListener {
                     values.add(getValueContainer(hero, PARAMS.C_N_OF_COUNTERS, PARAMS.N_OF_COUNTERS));
                 }
 
-                values.add(new ValueContainer("coord:", hero.getCoordinates().toString()));
+                {
+                    final ValueContainer valueContainer =
+                            new ValueContainer("coord:", hero.getCoordinates().toString());
+                    valueContainer.setNameAlignment(Align.left);
+                    valueContainer.setValueAlignment(Align.right);
+                    values.add(valueContainer);
+                }
 
                 if (hero.getFacing() != null || hero.getDirection() != null) {
                     final String name = "direction: " + (hero.getFacing() != null ?
                             hero.getFacing().getDirection() :
                             hero.getDirection());
-                    values.add(new ValueContainer(name, hero.getCoordinates().toString()));
+                    final ValueContainer valueContainer = new ValueContainer(name, hero.getCoordinates().toString());
+                    valueContainer.setNameAlignment(Align.left);
+                    valueContainer.setValueAlignment(Align.right);
+                    values.add(valueContainer);
                 }
 
                 if (hero.getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
-                    values.add(new ValueContainer("LIGHT_EMISSION", hero.getStrParam(PARAMS.LIGHT_EMISSION)));
+                    final ValueContainer valueContainer =
+                            new ValueContainer("LIGHT_EMISSION", hero.getStrParam(PARAMS.LIGHT_EMISSION));
+                    valueContainer.setNameAlignment(Align.left);
+                    valueContainer.setValueAlignment(Align.right);
+                    values.add(valueContainer);
                 }
 
                 if (hero.getCustomParamMap() != null) {
                     hero.getCustomParamMap().keySet().forEach(counter -> {
                         final String name = counter + " " + hero.getCustomParamMap().get(counter);
-                        values.add(new ValueContainer(name, ""));
+                        final ValueContainer valueContainer = new ValueContainer(name, "");
+                        valueContainer.setNameAlignment(Align.left);
+                        valueContainer.setValueAlignment(Align.right);
+                        values.add(valueContainer);
                     });
                 }
 
                 final ValueTooltip tooltip = new ValueTooltip();
+                tooltip.debug();
                 tooltip.setUserObject(values);
                 GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(tooltip));
                 GuiEventManager.trigger(MOUSE_HOVER, new EventCallbackParam(hero));
@@ -109,9 +129,12 @@ public class GridMouseListener extends ClickListener {
     private ValueContainer getValueContainer(BattleFieldObject hero, PARAMS cur, PARAMS max) {
         final Integer cv = hero.getIntParam(max);
         final Integer v = hero.getIntParam(cur);
-        final String name = PARAMS.TOUGHNESS.getName();
+        final String name = max.getName();
         final TextureRegion iconTexture = TextureCache.getOrCreateR(getPathFromName(name));
-        return new ValueContainer(iconTexture, name, v + "/" + cv);
+        final ValueContainer valueContainer = new ValueContainer(iconTexture, name, v + "/" + cv);
+        valueContainer.setNameAlignment(Align.left);
+        valueContainer.setValueAlignment(Align.right);
+        return valueContainer;
     }
 
     @Override

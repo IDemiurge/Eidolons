@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,14 +54,21 @@ public class BaseSlotPanel extends TablePanel {
         for (int i = 0; i < pagesCount; i++) {
             final int indx = i * getPageSize();
             final int toIndx = Math.min(sources.size(), indx + getPageSize());
-            TablePanel page = initPage(sources.subList(indx, toIndx), emptyImagePath);
+            addPage(sources.subList(indx, toIndx), emptyImagePath);
+        }
 
-            modTableMap.put(PagesMod.values()[i], page);
-            addElement(page).left().bottom();
-            page.setVisible(false);
+        if (modTableMap.size() == 0) {
+            addPage(Collections.EMPTY_LIST, emptyImagePath);
         }
 
         setActivePage(PagesMod.NONE);
+    }
+
+    private void addPage(List<ActionValueContainer> list, String emptyImagePath) {
+        final TablePanel page = initPage(list, emptyImagePath);
+        modTableMap.put(PagesMod.NONE, page);
+        addElement(page).left().bottom();
+        page.setVisible(false);
     }
 
     private void setActivePage(PagesMod page) {
