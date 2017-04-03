@@ -101,24 +101,22 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
 
     /**
-     * default self-activation
+     * default self-activation with manual target choosing
      */
     public boolean activate() {
          getMaster().getHandler().activateOnGameLoopThread();
         return true;
     }
 
-    @Override
-    public boolean activate(boolean transmit) {
-        return getHandler().activate();
-    }
 
+// for ai and universal usage
     @Override
     public boolean activatedOn(Ref ref) {
         getTargeter().setForcePresetTarget(true);
         return getHandler().activate();
     }
 
+    // for radial and easy custom activation
     public void activateOn(Obj t) {
         getMaster().getHandler().activateOn((DC_Obj) t);
     }

@@ -1,6 +1,7 @@
 package main.ability.conditions.special;
 
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
 
@@ -17,7 +18,7 @@ public class FleeCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         if (!(ref.getObj(key) instanceof Unit)) {
             return false;
         }

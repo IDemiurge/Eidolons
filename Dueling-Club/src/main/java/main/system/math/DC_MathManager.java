@@ -238,7 +238,7 @@ public class DC_MathManager extends MathMaster {
     @Override
     public Integer evaluateConcentration(Obj obj) {
         // if (new PositionCondition(POSITION.ADJACENT_ANY,
-        // true, source, CRYSTAL_CHARACTERISTICS).check(obj.getRef())){
+        // true, source, CRYSTAL_CHARACTERISTICS).preCheck(obj.getRef())){
         // }
         return DC_Formulas.getFocusConstForConcentration(calculateClaimedObjects(obj, "Crystal"));
     }

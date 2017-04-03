@@ -149,7 +149,7 @@ public class CONTENT_CONSTS {
         NOT_FREE_CELL("Relative position of the cell", "The cell " + VariableManager.getVarIndex(0)
          + " must be occupied", UNIT_DIRECTION.class),
 
-        REF_NOT_EMPTY("obj to check;ref to check", VariableManager.getVarIndex(1) + " is missing!", String.class, KEYS.class),;
+        REF_NOT_EMPTY("obj to preCheck;ref to preCheck", VariableManager.getVarIndex(1) + " is missing!", String.class, KEYS.class),;
 
         private String text;
         private Object[] vars;

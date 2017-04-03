@@ -1,6 +1,7 @@
 package main.elements.conditions;
 
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
+import main.entity.Ref;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
@@ -13,8 +14,8 @@ public class PrinciplesCondition extends StringComparison {
     }
 
     @Override
-    public boolean check() {
-        super.check();
+    public boolean check(Ref ref) {
+        super.check(ref);
 
         for (String s : StringMaster.openContainer(val1)) {
             for (String s2 : StringMaster.openContainer(val2)) {

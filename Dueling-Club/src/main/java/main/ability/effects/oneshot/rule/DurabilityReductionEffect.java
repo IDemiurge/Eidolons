@@ -64,7 +64,7 @@ public class DurabilityReductionEffect extends MicroEffect  implements OneshotEf
             durabilityLost = item.reduceDurabilityForDamage(amount, armor, mod, simulation);
         }
 
-        // check broken item TODO
+        // preCheck broken item TODO
 
         return true;
     }

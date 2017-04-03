@@ -1,12 +1,13 @@
 package main.ability.conditions.shortcut;
 
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 
 public class OrderCondition extends MicroCondition {
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         Unit targetUnit = (Unit) ref.getTargetObj();
 
         if (targetUnit.isOwnedBy(ref.getSourceObj().getOwner())) {

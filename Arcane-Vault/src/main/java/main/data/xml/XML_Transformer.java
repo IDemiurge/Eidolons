@@ -139,7 +139,7 @@ public class XML_Transformer {
     public static void filterTypes(Condition c, OBJ_TYPE... TYPES) {
         for (OBJ_TYPE TYPE : TYPES) {
             for (ObjType type : DataManager.getTypes(TYPE)) {
-                if (c.check(type.getRef())) {
+                if (c.preCheck(type.getRef())) {
                     DataManager.removeType(type.getName(), TYPE.getName());
                 }
             }

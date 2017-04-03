@@ -10,8 +10,7 @@ import main.entity.active.DC_ItemActiveObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.Active;
 import main.entity.obj.DC_Obj;
-import main.game.core.Eidolons;
-import main.game.core.GameLoop;
+import main.game.core.ActionInput;
 import main.game.logic.action.context.Context;
 import main.game.logic.combat.attack.extra_attack.AttackOfOpportunityRule;
 import main.game.logic.combat.attack.extra_attack.ExtraAttacksRule;
@@ -102,16 +101,9 @@ public class Executor extends ActiveHandler {
     public void activateOn(Ref ref) {
         targeter.setForcePresetTarget(true);
 
-        if (!GameLoop.isEnabled()) {
-            getEntity().setRef(ref);
-            getTargeter().setRef(ref);
-            activateOnGameLoopThread();
-            return;
-        }
 
-        getGame().getLoop().setContext(new Context(ref));
-        getGame().getLoop().setAction(getAction());
-        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION, true);
+        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION,
+         new ActionInput(getAction(), new Context(ref)));
     }
 
     public void activateOn(DC_Obj t) {
@@ -120,19 +112,13 @@ public class Executor extends ActiveHandler {
             activate();
             return;
         }
-        getGame().getLoop().setTarget(t);
-        getGame().getLoop().setAction(getAction());
-        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION, true);
+        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION,
+         new ActionInput(getAction(), t ));
     }
 
     public void activateOnGameLoopThread() {
-        if (!GameLoop.isEnabled()) {
-            Eidolons.getActionThread().setExecutor(this);
-            Eidolons.getExecutorService().execute(Eidolons.getActionThread());
-            return;
-        }
-        getGame().getLoop().setAction(getAction());
-        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION, true);
+        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION,
+         new ActionInput(getAction(), new Context(getRef()) ));
     }
 
 

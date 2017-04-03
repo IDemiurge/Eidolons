@@ -181,7 +181,7 @@ public class DivinationMaster {
     private static void initSpellPool() {
         spellPool = new LinkedList<>();
 
-        // add up all weights, roll, check within which range. Should be fair,
+        // add up all weights, roll, preCheck within which range. Should be fair,
         // right?
 
         SPELL_GROUP chosenGroup = new RandomWizard<SPELL_GROUP>()

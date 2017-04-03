@@ -139,7 +139,7 @@ public class ExploreMaster {
 
         party.getExploreCapacity();
         party.getSurvivalCapacity();
-        // check encounters
+        // preCheck encounters
 
         route.getBendFactor();
         MacroObj area = route.getRef().getRegion()

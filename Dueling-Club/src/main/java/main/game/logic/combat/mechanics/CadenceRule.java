@@ -68,7 +68,7 @@ public class CadenceRule {
         if (buff.getRef().getObj(KEYS.WEAPON) == action.getRef().getObj(KEYS.WEAPON)) {
             return false;
         }
-        // check new weapon - ? Buff ref?
+        // preCheck new weapon - ? Buff ref?
 
         return true;
     }
@@ -87,10 +87,10 @@ public class CadenceRule {
         Boolean offhand = null;
         if (action.checkProperty(PROP, MAIN_HAND)) {
             offhand = false;
-        }
+        } else
         if (action.checkProperty(PROP, OFF_HAND)) {
             offhand = true;
-        }
+        } else
         if (singleCadence)
         // offhand = !action.isOffhand();
         {
@@ -131,8 +131,10 @@ public class CadenceRule {
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
 
         effects.add(valueEffect);
+        if (unit.getIntParam(PARAMS.CADENCE_DAMAGE_MOD) > 0)
         effects.add(new ModifyValueEffect(PARAMS.DAMAGE_MOD, MOD.MODIFY_BY_PERCENT, unit
                 .getParam(PARAMS.CADENCE_DAMAGE_MOD)));
+        if (unit.getIntParam(PARAMS.CADENCE_ATTACK_MOD) > 0)
         effects.add(new ModifyValueEffect(PARAMS.ATTACK_MOD, MOD.MODIFY_BY_PERCENT, unit
                 .getParam(PARAMS.CADENCE_ATTACK_MOD)));
         String buffTypeName = (!offhand) ? buffTypeNameOffHand : buffTypeNameMainHand;
@@ -163,7 +165,7 @@ public class CadenceRule {
         AddBuffEffect addBuffEffect = new AddBuffEffect(buffTypeName, new CustomTargetEffect(
                 new TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES.ACTIONS, condition), effect),
                 DURATION);
-        // check perk
+        // preCheck perk
         addBuffEffect.addEffect(new AddTriggerEffect( // what about
                 // counters/AoO?
                 STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, new RefCondition(KEYS.EVENT_SOURCE,

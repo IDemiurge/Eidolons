@@ -103,7 +103,7 @@ public class EngagedRule implements ActionRule {
     public boolean checkCanDisengage(Unit disengager) {
         return disengager.getIntParam(PARAMS.C_N_OF_ACTIONS) >= 1 + getEngagers(disengager).size();
         // getDisengageCost(disengager).canBePaid();
-        // new Costs(map) //check provoke
+        // new Costs(map) //preCheck provoke
 
         // TODO ++ visuals - some little sword pointing...
         // NESW on cells? for directional blocking
@@ -244,7 +244,7 @@ public class EngagedRule implements ActionRule {
             SoundMaster.playEffectSound(SOUNDS.THREAT, engaged);
         }
         if (!isAutoEngageOff(engaged)) {
-            if (engaged.getEngagementTarget() == null) // TODO check dead!
+            if (engaged.getEngagementTarget() == null) // TODO preCheck dead!
             {
                 engaged.setEngagementTarget(engager);
             }

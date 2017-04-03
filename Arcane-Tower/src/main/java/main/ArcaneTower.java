@@ -272,7 +272,7 @@ public class ArcaneTower {
     }
 
     public static void saveEntity(ArcaneEntity entity) {
-        saveEntity(entity, false); // check remove from t/g
+        saveEntity(entity, false); // preCheck remove from t/g
     }
 
     public static void saveEntity(ArcaneEntity entity, boolean saveVersion) {

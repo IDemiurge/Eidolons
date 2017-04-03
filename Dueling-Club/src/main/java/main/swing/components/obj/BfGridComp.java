@@ -255,7 +255,7 @@ public class BfGridComp {
             }
         }
         boolean single = !comp.isMultiObj();
-        // check overlaying
+        // preCheck overlaying
         Image selectionFrame = info ? getInfoGlowFrame(obj)
                 : obj.isMine() ? BORDER.NEO_ACTIVE_SELECT_HIGHLIGHT.getImage()
                 : BORDER.NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT.getImage();

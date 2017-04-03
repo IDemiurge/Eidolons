@@ -52,7 +52,7 @@ public class DC_Player extends Player {
 
     @Override
     public boolean isAi() {
-        // check connection?
+        // preCheck connection?
         return super.isAi();
     }
 

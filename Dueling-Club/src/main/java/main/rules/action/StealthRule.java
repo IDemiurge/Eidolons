@@ -66,7 +66,7 @@ public class StealthRule implements ActionRule {
             return false;
         }
         if (unit.checkStatus(UnitEnums.STATUS.INVISIBLE))
-        // TODO mind-affecting check?
+        // TODO mind-affecting preCheck?
         {
             return true;
         }

@@ -4,6 +4,7 @@ import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.entity.active.DC_SpellObj;
 
 public class EnchantSpellCondition extends MicroCondition {
@@ -25,9 +26,9 @@ public class EnchantSpellCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         // TODO I could of course leave for freedom to the player
-        // - just check the *targeting mode* and if it's fitting, let him choose
+        // - just preCheck the *targeting mode* and if it's fitting, let him choose
         // the spell
         if (ref.getMatchObj() instanceof DC_SpellObj) {
             for (TARGETING_MODE t : modes) {

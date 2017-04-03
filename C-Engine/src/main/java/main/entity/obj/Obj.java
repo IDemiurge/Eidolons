@@ -120,11 +120,12 @@ public class Obj extends Entity {
         cloneMaps(type);
         setOBJ_TYPE_ENUM(type.getOBJ_TYPE_ENUM());
         setName(type.getName());
-        toBase();
-        resetObjects();
-        afterEffects();
-        resetPercentages();
-        resetCurrentValues();
+        reset();
+//        toBase();
+//        resetObjects();
+//        afterEffects();
+//        resetPercentages();
+//        resetCurrentValues();
 
     }
 

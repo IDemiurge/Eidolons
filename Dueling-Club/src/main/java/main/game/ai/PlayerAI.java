@@ -33,9 +33,9 @@ public class PlayerAI {
     }
 
     private void initSituation() {
-        // check melee
-        // check reinforcements for Stalling
-        // check ranged threat
+        // preCheck melee
+        // preCheck reinforcements for Stalling
+        // preCheck ranged threat
         if (type == AiEnums.PLAYER_AI_TYPE.BRUTE) {
             situation = SITUATION.ENGAGED; // brute!
         } else {

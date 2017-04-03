@@ -4,6 +4,7 @@ import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.elements.conditions.ConditionImpl;
+import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 
@@ -17,8 +18,8 @@ public class OccupiedCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
-        Coordinates c = getCoordinates();
+    public boolean check(Ref ref) {
+        Coordinates c = getCoordinates(ref);
         if (c == null) {
             return true;
         }
@@ -62,7 +63,7 @@ public class OccupiedCondition extends ConditionImpl {
         return result;
     }
 
-    protected Coordinates getCoordinates() {
+    protected Coordinates getCoordinates(Ref ref) {
         return game.getObjectById(ref.getId(obj_ref)).getCoordinates();
     }
 

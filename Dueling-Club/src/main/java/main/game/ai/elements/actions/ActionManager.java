@@ -181,7 +181,7 @@ public class ActionManager extends AiHandler {
                 actions.add(new ActionSequence(GOAL_TYPE.PREPARE, getAction(unit,
                         STD_MODE_ACTIONS.Concentrate.name())));
             }
-            // Integer id = checkWaitForBlockingAlly(); TODO can actually check
+            // Integer id = checkWaitForBlockingAlly(); TODO can actually preCheck
             // if movement is blocked and wait on the least sturdy in line...
             // if (id != null) {
             // Task task = new Task(ai, GOAL_TYPE.PREPARE, ai);
@@ -244,7 +244,7 @@ public class ActionManager extends AiHandler {
                         case "Hide":
                             // spotted?
                             result = unit.getBuff(StealthRule.SPOTTED) != null;
-                            // check has actions before turn left!
+                            // preCheck has actions before turn left!
                             break;
                         case "Search Mode":
                             result = Analyzer.getVisibleEnemies(unit.getUnitAI()).isEmpty();

@@ -114,7 +114,7 @@ public class HT_MapBuilder {
         // if (link == LINK_VARIANT.VERTICAL || link ==
         // LINK_VARIANT.VERTICAL_LONG) {
         if (!(link.isToRight() || link.isToLeft())) {
-            // check LONG/s TODO
+            // preCheck LONG/s TODO
             if (!moreVertical) {
                 return LINK_VARIANT.HORIZONTAL;
             }
@@ -175,7 +175,7 @@ public class HT_MapBuilder {
 
             if (column >= maxRows) {
                 column = 0;
-                // TODO check row has enough free Y space for this skill-line
+                // TODO preCheck row has enough free Y space for this skill-line
             }
             // y still determined by sd? perhaps not always, some *aligning*
             // would be good only non-basic roots?

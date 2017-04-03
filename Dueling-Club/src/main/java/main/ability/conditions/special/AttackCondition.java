@@ -2,6 +2,7 @@ package main.ability.conditions.special;
 
 import main.ability.effects.oneshot.attack.AttackEffect;
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.game.ai.tools.target.EffectFinder;
 
 public class AttackCondition extends MicroCondition {
@@ -13,7 +14,7 @@ public class AttackCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         AttackEffect attackEffect = null;
         if (ref.getEffect() instanceof AttackEffect) {
             attackEffect = (AttackEffect) ref.getEffect();

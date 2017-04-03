@@ -483,7 +483,7 @@ public class DataManager {
 
         List<String> groupsList = EnumMaster.findEnumConstantNames(TYPE.getSubGroupingKey()
                 .toString());
-        // TODO check TYPES!
+        // TODO preCheck TYPES!
         if (groupsList.isEmpty()) {
             if (DC_TYPE.isOBJ_TYPE(subgroup)) {
                 groupsList = toStringList(getTypes(DC_TYPE.getType(subgroup)));

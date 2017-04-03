@@ -4,6 +4,7 @@ import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.elements.conditions.ConditionImpl;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroSlotItem;
 import main.entity.obj.BattleFieldObject;
@@ -31,7 +32,7 @@ public class FacingCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         if (!(ref.getSourceObj() instanceof DC_UnitModel)) {
             return false;
         }

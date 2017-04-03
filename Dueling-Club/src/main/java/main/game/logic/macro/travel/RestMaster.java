@@ -31,7 +31,7 @@ public class RestMaster {
     private static int hp_mod;
 
     // setFinishDate / setRestTime / defaultTime (4/8/12 hours)
-    // TODO endTurn => auto-rest? valid modes check
+    // TODO endTurn => auto-rest? valid modes preCheck
     public static boolean rest(MacroParty party) {
 
         for (Unit hero : party.getMembers()) {

@@ -152,7 +152,7 @@ public class AnimationManager {
         for (PhaseAnimation anim : animations) {
             anim.draw(bfGraphics);
         }
-        // check overlapping !
+        // preCheck overlapping !
         // anim.getTarget()
     }
 

@@ -71,7 +71,6 @@ public class AbilityObj extends Obj implements ActiveObj, Interruptable {
         this.ref.setID(KEYS.ABILITY, id);
     }
 
-    @Override
     public boolean activate(boolean transmit) {
         return false;
     }

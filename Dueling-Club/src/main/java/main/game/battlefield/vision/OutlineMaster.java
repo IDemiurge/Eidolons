@@ -95,14 +95,14 @@ public class OutlineMaster {
 
         // int effectiveVisibility = (int) (gamma / Math.max(1, 2 *
         // Math.sqrt(diff)));
-        // first check if there is enough for either... then check which is
+        // first preCheck if there is enough for either... then preCheck which is
         // relatively greater! Or "Dark Vague Outline?" :)
         if (unit instanceof DC_Cell) {
             if (gamma > 50) {
 
                 // [quick fix]
-                if (!new ClearShotCondition().check(ref)) {
-                    // vision type check - x.ray or so TODO
+                if (!new ClearShotCondition().preCheck(ref)) {
+                    // vision type preCheck - x.ray or so TODO
                     return OUTLINE_TYPE.BLOCKED_OUTLINE;
                 }
                 return null;
@@ -112,8 +112,8 @@ public class OutlineMaster {
             // flat/blocked?
 
             // [quick fix]
-            if (!new ClearShotCondition().check(ref)) {
-                // vision type check - x.ray or so TODO
+            if (!new ClearShotCondition().preCheck(ref)) {
+                // vision type preCheck - x.ray or so TODO
                 return OUTLINE_TYPE.BLOCKED_OUTLINE;
             }
             return null;

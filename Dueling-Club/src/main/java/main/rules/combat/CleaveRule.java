@@ -90,7 +90,7 @@ public class CleaveRule {
             // find targets TODO
             first = true;
         }
-        clockwise = true; // check facing! always try the longest arc first, if
+        clockwise = true; // preCheck facing! always try the longest arc first, if
         // it fails, then short one
 
         DIRECTION direction = DirectionMaster.getRelativeDirection(source,

@@ -36,7 +36,7 @@ public class EncounterMaster {
         // getOrCreate fastest wave in encounter -> re-arrange waves and init battle
         // perhaps the only way a battle is joined is if the party is
         // surrounded...
-        // check more encounters - perhaps with luck you can run into even more
+        // preCheck more encounters - perhaps with luck you can run into even more
         // enemies...
         // DialogWizard.newMiniDialogue("Enemies have you surrounded, battle is now inevitable...",
         // true, "Curse our luck!", "Death has come for us...", "To Arms!");
@@ -73,7 +73,7 @@ public class EncounterMaster {
 //					e.getGroups().remove(group);
 //			}
 //			e.getGroups().addAll(checkEncounterGroups(e.getDefendingParty(), 1));
-//			// check coordinates - surround?
+//			// preCheck coordinates - surround?
 //			if (e.getGroups().isEmpty())
 //				return true;
 //		}
@@ -229,8 +229,8 @@ public class EncounterMaster {
         // // so each encounter string should already be initialized? I could
         // // use ObjTypes...
         //
-        // // 1) check random (collision) or ambushes
-        // // 2) check stealth
+        // // 1) preCheck random (collision) or ambushes
+        // // 2) preCheck stealth
         // waves.add(e);
         //
         // // apparently, we want to pre-initialize 'lurking enemies'!

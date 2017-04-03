@@ -42,7 +42,7 @@ import java.util.List;
  * toBase() is called whenever we need to update them - first they are set to their base,
  * then modified by various effects
  * <p>
- * esetObjects, afterEffects (apply masteries/attributes), check parameter buff rules (focus, stamina, …)
+ * esetObjects, afterEffects (apply masteries/attributes), preCheck parameter buff rules (focus, stamina, …)
  * :: Dynamic values are not reset to base on toBase()
  * :: Properties – container (; separated), variable(value),
  * :: Parameters – formula syntax: {ref_value}, e.g. {source_base strength}, event_ prefix checked first, replaced ref with event’s ref if necessary

@@ -580,7 +580,7 @@ public class HeroManager {
                 SpellUpgradeMaster.removeUpgrades(hero, type);
             }
         }
-        // TODO check if hero now has the prop!
+        // TODO preCheck if hero now has the prop!
         return true;
     }
 

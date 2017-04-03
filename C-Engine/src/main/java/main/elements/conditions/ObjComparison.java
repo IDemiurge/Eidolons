@@ -1,6 +1,7 @@
 package main.elements.conditions;
 
 
+import main.entity.Ref;
 import main.entity.obj.Obj;
 
 public class ObjComparison extends ConditionImpl {
@@ -25,7 +26,7 @@ public class ObjComparison extends ConditionImpl {
 	 * fail: ability(targeting: fixed(TARGET); effect: destroyObjEffect
 	 */
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
 
         Obj obj;
         if (id != null) {

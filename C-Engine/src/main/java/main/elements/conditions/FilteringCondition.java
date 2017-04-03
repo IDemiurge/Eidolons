@@ -1,6 +1,7 @@
 package main.elements.conditions;
 
 import main.content.OBJ_TYPE;
+import main.entity.Ref;
 
 public class FilteringCondition extends ConditionImpl {
 
@@ -9,7 +10,7 @@ public class FilteringCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         // TODO Auto-generated method stub
         return false;
     }

@@ -1,5 +1,6 @@
 package main.elements.conditions;
 
+import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
 
 public class StringContainersComparison extends StringComparison {
@@ -23,9 +24,9 @@ public class StringContainersComparison extends StringComparison {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
 
-        if (super.check()) {
+        if (super.check(ref)) {
             return !negative;
         }
         if (StringMaster.isEmpty(val1)) {

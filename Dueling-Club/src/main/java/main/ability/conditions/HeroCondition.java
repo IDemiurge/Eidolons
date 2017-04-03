@@ -4,6 +4,7 @@ import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.elements.conditions.ConditionImpl;
 import main.elements.conditions.StringComparison;
+import main.entity.Ref;
 
 public class HeroCondition extends ConditionImpl {
 
@@ -20,8 +21,8 @@ public class HeroCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
-        return c.check(ref);
+    public boolean check(Ref ref) {
+        return c.preCheck(ref);
     }
 
 }

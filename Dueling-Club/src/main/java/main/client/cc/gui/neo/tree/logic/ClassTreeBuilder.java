@@ -174,7 +174,7 @@ public class ClassTreeBuilder extends HT_MapBuilder {
     //
     // }
     // // if (!isMultiNode(type))
-    // // check adjacent nodes are grouped and alter
+    // // preCheck adjacent nodes are grouped and alter
     // // link pos and node pos!
     //
     // LINK_VARIANT variant = LINK_VARIANT.VERTICAL_LONG;

@@ -1,6 +1,7 @@
 package main.ability.conditions;
 
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
 
@@ -25,8 +26,8 @@ public class IncapacitatedCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
-        Unit unit = (Unit) getRef().getObj(key);
+    public boolean check(Ref ref) {
+        Unit unit = (Unit) ref.getObj(key);
         return unit.isIncapacitated();
     }
 

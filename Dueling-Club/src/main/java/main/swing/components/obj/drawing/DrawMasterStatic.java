@@ -42,7 +42,7 @@ public class DrawMasterStatic {
         // *alongside* it
         // totally two-sided, so we just have Boolean3, yet there are also
         // CORNERS...
-        // if contains null! then need to check the SIDES of other adjacent
+        // if contains null! then need to preCheck the SIDES of other adjacent
         // WALLS to know
         // what if an alternative path is there via a broken section?
         return false;

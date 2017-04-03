@@ -260,7 +260,7 @@ public class StringMaster {
                             continue;
                         }
                     }
-                    // check special chars
+                    // preCheck special chars
                     return false;
                 }
 

@@ -246,7 +246,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     @Override
     public void setRef(Ref ref) {
-        if (!equipped) { // TODO check ref contains *this* ?
+        if (!equipped) { // TODO preCheck ref contains *this* ?
             // HC unequip bug?
             equipped(ref);
         }

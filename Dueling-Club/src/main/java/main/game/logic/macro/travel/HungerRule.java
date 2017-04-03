@@ -10,7 +10,7 @@ public class HungerRule extends TurnRule {
 
     public void newTurn() {
         for (MacroParty p : MacroManager.getGame().getParties()) {
-            // TODO check turn is 'normal' - not a chase/flight, nor a battle or
+            // TODO preCheck turn is 'normal' - not a chase/flight, nor a battle or
             // march
             consumeProvisions(p);
         }
@@ -23,7 +23,7 @@ public class HungerRule extends TurnRule {
             int hungerAmount = p.getIntParam(MACRO_PARAMS.C_PROVISIONS);
             // choose who gets the last provisions or to split equally
             p.setParam(MACRO_PARAMS.C_PROVISIONS, 0);
-            // reduce health, motivation, maybe other params too... check alive!
+            // reduce health, motivation, maybe other params too... preCheck alive!
             // :)
             // hunger parameter? starvation buff that increases init/atk/sp but
             // reduces foc/def/ess

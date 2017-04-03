@@ -68,7 +68,6 @@ public class SpellType extends ActiveObjType {
                 SpellEnums.SPELL_TYPE.SUMMONING.name());
     }
 
-    @Override
     public boolean activate(boolean transmit) {
         return false;
     }

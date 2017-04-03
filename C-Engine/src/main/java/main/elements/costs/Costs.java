@@ -190,7 +190,7 @@ public class Costs extends CostImpl {
         reasons.clear();
 
         if (requirements != null) {
-            if (!requirements.check(ref)) {
+            if (!requirements.preCheck(ref)) {
                 reasons.add(requirements.getReason());
                 return false;
             }

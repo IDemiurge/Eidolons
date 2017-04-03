@@ -69,9 +69,9 @@ public class BehaviorMaster extends AiHandler {
 
     public AI_BEHAVIOR_MODE getBehavior(UnitAI ai) {
         // for (AI_BEHAVIOR_MODE b : ai.getBehaviors()) {
-        // // priority? situation? check each...
+        // // priority? situation? preCheck each...
         // }
-        return ai.getGroup().getBehaviorPref(); // check unit is viable?
+        return ai.getGroup().getBehaviorPref(); // preCheck unit is viable?
 
     }
 
@@ -139,7 +139,7 @@ public class BehaviorMaster extends AiHandler {
                                             .getList(targetCoordinates));
                     if (path == null) {
 
-                        ai.setPathBlocked(true); // TODO check if path
+                        ai.setPathBlocked(true); // TODO preCheck if path
                         // appropriate
                     } else {
                         ai.setPathBlocked(false);

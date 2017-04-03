@@ -2,6 +2,7 @@ package main.elements.conditions.standard;
 
 import main.elements.conditions.Condition;
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.system.entity.ConditionMaster;
 
 public class ParsedCondition extends MicroCondition {
@@ -14,12 +15,12 @@ public class ParsedCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         if (conditions == null) {
             conditions = ConditionMaster.toConditions(string);
         }
 
-        return conditions.check(ref);
+        return conditions.preCheck(ref);
     }
 
 }

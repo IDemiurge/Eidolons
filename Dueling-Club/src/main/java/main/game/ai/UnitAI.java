@@ -271,7 +271,7 @@ public class UnitAI {
         if (new EnumMaster<ENGAGEMENT_LEVEL>().getEnumConstIndex(getEngagementLevel()) < 1) {
             return false;
         }
-        // intelligence check? group check?
+        // intelligence preCheck? group preCheck?
         if (unit.getAiType() == AiEnums.AI_TYPE.ARCHER) {
             return true;
         }

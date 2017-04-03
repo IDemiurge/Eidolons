@@ -319,7 +319,7 @@ public class ActionSequenceConstructor extends AiHandler {
                 actions.add(targetAction);
                 break;
             // case RETREAT:
-            // // check *FLEE*
+            // // preCheck *FLEE*
             // // actions = getMoveSequence(targetAction, task);
             // break;
             // case SEARCH:

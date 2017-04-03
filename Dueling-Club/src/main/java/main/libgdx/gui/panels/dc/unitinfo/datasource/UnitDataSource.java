@@ -369,7 +369,7 @@ public class UnitDataSource implements
             final String cd = armor.getStrParam(PARAMS.C_DURABILITY);
             final String d = armor.getStrParam(PARAMS.DURABILITY);
 
-            values.add(new ValueContainer(PARAMS.DURABILITY.getName(), d + "/" + cd));
+            values.add(new ValueContainer(PARAMS.DURABILITY.getName(), cd + "/" + d));
 
             final String cover = armor.getStrParam(PARAMS.COVER_PERCENTAGE);
 
@@ -554,8 +554,7 @@ public class UnitDataSource implements
         if (weapon != null) {
             image = getOrCreateR(weapon.getImagePath());
         } else {
-            image = getOrCreateR((weapon.isMainHand() ?CELL_TYPE.WEAPON_MAIN :
-             CELL_TYPE.WEAPON_OFFHAND).getSlotImagePath());
+            image = getOrCreateR(CELL_TYPE.WEAPON_MAIN.getSlotImagePath());
         }
 
         ValueContainer valueContainer = new ValueContainer(image);

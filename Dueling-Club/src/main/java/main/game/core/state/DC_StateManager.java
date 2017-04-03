@@ -226,7 +226,7 @@ public class DC_StateManager extends StateManager {
         if (game.isStarted()) {
             getGameManager().resetValues();
             IlluminationRule.initLightEmission(getGame());
-            game.getTurnManager().makeTurn();
+            game.getTurnManager().newRound();
         } else {
 
             game.setStarted(true);
@@ -236,7 +236,7 @@ public class DC_StateManager extends StateManager {
                 e.printStackTrace();
             }
 
-            game.getTurnManager().makeTurn();
+            game.getTurnManager().newRound();
 //            getGameManager().refreshAll();
         }
 //        getGameManager().reset();

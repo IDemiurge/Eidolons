@@ -360,7 +360,7 @@ public class DamageDealer {
             e.printStackTrace();
         }
         if (dead) {
-            // will start new entry... a good check
+            // will start new entry... a good preCheck
             try {
                 attacked.kill(attacker, true, false);
             } catch (Exception e) {

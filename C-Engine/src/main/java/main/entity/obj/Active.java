@@ -5,8 +5,6 @@ import main.entity.Referred;
 
 public interface Active extends Referred {
 
-    boolean activate(boolean transmit);
-
     boolean activatedOn(Ref ref);
 
     boolean activate();

@@ -203,15 +203,15 @@ public class AbilityConstructor {
 
     public static void constructActives(Entity entity) {
         List<ActiveObj> abilities;
-        boolean action = (entity instanceof BfObj);
+        boolean action = !(entity instanceof BfObj);
         if (action) {
-            if (!entity.getType().isModel()) {
-                entity.getGame().getActionManager().resetActions(entity);
-            }
-        } else {
             abilities = getAbilitiesList(G_PROPS.ACTIVES, entity, false);
             if (abilities != null) {
                 entity.setActives(abilities);
+            }
+        } else {
+            if (!entity.getType().isModel()) {
+                entity.getGame().getActionManager().resetActions(entity);
             }
         }
 

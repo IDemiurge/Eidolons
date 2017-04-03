@@ -3,6 +3,7 @@ package main.ability.conditions.shortcut;
 import main.content.PARAMS;
 import main.elements.conditions.DistanceCondition;
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 
 public class RangeCondition extends MicroCondition {
@@ -15,9 +16,9 @@ public class RangeCondition extends MicroCondition {
     //
     // }
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         return new DistanceCondition(ref.getObj(KEYS.ACTIVE).getParam(
-                PARAMS.RANGE)).check(ref);
+                PARAMS.RANGE)).preCheck(ref);
     }
 
 }

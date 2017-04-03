@@ -1,6 +1,7 @@
 package main.ability.conditions.special;
 
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.unit.Unit;
 
@@ -12,7 +13,7 @@ public class SpellCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         if (!(ref.getMatchObj() instanceof DC_SpellObj)) {
             return false;
         }

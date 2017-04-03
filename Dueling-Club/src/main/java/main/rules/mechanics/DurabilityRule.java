@@ -102,7 +102,7 @@ public class DurabilityRule extends DC_RuleImpl {
 
     @Override
     public void initConditions() {
-        // check attack?
+        // preCheck attack?
     }
 
     @Override
@@ -110,7 +110,7 @@ public class DurabilityRule extends DC_RuleImpl {
         this.event_type = STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PHYSICAL_DAMAGE;
     }
     /**
-     * upon each physical attack, check weapon/armor of the belligerents and
+     * upon each physical attack, preCheck weapon/armor of the belligerents and
      * call their reduceDurability() method
      *
      * New rules: Custom trigger: write a method to be invoked upon X Event.

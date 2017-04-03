@@ -121,7 +121,7 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
         // String r = null; //
         // "((((25)*100+25*(-10))/100)*100+((25)*100+25*(-10))/100*(-0))/100";
         // try {
-        // r = hero.getGame().getRequirementsManager().check(hero, value);
+        // r = hero.getGame().getRequirementsManager().preCheck(hero, value);
         // } catch (Exception e) {
         // e.printStackTrace();
         // main.system.auxiliary.LogMaster
@@ -157,7 +157,7 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
     }
 
     private BORDER getBorder(ObjType value) {
-        // TODO check hero
+        // TODO preCheck hero
         if (borderChecker == null) {
             return DEFAULT_BORDER;
         }

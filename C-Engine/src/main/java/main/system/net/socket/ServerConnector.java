@@ -116,7 +116,7 @@ public abstract class ServerConnector {
             }
 
         } catch (NumberFormatException e) {
-            Err.error("User data check error - received inconsistent data");
+            Err.error("User data preCheck error - received inconsistent data");
         }
     }
 

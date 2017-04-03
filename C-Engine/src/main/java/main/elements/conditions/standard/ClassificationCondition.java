@@ -5,6 +5,7 @@ import main.content.values.properties.G_PROPS;
 import main.elements.conditions.ConditionImpl;
 import main.elements.conditions.StringComparison;
 import main.elements.conditions.StringContainersComparison;
+import main.entity.Ref;
 
 public class ClassificationCondition extends ConditionImpl {
 
@@ -26,8 +27,8 @@ public class ClassificationCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
-        return c.check(ref);
+    public boolean check(Ref ref) {
+        return c.preCheck(ref);
     }
 
     @Override

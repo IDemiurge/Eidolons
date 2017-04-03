@@ -204,7 +204,7 @@ public class PresetMaster {
     }
 
     private static String generatePath(String party, String enemies, String levelFilePath) {
-        // check multi-dungeon; check party-type, check encounter
+        // preCheck multi-dungeon; preCheck party-type, preCheck encounter
         return "test\\";
     }
 

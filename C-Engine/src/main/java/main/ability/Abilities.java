@@ -11,10 +11,7 @@ import java.util.function.Consumer;
 public class Abilities implements Ability, Iterable<Ability> {
     private List<Ability> abils;
 
-    /**
-     * Construction system: ???
-     */
-    public Abilities() {
+     public Abilities() {
         abils = new LinkedList<>();
 
     }
@@ -25,11 +22,6 @@ public class Abilities implements Ability, Iterable<Ability> {
 
     public boolean addAll(Collection<? extends Ability> c) {
         return abils.addAll(c);
-    }
-
-    @Override
-    public boolean activate(boolean transmit) {
-        return false;
     }
 
     // public void construct() {

@@ -1,6 +1,7 @@
 package main.elements.conditions.standard;
 
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.entity.obj.Obj;
 
 public class PositionCondition extends MicroCondition {
@@ -14,7 +15,7 @@ public class PositionCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         Obj obj = ref.getObj(key);
         if (cell != null) {
             return obj.getCoordinates().equals(cell.getCoordinates());

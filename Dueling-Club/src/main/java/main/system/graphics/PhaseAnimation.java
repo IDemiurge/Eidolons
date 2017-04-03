@@ -283,7 +283,7 @@ public abstract class PhaseAnimation implements ANIM {
     public void donePhase() {
         if (isOnLastPhase())
         // if set to false, always freeze
-        // if not, check defaul
+        // if not, preCheck defaul
 
         {
             if (!autoFinish || !isAutoFinishDefault()) {

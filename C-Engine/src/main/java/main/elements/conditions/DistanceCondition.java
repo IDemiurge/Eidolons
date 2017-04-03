@@ -1,6 +1,7 @@
 package main.elements.conditions;
 
 import main.data.ability.AE_ConstrArgs;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.math.Formula;
 
@@ -21,9 +22,9 @@ public class DistanceCondition extends NumericCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
 
-        return super.check();
+        return super.check(ref);
     }
 
     public Formula getDistance() {

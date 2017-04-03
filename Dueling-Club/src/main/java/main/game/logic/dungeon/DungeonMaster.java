@@ -413,7 +413,7 @@ public class DungeonMaster {
 
     public void subLevelEntered(String name) {
         // what if some units are left behind?
-        // gonna need some global check of sublevel to prevent interactions
+        // gonna need some global preCheck of sublevel to prevent interactions
 
     }
 

@@ -10,7 +10,7 @@ public class PackEffect extends MicroEffect {
 
     @Override
     public boolean applyThis() {
-        // TODO check; destroy (SMARTLY and Quietly); increase params
+        // TODO preCheck; destroy (SMARTLY and Quietly); increase params
 
         // pack together the entire Group? Or only in pairs with 1 being
         // assimilator, the other - assimilated?

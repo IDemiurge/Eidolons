@@ -28,7 +28,7 @@ public class DungeonCrawler {
         // for (DC_HeroObj unit : getCreeps()) {
         List<Unit> relevantEnemies = getRelevantEnemies(unit);
         for (Unit hero : relevantEnemies) {
-            // check detections - perhaps it's really just about making a check
+            // preCheck detections - perhaps it's really just about making a preCheck
             // before AS-constr.
 
             // sometimes creeps may be engaged but not know what hit them...

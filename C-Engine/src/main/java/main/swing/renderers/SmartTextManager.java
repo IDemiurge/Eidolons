@@ -79,7 +79,7 @@ public class SmartTextManager {
     }
 
     private static VALUE_CASES getDynamicValueCase(PARAMETER param, int amount, Entity obj) {
-        // check special cases - morale, etc
+        // preCheck special cases - morale, etc
         PARAMETER base_value = ContentManager.getBaseParameterFromCurrent(param);
         if (base_value == null) {
             return VALUE_CASES.VALUE_NORMAL;

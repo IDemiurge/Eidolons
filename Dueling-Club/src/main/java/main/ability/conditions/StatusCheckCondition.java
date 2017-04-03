@@ -21,7 +21,7 @@ public class StatusCheckCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         Obj obj = ref.getObj(obj_ref);
         if (obj instanceof DC_UnitModel) {
             return ((DC_UnitModel) obj).checkStatus(status);

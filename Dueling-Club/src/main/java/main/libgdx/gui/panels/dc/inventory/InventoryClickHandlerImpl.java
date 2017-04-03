@@ -97,7 +97,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                     return OPERATIONS.DROP;
                 return null;
             case ARMOR:
-                //check can be unequipped
+                //preCheck can be unequipped
 
                 break;
             case INVENTORY:

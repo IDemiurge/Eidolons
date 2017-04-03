@@ -7,6 +7,7 @@ import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.elements.conditions.MicroCondition;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.system.math.Formula;
 
 public class ListSizeCondition extends MicroCondition {
@@ -25,7 +26,7 @@ public class ListSizeCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
 
         OBJ_TYPE TYPE = C_OBJ_TYPE.BF;
         if (bfObj) {

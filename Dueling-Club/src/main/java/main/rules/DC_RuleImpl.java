@@ -75,7 +75,7 @@ public abstract class DC_RuleImpl implements Rule {
         ref.setEvent(event);
         LogMaster.log(LOG_CHANNELS.RULES_DEBUG, toString() + " checked on "
                 + ref.getSourceObj());
-        return conditions.check(ref);
+        return conditions.preCheck(ref);
     }
 
     public EVENT_TYPE getEventType() {

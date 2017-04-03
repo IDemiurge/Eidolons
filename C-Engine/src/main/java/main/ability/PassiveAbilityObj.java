@@ -93,7 +93,7 @@ public class PassiveAbilityObj extends AbilityObj implements Attachment {
     @Override
     public boolean checkRetainCondition() {
         if (retainConditions != null) {
-            if (retainConditions.check(ref)) {
+            if (retainConditions.preCheck(ref)) {
                 kill();
                 return false;
             }

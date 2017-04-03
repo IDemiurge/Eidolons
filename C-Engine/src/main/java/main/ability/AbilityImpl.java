@@ -67,7 +67,6 @@ public class AbilityImpl extends ReferredElement implements Ability {
         return activatedOn(ref);
     }
 
-    @Override
     public boolean activate(boolean transmit) {
         return false;
     }
@@ -76,13 +75,14 @@ public class AbilityImpl extends ReferredElement implements Ability {
     public boolean activatedOn(Ref ref) {
         setRef(ref);
 
+        //preCheck if targeting is overridden
         if (!(targeting instanceof AutoTargeting)) {
             if (!(targeting instanceof FixedTargeting)) {
                 if (isForcePresetTargeting() || targeting == null) {
                     if (ref.getTarget() != null || ref.getGroup() != null) {
-                        return resolve();
+                        return resolve(); //without targeting.select()
                     } else {
-                        return false;
+                        return false; // inconsistent data
                     }
                 }
             }

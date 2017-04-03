@@ -92,7 +92,7 @@ public class PatrolMaster {
         Coordinates coordinates = unit.getCoordinates().getAdjacentCoordinate(direction);
         // TODO more than 1 coordinate?
         Unit unitByCoordinate = null;// unit.getGame().getUnitByCoordinate(coordinates);
-        // check leader?
+        // preCheck leader?
         Collection<Obj> units = unit.getGame().getUnitsForCoordinates(coordinates);
         for (Obj u : units) {
             // sort?
@@ -112,7 +112,7 @@ public class PatrolMaster {
 
     private static Action getIdleAction(Patrol patrol, UnitAI ai) {
         STD_ACTIONS.Turn_Anticlockwise.name();
-        // check Prepare actions - rest, ... if turn is near over? OR
+        // preCheck Prepare actions - rest, ... if turn is near over? OR
         // getPrepareAction instead or return NULL!
         return null;
     }
@@ -226,7 +226,7 @@ public class PatrolMaster {
                 offsetY = -offsetY;
             }
 
-            // check valid coordinates? limit!
+            // preCheck valid coordinates? limit!
 
             c = new Coordinates(c.x + offsetX, c.y + offsetY);
 

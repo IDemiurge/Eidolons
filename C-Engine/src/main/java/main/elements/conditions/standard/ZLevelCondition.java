@@ -1,6 +1,7 @@
 package main.elements.conditions.standard;
 
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 
 public class ZLevelCondition extends MicroCondition {
     private boolean defaultReturn;
@@ -9,7 +10,7 @@ public class ZLevelCondition extends MicroCondition {
         this.defaultReturn = defaultReturn;
     }
 
-    public boolean check() {
+    public boolean check(Ref ref) {
         if (ref.getMatchObj() == null) {
             return defaultReturn;
         }

@@ -47,7 +47,7 @@ public class AiUnitActionMaster {
         return list;
     }
 
-    //returns all of unit's active that we want to check for execution
+    //returns all of unit's active that we want to preCheck for execution
     public static List<DC_ActiveObj> getFullActionList(GOAL_TYPE type, Unit unit) {
         // cache
         List<DC_ActiveObj> actions = new XList<>();

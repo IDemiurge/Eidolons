@@ -14,7 +14,7 @@ public class IfElseEffect extends ConditionalEffect {
 
     @Override
     public String getTooltip() {
-        if (condition.check(ref)) {
+        if (condition.preCheck(ref)) {
             return effect.getTooltip();
         } else {
             return ELSEeffect.getTooltip();
@@ -23,7 +23,7 @@ public class IfElseEffect extends ConditionalEffect {
 
     @Override
     public boolean applyThis() {
-        if (condition.check(ref)) {
+        if (condition.preCheck(ref)) {
             return effect.apply(ref);
         } else {
             return ELSEeffect.apply(ref);

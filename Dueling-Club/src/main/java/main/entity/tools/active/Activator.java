@@ -48,7 +48,7 @@ public class Activator extends ActiveHandler {
         // toBase();
         boolean result = false;
         try {
-            getInitializer().initCosts(); // TODO ++ check if there are any targets
+            getInitializer().initCosts(); // TODO ++ preCheck if there are any targets
 
             result = getAction().getCosts().canBePaid(getRef());
             broken = false;

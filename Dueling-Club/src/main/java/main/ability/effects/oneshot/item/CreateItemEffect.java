@@ -118,7 +118,7 @@ public class CreateItemEffect extends MicroEffect  implements OneshotEffect {
         item.setName(itemName);
 
         // Entity hero = ref.getTargetObj();
-        // if (!game.getRequirementsManager().check(hero, item))
+        // if (!game.getRequirementsManager().preCheck(hero, item))
         // // if cannot use, add to inventory
         // return new ManipulateInventoryEffect(INVENTORY_ACTIONS.ADD)
         // .apply(ref);

@@ -1,6 +1,7 @@
 package main.elements.conditions;
 
 import main.ability.effects.Effect;
+import main.entity.Ref;
 
 public class EffectCondition extends ConditionImpl {
 
@@ -11,7 +12,7 @@ public class EffectCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         return ref.getEffect().getClass() == e.getClass();
     }
 

@@ -108,9 +108,9 @@ public class SightMaster {
             }
         }
 
-        Chronos.mark("Clear shot check for " + source.getNameAndCoordinate());
+        Chronos.mark("Clear shot preCheck for " + source.getNameAndCoordinate());
         removeShadowed(list, source, facing);
-        Chronos.logTimeElapsedForMark("Clear shot check for " + source.getNameAndCoordinate());
+        Chronos.logTimeElapsedForMark("Clear shot preCheck for " + source.getNameAndCoordinate());
         if (vision) {
             // removeConcealed(list, unit, facing);
             // addIlluminated(list, unit, facing);
@@ -145,7 +145,7 @@ public class SightMaster {
             if (obj != null) {
                 Ref ref = new Ref(source);
                 ref.setMatch(obj.getId());
-                boolean clearShot = getClearShotCondition().check(ref);
+                boolean clearShot = getClearShotCondition().preCheck(ref);
                 if (!clearShot) {
                     removeList.add(c);
                 }
@@ -340,7 +340,7 @@ public class SightMaster {
         }
 
         // if (status == UNIT_TO_UNIT_VISION.IN_SIGHT)
-        // if (checkConcealed(activeUnit, unit)) // TODO check visibility
+        // if (checkConcealed(activeUnit, unit)) // TODO preCheck visibility
         // obstacles
         // status = UNIT_TO_UNIT_VISION.CONCEALED;
 

@@ -1,6 +1,7 @@
 package main.ability.conditions;
 
 import main.elements.conditions.ConditionImpl;
+import main.entity.Ref;
 
 public class SpellDamageCondition extends ConditionImpl {
     public SpellDamageCondition() {
@@ -8,7 +9,7 @@ public class SpellDamageCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         // ref.getSpell()!=null ???
         return false;
     }

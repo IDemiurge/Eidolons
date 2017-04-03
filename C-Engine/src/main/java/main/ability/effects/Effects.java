@@ -129,7 +129,7 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
     public String toString() {
         String result = "Effects: ";
         for (Effect effect : getEffects()) {
-            result += effect.toString() + ";";
+            result += effect.toString() + ";\n";
         }
 
         return result.substring(0, result.length() - 1);

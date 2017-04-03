@@ -131,16 +131,16 @@ public class WatchRule implements ActionRule {
             return true;
         }
         if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.TURN) {
-            return true; // TODO detailed check!
+            return true; // TODO detailed preCheck!
         }
         if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MODE) {
             return true; //
         }
         if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
-            // getDestination() -> check relative facing to watch
+            // getDestination() -> preCheck relative facing to watch
         }
         if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.SPELL) {
-            // getDestination() -> check relative facing to watch
+            // getDestination() -> preCheck relative facing to watch
             if (action instanceof DC_SpellObj) {
                 DC_SpellObj spellObj = (DC_SpellObj) action;
                 // teleport

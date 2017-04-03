@@ -160,7 +160,7 @@ public class AI_SpellMaster {
             }
             if (EffectFinder.check(actives, MoveEffect.class)) {
                 return AiEnums.AI_LOGIC.MOVE;
-            }// if (EffectMaster.check(actives, MoveEffect.class)) {// return
+            }// if (EffectMaster.preCheck(actives, MoveEffect.class)) {// return
             // AI_LOGIC.CUSTOM;// }
             if (EffectFinder.check(actives, SummonEffect.class)) {
                 return AiEnums.AI_LOGIC.SUMMON;
@@ -187,7 +187,7 @@ public class AI_SpellMaster {
             // ++ Resurrect, Status (sleep?)
         }
 
-        // check tags
+        // preCheck tags
 
         return logic;
     }

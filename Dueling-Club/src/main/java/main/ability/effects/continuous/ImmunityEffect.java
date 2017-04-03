@@ -17,7 +17,7 @@ public class ImmunityEffect extends ModifyPropertyEffect {
 	/*
      * or should it be immunity rule?
 	 * 
-	 * where do I check?
+	 * where do I preCheck?
 	 * 
 	 * Examples: ,Mind Affection, ,Poison, ,Wounds, ,Ensnare,
 	 * 

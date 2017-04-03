@@ -129,7 +129,7 @@ public class WanderMaster {
         // return true;
         // if (c.isInvalid())
         // return true;
-        // // what's the point of such a check? blocked() should be passed
+        // // what's the point of such a preCheck? blocked() should be passed
         // return
         // ai.getUnit().getGame().getBattleFieldManager().canMoveOnto(ai.getUnit(),
         // c);

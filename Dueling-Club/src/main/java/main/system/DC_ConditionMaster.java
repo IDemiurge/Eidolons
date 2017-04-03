@@ -390,14 +390,14 @@ public class DC_ConditionMaster extends ConditionMaster {
     // false))
     //
     // ))));
-    public static Condition getRetainConditionsFromTemplate(RETAIN_CONDITIONS template) {
+    public static Condition getRetainConditionsFromTemplate(RETAIN_CONDITIONS template, Ref ref) {
         switch (template) {
             case CASTER_ALIVE:
                 new NotCondition(new StringComparison("{SOURCE_STATUS}", "" + UnitEnums.STATUS.DEAD, false));
                 break;
             case CASTER_CONSCIOUS:
                 new MicroCondition() {
-                    public boolean check() {
+                    public boolean check(Ref ref) {
                         Unit hero = (Unit) ref.getObj(KEYS.SOURCE);
                         return !hero.checkUncontrollable();
                     }
@@ -462,7 +462,7 @@ public class DC_ConditionMaster extends ConditionMaster {
     }
 
     public static boolean checkCondition(Condition condition, Ref ref) {
-        return condition.check(ref);
+        return condition.preCheck(ref);
     }
 
     public static Condition getClearShotFilterCondition() {
@@ -535,20 +535,13 @@ public class DC_ConditionMaster extends ConditionMaster {
             return null;
         }
 
-        public Ref getRef() {
-            return getCondition().getRef();
-        }
 
-        public void setRef(Ref ref) {
-            getCondition().setRef(ref);
+        public boolean preCheck(Ref ref) {
+            return getCondition().preCheck(ref);
         }
 
         public boolean check(Ref ref) {
             return getCondition().check(ref);
-        }
-
-        public boolean check() {
-            return getCondition().check();
         }
 
         public boolean check(Entity match) {

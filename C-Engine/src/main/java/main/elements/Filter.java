@@ -107,7 +107,7 @@ public class Filter<T extends Entity> extends ReferredElement {
         match = id;
 
         REF.setID(KEYS.MATCH.name(), id);
-        return c.check(REF);
+        return c.preCheck(REF);
 
     }
 

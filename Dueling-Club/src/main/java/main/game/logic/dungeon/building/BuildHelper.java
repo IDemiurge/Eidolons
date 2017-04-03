@@ -605,7 +605,7 @@ public class BuildHelper {
     // : DEFAULT_BUILD_DIRECTION
     // .getYDirection()),
     // baseCoordinate, height, width, rotated);
-    // // TODO check valid coordinates?
+    // // TODO preCheck valid coordinates?
     // break;
     // case CROSS:
     // case CULDESAC:

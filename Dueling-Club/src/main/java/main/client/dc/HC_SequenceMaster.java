@@ -11,6 +11,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.elements.conditions.*;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
@@ -72,8 +73,14 @@ public class HC_SequenceMaster implements SequenceManager {
     }
 
     public void chooseNewMember(PartyObj party) {
-        Conditions filterConditions = new Conditions();
+
         Unit leader = party.getLeader();
+        Conditions filterConditions = new Conditions(){
+            @Override
+            public boolean check(Ref ref) {
+                return super.check(leader.getRef());
+            }
+        };
         OrConditions orConditions = new OrConditions();
 
         // StringContainersComparison principlesCondition = new
@@ -106,8 +113,9 @@ public class HC_SequenceMaster implements SequenceManager {
                     + "+1", StringMaster.getValueRef(KEYS.MATCH, PARAMS.HERO_LEVEL));
             filterConditions.add(lvlCondition);
         }
-        filterConditions.setRef(leader.getRef());
-        launchEntitySelection(DC_TYPE.CHARS, MainManager.getPresetGroup(), filterConditions,
+//        filterConditions.setRef();
+        launchEntitySelection(DC_TYPE.CHARS, MainManager.getPresetGroup(),
+         filterConditions,
                 leader, InfoMaster.CHOOSE_MEMBER);
 
         selection = SELECTION_TYPES.NEW_MEMBER_SELECTION;

@@ -194,14 +194,14 @@ public class PresetLauncher {
         boolean newDungeon = false;
         String oldDungeon = PresetMaster.getPreset().getValue(FIRST_DUNGEON);
         if (!profile.getValue(FIRST_DUNGEON).equals(oldDungeon)) {
-            newDungeon = true; // check after launch?
+            newDungeon = true; // preCheck after launch?
         }
         launchPreset(profile);
         if (newDungeon) {
             DC_Game.game.getDungeonMaster().initDungeonLevelChoice();
         }
         DC_Game.game.getDebugMaster().executeDebugFunctionNewThread(DEBUG_FUNCTIONS.CLEAR);
-        // check new dungeon
+        // preCheck new dungeon
 
     }
 

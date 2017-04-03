@@ -240,7 +240,7 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (!canAttack()) {
             return false;
         }
-        // ConditionMaster.getAdjacent().check(ref);
+        // ConditionMaster.getAdjacent().preCheck(ref);
         int range = getIntParam(PARAMS.RANGE);
         if (range == 1) {
             return getGame().getMovementManager().isAdjacent(getEntity(), attacked);

@@ -85,7 +85,9 @@ public abstract class Communicator {
     public boolean activate(Active active, Ref ref) {
         LogMaster.log("Activating: " + active + "\nREF: " + ref);
         active.setRef(ref);
-        return active.activate(false);
+        return
+//         active.activate
+         (false);
     }
 
     protected COMMAND getCommand(COMMAND cmd) {

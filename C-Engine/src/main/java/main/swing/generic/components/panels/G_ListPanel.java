@@ -43,7 +43,7 @@ public abstract class G_ListPanel<E> extends G_Panel {
 
     // private BorderChecker borderChecker;
     // private BORDER getBorder(ObjType value) {
-    // // TODO check hero
+    // // TODO preCheck hero
     // if (borderChecker == null)
     // return DEFAULT_BORDER;
     // return borderChecker.getBorder(value);

@@ -86,7 +86,7 @@ public class LootMaster {
                             + item.getName() + ", shall I claim it?", true,
                     "Certainly", "Better not", "If you wish");
             if (choice == null) {
-                // random? check wanted by others
+                // random? preCheck wanted by others
             }
         }
 
