@@ -3,6 +3,7 @@ package main.libgdx.gui.panels.dc.inventory.datasource;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.entity.obj.unit.Unit;
+import main.game.core.Eidolons;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import main.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
@@ -114,5 +115,10 @@ public class InventoryDataSource implements QuickSlotDataSource,
 
     public boolean isUndoDisabled() {
         return !handler.isUndoEnabled();
+    }
+
+    public String getOperationsString() {
+        return Eidolons.game.getInventoryManager().getOperationsLeft() + "/" +
+                Eidolons.game.getInventoryManager().getOperationsPool();
     }
 }

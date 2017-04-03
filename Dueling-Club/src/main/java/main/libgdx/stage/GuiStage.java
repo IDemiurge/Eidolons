@@ -10,7 +10,7 @@ import main.libgdx.gui.controls.radial.RadialMenu;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.LogPanel;
 import main.libgdx.gui.panels.dc.actionpanel.ActionPanelController;
-import main.libgdx.gui.panels.dc.inventory.InventoryPanel;
+import main.libgdx.gui.panels.dc.inventory.InventoryWithAction;
 import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -27,7 +27,7 @@ public class GuiStage extends Stage {
 
     protected ToolTipManager toolTipManager;
     private LogPanel log;
-    private InventoryPanel inventoryDialog;
+    private InventoryWithAction inventoryForm;
     private RadialMenu radialMenu;
     private UnitInfoPanel infoPanel;
     private InitiativePanel initiativePanel;
@@ -59,18 +59,18 @@ public class GuiStage extends Stage {
 
     public void bindEvents() {
         GuiEventManager.bind(GuiEventType.SHOW_INVENTORY, (obj) -> {
-            if (inventoryDialog == null) {
-                inventoryDialog = new InventoryPanel();
-                this.addActor(inventoryDialog);
-                inventoryDialog.setPosition(0, Gdx.graphics.getHeight() - inventoryDialog.getHeight());
+            if (inventoryForm == null) {
+                inventoryForm = new InventoryWithAction();
+                this.addActor(inventoryForm);
+                inventoryForm.setPosition(0, Gdx.graphics.getHeight() - inventoryForm.getHeight());
             }
 
             final Object param = obj.get();
             if (param == null) {
-                inventoryDialog.setVisible(false);
+                inventoryForm.setVisible(false);
             } else {
-                inventoryDialog.setVisible(true);
-                inventoryDialog.setUserObject(param);
+                inventoryForm.setVisible(true);
+                inventoryForm.setUserObject(param);
             }
         });
 

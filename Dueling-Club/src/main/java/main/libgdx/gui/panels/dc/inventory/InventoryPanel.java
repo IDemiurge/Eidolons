@@ -1,16 +1,13 @@
 package main.libgdx.gui.panels.dc.inventory;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import main.game.core.Eidolons;
 import main.libgdx.gui.panels.dc.TablePanel;
-import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import main.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
@@ -25,11 +22,6 @@ public class InventoryPanel extends TablePanel {
     private Cell avatarPanel;
     private Cell armorSlot;
     private Cell amuletSlot;
-
-    private Cell<Actor> actionPointsText;
-    private Cell<Actor> doneButton;
-    private Cell<Actor> cancelButton;
-    private Cell<Actor> undoButton;
 
     public InventoryPanel() {
         TextureRegion textureRegion = new TextureRegion(getOrCreateR("UI/components/inventory_background.png"));
@@ -85,16 +77,9 @@ public class InventoryPanel extends TablePanel {
 
         right.addElement(rightRingSlotsPanel).fill(0, 0);
 
-        initLowerBlock();
-
         initListeners();
 
         setTouchable(Touchable.enabled);
-    }
-
-    private static String getOperationsString() {
-        return Eidolons.game.getInventoryManager().getOperationsLeft() + "/" +
-                Eidolons.game.getInventoryManager().getOperationsPool();
     }
 
     @Override
@@ -118,31 +103,12 @@ public class InventoryPanel extends TablePanel {
         });
     }
 
-    private void initLowerBlock() {
-        final TablePanel<Actor> lower = new TablePanel<>();
-        addElement(lower).pad(0, 20, 20, 20);
-
-        actionPointsText = lower.addElement(null).left();
-
-        undoButton = lower.addElement(new InventoryActionButton("UI/components/small/back2.png"))
-                .fill(false).expand(0, 0).right()
-                .pad(20, 0, 20, 0).size(50, 50);
-
-        cancelButton = lower.addElement(new InventoryActionButton("UI/components/small/no.png"))
-                .fill(false).expand(0, 0).right()
-                .pad(20, 10, 20, 0).size(50, 50);
-
-        doneButton = lower.addElement(new InventoryActionButton("UI/components/small/ok.png"))
-                .fill(false).expand(0, 0).right()
-                .pad(20, 10, 20, 10).size(50, 50);
-    }
-
     @Override
-    public void afterUpdateAct(float delta) {
+    public void updateAct(float delta) {
         clear();
-        super.afterUpdateAct(delta);
+        super.updateAct(delta);
 
-        final InventoryDataSource source = (InventoryDataSource) getUserObject();
+        final EquipDataSource source = (EquipDataSource) getUserObject();
 
         mainWeapon.setActor(source.mainWeapon());
         offWeapon.setActor(source.offWeapon());
@@ -152,20 +118,12 @@ public class InventoryPanel extends TablePanel {
         armorSlot.setActor(source.armor());
 
         amuletSlot.setActor(source.amulet());
+    }
 
-        actionPointsText.setActor(new ValueContainer("Actions available:", getOperationsString()));
+    @Override
+    public void afterUpdateAct(float delta) {
+        clear();
 
-        InventoryActionButton button = (InventoryActionButton) doneButton.getActor();
-        button.addListener(source.getDoneHandler());
-        button.setDisabled(source.isDoneDisabled());
-
-        button = (InventoryActionButton) cancelButton.getActor();
-        button.addListener(source.getCancelHandler());
-        button.setDisabled(source.isCancelDisabled());
-
-        button = (InventoryActionButton) undoButton.getActor();
-        button.addListener(source.getUndoHandler());
-        button.setDisabled(source.isUndoDisabled());
     }
 
 }
