@@ -64,6 +64,15 @@ public class InventoryWithAction extends TablePanel {
     }
 
     @Override
+    public void clear() {
+        super.clear();
+
+        doneButton.getActor().clearListeners();
+        cancelButton.getActor().clearListeners();
+        undoButton.getActor().clearListeners();
+    }
+
+    @Override
     public void updateAct(float delta) {
         super.updateAct(delta);
 
