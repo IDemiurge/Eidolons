@@ -1,11 +1,8 @@
 package main.libgdx.gui.panels.dc.actionpanel;
 
-import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.UnitActionsDataSource;
 
 import java.util.List;
-
-import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class ModeActionsPanel extends BaseSlotPanel {
 
@@ -24,15 +21,8 @@ public class ModeActionsPanel extends BaseSlotPanel {
         final UnitActionsDataSource source = (UnitActionsDataSource) getUserObject();
 
         final List<ActionValueContainer> sources = source.getDisplayedActions();
-        final int tempLimit = Math.min(sources.size(), 6);
-        for (int i = 0; i < tempLimit; i++) {
-            addValueContainer(sources.get(i), getOrCreateR("UI/EMPTY_LIST_ITEM.jpg"));
-        }
-
-        for (int i = tempLimit; i < 6; i++) {
-            final ValueContainer container = new ValueContainer(getOrCreateR("UI/EMPTY_LIST_ITEM.jpg"));
-            container.overrideImageSize(imageSize, imageSize);
-            add(container).left().bottom();
-        }
+        initContainer(sources, "UI/EMPTY_LIST_ITEM.jpg");
     }
+
+
 }
