@@ -11,10 +11,10 @@ public class DualWieldingCondition extends MicroCondition {
     public boolean check(Ref ref) {
         // if (natural)
         // return UnitAnalyzer.checkDualWielding((DC_HeroObj)
-        // getRef().getSourceObj());
+        //ref.getSourceObj());
         // return UnitAnalyzer.checkDualWielding((DC_HeroObj)
-        // getRef().getObj(key));
-        return UnitAnalyzer.checkDualWielding((Unit) getRef().getSourceObj());
+        //ref.getObj(key));
+        return UnitAnalyzer.checkDualWielding((Unit)ref.getSourceObj());
     }
 
 }

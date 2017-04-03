@@ -390,7 +390,7 @@ public class DC_ConditionMaster extends ConditionMaster {
     // false))
     //
     // ))));
-    public static Condition getRetainConditionsFromTemplate(RETAIN_CONDITIONS template) {
+    public static Condition getRetainConditionsFromTemplate(RETAIN_CONDITIONS template, Ref ref) {
         switch (template) {
             case CASTER_ALIVE:
                 new NotCondition(new StringComparison("{SOURCE_STATUS}", "" + UnitEnums.STATUS.DEAD, false));
@@ -398,7 +398,7 @@ public class DC_ConditionMaster extends ConditionMaster {
             case CASTER_CONSCIOUS:
                 new MicroCondition() {
                     public boolean check(Ref ref) {
-                        Unit hero = (Unit)  getSource();
+                        Unit hero = (Unit) ref.getObj(KEYS.SOURCE);
                         return !hero.checkUncontrollable();
                     }
                 };

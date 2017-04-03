@@ -5,8 +5,6 @@ import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
 import main.entity.obj.unit.DC_UnitModel;
 import main.game.battlefield.Coordinates;
-import main.game.battlefield.Coordinates.DIRECTION;
-import main.game.battlefield.DirectionMaster;
 import main.system.auxiliary.EnumMaster;
 
 public class SpecialRequirements extends ConditionImpl {
@@ -46,16 +44,16 @@ public class SpecialRequirements extends ConditionImpl {
         return false;
     }
 
-    private boolean checkCellPassible(int rotation, int length) {
-        DC_UnitModel unit = (DC_UnitModel) ref.getSourceObj();
-        DIRECTION direction = unit.getDirection();
-        if (rotation != 0) {
-            direction = DirectionMaster.getDirectionByDegree(direction
-                    .getDegrees() + rotation);
-        }
-        Coordinates c = unit.getCoordinates().getAdjacentCoordinate(direction);
-        return game.getMovementManager().getPathingManager()
-                .isGroundPassable(unit, c);
-    }
+//    private boolean checkCellPassible(int rotation, int length) {
+//        DC_UnitModel unit = (DC_UnitModel) ref.getSourceObj();
+//        DIRECTION direction = unit.getDirection();
+//        if (rotation != 0) {
+//            direction = DirectionMaster.getDirectionByDegree(direction
+//                    .getDegrees() + rotation);
+//        }
+//        Coordinates c = unit.getCoordinates().getAdjacentCoordinate(direction);
+//        return game.getMovementManager().getPathingManager()
+//                .isGroundPassable(unit, c);
+//    }
 
 }

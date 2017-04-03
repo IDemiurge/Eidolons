@@ -34,7 +34,7 @@ public class GraveCondition extends MicroCondition {
         if (!ListMaster.isNotEmpty(deadUnits)) {
             return false;
         }
-        Set<Entity> filtered = new Filter<>(deadUnits, getRef(), getConditions()).getObjects();
+        Set<Entity> filtered = new Filter<>(deadUnits,ref, getConditions()).getObjects();
 
         if (!(ref.getMatchObj() instanceof DC_Cell)) {
             return filtered.contains(ref.getMatchObj());

@@ -227,7 +227,7 @@ public class AddBuffEffect extends MultiEffect  implements OneshotEffect, Resist
                     RETAIN_CONDITIONS.class, s);
             Condition condition;
             if (template != null) {
-                condition = DC_ConditionMaster.getRetainConditionsFromTemplate(template);
+                condition = DC_ConditionMaster.getRetainConditionsFromTemplate(template, ref);
             } else {
                 condition = ConditionMaster.toConditions(s);
             }
