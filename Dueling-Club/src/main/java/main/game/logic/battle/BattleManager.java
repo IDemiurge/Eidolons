@@ -294,7 +294,7 @@ public class BattleManager {
             if (!d.isDead()) {
                 return false;
             }
-            // panicked? check ownership change?
+            // panicked? preCheck ownership change?
         }
         return true;
     }

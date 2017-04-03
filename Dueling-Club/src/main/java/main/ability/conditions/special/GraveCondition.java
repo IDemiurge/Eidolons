@@ -5,6 +5,7 @@ import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.MicroCondition;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.system.auxiliary.data.ListMaster;
@@ -27,7 +28,7 @@ public class GraveCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         List<Obj> deadUnits = ref.getGame().getGraveyardManager().getDeadUnits(
                 ref.getMatchObj().getCoordinates());
         if (!ListMaster.isNotEmpty(deadUnits)) {

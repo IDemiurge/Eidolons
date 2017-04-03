@@ -131,7 +131,7 @@ public class TaskManager extends AiHandler {
         switch (goal) {
             case GUARD:
             case AMBUSH:
-                // check engagement level, default prefs
+                // preCheck engagement level, default prefs
             case SELF:
             case STEALTH:
                 list.add(new Task(forced, ai, goal, ai.getUnit().getId()));

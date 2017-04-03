@@ -1,6 +1,7 @@
 package main.elements.conditions;
 
 import main.data.ability.OmittedConstructor;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.log.LogMaster;
 
@@ -43,7 +44,7 @@ public class RefCondition extends ConditionImpl {
     // example: dispel buffs on target: /*
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         setTrue(false);
         try {
             Integer id = ref.getId(id1);

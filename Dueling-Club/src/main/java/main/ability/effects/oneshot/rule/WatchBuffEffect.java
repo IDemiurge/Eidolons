@@ -33,11 +33,11 @@ public class WatchBuffEffect extends AddBuffEffect {
 
     private static Effect generateEffects(Unit watcher, List<DC_Obj> list) {
         // some triggers? for the list...
-        // check specials per watcher!
+        // preCheck specials per watcher!
         Effects e = new Effects();
         // e.setForceStaticParse(false);
         // e.setForcedLayer(Effect.BUFF_RULE);
-        // atk/def VERSUS the list? perhaps only via special check in
+        // atk/def VERSUS the list? perhaps only via special preCheck in
         // AttackMaster...
 
         // TODO so this is re-applied after each reset() ? 'cause formulas may

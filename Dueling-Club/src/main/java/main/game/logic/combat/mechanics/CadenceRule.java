@@ -68,7 +68,7 @@ public class CadenceRule {
         if (buff.getRef().getObj(KEYS.WEAPON) == action.getRef().getObj(KEYS.WEAPON)) {
             return false;
         }
-        // check new weapon - ? Buff ref?
+        // preCheck new weapon - ? Buff ref?
 
         return true;
     }
@@ -165,7 +165,7 @@ public class CadenceRule {
         AddBuffEffect addBuffEffect = new AddBuffEffect(buffTypeName, new CustomTargetEffect(
                 new TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES.ACTIONS, condition), effect),
                 DURATION);
-        // check perk
+        // preCheck perk
         addBuffEffect.addEffect(new AddTriggerEffect( // what about
                 // counters/AoO?
                 STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, new RefCondition(KEYS.EVENT_SOURCE,

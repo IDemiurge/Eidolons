@@ -1,5 +1,6 @@
 package main.elements.conditions;
 
+import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Property;
 
@@ -12,7 +13,7 @@ public class EmptyStringCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         return StringMaster.isEmpty(new Property(string).getStr(ref));
     }
 

@@ -189,17 +189,17 @@ if (result)
         }
         if (result != null) {
             if (result) {
-                if (!targeting.getFilter().getConditions().check(REF)) {
+                if (!targeting.getFilter().getConditions().preCheck(REF)) {
                     return false;
                 }
             }
             if (!result) {
-                if (targeting.getFilter().getConditions().check(REF)) {
+                if (targeting.getFilter().getConditions().preCheck(REF)) {
                     return true;
                 }
             }
         }getEntity(). getRef().getSourceObj().getRef() .setInfoEntity(getEntity());
-        result = targeting.getFilter().getConditions().check(REF);
+        result = targeting.getFilter().getConditions().preCheck(REF);
         map2.put(id, result);
         return result;
 

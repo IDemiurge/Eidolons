@@ -392,7 +392,7 @@ public class ToolTipMaster {
 
         List<Object> lines = new LinkedList<>();
         for (Condition c : activeObj.getTargeting().getConditions()) {
-            lines.add(c.getTooltip()); // check can concatenate
+            lines.add(c.getTooltip()); // preCheck can concatenate
         }
         toolTipTextItems.remove(targetingText);
         targetingText = new TextItem(lines, TEXT_TYPE.TARGETING);

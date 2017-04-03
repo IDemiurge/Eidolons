@@ -49,7 +49,7 @@ public class CellPrioritizer extends AiHandler {
 		 * 
 		 * how to deal with special actions users? e.g. shadow step, short
 		 * flight... logically, those should be used to *close in* so maybe I
-		 * can make some kind of check?
+		 * can make some kind of preCheck?
 		 */
 
         return ai

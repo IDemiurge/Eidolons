@@ -2,6 +2,7 @@ package main.ability.conditions.special;
 
 import main.content.DC_TYPE;
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
@@ -85,7 +86,7 @@ public class ClearShotCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
        /* // consider flying/non-obstructing!
 
         DC_Obj target = (DC_Obj) game.getObjectById(ref.getId(str2));
@@ -173,7 +174,7 @@ public class ClearShotCondition extends MicroCondition {
 	 * this cell must be checked on this step. Now all cells on the line will be
 	 * checked.
 	 * 
-	 * I implemented the check based on dX, dY and obstructionArray, which
+	 * I implemented the preCheck based on dX, dY and obstructionArray, which
 	 * should containt True if cell contains something blocking, and False if
 	 * not.
 	 * 
@@ -213,9 +214,9 @@ public class ClearShotCondition extends MicroCondition {
         log("Checking Clear Shot for " + source + " on " + target + "; mirrored = "
                 + mirrorRectangle + "; flippedX = " + flippedX + "; flippedY = " + flippedY);
         boolean toCheck = false;
-        for (int i = 1; i < x; i++)            // don't check source
+        for (int i = 1; i < x; i++)            // don't preCheck source
         {
-            for (int j = 0; j <= y; j++) { // don't check target
+            for (int j = 0; j <= y; j++) { // don't preCheck target
                 int x_ = source.getX(); // greater mirrorRectangle ?
                 // source.getY() :
                 if (!mirrorRectangle) {
@@ -375,7 +376,7 @@ public class ClearShotCondition extends MicroCondition {
                 // if there are 2 cells adjacent with diagonal
                 // walls, we're blocked
 
-                // TODO just check that it goes the right way!
+                // TODO just preCheck that it goes the right way!
                 // depending on whether the C lies above or below the
                 // diagonal!
 
@@ -401,7 +402,7 @@ public class ClearShotCondition extends MicroCondition {
                 // return true;
                 //
                 // }
-                // run another loop here? check all again now with
+                // run another loop here? preCheck all again now with
                 // adjacent
                 // condition
                 // }
@@ -460,7 +461,7 @@ public class ClearShotCondition extends MicroCondition {
             x++;
 
             // TODO mystery solutions: 1) transform the Array 2) run the same
-            // check without 'rotation'
+            // preCheck without 'rotation'
         }
 
         return true;

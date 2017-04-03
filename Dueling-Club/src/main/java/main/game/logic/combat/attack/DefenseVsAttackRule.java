@@ -160,7 +160,7 @@ public class DefenseVsAttackRule {
     private static int getChance(DC_ActiveObj action, Unit attacker,
                                  Unit attacked, int attack, int defense, boolean critOrDodge) {
         int diff = defense - attack;
-        // first check ARITHMETIC difference...
+        // first preCheck ARITHMETIC difference...
         diff = Math.abs(diff)
          - ((critOrDodge) ? DC_Formulas.ATTACK_DMG_INCREASE_LIMIT
          : DC_Formulas.DEFENSE_DMG_DECREASE_LIMIT);

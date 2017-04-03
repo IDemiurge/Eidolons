@@ -437,7 +437,7 @@ public class LE_ObjMaster {
         // LevelEditor.getMainPanel().refreshGui();
         // Chronos.logTimeElapsedForMark("Main Panel refresh");
 
-        // check wall ?
+        // preCheck wall ?
         return obj;
     }
 

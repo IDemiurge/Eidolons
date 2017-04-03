@@ -152,7 +152,7 @@ public class AttackOfOpportunityRule {
 
     public static Boolean checkAttack(Unit unit, DC_ActiveObj active, boolean stealthAoO,
                                       boolean force) {
-        // if (!getConditions().check(unit)) return;
+        // if (!getConditions().preCheck(unit)) return;
         boolean free = false;
         boolean result = false;
 
@@ -242,7 +242,7 @@ public class AttackOfOpportunityRule {
                                                  Coordinates coordinates, DC_ActiveObj action) {
         List<DC_ActiveObj> list = new LinkedList<>();
         // TODO
-        // if (!getConditions().check(unit)) return;
+        // if (!getConditions().preCheck(unit)) return;
 
         return list;
     }

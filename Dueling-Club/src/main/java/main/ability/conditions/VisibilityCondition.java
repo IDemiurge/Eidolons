@@ -3,6 +3,7 @@ package main.ability.conditions;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
 import main.elements.conditions.ConditionImpl;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
@@ -37,7 +38,7 @@ public class VisibilityCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         if (!(ref.getObj(KEYS.MATCH) instanceof BfObj)) {
             return false;
         }

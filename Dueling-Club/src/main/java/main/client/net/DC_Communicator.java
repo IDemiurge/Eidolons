@@ -34,7 +34,7 @@ public class DC_Communicator extends Communicator {
                 + ref.getValues();
         LogMaster.log(2, "command data sent: " + data);
         getConnectionHandler().send(COMMAND.ACTIVATE + StringMaster.NETCODE_SEPARATOR + data);
-        // check response?
+        // preCheck response?
         return false;
     }
 

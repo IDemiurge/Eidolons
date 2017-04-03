@@ -154,7 +154,7 @@ public class TurnSequenceConstructor extends AiHandler {
     public static List<Action> getTurnSequence(Unit unit, Coordinates targetCoordinates) {
         List<Action> list = new ArrayList<>();
         // this will only work if there are no obstacles to the sides
-        // in reality, we need to check from which *empty* *adjacent* cell the
+        // in reality, we need to preCheck from which *empty* *adjacent* cell the
         // enemy is closer
         FACING_DIRECTION facing = unit.getFacing();
         boolean clockwise = RandomWizard.random();

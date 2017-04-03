@@ -254,7 +254,7 @@ public class AV_Tree extends G_Panel {
                     }
                     /*
                      * basically, it seems that root type count limits depth
-					 * the check
+					 * the preCheck
 					 *
 					 *
 					 */

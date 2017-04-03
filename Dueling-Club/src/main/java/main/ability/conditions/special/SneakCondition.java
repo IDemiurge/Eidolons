@@ -4,6 +4,7 @@ import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
@@ -31,7 +32,7 @@ public class SneakCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         if (!(ref.getObj(key) instanceof Unit)) {
             return false;
         }

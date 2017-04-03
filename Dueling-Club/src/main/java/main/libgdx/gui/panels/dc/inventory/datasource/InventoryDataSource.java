@@ -1,7 +1,9 @@
 package main.libgdx.gui.panels.dc.inventory.datasource;
 
-import main.content.PARAMS;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.entity.obj.unit.Unit;
+import main.game.core.Eidolons;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import main.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
@@ -13,8 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class InventoryDataSource implements QuickSlotDataSource,
- InventoryTableDataSource,
- EquipDataSource {
+        InventoryTableDataSource,
+        EquipDataSource {
 
     private InventoryValueContainerFactory factory;
     private Unit unit;
@@ -57,17 +59,13 @@ public class InventoryDataSource implements QuickSlotDataSource,
 
     @Override
     public List<InventoryValueContainer> getQuickSlots() {
-        List<InventoryValueContainer> list =
-         factory.getList(unit.getQuickItems(), CELL_TYPE.QUICK_SLOT);
-        ListMaster.fillWithNullElements(list
-         , unit.getIntParam(PARAMS.QUICK_SLOTS));
-        return list;
+        return factory.getList(unit.getQuickItems(), CELL_TYPE.QUICK_SLOT);
     }
 
     @Override
     public List<InventoryValueContainer> rings() {
         List<InventoryValueContainer> list = factory.getList(unit.getRings(),
-         CELL_TYPE.RING);
+                CELL_TYPE.RING);
         ListMaster.fillWithNullElements(list, 8);
         return list;
     }
@@ -76,9 +74,51 @@ public class InventoryDataSource implements QuickSlotDataSource,
     public List<InventoryValueContainer> getInventorySlots() {
         List<InventoryValueContainer> list = new LinkedList<>(factory.getList(unit.getInventory(), CELL_TYPE.INVENTORY));
         ListMaster.fillWithNullElements(list
-         , InventorySlotsPanel.SIZE);
+                , InventorySlotsPanel.SIZE);
         return list;
     }
 
+    public ClickListener getDoneHandler() {
+        return new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                handler.doneClicked();
+            }
+        };
+    }
 
+    public ClickListener getUndoHandler() {
+        return new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                handler.undoClicked();
+            }
+        };
+    }
+
+    public ClickListener getCancelHandler() {
+        return new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                handler.cancelClicked();
+            }
+        };
+    }
+
+    public boolean isDoneDisabled() {
+        return !handler.isDoneEnabled();
+    }
+
+    public boolean isCancelDisabled() {
+        return !handler.isCancelEnabled();
+    }
+
+    public boolean isUndoDisabled() {
+        return !handler.isUndoEnabled();
+    }
+
+    public String getOperationsString() {
+        return Eidolons.game.getInventoryManager().getOperationsLeft() + "/" +
+                Eidolons.game.getInventoryManager().getOperationsPool();
+    }
 }

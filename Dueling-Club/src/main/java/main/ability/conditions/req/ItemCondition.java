@@ -6,6 +6,7 @@ import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.MicroCondition;
 import main.elements.conditions.StringComparison;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
 import main.system.auxiliary.EnumMaster;
@@ -44,7 +45,7 @@ public class ItemCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         if (ref.getGame().isSimulation()) {
             return true;
         }
@@ -73,7 +74,7 @@ public class ItemCondition extends MicroCondition {
             return true;
         }
         String string = item.getProp(prop);
-        return new StringComparison(string, val, strict).check(ref);
+        return new StringComparison(string, val, strict).preCheck(ref);
 
         // String prop2 = ref.getObj(obj_string).getProp(slot);
         // if (StringMaster.isEmpty(prop2)) {

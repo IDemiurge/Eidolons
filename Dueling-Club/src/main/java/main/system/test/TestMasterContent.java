@@ -151,7 +151,7 @@ public class TestMasterContent {
 		 * keep a list of added actives and give all non-given to the last
 		 * hero...
 		 *
-		 * checkMastery() or at least aspect check class/masteries for actions
+		 * checkMastery() or at least aspect preCheck class/masteries for actions
 		 */
         SpellType spellType = (SpellType) DataManager.getType(typeName, DC_TYPE.SPELLS);
         if (spellType == null) {

@@ -41,11 +41,11 @@ public class EquipEffect extends MicroEffect  implements OneshotEffect {
                         : KEYS.ARMOR);
             }
         }
-        // check if item can be equipped at all!
+        // preCheck if item can be equipped at all!
 
         Unit hero = (Unit) ref.getTargetObj();
         ITEM_SLOT slot = ItemEnums.ITEM_SLOT.ARMOR;
-        // check if main hand is occupied
+        // preCheck if main hand is occupied
 
         boolean mainHand = true;
         // item.getProp(prop)

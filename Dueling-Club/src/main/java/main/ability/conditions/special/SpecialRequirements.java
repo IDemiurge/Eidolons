@@ -19,11 +19,11 @@ public class SpecialRequirements extends ConditionImpl {
     public static boolean check(String req, Ref ref) {
         SPECIAL_REQUIREMENTS template = new EnumMaster<SPECIAL_REQUIREMENTS>()
                 .retrieveEnumConst(SPECIAL_REQUIREMENTS.class, req);
-        return new SpecialRequirements(template).check(ref);
+        return new SpecialRequirements(template).preCheck(ref);
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         Coordinates c;
         DC_UnitModel unit;
         switch (template) {

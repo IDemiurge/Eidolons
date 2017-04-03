@@ -50,7 +50,7 @@ public class LockMaster {
         }
         Ref ref = new Ref(lockPicker);
         ref.setTarget(lockedObj.getId());
-        // check lockpick
+        // preCheck lockpick
         if (formula != null) {
             // TODO
         } else {

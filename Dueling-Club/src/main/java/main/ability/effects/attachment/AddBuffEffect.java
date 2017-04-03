@@ -131,7 +131,7 @@ public class AddBuffEffect extends MultiEffect  implements OneshotEffect, Resist
         } catch (Exception ignored) {
         }
         getBuffTypeLazily();
-        // check if continuous wrapping required
+        // preCheck if continuous wrapping required
         effect = ContinuousEffect.transformEffectToContinuous(effect);
         if (forcedLayer != null) {
             effect.setForcedLayer(forcedLayer);

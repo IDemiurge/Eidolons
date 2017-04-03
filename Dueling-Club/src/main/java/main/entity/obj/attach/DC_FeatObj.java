@@ -107,7 +107,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
 
         for (String s : StringMaster.openContainer(getProperty(PROPS.APPLY_REQS))) {
             Condition condition = ConditionMaster.toConditions(s);
-            if (!condition.check(ref)) {
+            if (!condition.preCheck(ref)) {
                 return false;
             }
         }

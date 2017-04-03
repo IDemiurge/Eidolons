@@ -104,7 +104,7 @@ public class SpectrumEffect extends DC_Effect {
             for (Obj o : objects) {
                 ref.setMatch(o.getId());
                 if (filterConditions != null) {
-                    if (!filterConditions.check(ref)) {
+                    if (!filterConditions.preCheck(ref)) {
                         continue;
                     }
                 }

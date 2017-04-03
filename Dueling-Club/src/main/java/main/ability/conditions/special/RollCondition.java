@@ -2,6 +2,7 @@ package main.ability.conditions.special;
 
 import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.system.math.roll.RollMaster;
 
 public class RollCondition extends MicroCondition {
@@ -13,7 +14,7 @@ public class RollCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         return RollMaster.roll(roll_type, ref);
     }
 

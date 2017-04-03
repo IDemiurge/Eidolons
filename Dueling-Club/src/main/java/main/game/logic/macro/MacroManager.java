@@ -79,7 +79,7 @@ public class MacroManager {
     }
 
     public static void endTurn() {
-        // TODO check orders are given or prompt
+        // TODO preCheck orders are given or prompt
         turnProcessing = true;
         try {
             game.getManager().newTurn();

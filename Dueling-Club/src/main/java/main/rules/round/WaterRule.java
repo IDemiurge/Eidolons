@@ -111,7 +111,7 @@ public class WaterRule extends RoundRule implements ActionRule {
         // float factor = Math.max(1, getSubmergedFactor(unit));
         // Effects submergedEffects = initSubmergedEffects(factor);
         // submergedEffects.apply(Ref.getSelfTargetingRefNew(unit));
-        // add moist counters , check drowning, check swimming
+        // add moist counters , preCheck drowning, preCheck swimming
 
     }
 

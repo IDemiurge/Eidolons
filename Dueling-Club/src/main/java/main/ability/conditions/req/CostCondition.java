@@ -1,6 +1,7 @@
 package main.ability.conditions.req;
 
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 
@@ -19,7 +20,7 @@ public class CostCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         Unit hero = (Unit) ref.getTargetObj();
 
         DC_ActiveObj action;

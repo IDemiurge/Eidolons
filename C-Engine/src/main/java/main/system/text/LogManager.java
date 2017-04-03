@@ -333,7 +333,7 @@ public abstract class LogManager {
 
     public void logActivation(ActiveObj active) {
         Obj obj = active.getOwnerObj();
-        // check visibility?
+        // preCheck visibility?
     }
 
     public void logDamageBeingDealt(int amount, Obj attacker, Obj attacked, DAMAGE_TYPE dmg_type) {

@@ -1,6 +1,7 @@
 package main.ability.conditions.req;
 
 import main.elements.conditions.standard.OccupiedCondition;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_UnitModel;
@@ -32,17 +33,17 @@ public class CellCondition extends OccupiedCondition {
     }
 
     @Override
-    public boolean check() {
-        return (free) ? !super.check() : super.check();
+    public boolean check(Ref ref) {
+        return (free) ? !super.check(ref) : super.check(ref);
     }
 
     @Override
-    protected Coordinates getCoordinates() {
+    protected Coordinates getCoordinates(Ref ref) {
         if (obj_ref == null) {
             obj_ref = KEYS.MATCH.toString();
         }
         if (direction == null) {
-            return super.getCoordinates();
+            return super.getCoordinates(ref);
         }
         Obj obj = ref.getObj(obj_ref);
         FACING_DIRECTION f = null;
@@ -53,11 +54,11 @@ public class CellCondition extends OccupiedCondition {
             return null;
         }
 
-        return super.getCoordinates().getAdjacentCoordinate(
+        return super.getCoordinates(ref).getAdjacentCoordinate(
                 DirectionMaster.getDirectionByFacing(f, direction));
     }
 }
-// boolean result = (free) ? !super.check() : super.check();
+// boolean result = (free) ? !super.preCheck() : super.preCheck();
 // if (!result) return false;
 //
 // if (getCoordinates().isInvalid()) return false;

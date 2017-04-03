@@ -253,7 +253,7 @@ public class A_StarAlgorithm {
 // if (isBlocked())
 // return -1;
 //
-// // check if finished
+// // preCheck if finished
 // if (manager.isAdjacent(C, dest)) {
 // return -1;
 // }

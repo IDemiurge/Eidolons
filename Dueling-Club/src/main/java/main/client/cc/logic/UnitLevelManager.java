@@ -30,7 +30,7 @@ public class UnitLevelManager {
         // game.initType(heroType);
         awardXP(newType, levelUps);
         awardGold(newType, levelUps);
-        // check max level and transitions
+        // preCheck max level and transitions
         for (int i = 0; i < levelUps; i++) {
             levelUp(newType);
         }

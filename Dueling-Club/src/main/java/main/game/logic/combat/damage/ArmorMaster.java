@@ -339,9 +339,9 @@ public class ArmorMaster {
 
         int attack = DefenseVsAttackRule.getAttackValue(offhand, attacker, attacked, action); // sneak?
         int defense = DefenseVsAttackRule.getDefenseValue(attacker, attacked, action);
-        boolean sneak = false;// sneakCondition.check(attacker);
-        // boolean watched_attacker=false;// watchCondition.check(attacker)
-        // boolean watched_target=false;// watchCondition.check(attacked)
+        boolean sneak = false;// sneakCondition.preCheck(attacker);
+        // boolean watched_attacker=false;// watchCondition.preCheck(attacker)
+        // boolean watched_target=false;// watchCondition.preCheck(attacked)
 
         int def_coef = 100;
         int atk_coef = 100;

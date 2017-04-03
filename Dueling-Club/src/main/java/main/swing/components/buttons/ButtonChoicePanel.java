@@ -82,7 +82,7 @@ public class ButtonChoicePanel {
         if (SwingUtilities.isEventDispatchThread()) {
             throw new RuntimeException("Cannot run this on EDT!");
         }
-        // check EDT!!!
+        // preCheck EDT!!!
         show();
         String result = (String) WaitMaster.waitForInput(operation);
         return result;

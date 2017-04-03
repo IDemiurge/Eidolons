@@ -183,7 +183,7 @@ public class AnimMaster extends Group {
                         " event anim created for: " + parentAnim);
                 parentAnim.addEventAnim(anim, event); //TODO}
             }
-            if (!parentAnim.isRunning()) {// check new TODO
+            if (!parentAnim.isRunning()) {// preCheck new TODO
                 add(parentAnim);
             }
         });

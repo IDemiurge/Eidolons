@@ -63,7 +63,7 @@ public class AutoTestRunner {
 
     private void actionTest(String name, Ref ref, Unit unit) {
         unit.getAction(name).setRef(ref);
-        unit.getAction(name).activate(false);
+        unit.getAction(name).activate( );
         logMeasurements();
         logAssertions();
     }

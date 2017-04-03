@@ -10,12 +10,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Vector;
 
-public class Conditions extends Vector<Condition> implements Referred, Condition {
+public class Conditions extends Vector<Condition> implements  Condition {
 
     protected boolean negative = false;
     boolean isTrue;
     boolean or = false;
-    Ref ref;
     private Condition lastCheckedCondition;
     private boolean fastFailOnCheck;
 
@@ -99,12 +98,11 @@ public class Conditions extends Vector<Condition> implements Referred, Condition
     }
 
     @Override
-    public boolean check(Ref ref) {
-        setRef(ref);
+    public boolean preCheck(Ref ref) {
         if (or) {
-            return checkAny();
+            return checkAny(ref);
         }
-        return check();
+        return check(ref);
     }
 
     @Override
@@ -115,17 +113,13 @@ public class Conditions extends Vector<Condition> implements Referred, Condition
         // }, this);
     }
 
-    public boolean checkAny(Ref ref) {
-        setRef(ref);
-        return checkAny();
-    }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         isTrue = true;
         for (int i = 0; i < this.size(); i++) {
 
-            isTrue &= this.get(i).check(ref);
+            isTrue &= this.get(i).preCheck(ref);
             if (!isTrue) {
                 if (isFastFailOnCheck()) {
                     break;
@@ -150,16 +144,16 @@ public class Conditions extends Vector<Condition> implements Referred, Condition
 
     @Override
     public boolean check(Entity match) {
-        ref = match.getRef().getCopy();
+       Ref ref = match.getRef().getCopy();
         ref.setMatch(match.getId());
-        return check();
+        return check(ref);
     }
 
-    public boolean checkAny() {
+    public boolean checkAny(Ref ref) {
         isTrue = false;
         for (int i = 0; i < this.size(); i++) {
 
-            isTrue |= this.get(i).check(ref);
+            isTrue |= this.get(i).preCheck(ref);
             if (isTrue) {
                 if (isFastFailOnCheck()) {
                     break;
@@ -172,15 +166,6 @@ public class Conditions extends Vector<Condition> implements Referred, Condition
         return isTrue;
     }
 
-    @Override
-    public Ref getRef() {
-        return ref;
-    }
-
-    @Override
-    public void setRef(Ref ref) {
-        this.ref = ref;
-    }
 
     @Override
     public boolean add(Condition c) {

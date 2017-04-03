@@ -22,7 +22,7 @@ public class PayCostEffect extends DC_Effect  implements OneshotEffect {
             return false;
         }
         if (!force) {
-            // check
+            // preCheck
         }
 
         action.payCosts();

@@ -627,7 +627,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
                     swapIndex2 = 1;
                 } else {
                     if (size == 3) {
-                        // check selected
+                        // preCheck selected
                         swapIndex1 = (children.get(0) == selectedType) ? 1 : 0;
                         swapIndex2 = (children.get(2) == selectedType) ? 1 : 2;
                     } else {

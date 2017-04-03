@@ -422,7 +422,7 @@ public class Analyzer extends AiHandler {
         List<DC_Cell> cells = getCells(ai, true, true, true);
         boolean melee = true;
         // try{
-        // } check melee TODO
+        // } preCheck melee TODO
         if (melee) {
             for (Unit e : getVisibleEnemies(ai)) {
                 // e.getCoordinates().getAdjacentCoordinates()

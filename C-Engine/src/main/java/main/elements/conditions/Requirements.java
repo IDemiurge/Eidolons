@@ -83,13 +83,13 @@ public class Requirements implements Condition {
 
     }
 
-    public boolean check(Ref ref) {
+    public boolean preCheck(Ref ref) {
         reasons.clear();
         Ref REF = ref.getCopy();
         REF.setValue(KEYS.PAYEE, REF.getSource() + "");
         setReason(null);
         for (String r : reqMap.keySet()) {
-            if (!reqMap.get(r).check(REF)) {
+            if (!reqMap.get(r).preCheck(REF)) {
                 reasons.add(r);
                 if (getReason() == null) {
                     setReason(r);
@@ -107,7 +107,7 @@ public class Requirements implements Condition {
         setFullCheck(forceFullCheck);
         boolean result = false;
         try {
-            result = check(ref);
+            result = preCheck(ref);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -125,14 +125,7 @@ public class Requirements implements Condition {
         this.fullCheck = fullCheck;
     }
 
-    @Override
-    public Ref getRef() {
-        return null;
-    }
 
-    @Override
-    public void setRef(Ref ref) {
-    }
 
     @Override
     public String getTooltip() {
@@ -141,13 +134,13 @@ public class Requirements implements Condition {
     }
 
     @Override
-    public boolean check() {
-        return check(new Ref());
+    public boolean check(Ref ref) {
+        return preCheck(new Ref());
     }
 
     @Override
     public boolean check(Entity match) {
-        return check(new Ref(match));
+        return preCheck(new Ref(match));
     }
 
     public synchronized Map<String, Condition> getReqMap() {

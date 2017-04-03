@@ -13,11 +13,11 @@ public class VerboseChecker {
         if (c instanceof Conditions) {
             boolean result = true;
             for (Condition condition : ((Conditions) c)) {
-                result &= log(c, c.check(ref));
+                result &= log(c, c.preCheck(ref));
             }
             return result;
         }
-        return log(c, c.check(ref));
+        return log(c, c.preCheck(ref));
     }
 
     private boolean log(Condition c, boolean check) {

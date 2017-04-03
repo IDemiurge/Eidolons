@@ -83,7 +83,7 @@ public class CostImpl extends ReferredElement implements Cost, Serializable {
         if (requirements == null) {
             requirements = new CostRequirements(toPay);
         }
-        boolean result = requirements.check(ref);
+        boolean result = requirements.preCheck(ref);
         if (!result) {
             if (!noAlt) {
                 if (altCosts != null) {

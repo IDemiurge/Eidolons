@@ -57,6 +57,6 @@ public class TrampleRule extends DC_RuleImpl {
      *
 	 * on hit...
 	 * 
-	 * check
+	 * preCheck
 	 */
 }

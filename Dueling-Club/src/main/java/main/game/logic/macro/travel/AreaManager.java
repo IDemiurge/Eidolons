@@ -37,7 +37,7 @@ public class AreaManager {
                 checkAddGroups(area);
                 for (MacroGroup group : area.getGroups()) {
                     if (group.isAmbushing()) {
-                        // check continue;
+                        // preCheck continue;
                     } else {
                         if (!group.checkSetAmbush())
 

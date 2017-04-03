@@ -174,7 +174,7 @@ public class MusicCore {
 
     public static void saveAll() {
         if (!MusicCore.initMusicListTypes) {
-            // check types read
+            // preCheck types read
         }
         for (AT_OBJ_TYPE t : musicTYPEs) {
             XML_Writer.writeXML_ForTypeGroup(t);

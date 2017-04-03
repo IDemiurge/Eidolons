@@ -1,5 +1,6 @@
 package main.elements.conditions;
 
+import main.entity.Ref;
 import main.system.auxiliary.log.LogMaster;
 
 public class RefNotEmptyCondition extends MicroCondition {
@@ -18,7 +19,7 @@ public class RefNotEmptyCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         try {
             return ref.getObj(obj).getRef().getObj(key) != null;
         } catch (Exception e) {

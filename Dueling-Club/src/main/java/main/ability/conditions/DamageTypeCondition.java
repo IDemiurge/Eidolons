@@ -21,7 +21,7 @@ public class DamageTypeCondition extends MicroCondition {
         this.dmg_type = dmg_type;
     }
 
-    public boolean check() {
+    public boolean check(Ref ref) {
 
         DAMAGE_TYPE event_damage_type = new EnumMaster<DAMAGE_TYPE>()
                 .retrieveEnumConst(DAMAGE_TYPE.class, ref.getEvent().getRef()

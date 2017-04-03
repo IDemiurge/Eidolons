@@ -1,5 +1,7 @@
 package main.elements.conditions;
 
+import main.entity.Ref;
+
 public class Requirement extends ConditionImpl {
 
     private Condition condition;
@@ -11,8 +13,8 @@ public class Requirement extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
-        return getCondition().check();
+    public boolean check(Ref ref) {
+        return getCondition().check(ref);
     }
 
     public String getText() {

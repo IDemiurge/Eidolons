@@ -293,7 +293,7 @@ public class ArenaBattleConstructor {
         ObjType dungeonType = getDungeon().getType();
         waves = DataManager.toTypeList(dungeonType.getProperty(alt ? PROPS.ALT_ENCOUNTERS
                 : PROPS.ENCOUNTERS), DC_TYPE.ENCOUNTERS);
-        // TODO need a better check...
+        // TODO need a better preCheck...
         if (waves.size() < 3) {
             waves = DataManager.toTypeList(dungeonType
                             .getProperty(!alt ? PROPS.ALT_ENCOUNTERS : PROPS.ENCOUNTERS),

@@ -2,6 +2,7 @@ package main.elements.conditions.standard;
 
 import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.elements.conditions.ConditionImpl;
+import main.entity.Ref;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.Formula;
 
@@ -32,7 +33,7 @@ public class ChanceCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         boolean result;
         if (percentage != null) {
             result = RandomWizard.chance(percentage.getInt(ref));

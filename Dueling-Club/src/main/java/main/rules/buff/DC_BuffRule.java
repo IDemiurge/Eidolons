@@ -61,7 +61,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         Ref ref = obj.getRef().getCopy();
         ref.setMatch(obj.getId());
         ref.setTarget(obj.getId());
-        return (conditions.check(ref));
+        return (conditions.preCheck(ref));
     }
 
     protected boolean applyToBfObjs() {
@@ -88,7 +88,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
             }
         }
 
-        if (getBuffConditions().check(ref)) {
+        if (getBuffConditions().preCheck(ref)) {
             if (checkBuffLevel(ref)) {
                 if (checkLogged(obj)) {
                     log(obj);
@@ -183,7 +183,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         ref.setMatch(unit.getId());
         ref.setTarget(unit.getId());
         ref.setBasis(unit.getId());
-        boolean result = conditions.check(ref);
+        boolean result = conditions.preCheck(ref);
         if (!result) {
             return -1;
         }
@@ -321,7 +321,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     protected Integer initLevel(Ref ref) {
         level = getMinLevel() - 1;
         for (int i = getMaxLevel(); i >= getMinLevel(); i--) {
-            if (getConditions(i).check(ref)) {
+            if (getConditions(i).preCheck(ref)) {
                 level = i;
             } else {
                 // break;

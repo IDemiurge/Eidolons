@@ -193,7 +193,7 @@ public class InstantAttackRule {
 
     public static Boolean canMakeInstantAttackAgainst(DC_ActiveObj action) {
         if (action.isMove()) {
-            return true; // dexterous check ?
+            return true; // dexterous preCheck ?
         }
         return false;
     }
@@ -208,7 +208,7 @@ public class InstantAttackRule {
                 .getMovementDestinationCoordinate(action), unit.getCoordinates()));
         // TODO moving away from same-cell ?
 
-        // how to check if jump trajectory intersects with IA range? for (c c :
+        // how to preCheck if jump trajectory intersects with IA range? for (c c :
         // getMovePathCells()){
         if (unit.getPreferredInstantAttack() != null) {
             return unit.getPreferredInstantAttack();

@@ -369,7 +369,7 @@ public class ConditionMaster {
     }
 
     public static boolean checkStringCondition(String condition, Ref ref) {
-        return toConditions(condition).check(ref);
+        return toConditions(condition).preCheck(ref);
     }
 
     public static Condition toConditions(String string) {
@@ -607,7 +607,7 @@ public class ConditionMaster {
         STRING_STRICT("strStrict", "strEqual", "strict"),
         CONTAINER("contains"),
         CONTAINER_STRICT("containerStrict"),
-        REF("ref", "check"),
+        REF("ref", "preCheck"),
         NUMERIC("num", "numeric", "greater"),
         NUMERIC_EQUAL("numEqual", "numeric equal", "equal"),
         NUMERIC_LESS("numLess", "numeric less", "less"),

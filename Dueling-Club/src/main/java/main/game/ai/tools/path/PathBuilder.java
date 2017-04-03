@@ -222,7 +222,7 @@ public class PathBuilder extends AiHandler {
         Chronos.mark("Finding custom choices for " + path);
         if (ListMaster.isNotEmpty(moveActions)) {
             // add special
-            // will need to remove actions from list when used? check CD
+            // will need to remove actions from list when used? preCheck CD
 
             for (DC_ActiveObj a : moveActions) {
 
@@ -385,7 +385,7 @@ public class PathBuilder extends AiHandler {
             return true;
         }
         unit.setCoordinates(c); // change facing
-        // check range
+        // preCheck range
         if (PositionMaster.getDistance(targetAction.getTarget().getCoordinates(), c) > targetAction
                 .getActive().getIntParam(PARAMS.RANGE)) {
             nonSneakCells.add(c);
@@ -393,7 +393,7 @@ public class PathBuilder extends AiHandler {
         }
         Ref ref = targetAction.getRef();
         ref.setTarget(targetAction.getTarget().getId());
-        boolean result = new SneakCondition().check(ref);
+        boolean result = new SneakCondition().preCheck(ref);
 
         adjustUnit();
         if (result) {
@@ -461,7 +461,7 @@ public class PathBuilder extends AiHandler {
         path.add(choice);
         if (checkFinished()) {
             if (targetAction.getActive().getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
-                checkAddFaceTurn(); // TODO better check?
+                checkAddFaceTurn(); // TODO better preCheck?
             }
             if (checkFailed()) {
                 return true;
@@ -595,7 +595,7 @@ public class PathBuilder extends AiHandler {
         Costs cost = getPathCosts(path);
         int result = DC_PriorityManager.getCostFactor(cost, unit);
         try {
-            // result += getAoOPenalty(); TODO instant atks check !
+            // result += getAoOPenalty(); TODO instant atks preCheck !
         } catch (Exception e) {
             e.printStackTrace();
         }

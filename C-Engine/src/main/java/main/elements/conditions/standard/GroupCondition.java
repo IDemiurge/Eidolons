@@ -34,7 +34,7 @@ public class GroupCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         Ref REF = ref;
         if (event) {
             REF = ref.getEvent().getRef();

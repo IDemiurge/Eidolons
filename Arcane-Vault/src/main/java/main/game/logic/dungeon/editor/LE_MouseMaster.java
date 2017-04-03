@@ -72,7 +72,7 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
         // int x2 = LevelEditor.getCurrentLevel().getDungeon().getCellsX() - 2;
         // int y1 = 1;
         // int y2 = LevelEditor.getCurrentLevel().getDungeon().getCellsY() - 2;
-        // // check on edge
+        // // preCheck on edge
         // if (!CoordinatesMaster.isWithinBounds(hoverObj.getCoordinates(), x1,
         // x2, y1, y2)) {
         // }
@@ -349,7 +349,7 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
                     int i = (positive ? 1 : -1);
 
                     offset(i, x); // left right button? mods?
-                    // check exited, released, off limits
+                    // preCheck exited, released, off limits
 
                     WaitMaster.WAIT(500);
                 }

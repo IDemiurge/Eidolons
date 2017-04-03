@@ -38,7 +38,7 @@ public class OrderMaster extends AiHandler {
             return null;
         }
         return order.getSequence().getNextAction();
-        // check re-build sequence
+        // preCheck re-build sequence
     }
 
     private void initOrderSequence(Order order) {

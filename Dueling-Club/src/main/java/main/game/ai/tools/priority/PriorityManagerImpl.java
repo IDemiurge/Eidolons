@@ -250,7 +250,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             if (unitAction.getModeEffect() != null) {
                 if (unitAction.getModeEffect().getMode().equals(STD_MODES.STEALTH)) {
                     /*
-                     * check detection inevitable?
+                     * preCheck detection inevitable?
 					 */
                     return 300;
                     // should add to the max target priority...
@@ -630,8 +630,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         // priority = priority / meleeDangerFactor;
         // else if (unit_ai.getBehaviorMode() != BEHAVIOR_MODE.PANIC)
         // priority = 0;
-        // check melee threat if unit were on this cell?
-        // check ranged threat? hide behind obstacles...
+        // preCheck melee threat if unit were on this cell?
+        // preCheck ranged threat? hide behind obstacles...
         return priority;
     }
 
@@ -759,7 +759,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         setBasePriority(getUnitPriority(target, false));
 
         boolean ally = target.getOwner().equals(unit.getOwner());
-        // boolean mod = EffectMaster.check(spell.getAbilities(),
+        // boolean mod = EffectMaster.preCheck(spell.getAbilities(),
         // ModifyValueEffect.class);
         List<Effect> effects = EffectFinder.getEffectsOfClass(spell.getAbilities(),
                 (buff) ? AddBuffEffect.class : ModifyValueEffect.class);
@@ -898,7 +898,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public int getCounterModSpellPriority(Action action) {
-        // check immunity? find counter rule by name and check....
+        // preCheck immunity? find counter rule by name and preCheck....
 
         List<Effect> effects = EffectFinder.getEffectsOfClass(action.getActive().getAbilities(),
                 ModifyCounterEffect.class);
@@ -1179,14 +1179,14 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         if (targetObj.isNeutral()) {
             return false;
         }
-        // check if action deals exceeding damage?
+        // preCheck if action deals exceeding damage?
         // if (PositionMaster.getDistance(targetObj, unit) > 1) {
         // if (Analyzer.getEnemies((DC_HeroObj) targetObj, false).size() > 0) {
         // // melee threat instead?
         //
         // return false;
         // }
-        // }// check if wounded
+        // }// preCheck if wounded
         return true;
     }
 
@@ -1328,7 +1328,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         } else {
             addMultiplier(100 - ParamPriorityAnalyzer.getUnitLifeFactor(target), "ally life factor");
         }
-        // check if ally is blocking move/view
+        // preCheck if ally is blocking move/view
         // relevance factor -> "need to take your place" OR
         // "waiting for you to come closer"
 
@@ -1384,7 +1384,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             case RESTING:
 
                 modifier = -getMeleeDangerFactor(unit);
-                // check ignore TODO
+                // preCheck ignore TODO
                 break;
         }
         priority = factor;
@@ -1537,11 +1537,11 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 return 100;
             }
         }
-        // check actions
+        // preCheck actions
         if (p == PARAMS.C_ENDURANCE) {
             return 125;
         }
-        // check toughness
+        // preCheck toughness
         return (base_priority);
         // * 100 - percentage / MathManager.MULTIPLIER) / 100;
     }

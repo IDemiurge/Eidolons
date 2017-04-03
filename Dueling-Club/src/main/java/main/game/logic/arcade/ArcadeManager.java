@@ -177,7 +177,7 @@ public class ArcadeManager {
         region = new EnumMaster<ARCADE_REGION>().retrieveEnumConst(ARCADE_REGION.class, party
                 .getProperty(G_PROPS.ARCADE_REGION));
 
-        // check load? yes - perhaps the party.xml should write something on
+        // preCheck load? yes - perhaps the party.xml should write something on
         // battle begin and end, so that we know if there was a "disconnect"
 
     }

@@ -112,7 +112,7 @@ public class UnitGroupMaster {
         for (File sub : FileManager.getFilesFromDirectory(getReadyGroupsPath(), false)) {
             readyGroups += sub.getName() + ";";
         }
-        // TODO check units inside!
+        // TODO preCheck units inside!
         if (StringMaster.contains(readyGroups, name)) {
             return true;
         }

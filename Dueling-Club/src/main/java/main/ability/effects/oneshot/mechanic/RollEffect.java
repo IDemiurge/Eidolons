@@ -135,7 +135,7 @@ public class RollEffect extends MicroEffect  implements OneshotEffect, Container
             // ++ event
             result =
                     // new ChanceCondition(new Formula(successFormula),
-                    // new Formula(failFormula)).check(ref);
+                    // new Formula(failFormula)).preCheck(ref);
                     RollMaster.roll(rollType, getSuccess(), getFail(), ref);
 
             // roll method instead, with proper logging!

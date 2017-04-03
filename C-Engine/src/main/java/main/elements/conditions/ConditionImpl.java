@@ -1,15 +1,16 @@
 package main.elements.conditions;
 
-import main.elements.ReferredElement;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.system.auxiliary.log.LogMaster;
+import main.game.core.game.Game;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 
-public abstract class ConditionImpl extends ReferredElement implements Condition {
+public abstract class ConditionImpl  implements Condition {
     public static final int MAX_TOOLTIP_LENGTH = 50;
+    private static final boolean FORCE_LOG =false ;
     private boolean isTrue;
-    private boolean forceLog;
+    protected Game game;
 
     @Override
     public String toString() {
@@ -27,9 +28,14 @@ public abstract class ConditionImpl extends ReferredElement implements Condition
                 .getWellFormattedString(toString()));
     }
 
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
     @Override
-    public boolean check(Ref ref) {
-        setRef(ref);
+    public boolean preCheck(Ref ref) {
+        ref =ref.getCopy();
+       setGame(ref.getGame());
         boolean logged = false;
         if (!isLoggingBlocked()) {
             if (ref.getGame().getManager().isSelecting()
@@ -37,11 +43,10 @@ public abstract class ConditionImpl extends ReferredElement implements Condition
                 logged = true;
             }
         }
-        // ++ trigger
         try {
-            isTrue = check();
+            isTrue = check(ref);
             if (logged) {
-                LogMaster.log((forceLog ? 1 : LogMaster.CONDITION_DEBUG),
+                LogMaster.log((FORCE_LOG ? 1 : LogMaster.CONDITION_DEBUG),
                         toString() + " checks " + isTrue + " on " + ref);
             }
 
@@ -51,8 +56,8 @@ public abstract class ConditionImpl extends ReferredElement implements Condition
             return false;
         }
         if (isTrue) {
-            // LogMaster.log(LogMaster.CONDITION_DEBUG, "" + toString()
-            // + " checks TRUE for " + ref);
+             LogMaster.log(LogMaster.CONDITION_DEBUG, "" + toString()
+             + " checks TRUE for " + ref);
 
             return true;
         }
@@ -69,20 +74,17 @@ public abstract class ConditionImpl extends ReferredElement implements Condition
 
     @Override
     public boolean check(Entity match) {
-        // match.getRef() TODO - give ObjType's per 1 ID! Any simulation will
-        // need this!
         Ref REF = match.getRef().getCopy();
         REF.setMatch(match.getId());
 
-        return check(REF);
+        return preCheck(REF);
     }
 
-    // public abstract boolean check();
 
 
 
     @Override
-    public abstract boolean check();
+    public abstract boolean check(Ref ref);
 
     public boolean isTrue() {
         return isTrue;

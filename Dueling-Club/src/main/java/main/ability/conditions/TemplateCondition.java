@@ -6,6 +6,7 @@ import main.elements.conditions.Conditions;
 import main.elements.conditions.MicroCondition;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
+import main.entity.Ref;
 import main.system.DC_ConditionMaster;
 
 public class TemplateCondition extends MicroCondition {
@@ -28,11 +29,11 @@ public class TemplateCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         if (conditions == null) {
             initConditions();
         }
-        return conditions.check(ref);
+        return conditions.preCheck(ref);
     }
 
     private void initConditions() {

@@ -65,7 +65,7 @@ public class ReasonMaster {
         // Map<String, Condition> reqs =
         // action.getActive().getCosts().getRequirements().getReqMap();
         // for (Condition c : reqs.values()) {
-        // if (!c.check(REF)) {
+        // if (!c.preCheck(REF)) {
         // reasons.add
         // (new MapMaster<String, Condition>().getKeyForValue(reqs, c));
         // }
@@ -111,7 +111,7 @@ public class ReasonMaster {
             targeting = TargetingMaster.findTargeting(action.getActive());
         }
         Conditions conditions = targeting.getFilter().getConditions();
-        // conditions.check(REF);
+        // conditions.preCheck(REF);
         List<FILTER_REASON> reasons = new LinkedList<>();
         for (Condition c : conditions) {
             FILTER_REASON reason = getReason(c);
@@ -131,7 +131,7 @@ public class ReasonMaster {
             }
             boolean result = c.isTrue();
             if (!useConditionResultCache) {
-                result = c.check(REF);
+                result = c.preCheck(REF);
             } else {
                 LogMaster.log(0, c + " uses cached result " + result);
             }

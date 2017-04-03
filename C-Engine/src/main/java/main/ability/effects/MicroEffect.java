@@ -23,7 +23,7 @@ public abstract class MicroEffect extends EffectImpl {
     public boolean apply() {
 
         boolean result = super.apply();
-
+// FOR PHASE ANIMATIONS
         if (result) {
             if (!isContinuousWrapped() || !isApplied()) {
                 if (!isAnimationDisabled()) {

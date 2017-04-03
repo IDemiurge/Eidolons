@@ -4,6 +4,7 @@ import main.content.PROPS;
 import main.data.DataManager;
 import main.elements.conditions.MicroCondition;
 import main.elements.conditions.StringContainersComparison;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
@@ -26,7 +27,7 @@ public class MultiClassCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         ObjType type;
         if (className == null) {
             type = ref.getType(key.toString());
@@ -38,7 +39,7 @@ public class MultiClassCondition extends MicroCondition {
         // }
         for (String className : StringMaster
                 .openContainer(type.getProperty(PROPS.BASE_CLASSES_ONE))) {
-            if (!new ClassTreeCondition(className).check(ref))
+            if (!new ClassTreeCondition(className).preCheck(ref))
             // setReason()
             {
                 return false;
@@ -46,14 +47,14 @@ public class MultiClassCondition extends MicroCondition {
         }
         for (String className : StringMaster
                 .openContainer(type.getProperty(PROPS.BASE_CLASSES_TWO))) {
-            if (!new ClassTreeCondition(className).check(ref)) {
+            if (!new ClassTreeCondition(className).preCheck(ref)) {
                 return false;
             }
         }
 
         return new StringContainersComparison(ref.getSourceObj().getProperty(PROPS.CLASSES), type
-                .getProperty(PROPS.BASE_CLASSES_ONE)).check(ref)
+                .getProperty(PROPS.BASE_CLASSES_ONE)).preCheck(ref)
                 && new StringContainersComparison(ref.getSourceObj().getProperty(PROPS.CLASSES),
-                type.getProperty(PROPS.BASE_CLASSES_TWO)).check(ref);
+                type.getProperty(PROPS.BASE_CLASSES_TWO)).preCheck(ref);
     }
 }

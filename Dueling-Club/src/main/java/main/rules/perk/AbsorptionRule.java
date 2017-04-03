@@ -20,7 +20,7 @@ public class AbsorptionRule extends DC_CounterRule {
     }
 
     public void damageDealt(DAMAGE_TYPE type, int amount, Ref ref) {
-//        check
+//        preCheck
     }
 
     @Override

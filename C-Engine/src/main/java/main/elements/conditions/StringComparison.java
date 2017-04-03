@@ -1,6 +1,7 @@
 package main.elements.conditions;
 
 import main.data.ability.AE_ConstrArgs;
+import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Property;
 
@@ -28,7 +29,7 @@ public class StringComparison extends ConditionImpl {
     // if 2 units share race... or classification... if a unit has a
     // classification
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         if (arg1 == null) {
             this.arg1 = new Property(str1);
         }

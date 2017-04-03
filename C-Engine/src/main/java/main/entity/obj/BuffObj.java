@@ -254,9 +254,9 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         }
 
         if (retainConditions != null) {
-            if (!retainConditions.check(ref)) {
+            if (!retainConditions.preCheck(ref)) {
                 LogMaster.log(LOG_CHANNELS.BUFF_DEBUG,
-                        "Retain conditions check false for " + getName());
+                        "Retain conditions preCheck false for " + getName());
                 kill();
 
                 return false;

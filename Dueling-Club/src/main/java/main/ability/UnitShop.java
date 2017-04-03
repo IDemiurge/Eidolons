@@ -131,14 +131,14 @@ public class UnitShop {
     private static void generateArmorRepertoire(Unit hero) {
         // TODO
         /*
-         * if has armorer... if isn't caster... check robe per mastery... check
+         * if has armorer... if isn't caster... preCheck robe per mastery... preCheck
 		 * strength...
 		 */
 
     }
 
     private static void buyQuickItems() {
-        // TODO check slots
+        // TODO preCheck slots
         while (true) {
             if (unit.getRemainingQuickSlots() <= 0) {
                 break;
@@ -166,7 +166,7 @@ public class UnitShop {
 
     private static void buyJewelry(PROPS property) {
         String repertoire = ""; // TODO 1) sort types by plan and cost 2)
-        // prioritize/check amulet 3)
+        // prioritize/preCheck amulet 3)
         // randomize
         String prop = unit.getProp(property.getName());
         // ++ attr jewelry ++ passive enchantment
@@ -177,8 +177,8 @@ public class UnitShop {
             ObjType type = DataManager.findType(VariableManager.removeVarPart(trait),
                     DC_TYPE.JEWELRY);
             if (type != null)
-            // check what, exactly? quality range? proper match? (resistance
-            // could be resistance penetration... TODO check doesn't contain
+            // preCheck what, exactly? quality range? proper match? (resistance
+            // could be resistance penetration... TODO preCheck doesn't contain
             // other trait
             {
                 repertoire += VariableManager.removeVarPart(type.getName())

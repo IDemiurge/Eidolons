@@ -16,11 +16,11 @@ public class NotCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check(Ref ref) {
+    public boolean preCheck(Ref ref) {
         if (switcher != null) {
-            return (switcher) == c.check(ref);
+            return (switcher) == c.preCheck(ref);
         }
-        return !c.check(ref);
+        return !c.preCheck(ref);
 
     }
 
@@ -30,7 +30,7 @@ public class NotCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         return false;
     }
 

@@ -3,6 +3,7 @@ package main.ability.conditions.req;
 import main.content.DC_ValueManager.VALUE_GROUP;
 import main.content.values.parameters.PARAMETER;
 import main.elements.conditions.NumericCondition;
+import main.entity.Ref;
 import main.system.entity.ConditionMaster;
 
 public class ValueGroupCondition extends NumericCondition {
@@ -23,7 +24,7 @@ public class ValueGroupCondition extends NumericCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         Integer sum = 0;
         for (PARAMETER p : template.getParams()) {
             if (total) {
@@ -40,7 +41,7 @@ public class ValueGroupCondition extends NumericCondition {
 
     private boolean check(PARAMETER p) {
         return ConditionMaster.getParamCondition(p.getName(), getComparingValue().toString())
-                .check(ref);
+                .preCheck(ref);
     }
 
 }

@@ -10,8 +10,7 @@ import main.libgdx.gui.controls.radial.RadialMenu;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.LogPanel;
 import main.libgdx.gui.panels.dc.actionpanel.ActionPanelController;
-import main.libgdx.gui.panels.dc.inventory.InventoryPanel;
-import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import main.libgdx.gui.panels.dc.inventory.InventoryWithAction;
 import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -28,7 +27,7 @@ public class GuiStage extends Stage {
 
     protected ToolTipManager toolTipManager;
     private LogPanel log;
-    private InventoryPanel inventoryDialog;
+    private InventoryWithAction inventoryForm;
     private RadialMenu radialMenu;
     private UnitInfoPanel infoPanel;
     private InitiativePanel initiativePanel;
@@ -59,25 +58,20 @@ public class GuiStage extends Stage {
     }
 
     public void bindEvents() {
-        GuiEventManager.bind(GuiEventType.CLOSE_INVENTORY_DIALOG, (obj) -> {
-            inventoryDialog.setVisible(false);
-        });
-        GuiEventManager.bind(GuiEventType.REFRESH_INVENTORY_DIALOG, (obj) -> {
-            if (obj==null ){
-                inventoryDialog.setUserObject(inventoryDialog.getUserObject());
-            }else {
-                inventoryDialog.setUserObject(obj.get());
-            inventoryDialog.initButtonListeners(((InventoryDataSource) inventoryDialog.getUserObject()).getHandler());
+        GuiEventManager.bind(GuiEventType.SHOW_INVENTORY, (obj) -> {
+            if (inventoryForm == null) {
+                inventoryForm = new InventoryWithAction();
+                this.addActor(inventoryForm);
+                inventoryForm.setPosition(0, Gdx.graphics.getHeight() - inventoryForm.getHeight());
             }
-        });
-        GuiEventManager.bind(GuiEventType.SHOW_INVENTORY_DIALOG, (obj) -> {
-            if (inventoryDialog == null) {
-                inventoryDialog = new InventoryPanel();
-                this.addActor(inventoryDialog);
-                inventoryDialog.setPosition(0, Gdx.graphics.getHeight() - inventoryDialog.getHeight());
+
+            final Object param = obj.get();
+            if (param == null) {
+                inventoryForm.setVisible(false);
+            } else {
+                inventoryForm.setVisible(true);
+                inventoryForm.setUserObject(param);
             }
-            GuiEventManager.trigger(GuiEventType.REFRESH_INVENTORY_DIALOG, obj);
-            inventoryDialog.setVisible(true);
         });
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {

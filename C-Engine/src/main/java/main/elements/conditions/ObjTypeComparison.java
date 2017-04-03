@@ -3,6 +3,7 @@ package main.elements.conditions;
 import main.content.OBJ_TYPE;
 import main.data.ability.OmittedConstructor;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 
 public class ObjTypeComparison extends MicroCondition {
@@ -25,7 +26,7 @@ public class ObjTypeComparison extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         if (TYPE == null) {
             return true;
         }

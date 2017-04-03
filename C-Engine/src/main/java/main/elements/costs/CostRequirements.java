@@ -61,7 +61,7 @@ public class CostRequirements extends Requirements {
 
     }
 
-    public boolean check(Ref ref) {
+    public boolean preCheck(Ref ref) {
         // if (var)
         try {
             initConditions(paymentList, ref);
@@ -69,7 +69,7 @@ public class CostRequirements extends Requirements {
             return false;
         }
         try {
-            super.check(ref);
+            super.preCheck(ref);
         } catch (Exception e) {
             return false;
         }

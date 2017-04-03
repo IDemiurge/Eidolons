@@ -6,6 +6,7 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.elements.conditions.MicroCondition;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.system.math.DC_MathManager;
 
@@ -23,7 +24,7 @@ public class SkillPointCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         Entity match = ref.getMatchObj();
         if (match == null) {
             match = ref.getType("match");

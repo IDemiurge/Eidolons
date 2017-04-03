@@ -14,6 +14,6 @@ public class SneakRule {
         if (sneakCondition == null) {
             sneakCondition = new SneakCondition();
         }
-        return sneakCondition.check(ref);
+        return sneakCondition.preCheck(ref);
     }
 }

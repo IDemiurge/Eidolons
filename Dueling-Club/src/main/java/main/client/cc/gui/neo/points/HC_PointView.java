@@ -128,7 +128,7 @@ public class HC_PointView extends HeroView {
         if (attributes) {
             return ContentManager.isBase(p);
         }
-        return true; // check locked!!!
+        return true; // preCheck locked!!!
     }
 
     private void initValues() {

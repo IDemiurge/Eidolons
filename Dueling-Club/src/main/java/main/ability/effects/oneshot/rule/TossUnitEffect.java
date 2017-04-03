@@ -15,7 +15,7 @@ public class TossUnitEffect extends DC_Effect  implements OneshotEffect {
 
     @Override
     public boolean applyThis() {
-        // distance? landing cell - check collisions
+        // distance? landing cell - preCheck collisions
 
         return true;
     }

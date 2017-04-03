@@ -94,7 +94,7 @@ public class DC_RequirementsManager implements RequirementsManager {
         if (CoreEngine.isArcaneVault()) {
             return null;
         }
-        // Chronos.mark(type.getName() + " req check");
+        // Chronos.mark(type.getName() + " req preCheck");
         this.setHero(hero);
         String reason;
         // specialCheck(type, hero);
@@ -108,7 +108,7 @@ public class DC_RequirementsManager implements RequirementsManager {
             return null;
         }
         reason = requirements.checkReason(hero.getRef(), type);
-        // Chronos.logTimeElapsedForMark(type.getName() + " req check");
+        // Chronos.logTimeElapsedForMark(type.getName() + " req preCheck");
         return reason;
     }
 
@@ -388,7 +388,7 @@ public class DC_RequirementsManager implements RequirementsManager {
                 || ContentManager.isProperty(valRef);
     }
 
-    // TODO check upgrade
+    // TODO preCheck upgrade
     public Requirements generateSpellRequirements(Entity type, int mode) {
         Requirements req = new Requirements();
 
@@ -451,7 +451,7 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     public Requirements generateClassRequirements(Entity type, int mode) {
-        // check has class of this Base Type of equal or greater Circle
+        // preCheck has class of this Base Type of equal or greater Circle
         // multi :
         if (mode == RANK_MODE) {
             return generateClassRankRequirements(type);

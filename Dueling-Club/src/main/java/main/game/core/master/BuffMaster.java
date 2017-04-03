@@ -144,7 +144,7 @@ public class BuffMaster extends Master {
                 buff.modifyParameter(PARAMS.BUFF_STACKS, 1);
             }
         } else {
-            // check cache
+            // preCheck cache
         }
 
         buff = new DC_BuffObj(type, player, getGame(), ref, effect, duration, retainCondition);

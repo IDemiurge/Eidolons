@@ -91,7 +91,7 @@ public class DC_PagedBuffPanel extends G_PagePanel<BuffObj> {
 
                 // standard -> buff -> debuff -> other
 
-                // check group as well
+                // preCheck group as well
 
                 if (o1.isPermanent()) {
                     if (!o2.isPermanent()) {

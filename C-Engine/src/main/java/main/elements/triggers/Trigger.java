@@ -64,7 +64,7 @@ basis =abilities.getRef().getTarget();
         Ref ref = getAbilities().getRef();
         ref.setEvent(event);
         if (retainCondition != null) {
-            if (!retainCondition.check(ref)) {
+            if (!retainCondition.preCheck(ref)) {
                 remove();
                 return false;
             }
@@ -82,7 +82,7 @@ basis =abilities.getRef().getTarget();
             }
             ref.getGame().getManager().setTriggerBeingChecked(true);
             try {
-                if (conditions.check(ref)) {
+                if (conditions.preCheck(ref)) {
                     this.event=event;
                     ref.getGame().getManager().setTriggerBeingActivated(true);
                     return trigger();

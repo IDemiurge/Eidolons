@@ -51,7 +51,7 @@ public class TavernMaster {
                     / tavern.getIntParam(MACRO_PARAMS.FOOD_COST);
             cost = amount * tavern.getIntParam(MACRO_PARAMS.FOOD_COST);
         }
-        // check(cost, party) return;
+        // preCheck(cost, party) return;
         // MathManager.addFactor(amount, goldMod)
         // applyAverageQuality(tavern.getIntParam(MACRO_PARAMS.FOOD_QUALITY));
         MacroPartyManager.reduceSharedGold(party, cost);

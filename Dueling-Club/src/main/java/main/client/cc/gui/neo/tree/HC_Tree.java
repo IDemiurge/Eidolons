@@ -597,7 +597,7 @@ public class HC_Tree {
                 } else {
                     Ref ref = new Ref(hero);
                     ref.setMatch((reqTextType).getId());
-                    reqs.check(ref);
+                    reqs.preCheck(ref);
                     list = reqs.getReasons();
                     reasons = new LinkedList<>();
                 }

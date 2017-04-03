@@ -11,7 +11,7 @@ import main.game.ai.elements.generic.AiHandler;
 import java.util.List;
 
 /**
- * 1) check forced 2) create action sequences for default goal 3) choose the
+ * 1) preCheck forced 2) create action sequences for default goal 3) choose the
  * topmost
  * <p>
  * to choose an action sequence, first create all possible tasks if there are X

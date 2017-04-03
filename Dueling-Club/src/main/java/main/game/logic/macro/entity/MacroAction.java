@@ -47,7 +47,6 @@ public class MacroAction extends MacroObj implements ActiveObj {
         setImage(mode.getImagePath());
     }
 
-    @Override
     public boolean activate(boolean transmit) {
         return false;
     }
@@ -126,10 +125,10 @@ public class MacroAction extends MacroObj implements ActiveObj {
             return false;
         }
         if (mode != null) {
-            // check mode already on?
+            // preCheck mode already on?
         }
         if (mpa != null) {
-            // check order cancelable
+            // preCheck order cancelable
         }
         return true;
     }

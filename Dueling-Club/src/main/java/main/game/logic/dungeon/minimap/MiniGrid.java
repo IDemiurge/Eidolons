@@ -207,7 +207,7 @@ public class MiniGrid implements Refreshable {
         int x = p.x / getCellWidth();
         int y = p.y / getCellWidth();
         Coordinates coordinates = new Coordinates(true, x, y);
-        // check overlaying!
+        // preCheck overlaying!
         for (MiniObjComp o : overlayingObjComps) {
             // if (!o.getCoordinates().eq)
             // continue; TODO

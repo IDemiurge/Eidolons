@@ -30,7 +30,7 @@ import java.util.List;
  * An effect is contained in an {@link Ability} and can either be passive
  * (static) or OneShot (active). OneShot ones take effect when an ability
  * invoking them resolves. They perform some tasks and fire corresponding
- * events, enabling event handler to check triggers and watchers, possibly
+ * events, enabling event handler to preCheck triggers and watchers, possibly
  * leading to more abilities resolving and more effects coming in play. Static
  * effects often have watchers, conditions and triggers as well. Passive effects
  * are often contained within a buff, an object that represents one or two
@@ -158,13 +158,12 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
     @Override
     public boolean apply(Ref ref) {
-        // specific for spells?
+        setRef(ref);
+
+        // for logging
         boolean active = getLayer() != BUFF_RULE && ref.getObj(KEYS.ACTIVE) != null
                 && (!(ref.getObj(KEYS.ABILITY) instanceof PassiveAbilityObj));
-        // that is not enough - some passives/triggers are added by spells! what
-        // do they have
-        // in common? ABIL ref?
-        setRef(ref);
+
         if ((ref.getGroup() == null && targetGroup == null) || isIgnoreGroupTargeting()) {
             // single-target effect
             if (ref.getTargetObj() != null) {
@@ -174,7 +173,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             }
             return apply();
         } else {
-
+//multi-target effect, applies to each target
             GroupImpl group = ref.getGroup();
             if (group == null) {
                 group = targetGroup;
@@ -222,21 +221,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
     }
 
-    protected void applyConcurrently(Integer targetId) {
-
-        Ref REF = Ref.getCopy(this.ref);
-        REF.setGroup(targetGroup);
-        REF.setTarget(targetId);
-
-        if (construct != null) {
-            getCopy().apply(REF);
-        } else {
-            this.ref.setTarget(targetId);
-            apply();
-        }
-
-    }
-
     @Override
     public void remove() {
 
@@ -258,8 +242,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             return false;
         }
 
-        // if (isResisted()){
-
         try {
             animateSprite();
         } catch (Exception e) {
@@ -273,12 +255,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
                 }
             }
         }
-        // TODO anim thread?
-        // main.system.auxiliary.LogMaster.log(LogMaster.EFFECT_DEBUG,
-        // toString()
-        // + " is being applied to "
-        // + ((ref.getTargetObj() != null) ? ref.getTargetObj()
-        // : "<NO TARGET!>"));
         boolean result = false;
         try {
             result = applyThis();

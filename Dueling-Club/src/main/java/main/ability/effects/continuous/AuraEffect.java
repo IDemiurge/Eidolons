@@ -122,7 +122,7 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
 
         // use zoneEffect?
         // if only modifies non-dynamic values, then it's continuous. How to
-        // check?
+        // preCheck?
         if (!initialized) {
             init();
         }

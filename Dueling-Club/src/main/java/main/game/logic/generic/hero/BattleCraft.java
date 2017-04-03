@@ -15,7 +15,7 @@ import java.util.List;
 public class BattleCraft {
     /**
      * BattleCraft ReCapture To Fix Spawn wave failed? AI thinking is visible
-     * on refresh  check this! Check dungeon-spawning Jewelry selection, armor
+     * on refresh  preCheck this! Check dungeon-spawning Jewelry selection, armor
      * filtering Allied but not controlled units (mercs, fodder, summons)
      * <p>
      * Unknown unit priority DC_INV slot items and refresh Stacking  girth for

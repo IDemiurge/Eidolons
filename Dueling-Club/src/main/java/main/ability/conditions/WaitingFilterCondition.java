@@ -1,6 +1,7 @@
 package main.ability.conditions;
 
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_UnitModel;
 
@@ -14,7 +15,7 @@ public class WaitingFilterCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         // TODO Auto-generated method stub
         Obj obj = ref.getMatchObj();
         if (obj == ref.getSourceObj()) {

@@ -2,6 +2,7 @@ package main.elements.conditions;
 
 import main.data.ability.AE_ConstrArgs;
 import main.data.ability.OmittedConstructor;
+import main.entity.Ref;
 import main.system.math.Formula;
 
 public class NumericCondition extends ConditionImpl {
@@ -39,7 +40,7 @@ public class NumericCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
 
         int a = greater.getInt(ref);
         int b = than.getInt(ref);

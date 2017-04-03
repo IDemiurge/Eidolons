@@ -149,7 +149,7 @@ public class FilterMaster {
             }
             Ref REF = e.getRef().getCopy();
             REF.setID(KEYS.MATCH.name(), e.getId());
-            boolean check = !condition.check(REF);
+            boolean check = !condition.preCheck(REF);
             if (out) {
                 check = !check;
             }

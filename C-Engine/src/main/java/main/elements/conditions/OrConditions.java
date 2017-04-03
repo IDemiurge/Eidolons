@@ -32,10 +32,8 @@ public class OrConditions extends Conditions {
     // this.c1=
     // }
     @Override
-    public boolean check(Ref ref) {
-        setRef(ref);
-
-        return checkAny();
+    public boolean preCheck(Ref ref) {
+        return checkAny(ref);
 
     }
 
@@ -44,10 +42,10 @@ public class OrConditions extends Conditions {
     }
 
     @Override
-    public boolean checkAny() {
+    public boolean checkAny(Ref ref) {
         isTrue = false;
         for (int i = 0; i < this.size(); i++) {
-            isTrue |= this.get(i).check(ref);
+            isTrue |= this.get(i).preCheck(ref);
             // if ((isTrue & negative))
             if (isTrue) {
                 if (isFastFailOnCheck()) {

@@ -1,9 +1,11 @@
 package main.elements.conditions;
 
+import main.entity.Ref;
+
 public class WoundedCondition extends ConditionImpl {
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         // TODO Auto-generated method stub
 
 

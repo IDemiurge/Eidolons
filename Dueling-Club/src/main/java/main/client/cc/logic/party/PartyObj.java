@@ -279,7 +279,7 @@ public class PartyObj extends Obj {
         int sd_mod = 100;
         for (Unit hero : members) {
             // principle clash?
-            // getOrCreate condition, check per unit, add up on false!
+            // getOrCreate condition, preCheck per unit, add up on false!
             if (hero.isDead()) {
                 continue;
             }

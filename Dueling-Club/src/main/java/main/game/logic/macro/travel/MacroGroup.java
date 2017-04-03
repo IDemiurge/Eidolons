@@ -107,7 +107,7 @@ public class MacroGroup { // macro obj type?
                 y_offset = -y_offset;
             }
         }
-        // check out of bounds
+        // preCheck out of bounds
         if (coordinates == null) {
             setCoordinates(AreaManager.getRandomCoordinateWithinArea(getArea()));
         }

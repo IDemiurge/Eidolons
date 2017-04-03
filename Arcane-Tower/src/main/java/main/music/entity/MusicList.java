@@ -49,7 +49,7 @@ public class MusicList extends MusicEntity {
         tracks = new LinkedList<>();
         String property = getProperty(AT_PROPS.TRACKS);
         for (ObjType t : DataManager.toTypeList(property, AT_OBJ_TYPE.TRACK)) {
-            // duplicate check
+            // duplicate preCheck
             tracks.add(MusicCore.getTrack(t));
         }
     }

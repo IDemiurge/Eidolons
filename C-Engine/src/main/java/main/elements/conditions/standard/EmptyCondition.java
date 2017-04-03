@@ -1,6 +1,7 @@
 package main.elements.conditions.standard;
 
 import main.elements.conditions.MicroCondition;
+import main.entity.Ref;
 
 public class EmptyCondition extends MicroCondition {
     public EmptyCondition() {
@@ -8,7 +9,7 @@ public class EmptyCondition extends MicroCondition {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         return true;
     }
 

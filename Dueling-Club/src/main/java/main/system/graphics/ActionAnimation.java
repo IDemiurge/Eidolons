@@ -161,7 +161,7 @@ public class ActionAnimation extends PhaseAnimation {
             separate = true;
         }
 
-        // check separate or not!
+        // preCheck separate or not!
         // center damage if not and
         if (!separate) {
             drawNaturalReductionColumn(null, dmg_type, e_dmg, e_res, e_armor);
@@ -377,7 +377,7 @@ public class ActionAnimation extends PhaseAnimation {
         Map<Image, String> iconMap = new HashMap<>();
         for (PARAMETER param : map.keySet()) {
             Image image = ImageManager.getValueIcon(param);
-            // TODO check w
+            // TODO preCheck w
             getSubPhaseTooltipMap().put(image, getTooltip(param));
 
             iconMap.put(image, map.get(param));

@@ -591,7 +591,7 @@ public class Unit extends DC_UnitModel {
         if (prevItem != null) {
             addItemToInventory(prevItem);
         }
-        // check weight and prompt drop if too heavy?
+        // preCheck weight and prompt drop if too heavy?
         return true;
     }
 

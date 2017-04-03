@@ -1,6 +1,7 @@
 package main.elements.conditions.standard;
 
 import main.elements.conditions.ConditionImpl;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.logic.battle.player.Player;
@@ -40,7 +41,7 @@ public class OwnershipCondition extends ConditionImpl {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(Ref ref) {
         Obj obj = ref.getObj(string);
         Obj obj2 = ref.getObj(string2);
 //        if (obj==null )

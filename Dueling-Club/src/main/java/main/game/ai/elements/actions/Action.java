@@ -93,7 +93,7 @@ public class Action {
         if (targeting == null) {
             try {
                 targeting = TargetingMaster.findTargeting(active, SelectiveTargeting.class); // list?
-                // check
+                // preCheck
                 // both?
             } catch (Exception e) {
                 e.printStackTrace();

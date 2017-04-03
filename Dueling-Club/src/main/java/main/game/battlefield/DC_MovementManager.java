@@ -282,7 +282,7 @@ public class DC_MovementManager implements MovementManager {
                         Ref ref) {
         // if (path == null) {
         // if (!free)
-        // path = getPath(obj, cell); // TODO just check if it's blocked
+        // path = getPath(obj, cell); // TODO just preCheck if it's blocked
         // }
         // if (!free)
         // if (!canMove(obj, cell))
@@ -475,7 +475,7 @@ public class DC_MovementManager implements MovementManager {
                 return obj.getCoordinates().getAdjacentCoordinate(
                         DirectionMaster.getDirectionByFacing(facing, direction));
             }
-            // check int >= formla
+            // preCheck int >= formla
 
         }
 

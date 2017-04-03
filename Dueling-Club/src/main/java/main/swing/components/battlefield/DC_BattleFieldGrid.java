@@ -149,7 +149,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                         .getObjectsOnCoordinate(getZ(), c, true, true, false))
                         .getRemoveAll(objects));
 
-                // visibility check!
+                // visibility preCheck!
 
                 CellComp comp = gridComp.getCells()[x][y];
                 List<Unit> list = new LinkedList<>();
