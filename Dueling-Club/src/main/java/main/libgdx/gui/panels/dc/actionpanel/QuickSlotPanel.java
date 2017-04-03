@@ -1,5 +1,6 @@
 package main.libgdx.gui.panels.dc.actionpanel;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
 
@@ -34,6 +35,16 @@ public class QuickSlotPanel extends BaseSlotPanel {
             container.overrideImageSize(imageSize, imageSize);
             add(container).left().bottom();
         }
+    }
+
+    protected void addValueContainer(ValueContainer valueContainer, TextureRegion emptySlotTexture) {
+        if (valueContainer == null) {
+            valueContainer = new ValueContainer(emptySlotTexture);
+        }
+        if (imageSize > 0) {
+            valueContainer.overrideImageSize(imageSize, imageSize);
+        }
+        add(valueContainer).left().bottom();
     }
 
 }
