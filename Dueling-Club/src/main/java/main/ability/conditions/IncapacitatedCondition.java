@@ -27,7 +27,7 @@ public class IncapacitatedCondition extends MicroCondition {
 
     @Override
     public boolean check(Ref ref) {
-        Unit unit = (Unit) getRef().getObj(key);
+        Unit unit = (Unit) ref.getObj(key);
         return unit.isIncapacitated();
     }
 

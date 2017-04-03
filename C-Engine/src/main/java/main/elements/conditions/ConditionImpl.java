@@ -11,6 +11,7 @@ public abstract class ConditionImpl  implements Condition {
     private static final boolean FORCE_LOG =false ;
     private boolean isTrue;
     protected Game game;
+    private Entity match;
 
     @Override
     public String toString() {
@@ -76,7 +77,7 @@ public abstract class ConditionImpl  implements Condition {
     public boolean check(Entity match) {
         Ref REF = match.getRef().getCopy();
         REF.setMatch(match.getId());
-
+this.match = match;
         return preCheck(REF);
     }
 

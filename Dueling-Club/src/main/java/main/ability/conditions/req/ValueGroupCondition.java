@@ -29,7 +29,7 @@ public class ValueGroupCondition extends NumericCondition {
         for (PARAMETER p : template.getParams()) {
             if (total) {
                 sum += ref.getSourceObj().getIntParam(p);
-            } else if (check(p)) {
+            } else if (check(p, ref)) {
                 return true;
             }
         }
@@ -39,7 +39,7 @@ public class ValueGroupCondition extends NumericCondition {
         return false;
     }
 
-    private boolean check(PARAMETER p) {
+    private boolean check(PARAMETER p, Ref ref) {
         return ConditionMaster.getParamCondition(p.getName(), getComparingValue().toString())
                 .preCheck(ref);
     }

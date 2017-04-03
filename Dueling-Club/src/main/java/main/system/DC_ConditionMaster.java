@@ -398,7 +398,7 @@ public class DC_ConditionMaster extends ConditionMaster {
             case CASTER_CONSCIOUS:
                 new MicroCondition() {
                     public boolean check(Ref ref) {
-                        Unit hero = (Unit) this.ref.getObj(KEYS.SOURCE);
+                        Unit hero = (Unit)  getSource();
                         return !hero.checkUncontrollable();
                     }
                 };
@@ -535,20 +535,13 @@ public class DC_ConditionMaster extends ConditionMaster {
             return null;
         }
 
-        public Ref getRef() {
-            return getCondition().getRef();
-        }
-
-        public void setRef(Ref ref) {
-            getCondition().setRef(ref);
-        }
 
         public boolean preCheck(Ref ref) {
             return getCondition().preCheck(ref);
         }
 
         public boolean check(Ref ref) {
-            return getCondition().check();
+            return getCondition().check(ref);
         }
 
         public boolean check(Entity match) {

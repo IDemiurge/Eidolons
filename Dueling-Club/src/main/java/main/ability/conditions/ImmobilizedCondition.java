@@ -8,7 +8,7 @@ public class ImmobilizedCondition extends MicroCondition {
 
     @Override
     public boolean check(Ref ref) {
-        Unit unit = (Unit) getRef().getMatchObj();
+        Unit unit = (Unit) getMatchObj();
         return unit.isImmobilized();
     }
 
