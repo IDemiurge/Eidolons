@@ -9,8 +9,6 @@ import main.entity.Entity;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 public class InventoryValueContainer extends ValueContainer {
     private CELL_TYPE cellType;
@@ -55,11 +53,7 @@ public class InventoryValueContainer extends ValueContainer {
                 final int tapCount = this.getTapCount();
                 final boolean isRightClicked = event.getButton() == Input.Buttons.RIGHT;
                 final boolean isAltPressed = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
-
-                boolean result = handler.cellClicked(cellType, tapCount, isRightClicked, isAltPressed, entity);
-if (result ){
-    GuiEventManager.trigger(GuiEventType.REFRESH_INVENTORY_DIALOG, null );
-}
+                handler.cellClicked(cellType, tapCount, isRightClicked, isAltPressed, entity);
                 event.stop();
             }
         });

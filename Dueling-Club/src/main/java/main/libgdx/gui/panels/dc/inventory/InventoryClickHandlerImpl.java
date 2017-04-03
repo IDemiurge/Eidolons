@@ -45,18 +45,28 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     public boolean cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick,
                                boolean altClick, Entity cellContents) {
 
+        boolean result = false;
         OPERATIONS operation = getOperation(cell_type, clickCount, rightClick,
-         altClick, cellContents);
-        if (operation == null) return false;
-//        String arg = getArg(cell_type, clickCount, rightClick,
+                altClick, cellContents);
+        if (operation == null) {
+            result = false;
+        } else {
+            //        String arg = getArg(cell_type, clickCount, rightClick,
 //         altClick, cellContents);
 //        if (arg == null) return false;
-        if (Eidolons.game.getInventoryManager().tryExecuteOperation
-         (operation, cellContents)) {
-            dirty = true;
-            return true;
+            if (Eidolons.game.getInventoryManager().tryExecuteOperation
+                    (operation, cellContents)) {
+                dirty = true;
+                result = true;
+            }
         }
-        return false;
+
+        if (result) {
+            GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
+                    new EventCallbackParam(new InventoryDataSource(unit)));
+        }
+
+        return result;
 
     }
 
@@ -123,8 +133,8 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     }
 
     public void refreshPanel() {
-        GuiEventManager.trigger(GuiEventType.REFRESH_INVENTORY_DIALOG,
-         new EventCallbackParam(new InventoryDataSource(unit)));
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
+                new EventCallbackParam(new InventoryDataSource(unit)));
     }
 
     @Override
@@ -132,7 +142,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 //        InventoryTransactionManager.updateType(unit); ???
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
         CharacterCreator.getHeroManager().removeHero(unit);
-        GuiEventManager.trigger(GuiEventType.CLOSE_INVENTORY_DIALOG, null);
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, new EventCallbackParam(null));
     }
 
     @Override

@@ -3,24 +3,20 @@ package main.libgdx.gui.panels.dc.inventory;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.game.core.Eidolons;
-import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class InventoryPanel extends TablePanel {
 
-    private final InventorySlotsPanel inventorySlotsPanel;
-    private final InventoryQuickSlotPanel quickSlot;
+    private InventorySlotsPanel inventorySlotsPanel;
+    private InventoryQuickSlotPanel quickSlot;
     private Cell mainWeapon;
     private Cell offWeapon;
     private RingSlotsPanel leftRingSlotsPanel;
@@ -28,7 +24,7 @@ public class InventoryPanel extends TablePanel {
     private Cell avatarPanel;
     private Cell armorSlot;
     private Cell amuletSlot;
-    //TODO extract all below this into *DIALOG*, the rest is same for HC inventory
+
     private Cell<Actor> actionPointsText;
     private Cell<Actor> doneButton;
     private Cell<Actor> cancelButton;
@@ -39,16 +35,15 @@ public class InventoryPanel extends TablePanel {
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
 
-        //debug();
-
         TablePanel upper = new TablePanel();
         inventorySlotsPanel = new InventorySlotsPanel();
 
         addElement(upper)
-         .height(340)
-         .pad(20, 20, 0, 20)
-         .top().expand(1, 0);
+                .height(340)
+                .pad(20, 20, 0, 20)
+                .top().expand(1, 0);
         row();
+
         quickSlot = new InventoryQuickSlotPanel();
         addElement(quickSlot);
         row();
@@ -89,102 +84,56 @@ public class InventoryPanel extends TablePanel {
 
         right.addElement(rightRingSlotsPanel).fill(0, 0);
 
-        final TablePanel<Actor> lower = new TablePanel<>();
-        addElement(lower).pad(0, 20, 20, 20);
+        initLowerBlock();
 
-        actionPointsText = lower.addElement(null).left();
+        initListeners();
 
-
-        undoButton = lower.addElement(null).fill(false).expand(0, 0)
-         .right().pad(20, 0, 20, 0).size(50, 50);
-        cancelButton = lower.addElement(null).fill(false).expand(0, 0)
-         .right().pad(20, 10, 20, 0).size(50, 50);
-        doneButton = lower.addElement(null).fill(false).expand(0, 0)
-         .right().pad(20, 10, 20, 10).size(50, 50);
-
-        clear();
-
+        //setTouchable(Touchable.enabled);
     }
 
-    public static String getOperationsString() {
+    private static String getOperationsString() {
         return Eidolons.game.getInventoryManager().getOperationsLeft() + "/" +
-         Eidolons.game.getInventoryManager().getOperationsPool();
-    }
-
-    public void initButtonListeners(InventoryClickHandler handler) {
-//        undoButton.getActor().removeListener()
-        undoButton.getActor().addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                handler.undoClicked();
-            }
-        });
-        doneButton.getActor().addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                handler.doneClicked();
-            }
-        });
-        cancelButton.getActor().addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                handler.cancelClicked();
-            }
-        });
+                Eidolons.game.getInventoryManager().getOperationsPool();
     }
 
     @Override
     public void clear() {
 
-        actionPointsText.setActor(new ValueContainer("Actions available:", getOperationsString()) {
+    }
+
+    private void initListeners() {
+        addListener(new InputListener() {
             @Override
-            public void afterUpdateAct(float delta) {
-                valueContainer.setActor(new Label(getOperationsString(),
-                 StyleHolder.getDefaultLabelStyle()));
-                super.afterUpdateAct(delta);
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                event.stop();
+                return true;
             }
-        });
-        doneButton.setActor(new Button(StyleHolder.getCustomButtonStyle
-                             ("UI/components/small/ok.png")) {
-                                public boolean isDisabled() {
-                                    Object obj = getUserObject();
-                                    if (obj instanceof InventoryDataSource) {
-                                        return !((InventoryDataSource) obj).
-                                         getHandler().isDoneEnabled();
-                                    }
-                                    return super.isDisabled();
 
-                                }
-                            }
-        );
-        cancelButton.setActor(new Button(StyleHolder.getCustomButtonStyle
-         ("UI/components/small/no.png")) {
-            public boolean isDisabled() {
-                Object obj = getUserObject();
-                if (obj instanceof InventoryDataSource) {
-                    return !((InventoryDataSource) obj).
-                     getHandler().isCancelEnabled();
-                }
-                return super.isDisabled();
-
-            }
-        });
-        undoButton.setActor(new Button(StyleHolder.getCustomButtonStyle
-         ("UI/components/small/back2.png")) {
-            public boolean isDisabled() {
-                Object obj = getUserObject();
-                if (obj instanceof InventoryDataSource) {
-                    return !((InventoryDataSource) obj).
-                     getHandler().isUndoEnabled();
-                }
-                return super.isDisabled();
-
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                event.stop();
+                return true;
             }
         });
     }
 
-    @Override
-    public void setUserObject(Object userObject) {
-        if (userObject == null)
-            return;
-        super.setUserObject(userObject);
+    private void initLowerBlock() {
+        final TablePanel<Actor> lower = new TablePanel<>();
+        addElement(lower).pad(0, 20, 20, 20);
+
+        actionPointsText = lower.addElement(null).left();
+
+        undoButton = lower.addElement(new InventoryActionButton("UI/components/small/back2.png"))
+                .fill(false).expand(0, 0).right()
+                .pad(20, 0, 20, 0).size(50, 50);
+
+        cancelButton = lower.addElement(new InventoryActionButton("UI/components/small/no.png"))
+                .fill(false).expand(0, 0).right()
+                .pad(20, 10, 20, 0).size(50, 50);
+
+        doneButton = lower.addElement(new InventoryActionButton("UI/components/small/ok.png"))
+                .fill(false).expand(0, 0).right()
+                .pad(20, 10, 20, 10).size(50, 50);
     }
 
     @Override
@@ -192,7 +141,7 @@ public class InventoryPanel extends TablePanel {
         clear();
         super.afterUpdateAct(delta);
 
-        final EquipDataSource source = (EquipDataSource) getUserObject();
+        final InventoryDataSource source = (InventoryDataSource) getUserObject();
 
         mainWeapon.setActor(source.mainWeapon());
         offWeapon.setActor(source.offWeapon());
@@ -203,6 +152,19 @@ public class InventoryPanel extends TablePanel {
 
         amuletSlot.setActor(source.amulet());
 
+        actionPointsText.setActor(new ValueContainer("Actions available:", getOperationsString()));
+
+        InventoryActionButton button = (InventoryActionButton) doneButton.getActor();
+        button.addListener(source.getDoneHandler());
+        button.setDisabled(source.isDoneDisabled());
+
+        button = (InventoryActionButton) cancelButton.getActor();
+        button.addListener(source.getCancelHandler());
+        button.setDisabled(source.isCancelDisabled());
+
+        button = (InventoryActionButton) undoButton.getActor();
+        button.addListener(source.getUndoHandler());
+        button.setDisabled(source.isUndoDisabled());
     }
 
 }

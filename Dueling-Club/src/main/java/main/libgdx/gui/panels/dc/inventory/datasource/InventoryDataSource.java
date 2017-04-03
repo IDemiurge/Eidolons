@@ -1,6 +1,7 @@
 package main.libgdx.gui.panels.dc.inventory.datasource;
 
-import main.entity.Entity;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.entity.obj.unit.Unit;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
@@ -8,14 +9,13 @@ import main.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import main.libgdx.gui.panels.dc.inventory.containers.InventoryValueContainer;
 import main.libgdx.gui.panels.dc.inventory.containers.InventoryValueContainerFactory;
 import main.system.auxiliary.data.ListMaster;
-import main.system.datatypes.DequeImpl;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class InventoryDataSource implements QuickSlotDataSource,
- InventoryTableDataSource,
- EquipDataSource {
+        InventoryTableDataSource,
+        EquipDataSource {
 
     private InventoryValueContainerFactory factory;
     private Unit unit;
@@ -63,8 +63,8 @@ public class InventoryDataSource implements QuickSlotDataSource,
 
     @Override
     public List<InventoryValueContainer> rings() {
-        List<InventoryValueContainer> list = factory.getList(  unit.getRings(),
-         CELL_TYPE.RING);
+        List<InventoryValueContainer> list = factory.getList(unit.getRings(),
+                CELL_TYPE.RING);
         ListMaster.fillWithNullElements(list, 8);
         return list;
     }
@@ -73,9 +73,46 @@ public class InventoryDataSource implements QuickSlotDataSource,
     public List<InventoryValueContainer> getInventorySlots() {
         List<InventoryValueContainer> list = new LinkedList<>(factory.getList(unit.getInventory(), CELL_TYPE.INVENTORY));
         ListMaster.fillWithNullElements(list
-         , InventorySlotsPanel.SIZE);
+                , InventorySlotsPanel.SIZE);
         return list;
     }
 
+    public ClickListener getDoneHandler() {
+        return new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                handler.doneClicked();
+            }
+        };
+    }
 
+    public ClickListener getUndoHandler() {
+        return new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                handler.undoClicked();
+            }
+        };
+    }
+
+    public ClickListener getCancelHandler() {
+        return new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                handler.cancelClicked();
+            }
+        };
+    }
+
+    public boolean isDoneDisabled() {
+        return !handler.isDoneEnabled();
+    }
+
+    public boolean isCancelDisabled() {
+        return !handler.isCancelEnabled();
+    }
+
+    public boolean isUndoDisabled() {
+        return !handler.isUndoEnabled();
+    }
 }

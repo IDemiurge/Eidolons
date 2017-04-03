@@ -297,7 +297,7 @@ public class GridPanel extends Group {
                 if (CoreEngine.isGuiTestMode()) {
 
                    Eidolons.game.getInventoryManager().setOperationsPool(2);
-                    GuiEventManager.trigger(SHOW_INVENTORY_DIALOG,
+                    GuiEventManager.trigger(SHOW_INVENTORY,
                      new EventCallbackParam(new InventoryDataSource((Unit) hero)));
                 }
 
