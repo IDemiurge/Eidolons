@@ -73,7 +73,7 @@ public class TestMasterContent {
                     "Scare;Freeze;" +
                     "Scorching Light";
 
-    private static String GRAPHICS_TEST_LIST = "Light;Haze;Force Field;" +
+    private static String GRAPHICS_TEST_LIST = "Enchant Armor;Enchant Weapon;Force Field;" +
             "Summon Vampire Bat;Blink";
     private static String TEST_LIST =
 //     "Raise Skeleton;" +

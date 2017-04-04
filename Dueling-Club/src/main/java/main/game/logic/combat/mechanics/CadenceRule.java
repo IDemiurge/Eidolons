@@ -103,7 +103,6 @@ public class CadenceRule {
         LogMaster.log(LogMaster.RULES_DEBUG, "Cadence Rule applies! ");
 
         Ref ref = new Ref(unit.getGame(), unit.getId());
-        ref.setTarget(unit.getId());
 
         if (checkFocusBonusApplies(unit, action, singleCadence)) {
             Integer amount = action.getOwnerObj().getIntParam(PARAMS.CADENCE_FOCUS_BOOST);
@@ -121,6 +120,8 @@ public class CadenceRule {
         ModifyValueEffect valueEffect = new ModifyValueEffect(PARAMS.AP_COST,
                 MOD.MODIFY_BY_PERCENT, cadence);
         DC_WeaponObj weapon = unit.getActiveWeapon(offhand);
+
+        ref.setTarget(weapon.getId());
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
         effects.add(valueEffect);
         cadence = unit.getParam(PARAMS.CADENCE_STA_MOD);

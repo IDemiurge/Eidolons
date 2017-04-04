@@ -375,6 +375,10 @@ public class HeroManager {
             slot = getItemSlot(hero, type);
         }
         if (slot == null) {
+            if (!alt)
+                if (isQuickSlotWeapon(type)) {
+                return  0;
+                }
             if (isQuickItem(type)) {
                 // type.getProp(G_PROPS.CUSTOM_SOUNDSET)
                 return addQuickItem(hero, type);

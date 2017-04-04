@@ -73,28 +73,28 @@ public class DC_InventoryManager {
             execute(operation, typeName);
         }
     }
+
     private void execute(OPERATIONS operation, String typeName) {
         DC_HeroItemObj item = getHero().findItem(typeName, getMode(operation));
         execute(operation, item.getType());
     }
+
     public boolean tryExecuteOperation(OPERATIONS operation, Entity type) {
         if (!canDoOperation(operation, type)) {
             return false;
         }
         try {
-            execute(operation, type);
+            return checkExecuted(operation, type);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-
-
-        return true;
     }
 
     private boolean canDoOperation(OPERATIONS operation, Entity type) {
         if (!hasOperations())
             return false;
+
 //        String s = CharacterCreator.getHeroManager()
 //         .checkRequirements(getHero(), type, RequirementsManager.NORMAL_MODE);
         // if (s != null) {
@@ -102,42 +102,52 @@ public class DC_InventoryManager {
     }
 
 
+    private boolean checkExecuted(OPERATIONS operation, Entity type) {
+        int cost = execute(operation, type);
+        if (cost == 0) return false;
+        operationDone(cost, operation, type.getName());
+        return true;
+    }
 
-    private void execute(OPERATIONS operation, Entity type) {
+    private int execute(OPERATIONS operation, Entity type) {
         boolean alt = false;
 //        if (operation == OPERATIONS.PICK_UP) {
 //            item = unit.getGame().getDroppedItemManager().findDroppedItem(typeName,
 //             unit.getCoordinates()); // TODO finish
 //        }
-        DC_HeroItemObj item =null ;
+        DC_HeroItemObj item = null;
         item = (DC_HeroItemObj) type;
 //        getHero().
 //         findItem(type.getName(),
 //          getMode(operation));
         boolean drop = false;
+        int cost = 0;
         switch (operation) {
             case EQUIP:
-                CharacterCreator.getHeroManager().addSlotItem(getHero(), type, alt);
+                cost = CharacterCreator.getHeroManager().addSlotItem(getHero(), type, alt);
                 break;
             case DROP:
                 drop = true;
             case UNEQUIP:
+                cost = 1;
                 getHero().unequip(item, drop);
                 break;
             case EQUIP_QUICK_SLOT:
                 // CharacterCreator.getHeroManager().addItem(unit, type,
                 // OBJ_TYPES.ITEMS, PROPS.QUICK_ITEMS, true);
-                CharacterCreator.getHeroManager().addQuickItem(getHero(), type);
+                cost = CharacterCreator.getHeroManager().addQuickItem(getHero(), type);
                 break;
             case PICK_UP:
+                cost = 1;
                 game.getDroppedItemManager().pickUp(getHero(), type);
                 break;
 
             case UNEQUIP_QUICK_SLOT:
+                cost = 1;
                 CharacterCreator.getHeroManager().removeQuickSlotItem(getHero(), type);
                 break;
         }
-        operationDone(1, operation, type.getName());
+        return cost;
     }
 
     private Boolean getMode(OPERATIONS operation) {
@@ -148,7 +158,8 @@ public class DC_InventoryManager {
         if (operation == OPERATIONS.EQUIP || operation == OPERATIONS.EQUIP_QUICK_SLOT) {
             mode = false;
         }
-        return mode;  }
+        return mode;
+    }
 
 
     public boolean operationDone(OPERATIONS operation, String string) {
@@ -209,8 +220,7 @@ public class DC_InventoryManager {
     }
 
     public InventoryClickHandler getClickHandler() {
-        if (clickHandler==null )
-        {
+        if (clickHandler == null) {
             clickHandler = new InventoryClickHandlerImpl(getHero());
         }
         return clickHandler;
