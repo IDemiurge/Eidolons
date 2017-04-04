@@ -46,7 +46,7 @@ public class InventoryValueContainer extends ValueContainer {
     protected void init(TextureRegion texture, String name, String value) {
         super.init(texture, name, value);
 
-        addListener(new ClickListener() {
+        addListener(new ClickListener(-1) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 final int tapCount = this.getTapCount();
