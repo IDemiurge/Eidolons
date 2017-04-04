@@ -2,8 +2,8 @@ package main.libgdx.gui.panels.dc.inventory.containers;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.entity.Entity;
+import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
-import main.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import main.libgdx.texture.TextureCache;
 import main.system.datatypes.DequeImpl;
 
@@ -14,9 +14,9 @@ import java.util.List;
  * Created by JustMe on 3/31/2017.
  */
 public class InventoryValueContainerFactory {
-    private InventoryClickHandlerImpl handler;
+    private InventoryClickHandler handler;
 
-    public InventoryValueContainerFactory(InventoryClickHandlerImpl inventoryClickHandler) {
+    public InventoryValueContainerFactory(InventoryClickHandler  inventoryClickHandler) {
         this.handler = inventoryClickHandler;
     }
 
