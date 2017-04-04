@@ -5,10 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.libgdx.gui.NinePathFactory;
-import main.libgdx.gui.dialog.ToolTip;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
+import main.libgdx.gui.tooltips.ToolTip;
 
 import java.util.ArrayList;
 import java.util.List;

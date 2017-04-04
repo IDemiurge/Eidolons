@@ -5,11 +5,11 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.unit.Unit;
-import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.EffectsAndAbilitiesSource;
+import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.datatypes.DequeImpl;
 import org.apache.commons.lang3.StringUtils;
 

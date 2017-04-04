@@ -1,8 +1,7 @@
-package main.libgdx.gui.panels.dc.inventory.containers;
+package main.libgdx.gui.panels.dc.inventory;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.entity.Entity;
-import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import main.libgdx.texture.TextureCache;
 import main.system.datatypes.DequeImpl;

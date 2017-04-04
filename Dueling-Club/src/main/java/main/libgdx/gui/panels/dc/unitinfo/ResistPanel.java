@@ -3,9 +3,9 @@ package main.libgdx.gui.panels.dc.unitinfo;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.PARAMS;
 import main.content.values.parameters.PARAMETER;
-import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.tooltips.ValueTooltip;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 

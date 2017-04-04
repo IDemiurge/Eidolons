@@ -11,23 +11,20 @@ import main.entity.item.DC_ArmorObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.libgdx.gui.dialog.ToolTip;
-import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.VerticalValueContainer;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.*;
+import main.libgdx.gui.tooltips.ToolTip;
+import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.texture.TextureCache;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -87,17 +84,17 @@ public class UnitDataSource implements
         List<ValueContainer> costsList = new ArrayList<>();
         for (int i = 0, costsLength = RESOURCE_COSTS.length; i < costsLength; i++) {
             PARAMETER cost = RESOURCE_COSTS[i];
-            final Integer param = el.getIntParam(cost);
+            final double param = el.getParamDouble(cost);
             if (param > 0) {
                 final String iconPath = ImageManager.getValueIconPath(COSTS_ICON_PARAMS[i]);
-                costsList.add(new ValueContainer(getOrCreateR(iconPath), String.valueOf(param)));
+                costsList.add(new ValueContainer(getOrCreateR(iconPath), String.format(Locale.US, "%.1f", param)));
             }
         }
 
-        final Integer reqRes = el.getIntParam(MIN_REQ_RES_FOR_USE.getLeft());
+        final double reqRes = el.getParamDouble(MIN_REQ_RES_FOR_USE.getLeft());
         if (reqRes > 0) {
             final String iconPath = ImageManager.getValueIconPath(MIN_REQ_RES_FOR_USE.getRight());
-            costsList.add(new ValueContainer(getOrCreateR(iconPath), "> " + reqRes));
+            costsList.add(new ValueContainer(getOrCreateR(iconPath), String.format(Locale.US, "> %.1f", reqRes)));
         }
         return costsList;
     }

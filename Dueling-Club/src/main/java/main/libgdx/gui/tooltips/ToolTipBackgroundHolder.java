@@ -1,4 +1,4 @@
-package main.libgdx.gui.dialog;
+package main.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

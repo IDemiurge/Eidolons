@@ -6,8 +6,8 @@ import main.entity.obj.unit.Unit;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import main.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
-import main.libgdx.gui.panels.dc.inventory.containers.InventoryValueContainer;
-import main.libgdx.gui.panels.dc.inventory.containers.InventoryValueContainerFactory;
+import main.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
+import main.libgdx.gui.panels.dc.inventory.InventoryValueContainerFactory;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.LinkedList;
