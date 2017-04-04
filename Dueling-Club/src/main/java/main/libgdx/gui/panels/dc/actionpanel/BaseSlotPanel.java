@@ -66,7 +66,7 @@ public class BaseSlotPanel extends TablePanel {
 
     private void addPage(List<ActionValueContainer> list, String emptyImagePath) {
         final TablePanel page = initPage(list, emptyImagePath);
-        modTableMap.put(PagesMod.NONE, page);
+        modTableMap.put(PagesMod.values()[modTableMap.size()], page);
         addElement(page).left().bottom();
         page.setVisible(false);
     }

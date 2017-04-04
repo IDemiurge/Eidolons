@@ -115,7 +115,6 @@ public class GridMouseListener extends ClickListener {
                 }
 
                 final ValueTooltip tooltip = new ValueTooltip();
-                tooltip.debug();
                 tooltip.setUserObject(values);
                 GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(tooltip));
                 GuiEventManager.trigger(MOUSE_HOVER, new EventCallbackParam(hero));
