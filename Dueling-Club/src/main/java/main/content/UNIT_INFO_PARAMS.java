@@ -23,6 +23,7 @@ public interface UNIT_INFO_PARAMS {
             ESSENCE, FOCUS,
             ENDURANCE, N_OF_COUNTERS,
     };
+
     PARAMS[] ARMOR_DC_INFO_PARAMS = {
             PARAMS.ARMOR, PARAMS.C_DURABILITY,
             PARAMS.COVER_PERCENTAGE, PARAMS.HARDNESS,
@@ -30,6 +31,7 @@ public interface UNIT_INFO_PARAMS {
 
 
     };
+
     PARAMS[] WEAPON_DC_INFO_PARAMS = {
             DAMAGE_BONUS, DAMAGE_MOD,
             DICE, DIE_SIZE,
@@ -265,13 +267,7 @@ public interface UNIT_INFO_PARAMS {
             },
 
     };
-    PARAMETER[] ACTION_TOOLTIP_PARAMS_COSTS = {
-            AP_COST,
-            CP_COST,
-            STA_COST,
-            FOC_REQ,
-            FOC_COST,
-    };
+
     Map<VALUE, Pair<PARAMS, PARAMS>> ACTION_TOOLTIPS_PARAMS_MAP = _buildMap();
 
     static Map<VALUE, Pair<PARAMS, PARAMS>> _buildMap() {
@@ -292,9 +288,4 @@ public interface UNIT_INFO_PARAMS {
 
         return map;
     }
-
-    enum ActionToolTipSections {
-        HEAD, BASE, RANGE, TEXT, COSTS
-    }
-
 }

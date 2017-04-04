@@ -347,9 +347,17 @@ public class UnitDataSource implements
             container = new ValueContainer(getOrCreateR(armor.getImagePath()));
 
             ValueTooltip tooltip = new ValueTooltip();
-            tooltip.setUserObject(Arrays.asList(new ValueContainer("", "This is my armor. There are many like it, but this one is mine.\n" +
-                    "My armor is my best friend. It is my life. \n" +
-                    "Without me, my armor is useless. Without my armor, I am useless.")));
+
+            List<ValueContainer> values = new ArrayList<>();
+            values.add(new ValueContainer(armor.getName(), ""));
+
+            values.addAll(armor.getBuffs().stream()
+                    .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
+                    .map(getObjValueContainerMapper())
+                    .collect(Collectors.toList()));
+
+            tooltip.setUserObject(values);
+
             container.addListener(tooltip.getController());
         } else {
             container = new ValueContainer(getOrCreateR("/mini/item/armor/empty.jpg"));
@@ -569,7 +577,20 @@ public class UnitDataSource implements
             }
 
             ToolTip toolTip = new WeaponToolTip();
-            toolTip.setUserObject(list);
+            toolTip.setUserObject(new WeaponToolTipDataSource() {
+                @Override
+                public List<ValueContainer> getMainParams() {
+                    return list;
+                }
+
+                @Override
+                public List<ValueContainer> getBuffs() {
+                    return weapon.getBuffs().stream()
+                            .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
+                            .map(getObjValueContainerMapper())
+                            .collect(Collectors.toList());
+                }
+            });
             valueContainer.addListener(toolTip.getController());
         }
         return valueContainer;
