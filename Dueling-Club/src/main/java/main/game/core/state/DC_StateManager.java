@@ -129,6 +129,7 @@ public class DC_StateManager extends StateManager {
     }
 
     private void afterEffects(Unit unit) {
+
     }
 
     private void resetRawValues(Unit unit) {
@@ -145,6 +146,124 @@ public class DC_StateManager extends StateManager {
 
     private void toBase(Unit unit) {
     }
+
+
+    public void checkContinuousRules() {
+        for (Unit unit : getGame().getUnits()) {
+            getGame().getRules().applyContinuousRules(unit);
+        }
+
+    }
+
+
+    public void checkCounterRules() {
+        if (getGame().getRules().getCounterRules() != null) {
+            for (Unit unit : getGame().getUnits()) {
+                for (DC_CounterRule rule : getGame().getRules().getCounterRules()) {
+                    // rule.newTurn();
+                    rule.check((unit));
+                }
+            }
+        }
+    }
+
+    private void applyEndOfTurnDamage() {
+        if (getGame().getRules().getDamageRules() != null) {
+            for (Unit unit : getGame().getUnits()) {
+                for (DamageCounterRule rule : getGame().getRules().getDamageRules()) {
+                    rule.apply(unit);
+                }
+            }
+        }
+
+    }
+
+    public void allToBase() {
+        for (Obj obj : state.getObjMap().values()) {
+            if (Arrays.asList(toBaseIgnoredTypes).contains(obj.getOBJ_TYPE_ENUM())) {
+                continue;
+            }
+            if (!obj.isDead()) {
+                try {
+                    obj.toBase();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        // TODO Auto-generated method stub
+
+    }
+
+    protected void resetCurrentValues() {
+        for (Obj obj : getGame().getUnits()) {
+            obj.resetCurrentValues();
+        }
+    }
+
+    public void afterEffects() {
+        for (Obj obj : getGame().getBfObjects()) {
+            if (!obj.isDead()) {
+                try {
+                    obj.afterEffects();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (PartyManager.getParty() != null) {
+            try {
+                PartyManager.getParty().afterEffects();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        for (Obj obj : PartyManager.getParties()) {
+            try {
+                obj.afterEffects();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void applyEndOfTurnRules() {
+
+        for (RoundRule rule : getGame().getRules().getRoundRules()) {
+            try {
+                rule.newTurn();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (DC_CounterRule rule : getGame().getRules().getCounterRules()) {
+            try {
+                rule.newTurn();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public void resetUnitObjects() {
+        for (Unit unit : getGame().getUnits()) {
+            if (!unit.isDead()) {
+                unit.resetObjects();
+            }
+        }
+    }
+
+    public void resetRawValues() {
+        for (Unit unit : getGame().getUnits()) {
+            if (!unit.isDead()) {
+                unit.resetRawValues();
+            }
+        }
+    }
+
 
     protected void applyMods() {
         for (Unit obj : getGame().getUnits()) {
@@ -262,122 +381,6 @@ public class DC_StateManager extends StateManager {
         }
         for (Obj obj : state.getObjMaps().get(DC_TYPE.SPELLS).values()) {
             ((DC_SpellObj) obj).tick();
-        }
-    }
-
-    public void checkContinuousRules() {
-        for (Unit unit : getGame().getUnits()) {
-            getGame().getRules().applyContinuousRules(unit);
-        }
-
-    }
-
-
-    public void checkCounterRules() {
-        if (getGame().getRules().getCounterRules() != null) {
-            for (Unit unit : getGame().getUnits()) {
-                for (DC_CounterRule rule : getGame().getRules().getCounterRules()) {
-                    // rule.newTurn();
-                    rule.check((unit));
-                }
-            }
-        }
-    }
-
-    private void applyEndOfTurnDamage() {
-        if (getGame().getRules().getDamageRules() != null) {
-            for (Unit unit : getGame().getUnits()) {
-                for (DamageCounterRule rule : getGame().getRules().getDamageRules()) {
-                    rule.apply(unit);
-                }
-            }
-        }
-
-    }
-
-    public void allToBase() {
-        for (Obj obj : state.getObjMap().values()) {
-            if (Arrays.asList(toBaseIgnoredTypes).contains(obj.getOBJ_TYPE_ENUM())) {
-                continue;
-            }
-            if (!obj.isDead()) {
-                try {
-                    obj.toBase();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        // TODO Auto-generated method stub
-
-    }
-
-    protected void resetCurrentValues() {
-        for (Obj obj : getGame().getUnits()) {
-            obj.resetCurrentValues();
-        }
-    }
-
-    public void afterEffects() {
-        for (Obj obj : getGame().getBfObjects()) {
-            if (!obj.isDead()) {
-                try {
-                    obj.afterEffects();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        if (PartyManager.getParty() != null) {
-            try {
-                PartyManager.getParty().afterEffects();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        for (Obj obj : PartyManager.getParties()) {
-            try {
-                obj.afterEffects();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void applyEndOfTurnRules() {
-
-        for (RoundRule rule : getGame().getRules().getRoundRules()) {
-            try {
-                rule.newTurn();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (DC_CounterRule rule : getGame().getRules().getCounterRules()) {
-            try {
-                rule.newTurn();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    public void resetUnitObjects() {
-        for (Unit unit : getGame().getUnits()) {
-            if (!unit.isDead()) {
-                unit.resetObjects();
-            }
-        }
-    }
-
-    public void resetRawValues() {
-        for (Unit unit : getGame().getUnits()) {
-            if (!unit.isDead()) {
-                unit.resetRawValues();
-            }
         }
     }
 

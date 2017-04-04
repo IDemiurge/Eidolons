@@ -209,6 +209,10 @@ public class DC_InventoryManager {
     }
 
     public InventoryClickHandler getClickHandler() {
+        if (clickHandler==null )
+        {
+            clickHandler = new InventoryClickHandlerImpl(getHero());
+        }
         return clickHandler;
     }
 
