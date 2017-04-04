@@ -38,6 +38,9 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
     @Override
     public void clear() {
         super.clear();
+        tabsToNamesMap.clear();
+        buttonGroup.clear();
+        tabs.clear();
         initContainer();
     }
 

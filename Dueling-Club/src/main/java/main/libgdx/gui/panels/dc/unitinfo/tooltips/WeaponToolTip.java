@@ -3,6 +3,7 @@ package main.libgdx.gui.panels.dc.unitinfo.tooltips;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import main.libgdx.gui.NinePathFactory;
+import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.ValueTooltip;
 
@@ -18,7 +19,24 @@ public class WeaponToolTip extends ValueTooltip {
 
     @Override
     public void updateAct(float delta) {
-        final List<ValueContainer> valueContainers = (List<ValueContainer>) getUserObject();
+        final WeaponToolTipDataSource source = (WeaponToolTipDataSource) getUserObject();
+
+        addElement(initTableValues(source.getMainParams()));
+        row();
+
+        if (source.getBuffs().size() > 0) {
+            TablePanel buffsTable = new TablePanel();
+
+            source.getBuffs().forEach(el -> {
+                el.overrideImageSize(32, 32);
+                buffsTable.addElement(el);
+            });
+            addElement(buffsTable);
+        }
+    }
+
+    private TablePanel initTableValues(List<ValueContainer> valueContainers) {
+        TablePanel table = new TablePanel();
         final int size = valueContainers.size();
         int halfSize = size / 2;
         if (size % 2 != 0) {
@@ -30,18 +48,20 @@ public class WeaponToolTip extends ValueTooltip {
             valueContainer.cropName();
             valueContainer.setNameAlignment(Align.left);
             valueContainer.setBorder(getOrCreateR("UI/components/infopanel/simple_value_border.png"));
-            addElement(valueContainer);
+            table.addElement(valueContainer);
             final int i1 = i + halfSize;
             if (i1 < valueContainers.size()) {
                 valueContainer = valueContainers.get(i1);
                 valueContainer.cropName();
                 valueContainer.setNameAlignment(Align.left);
                 valueContainer.setBorder(getOrCreateR("UI/components/infopanel/simple_value_border.png"));
-                addElement(valueContainer);
+                table.addElement(valueContainer);
             }
 
-            row();
+            table.row();
         }
+
+        return table;
     }
 
     @Override

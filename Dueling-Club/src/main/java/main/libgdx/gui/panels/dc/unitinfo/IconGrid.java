@@ -21,7 +21,9 @@ public class IconGrid extends TablePanel {
         for (int x = 0; x < h; x++) {
             for (int y = 0; y < w; y++) {
                 if (iter.hasNext()) {
-                    addElement(iter.next());
+                    final ValueContainer el = iter.next();
+                    el.overrideImageSize(32, 32);
+                    addElement(el);
                 } else {
                     addElement(new Image(emptyCell));
                 }

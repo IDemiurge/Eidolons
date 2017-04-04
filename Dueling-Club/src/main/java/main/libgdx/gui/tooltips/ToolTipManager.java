@@ -26,7 +26,6 @@ public class ToolTipManager extends TablePanel {
     }
 
     private void init(ToolTip toolTip) {
-
         toolTip.invalidate();
         actorCell.setActor(toolTip);
 
