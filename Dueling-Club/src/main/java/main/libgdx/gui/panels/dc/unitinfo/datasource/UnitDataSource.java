@@ -346,17 +346,24 @@ public class UnitDataSource implements
         if (armor != null) {
             container = new ValueContainer(getOrCreateR(armor.getImagePath()));
 
-            ValueTooltip tooltip = new ValueTooltip();
+            WeaponToolTip tooltip = new WeaponToolTip();
 
-            List<ValueContainer> values = new ArrayList<>();
-            values.add(new ValueContainer(armor.getName(), ""));
+            tooltip.setUserObject(new WeaponToolTipDataSource() {
+                @Override
+                public List<ValueContainer> getMainParams() {
+                    return Arrays.stream(ARMOR_TOOLTIP)
+                            .map(el -> new ValueContainer(el.getName(), armor.getStrParam(el)).pad(10))
+                            .collect(Collectors.toList());
+                }
 
-            values.addAll(armor.getBuffs().stream()
-                    .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-                    .map(getObjValueContainerMapper())
-                    .collect(Collectors.toList()));
-
-            tooltip.setUserObject(values);
+                @Override
+                public List<ValueContainer> getBuffs() {
+                    return armor.getBuffs().stream()
+                            .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
+                            .map(getObjValueContainerMapper())
+                            .collect(Collectors.toList());
+                }
+            });
 
             container.addListener(tooltip.getController());
         } else {
