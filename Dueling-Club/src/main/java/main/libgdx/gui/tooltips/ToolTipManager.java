@@ -1,10 +1,9 @@
-package main.libgdx.gui;
+package main.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import main.libgdx.gui.dialog.ToolTip;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.system.GuiEventManager;
 

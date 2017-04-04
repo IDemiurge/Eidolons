@@ -1,4 +1,4 @@
-package main.libgdx.gui.dialog;
+package main.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;

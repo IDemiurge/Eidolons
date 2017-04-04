@@ -3,8 +3,8 @@ package main.libgdx.gui.panels.dc.unitinfo.tooltips;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import main.libgdx.gui.NinePathFactory;
-import main.libgdx.gui.dialog.ValueTooltip;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.tooltips.ValueTooltip;
 
 import java.util.List;
 
