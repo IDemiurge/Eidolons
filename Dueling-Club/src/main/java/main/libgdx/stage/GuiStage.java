@@ -59,7 +59,7 @@ public class GuiStage extends Stage {
 
     public void bindEvents() {
         GuiEventManager.bind(GuiEventType.SHOW_INVENTORY, (obj) -> {
-            if (inventoryForm == null) {
+           /* if (inventoryForm == null) {
                 inventoryForm = new InventoryWithAction();
                 this.addActor(inventoryForm);
                 inventoryForm.setPosition(0, Gdx.graphics.getHeight() - inventoryForm.getHeight());
@@ -71,7 +71,7 @@ public class GuiStage extends Stage {
             } else {
                 inventoryForm.setVisible(true);
                 inventoryForm.setUserObject(param);
-            }
+            }*/
         });
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {

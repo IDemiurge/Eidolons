@@ -2,7 +2,6 @@ package main.libgdx.gui.panels.dc.inventory;
 
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.panels.dc.inventory.containers.InventoryValueContainer;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
 
 import java.util.List;

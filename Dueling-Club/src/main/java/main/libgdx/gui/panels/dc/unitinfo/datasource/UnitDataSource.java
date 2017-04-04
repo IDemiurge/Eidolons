@@ -24,10 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -87,17 +84,17 @@ public class UnitDataSource implements
         List<ValueContainer> costsList = new ArrayList<>();
         for (int i = 0, costsLength = RESOURCE_COSTS.length; i < costsLength; i++) {
             PARAMETER cost = RESOURCE_COSTS[i];
-            final Integer param = el.getIntParam(cost);
+            final double param = el.getParamDouble(cost);
             if (param > 0) {
                 final String iconPath = ImageManager.getValueIconPath(COSTS_ICON_PARAMS[i]);
-                costsList.add(new ValueContainer(getOrCreateR(iconPath), String.valueOf(param)));
+                costsList.add(new ValueContainer(getOrCreateR(iconPath), String.format(Locale.US, "%.1f", param)));
             }
         }
 
-        final Integer reqRes = el.getIntParam(MIN_REQ_RES_FOR_USE.getLeft());
+        final double reqRes = el.getParamDouble(MIN_REQ_RES_FOR_USE.getLeft());
         if (reqRes > 0) {
             final String iconPath = ImageManager.getValueIconPath(MIN_REQ_RES_FOR_USE.getRight());
-            costsList.add(new ValueContainer(getOrCreateR(iconPath), "> " + reqRes));
+            costsList.add(new ValueContainer(getOrCreateR(iconPath), String.format(Locale.US, "> %.1f", reqRes)));
         }
         return costsList;
     }

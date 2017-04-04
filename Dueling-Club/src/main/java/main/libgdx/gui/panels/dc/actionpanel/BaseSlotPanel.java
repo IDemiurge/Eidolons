@@ -33,7 +33,6 @@ public class BaseSlotPanel extends TablePanel {
     public void act(float delta) {
         super.act(delta);
 
-
         PagesMod mod = PagesMod.NONE;
 
         for (PagesMod pagesMod : PagesMod.values()) {
