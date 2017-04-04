@@ -7,7 +7,6 @@ import main.libgdx.gui.panels.dc.ValueContainer;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Supplier;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
@@ -19,7 +18,7 @@ public class StatsPanel extends TablePanel {
     public void updateAct(float delta) {
         clear();
 
-        List<List<ValueContainer>> valueContainers = ((Supplier<List<List<ValueContainer>>>) getUserObject()).get();
+        List<List<ValueContainer>> valueContainers = (List<List<ValueContainer>>) getUserObject();
         for (int i = 0; i < valueContainers.size(); i++) {
             List<ValueContainer> valueContainerList = valueContainers.get(i);
             Iterator<ValueContainer> iter = valueContainerList.iterator();

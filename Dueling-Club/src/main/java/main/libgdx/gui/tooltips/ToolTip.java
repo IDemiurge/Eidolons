@@ -33,9 +33,4 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
             }
         };
     }
-
-    @Override
-    public Object getUserObject() {
-        return super.getUserObject();
-    }
 }

@@ -8,18 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+import java.util.function.Supplier;
+
 public class TablePanel<T extends Actor> extends Table {
 
     protected boolean updateRequired;
 
     public TablePanel() {
-    }
-
-    @Override
-    public void setUserObject(Object userObject) {
-        super.setUserObject(userObject);
-        getChildren().forEach(ch -> ch.setUserObject(userObject));
-        updateRequired = true;
     }
 
     public Cell<T> addElement(T el) {
@@ -58,5 +53,22 @@ public class TablePanel<T extends Actor> extends Table {
 
     public void updateAct(float delta) {
 
+    }
+
+    @Override
+    public Object getUserObject() {
+        final Object userObject = super.getUserObject();
+        if (userObject instanceof Supplier) {
+            return ((Supplier) userObject).get();
+        } else {
+            return userObject;
+        }
+    }
+
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        getChildren().forEach(ch -> ch.setUserObject(userObject));
+        updateRequired = true;
     }
 }

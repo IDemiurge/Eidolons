@@ -150,7 +150,7 @@ public class ResistPanel extends TablePanel {
 
     @Override
     public void updateAct(float delta) {
-        List<Pair<PARAMETER, String>> source = ((Supplier<List<Pair<PARAMETER, String>>>) getUserObject()).get();
+        List<Pair<PARAMETER, String>> source = (List<Pair<PARAMETER, String>>) getUserObject();
 
         source.forEach(pair -> {
             PARAMS param = (PARAMS) pair.getLeft();
