@@ -1,6 +1,7 @@
 package main.ability.effects.oneshot.dialog;
 
 import main.ability.InventoryTransactionManager;
+import main.client.cc.CharacterCreator;
 import main.entity.obj.unit.Unit;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.system.EventCallbackParam;
@@ -25,7 +26,9 @@ public class InventoryDialogEffect extends DialogEffect {
     @Override
     public boolean applyThis() {
         Integer operations = numberOfOperations.getInt(ref);
-        getGame().getInventoryManager().setOperationsPool(operations);
+        getGame().getInventoryManager().setHero(getSource());
+         getGame().getInventoryManager().setOperationsPool(operations);
+        CharacterCreator.getHeroManager().addHero(getSource());
         GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
          new EventCallbackParam(new InventoryDataSource((Unit) ref.getSourceObj())));
         return (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);

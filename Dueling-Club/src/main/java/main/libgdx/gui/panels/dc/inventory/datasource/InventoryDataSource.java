@@ -3,9 +3,8 @@ package main.libgdx.gui.panels.dc.inventory.datasource;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.entity.obj.unit.Unit;
-import main.game.core.Eidolons;
+import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
-import main.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import main.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import main.libgdx.gui.panels.dc.inventory.containers.InventoryValueContainer;
 import main.libgdx.gui.panels.dc.inventory.containers.InventoryValueContainerFactory;
@@ -20,15 +19,15 @@ public class InventoryDataSource implements QuickSlotDataSource,
 
     private InventoryValueContainerFactory factory;
     private Unit unit;
-    private InventoryClickHandlerImpl handler;
+    private InventoryClickHandler handler;
 
     public InventoryDataSource(Unit unit) {
         this.unit = unit;
-        handler = new InventoryClickHandlerImpl(unit);
+        handler = unit.getGame().getInventoryManager().getClickHandler();
         factory = new InventoryValueContainerFactory(handler);
     }
 
-    public InventoryClickHandlerImpl getHandler() {
+    public InventoryClickHandler getHandler() {
         return handler;
     }
 
@@ -118,7 +117,7 @@ public class InventoryDataSource implements QuickSlotDataSource,
     }
 
     public String getOperationsString() {
-        return Eidolons.game.getInventoryManager().getOperationsLeft() + "/" +
-                Eidolons.game.getInventoryManager().getOperationsPool();
+        return unit.getGame().getInventoryManager().getOperationsLeft() + "/" +
+         unit.getGame().getInventoryManager().getOperationsPool();
     }
 }

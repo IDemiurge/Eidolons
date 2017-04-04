@@ -10,6 +10,8 @@ import main.entity.item.DC_HeroItemObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
+import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
+import main.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.sound.SoundMaster;
@@ -27,6 +29,7 @@ public class DC_InventoryManager {
     private DC_Game game;
     private Unit hero;
     private OBJ_TYPE TYPE;
+    private InventoryClickHandler clickHandler;
 
     public DC_InventoryManager(DC_Game game) {
         this.TYPE = DC_TYPE.ITEMS;
@@ -202,7 +205,13 @@ public class DC_InventoryManager {
 
     public void setHero(Unit hero) {
         this.hero = hero;
+        clickHandler = new InventoryClickHandlerImpl(hero);
     }
+
+    public InventoryClickHandler getClickHandler() {
+        return clickHandler;
+    }
+
 
     public enum OPERATIONS {
         PICK_UP, DROP, UNEQUIP, UNEQUIP_QUICK_SLOT, EQUIP, EQUIP_QUICK_SLOT,

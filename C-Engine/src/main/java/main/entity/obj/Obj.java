@@ -121,11 +121,12 @@ public class Obj extends Entity {
         setOBJ_TYPE_ENUM(type.getOBJ_TYPE_ENUM());
         setName(type.getName());
         reset();
+
 //        toBase();
 //        resetObjects();
 //        afterEffects();
-//        resetPercentages();
-//        resetCurrentValues();
+        resetPercentages();
+        resetCurrentValues();
 
     }
 

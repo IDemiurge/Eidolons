@@ -601,6 +601,12 @@ public class Unit extends DC_UnitModel {
         // EVENT,
     }
 
+    @Override
+    public void applyType(ObjType type) {
+        setItemsInitialized(false);
+        super.applyType(type);
+    }
+
     public void setItem(DC_HeroItemObj item, ITEM_SLOT slot) {
         if (item instanceof DC_QuickItemObj) {
             if (((DC_QuickItemObj) item).getWrappedWeapon() != null) {
