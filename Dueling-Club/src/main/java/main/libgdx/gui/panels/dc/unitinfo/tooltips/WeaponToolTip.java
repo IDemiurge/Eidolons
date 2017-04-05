@@ -31,8 +31,9 @@ public class WeaponToolTip extends ValueTooltip {
                 el.overrideImageSize(32, 32);
                 buffsTable.addElement(el);
             });
-            addElement(buffsTable);
+            addElement(buffsTable).padTop(5);
         }
+
     }
 
     private TablePanel initTableValues(List<ValueContainer> valueContainers) {

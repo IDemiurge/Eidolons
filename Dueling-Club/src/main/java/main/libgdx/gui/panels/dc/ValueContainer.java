@@ -43,6 +43,12 @@ public class ValueContainer extends TablePanel {
         init(null, actor.getText().toString(), "");
     }
 
+    @Override
+    public ValueContainer pad(float pad) {
+        super.pad(pad);
+        return this;
+    }
+
     protected void init(TextureRegion texture, String name, String value) {
         imageContainer = addElement(null);
 
