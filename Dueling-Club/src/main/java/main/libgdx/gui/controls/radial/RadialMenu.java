@@ -51,7 +51,6 @@ public class RadialMenu extends Group {
         updatePosition();
         currentNode.drawChildren = true;
         setVisible(true);
-        //addActor(currentNode);
     }
 
     private void setCurrentNode(MenuNode node) {
@@ -61,11 +60,9 @@ public class RadialMenu extends Group {
         updatePosition();
         updateCallbacks();
         currentNode.drawChildren = true;
-        // addActor(currentNode);
     }
 
     private void updatePosition() {
-
         int step = 360 / currentNode.childNodes.size();
         int pos;
         int r = (int) (currentNode.getWidth() * 1.5);
