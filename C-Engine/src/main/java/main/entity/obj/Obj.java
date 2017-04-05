@@ -125,7 +125,7 @@ public class Obj extends Entity {
 //        toBase();
 //        resetObjects();
 //        afterEffects();
-        resetPercentages();
+//        resetPercentages();
         resetCurrentValues();
 
     }

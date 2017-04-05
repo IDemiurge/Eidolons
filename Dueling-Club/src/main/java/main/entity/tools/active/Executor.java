@@ -69,7 +69,7 @@ public class Executor extends ActiveHandler {
     private boolean triggered;
     private boolean resistanceChecked;
     private int timeCost;
-    private boolean contextMode;
+    private Context context;
 
 
     public Executor(DC_ActiveObj active, ActiveMaster entityMaster) {
@@ -87,13 +87,14 @@ public class Executor extends ActiveHandler {
     }
 
     public Boolean activateOn(Context context) {
-        if (context.getTargetObj() != null) {
-            Ref ref = getAction().getRef();
-            ref.setTarget(context.getTarget());
+        if (context.getTargetObj() != null || context.getGroup()!=null ) {
+//            Ref ref = getAction().getRef();
+//            ref.setTarget(context.getTarget());
             targeter.setForcePresetTarget(true);
-            getTargeter().setRef(ref);
+            targeter.presetTarget=context.getTargetObj();
+            getTargeter().setRef(context);
         }
-        contextMode = true;
+        this.context=context;
         activate();
         return result;
     }
@@ -121,8 +122,8 @@ public class Executor extends ActiveHandler {
          new ActionInput(getAction(), new Context(getRef()) ));
     }
 
-
     public boolean activate() {
+
 
         log(getAction().getOwnerObj() + " activates " + getAction(), true);
 

@@ -12,6 +12,7 @@ import main.game.logic.combat.damage.Damage;
 import main.game.logic.combat.damage.MultiDamage;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.libgdx.GameScreen;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
@@ -31,7 +32,7 @@ import java.util.List;
  */
 public class FloatingTextMaster {
     private static final float DEFAULT_DISPLACEMENT_Y = 140;
-    private static final float DEFAULT_DISPLACEMENT_X =  0;
+    private static final float DEFAULT_DISPLACEMENT_X = 0;
     private static final float DEFAULT_DURATION = 3;
     private static FloatingTextMaster instance;
 
@@ -155,6 +156,7 @@ public class FloatingTextMaster {
 //        floatingText.setDuration(dur);
         return floatingText;
     }
+
     private FloatingText addFloatingText(DC_ActiveObj active,
                                          TEXT_CASES CASE, Object arg, Anim anim, float delay) {
         FloatingText floatingText = getFloatingText(active, CASE, arg);
@@ -179,7 +181,7 @@ public class FloatingTextMaster {
     }
 
     private float getDefaultDuration(TEXT_CASES aCase) {
-        return DEFAULT_DURATION* ConfigMaster.getInstance().getInt(ConfigKeys.FLOATING_TEXT_DURATION);
+        return DEFAULT_DURATION * ConfigMaster.getInstance().getInt(ConfigKeys.FLOATING_TEXT_DURATION);
     }
 
     public void initFloatTextForDamage(Damage damage, Anim anim) {
@@ -203,11 +205,20 @@ public class FloatingTextMaster {
         return ANIM_PART.IMPACT;
     }
 
+    public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {
+        try {
+            getFloatingText(entity, CASE, arg).addToStage(GameScreen.getInstance().getAnimsStage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
     public enum TEXT_CASES {
         DEFAULT,
         REQUIREMENT,
+        ERROR,
 
         BONUS_DAMAGE,
         ATTACK_CRITICAL,

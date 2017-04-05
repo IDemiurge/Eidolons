@@ -7,10 +7,9 @@ import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
+import main.game.core.game.GameManager;
 import main.game.logic.event.Event;
 import main.game.logic.event.Rule;
-import main.game.core.game.GameManager;
-import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 
@@ -57,87 +56,12 @@ public abstract class StateManager {
         applyEffects(Effect.SECOND_LAYER);
         applyEffects(Effect.BUFF_RULE);
         checkContinuousRules();
-        applyMods();
-        resetCurrentValues();
-    }
-
-    public void tryResetAll() {
-        state.getTriggers().clear();
-        getManager().checkForChanges(false);
-        Chronos.mark("ALL TO BASE");
-        try {
-            allToBase();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Chronos.logTimeElapsedForMark("ALL TO BASE");
-
-        try {
-            checkCounterRules();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Chronos.mark("Apply Effects");
-        try {
-            applyEffects(Effect.ZERO_LAYER);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // TODO (Attributes and percentages) = >
-        Chronos.logTimeElapsedForMark("Apply Effects");
-        Chronos.mark("Reset Unit Objects");
-        try {
-            resetUnitObjects();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Chronos.logTimeElapsedForMark("Reset Unit Objects");
-        resetRawValues();
-        try {
-            applyEffects(Effect.BASE_LAYER);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Chronos.mark("After Effects");
-        try {
-            afterEffects();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // changes to derived values?
-        Chronos.logTimeElapsedForMark("After Effects");
-
-        Chronos.mark("Apply Effects SECOND_LAYER");
-        try {
-            applyEffects(Effect.SECOND_LAYER);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Chronos.logTimeElapsedForMark("Apply Effects SECOND_LAYER");
-        Chronos.mark("Apply Effects BUFF_RULE");
-        try {
-            applyEffects(Effect.BUFF_RULE);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Chronos.logTimeElapsedForMark("Apply Effects BUFF_RULE");
-        try {
-            checkContinuousRules();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            applyMods();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        afterBuffRuleEffects();
         resetCurrentValues();
     }
 
 
-    protected abstract void applyMods();
+    protected abstract void afterBuffRuleEffects();
 
     protected abstract void resetCurrentValues();
 
@@ -175,6 +99,28 @@ public abstract class StateManager {
         }
     }
 
+
+    public void applyEffects(int layer ) {
+        applyEffects(layer, null );
+    }
+        public void applyEffects(int layer, Obj unit) {
+        if (state.getEffects().size() == 0) {
+            return;
+        }
+        for (Effect effect : state.effects) {
+            if (effect.getLayer() == layer) {
+                if (unit!=null )
+                if (effect.getRef().getTargetObj()!=unit)
+                    continue;
+                LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, layer
+                 + " Layer, applying effect : " + state.effects);
+                if (!effect.apply()) {
+                    LogMaster.log(LogMaster.EFFECT_DEBUG, layer
+                     + " Layer, effect failed: " + state.effects);
+                }
+            }
+        }
+    }
     public void addTrigger(Trigger t) {
         LogMaster.log(LogMaster.TRIGGER_DEBUG, " added " + t);
         this.state.getTriggers().add(t);
@@ -224,22 +170,6 @@ public abstract class StateManager {
             LogMaster
              .log(LogMaster.CORE_DEBUG_1, "no type found by id " + id);
             return null;
-        }
-    }
-
-    public void applyEffects(int layer) {
-        if (state.getEffects().size() == 0) {
-            return;
-        }
-        for (Effect effect : state.effects) {
-            if (effect.getLayer() == layer) {
-                LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, layer
-                 + " Layer, applying effect : " + state.effects);
-                if (!effect.apply()) {
-                    LogMaster.log(LogMaster.EFFECT_DEBUG, layer
-                     + " Layer, effect failed: " + state.effects);
-                }
-            }
         }
     }
 

@@ -85,88 +85,52 @@ public class DC_StateManager extends StateManager {
             keeper.save();
     }
 
-
-//    public void resetUnit (Unit unit) {
-//        unit.toBase();
-//        checkCounterRules();
-//        applyEffects(Effect.ZERO_LAYER);
-//        unit. resetUnitObjects();
-//        unit. resetRawValues();
-//        applyEffects(Effect.BASE_LAYER);
-//
-//        afterEffectsApplied();
-//        applyEffects(Effect.SECOND_LAYER);
-//        applyEffects(Effect.BUFF_RULE);
-//
-//        unit.applyMods();
-//        unit. resetCurrentValues();
-//    }
-
     public void reset(Unit unit) {
-        toBase(unit);
+        unit.toBase();
         checkCounterRules(unit);
-        applyEffects(unit, Effect.ZERO_LAYER);
-        resetUnitObjects(unit);
-        resetRawValues(unit);
-        applyEffects(unit, Effect.BASE_LAYER);
-        afterEffects(unit);
-        applyEffects(unit, Effect.SECOND_LAYER);
-        applyEffects(unit, Effect.BUFF_RULE);
+        applyEffects(Effect.ZERO_LAYER, unit);
+        unit.resetObjects();
+        unit.resetRawValues();
+        applyEffects(Effect.BASE_LAYER, unit);
+        unit.afterEffects();
+        applyEffects(Effect.SECOND_LAYER, unit);
+        applyEffects(Effect.BUFF_RULE, unit);
         checkContinuousRules(unit);
-        applyMods(unit);
-        resetCurrentValues(unit);
-    }
-
-    private void resetCurrentValues(Unit unit) {
-    }
-
-    private void applyMods(Unit unit) {
-
         unit.afterBuffRuleEffects();
+        unit.resetPercentages();
+        unit.resetCurrentValues();
     }
 
-    private void checkContinuousRules(Unit unit) {
-    }
 
-    private void afterEffects(Unit unit) {
 
-    }
 
-    private void resetRawValues(Unit unit) {
-    }
 
-    private void resetUnitObjects(Unit unit) {
-    }
 
-    private void applyEffects(Unit unit, int zeroLayer) {
-    }
-
-    private void checkCounterRules(Unit unit) {
-    }
-
-    private void toBase(Unit unit) {
-    }
 
 
     public void checkContinuousRules() {
         for (Unit unit : getGame().getUnits()) {
-            getGame().getRules().applyContinuousRules(unit);
+            checkContinuousRules (unit);
         }
-
     }
 
+    private void checkContinuousRules(Unit unit) {
+        getGame().getRules().applyContinuousRules(unit);
+    }
 
     public void checkCounterRules() {
-        if (getGame().getRules().getCounterRules() != null) {
             for (Unit unit : getGame().getUnits()) {
-                for (DC_CounterRule rule : getGame().getRules().getCounterRules()) {
-                    // rule.newTurn();
-                    rule.check((unit));
-                }
+                checkCounterRules(unit);
+        }
+    }
+    private void checkCounterRules(Unit unit) {
+        if (getGame().getRules().getCounterRules() != null) {
+            for (DC_CounterRule rule : getGame().getRules().getCounterRules()) {
+                // rule.newTurn();
+                rule.check((unit));
             }
         }
     }
-
     private void applyEndOfTurnDamage() {
         if (getGame().getRules().getDamageRules() != null) {
             for (Unit unit : getGame().getUnits()) {
@@ -265,9 +229,9 @@ public class DC_StateManager extends StateManager {
     }
 
 
-    protected void applyMods() {
-        for (Unit obj : getGame().getUnits()) {
-            applyMods(obj);
+    protected void afterBuffRuleEffects() {
+        for (Unit unit : getGame().getUnits()) {
+            unit.afterBuffRuleEffects();
         }
     }
 

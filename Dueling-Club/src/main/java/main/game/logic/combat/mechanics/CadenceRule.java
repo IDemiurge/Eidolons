@@ -1,37 +1,36 @@
 package main.game.logic.combat.mechanics;
 
 import main.ability.ActiveAbility;
-import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
-import main.ability.effects.oneshot.buff.RemoveBuffEffect;
-import main.ability.effects.continuous.CustomTargetEffect;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.attachment.AddTriggerEffect;
 import main.ability.effects.common.ModifyValueEffect;
-import main.ability.targeting.TemplateAutoTargeting;
+import main.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
-import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.RefCondition;
-import main.elements.conditions.StringComparison;
 import main.elements.conditions.standard.ChanceCondition;
-import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_UnitAction;
+import main.entity.group.GroupImpl;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.BuffObj;
+import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.UnitAnalyzer;
 import main.system.DC_Formulas;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class CadenceRule {
     public static final String MAIN_HAND = ActionEnums.ACTION_TAGS.MAIN_HAND.toString();
@@ -96,13 +95,21 @@ public class CadenceRule {
         {
             offhand = false;
         }
-
         if (offhand == null) {
             return;
         }
-        LogMaster.log(LogMaster.RULES_DEBUG, "Cadence Rule applies! ");
-
         Ref ref = new Ref(unit.getGame(), unit.getId());
+
+        DC_WeaponObj weapon = unit.getActiveWeapon(offhand);
+        List<Obj> targets = new LinkedList<>();
+        if (unit.getWeapon(!offhand)!=null )
+        targets.add(unit.getWeapon(!offhand));
+        if (unit.getNaturalWeapon(!offhand)!=null )
+        targets.add(unit.getNaturalWeapon(!offhand));
+        GroupImpl group = new GroupImpl(  targets);
+        LogMaster.log(LogMaster.RULES_DEBUG, "Cadence Rule applies to " + group);
+        ref.setGroup(group);
+
 
         if (checkFocusBonusApplies(unit, action, singleCadence)) {
             Integer amount = action.getOwnerObj().getIntParam(PARAMS.CADENCE_FOCUS_BOOST);
@@ -117,26 +124,33 @@ public class CadenceRule {
         if (cadence.isEmpty()) {
             cadence = DC_Formulas.DEFAULT_CADENCE_AP_MOD + "";
         }
-        ModifyValueEffect valueEffect = new ModifyValueEffect(PARAMS.AP_COST,
+        ModifyValueEffect valueEffect = new ModifyValueEffect(
+         PARAMS. ATTACK_AP_PENALTY,
                 MOD.MODIFY_BY_PERCENT, cadence);
-        DC_WeaponObj weapon = unit.getActiveWeapon(offhand);
 
-        ref.setTarget(weapon.getId());
+
+
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
         effects.add(valueEffect);
         cadence = unit.getParam(PARAMS.CADENCE_STA_MOD);
         if (cadence.isEmpty()) {
             cadence = DC_Formulas.DEFAULT_CADENCE_STA_MOD + "";
         }
-        valueEffect = new ModifyValueEffect(PARAMS.STA_COST, MOD.MODIFY_BY_PERCENT, cadence);
+        valueEffect = new ModifyValueEffect(
+         PARAMS. ATTACK_STA_PENALTY,
+         MOD.MODIFY_BY_PERCENT, cadence);
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
 
         effects.add(valueEffect);
         if (unit.getIntParam(PARAMS.CADENCE_DAMAGE_MOD) > 0)
-        effects.add(new ModifyValueEffect(PARAMS.DAMAGE_MOD, MOD.MODIFY_BY_PERCENT, unit
+        effects.add(new ModifyValueEffect(
+         PARAMS. DAMAGE_MOD,
+           MOD.MODIFY_BY_PERCENT, unit
                 .getParam(PARAMS.CADENCE_DAMAGE_MOD)));
         if (unit.getIntParam(PARAMS.CADENCE_ATTACK_MOD) > 0)
-        effects.add(new ModifyValueEffect(PARAMS.ATTACK_MOD, MOD.MODIFY_BY_PERCENT, unit
+        effects.add(new ModifyValueEffect(
+         PARAMS. ATTACK_MOD
+         , MOD.MODIFY_BY_PERCENT, unit
                 .getParam(PARAMS.CADENCE_ATTACK_MOD)));
         String buffTypeName = (!offhand) ? buffTypeNameOffHand : buffTypeNameMainHand;
 
@@ -152,19 +166,23 @@ public class CadenceRule {
                 new ActiveAbility(new FixedTargeting(KEYS.BASIS),
                         new RemoveBuffEffect(buffTypeName))));
 
-        Condition condition = new StringComparison(StringMaster.getValueRef(KEYS.MATCH, PROP),
-                (offhand) ? MAIN_HAND : OFF_HAND, false);
         AddBuffEffect effect = new AddBuffEffect(buffTypeName, effects, DURATION);
 
-        // retain condition - hero hasBuff()
+//        Condition condition = new StringComparison(StringMaster.getValueRef(KEYS.MATCH, PROP),
+//         (offhand) ? MAIN_HAND : OFF_HAND, false);
 
+
+        // retain condition - hero hasBuff()
         // add remove trigger on attack? either off/main hand, so there is no
         // stacking...
-
         // linked buffs?
         effect.setIrresistible(false);
-        AddBuffEffect addBuffEffect = new AddBuffEffect(buffTypeName, new CustomTargetEffect(
-                new TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES.ACTIONS, condition), effect),
+        AddBuffEffect addBuffEffect = new AddBuffEffect(buffTypeName,
+//         new CustomTargetEffect(
+//                new TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES.ACTIONS, condition),
+         effect
+//        )
+         ,
                 DURATION);
         // preCheck perk
         addBuffEffect.addEffect(new AddTriggerEffect( // what about

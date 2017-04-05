@@ -66,7 +66,8 @@ public class GameLoop {
             input.getAction().getHandler().activateOn(input.getContext());
         } catch (Exception e) {
             e.printStackTrace();
-        }
+            getGame().getManager().unitActionCompleted(input.getAction(), true);
+       return true; }
         int timeCost = input.getAction().getHandler().getTimeCost();
         Boolean endTurn = getGame().getRules().getTimeRule().
          actionComplete(input.getAction(), timeCost);

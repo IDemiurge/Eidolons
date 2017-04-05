@@ -44,7 +44,8 @@ public interface UNIT_INFO_PARAMS {
             SP_DMG_MODIFIER, INT_DMG_MODIFIER,
             IMPACT_AREA, WEIGHT,
             ARMOR_MOD, ARMOR_PENETRATION,
-            DURABILITY_DAMAGE_MOD, DURABILITY_SELF_DAMAGE_MOD,
+     DURABILITY_DAMAGE_MOD, DURABILITY_SELF_DAMAGE_MOD,
+     ATTACK_AP_PENALTY, ATTACK_STA_PENALTY,
     };
 
     //                                   <><><><><>
