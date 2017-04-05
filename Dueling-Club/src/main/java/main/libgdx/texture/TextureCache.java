@@ -58,6 +58,10 @@ public class TextureCache {
         return new TextureRegion(getOrCreate(path));
     }
 
+    public static TextureRegion getOrCreateGrayscaleR(String path) {
+        return new TextureRegion(getOrCreateGrayscale(path));
+    }
+
     private Texture _getOrCreateGrayScale(String path) {
         Texture normal = _getOrCreate(path);
         if (!greyscaleCache.containsKey(normal)) {
