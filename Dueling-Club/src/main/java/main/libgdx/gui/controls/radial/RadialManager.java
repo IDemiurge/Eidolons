@@ -8,7 +8,6 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
-import main.entity.obj.ActiveObj;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -21,7 +20,6 @@ import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.TargetRunnable;
 import main.libgdx.gui.controls.radial.RadialMenu.CreatorNode;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
-import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -32,8 +30,14 @@ import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import static main.libgdx.texture.TextureCache.getOrCreate;
+import static main.libgdx.texture.TextureCache.getOrCreateGrayscale;
 import static main.system.GuiEventManager.trigger;
 import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 
@@ -46,8 +50,8 @@ public class RadialManager {
 
     public static Texture getTextureForActive(DC_ActiveObj obj, Ref ref) {
         return !obj.canBeActivated(ref) ?
-         TextureCache.getOrCreateGrayscale(obj.getImagePath())
-         : TextureCache.getOrCreate(obj.getImagePath());
+                getOrCreateGrayscale(obj.getImagePath())
+                : getOrCreate(obj.getImagePath());
     }
 
     public static List<RadialMenu.CreatorNode> createNew(DC_Obj target) {
@@ -55,50 +59,35 @@ public class RadialManager {
         if (source == null) {
             return null;
         }
-        List<ActiveObj> activeObjs = source.getActives();
 
-        List<RadialMenu.CreatorNode> moves = new ArrayList<>();
-        List<RadialMenu.CreatorNode> turns = new ArrayList<>();
-        List<RadialMenu.CreatorNode> attacks = new ArrayList<>();
+        List<MenuNodeDataSource> moves = new ArrayList<>();
+        List<MenuNodeDataSource> turns = new ArrayList<>();
+        List<MenuNodeDataSource> attacks = new ArrayList<>();
 
-        Set<ActiveObj> actives = new HashSet<>();
+        source.getActives().parallelStream()
+                .filter(el -> el.getTargeting() != null && el instanceof DC_ActiveObj)
+                .map(el -> (DC_ActiveObj) el)
+                .distinct()
+                .sequential()
+                .forEach(el -> {
+                    if (el.isMove()) {
+                        moves.add(configureMoveNode(target, el));
+                    } else if (el.isTurn()) {
+                        turns.add(createNode(new ImmutableTriple<>(
+                                el::invokeClicked,
+                                getTextureForActive(el, target),
+                                el.getName()
+                        )));
+                    } else if (el.isAttackGeneric()) {
+                        configureAttackNode(target, attacks, el);
+                    }
+                });
 
-        for (ActiveObj obj : activeObjs) {
-            if (actives.contains(obj)) {
-                continue;
-            }
-            if (obj.getTargeting() == null) {
-                continue;
-            }
-            if (!(obj instanceof DC_ActiveObj)) {
-                continue;
-            }
 
-            DC_ActiveObj dcActiveObj = ((DC_ActiveObj) obj);
-            actives.add(dcActiveObj);
-
-            if (dcActiveObj.isMove()) {
-                moves.add(configureMoveNode(target, dcActiveObj));
-            }
-
-            if (dcActiveObj.isTurn()) {
-                turns.add(createNode( new ImmutableTriple<>(
-                 dcActiveObj::invokeClicked,
-                 getTextureForActive(dcActiveObj, target),
-                 dcActiveObj.getName()
-                )));
-            }
-
-            if (dcActiveObj.isAttackGeneric()) {
-                configureAttackNode(target, attacks, dcActiveObj);
-            }
-
-        }
-
-        Texture examineTexture = TextureCache.getOrCreate("UI/actions/examine.png");
-        Texture moveAction = TextureCache.getOrCreate("/UI/actions/Move gold.jpg");
-        Texture turnAction = TextureCache.getOrCreate("/UI/actions/turn anticlockwise quick2 - Copy.jpg");
-        Texture attackAction = TextureCache.getOrCreate("/mini/actions/New folder/Achievement_Arena_2v2_2.jpg");
+        Texture examineTexture = getOrCreate("UI/actions/examine.png");
+        Texture moveAction = getOrCreate("/UI/actions/Move gold.jpg");
+        Texture turnAction = getOrCreate("/UI/actions/turn anticlockwise quick2 - Copy.jpg");
+        Texture attackAction = getOrCreate("/mini/actions/New folder/Achievement_Arena_2v2_2.jpg");
         Texture yellow = new Texture(GridPanel.class.getResource("/data/marble_yellow.png").getPath());
         Texture red = new Texture(GridPanel.class.getResource("/data/marble_red.png").getPath());
         Texture green = new Texture(GridPanel.class.getResource("/data/marble_green.png").getPath());
@@ -111,8 +100,8 @@ public class RadialManager {
                 examine.texture = examineTexture;
                 examine.action = () -> {
                     GuiEventManager.trigger(
-                     GuiEventType.SHOW_UNIT_INFO_PANEL,
-                     new EventCallbackParam<>(new UnitDataSource(((Unit) target))));
+                            GuiEventType.SHOW_UNIT_INFO_PANEL,
+                            new EventCallbackParam<>(new UnitDataSource(((Unit) target))));
                 };
                 examine.name = "examine";
                 list.add(examine);
@@ -127,7 +116,7 @@ public class RadialManager {
 
         RadialMenu.CreatorNode movesN1 = new RadialMenu.CreatorNode();
         movesN1.texture = moveAction;
-        movesN1.childNodes =  (moves);
+        movesN1.childNodes = (moves);
         list.add(movesN1);
 
         if (attacks.size() > 1) {
@@ -140,7 +129,7 @@ public class RadialManager {
         }
         if (!source.getSpells().isEmpty()) {
             RadialMenu.CreatorNode spellNode = new RadialMenu.CreatorNode();
-            spellNode.texture = TextureCache.getOrCreate(ImageManager.getRadialSpellIconPath());
+            spellNode.texture = getOrCreate(ImageManager.getRadialSpellIconPath());
             spellNode.childNodes = SpellRadialManager.getSpellNodes(source, target);
             spellNode.name = "Spells";
             if (spellNode.childNodes.size() == 0) {
@@ -152,40 +141,45 @@ public class RadialManager {
         }
         RadialMenu.CreatorNode turnsN1 = new RadialMenu.CreatorNode();
         turnsN1.texture = turnAction;
-        turnsN1.childNodes =  (turns);
+        turnsN1.childNodes = (turns);
         list.add(turnsN1);
 
         return list;
     }
 
-    private static CreatorNode configureSelectiveTargetedNode(  DC_ActiveObj active) {
-        Ref ref1 = active.getRef();
-        ref1.setMatch(active.getOwnerObj().getId()); // for filter
+    private static Filter<Obj> getFilter(DC_ActiveObj active) {
+        active.getRef().setMatch(active.getOwnerObj().getId()); // for filter
         Filter<Obj> filter = active.getTargeting().getFilter();
-        filter.setRef(ref1);
-        Set<Obj> objects = new HashSet<>();
-        if (CoreEngine.isActionTargetingFiltersOff()) {
-            for (Unit o : DC_Game.game.getUnits()) {
-                objects.add(o);
-            }
-        } else {
-            objects = filter.getObjects();
-        }
-        boolean valid = objects.size() > 0;
+        filter.setRef(active.getRef());
 
-        Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(objects,
-         active::activateOn);
+        return filter;
+    }
+
+    private static CreatorNode configureSelectiveTargetedNode(DC_ActiveObj active) {
+
+        Set<Obj> objSet = CoreEngine.isActionTargetingFiltersOff() ?
+                DC_Game.game.getUnits().parallelStream().distinct().collect(Collectors.toSet())
+                : getFilter(active).getObjects();
+
+        boolean valid = objSet.size() > 0;
+
+        Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(objSet, active::activateOn);
+        
         CreatorNode innn = new CreatorNode();
-        innn.name = active.getName();
-        innn.texture = valid ? TextureCache.getOrCreate(active.getImagePath()) : TextureCache.getOrCreateGrayscale(active.getImagePath());
-        innn.action = () -> {
-        if (valid){
-            trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
-        }else {
-            FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.ERROR, "", active);
-        } 
-        } ;
 
+        innn.name = active.getName();
+
+        innn.texture = valid ?
+                getOrCreate(active.getImagePath()) :
+                getOrCreateGrayscale(active.getImagePath());
+
+        innn.action = () -> {
+            if (valid) {
+                trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
+            } else {
+                FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.ERROR, "", active);
+            }
+        };
 
         return innn;
     }
@@ -197,23 +191,17 @@ public class RadialManager {
         inn1.name = dcActiveObj.getName();
         inn1.action = null;
         List<RadialMenu.CreatorNode> list = new ArrayList<>();
-        if (dcActiveObj.getRef().getSourceObj() == target) {
-            for (DC_ActiveObj active1 : dcActiveObj.getSubActions()) {
-                list.add(configureSelectiveTargetedNode( active1));
-            }
 
-            inn1.childNodes = list;
-            nn1.add(inn1);
-        } else if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
-            for (DC_ActiveObj dc_activeObj : dcActiveObj.getSubActions()) {
+        for (DC_ActiveObj dc_activeObj : dcActiveObj.getSubActions()) {
+            if (dcActiveObj.getRef().getSourceObj() == target) {
+                list.add(configureSelectiveTargetedNode(dc_activeObj));
+            } else if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
                 RadialMenu.CreatorNode innn = new RadialMenu.CreatorNode();
                 innn.name = dc_activeObj.getName();
-                innn.texture = TextureCache.getOrCreate(dc_activeObj.getImagePath());
+                innn.texture = getOrCreate(dc_activeObj.getImagePath());
                 innn.action = () -> dc_activeObj.activateOn(target);
                 list.add(innn);
             }
-            inn1.childNodes = list;
-            nn1.add(inn1);
         }
 
         DC_WeaponObj activeWeapon = dcActiveObj.getActiveWeapon();
@@ -222,42 +210,48 @@ public class RadialManager {
                 for (DC_QuickItemObj ammo : dcActiveObj.getOwnerObj().getQuickItems()) {
                     RadialMenu.CreatorNode innn = new RadialMenu.CreatorNode();
                     innn.name = "Reload with " + ammo.getName();
-                    innn.texture = TextureCache.getOrCreate(ammo.getImagePath());
+                    innn.texture = getOrCreate(ammo.getImagePath());
                     innn.action = ammo::invokeClicked;
                     list.add(innn);
                 }
             }
         }
+
+        inn1.childNodes = list;
+        nn1.add(inn1);
     }
 
 
-    private static CreatorNode configureMoveNode(DC_Obj target, DC_ActiveObj dcActiveObj) {
+    private static MenuNodeDataSource configureMoveNode(DC_Obj target, DC_ActiveObj dcActiveObj) {
         Triple<Runnable, Texture, String> result;
+
         if (target == dcActiveObj.getOwnerObj()) {
-            return  configureSelectiveTargetedNode(  dcActiveObj);
+            return configureSelectiveTargetedNode(dcActiveObj);
         }
+
         if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
             result = new ImmutableTriple<>(
-             () -> {
-                 DC_Cell cell = target.getGame().getCellByCoordinate(target.getCoordinates());
-                 if (dcActiveObj.getTargeter().canBeTargeted(cell.getId()))
-                     dcActiveObj.activateOn(target);
-             },
-             TextureCache.getOrCreate(dcActiveObj.getImagePath()),
-             dcActiveObj.getName()
+                    () -> {
+                        DC_Cell cell = target.getGame().getCellByCoordinate(target.getCoordinates());
+                        if (dcActiveObj.getTargeter().canBeTargeted(cell.getId()))
+                            dcActiveObj.activateOn(target);
+                    },
+                    getOrCreate(dcActiveObj.getImagePath()),
+                    dcActiveObj.getName()
             );
         } else {
             result = new ImmutableTriple<>(
-             dcActiveObj::invokeClicked,
-             getTextureForActive(dcActiveObj, target),
-             dcActiveObj.getName()
+                    dcActiveObj::invokeClicked,
+                    getTextureForActive(dcActiveObj, target),
+                    dcActiveObj.getName()
             );
         }
 
         return createNode(result);
     }
+
     private static RadialMenu.CreatorNode createNode(Triple<Runnable, Texture,
-     String>  triple ) {
+            String> triple) {
         RadialMenu.CreatorNode inn1 = new RadialMenu.CreatorNode();
         inn1.texture = triple.getMiddle();
         inn1.action = triple.getLeft();
@@ -265,7 +259,7 @@ public class RadialManager {
         return inn1;
     }
 
-        private static List<RadialMenu.CreatorNode> createNodes(List<Triple<Runnable, Texture, String>> pairs) {
+    private static List<RadialMenu.CreatorNode> createNodes(List<Triple<Runnable, Texture, String>> pairs) {
         List<RadialMenu.CreatorNode> nn1 = new ArrayList<>();
         for (final Triple<Runnable, Texture, String> triple : pairs) {
             nn1.add(createNode(triple));

@@ -95,15 +95,12 @@ public class SpellRadialManager {
             if (node.name.equalsIgnoreCase("Summon Vampire Bat")) {
                 int i = 1;
             }
-            node.action = new Runnable() {
-                @Override
-                public void run() {
-                    if (checkForceTargeting(source, target, action)) {
-                        action.activate();
-                    } else {
-                        action.activateOn(target);
+            node.action = () -> {
+                if (checkForceTargeting(source, target, action)) {
+                    action.activate();
+                } else {
+                    action.activateOn(target);
 
-                    }
                 }
             };
         } else {
@@ -119,17 +116,6 @@ public class SpellRadialManager {
             });
         }
         return node;
-    }
-/*
-6 aspects?
-spell 'types'?
-
- */
-
-    public enum RADIAL_ITEM_SPELL {
-        RECOMMENDED,
-        LAST,
-
     }
 
     public enum SPELL_ASPECT {
@@ -147,12 +133,6 @@ spell 'types'?
         SPELL_ASPECT(SPELL_GROUP... groups) {
             this.groups = groups;
         }
-    }
-
-    public enum SPELL_RADIAL_MODE {
-        ASPECT,
-        ALL,
-
     }
 
 }
