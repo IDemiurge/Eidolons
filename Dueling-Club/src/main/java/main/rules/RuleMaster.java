@@ -310,12 +310,12 @@ public class RuleMaster implements Controller {
 
     public enum RULE {
         FORCE(RULE_SCOPE.FULL),
-        ATTACK_OF_OPPORTUNITY,
-        INSTANT_ATTACK(RULE_SCOPE.TEST),
-        COUNTER_ATTACK,
-        TIME,
-        VISIBILITY,
-        CLEAR_SHOT,
+        ATTACK_OF_OPPORTUNITY(RULE_SCOPE.FULL),
+        INSTANT_ATTACK(RULE_SCOPE.FULL),
+        COUNTER_ATTACK(RULE_SCOPE.BASIC),
+        TIME(RULE_SCOPE.BASIC),
+        VISIBILITY(RULE_SCOPE.FULL),
+        CLEAR_SHOT(RULE_SCOPE.BASIC),
         PARRYING(RULE_SCOPE.FULL),
         // C
         DURABILITY,
@@ -327,7 +327,7 @@ public class RuleMaster implements Controller {
         WOUNDS,
         BLEEDING,
         WEIGHT,
-        INJURY,;
+        INJURY(RULE_SCOPE.FULL),;
 
         String tooltip;
         RULE_SCOPE scope;

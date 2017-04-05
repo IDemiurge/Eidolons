@@ -69,6 +69,7 @@ public class DC_Attributes {
                 // StringMaster.getWellFormattedString(attr.toString())); //in
                 // DEXTERITY
                 hero.modifyParameter(PARAMS.ATTACK_AP_PENALTY, -amount / 2, modifierKey);
+                hero.modifyParameter(PARAMS.OFFHAND_ATTACK_AP_PENALTY, -amount / 2, modifierKey);
                 // hero.modifyParameter(PARAMS.N_OF_ACTIONS, DC_Formulas
                 // .getActsFromAgi(amount),
                 // StringMaster.getWellFormattedString(attr.toString())); TODO

@@ -13,6 +13,7 @@ import main.game.ai.elements.task.TaskManager;
 import main.game.ai.tools.AiExecutor;
 import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.ai.tools.priority.PriorityManager;
+import main.game.battlefield.Coordinates;
 import main.game.core.game.DC_Game;
 
 import java.util.HashSet;
@@ -44,6 +45,7 @@ public class AI_Manager extends AiMaster {
         Action action = null;
         running = true;
         setUnit(unit);
+        Coordinates bufferedCoordinates = unit.getCoordinates();
         try {
             action = actionManager.chooseAction(getAI(unit));
         } catch (Exception e) {
@@ -60,6 +62,9 @@ public class AI_Manager extends AiMaster {
             } finally {
                 running = false;
             }
+        }
+        if (!bufferedCoordinates.equals(unit.getCoordinates())) {
+            unit.setCoordinates(bufferedCoordinates);
         }
         return action;
     }

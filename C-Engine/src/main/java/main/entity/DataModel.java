@@ -756,7 +756,8 @@ public abstract class DataModel {
         return modifyParamByPercent(param, perc, false);
     }
 
-    public boolean modifyParamByPercent(PARAMETER param, int perc, boolean base) {
+        public boolean modifyParamByPercent(PARAMETER param,
+        int perc, boolean base) {
         if (perc == 0 || getIntParam(param, base) == 0) {
             return false;
         }

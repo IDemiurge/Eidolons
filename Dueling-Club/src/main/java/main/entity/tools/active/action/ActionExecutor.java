@@ -81,8 +81,12 @@ public class ActionExecutor extends Executor {
 
     @Override
     public void actionComplete() {
-        CadenceRule.checkDualAttackCadence(getAction(), ownerObj);
         super.actionComplete();
+        try {
+            CadenceRule.checkDualAttackCadence(getAction(), ownerObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -116,7 +120,7 @@ public class ActionExecutor extends Executor {
                     conditions = ConditionMaster.getFilteredConditions(conditions, DistanceCondition.class);
                     conditions.add(new DistanceCondition("" + maxRange));
                     SelectiveTargeting selectiveTargeting = new SelectiveTargeting(
-                            SELECTIVE_TARGETING_TEMPLATES.ATTACK, conditions, new Formula("1"));
+                     SELECTIVE_TARGETING_TEMPLATES.ATTACK, conditions, new Formula("1"));
                     return selectiveTargeting;
 
                 }

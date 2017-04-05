@@ -126,7 +126,7 @@ public class CadenceRule {
         }
         ModifyValueEffect valueEffect = new ModifyValueEffect(
          PARAMS. ATTACK_AP_PENALTY,
-                MOD.MODIFY_BY_PERCENT, cadence);
+                MOD.MODIFY_BY_CONST, cadence);
 
 
 
@@ -138,19 +138,19 @@ public class CadenceRule {
         }
         valueEffect = new ModifyValueEffect(
          PARAMS. ATTACK_STA_PENALTY,
-         MOD.MODIFY_BY_PERCENT, cadence);
+         MOD.MODIFY_BY_CONST, cadence);
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
 
         effects.add(valueEffect);
         if (unit.getIntParam(PARAMS.CADENCE_DAMAGE_MOD) > 0)
         effects.add(new ModifyValueEffect(
          PARAMS. DAMAGE_MOD,
-           MOD.MODIFY_BY_PERCENT, unit
+           MOD.MODIFY_BY_CONST, unit
                 .getParam(PARAMS.CADENCE_DAMAGE_MOD)));
         if (unit.getIntParam(PARAMS.CADENCE_ATTACK_MOD) > 0)
         effects.add(new ModifyValueEffect(
          PARAMS. ATTACK_MOD
-         , MOD.MODIFY_BY_PERCENT, unit
+         , MOD.MODIFY_BY_CONST, unit
                 .getParam(PARAMS.CADENCE_ATTACK_MOD)));
         String buffTypeName = (!offhand) ? buffTypeNameOffHand : buffTypeNameMainHand;
 
@@ -166,7 +166,7 @@ public class CadenceRule {
                 new ActiveAbility(new FixedTargeting(KEYS.BASIS),
                         new RemoveBuffEffect(buffTypeName))));
 
-        AddBuffEffect effect = new AddBuffEffect(buffTypeName, effects, DURATION);
+//        effect = new AddBuffEffect(buffTypeName, effects, DURATION);
 
 //        Condition condition = new StringComparison(StringMaster.getValueRef(KEYS.MATCH, PROP),
 //         (offhand) ? MAIN_HAND : OFF_HAND, false);
@@ -176,11 +176,11 @@ public class CadenceRule {
         // add remove trigger on attack? either off/main hand, so there is no
         // stacking...
         // linked buffs?
-        effect.setIrresistible(false);
+//        effect.setIrresistible(false);
         AddBuffEffect addBuffEffect = new AddBuffEffect(buffTypeName,
 //         new CustomTargetEffect(
 //                new TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES.ACTIONS, condition),
-         effect
+         effects
 //        )
          ,
                 DURATION);
@@ -194,7 +194,7 @@ public class CadenceRule {
         Integer param = unit.getIntParam(PARAMS.CADENCE_DEFENSE_MOD);
         if (param != 0) {
             addBuffEffect.addEffect(new ModifyValueEffect(PARAMS.DEFENSE_MOD,
-                    MOD.MODIFY_BY_PERCENT, "" + param));
+                    MOD.MODIFY_BY_CONST, "" + param));
         }
 
         addBuffEffect.setIrresistible(true);
