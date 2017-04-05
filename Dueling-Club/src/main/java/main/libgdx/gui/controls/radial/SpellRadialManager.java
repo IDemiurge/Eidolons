@@ -92,9 +92,7 @@ public class SpellRadialManager {
             node.texture =
                     RadialManager.getTextureForActive(action, target);
             node.name = action.getName();
-            if (node.name.equalsIgnoreCase("Summon Vampire Bat")) {
-                int i = 1;
-            }
+
             node.action = () -> {
                 if (checkForceTargeting(source, target, action)) {
                     action.activate();
