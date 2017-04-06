@@ -17,7 +17,6 @@ import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.TargetRunnable;
 import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
@@ -27,13 +26,8 @@ import main.system.GuiEventType;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.apache.commons.lang3.tuple.Triple;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static main.libgdx.texture.TextureCache.*;
@@ -47,23 +41,34 @@ public class RadialManager {
         return getTextureForActive(obj, ref);
     }
 
+    public static TextureRegion getTextureRForActive(DC_ActiveObj obj, DC_Obj target) {
+        Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
+        return getTextureRForActive(obj, ref);
+    }
+
+    public static TextureRegion getTextureRForActive(DC_ActiveObj obj, Ref ref) {
+        return !obj.canBeActivated(ref) ?
+                getOrCreateGrayscaleR(obj.getImagePath())
+                : getOrCreateR(obj.getImagePath());
+    }
+
     public static Texture getTextureForActive(DC_ActiveObj obj, Ref ref) {
         return !obj.canBeActivated(ref) ?
                 getOrCreateGrayscale(obj.getImagePath())
                 : getOrCreate(obj.getImagePath());
     }
 
-    public static List<RadialMenu.CreatorNode> createNew(DC_Obj target) {
-        Unit source = (Unit) Game.game.getManager().getActiveObj();
-        if (source == null) {
-            return null;
+    public static List<MenuNodeDataSource> createNew(DC_Obj target) {
+        Unit sourceUnit = (Unit) Game.game.getManager().getActiveObj();
+        if (sourceUnit == null) {
+            return Collections.EMPTY_LIST;
         }
 
         List<MenuNodeDataSource> moves = new ArrayList<>();
         List<MenuNodeDataSource> turns = new ArrayList<>();
-        List<MenuNodeDataSource> attacks;
+        List<MenuNodeDataSource> attacks = new ArrayList<>();
 
-        source.getActives().parallelStream()
+        sourceUnit.getActives().parallelStream()
                 .filter(el -> el.getTargeting() != null && el instanceof DC_ActiveObj)
                 .map(el -> (DC_ActiveObj) el)
                 .distinct()
@@ -78,91 +83,108 @@ public class RadialManager {
                                 )
                         );
                     } else if (el.isAttackGeneric()) {
-                        attacks = configureAttackNode(target, el);
+                        attacks.addAll(configureAttackNode(target, el));
                     }
                 });
 
-        Texture examineTexture = getOrCreate("UI/actions/examine.png");
-        Texture moveAction = getOrCreate("/UI/actions/Move gold.jpg");
-        TextureRegion turnAction = getOrCreateR("/UI/actions/turn anticlockwise quick2 - Copy.jpg");
+        /*
         Texture attackAction = getOrCreate("/mini/actions/New folder/Achievement_Arena_2v2_2.jpg");
         Texture yellow = new Texture(GridPanel.class.getResource("/data/marble_yellow.png").getPath());
         Texture red = new Texture(GridPanel.class.getResource("/data/marble_red.png").getPath());
         Texture green = new Texture(GridPanel.class.getResource("/data/marble_green.png").getPath());
+*/
 
-        List<RadialMenu.CreatorNode> list = new LinkedList<>();
+        List<MenuNodeDataSource> list = new LinkedList<>();
 
         if (C_OBJ_TYPE.UNITS_CHARS.equals(target.getOBJ_TYPE_ENUM())) {
             if (target instanceof Unit) {
-                RadialMenu.CreatorNode examine = new RadialMenu.CreatorNode();
-                examine.texture = examineTexture;
-                examine.action = () -> {
-                    GuiEventManager.trigger(
-                            GuiEventType.SHOW_UNIT_INFO_PANEL,
-                            new EventCallbackParam<>(new UnitDataSource(((Unit) target))));
-                };
-                examine.name = "examine";
-                list.add(examine);
+                list.add(() -> new ActionValueContainer(
+                        getOrCreateR("UI/actions/examine.png"),
+                        () -> GuiEventManager.trigger(
+                                GuiEventType.SHOW_UNIT_INFO_PANEL,
+                                new EventCallbackParam<>(new UnitDataSource(((Unit) target)))
+                        )
+                ));
             }
         }
 
-        MenuNodeDataSource attMain = new MenuNodeDataSource() {
+        list.add(new MenuNodeDataSource() {
             @Override
             public ActionValueContainer getCurrent() {
-                return null;
+                return attacks.get(0).getCurrent();
             }
 
             @Override
             public List<MenuNodeDataSource> getChilds() {
-                return null;
+                return attacks.get(0).getChilds();
             }
-        }
+        });
 
-        RadialMenu.CreatorNode attM = new RadialMenu.CreatorNode();
-        attM.texture = attacks.get(0).texture;
-        attM.childNodes = attacks.get(0).childNodes;
-        attM.name = attacks.get(0).name;
-        list.add(attM);
-
-        RadialMenu.CreatorNode movesN1 = new RadialMenu.CreatorNode();
-        movesN1.texture = moveAction;
-        movesN1.childNodes = (moves);
-        list.add(movesN1);
-
-        if (attacks.size() > 1) {
-            RadialMenu.CreatorNode attO = new RadialMenu.CreatorNode();
-            attO.texture = attacks.get(1).texture;
-            attO.childNodes = attacks.get(1).childNodes;
-            attO.name = attacks.get(1).name;
-            list.add(attO);
-
-        }
-        if (!source.getSpells().isEmpty()) {
-            RadialMenu.CreatorNode spellNode = new RadialMenu.CreatorNode();
-            spellNode.texture = getOrCreate(ImageManager.getRadialSpellIconPath());
-            spellNode.childNodes = SpellRadialManager.getSpellNodes(source, target);
-            spellNode.name = "Spells";
-            if (spellNode.childNodes.size() == 0) {
-                spellNode.action = () -> {
-                };//spell manager may return empty spell list, close menu
-                System.out.println("Error: SpellRadialManager.getSpellNodes() return empty list");
-            }
-            list.add(spellNode);
-        }
-
-        MenuNodeDataSource turns1 = new MenuNodeDataSource() {
+        list.add(new MenuNodeDataSource() {
             @Override
             public ActionValueContainer getCurrent() {
-                return new ActionValueContainer(turnAction, null);
+                return new ActionValueContainer(getOrCreateR("/UI/actions/Move gold.jpg"), null);
+            }
+
+            @Override
+            public List<MenuNodeDataSource> getChilds() {
+                return moves;
+            }
+        });
+
+        if (attacks.size() > 1) {
+            list.add(new MenuNodeDataSource() {
+                @Override
+                public ActionValueContainer getCurrent() {
+                    return attacks.get(1).getCurrent();
+                }
+
+                @Override
+                public List<MenuNodeDataSource> getChilds() {
+                    return attacks.get(1).getChilds();
+                }
+            });
+        }
+
+
+        if (!sourceUnit.getSpells().isEmpty()) {
+            final List<MenuNodeDataSource> spellNodes =
+                    SpellRadialManager.getSpellNodes(sourceUnit, target);
+
+            list.add(new MenuNodeDataSource() {
+                @Override
+                public List<MenuNodeDataSource> getChilds() {
+                    return spellNodes;
+                }
+
+                @Override
+                public ActionValueContainer getCurrent() {
+                    return new ActionValueContainer(
+                            spellNodes.size() > 0 ?
+                                    getOrCreateR(ImageManager.getRadialSpellIconPath()) :
+                                    getOrCreateGrayscaleR(ImageManager.getRadialSpellIconPath()),
+                            () -> {
+                            }
+                    );
+
+                }
+            });
+        }
+
+        list.add(new MenuNodeDataSource() {
+            @Override
+            public ActionValueContainer getCurrent() {
+                return new ActionValueContainer(
+                        getOrCreateR("/UI/actions/turn anticlockwise quick2 - Copy.jpg"),
+                        null
+                );
             }
 
             @Override
             public List<MenuNodeDataSource> getChilds() {
                 return turns;
             }
-        };
-
-        list.add(turns1);
+        });
 
         return list;
     }
@@ -248,30 +270,27 @@ public class RadialManager {
     }
 
     private static MenuNodeDataSource configureMoveNode(DC_Obj target, DC_ActiveObj dcActiveObj) {
-        Triple<Runnable, Texture, String> result;
+        MenuNodeDataSource result;
 
         if (target == dcActiveObj.getOwnerObj()) {
-            return configureSelectiveTargetedNode(dcActiveObj);
-        }
-
-        if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
-            result = new ImmutableTriple<>(
-                    () -> {
-                        DC_Cell cell = target.getGame().getCellByCoordinate(target.getCoordinates());
-                        if (dcActiveObj.getTargeter().canBeTargeted(cell.getId()))
-                            dcActiveObj.activateOn(target);
-                    },
-                    getOrCreate(dcActiveObj.getImagePath()),
-                    dcActiveObj.getName()
-            );
+            result = configureSelectiveTargetedNode(dcActiveObj);
         } else {
-            result = new ImmutableTriple<>(
-                    dcActiveObj::invokeClicked,
-                    getTextureForActive(dcActiveObj, target),
-                    dcActiveObj.getName()
-            );
+            if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
+                result = () -> new ActionValueContainer(
+                        getOrCreateR(dcActiveObj.getImagePath()),
+                        () -> {
+                            DC_Cell cell = target.getGame().getCellByCoordinate(target.getCoordinates());
+                            if (dcActiveObj.getTargeter().canBeTargeted(cell.getId()))
+                                dcActiveObj.activateOn(target);
+                        }
+                );
+            } else {
+                result = () -> new ActionValueContainer(
+                        new TextureRegion(getTextureForActive(dcActiveObj, target)),
+                        dcActiveObj::invokeClicked
+                );
+            }
         }
-
         return result;
     }
 }
