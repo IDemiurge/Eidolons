@@ -1,18 +1,12 @@
 package main.libgdx.gui.controls.radial;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import main.system.auxiliary.log.LogMaster;
+import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +16,16 @@ public class RadialMenu extends Group {
     private MenuNode currentNode;
     private Image closeImage;
 
+    private ActionValueContainer closeButton;
+
     public RadialMenu() {
         final Texture t = new Texture(RadialMenu.class.getResource("/data/marble_green.png").getPath());
-        closeImage = new Image(t);
-        this.closeTex = t;
+        closeButton = new ActionValueContainer(new TextureRegion(t), () -> RadialMenu.this.setVisible(false));
     }
 
     public void init(List<MenuNodeDataSource> nodes) {
-        
-        currentNode = new MenuNode(closeImage, "Close");
+
+        currentNode = new MenuNode(closeButton);
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setBounds(
@@ -40,30 +35,26 @@ public class RadialMenu extends Group {
                 currentNode.getHeight()
         );
 
-        currentNode.setX(getX());
-        currentNode.setY(getY());
+        addActor(currentNode);
 
         currentNode.childNodes = createChildren(currentNode, nodes);
 
-        final RadialMenu menu = this;
-        currentNode.action = () -> menu.setVisible(false);
-
         updateCallbacks();
-        updatePosition();
-        currentNode.drawChildren = true;
+        //updatePosition();
+        currentNode.setChildVisible(true);
         setVisible(true);
     }
 
     private void setCurrentNode(MenuNode node) {
         removeActor(currentNode);
-        currentNode.drawChildren = false;
+        currentNode.setChildVisible(false);
         currentNode = node;
-        updatePosition();
+//        updatePosition();
         updateCallbacks();
-        currentNode.drawChildren = true;
+        currentNode.setChildVisible(true);
     }
 
-    private void updatePosition() {
+/*    private void updatePosition() {
         int step = 360 / currentNode.childNodes.size();
         int pos;
         int r = (int) (currentNode.getWidth() * 1.5);
@@ -75,13 +66,13 @@ public class RadialMenu extends Group {
             currentNode.childNodes.get(i).setX(x + currentNode.getX());
             currentNode.childNodes.get(i).setY(y + currentNode.getY());
         }
-    }
+    }*/
 
     private void updateCallbacks() {
         if (currentNode.parent == null) {
-            currentNode.action = () -> setVisible(false);
+            currentNode.button.bindAction(() -> RadialMenu.this.setVisible(false));
         } else {
-            currentNode.action = () -> setCurrentNode(currentNode.parent);
+            currentNode.button.bindAction(() -> setCurrentNode(currentNode.parent));
         }
         for (final MenuNode child : currentNode.childNodes) {
             if (child.childNodes.size() > 0) {
@@ -90,123 +81,35 @@ public class RadialMenu extends Group {
         }
     }
 
-    private List<MenuNode> createChildren(final MenuNode parent, final List<CreatorNode> creatorNodes) {
+    private List<MenuNode> createChildren(final MenuNode parent, final List<MenuNodeDataSource> creatorNodes) {
         List<MenuNode> menuNodes = new ArrayList<>();
-        for (final CreatorNode node : creatorNodes) {
-            final MenuNode menuNode = new MenuNode(
-                    node.texture == null ?
-                            new Image(closeTex)
-                            : new Image(node.texture), node.name,
-                    node.w, node.h
-            );
+        for (final MenuNodeDataSource node : creatorNodes) {
+            final MenuNode menuNode = new MenuNode(node.getCurrent());
             menuNode.parent = parent;
-            if (node.action != null) {
-                final Runnable r = node.action;
+            if (node.getChilds().size() == 0) {
+                final Runnable r = node.getCurrent().getClickAction();
                 final RadialMenu menu = this;
-                menuNode.action = () -> {
+                menuNode.button.bindAction(() -> {
                     r.run();
                     menu.setVisible(false);
-                };
+                });
             } else {
-                menuNode.setChildren(createChildren(menuNode, node.childNodes));
+                menuNode.setChildren(createChildren(menuNode, node.getChilds()));
             }
             menuNodes.add(menuNode);
-            //parent.addActor(menuNode);
         }
         return menuNodes;
-    }
-
-    @Override
-    public Actor hit(float x, float y, boolean touchable) {
-        if (!isVisible() || currentNode == null) {
-            return null;
-        }
-        Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-        v2 = getStage().screenToStageCoordinates(v2);
-        return currentNode.hit(v2.x, v2.y, touchable);
-    }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        if (!isVisible() || currentNode == null) {
-            return;
-        }
-        currentNode.draw(batch, parentAlpha);
-    }
-
-
-    public static class CreatorNode {
-        public Texture texture;
-        public String name;
-        public List<CreatorNode> childNodes;
-        public Runnable action;
-        public float w;
-        public float h;
     }
 
     public class MenuNode extends Group {
         public MenuNode parent = null;
         public Runnable action = null;
         private List<MenuNode> childNodes = new ArrayList<>();
-        private boolean drawChildren = false;
-        private Image image;
-        private Label text = null;
+        private ActionValueContainer button;
 
-        public MenuNode(Image image, String text) {
-            this(image, text, image.getWidth(), image.getHeight());
-        }
-
-        public MenuNode(Image image, String text, float w, float h) {
-//            addActor(image);
-            if (text != null && text.length() > 0) {
-                this.text = new Label(text, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-            }
-            this.image = image;
-            if (w != 0) {
-                image.setWidth(w);
-            }
-            if (h != 0) {
-                image.setHeight(h);
-            }
-            setHeight(image.getHeight());
-            setWidth(image.getWidth());
-
-            addListener(new InputListener() {
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    if (action == null) {
-                        LogMaster.log(1, "action == null");
-                    } else {
-
-                        action.run();
-                    }
-                    event.stop();
-                    return true;
-                }
-
-                @Override
-                public boolean mouseMoved(InputEvent event, float x, float y) {
-                    return true;
-                }
-            });
-        }
-
-        @Override
-        public void setX(float x) {
-            super.setX(x);
-            image.setX(x);
-            if (text != null) {
-                text.setX(x);
-            }
-        }
-
-        @Override
-        public void setY(float y) {
-            super.setY(y);
-            image.setY(y);
-            if (text != null) {
-                text.setY(y);
-            }
+        public MenuNode(ActionValueContainer button) {
+            this.button = button;
+            addActor(button);
         }
 
         public void setChildren(List<MenuNode> childs) {
@@ -214,37 +117,33 @@ public class RadialMenu extends Group {
             for (MenuNode child : childs) {
                 addActor(child);
             }
+
+            positionChanged();
         }
 
         @Override
-        public void draw(Batch batch, float parentAlpha) {
-            image.draw(batch, parentAlpha);
-            if (text != null) {
-                text.draw(batch, parentAlpha);
-            }
-            if (drawChildren) {
-                for (MenuNode child : childNodes) {
-                    child.draw(batch, parentAlpha);
-                }
+        protected void positionChanged() {
+            super.positionChanged();
+
+            button.setPosition(button.getWidth() / 2, button.getHeight() / 2);
+
+            int step = 360 / childNodes.size();
+            int pos;
+            int r = (int) (getWidth() * 1.5);
+
+            for (int i = 0; i < childNodes.size(); i++) {
+                pos = i * step;
+                int y = (int) (r * Math.sin(Math.toRadians(pos + 90)));
+                int x = (int) (r * Math.cos(Math.toRadians(pos + 90)));
+                childNodes.get(i).setPosition(x + currentNode.getX(), y + currentNode.getY());
             }
         }
 
-        @Override
-        public Actor hit(float x, float y, boolean touchable) {
-            Actor a = image.hit(x - image.getX(), y - image.getY(), touchable);
-            if (a != null) {
-                a = this;
+        public void setChildVisible(boolean visible) {
+            childNodes.forEach(el -> el.setVisible(visible));
+            if (visible) {
+                positionChanged();
             }
-            if (a == null && drawChildren) {
-                for (MenuNode child : childNodes) {
-                    a = child.hit(x, y, touchable);
-                    if (a != null) {
-                        a = child;
-                        break;
-                    }
-                }
-            }
-            return a;
         }
     }
 }

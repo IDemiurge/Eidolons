@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.entity.obj.DC_Obj;
-import main.libgdx.gui.controls.radial.DebugRadialManager;
 import main.libgdx.gui.controls.radial.RadialMenu;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.LogPanel;
@@ -78,7 +77,7 @@ public class GuiStage extends Stage {
             DC_Obj dc_obj = (DC_Obj) obj.get();
             GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(null));
             if (Gdx.input.isButtonPressed(0) || Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-                radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
+                //radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
             } else {
                 radialMenu.init(createNew(dc_obj));
             }
