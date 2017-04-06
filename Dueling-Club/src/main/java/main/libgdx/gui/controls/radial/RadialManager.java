@@ -18,7 +18,9 @@ import main.game.core.game.Game;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.bf.TargetRunnable;
+import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
+import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -74,12 +76,16 @@ public class RadialManager {
                 .sequential()
                 .forEach(el -> {
                     if (el.isMove()) {
-                        moves.add(configureMoveNode(target, el));
+                        final RadialValueContainer valueContainer = configureMoveNode(target, el);
+                        addSimpleTooltip(valueContainer, el.getName());
+                        moves.add(valueContainer);
                     } else if (el.isTurn()) {
-                        turns.add(new RadialValueContainer(
+                        final RadialValueContainer valueContainer = new RadialValueContainer(
                                 new TextureRegion(getTextureForActive(el, target)),
                                 el::invokeClicked
-                        ));
+                        );
+                        addSimpleTooltip(valueContainer, el.getName());
+                        turns.add(valueContainer);
                     } else if (el.isAttackGeneric()) {
                         attacks.addAll(configureAttackNode(target, el));
                     }
@@ -96,25 +102,33 @@ public class RadialManager {
 
         if (C_OBJ_TYPE.UNITS_CHARS.equals(target.getOBJ_TYPE_ENUM())) {
             if (target instanceof Unit) {
-                list.add(new RadialValueContainer(
+                final RadialValueContainer valueContainer = new RadialValueContainer(
                         getOrCreateR("UI/actions/examine.png"),
                         () -> GuiEventManager.trigger(
                                 GuiEventType.SHOW_UNIT_INFO_PANEL,
                                 new EventCallbackParam<>(new UnitDataSource(((Unit) target)))
                         )
-                ));
+                );
+                addSimpleTooltip(valueContainer, "examine");
+                list.add(valueContainer);
             }
         }
+        RadialValueContainer valueContainer;
+        valueContainer = attacks.get(0);
+        addSimpleTooltip(valueContainer, "main hand attacks");
+        list.add(valueContainer);
 
-        list.add(attacks.get(0));
-
-        RadialValueContainer valueContainer =
+        valueContainer =
                 new RadialValueContainer(getOrCreateR("/UI/actions/Move gold.jpg"), null);
         valueContainer.setChilds(moves);
+        addSimpleTooltip(valueContainer, "moves");
+
         list.add(valueContainer);
 
         if (attacks.size() > 1) {
-            list.add(attacks.get(1));
+            valueContainer = attacks.get(1);
+            addSimpleTooltip(valueContainer, "offhand attacks");
+            list.add(valueContainer);
         }
 
         if (!sourceUnit.getSpells().isEmpty()) {
@@ -128,6 +142,7 @@ public class RadialManager {
                     });
 
             valueContainer.setChilds(spellNodes);
+            addSimpleTooltip(valueContainer, "spells");
 
             list.add(valueContainer);
         }
@@ -138,10 +153,16 @@ public class RadialManager {
         );
 
         valueContainer.setChilds(turns);
-
+        addSimpleTooltip(valueContainer, "turns");
         list.add(valueContainer);
 
         return list;
+    }
+
+    public static void addSimpleTooltip(RadialValueContainer el, String name) {
+        ValueTooltip tooltip = new ValueTooltip();
+        tooltip.setUserObject(Arrays.asList(new ValueContainer(name, "")));
+        el.addListener(tooltip.getController());
     }
 
     private static Filter<Obj> getFilter(DC_ActiveObj active) {
@@ -181,12 +202,17 @@ public class RadialManager {
 
         for (DC_ActiveObj dc_activeObj : dcActiveObj.getSubActions()) {
             if (dcActiveObj.getRef().getSourceObj() == target) {
-                list.add(configureSelectiveTargetedNode(dc_activeObj));
+                final RadialValueContainer valueContainer =
+                        configureSelectiveTargetedNode(dc_activeObj);
+                addSimpleTooltip(valueContainer, dc_activeObj.getName());
+                list.add(valueContainer);
             } else if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
-                list.add(new RadialValueContainer(
+                final RadialValueContainer valueContainer = new RadialValueContainer(
                         getOrCreateR(dc_activeObj.getImagePath()),
                         () -> dc_activeObj.activateOn(target)
-                ));
+                );
+                addSimpleTooltip(valueContainer, dc_activeObj.getName());
+                list.add(valueContainer);
             }
         }
 
@@ -194,21 +220,24 @@ public class RadialManager {
         if (activeWeapon != null && activeWeapon.isRanged()) {
             if (dcActiveObj.getRef().getObj(Ref.KEYS.AMMO) == null) {
                 for (DC_QuickItemObj ammo : dcActiveObj.getOwnerObj().getQuickItems()) {
-                    list.add(new RadialValueContainer(
+                    final RadialValueContainer valueContainer = new RadialValueContainer(
                             getOrCreateR(ammo.getImagePath()),
                             ammo::invokeClicked
-                    ));
+                    );
+                    addSimpleTooltip(valueContainer, ammo.getName());
+                    list.add(valueContainer);
                 }
             }
         }
 
-        RadialValueContainer source =
+        RadialValueContainer valueContainer =
                 new RadialValueContainer(
                         new TextureRegion(getTextureForActive(dcActiveObj, target)), null
                 );
-        source.setChilds(list);
+        addSimpleTooltip(valueContainer, dcActiveObj.getName());
+        valueContainer.setChilds(list);
 
-        result.add(source);
+        result.add(valueContainer);
 
         return result;
     }
@@ -235,6 +264,8 @@ public class RadialManager {
                 );
             }
         }
+        addSimpleTooltip(result, dcActiveObj.getName());
+
         return result;
     }
 }
