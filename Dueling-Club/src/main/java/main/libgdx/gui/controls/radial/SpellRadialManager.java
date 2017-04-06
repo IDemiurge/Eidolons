@@ -6,12 +6,12 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.libgdx.gui.controls.radial.RadialMenu.CreatorNode;
-import main.libgdx.texture.TextureCache;
-import main.system.auxiliary.StringMaster;
+import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 /**
  * Created by JustMe on 12/29/2016.
@@ -71,37 +71,41 @@ public class SpellRadialManager {
         return false; //TODO
     }
 
-    private static MenuNodeDataSource createNodeBranch(RADIAL_ITEM object,
-                                                       Unit source, DC_Obj target) {
-        CreatorNode node = new RadialMenu.CreatorNode();
-        node.name = StringMaster.getWellFormattedString(object.getContents().toString());
-
+    private static MenuNodeDataSource createNodeBranch(RADIAL_ITEM object, Unit source, DC_Obj target) {
+        MenuNodeDataSource dataSource;
         if (object instanceof EntityNode) {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
+            dataSource = () ->
+                    new ActionValueContainer(
+                            RadialManager.getTextureRForActive(action, target),
+                            () -> {
+                                if (checkForceTargeting(source, target, action)) {
+                                    action.activate();
+                                } else {
+                                    action.activateOn(target);
+                                }
+                            }
+                    );
+        } else {
+            dataSource = new MenuNodeDataSource() {
+                @Override
+                public List<MenuNodeDataSource> getChilds() {
+                    return object.getItems(source).stream()
+                            .map(el -> createNodeBranch(el, source, target))
+                            .collect(Collectors.toList());
+                }
 
-            node.texture =
-                    RadialManager.getTextureForActive(action, target);
+                @Override
+                public ActionValueContainer getCurrent() {
+                    return new ActionValueContainer(
+                            getOrCreateR(object.getTexturePath()),
+                            null
+                    );
 
-            node.name = action.getName();
-
-            node.action = () -> {
-                if (checkForceTargeting(source, target, action)) {
-                    action.activate();
-                } else {
-                    action.activateOn(target);
                 }
             };
-        } else {
-            node.childNodes = new LinkedList<>();
-
-            node.texture = TextureCache.getOrCreate(object.getTexturePath());
-
-            node.w = object.getWidth();
-            node.h = object.getHeight();
-            object.getItems(source).forEach(child ->
-                    node.childNodes.add(createNodeBranch(child, source, target)));
         }
-        return node;
+        return dataSource;
     }
 
     public enum SPELL_ASPECT {
