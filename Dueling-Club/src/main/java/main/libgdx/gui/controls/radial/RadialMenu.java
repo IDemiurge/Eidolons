@@ -5,53 +5,54 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RadialMenu extends Group {
-    private Texture closeTex;
-    private MenuNode currentNode;
-    private Image closeImage;
+    private RadialValueContainer currentNode;
 
-    private ActionValueContainer closeButton;
+    private RadialValueContainer closeButton;
 
     public RadialMenu() {
         final Texture t = new Texture(RadialMenu.class.getResource("/data/marble_green.png").getPath());
-        closeButton = new ActionValueContainer(new TextureRegion(t), () -> RadialMenu.this.setVisible(false));
+        closeButton = new RadialValueContainer(new TextureRegion(t), () -> RadialMenu.this.setVisible(false));
+        setSize(64, 64);
     }
 
-    public void init(List<MenuNodeDataSource> nodes) {
+    public void init(List<RadialValueContainer> nodes) {
 
-        currentNode = new MenuNode(closeButton);
+        currentNode = closeButton;
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
-        setBounds(
-                v2.x - currentNode.getWidth() / 2,
-                v2.y - currentNode.getHeight() / 2,
-                currentNode.getWidth(),
-                currentNode.getHeight()
-        );
+        setPosition(v2.x, v2.y);
 
-        addActor(currentNode);
-
-        currentNode.childNodes = createChildren(currentNode, nodes);
-
-        updateCallbacks();
-        //updatePosition();
-        currentNode.setChildVisible(true);
-        setVisible(true);
+        closeButton.setChilds(nodes);
+        setCurrentNode(closeButton);
     }
 
-    private void setCurrentNode(MenuNode node) {
-        removeActor(currentNode);
-        currentNode.setChildVisible(false);
+    private void setCurrentNode(RadialValueContainer node) {
+        clearChildren();
+        addActor(node);
         currentNode = node;
-//        updatePosition();
         updateCallbacks();
+        currentNode.getChilds().forEach(this::addActor);
         currentNode.setChildVisible(true);
+        updatePosition();
+        setVisible(true);
+
+    }
+
+    public void updatePosition() {
+        int step = 360 / currentNode.getChilds().size();
+        int pos;
+        int r = (int) (getWidth() * 1.5);
+
+        for (int i = 0; i < currentNode.getChilds().size(); i++) {
+            pos = i * step;
+            int y = (int) (r * Math.sin(Math.toRadians(pos + 90)));
+            int x = (int) (r * Math.cos(Math.toRadians(pos + 90)));
+            currentNode.getChilds().get(i).setPosition(x /*+ getX()*/, y /*+ getY()*/);
+        }
     }
 
 /*    private void updatePosition() {
@@ -69,19 +70,18 @@ public class RadialMenu extends Group {
     }*/
 
     private void updateCallbacks() {
-        if (currentNode.parent == null) {
-            currentNode.button.bindAction(() -> RadialMenu.this.setVisible(false));
-        } else {
-            currentNode.button.bindAction(() -> setCurrentNode(currentNode.parent));
+        if (currentNode.getParent() != null) {
+            //currentNode.button.bindAction(() -> RadialMenu.this.setVisible(false));
+            currentNode.bindAction(() -> setCurrentNode(currentNode.getParent()));
         }
-        for (final MenuNode child : currentNode.childNodes) {
-            if (child.childNodes.size() > 0) {
-                child.action = () -> setCurrentNode(child);
+        for (final RadialValueContainer child : currentNode.getChilds()) {
+            if (child.getChilds().size() > 0) {
+                child.bindAction(() -> setCurrentNode(child));
             }
         }
     }
 
-    private List<MenuNode> createChildren(final MenuNode parent, final List<MenuNodeDataSource> creatorNodes) {
+/*    private List<MenuNode> createChildren(final MenuNode parent, final List<MenuNodeDataSource> creatorNodes) {
         List<MenuNode> menuNodes = new ArrayList<>();
         for (final MenuNodeDataSource node : creatorNodes) {
             final MenuNode menuNode = new MenuNode(node.getCurrent());
@@ -109,6 +109,7 @@ public class RadialMenu extends Group {
 
         public MenuNode(ActionValueContainer button) {
             this.button = button;
+            button.setPosition(-(button.getPrefWidth() / 2), -(button.getPrefHeight() / 2));
             addActor(button);
         }
 
@@ -118,15 +119,11 @@ public class RadialMenu extends Group {
                 addActor(child);
             }
 
-            positionChanged();
+            updatePosition();
+            setChildVisible(true);
         }
 
-        @Override
-        protected void positionChanged() {
-            super.positionChanged();
-
-            button.setPosition(button.getWidth() / 2, button.getHeight() / 2);
-
+        protected void updatePosition() {
             int step = 360 / childNodes.size();
             int pos;
             int r = (int) (getWidth() * 1.5);
@@ -140,10 +137,10 @@ public class RadialMenu extends Group {
         }
 
         public void setChildVisible(boolean visible) {
-            childNodes.forEach(el -> el.setVisible(visible));
-            if (visible) {
-                positionChanged();
-            }
+            childNodes.forEach(el -> el.button.setVisible(visible));
+*//*            if (visible) {
+                updatePosition();
+            }*//*
         }
-    }
+    }*/
 }

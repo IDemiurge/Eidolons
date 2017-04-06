@@ -6,7 +6,6 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,8 +18,8 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 public class SpellRadialManager {
     private static int MAX_SPELLS_DISPLAYED = 16;
 
-    public static List<MenuNodeDataSource> getSpellNodes(Unit source,
-                                                         DC_Obj target) {
+    public static List<RadialValueContainer> getSpellNodes(Unit source,
+                                                           DC_Obj target) {
         List<DC_SpellObj> spells = source.getSpells().stream()
                 .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
                 .collect(Collectors.toList());
@@ -36,7 +35,7 @@ public class SpellRadialManager {
 
     }
 
-    private static List<MenuNodeDataSource> constructNestedSpellNodes(List<DC_SpellObj> spells, Unit source, DC_Obj target) {
+    private static List<RadialValueContainer> constructNestedSpellNodes(List<DC_SpellObj> spells, Unit source, DC_Obj target) {
 
         Set<SPELL_GROUP> spell_groups = new HashSet<>();
         List<SPELL_ASPECT> aspects = new LinkedList<>();
@@ -71,39 +70,29 @@ public class SpellRadialManager {
         return false; //TODO
     }
 
-    private static MenuNodeDataSource createNodeBranch(RADIAL_ITEM object, Unit source, DC_Obj target) {
-        MenuNodeDataSource dataSource;
+    private static RadialValueContainer createNodeBranch(RADIAL_ITEM object, Unit source, DC_Obj target) {
+        RadialValueContainer dataSource;
         if (object instanceof EntityNode) {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
-            dataSource = () ->
-                    new ActionValueContainer(
-                            RadialManager.getTextureRForActive(action, target),
-                            () -> {
-                                if (checkForceTargeting(source, target, action)) {
-                                    action.activate();
-                                } else {
-                                    action.activateOn(target);
-                                }
-                            }
-                    );
+            dataSource = new RadialValueContainer(
+                    RadialManager.getTextureRForActive(action, target),
+                    () -> {
+                        if (checkForceTargeting(source, target, action)) {
+                            action.activate();
+                        } else {
+                            action.activateOn(target);
+                        }
+                    }
+            );
         } else {
-            dataSource = new MenuNodeDataSource() {
-                @Override
-                public List<MenuNodeDataSource> getChilds() {
-                    return object.getItems(source).stream()
-                            .map(el -> createNodeBranch(el, source, target))
-                            .collect(Collectors.toList());
-                }
+            dataSource = new RadialValueContainer(
+                    getOrCreateR(object.getTexturePath()),
+                    null
+            );
 
-                @Override
-                public ActionValueContainer getCurrent() {
-                    return new ActionValueContainer(
-                            getOrCreateR(object.getTexturePath()),
-                            null
-                    );
-
-                }
-            };
+            dataSource.setChilds(object.getItems(source).stream()
+                    .map(el -> createNodeBranch(el, source, target))
+                    .collect(Collectors.toList()));
         }
         return dataSource;
     }

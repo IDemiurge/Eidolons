@@ -1,28 +1,14 @@
 package main.libgdx.gui.controls.radial;
 
-import main.entity.obj.DC_Obj;
-import main.game.core.game.DC_Game;
-import main.game.core.game.Game;
-import main.swing.generic.components.editors.lists.ListChooser;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
-import main.test.debug.DebugMaster;
-import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
-import main.test.debug.DebugMaster.HIDDEN_DEBUG_FUNCTIONS;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * Created by JustMe on 12/28/2016.
  */
 public class DebugRadialManager {
-
+/*
     static {
         DEBUG_CONTROL.FUNC_OTHER.objects = getUnlistedFunctions().toArray();
     }
+
 
     public static List<RadialMenu.CreatorNode> getDebugNodes(DC_Obj obj) {
         List<RadialMenu.CreatorNode> list = new LinkedList<>();
@@ -210,6 +196,7 @@ public class DebugRadialManager {
             return objects;
         }
     }
+*/
 
 
 }
