@@ -28,7 +28,8 @@ public class RadialMenu extends Group {
         this.closeTex = t;
     }
 
-    public void init(List<CreatorNode> nodes) {
+    public void init(List<MenuNodeDataSource> nodes) {
+        
         currentNode = new MenuNode(closeImage, "Close");
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
