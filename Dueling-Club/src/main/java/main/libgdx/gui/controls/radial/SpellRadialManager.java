@@ -10,6 +10,7 @@ import main.entity.obj.unit.Unit;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static main.libgdx.gui.controls.radial.RadialManager.addSimpleTooltip;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 /**
@@ -25,7 +26,11 @@ public class SpellRadialManager {
                 .collect(Collectors.toList());
         if (spells.size() <= MAX_SPELLS_DISPLAYED) {
             return spells.stream()
-                    .map(el -> createNodeBranch(new EntityNode(el), source, target))
+                    .map(el -> {
+                        final RadialValueContainer valueContainer = createNodeBranch(new EntityNode(el), source, target);
+                        addSimpleTooltip(valueContainer, el.getName());
+                        return valueContainer;
+                    })
                     .collect(Collectors.toList());
 
         }
@@ -52,7 +57,6 @@ public class SpellRadialManager {
                     }
                 }
             }
-
         }
 
         return spell_groups.size() > 8 ?
@@ -71,10 +75,10 @@ public class SpellRadialManager {
     }
 
     private static RadialValueContainer createNodeBranch(RADIAL_ITEM object, Unit source, DC_Obj target) {
-        RadialValueContainer dataSource;
+        RadialValueContainer valueContainer;
         if (object instanceof EntityNode) {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
-            dataSource = new RadialValueContainer(
+            valueContainer = new RadialValueContainer(
                     RadialManager.getTextureRForActive(action, target),
                     () -> {
                         if (checkForceTargeting(source, target, action)) {
@@ -84,17 +88,20 @@ public class SpellRadialManager {
                         }
                     }
             );
+            addSimpleTooltip(valueContainer, action.getName());
         } else {
-            dataSource = new RadialValueContainer(
+            valueContainer = new RadialValueContainer(
                     getOrCreateR(object.getTexturePath()),
                     null
             );
 
-            dataSource.setChilds(object.getItems(source).stream()
+            valueContainer.setChilds(object.getItems(source).stream()
                     .map(el -> createNodeBranch(el, source, target))
                     .collect(Collectors.toList()));
+
+            addSimpleTooltip(valueContainer, "unknown name");
         }
-        return dataSource;
+        return valueContainer;
     }
 
     public enum SPELL_ASPECT {

@@ -9,7 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.tooltips.ValueTooltip;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class RadialMenu extends Group {
@@ -23,11 +26,14 @@ public class RadialMenu extends Group {
         closeButton = new RadialValueContainer(new TextureRegion(t), () -> RadialMenu.this.setVisible(false));
         closeButton.setX(-20);
 
+        ValueTooltip tooltip = new ValueTooltip();
+        tooltip.setUserObject(Arrays.asList(new ValueContainer("Close", "")));
+        closeButton.addListener(tooltip.getController());
+
         addListener(new InputListener() {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 if (event.getTarget() == RadialMenu.this) {
-                    System.out.println("inside");
                     return true;
                 } else {
                     return super.mouseMoved(event, x, y);
@@ -62,7 +68,6 @@ public class RadialMenu extends Group {
         currentNode.setChildVisible(true);
         updatePosition();
         setVisible(true);
-        System.out.println(getX() + " " + getY() + " | " + currentNode.getX() + " " + currentNode.getY());
     }
 
     public void updatePosition() {
@@ -95,9 +100,8 @@ public class RadialMenu extends Group {
     public Actor hit(float x, float y, boolean touchable) {
         Actor actor = super.hit(x, y, touchable);
         if (actor == null && currentNode != null) {
-            Vector2 v2 = new Vector2(x, y);
-            //v2 = parentToLocalCoordinates(v2);
             Vector2 v = new Vector2(currentNode.getX(), currentNode.getY());
+            Vector2 v2 = new Vector2(x, y);
             v = currentNode.localToParentCoordinates(v);
             final int cradius = radius + 32;
             Rectangle rect = new Rectangle(
