@@ -7,6 +7,8 @@ import main.libgdx.gui.panels.dc.ValueContainer;
 
 public class ActionValueContainer extends ValueContainer {
 
+    private Runnable clickAction;
+
     public ActionValueContainer(TextureRegion texture, String name, String value, Runnable action) {
         super(texture, name, value);
         bindAction(action);
@@ -27,13 +29,21 @@ public class ActionValueContainer extends ValueContainer {
         bindAction(action);
     }
 
-    private void bindAction(Runnable action) {
+    public void bindAction(Runnable action) {
+        if (action != null) {
+            clickAction = action::run;
+        }
+    }
+
+    @Override
+    protected void init(TextureRegion texture, String name, String value) {
+        super.init(texture, name, value);
+        clickAction = () -> {
+        };
         addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (action != null) {
-                    action.run();
-                }
+                clickAction.run();
             }
         });
     }

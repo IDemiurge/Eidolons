@@ -187,5 +187,11 @@ public class ValueContainer extends TablePanel {
             imageContainer.size(w, h);
         }
     }
+
+    public void setImageAlign(int imageAlign) {
+        if (imageContainer.getActor() != null) {
+            imageContainer.getActor().setAlign(imageAlign);
+        }
+    }
 }
 

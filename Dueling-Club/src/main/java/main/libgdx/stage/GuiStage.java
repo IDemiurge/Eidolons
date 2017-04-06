@@ -46,9 +46,9 @@ public class GuiStage extends Stage {
         addActor(infoPanel);
         infoPanel.setPosition(0, 0);
 
+        addActor(radialMenu = new RadialMenu());
         addActor(toolTipManager = new ToolTipManager());
 
-        addActor(radialMenu = new RadialMenu());
 
         log = new LogPanel();
         addActor(log);

@@ -6,12 +6,12 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.libgdx.gui.controls.radial.RadialMenu.CreatorNode;
-import main.libgdx.texture.TextureCache;
-import main.system.auxiliary.StringMaster;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static main.libgdx.gui.controls.radial.RadialManager.addSimpleTooltip;
+import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 /**
  * Created by JustMe on 12/29/2016.
@@ -19,14 +19,20 @@ import java.util.stream.Collectors;
 public class SpellRadialManager {
     private static int MAX_SPELLS_DISPLAYED = 16;
 
-    public static List<RadialMenu.CreatorNode> getSpellNodes(Unit source,
-                                                             DC_Obj target) {
-        List<DC_SpellObj> spells = source.getSpells()
-                .stream()
+    public static List<RadialValueContainer> getSpellNodes(Unit source,
+                                                           DC_Obj target) {
+        List<DC_SpellObj> spells = source.getSpells().stream()
                 .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
                 .collect(Collectors.toList());
         if (spells.size() <= MAX_SPELLS_DISPLAYED) {
-            return constructPlainSpellNodes(spells, source, target);
+            return spells.stream()
+                    .map(el -> {
+                        final RadialValueContainer valueContainer = createNodeBranch(new EntityNode(el), source, target);
+                        addSimpleTooltip(valueContainer, el.getName());
+                        return valueContainer;
+                    })
+                    .collect(Collectors.toList());
+
         }
 
 
@@ -34,8 +40,7 @@ public class SpellRadialManager {
 
     }
 
-    private static List<CreatorNode> constructNestedSpellNodes(List<DC_SpellObj> spells, Unit source, DC_Obj target) {
-        List<RadialMenu.CreatorNode> nodes = new LinkedList<>();
+    private static List<RadialValueContainer> constructNestedSpellNodes(List<DC_SpellObj> spells, Unit source, DC_Obj target) {
 
         Set<SPELL_GROUP> spell_groups = new HashSet<>();
         List<SPELL_ASPECT> aspects = new LinkedList<>();
@@ -52,28 +57,15 @@ public class SpellRadialManager {
                     }
                 }
             }
-
-        }
-        if (spell_groups.size() > 8) {
-            for (SPELL_ASPECT g : aspects) {
-                nodes.add(createNodeBranch(new RadialSpellAspect(g), source, target));
-            }
-        } else {
-            for (SPELL_GROUP g : spell_groups) {
-                nodes.add(createNodeBranch(new RadialSpellGroup(g), source, target));
-            }
         }
 
-        return nodes;
-    }
-
-    private static List<CreatorNode> constructPlainSpellNodes(List<DC_SpellObj> spells, Unit source, DC_Obj target) {
-        List<RadialMenu.CreatorNode> nodes = new LinkedList<>();
-        for (DC_SpellObj g : spells) {
-            nodes.add(createNodeBranch(new EntityNode(g), source, target));
-        }
-        return nodes;
-
+        return spell_groups.size() > 8 ?
+                aspects.stream()
+                        .map(el -> createNodeBranch(new RadialSpellAspect(el), source, target))
+                        .collect(Collectors.toList()) :
+                spell_groups.stream()
+                        .map(el -> createNodeBranch(new RadialSpellGroup(el), source, target))
+                        .collect(Collectors.toList());
     }
 
     private static boolean checkForceTargeting(Unit source,
@@ -82,54 +74,34 @@ public class SpellRadialManager {
         return false; //TODO
     }
 
-    private static CreatorNode createNodeBranch(RADIAL_ITEM object,
-                                                Unit source, DC_Obj target) {
-        CreatorNode node = new RadialMenu.CreatorNode();
-        node.name = StringMaster.getWellFormattedString(object.getContents().toString());
+    private static RadialValueContainer createNodeBranch(RADIAL_ITEM object, Unit source, DC_Obj target) {
+        RadialValueContainer valueContainer;
         if (object instanceof EntityNode) {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
-
-            node.texture =
-                    RadialManager.getTextureForActive(action, target);
-            node.name = action.getName();
-            if (node.name.equalsIgnoreCase("Summon Vampire Bat")) {
-                int i = 1;
-            }
-            node.action = new Runnable() {
-                @Override
-                public void run() {
-                    if (checkForceTargeting(source, target, action)) {
-                        action.activate();
-                    } else {
-                        action.activateOn(target);
-
+            valueContainer = new RadialValueContainer(
+                    RadialManager.getTextureRForActive(action, target),
+                    () -> {
+                        if (checkForceTargeting(source, target, action)) {
+                            action.activate();
+                        } else {
+                            action.activateOn(target);
+                        }
                     }
-                }
-            };
+            );
+            addSimpleTooltip(valueContainer, action.getName());
         } else {
-            node.childNodes = new LinkedList<>();
+            valueContainer = new RadialValueContainer(
+                    getOrCreateR(object.getTexturePath()),
+                    null
+            );
 
-            node.texture = TextureCache.getOrCreate(object.getTexturePath());
+            valueContainer.setChilds(object.getItems(source).stream()
+                    .map(el -> createNodeBranch(el, source, target))
+                    .collect(Collectors.toList()));
 
-            node.w = object.getWidth();
-            node.h = object.getHeight();
-            object.getItems(source).forEach(child -> {
-                node.childNodes.add(createNodeBranch(
-                        child, source, target));
-            });
+            addSimpleTooltip(valueContainer, "unknown name");
         }
-        return node;
-    }
-/*
-6 aspects?
-spell 'types'?
-
- */
-
-    public enum RADIAL_ITEM_SPELL {
-        RECOMMENDED,
-        LAST,
-
+        return valueContainer;
     }
 
     public enum SPELL_ASPECT {
@@ -147,12 +119,6 @@ spell 'types'?
         SPELL_ASPECT(SPELL_GROUP... groups) {
             this.groups = groups;
         }
-    }
-
-    public enum SPELL_RADIAL_MODE {
-        ASPECT,
-        ALL,
-
     }
 
 }
