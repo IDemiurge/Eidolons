@@ -3,8 +3,12 @@ package main.libgdx.gui.controls.radial;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 import java.util.List;
 
@@ -12,13 +16,24 @@ public class RadialMenu extends Group {
     private RadialValueContainer currentNode;
 
     private RadialValueContainer closeButton;
+    private int radius;
 
     public RadialMenu() {
         final Texture t = new Texture(RadialMenu.class.getResource("/data/marble_green.png").getPath());
         closeButton = new RadialValueContainer(new TextureRegion(t), () -> RadialMenu.this.setVisible(false));
         closeButton.setX(-20);
-        setSize(128, 128);
-        debug();
+
+        addListener(new InputListener() {
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                if (event.getTarget() == RadialMenu.this) {
+                    System.out.println("inside");
+                    return true;
+                } else {
+                    return super.mouseMoved(event, x, y);
+                }
+            }
+        });
     }
 
     public void init(List<RadialValueContainer> nodes) {
@@ -53,13 +68,14 @@ public class RadialMenu extends Group {
     public void updatePosition() {
         int step = 360 / currentNode.getChilds().size();
         int pos;
+
         final double coefficient = currentNode.getChilds().size() > 6 ? 2 : 1.5;
-        int r = (int) (64 * coefficient);
+        radius = (int) (72 * coefficient);
 
         for (int i = 0; i < currentNode.getChilds().size(); i++) {
             pos = i * step;
-            int y = (int) (r * Math.sin(Math.toRadians(pos + 90)));
-            int x = (int) (r * Math.cos(Math.toRadians(pos + 90)));
+            int y = (int) (radius * Math.sin(Math.toRadians(pos + 90)));
+            int x = (int) (radius * Math.cos(Math.toRadians(pos + 90)));
             currentNode.getChilds().get(i).setPosition(x + currentNode.getX(), y + currentNode.getY());
         }
     }
@@ -73,5 +89,24 @@ public class RadialMenu extends Group {
                 child.bindAction(() -> setCurrentNode(child));
             }
         }
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        Actor actor = super.hit(x, y, touchable);
+        if (actor == null && currentNode != null) {
+            Vector2 v2 = new Vector2(x, y);
+            //v2 = parentToLocalCoordinates(v2);
+            Vector2 v = new Vector2(currentNode.getX(), currentNode.getY());
+            v = currentNode.localToParentCoordinates(v);
+            final int cradius = radius + 32;
+            Rectangle rect = new Rectangle(
+                    v.x - cradius, v.y - cradius,
+                    cradius * 2, cradius * 2);
+            if (rect.contains(v2)) {
+                actor = this;
+            }
+        }
+        return actor;
     }
 }
