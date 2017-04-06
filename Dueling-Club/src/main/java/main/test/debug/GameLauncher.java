@@ -31,6 +31,7 @@ import main.system.launch.CoreEngine;
 import main.system.test.TestMasterContent;
 import main.test.Preset;
 import main.test.PresetLauncher;
+import main.test.PresetLauncher.LAUNCH;
 import main.test.PresetMaster;
 import main.test.frontend.FAST_DC;
 
@@ -205,32 +206,34 @@ public class GameLauncher {
         game.setEnemyParty(ENEMY_PARTY);
 
 
-        if (PresetLauncher.getLaunch() != null) {
+        LAUNCH launch = PresetLauncher.getLaunch();
+        if (launch != null) {
 //            if (PresetLauncher.getLaunch().preset != null) {
 //                Preset p = PresetMaster.loadPreset(PresetLauncher.getLaunch().preset);
 //         PresetMaster.setPreset(p);
 //            } TODO move here from PResetLauncher
-            ENEMY_CODE = PresetLauncher.getLaunch().ENEMY_CODE ;
-            PARTY_CODE = PresetLauncher.getLaunch().PARTY_CODE ;
+            ENEMY_CODE = launch.ENEMY_CODE ;
+            PARTY_CODE = launch.PARTY_CODE ;
 
             if (!VISION_HACK) {
-                VISION_HACK = PresetLauncher.getLaunch().visionHacked;
+                VISION_HACK = launch.visionHacked;
             }
-            DUMMY_MODE = PresetLauncher.getLaunch().dummy;
-            DUMMY_PP = PresetLauncher.getLaunch().dummy_pp;
-            DEBUG_MODE = PresetLauncher.getLaunch().debugMode;
-            FAST_MODE = PresetLauncher.getLaunch().fast;
-            if (PresetLauncher.getLaunch().ruleScope!=null ) {
-                RuleMaster.setScope(PresetLauncher.getLaunch().ruleScope);
+            DUMMY_MODE = launch.dummy;
+            DUMMY_PP = launch.dummy_pp;
+            DEBUG_MODE = launch.debugMode;
+            FAST_MODE = launch.fast;
+            if (launch.ruleScope!=null ) {
+                RuleMaster.setScope(launch.ruleScope);
             }
-            ItemGenerator.setGenerationOn(!PresetLauncher.getLaunch().itemGenerationOff);
-            TestMasterContent.setForceFree(PresetLauncher.getLaunch().freeActions);
+            ItemGenerator.setGenerationOn(!launch.itemGenerationOff);
+            TestMasterContent.setForceFree(launch.freeActions);
 
-            TestMasterContent.setImmortal(PresetLauncher.getLaunch().immortal);
-            CoreEngine.setGraphicTestMode(PresetLauncher.getLaunch().graphicsTest);
-UnitTrainingMaster.setRandom(!PresetLauncher.getLaunch().deterministicUnitTraining);
-
-            DC_KeyManager.DEFAULT_CONTROLLER = PresetLauncher.getLaunch().controller;
+            TestMasterContent.setImmortal(launch.immortal);
+            CoreEngine.setGraphicTestMode(launch.graphicsTest);
+UnitTrainingMaster.setRandom(!launch.deterministicUnitTraining);
+if (launch.gameMode != null )
+ game.setGameMode(launch.gameMode);
+            DC_KeyManager.DEFAULT_CONTROLLER = launch.controller;
         }
         if (host_client != null) {
             initMultiplayerFlags();

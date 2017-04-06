@@ -20,7 +20,6 @@ import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.images.ImageManager.HIGHLIGHT;
 import main.system.launch.CoreEngine;
 
 import java.util.LinkedList;
@@ -31,7 +30,6 @@ import java.util.List;
  * Placed in a map in GameState upon creation
  */
 public class Obj extends Entity {
-    private HIGHLIGHT highlight;
     private DequeImpl<BuffObj> buffs;
     private List<String> passiveAbils;
     private boolean infoSelected;
@@ -360,13 +358,7 @@ public class Obj extends Entity {
         setProperty(G_PROPS.ID, id + "");
     }
 
-    public HIGHLIGHT getHighlight() {
-        return highlight;
-    }
 
-    public void setHighlight(HIGHLIGHT highlight) {
-        this.highlight = highlight;
-    }
 
     public boolean isInfoSelected() {
         return infoSelected;

@@ -7,6 +7,7 @@ import main.content.PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.dungeon.DungeonMaster;
 import main.libgdx.anims.controls.EmitterController;
@@ -336,6 +337,7 @@ public class PresetLauncher {
         Light("light preview.xml", RULE_SCOPE.BASIC, true),
         JUnit(),
         Profiling(true),
+        Standoff("Standoff.xml", RULE_SCOPE.FULL, null),
         Usability("Usability.xml", RULE_SCOPE.FULL, null)
         ;
         public Boolean immortal;
@@ -359,6 +361,7 @@ public class PresetLauncher {
         public boolean graphicsOff;
         public int ENEMY_CODE;
         public int PARTY_CODE;
+        public GAME_MODES gameMode;
 
         //test launches
         LAUNCH() {
