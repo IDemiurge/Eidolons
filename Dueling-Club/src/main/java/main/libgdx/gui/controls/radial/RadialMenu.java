@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.Align;
 
 import java.util.List;
 
@@ -16,18 +17,26 @@ public class RadialMenu extends Group {
     public RadialMenu() {
         final Texture t = new Texture(RadialMenu.class.getResource("/data/marble_green.png").getPath());
         closeButton = new RadialValueContainer(new TextureRegion(t), () -> RadialMenu.this.setVisible(false));
+        closeButton.setSize(64, 64);
+        closeButton.setImageAlign(Align.bottomLeft);
         setSize(64, 64);
     }
 
     public void init(List<RadialValueContainer> nodes) {
-
         currentNode = closeButton;
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setPosition(v2.x, v2.y);
-
         closeButton.setChilds(nodes);
+
+        setParents(closeButton, null);
+
         setCurrentNode(closeButton);
+    }
+
+    private void setParents(RadialValueContainer el, RadialValueContainer parent) {
+        el.setParent(parent);
+        el.getChilds().forEach(inn -> setParents(inn, el));
     }
 
     private void setCurrentNode(RadialValueContainer node) {
@@ -43,6 +52,8 @@ public class RadialMenu extends Group {
     }
 
     public void updatePosition() {
+        currentNode.setPosition(-32, -32);
+
         int step = 360 / currentNode.getChilds().size();
         int pos;
         int r = (int) (getWidth() * 1.5);
@@ -51,27 +62,12 @@ public class RadialMenu extends Group {
             pos = i * step;
             int y = (int) (r * Math.sin(Math.toRadians(pos + 90)));
             int x = (int) (r * Math.cos(Math.toRadians(pos + 90)));
-            currentNode.getChilds().get(i).setPosition(x /*+ getX()*/, y /*+ getY()*/);
+            currentNode.getChilds().get(i).setPosition(x + currentNode.getX(), y + currentNode.getY());
         }
     }
 
-/*    private void updatePosition() {
-        int step = 360 / currentNode.childNodes.size();
-        int pos;
-        int r = (int) (currentNode.getWidth() * 1.5);
-
-        for (int i = 0; i < currentNode.childNodes.size(); i++) {
-            pos = i * step;
-            int y = (int) (r * Math.sin(Math.toRadians(pos + 90)));
-            int x = (int) (r * Math.cos(Math.toRadians(pos + 90)));
-            currentNode.childNodes.get(i).setX(x + currentNode.getX());
-            currentNode.childNodes.get(i).setY(y + currentNode.getY());
-        }
-    }*/
-
     private void updateCallbacks() {
         if (currentNode.getParent() != null) {
-            //currentNode.button.bindAction(() -> RadialMenu.this.setVisible(false));
             currentNode.bindAction(() -> setCurrentNode(currentNode.getParent()));
         }
         for (final RadialValueContainer child : currentNode.getChilds()) {
