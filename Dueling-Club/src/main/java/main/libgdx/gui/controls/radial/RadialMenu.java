@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.ValueTooltip;
+import main.libgdx.texture.TextureCache;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +23,9 @@ public class RadialMenu extends Group {
     private int radius;
 
     public RadialMenu() {
-        final Texture t = new Texture(RadialMenu.class.getResource("/data/marble_green.png").getPath());
+        final Texture t = TextureCache.getOrCreate(getEmptyNodePath());
+//        new Texture(RadialMenu.class.getResource(
+//         /data/marble_green.png).getPath());
         closeButton = new RadialValueContainer(new TextureRegion(t), () -> RadialMenu.this.setVisible(false));
         closeButton.setX(-20);
 
@@ -40,6 +43,12 @@ public class RadialMenu extends Group {
                 }
             }
         });
+    }
+
+    private String getEmptyNodePath() {
+        return "UI\\components\\2017\\radial\\empty.png";
+//        return "UI\\components\\2017\\radial\\empty dark.png";
+//        return "UI\\components\\2017\\radial\\empty dark.png";
     }
 
     public void init(List<RadialValueContainer> nodes) {
