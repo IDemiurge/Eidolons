@@ -32,17 +32,19 @@ public class ActionValueContainer extends ValueContainer {
     public void bindAction(Runnable action) {
         if (action != null) {
             clickAction = action::run;
-
-            addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    clickAction.run();
-                }
-            });
         }
     }
 
-    public Runnable getClickAction() {
-        return clickAction;
+    @Override
+    protected void init(TextureRegion texture, String name, String value) {
+        super.init(texture, name, value);
+        clickAction = () -> {
+        };
+        addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                clickAction.run();
+            }
+        });
     }
 }

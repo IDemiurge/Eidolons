@@ -39,10 +39,11 @@ public class RadialValueContainer extends ActionValueContainer {
         return parent;
     }
 
+    public void setParent(RadialValueContainer parent) {
+        this.parent = parent;
+    }
+
     public void setChildVisible(boolean visible) {
         childs.forEach(el -> el.setVisible(visible));
-/*            if (visible) {
-                updatePosition();
-            }*/
     }
 }
