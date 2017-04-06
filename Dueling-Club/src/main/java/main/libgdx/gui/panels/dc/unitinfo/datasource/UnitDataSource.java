@@ -367,7 +367,8 @@ public class UnitDataSource implements
 
             container.addListener(tooltip.getController());
         } else {
-            container = new ValueContainer(getOrCreateR("/mini/item/armor/empty.jpg"));
+            container = new ValueContainer(getOrCreateR(
+             CELL_TYPE.ARMOR.getSlotImagePath()));
         }
 
         return container;

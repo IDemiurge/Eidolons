@@ -69,6 +69,11 @@ public abstract class DC_HeroSlotItem extends DC_HeroItemObj {
     }
 
     @Override
+    protected void addDynamicValues() {
+        super.addDynamicValues();
+    }
+
+    @Override
     public void toBase() {
         getSpecialEffects().clear();
         super.toBase();

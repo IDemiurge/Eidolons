@@ -279,6 +279,8 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public void infoSelect(Obj obj) {
+        if (!CoreEngine.isSwingOn())
+            return;
         SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
         if (!(obj instanceof DC_Obj)) {
             return;
@@ -349,16 +351,16 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public Integer select(Set<Obj> selectingSet, Ref ref) {
-        if (!CoreEngine.isSwingOn()) {
             Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
                 if (ref.getActive() instanceof DC_ActiveObj) {
+                    //TODO CLICK ON ANY OTHER OBJ MUST RESULT IN SELECTION STOP!
 //                    ((DC_ActiveObj) ref.getActive()).activateOn(t);
 //                    WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, t.getId());
 t.invokeClicked();
                 }
             });
             GuiEventManager.trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
-        }
+
         for (Obj obj : new LinkedList<>(selectingSet)) {
             if (obj instanceof DC_Obj) {
                 DC_Obj unit = (DC_Obj) obj;
@@ -385,7 +387,7 @@ t.invokeClicked();
         }
 
         Integer id = selectAwait();
-        if (id == 0) {
+        if (id == null ) {
             if (ref.getTarget() != null ) {
                 return ref.getTarget();
             }

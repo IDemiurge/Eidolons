@@ -11,7 +11,6 @@ import main.game.ai.elements.actions.sequence.ActionSequence;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.target.AI_SpellMaster;
 import main.game.logic.generic.DC_ActionManager;
-import main.game.logic.generic.DC_ActionManager.STD_ACTIONS;
 import main.game.logic.generic.DC_ActionManager.STD_MODE_ACTIONS;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
@@ -109,7 +108,7 @@ public class AiUnitActionMaster {
                 }
                 break;
             case WAIT:
-                actions.add(ActionFactory.getUnitAction(unit, STD_ACTIONS.Wait.name()));
+                actions.add(ActionFactory.getUnitAction(unit,  "Wait"));
                 break;
             case PREPARE:
                 actions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.MODE));

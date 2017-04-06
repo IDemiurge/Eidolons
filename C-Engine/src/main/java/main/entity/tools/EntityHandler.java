@@ -99,6 +99,13 @@ public class EntityHandler<E extends Entity> {
         return getEntity().getParam(p);
     }
 
+    public String getValue(String param) {
+        return getEntity().getValue(param);
+    }
+    public String getValue(VALUE param) {
+        return getEntity().getValue(param);
+    }
+
     public String getParam(PARAMETER param) {
         return getEntity().getParam(param);
     }

@@ -5,6 +5,7 @@ import main.data.ability.construct.AbilityConstructor;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
@@ -21,6 +22,8 @@ public class AbilityObj extends Obj implements ActiveObj, Interruptable {
     protected boolean interrupted;
     protected Boolean cancelled;
     private boolean forcePresetTarget;
+    private Obj targetObj;
+    private GroupImpl targetGroup;
 
     public AbilityObj(AbilityType type, Ref ref, Player player, Game game) {
         super(type, player, game, ref); // entity/obj?
@@ -80,6 +83,24 @@ public class AbilityObj extends Obj implements ActiveObj, Interruptable {
         setRef(ref);
         return activate();
 
+    }
+
+    @Override
+    public Obj getTargetObj() {
+        return targetObj;
+    }
+
+    public void setTargetObj(Obj targetObj) {
+        this.targetObj = targetObj;
+    }
+
+    @Override
+    public GroupImpl getTargetGroup() {
+        return targetGroup;
+    }
+
+    public void setTargetGroup(GroupImpl targetGroup) {
+        this.targetGroup = targetGroup;
     }
 
     @Override

@@ -27,8 +27,7 @@ public class UnitMaster extends EntityMaster<Unit> {
 
     @Override
     protected EntityLogger createEntityLogger() {
-//        return new UnitLogger(getUnit(), this);
-        return null;
+        return new UnitLogger(getUnit(), this);
     }
 
     @Override

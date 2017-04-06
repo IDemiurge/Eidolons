@@ -80,7 +80,7 @@ public class PatrolMaster {
 
         Ref ref = new Ref(unit);
         ref.setTarget(blocker.getId());
-        new Action(ai.getUnit().getAction(STD_ACTIONS.Wait.name()), ref);
+        new Action(ai.getUnit().getAction( "Wait"), ref);
         return null;
     }
 

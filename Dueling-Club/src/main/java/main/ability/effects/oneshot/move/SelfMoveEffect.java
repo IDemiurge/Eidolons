@@ -1,10 +1,8 @@
 package main.ability.effects.oneshot.move;
 
 import main.ability.conditions.FacingCondition;
-import main.ability.targeting.TemplateSelectiveTargeting;
 import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Conditions;
-import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.entity.obj.BattleFieldObject;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
@@ -72,7 +70,7 @@ public class SelfMoveEffect extends MoveEffect {
         } else {
             if (formula == null) {
                 try {
-                    return ref.getTargetObj().getCoordinates();
+                    return ref.getActive().getTargetObj().getCoordinates();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -87,10 +85,10 @@ public class SelfMoveEffect extends MoveEffect {
 
                 }
             }
-            if (!new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.CELL, conditions)
-                    .select(ref)) {
-                return null;
-            }
+//            if (!new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.CELL, conditions)
+//                    .select(ref)) {
+//                return null;
+//            }
             destination = ref.getTargetObj().getCoordinates();
         }
         return destination;

@@ -15,7 +15,6 @@ import main.entity.obj.unit.Unit;
 import main.game.ai.tools.target.TargetingMaster;
 import main.system.ObjUtilities;
 import main.system.auxiliary.StringMaster;
-import main.system.threading.Weaver;
 
 public class Action {
     Ref ref;
@@ -31,11 +30,7 @@ public class Action {
 
     public Action(DC_ActiveObj action) {
         this(action, Ref.getCopy(action.getRef()));
-        Weaver.inNewThread(new Runnable() {
-            public void run() {
-                add();
-            }
-        });
+
     }
 
     public Action(DC_ActiveObj action, Obj enemy) {
@@ -45,13 +40,7 @@ public class Action {
         getRef().setID(KEYS.ACTIVE, action.getId());
     }
 
-    public void add() {
-        try {
-            getSource().getUnitAI().addAction(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
     @Override
     public boolean equals(Object obj) {

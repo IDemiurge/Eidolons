@@ -86,6 +86,7 @@ public class Targeter extends ActiveHandler {
             }
         }
         boolean result = false;
+//        TODO into SelectiveTargeting!
         if (getTargeting() instanceof SelectiveTargeting && getOwnerObj().isAiControlled()) {
             Integer id = TargetingMaster.selectTargetForAction(getEntity());
             if (id != null) {
@@ -94,6 +95,7 @@ public class Targeter extends ActiveHandler {
         } else {
             result = getTargeting().select(ref);
         }
+
         if (result) {
             getHandler().setCancelled(null);
         } else {

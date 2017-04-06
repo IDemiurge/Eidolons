@@ -1,10 +1,7 @@
 package main.entity.obj;
 
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
-import main.content.ContentManager;
-import main.content.DC_TYPE;
-import main.content.PARAMS;
-import main.content.PROPS;
+import main.content.*;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
@@ -26,6 +23,8 @@ import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.DC_MathManager;
+
+import java.util.Arrays;
 
 /**
  * Created by JustMe on 2/15/2017.
@@ -213,29 +212,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     }
 
     public void resetPercentages() {
-        resetPercentage(PARAMS.TOUGHNESS);
-        resetPercentage(PARAMS.MORALE);
-        resetPercentage(PARAMS.ENDURANCE);
-        resetPercentage(PARAMS.ESSENCE);
-        resetPercentage(PARAMS.FOCUS);
-        resetPercentage(PARAMS.STAMINA);
-        resetPercentage(PARAMS.N_OF_COUNTERS);
-        resetPercentage(PARAMS.N_OF_ACTIONS);
-        resetPercentage(PARAMS.INITIATIVE);
-
+        Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p->resetPercentage(p));
     }
 
     public void resetCurrentValues() {
-        resetCurrentValue(PARAMS.TOUGHNESS);
-        resetCurrentValue(PARAMS.ENDURANCE);
-        resetCurrentValue(PARAMS.MORALE);
-        resetCurrentValue(PARAMS.ESSENCE);
-        resetCurrentValue(PARAMS.FOCUS);
-        resetCurrentValue(PARAMS.STAMINA);
-        resetCurrentValue(PARAMS.N_OF_COUNTERS);
-        resetCurrentValue(PARAMS.N_OF_ACTIONS);
-        resetCurrentValue(PARAMS.INITIATIVE);
-
+        Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p->resetCurrentValue(p));
     }
 
 

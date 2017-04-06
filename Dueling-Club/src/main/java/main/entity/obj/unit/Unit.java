@@ -33,15 +33,18 @@ import main.entity.active.DC_SpellObj;
 import main.entity.item.*;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.KeyResolver;
 import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.bf.unit.UnitCalculator;
 import main.entity.tools.bf.unit.UnitInitializer;
+import main.entity.tools.bf.unit.UnitLogger;
 import main.entity.tools.bf.unit.UnitMaster;
 import main.entity.type.ObjType;
 import main.game.battlefield.CoordinatesMaster;
 import main.game.core.game.DC_Game;
+import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
 import main.game.logic.dungeon.Dungeon;
@@ -57,10 +60,8 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Unit extends DC_UnitModel {
     protected DC_WeaponObj offhandNaturalWeapon;
@@ -96,6 +97,7 @@ public class Unit extends DC_UnitModel {
     private Map<DC_ActiveObj, String> actionModeMap;
     private boolean animated;
     private Unit engagementTarget;
+    private DC_WeaponObj rangedWeapon;
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
@@ -208,11 +210,11 @@ public class Unit extends DC_UnitModel {
     }
 
     public DC_WeaponObj getNaturalWeapon() {
-        return naturalWeapon;
+        return getNaturalWeapon(false);
     }
 
     public DC_WeaponObj getOffhandNaturalWeapon() {
-        return offhandNaturalWeapon;
+        return getNaturalWeapon(true);
     }
 
     public DC_WeaponObj getNaturalWeapon(boolean offhand) {
@@ -604,6 +606,13 @@ public class Unit extends DC_UnitModel {
     @Override
     public void applyType(ObjType type) {
         setItemsInitialized(false);
+        //TODO need to copy all dynamic params!
+        // or implement a real buffer copy
+        type.copyValues(this,
+         Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT).map(
+          (PARAMETER p) -> ContentManager.getPercentageParam(p)).
+          collect(Collectors.toList()));
+        type.copyValues(this, Arrays.asList(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT));
         super.applyType(type);
     }
 
@@ -740,6 +749,11 @@ public class Unit extends DC_UnitModel {
                 item = getSecondWeapon();
                 setSecondWeapon(null);
                 break;
+        }
+        if (item instanceof DC_WeaponObj){
+            if (((DC_WeaponObj) item).isRanged()) {
+                setRangedWeapon(null);
+            }
         }
         if (item == null) {
             return;
@@ -1043,7 +1057,9 @@ public class Unit extends DC_UnitModel {
     }
 
     public DC_ActiveObj getAttackAction(boolean offhand) {
-        return getAction(offhand ? DC_ActionManager.OFFHAND_ATTACK : DC_ActionManager.ATTACK);
+
+        return getAction(offhand ? DC_ActionManager.OFFHAND_ATTACK :
+         DC_ActionManager.ATTACK);
     }
 
     public Unit getEngagementTarget() {
@@ -1108,6 +1124,10 @@ public class Unit extends DC_UnitModel {
         getResetter().resetMorale();
     }
 
+    @Override
+    public UnitLogger getLogger() {
+        return (UnitLogger) super.getLogger();
+    }
 
     @Override
     public UnitCalculator getCalculator() {
@@ -1232,5 +1252,17 @@ public class Unit extends DC_UnitModel {
                 return j;
         }
         return null;
+    }
+
+    public DC_Obj getLinkedObj(IdKey key) {
+        return  new KeyResolver().getObj(key, this);
+    }
+
+    public DC_WeaponObj getRangedWeapon() {
+        return rangedWeapon;
+    }
+
+    public void setRangedWeapon(DC_WeaponObj rangedWeapon) {
+        this.rangedWeapon = rangedWeapon;
     }
 }

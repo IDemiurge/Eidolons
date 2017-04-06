@@ -97,8 +97,8 @@ public class DC_StateManager extends StateManager {
         applyEffects(Effect.BUFF_RULE, unit);
         checkContinuousRules(unit);
         unit.afterBuffRuleEffects();
-        unit.resetPercentages();
         unit.resetCurrentValues();
+        unit.resetPercentages();
     }
 
 

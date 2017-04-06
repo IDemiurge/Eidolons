@@ -75,8 +75,8 @@ public class RuleMaster implements Controller {
 
     public static RULE_SCOPE getScopeForRuleGroup(RULE_GROUP r) {
         switch (r) {
-            case EXTRA_ATTACKS:
-                return RULE_SCOPE.TEST;
+//            case EXTRA_ATTACKS:
+//                return RULE_SCOPE.TEST;
         }
         return RULE_SCOPE.BASIC;
     }

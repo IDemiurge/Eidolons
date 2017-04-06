@@ -4,7 +4,9 @@ import main.ability.Abilities;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
+import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.logic.macro.MacroManager;
@@ -197,6 +199,16 @@ public class MacroAction extends MacroObj implements ActiveObj {
     @Override
     public boolean isTurn() {
         return false;
+    }
+
+    @Override
+    public Obj getTargetObj() {
+        return null;
+    }
+
+    @Override
+    public GroupImpl getTargetGroup() {
+        return null;
     }
 
     @Override

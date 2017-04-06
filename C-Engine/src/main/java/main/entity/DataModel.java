@@ -899,18 +899,8 @@ public abstract class DataModel {
         putParameter(param, value);
         getIntegerMap(false).remove(param);
         setDirty(true);
-        if (!quiety && game.isStarted()) {
-            fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
 
-            if (param.isDynamic()) {
-                PARAMETER base_param = ContentManager.getBaseParameterFromCurrent(param);
-                if (base_param != null && base_param != param) {
-                    resetPercentage(base_param);
 
-                }
-            }
-
-        }
         return true;
     }
 
@@ -923,6 +913,8 @@ public abstract class DataModel {
     }
 
     protected void resetCurrentValue(PARAMETER base_p) {
+
+          base_p = ContentManager.getBaseParameterFromCurrent(base_p);
         PARAMETER c_p = ContentManager.getCurrentParam(base_p);
         PARAMETER c_perc = ContentManager.getPercentageParam(base_p);
         int percentage = getIntParam(c_perc);
@@ -936,6 +928,7 @@ public abstract class DataModel {
     }
 
     protected void resetPercentage(PARAMETER p) {
+        p  = ContentManager.getBaseParameterFromCurrent(p);
         PARAMETER c_p = ContentManager.getCurrentParam(p);
         PARAMETER c_perc = ContentManager.getPercentageParam(p);
         if (c_perc == null || c_perc == p) {

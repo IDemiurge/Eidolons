@@ -4,13 +4,11 @@ import main.ability.conditions.shortcut.StdPassiveCondition;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
-import main.ability.effects.oneshot.mechanic.ModeEffect;
 import main.ability.effects.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.content.VALUE;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.MetaEnums;
-import main.content.mode.STD_MODES;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
 import main.entity.Ref.KEYS;
@@ -35,7 +33,10 @@ public class StaminaBuffRule extends DC_BuffRule {
     protected Effect getEffect(int level) {
         switch (level) {
             case 0: {
-                return new Effects(getEffect(1), new ModeEffect(STD_MODES.RESTING));
+                return new Effects(getEffect(1)
+//         TODO won't work via buff, need oneshot mechanic
+//        , new ModeEffect(STD_MODES.RESTING)
+                );
             }
             case 1: {
                 return new ModifyValueEffect(PARAMS.DAMAGE_MOD, MOD.MODIFY_BY_PERCENT,

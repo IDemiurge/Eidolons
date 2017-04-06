@@ -1,5 +1,6 @@
 package main.game.core;
 
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.elements.actions.Action;
 import main.game.core.game.DC_Game;
@@ -16,6 +17,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 public class GameLoop {
     private Unit activeUnit;
     private DC_Game game;
+    private DC_ActiveObj activatingAction;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -62,12 +64,18 @@ public class GameLoop {
     }
 
     private Boolean activateAction(ActionInput input) {
+        activatingAction = input.getAction();
+        activatingAction.setTargetObj(input.getContext().getTargetObj());
+        activatingAction.setTargetGroup(input.getContext().getGroup());
         try {
             input.getAction().getHandler().activateOn(input.getContext());
         } catch (Exception e) {
             e.printStackTrace();
             getGame().getManager().unitActionCompleted(input.getAction(), true);
-       return true; }
+            return true;
+        } finally {
+            activatingAction = null;
+        }
         int timeCost = input.getAction().getHandler().getTimeCost();
         Boolean endTurn = getGame().getRules().getTimeRule().
          actionComplete(input.getAction(), timeCost);
@@ -100,5 +108,9 @@ public class GameLoop {
         return (ActionInput) WaitMaster.waitForInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION);
     }
 
+
+    public DC_ActiveObj getActivatingAction() {
+        return activatingAction;
+    }
 
 }

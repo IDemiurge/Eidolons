@@ -165,14 +165,7 @@ public class UnitAI {
 
     }
 
-    public void addAction(Action action) {
-        actions.put(action.getActive().getName(), action);
 
-    }
-
-    public Action getAction(String string) {
-        return actions.get(string);
-    }
 
     public Map<ObjType, Integer> getActionPriorityMods() {
         if (actionPriorityMods == null) {

@@ -42,7 +42,7 @@ public class EmitterController implements Controller {
     boolean cursorAttached;
     private LinkedList<EmitterActor> sfx;
     private SFX_MODIFICATION_PRESET lastPreset;
-    private String randomSfxPath = "templates\\work\\";
+    private String randomSfxPath = "modified\\templates\\work";
 
     public EmitterController() {
         sfx = new LinkedList<>();

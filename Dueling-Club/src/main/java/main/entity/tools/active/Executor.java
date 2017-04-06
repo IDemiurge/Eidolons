@@ -36,6 +36,7 @@ import java.util.List;
 
 //REVIEW 40 public methods and not a single one (or did I miss something?) has comments...
 //First of all - what is the purpose of the whole class? in plain english please.
+
 /**
  * Created by JustMe on 2/21/2017.
  * <p>
@@ -87,14 +88,18 @@ public class Executor extends ActiveHandler {
     }
 
     public Boolean activateOn(Context context) {
-        if (context.getTargetObj() != null || context.getGroup()!=null ) {
+        if (context.getTargetObj() != null || context.getGroup() != null || context.isTriggered()) {
 //            Ref ref = getAction().getRef();
 //            ref.setTarget(context.getTarget());
             targeter.setForcePresetTarget(true);
-            targeter.presetTarget=context.getTargetObj();
+            targeter.presetTarget = context.getTargetObj();
             getTargeter().setRef(context);
+            if (context.getTargetObj() != null)
+                getAction().setTargetObj(context.getTargetObj());
+            if (context.getTargetObj() != null)
+                getAction().setTargetGroup(context.getGroup());
         }
-        this.context=context;
+        this.context = context;
         activate();
         return result;
     }
@@ -114,24 +119,22 @@ public class Executor extends ActiveHandler {
             return;
         }
         WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION,
-         new ActionInput(getAction(), t ));
+         new ActionInput(getAction(), t));
     }
 
     public void activateOnGameLoopThread() {
         WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION,
-         new ActionInput(getAction(), new Context(getRef()) ));
+         new ActionInput(getAction(), new Context(getRef())));
     }
 
     public boolean activate() {
-
-
-        log(getAction().getOwnerObj() + " activates " + getAction(), true);
-
         reset();
         syncActionRefWithSource();
         getTargeter().initTarget();
         if (isInterrupted())
             return interrupted();
+
+        log(getAction().getOwnerObj() + " activates " + getAction(), true);
         beingActivated();
         if (isInterrupted())
             return interrupted();
@@ -160,6 +163,13 @@ public class Executor extends ActiveHandler {
                 getAction().getOwnerObj().getRef().setID(KEYS.AMMO, item.getId());
             }
         }
+        //TODO  quickfix, replace with IdKey resolving
+        if (getAction().getRef().getTargetObj() == null) {
+            if (getAction().getOwnerObj().getRef().getTargetObj() != null) {
+                getAction().getRef().setTarget(getAction().getOwnerObj().getRef().getTarget());
+            }
+        }
+
         getAction().setRef(getAction().getOwnerObj().getRef());
     }
 

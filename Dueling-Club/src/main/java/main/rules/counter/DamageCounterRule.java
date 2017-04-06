@@ -45,7 +45,7 @@ public abstract class DamageCounterRule extends DC_CounterRule {
          new Formula(getCounterRef() + " * ("
          + getDamagePerCounterFormula() + ")"),
 
-         GenericEnums.DAMAGE_MODIFIER.PERIODIC,
+         GenericEnums.DAMAGE_MODIFIER.PERIODIC, DAMAGE_MODIFIER.QUIET,
          (isEnduranceOnly() ? DAMAGE_MODIFIER.ENDURANCE_ONLY : null),
          (isUnblockable() ? DAMAGE_MODIFIER.UNBLOCKABLE : null))
          .apply(ref);

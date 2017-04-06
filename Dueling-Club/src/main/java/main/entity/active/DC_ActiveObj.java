@@ -24,6 +24,7 @@ import main.elements.costs.Costs;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.group.GroupImpl;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
@@ -32,6 +33,8 @@ import main.entity.tools.active.*;
 import main.entity.type.ObjType;
 import main.game.ai.tools.target.EffectFinder;
 import main.game.core.game.Game;
+import main.game.logic.action.context.Context;
+import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
 import main.game.logic.combat.damage.Damage;
 import main.system.auxiliary.EnumMaster;
@@ -69,6 +72,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     private boolean continuous;
     private boolean resistanceChecked;
     private Damage damageDealt;
+    private Obj targetObj;
+    private GroupImpl targetGroup;
 
     public DC_ActiveObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -109,11 +114,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
 
-// for ai and universal usage
+// for ai and inside-engine usage NOT FOR GUI CONTROLS - RUNS IN SAME THREAD!
     @Override
     public boolean activatedOn(Ref ref) {
-        getTargeter().setForcePresetTarget(true);
-        return getHandler().activate();
+        return getHandler().activateOn(new Context(ref));
     }
 
     // for radial and easy custom activation
@@ -121,6 +125,12 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         getMaster().getHandler().activateOn((DC_Obj) t);
     }
 
+    public DAMAGE_TYPE getDamageType() {
+        if (super.getDamageType()==null ){
+            getActiveWeapon().getDamageType();
+        }
+            return super.getDamageType();
+    }
 
     public DAMAGE_TYPE getEnergyType() {
         if (energyType == null) {
@@ -239,7 +249,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         super.setRef(REF);
         ref.setTriggered(false);
         setOwnerObj((Unit) ref.getObj(KEYS.SOURCE));
-        this.ref.setGroup(null); // GROUP MUST NOT BE COPIED FROM OTHER SPELLS!
+//        this.ref.setGroup(null); // TODO GROUP MUST NOT BE COPIED FROM OTHER SPELLS!
     }
 
     public void playCancelSound() {
@@ -513,9 +523,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         }
         else
         if (isRanged()) {
-            return (DC_WeaponObj) getRef().getObj(KEYS.RANGED);
+            return (DC_WeaponObj) getOwnerObj().getLinkedObj(IdKey.RANGED);
         }
-        return (DC_WeaponObj) getRef().getObj(isOffhand() ? KEYS.OFFHAND : KEYS.WEAPON);
+        IdKey key = (isOffhand() ? IdKey.OFFHAND : IdKey.WEAPON);
+     return (DC_WeaponObj) getOwnerObj().getLinkedObj(key);
     }
 
 
@@ -853,4 +864,20 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
 
+    public void setTargetObj(Obj targetObj) {
+        this.targetObj = targetObj;
+    }
+@Override
+    public Obj getTargetObj() {
+        return targetObj;
+    }
+
+    public void setTargetGroup(GroupImpl targetGroup) {
+        this.targetGroup = targetGroup;
+    }
+
+    @Override
+    public GroupImpl getTargetGroup() {
+        return targetGroup;
+    }
 }

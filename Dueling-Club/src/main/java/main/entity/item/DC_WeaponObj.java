@@ -120,6 +120,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         }
         Ref ref = getHero().getRef();
         if (isRanged()) {
+            getHero().setRangedWeapon(this);
             ref.setID(KEYS.RANGED, getId());
         }
         if (mainHand) {
@@ -274,7 +275,9 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
         }
         super.setRef(ref);
-
+        if (isRanged()) {
+            getHero().setRangedWeapon(this);
+        }
     }
 
     @Override

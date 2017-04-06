@@ -252,7 +252,7 @@ public class DamageDealer {
         if (ref.isQuiet()) {
             return true;
         }
-        if (ref.getActive() != null) {
+        if (ref.getActive() != null  &&statsParam != null ) {
             try {
                 Ref REF = ref.getActive().getRef();
                 if (add) {

@@ -58,20 +58,20 @@ public class DC_ActionManager implements ActionManager {
     public static final int STD_ACTION_N = 5;
     public static final int MODES_N = 5;
     public static final String OFFHAND_ATTACK = StringMaster
-            .getWellFormattedString(STD_SPEC_ACTIONS.OFFHAND_ATTACK.name());
+     .getWellFormattedString(STD_SPEC_ACTIONS.OFFHAND_ATTACK.name());
     public static final String DUAL_ATTACK = StringMaster
-            .getWellFormattedString(STD_SPEC_ACTIONS.DUAL_ATTACK.name());
+     .getWellFormattedString(STD_SPEC_ACTIONS.DUAL_ATTACK.name());
     public static final String ATTACK_OF_OPPORTUNITY = StringMaster
-            .getWellFormattedString(HIDDEN_ACTIONS.Attack_of_Opportunity.name());
+     .getWellFormattedString(HIDDEN_ACTIONS.Attack_of_Opportunity.name());
     public static final String FREE_ATTACK_OF_OPPORTUNITY = StringMaster
-            .getWellFormattedString(HIDDEN_ACTIONS.Free_Attack_of_Opportunity.name());
+     .getWellFormattedString(HIDDEN_ACTIONS.Free_Attack_of_Opportunity.name());
     public static final String COUNTER_ATTACK = StringMaster
-            .getWellFormattedString(HIDDEN_ACTIONS.Counter_Attack.name());
+     .getWellFormattedString(HIDDEN_ACTIONS.Counter_Attack.name());
     public static final String FREE_COUNTER_ATTACK = StringMaster
-            .getWellFormattedString(HIDDEN_ACTIONS.Free_Counter_Attack.name());
+     .getWellFormattedString(HIDDEN_ACTIONS.Free_Counter_Attack.name());
     public static final G_PROPS ACTIVES = G_PROPS.ACTIVES;
     public static final String ATTACK = StringMaster.getWellFormattedString(STD_ACTIONS.Attack
-            .name());
+     .name());
     public static final String RELOAD = "Reload";
     public static final String THROW = "Throw";
     public static final String CLUMSY_LEAP = "Clumsy Leap";
@@ -88,7 +88,7 @@ public class DC_ActionManager implements ActionManager {
     public static final String UNLOCK = "Unlock";
     private static final String DUMMY_ACTION = "Dummy Action";
     private static final String USE_INVENTORY = StringMaster
-            .getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.toString());
+     .getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.toString());
     private static final String DIVINATION = "Divination";
     private static final String PICK_UP = "Pick Up Items";
     private static LinkedList<ActionType> stdActionTypes;
@@ -105,7 +105,7 @@ public class DC_ActionManager implements ActionManager {
         stdActionTypes = new LinkedList<>();
         for (STD_ACTIONS name : STD_ACTIONS.values()) {
             ActionType type = (ActionType) DataManager.getType(StringMaster
-                    .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
+             .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
 
             stdActionTypes.add(type);
         }
@@ -113,14 +113,14 @@ public class DC_ActionManager implements ActionManager {
         modeActionTypes = new LinkedList<>();
         for (STD_MODE_ACTIONS name : STD_MODE_ACTIONS.values()) {
             ActionType type = (ActionType) DataManager.getType(StringMaster
-                    .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
+             .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
 
             modeActionTypes.add(type);
         }
         hiddenActions = new LinkedList<>();
         for (HIDDEN_ACTIONS name : HIDDEN_ACTIONS.values()) {
             ActionType type = (ActionType) DataManager.getType(StringMaster
-                    .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
+             .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
 
             hiddenActions.add(type);
         }
@@ -149,8 +149,7 @@ public class DC_ActionManager implements ActionManager {
                         return ActionEnums.ACTION_TYPE_GROUPS.TURN;
                     case Turn_Clockwise:
                         return ActionEnums.ACTION_TYPE_GROUPS.TURN;
-                    case Wait:
-                        return ActionEnums.ACTION_TYPE_GROUPS.MODE;
+
                     default:
                         break;
 
@@ -168,8 +167,6 @@ public class DC_ActionManager implements ActionManager {
                         return ActionEnums.ACTION_TYPE_GROUPS.TURN;
                     case Turn_Clockwise:
                         return ActionEnums.ACTION_TYPE_GROUPS.TURN;
-                    case Wait:
-                        return ActionEnums.ACTION_TYPE_GROUPS.MODE;
                     default:
                         break;
 
@@ -231,7 +228,7 @@ public class DC_ActionManager implements ActionManager {
         Unit target = (Unit) action.getOwnerObj();
         Unit source = (Unit) _countering;
         DC_ActiveObj counter = (DC_ActiveObj) getCounterAttackAction(target, source,
-                (DC_ActiveObj) action);
+         (DC_ActiveObj) action);
         if (counter == null) {
             return null;
         }
@@ -362,7 +359,7 @@ public class DC_ActionManager implements ActionManager {
 
     private DC_UnitAction generateModeAction(String mode, DC_UnitAction baseAction) {
         return generateModeAction(new EnumMaster<STD_ACTION_MODES>().retrieveEnumConst(
-                STD_ACTION_MODES.class, mode), baseAction);
+         STD_ACTION_MODES.class, mode), baseAction);
     }
 
     public List<DC_ActiveObj> generateModesForUnit(Unit unit, ACTION_TYPE_GROUPS group) {
@@ -403,7 +400,7 @@ public class DC_ActionManager implements ActionManager {
             }
         }
         return action.getProperty(PROPS.ACTION_MODES).contains(
-                StringMaster.getWellFormattedString(mode.toString()));
+         StringMaster.getWellFormattedString(mode.toString()));
 
     }
 
@@ -433,7 +430,7 @@ public class DC_ActionManager implements ActionManager {
 
     private DC_UnitAction getModeAction(DC_ActiveObj action, Unit unit, STD_ACTION_MODES mode) {
         DC_UnitAction subAction = (DC_UnitAction) getAction(mode.getPrefix() + action.getName(),
-                unit);
+         unit);
         if (subAction == null) {
             subAction = (generateModeAction(mode, action));
         }
@@ -465,14 +462,14 @@ public class DC_ActionManager implements ActionManager {
                     type.setParam(param, param.getDefaultValue());
                 }
                 type.modifyParamByPercent(param, StringMaster.getInteger(mode.getParamModMap().get(
-                        s)), false);
+                 s)), false);
             }
         }
         if (mode != STD_ACTION_MODES.STANDARD) {
             type.setName(mode.getPrefix() + baseAction.getName());
         }
         DC_UnitAction subAction = newAction(type, new Ref(baseAction.getOwnerObj()), baseAction
-                .getOwner(), game);
+         .getOwner(), game);
         // TODO not all!..
         subAction.setActionType(ActionEnums.ACTION_TYPE.HIDDEN);
         subAction.setActionTypeGroup(ActionEnums.ACTION_TYPE_GROUPS.HIDDEN);
@@ -549,7 +546,7 @@ public class DC_ActionManager implements ActionManager {
             return new LinkedList<>();
         }
         List<DC_UnitAction> list = weapon.getAttackActions();
-        if (list != null) return list;
+        if (list != null) return     new LinkedList<>(list) ;
         list = new LinkedList<>();
         for (String typeName : StringMaster.openContainer(weapon.getProperty(PROPS.WEAPON_ATTACKS))) {
             if (!weapon.isMainHand()) {
@@ -566,11 +563,11 @@ public class DC_ActionManager implements ActionManager {
         }
         if (checkAddThrowAction(weapon.getOwnerObj(), !weapon.isMainHand())) {
             DC_ActiveObj throwAction = getAction(weapon.isMainHand() ? THROW_MAIN : THROW_OFFHAND,
-                    obj);
+             obj);
             throwAction.setName("Throw " + weapon.getName());
             list.add((DC_UnitAction) throwAction);
         }
-        weapon.setAttackActions(list);
+        weapon.setAttackActions(    new LinkedList<>(list));
         return list;
     }
 
@@ -603,6 +600,8 @@ public class DC_ActionManager implements ActionManager {
         }
         addStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, actives, unit);
 
+        actives.add(newAction(STD_SPEC_ACTIONS.Wait.name(), unit));
+
         if (RuleMaster.checkFeature(FEATURE.USE_INVENTORY)) {
             if (unit.canUseItems()) {
                 actives.add(newAction(USE_INVENTORY, unit));
@@ -612,6 +611,7 @@ public class DC_ActionManager implements ActionManager {
         if (RuleMaster.checkFeature(FEATURE.WATCH)) {
             actives.add(newAction(STD_SPEC_ACTIONS.Watch.name(), unit));
         }
+
 
         if (RuleMaster.checkFeature(FEATURE.FLEE)) {
             if (FleeRule.isFleeAllowed()) {
@@ -656,7 +656,7 @@ public class DC_ActionManager implements ActionManager {
 
     private ActiveObj getDisarmAction(final Unit hero, final Trap trap) {
         DC_UnitAction action = new DC_UnitAction(DataManager.getType(DISARM, DC_TYPE.ACTIONS),
-                hero.getOwner(), game, hero.getRef().getCopy()) {
+         hero.getOwner(), game, hero.getRef().getCopy()) {
             public boolean resolve() {
 //                animate(); // pass std icon as param?
                 TrapMaster.tryDisarmTrap(trap);
@@ -672,7 +672,7 @@ public class DC_ActionManager implements ActionManager {
 
     private ActiveObj getUnlockAction(final Unit hero, final Entity e) {
         DC_UnitAction action = new DC_UnitAction(DataManager.getType(UNLOCK, DC_TYPE.ACTIONS),
-                hero.getOwner(), game, hero.getRef().getCopy()) {
+         hero.getOwner(), game, hero.getRef().getCopy()) {
             public boolean resolve() {
 //                animate(); // pass std icon as param?
                 LockMaster.tryUnlock(e, hero);
@@ -687,7 +687,7 @@ public class DC_ActionManager implements ActionManager {
 
     private DC_UnitAction getEnterAction(final Unit hero, final Entrance e) {
         DC_UnitAction action = new DC_UnitAction(DataManager.getType(ENTER, DC_TYPE.ACTIONS),
-                hero.getOwner(), game, hero.getRef().getCopy()) {
+         hero.getOwner(), game, hero.getRef().getCopy()) {
             public boolean resolve() {
 //                animate();
                 e.enter(hero, coordinates);
@@ -752,7 +752,7 @@ public class DC_ActionManager implements ActionManager {
 
         for (ActiveObj attack : actives) {
             ObjType offhand = (DataManager.getType(ActionGenerator.getOffhandActionName(attack
-                    .getName()), DC_TYPE.ACTIONS));
+             .getName()), DC_TYPE.ACTIONS));
             if (offhand == null) {
                 continue;
             }
@@ -803,6 +803,18 @@ public class DC_ActionManager implements ActionManager {
         }
     }
 
+    private List<DC_UnitAction> getAndInitAttacks(boolean offhand, Unit unit) {
+        DC_ActiveObj action = unit.getAttackAction(offhand);
+        if (action == null)
+            return null;
+        List<DC_UnitAction> subActions = getOrCreateWeaponActions(unit.getWeapon(offhand));
+        action.setSubActions(new LinkedList<>(subActions));
+        subActions.addAll(getOrCreateWeaponActions(unit.getNaturalWeapon(offhand)));
+        if (action.getSubActions().isEmpty())
+            action.setSubActions(new LinkedList<>(subActions));
+       return subActions;
+    }
+
     private void addStandardActionsForGroup(ACTION_TYPE type, Collection<ActiveObj> actives,
                                             Unit unit) {
         if (stdActionTypes == null) {
@@ -813,17 +825,8 @@ public class DC_ActionManager implements ActionManager {
         switch (type) {
             case STANDARD_ATTACK:
                 // TODO
-                DC_ActiveObj action = getAction(DC_ActionManager.ATTACK, unit);
-                List<DC_UnitAction> subActions = getOrCreateWeaponActions(unit.getActiveWeapon(false));
-                action.setSubActions(new LinkedList<>(subActions));
-                actions.addAll(subActions);
-
-                action = getAction(DC_ActionManager.OFFHAND_ATTACK, unit);
-                if (action != null) {
-                    subActions = getOrCreateWeaponActions(unit.getActiveWeapon(true));
-                    action.setSubActions(new LinkedList<>(subActions));
-                    actions.addAll(subActions);
-                }
+              actions.addAll( getAndInitAttacks(false,  unit));
+                actions.addAll(  getAndInitAttacks(true,   unit));
                 break;
             case HIDDEN:
                 // TODO extract into separate?
@@ -861,9 +864,9 @@ public class DC_ActionManager implements ActionManager {
                 return;
             }
             for (ACTION_TYPE key : game.getManager().getActiveObj().getActionMap()
-                    .keySet()) {
+             .keySet()) {
                 for (DC_ActiveObj active : game.getManager().getActiveObj()
-                        .getActionMap().get(key)) {
+                 .getActionMap().get(key)) {
                     active.initCosts();
                 }
             }
@@ -903,7 +906,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public enum STD_ACTIONS {
-        Attack, Turn_Anticlockwise, Turn_Clockwise, Move, Wait,;
+        Attack, Turn_Anticlockwise, Turn_Clockwise, Move ;
 
         public String toString() {
             return StringMaster.getWellFormattedString(name());
@@ -919,7 +922,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public enum STD_SPEC_ACTIONS {
-        Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Watch
+        Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Watch, Wait
     }
 
     public enum WEAPON_ATTACKS {

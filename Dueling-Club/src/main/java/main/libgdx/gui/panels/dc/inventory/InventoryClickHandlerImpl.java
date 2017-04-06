@@ -47,7 +47,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
         boolean result = false;
         OPERATIONS operation = getOperation(cell_type, clickCount, rightClick,
-                altClick, cellContents);
+         altClick, cellContents);
         if (operation == null) {
             result = false;
         } else {
@@ -55,7 +55,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 //         altClick, cellContents);
 //        if (arg == null) return false;
             if (Eidolons.game.getInventoryManager().tryExecuteOperation
-                    (operation, cellContents)) {
+             (operation, cellContents)) {
                 dirty = true;
                 result = true;
             }
@@ -63,7 +63,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
         if (result) {
             GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
-                    new EventCallbackParam(new InventoryDataSource(unit)));
+             new EventCallbackParam(new InventoryDataSource(unit)));
         }
 
         return result;
@@ -121,6 +121,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     @Override
     public void undoClicked() {
+        if (!isUndoEnabled()) return;
 //        inventoryManager.getInvListManager().setOperationsLeft(getOperationsLeft());
         if (CharacterCreator.getHeroManager().undo(unit)) {
 //         modifications --;
@@ -134,11 +135,12 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     public void refreshPanel() {
         GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
-                new EventCallbackParam(new InventoryDataSource(unit)));
+         new EventCallbackParam(new InventoryDataSource(unit)));
     }
 
     @Override
     public void doneClicked() {
+        if (!isDoneEnabled()) return;
 //        InventoryTransactionManager.updateType(unit); ???
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
         CharacterCreator.getHeroManager().removeHero(unit);
@@ -147,10 +149,13 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     @Override
     public void cancelClicked() {
+        if (!isCancelEnabled()) return;
         unit.applyType(buffer);
 //        cell.setProperty(PROPS.DROPPED_ITEMS, cachedValue);TODO
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, false);
         CharacterCreator.getHeroManager().removeHero(unit);
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, new EventCallbackParam(null));
+
     }
 
     @Override

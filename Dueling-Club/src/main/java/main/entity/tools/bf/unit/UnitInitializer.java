@@ -278,9 +278,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initNaturalWeapon(boolean offhand) {
-        if (getEntity().getWeapon(offhand) != null) {
-            return;
-        }
+
         if (offhand) {
             if (StringMaster.isEmpty(getProperty(PROPS.OFFHAND_NATURAL_WEAPON))) {
                 return;

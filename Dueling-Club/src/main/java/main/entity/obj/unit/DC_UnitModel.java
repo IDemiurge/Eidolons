@@ -22,6 +22,7 @@ import main.entity.Deity;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
+import main.entity.obj.ActiveObj;
 import main.entity.obj.BattleFieldObject;
 import main.entity.tools.bf.unit.UnitCalculator;
 import main.entity.tools.bf.unit.UnitChecker;
@@ -451,8 +452,11 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return action.canBeActivated();
     }
 
-    public DC_UnitAction getAction(String action) {
-        return getAction(action, false);
+    public DC_UnitAction getAction(String name) {
+        ActiveObj action = getGame().getActionManager().getAction(name, this);
+      if (action instanceof  DC_UnitAction)
+          return (DC_UnitAction) action;
+        return getAction(name, false);
     }
 
     public DC_UnitAction getAction(String action, boolean strict) {

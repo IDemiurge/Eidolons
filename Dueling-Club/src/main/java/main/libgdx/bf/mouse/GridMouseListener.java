@@ -2,6 +2,7 @@ package main.libgdx.bf.mouse;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import main.content.PARAMS;
 import main.entity.obj.BattleFieldObject;
+import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.game.battlefield.Coordinates;
 import main.game.core.Eidolons;
@@ -146,7 +148,8 @@ public class GridMouseListener extends ClickListener {
         a = gridPanel.hitChildren(x, y, true);
         if (a != null && a instanceof GridCell) {
             GridCell cell = (GridCell) a;
-            if (gridPanel.getCellBorderManager().isBlueBorderActive() && event.getButton() == Input.Buttons.LEFT) {
+            if (gridPanel.getCellBorderManager().isBlueBorderActive()
+             && event.getButton() == Input.Buttons.LEFT) {
                 Borderable b = cell;
                 if (cell.getInnerDrawable() != null) {
                     Actor unit = cell.getInnerDrawable().hit(x, y, true);
@@ -154,10 +157,21 @@ public class GridMouseListener extends ClickListener {
                         b = (Borderable) unit;
                     }
                 }
-                gridPanel.getCellBorderManager().hitAndCall(b);
+                boolean selected = gridPanel.getCellBorderManager().hitAndCall(b);
+                if (!selected) {
+                    DC_Cell cellObj = Eidolons.game.getCellByCoordinate(new Coordinates(cell.getGridX(), cell.getGridY()));
+                    cellObj.invokeClicked();
+                    // selection cancel works this way, but....
+                    //TODO  RADIAL SELECTIVE-NODE MUST ACTIVATE()
+                    // ACTION IS NOT BEING ACTIVATED HERE YET!
+//                  WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, cellObj.getId());
+//                    cellObj.getGame().getManager().setSelecting(true);
+//                    cellObj.getGame().getManager().objClicked(cellObj);
+//
+                }
             }
-
-            if (cell.getInnerDrawable() != null) {
+             if (event.getButton() == Buttons.RIGHT){
+                if (cell.getInnerDrawable() != null) {
                 Actor unit = cell.getInnerDrawable().hit(x, y, true);
                 if (unit != null && unit instanceof BaseView) {
                     BattleFieldObject obj = unitViewMap.entrySet()
@@ -175,9 +189,10 @@ public class GridMouseListener extends ClickListener {
                             }
                     }
                 }
-            } else if (event.getButton() == Input.Buttons.RIGHT) {
+            } else  {
                 DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(new Coordinates(cell.getGridX(), cell.getGridY()));
                 GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(dc_cell));
+            }
             }
             event.stop();
             return true;

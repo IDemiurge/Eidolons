@@ -26,7 +26,7 @@ public class ContinuousEffect extends MicroEffect {
 
     public static Effect transformEffectToContinuous(Effect effect) {
 if (effect instanceof OneshotEffect)
-    throw new RuntimeException("OneshotEffect cannot be made Continuous!");
+    throw new RuntimeException("OneshotEffect cannot be made Continuous!"+ effect);
 
 
         if ((effect instanceof Effects)) {

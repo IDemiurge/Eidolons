@@ -25,6 +25,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
                           // , PROPERTY[] props
     ) {
         super(type, owner, game, ref);
+        addDynamicValues();
         this.params = params;
         // this.props = props;
     }

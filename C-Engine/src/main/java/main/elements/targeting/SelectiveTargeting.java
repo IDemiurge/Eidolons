@@ -52,6 +52,13 @@ public class SelectiveTargeting extends TargetingImpl {
 
     @Override
     public boolean select(Ref ref) {
+//        if (ref.getSourceObj().isAiControlled()) {
+//            Integer id = TargetingMaster.selectTargetForAction(getEntity());
+//            if (id != null) {
+//               return  true;
+//            }
+//            return false;
+//        }
         if (template != null) {
             filteredType = (getTYPEforTemplate(template));
         }

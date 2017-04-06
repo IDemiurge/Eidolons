@@ -24,11 +24,12 @@ public class Context extends Ref {
 
     @Override
     public Obj getTargetObj() {
+        if (target==null )
+            return super.getTargetObj();
         return target;
     }
 
     public Context(Ref ref){
-        
         cloneMaps(ref );
         setPlayer(ref.getPlayer());
         setEvent(ref.event);
@@ -39,10 +40,31 @@ public class Context extends Ref {
         setTriggered(ref.isTriggered());
         setDebug(ref.isDebug());
         setAnimationActive(ref.getAnimationActive());
+
+        target = getTargetObj();
+        source = getSourceObj();
     }
 
 
     public enum IdKey{
 
+        TARGET,
+        SOURCE,
+        BASIS,
+        ACTIVE,
+        SPELL,
+        WEAPON,
+        ARMOR,
+        OFFHAND,
+        BUFF,
+        SUMMONER,
+        SUMMONED,
+        PAYEE,
+        ITEM,
+        SKILL,
+        PARTY,
+        INFO,
+        AMMO,
+        RANGED,
     }
 }

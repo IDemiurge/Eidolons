@@ -16,6 +16,7 @@ import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -120,12 +121,8 @@ public class Obj extends Entity {
         cloneMaps(type);
         setOBJ_TYPE_ENUM(type.getOBJ_TYPE_ENUM());
         setName(type.getName());
+        resetCurrentValues();
         reset();
-
-//        toBase();
-//        resetObjects();
-//        afterEffects();
-//        resetPercentages();
         resetCurrentValues();
 
     }
@@ -163,16 +160,23 @@ public class Obj extends Entity {
     protected void addDynamicValues() {
     }
 
-    // @Override
-    // public int getX() {
-    // return x;
-    // }
-    //
-    // @Override
-    // public int getY() {
-    // return y;
-    // }
-    //
+    @Override
+    public boolean setParam(PARAMETER param, String value, boolean quiety) {
+        boolean result = super.setParam(param, value, quiety);
+        if (!quiety && game.isStarted()) {
+            fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
+
+            if (param.isDynamic()) {
+                PARAMETER base_param = ContentManager.getBaseParameterFromCurrent(param);
+                if (base_param != null && base_param != param) {
+                    resetPercentage(base_param);
+
+                }
+            }
+
+        }
+        return result;
+    }
 
     public boolean isFull(PARAMETER p) {
         return getIntParam(ContentManager.getCurrentParam(p)) >= getIntParam(p);

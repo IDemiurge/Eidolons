@@ -32,6 +32,7 @@ public class ContentManager {
     public static final String OLD_EMPTY_VALUE = "[...]";
     private static final String MASTERY = "_MASTERY";
 
+
     private static Map<String, List<String>> valueNamesMap = new ConcurrentMap<>();
 
     private static Map<String, List<String>> valueNamesMapAV = new ConcurrentMap<>();
@@ -144,9 +145,15 @@ public class ContentManager {
     }
 
     public static PARAMETER getCurrentParam(PARAMETER p) {
+        if (p.name().startsWith(StringMaster.CURRENT ))
+            return p;
         return getPARAM(StringMaster.CURRENT + p.getName(), true);
     }
-
+    public static PARAMETER getBaseParameterFromCurrent(PARAMETER param) {
+        if (!param.name().startsWith(StringMaster.CURRENT ))
+            return param;
+        return getPARAM(param.getFullName().replace(StringMaster.CURRENT, ""), true);
+    }
     public static PARAMETER getReqParam(PARAMETER p) {
         return getPARAM(p.getName() + StringMaster.REQUIREMENT, true);
     }
@@ -160,9 +167,7 @@ public class ContentManager {
         return param;
     }
 
-    public static PARAMETER getBaseParameterFromCurrent(PARAMETER param) {
-        return getPARAM(param.getFullName().replace(StringMaster.CURRENT, ""), true);
-    }
+
 
     public static PARAMETER getRegenParam(PARAMETER p) {
         return getPARAM(p.getName() + StringMaster.REGEN, true);
@@ -229,7 +234,7 @@ public class ContentManager {
     }
 
     public static PARAMETER getPercentageParam(PARAMETER p) {
-        if (p.isDynamic()) {
+        if (p.isDynamic() && p.name().startsWith(StringMaster.CURRENT)) {
             p = getBaseParameterFromCurrent(p);
         }
         return getPARAM(p.getName() + StringMaster.PERCENTAGE);

@@ -3,6 +3,7 @@ package main.entity.obj;
 import main.ability.Abilities;
 import main.elements.targeting.Targeting;
 import main.entity.OBJ;
+import main.entity.group.GroupImpl;
 import main.system.graphics.ANIM;
 
 /**
@@ -53,4 +54,8 @@ public interface ActiveObj extends Cancellable, Active, OBJ {
     boolean isMove();
 
     boolean isTurn();
+
+    Obj getTargetObj();
+
+    GroupImpl getTargetGroup();
 }

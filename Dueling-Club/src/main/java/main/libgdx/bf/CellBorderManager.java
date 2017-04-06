@@ -5,8 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -86,15 +84,11 @@ public class CellBorderManager extends Group {
         });
     }
 
-    public void hitAndCall(Borderable borderable) {
-        blueBorderOwners.entrySet().forEach(entry -> {
-            if (entry.getKey() == borderable) {
-                entry.getValue().run();
-                int id = 0; //TODO get that id!
-                WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, id
-                );
-            }
-        });
+    public boolean hitAndCall(Borderable borderable) {
+        Runnable entity = blueBorderOwners.get(borderable);
+        if (entity!=null )
+        entity.run(); // will invokeClicked() !
+//                WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, id );
 
         clearBlueBorder();
 
@@ -102,7 +96,7 @@ public class CellBorderManager extends Group {
             showBorder(singleBorderImageBackup, unitBorderOwner);
             singleBorderImageBackup = null;
         }
-
+return  (entity!=null );
     }
 
     private void showBorder(Image border, Borderable owner) {

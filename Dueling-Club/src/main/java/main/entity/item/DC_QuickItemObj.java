@@ -181,6 +181,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     public boolean activate() {
+
         if (!isConstructed() || wrapped) {
             construct();
         }
@@ -273,7 +274,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     @Override
     public void clicked() {
         // TODO // threading?
-        if (game.getManager().getActivatingAction() != null) {
+        if (getGame().getLoop().getActivatingAction() != null) {
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
             return;
         }

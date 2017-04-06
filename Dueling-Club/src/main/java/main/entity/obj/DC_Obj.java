@@ -578,4 +578,6 @@ public abstract class DC_Obj extends MicroObj {
     public void setAnimation(PhaseAnimation animation) {
         this.animation = animation;
     }
+
+
 }
