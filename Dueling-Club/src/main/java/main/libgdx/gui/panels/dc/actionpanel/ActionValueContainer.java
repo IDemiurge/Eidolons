@@ -30,14 +30,16 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     public void bindAction(Runnable action) {
-        addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                if (action != null) {
-                    clickAction = action::run;
+        if (action != null) {
+            clickAction = action::run;
+
+            addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    clickAction.run();
                 }
-            }
-        });
+            });
+        }
     }
 
     public Runnable getClickAction() {
