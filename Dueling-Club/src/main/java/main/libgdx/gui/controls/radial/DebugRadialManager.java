@@ -37,11 +37,12 @@ public class DebugRadialManager {
     public static List<RadialValueContainer> getDebugNodes(DC_Obj obj) {
         List<RadialValueContainer> list = new LinkedList<>();
 
-        Arrays.stream(DEBUG_CONTROL.values()).forEach(c -> {
-            if (c.isRoot()) {
-                list.add(createNodeBranch(c, obj));
+        for (int i = 0; i < DEBUG_CONTROL.values().length; i++) {
+            final DEBUG_CONTROL debug_control = DEBUG_CONTROL.values()[i];
+            if (debug_control.isRoot()) {
+                list.add(createNodeBranch(debug_control, obj));
             }
-        });
+        }
 
         return list;
     }
@@ -64,9 +65,9 @@ public class DebugRadialManager {
                         );
             }
         }
-        if (list.size() != 0) {
+        if (list.size() == 0) {
 
-            node = new RadialValueContainer(defaultTexture, () -> {
+            node = new RadialValueContainer(defaultTexture, object.toString(), () -> {
                 DebugMaster.setTarget(obj);
                 try {
                     if (object instanceof DEBUG_CONTROL) {
@@ -79,7 +80,7 @@ public class DebugRadialManager {
                 }
             });
         } else {
-            node = new RadialValueContainer(defaultTexture, null);
+            node = new RadialValueContainer(defaultTexture, object.toString(), null);
             node.setChilds(list);
         }
 
