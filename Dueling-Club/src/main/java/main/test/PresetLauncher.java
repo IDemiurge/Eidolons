@@ -330,7 +330,15 @@ public class PresetLauncher {
 
     }
 
-    public enum LAUNCH {
+    public enum LAUNCH_MODS {
+        //modify launch!
+        SELECT_DUNGEON,
+        SELECT_party,
+        SELECT_enemy,
+        SELECT_config,
+
+    }
+        public enum LAUNCH {
         AI("ai.xml", RULE_SCOPE.TEST, false),
         Gui("graphics test.xml", RULE_SCOPE.BASIC, null),
         Playtest("ai full.xml", RULE_SCOPE.FULL, null),

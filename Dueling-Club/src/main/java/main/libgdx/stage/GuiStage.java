@@ -84,4 +84,28 @@ public class GuiStage extends Stage {
             }
         });
     }
+
+    public ToolTipManager getToolTipManager() {
+        return toolTipManager;
+    }
+
+    public LogPanel getLog() {
+        return log;
+    }
+
+    public InventoryWithAction getInventoryForm() {
+        return inventoryForm;
+    }
+
+    public RadialMenu getRadialMenu() {
+        return radialMenu;
+    }
+
+    public UnitInfoPanel getInfoPanel() {
+        return infoPanel;
+    }
+
+    public InitiativePanel getInitiativePanel() {
+        return initiativePanel;
+    }
 }

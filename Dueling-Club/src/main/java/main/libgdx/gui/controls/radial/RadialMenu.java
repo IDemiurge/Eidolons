@@ -26,7 +26,8 @@ public class RadialMenu extends Group {
         final Texture t = TextureCache.getOrCreate(getEmptyNodePath());
 //        new Texture(RadialMenu.class.getResource(
 //         /data/marble_green.png).getPath());
-        closeButton = new RadialValueContainer(new TextureRegion(t), () -> RadialMenu.this.setVisible(false));
+        closeButton = new RadialValueContainer(new TextureRegion(t), () ->
+         close());
         closeButton.setX(-20);
 
         ValueTooltip tooltip = new ValueTooltip();
@@ -43,6 +44,10 @@ public class RadialMenu extends Group {
                 }
             }
         });
+    }
+
+    public void close() {
+        RadialMenu.this.setVisible(false);
     }
 
     private String getEmptyNodePath() {

@@ -713,6 +713,10 @@ public class SpawnManager {
     }
 
     public Map<Wave, Integer> getScheduledWaves() {
+        if (scheduledWaves==null )
+        {
+            arenaManager.getBattleConstructor().construct();
+        }
         return scheduledWaves;
     }
 

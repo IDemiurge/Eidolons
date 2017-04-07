@@ -34,7 +34,7 @@ public class GameScreen implements Screen {
     public static OrthographicCamera camera;
     private static GameScreen instance;
     private Stage gridStage;
-    private Stage guiStage;
+    private GuiStage guiStage;
     private Stage dialogStage;
     private Stage animsStage;
     private Stage ambienceStage;
@@ -251,7 +251,7 @@ public class GameScreen implements Screen {
         return gridStage;
     }
 
-    public Stage getGuiStage() {
+    public GuiStage getGuiStage() {
         return guiStage;
     }
 
