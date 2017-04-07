@@ -20,6 +20,7 @@ import main.game.core.ActionInput;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
 import main.game.logic.action.context.Context;
+import main.libgdx.GameScreen;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.gui.panels.dc.ValueContainer;
@@ -151,10 +152,12 @@ public class RadialManager {
             if (target instanceof Unit) {
                 final RadialValueContainer valueContainer = new RadialValueContainer(
                  getOrCreateR("UI/actions/examine.png"),
-                 () -> GuiEventManager.trigger(
-                  GuiEventType.SHOW_UNIT_INFO_PANEL,
-                  new EventCallbackParam<>(new UnitDataSource(((Unit) target)))
-                 )
+                 () -> {
+                     GuiEventManager.trigger(
+                      GuiEventType.SHOW_UNIT_INFO_PANEL,
+                      new EventCallbackParam<>(new UnitDataSource(((Unit) target))));
+                     GameScreen.getInstance().getGuiStage().getRadialMenu().close();
+                 }
                 );
                 addSimpleTooltip(valueContainer, "Examine");
                 return valueContainer;
@@ -185,7 +188,7 @@ public class RadialManager {
 
         RadialValueContainer valueContainer = new RadialValueContainer(
          new TextureRegion(getTextureForActive(el, target)),
-         el::invokeClicked
+         getRunnable(target, el)
         );
         addSimpleTooltip(valueContainer, el.getName());
         return valueContainer;
@@ -213,6 +216,7 @@ public class RadialManager {
              } else {
                  FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.ERROR, "", active);
              }
+             GameScreen.getInstance().getGuiStage().getRadialMenu().close();
          });
     }
 
@@ -229,7 +233,8 @@ public class RadialManager {
             } else if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
                 final RadialValueContainer valueContainer = new RadialValueContainer(
                  getOrCreateR(dc_activeObj.getImagePath()),
-                 () -> dc_activeObj.activateOn(target)
+                 getRunnable(RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, target, dcActiveObj)
+//                () -> dc_activeObj.activateOn(target)
                 );
                 addSimpleTooltip(valueContainer, dc_activeObj.getName());
                 list.add(valueContainer);
@@ -242,7 +247,7 @@ public class RadialManager {
                 for (DC_QuickItemObj ammo : dcActiveObj.getOwnerObj().getQuickItems()) {
                     final RadialValueContainer valueContainer = new RadialValueContainer(
                      getOrCreateR(ammo.getImagePath()),
-                     ammo::invokeClicked
+                     getRunnable(RADIAL_PARENT_NODE.MOVES, target, ammo)
                     );
                     addSimpleTooltip(valueContainer, ammo.getName());
                     list.add(valueContainer);
@@ -278,7 +283,7 @@ public class RadialManager {
             } else {
                 result = new RadialValueContainer(
                  new TextureRegion(getTextureForActive(dcActiveObj, target)),
-                 dcActiveObj::invokeClicked
+                 getRunnable(RADIAL_PARENT_NODE.MOVES, target, dcActiveObj)
                 );
             }
         }
@@ -287,35 +292,31 @@ public class RadialManager {
         return result;
     }
 
+    private static Runnable getRunnable(
+     DC_Obj target, Entity activeObj) {
+        return getRunnable(null, target, activeObj);
+    }
+
     private static Runnable getRunnable(RADIAL_PARENT_NODE type,
                                         DC_Obj target, Entity activeObj) {
 
         if (activeObj instanceof DC_ActiveObj) {
-            DC_ActiveObj  active = (DC_ActiveObj) activeObj;
-        if (active.getTargeting() instanceof SelectiveTargeting)
-            return () -> {
-                DC_Cell cell = target.getGame().getCellByCoordinate(target.getCoordinates());
-                if (active.getTargeter().canBeTargeted(cell.getId()))
-                    active.activateOn(target);
-            };
-        }
-        switch (type) {
+            DC_ActiveObj active = (DC_ActiveObj) activeObj;
+            if (active.getTargeting() instanceof SelectiveTargeting)
+                return () -> {
+                    DC_Cell cell = target.getGame().getCellByCoordinate(target.getCoordinates());
+                    if (active.getTargeter().canBeTargeted(cell.getId()))
+                        active.activateOn(target);
 
-            case OFFHAND_ATTACKS:
-            case MAIN_HAND_ATTACKS:
-
-            case TURN_ACTIONS:
-                break;
-            case SPELLS:
-                break;
-            case MOVES:
-                break;
-            case SPECIAL:
-                break;
-            case QUICK_ITEMS:
-                break;
+                    GameScreen.getInstance().getGuiStage().getRadialMenu().close();
+                };
         }
-        return  activeObj::invokeClicked;
+
+        return () -> {
+            activeObj.invokeClicked();
+            GameScreen.getInstance().getGuiStage().getRadialMenu().close();
+
+        };
     }
 
     public enum RADIAL_PARENT_NODE {
