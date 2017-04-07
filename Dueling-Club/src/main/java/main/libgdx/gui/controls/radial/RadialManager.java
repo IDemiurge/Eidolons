@@ -208,10 +208,11 @@ public class RadialManager {
           getOrCreateGrayscaleR(active.getImagePath()),
          () -> {
              if (valid) {
-                 new Thread(() -> {
-                     active.getGame().getManager().select(objSet, active.getRef());
-                     WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(active, new Context(active.getRef())));
-                 }, active.getName() + " radial activation").start();
+                 WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(active, new Context(active.getRef())));
+//                 new Thread(() -> {
+//                     active.getGame().getManager().select(objSet, active.getRef());
+//                     WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(active, new Context(active.getRef())));
+//                 }, active.getName() + " radial activation").start();
 
              } else {
                  FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.ERROR, "", active);
