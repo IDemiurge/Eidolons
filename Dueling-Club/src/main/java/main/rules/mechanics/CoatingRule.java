@@ -5,7 +5,7 @@ import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
-import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_QuickItemAction;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -90,7 +90,7 @@ public class CoatingRule {
 
         // }
 
-        if (action instanceof DC_ItemActiveObj) {
+        if (action instanceof DC_QuickItemAction) {
             weapon = (DC_Obj) action.getRef().getObj(KEYS.ITEM);
             throwing = true;
         }

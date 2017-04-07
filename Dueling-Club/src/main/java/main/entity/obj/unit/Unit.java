@@ -28,7 +28,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
-import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_SpellObj;
 import main.entity.item.*;
 import main.entity.obj.ActiveObj;
@@ -298,16 +298,16 @@ public class Unit extends DC_UnitModel {
 
     }
 
-    public List<DC_ItemActiveObj> getQuickItemActives() {
+    public List<DC_QuickItemAction> getQuickItemActives() {
         if (!ListMaster.isNotEmpty(getQuickItems())) {
             return new LinkedList<>();
         }
-        List<DC_ItemActiveObj> qia = new LinkedList<>();
+        List<DC_QuickItemAction> qia = new LinkedList<>();
         for (DC_QuickItemObj q : getQuickItems()) {
             if (!q.isConstructed()) {
                 q.construct();
             }
-            DC_ItemActiveObj active = q.getActive();
+            DC_QuickItemAction active = q.getActive();
             if (active != null) {
                 qia.add(active);
             }

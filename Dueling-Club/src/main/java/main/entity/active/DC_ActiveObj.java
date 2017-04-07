@@ -517,8 +517,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public DC_WeaponObj getActiveWeapon() {
         if (isThrow()){
-            if (this instanceof DC_ItemActiveObj){
-                return ((DC_ItemActiveObj) this).getItem().getWrappedWeapon();
+            if (this instanceof DC_QuickItemAction){
+                return ((DC_QuickItemAction) this).getItem().getWrappedWeapon();
             }
         }
         else

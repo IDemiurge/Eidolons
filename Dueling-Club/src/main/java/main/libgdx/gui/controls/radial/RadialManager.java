@@ -2,13 +2,14 @@ package main.libgdx.gui.controls.radial;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import main.content.C_OBJ_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.elements.Filter;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
+import main.entity.active.DC_QuickItemAction;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.ActiveObj;
@@ -68,6 +69,8 @@ public class RadialManager {
         if (target != action.getOwnerObj()) {
             if (action.getActionType() == ACTION_TYPE.MODE)
                 return false;
+            if (action.getActionGroup() == ACTION_TYPE_GROUPS.TURN)
+                return false;
         }
         return action.getTargeting() != null;
     }
@@ -86,7 +89,13 @@ public class RadialManager {
         List<RadialValueContainer> turns = new ArrayList<>();
         List<RadialValueContainer> attacks = new ArrayList<>();
         List<RadialValueContainer> specialActions = new ArrayList<>();
+        List<RadialValueContainer> modes = new ArrayList<>();
+        List<RadialValueContainer> quickItems = new ArrayList<>();
         List<ActiveObj> actives = sourceUnit.getActives();
+        sourceUnit.getQuickItems().forEach(item -> {
+            if (isQuickItemShown(item, target))
+                actives.add(item.getActive());
+        });
         actives.parallelStream()
          .filter(el -> isActionShown(el, target))
          .map(el -> (DC_ActiveObj) el)
@@ -102,21 +111,35 @@ public class RadialManager {
              } else if (el.isAttackGeneric()) {
                  attacks.addAll(configureAttackNode(target, el));
              } else {
-//                 if (el.getActionType() == ACTION_TYPE.MODE) {
                  final RadialValueContainer valueContainer = configureActionNode(target, el);
-                 specialActions.add(valueContainer);
+
+                 if (el instanceof DC_QuickItemAction)
+                     quickItems.add(valueContainer);
+                 else if (el.getActionType() == ACTION_TYPE.MODE)
+                     modes.add(valueContainer);
+                 else
+                 {
+                     if (!el.isAttackAny())
+                         if ( el.getActionType()!=ACTION_TYPE.HIDDEN )
+                             specialActions.add(valueContainer);
+                 }
 
              }
          });
 
         List<RadialValueContainer> list = new LinkedList<>();
-        list.add(getExamineNode(target));
-        list.add(getParentNode(RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, attacks.get(0)));
+        if (target instanceof Unit)
+            list.add(getExamineNode(target));
+        list.add(getAttackParentNode(RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, attacks.get(0)));
         list.add(getParentNode(RADIAL_PARENT_NODE.TURN_ACTIONS, turns));
         list.add(getParentNode(RADIAL_PARENT_NODE.MOVES, moves));
         if (attacks.size() > 1)
-            list.add(getParentNode(RADIAL_PARENT_NODE.OFFHAND_ATTACKS, attacks.get(1)));
-//        list.add(getParentNode(RADIAL_PARENT_NODE.QUICK_ITEMS, null )); TODO
+            list.add(getAttackParentNode(RADIAL_PARENT_NODE.OFFHAND_ATTACKS, attacks.get(1)));
+
+        list.add(getParentNode(RADIAL_PARENT_NODE.QUICK_ITEMS, quickItems));
+        list.add(getParentNode(RADIAL_PARENT_NODE.MODES, modes));
+
+
         list.add(getParentNode(RADIAL_PARENT_NODE.SPECIAL, specialActions));
 
         if (!sourceUnit.getSpells().isEmpty()) {
@@ -125,8 +148,17 @@ public class RadialManager {
             list.add(getParentNode(RADIAL_PARENT_NODE.SPELLS, spellNodes));
         }
 
-        list.removeIf(p -> p == null);
         return list;
+    }
+
+    private static boolean isQuickItemShown(DC_QuickItemObj item, DC_Obj target) {
+        if (target != item.getOwnerObj()) {
+            if (!(item.getActive().getTargeting() instanceof SelectiveTargeting))
+                return false;
+        }
+        if (item.isAmmo())
+            return false;
+        return true;
     }
 
     private static RadialValueContainer getParentNode(RADIAL_PARENT_NODE type,
@@ -140,29 +172,25 @@ public class RadialManager {
         return (valueContainer);
     }
 
-    private static RadialValueContainer getParentNode(RADIAL_PARENT_NODE type,
-                                                      RadialValueContainer valueContainer) {
+    private static RadialValueContainer getAttackParentNode(RADIAL_PARENT_NODE type,
+                                                            RadialValueContainer valueContainer) {
         addSimpleTooltip(valueContainer, type.getName());
         return valueContainer;
     }
 
     private static RadialValueContainer getExamineNode(DC_Obj target) {
-        if (C_OBJ_TYPE.UNITS_CHARS.equals(target.getOBJ_TYPE_ENUM())) {
-            if (target instanceof Unit) {
-                final RadialValueContainer valueContainer = new RadialValueContainer(
-                 getOrCreateR("UI/actions/examine.png"),
-                 () -> {
-                     GuiEventManager.trigger(
-                      GuiEventType.SHOW_UNIT_INFO_PANEL,
-                      new EventCallbackParam<>(new UnitDataSource(((Unit) target))));
-                     
-                 }
-                );
-                addSimpleTooltip(valueContainer, "Examine");
-                return valueContainer;
-            }
-        }
-        return null;
+
+        final RadialValueContainer valueContainer = new RadialValueContainer(
+         getOrCreateR("UI/components\\2017\\radial/examine.png"),
+         () -> {
+             GuiEventManager.trigger(
+              GuiEventType.SHOW_UNIT_INFO_PANEL,
+              new EventCallbackParam<>(new UnitDataSource(((Unit) target))));
+
+         }
+        );
+        addSimpleTooltip(valueContainer, "Examine");
+        return valueContainer;
     }
 
 
@@ -211,7 +239,7 @@ public class RadialManager {
              } else {
                  FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.ERROR, "", active);
              }
-             
+
          });
     }
 
@@ -298,25 +326,27 @@ public class RadialManager {
                     if (active.getTargeter().canBeTargeted(cell.getId()))
                         active.activateOn(target);
 
-                    
+
                 };
         }
 
         return () -> {
             activeObj.invokeClicked();
-            
+
 
         };
     }
 
     public enum RADIAL_PARENT_NODE {
         OFFHAND_ATTACKS,
-        TURN_ACTIONS("/UI/components\\2017\\radial\\turn actions.jpg"),
+        TURN_ACTIONS("/UI/components\\2017\\radial\\turns.png"),
         SPELLS("/UI/components\\2017\\radial\\spells.png"),
-        MOVES("UI\\components\\2017\\radial\\moves.jpg"),
+        MOVES("UI\\components\\2017\\radial\\moves.png"),
         MAIN_HAND_ATTACKS,
-        SPECIAL("UI\\components\\2017\\radial\\restoration modes.png"),
-        QUICK_ITEMS,;
+        SPECIAL("UI\\components\\2017\\radial\\special actions.png"),
+        QUICK_ITEMS("UI\\components\\2017\\radial\\restoration modes.png")
+        , MODES("UI\\components\\2017\\radial\\additional actions.png"),
+        ;
 
         private String iconPath;
 

@@ -31,7 +31,7 @@ import main.data.DataManager;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
-import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_QuickItemAction;
 import main.entity.type.ObjType;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.system.auxiliary.log.LogMaster;
@@ -96,8 +96,8 @@ public class AI_SpellMaster {
         if (spell.isThrow()) {
             return AiEnums.AI_LOGIC.DAMAGE;
         }
-        if (spell instanceof DC_ItemActiveObj) {
-            DC_ItemActiveObj itemActiveObj = (DC_ItemActiveObj) spell;
+        if (spell instanceof DC_QuickItemAction) {
+            DC_QuickItemAction itemActiveObj = (DC_QuickItemAction) spell;
             if (itemActiveObj.getItem().isAmmo()) {
                 return AiEnums.AI_LOGIC.OTHER;
             }

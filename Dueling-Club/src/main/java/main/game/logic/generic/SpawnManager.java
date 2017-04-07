@@ -671,10 +671,12 @@ public class SpawnManager {
     public void newRound() {
         Map<Wave, Integer> waves = getScheduledWaves();
         if (!waves.isEmpty()) {
-            for (Wave waveType : waves.keySet()) {
-                if (scheduledWaves.get(waveType) <= game.getState().getRound()) {
-                    spawnWave(waveType);
-                    scheduledWaves.remove(waveType);
+            for (Wave wave : waves.keySet()) {
+                if (scheduledWaves.get(wave) <= game.getState().getRound()) {
+try{                    spawnWave(wave);                }catch(Exception e){                e.printStackTrace();            }
+                 finally {
+    scheduledWaves.remove(wave);
+}
                 }
             }
         }

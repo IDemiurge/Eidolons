@@ -8,7 +8,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_QuickItemAction;
 import main.entity.obj.HeroItem;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
@@ -24,7 +24,7 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     private static final VALUE[] TRANSLATED_VALUES = {G_PROPS.STD_BOOLS};
     // or aggregation?
-    private DC_ItemActiveObj active;
+    private DC_QuickItemAction active;
     private boolean wrapped;
 
     private DC_WeaponObj wrappedWeapon;
@@ -80,7 +80,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         type.setProperty(G_PROPS.NAME, type.getName() + ""
                 + StringMaster.wrapInParenthesis(getName()));
         type.setGame(game);
-        setActive(new DC_ItemActiveObj(type, getOriginalOwner(), getGame(), ref));
+        setActive(new DC_QuickItemAction(type, getOriginalOwner(), getGame(), ref));
         getActive().setItem(this);
 
     }
@@ -116,7 +116,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         }
 
         ObjType type = initActiveType();
-        setActive(new DC_ItemActiveObj(type, getOriginalOwner(), getGame(), ref));
+        setActive(new DC_QuickItemAction(type, getOriginalOwner(), getGame(), ref));
         getActive().setActives(getActives());
         getActive().setItem(this);
 
@@ -359,11 +359,11 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 	 * talismans?
 	 */
 
-    public DC_ItemActiveObj getActive() {
+    public DC_QuickItemAction getActive() {
         return active;
     }
 
-    public void setActive(DC_ItemActiveObj active) {
+    public void setActive(DC_QuickItemAction active) {
         this.active = active;
     }
 

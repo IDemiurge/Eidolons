@@ -15,7 +15,7 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.DC_UnitModel;
@@ -52,7 +52,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     @Override
     public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, DC_UnitModel target, Ref REF) {
-        if (REF.getActive() instanceof DC_ItemActiveObj) {
+        if (REF.getActive() instanceof DC_QuickItemAction) {
             DC_Obj weapon = (DC_Obj) REF.getActive().getRef().getObj(KEYS.ITEM);
             if (weapon != null) {
                 weapon.applySpecialEffects(case_type, target, REF);

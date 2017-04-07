@@ -1,7 +1,7 @@
 package main.swing.builders;
 
 import main.entity.active.DC_ActiveObj;
-import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_SpellObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Cell;
@@ -454,7 +454,7 @@ public class DC_Builder extends Builder {
         g.drawImage(image, p.x + offsetX, p.y + offsetY, null);
     }
 
-    private Point getScreenPointForQuickItem(DC_ItemActiveObj activeObj) {
+    private Point getScreenPointForQuickItem(DC_QuickItemAction activeObj) {
         int x = getQuickItemPanel().getX();
         int y = getQuickItemPanel().getY();
 
@@ -479,8 +479,8 @@ public class DC_Builder extends Builder {
         if (activeObj instanceof DC_SpellObj) {
             return getScreenPointForSpell((DC_SpellObj) activeObj);
         }
-        if (activeObj instanceof DC_ItemActiveObj) {
-            return getScreenPointForQuickItem((DC_ItemActiveObj) activeObj);
+        if (activeObj instanceof DC_QuickItemAction) {
+            return getScreenPointForQuickItem((DC_QuickItemAction) activeObj);
         }
         DC_PagedUnitActionPanel unitActionPanel = getUap().getPanelForAction(
                 (DC_ActiveObj) activeObj);
