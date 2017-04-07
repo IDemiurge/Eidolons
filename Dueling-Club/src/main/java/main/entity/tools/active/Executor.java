@@ -134,7 +134,14 @@ public class Executor extends ActiveHandler {
         if (isInterrupted())
             return interrupted();
 
-        log(getAction().getOwnerObj() + " activates " + getAction(), true);
+        boolean gameLog = getAction().getLogger().isActivationLogged();
+        String targets = " ";
+        if (getAction().getTargeting()!=null )
+            targets+= getAction().getTargetObj().getNameAndCoordinate();
+        if (getAction().getTargetGroup()!=null )
+            targets+= getAction().getTargetGroup().toString();
+        log(getAction().getOwnerObj().getNameIfKnown() + " activates "
+         + getAction().getNameIfKnown() + targets, gameLog);
         beingActivated();
         if (isInterrupted())
             return interrupted();

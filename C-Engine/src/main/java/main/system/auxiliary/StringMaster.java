@@ -7,6 +7,7 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Converter;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.system.auxiliary.data.ListMaster;
@@ -690,7 +691,7 @@ public class StringMaster {
     public static Integer getInteger(String value) {
         if (!isInteger(value)) {
             try {
-                return new Formula(value).getInt();
+                return new Formula(value).getInt(new Ref());
             } catch (Exception e2) {
                 e2.printStackTrace();
             }

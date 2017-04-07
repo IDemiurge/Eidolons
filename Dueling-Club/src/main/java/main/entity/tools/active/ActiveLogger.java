@@ -95,4 +95,9 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
     public Executor getHandler() {
         return (Executor) super.getHandler();
     }
+
+    public boolean isActivationLogged() {
+        if (getEntity().isAttackAny()) return false;
+        return true;
+    }
 }

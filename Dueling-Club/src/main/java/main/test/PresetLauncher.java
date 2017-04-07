@@ -4,6 +4,7 @@ import main.ability.UnitTrainingMaster;
 import main.client.cc.logic.items.ItemGenerator;
 import main.content.DC_TYPE;
 import main.content.PROPS;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
@@ -28,6 +29,7 @@ import main.test.Preset.PRESET_DATA;
 import main.test.Preset.PRESET_OPTION;
 import main.test.debug.DebugMaster;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
+import main.test.debug.GameLauncher.CODE;
 import main.test.frontend.FAST_DC;
 
 import java.util.Arrays;
@@ -40,7 +42,7 @@ public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
             "AI", "Gui", "Playtest", "Recent", "New", "Anims", "Usability",
 //            "Emitters","Light",
-     "Standoff",  "Last",  "Profiling"
+     "Standoff Test","Standoff",  "Last",  "Profiling"
 
     };
     public static int PRESET_OPTION = -1;
@@ -48,8 +50,14 @@ public class PresetLauncher {
     private static boolean isInitLaunch = true;
 
     static {
+        LAUNCH.Standoff_Test.gameMode = GAME_MODES.ARENA;
+        LAUNCH.Standoff_Test.dungeonPath = "Pit.xml";
+
         LAUNCH.Standoff.gameMode = GAME_MODES.ARENA;
         LAUNCH.Standoff.dungeonPath = "Pit.xml";
+
+        LAUNCH.Standoff. workspaceFilter=WORKSPACE_GROUP.TEST;
+        LAUNCH.Standoff. PARTY_CODE= CODE.CHOOSE;
         LAUNCH.Gui.graphicsTest = true;
 
         LAUNCH.Gui.visionHacked = true;
@@ -348,8 +356,9 @@ public class PresetLauncher {
         JUnit(),
         Profiling(true),
         Standoff(null , RULE_SCOPE.FULL, null),
+            Standoff_Test(null , RULE_SCOPE.TEST, true),
         Usability("Usability.xml", RULE_SCOPE.FULL, null)
-        ;
+            ;
         public Boolean immortal;
         public CONTROLLER controller;
         public String preset;
@@ -372,8 +381,9 @@ public class PresetLauncher {
         public int ENEMY_CODE;
         public int PARTY_CODE;
         public GAME_MODES gameMode;
+            public WORKSPACE_GROUP workspaceFilter;
 
-        //test launches
+            //test launches
         LAUNCH() {
             deterministicUnitTraining=true;
 
