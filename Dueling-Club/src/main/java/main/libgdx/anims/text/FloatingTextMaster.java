@@ -33,7 +33,7 @@ import java.util.List;
 public class FloatingTextMaster {
     private static final float DEFAULT_DISPLACEMENT_Y = 140;
     private static final float DEFAULT_DISPLACEMENT_X = 0;
-    private static final float DEFAULT_DURATION = 3;
+    private static final float DEFAULT_DURATION = 4.5f;
     private static FloatingTextMaster instance;
 
     public FloatingTextMaster() {

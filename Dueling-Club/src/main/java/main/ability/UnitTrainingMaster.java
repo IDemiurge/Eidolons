@@ -18,7 +18,7 @@ public class UnitTrainingMaster {
     private static final int DEFAULT_CASTER_XP_MOD = 60;
     private static boolean random;
     private static boolean shopOn = true;
-    private static boolean spellsOn;
+    private static boolean spellsOn=true;
     private static boolean skillsOn;
 
     static {

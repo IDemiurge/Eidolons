@@ -7,6 +7,7 @@ import main.content.PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.dungeon.DungeonMaster;
 import main.libgdx.anims.controls.EmitterController;
@@ -38,8 +39,8 @@ import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
 public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
             "AI", "Gui", "Playtest", "Recent", "New", "Anims", "Usability",
-            "Emitters",
-            "Last",  "Light","Profiling"
+//            "Emitters","Light",
+     "Standoff",  "Last",  "Profiling"
 
     };
     public static int PRESET_OPTION = -1;
@@ -47,6 +48,8 @@ public class PresetLauncher {
     private static boolean isInitLaunch = true;
 
     static {
+        LAUNCH.Standoff.gameMode = GAME_MODES.ARENA;
+        LAUNCH.Standoff.dungeonPath = "Pit.xml";
         LAUNCH.Gui.graphicsTest = true;
 
         LAUNCH.Gui.visionHacked = true;
@@ -336,6 +339,7 @@ public class PresetLauncher {
         Light("light preview.xml", RULE_SCOPE.BASIC, true),
         JUnit(),
         Profiling(true),
+        Standoff(null , RULE_SCOPE.FULL, null),
         Usability("Usability.xml", RULE_SCOPE.FULL, null)
         ;
         public Boolean immortal;
@@ -359,6 +363,7 @@ public class PresetLauncher {
         public boolean graphicsOff;
         public int ENEMY_CODE;
         public int PARTY_CODE;
+        public GAME_MODES gameMode;
 
         //test launches
         LAUNCH() {

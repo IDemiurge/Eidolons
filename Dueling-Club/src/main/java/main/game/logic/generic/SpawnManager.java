@@ -19,7 +19,6 @@ import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_ObjInitializer;
 import main.game.battlefield.FacingMaster;
 import main.game.core.game.DC_Game;
-import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.arena.ArenaManager;
 import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.arena.Wave;
@@ -361,13 +360,14 @@ public class SpawnManager {
                 // TODO not always vertical!
                 facing = FacingMaster.getFacingFromDirection(getPositioner().getClosestEdgeY(
                         unit.getCoordinates()).getDirection().flip());
-            } else if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
+            } else
+//             TODO    if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
                 facing = FacingMaster.getPresetFacing(me);
-            } else if (me) {
-                facing = getPositioner().getPartyMemberFacing(unit.getCoordinates());
-            } else {
-                facing = getPositioner().getFacingForEnemy(unit.getCoordinates());
-            }
+//            } else if (me) {
+//                facing = getPositioner().getPartyMemberFacing(unit.getCoordinates());
+//            } else {
+//                facing = getPositioner().getFacingForEnemy(unit.getCoordinates());
+//            }
             ((BattleFieldObject) unit).resetFacing(facing);
         }
         DC_ObjInitializer.initializePartyPositions(partyData, list);

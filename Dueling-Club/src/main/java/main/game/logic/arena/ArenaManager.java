@@ -174,9 +174,7 @@ public class ArenaManager {
     }
 
     private boolean isEncountersConstructed() {
-        if (game.isTestMode()) {
-            return false;
-        }
+
         return game.getGameMode() == GAME_MODES.ARENA;
     }
 

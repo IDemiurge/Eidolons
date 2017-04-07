@@ -31,6 +31,7 @@ import main.system.launch.CoreEngine;
 import main.system.test.TestMasterContent;
 import main.test.Preset;
 import main.test.PresetLauncher;
+import main.test.PresetLauncher.LAUNCH;
 import main.test.PresetMaster;
 import main.test.frontend.FAST_DC;
 
@@ -47,7 +48,7 @@ public class GameLauncher {
     // private boolean RANDOMIZE_ENEMIES_PARTY = true;
     public boolean LEADER_MOVES_FIRST = false;
     public String ENEMY_PARTY = "Pirate";
-    public String PLAYER_PARTY = "Bandit Archer";//Zail Adelwyn v4
+    public String PLAYER_PARTY = "Warlock";//"Bandit Archer";//Zail Adelwyn v4
     public boolean DUMMY_MODE = false;
     public boolean DUMMY_PP = false;
     public Boolean FAST_MODE;
@@ -72,7 +73,7 @@ public class GameLauncher {
                         Boolean host_client) {
         this.game = game;
         this.host_client = host_client;
-        this.FAST_MODE =BooleanMaster.isTrue( FAST_MODE);
+        this.FAST_MODE = BooleanMaster.isTrue(FAST_MODE);
         this.SUPER_FAST_MODE = BooleanMaster.isTrue(SUPER_FAST_MODE);
         instance = this;
     }
@@ -83,7 +84,7 @@ public class GameLauncher {
 
     private String initFactionData() {
         unitGroupLevel = BooleanMaster.isFalse(host_client) ? UnitGroupMaster.getPowerLevel()
-                : DialogMaster.inputInt(UnitGroupMaster.getPowerLevel());
+         : DialogMaster.inputInt(UnitGroupMaster.getPowerLevel());
         UnitGroupMaster.setPowerLevel(unitGroupLevel);
         UnitGroupMaster.setFactionLeaderRequired(factionLeaderRequired);
         // Faction faction = chooseFaction();
@@ -184,8 +185,8 @@ public class GameLauncher {
         }
         try {
             if (PresetMaster.getPreset() == null // &&
-                    // !BooleanMaster.isTrue(FAST_MODE)
-                    && !SUPER_FAST_MODE) {
+             // !BooleanMaster.isTrue(FAST_MODE)
+             && !SUPER_FAST_MODE) {
                 createPreset();
                 autosavePreset();
             }
@@ -205,32 +206,38 @@ public class GameLauncher {
         game.setEnemyParty(ENEMY_PARTY);
 
 
-        if (PresetLauncher.getLaunch() != null) {
+        LAUNCH launch = PresetLauncher.getLaunch();
+        if (launch != null) {
 //            if (PresetLauncher.getLaunch().preset != null) {
 //                Preset p = PresetMaster.loadPreset(PresetLauncher.getLaunch().preset);
 //         PresetMaster.setPreset(p);
 //            } TODO move here from PResetLauncher
-            ENEMY_CODE = PresetLauncher.getLaunch().ENEMY_CODE ;
-            PARTY_CODE = PresetLauncher.getLaunch().PARTY_CODE ;
+            ENEMY_CODE = launch.ENEMY_CODE;
+            PARTY_CODE = launch.PARTY_CODE;
 
             if (!VISION_HACK) {
-                VISION_HACK = PresetLauncher.getLaunch().visionHacked;
+                VISION_HACK = launch.visionHacked;
             }
-            DUMMY_MODE = PresetLauncher.getLaunch().dummy;
-            DUMMY_PP = PresetLauncher.getLaunch().dummy_pp;
-            DEBUG_MODE = PresetLauncher.getLaunch().debugMode;
-            FAST_MODE = PresetLauncher.getLaunch().fast;
-            if (PresetLauncher.getLaunch().ruleScope!=null ) {
-                RuleMaster.setScope(PresetLauncher.getLaunch().ruleScope);
+            DUMMY_MODE = launch.dummy;
+            DUMMY_PP = launch.dummy_pp;
+            DEBUG_MODE = launch.debugMode;
+            FAST_MODE = launch.fast;
+            if (launch.ruleScope != null) {
+                RuleMaster.setScope(launch.ruleScope);
             }
-            ItemGenerator.setGenerationOn(!PresetLauncher.getLaunch().itemGenerationOff);
-            TestMasterContent.setForceFree(PresetLauncher.getLaunch().freeActions);
+            ItemGenerator.setGenerationOn(!launch.itemGenerationOff);
+            TestMasterContent.setForceFree(launch.freeActions);
 
-            TestMasterContent.setImmortal(PresetLauncher.getLaunch().immortal);
-            CoreEngine.setGraphicTestMode(PresetLauncher.getLaunch().graphicsTest);
-UnitTrainingMaster.setRandom(!PresetLauncher.getLaunch().deterministicUnitTraining);
+            TestMasterContent.setImmortal(launch.immortal);
+            CoreEngine.setGraphicTestMode(launch.graphicsTest);
 
-            DC_KeyManager.DEFAULT_CONTROLLER = PresetLauncher.getLaunch().controller;
+            UnitTrainingMaster.setSpellsOn(!launch.fast);
+            UnitTrainingMaster.setSkillsOn(!launch.fast);
+
+            UnitTrainingMaster.setRandom(!launch.deterministicUnitTraining);
+            if (launch.gameMode != null)
+                game.setGameMode(launch.gameMode);
+            DC_KeyManager.DEFAULT_CONTROLLER = launch.controller;
         }
         if (host_client != null) {
             initMultiplayerFlags();
@@ -311,7 +318,7 @@ UnitTrainingMaster.setRandom(!PresetLauncher.getLaunch().deterministicUnitTraini
         game.setTestMode(true);
         if (OPTION == null) {
             OPTION = DialogMaster.optionChoice("Select party init option", "Group", "Default",
-                    "Heroes", "Units", "Party");
+             "Heroes", "Units", "Party");
         }
         switch (OPTION) {
             case 0:
@@ -341,7 +348,7 @@ UnitTrainingMaster.setRandom(!PresetLauncher.getLaunch().deterministicUnitTraini
 
     private String chooseParty() {
         ObjType party = ListChooser.chooseType_(DataManager
-                .getTypesGroup(DC_TYPE.PARTY, "Preset"), DC_TYPE.PARTY);
+         .getTypesGroup(DC_TYPE.PARTY, "Preset"), DC_TYPE.PARTY);
         return party.getProperty(PROPS.MEMBERS);
     }
 
@@ -384,7 +391,7 @@ UnitTrainingMaster.setRandom(!PresetLauncher.getLaunch().deterministicUnitTraini
     public String chooseEnemies(Integer ENEMY_OPTION) {
         if (ENEMY_OPTION == null) {
             ENEMY_OPTION = DialogMaster.optionChoice("Select Enemy init option", "Group",
-                    "Encounter", "Heroes", "Units", "Default");
+             "Encounter", "Heroes", "Units", "Default");
         }
         switch (ENEMY_OPTION) {
             case 0:
@@ -394,7 +401,7 @@ UnitTrainingMaster.setRandom(!PresetLauncher.getLaunch().deterministicUnitTraini
                 encounterName = ListChooser.chooseType(DC_TYPE.ENCOUNTERS);
                 if (encounterName != null) {
                     return getEnemiesFromWave(DataManager.getType(encounterName,
-                            DC_TYPE.ENCOUNTERS));
+                     DC_TYPE.ENCOUNTERS));
                 }
             case 2:
                 return chooseCharacters();

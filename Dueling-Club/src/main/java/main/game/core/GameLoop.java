@@ -64,10 +64,12 @@ public class GameLoop {
     }
 
     private Boolean activateAction(ActionInput input) {
-        activatingAction = input.getAction();
-        activatingAction.setTargetObj(input.getContext().getTargetObj());
-        activatingAction.setTargetGroup(input.getContext().getGroup());
+        if (input == null )
+            return true;
         try {
+            activatingAction = input.getAction();
+            activatingAction.setTargetObj(input.getContext().getTargetObj());
+            activatingAction.setTargetGroup(input.getContext().getGroup());
             input.getAction().getHandler().activateOn(input.getContext());
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,7 +107,7 @@ public class GameLoop {
 
 
     private ActionInput waitForPlayerInput() {
-        return (ActionInput) WaitMaster.waitForInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION);
+        return (ActionInput) WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_INPUT);
     }
 
 

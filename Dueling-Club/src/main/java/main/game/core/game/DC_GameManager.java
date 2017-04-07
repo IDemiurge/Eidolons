@@ -144,7 +144,7 @@ public class DC_GameManager extends GameManager {
         // SoundMaster.playEffectSound(SOUNDS.WHAT, obj);
 
         ColorManager.setCurrentColor(ColorManager.getDarkerColor(ColorManager.getAltAspectColor(obj
-                .getType()), 80));
+         .getType()), 80));
 
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTIVE_UNIT_SELECTED, getActiveObj());
         return true;
@@ -252,7 +252,7 @@ public class DC_GameManager extends GameManager {
         if (!selectionObj) {
             if (C_OBJ_TYPE.BF_OBJ.equals(obj.getOBJ_TYPE_ENUM())) {
                 selectionObj = selectingSet.contains(getGame().getCellByCoordinate(
-                        obj.getCoordinates()));
+                 obj.getCoordinates()));
             }
         }
         if (!selectionObj) {
@@ -293,7 +293,7 @@ public class DC_GameManager extends GameManager {
 
         super.infoSelect(obj);
         if (
-                getGame().getBattleField() != null) {
+         getGame().getBattleField() != null) {
             getGame().getBattleField().selectInfoObj(obj, true);
         }
 
@@ -339,7 +339,7 @@ public class DC_GameManager extends GameManager {
     public Integer select(Filter<Obj> filter, Ref ref) {
         if (ref.getActive() instanceof DC_ActiveObj) {
             if (getGame().getToolTipMaster()
-                    .isTargetingTooltipShown((DC_ActiveObj) ref.getActive())) {
+             .isTargetingTooltipShown((DC_ActiveObj) ref.getActive())) {
                 getGame().getToolTipMaster().initTargetingTooltip((DC_ActiveObj) ref.getActive());
             }
         }
@@ -351,15 +351,15 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public Integer select(Set<Obj> selectingSet, Ref ref) {
-            Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
-                if (ref.getActive() instanceof DC_ActiveObj) {
-                    //TODO CLICK ON ANY OTHER OBJ MUST RESULT IN SELECTION STOP!
+        Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
+            if (ref.getActive() instanceof DC_ActiveObj) {
+                //TODO CLICK ON ANY OTHER OBJ MUST RESULT IN SELECTION STOP!
 //                    ((DC_ActiveObj) ref.getActive()).activateOn(t);
 //                    WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, t.getId());
-t.invokeClicked();
-                }
-            });
-            GuiEventManager.trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
+                t.invokeClicked();
+            }
+        });
+        GuiEventManager.trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
 
         for (Obj obj : new LinkedList<>(selectingSet)) {
             if (obj instanceof DC_Obj) {
@@ -377,7 +377,7 @@ t.invokeClicked();
 
         if (selectingSet.isEmpty()) {
             getGame().getToolTipMaster().addTooltip(SCREEN_POSITION.ACTIVE_UNIT_BOTTOM,
-                    "No targets available!");
+             "No targets available!");
             SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
             return null;
         }
@@ -387,8 +387,8 @@ t.invokeClicked();
         }
 
         Integer id = selectAwait();
-        if (id == null ) {
-            if (ref.getTarget() != null ) {
+        if (id == null) {
+            if (ref.getTarget() != null) {
                 return ref.getTarget();
             }
         }
@@ -401,7 +401,7 @@ t.invokeClicked();
         // add Cancel button? add hotkey listener?
         LogMaster.log(1, "***** awaiting selection from: " + selectingSet);
         Integer selectedId = (Integer) WaitMaster.waitForInput(
-                WAIT_OPERATIONS.SELECT_BF_OBJ);
+         WAIT_OPERATIONS.SELECT_BF_OBJ);
         // selecting = false;
         // cancelSelecting();
         return selectedId;
@@ -499,8 +499,8 @@ t.invokeClicked();
     public boolean effectApplies(EffectImpl effect) {
         Ref ref = effect.getRef();
         if (!getGame().fireEvent(new
-                Event(STANDARD_EVENT_TYPE.EFFECT_IS_BEING_APPLIED,
-                ref))) {
+         Event(STANDARD_EVENT_TYPE.EFFECT_IS_BEING_APPLIED,
+         ref))) {
             return false;
         }
 
