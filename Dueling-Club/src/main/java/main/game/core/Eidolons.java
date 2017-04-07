@@ -9,6 +9,7 @@ import main.game.core.state.DC_StateManager;
  * Created by JustMe on 2/15/2017.
  */
 public class Eidolons {
+    public static final boolean DEV_MODE =true ;
     public static DC_Game game;
     public static DC_GameManager gameManager;
     public static DC_GameMaster gameMaster;

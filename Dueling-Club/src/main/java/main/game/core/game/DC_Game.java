@@ -618,10 +618,7 @@ public class DC_Game extends MicroGame {
     }
 
     public GAME_MODES getGameMode() {
-        if (ArenaArcadeMaster.isTestMode()) {
-            return GAME_MODES.ARENA_ARCADE;
-        }
-        return gameMode;
+            return gameMode;
     }
 
     public void setGameMode(GAME_MODES gameMode) {

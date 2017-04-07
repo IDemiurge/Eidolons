@@ -1,6 +1,5 @@
 package main.game.logic.arena;
 
-import main.client.dc.Launcher;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
@@ -18,6 +17,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.BattleOptions;
 import main.game.logic.battle.BattleOptions.ARENA_GAME_OPTIONS;
@@ -120,7 +120,7 @@ public class ArenaBattleConstructor {
             encounters += type.getName() + " on " + waves.get(type) + ", ";
         }
         encounters = encounters.substring(0, encounters.length() - 2);
-        if (game.isDebugMode()) {
+        if (Eidolons.DEV_MODE) {
             game.getLogManager().log("Encounters scheduled: " + encounters);
         }
         return true;
@@ -192,7 +192,7 @@ public class ArenaBattleConstructor {
             Wave wave = new Wave(c, waveType, game, new Ref(game), game.getPlayer(false));
             wave.initUnitMap();
             map.put(wave, round);
-            if (Launcher.DEV_MODE) {
+            if (Eidolons.DEV_MODE) {
                 game.getLogManager().logInfo(wave.toString() + " on round #" + round);
             }
             LogMaster.log(1, wave.toString() + " on round #" + round);

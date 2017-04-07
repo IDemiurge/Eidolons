@@ -116,6 +116,7 @@ public class FloatingText extends Group {
         Label label =
                 new Label(getText(), StyleHolder.getDefaultLabelStyle());
         label.setColor(c);
+        label.setPosition(0, -20);
         addActor(label);
 
         setPosition(origin.x, origin.y);

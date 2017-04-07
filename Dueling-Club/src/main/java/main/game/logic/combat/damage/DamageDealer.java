@@ -30,6 +30,8 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 public class DamageDealer {
 
 
+    private static boolean logOn;
+
     /**
      * Accepts Damage Object that encapsulates all necessary data
      *
@@ -41,15 +43,18 @@ public class DamageDealer {
     }
 
     private static int dealDamage(Damage damage, boolean isBonusDamage) {
+        logOn = true;
         int result = dealDamageOfType(damage.getDmgType(),
          damage.getTarget()
          , damage.getRef(), damage.getAmount(), isBonusDamage);
 
         if (damage instanceof MultiDamage) {
+            logOn=false;
             int bonus = dealBonusDamage((MultiDamage) damage, result);
             result += bonus;
         }
 
+        logOn=true;
         return result;
     }
 
@@ -113,6 +118,7 @@ public class DamageDealer {
         }
         // VITAL!
         amount = ref.getAmount();
+        if (isLogOn())
         ref.getGame().getLogManager().logDamageBeingDealt(amount, attacker, targetObj, damage_type);
 
         if (!processDamageEvent(damage_type, ref, amount, new EventType(
@@ -201,6 +207,7 @@ public class DamageDealer {
          : STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PHYSICAL_DAMAGE, ref).fire();
 
 
+        if (isLogOn())
         attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked, amount);
         return result;
     }
@@ -283,12 +290,12 @@ public class DamageDealer {
         }
         // TODO if not started already
 
-        attacked.getGame().getLogManager().newLogEntryNode(true, ENTRY_TYPE.DAMAGE);
-
+        if (isLogOn()) {
+            attacked.getGame().getLogManager().newLogEntryNode(true, ENTRY_TYPE.DAMAGE);
+            attacked.getGame().getLogManager().logDamageDealt(toughness_dmg, endurance_dmg, attacker, attacked);
+        }
         LogMaster.log(1, toughness_dmg + " / " + endurance_dmg + " damage being dealt to "
          + attacked.toString());
-        attacked.getGame().getLogManager().logDamageDealt(toughness_dmg, endurance_dmg, attacker, attacked);
-
         ref.setTarget(attacked.getId());
         ref.setSource(attacker.getId());
 
@@ -372,8 +379,10 @@ public class DamageDealer {
         }
         LogMaster.log(1, toughness_dmg + " / " + endurance_dmg + " damage has been dealt to "
          + attacked.toString());
-        attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked,
-         damageDealt);
+
+        if (isLogOn())
+            attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked,
+             damageDealt);
         processDamageEvent(null, ref, damageDealt, STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE);
         return damageDealt;
     }
@@ -386,5 +395,10 @@ public class DamageDealer {
         }
         return false;
     }
+
+    public static boolean isLogOn() {
+        return logOn;
+    }
+
 
 }

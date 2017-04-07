@@ -108,7 +108,7 @@ public class Executor extends ActiveHandler {
         targeter.setForcePresetTarget(true);
 
 
-        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION,
+        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
          new ActionInput(getAction(), new Context(ref)));
     }
 
@@ -118,12 +118,12 @@ public class Executor extends ActiveHandler {
             activate();
             return;
         }
-        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION,
+        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
          new ActionInput(getAction(), t));
     }
 
     public void activateOnGameLoopThread() {
-        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_SELECTION,
+        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
          new ActionInput(getAction(), new Context(getRef())));
     }
 

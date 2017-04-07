@@ -738,7 +738,7 @@ public class DebugMaster {
 
                 case END_TURN:
                     game.getManager().setActivatingAction(null);
-                    WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, false);
+                    WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, null );
                     return func;
                 case KILL_UNIT:
                     if (arg != null) {

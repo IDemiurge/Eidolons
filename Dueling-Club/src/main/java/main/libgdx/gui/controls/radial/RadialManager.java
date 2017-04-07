@@ -15,8 +15,10 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.core.ActionInput;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
+import main.game.logic.action.context.Context;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.gui.panels.dc.ValueContainer;
@@ -27,6 +29,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -200,7 +204,10 @@ public class RadialManager {
           getOrCreateGrayscaleR(active.getImagePath()),
          () -> {
              if (valid) {
-                 new Thread(() -> active.getGame().getManager().select(objSet, active.getRef()), " selection thread").start();
+                 new Thread(() -> {
+                     active.getGame().getManager().select(objSet, active.getRef());
+                     WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(active, new Context(active.getRef())));
+                 }, active.getName() + " radial activation").start();
 
              } else {
                  FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.ERROR, "", active);
