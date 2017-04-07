@@ -7,6 +7,7 @@ import main.client.game.NetGame;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.PROPS;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -64,6 +65,7 @@ public class GameLauncher {
     private Integer unitGroupLevel;
     private boolean factionLeaderRequired;
     private String dungeon;
+    private WORKSPACE_GROUP workspaceFilter ;
 
     public GameLauncher(DC_Game game, Boolean host_client) {
         this(game, null, null, host_client);
@@ -255,6 +257,8 @@ public class GameLauncher {
         if (!VISION_HACK) {
             VISION_HACK = launch.visionHacked;
         }
+
+        workspaceFilter= launch.workspaceFilter;
         DUMMY_MODE = launch.dummy;
         DUMMY_PP = launch.dummy_pp;
         DEBUG_MODE = launch.debugMode;
@@ -320,6 +324,11 @@ public class GameLauncher {
         // return (DataManager.getType(partyName,
         // OBJ_TYPES.PARTY).getProperty(PROPS.MEMBERS));
         // }
+
+        if (workspaceFilter!=null )
+            return chooseFiltered(DC_TYPE.CHARS);
+
+
         game.setTestMode(true);
         if (OPTION == null) {
             OPTION = DialogMaster.optionChoice("Select party init option", "Group", "Default",
@@ -342,6 +351,7 @@ public class GameLauncher {
                 return PLAYER_PARTY;
             case 2:
                 game.setTestMode(false);
+
                 return chooseCharacters();
             case 3:
                 return chooseUnits();
@@ -365,12 +375,21 @@ public class GameLauncher {
         return choose(DC_TYPE.UNITS);
     }
 
-    public String choose(DC_TYPE type) {
+    public String chooseFiltered(DC_TYPE TYPE) {
+        List<ObjType> data = DataManager.getTypes(TYPE);
+        if (workspaceFilter!=null )
+        data.removeIf(type -> type.getWorkspaceGroup() != workspaceFilter);
+        String objects =  ListChooser.chooseTypes(data);
+        return objects;
+
+    }
+        public String choose(DC_TYPE type) {
         String filterGroup = getFilterGroup(type);
         List<String> data = DataManager.getTypeNames(type);
         if (!filterGroup.isEmpty()) {
             data = DataManager.getTypesSubGroupNames(type, filterGroup);
         }
+
 
         String objects = new ListChooser(SELECTION_MODE.MULTIPLE, data, type).choose();
         return objects;

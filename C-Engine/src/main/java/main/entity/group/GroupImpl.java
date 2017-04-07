@@ -2,6 +2,7 @@ package main.entity.group;
 
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
+import main.system.auxiliary.StringMaster;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,7 +48,8 @@ public class GroupImpl implements GROUP<Obj> {
     public String toString() {
 
         if (getObjects() == null ) return getObjectIds().toString();
-        return getObjects().toString();
+        return "Group: " + StringMaster.joinStringList(
+         StringMaster.convertToStringList(getObjects()), ", ");
     }
 
     @Override

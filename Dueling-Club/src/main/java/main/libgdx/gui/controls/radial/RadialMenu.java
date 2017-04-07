@@ -106,6 +106,12 @@ public class RadialMenu extends Group {
         for (final RadialValueContainer child : currentNode.getChilds()) {
             if (child.getChilds().size() > 0) {
                 child.bindAction(() -> setCurrentNode(child));
+            }else {
+                Runnable action = child.getClickAction();
+                child.bindAction(() -> {
+                    close();
+                    action.run();
+                });
             }
         }
     }

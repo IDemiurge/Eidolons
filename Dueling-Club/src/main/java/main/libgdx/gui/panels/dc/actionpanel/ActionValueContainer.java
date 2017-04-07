@@ -35,6 +35,10 @@ public class ActionValueContainer extends ValueContainer {
         }
     }
 
+    public Runnable getClickAction() {
+        return clickAction;
+    }
+
     @Override
     protected void init(TextureRegion texture, String name, String value) {
         super.init(texture, name, value);

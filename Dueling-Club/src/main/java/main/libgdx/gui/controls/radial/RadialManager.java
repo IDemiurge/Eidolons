@@ -20,7 +20,6 @@ import main.game.core.ActionInput;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
 import main.game.logic.action.context.Context;
-import main.libgdx.GameScreen;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.gui.panels.dc.ValueContainer;
@@ -156,7 +155,7 @@ public class RadialManager {
                      GuiEventManager.trigger(
                       GuiEventType.SHOW_UNIT_INFO_PANEL,
                       new EventCallbackParam<>(new UnitDataSource(((Unit) target))));
-                     GameScreen.getInstance().getGuiStage().getRadialMenu().close();
+                     
                  }
                 );
                 addSimpleTooltip(valueContainer, "Examine");
@@ -209,15 +208,10 @@ public class RadialManager {
          () -> {
              if (valid) {
                  WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(active, new Context(active.getRef())));
-//                 new Thread(() -> {
-//                     active.getGame().getManager().select(objSet, active.getRef());
-//                     WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(active, new Context(active.getRef())));
-//                 }, active.getName() + " radial activation").start();
-
              } else {
                  FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.ERROR, "", active);
              }
-             GameScreen.getInstance().getGuiStage().getRadialMenu().close();
+             
          });
     }
 
@@ -234,7 +228,7 @@ public class RadialManager {
             } else if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
                 final RadialValueContainer valueContainer = new RadialValueContainer(
                  getOrCreateR(dc_activeObj.getImagePath()),
-                 getRunnable(RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, target, dcActiveObj)
+                 getRunnable(target, dcActiveObj)
 //                () -> dc_activeObj.activateOn(target)
                 );
                 addSimpleTooltip(valueContainer, dc_activeObj.getName());
@@ -248,7 +242,7 @@ public class RadialManager {
                 for (DC_QuickItemObj ammo : dcActiveObj.getOwnerObj().getQuickItems()) {
                     final RadialValueContainer valueContainer = new RadialValueContainer(
                      getOrCreateR(ammo.getImagePath()),
-                     getRunnable(RADIAL_PARENT_NODE.MOVES, target, ammo)
+                     getRunnable(target, ammo)
                     );
                     addSimpleTooltip(valueContainer, ammo.getName());
                     list.add(valueContainer);
@@ -278,13 +272,13 @@ public class RadialManager {
             if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
                 result = new RadialValueContainer(
                  getOrCreateR(dcActiveObj.getImagePath()),
-                 getRunnable(RADIAL_PARENT_NODE.MOVES, target, dcActiveObj)
+                 getRunnable(target, dcActiveObj)
 
                 );
             } else {
                 result = new RadialValueContainer(
                  new TextureRegion(getTextureForActive(dcActiveObj, target)),
-                 getRunnable(RADIAL_PARENT_NODE.MOVES, target, dcActiveObj)
+                 getRunnable(target, dcActiveObj)
                 );
             }
         }
@@ -293,13 +287,8 @@ public class RadialManager {
         return result;
     }
 
-    private static Runnable getRunnable(
-     DC_Obj target, Entity activeObj) {
-        return getRunnable(null, target, activeObj);
-    }
 
-    private static Runnable getRunnable(RADIAL_PARENT_NODE type,
-                                        DC_Obj target, Entity activeObj) {
+    private static Runnable getRunnable(DC_Obj target, Entity activeObj) {
 
         if (activeObj instanceof DC_ActiveObj) {
             DC_ActiveObj active = (DC_ActiveObj) activeObj;
@@ -309,13 +298,13 @@ public class RadialManager {
                     if (active.getTargeter().canBeTargeted(cell.getId()))
                         active.activateOn(target);
 
-                    GameScreen.getInstance().getGuiStage().getRadialMenu().close();
+                    
                 };
         }
 
         return () -> {
             activeObj.invokeClicked();
-            GameScreen.getInstance().getGuiStage().getRadialMenu().close();
+            
 
         };
     }

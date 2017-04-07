@@ -11,6 +11,7 @@ import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
@@ -189,12 +190,15 @@ public class DamageCalculator {
             if (e == CASE)
                 list.addAll(obj.getBonusDamage().get(e));
         }
+        if (obj instanceof DC_ActiveObj) {
+            obj = ((DC_ActiveObj) obj).getActiveWeapon();
+            if (obj!=null )
+                for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
+                    if (e == CASE)
+                        list.addAll(obj.getBonusDamage().get(e));
+                }
+        }
 
-            obj = (DC_Obj) ref.getObj(KEYS.WEAPON);
-            for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
-                if (e == CASE)
-                    list.addAll(obj.getBonusDamage().get(e));
-            }
         return list;
     }
 
