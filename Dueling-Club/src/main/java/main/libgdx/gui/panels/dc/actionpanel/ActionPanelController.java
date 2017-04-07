@@ -9,10 +9,12 @@ import static main.system.GuiEventType.UPDATE_QUICK_SLOT_PANEL;
 
 public class ActionPanelController extends Group {
     private final static int IMAGE_SIZE = 60;
+    private final LeftOrbPanel leftOrbPanel;
     private QuickSlotPanel quickSlotPanel;
     private ModeActionsPanel modeActionsPanel;
     private SpellPanel spellPanel;
     private EffectsPanel effectsPanel;
+    private RigthOrbPanel rigthOrbPanel;
 
     public ActionPanelController() {
         quickSlotPanel = new QuickSlotPanel(IMAGE_SIZE);
@@ -34,6 +36,15 @@ public class ActionPanelController extends Group {
         effectsPanel.setPosition(actionOffset, IMAGE_SIZE);
         addActor(effectsPanel);
 
+        leftOrbPanel = new LeftOrbPanel();
+        leftOrbPanel.setPosition(quickSlotOffset + 76, IMAGE_SIZE);
+        addActor(leftOrbPanel);
+
+        rigthOrbPanel = new RigthOrbPanel();
+        rigthOrbPanel.setPosition(spellOffset - 29, IMAGE_SIZE);
+        addActor(rigthOrbPanel);
+
+
         setY(-IMAGE_SIZE);
 
         initListeners();
@@ -50,6 +61,8 @@ public class ActionPanelController extends Group {
                 modeActionsPanel.setUserObject(source);
                 spellPanel.setUserObject(source);
                 effectsPanel.setUserObject(source);
+                leftOrbPanel.setUserObject(source);
+                rigthOrbPanel.setUserObject(source);
             } else {
                 setY(-IMAGE_SIZE);
             }

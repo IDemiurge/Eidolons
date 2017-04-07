@@ -1,6 +1,7 @@
 package main.libgdx.gui.panels.dc.actionpanel.datasource;
 
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.entity.item.DC_QuickItemObj;
@@ -9,6 +10,7 @@ import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.EffectsAndAbilitiesSource;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSource;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.datatypes.DequeImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -23,8 +25,8 @@ import static main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource.getOb
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class PanelActionsDataSource implements
- ActiveQuickSlotsDataSource, UnitActionsDataSource, SpellDataSource,
-        EffectsAndAbilitiesSource {
+        ActiveQuickSlotsDataSource, UnitActionsDataSource, SpellDataSource,
+        EffectsAndAbilitiesSource, ResourceSource {
     private Unit unit;
 
     public PanelActionsDataSource(Unit unit) {
@@ -63,20 +65,21 @@ public class PanelActionsDataSource implements
 
     @Override
     public List<ActionValueContainer> getDisplayedActions() {
-         List<ActionValueContainer> list = new LinkedList<>();
+        List<ActionValueContainer> list = new LinkedList<>();
         list.addAll(getModeActions());
         list.addAll(getSpecialActions());
-         return list;
+        return list;
     }
 
-    private  List<ActionValueContainer> getSpecialActions() {
+    private List<ActionValueContainer> getSpecialActions() {
         return getActions(ACTION_TYPE.SPECIAL_ACTION);
     }
 
     public List<ActionValueContainer> getModeActions() {
         return getActions(ACTION_TYPE.MODE);
     }
-        public List<ActionValueContainer> getActions(ACTION_TYPE type) {
+
+    public List<ActionValueContainer> getActions(ACTION_TYPE type) {
         return unit.getActionMap().get(type).stream()
                 .map(key -> {
                     final ActionValueContainer valueContainer = new ActionValueContainer(
@@ -133,5 +136,47 @@ public class PanelActionsDataSource implements
                 .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
                 .map(getObjValueContainerMapper())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getToughness() {
+        int c = unit.getIntParam(PARAMS.C_TOUGHNESS);
+        int m = unit.getIntParam(PARAMS.TOUGHNESS);
+        return c + "/" + m;
+    }
+
+    @Override
+    public String getEndurance() {
+        int c = unit.getIntParam(PARAMS.C_ENDURANCE);
+        int m = unit.getIntParam(PARAMS.ENDURANCE);
+        return c + "/" + m;
+    }
+
+    @Override
+    public String getStamina() {
+        int c = unit.getIntParam(PARAMS.C_STAMINA);
+        int m = unit.getIntParam(PARAMS.STAMINA);
+        return c + "/" + m;
+    }
+
+    @Override
+    public String getMorale() {
+        int c = unit.getIntParam(PARAMS.C_MORALE);
+        int m = unit.getIntParam(PARAMS.MORALE);
+        return c + "/" + m;
+    }
+
+    @Override
+    public String getEssence() {
+        int c = unit.getIntParam(PARAMS.C_ESSENCE);
+        int m = unit.getIntParam(PARAMS.ESSENCE);
+        return c + "/" + m;
+    }
+
+    @Override
+    public String getFocus() {
+        int c = unit.getIntParam(PARAMS.C_FOCUS);
+        int m = unit.getIntParam(PARAMS.FOCUS);
+        return c + "/" + m;
     }
 }
