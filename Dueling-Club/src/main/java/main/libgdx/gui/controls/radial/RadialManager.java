@@ -6,6 +6,7 @@ import main.content.C_OBJ_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.elements.Filter;
 import main.elements.targeting.SelectiveTargeting;
+import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_QuickItemObj;
@@ -61,7 +62,7 @@ public class RadialManager {
          : getOrCreate(obj.getImagePath());
     }
 
-    private static boolean isActionShown( ActiveObj el, DC_Obj target) {
+    private static boolean isActionShown(ActiveObj el, DC_Obj target) {
         if (!(el instanceof DC_ActiveObj)) return false;
         DC_ActiveObj action = ((DC_ActiveObj) el);
         if (target != action.getOwnerObj()) {
@@ -102,8 +103,8 @@ public class RadialManager {
                  attacks.addAll(configureAttackNode(target, el));
              } else {
 //                 if (el.getActionType() == ACTION_TYPE.MODE) {
-                     final RadialValueContainer valueContainer = configureActionNode(target, el);
-                     specialActions.add(valueContainer);
+                 final RadialValueContainer valueContainer = configureActionNode(target, el);
+                 specialActions.add(valueContainer);
 
              }
          });
@@ -178,9 +179,9 @@ public class RadialManager {
     }
 
     private static RadialValueContainer configureActionNode(DC_Obj target, DC_ActiveObj el) {
-        if (el.getTargeting() instanceof  SelectiveTargeting)
-        if (target == el.getOwnerObj())
-            return  configureSelectiveTargetedNode(el);
+        if (el.getTargeting() instanceof SelectiveTargeting)
+            if (target == el.getOwnerObj())
+                return configureSelectiveTargetedNode(el);
 
         RadialValueContainer valueContainer = new RadialValueContainer(
          new TextureRegion(getTextureForActive(el, target)),
@@ -261,7 +262,8 @@ public class RadialManager {
         return result;
     }
 
-    private static RadialValueContainer configureMoveNode(DC_Obj target, DC_ActiveObj dcActiveObj) {
+    private static RadialValueContainer configureMoveNode(DC_Obj target,
+                                                          DC_ActiveObj dcActiveObj) {
         RadialValueContainer result;
 
         if (target == dcActiveObj.getOwnerObj()) {
@@ -270,11 +272,8 @@ public class RadialManager {
             if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
                 result = new RadialValueContainer(
                  getOrCreateR(dcActiveObj.getImagePath()),
-                 () -> {
-                     DC_Cell cell = target.getGame().getCellByCoordinate(target.getCoordinates());
-                     if (dcActiveObj.getTargeter().canBeTargeted(cell.getId()))
-                         dcActiveObj.activateOn(target);
-                 }
+                 getRunnable(RADIAL_PARENT_NODE.MOVES, target, dcActiveObj)
+
                 );
             } else {
                 result = new RadialValueContainer(
@@ -286,6 +285,37 @@ public class RadialManager {
         addSimpleTooltip(result, dcActiveObj.getName());
 
         return result;
+    }
+
+    private static Runnable getRunnable(RADIAL_PARENT_NODE type,
+                                        DC_Obj target, Entity activeObj) {
+
+        if (activeObj instanceof DC_ActiveObj) {
+            DC_ActiveObj  active = (DC_ActiveObj) activeObj;
+        if (active.getTargeting() instanceof SelectiveTargeting)
+            return () -> {
+                DC_Cell cell = target.getGame().getCellByCoordinate(target.getCoordinates());
+                if (active.getTargeter().canBeTargeted(cell.getId()))
+                    active.activateOn(target);
+            };
+        }
+        switch (type) {
+
+            case OFFHAND_ATTACKS:
+            case MAIN_HAND_ATTACKS:
+
+            case TURN_ACTIONS:
+                break;
+            case SPELLS:
+                break;
+            case MOVES:
+                break;
+            case SPECIAL:
+                break;
+            case QUICK_ITEMS:
+                break;
+        }
+        return  activeObj::invokeClicked;
     }
 
     public enum RADIAL_PARENT_NODE {

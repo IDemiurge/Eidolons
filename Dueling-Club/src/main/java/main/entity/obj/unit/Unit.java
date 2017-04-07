@@ -904,7 +904,10 @@ public class Unit extends DC_UnitModel {
         if (aiControlled) {
             return true;
         }
-
+        if (!getGame().isDebugMode())
+if (owner.getHeroObj()!= this){
+            return true;
+}
         if (owner.isAi()) {
             if (!checkBool(DYNAMIC_BOOLS.PLAYER_CONTROLLED)) {
                 return true;

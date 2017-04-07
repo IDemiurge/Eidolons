@@ -172,8 +172,9 @@ public class ArenaBattleConstructor {
             }
             waves = new LinkedList<>(waveBuffer);
 
-            Conditions conditions = new Conditions(getEncounterTypeCondition(type),
-                    getPlayableCondition());
+            Conditions conditions = new Conditions(getEncounterTypeCondition(type)
+//         TODO     ,getPlayableCondition()
+            );
 
             List<ObjType> filteredWaves = new Filter<ObjType>(game, conditions).filter(waves);
             if (!filteredWaves.isEmpty()) {
@@ -337,7 +338,8 @@ public class ArenaBattleConstructor {
     }
 
     private boolean checkEncounter(ObjType waveType) {
-        return waveType.checkGroup(StringMaster.PLAYABLE);
+        return true;
+//     TODO    return waveType.checkGroup(StringMaster.PLAYABLE);
     }
 
     public Integer getRoundsToFight(ObjType waveType) {
