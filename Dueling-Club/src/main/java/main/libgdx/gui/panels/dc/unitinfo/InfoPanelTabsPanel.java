@@ -1,6 +1,5 @@
 package main.libgdx.gui.panels.dc.unitinfo;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -12,7 +11,7 @@ public class InfoPanelTabsPanel<T extends Actor> extends TabbedPanel<T> {
 
     @Override
     protected TextButton.TextButtonStyle getButtonStyle() {
-        Texture buttonTexture = TextureCache.getOrCreate("/UI/components/infopanel/buttons.png");
+        TextureRegion buttonTexture = TextureCache.getOrCreateR("/UI/components/infopanel/buttons.png");
         TextureRegion pressed = new TextureRegion(buttonTexture, 0, 0, 59, 28);
         TextureRegion released = new TextureRegion(buttonTexture, 60, 0, 59, 28);
         TextButton.TextButtonStyle style = super.getButtonStyle();

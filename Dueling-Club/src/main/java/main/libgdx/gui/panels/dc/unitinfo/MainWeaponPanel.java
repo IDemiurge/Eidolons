@@ -8,8 +8,7 @@ import main.libgdx.texture.TextureCache;
 public class MainWeaponPanel extends WeaponPanel {
     public MainWeaponPanel() {
         super();
-        TextureRegion textureRegion = new
-                TextureRegion(TextureCache.getOrCreate("/UI/components/infopanel/main_weapon.png"));
+        TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/main_weapon.png");
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
     }

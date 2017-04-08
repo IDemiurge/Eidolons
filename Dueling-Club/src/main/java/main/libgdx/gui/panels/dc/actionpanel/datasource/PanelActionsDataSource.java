@@ -1,19 +1,15 @@
 package main.libgdx.gui.panels.dc.actionpanel.datasource;
 
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
-import main.content.values.properties.G_PROPS;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.unit.Unit;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
-import main.libgdx.gui.panels.dc.unitinfo.datasource.EffectsAndAbilitiesSource;
-import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSource;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.*;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.datatypes.DequeImpl;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -21,16 +17,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource.getActionCostList;
-import static main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource.getObjValueContainerMapper;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class PanelActionsDataSource implements
         ActiveQuickSlotsDataSource, UnitActionsDataSource, SpellDataSource,
-        EffectsAndAbilitiesSource, ResourceSource {
+        EffectsAndAbilitiesSource, ResourceSource,
+        MainWeaponDataSource<ActionValueContainer>, OffWeaponDataSource {
     private Unit unit;
+
+    private UnitDataSource unitDataSource;
 
     public PanelActionsDataSource(Unit unit) {
         this.unit = unit;
+        unitDataSource = new UnitDataSource(unit);
     }
 
     private static InputListener getToolTipController(String name) {
@@ -112,9 +111,7 @@ public class PanelActionsDataSource implements
                 .map(el -> {
                     final ActionValueContainer container = new ActionValueContainer(
                             getOrCreateR(el.getImagePath()),
-                            () -> {
-                                el.invokeClicked();
-                            }
+                            el::invokeClicked
                     );
                     container.addListener(getToolTipController(el.getName()));
 
@@ -124,59 +121,81 @@ public class PanelActionsDataSource implements
 
     @Override
     public List<ValueContainer> getEffects() {
-        return unit.getBuffs().stream()
-                .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-                .map(getObjValueContainerMapper())
-                .collect(Collectors.toList());
+        return unitDataSource.getEffects();
     }
 
     @Override
     public List<ValueContainer> getAbilities() {
-        return unit.getPassives().stream()
-                .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-                .map(getObjValueContainerMapper())
-                .collect(Collectors.toList());
+        return unitDataSource.getAbilities();
     }
 
     @Override
     public String getToughness() {
-        int c = unit.getIntParam(PARAMS.C_TOUGHNESS);
-        int m = unit.getIntParam(PARAMS.TOUGHNESS);
-        return c + "/" + m;
+        return unitDataSource.getToughness();
     }
 
     @Override
     public String getEndurance() {
-        int c = unit.getIntParam(PARAMS.C_ENDURANCE);
-        int m = unit.getIntParam(PARAMS.ENDURANCE);
-        return c + "/" + m;
+        return unitDataSource.getEndurance();
     }
 
     @Override
     public String getStamina() {
-        int c = unit.getIntParam(PARAMS.C_STAMINA);
-        int m = unit.getIntParam(PARAMS.STAMINA);
-        return c + "/" + m;
+        return unitDataSource.getStamina();
     }
 
     @Override
     public String getMorale() {
-        int c = unit.getIntParam(PARAMS.C_MORALE);
-        int m = unit.getIntParam(PARAMS.MORALE);
-        return c + "/" + m;
+        return unitDataSource.getMorale();
     }
 
     @Override
     public String getEssence() {
-        int c = unit.getIntParam(PARAMS.C_ESSENCE);
-        int m = unit.getIntParam(PARAMS.ESSENCE);
-        return c + "/" + m;
+        return unitDataSource.getEssence();
     }
 
     @Override
     public String getFocus() {
-        int c = unit.getIntParam(PARAMS.C_FOCUS);
-        int m = unit.getIntParam(PARAMS.FOCUS);
-        return c + "/" + m;
+        return unitDataSource.getFocus();
+    }
+
+    @Override
+    public ValueContainer getOffWeapon() {
+        return unitDataSource.getOffWeapon();
+    }
+
+    @Override
+    public List<ValueContainer> getOffWeaponDetailInfo() {
+        return unitDataSource.getOffWeaponDetailInfo();
+    }
+
+    @Override
+    public ValueContainer getNaturalOffWeapon() {
+        return unitDataSource.getNaturalOffWeapon();
+    }
+
+    @Override
+    public List<ValueContainer> getNaturalOffWeaponDetailInfo() {
+        return unitDataSource.getNaturalOffWeaponDetailInfo();
+    }
+
+    @Override
+    public ActionValueContainer getMainWeapon() {
+        return null;
+    }
+
+    @Override
+    public List<ActionValueContainer> getMainWeaponDetailInfo() {
+        return null;
+    }
+
+    @Override
+    public ActionValueContainer getNaturalMainWeapon() {
+        return null;
+    }
+
+    @Override
+    public List<ActionValueContainer> getNaturalMainWeaponDetailInfo() {
+        return null;
     }
 }

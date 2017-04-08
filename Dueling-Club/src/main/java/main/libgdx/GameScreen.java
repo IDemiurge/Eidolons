@@ -141,6 +141,8 @@ public class GameScreen implements Screen {
 
         GuiEventManager.processEvents();
 
+        System.out.println(((SpriteBatch) guiStage.getBatch()).renderCalls + " " + ((SpriteBatch) gridStage.getBatch()).renderCalls + " " + delta);
+
         guiStage.act(delta);
         gridStage.act(delta);
         ambienceStage.act(delta);

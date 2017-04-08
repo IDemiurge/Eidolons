@@ -1,7 +1,6 @@
 package main.libgdx.gui.controls.radial;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -23,7 +22,7 @@ public class RadialMenu extends Group {
     private int radius;
 
     public RadialMenu() {
-        final Texture t = TextureCache.getOrCreate(getEmptyNodePath());
+        final TextureRegion t = TextureCache.getOrCreateR(getEmptyNodePath());
 //        new Texture(RadialMenu.class.getResource(
 //         /data/marble_green.png).getPath());
         closeButton = new RadialValueContainer(new TextureRegion(t), () ->

@@ -4,12 +4,12 @@ import main.libgdx.gui.panels.dc.ValueContainer;
 
 import java.util.List;
 
-public interface MainWeaponDataSource {
-    ValueContainer getMainWeapon();
+public interface MainWeaponDataSource<T extends ValueContainer> {
+    T getMainWeapon();
 
-    List<ValueContainer> getMainWeaponDetailInfo();
+    List<T> getMainWeaponDetailInfo();
 
-    ValueContainer getNaturalMainWeapon();
+    T getNaturalMainWeapon();
 
-    List<ValueContainer> getNaturalMainWeaponDetailInfo();
+    List<T> getNaturalMainWeaponDetailInfo();
 }

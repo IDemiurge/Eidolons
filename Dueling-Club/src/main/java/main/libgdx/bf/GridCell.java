@@ -1,7 +1,7 @@
 package main.libgdx.bf;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -12,7 +12,7 @@ import main.libgdx.StyleHolder;
 
 public class GridCell extends Group implements Borderable {
     protected Image backImage;
-    protected Texture backTexture;
+    protected TextureRegion backTexture;
     private int gridX;
     private int gridY;
     private GridCell innerDrawable;
@@ -20,14 +20,13 @@ public class GridCell extends Group implements Borderable {
     private Label cordsText;
     private float gamma;
 
-    public GridCell(Texture backTexture, int gridX, int gridY) {
+    public GridCell(TextureRegion backTexture, int gridX, int gridY) {
         this.backTexture = backTexture;
         this.setGridX(gridX);
         this.setGridY(gridY);
     }
 
     public GridCell init() {
-        backTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         backImage = new Image(backTexture);
         addActor(backImage);
         setWidth(backImage.getWidth());

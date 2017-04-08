@@ -107,7 +107,7 @@ public class FloatingText extends Group {
 
         if (imageSupplier != null) {
             if (!StringMaster.isEmpty(imageSupplier.get())) {
-                Image image = new Image(TextureCache.getOrCreate(imageSupplier.get()));
+                Image image = new Image(TextureCache.getOrCreateR(imageSupplier.get()));
                 addActor(image);
 //            image.setPosition(origin.x, origin.y);
             }

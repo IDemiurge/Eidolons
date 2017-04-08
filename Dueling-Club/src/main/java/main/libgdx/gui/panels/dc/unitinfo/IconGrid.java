@@ -15,7 +15,7 @@ public class IconGrid extends TablePanel {
 
     public IconGrid(List<ValueContainer> images, int w, int h) {
 
-        TextureRegion emptyCell = new TextureRegion(TextureCache.getOrCreate(cellBackImage));
+        TextureRegion emptyCell = TextureCache.getOrCreateR(cellBackImage);
 
         Iterator<ValueContainer> iter = images.iterator();
         for (int x = 0; x < h; x++) {

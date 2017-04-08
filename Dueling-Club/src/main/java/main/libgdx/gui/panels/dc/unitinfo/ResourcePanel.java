@@ -21,7 +21,7 @@ public class ResourcePanel extends TablePanel {
     private final ValueContainer focus;
 
     public ResourcePanel() {
-        TextureRegion textureRegion = new TextureRegion(TextureCache.getOrCreate("/UI/components/infopanel/main_resource_panel.png"));
+        TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/main_resource_panel.png");
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
 

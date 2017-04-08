@@ -45,8 +45,7 @@ public class TextureManager {
         Texture sheet = path == null ? texture : TextureCache.getOrCreate(path);
         TextureRegion[][] tmp = null;
         try {
-            tmp =
-                    TextureRegion.split(sheet,
+            tmp = TextureRegion.split(sheet,
                             sheet.getWidth() / FRAME_COLS,
                             sheet.getHeight() / FRAME_ROWS);
         } catch (Exception e) {
