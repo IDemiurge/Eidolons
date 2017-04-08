@@ -6,7 +6,7 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
-import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_QuickItemAction;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.Active;
 import main.entity.obj.DC_Obj;
@@ -164,8 +164,8 @@ public class Executor extends ActiveHandler {
     }
 
     private void syncActionRefWithSource() {
-        if (getAction() instanceof DC_ItemActiveObj) {
-            DC_QuickItemObj item = ((DC_ItemActiveObj) getAction()).getItem();
+        if (getAction() instanceof DC_QuickItemAction) {
+            DC_QuickItemObj item = ((DC_QuickItemAction) getAction()).getItem();
             if (item.isAmmo()) {
                 getAction().getOwnerObj().getRef().setID(KEYS.AMMO, item.getId());
             }

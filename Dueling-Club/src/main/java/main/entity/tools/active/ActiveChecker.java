@@ -13,7 +13,7 @@ import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.values.properties.G_PROPS;
 import main.entity.active.DC_ActiveObj;
-import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_QuickItemAction;
 import main.entity.tools.EntityChecker;
 import main.entity.tools.EntityMaster;
 import main.game.ai.tools.target.EffectFinder;
@@ -41,8 +41,8 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
         if (getName().contains(ActionEnums.ACTION_TAGS.THROW + "")) {
             return true;
         }
-        if (getEntity() instanceof DC_ItemActiveObj) {
-            DC_ItemActiveObj itemActiveObj = (DC_ItemActiveObj) getEntity();
+        if (getEntity() instanceof DC_QuickItemAction) {
+            DC_QuickItemAction itemActiveObj = (DC_QuickItemAction) getEntity();
             if (!itemActiveObj.getItem().isAmmo()) {
                 if (itemActiveObj.getItem().getWrappedWeapon() != null) {
                     return true;

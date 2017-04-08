@@ -285,33 +285,25 @@ public class DC_StateManager extends StateManager {
         getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, state.getRound());
 
         game.getLogManager().log("            >>>Round #" + (state.getRound() + 1) + "<<<");
+        newTurnTick();
+        getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.NEW_ROUND, game));
 
-        try {
-            newTurnTick();
-            getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.NEW_ROUND, game));
-//            LogMaster.log(LogMaster.TRIGGER_DEBUG, triggers.toString());
-//            LogMaster.log(LogMaster.EFFECT_DEBUG, effects.toString());
+            if (getGame().getGameMode() == GAME_MODES.ARENA)
+                try {         getGame().getArenaManager().newRound();
 
-            if (getGame().getGameMode() == GAME_MODES.ARENA) {
-                getGame().getArenaManager().newRound();
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (game.isStarted())
-        {
-            getGameManager().reset();
-        }
-        else {
-            resetAllSynchronized();
-        }
+
         if (game.isStarted()) {
+            getGameManager().reset();
             getGameManager().resetValues();
             IlluminationRule.initLightEmission(getGame());
             game.getTurnManager().newRound();
         } else {
 
+            resetAllSynchronized();
             game.setStarted(true);
             try {
                 IlluminationRule.initLightEmission(getGame());

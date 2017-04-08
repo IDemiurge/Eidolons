@@ -50,8 +50,12 @@ public class PresetLauncher {
     private static boolean isInitLaunch = true;
 
     static {
+        LAUNCH.Profiling.gameMode = GAME_MODES.ARENA;
+
+
         LAUNCH.Standoff_Test.gameMode = GAME_MODES.ARENA;
         LAUNCH.Standoff_Test.dungeonPath = "Pit.xml";
+
 
         LAUNCH.Standoff.gameMode = GAME_MODES.ARENA;
         LAUNCH.Standoff.dungeonPath = "Pit.xml";

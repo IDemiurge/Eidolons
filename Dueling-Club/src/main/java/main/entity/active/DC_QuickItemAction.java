@@ -15,11 +15,11 @@ import main.system.graphics.Sprite;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
-public class DC_ItemActiveObj extends DC_ActiveObj {
+public class DC_QuickItemAction extends DC_ActiveObj {
 
     private DC_QuickItemObj item;
 
-    public DC_ItemActiveObj(ObjType type, Player owner, MicroGame game, Ref ref) {
+    public DC_QuickItemAction(ObjType type, Player owner, MicroGame game, Ref ref) {
         super(type, owner, game, ref);
     }
 

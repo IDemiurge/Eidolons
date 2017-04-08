@@ -14,7 +14,7 @@ import main.content.enums.system.MetaEnums.DC_OBJ_CLASSES;
 import main.content.values.parameters.PARAMETER;
 import main.data.ability.construct.AbilityConstructor;
 import main.elements.triggers.Trigger;
-import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_SpellObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_ArmorObj;
@@ -229,7 +229,7 @@ public class StateCloner {
                 case DC_QuickItemObj:
                     return new DC_QuickItemObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_ItemActiveObj:
-                    return new DC_ItemActiveObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
+                    return new DC_QuickItemAction(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_UnitAction:
                     return new DC_UnitAction(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_SpellObj:

@@ -2,7 +2,7 @@ package main.game.ai.elements.actions;
 
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
-import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.unit.Unit;
 
@@ -15,8 +15,8 @@ public class ActionFactory {
     }
 
     public static Action newAction(DC_ActiveObj action, Ref ref) {
-        if (action instanceof DC_ItemActiveObj) {
-            DC_ItemActiveObj itemActiveObj = (DC_ItemActiveObj) action;
+        if (action instanceof DC_QuickItemAction) {
+            DC_QuickItemAction itemActiveObj = (DC_QuickItemAction) action;
             return new AiQuickItemAction(itemActiveObj.getItem(), ref);
         }
         // my change!

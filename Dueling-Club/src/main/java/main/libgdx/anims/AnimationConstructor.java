@@ -13,7 +13,7 @@ import main.content.values.properties.PROPERTY;
 import main.data.filesys.PathFinder;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
-import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BuffObj;
@@ -158,8 +158,8 @@ public class AnimationConstructor {
         if (active.isMove()) {
             return MoveAnimation.isOn() ? new MoveAnimation(active, data) : null;
         }
-        if (active instanceof DC_ItemActiveObj) {
-            if (((DC_ItemActiveObj) active).getItem().isAmmo()) {
+        if (active instanceof DC_QuickItemAction) {
+            if (((DC_QuickItemAction) active).getItem().isAmmo()) {
                 return new ReloadAnim(active);
             }
         }
