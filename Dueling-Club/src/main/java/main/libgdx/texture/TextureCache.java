@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.GreyscaleUtils;
 
 import java.nio.file.Path;
@@ -86,10 +87,10 @@ public class TextureCache {
 
     private Texture _getOrCreate(String path) {
 
-        if (path.contains(imagePath)) {
-            throw new RuntimeException("fix this path: '" + path + "'");
-        }
-
+//        if (path.contains(imagePath)) {
+//            throw new RuntimeException("fix this path: '" + path + "'");
+//        }
+        path = StringMaster.removePreviousPathSegments(path, imagePath);
         path = path.replace("\\", "/").toLowerCase();
         if (!path.startsWith("/")) {
             path = "/" + path;

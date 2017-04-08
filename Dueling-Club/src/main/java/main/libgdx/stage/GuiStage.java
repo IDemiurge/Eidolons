@@ -59,7 +59,7 @@ public class GuiStage extends Stage {
 
     public void bindEvents() {
         GuiEventManager.bind(GuiEventType.SHOW_INVENTORY, (obj) -> {
-             if (inventoryForm == null) {
+            if (inventoryForm == null) {
                 inventoryForm = new InventoryWithAction();
                 this.addActor(inventoryForm);
                 inventoryForm.setPosition(0, Gdx.graphics.getHeight() - inventoryForm.getHeight());
@@ -78,7 +78,11 @@ public class GuiStage extends Stage {
             DC_Obj dc_obj = (DC_Obj) obj.get();
             GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(null));
             if (Gdx.input.isButtonPressed(0) || Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-                radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
+                try {
+                    radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 radialMenu.init(createNew(dc_obj));
             }

@@ -29,6 +29,7 @@ import main.system.math.MathMaster;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //TODO  support WEIGHT-format: pick from unit pool until target-power is filled or 
 // apply growth per random 
@@ -189,7 +190,7 @@ public class WaveAssembler {
                 return false;
             }
         }
-
+        positioner.setMaxSpacePercentageTaken(50);
         List<ObjAtCoordinate> group = positioner.getCoordinatesForUnitGroup(types, wave, unitLevel);
         typeMap.addAll(group);
         unitGroups.add(group);
@@ -197,8 +198,17 @@ public class WaveAssembler {
         return true;
     }
 
-    public void applyLevel() {
+    public void resetPositions(Wave wave) {
+        List<ObjType> types = wave.getUnitMap().stream().map(t -> t.getType()).collect(Collectors.toList());
+        positioner.setMaxSpacePercentageTaken(50);
+        List<ObjAtCoordinate> group =
+         positioner.getCoordinatesForUnitGroup(types, wave, wave.getUnitLevel());
+        wave.setUnitMap(group);
+    }
+        public void applyLevel() {
         // TODO foreach unit add level and break if exceeding power
+            unitLevel++;
+            wave.setUnitLevel(unitLevel);
         for (ObjAtCoordinate type : typeMap) {
             ObjType newType = new UnitLevelManager().getLeveledType(type.getType(), 1, true);
             type.setType(newType);

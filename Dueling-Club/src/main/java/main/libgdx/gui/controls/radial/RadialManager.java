@@ -72,7 +72,11 @@ public class RadialManager {
             if (action.getActionGroup() == ACTION_TYPE_GROUPS.TURN)
                 return false;
         }
-        return action.getTargeting() != null;
+        if (action.getTargeting() == null) return false;
+
+        if (!action.canBeTargeted(target.getId()))
+            return false;
+        return true;
     }
 
     public static List<RadialValueContainer> createNew(DC_Obj target) {

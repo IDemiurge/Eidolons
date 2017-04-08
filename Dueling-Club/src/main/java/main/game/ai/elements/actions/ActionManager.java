@@ -42,10 +42,12 @@ import java.util.List;
 public class ActionManager extends AiHandler {
 
     BehaviorMaster behaviorMaster;
+    private AtomicAi atomicAi;
 
     public ActionManager(AiHandler master) {
         super(master);
         this.behaviorMaster = new BehaviorMaster(master);
+        atomicAi = new AtomicAi(master);
     }
 
     public static Costs getTotalCost(List<Action> actions) {
@@ -93,40 +95,42 @@ public class ActionManager extends AiHandler {
             return action;
         }
 
-        if (!ai.isEngaged()) {
-            return behaviorMaster.getBehaviorAction(ai);
-        }
+//        if (!ai.isEngaged()) {
+//       TODO      return behaviorMaster.getBehaviorAction(ai);
+//        }
 
         FACING_DIRECTION originalFacing = unit.getFacing();
         Coordinates originalCoordinates = unit.getCoordinates();
-
-        List<ActionSequence> actions = new LinkedList<>();
-        try {
-            // actions = createActionSequences(ai);
-            for (ActionSequence a : getActionSequenceConstructor().createActionSequences(
-                    ai)) {
-                if (a.get(0).canBeActivated()) {
-                    if (checkNotBroken(a))
-                    // if (a.getOrCreate(0).canBeTargeted())
-                    {
-                        actions.add(a);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            unit.setCoordinates(originalCoordinates);
-            unit.resetFacing(originalFacing);
-        }
         Action action;
         ActionSequence sequence = null;
-        if (ListMaster.isNotEmpty(actions)) {
-            sequence = DC_PriorityManager.chooseByPriority(actions);
+if (!atomicAi.checkAtomicActionCase(ai)) {
+    List<ActionSequence> actions = new LinkedList<>();
+    try {
+        // actions = createActionSequences(ai);
+        for (ActionSequence a : getActionSequenceConstructor().createActionSequences(
+         ai)) {
+            if (a.get(0).canBeActivated()) {
+                if (checkNotBroken(a))
+                // if (a.getOrCreate(0).canBeTargeted())
+                {
+                    actions.add(a);
+                }
+            }
+            if (ListMaster.isNotEmpty(actions)) {
+                sequence = DC_PriorityManager.chooseByPriority(actions);
+            }
         }
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        unit.setCoordinates(originalCoordinates);
+        unit.resetFacing(originalFacing);
+    }
+
+}
 
         if (sequence == null) {
-            action = AtomicAi.getAtomicAction(ai);
+            action = atomicAi.getAtomicAction(ai);
             if (action == null) {
                 action = getForcedAction(ai);
             }

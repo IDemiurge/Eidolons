@@ -254,25 +254,25 @@ public class ArmorMaster {
         }
         Integer blockValue = getShieldBlockValue(damage, shield, attacked, attacker, weapon,
                 action, zone);
-        int durabilityLost = reduceDurability(blockValue, shield, spell, damage_type, attacker
-                .getActiveWeapon(offhand), damage);
-        // shield.getIntParam(PARAMS.DAMAGE_BONUS); TODO so strength may
-        // increase it? ...
-        // RandomWizard.getRandomIntBetween(attacked.getIntParam(PARAMS.OFF_HAND_MIN_DAMAGE),
-        // attacked
-        // .getIntParam(PARAMS.OFF_HAND_MAX_DAMAGE));
-        // blockValue = blockValue * (100 +
-        // attacked.getIntParam(PARAMS.SHIELD_MASTERY)) / 100;
+
+        blockValue = Math.min(blockValue, damage);
         if (!simulation) {
+            int durabilityLost = reduceDurability(blockValue, shield, spell, damage_type, attacker
+         .getActiveWeapon(offhand), damage);
+            // shield.getIntParam(PARAMS.DAMAGE_BONUS); TODO so strength may
+            // increase it? ...
+            // RandomWizard.getRandomIntBetween(attacked.getIntParam(PARAMS.OFF_HAND_MIN_DAMAGE),
+            // attacked
+            // .getIntParam(PARAMS.OFF_HAND_MAX_DAMAGE));
+            // blockValue = blockValue * (100 +
+            // attacked.getIntParam(PARAMS.SHIELD_MASTERY)) / 100;
             if (blockValue <= 0) {
                 action.getGame().getLogManager().log(LOG.GAME_INFO,
                         shield.getName() + " is ineffective against " + action.getName() + "!",
                         ENTRY_TYPE.DAMAGE);
                 return 0;
             }
-        }
-        blockValue = Math.min(blockValue, damage);
-        if (!simulation) {
+
             DC_SoundMaster.playBlockedSound(attacker, attacked, shield, weapon, blockValue, damage);
             // shield.reduceDurabilityForDamage(damage, blockValue,
             // durabilityMod);

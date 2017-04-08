@@ -66,21 +66,22 @@ public class GameLoop {
     private Boolean activateAction(ActionInput input) {
         if (input == null )
             return true;
+        boolean result=false;
         try {
             activatingAction = input.getAction();
             activatingAction.setTargetObj(input.getContext().getTargetObj());
             activatingAction.setTargetGroup(input.getContext().getGroup());
-            input.getAction().getHandler().activateOn(input.getContext());
+            result=   input.getAction().getHandler().activateOn(input.getContext());
         } catch (Exception e) {
             e.printStackTrace();
             getGame().getManager().unitActionCompleted(input.getAction(), true);
             return true;
         } finally {
             activatingAction = null;
-        }
-        int timeCost = input.getAction().getHandler().getTimeCost();
+        }if (!result) return false;
+            int timeCost = input.getAction().getHandler().getTimeCost();
         Boolean endTurn = getGame().getRules().getTimeRule().
-         actionComplete(input.getAction(), timeCost);
+        actionComplete(input.getAction(), timeCost);
         if (!endTurn) {
             game.getManager().reset();
             if (ChargeRule.checkRetainUnitTurn(input.getAction())) {

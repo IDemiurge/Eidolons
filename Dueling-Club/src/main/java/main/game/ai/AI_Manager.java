@@ -42,6 +42,9 @@ public class AI_Manager extends AiMaster {
     }
 
     public Action getAction(Unit unit) {
+        if (unit.isMine()){
+            unit.getQuickItemActives();
+        }
         Action action = null;
         running = true;
         setUnit(unit);

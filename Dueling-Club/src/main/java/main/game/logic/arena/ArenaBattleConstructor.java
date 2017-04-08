@@ -82,6 +82,7 @@ public class ArenaBattleConstructor {
     private Positioner positioner;
     private boolean encounter;
     private List<Coordinates> usedSpawnCoordinates;
+    private boolean sideSpawnTestMode = false;
 
     public ArenaBattleConstructor(ArenaManager manager) {
         this.manager = manager;
@@ -213,6 +214,8 @@ public class ArenaBattleConstructor {
 
     private Coordinates pickSpawnCoordinateForWave(ENCOUNTER_TYPE type, Integer round,
                                                    ObjType waveType, boolean recursion) {
+       if (sideSpawnTestMode)
+           return null ;
         int minDistance = Integer.MAX_VALUE;
         int maxDistance = 0;
         Map<Coordinates, Point> map = new HashMap<>();

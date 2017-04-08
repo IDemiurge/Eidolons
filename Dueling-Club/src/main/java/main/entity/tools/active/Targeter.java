@@ -47,8 +47,6 @@ public class Targeter extends ActiveHandler {
             if (getEntity().getTargeting() != null) {
                 if (!isForcePresetTarget()) {
                     if (!selectTarget(getRef())) {
-                        getHandler().setResult(false);
-                        getHandler().setInterrupted(true);
                         if (getEntity().getOwnerObj().isAiControlled())
                             throw new RuntimeException();
                     }

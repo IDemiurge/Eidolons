@@ -29,7 +29,7 @@ import static main.system.GuiEventType.DESTROY_UNIT_MODEL;
  * Created by JustMe on 1/16/2017.
  */
 public class DeathAnim extends ActionAnim {
-    private static boolean on = true;
+    private static boolean on = false;
     Unit unit;
     DEATH_ANIM template;
     private Image skull;

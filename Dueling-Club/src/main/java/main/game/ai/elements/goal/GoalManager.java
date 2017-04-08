@@ -76,6 +76,7 @@ public class GoalManager extends AiHandler {
 
     private static void addNonEnemyGoals(List<GOAL_TYPE> list) {
         // list.add(GOAL_TYPE.APPROACH);
+        list.add(GOAL_TYPE.PREPARE);
         list.add(GOAL_TYPE.BUFF);
         list.add(GOAL_TYPE.ZONE_SPECIAL);
         list.add(GOAL_TYPE.ZONE_DAMAGE);

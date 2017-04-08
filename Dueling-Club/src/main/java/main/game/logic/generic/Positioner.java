@@ -50,6 +50,7 @@ public class Positioner {
     private FACING_DIRECTION forcedSide;
     private Map<MapBlock, Map<Coordinates, ObjType>> unitDungeonGroups = new LinkedHashMap<>();
     private Map<Coordinates, List<ObjType>> unitCache;
+    private Integer maxSpacePercentageTaken=100;
 
     public Positioner() {
 
@@ -586,7 +587,7 @@ public class Positioner {
         }
 
         try {
-            return StackingRule.checkCanPlace(c, entityToPosition, otherUnits);
+            return StackingRule.checkCanPlace(maxSpacePercentageTaken, c, entityToPosition, otherUnits);
         } catch (Exception e) {
             return true;
         }
@@ -671,6 +672,14 @@ public class Positioner {
             }
         }
         return DEFAULT_ENEMY_SIDE;
+    }
+
+    public Integer getMaxSpacePercentageTaken() {
+        return maxSpacePercentageTaken;
+    }
+
+    public void setMaxSpacePercentageTaken(Integer maxSpacePercentageTaken) {
+        this.maxSpacePercentageTaken = maxSpacePercentageTaken;
     }
 
     public synchronized List<FACING_DIRECTION> getSides() {

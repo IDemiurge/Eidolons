@@ -1,8 +1,8 @@
 package main.game.ai.tools.path;
 
 import main.ability.conditions.special.SneakCondition;
-import main.ability.effects.oneshot.mechanic.ChangeFacingEffect;
 import main.ability.effects.Effect;
+import main.ability.effects.oneshot.mechanic.ChangeFacingEffect;
 import main.ability.effects.oneshot.move.SelfMoveEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums;
@@ -21,7 +21,6 @@ import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.ActionManager;
 import main.game.ai.elements.actions.AiUnitActionMaster;
-import main.game.ai.elements.actions.sequence.TurnSequenceConstructor;
 import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.ai.tools.target.ReasonMaster;
@@ -198,7 +197,7 @@ public class PathBuilder extends AiHandler {
             return new Choice(targetCoordinate, c_coordinate, moveAction);
         }
         adjustUnit();
-        Collection<Action> actions = TurnSequenceConstructor.getTurnSequence(
+        Collection<Action> actions = getTurnSequenceConstructor().getTurnSequence(
                 UnitEnums.FACING_SINGLE.IN_FRONT, unit, targetCoordinate);
         actions.add(moveAction);
         // resetUnit();// TODO is that right?
@@ -517,7 +516,7 @@ public class PathBuilder extends AiHandler {
         unit.resetFacing(c_facing);
         unit.setCoordinates(c_coordinate);
         if (ReasonMaster.checkReasonCannotTarget(FILTER_REASON.FACING, targetAction)) {
-            List<Action> sequence = TurnSequenceConstructor.getTurnSequence(targetAction);
+            List<Action> sequence = getTurnSequenceConstructor().getTurnSequence(targetAction);
             for (Action a : sequence) {
                 path.add(new Choice(c_coordinate, a));
             }
