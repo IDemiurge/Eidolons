@@ -1,6 +1,6 @@
 package main.libgdx.bf;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.texture.TextureCache;
@@ -22,17 +22,17 @@ public class CellBorderManager extends Group {
     protected Image greenBorder;
     protected Image redBorder;
     protected Image orangeBorder;
-    protected Texture blueBorderTexture;
+    protected TextureRegion blueBorderTexture;
     private Borderable unitBorderOwner = null;
     private Map<Borderable, Runnable> blueBorderOwners = new HashMap<>();
 
     public CellBorderManager() {
-        greenBorder = new Image(TextureCache.getOrCreate(cyanPath));
+        greenBorder = new Image(TextureCache.getOrCreateR(cyanPath));
         greenBorder.setBounds(2, 2, 4, 4);
 
-        redBorder = new Image(TextureCache.getOrCreate(redPath));
+        redBorder = new Image(TextureCache.getOrCreateR(redPath));
 
-        blueBorderTexture = TextureCache.getOrCreate(bluePath);
+        blueBorderTexture = TextureCache.getOrCreateR(bluePath);
 
         bindEvents();
     }

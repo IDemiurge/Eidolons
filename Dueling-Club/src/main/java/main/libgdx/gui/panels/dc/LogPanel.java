@@ -30,7 +30,7 @@ public class LogPanel extends Group {
 
     public LogPanel() {
         setSize(400, 250);
-        Image bg = new Image(TextureCache.getOrCreate(bgPath));
+        Image bg = new Image(TextureCache.getOrCreateR(bgPath));
         bg.setFillParent(true);
         addActor(bg);
 

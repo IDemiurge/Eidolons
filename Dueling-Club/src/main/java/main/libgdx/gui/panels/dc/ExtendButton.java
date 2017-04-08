@@ -9,7 +9,7 @@ public class ExtendButton extends Group {
     private final static String extendButtonImagePath = "UI\\components\\extend_button.png";
 
     public ExtendButton() {
-        Image back = new Image(TextureCache.getOrCreate(extendButtonImagePath));
+        Image back = new Image(TextureCache.getOrCreateR(extendButtonImagePath));
         setHeight(back.getHeight());
         setWidth(back.getWidth());
         addActor(back);

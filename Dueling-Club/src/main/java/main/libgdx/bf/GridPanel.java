@@ -1,7 +1,7 @@
 package main.libgdx.bf;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -49,11 +49,11 @@ public class GridPanel extends Group {
     private static final String highlightCellPath = "UI/cells/Highlight Green Cell v3.png";
     private static final String unknownCellPath = "UI/cells/Unknown Cell v2.png";
     private static final String cellBorderPath = "UI\\CELL for 96.png";
-    protected Texture emptyImage;
-    protected Texture hiddenImage;
-    protected Texture highlightImage;
-    protected Texture unknownImage;
-    protected Texture cellBorderTexture;
+    protected TextureRegion emptyImage;
+    protected TextureRegion hiddenImage;
+    protected TextureRegion highlightImage;
+    protected TextureRegion unknownImage;
+    protected TextureRegion cellBorderTexture;
     protected DequeImpl<BattleFieldObject> units;
     protected GridCell[][] cells;
     private CellBorderManager cellBorderManager;
@@ -74,9 +74,9 @@ public class GridPanel extends Group {
                 OUTLINE_TYPE outline = obj.getOutlineType();
                 UnitView uv = (UnitView) unitMap.get(obj);
 
-                Texture texture = null;
+                TextureRegion texture = null;
                 if (outline != null) {
-                    texture = TextureCache.getOrCreate(
+                    texture = TextureCache.getOrCreateR(
                             Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
                 }
 
@@ -116,11 +116,11 @@ public class GridPanel extends Group {
 
     public GridPanel init() {
         setUnitMap(new HashMap<>());
-        emptyImage = TextureCache.getOrCreate(emptyCellPath);
-        hiddenImage = TextureCache.getOrCreate(hiddenCellPath);
-        highlightImage = TextureCache.getOrCreate(highlightCellPath);
-        unknownImage = TextureCache.getOrCreate(unknownCellPath);
-        cellBorderTexture = TextureCache.getOrCreate(cellBorderPath);
+        emptyImage = TextureCache.getOrCreateR(emptyCellPath);
+        hiddenImage = TextureCache.getOrCreateR(hiddenCellPath);
+        highlightImage = TextureCache.getOrCreateR(highlightCellPath);
+        unknownImage = TextureCache.getOrCreateR(unknownCellPath);
+        cellBorderTexture = TextureCache.getOrCreateR(cellBorderPath);
 
         cells = (new GridCell[cols][rows]);
 

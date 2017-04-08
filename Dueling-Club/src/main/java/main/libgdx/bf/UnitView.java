@@ -32,15 +32,15 @@ public class UnitView extends BaseView {
     private int arrowRotation;
     private int clockVal;
     private FrameBuffer fbo;
-    private Texture portraitTexture;
+    private TextureRegion portraitTexture;
     private Container<Image> imageContainer;
-    private Texture clockTexture;
+    private TextureRegion clockTexture;
     private boolean needRepaint = true;
     private Label initiativeStrVal;
     private float alpha = 1f;
     private boolean dead;
     private int graveIndex;
-    private Texture outlineTexture;
+    private TextureRegion outlineTexture;
 
 
     public UnitView(UnitViewOptions o) {
@@ -49,16 +49,15 @@ public class UnitView extends BaseView {
         init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getClockTexture(), o.getClockValue(), o.getPortrateTexture(), o.getIconTexture());
     }
 
-    private void init(Texture arrowTexture, int arrowRotation, Texture clockTexture, int clockVal, Texture portraitTexture, Texture iconTexture) {
+    private void init(TextureRegion arrowTexture, int arrowRotation, TextureRegion clockTexture, int clockVal, TextureRegion portraitTexture, Texture iconTexture) {
         this.arrowRotation = arrowRotation + 90;
         this.clockVal = clockVal;
         this.portraitTexture = portraitTexture;
         portrait = new Image(portraitTexture);
 
-        baseHeight = portraitTexture.getHeight();
-        baseWidth = portraitTexture.getHeight();
-        setHeight(baseHeight * getScaleY());
-        setWidth(baseWidth * getScaleX());
+        baseHeight = portraitTexture.getRegionHeight();
+        baseWidth = portraitTexture.getRegionWidth();
+        setSize(baseWidth * getScaleX(), baseHeight * getScaleY());
 
         fbo = new FrameBuffer(Pixmap.Format.RGBA4444, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         imageContainer = new Container<>();
@@ -69,8 +68,8 @@ public class UnitView extends BaseView {
             this.clockTexture = clockTexture;
             initiativeStrVal = new Label("[#00FF00FF]" + String.valueOf(clockVal) + "[]", StyleHolder.getDefaultLabelStyle());
             initiativeStrVal.setPosition(
-                    getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
-                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
+                    getWidth() - clockTexture.getRegionWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    clockTexture.getRegionHeight() / 2 - initiativeStrVal.getHeight() / 2);
         }
 
         if (arrowTexture != null) {
@@ -116,8 +115,10 @@ public class UnitView extends BaseView {
     @Override
     public void updateBorderSize() {
         super.updateBorderSize();
-        border.setHeight(portraitTexture.getWidth() + 8);
-        border.setWidth(portraitTexture.getHeight() + 8);
+        border.setSize(
+                portraitTexture.getRegionWidth() + 8,
+                portraitTexture.getRegionHeight() + 8
+        );
     }
 
     public void setVisibleVal(int val) {
@@ -149,9 +150,9 @@ public class UnitView extends BaseView {
 //                 GraveyardManager.GRAVE_ROWS;
 //                sp.draw(skullTexture, x, y, skullTexture.getWidth(), skullTexture.getHeight());
 //            }
-            Texture texture = portraitTexture;
-            float w = texture.getWidth();
-            float h = texture.getHeight();
+            TextureRegion texture = portraitTexture;
+            float w = texture.getRegionWidth();
+            float h = texture.getRegionHeight();
             if (outlineTexture != null) {
                 texture = outlineTexture;
                 w=GridConst.CELL_W;
@@ -164,7 +165,7 @@ public class UnitView extends BaseView {
             }
             if (isDrawOverlays()) {
                 if (clockTexture != null) {
-                    sp.draw(clockTexture, portraitTexture.getWidth() - clockTexture.getWidth(), 0);
+                    sp.draw(clockTexture, portraitTexture.getRegionWidth() - clockTexture.getRegionWidth(), 0);
 
                 }
                 if (initiativeStrVal != null) {
@@ -174,7 +175,12 @@ public class UnitView extends BaseView {
             sp.end();
             fbo.end();
 
-            TextureRegion textureRegion = new TextureRegion(fbo.getColorBufferTexture(), 0, 0, portraitTexture.getWidth(), portraitTexture.getHeight());
+            TextureRegion textureRegion = new TextureRegion(
+                    fbo.getColorBufferTexture(), 0, 0,
+                    portraitTexture.getRegionWidth(),
+                    portraitTexture.getRegionHeight()
+            );
+
             textureRegion.flip(false, true);
             imageContainer.setActor(new Image(textureRegion));
 
@@ -225,8 +231,8 @@ public class UnitView extends BaseView {
 
         if (initiativeStrVal != null) {
             initiativeStrVal.setPosition(
-                    portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
-                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
+                    portraitTexture.getRegionWidth() - clockTexture.getRegionWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    clockTexture.getRegionHeight() / 2 - initiativeStrVal.getHeight() / 2);
         }
 
         if (imageContainer != null) {
@@ -257,8 +263,8 @@ public class UnitView extends BaseView {
             clockVal = val;
             initiativeStrVal.setText("[#00FF00FF]" + String.valueOf(val) + "[]");
             initiativeStrVal.setPosition(
-                    portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
-                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
+                    portraitTexture.getRegionWidth() - clockTexture.getRegionWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    clockTexture.getRegionHeight() / 2 - initiativeStrVal.getHeight() / 2);
 
             needRepaint = true;
         } else {
@@ -282,11 +288,7 @@ public class UnitView extends BaseView {
         this.graveIndex = graveIndex;
     }
 
-    public Texture getOutlineTexture() {
-        return outlineTexture;
-    }
-
-    public void setOutlineTexture(Texture outlineTexture) {
+    public void setOutlineTexture(TextureRegion outlineTexture) {
         this.outlineTexture = outlineTexture;
     }
 }

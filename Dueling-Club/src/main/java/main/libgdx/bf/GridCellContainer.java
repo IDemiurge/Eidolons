@@ -1,6 +1,6 @@
 package main.libgdx.bf;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.entity.obj.unit.Unit;
@@ -19,7 +19,7 @@ public class GridCellContainer extends GridCell {
     private int unitViewCount = 0;
     private int overlayCount = 0;
 
-    public GridCellContainer(Texture backTexture, int gridX, int gridY) {
+    public GridCellContainer(TextureRegion backTexture, int gridX, int gridY) {
         super(backTexture, gridX, gridY);
     }
 

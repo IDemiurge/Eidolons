@@ -4,7 +4,6 @@ import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.unit.Unit;
 import main.libgdx.gui.controls.radial.SpellRadialManager.SPELL_ASPECT;
-import main.libgdx.texture.TextureCache;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -50,17 +49,5 @@ public class RadialSpellAspect implements RADIAL_ITEM {
     public String getTexturePath() {
         return "ui\\value icons\\aspects\\" + aspect.name().toLowerCase() + ".png";
     }
-
-    @Override
-    public float getWidth() {
-//        return Math.min(100, TextureCache.getOrCreate(getTexturePath()).getWidth());
-        return TextureCache.getOrCreate(getTexturePath()).getWidth() * 0.66f;
-    }
-
-    @Override
-    public float getHeight() {
-        return TextureCache.getOrCreate(getTexturePath()).getHeight() * 0.66f;
-    }
-    //        ASPECT
 
 }

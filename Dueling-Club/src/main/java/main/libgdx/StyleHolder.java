@@ -1,12 +1,15 @@
 package main.libgdx;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import main.data.filesys.PathFinder;
 import main.system.graphics.ColorManager;
 
 import java.util.HashMap;
@@ -25,6 +28,7 @@ public class StyleHolder {
     private static TextButton.TextButtonStyle defaultTextButtonStyle;
     private static Map<Color, Label.LabelStyle> colorLabelStyleMap = new HashMap<>();
 
+
     public static Label.LabelStyle getDefaultLabelStyle(Color color) {
         if (!colorLabelStyleMap.containsKey(color)) {
             Label.LabelStyle style = new Label.LabelStyle(new BitmapFont(), color);
@@ -32,6 +36,18 @@ public class StyleHolder {
             colorLabelStyleMap.put(color, style);
         }
         return colorLabelStyleMap.get(color);
+    }
+
+    private static BitmapFont getDiablo2Font(Color color) {
+        final String path = PathFinder.getFontPath() + "/DIABLO_H.ttf";
+
+        final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(new FileHandle(path));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.color = color;
+
+        final BitmapFont bitmapFont = generator.generateFont(parameter);
+        generator.dispose();
+        return bitmapFont;
     }
 
     public static Label.LabelStyle getDefaultLabelStyle() {

@@ -1,6 +1,5 @@
 package main.libgdx.gui.panels.dc.unitinfo.datasource;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.PARAMS;
 import main.content.VALUE;
@@ -37,7 +36,7 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 public class UnitDataSource implements
         MainParamDataSource, ResourceSource,
         AvatarDataSource, CounterAndActionPointsSource,
-        EffectsAndAbilitiesSource, MainWeaponDataSource, OffWeaponDataSource,
+        EffectsAndAbilitiesSource, MainWeaponDataSource<ValueContainer>, OffWeaponDataSource,
         MainAttributesSource, ResistSource, StatsDataSource,
         ArmorDataSource {
     private Unit unit;
@@ -192,8 +191,8 @@ public class UnitDataSource implements
     }
 
     @Override
-    public Texture getAvatar() {
-        return TextureCache.getOrCreate(unit.getImagePath());
+    public TextureRegion getAvatar() {
+        return TextureCache.getOrCreateR(unit.getImagePath());
     }
 
     @Override

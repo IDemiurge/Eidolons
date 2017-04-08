@@ -35,7 +35,7 @@ public class Comp extends WidgetGroup {
         }
         if (ImageManager.isImage(imagePath)) {
             removeActor(image);
-            image = new Image(TextureCache.getOrCreate(imagePath));
+            image = new Image(TextureCache.getOrCreateR(imagePath));
             addActorAt(0, image);
         }
         if (image == null) {
@@ -48,7 +48,7 @@ public class Comp extends WidgetGroup {
 
     public Image getImage() {
         if (image == null || dirty) {
-            image = new Image(TextureCache.getOrCreate(imagePath));
+            image = new Image(TextureCache.getOrCreateR(imagePath));
         }
         return image;
     }

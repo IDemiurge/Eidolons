@@ -7,9 +7,7 @@ import main.entity.obj.unit.Unit;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
-import main.libgdx.gui.panels.dc.unitinfo.datasource.EffectsAndAbilitiesSource;
-import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSource;
-import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.*;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.datatypes.DequeImpl;
 
@@ -23,7 +21,8 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class PanelActionsDataSource implements
         ActiveQuickSlotsDataSource, UnitActionsDataSource, SpellDataSource,
-        EffectsAndAbilitiesSource, ResourceSource {
+        EffectsAndAbilitiesSource, ResourceSource,
+        MainWeaponDataSource<ActionValueContainer>, OffWeaponDataSource {
     private Unit unit;
 
     private UnitDataSource unitDataSource;
@@ -158,5 +157,45 @@ public class PanelActionsDataSource implements
     @Override
     public String getFocus() {
         return unitDataSource.getFocus();
+    }
+
+    @Override
+    public ValueContainer getOffWeapon() {
+        return unitDataSource.getOffWeapon();
+    }
+
+    @Override
+    public List<ValueContainer> getOffWeaponDetailInfo() {
+        return unitDataSource.getOffWeaponDetailInfo();
+    }
+
+    @Override
+    public ValueContainer getNaturalOffWeapon() {
+        return unitDataSource.getNaturalOffWeapon();
+    }
+
+    @Override
+    public List<ValueContainer> getNaturalOffWeaponDetailInfo() {
+        return unitDataSource.getNaturalOffWeaponDetailInfo();
+    }
+
+    @Override
+    public ActionValueContainer getMainWeapon() {
+        return null;
+    }
+
+    @Override
+    public List<ActionValueContainer> getMainWeaponDetailInfo() {
+        return null;
+    }
+
+    @Override
+    public ActionValueContainer getNaturalMainWeapon() {
+        return null;
+    }
+
+    @Override
+    public List<ActionValueContainer> getNaturalMainWeaponDetailInfo() {
+        return null;
     }
 }

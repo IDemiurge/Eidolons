@@ -29,14 +29,4 @@ public class EntityNode implements RADIAL_ITEM {
     public String getTexturePath() {
         return ((Entity) getContents()).getImagePath();
     }
-
-    @Override
-    public float getWidth() {
-        return 0;
-    }
-
-    @Override
-    public float getHeight() {
-        return 0;
-    }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class EffectAndAbilitiesPanel extends TablePanel {
 
     public EffectAndAbilitiesPanel() {
-        TextureRegion textureRegion = new TextureRegion(TextureCache.getOrCreate("/UI/components/infopanel/effects_and_abilities_panel.png"));
+        TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/effects_and_abilities_panel.png");
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
     }

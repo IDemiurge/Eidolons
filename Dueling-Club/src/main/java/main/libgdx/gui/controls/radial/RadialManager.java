@@ -1,6 +1,5 @@
 package main.libgdx.gui.controls.radial;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.C_OBJ_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -36,11 +35,12 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static main.libgdx.texture.TextureCache.*;
+import static main.libgdx.texture.TextureCache.getOrCreateGrayscaleR;
+import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class RadialManager {
 
-    public static Texture getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
+    public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
         Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
         return getTextureForActive(obj, ref);
     }
@@ -56,10 +56,10 @@ public class RadialManager {
          : getOrCreateR(obj.getImagePath());
     }
 
-    public static Texture getTextureForActive(DC_ActiveObj obj, Ref ref) {
+    public static TextureRegion getTextureForActive(DC_ActiveObj obj, Ref ref) {
         return !obj.canBeActivated(ref) ?
-         getOrCreateGrayscale(obj.getImagePath())
-         : getOrCreate(obj.getImagePath());
+                getOrCreateGrayscaleR(obj.getImagePath())
+                : getOrCreateR(obj.getImagePath());
     }
 
     private static boolean isActionShown(ActiveObj el, DC_Obj target) {

@@ -1,9 +1,9 @@
 package main.libgdx.gui.panels.dc.unitinfo.datasource;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public interface AvatarDataSource {
-    Texture getAvatar();
+    TextureRegion getAvatar();
 
     String getName();
 
