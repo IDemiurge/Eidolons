@@ -147,7 +147,7 @@ public class RadialManager {
              SpellRadialManager.getSpellNodes(sourceUnit, target);
             list.add(getParentNode(RADIAL_PARENT_NODE.SPELLS, spellNodes));
         }
-        list.removeIf(i -> i == null); // REMOVE IF NO NODES IN PARENT! 
+        list.removeIf(i -> i == null); // REMOVE IF NO NODES IN PARENT!
         return list;
     }
 
@@ -163,7 +163,7 @@ public class RadialManager {
 
     private static RadialValueContainer getParentNode(RADIAL_PARENT_NODE type,
                                                       List<RadialValueContainer> containers) {
-      if (containers==null )
+      if (containers.isEmpty() )
           return null ;
         RadialValueContainer valueContainer = new RadialValueContainer(
          getOrCreateR(type.getIconPath()),

@@ -124,7 +124,7 @@ public class Executor extends ActiveHandler {
 
     public void activateOnGameLoopThread() {
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-         new ActionInput(getAction(), new Context(getRef())));
+         new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }
 
     public boolean activate() {
@@ -136,7 +136,7 @@ public class Executor extends ActiveHandler {
 
         boolean gameLog = getAction().getLogger().isActivationLogged();
         String targets = " ";
-        if (getAction().getTargeting()!=null )
+        if (getAction().getTargetObj()!=null )
             targets+= getAction().getTargetObj().getNameAndCoordinate();
         if (getAction().getTargetGroup()!=null )
             targets+= getAction().getTargetGroup().toString();
