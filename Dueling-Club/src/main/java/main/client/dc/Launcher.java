@@ -57,7 +57,7 @@ public class Launcher {
     // "UI\\Empty3.png";
     public static final String FAST_TEST_PARTY = "Aeridan's Party";
     public static final boolean ILYA_MODE = true;
-    public static final boolean BRUTE_AI_MODE = true;
+    public static final boolean BRUTE_AI_MODE = false;
     public static final boolean ITS_ME = true;
     private static final Dimension VIEW_PANEL_SIZE = GuiManager.DEF_DIMENSION;
     private static final String BACKGROUND_IMAGE_1920x1200 = "UI\\components\\main\\bg_1920x1200.png";

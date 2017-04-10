@@ -30,7 +30,7 @@ import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.ai.AI_Manager;
-import main.game.ai.tools.DC_Analyzer;
+import main.game.ai.tools.DC_Bf_Analyzer;
 import main.game.battlefield.*;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.map.DC_Map;
@@ -284,7 +284,7 @@ public class DC_Game extends MicroGame {
             if (isAI_ON()) {
                 player2.setAi(true);
             } else {
-                setAnalyzer(new DC_Analyzer((MicroGame) Game.game));
+                setAnalyzer(new DC_Bf_Analyzer((MicroGame) Game.game));
             }
 
         } else {

@@ -31,9 +31,9 @@ import java.util.List;
  * Created by JustMe on 2/7/2017.
  */
 public class FloatingTextMaster {
-    private static final float DEFAULT_DISPLACEMENT_Y = 140;
-    private static final float DEFAULT_DISPLACEMENT_X = 0;
-    private static final float DEFAULT_DURATION = 4.5f;
+    private static final float DEFAULT_DISPLACEMENT_Y = 160;
+    private static final float DEFAULT_DISPLACEMENT_X = 40;
+    private static final float DEFAULT_DURATION = 6.25f;
     private static FloatingTextMaster instance;
 
     public FloatingTextMaster() {
@@ -53,6 +53,10 @@ public class FloatingTextMaster {
 
     private Color getColor(TEXT_CASES aCase, Object arg) {
         switch (aCase) {
+            case BONUS_DAMAGE:
+                Damage damage = (Damage) arg;
+                return GdxColorMaster.getDamageTypeColor(damage.getDmgType());
+
             case COSTS:
                 Cost cost = (Cost) arg;
                 return GdxColorMaster.getParamColor(cost.getPayment().getParamToPay());
@@ -177,7 +181,7 @@ public class FloatingTextMaster {
     }
 
     private float getDisplacementX(TEXT_CASES aCase) {
-        return DEFAULT_DISPLACEMENT_Y;
+        return DEFAULT_DISPLACEMENT_X;
     }
 
     private float getDefaultDuration(TEXT_CASES aCase) {

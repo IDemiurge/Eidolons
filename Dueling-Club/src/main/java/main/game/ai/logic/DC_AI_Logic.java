@@ -28,7 +28,7 @@ public abstract class DC_AI_Logic implements AI_Logic {
     protected TargetingManager targetingManager;
     protected OldPriorityManager pManager;
     protected ActionTypeManager aManager;
-    protected Analyzer analyzer;
+    protected BfAnalyzer analyzer;
 
     private Integer target;
 
@@ -218,12 +218,12 @@ public abstract class DC_AI_Logic implements AI_Logic {
     }
 
     @Override
-    public Analyzer getAnalyzer() {
+    public BfAnalyzer getAnalyzer() {
         return this.analyzer;
     }
 
     @Override
-    public void setAnalyzer(Analyzer analyzer) {
+    public void setAnalyzer(BfAnalyzer analyzer) {
         this.analyzer = analyzer;
     }
 

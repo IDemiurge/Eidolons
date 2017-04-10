@@ -28,10 +28,12 @@ public class DC_PriorityManager {
 
 
     private static PriorityManager impl;
+    private static AiHandler aiHandler;
 
     public static PriorityManager
     init(AiHandler handler) {
         impl = new PriorityManagerImpl(handler);
+      aiHandler = handler;
         return impl;
     }
 
@@ -65,20 +67,20 @@ public class DC_PriorityManager {
     }
 
     public static int getMeleeDangerFactor(Unit unit) {
-        return impl.getMeleeDangerFactor(unit);
+        return aiHandler.getSituationAnalyzer(). getMeleeDangerFactor(unit);
     }
 
     public static int getMeleeThreat(Unit enemy) {
-        return impl.getMeleeThreat(enemy);
+        return aiHandler.getSituationAnalyzer() .getMeleeThreat(enemy);
     }
 
     public static int getCostFactor(Costs cost, Unit unit) {
-        return impl.getCostFactor(cost, unit);
+        return aiHandler.getParamAnalyzer().getCostFactor(cost, unit);
     }
 
 
     public static ActionSequence chooseByPriority(List<ActionSequence> actions) {
-        return impl.chooseByPriority(actions);
+        return impl. chooseByPriority(actions);
     }
 
 

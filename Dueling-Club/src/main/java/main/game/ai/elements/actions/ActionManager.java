@@ -16,7 +16,6 @@ import main.game.ai.AI_Manager;
 import main.game.ai.UnitAI;
 import main.game.ai.advanced.behavior.BehaviorMaster;
 import main.game.ai.elements.actions.sequence.ActionSequence;
-import main.game.ai.elements.actions.sequence.ActionSequenceConstructor;
 import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.elements.goal.Goal;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
@@ -48,6 +47,13 @@ public class ActionManager extends AiHandler {
         super(master);
         this.behaviorMaster = new BehaviorMaster(master);
         atomicAi = new AtomicAi(master);
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        atomicAi.initialize();
+        behaviorMaster.initialize();
     }
 
     public static Costs getTotalCost(List<Action> actions) {
@@ -103,22 +109,23 @@ public class ActionManager extends AiHandler {
         Coordinates originalCoordinates = unit.getCoordinates();
         Action action;
         ActionSequence sequence = null;
-if (!atomicAi.checkAtomicActionCase(ai)) {
+if (!atomicAi.checkAtomicActionCaseAny(ai)) {
     List<ActionSequence> actions = new LinkedList<>();
     try {
         // actions = createActionSequences(ai);
         for (ActionSequence a : getActionSequenceConstructor().createActionSequences(
          ai)) {
+            if (checkNotBroken(a))
             if (a.get(0).canBeActivated()) {
-                if (checkNotBroken(a))
                 // if (a.getOrCreate(0).canBeTargeted())
                 {
                     actions.add(a);
                 }
             }
-            if (ListMaster.isNotEmpty(actions)) {
-                sequence = DC_PriorityManager.chooseByPriority(actions);
-            }
+
+        }
+        if (ListMaster.isNotEmpty(actions)) {
+            sequence = DC_PriorityManager.chooseByPriority(actions);
         }
     } catch (Exception e) {
         e.printStackTrace();
@@ -264,8 +271,6 @@ if (!atomicAi.checkAtomicActionCase(ai)) {
 
     }
 
-    public ActionSequenceConstructor getActionSequenceConstructor() {
-        return actionSequenceConstructor;
-    }
+
 
 }

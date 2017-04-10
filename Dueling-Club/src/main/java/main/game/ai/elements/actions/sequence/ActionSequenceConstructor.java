@@ -73,7 +73,7 @@ public class ActionSequenceConstructor extends AiHandler {
         actions.addAll(addSubactions(actions));
         for (DC_ActiveObj action : actions) {
             Chronos.mark(getChronosPrefix() + action);
-            List<Task> tasks = taskManager.getTasks(goal.getTYPE(), ai, goal.isForced(), action);
+            List<Task> tasks = getTaskManager().getTasks(goal.getTYPE(), ai, goal.isForced(), action);
             for (Task task : tasks) {
                 if (task.isBlocked()) {
                     continue;
@@ -167,7 +167,7 @@ public class ActionSequenceConstructor extends AiHandler {
         if (task.getType() == GOAL_TYPE.RETREAT) {
             {
                 List<ActionSequence> sequencesFromPaths = getSequencesFromPaths(
-                        pathSequenceConstructor.getRetreatPaths(arg), task, action);
+                        getPathSequenceConstructor().getRetreatPaths(arg), task, action);
                 return sequencesFromPaths;
             } // TODO
         }
@@ -239,7 +239,7 @@ public class ActionSequenceConstructor extends AiHandler {
             // moveActions, action);
         }
 
-        List<ActionPath> paths = pathSequenceConstructor.getPathSequences(moveActions, action);
+        List<ActionPath> paths = getPathSequenceConstructor().getPathSequences(moveActions, action);
         list = getSequencesFromPaths(paths, task, action);
         return list;
 

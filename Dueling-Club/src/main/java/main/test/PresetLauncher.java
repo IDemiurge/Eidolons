@@ -55,16 +55,17 @@ public class PresetLauncher {
 
         LAUNCH.Standoff_Test.gameMode = GAME_MODES.ARENA;
         LAUNCH.Standoff_Test.dungeonPath = "Pit.xml";
+
         LAUNCH.Standoff_Preset.gameMode = GAME_MODES.ARENA;
         LAUNCH.Standoff_Preset.dungeonPath = "Pit.xml";
-        LAUNCH.Standoff.gameMode = GAME_MODES.ARENA;
-        LAUNCH.Standoff.dungeonPath = "Pit.xml";
 
+        LAUNCH.Standoff.gameMode = GAME_MODES.ARENA;
         LAUNCH.Standoff. workspaceFilter=WORKSPACE_GROUP.TEST;
         LAUNCH.Standoff. PARTY_CODE= CODE.CHOOSE;
-        LAUNCH.Gui.graphicsTest = true;
 
+        LAUNCH.Gui.graphicsTest = true;
         LAUNCH.Gui.visionHacked = true;
+
         LAUNCH.Anims.visionHacked = true;
         LAUNCH.AI.visionHacked = true;
         LAUNCH.Anims.logChannelsOn = new LogMaster.LOG_CHANNELS[]{

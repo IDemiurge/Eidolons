@@ -196,7 +196,11 @@ public class DC_GameMaster extends GameMaster {
     }
 
     public Unit getUnitByCoordinate(Coordinates coordinates) {
-        return (Unit) getGame().getBattleField().getObj(coordinates);
+        Collection<Obj> list = getUnitsForCoordinates(coordinates);
+        //sort?? TODO
+        if (list.isEmpty())return null ;
+        return (Unit) list.iterator().next();
+//         getGame().getBattleField().getObj(coordinates);
     }
 
     public Collection<Obj> getUnitsForCoordinates(Coordinates... coordinates) {

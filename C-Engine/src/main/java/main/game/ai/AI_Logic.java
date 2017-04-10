@@ -4,7 +4,7 @@ import main.entity.obj.Active;
 import main.entity.obj.Obj;
 import main.game.ai.logic.ActionTypeManager;
 import main.game.ai.logic.ActionTypeManager.ACTION_TYPES;
-import main.game.ai.logic.Analyzer;
+import main.game.ai.logic.BfAnalyzer;
 import main.game.ai.logic.OldPriorityManager;
 import main.game.ai.logic.TargetingManager;
 import main.game.core.game.MicroGame;
@@ -68,9 +68,9 @@ public interface AI_Logic {
 
     int initTargetId();
 
-    Analyzer getAnalyzer();
+    BfAnalyzer getAnalyzer();
 
-    void setAnalyzer(Analyzer analyzer);
+    void setAnalyzer(BfAnalyzer analyzer);
 
     Set<Obj> getEnemyUnits();
 

@@ -82,7 +82,7 @@ public class ArenaBattleConstructor {
     private Positioner positioner;
     private boolean encounter;
     private List<Coordinates> usedSpawnCoordinates;
-    private boolean sideSpawnTestMode = false;
+    private boolean sideSpawnTestMode = true;
 
     public ArenaBattleConstructor(ArenaManager manager) {
         this.manager = manager;

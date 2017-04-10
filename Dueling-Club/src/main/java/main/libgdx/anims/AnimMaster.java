@@ -53,7 +53,7 @@ public class AnimMaster extends Group {
         instance = this;
         floatingTextMaster = new FloatingTextMaster();
         continuousAnimsOn =
-                false;
+         false;
 //         FAST_DC.getGameLauncher().FAST_MODE ||
 //          FAST_DC.getGameLauncher().SUPER_FAST_MODE;
         on = true;
@@ -180,7 +180,7 @@ public class AnimMaster extends Group {
             parentAnim = getParentAnim(event.getRef());
             if (parentAnim != null) {
                 LogMaster.log(LogMaster.ANIM_DEBUG, anim +
-                        " event anim created for: " + parentAnim);
+                 " event anim created for: " + parentAnim);
                 parentAnim.addEventAnim(anim, event); //TODO}
             }
             if (!parentAnim.isRunning()) {// preCheck new TODO
@@ -188,22 +188,22 @@ public class AnimMaster extends Group {
             }
         });
         GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p -> {
-                    if (!isOn()) {
-                        return;
-                    }
-                    Effect effect = (Effect) p.get();
-                    Animation anim = constructor.getEffectAnim(effect);
-                    if (anim == null) {
-                        return;
-                    }
-                    CompositeAnim parentAnim = getParentAnim(effect.getRef());
-                    if (parentAnim != null) {
-                        LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
-                        parentAnim.addEffectAnim(anim, effect); //TODO}
-                    } else {
+             if (!isOn()) {
+                 return;
+             }
+             Effect effect = (Effect) p.get();
+             Animation anim = constructor.getEffectAnim(effect);
+             if (anim == null) {
+                 return;
+             }
+             CompositeAnim parentAnim = getParentAnim(effect.getRef());
+             if (parentAnim != null) {
+                 LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
+                 parentAnim.addEffectAnim(anim, effect); //TODO}
+             } else {
 //                        add(anim);// when to start()?
-                    }
-                }
+             }
+         }
         );
     }
 
@@ -288,8 +288,8 @@ public class AnimMaster extends Group {
             }
             CompositeAnim a = new CompositeAnim();
             a.add(
-                    part
-                    , (Anim) e);
+             part
+             , (Anim) e);
             if (e.getDelay() == 0) {
                 root.getAttached().get(part).set(i, a);
             } else {
@@ -333,7 +333,12 @@ public class AnimMaster extends Group {
             return;
         }
 
-        boolean result = leadAnimation.draw(batch);//drawer
+        boolean result = false;
+        try {
+            result=leadAnimation.draw(batch);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (!result) {
             startNext();
         }

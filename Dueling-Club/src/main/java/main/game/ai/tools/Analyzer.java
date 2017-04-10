@@ -21,10 +21,12 @@ import main.game.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
+import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.PositionMaster;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -228,16 +230,32 @@ public class Analyzer extends AiHandler {
     }
 
     public static List<? extends DC_Obj> getEnemies(Unit unit,
-                                                    boolean checkAct, boolean checkAttack, boolean adjacentOnly) {
-        return getUnits(unit, true, checkAct, checkAttack, adjacentOnly);
+                                                    boolean checkAct, boolean
+                                                     checkAttack, boolean adjacentOnly) {
+        return getUnits(unit, true, checkAct, checkAttack, adjacentOnly );
     }
 
+    public int getClosestEnemyDistance(Unit unit ) {
+        Unit enemy = getClosestEnemy(unit);
+        if (enemy==null ) return 999;
+        return PositionMaster.getDistance(enemy, unit);
+    }
+
+        public Unit getClosestEnemy(Unit unit ) {
+        List<? extends DC_Obj> list = getEnemies(unit, true, false, false);
+        if (list.isEmpty()) return null ;
+        list.sort(
+         SortMaster.getSorterByExpressionObj(
+          (t) -> PositionMaster.getDistance(t.getCoordinates(), unit.getCoordinates())));
+        return (Unit) list.get(0);
+    }
     public static List<Unit> getUnits(Unit unit,
-                                      Boolean enemy_or_ally_only, boolean checkAct, boolean checkAttack,
-                                      boolean adjacentOnly) {
+                                      Boolean enemy_or_ally_only, boolean checkAct,
+                                      boolean checkAttack, boolean adjacent) {
         List<Unit> list = new LinkedList<>();
-        for (Coordinates coordinates : unit.getCoordinates()
-                .getAdjacentCoordinates()) {
+      Collection<Coordinates> coordinatesToCheck=adjacent?  unit.getCoordinates()
+         .getAdjacentCoordinates() :unit.getGame().getCoordinates();
+        for (Coordinates coordinates : coordinatesToCheck) {
             Obj obj = unit.getGame().getUnitByCoordinate(coordinates);
             if (obj == null) {
                 continue;
@@ -246,9 +264,10 @@ public class Analyzer extends AiHandler {
             Unit enemy = (Unit) obj;
             if (enemy_or_ally_only != null) {
                 if (enemy_or_ally_only) {
-                    if (obj.getOwner().equals(unit.getOwner())) {
+                    if (obj.getOwner().equals(unit.getOwner()))
                         continue;
-                    } else if (!obj.getOwner().equals(unit.getOwner())) {
+                }else {
+                    if (!obj.getOwner().equals(unit.getOwner())) {
                         continue;
                     }
                 }
@@ -488,5 +507,6 @@ public class Analyzer extends AiHandler {
         // unit.setCoordinates(originalCoordinates);
         // return list;
     }
+
 
 }

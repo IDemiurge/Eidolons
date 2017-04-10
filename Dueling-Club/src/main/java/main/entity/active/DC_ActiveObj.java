@@ -127,6 +127,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public DAMAGE_TYPE getDamageType() {
         if (super.getDamageType()==null ){
+            if (getActiveWeapon()==null )
+                return null ;
             getActiveWeapon().getDamageType();
         }
             return super.getDamageType();

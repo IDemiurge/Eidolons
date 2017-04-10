@@ -1,6 +1,7 @@
 package main.game.ai;
 
 import main.client.cc.logic.party.PartyObj;
+import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
 import main.data.XStack;
 import main.entity.obj.MicroObj;
 import main.entity.obj.unit.Unit;
@@ -17,6 +18,7 @@ import main.system.auxiliary.data.ListMaster;
 import java.util.*;
 
 public class GroupAI {
+    private ENCOUNTER_TYPE encounterType;
     private Unit leader;
     private List<Unit> members;
     private PartyObj party;
@@ -40,6 +42,7 @@ public class GroupAI {
     public GroupAI(Wave creepGroup) {
         this.creepGroup = creepGroup;
         members = new LinkedList<>();
+      encounterType =  creepGroup.getWaveType();
         if (creepGroup == null) {
             return;
         }
@@ -231,6 +234,10 @@ public class GroupAI {
 
     public Map<Unit, List<Coordinates>> getSuspectedEnemyCoordinatesMap() {
         return suspectedEnemyCoordinatesMap;
+    }
+
+    public ENCOUNTER_TYPE getEncounterType() {
+        return encounterType;
     }
 
     public void setSuspectedEnemyCoordinatesMap(

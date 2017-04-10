@@ -38,6 +38,7 @@ public class AI_Manager extends AiMaster {
     }
 
     public void init() {
+        initialize();
         game.getPlayer(false).setPlayerAI(new PlayerAI(getType()));
     }
 

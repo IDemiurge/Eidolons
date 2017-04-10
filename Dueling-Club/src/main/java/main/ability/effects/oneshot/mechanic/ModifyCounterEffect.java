@@ -1,9 +1,9 @@
 package main.ability.effects.oneshot.mechanic;
 
+import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
-import main.ability.effects.MicroEffect;
 import main.content.DC_ContentManager;
 import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.entity.Ref;
@@ -80,7 +80,7 @@ public class ModifyCounterEffect extends MicroEffect  implements OneshotEffect, 
 
         }
         if (result) {
-            getAnimation().addPhaseArgs(PHASE_TYPE.COUNTER, counterName, modtype, modValue);
+          try{  getAnimation().addPhaseArgs(PHASE_TYPE.COUNTER, counterName, modtype, modValue);              }catch(Exception e){                e.printStackTrace();            }
         } else {
             return false;
         }

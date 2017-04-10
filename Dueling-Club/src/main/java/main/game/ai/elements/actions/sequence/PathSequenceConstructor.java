@@ -1,5 +1,6 @@
 package main.game.ai.elements.actions.sequence;
 
+import main.elements.targeting.Targeting;
 import main.entity.active.DC_ActiveObj;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
@@ -26,6 +27,7 @@ import java.util.Map;
  */
 public class PathSequenceConstructor extends AiHandler {
     Map<List<Coordinates>, List<ActionPath>> pathCache = new HashMap<>();
+    Map<Targeting, List<Coordinates>> cellsCache = new HashMap<>();
 
     public PathSequenceConstructor(AiHandler master) {
         super(master);
@@ -104,7 +106,9 @@ public class PathSequenceConstructor extends AiHandler {
         }
 
         Coordinates originalCoordinate = unit.getCoordinates();
-        List<Coordinates> list = new ArrayList<>();
+        List<Coordinates> list = cellsCache.get(targetAction.getTargeting());
+        if (list!=null )return list;
+list =        new ArrayList<>();
         try {
             if (fastPickClosest) {
                 double min = Integer.MAX_VALUE;
@@ -152,6 +156,7 @@ public class PathSequenceConstructor extends AiHandler {
             LogMaster.log(LOG_CHANNELS.AI_DEBUG, "***" + targetAction
                     + " has target cells for PB: " + list);
         }
+        cellsCache.put(targetAction .getTargeting(), list);
         return list;
     }
 

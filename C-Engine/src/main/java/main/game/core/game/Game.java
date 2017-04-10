@@ -11,7 +11,7 @@ import main.game.logic.generic.ActionManager;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.ai.logic.Analyzer;
+import main.game.ai.logic.BfAnalyzer;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.GenericVisionManager;
 import main.game.battlefield.GraveyardManager;
@@ -51,7 +51,7 @@ public abstract class Game  implements Serializable { // extends Entity? ;) Prop
     protected MovementManager movementManager;
     protected Log log;
     protected MathMaster mathManager;
-    protected Analyzer analyzer;
+    protected BfAnalyzer analyzer;
     protected ActionManager actionManager;
     protected TurnManager turnManager;
     protected EffectManager effectManager;
@@ -176,11 +176,11 @@ public abstract class Game  implements Serializable { // extends Entity? ;) Prop
         return mathManager;
     }
 
-    public Analyzer getAnalyzer() {
+    public BfAnalyzer getAnalyzer() {
         return analyzer;
     }
 
-    public void setAnalyzer(Analyzer analyzer) {
+    public void setAnalyzer(BfAnalyzer analyzer) {
         this.analyzer = analyzer;
     }
 

@@ -105,6 +105,11 @@ public class ValuePages {
      C_ESSENCE,
      C_MORALE,
     };
+    public static final PARAMS[] UNIT_DYNAMIC_PARAMETERS_RESTORABLE  = {
+     C_STAMINA,
+     C_FOCUS,
+     C_ESSENCE,
+    };
     public static final PARAMETER[] UNIT_DYNAMIC_PARAMETERS_CORE  = {
      N_OF_ACTIONS,
      N_OF_COUNTERS,

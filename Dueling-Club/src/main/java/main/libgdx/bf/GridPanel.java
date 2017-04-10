@@ -200,7 +200,11 @@ public class GridPanel extends Group {
                 BaseView view = unitMap.get(hero);
                 if (view instanceof UnitView) {
                     UnitView unitView = ((UnitView) view);
-                    unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
+                    //TODO UnitView creation may not happen in time for some Turn or Move
+                    // -> exception
+                    //  IDEA – if I just ignore this, maybe facing will be initialized correctly?
+                    if (unitView!=null )
+                     unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
                 }
                 caught = true;
             }

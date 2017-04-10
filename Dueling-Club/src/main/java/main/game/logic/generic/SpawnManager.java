@@ -611,20 +611,20 @@ public class SpawnManager {
         }
         for (ObjAtCoordinate oac : unitMap) {
             Coordinates c = oac.getCoordinates();
-            if (c == null) {
-                continue;
-            }
-            if (c.isInvalid()) {
-                continue;
-            }
             FACING_DIRECTION facing = getPositioner().getFacingForEnemy(c);
-
-            ObjType type = oac.getType();
-
+            boolean invalid=false;
+            if (c == null) {
+                invalid = true;
+            } else
+            if (c.isInvalid()) {
+                invalid = true;
+            } else
             if (game.getBattleField().getGrid().isCoordinateObstructed(c)) {
-                c = Positioner.adjustCoordinate(c, facing);
+                invalid = true;
             }
-
+if (invalid)
+    c = Positioner.adjustCoordinate(c, facing);
+            ObjType type = oac.getType();
             Unit unit = (Unit) game.createUnit(type, c, wave.getOwner());
             UnitTrainingMaster.train(unit);
 

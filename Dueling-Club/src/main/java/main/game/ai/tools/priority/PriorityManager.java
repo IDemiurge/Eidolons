@@ -5,7 +5,6 @@ import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.oneshot.mechanic.RollEffect;
 import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
-import main.elements.costs.Costs;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -36,9 +35,7 @@ public interface PriorityManager {
     //not the same as danger!
     float calculateCapacity(Unit unit);
 
-    int getCostFactor(Costs cost, Unit unit);
 
-    int getParamPriority(PARAMETER p, Unit unit);
 
     int getSpellPriority(GOAL_TYPE type, Action action);
 
@@ -134,17 +131,6 @@ public interface PriorityManager {
     int getDefendPriority(UnitAI unit_ai);
 
     int getModePriority(Unit unit, STD_MODES mode);
-
-    int getMeleeDangerFactor(Unit unit);
-
-    int getMeleeDangerFactor(Unit unit, boolean adjacentOnly, boolean now);
-
-    int getMeleeThreat(Unit enemy);
-
-    int getMeleeThreat(Unit enemy, boolean now);
-
-
-    int getCastingPriority(Unit unit);
 
 
     public enum AI_EFFECT_PRIORITIZING {

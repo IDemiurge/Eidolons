@@ -10,6 +10,7 @@ import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.game.logic.combat.damage.Damage;
 import main.libgdx.GameScreen;
+import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
@@ -30,7 +31,7 @@ public class HitAnim extends ActionAnim {
 
 
     public HitAnim(DC_ActiveObj active, AnimData params) {
-        this(active, params, true, Color.RED, () -> String.valueOf(
+        this(active, params, true, null , () -> String.valueOf(
                 active.getIntParam(PARAMS.DAMAGE_LAST_DEALT)),
                 () -> ImageManager.getDamageTypeImagePath(
                         active.getDamageType() == null ? "Physical" : active.getDamageType().getName()));
@@ -54,6 +55,10 @@ public class HitAnim extends ActionAnim {
         fade.setAlpha(0);
         addAction(fade);
         setLoops(1);
+        if (c==null ){
+            c = GdxColorMaster.getDamageTypeColor(active.getDamageType());
+        }
+        //TODO //        FloatingTextMaster.getInstance().getFloatingText(active, HIT, active);
         floatingText =
                 new FloatingText(
                         floatingTextSupplier, imageSupplier

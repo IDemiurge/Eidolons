@@ -91,12 +91,12 @@ public class ArmorMaster {
         /*
          * if blocks, apply armor's resistance values too
 		 */
+        if (action==null )
+            return 0;
         if (!offhand) {
             offhand = action.isOffhand();
         }
-        if (action == null) {
-            return 0;
-        }
+
         DC_ArmorObj armorObj = attacked.getArmor();
         if (armorObj == null) {
             return 0;

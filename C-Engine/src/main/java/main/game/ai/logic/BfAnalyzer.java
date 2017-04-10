@@ -1,11 +1,11 @@
 package main.game.ai.logic;
 
 import main.entity.obj.Obj;
-import main.game.core.game.MicroGame;
 import main.game.ai.AI;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.MovementManager;
 import main.game.battlefield.pathing.Path;
+import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
@@ -13,7 +13,7 @@ import main.system.math.PositionMaster;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class Analyzer {
+public abstract class BfAnalyzer {
 
     protected MicroGame game;
     protected Player enemy;
@@ -21,13 +21,25 @@ public abstract class Analyzer {
     protected AI ai;
     protected MovementManager movementManager;
 
-    public Analyzer(MicroGame game, AI ai) {
+    public BfAnalyzer(MicroGame game, AI ai) {
         this.game = game;
         this.setAi(ai);
         this.movementManager = game.getMovementManager();
         setPlayer(game.getPlayer(!ai.getPlayer().isMe()));
         setEnemy(ai.getPlayer());
     }
+//    public abstract  int getMeleeDangerFactor(Unit unit);
+//
+//    public abstract  int getMeleeDangerFactor(Unit unit, boolean adjacentOnly, boolean now);
+//
+//    public abstract  int getMeleeThreat(Unit enemy);
+//
+//    public abstract   int getMeleeThreat(Unit enemy, boolean now);
+//
+//    public abstract  int getCostFactor(Costs cost, Unit unit);
+//
+//    public abstract  int getCastingPriority(Unit unit);
+
 
     public abstract boolean checkFreeHits();
 

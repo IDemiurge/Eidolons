@@ -222,7 +222,11 @@ public class CompositeAnim implements Animation {
             return;
         }
 
-        currentAnim.start();
+try{       currentAnim.start();         }catch(Exception e){
+            e.printStackTrace();
+        return ;
+        }
+
         triggerStartEvents();
 
         if (map.isEmpty()) {
