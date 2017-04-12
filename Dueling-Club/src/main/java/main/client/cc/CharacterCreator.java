@@ -173,7 +173,7 @@ public class CharacterCreator {
     }
 
     public static WORKSPACE_GROUP getDefaultWorkspaceGroup() {
-        return MetaEnums.WORKSPACE_GROUP.IMPLEMENT;
+        return WORKSPACE_GROUP.TEST;
     }
 
     private static boolean checkNameBlocked(String name) {

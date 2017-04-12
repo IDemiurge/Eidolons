@@ -15,6 +15,7 @@ import main.game.ai.tools.SituationAnalyzer;
 import main.game.ai.tools.path.CellPrioritizer;
 import main.game.ai.tools.path.PathBuilder;
 import main.game.ai.tools.priority.PriorityManager;
+import main.game.ai.tools.priority.ThreatAnalyzer;
 import main.game.ai.tools.prune.PruneMaster;
 import main.game.ai.tools.target.TargetingMaster;
 import main.game.core.game.DC_Game;
@@ -49,7 +50,10 @@ public abstract class AiHandler {
         return master.getTaskManager();
     }
 
-    
+    public ThreatAnalyzer getThreatAnalyzer() {
+        return master.getThreatAnalyzer();
+    }
+
     public GoalManager getGoalManager() {
         return master.getGoalManager();
     }

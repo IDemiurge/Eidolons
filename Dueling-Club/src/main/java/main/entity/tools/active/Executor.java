@@ -93,10 +93,7 @@ public class Executor extends ActiveHandler {
 //            ref.setTarget(context.getTarget());
             targeter.setForcePresetTarget(true);
             targeter.presetTarget = context.getTargetObj();
-            getTargeter().setRef(context);
-            if (context.getTargetObj() != null)
                 getAction().setTargetObj(context.getTargetObj());
-            if (context.getTargetObj() != null)
                 getAction().setTargetGroup(context.getGroup());
         }
         this.context = context;
@@ -183,6 +180,7 @@ public class Executor extends ActiveHandler {
         }
 
         getAction().setRef(getAction().getOwnerObj().getRef());
+
     }
 
     private boolean interrupted() {

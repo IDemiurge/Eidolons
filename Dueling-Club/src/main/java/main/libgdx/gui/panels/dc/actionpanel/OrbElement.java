@@ -60,7 +60,11 @@ public class OrbElement extends ValueContainer {
         ScissorStack.pushScissors(scissors);
         batch.draw(orbRegion, getX(), getY());
         batch.flush();
-        ScissorStack.popScissors();
+        try {
+            ScissorStack.popScissors();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //Vector2 v2 = new Vector2(-24, -4);
         //Vector2 v2 = new Vector2(-32, -5);

@@ -17,6 +17,7 @@ import main.game.logic.battle.BattleOptions;
 import main.game.logic.battle.BattleOptions.DIFFICULTY;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.generic.Positioner;
+import main.game.logic.generic.SpawnManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
@@ -190,7 +191,7 @@ public class WaveAssembler {
                 return false;
             }
         }
-        positioner.setMaxSpacePercentageTaken(50);
+        positioner.setMaxSpacePercentageTaken(SpawnManager.MAX_SPACE_PERC_CREEPS);
         List<ObjAtCoordinate> group = positioner.getCoordinatesForUnitGroup(types, wave, unitLevel);
         typeMap.addAll(group);
         unitGroups.add(group);
@@ -200,7 +201,7 @@ public class WaveAssembler {
 
     public void resetPositions(Wave wave) {
         List<ObjType> types = wave.getUnitMap().stream().map(t -> t.getType()).collect(Collectors.toList());
-        positioner.setMaxSpacePercentageTaken(50);
+        positioner.setMaxSpacePercentageTaken(SpawnManager.MAX_SPACE_PERC_CREEPS);
         List<ObjAtCoordinate> group =
          positioner.getCoordinatesForUnitGroup(types, wave, wave.getUnitLevel());
         wave.setUnitMap(group);

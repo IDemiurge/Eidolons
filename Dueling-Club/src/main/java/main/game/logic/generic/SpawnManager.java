@@ -19,6 +19,7 @@ import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_ObjInitializer;
 import main.game.battlefield.FacingMaster;
 import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.arena.ArenaManager;
 import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.arena.Wave;
@@ -28,6 +29,8 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.ai.DungeonCrawler;
 import main.game.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
 import main.game.logic.dungeon.building.MapBlock;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.macro.travel.EncounterMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.RandomWizard;
@@ -46,6 +49,8 @@ import java.util.*;
 
 public class SpawnManager {
 
+    public static final Integer MAX_SPACE_PERC_CREEPS = 25 ; // 1 per cell only
+    private static final Integer MAX_SPACE_PERC_PARTY = 100;
     private static boolean playerUnitGroupMode;
     private static boolean enemyUnitGroupMode;
     Map<Dungeon, Map<MapBlock, Map<Coordinates, ObjType>>> specialEncounters = new HashMap<>();
@@ -214,7 +219,7 @@ public class SpawnManager {
         groupAi.setLeader(group.getParty().getLeader());
         groupAi.setWanderDirection(FacingMaster.getRandomFacing().getDirection());
         group.setAi(groupAi);
-
+if (getGame().getGameMode()== GAME_MODES.DUNGEON_CRAWL){
         XList<MapBlock> permittedBlocks = new XList<>();
         permittedBlocks.addAllUnique(group.getBlock().getConnectedBlocks().keySet());
         int wanderBlockDistance = 1;
@@ -224,6 +229,7 @@ public class SpawnManager {
             }
         }
         groupAi.setPermittedBlocks(permittedBlocks);
+}
     }
 
     private boolean checkSpawnBlock(MapBlock block) {
@@ -368,7 +374,7 @@ public class SpawnManager {
 //            } else {
 //                facing = getPositioner().getFacingForEnemy(unit.getCoordinates());
 //            }
-            ((BattleFieldObject) unit).resetFacing(facing);
+            ((BattleFieldObject) unit).setFacing(facing);
         }
         DC_ObjInitializer.initializePartyPositions(partyData, list);
         if (!custom) {
@@ -460,7 +466,7 @@ public class SpawnManager {
 
         DC_ObjInitializer.initializePartyPositions(partyData, party.getMembers());
         int i = 0;
-        getPositioner().setMaxSpacePercentageTaken(100);
+        getPositioner().setMaxSpacePercentageTaken(MAX_SPACE_PERC_PARTY);
         Boolean last = null;
         for (Unit hero : party.getMembers()) {
             // on initializePartyPositions() !
@@ -474,7 +480,7 @@ public class SpawnManager {
             // }
 
             if (party.getPartyCoordinates() == null) {
-                hero.resetFacing(getPositioner().getPartyMemberFacing(hero.getCoordinates()));
+                hero.setFacing(getPositioner().getPartyMemberFacing(hero.getCoordinates()));
             }
 
             hero.setOriginalOwner(game.getPlayer(true));
@@ -509,7 +515,7 @@ public class SpawnManager {
         } else {
             positioner.setSpawner(this);
         }
-        getPositioner().setMaxSpacePercentageTaken(100);
+        getPositioner().setMaxSpacePercentageTaken(MAX_SPACE_PERC_PARTY);
         List<Coordinates> coordinates = null;
 
         if (PartyManager.getParty() != null) {
@@ -600,7 +606,7 @@ public class SpawnManager {
             setPositioner(new Positioner(this));
         }
         if (unitMap == null) {
-            positioner.setMaxSpacePercentageTaken(50);
+            positioner.setMaxSpacePercentageTaken(MAX_SPACE_PERC_CREEPS);
             wave.initUnitMap();
             unitMap = wave.getUnitMap();
         }
@@ -628,8 +634,10 @@ if (invalid)
             Unit unit = (Unit) game.createUnit(type, c, wave.getOwner());
             UnitTrainingMaster.train(unit);
 
-            unit.resetFacing(facing);
+            unit.setFacing(facing);
             wave.addUnit(unit);
+            game.fireEvent(
+             new Event(STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING, Ref.getSelfTargetingRefCopy(unit)));
         }
         if (!PartyManager.checkMergeParty(wave)) {
             try {

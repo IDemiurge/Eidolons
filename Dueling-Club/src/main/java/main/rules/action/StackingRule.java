@@ -198,6 +198,10 @@ public class StackingRule implements ActionRule {
             space =space*maxSpaceTakenPercentage/100;
         if (space >= girth) {
             result = true;
+        } else {
+            if (unit.getIntParam(PARAMS.GIRTH)>space)
+                if (units.isEmpty())
+                    result = true;
         }
         if (maxSpaceTakenPercentage==100) //only cache for default cases!
         bools.put(c, result);

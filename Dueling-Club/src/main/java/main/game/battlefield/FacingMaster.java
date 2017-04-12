@@ -13,6 +13,8 @@ import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class FacingMaster {
     public static FACING_DIRECTION rotate(FACING_DIRECTION oldDirection, boolean clockwise) {
@@ -161,17 +163,25 @@ public class FacingMaster {
     }
 
     public static FACING_DIRECTION getRelativeFacing(Coordinates c, Coordinates c2) {
+        boolean x_y = Math.abs( c.x - c2.x) > Math.abs( c.y-c2.y);
+      if (Math.abs( c.x - c2.x) == Math.abs( c.y-c2.y))
+          x_y = RandomWizard.random();
+
+        if (x_y){
+            Boolean left = PositionMaster.isToTheLeftOr(c, c2);
+            if (left != null) {
+                return left ? FACING_DIRECTION.EAST : FACING_DIRECTION.WEST;
+            }
+        }
         Boolean above = PositionMaster.isAboveOr(c, c2);
         if (above != null) {
             return above ? FACING_DIRECTION.SOUTH : FACING_DIRECTION.NORTH;
         }
-        Boolean left = PositionMaster.isToTheLeftOr(c, c2);
-        if (left == null) {
-            return left ? FACING_DIRECTION.EAST : FACING_DIRECTION.WEST;
-        }
+       return null ;
 
-        // if diagonal
-        return FACING_DIRECTION.NONE;
+//        List<Coordinates> list = c.getAdjacent(false);
+//       return getRelativeFacing( list.get(RandomWizard.getRandomListIndex(list)), c2);
+//        new Coordinates(c.x, c.y+(RandomWizard.random() ? 1 : -1))
     }
 
     public static FACING_DIRECTION getRandomFacing() {
@@ -206,5 +216,36 @@ public class FacingMaster {
             return ((Unit) sourceObj).getFacing();
         }
         return null;
+    }
+
+    public static FACING_DIRECTION getOptimalFacingTowardsUnits(Coordinates c,
+                                                                Collection<? extends Obj> units) {
+        HashMap<FACING_DIRECTION, Integer> map = new HashMap<>();
+        for (Obj member : units) { // [QUICK
+            // FIX]
+            // getGame().getParty().getMembers()
+            FACING_DIRECTION facing = FacingMaster.getRelativeFacing(c, member.getCoordinates());
+            if (facing == null) {
+                facing = FacingMaster.getFacingFromDirection(DirectionMaster.getRelativeDirection(
+                 c, member.getCoordinates()));
+            }
+
+            Integer i = map.get(facing);
+            if (i == null) {
+                i = 0;
+            }
+            i++;
+            map.put(facing, i);
+
+        }
+        FACING_DIRECTION pick = null;
+        Integer max = 0;
+        for (FACING_DIRECTION fac : map.keySet()) {
+            if (map.get(fac) > max) {
+                max = map.get(fac);
+                pick = fac;
+            }
+        }
+        return pick;
     }
 }

@@ -56,7 +56,9 @@ public class HitAnim extends ActionAnim {
         addAction(fade);
         setLoops(1);
         if (c==null ){
+            if (active.getDamageType()!=null )
             c = GdxColorMaster.getDamageTypeColor(active.getDamageType());
+            else c = Color.RED;
         }
         //TODO //        FloatingTextMaster.getInstance().getFloatingText(active, HIT, active);
         floatingText =

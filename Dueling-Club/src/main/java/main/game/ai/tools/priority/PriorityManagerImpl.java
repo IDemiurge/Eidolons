@@ -23,6 +23,7 @@ import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.mode.STD_MODES;
 import main.content.values.parameters.G_PARAMS;
@@ -89,6 +90,7 @@ import java.util.*;
  * Created by JustMe on 2/15/2017.
  */
 public class PriorityManagerImpl extends AiHandler implements PriorityManager {
+    private static final int DEFAULT_RESTORATION_PRIORITY_MOD =50 ;
     public final int DEFAULT_PRIORITY = 100;
     public final int DEFAULT_ATTACK_PRIORITY = 100;
     public final int WAIT_PRIORITY_FACTOR = 10;
@@ -1364,7 +1366,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 factor = getSituationAnalyzer().getCastingPriority(unit);
             case CONCENTRATION:
             case RESTING:
-                modifier = -getSituationAnalyzer().getMeleeDangerFactor(unit);
+                modifier -= getSituationAnalyzer().getMeleeDangerFactor(unit);
+                modifier -= getThreatAnalyzer().getRangedDangerFactor(unit);
                 factor  = factor*getRestorationPriorityMod(unit) / 100;
                 break;
             default:
@@ -1380,7 +1383,14 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     private int getRestorationPriorityMod(Unit unit) {
-        return 50;
+        int mod = DEFAULT_RESTORATION_PRIORITY_MOD;
+        if (unit.getAI().getType()== AI_TYPE.BRUTE)
+            mod-=15;
+        if (unit.getAI().checkMod(AI_MODIFIERS.TRUE_BRUTE))
+            mod-=15;
+        if (unit.isMine())
+            mod+=15;
+        return mod;
     }
 
     public void applyMultiplier(int factor, String string) {
@@ -1432,9 +1442,13 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     @Override
     public ActionSequence chooseByPriority(List<ActionSequence> actions) {
         setPriorities(actions);
-        // if (behaviorMode == null)
+         if (isApplyConvergingPathsPriorities() )
         applyConvergingPathsPriorities(actions);
         return getByPriority(actions);
+    }
+
+    private boolean isApplyConvergingPathsPriorities() {
+        return false;
     }
 
     public ActionSequence getByPriority(List<ActionSequence> actions) {
@@ -1451,7 +1465,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         }
         Chronos.logTimeElapsedForMark("Priority sorting ");
         LogMaster.log(1, unit + " has chosen " + "" + sequence
-         + " with priorioty of " + priority);
+         + " with priorioty of " + sequence.getPriority());
         return sequence;
     }
 

@@ -23,6 +23,7 @@ import main.system.auxiliary.log.LogMaster;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class UnitView extends BaseView {
+    public static final int HIDE_ARROW = -999;
     private static AtomicInteger lastId = new AtomicInteger(1);
     private final int curId;
     private Image arrow;
@@ -218,9 +219,17 @@ public class UnitView extends BaseView {
     }
 
     public void updateRotation(int val) {
+
+
         if (arrow != null) {
+            if (val== HIDE_ARROW)
+            {
+                arrow.setVisible(false);
+                return;
+            }
             arrowRotation = val + 90;
             arrow.setRotation(arrowRotation);
+            arrow.setVisible(true);
         }
     }
 

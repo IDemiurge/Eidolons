@@ -23,6 +23,7 @@ import main.game.logic.action.context.Context;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.EventCallbackParam;
@@ -113,7 +114,7 @@ public class RadialManager {
                  final RadialValueContainer valueContainer = configureActionNode(target, el);
                  turns.add(valueContainer);
              } else if (el.isAttackGeneric()) {
-                 attacks.addAll(configureAttackNode(target, el));
+                 attacks.add(configureAttackNode(target, el));
              } else {
                  final RadialValueContainer valueContainer = configureActionNode(target, el);
 
@@ -134,6 +135,7 @@ public class RadialManager {
         List<RadialValueContainer> list = new LinkedList<>();
         if (target instanceof Unit)
             list.add(getExamineNode(target));
+        if (!attacks.isEmpty())
         list.add(getAttackParentNode(RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, attacks.get(0)));
         list.add(getParentNode(RADIAL_PARENT_NODE.TURN_ACTIONS, turns));
         list.add(getParentNode(RADIAL_PARENT_NODE.MOVES, moves));
@@ -200,7 +202,10 @@ public class RadialManager {
     }
 
 
-    public static void addSimpleTooltip(RadialValueContainer el, String name) {
+    public static void addSimpleTooltip(RADIAL_PARENT_NODE parent, RadialValueContainer el, DC_ActiveObj activeObj) {
+        new ActionCostTooltip();
+    }
+        public static void addSimpleTooltip(RadialValueContainer el, String name) {
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer(name, "")));
         el.addListener(tooltip.getController());
@@ -249,8 +254,7 @@ public class RadialManager {
          });
     }
 
-    private static List<RadialValueContainer> configureAttackNode(DC_Obj target, DC_ActiveObj dcActiveObj) {
-        List<RadialValueContainer> result = new ArrayList<>();
+    private static RadialValueContainer configureAttackNode(DC_Obj target, DC_ActiveObj dcActiveObj) {
         List<RadialValueContainer> list = new ArrayList<>();
 
         for (DC_ActiveObj dc_activeObj : dcActiveObj.getSubActions()) {
@@ -291,9 +295,7 @@ public class RadialManager {
         addSimpleTooltip(valueContainer, dcActiveObj.getName());
         valueContainer.setChilds(list);
 
-        result.add(valueContainer);
-
-        return result;
+        return valueContainer;
     }
 
     private static RadialValueContainer configureMoveNode(DC_Obj target,

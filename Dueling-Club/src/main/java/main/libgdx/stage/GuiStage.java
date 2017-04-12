@@ -84,7 +84,11 @@ public class GuiStage extends Stage {
                     e.printStackTrace();
                 }
             } else {
-                radialMenu.init(createNew(dc_obj));
+                try {
+                    radialMenu.init(createNew(dc_obj));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

@@ -44,6 +44,6 @@ public class StructureResetter extends EntityResetter<Structure> {
 
         }
         getEntity().setFacing(facing);
-//        getEntity().resetFacing(facing);
+//        getEntity().setFacing(facing);
     }
 }

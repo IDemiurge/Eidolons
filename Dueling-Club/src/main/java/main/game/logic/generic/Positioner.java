@@ -598,33 +598,9 @@ public class Positioner {
     }
 
     public FACING_DIRECTION getFacingOptimal(Coordinates c) {
-        // TODO
-        HashMap<FACING_DIRECTION, Integer> map = new HashMap<>();
-        for (Obj member : getGame().getPlayer(true).getControlledUnits()) { // [QUICK
-            // FIX]
-            // getGame().getParty().getMembers()
-            FACING_DIRECTION facing = FacingMaster.getRelativeFacing(c, member.getCoordinates());
-            if (facing == null) {
-                facing = FacingMaster.getFacingFromDirection(DirectionMaster.getRelativeDirection(
-                        c, member.getCoordinates()));
-            }
-            Integer i = map.get(facing);
-            if (i == null) {
-                i = 0;
-            }
-            i++;
-            map.put(facing, i);
+        Collection<Obj> units = getGame().getPlayer(true).getControlledUnits();
+       return  FacingMaster.getOptimalFacingTowardsUnits(c, units);
 
-        }
-        FACING_DIRECTION pick = null;
-        Integer max = 0;
-        for (FACING_DIRECTION fac : map.keySet()) {
-            if (map.get(fac) > max) {
-                max = map.get(fac);
-                pick = fac;
-            }
-        }
-        return pick;
 
     }
 

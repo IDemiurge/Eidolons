@@ -14,15 +14,20 @@ import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.battlefield.Coordinates;
+import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_MovementManager;
+import main.game.battlefield.FacingMaster;
 import main.game.logic.generic.DC_ActionManager.STD_MODE_ACTIONS;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.PositionMaster;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AtomicAi extends AiHandler {
+
+    private boolean hotzoneMode;
 
     public AtomicAi(AiHandler master) {
         super(master);
@@ -77,20 +82,28 @@ public class AtomicAi extends AiHandler {
         List<Unit> allies = Analyzer.getAllies(ai);
         float greatest = 0;
         Coordinates pick = null;
-        for (Coordinates c : ai.getUnit().getCoordinates().getAdjacentCoordinates()) {
-            float i = 0;
-            i += getCellPriority(c, ai);
-            if (BooleanMaster.isFalse(approach_retreat_search)) for (Unit a : allies) {
-                i += getAllyPriority(c, a, ai, logic);
+        if (isHotzoneMode())
+            for (Coordinates c : ai.getUnit().getCoordinates().getAdjacentCoordinates()) {
+                float i = 0;
+                i += getCellPriority(c, ai);
+                if (BooleanMaster.isFalse(approach_retreat_search)) for (Unit a : allies) {
+                    i += getAllyPriority(c, a, ai, logic);
+                }
+                for (Unit e : enemies) {
+                    i = i + ((approach_retreat_search ? 1 : -1) * getEnemyPriority(c, e, ai, logic));
+                }
+                i = i * getCellPriorityMod(c, ai) / 100;
+                if (i > greatest) {
+                    greatest = i;
+                    pick = c;
+                }
             }
-            for (Unit e : enemies) {
-                i = i + ((approach_retreat_search ? 1 : -1) * getEnemyPriority(c, e, ai, logic));
-            }
-            i = i * getCellPriorityMod(c, ai) / 100;
-            if (i > greatest) {
-                greatest = i;
-                pick = c;
-            }
+        else {
+            Collection<Unit> units = getAnalyzer().getVisibleEnemies(ai);
+            FACING_DIRECTION facing = FacingMaster.
+             getOptimalFacingTowardsUnits(unit.getCoordinates(),
+              units);
+            pick = unit.getCoordinates().getAdjacentCoordinate(facing.getDirection());
         }
         Action action = null;
         List<Action> sequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, unit, pick);
@@ -99,11 +112,13 @@ public class AtomicAi extends AiHandler {
         if (action == null)
             try {
                 action = DC_MovementManager.getFirstAction(ai.getUnit(), pick);
+                main.system.auxiliary.log.LogMaster.log(1, " ATOMIC ACTION " + action +
+                 " CHOSEN TO GET TO " + pick);
             } catch (Exception e) {
                 e.printStackTrace();
+                //TODO what to return???
             }
-        main.system.auxiliary.log.LogMaster.log(1, " ATOMIC ACTION " + action +
-         " CHOSEN TO GET TO " + pick);
+
         return action;
     }
 
@@ -221,6 +236,7 @@ public class AtomicAi extends AiHandler {
         if (distance > maxDistance && distance < 999) {
             return true;
         }
+        if (ai.getGroup()!=null )
         if (ai.getGroup().getMembers().size() > 8)
             return true;
         Double average = ai.getGroup().getMembers().stream().collect(
@@ -229,6 +245,14 @@ public class AtomicAi extends AiHandler {
             return true;
 
         return false;
+    }
+
+    public boolean isHotzoneMode() {
+        return hotzoneMode;
+    }
+
+    public void setHotzoneMode(boolean hotzoneMode) {
+        this.hotzoneMode = hotzoneMode;
     }
 
     public enum ATOMIC_LOGIC {

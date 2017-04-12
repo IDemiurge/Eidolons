@@ -31,7 +31,6 @@ public class Targeter extends ActiveHandler {
     protected Obj presetTarget;
     protected boolean forcePresetTarget;
     private TARGETING_MODE targetingMode;
-    private Ref ref;
     private boolean targetingInitialized;
 
     public Targeter(DC_ActiveObj entity, ActiveMaster entityMaster) {
@@ -59,20 +58,13 @@ public class Targeter extends ActiveHandler {
 
         }
 
-        getEntity().setRef(getRef());
     }
     public Ref getRef() {
-        if (ref == null )
-            ref = getEntity(). getRef();
-        return ref;
+        return getEntity(). getRef();
     }
 
-    public void setRef(Ref ref) {
-        this.ref = ref;
-    }
 
     public boolean selectTarget(Ref ref) {
-        setRef(ref);
         if (isForcePresetTarget()) {
             return true;
         }
@@ -100,9 +92,11 @@ public class Targeter extends ActiveHandler {
             getHandler().setCancelled(true);
         }
 if (result)
-    getRef().setTarget(getRef().getTarget());
+{
+    getAction().setTargetObj(getRef().getTargetObj());
+    getAction().setTargetGroup(getRef().getGroup());
+}
 
-        getEntity().setRef(getRef());
         return result;
 
     }

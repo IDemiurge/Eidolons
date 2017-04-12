@@ -4,6 +4,7 @@ import main.ability.effects.oneshot.move.MoveEffect;
 import main.ability.effects.oneshot.move.SelfMoveEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -16,6 +17,7 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.elements.actions.Action;
+import main.game.ai.elements.actions.ActionFactory;
 import main.game.ai.elements.actions.AiUnitActionMaster;
 import main.game.ai.tools.path.ActionPath;
 import main.game.ai.tools.path.PathBuilder;
@@ -72,16 +74,30 @@ public class DC_MovementManager implements MovementManager {
     }
 
     public static Action getFirstAction(Unit unit, Coordinates coordinates) {
-        List<ActionPath> paths = instance.buildPath(unit, coordinates);
-        ActionPath path =paths.get(0);
-        for (ActionPath p : paths){
-            if (p.getActions().get(0).getActive().isTurn())
-            {
-                path = p;
-                break;
-            }
-        }
-        return path.getActions().get(0);
+        FACING_SINGLE relative = FacingMaster.getSingleFacing(unit.getFacing(),
+         unit.getCoordinates(), coordinates);
+        if (relative== FACING_SINGLE.IN_FRONT)
+            return ActionFactory.newAction( "Move", unit.getAI());
+        boolean left =(unit.getFacing().isVertical()) ?
+         PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)
+         : PositionMaster.isAbove(unit.getCoordinates(), coordinates);
+        if (unit.getFacing().isMirrored())
+            left =!left;
+
+        return ActionFactory.newAction("Move "+ (left? "Left" : "Right"), unit.getAI());
+//        List<ActionPath> paths = instance.buildPath(unit, coordinates);
+//            if (!ListMaster.isNotEmpty(paths)) {
+//            return  null ;
+//            }
+//        ActionPath path =paths.get(0);
+//        for (ActionPath p : paths){
+//            if (p.getActions().get(0).getActive().isTurn())
+//            {
+//                path = p;
+//                break;
+//            }
+//        }
+//        return path.getActions().get(0);
     }
 
     public static List<DC_ActiveObj> getMoves(Unit unit) {

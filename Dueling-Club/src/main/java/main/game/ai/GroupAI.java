@@ -42,6 +42,7 @@ public class GroupAI {
     public GroupAI(Wave creepGroup) {
         this.creepGroup = creepGroup;
         members = new LinkedList<>();
+        if (creepGroup!=null ){
       encounterType =  creepGroup.getWaveType();
         if (creepGroup == null) {
             return;
@@ -55,6 +56,7 @@ public class GroupAI {
         originCoordinates = creepGroup.getCoordinates();
         if (originCoordinates == null) {
             originCoordinates = leader.getCoordinates();
+        }
         }
     }
 

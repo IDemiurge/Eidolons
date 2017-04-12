@@ -231,7 +231,7 @@ main.system.auxiliary.log.LogMaster.log(LOG_CHANNELS.AI_DEBUG,"PRUNING FOR "+act
                     distance += 6;
                     break;
             }
-            map.put(distance, c);
+            map.put(distance, c); //TODO KEYS WILL OVERLAP!
         }
         // if (distance<minDistance)
         // minDistance=distance;

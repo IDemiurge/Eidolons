@@ -69,7 +69,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     protected Deity deity;
     private boolean hidden;
     private ImageIcon emblem;
-    private UnitAI unitAI;
+    protected UnitAI unitAI;
     private DC_ActiveObj preferredInstantAttack;
     private DC_ActiveObj preferredCounterAttack;
     private DC_ActiveObj preferredAttackOfOpportunity;
@@ -625,16 +625,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return ai;
     }
 
-    public UnitAI getAI() {
-        return getUnitAI();
-    }
 
-    public UnitAI getUnitAI() {
-        if (unitAI == null) {
-            unitAI = new UnitAI(this);
-        }
-        return unitAI;
-    }
 
 
     public DC_ActiveObj getDummyAction() {

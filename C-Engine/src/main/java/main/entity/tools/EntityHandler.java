@@ -37,6 +37,7 @@ public class EntityHandler<E extends Entity> {
     protected void log(String string, boolean gameLog) {
         if (gameLog)
             getGame().getLogManager().log(string);
+        else
         main.system.auxiliary.log.LogMaster.log(getLogChannel(),string);
     }
 

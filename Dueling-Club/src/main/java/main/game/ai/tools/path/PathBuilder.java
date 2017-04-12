@@ -102,13 +102,13 @@ public class PathBuilder extends AiHandler {
 
     private void resetUnit() {
         unit.setCoordinates(originalCoordinate);
-        unit.resetFacing(originalFacing);
+        unit.setFacing(originalFacing);
 
     }
 
     private void adjustUnit() {
         unit.setCoordinates(c_coordinate);
-        unit.resetFacing(c_facing);
+        unit.setFacing(c_facing);
         unit.getGame().getRules().getStackingRule().clearCache();
     }
 
@@ -219,6 +219,8 @@ public class PathBuilder extends AiHandler {
             }
         }
         Chronos.mark("Finding custom choices for " + path);
+
+        List<Choice> specialChoices=    new LinkedList<>();
         if (ListMaster.isNotEmpty(moveActions)) {
             // add special
             // will need to remove actions from list when used? preCheck CD
@@ -233,6 +235,7 @@ public class PathBuilder extends AiHandler {
                         }
                     }
                 }
+
                 if (path.hasAction(a)) {
                     if (a.getIntParam(PARAMS.COOLDOWN) >= 0) {
                         continue;
@@ -263,6 +266,8 @@ public class PathBuilder extends AiHandler {
                     objects = targeting.getFilter().getObjects(a.getRef());
                 }
                 if (objects != null) {
+
+                    List<Choice> choicesForAction=    new LinkedList<>();
                     for (Object obj : objects) {
                         if (obj instanceof DC_Cell) {
                             Coordinates coordinates = ((DC_Cell) obj).getCoordinates();
@@ -282,17 +287,23 @@ public class PathBuilder extends AiHandler {
                             ref.setTarget(((DC_Cell) obj).getId());
                             Choice choice = new Choice(coordinates, c_coordinate,
                                     new Action(a, ref));
-                            choices.add(choice);
+                            choicesForAction.add(choice);
                         }
                     }
+
+                    Chronos.mark("Filter custom choices for " + a);
+                    specialChoices.addAll(filterSpecialMoveChoices(choicesForAction, a));
+                    Chronos.logTimeElapsedForMark("Filter custom choices for " + a);
                 }
                 // if (choices.size() > 1)
-                choices = filterSpecialMoveChoices(choices, a);
+
             }
         }
-
-        sortChoices(choices);
         Chronos.logTimeElapsedForMark("Finding custom choices for " + path);
+        choices.addAll(specialChoices);
+        Chronos.mark("Sort choices");
+        sortChoices(choices);
+        Chronos.logTimeElapsedForMark("Sort choices"  );
 
         // resetUnit();// TODO is that right?
         Chronos.logTimeElapsedForMark("Finding choices for " + path);
@@ -513,7 +524,7 @@ public class PathBuilder extends AiHandler {
     }
 
     private void checkAddFaceTurn() {
-        unit.resetFacing(c_facing);
+        unit.setFacing(c_facing);
         unit.setCoordinates(c_coordinate);
         if (ReasonMaster.checkReasonCannotTarget(FILTER_REASON.FACING, targetAction)) {
             List<Action> sequence = getTurnSequenceConstructor().getTurnSequence(targetAction);
@@ -521,7 +532,7 @@ public class PathBuilder extends AiHandler {
                 path.add(new Choice(c_coordinate, a));
             }
         }
-        unit.resetFacing(originalFacing);
+        unit.setFacing(originalFacing);
         unit.setCoordinates(originalCoordinate);
     }
 

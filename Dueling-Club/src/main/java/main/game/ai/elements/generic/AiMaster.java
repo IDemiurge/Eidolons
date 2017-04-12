@@ -15,6 +15,7 @@ import main.game.ai.tools.SituationAnalyzer;
 import main.game.ai.tools.path.CellPrioritizer;
 import main.game.ai.tools.path.PathBuilder;
 import main.game.ai.tools.priority.PriorityManager;
+import main.game.ai.tools.priority.ThreatAnalyzer;
 import main.game.ai.tools.prune.PruneMaster;
 import main.game.ai.tools.target.TargetingMaster;
 import main.game.core.game.DC_Game;
@@ -43,6 +44,7 @@ public class AiMaster extends AiHandler {
     protected PathSequenceConstructor pathSequenceConstructor;
     protected TurnSequenceConstructor turnSequenceConstructor;
     private   SituationAnalyzer situationAnalyzer;
+    private ThreatAnalyzer threatAnalyzer;
     private List<AiHandler> handlers=     new LinkedList<>() ;
 
     public AiMaster(DC_Game game) {
@@ -59,6 +61,7 @@ public class AiMaster extends AiHandler {
         this.analyzer =  new Analyzer(this);
         this.paramAnalyzer =  new ParamAnalyzer(this);
         this.situationAnalyzer =  new SituationAnalyzer(this);
+        this.threatAnalyzer =  new ThreatAnalyzer(this);
         this.cellPrioritizer =  new CellPrioritizer(this);
         pathSequenceConstructor = new PathSequenceConstructor(master);
         turnSequenceConstructor = new TurnSequenceConstructor(master);
@@ -161,6 +164,10 @@ getHandlers().forEach(handler -> handler.setUnit(unit));
     @Override
     public TurnSequenceConstructor getTurnSequenceConstructor() {
         return turnSequenceConstructor;
+    }
+
+    public ThreatAnalyzer getThreatAnalyzer() {
+        return threatAnalyzer;
     }
 
     public SituationAnalyzer getSituationAnalyzer() {

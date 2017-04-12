@@ -131,7 +131,7 @@ if (!atomicAi.checkAtomicActionCaseAny(ai)) {
         e.printStackTrace();
     } finally {
         unit.setCoordinates(originalCoordinates);
-        unit.resetFacing(originalFacing);
+        unit.setFacing(originalFacing);
     }
 
 }
