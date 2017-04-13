@@ -23,6 +23,7 @@ import main.game.logic.action.context.Context;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import main.libgdx.gui.tooltips.ValueTooltip;
@@ -202,8 +203,21 @@ public class RadialManager {
     }
 
 
-    public static void addSimpleTooltip(RADIAL_PARENT_NODE parent, RadialValueContainer el, DC_ActiveObj activeObj) {
+    public static void addTooltip(RADIAL_PARENT_NODE parent, RadialValueContainer el, DC_ActiveObj activeObj) {
         new ActionCostTooltip();
+
+        new ActionCostSource(){
+
+            @Override
+            public ValueContainer getName() {
+                return null;
+            }
+
+            @Override
+            public List<ValueContainer> getCostsList() {
+                return null;
+            }
+        };
     }
         public static void addSimpleTooltip(RadialValueContainer el, String name) {
         ValueTooltip tooltip = new ValueTooltip();

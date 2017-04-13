@@ -31,8 +31,11 @@ public class WaitMaster {
         }
         return waitForInput(operation);
     }
-
-    public static Object waitForInput(WAIT_OPERATIONS operation) {
+    public static Object waitForInput(WAIT_OPERATIONS animationFinished) {
+        return waitForInput(animationFinished, null );
+    }
+    public static Object waitForInput(WAIT_OPERATIONS operation,
+                                      Integer maxTime) {
         if (operation== WAIT_OPERATIONS.ACTION_COMPLETE){
             operation=  WAIT_OPERATIONS.ACTION_COMPLETE;
         }
@@ -49,7 +52,7 @@ public class WaitMaster {
             waiters.put(operation, waiter);
         }
 
-        Object result = waiter.startWaiting();
+        Object result = waiter.startWaiting(maxTime==null ? null : (long) maxTime);
 
         LogMaster.log(LogMaster.WAIT_DEBUG, "INPUT RETURNED: " + result);
 
@@ -109,6 +112,8 @@ public class WaitMaster {
         return waiters;
     }
 
+
+
     // additional identifying for batch operations?
     public enum WAIT_OPERATIONS {
         SELECT_BF_OBJ,
@@ -128,7 +133,7 @@ public class WaitMaster {
         MAP_CLICK,
         DIALOGUE_DONE,
         AUTO_TEST_INPUT,
-        ACTIVE_UNIT_SELECTED, ACTION_INPUT, GDX_READY
+        ACTIVE_UNIT_SELECTED, ACTION_INPUT, ANIMATION_QUEUE_FINISHED, GDX_READY
     }
 
 }

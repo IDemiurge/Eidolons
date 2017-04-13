@@ -1853,4 +1853,4 @@
             </props>
         </Eiraglen_AemrisUNICODE39CODEEND_Party>
     </Arcade>
-</XML>
+<Custom><Shamanus_ShiltusUNICODE39CODEEND_Party><params></params><props><Displayed_Name>Shamanus Shiltus' Party</Displayed_Name><Name>Shamanus Shiltus' Party</Name><Members>Shamanus Shiltus;</Members><Image>\mini\char\std\human\Wolf Realm\wulfy.jpg</Image><Group>Arcade</Group><Dungeons_Pending>Demon Shrine;Cemetary;Crystal Cave;Witch Grove;Dwarven Halls;Shadow Keep;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Arcade_Region>Dusk Dale</Arcade_Region></props></Shamanus_ShiltusUNICODE39CODEEND_Party></Custom></XML>

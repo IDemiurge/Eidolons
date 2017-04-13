@@ -24,6 +24,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -47,6 +49,7 @@ public class AnimMaster extends Group {
     private boolean continuousAnimsOn;
     private Integer showBuffAnimsOnNewRoundLength = 2;
     private Integer showBuffAnimsOnHoverLength = 3; //continuous
+    private boolean drawing;
 
     //animations will use emitters, light, sprites, text and icons
     public AnimMaster(Stage stage) {
@@ -66,6 +69,10 @@ public class AnimMaster extends Group {
     public static boolean isOn() {
         return on;
 
+    }
+
+    public boolean isDrawing() {
+        return drawing;
     }
 
     public void setOn(boolean on) {
@@ -303,6 +310,10 @@ public class AnimMaster extends Group {
     private CompositeAnim next() {
         if (leadQueue.isEmpty()) {
             leadAnimation = null;
+            if (drawing){
+            drawing  = false;
+            WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, true);
+            }
             return null;
         }
         leadAnimation = leadQueue.pop();
@@ -334,6 +345,7 @@ public class AnimMaster extends Group {
         }
 
         boolean result = false;
+        drawing  = true;
         try {
             result=leadAnimation.draw(batch);
         } catch (Exception e) {

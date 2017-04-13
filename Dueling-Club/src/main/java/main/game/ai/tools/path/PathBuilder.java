@@ -133,6 +133,9 @@ public class PathBuilder extends AiHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if (filteredPaths.isEmpty()){
+            filteredPaths = paths;
+        }
         return filteredPaths;
     }
 

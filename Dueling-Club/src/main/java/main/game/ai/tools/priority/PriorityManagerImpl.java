@@ -90,7 +90,7 @@ import java.util.*;
  * Created by JustMe on 2/15/2017.
  */
 public class PriorityManagerImpl extends AiHandler implements PriorityManager {
-    private static final int DEFAULT_RESTORATION_PRIORITY_MOD =50 ;
+    private static final int DEFAULT_RESTORATION_PRIORITY_MOD =40 ;
     public final int DEFAULT_PRIORITY = 100;
     public final int DEFAULT_ATTACK_PRIORITY = 100;
     public final int WAIT_PRIORITY_FACTOR = 10;
