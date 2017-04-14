@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.libgdx.StyleHolder;
@@ -14,17 +13,12 @@ import main.system.auxiliary.log.LogMaster;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class UnitView extends BaseView {
-    public static final int HIDE_ARROW = -999;
     private static AtomicInteger lastId = new AtomicInteger(1);
     private final int curId;
     private Image arrow;
     private Image icon;
-    private int baseHeight;
-    private int baseWidth;
     private int arrowRotation;
     private int clockVal;
-    private TextureRegion portraitTexture;
-    private Container<Image> imageContainer;
     private TextureRegion clockTexture;
     private boolean needRepaint = true;
     private Label initiativeStrVal;
@@ -42,8 +36,10 @@ public class UnitView extends BaseView {
     private void init(TextureRegion arrowTexture, int arrowRotation, TextureRegion clockTexture, int clockVal, TextureRegion portraitTexture, Texture iconTexture) {
         this.arrowRotation = arrowRotation + 90;
         this.clockVal = clockVal;
-        this.portraitTexture = portraitTexture;
         portrait = new Image(portraitTexture);
+        addActor(portrait);
+
+        setSize(portraitTexture.getRegionWidth(), portraitTexture.getRegionHeight());
 
         if (clockTexture != null) {
             this.clockTexture = clockTexture;
@@ -90,19 +86,17 @@ public class UnitView extends BaseView {
     protected void sizeChanged() {
 
         if (initiativeStrVal != null) {
-            initiativeStrVal.setPosition(
-                    getWidth() - clockTexture.getRegionWidth() / 2 - initiativeStrVal.getWidth() / 2,
-                    clockTexture.getRegionHeight() / 2 - initiativeStrVal.getHeight() / 2);
-
             clockImage.setPosition(
-                    getWidth() - clockTexture.getRegionWidth() / 2,
-                    clockTexture.getRegionHeight() / 2
+                    getWidth() - clockTexture.getRegionWidth(),
+                    0
             );
+
+            initiativeStrVal.setPosition(
+                    clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeStrVal.getWidth()),
+                    clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeStrVal.getHeight() / 2));
         }
 
-        if (imageContainer != null) {
-            imageContainer.size(getWidth(), getHeight());
-        }
+        portrait.setSize(getWidth(), getHeight());
 
         if (icon != null) {
             icon.setPosition(0, getHeight() - icon.getImageHeight());

@@ -13,7 +13,6 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
-import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.core.Eidolons;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.particles.lighting.LightingManager;
@@ -163,23 +162,12 @@ public class GridPanel extends Group {
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING
                     || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
                     || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
-//                (r.getEffect() instanceof ChangeFacingEffect) nice try
             {
                 BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET);
                 BaseView view = unitMap.get(hero);
-                if (view instanceof UnitView) {
+                if (view != null && view instanceof UnitView) {
                     UnitView unitView = ((UnitView) view);
-                    //TODO UnitView creation may not happen in time for some Turn or Move
-                    // -> exception
-                    //  IDEA – if I just ignore this, maybe facing will be initialized correctly?
-                    if (unitView != null) {
-                        if (hero.getFacing() == FACING_DIRECTION.NONE) {
-                            unitView.updateRotation(UnitView.HIDE_ARROW);
-                        } else {
-                            unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
-                        }
-
-                    }
+                    unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
                 }
                 caught = true;
             }
@@ -276,7 +264,7 @@ public class GridPanel extends Group {
 
                     Eidolons.game.getInventoryManager().setOperationsPool(2);
                     GuiEventManager.trigger(SHOW_INVENTORY,
-                     new EventCallbackParam(new InventoryDataSource((Unit) hero)));
+                            new EventCallbackParam(new InventoryDataSource((Unit) hero)));
                 }
 
             } else {
