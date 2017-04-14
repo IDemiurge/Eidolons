@@ -101,8 +101,7 @@ public class GridCellContainer extends GridCell {
     public Actor hit(float x, float y, boolean touchable) {
         Vector2 v = new Vector2(x, y);
         v = getParent().parentToLocalCoordinates(v);
-        Actor a = super.hitChilds(v.x, v.y, touchable);
-        return a != null ? a : null;
+        return super.hitChilds(v.x, v.y, touchable);
     }
 
     public void setOverlays(List<OverlayView> overlays) {
