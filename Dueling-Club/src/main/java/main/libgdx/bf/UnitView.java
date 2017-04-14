@@ -1,23 +1,14 @@
 package main.libgdx.bf;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.libgdx.StyleHolder;
-import main.libgdx.gui.panels.dc.InitiativePanelParam;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
-import main.system.OnDemandEventCallBack;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,15 +22,12 @@ public class UnitView extends BaseView {
     private int baseWidth;
     private int arrowRotation;
     private int clockVal;
-    private FrameBuffer fbo;
     private TextureRegion portraitTexture;
     private Container<Image> imageContainer;
     private TextureRegion clockTexture;
     private boolean needRepaint = true;
     private Label initiativeStrVal;
     private float alpha = 1f;
-    private boolean dead;
-    private int graveIndex;
     private TextureRegion outlineTexture;
 
 
@@ -59,8 +47,7 @@ public class UnitView extends BaseView {
         baseWidth = portraitTexture.getRegionWidth();
         setSize(baseWidth * getScaleX(), baseHeight * getScaleY());
 
-        fbo = new FrameBuffer(Pixmap.Format.RGBA4444, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        imageContainer = new Container<>();
+        imageContainer = new Container<>(portrait);
         imageContainer.width(getW()).height(getH()).bottom().left();
         addActor(imageContainer);
 
@@ -70,6 +57,8 @@ public class UnitView extends BaseView {
             initiativeStrVal.setPosition(
                     getWidth() - clockTexture.getRegionWidth() / 2 - initiativeStrVal.getWidth() / 2,
                     clockTexture.getRegionHeight() / 2 - initiativeStrVal.getHeight() / 2);
+            addActor(new Image(clockTexture));
+            addActor(initiativeStrVal);
         }
 
         if (arrowTexture != null) {
@@ -86,7 +75,6 @@ public class UnitView extends BaseView {
             icon.setX(0);
             icon.setY(getHeight() - icon.getImageHeight());
         }
-//        setDebug(true);
         needRepaint = true;
     }
 
@@ -103,23 +91,23 @@ public class UnitView extends BaseView {
         needRepaint = true;
     }
 
-    @Override
+/*    @Override
     public void setBorder(Image image) {
         border = image;
         if (border != null) {
             updateBorderSize();
         }
         needRepaint = true;
-    }
+    }*/
 
-    @Override
+/*    @Override
     public void updateBorderSize() {
         super.updateBorderSize();
-        border.setSize(
-                portraitTexture.getRegionWidth() + 8,
-                portraitTexture.getRegionHeight() + 8
+        border.setBounds(
+                -4, -4,
+                portraitTexture.getRegionWidth(), portraitTexture.getRegionHeight()
         );
-    }
+    }*/
 
     public void setVisibleVal(int val) {
         val = Math.max(0, val);
@@ -131,62 +119,35 @@ public class UnitView extends BaseView {
     @Override
     public void act(float delta) {
         if (needRepaint) {
-            SpriteBatch sp = new SpriteBatch(1);
-            fbo.begin();
-            Gdx.gl.glClearColor(0, 0, 0, 0);
-            Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-            sp.begin();
 
-            sp.setColor(1, 1, 1, 1 * alpha);
-            //TODO  BLACK AND WHITE IF UNCONSCIOUS
-
-//            if (isDead()) {
-//                Texture skullTexture = TextureCache.getOrCreate(ImageManager.DEAD_ICON);
-//                int x = 4 + skullTexture.getWidth()
-//                 * graveIndex /
-//                 GraveyardManager.GRAVE_ROWS;
-//                int y = 3 + skullTexture.getHeight()
-//                 *graveIndex%
-//                 GraveyardManager.GRAVE_ROWS;
-//                sp.draw(skullTexture, x, y, skullTexture.getWidth(), skullTexture.getHeight());
-//            }
-            TextureRegion texture = portraitTexture;
-            float w = texture.getRegionWidth();
-            float h = texture.getRegionHeight();
-            if (outlineTexture != null) {
-                texture = outlineTexture;
-                w=GridConst.CELL_W;
-                h=GridConst.CELL_H;
-            }
-            sp.draw(texture, 0, 0, w, h);
-
+/*
             if (border != null) {
                 border.draw(sp, 1);
             }
-            if (isDrawOverlays()) {
-                if (clockTexture != null) {
-                    sp.draw(clockTexture, portraitTexture.getRegionWidth() - clockTexture.getRegionWidth(), 0);
+*/
 
+/*            if (clockTexture != null) {
+                textureData = clockTexture.getTexture().getTextureData();
+                if (!textureData.isPrepared()) {
+                    textureData.prepare();
                 }
-                if (initiativeStrVal != null) {
-                    initiativeStrVal.draw(sp, alpha);
-                }
+                source = textureData.consumePixmap();
+                dest.drawPixmap(source, portraitTexture.getRegionWidth() - clockTexture.getRegionWidth(), 0,
+                        clockTexture.getRegionX(), clockTexture.getRegionY(),
+                        clockTexture.getRegionWidth(), clockTexture.getRegionHeight());
+            }*/
+
+/*            if (initiativeStrVal != null) {
+                initiativeStrVal.draw(sp, alpha);
             }
-            sp.end();
-            fbo.end();
+  */
+/*            TextureRegion textureRegion = new TextureRegion(new Texture(dest));
 
-            TextureRegion textureRegion = new TextureRegion(
-                    fbo.getColorBufferTexture(), 0, 0,
-                    portraitTexture.getRegionWidth(),
-                    portraitTexture.getRegionHeight()
-            );
-
-            textureRegion.flip(false, true);
             imageContainer.setActor(new Image(textureRegion));
 
             imageContainer.width(getWidth()).height(getHeight()).bottom().left().pack();
 
-            if (clockTexture != null) { // ???
+            if (clockTexture != null) {
                 if (alpha != 0) {
                     InitiativePanelParam panelParam = new InitiativePanelParam(textureRegion, curId, clockVal);
                     GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE, new OnDemandEventCallBack(panelParam));
@@ -194,22 +155,14 @@ public class UnitView extends BaseView {
                     InitiativePanelParam panelParam = new InitiativePanelParam(curId);
                     GuiEventManager.trigger(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, new OnDemandEventCallBack(panelParam));
                 }
-            }
+            }*/
             needRepaint = false;
         }
-        if (isDrawOverlays()) {
-            if (arrow != null) {
-                arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
-                arrow.setRotation(arrowRotation);
-            }
-        }
-    }
 
-    private boolean isDrawOverlays() {
-        if (outlineTexture != null) {
-            return false;
+        if (arrow != null) {
+            arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
+            arrow.setRotation(arrowRotation);
         }
-        return true;
     }
 
     @Override
@@ -274,18 +227,6 @@ public class UnitView extends BaseView {
 
     public int getId() {
         return curId;
-    }
-
-    public boolean isDead() {
-        return dead;
-    }
-
-    public void setDead(boolean dead) {
-        this.dead = dead;
-    }
-
-    public void setGraveIndex(int graveIndex) {
-        this.graveIndex = graveIndex;
     }
 
     public void setOutlineTexture(TextureRegion outlineTexture) {

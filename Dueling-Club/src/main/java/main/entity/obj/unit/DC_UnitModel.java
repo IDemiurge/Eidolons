@@ -225,26 +225,23 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public void recalculateInitiative() {
 
-        int before = getIntParam(PARAMS.C_INITIATIVE);
-        int initiative = getCalculator().calculateInitiative(true);
+        final int before = getIntParam(PARAMS.C_INITIATIVE);
+        final int initiative = getCalculator().calculateInitiative(true);
 
         setParam(PARAMS.C_INITIATIVE, initiative, true);
 
-        int base_initiative = getCalculator().calculateInitiative(false);
-        setParam(PARAMS.INITIATIVE, base_initiative, true);
+        int baseInitiative = getCalculator().calculateInitiative(false);
+        setParam(PARAMS.INITIATIVE, baseInitiative, true);
 
         resetPercentage(PARAMS.INITIATIVE);
 
-        int after = getIntParam(PARAMS.C_INITIATIVE);
-        if (before == after) {
-            return;
-        }
-        int diff = before - after;
+        final int after = getIntParam(PARAMS.C_INITIATIVE);
 
-        if (diff != 0) {
-            GuiEventManager.trigger(INITIATIVE_CHANGED,
-                    new EventCallbackParam(new ImmutablePair<>(this, after)));
-
+        if (before - after != 0) {
+            GuiEventManager.trigger(
+                    INITIATIVE_CHANGED,
+                    new EventCallbackParam(new ImmutablePair<>(this, after))
+            );
         }
     }
 

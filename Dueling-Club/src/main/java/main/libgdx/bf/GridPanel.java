@@ -85,35 +85,6 @@ public class GridPanel extends Group {
         });
     }
 
-    public void updateGamma() {
-        if (Eidolons.game.getManager().getActiveObj() == null) {
-            return;
-        }
-        if (!Eidolons.game.getManager().getActiveObj().isMine()) {
-            return;
-        }
-        int x = 0;
-        int y = 0;
-        for (GridCell[] cellRow : (cells)) {
-            for (GridCell cell : cellRow) {
-                float gamma =
-                        Eidolons.game.getVisionMaster().getGammaMaster().getGammaForCell(x, y);
-                cell.setGamma(gamma);
-                x++;
-            }
-            y++;
-        }
-
-    }
-
-    public void updateGraves() {
-
-        unitMap.keySet().forEach(obj -> {
-            UnitView uv = (UnitView) unitMap.get(obj);
-            uv.setGraveIndex(Eidolons.game.getGraveyardManager().getGraveIndex(obj));
-        });
-    }
-
     public GridPanel init() {
         setUnitMap(new HashMap<>());
         emptyImage = TextureCache.getOrCreateR(emptyCellPath);
@@ -148,11 +119,9 @@ public class GridPanel extends Group {
 
 
         GuiEventManager.bind(UPDATE_GUI, obj -> {
-            if (Eidolons.game.getVisionMaster().getVisibilityMaster().isOutlinesOn())
+            if (Eidolons.game.getVisionMaster().getVisibilityMaster().isOutlinesOn()) {
                 updateOutlines();
-
-//            updateGamma();
-//            updateGraves();
+            }
         });
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p = (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
