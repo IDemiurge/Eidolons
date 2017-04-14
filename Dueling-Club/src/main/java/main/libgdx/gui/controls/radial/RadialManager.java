@@ -82,13 +82,17 @@ public class RadialManager {
     }
 
     public static List<RadialValueContainer> createNew(DC_Obj target) {
+        List<RadialValueContainer> list = new LinkedList<>();
+        if (target instanceof Unit)
+            list.add(getExamineNode(target));
+
         Unit sourceUnit = (Unit) Game.game.getManager().getActiveObj();
         if (sourceUnit == null) {
-            return Collections.EMPTY_LIST;
+            return list;
         }
         if (!sourceUnit.isMine())
             if (!sourceUnit.getGame().isDebugMode())
-                return Collections.EMPTY_LIST;
+                return list;
 
 
         List<RadialValueContainer> moves = new ArrayList<>();
@@ -133,9 +137,7 @@ public class RadialManager {
              }
          });
 
-        List<RadialValueContainer> list = new LinkedList<>();
-        if (target instanceof Unit)
-            list.add(getExamineNode(target));
+
         if (!attacks.isEmpty())
             list.add(getAttackParentNode(RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, attacks.get(0)));
         list.add(getParentNode(RADIAL_PARENT_NODE.TURN_ACTIONS, turns));

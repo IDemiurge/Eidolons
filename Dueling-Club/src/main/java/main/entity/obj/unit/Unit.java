@@ -45,6 +45,7 @@ import main.entity.type.ObjType;
 import main.game.ai.UnitAI;
 import main.game.battlefield.CoordinatesMaster;
 import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
@@ -906,7 +907,9 @@ public class Unit extends DC_UnitModel {
             return true;
         }
         if (!getGame().isDebugMode())
-if (owner.getHeroObj()!= this){
+            if ( getGame().getGameMode()== GAME_MODES.ARENA)
+            if (owner.getHeroObj()!= null )
+                if (owner.getHeroObj()!= this){
             return true;
 }
         if (owner.isAi()) {

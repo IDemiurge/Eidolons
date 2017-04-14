@@ -30,12 +30,26 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public class FilterMaster {
 
     public static List<? extends Entity> getFilteredList(Condition c, List<? extends Entity> list) {
         return filterOut(new LinkedList(list), c);
 
+    }
+
+    public static Collection<? extends  Entity> filterByPropJ8
+     (Collection<? extends  Entity> list,
+                                               String prop, String value) {
+        list.removeIf(getPredicateProperty(prop, value));
+        return list;
+    }
+
+    private static Predicate<Entity> getPredicateProperty(String prop, String value) {
+        return e -> {
+         return    e.checkProperty(ContentManager.getPROP(prop), value);
+        };
     }
 
     public static Collection<?> filterByProp(Collection<?> list, String prop, String value) {

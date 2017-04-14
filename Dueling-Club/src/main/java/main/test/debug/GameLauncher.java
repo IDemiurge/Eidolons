@@ -12,6 +12,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlefield.vision.VisionManager;
+import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
 import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.dungeon.DungeonMaster;
@@ -50,7 +51,10 @@ public class GameLauncher {
     public boolean LEADER_MOVES_FIRST = false;
     public String ENEMY_PARTY = "Pirate";
     public String PLAYER_PARTY =
-            "Demir;Brother Anthin;Ogsit Tholmir;Imros the Rangerly;";//"Guy Fox;Fiona Emrin;Donkel Nogvir;";// "Elberen v2;";//"Bandit Archer";//Zail Adelwyn v4
+     "Amaltha Soamdath;Anfina Ilarfis;Grufirant Grossklotz;Orthaelion Enloth"
+//      ";Belia Haevril"
+     ;
+//     "Demir;Brother Anthin;Ogsit Tholmir;Imros the Rangerly;";//"Guy Fox;Fiona Emrin;Donkel Nogvir;";// "Elberen v2;";//"Bandit Archer";//Zail Adelwyn v4
     public boolean DUMMY_MODE = false;
     public boolean DUMMY_PP = false;
     public Boolean FAST_MODE;
@@ -280,6 +284,8 @@ public class GameLauncher {
         if (launch.gameMode != null)
             game.setGameMode(launch.gameMode);
         DC_KeyManager.DEFAULT_CONTROLLER = launch.controller;
+
+        GameLoop.setMaxAnimTime(launch.maxAnimTime);
     }
 
     private void initPlayerParties() {

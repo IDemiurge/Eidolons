@@ -50,6 +50,9 @@ public class DungeonMaster {
     // "Dungeon"; //
     // Arcane Tower
     private static final String DUNGEON_BACKGROUND_FOLDER = "\\big\\dungeons";
+    private static final  String RANDOM_DUNGEON_WORKSPACE_FILTER =
+     MetaEnums.WORKSPACE_GROUP.FOCUS
+      + ""+ MetaEnums.WORKSPACE_GROUP.COMPLETE;
     public static boolean RANDOM_DUNGEON = false;
     public static boolean CHOOSE_LEVEL = false;
     private static String DEFAULT_DUNGEON_LEVEL = "Forest.xml"; // "Arena.xml";
@@ -232,10 +235,10 @@ public class DungeonMaster {
     private ObjType pickRandomDungeon() {
         ObjType type;
         List<ObjType> list = DataManager.getTypes(DC_TYPE.DUNGEONS);
+
         FilterMaster.filterByProp(list,
          G_PROPS.WORKSPACE_GROUP.getName(),
-         MetaEnums.WORKSPACE_GROUP.FOCUS
-                + ""+ MetaEnums.WORKSPACE_GROUP.COMPLETE);
+         RANDOM_DUNGEON_WORKSPACE_FILTER);
         if (list.isEmpty()) {
             list = DataManager.getTypes(DC_TYPE.DUNGEONS);
             FilterMaster.filterByProp(list, G_PROPS.WORKSPACE_GROUP.getName(),

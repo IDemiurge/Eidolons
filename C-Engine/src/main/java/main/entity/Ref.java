@@ -77,7 +77,8 @@ public class Ref implements Cloneable, Serializable {
     public Ref(Entity entity) {
         this(entity.getGame(), entity.getId());
     }
-    public Ref(Entity entity,Entity target) {
+
+    public Ref(Entity entity, Entity target) {
         this(entity.getGame(),
          entity.getId());
         setTarget(target.getId());
@@ -152,7 +153,14 @@ public class Ref implements Cloneable, Serializable {
 
 
     protected KEYS getKey(String name) {
-        return new EnumMaster<KEYS>().retrieveEnumConst(KEYS.class, name);
+        try {
+            return KEYS.valueOf(name.toUpperCase());
+        } catch (Exception e) {
+
+        }
+//   COULD FIND WRONG STUFF!
+//     return new EnumMaster<KEYS>().retrieveEnumConst(KEYS.class, name);
+        return null;
     }
 
 
@@ -177,9 +185,8 @@ public class Ref implements Cloneable, Serializable {
             if (id != null) {
                 Obj obj = game.getObjectById(id);
                 if (obj != null) {
-                    result += key + " = " + obj ;
-                }
-                else {
+                    result += key + " = " + obj;
+                } else {
                     result += key + " = " + value;
                 }
                 result = result + ";" + "\n";
@@ -571,7 +578,7 @@ public class Ref implements Cloneable, Serializable {
 
     //
 
-        public enum KEYS {
+    public enum KEYS {
         THIS,
 
         TARGET,

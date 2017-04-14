@@ -171,7 +171,7 @@ public class SelectiveTargeting extends TargetingImpl {
         ENEMY_ITEM,
         ENEMY_WEAPON,
         MY_ITEM;
-        private boolean zDependent = true;
+        private boolean zDependent = false;
 
         SELECTIVE_TARGETING_TEMPLATES() {
 

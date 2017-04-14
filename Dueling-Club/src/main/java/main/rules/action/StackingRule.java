@@ -111,16 +111,29 @@ public class StackingRule implements ActionRule {
     private boolean canBeMovedOnto(Integer maxSpaceTakenPercentage, Entity unit, Coordinates c, Integer z,
                                    List<? extends Entity> otherUnits) {
         HashMap<Coordinates, Boolean> bools = cache.get(unit);
-        Boolean result = false;
+        boolean result = false;
+        if (maxSpaceTakenPercentage==100)
         if (bools != null) {
-            result = bools.get(c);
-            if (result != null) {
-                return result;
+            if (bools .containsKey(c)) {
+                return bools.get(c);
             }
         } else {
+            bools = new HashMap<>();
             cache.put(unit, bools);
         }
-        bools = new HashMap<>();
+
+        //get all units on the cell
+            DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
+            for (Unit u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
+                if (!units.contains(u)) {
+                    units.addCast(u.getType());
+                }
+            }
+            //check if '1 unit per cell' is on
+            if (maxSpaceTakenPercentage<=0)
+                if (!units.isEmpty())
+                    return false;
+
 
         if (unit == null) {
             unit = DataManager.getType(HeroCreator.BASE_HERO, DC_TYPE.CHARS);
@@ -134,7 +147,6 @@ public class StackingRule implements ActionRule {
         if (cell == null) {
             return false;
         }
-        DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
 
         if (z == null) {
             if (unit instanceof Unit) {
@@ -142,15 +154,8 @@ public class StackingRule implements ActionRule {
                 z = heroObj.getZ();
             }
         }
-        // if (otherUnits == null)
-        // // TODO ADD
-        // otherUnits = game.getObjectsOnCoordinate(z, c, false, false, false);
-        // else
-        for (Unit u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
-            if (!units.contains(u)) {
-                units.addCast(u.getType());
-            }
-        }
+
+        //TODO ???
         if (game.isSimulation()) {
             if (units.size() > 1) {
                 return false;

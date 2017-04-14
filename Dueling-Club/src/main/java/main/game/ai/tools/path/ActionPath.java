@@ -2,7 +2,6 @@ package main.game.ai.tools.path;
 
 import main.entity.active.DC_ActiveObj;
 import main.game.ai.elements.actions.Action;
-import main.game.ai.tools.path.PathBuilder.Choice;
 import main.game.battlefield.Coordinates;
 import main.system.auxiliary.data.ListMaster;
 

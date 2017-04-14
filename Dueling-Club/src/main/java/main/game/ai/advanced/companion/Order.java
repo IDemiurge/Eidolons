@@ -1,19 +1,22 @@
 package main.game.ai.advanced.companion;
 
 import main.content.CONTENT_CONSTS2.ORDER_TYPE;
-import main.game.ai.GroupAI;
-import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.sequence.ActionSequence;
+import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+
+import java.util.Map;
 
 public class Order {
     ORDER_TYPE type;
     String arg;
     ActionSequence sequence;
     String actionType;
-    UnitAI ai;
-    GroupAI group;
+    private Map<GOAL_TYPE, Integer> priorityModsMap;
 
-    public Order(UnitAI ai, ORDER_TYPE type, String arg) {
+    public Order(  String arg) {
+        this.arg = arg;
+    }
+    public Order(  ORDER_TYPE type, String arg) {
         this.arg = arg;
         this.type = type;
     }
@@ -50,11 +53,12 @@ public class Order {
         this.actionType = actionType;
     }
 
-    public UnitAI getAi() {
-        return ai;
+
+    public void setPriorityModsMap(Map<GOAL_TYPE, Integer> priorityModsMap) {
+        this.priorityModsMap = priorityModsMap;
     }
 
-    public void setAi(UnitAI ai) {
-        this.ai = ai;
+    public Map<GOAL_TYPE, Integer> getPriorityModsMap() {
+        return priorityModsMap;
     }
 }
