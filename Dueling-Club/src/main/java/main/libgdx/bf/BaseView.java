@@ -46,8 +46,8 @@ public class BaseView extends Group implements Borderable {
         if (border != null) {
             border.setX(-4);
             border.setY(-4);
-            border.setHeight(getWidth() + 4);
-            border.setWidth(getHeight() + 4);
+            border.setHeight(getHeight() + 8);
+            border.setWidth(getWidth() + 8);
         }
     }
 }

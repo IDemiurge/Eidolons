@@ -45,20 +45,9 @@ public class UnitView extends BaseView {
         this.portraitTexture = portraitTexture;
         portrait = new Image(portraitTexture);
 
-/*        baseHeight = portraitTexture.getRegionHeight();
-        baseWidth = portraitTexture.getRegionWidth();
-        setSize(baseWidth * getScaleX(), baseHeight * getScaleY());*/
-
-        imageContainer = new Container<>(portrait);
-        imageContainer.width(getW()).height(getH()).fill().bottom().left();
-        addActor(imageContainer);
-
         if (clockTexture != null) {
             this.clockTexture = clockTexture;
             initiativeStrVal = new Label("[#00FF00FF]" + String.valueOf(clockVal) + "[]", StyleHolder.getDefaultLabelStyle());
-/*            initiativeStrVal.setPosition(
-                    getWidth() - clockTexture.getRegionWidth() / 2 - initiativeStrVal.getWidth() / 2,
-                    clockTexture.getRegionHeight() / 2 - initiativeStrVal.getHeight() / 2);*/
             clockImage = new Image(clockTexture);
             addActor(clockImage);
             addActor(initiativeStrVal);
@@ -68,17 +57,15 @@ public class UnitView extends BaseView {
             arrow = new Image(arrowTexture);
             addActor(arrow);
             arrow.setOrigin(getWidth() / 2 + arrow.getWidth(), getHeight() / 2 + arrow.getHeight());
-            arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
-            arrow.setY(0);
+            arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
         }
 
         if (iconTexture != null) {
             icon = new Image(iconTexture);
             addActor(icon);
-            icon.setX(0);
-            icon.setY(getHeight() - icon.getImageHeight());
+            icon.setPosition(0, getHeight() - icon.getImageHeight());
         }
-        needRepaint = true;
+        sizeChanged();
     }
 
     public void setVisibleVal(int val) {
@@ -106,6 +93,11 @@ public class UnitView extends BaseView {
             initiativeStrVal.setPosition(
                     getWidth() - clockTexture.getRegionWidth() / 2 - initiativeStrVal.getWidth() / 2,
                     clockTexture.getRegionHeight() / 2 - initiativeStrVal.getHeight() / 2);
+
+            clockImage.setPosition(
+                    getWidth() - clockTexture.getRegionWidth() / 2,
+                    clockTexture.getRegionHeight() / 2
+            );
         }
 
         if (imageContainer != null) {
@@ -122,8 +114,19 @@ public class UnitView extends BaseView {
             arrow.setRotation(arrowRotation);
         }
 
-        updateBorderSize();
+        if (border != null) {
+/*            border.setX(-4);
+            border.setY(-4);*/
+            border.setHeight(getHeight());
+            border.setWidth(getWidth());
+        }
     }
+
+/*    @Override
+    public void updateBorderSize() {
+        border.setHeight(100);
+        border.setWidth(100);
+    }*/
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
@@ -137,11 +140,7 @@ public class UnitView extends BaseView {
         if (clockTexture != null) {
             clockVal = val;
             initiativeStrVal.setText("[#00FF00FF]" + String.valueOf(val) + "[]");
-            initiativeStrVal.setPosition(
-                    portraitTexture.getRegionWidth() - clockTexture.getRegionWidth() / 2 - initiativeStrVal.getWidth() / 2,
-                    clockTexture.getRegionHeight() / 2 - initiativeStrVal.getHeight() / 2);
-
-            needRepaint = true;
+            sizeChanged();
         } else {
             LogMaster.error("Initiative set to wrong object type != OBJ_TYPES.UNITS");
         }
