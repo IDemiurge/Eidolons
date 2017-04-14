@@ -403,8 +403,8 @@ public class Coordinates {
 
         FACING_DIRECTION(DIRECTION direction, boolean vertical, boolean closerToZero) {
             this.setDirection(direction);
-            this.setVertical(vertical);
-            this.setCloserToZero(closerToZero);
+            this.vertical=(vertical);
+            this.    closerToZero=(closerToZero);
         }
 
         public DIRECTION getDirection() {
@@ -423,17 +423,14 @@ public class Coordinates {
             return vertical;
         }
 
-        public void setVertical(boolean vertical) {
-            this.vertical = vertical;
-        }
 
         public boolean isCloserToZero() {
             return closerToZero;
         }
-
-        public void setCloserToZero(boolean closerToZero) {
-            this.closerToZero = closerToZero;
+        public boolean isMirrored() {
+            return !closerToZero;
         }
+
 
         // public FACING_DIRECTION rotate180() {
         // return

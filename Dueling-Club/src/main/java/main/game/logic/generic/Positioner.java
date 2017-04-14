@@ -50,6 +50,7 @@ public class Positioner {
     private FACING_DIRECTION forcedSide;
     private Map<MapBlock, Map<Coordinates, ObjType>> unitDungeonGroups = new LinkedHashMap<>();
     private Map<Coordinates, List<ObjType>> unitCache;
+    private Integer maxSpacePercentageTaken=100;
 
     public Positioner() {
 
@@ -586,7 +587,7 @@ public class Positioner {
         }
 
         try {
-            return StackingRule.checkCanPlace(c, entityToPosition, otherUnits);
+            return StackingRule.checkCanPlace(maxSpacePercentageTaken, c, entityToPosition, otherUnits);
         } catch (Exception e) {
             return true;
         }
@@ -597,33 +598,9 @@ public class Positioner {
     }
 
     public FACING_DIRECTION getFacingOptimal(Coordinates c) {
-        // TODO
-        HashMap<FACING_DIRECTION, Integer> map = new HashMap<>();
-        for (Obj member : getGame().getPlayer(true).getControlledUnits()) { // [QUICK
-            // FIX]
-            // getGame().getParty().getMembers()
-            FACING_DIRECTION facing = FacingMaster.getRelativeFacing(c, member.getCoordinates());
-            if (facing == null) {
-                facing = FacingMaster.getFacingFromDirection(DirectionMaster.getRelativeDirection(
-                        c, member.getCoordinates()));
-            }
-            Integer i = map.get(facing);
-            if (i == null) {
-                i = 0;
-            }
-            i++;
-            map.put(facing, i);
+        Collection<Obj> units = getGame().getPlayer(true).getControlledUnits();
+       return  FacingMaster.getOptimalFacingTowardsUnits(c, units);
 
-        }
-        FACING_DIRECTION pick = null;
-        Integer max = 0;
-        for (FACING_DIRECTION fac : map.keySet()) {
-            if (map.get(fac) > max) {
-                max = map.get(fac);
-                pick = fac;
-            }
-        }
-        return pick;
 
     }
 
@@ -671,6 +648,14 @@ public class Positioner {
             }
         }
         return DEFAULT_ENEMY_SIDE;
+    }
+
+    public Integer getMaxSpacePercentageTaken() {
+        return maxSpacePercentageTaken;
+    }
+
+    public void setMaxSpacePercentageTaken(Integer maxSpacePercentageTaken) {
+        this.maxSpacePercentageTaken = maxSpacePercentageTaken;
     }
 
     public synchronized List<FACING_DIRECTION> getSides() {

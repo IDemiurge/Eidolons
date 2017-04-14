@@ -90,16 +90,17 @@ public class DamageFactory {
     }
 
     public static Damage getDamageForPrecalculate(Ref ref) {
+        Damage dmg = new Damage();
         int amount = ref.getAmount();
         // if (ref.getActive().isSpell())
         DAMAGE_TYPE damageType = ref.getDamageType();
-        if (damageType == null) {
+
             if (ref.getActive() instanceof DC_ActiveObj) {
                 DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
-                damageType = activeObj.getDamageType();
+                dmg.setAction(activeObj);
+                if (damageType == null) {  damageType = activeObj.getDamageType();
             }
         }
-        Damage dmg = new Damage();
         dmg.setRef(ref);
         dmg.setAmount(amount);
         dmg.setDmgType(damageType);

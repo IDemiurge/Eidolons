@@ -10,7 +10,7 @@ public class Chronos {
     public static final boolean CONSTRUCT = false;
     private static final Logger logger = LogMaster.getInstance();
     private static Map<String, Calendar> timeMap = new ConcurrentMap<>();
-    private static boolean on;
+    private static boolean on=true;
 
     public static boolean isOn() {
         return on;

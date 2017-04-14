@@ -36,7 +36,6 @@ import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.test.TestMasterContent;
-import main.test.debug.GameLauncher;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -110,9 +109,9 @@ public class UnitResetter extends EntityResetter<Unit> {
         }
         super.toBase();
 
-        if (game.isSimulation()) {
-            return;
-        }
+//        if (game.isSimulation()) {
+//            return;
+//        }
         if (getEntity().isMine()) {
             if (CoreEngine.isAnimationTestMode()) {
                 TestMasterContent.addANIM_TEST_Spells(getEntity());
@@ -131,9 +130,7 @@ public class UnitResetter extends EntityResetter<Unit> {
         // Chronos.logTimeElapsedForMark(toString() + "to base (values)");
 
         // Chronos.mark(toString() + "to base (init objects)");
-        if (!GameLauncher.getInstance().SUPER_FAST_MODE) {
             getInitializer().initHeroObjects();
-        }
         // Chronos.logTimeElapsedForMark(toString() + "to base (init objects)");
         // if (mainHero)
         if (!CoreEngine.isArcaneVault()) {
@@ -291,7 +288,6 @@ public class UnitResetter extends EntityResetter<Unit> {
         getInitializer().initActives();
         // Chronos.logTimeElapsedForMark(toString() + " init ACTIVES");
 
-        getEntity().resetFacing();
 
     }
 

@@ -42,6 +42,7 @@ import main.entity.tools.bf.unit.UnitInitializer;
 import main.entity.tools.bf.unit.UnitLogger;
 import main.entity.tools.bf.unit.UnitMaster;
 import main.entity.type.ObjType;
+import main.game.ai.UnitAI;
 import main.game.battlefield.CoordinatesMaster;
 import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context.IdKey;
@@ -919,7 +920,16 @@ if (owner.getHeroObj()!= this){
 
         return getBehaviorMode() != null;
     }
+    public UnitAI getAI() {
+        return getUnitAI();
+    }
 
+    public UnitAI getUnitAI() {
+        if (unitAI == null) {
+            unitAI = new UnitAI(this);
+        }
+        return unitAI;
+    }
     public void setAiControlled(boolean aiControlled) {
         this.aiControlled = aiControlled;
     }

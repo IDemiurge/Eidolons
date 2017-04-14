@@ -67,9 +67,9 @@ public abstract class Entity extends DataModel implements OBJ {
     public Entity(ObjType type, Player owner, Game game, Ref ref) {
         // initial party?
         if (type == null) {
-            LogMaster.log(1, "null type!" + ref);
+
 //            if (!CoreEngine.isTEST_MODE()) {
-            RuntimeException e = new RuntimeException();
+            RuntimeException e = new RuntimeException("null type!" + ref);
             throw (e);
 //            }
         } else {

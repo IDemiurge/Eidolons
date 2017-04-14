@@ -24,6 +24,13 @@ public abstract class ConditionImpl  implements Condition {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj==null )
+            return this == null ;
+        return toString().equals(obj.toString());
+    }
+
+    @Override
     public String getTooltip() {
         return StringMaster.cropByLength(MAX_TOOLTIP_LENGTH, StringMaster
                 .getWellFormattedString(toString()));

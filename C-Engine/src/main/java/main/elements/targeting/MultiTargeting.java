@@ -18,7 +18,12 @@ public class MultiTargeting extends TargetingImpl {
     private Formula nOfTargets;
     private boolean noDuplicates = true;
     private boolean ignoreGroupTargeting = true;
-
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MultiTargeting ))
+            return false;
+        return super.equals(obj);
+    }
     public MultiTargeting(Targeting targeting1, Targeting targeting2) {
         this(true, targeting1, targeting2);
     }

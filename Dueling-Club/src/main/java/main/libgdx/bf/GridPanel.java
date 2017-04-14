@@ -13,6 +13,7 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
+import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.core.Eidolons;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.particles.lighting.LightingManager;
@@ -77,7 +78,7 @@ public class GridPanel extends Group {
                 TextureRegion texture = null;
                 if (outline != null) {
                     texture = TextureCache.getOrCreateR(
-                            Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
+                     Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
                 }
 
                 uv.setOutlineTexture(texture);
@@ -143,7 +144,7 @@ public class GridPanel extends Group {
             UnitView view = (UnitView) unitMap.get(unit);
             view.setVisibleVal(0);//set this val to zero remove unit from initiative queue
             GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL,
-                    new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
+             new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
             removeUnitView(unit);
         });
 
@@ -155,21 +156,30 @@ public class GridPanel extends Group {
             boolean caught = false;
             if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED) {
                 GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED,
-                        new EventCallbackParam<>(event.getRef().getEffect()));
+                 new EventCallbackParam<>(event.getRef().getEffect()));
                 caught = true;
             }
 
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
+             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
+             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
 //                (r.getEffect() instanceof ChangeFacingEffect) nice try
             {
                 BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET);
                 BaseView view = unitMap.get(hero);
                 if (view instanceof UnitView) {
                     UnitView unitView = ((UnitView) view);
-                    unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
+                    //TODO UnitView creation may not happen in time for some Turn or Move
+                    // -> exception
+                    //  IDEA – if I just ignore this, maybe facing will be initialized correctly?
+                    if (unitView != null) {
+                        if (hero.getFacing() == FACING_DIRECTION.NONE)
+                            unitView.updateRotation(UnitView.HIDE_ARROW);
+                        else
+                            unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
+
+                    }
                 }
                 caught = true;
             }
@@ -261,11 +271,11 @@ public class GridPanel extends Group {
                 GuiEventManager.trigger(SHOW_GREEN_BORDER, new EventCallbackParam(view));
 
                 GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL,
-                        new EventCallbackParam(new PanelActionsDataSource((Unit) hero)));
+                 new EventCallbackParam(new PanelActionsDataSource((Unit) hero)));
 
                 if (CoreEngine.isGuiTestMode()) {
 
-                   Eidolons.game.getInventoryManager().setOperationsPool(2);
+                    Eidolons.game.getInventoryManager().setOperationsPool(2);
                     GuiEventManager.trigger(SHOW_INVENTORY,
                      new EventCallbackParam(new InventoryDataSource((Unit) hero)));
                 }
@@ -307,7 +317,7 @@ public class GridPanel extends Group {
                 }
 
                 GridCellContainer cellContainer =
-                        new GridCellContainer(emptyImage, coordinates.getX(), coordinates.getY()).init();
+                 new GridCellContainer(emptyImage, coordinates.getX(), coordinates.getY()).init();
                 cellContainer.setObjects(options);
                 cellContainer.setOverlays(overlays);
 

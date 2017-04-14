@@ -1,11 +1,14 @@
 package main.game.ai.tools.priority;
 
+import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.content.values.parameters.PARAMETER;
+import main.elements.costs.Cost;
+import main.elements.costs.Costs;
 import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
@@ -16,9 +19,11 @@ import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.ParamAnalyzer;
 import main.rules.UnitAnalyzer;
+import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;
 
 public class ParamPriorityAnalyzer {
+
 
     public static int getParamPriority(PARAMETER param, Obj target) {
         int factor = 100;
@@ -28,7 +33,7 @@ public class ParamPriorityAnalyzer {
                 factor = getUnitParamRelevance(param, (Unit) target);
             }
         }
-        return MathMaster.getFractionValueCentimal(
+       return  MathMaster.getFractionValueCentimal(
                 getParamPercentPriority((PARAMS) param), factor);
     }
 
@@ -37,7 +42,9 @@ public class ParamPriorityAnalyzer {
             return 50;
         }
         // depending on AI_TYPE
-        switch ((PARAMS) param) {
+        if (param.isDynamic())
+        param = (PARAMS) ContentManager.getCurrentParam(param);
+        switch (  param) {
             case ATTACK:
             case DEFENSE:
             case ATTACK_MOD:
@@ -72,28 +79,29 @@ public class ParamPriorityAnalyzer {
         if (param.isAttribute()) {
             return 15;
         }
+//        if (param.isDynamic()) C_ is less important than total!
+//            param = (PARAMS) ContentManager.getCurrentParam(param);
+        if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE))
+            if (param instanceof PARAMS)
+                switch ((PARAMS) param) {
+                    case C_ENDURANCE:
+                    case ENDURANCE:
+                    case C_TOUGHNESS:
+                    case TOUGHNESS:
+                        return 0;
+                }
+
+
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
                 case C_ENDURANCE:
-                    if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
-                        return 0;
-                    }
                     return 2;
-                case C_TOUGHNESS:
-                    if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
-                        return 0;
-                    }
-                    return 4;
-                case TOUGHNESS:
-                    if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
-                        return 0;
-                    }
-                    return 6.5f;
                 case ENDURANCE:
-                    if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
-                        return 0;
-                    }
-                    return 3.5f;
+                    return 3;
+                case C_TOUGHNESS:
+                    return 3;
+                case TOUGHNESS:
+                    return 5;
                 case C_STAMINA:
                     if (target instanceof Unit) {
                         if (ParamAnalyzer.isStaminaIgnore((Unit) target)) {

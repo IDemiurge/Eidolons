@@ -31,7 +31,7 @@ public class TurnSequenceConstructor extends AiHandler {
         super(master);
     }
 
-    private static Action getTurnAction(boolean clockwise, Unit source) {
+    private   Action getTurnAction(boolean clockwise, Unit source) {
         DC_UnitAction specAction = source.getAction("Quick Turn "
                 + (clockwise ? "Clockwise" : "Anticlockwise"));
         if (specAction != null) {
@@ -47,7 +47,7 @@ public class TurnSequenceConstructor extends AiHandler {
 
     }
 
-    public static List<Action> getTurnSequence(Action action) {
+    public   List<Action> getTurnSequence(Action action) {
         Conditions conditions = (action.getTargeting().getFilter().getConditions());
         FacingCondition condition = null;
         FACING_SINGLE template = null;
@@ -99,7 +99,7 @@ public class TurnSequenceConstructor extends AiHandler {
 
     }
 
-    public static List<Action> getTurnSequence(FACING_SINGLE template, Unit source,
+    public   List<Action> getTurnSequence(FACING_SINGLE template, Unit source,
                                                Coordinates target) {
 
         FACING_DIRECTION original_facing = source.getFacing();
@@ -151,7 +151,7 @@ public class TurnSequenceConstructor extends AiHandler {
 
 
     @Deprecated
-    public static List<Action> getTurnSequence(Unit unit, Coordinates targetCoordinates) {
+    public   List<Action> getTurnSequence(Unit unit, Coordinates targetCoordinates) {
         List<Action> list = new ArrayList<>();
         // this will only work if there are no obstacles to the sides
         // in reality, we need to preCheck from which *empty* *adjacent* cell the

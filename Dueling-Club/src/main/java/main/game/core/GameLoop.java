@@ -5,6 +5,7 @@ import main.entity.obj.unit.Unit;
 import main.game.ai.elements.actions.Action;
 import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context;
+import main.libgdx.anims.AnimMaster;
 import main.rules.combat.ChargeRule;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.threading.WaitMaster;
@@ -15,6 +16,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
  * Created by JustMe on 3/23/2017.
  */
 public class GameLoop {
+    private static final int MAX_ANIM_TIME = 2500;
     private Unit activeUnit;
     private DC_Game game;
     private DC_ActiveObj activatingAction;
@@ -56,31 +58,41 @@ public class GameLoop {
 
     private Boolean makeAction() {
 
+        Boolean result=null ;
         if (game.getManager().getActiveObj().isAiControlled()) {
-            return activateAction(waitForAI());
+            result = activateAction(waitForAI());
         } else {
-            return activateAction(waitForPlayerInput());
+            result = activateAction(waitForPlayerInput());
         }
+//        if ()
+        waitForAnimations();
+        return result;
+    }
+
+    private void waitForAnimations() {
+        if (AnimMaster.getInstance().isDrawing())
+        WaitMaster.waitForInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, MAX_ANIM_TIME);
     }
 
     private Boolean activateAction(ActionInput input) {
         if (input == null )
             return true;
+        boolean result=false;
         try {
             activatingAction = input.getAction();
             activatingAction.setTargetObj(input.getContext().getTargetObj());
             activatingAction.setTargetGroup(input.getContext().getGroup());
-            input.getAction().getHandler().activateOn(input.getContext());
+            result=   input.getAction().getHandler().activateOn(input.getContext());
         } catch (Exception e) {
             e.printStackTrace();
             getGame().getManager().unitActionCompleted(input.getAction(), true);
             return true;
         } finally {
             activatingAction = null;
-        }
-        int timeCost = input.getAction().getHandler().getTimeCost();
+        }if (!result) return false;
+            int timeCost = input.getAction().getHandler().getTimeCost();
         Boolean endTurn = getGame().getRules().getTimeRule().
-         actionComplete(input.getAction(), timeCost);
+        actionComplete(input.getAction(), timeCost);
         if (!endTurn) {
             game.getManager().reset();
             if (ChargeRule.checkRetainUnitTurn(input.getAction())) {

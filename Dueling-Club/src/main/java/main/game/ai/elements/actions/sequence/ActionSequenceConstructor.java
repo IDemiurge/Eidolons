@@ -73,7 +73,7 @@ public class ActionSequenceConstructor extends AiHandler {
         actions.addAll(addSubactions(actions));
         for (DC_ActiveObj action : actions) {
             Chronos.mark(getChronosPrefix() + action);
-            List<Task> tasks = taskManager.getTasks(goal.getTYPE(), ai, goal.isForced(), action);
+            List<Task> tasks = getTaskManager().getTasks(goal.getTYPE(), ai, goal.isForced(), action);
             for (Task task : tasks) {
                 if (task.isBlocked()) {
                     continue;
@@ -107,9 +107,9 @@ public class ActionSequenceConstructor extends AiHandler {
     private void addSequences(Task task, List<ActionSequence> sequences, DC_ActiveObj active) {
         Ref ref = task.getUnit().getRef().getCopy();
         Integer arg = TaskManager.checkTaskArgReplacement(task, active);
-        if (arg == null) {
-            return;
-        }
+//        if (arg == null) {
+//       if (isArgNeeded(active))     return;
+//        }
         ref.setTarget(arg);
         List<ActionSequence> newSequences = null;
         Action action = ActionFactory.newAction(active, ref);
@@ -167,7 +167,7 @@ public class ActionSequenceConstructor extends AiHandler {
         if (task.getType() == GOAL_TYPE.RETREAT) {
             {
                 List<ActionSequence> sequencesFromPaths = getSequencesFromPaths(
-                        pathSequenceConstructor.getRetreatPaths(arg), task, action);
+                        getPathSequenceConstructor().getRetreatPaths(arg), task, action);
                 return sequencesFromPaths;
             } // TODO
         }
@@ -239,7 +239,7 @@ public class ActionSequenceConstructor extends AiHandler {
             // moveActions, action);
         }
 
-        List<ActionPath> paths = pathSequenceConstructor.getPathSequences(moveActions, action);
+        List<ActionPath> paths = getPathSequenceConstructor().getPathSequences(moveActions, action);
         list = getSequencesFromPaths(paths, task, action);
         return list;
 
@@ -315,7 +315,7 @@ public class ActionSequenceConstructor extends AiHandler {
             }
             case DEBUFF:
             case BUFF:
-                actions.addAll(TurnSequenceConstructor.getTurnSequence(targetAction));
+                actions.addAll(getTurnSequenceConstructor().getTurnSequence(targetAction));
                 actions.add(targetAction);
                 break;
             // case RETREAT:
@@ -376,7 +376,7 @@ public class ActionSequenceConstructor extends AiHandler {
                     return list;
                 }
                 if (reasons.contains(FILTER_REASON.FACING)) {
-                    list.addAll(TurnSequenceConstructor.getTurnSequence(targetAction));
+                    list.addAll(getTurnSequenceConstructor().getTurnSequence(targetAction));
                     list.add(targetAction);
                 } else if (targetAction.getActive().isRanged()) {
                     list.add(targetAction);

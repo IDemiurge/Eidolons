@@ -24,6 +24,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -47,13 +49,14 @@ public class AnimMaster extends Group {
     private boolean continuousAnimsOn;
     private Integer showBuffAnimsOnNewRoundLength = 2;
     private Integer showBuffAnimsOnHoverLength = 3; //continuous
+    private boolean drawing;
 
     //animations will use emitters, light, sprites, text and icons
     public AnimMaster(Stage stage) {
         instance = this;
         floatingTextMaster = new FloatingTextMaster();
         continuousAnimsOn =
-                false;
+         false;
 //         FAST_DC.getGameLauncher().FAST_MODE ||
 //          FAST_DC.getGameLauncher().SUPER_FAST_MODE;
         on = true;
@@ -66,6 +69,10 @@ public class AnimMaster extends Group {
     public static boolean isOn() {
         return on;
 
+    }
+
+    public boolean isDrawing() {
+        return drawing;
     }
 
     public void setOn(boolean on) {
@@ -180,7 +187,7 @@ public class AnimMaster extends Group {
             parentAnim = getParentAnim(event.getRef());
             if (parentAnim != null) {
                 LogMaster.log(LogMaster.ANIM_DEBUG, anim +
-                        " event anim created for: " + parentAnim);
+                 " event anim created for: " + parentAnim);
                 parentAnim.addEventAnim(anim, event); //TODO}
             }
             if (!parentAnim.isRunning()) {// preCheck new TODO
@@ -188,22 +195,22 @@ public class AnimMaster extends Group {
             }
         });
         GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p -> {
-                    if (!isOn()) {
-                        return;
-                    }
-                    Effect effect = (Effect) p.get();
-                    Animation anim = constructor.getEffectAnim(effect);
-                    if (anim == null) {
-                        return;
-                    }
-                    CompositeAnim parentAnim = getParentAnim(effect.getRef());
-                    if (parentAnim != null) {
-                        LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
-                        parentAnim.addEffectAnim(anim, effect); //TODO}
-                    } else {
+             if (!isOn()) {
+                 return;
+             }
+             Effect effect = (Effect) p.get();
+             Animation anim = constructor.getEffectAnim(effect);
+             if (anim == null) {
+                 return;
+             }
+             CompositeAnim parentAnim = getParentAnim(effect.getRef());
+             if (parentAnim != null) {
+                 LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
+                 parentAnim.addEffectAnim(anim, effect); //TODO}
+             } else {
 //                        add(anim);// when to start()?
-                    }
-                }
+             }
+         }
         );
     }
 
@@ -288,8 +295,8 @@ public class AnimMaster extends Group {
             }
             CompositeAnim a = new CompositeAnim();
             a.add(
-                    part
-                    , (Anim) e);
+             part
+             , (Anim) e);
             if (e.getDelay() == 0) {
                 root.getAttached().get(part).set(i, a);
             } else {
@@ -303,6 +310,10 @@ public class AnimMaster extends Group {
     private CompositeAnim next() {
         if (leadQueue.isEmpty()) {
             leadAnimation = null;
+            if (drawing){
+            drawing  = false;
+            WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, true);
+            }
             return null;
         }
         leadAnimation = leadQueue.pop();
@@ -333,7 +344,13 @@ public class AnimMaster extends Group {
             return;
         }
 
-        boolean result = leadAnimation.draw(batch);//drawer
+        boolean result = false;
+        drawing  = true;
+        try {
+            result=leadAnimation.draw(batch);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (!result) {
             startNext();
         }

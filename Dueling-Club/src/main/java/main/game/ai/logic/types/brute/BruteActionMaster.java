@@ -2,7 +2,7 @@ package main.game.ai.logic.types.brute;
 
 import main.game.ai.AI_Logic;
 import main.game.ai.logic.ActionTypeManager;
-import main.game.ai.logic.Analyzer.ACTION_CASES;
+import main.game.ai.logic.BfAnalyzer.ACTION_CASES;
 
 import java.util.HashMap;
 import java.util.Map;

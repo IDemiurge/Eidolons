@@ -232,11 +232,11 @@ public class TextParser {
             }
         }
         Game game = ref.getGame();
-        if (id == 0) {
-            if (game.isRunning()) {
-                id = game.getManager().getInfoObj().getId();
-            }
-        }
+//        if (id == 0) {
+//            if (game.isRunning()) {
+//                id = game.getManager().getInfoObj().getId();
+//            }
+//        }
         // else if (CharacterCreator.isRunning())
 
         String replacement = ref_substring;

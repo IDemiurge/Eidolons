@@ -19,6 +19,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 import main.system.images.ImageManager.BORDER;
 import main.system.math.Formula;
+import main.system.text.TextParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -144,8 +145,9 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
             }
             if (param == null) {
                 continue;
-            }
-            Integer amount = StringMaster.getInteger(bonus);
+            } getRef().setInfoEntity(this);
+            bonus = TextParser.parse(bonus, getRef());
+            Integer amount =Integer.valueOf(bonus);// StringMaster.getInteger(bonus);
             if (amount == 0) {
                 continue;
             }

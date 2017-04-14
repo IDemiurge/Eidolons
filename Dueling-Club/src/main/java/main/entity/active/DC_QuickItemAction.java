@@ -66,5 +66,8 @@ public class DC_QuickItemAction extends DC_ActiveObj {
         return null;
     }
 
-
+    @Override
+    public void invokeClicked() {
+        getItem().invokeClicked();
+    }
 }

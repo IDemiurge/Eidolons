@@ -8,6 +8,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.generic.AiHandler;
+import main.game.ai.elements.generic.AiMaster;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.priority.DC_PriorityManager;
@@ -20,10 +21,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GoalManager extends AiHandler {
-    public GoalManager(AiHandler master) {
+    public GoalManager(AiMaster master) {
         super(master);
     }
 
+    public static Boolean isGoalVsEnemies(GOAL_TYPE g) {
+        switch (g){
+
+        }
+        return null ;
+    }
     public static List<GOAL_TYPE> getGoalsForUnit(UnitAI ai) {
         Unit unit = ai.getUnit();
         List<GOAL_TYPE> list = getBehaviorGoals(unit);
@@ -76,6 +83,7 @@ public class GoalManager extends AiHandler {
 
     private static void addNonEnemyGoals(List<GOAL_TYPE> list) {
         // list.add(GOAL_TYPE.APPROACH);
+        list.add(GOAL_TYPE.PREPARE);
         list.add(GOAL_TYPE.BUFF);
         list.add(GOAL_TYPE.ZONE_SPECIAL);
         list.add(GOAL_TYPE.ZONE_DAMAGE);

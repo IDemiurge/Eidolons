@@ -12,9 +12,9 @@ import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.obj.DC_Cell;
-import main.entity.obj.unit.DC_UnitModel;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.ai.advanced.companion.CompanionMaster;
 import main.game.ai.advanced.companion.Order;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.sequence.ActionSequence;
@@ -58,19 +58,13 @@ public class UnitAI {
     private int logLevel = LOG_LEVEL_RESULTS;
     private Order currentOrder;
 
-    public UnitAI(Unit unit, AI_Manager ai_Manager) {
-        this.unit = unit;
+    public UnitAI(Unit unit) {
+        this.unit =   unit;
         initType();
         setOriginalCoordinates(unit.getCoordinates());
-        // initActionPriorities();
-        // this.ai_Manager = ai_Manager;
-    }
-
-    public UnitAI(DC_UnitModel unit) {
-        this.unit = (Unit) unit;
-        initType();
-        setOriginalCoordinates(unit.getCoordinates());
-
+        if (unit.isMine()){
+            CompanionMaster.initCompanionAiParams(this);
+        }
     }
 
     public int getLogLevel() {
@@ -406,8 +400,8 @@ public class UnitAI {
 
     public GroupAI getGroupAI() {
         if (groupAI == null) {
-            AI_Manager.getCustomUnitGroup().add(getUnit());
-            groupAI = (AI_Manager.getCustomUnitGroup());
+            AI_Manager.getCustomUnitGroup(getUnit()).add(getUnit());
+            groupAI = (AI_Manager.getCustomUnitGroup(getUnit()));
         }
         return groupAI;
     }

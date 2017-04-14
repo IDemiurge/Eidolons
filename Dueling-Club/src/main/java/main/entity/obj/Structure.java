@@ -44,6 +44,6 @@ public class Structure extends BattleFieldObject {
     }
 
     public void resetFacing() {
-//        getResetter().resetFacing();
+//        getResetter().setFacing();
     }
 }

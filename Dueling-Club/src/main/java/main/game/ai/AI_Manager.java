@@ -30,6 +30,8 @@ public class AI_Manager extends AiMaster {
     private   ExecutorService executorService;
     private Map<Unit, UnitAI> aiMap = new XLinkedMap<>();
     private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
+    private static GroupAI allyGroup;
+    private static GroupAI enemyGroup;
 
     public AI_Manager(DC_Game game) {
         super(game);
@@ -37,11 +39,31 @@ public class AI_Manager extends AiMaster {
         priorityManager = DC_PriorityManager.init(this);
     }
 
+    public static GroupAI getAllyGroup() {
+        if (allyGroup == null) {
+            allyGroup = new GroupAI(null);
+        }
+        return allyGroup;
+    }
+
+
+    public static GroupAI getEnemyGroup() {
+        if (enemyGroup == null) {
+            enemyGroup = new GroupAI(null);
+        }
+        return enemyGroup;
+    }
+
+
     public void init() {
+        initialize();
         game.getPlayer(false).setPlayerAI(new PlayerAI(getType()));
     }
 
     public Action getAction(Unit unit) {
+        if (unit.isMine()){
+            unit.getQuickItemActives();
+        }
         Action action = null;
         running = true;
         setUnit(unit);
@@ -129,11 +151,11 @@ public class AI_Manager extends AiMaster {
         return topPriorityUnit;
     }
 
-    public static GroupAI getCustomUnitGroup() {
-        if (customGroup == null) {
-            customGroup = new GroupAI(null);
-        }
-        return customGroup;
+    public static GroupAI getCustomUnitGroup(Unit unit) {
+        if (unit.isMine())
+            return
+             getAllyGroup();
+        return getEnemyGroup();
     }
     public static boolean isRunning() {
         return running;

@@ -8,8 +8,9 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Waiter implements Runnable {
+public class Waiter {
     private static final long default_time_limit = 100000; // what if user is
+    private static final long PING_PERIOD = 100;
     Lock lock = new ReentrantLock();
     Condition waiting = lock.newCondition();
     Long timeLimit;
@@ -37,37 +38,46 @@ public class Waiter implements Runnable {
         return null;
     }
 
+    private void startPingingThread() {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    wait(PING_PERIOD);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                lock.lock();
+                waiting.signal();
+                lock.unlock();
+            }
+        }, getId()+"'s pinging thread").start();
+    }
+
     public synchronized Object startWaiting() {
         return startWaiting(null);
     }
 
     public synchronized Object startWaiting(Long timeLimit) {
         LogMaster.log(LogMaster.WAITING_DEBUG, operation.name() + " WAITING STARTED : " + input
-                + interrupted);
+         + interrupted);
+        this.timeLimit = timeLimit;
 
-        new Thread(this, getId()).start();
         n++;
-        try {
-            lock.lock();
-            waiting.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            lock.unlock();
-        }
+        await();
         if (interrupted) {
             input = null;
         }
         return input;
     }
 
-    @Override
-    public void run() {
+    public void await() {
         input = null;
         interrupted = false;
         if (timeLimit != null) {
             Chronos.mark(getId());
+            startPingingThread();
         }
+
         while (input == null && interrupted == false) {
             if (timeLimit != null) {
                 if (timeElapsed >= timeLimit) {
@@ -88,11 +98,12 @@ public class Waiter implements Runnable {
         }
 
         LogMaster.log(LogMaster.WAITING_DEBUG, operation.name()
-                + " WAIT LOOP EXITED WITH : " + input);
+         + " WAIT LOOP EXITED WITH : " + input);
         lock.lock();
         waiting.signal();
         lock.unlock();
     }
+
 
     private String getId() {
         return "Waiter " + operation + "#" + n;
@@ -126,7 +137,7 @@ public class Waiter implements Runnable {
         lock.unlock();
 
         LogMaster.log(LogMaster.WAITING_DEBUG, "WAITER INTERRUPTED: "
-                + operation.name());
+         + operation.name());
     }
 
 }

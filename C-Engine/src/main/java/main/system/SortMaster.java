@@ -1,22 +1,24 @@
 package main.system;
 
-import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
+import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.Entity;
+import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
 public class SortMaster {
 
@@ -106,12 +108,17 @@ public class SortMaster {
     }
 
     public static Comparator<? super Entity> getSorter(final VALUE p, final Boolean descending) {
-        return new Comparator<Entity>() {
-            public int compare(Entity o1, Entity o2) {
-                return compareValue(p, descending, o1, o2);
-            }
+        return (Comparator<Entity>) (o1, o2) -> compareValue(p, descending, o1, o2);
 
-        };
+    }
+    public static Comparator<? super Entity> getSorterByExpression
+     (Function<Entity, Integer> function) {
+        return Comparator.comparingInt(o -> function.apply(o));
+
+    }
+    public static Comparator<? super Obj> getSorterByExpressionObj
+     (Function<Obj, Integer> function) {
+        return Comparator.comparingInt(o -> function.apply(o));
 
     }
 

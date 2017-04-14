@@ -1,6 +1,7 @@
 package main.game.ai.elements.generic;
 
 import main.entity.obj.unit.Unit;
+import main.game.ai.AI_Logic;
 import main.game.ai.elements.actions.ActionManager;
 import main.game.ai.elements.actions.sequence.ActionSequenceConstructor;
 import main.game.ai.elements.actions.sequence.PathSequenceConstructor;
@@ -10,220 +11,120 @@ import main.game.ai.elements.task.TaskManager;
 import main.game.ai.tools.AiExecutor;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.ParamAnalyzer;
+import main.game.ai.tools.SituationAnalyzer;
 import main.game.ai.tools.path.CellPrioritizer;
 import main.game.ai.tools.path.PathBuilder;
 import main.game.ai.tools.priority.PriorityManager;
+import main.game.ai.tools.priority.ThreatAnalyzer;
 import main.game.ai.tools.prune.PruneMaster;
 import main.game.ai.tools.target.TargetingMaster;
 import main.game.core.game.DC_Game;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by JustMe on 3/3/2017.
  */
 public abstract class AiHandler {
-    protected TaskManager taskManager;
-    protected  GoalManager goalManager;
-    protected  ActionManager actionManager;
-    protected  PriorityManager priorityManager;
-    protected  PruneMaster pruneMaster;
-    protected  PathBuilder pathBuilder;
-    protected  TargetingMaster targetingMaster;
-    protected  Analyzer analyzer;
-    protected  ParamAnalyzer paramAnalyzer;
-    protected   ActionSequenceConstructor actionSequenceConstructor;
-    protected AiExecutor executor;
-    protected CellPrioritizer cellPrioritizer;
-    protected    AiHandler master;
+    protected    AiMaster master;
     protected   DC_Game game;
     protected   Unit unit;
-    protected   PathSequenceConstructor pathSequenceConstructor;
-    protected   TurnSequenceConstructor turnSequenceConstructor;
-    private List<AiHandler> handlers;
 
-    public AiHandler(DC_Game game) {
-        this.game = game;
-        this.master = this;
-        this.actionSequenceConstructor = new ActionSequenceConstructor(this);
-        this.taskManager =  new TaskManager(this);
-        this.goalManager =  new GoalManager(this);
-        this.actionManager =  new ActionManager(this);
-        this.pruneMaster =  new PruneMaster(this);
-        this.pathBuilder =  new PathBuilder(this);
-        this.targetingMaster =  new TargetingMaster(this);
-        this.analyzer =  new Analyzer(this);
-        this.paramAnalyzer =  new ParamAnalyzer(this);
-        this.cellPrioritizer =  new CellPrioritizer(this);
-        pathSequenceConstructor = new PathSequenceConstructor(master);
-        turnSequenceConstructor = new TurnSequenceConstructor(master);
-
-        executor = new AiExecutor(game);
-
-        this.actionSequenceConstructor  .initialize();
-        this.taskManager  .initialize(); 
-        this.goalManager  .initialize(); 
-        this.actionManager  .initialize(); 
-        this.pruneMaster  .initialize(); 
-        this.pathBuilder  .initialize(); 
-        this.targetingMaster  .initialize(); 
-        this.analyzer  .initialize();  
-        this.paramAnalyzer  .initialize(); 
-        this.cellPrioritizer  .initialize();
-        this.pathSequenceConstructor  .initialize();
-        this.turnSequenceConstructor  .initialize();
-    }
 
     public AiHandler(AiHandler master) {
-        this.master = master;
+        this.master = (AiMaster) master;
     }
     public void initialize() {
-        this.pathSequenceConstructor = master.pathSequenceConstructor ;
-        this.turnSequenceConstructor =  master.turnSequenceConstructor ;
-        this.actionSequenceConstructor = master.actionSequenceConstructor;
-        this.taskManager = master.taskManager;
-        this.goalManager = master.goalManager;
-        this.actionManager = master.actionManager;
-        this.priorityManager = master.priorityManager;
-        this.pruneMaster = master.pruneMaster;
-        this.pathBuilder = master.pathBuilder;
-        this.targetingMaster = master.targetingMaster;
-        this.analyzer = master.analyzer;
-        this.paramAnalyzer = master.paramAnalyzer;
-        master.handlerInitialized(this);
+        master.getHandlers().add(this);
     }
 
-    private void handlerInitialized(AiHandler handler) {
-        getHandlers().add(handler);
+    public AI_Logic getLogic() {
+        return master.getLogic();
     }
 
-    public ActionSequenceConstructor getActionSequenceConstructor() {
-        return actionSequenceConstructor;
-    }
-
-    public void setActionSequenceConstructor(ActionSequenceConstructor actionSequenceConstructor) {
-        this.actionSequenceConstructor = actionSequenceConstructor;
-    }
-
-    public AiHandler getMaster() {
-        return master;
-    }
-
-    public void setMaster(AiHandler master) {
-        this.master = master;
-    }
-
-    public AiExecutor getExecutor() {
-        return executor;
-    }
-
-    public void setExecutor(AiExecutor executor) {
-        this.executor = executor;
-    }
-
-    public CellPrioritizer getCellPrioritizer() {
-        return cellPrioritizer;
-    }
-
-    public void setCellPrioritizer(CellPrioritizer cellPrioritizer) {
-        this.cellPrioritizer = cellPrioritizer;
+    public SituationAnalyzer getSituationAnalyzer() {
+        return master.getSituationAnalyzer();
     }
 
     public TaskManager getTaskManager() {
-        return taskManager;
+        return master.getTaskManager();
     }
 
-    public void setTaskManager(TaskManager taskManager) {
-        this.taskManager = taskManager;
+    public ThreatAnalyzer getThreatAnalyzer() {
+        return master.getThreatAnalyzer();
     }
 
     public GoalManager getGoalManager() {
-        return goalManager;
+        return master.getGoalManager();
     }
 
-    public void setGoalManager(GoalManager goalManager) {
-        this.goalManager = goalManager;
-    }
-
+    
     public ActionManager getActionManager() {
-        return actionManager;
+        return master.getActionManager();
     }
 
-    public void setActionManager(ActionManager actionManager) {
-        this.actionManager = actionManager;
-    }
-
+    
     public PriorityManager getPriorityManager() {
-        return priorityManager;
+        return master.getPriorityManager();
     }
 
-    public void setPriorityManager(PriorityManager priorityManager) {
-        this.priorityManager = priorityManager;
-    }
-
+    
     public PruneMaster getPruneMaster() {
-        return pruneMaster;
+        return master.getPruneMaster();
     }
 
-    public void setPruneMaster(PruneMaster pruneMaster) {
-        this.pruneMaster = pruneMaster;
-    }
-
+    
     public PathBuilder getPathBuilder() {
-        return pathBuilder;
+        return master.getPathBuilder();
     }
 
-    public void setPathBuilder(PathBuilder pathBuilder) {
-        this.pathBuilder = pathBuilder;
-    }
-
+    
     public TargetingMaster getTargetingMaster() {
-        return targetingMaster;
+        return master.getTargetingMaster();
     }
 
-    public void setTargetingMaster(TargetingMaster targetingMaster) {
-        this.targetingMaster = targetingMaster;
-    }
-
+    
     public Analyzer getAnalyzer() {
-        return analyzer;
+        return master.getAnalyzer();
     }
 
-    public void setAnalyzer(Analyzer analyzer) {
-        this.analyzer = analyzer;
-    }
-
+    
     public ParamAnalyzer getParamAnalyzer() {
-        return paramAnalyzer;
+        return master.getParamAnalyzer();
     }
 
-    public void setParamAnalyzer(ParamAnalyzer paramAnalyzer) {
-        this.paramAnalyzer = paramAnalyzer;
+    
+    public ActionSequenceConstructor getActionSequenceConstructor() {
+        return master.getActionSequenceConstructor();
     }
 
+    
+    public AiExecutor getExecutor() {
+        return master.getExecutor();
+    }
+
+    
+    public CellPrioritizer getCellPrioritizer() {
+        return master.getCellPrioritizer();
+    }
+
+    
     public PathSequenceConstructor getPathSequenceConstructor() {
-        return pathSequenceConstructor;
+        return master.getPathSequenceConstructor();
     }
 
-    public void setPathSequenceConstructor(PathSequenceConstructor pathSequenceConstructor) {
-        this.pathSequenceConstructor = pathSequenceConstructor;
-    }
-
+    
     public TurnSequenceConstructor getTurnSequenceConstructor() {
-        return turnSequenceConstructor;
+        return master.getTurnSequenceConstructor();
     }
 
-    public void setTurnSequenceConstructor(TurnSequenceConstructor turnSequenceConstructor) {
-        this.turnSequenceConstructor = turnSequenceConstructor;
-    }
-
+    
     public List<AiHandler> getHandlers() {
-        if (handlers==null )handlers = new LinkedList<>(); 
-        return handlers;
+        return master.getHandlers();
     }
 
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
+
 }

@@ -23,7 +23,7 @@ public class Old_AI_Manager {
         return logic.getPriorityForUnit(unit, units);
     }
 
-    public Analyzer getAnalyzer() {
+    public BfAnalyzer getAnalyzer() {
         return logic.getAnalyzer();
     }
 

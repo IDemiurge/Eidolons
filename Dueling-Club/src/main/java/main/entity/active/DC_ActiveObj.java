@@ -127,6 +127,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public DAMAGE_TYPE getDamageType() {
         if (super.getDamageType()==null ){
+            if (getActiveWeapon()==null )
+                return null ;
             getActiveWeapon().getDamageType();
         }
             return super.getDamageType();
@@ -247,6 +249,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public void setRef(Ref REF) {
         REF.setID(Ref.KEYS.ACTIVE, getId());
         super.setRef(REF);
+            ref.setObj(KEYS.TARGET,targetObj );
+            ref.setGroup(targetGroup );
+
         ref.setTriggered(false);
         setOwnerObj((Unit) ref.getObj(KEYS.SOURCE));
 //        this.ref.setGroup(null); // TODO GROUP MUST NOT BE COPIED FROM OTHER SPELLS!

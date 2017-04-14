@@ -4,7 +4,6 @@ import main.ability.effects.Effect;
 import main.content.PARAMS;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
-import main.entity.Ref.KEYS;
 import main.entity.obj.BuffObj;
 import main.entity.tools.DC_ObjMaster;
 import main.entity.tools.EntityMaster;
@@ -13,7 +12,6 @@ import main.game.core.game.DC_Game;
 import main.game.core.game.MicroGame;
 import main.game.core.master.BuffMaster;
 import main.game.logic.battle.player.Player;
-import main.system.auxiliary.StringMaster;
 
 public class DC_BuffObj extends BuffObj {
 
@@ -37,7 +35,8 @@ public class DC_BuffObj extends BuffObj {
     @Override
     public boolean applyEffect() {
         getEffect().resetOriginalFormula();
-        getEffect().multiplyFormula("1+" + StringMaster.getValueRef(KEYS.BUFF, PARAMS.BUFF_STACKS));
+//        TODO min(x,y) won't work
+//        getEffect().multiplyFormula("1+" + StringMaster.getValueRef(KEYS.BUFF, PARAMS.BUFF_STACKS));
         return super.applyEffect();
     }
 

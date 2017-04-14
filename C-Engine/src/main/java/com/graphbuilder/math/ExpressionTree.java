@@ -133,8 +133,16 @@ public class ExpressionTree {
 
             if (term) {
                 if (c == '(') {
-                    if (negate) {
-                        throw new ExpressionParseException("Open bracket found after negate.", i);
+                    if (negate) { //IDEA - REPLACE NEGATE WITH -1*
+
+                        if (!autoresolved && MathMaster.isAutoResolveParseExceptions()) {
+                            LogMaster.log(1,
+                             "autoresolving malformed formula - crop last ')': " + s);
+                            String autoresolvedString = StringMaster.replaceLast(s, "-(", "-1*(");
+                            return build(true, autoresolvedString,
+                             indexErrorOffset);
+                        }else
+                            throw new ExpressionParseException("Open bracket found after negate.", i);
                     }
 
                     s2.push("(");

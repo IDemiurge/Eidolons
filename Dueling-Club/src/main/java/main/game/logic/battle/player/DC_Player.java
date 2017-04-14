@@ -10,10 +10,7 @@ import main.game.battlefield.Coordinates;
 import main.game.core.game.DC_Game;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Regulus
@@ -80,7 +77,7 @@ public class DC_Player extends Player {
 
     public Set<Obj> getControlledUnits() {
 
-        Set<Obj> units = new HashSet<>();
+        Set<Obj> units = new LinkedHashSet<>();
         for (Unit unit : (getGame().getUnits())) {
             if (unit.getOwner() == this) {
                 units.add(unit);

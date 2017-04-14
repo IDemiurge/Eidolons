@@ -30,17 +30,34 @@ public class AiEnums {
     }
 
     public enum AI_TYPE {
-        NORMAL, BRUTE, // attack
-        SNEAK, // hide, flee, sneak mod
-        CASTER,
+        NORMAL,
+        BRUTE,
+        SNEAK,
+        TANK,
         CASTER_MELEE,
-        CASTER_SUPPORT,
-        CASTER_SUMMONER,
-        CASTER_OFFENSE, // spells
-        // +
-        // flee
-        ARCHER, // flee
-        TANK // def goals
+        CASTER(true),
+        CASTER_SUPPORT(true),
+        CASTER_SUMMONER(true),
+        CASTER_OFFENSE(true),
+        ARCHER(true)
+        ;
+
+        AI_TYPE(boolean ranged) {
+            this.ranged = ranged;
+        }
+
+        AI_TYPE() {
+        }
+
+        private boolean ranged;
+
+        public boolean isRanged() {
+            return ranged;
+        }
+
+        public void setRanged(boolean ranged) {
+            this.ranged = ranged;
+        }
     }
 
     public enum BEHAVIOR_MODE

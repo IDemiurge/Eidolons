@@ -93,10 +93,7 @@ public class Executor extends ActiveHandler {
 //            ref.setTarget(context.getTarget());
             targeter.setForcePresetTarget(true);
             targeter.presetTarget = context.getTargetObj();
-            getTargeter().setRef(context);
-            if (context.getTargetObj() != null)
                 getAction().setTargetObj(context.getTargetObj());
-            if (context.getTargetObj() != null)
                 getAction().setTargetGroup(context.getGroup());
         }
         this.context = context;
@@ -124,22 +121,27 @@ public class Executor extends ActiveHandler {
 
     public void activateOnGameLoopThread() {
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-         new ActionInput(getAction(), new Context(getRef())));
+         new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }
 
     public boolean activate() {
         reset();
         syncActionRefWithSource();
         getTargeter().initTarget();
+        if ((isCancelled())!=null )
+        {
+            cancelled();
+            return false;
+        }
         if (isInterrupted())
             return interrupted();
 
         boolean gameLog = getAction().getLogger().isActivationLogged();
         String targets = " ";
-        if (getAction().getTargeting()!=null )
-            targets+= getAction().getTargetObj().getNameAndCoordinate();
-        if (getAction().getTargetGroup()!=null )
-            targets+= getAction().getTargetGroup().toString();
+        if (getAction().getTargetObj() != null)
+            targets += getAction().getTargetObj().getNameAndCoordinate();
+        if (getAction().getTargetGroup() != null)
+            targets += getAction().getTargetGroup().toString();
         log(getAction().getOwnerObj().getNameIfKnown() + " activates "
          + getAction().getNameIfKnown() + targets, gameLog);
         beingActivated();
@@ -151,10 +153,10 @@ public class Executor extends ActiveHandler {
         resolve();
         if (!BooleanMaster.isTrue(cancelled))
             payCosts();
-        else {
-            if (BooleanMaster.isFalse(cancelled))
-                cancelled();
-        }
+//        else {???
+//            if (BooleanMaster.isFalse(cancelled))
+//                cancelled();
+//        }
         //TODO BEFORE RESOLVE???
         GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new EventCallbackParam(getAction()));
 
@@ -178,6 +180,7 @@ public class Executor extends ActiveHandler {
         }
 
         getAction().setRef(getAction().getOwnerObj().getRef());
+
     }
 
     private boolean interrupted() {
@@ -351,10 +354,12 @@ public class Executor extends ActiveHandler {
 
 
     public void actionComplete() {
+
         if (isResult())
             log(getAction() + " done", false);
         else
             log(getAction() + " failed", false);
+
         fireEvent(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, false);
         getMaster().getLogger().logCompletion();
         getGame().getManager().applyActionRules(getAction());
@@ -419,7 +424,11 @@ public class Executor extends ActiveHandler {
 
     protected boolean checkExtraAttacksDoNotInterrupt(ENTRY_TYPE entryType) {
         if (RuleMaster.checkRuleGroupIsOn(RULE_GROUP.EXTRA_ATTACKS)) {
-            return !ExtraAttacksRule.checkInterrupted(getAction(), entryType);
+            try {
+                return !ExtraAttacksRule.checkInterrupted(getAction(), entryType);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return true;
     }

@@ -40,9 +40,9 @@ import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
 
 public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
-            "AI", "Gui", "Playtest", "Recent", "New", "Anims", "Usability",
+            "AI", "Gui", "Last", "Recent", "New", "Anims", "Usability",
 //            "Emitters","Light",
-     "Standoff Test","Standoff",  "Last",  "Profiling"
+     "Standoff Test","Standoff Preset","Standoff",    "Profiling"
 
     };
     public static int PRESET_OPTION = -1;
@@ -56,15 +56,16 @@ public class PresetLauncher {
         LAUNCH.Standoff_Test.gameMode = GAME_MODES.ARENA;
         LAUNCH.Standoff_Test.dungeonPath = "Pit.xml";
 
+        LAUNCH.Standoff_Preset.gameMode = GAME_MODES.ARENA;
+        LAUNCH.Standoff_Preset.dungeonPath = "Pit.xml";
 
         LAUNCH.Standoff.gameMode = GAME_MODES.ARENA;
-        LAUNCH.Standoff.dungeonPath = "Pit.xml";
-
         LAUNCH.Standoff. workspaceFilter=WORKSPACE_GROUP.TEST;
         LAUNCH.Standoff. PARTY_CODE= CODE.CHOOSE;
-        LAUNCH.Gui.graphicsTest = true;
 
+        LAUNCH.Gui.graphicsTest = true;
         LAUNCH.Gui.visionHacked = true;
+
         LAUNCH.Anims.visionHacked = true;
         LAUNCH.AI.visionHacked = true;
         LAUNCH.Anims.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
@@ -361,6 +362,7 @@ public class PresetLauncher {
         Profiling(true),
         Standoff(null , RULE_SCOPE.FULL, null),
             Standoff_Test(null , RULE_SCOPE.TEST, true),
+            Standoff_Preset(null , RULE_SCOPE.FULL, null),
         Usability("Usability.xml", RULE_SCOPE.FULL, null)
             ;
         public Boolean immortal;

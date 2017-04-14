@@ -989,7 +989,7 @@ public class DebugMaster {
         effect.apply(ref);
 
         if (player.isAi()) {
-            AI_Manager.getCustomUnitGroup().add(effect.getUnit());
+            AI_Manager.getCustomUnitGroup((Unit) effect.getUnit()).add(effect.getUnit());
         }
         game.getManager().refreshAll();
     }

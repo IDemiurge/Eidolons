@@ -19,6 +19,7 @@ import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_ObjInitializer;
 import main.game.battlefield.FacingMaster;
 import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.arena.ArenaManager;
 import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.arena.Wave;
@@ -28,6 +29,8 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.ai.DungeonCrawler;
 import main.game.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
 import main.game.logic.dungeon.building.MapBlock;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.macro.travel.EncounterMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.RandomWizard;
@@ -46,6 +49,8 @@ import java.util.*;
 
 public class SpawnManager {
 
+    public static final Integer MAX_SPACE_PERC_CREEPS = 25 ; // 1 per cell only
+    private static final Integer MAX_SPACE_PERC_PARTY = 100;
     private static boolean playerUnitGroupMode;
     private static boolean enemyUnitGroupMode;
     Map<Dungeon, Map<MapBlock, Map<Coordinates, ObjType>>> specialEncounters = new HashMap<>();
@@ -86,7 +91,7 @@ public class SpawnManager {
     public void init() {
         // this.level = battle.getIntValue(BATTLE_STATS.LEVEL);
         if (!isPlayerUnitGroupMode() // && PresetMaster.getPreset() == null
-                ) {
+         ) {
             initPlayerParty();
         } else {
             playerPartyData = getGame().getPlayerParty();
@@ -106,7 +111,7 @@ public class SpawnManager {
         // if (!CharacterCreator.isPartyMode())
         // waveCleared(); TODO what for???
         this.roundsToWait = arenaManager.getArenaOptions().getIntValue(
-                ARENA_GAME_OPTIONS.TURNS_TO_PREPARE);
+         ARENA_GAME_OPTIONS.TURNS_TO_PREPARE);
 
     }
 
@@ -153,8 +158,8 @@ public class SpawnManager {
         int power = 0;
 
         int preferredPower = dungeon.getLevel()
-                // + PartyManager.getParty().getPower()
-                + getGame().getArenaManager().getBattleLevel();
+         // + PartyManager.getParty().getPower()
+         + getGame().getArenaManager().getBattleLevel();
         int min = preferredPower * 2 / 3;
         int max = preferredPower * 3 / 2;
 
@@ -163,13 +168,13 @@ public class SpawnManager {
 
             if (specialEncounters.get(dungeon) != null) {
                 Map<Coordinates, ObjType> specEncounters = specialEncounters.get(dungeon)
-                        .get(block);
+                 .get(block);
                 for (Coordinates c : specEncounters.keySet()) {
                     ObjType waveType = specEncounters.get(c);
 
                     if (waveType.getGroup().equalsIgnoreCase("Substitute")) {
                         waveType = EncounterMaster.getSubstituteEncounterType(waveType, dungeon,
-                                preferredPower);
+                         preferredPower);
                     }
 
                     group = new Wave(waveType, game, new Ref(), game.getPlayer(false));
@@ -214,7 +219,7 @@ public class SpawnManager {
         groupAi.setLeader(group.getParty().getLeader());
         groupAi.setWanderDirection(FacingMaster.getRandomFacing().getDirection());
         group.setAi(groupAi);
-
+if (getGame().getGameMode()== GAME_MODES.DUNGEON_CRAWL){
         XList<MapBlock> permittedBlocks = new XList<>();
         permittedBlocks.addAllUnique(group.getBlock().getConnectedBlocks().keySet());
         int wanderBlockDistance = 1;
@@ -224,6 +229,7 @@ public class SpawnManager {
             }
         }
         groupAi.setPermittedBlocks(permittedBlocks);
+}
     }
 
     private boolean checkSpawnBlock(MapBlock block) {
@@ -231,10 +237,10 @@ public class SpawnManager {
             return block.getId() < 2;
         }
         return block.getRoomType() == ROOM_TYPE.GUARD_ROOM
-                || block.getRoomType() == ROOM_TYPE.COMMON_ROOM
-                || block.getRoomType() == ROOM_TYPE.THRONE_ROOM
-                || block.getRoomType() == ROOM_TYPE.EXIT_ROOM
-                || block.getRoomType() == ROOM_TYPE.DEATH_ROOM;
+         || block.getRoomType() == ROOM_TYPE.COMMON_ROOM
+         || block.getRoomType() == ROOM_TYPE.THRONE_ROOM
+         || block.getRoomType() == ROOM_TYPE.EXIT_ROOM
+         || block.getRoomType() == ROOM_TYPE.DEATH_ROOM;
     }
 
     private Wave getCreepGroupForBlock(int preferredPower, Dungeon dungeon, MapBlock block,
@@ -307,7 +313,7 @@ public class SpawnManager {
     public void spawnUnitsAt(List<Unit> units, Coordinates coordinates) {
         List<String> partyTypes = StringMaster.convertToNameIntList(units);
         List<Coordinates> coordinateList = game.getArenaManager().getSpawnManager()
-                .initPartyCoordinates(partyTypes, null);
+         .initPartyCoordinates(partyTypes, null);
         int index = 0;
         for (Unit m : units) {
             m.setCoordinates(coordinateList.get(index));
@@ -359,7 +365,7 @@ public class SpawnManager {
             if (!game.isOffline()) {
                 // TODO not always vertical!
                 facing = FacingMaster.getFacingFromDirection(getPositioner().getClosestEdgeY(
-                        unit.getCoordinates()).getDirection().flip());
+                 unit.getCoordinates()).getDirection().flip());
             } else
 //             TODO    if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
                 facing = FacingMaster.getPresetFacing(me);
@@ -368,14 +374,14 @@ public class SpawnManager {
 //            } else {
 //                facing = getPositioner().getFacingForEnemy(unit.getCoordinates());
 //            }
-            ((BattleFieldObject) unit).resetFacing(facing);
+            ((BattleFieldObject) unit).setFacing(facing);
         }
         DC_ObjInitializer.initializePartyPositions(partyData, list);
         if (!custom) {
             player.setHeroObj(list.get(0));
             try {
                 player.setEmblem( // TODO ???
-                        ((Unit) list.get(0)).getEmblem().getImage());
+                 ((Unit) list.get(0)).getEmblem().getImage());
             } catch (Exception e) {
 //                e.printStackTrace();
             }
@@ -415,7 +421,7 @@ public class SpawnManager {
 
         }
         spawnCoordinates = (me) ? game.getDungeon().getPlayerSpawnCoordinates() : game.getDungeon()
-                .getEnemySpawningCoordinates();
+         .getEnemySpawningCoordinates();
         offset_coordinate = spawnCoordinates.getOffsetByX(offsetX).getOffsetByY(offsetY);
         DC_ObjInitializer.processObjData(game.getPlayer(me), data, offset_coordinate);
 
@@ -441,10 +447,10 @@ public class SpawnManager {
         // offset_coordinate);
         // }
         LogMaster.logToFile("spawnCoordinates=" + spawnCoordinates + " ;offset_coordinate="
-                + offset_coordinate + ";height=" + height + "; width=" + width);
+         + offset_coordinate + ";height=" + height + "; width=" + width);
         LogMaster.log(1, "spawnCoordinates=" + spawnCoordinates
-                + " ;offset_coordinate=" + offset_coordinate + ";height=" + height + "; width="
-                + width);
+         + " ;offset_coordinate=" + offset_coordinate + ";height=" + height + "; width="
+         + width);
     }
 
     public boolean isEnemyUnitGroupMode() {
@@ -460,7 +466,7 @@ public class SpawnManager {
 
         DC_ObjInitializer.initializePartyPositions(partyData, party.getMembers());
         int i = 0;
-
+        getPositioner().setMaxSpacePercentageTaken(MAX_SPACE_PERC_PARTY);
         Boolean last = null;
         for (Unit hero : party.getMembers()) {
             // on initializePartyPositions() !
@@ -474,7 +480,7 @@ public class SpawnManager {
             // }
 
             if (party.getPartyCoordinates() == null) {
-                hero.resetFacing(getPositioner().getPartyMemberFacing(hero.getCoordinates()));
+                hero.setFacing(getPositioner().getPartyMemberFacing(hero.getCoordinates()));
             }
 
             hero.setOriginalOwner(game.getPlayer(true));
@@ -509,20 +515,21 @@ public class SpawnManager {
         } else {
             positioner.setSpawner(this);
         }
+        getPositioner().setMaxSpacePercentageTaken(MAX_SPACE_PERC_PARTY);
         List<Coordinates> coordinates = null;
 
         if (PartyManager.getParty() != null) {
             if (MapMaster.isNotEmpty(PartyManager.getParty().getPartyCoordinates())) {
                 coordinates = new LinkedList<>(PartyManager.getParty().getPartyCoordinates()
-                        .values());
+                 .values());
                 partyTypes = ListMaster.toNameList(PartyManager.getParty().getPartyCoordinates()
-                        .keySet());
+                 .keySet());
             }
 
         }
         if (coordinates == null) {
             coordinates = positioner.getPartyCoordinates(null, BooleanMaster
-                    .isTrue(mine_enemy_third), partyTypes);
+             .isTrue(mine_enemy_third), partyTypes);
         }
 
         int i = 0;
@@ -598,33 +605,39 @@ public class SpawnManager {
         if (positioner == null) {
             setPositioner(new Positioner(this));
         }
-
         if (unitMap == null) {
+            positioner.setMaxSpacePercentageTaken(MAX_SPACE_PERC_CREEPS);
             wave.initUnitMap();
             unitMap = wave.getUnitMap();
         }
-
+        try {
+            arenaManager.getWaveAssembler().resetPositions(wave);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         for (ObjAtCoordinate oac : unitMap) {
             Coordinates c = oac.getCoordinates();
-            if (c == null) {
-                continue;
-            }
-            if (c.isInvalid()) {
-                continue;
-            }
             FACING_DIRECTION facing = getPositioner().getFacingForEnemy(c);
-
-            ObjType type = oac.getType();
-
+            boolean invalid=false;
+            if (c == null) {
+                invalid = true;
+            } else
+            if (c.isInvalid()) {
+                invalid = true;
+            } else
             if (game.getBattleField().getGrid().isCoordinateObstructed(c)) {
-                c = Positioner.adjustCoordinate(c, facing);
+                invalid = true;
             }
-
+if (invalid)
+    c = Positioner.adjustCoordinate(c, facing);
+            ObjType type = oac.getType();
             Unit unit = (Unit) game.createUnit(type, c, wave.getOwner());
             UnitTrainingMaster.train(unit);
 
-            unit.resetFacing(facing);
+            unit.setFacing(facing);
             wave.addUnit(unit);
+            game.fireEvent(
+             new Event(STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING, Ref.getSelfTargetingRefCopy(unit)));
         }
         if (!PartyManager.checkMergeParty(wave)) {
             try {
@@ -638,13 +651,13 @@ public class SpawnManager {
     public void waveCleared() {
         if (game.isStarted()) {
             game.getLogManager().log(
-                    "*** Enemies cleared! Encounters left: " + getScheduledWaves().toString());
+             "*** Enemies cleared! Encounters left: " + getScheduledWaves().toString());
             if (game.getParty() != null) {
                 SoundMaster.playEffectSound(SOUNDS.TAUNT, game.getParty().getLeader());
             }
         }
         roundsToWait = arenaManager.getArenaOptions().getIntValue(
-                ARENA_GAME_OPTIONS.TURNS_BETWEEN_WAVES);
+         ARENA_GAME_OPTIONS.TURNS_BETWEEN_WAVES);
         roundsToWait++;
     }
 
@@ -665,7 +678,7 @@ public class SpawnManager {
             return;
         }
         newWave(new Wave(DataManager.getType(type, DC_TYPE.ENCOUNTERS), game, new Ref(game),
-                player));
+         player));
     }
 
     public void newRound() {
@@ -673,10 +686,13 @@ public class SpawnManager {
         if (!waves.isEmpty()) {
             for (Wave wave : waves.keySet()) {
                 if (scheduledWaves.get(wave) <= game.getState().getRound()) {
-try{                    spawnWave(wave);                }catch(Exception e){                e.printStackTrace();            }
-                 finally {
-    scheduledWaves.remove(wave);
-}
+                    try {
+                        spawnWave(wave);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        scheduledWaves.remove(wave);
+                    }
                 }
             }
         }
@@ -715,8 +731,7 @@ try{                    spawnWave(wave);                }catch(Exception e){    
     }
 
     public Map<Wave, Integer> getScheduledWaves() {
-        if (scheduledWaves==null )
-        {
+        if (scheduledWaves == null) {
             arenaManager.getBattleConstructor().construct();
         }
         return scheduledWaves;

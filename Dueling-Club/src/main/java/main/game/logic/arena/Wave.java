@@ -35,6 +35,8 @@ public class Wave extends DC_Obj {
     private int preferredPower;
     private boolean adjustmentDisabled;
     private boolean presetCoordinate;
+    private int unitLevel=0;
+
 
     public Wave(DC_Player player) {
         super(new ObjType(), player, DC_Game.game, new Ref());
@@ -56,6 +58,8 @@ public class Wave extends DC_Obj {
     @Override
     public String toString() {
         // unitMap
+        if (getCoordinates()==null )
+            return getName();
         String string = getNameAndCoordinate();
         return string;
     }
@@ -68,6 +72,13 @@ public class Wave extends DC_Obj {
         // .openContainer(getProperty(PROPS.UNIT_TYPES))) {
         // // level up and place units
         // }
+    }
+    public int getUnitLevel() {
+        return unitLevel;
+    }
+
+    public void setUnitLevel(int unitLevel) {
+        this.unitLevel = unitLevel;
     }
 
     @Override

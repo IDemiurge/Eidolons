@@ -1572,4 +1572,12 @@ public abstract class DataModel {
         }
         return propCache;
     }
+
+    public int getSumOfParams(PARAMETER... params) {
+        Integer sum=0;
+        for (PARAMETER param : params){
+           sum += getIntParam(param);
+       }
+        return sum;
+    }
 }
