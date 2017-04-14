@@ -423,6 +423,7 @@ public class UnitAI {
     }
 
     public Integer getGoalPriorityMod(GOAL_TYPE goalType) {
+        if (currentOrder==null ) return null ;
         return currentOrder.getPriorityModsMap().get(goalType);
     }
 
