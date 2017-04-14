@@ -107,8 +107,9 @@ public class PathSequenceConstructor extends AiHandler {
 
         Coordinates originalCoordinate = unit.getCoordinates();
         List<Coordinates> list = cellsCache.get(targetAction.getTargeting());
-        if (list != null)
+        if (list != null) {
             return list;
+        }
         list = new ArrayList<>();
         try {
             if (fastPickClosest) {

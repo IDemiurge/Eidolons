@@ -173,10 +173,11 @@ public class GridPanel extends Group {
                     // -> exception
                     //  IDEA – if I just ignore this, maybe facing will be initialized correctly?
                     if (unitView != null) {
-                        if (hero.getFacing() == FACING_DIRECTION.NONE)
+                        if (hero.getFacing() == FACING_DIRECTION.NONE) {
                             unitView.updateRotation(UnitView.HIDE_ARROW);
-                        else
+                        } else {
                             unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
+                        }
 
                     }
                 }

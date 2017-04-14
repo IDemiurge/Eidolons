@@ -32,9 +32,11 @@ public class DamageFactory {
         List<Damage> list =
          DamageCalculator.getBonusDamageList(effect.getRef(), effect.isMagical()
           ? DAMAGE_CASE.SPELL : DAMAGE_CASE.ACTION);
-        if (!list.isEmpty())
+        if (!list.isEmpty()) {
             damageObject = new MultiDamage();
-        else damageObject = new Damage();
+        } else {
+            damageObject = new Damage();
+        }
 
         damageObject.setAmount(amount);
         damageObject.setDmgType(effect.getDamageType());
@@ -83,8 +85,9 @@ public class DamageFactory {
         };
         damage.setModifiers(modifiers);
 
-        if (effect.getConditions() != null)
+        if (effect.getConditions() != null) {
             damage = new ConditionalDamage(damage, effect.getConditions());
+        }
 
         return damage;
     }

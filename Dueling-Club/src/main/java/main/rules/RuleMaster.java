@@ -82,8 +82,9 @@ public class RuleMaster implements Controller {
     }
 
     public static RULE_SCOPE getScopeForRule(RULE r) {
-        if (r.scope!=null )
+        if (r.scope != null) {
             return r.scope;
+        }
         switch (r) {
             case FORCE:
             case INJURY:

@@ -28,15 +28,21 @@ public abstract class TargetingImpl implements Targeting
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof TargetingImpl) {
-            if (obj instanceof SelectiveTargeting)
-                if (!(this instanceof SelectiveTargeting))
+            if (obj instanceof SelectiveTargeting) {
+                if (!(this instanceof SelectiveTargeting)) {
                     return false;
-            if (obj instanceof AutoTargeting)
-                if (!(this instanceof AutoTargeting))
+                }
+            }
+            if (obj instanceof AutoTargeting) {
+                if (!(this instanceof AutoTargeting)) {
                     return false;
-            if (obj instanceof FixedTargeting)
-                if (!(this instanceof FixedTargeting))
+                }
+            }
+            if (obj instanceof FixedTargeting) {
+                if (!(this instanceof FixedTargeting)) {
                     return false;
+                }
+            }
 
 
             return ((TargetingImpl) obj).getConditions().equals(getConditions());

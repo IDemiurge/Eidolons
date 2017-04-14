@@ -1063,13 +1063,16 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         }
         int factor = (int) -Math.sqrt(item.getIntParam(PARAMS.GOLD_COST))
                 * 50;
-        if (!quick)
+        if (!quick) {
             factor *= 2;
-        if (!offhand)
+        }
+        if (!offhand) {
             factor *= 2;
+        }
         addConstant(factor, "item thrown");
-        if (priority > 0)
+        if (priority > 0) {
             addMultiplier(factor / 5, "item thrown");
+        }
     }
 
     @Override
@@ -1359,8 +1362,9 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     @Override
     public int getModePriority(Unit unit, STD_MODES mode) {
         PARAMETER p = ContentManager.getPARAM(mode.getParameter());
-        if (p == null)
+        if (p == null) {
             return 0;
+        }
         Integer percentage = unit.getIntParam(ContentManager.getPercentageParam(new Param(
                 ContentManager.getBaseParameterFromCurrent(p))))
                 / MathMaster.MULTIPLIER;
@@ -1390,12 +1394,15 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     private int getRestorationPriorityMod(Unit unit) {
         int mod = DEFAULT_RESTORATION_PRIORITY_MOD;
-        if (unit.getAI().getType() == AI_TYPE.BRUTE)
+        if (unit.getAI().getType() == AI_TYPE.BRUTE) {
             mod -= 15;
-        if (unit.getAI().checkMod(AI_MODIFIERS.TRUE_BRUTE))
+        }
+        if (unit.getAI().checkMod(AI_MODIFIERS.TRUE_BRUTE)) {
             mod -= 15;
-        if (unit.isMine())
+        }
+        if (unit.isMine()) {
             mod += 15;
+        }
         return mod;
     }
 
@@ -1448,8 +1455,9 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     @Override
     public ActionSequence chooseByPriority(List<ActionSequence> actions) {
         setPriorities(actions);
-        if (isApplyConvergingPathsPriorities())
-        applyConvergingPathsPriorities(actions);
+        if (isApplyConvergingPathsPriorities()) {
+            applyConvergingPathsPriorities(actions);
+        }
         return getByPriority(actions);
     }
 

@@ -23,8 +23,9 @@ public class TemplateSelectiveTargeting extends SelectiveTargeting {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof TemplateSelectiveTargeting))
+        if (!(obj instanceof TemplateSelectiveTargeting)) {
             return false;
+        }
         return super.equals(obj);
     }
 

@@ -185,13 +185,17 @@ public class DC_KeyManager
     private void selectController() {
         CONTROLLER c =
                 new EnumMaster<CONTROLLER>().selectEnum(CONTROLLER.class);
-        if (c == null)
+        if (c == null) {
             controller = new GlobalController();
-        else controller = getControllerInstance(c);
+        } else {
+            controller = getControllerInstance(c);
+        }
     }
 
     private Controller getControllerInstance(CONTROLLER c) {
-        if (c == null) return null;
+        if (c == null) {
+            return null;
+        }
         switch (c) {
             case ACTION:
                 return null;
@@ -216,9 +220,11 @@ public class DC_KeyManager
         if (checkControllerHotkey(keyMod, CHAR)) {
             return;
         }
-        if (globalController != null)
-            if (globalController.charTyped(CHAR))
+        if (globalController != null) {
+            if (globalController.charTyped(CHAR)) {
                 return;
+            }
+        }
         if (controller != null) {
             try {
                 if (controller.charTyped(CHAR)) {

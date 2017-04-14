@@ -22,9 +22,9 @@ public class AmmoEffect extends DC_Effect{
             DC_QuickItemObj ammo = (DC_QuickItemObj) ref.getActive().getRef().getObj(KEYS.AMMO);
 
             rangedWeapon.setAmmo(ammo);
+        } else {
+            rangedWeapon.setAmmo(null);
         }
-        else
-            rangedWeapon.setAmmo(null );
 
         return true;
     }

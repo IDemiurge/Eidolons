@@ -1606,7 +1606,9 @@ public class StringMaster {
             if (predicate.test(sub)) {
                 if (breakOnFalse) {
                     break;
-                } else continue;
+                } else {
+                    continue;
+                }
             }
             builder.append(sub + separator);
         }

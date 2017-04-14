@@ -112,8 +112,9 @@ public class ArmorMaster {
         /*
          * if blocks, apply armor's resistance values too
 		 */
-        if (action == null)
+        if (action == null) {
             return 0;
+        }
         if (!offhand) {
             offhand = action.isOffhand();
         }
@@ -163,13 +164,14 @@ public class ArmorMaster {
                  attacked, damage, blocked);
                 int durabilityLost = reduceDurability(blocked, armorObj, spell, dmg_type, attacker
                  .getActiveWeapon(offhand), damage);
-                if (!simulation)
+                if (!simulation) {
                     if (!shield) {
                         PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
-                         Attack.getAnimationKey(action));
+                                Attack.getAnimationKey(action));
                         animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_ARMOR, blockedPercentage,
-                         blocked, durabilityLost, damage, dmg_type, armorObj));
+                                blocked, durabilityLost, damage, dmg_type, armorObj));
                     }
+                }
 
             }
             if (!simulation) {

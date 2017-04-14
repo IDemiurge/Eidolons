@@ -250,8 +250,9 @@ public class Analyzer extends AiHandler {
             Unit enemy = (Unit) obj;
             if (enemy_or_ally_only != null) {
                 if (enemy_or_ally_only) {
-                    if (obj.getOwner().equals(unit.getOwner()))
+                    if (obj.getOwner().equals(unit.getOwner())) {
                         continue;
+                    }
                 } else {
                     if (!obj.getOwner().equals(unit.getOwner())) {
                         continue;
@@ -496,13 +497,17 @@ public class Analyzer extends AiHandler {
 
     public int getClosestEnemyDistance(Unit unit) {
         Unit enemy = getClosestEnemy(unit);
-        if (enemy == null) return 999;
+        if (enemy == null) {
+            return 999;
+        }
         return PositionMaster.getDistance(enemy, unit);
     }
 
     public Unit getClosestEnemy(Unit unit) {
         List<? extends DC_Obj> list = getEnemies(unit, true, false, false);
-        if (list.isEmpty()) return null;
+        if (list.isEmpty()) {
+            return null;
+        }
         list.sort(
                 SortMaster.getSorterByExpressionObj(
                         (t) -> PositionMaster.getDistance(t.getCoordinates(), unit.getCoordinates())));

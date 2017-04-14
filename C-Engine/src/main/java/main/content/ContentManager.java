@@ -10,7 +10,10 @@ import main.content.values.properties.PROPERTY;
 import main.data.ConcurrentMap;
 import main.data.xml.XML_Reader;
 import main.entity.Entity;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.SearchMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 
@@ -145,13 +148,15 @@ public class ContentManager {
     }
 
     public static PARAMETER getCurrentParam(PARAMETER p) {
-        if (p.name().startsWith(StringMaster.CURRENT ))
+        if (p.name().startsWith(StringMaster.CURRENT)) {
             return p;
+        }
         return getPARAM(StringMaster.CURRENT + p.getName(), true);
     }
     public static PARAMETER getBaseParameterFromCurrent(PARAMETER param) {
-        if (!param.name().startsWith(StringMaster.CURRENT ))
+        if (!param.name().startsWith(StringMaster.CURRENT)) {
             return param;
+        }
         return getPARAM(param.getFullName().replace(StringMaster.CURRENT, ""), true);
     }
     public static PARAMETER getReqParam(PARAMETER p) {

@@ -132,26 +132,32 @@ public class Executor extends ActiveHandler {
             cancelled();
             return false;
         }
-        if (isInterrupted())
+        if (isInterrupted()) {
             return interrupted();
+        }
 
         boolean gameLog = getAction().getLogger().isActivationLogged();
         String targets = " ";
-        if (getAction().getTargetObj() != null)
+        if (getAction().getTargetObj() != null) {
             targets += getAction().getTargetObj().getNameAndCoordinate();
-        if (getAction().getTargetGroup() != null)
+        }
+        if (getAction().getTargetGroup() != null) {
             targets += getAction().getTargetGroup().toString();
+        }
         log(getAction().getOwnerObj().getNameIfKnown() + " activates "
          + getAction().getNameIfKnown() + targets, gameLog);
         beingActivated();
-        if (isInterrupted())
+        if (isInterrupted()) {
             return interrupted();
+        }
         initActivation();
-        if (isInterrupted())
+        if (isInterrupted()) {
             return interrupted();
+        }
         resolve();
-        if (!BooleanMaster.isTrue(cancelled))
+        if (!BooleanMaster.isTrue(cancelled)) {
             payCosts();
+        }
 //        else {???
 //            if (BooleanMaster.isFalse(cancelled))
 //                cancelled();
@@ -339,8 +345,9 @@ public class Executor extends ActiveHandler {
 
     private void fireEvent(STANDARD_EVENT_TYPE type, boolean interrupting) {
         boolean result = getGame().fireEvent(new Event(type, getRef()));
-        if (interrupting)
+        if (interrupting) {
             setInterrupted(!result);
+        }
 //        if (cancel)
 //            this.result=result;
     }
@@ -354,10 +361,11 @@ public class Executor extends ActiveHandler {
 
     public void actionComplete() {
 
-        if (isResult())
+        if (isResult()) {
             log(getAction() + " done", false);
-        else
+        } else {
             log(getAction() + " failed", false);
+        }
 
         fireEvent(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, false);
         getMaster().getLogger().logCompletion();
@@ -482,18 +490,25 @@ public class Executor extends ActiveHandler {
     }
 
     public void setExtraAttackMode(Boolean instant_counter_opportunity, boolean b) {
-        if (instant_counter_opportunity == null)
+        if (instant_counter_opportunity == null) {
             setAttackOfOpportunityMode(b);
-        else if (instant_counter_opportunity)
+        } else if (instant_counter_opportunity) {
             setInstantMode(b);
-        else
+        } else {
             setCounterMode(b);
+        }
     }
 
     public boolean isExtraAttackMode() {
-        if (isAttackOfOpportunityMode()) return true;
-        if (isCounterMode()) return true;
-        if (isInstantMode()) return true;
+        if (isAttackOfOpportunityMode()) {
+            return true;
+        }
+        if (isCounterMode()) {
+            return true;
+        }
+        if (isInstantMode()) {
+            return true;
+        }
         return false;
     }
 

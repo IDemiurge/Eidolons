@@ -97,7 +97,9 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
     }
 
     public boolean isActivationLogged() {
-        if (getEntity().isAttackAny()) return false;
+        if (getEntity().isAttackAny()) {
+            return false;
+        }
         return true;
     }
 }

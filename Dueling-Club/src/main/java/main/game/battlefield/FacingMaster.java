@@ -164,8 +164,9 @@ public class FacingMaster {
 
     public static FACING_DIRECTION getRelativeFacing(Coordinates c, Coordinates c2) {
         boolean x_y = Math.abs(c.x - c2.x) > Math.abs(c.y - c2.y);
-        if (Math.abs(c.x - c2.x) == Math.abs(c.y - c2.y))
+        if (Math.abs(c.x - c2.x) == Math.abs(c.y - c2.y)) {
             x_y = RandomWizard.random();
+        }
 
         if (x_y) {
             Boolean left = PositionMaster.isToTheLeftOr(c, c2);

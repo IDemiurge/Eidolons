@@ -408,6 +408,16 @@ public class TestMasterContent {
         TestMasterContent.forceFree = forceFree;
     }
 
+    public static boolean isArtifact(DC_WeaponObj weapon) {
+        if (weapon.isNatural()) {
+            return false;
+        }
+        if (weapon.isShield()) {
+            return false;
+        }
+        return weapon.isMelee();
+    }
+
     private void initTestConfig() {
         testConfig = new TestingConfigurations();
         testConfig.setTestList(StringMaster.openContainer(getTEST_LIST()));
@@ -459,14 +469,6 @@ public class TestMasterContent {
             }
         }
         return StringMaster.constructContainer(list);
-    }
-
-    public static boolean isArtifact(DC_WeaponObj weapon) {
-        if (weapon.isNatural())
-            return false;
-        if (weapon.isShield())
-            return false;
-        return weapon.isMelee();
     }
 
     public enum TEST_PROFILES {

@@ -13,8 +13,9 @@ public class MultiDamage extends Damage {
 
 
     public List<Damage> getAdditionalDamage() {
-        if (additionalDamage == null)
+        if (additionalDamage == null) {
             additionalDamage = new LinkedList<>();
+        }
         return additionalDamage;
     }
 

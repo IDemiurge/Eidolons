@@ -77,9 +77,10 @@ public class AI_Manager extends AiMaster {
     }
 
     public static GroupAI getCustomUnitGroup(Unit unit) {
-        if (unit.isMine())
+        if (unit.isMine()) {
             return
                     getAllyGroup();
+        }
         return getEnemyGroup();
     }
 
@@ -160,8 +161,9 @@ public class AI_Manager extends AiMaster {
     }
 
     public   ExecutorService getExecutorService() {
-        if (executorService == null)
+        if (executorService == null) {
             executorService = Executors.newSingleThreadExecutor();
+        }
         return executorService;
     }
 

@@ -22,13 +22,6 @@ public class Context extends Ref {
         }
     }
 
-    @Override
-    public Obj getTargetObj() {
-        if (target==null )
-            return super.getTargetObj();
-        return target;
-    }
-
     public Context(Ref ref){
         cloneMaps(ref );
         setPlayer(ref.getPlayer());
@@ -43,6 +36,14 @@ public class Context extends Ref {
 
         target = getTargetObj();
         source = getSourceObj();
+    }
+
+    @Override
+    public Obj getTargetObj() {
+        if (target == null) {
+            return super.getTargetObj();
+        }
+        return target;
     }
 
 

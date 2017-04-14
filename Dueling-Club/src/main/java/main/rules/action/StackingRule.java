@@ -112,14 +112,15 @@ public class StackingRule implements ActionRule {
                                    List<? extends Entity> otherUnits) {
         HashMap<Coordinates, Boolean> bools = cache.get(unit);
         boolean result = false;
-        if (maxSpaceTakenPercentage == 100)
-        if (bools != null) {
-            if (bools.containsKey(c)) {
-                return bools.get(c);
+        if (maxSpaceTakenPercentage == 100) {
+            if (bools != null) {
+                if (bools.containsKey(c)) {
+                    return bools.get(c);
+                }
+            } else {
+                bools = new HashMap<>();
+                cache.put(unit, bools);
             }
-        } else {
-            bools = new HashMap<>();
-            cache.put(unit, bools);
         }
 
         //get all units on the cell
@@ -130,9 +131,11 @@ public class StackingRule implements ActionRule {
             }
         }
         //check if '1 unit per cell' is on
-        if (maxSpaceTakenPercentage <= 0)
-            if (!units.isEmpty())
+        if (maxSpaceTakenPercentage <= 0) {
+            if (!units.isEmpty()) {
                 return false;
+            }
+        }
 
 
         if (unit == null) {
@@ -206,12 +209,16 @@ public class StackingRule implements ActionRule {
         if (space >= girth) {
             result = true;
         } else {
-            if (unit.getIntParam(PARAMS.GIRTH) > space)
-                if (units.isEmpty())
+            if (unit.getIntParam(PARAMS.GIRTH) > space) {
+                if (units.isEmpty()) {
                     result = true;
+                }
+            }
         }
         if (maxSpaceTakenPercentage == 100) //only cache for default cases!
+        {
             bools.put(c, result);
+        }
         return result;
     }
 

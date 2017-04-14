@@ -113,20 +113,7 @@ public class UnitView extends BaseView {
             arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
             arrow.setRotation(arrowRotation);
         }
-
-        if (border != null) {
-/*            border.setX(-4);
-            border.setY(-4);*/
-            border.setHeight(getHeight());
-            border.setWidth(getWidth());
-        }
     }
-
-/*    @Override
-    public void updateBorderSize() {
-        border.setHeight(100);
-        border.setWidth(100);
-    }*/
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {

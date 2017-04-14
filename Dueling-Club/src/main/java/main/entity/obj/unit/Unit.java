@@ -808,8 +808,9 @@ public class Unit extends DC_UnitModel {
             addItemToInventory(item);
 
         }
-        if (drop)
+        if (drop) {
             dropItemFromInventory(item);
+        }
     }
 
     @Override
@@ -906,12 +907,15 @@ public class Unit extends DC_UnitModel {
         if (aiControlled) {
             return true;
         }
-        if (!getGame().isDebugMode())
-            if (getGame().getGameMode() == GAME_MODES.ARENA)
-                if (owner.getHeroObj() != null)
+        if (!getGame().isDebugMode()) {
+            if (getGame().getGameMode() == GAME_MODES.ARENA) {
+                if (owner.getHeroObj() != null) {
                     if (owner.getHeroObj() != this) {
-            return true;
-}
+                        return true;
+                    }
+                }
+            }
+        }
         if (owner.isAi()) {
             if (!checkBool(DYNAMIC_BOOLS.PLAYER_CONTROLLED)) {
                 return true;
@@ -1258,16 +1262,18 @@ public class Unit extends DC_UnitModel {
     public DequeImpl<DC_JewelryObj> getRings() {
         DequeImpl<DC_JewelryObj> list = new DequeImpl<>(getJewelry());
         for (DC_JewelryObj j : getJewelry()) {
-            if (j.isAmulet())
+            if (j.isAmulet()) {
                 list.remove(j);
+            }
         }
         return list;
     }
 
     public DC_JewelryObj getAmulet() {
         for (DC_JewelryObj j : getJewelry()) {
-            if (j.isAmulet())
+            if (j.isAmulet()) {
                 return j;
+            }
         }
         return null;
     }

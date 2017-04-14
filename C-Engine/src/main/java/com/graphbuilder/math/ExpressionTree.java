@@ -141,8 +141,9 @@ public class ExpressionTree {
                             String autoresolvedString = StringMaster.replaceLast(s, "-(", "-1*(");
                             return build(true, autoresolvedString,
                                     indexErrorOffset);
-                        } else
+                        } else {
                             throw new ExpressionParseException("Open bracket found after negate.", i);
+                        }
                     }
 
                     s2.push("(");

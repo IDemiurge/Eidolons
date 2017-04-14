@@ -40,16 +40,21 @@ public class GameLoop {
         game.getStateManager().newRound();
         while (true) {
             Boolean result = game.getTurnManager().nextAction();
-            if (result == null)
+            if (result == null) {
                 break;
-            if (!result)
+            }
+            if (!result) {
                 continue;
+            }
             activeUnit = game.getTurnManager().getActiveUnit();
-            if (activeUnit == null) break;
-
-
-            if (makeAction())
+            if (activeUnit == null) {
                 break;
+            }
+
+
+            if (makeAction()) {
+                break;
+            }
 
 
         }
@@ -74,15 +79,19 @@ public class GameLoop {
     }
 
     private void waitForAnimations() {
-        if (MAX_ANIM_TIME != null)
-            if (MAX_ANIM_TIME > 0)
-                if (AnimMaster.getInstance().isDrawing())
+        if (MAX_ANIM_TIME != null) {
+            if (MAX_ANIM_TIME > 0) {
+                if (AnimMaster.getInstance().isDrawing()) {
                     WaitMaster.waitForInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, MAX_ANIM_TIME);
+                }
+            }
+        }
     }
 
     private Boolean activateAction(ActionInput input) {
-        if (input == null )
+        if (input == null) {
             return true;
+        }
         boolean result = false;
         try {
             activatingAction = input.getAction();
@@ -96,7 +105,9 @@ public class GameLoop {
         } finally {
             activatingAction = null;
         }
-        if (!result) return false;
+        if (!result) {
+            return false;
+        }
         int timeCost = input.getAction().getHandler().getTimeCost();
         Boolean endTurn = getGame().getRules().getTimeRule().
                 actionComplete(input.getAction(), timeCost);
@@ -109,9 +120,9 @@ public class GameLoop {
 
         getGame().getManager().unitActionCompleted(input.getAction(), endTurn);
 
-        if (BooleanMaster.isTrue(endTurn))
+        if (BooleanMaster.isTrue(endTurn)) {
             return true;
-        else {
+        } else {
             game.getTurnManager().
              resetInitiative(false);
         }

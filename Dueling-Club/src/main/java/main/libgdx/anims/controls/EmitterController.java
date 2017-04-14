@@ -69,10 +69,12 @@ public class EmitterController implements Controller {
 
     private void removeLast() {
         last.remove();
-        if (!sfx.isEmpty())
+        if (!sfx.isEmpty()) {
             last = sfx.pollLast();
-        if (!sfx.isEmpty())
+        }
+        if (!sfx.isEmpty()) {
             last = sfx.peekLast();
+        }
     }
 
     private void saveAs() {
@@ -361,7 +363,9 @@ public class EmitterController implements Controller {
 
     private void pickFunction() {
         EMITTER_CONTROLLER_FUNCTIONS func = new EnumMaster<EMITTER_CONTROLLER_FUNCTIONS>().selectEnum(EMITTER_CONTROLLER_FUNCTIONS.class);
-        if (func == null) return;
+        if (func == null) {
+            return;
+        }
         executeFunction(func);
     }
 
@@ -397,8 +401,9 @@ public class EmitterController implements Controller {
             case SET_DEFAULT_ADD_PATH:
                 String result = new FileChooser(true, PathFinder.getSfxPath()).launch("", "");
                 if (result != null) {
-                    if (FileManager.isDirectory(PathFinder.getSfxPath() + result))
+                    if (FileManager.isDirectory(PathFinder.getSfxPath() + result)) {
                         randomSfxPath = result;
+                    }
                 }
                 break;
             case PICK_SFX:

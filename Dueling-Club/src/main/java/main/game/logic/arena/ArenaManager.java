@@ -133,8 +133,9 @@ public class ArenaManager {
         }
 
         spawnManager.spawnParty(false);
-        if (!game.getPlayer(false).getControlledUnits().isEmpty())
+        if (!game.getPlayer(false).getControlledUnits().isEmpty()) {
             LogMaster.log(1, "spawn enemy party " + game.getPlayer(false).getControlledUnits());
+        }
 
         if (game.getData() != null) {
             LogMaster.log(1, "processing UnitData " + game.getData());

@@ -20,6 +20,20 @@ public class CounterAttackRule {
         this.game = game;
     }
 
+    public static boolean canCounter(Unit attacked, DC_ActiveObj active) {
+        if (!attacked.canCounter()) {
+            return false;
+        }
+        if (active.checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
+            return false;
+        }
+        // if (!attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
+        if (active.getOwnerObj().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
+            return false;
+        }
+        return true;
+    }
+
     public ActiveObj tryCounter(Attack attack) {
         return tryCounter(attack, true);
     }
@@ -45,20 +59,6 @@ public class CounterAttackRule {
         return counter;
 
     }
-
-    public static boolean canCounter(Unit attacked, DC_ActiveObj active) {
-        if (!attacked.canCounter())
-            return false;
-        if (active.checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
-            return false;
-        }
-        // if (!attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
-        if (active.getOwnerObj().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
-            return false;
-        }
-    return true;
-    }
-
 
     private ActiveObj counter(DC_ActiveObj action, Unit attacked) {
         return game.getActionManager().activateCounterAttack(action,

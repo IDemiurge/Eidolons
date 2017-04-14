@@ -166,8 +166,9 @@ public class GameLauncher {
         }
         if (PresetMaster.getPreset() == null) {
 
-            if (DEBUG_MODE == null)
+            if (DEBUG_MODE == null) {
                 game.setDebugMode(Launcher.isDEBUG_MODE_DEFAULT());
+            }
             initPlayerParties();
             if (PARTY_CODE != CODE.NONE) {
                 game.setPlayerParty(PLAYER_PARTY);
@@ -281,8 +282,9 @@ public class GameLauncher {
         UnitTrainingMaster.setSkillsOn(!launch.fast);
 
         UnitTrainingMaster.setRandom(!launch.deterministicUnitTraining);
-        if (launch.gameMode != null)
+        if (launch.gameMode != null) {
             game.setGameMode(launch.gameMode);
+        }
         DC_KeyManager.DEFAULT_CONTROLLER = launch.controller;
 
         GameLoop.setMaxAnimTime(launch.maxAnimTime);
@@ -332,8 +334,9 @@ public class GameLauncher {
         // OBJ_TYPES.PARTY).getProperty(PROPS.MEMBERS));
         // }
 
-        if (workspaceFilter!=null )
+        if (workspaceFilter != null) {
             return chooseFiltered(DC_TYPE.CHARS);
+        }
 
 
         game.setTestMode(true);
@@ -384,8 +387,9 @@ public class GameLauncher {
 
     public String chooseFiltered(DC_TYPE TYPE) {
         List<ObjType> data = DataManager.getTypes(TYPE);
-        if (workspaceFilter!=null )
-        data.removeIf(type -> type.getWorkspaceGroup() != workspaceFilter);
+        if (workspaceFilter != null) {
+            data.removeIf(type -> type.getWorkspaceGroup() != workspaceFilter);
+        }
         String objects =  ListChooser.chooseTypes(data);
         return objects;
 

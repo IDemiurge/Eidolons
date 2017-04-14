@@ -39,8 +39,9 @@ public class ParamPriorityAnalyzer {
             return 50;
         }
         // depending on AI_TYPE
-        if (param.isDynamic())
+        if (param.isDynamic()) {
             param = (PARAMS) ContentManager.getCurrentParam(param);
+        }
         switch (param) {
             case ATTACK:
             case DEFENSE:
@@ -78,8 +79,8 @@ public class ParamPriorityAnalyzer {
         }
 //        if (param.isDynamic()) C_ is less important than total!
 //            param = (PARAMS) ContentManager.getCurrentParam(param);
-        if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE))
-            if (param instanceof PARAMS)
+        if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
+            if (param instanceof PARAMS) {
                 switch ((PARAMS) param) {
                     case C_ENDURANCE:
                     case ENDURANCE:
@@ -87,6 +88,8 @@ public class ParamPriorityAnalyzer {
                     case TOUGHNESS:
                         return 0;
                 }
+            }
+        }
 
 
         if (param instanceof PARAMS) {

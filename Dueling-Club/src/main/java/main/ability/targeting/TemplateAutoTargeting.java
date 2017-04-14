@@ -32,8 +32,9 @@ public class TemplateAutoTargeting extends AutoTargeting {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof TemplateAutoTargeting))
+        if (!(obj instanceof TemplateAutoTargeting)) {
             return false;
+        }
         return super.equals(obj);
     }
 }

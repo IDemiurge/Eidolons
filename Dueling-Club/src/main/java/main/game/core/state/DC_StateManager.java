@@ -48,8 +48,11 @@ public class DC_StateManager extends StateManager {
 
     public DC_StateManager(DC_GameState state, boolean clone) {
         super(state);
-        if (clone) keeper = state.getGame().getState().getManager().getKeeper();
-        else keeper = new StatesKeeper(getGame());
+        if (clone) {
+            keeper = state.getGame().getState().getManager().getKeeper();
+        } else {
+            keeper = new StatesKeeper(getGame());
+        }
     }
 
     public StatesKeeper getKeeper() {
@@ -81,8 +84,9 @@ public class DC_StateManager extends StateManager {
                 e.printStackTrace();
             }
         }
-        if (savingOn)
+        if (savingOn) {
             keeper.save();
+        }
     }
 
     public void reset(Unit unit) {
@@ -288,11 +292,13 @@ public class DC_StateManager extends StateManager {
         newTurnTick();
         getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.NEW_ROUND, game));
 
-            if (getGame().getGameMode() == GAME_MODES.ARENA)
-                try {         getGame().getArenaManager().newRound();
+        if (getGame().getGameMode() == GAME_MODES.ARENA) {
+            try {
+                getGame().getArenaManager().newRound();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
 

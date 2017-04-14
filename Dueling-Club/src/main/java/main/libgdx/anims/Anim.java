@@ -336,8 +336,9 @@ public class Anim extends Group implements Animation {
 
     protected Texture getTexture() {
         if (texture == null) {
-            if (ImageManager.isImage(getTexturePath()))
+            if (ImageManager.isImage(getTexturePath())) {
                 texture = TextureCache.getOrCreate(getTexturePath());
+            }
         }
         return texture;
 

@@ -47,7 +47,9 @@ public class GroupImpl implements GROUP<Obj> {
     @Override
     public String toString() {
 
-        if (getObjects() == null ) return getObjectIds().toString();
+        if (getObjects() == null) {
+            return getObjectIds().toString();
+        }
         return "Group: " + StringMaster.joinStringList(
          StringMaster.convertToStringList(getObjects()), ", ");
     }

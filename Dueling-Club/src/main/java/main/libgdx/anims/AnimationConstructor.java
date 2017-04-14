@@ -1,8 +1,8 @@
 package main.libgdx.anims;
 
-import main.ability.effects.oneshot.DealDamageEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.common.ModifyValueEffect;
+import main.ability.effects.oneshot.DealDamageEffect;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.VALUE;
@@ -210,7 +210,9 @@ public class AnimationConstructor {
         List<SpriteAnimation> sprites = new LinkedList<>();
         for (String path :
                 StringMaster.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
-            if (path.isEmpty()) continue;
+            if (path.isEmpty()) {
+                continue;
+            }
             sprites.add(SpriteAnimationFactory.getSpriteAnimation(path));
             exists = true;
         }

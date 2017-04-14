@@ -36,7 +36,9 @@ public class RingSlotsPanel extends TablePanel {
 
         int a = 0;
         for (int i = 0; i < 8; i++) {
-            if (i % 2 == (left ? 1 : 0)) continue;
+            if (i % 2 == (left ? 1 : 0)) {
+                continue;
+            }
             a++;
             ValueContainer valueContainer = rings.get(i);
             if (valueContainer == null) {

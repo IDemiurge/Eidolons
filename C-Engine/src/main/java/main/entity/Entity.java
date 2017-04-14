@@ -129,8 +129,9 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public void addToState() {
-        if (game.isCloningMode())
-            return ;
+        if (game.isCloningMode()) {
+            return;
+        }
 
         if (added || !isMicroGameObj()) {
             return;

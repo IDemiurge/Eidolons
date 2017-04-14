@@ -71,6 +71,21 @@ public class PhaseAnimator extends Group {
         return getActionAnimation(ref, obj);
     }
 
+    public static void handleDamageAnimAndLog(Ref ref, Unit attacked, boolean magical, DAMAGE_TYPE dmg_type) {
+        LogEntryNode entry = attacked.getGame().getLogManager().newLogEntryNode(true,
+                ENTRY_TYPE.DAMAGE);
+        PhaseAnimation animation = magical ? PhaseAnimator.getActionAnimation(ref, attacked)
+                : PhaseAnimator.getAttackAnimation(ref,
+                attacked);
+
+        entry.addLinkedAnimations(animation);
+        entry.setAnimPhasesToPlay(PHASE_TYPE.DAMAGE_DEALT);
+//active.getAnimator(). TODO
+        if (animation != null) {
+            animation.addPhaseArgs(true, PHASE_TYPE.REDUCTION_NATURAL, dmg_type);
+        }
+    }
+
     public void init() {
         GuiEventManager.bind(SHOW_PHASE_ANIM, (event) -> {
 
@@ -141,7 +156,6 @@ public class PhaseAnimator extends Group {
         setVisible(true);
     }
 
-
     private void removeAnims() {
         getAnims().forEach(anim -> {
             if (!DC_Game.game.getAnimationManager().
@@ -181,20 +195,6 @@ public class PhaseAnimator extends Group {
 
     public void setOn(boolean on) {
         this.on = on;
-    }
-
-    public static void handleDamageAnimAndLog(Ref ref, Unit attacked, boolean magical, DAMAGE_TYPE dmg_type) {
-        LogEntryNode entry = attacked.getGame().getLogManager().newLogEntryNode(true,
-         ENTRY_TYPE.DAMAGE);
-        PhaseAnimation animation = magical ? PhaseAnimator.getActionAnimation(ref, attacked)
-         : PhaseAnimator.getAttackAnimation(ref,
-         attacked);
-
-        entry.addLinkedAnimations(animation);
-        entry.setAnimPhasesToPlay(PHASE_TYPE.DAMAGE_DEALT);
-//active.getAnimator(). TODO
-        if (animation != null)
-            animation.addPhaseArgs(true, PHASE_TYPE.REDUCTION_NATURAL, dmg_type);
     }
 
     public void initAttackAnimRawDamage(Attack attack) {

@@ -16,13 +16,16 @@ public class AiExecutor {
         Ref ref = action.getRef();
         try {
 
-            if (!action.getActive().isChanneling())
-                if (ref.getTargetObj() == null)
+            if (!action.getActive().isChanneling()) {
+                if (ref.getTargetObj() == null) {
                     if (!(action.getActive().getTargeting()
-                     instanceof SelectiveTargeting)) { result = true;
+                            instanceof SelectiveTargeting)) {
+                        result = true;
                         action.getActive().getHandler().activateOnGameLoopThread();
 
                     }
+                }
+            }
             if (!result) {
                 action.getActive().getHandler().activateOn(ref);
                 result = true;

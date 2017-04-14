@@ -73,15 +73,17 @@ public class BuffRulesTest extends CreateUnitTest {
             judi.game.getStateManager().reset(entity);
             Integer reduced = entity.getIntParam(reduced_params[i]);
 
-            if (isReductionOn(root_param))
+            if (isReductionOn(root_param)) {
                 assertAndLog(initial, reduced, root_param + " rule");
+            }
 
             if (!isIncreaseOn(root_param)) {
                 i++;
                 continue;
             }
-            if (reduced_params[i] != increased_params[i])
-            initial = entity.getIntParam(increased_params[i]);
+            if (reduced_params[i] != increased_params[i]) {
+                initial = entity.getIntParam(increased_params[i]);
+            }
             entity.setParam(root_param, new Formula(value_high[i]).getInt(new Ref(entity))
             );
             judi.game.getStateManager().reset(entity);

@@ -58,8 +58,9 @@ public class Wave extends DC_Obj {
     @Override
     public String toString() {
         // unitMap
-        if (getCoordinates() == null)
+        if (getCoordinates() == null) {
             return getName();
+        }
         String string = getNameAndCoordinate();
         return string;
     }

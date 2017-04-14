@@ -309,9 +309,11 @@ public class DC_ActionManager implements ActionManager {
         }
         ActiveObj action = actionsCache.get(entity).get(typeName);
         if (action == null) {
-            if (onlyIfAlreadyPresent)
-                if (!StringMaster.contains(entity.getProperty(G_PROPS.ACTIVES), typeName))
+            if (onlyIfAlreadyPresent) {
+                if (!StringMaster.contains(entity.getProperty(G_PROPS.ACTIVES), typeName)) {
                     return null;
+                }
+            }
 
 //            action =new SearchMaster<ActiveObj>().find(typeName, entity.getActives());
 //            if (action != null)
@@ -545,8 +547,9 @@ public class DC_ActionManager implements ActionManager {
         // .constructContainer(StringMaster.convertToIdList(actives)));
         entity.setActivesReady(true);
         for (ActiveObj a : actives) {
-            if (activesProp.contains(a.getName()))
+            if (activesProp.contains(a.getName())) {
                 activesProp += a.getName() + ";";
+            }
         }
         entity.setProperty(ACTIVES, activesProp);
     }
@@ -561,7 +564,9 @@ public class DC_ActionManager implements ActionManager {
             return new LinkedList<>();
         }
         List<DC_UnitAction> list = weapon.getAttackActions();
-        if (list != null) return     new LinkedList<>(list) ;
+        if (list != null) {
+            return new LinkedList<>(list);
+        }
         list = new LinkedList<>();
         for (String typeName : StringMaster.openContainer(weapon.getProperty(PROPS.WEAPON_ATTACKS))) {
             if (!weapon.isMainHand()) {
@@ -821,13 +826,15 @@ public class DC_ActionManager implements ActionManager {
 
     private List<DC_UnitAction> getAndInitAttacks(boolean offhand, Unit unit) {
         DC_ActiveObj action = unit.getAttackAction(offhand);
-        if (action == null)
+        if (action == null) {
             return null;
+        }
         List<DC_UnitAction> subActions = getOrCreateWeaponActions(unit.getWeapon(offhand));
         action.setSubActions(new LinkedList<>(subActions));
         subActions.addAll(getOrCreateWeaponActions(unit.getNaturalWeapon(offhand)));
-        if (action.getSubActions().isEmpty())
+        if (action.getSubActions().isEmpty()) {
             action.setSubActions(new LinkedList<>(subActions));
+        }
        return subActions;
     }
 

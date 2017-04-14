@@ -127,8 +127,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public DAMAGE_TYPE getDamageType() {
         if (super.getDamageType()==null ){
-            if (getActiveWeapon() == null)
+            if (getActiveWeapon() == null) {
                 return null;
+            }
             getActiveWeapon().getDamageType();
         }
             return super.getDamageType();
@@ -159,10 +160,12 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         }
 
         if (resistType == null) {
-            if (isDamageSpell())
+            if (isDamageSpell()) {
                 return RESISTANCE_TYPE.REDUCE_DAMAGE;
-            if (isDebuffSpell())
+            }
+            if (isDebuffSpell()) {
                 return RESISTANCE_TYPE.REDUCE_DURATION;
+            }
 
             return RESISTANCE_TYPE.CHANCE_TO_BLOCK;
         }

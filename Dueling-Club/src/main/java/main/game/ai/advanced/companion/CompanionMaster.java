@@ -66,8 +66,9 @@ public class CompanionMaster {
             case CASTER_OFFENSE:
                 return hero.getSumOfParams(PARAMS.SPELLPOWER, PARAMS.SPELLPOWER, PARAMS.RESISTANCE_PENETRATION) + hero.getSumOfParams(VALUE_GROUP.OFFENSE_MAGIC.getParams());
             case ARCHER:
-                if (hero.getRangedWeapon() == null)
+                if (hero.getRangedWeapon() == null) {
                     return 0;
+                }
                 return
                         (int)
                                 (Math.sqrt(hero.getRangedWeapon().getIntParam(PARAMS.GOLD_COST)) * 2

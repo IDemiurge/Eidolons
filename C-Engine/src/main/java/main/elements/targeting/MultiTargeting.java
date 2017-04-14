@@ -43,8 +43,9 @@ public class MultiTargeting extends TargetingImpl {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof MultiTargeting))
+        if (!(obj instanceof MultiTargeting)) {
             return false;
+        }
         return super.equals(obj);
     }
 

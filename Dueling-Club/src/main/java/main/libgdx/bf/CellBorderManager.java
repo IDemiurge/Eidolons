@@ -86,17 +86,16 @@ public class CellBorderManager extends Group {
 
     public boolean hitAndCall(Borderable borderable) {
         Runnable entity = blueBorderOwners.get(borderable);
-        if (entity!=null )
-        entity.run(); // will invokeClicked() !
-//                WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, id );
-
+        if (entity != null) {
+            entity.run();
+        }
         clearBlueBorder();
 
         if (singleBorderImageBackup != null) {
             showBorder(singleBorderImageBackup, unitBorderOwner);
             singleBorderImageBackup = null;
         }
-return  (entity!=null );
+        return (entity != null);
     }
 
     private void showBorder(Image border, Borderable owner) {

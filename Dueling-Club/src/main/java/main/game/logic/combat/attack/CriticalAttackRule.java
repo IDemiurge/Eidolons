@@ -24,8 +24,9 @@ public class CriticalAttackRule {
 //        int factor =
 //         MathMaster.getFractionValueCentimal(
 //          DC_Formulas.DEFAULT_CRITICAL_FACTOR, mod);
-        if (attacked != null)
+        if (attacked != null) {
             mod -= attacked.getIntParam(PARAMS.CRITICAL_REDUCTION);
+        }
         return MathMaster.applyMod(
          DC_Formulas.DEFAULT_CRITICAL_FACTOR, mod);
     }

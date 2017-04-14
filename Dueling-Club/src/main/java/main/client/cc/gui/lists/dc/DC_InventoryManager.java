@@ -92,8 +92,9 @@ public class DC_InventoryManager {
     }
 
     private boolean canDoOperation(OPERATIONS operation, Entity type) {
-        if (!hasOperations())
+        if (!hasOperations()) {
             return false;
+        }
 
 //        String s = CharacterCreator.getHeroManager()
 //         .checkRequirements(getHero(), type, RequirementsManager.NORMAL_MODE);
@@ -104,7 +105,9 @@ public class DC_InventoryManager {
 
     private boolean checkExecuted(OPERATIONS operation, Entity type) {
         int cost = execute(operation, type);
-        if (cost == 0) return false;
+        if (cost == 0) {
+            return false;
+        }
         operationDone(cost, operation, type.getName());
         return true;
     }
@@ -209,8 +212,9 @@ public class DC_InventoryManager {
 
 
     public Unit getHero() {
-        if (hero == null)
+        if (hero == null) {
             return game.getManager().getActiveObj();
+        }
         return hero;
     }
 

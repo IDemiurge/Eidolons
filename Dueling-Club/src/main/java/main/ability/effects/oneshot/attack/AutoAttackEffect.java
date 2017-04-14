@@ -88,8 +88,9 @@ public class AutoAttackEffect extends DC_Effect  implements OneshotEffect {
     }
 
     private DC_ActiveObj pickManually(List<DC_ActiveObj> subActions) {
-        if (!isManualOn)
+        if (!isManualOn) {
             throw new RuntimeException();
+        }
         AttackChoicePanel dialog = new AttackChoicePanel(subActions, getTarget());
         DC_ActiveObj action =
          dialog.chooseEntity();

@@ -206,12 +206,13 @@ public class DC_ObjInitializer {
                 }
 
                 Coordinates c = null;
-                if (item.contains("("  )||item.contains("-") )
+                if (item.contains("(") || item.contains("-")) {
                     if (!item.contains("null=")) {
-                    try {
-                        c = getCoordinatesFromObjString(item, alt);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        try {
+                            c = getCoordinatesFromObjString(item, alt);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 

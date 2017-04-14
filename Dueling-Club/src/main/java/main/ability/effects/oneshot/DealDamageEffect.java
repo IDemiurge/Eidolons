@@ -11,8 +11,10 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.game.logic.combat.damage.*;
-import main.game.logic.combat.mechanics.ForceRule;
+import main.game.logic.combat.damage.ArmorMaster;
+import main.game.logic.combat.damage.Damage;
+import main.game.logic.combat.damage.DamageDealer;
+import main.game.logic.combat.damage.DamageFactory;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
@@ -77,8 +79,9 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
         boolean spell = active instanceof DC_SpellObj;
 
         initDamageType();
-        if (!checkDamageMod(DAMAGE_MODIFIER.UNBLOCKABLE))
+        if (!checkDamageMod(DAMAGE_MODIFIER.UNBLOCKABLE)) {
             amount = ArmorMaster.getShieldReducedAmountForDealDamageEffect(this, targetObj, amount, active);
+        }
 
         LogMaster.log(LogMaster.COMBAT_DEBUG, "Effect is dealing damage: "
          + amount + " to " + ref.getTargetObj().toString());
@@ -109,8 +112,9 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
     }
 
     public boolean checkDamageMod(DAMAGE_MODIFIER unblockable) {
-        if (damage_mod == unblockable)
+        if (damage_mod == unblockable) {
             return true;
+        }
         if (damage_mods != null) {
             return new ArrayMaster<DAMAGE_MODIFIER>().contains(damage_mods, unblockable);
         }

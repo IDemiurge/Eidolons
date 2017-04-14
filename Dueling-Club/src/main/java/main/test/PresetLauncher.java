@@ -92,36 +92,38 @@ public class PresetLauncher {
             }
         }
         Preset p = null;
-        if (isInitLaunch)
-            launch=initLaunch(LAUNCH_OPTIONS[i]);
-        if (launch != null)
+        if (isInitLaunch) {
+            launch = initLaunch(LAUNCH_OPTIONS[i]);
+        }
+        if (launch != null) {
             return customInit(launch);
-        else
-        switch (LAUNCH_OPTIONS[i]) {
-            case "Last":
-                Preset lastPreset = PresetMaster.loadLastPreset();
-                UnitGroupMaster.setFactionMode(false);
-                UnitTrainingMaster.setRandom(false);
-                PresetMaster.setPreset(lastPreset);
-                break;
-            case "Recent":
-                chooseRecentPreset();
-                break;
-            case "New":
-                FAST_DC.getGameLauncher().DUMMY_MODE = false;
-                FAST_DC.getGameLauncher().DUMMY_PP = false;
-                UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
-                return null;
-            case "Superfast":
-                FAST_DC.getGameLauncher().DUMMY_MODE = true;
-                FAST_DC.getGameLauncher().DUMMY_PP = true;
-                FAST_DC.getGameLauncher().setSUPER_FAST_MODE(true);
-                return false;
-            case "Load":
-                // if (choosePreset()==null)
-                choosePreset();
-                break;
+        } else {
+            switch (LAUNCH_OPTIONS[i]) {
+                case "Last":
+                    Preset lastPreset = PresetMaster.loadLastPreset();
+                    UnitGroupMaster.setFactionMode(false);
+                    UnitTrainingMaster.setRandom(false);
+                    PresetMaster.setPreset(lastPreset);
+                    break;
+                case "Recent":
+                    chooseRecentPreset();
+                    break;
+                case "New":
+                    FAST_DC.getGameLauncher().DUMMY_MODE = false;
+                    FAST_DC.getGameLauncher().DUMMY_PP = false;
+                    UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
+                    return null;
+                case "Superfast":
+                    FAST_DC.getGameLauncher().DUMMY_MODE = true;
+                    FAST_DC.getGameLauncher().DUMMY_PP = true;
+                    FAST_DC.getGameLauncher().setSUPER_FAST_MODE(true);
+                    return false;
+                case "Load":
+                    // if (choosePreset()==null)
+                    choosePreset();
+                    break;
 
+            }
         }
 
         return null;
@@ -158,15 +160,19 @@ public class PresetLauncher {
 
     public static LAUNCH initLaunch(String option) {
         launch = new EnumMaster<LAUNCH>().retrieveEnumConst(LAUNCH.class, option);
-        if (launch==null ) return null;
-        if (launch.logChannelsOff!=null )
-        Arrays.stream(launch.logChannelsOn).forEach(c->{
-            c.setOn(true);
-        });
-        if (launch.logChannelsOff!=null )
-        Arrays.stream(launch.logChannelsOff).forEach(c->{
-            c.setOn(false);
-        });
+        if (launch == null) {
+            return null;
+        }
+        if (launch.logChannelsOff != null) {
+            Arrays.stream(launch.logChannelsOn).forEach(c -> {
+                c.setOn(true);
+            });
+        }
+        if (launch.logChannelsOff != null) {
+            Arrays.stream(launch.logChannelsOff).forEach(c -> {
+                c.setOn(false);
+            });
+        }
 
         if (launch.preset != null) {
             Preset p = PresetMaster.loadPreset(launch.preset);
@@ -401,20 +407,22 @@ public class PresetLauncher {
         LAUNCH(String preset, RULE_SCOPE ruleScope, Boolean dummyPlus) {
             this.preset = preset;
             this.ruleScope = ruleScope;
-            if (dummyPlus != null)
+            if (dummyPlus != null) {
                 if (dummyPlus) {
                     initDummyPlusFlags();
                 } else {
                     initDummyFlags();
                 }
+            }
         }
 
         LAUNCH(Boolean dummyPlus) {
-            if (dummyPlus != null)
-            if (dummyPlus) {
-                initDummyPlusFlags();
-            } else {
-                initDummyFlags();
+            if (dummyPlus != null) {
+                if (dummyPlus) {
+                    initDummyPlusFlags();
+                } else {
+                    initDummyFlags();
+                }
             }
         }
 

@@ -46,12 +46,15 @@ public class ParamAnalyzer extends AiHandler {
         }
         if (buffLevel == rule
                 .getMinLevel()) {
-            if (low_critical)
+            if (low_critical) {
                 return true;
-            else return false;
+            } else {
+                return false;
+            }
         }
-        if (low_critical)
+        if (low_critical) {
             return false;
+        }
         return true;
     }
 
@@ -94,11 +97,13 @@ public class ParamAnalyzer extends AiHandler {
 
         }
         if (p == PARAMS.C_ESSENCE) {
-            if (low_critical)
+            if (low_critical) {
                 return MathMaster.getCentimalPercent(
                         unit.getIntParam(ContentManager.getPercentageParam(p))) < 30;
-            else return MathMaster.getCentimalPercent(
-                    unit.getIntParam(ContentManager.getPercentageParam(p))) < 10;
+            } else {
+                return MathMaster.getCentimalPercent(
+                        unit.getIntParam(ContentManager.getPercentageParam(p))) < 10;
+            }
 
         }
         return false;
@@ -250,8 +255,9 @@ public class ParamAnalyzer extends AiHandler {
     public List<PARAMS> getRelevantParams(Unit unit) {
         List<PARAMS> list = new LinkedList<>();
         for (PARAMS p : ValuePages.UNIT_DYNAMIC_PARAMETERS_RESTORABLE) {
-            if (!isParamIgnored(unit, p))
+            if (!isParamIgnored(unit, p)) {
                 list.add(p);
+            }
         }
         return list;
     }

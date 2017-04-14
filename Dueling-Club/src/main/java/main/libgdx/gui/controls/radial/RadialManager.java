@@ -66,33 +66,43 @@ public class RadialManager {
     }
 
     private static boolean isActionShown(ActiveObj el, DC_Obj target) {
-        if (!(el instanceof DC_ActiveObj)) return false;
+        if (!(el instanceof DC_ActiveObj)) {
+            return false;
+        }
         DC_ActiveObj action = ((DC_ActiveObj) el);
         if (target != action.getOwnerObj()) {
-            if (action.getActionType() == ACTION_TYPE.MODE)
+            if (action.getActionType() == ACTION_TYPE.MODE) {
                 return false;
-            if (action.getActionGroup() == ACTION_TYPE_GROUPS.TURN)
+            }
+            if (action.getActionGroup() == ACTION_TYPE_GROUPS.TURN) {
                 return false;
+            }
         }
-        if (action.getTargeting() == null) return false;
-
-        if (!action.canBeTargeted(target.getId()))
+        if (action.getTargeting() == null) {
             return false;
+        }
+
+        if (!action.canBeTargeted(target.getId())) {
+            return false;
+        }
         return true;
     }
 
     public static List<RadialValueContainer> createNew(DC_Obj target) {
         List<RadialValueContainer> list = new LinkedList<>();
-        if (target instanceof Unit)
+        if (target instanceof Unit) {
             list.add(getExamineNode(target));
+        }
 
         Unit sourceUnit = (Unit) Game.game.getManager().getActiveObj();
         if (sourceUnit == null) {
             return list;
         }
-        if (!sourceUnit.isMine())
-            if (!sourceUnit.getGame().isDebugMode())
+        if (!sourceUnit.isMine()) {
+            if (!sourceUnit.getGame().isDebugMode()) {
                 return list;
+            }
+        }
 
 
         List<RadialValueContainer> moves = new ArrayList<>();
@@ -103,8 +113,9 @@ public class RadialManager {
         List<RadialValueContainer> quickItems = new ArrayList<>();
         List<ActiveObj> actives = sourceUnit.getActives();
         sourceUnit.getQuickItems().forEach(item -> {
-            if (isQuickItemShown(item, target))
+            if (isQuickItemShown(item, target)) {
                 actives.add(item.getActive());
+            }
         });
         actives.parallelStream()
          .filter(el -> isActionShown(el, target))
@@ -123,27 +134,31 @@ public class RadialManager {
              } else {
                  final RadialValueContainer valueContainer = configureActionNode(target, el);
 
-                 if (el instanceof DC_QuickItemAction)
+                 if (el instanceof DC_QuickItemAction) {
                      quickItems.add(valueContainer);
-                 else if (el.getActionType() == ACTION_TYPE.MODE)
+                 } else if (el.getActionType() == ACTION_TYPE.MODE) {
                      modes.add(valueContainer);
-                 else
+                 } else
                  {
-                     if (!el.isAttackAny())
-                         if ( el.getActionType()!=ACTION_TYPE.HIDDEN )
+                     if (!el.isAttackAny()) {
+                         if (el.getActionType() != ACTION_TYPE.HIDDEN) {
                              specialActions.add(valueContainer);
+                         }
+                     }
                  }
 
              }
          });
 
 
-        if (!attacks.isEmpty())
+        if (!attacks.isEmpty()) {
             list.add(getAttackParentNode(RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, attacks.get(0)));
+        }
         list.add(getParentNode(RADIAL_PARENT_NODE.TURN_ACTIONS, turns));
         list.add(getParentNode(RADIAL_PARENT_NODE.MOVES, moves));
-        if (attacks.size() > 1)
+        if (attacks.size() > 1) {
             list.add(getAttackParentNode(RADIAL_PARENT_NODE.OFFHAND_ATTACKS, attacks.get(1)));
+        }
 
         list.add(getParentNode(RADIAL_PARENT_NODE.QUICK_ITEMS, quickItems));
         list.add(getParentNode(RADIAL_PARENT_NODE.MODES, modes));
@@ -162,18 +177,21 @@ public class RadialManager {
 
     private static boolean isQuickItemShown(DC_QuickItemObj item, DC_Obj target) {
         if (target != item.getOwnerObj()) {
-            if (!(item.getActive().getTargeting() instanceof SelectiveTargeting))
+            if (!(item.getActive().getTargeting() instanceof SelectiveTargeting)) {
                 return false;
+            }
         }
-        if (item.isAmmo())
+        if (item.isAmmo()) {
             return false;
+        }
         return true;
     }
 
     private static RadialValueContainer getParentNode(RADIAL_PARENT_NODE type,
                                                       List<RadialValueContainer> containers) {
-        if (containers.isEmpty())
-          return null ;
+        if (containers.isEmpty()) {
+            return null;
+        }
         RadialValueContainer valueContainer = new RadialValueContainer(
          getOrCreateR(type.getIconPath()),
          null);
@@ -237,9 +255,11 @@ public class RadialManager {
     }
 
     private static RadialValueContainer configureActionNode(DC_Obj target, DC_ActiveObj el) {
-        if (el.getTargeting() instanceof SelectiveTargeting)
-            if (target == el.getOwnerObj())
+        if (el.getTargeting() instanceof SelectiveTargeting) {
+            if (target == el.getOwnerObj()) {
                 return configureSelectiveTargetedNode(el);
+            }
+        }
 
         RadialValueContainer valueContainer = new RadialValueContainer(
          new TextureRegion(getTextureForActive(el, target)),
@@ -345,14 +365,16 @@ public class RadialManager {
 
         if (activeObj instanceof DC_ActiveObj) {
             DC_ActiveObj active = (DC_ActiveObj) activeObj;
-            if (active.getTargeting() instanceof SelectiveTargeting)
+            if (active.getTargeting() instanceof SelectiveTargeting) {
                 return () -> {
                     DC_Cell cell = target.getGame().getCellByCoordinate(target.getCoordinates());
-                    if (active.getTargeter().canBeTargeted(cell.getId()))
+                    if (active.getTargeter().canBeTargeted(cell.getId())) {
                         active.activateOn(target);
+                    }
 
 
                 };
+            }
         }
 
         return () -> {

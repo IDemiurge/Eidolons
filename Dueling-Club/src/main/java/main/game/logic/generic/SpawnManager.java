@@ -368,7 +368,9 @@ public class SpawnManager {
                         unit.getCoordinates()).getDirection().flip());
             } else
 //             TODO    if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
+            {
                 facing = FacingMaster.getPresetFacing(me);
+            }
 //            } else if (me) {
 //                facing = getPositioner().getPartyMemberFacing(unit.getCoordinates());
 //            } else {
@@ -628,8 +630,9 @@ public class SpawnManager {
             if (game.getBattleField().getGrid().isCoordinateObstructed(c)) {
                 invalid = true;
             }
-            if (invalid)
+            if (invalid) {
                 c = Positioner.adjustCoordinate(c, facing);
+            }
             ObjType type = oac.getType();
             Unit unit = (Unit) game.createUnit(type, c, wave.getOwner());
             UnitTrainingMaster.train(unit);

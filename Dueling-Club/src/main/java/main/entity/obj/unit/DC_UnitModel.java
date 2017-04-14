@@ -451,8 +451,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public DC_UnitAction getAction(String name) {
         ActiveObj action = getGame().getActionManager().getAction(name, this);
-      if (action instanceof  DC_UnitAction)
-          return (DC_UnitAction) action;
+        if (action instanceof DC_UnitAction) {
+            return (DC_UnitAction) action;
+        }
         return getAction(name, false);
     }
 

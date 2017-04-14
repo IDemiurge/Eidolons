@@ -126,10 +126,11 @@ public class DefenseVsAttackRule {
             crit = true;
         }
         int chance = getChance(action, attacker, attacked, attack, defense, crit);
-        if (logged)
+        if (logged) {
             main.system.auxiliary.log.LogMaster.log(1, ""
-             + (crit ? "...chance for critical strike: " : "..." + attacked.getName()
-             + "'s chance to dodge: ") + String.valueOf(chance) + "%");
+                    + (crit ? "...chance for critical strike: " : "..." + attacked.getName()
+                    + "'s chance to dodge: ") + String.valueOf(chance) + "%");
+        }
         boolean result = RandomWizard.chance(chance);
         if (isCRIT_TEST()) {
             result = true;
@@ -137,12 +138,14 @@ public class DefenseVsAttackRule {
         }
         if (result) {
             if (crit) {
-                if (animation != null)
+                if (animation != null) {
                     animation.addPhase(new AnimPhase(PHASE_TYPE.ATTACK_CRITICAL, chance));
+                }
                 return false;
             } else {
-                if (animation != null)
+                if (animation != null) {
                     animation.addPhase(new AnimPhase(PHASE_TYPE.ATTACK_DODGED, chance));
+                }
                 return true;
             }
         }

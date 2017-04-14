@@ -22,8 +22,9 @@ public class OrderMaster extends AiHandler {
 //        order.geti
 //      chance=MathMaster.applyMod(chance, active.getIntParam(PARAMS.ORDER_CHANCE_MOD,
 //       false));
-        if (partyTargeting)
+        if (partyTargeting) {
             chance = chance * 75 / 100;
+        }
 
         //battle spirit?
 

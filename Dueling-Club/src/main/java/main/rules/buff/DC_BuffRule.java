@@ -1,7 +1,7 @@
 package main.rules.buff;
 
-import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.data.XLinkedMap;
@@ -193,8 +193,9 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     // protected abstract String getLogText(Integer level);
     @Override
     public void apply(Ref ref) {
-        if (level<0)
-            return ;
+        if (level < 0) {
+            return;
+        }
         target = (Unit) ref.getTargetObj();
         getEffect().setAnimationActive(ref.getActive());
         if (checkAnimationDisplayed(ref)) {

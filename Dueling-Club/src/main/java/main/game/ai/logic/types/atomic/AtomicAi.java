@@ -35,8 +35,9 @@ public class AtomicAi extends AiHandler {
 
     public Action getAtomicAction(UnitAI ai) {
         Action action = getAtomicActionPrepare(ai);
-        if (action == null)
+        if (action == null) {
             action = getAtomicActionApproach(ai);
+        }
 
         return action;
     }
@@ -44,8 +45,9 @@ public class AtomicAi extends AiHandler {
     private Action getAtomicActionPrepare(UnitAI ai) {
         //ammo
         //meditate
-        if (!checkAtomicActionCase(ATOMIC_LOGIC_CASE.PREPARE, ai))
+        if (!checkAtomicActionCase(ATOMIC_LOGIC_CASE.PREPARE, ai)) {
             return null;
+        }
         if (ai.getType() == AI_TYPE.ARCHER) {
             return getReloadAction(ai);
         }
@@ -62,12 +64,14 @@ public class AtomicAi extends AiHandler {
         for (DC_QuickItemObj a : ai.getUnit().getQuickItems()) {
             if (a.isAmmo()) {
                 Integer cost = a.getWrappedWeapon().getIntParam(PARAMS.GOLD_COST);
-                if (cost > maxCost)
+                if (cost > maxCost) {
                     ammo = a;
+                }
             }
         }
-        if (ammo != null)
+        if (ammo != null) {
             return ActionFactory.newAction(ammo.getActive(), new Ref(ai.getUnit()));
+        }
 
         return null;
     }
@@ -82,12 +86,14 @@ public class AtomicAi extends AiHandler {
         List<Unit> allies = Analyzer.getAllies(ai);
         float greatest = 0;
         Coordinates pick = null;
-        if (isHotzoneMode())
+        if (isHotzoneMode()) {
             for (Coordinates c : ai.getUnit().getCoordinates().getAdjacentCoordinates()) {
                 float i = 0;
                 i += getCellPriority(c, ai);
-                if (BooleanMaster.isFalse(approach_retreat_search)) for (Unit a : allies) {
-                    i += getAllyPriority(c, a, ai, logic);
+                if (BooleanMaster.isFalse(approach_retreat_search)) {
+                    for (Unit a : allies) {
+                        i += getAllyPriority(c, a, ai, logic);
+                    }
                 }
                 for (Unit e : enemies) {
                     i = i + ((approach_retreat_search ? 1 : -1) * getEnemyPriority(c, e, ai, logic));
@@ -98,7 +104,7 @@ public class AtomicAi extends AiHandler {
                     pick = c;
                 }
             }
-        else {
+        } else {
             Collection<Unit> units = getAnalyzer().getVisibleEnemies(ai);
             FACING_DIRECTION facing = FacingMaster.
                     getOptimalFacingTowardsUnits(unit.getCoordinates(),
@@ -107,9 +113,10 @@ public class AtomicAi extends AiHandler {
         }
         Action action = null;
         List<Action> sequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, unit, pick);
-        if (!sequence.isEmpty())
+        if (!sequence.isEmpty()) {
             action = sequence.get(0);
-        if (action == null)
+        }
+        if (action == null) {
             try {
                 action = DC_MovementManager.getFirstAction(ai.getUnit(), pick);
                 main.system.auxiliary.log.LogMaster.log(1, " ATOMIC ACTION " + action +
@@ -118,6 +125,7 @@ public class AtomicAi extends AiHandler {
                 e.printStackTrace();
                 //TODO what to return???
             }
+        }
 
         return action;
     }
@@ -202,8 +210,9 @@ public class AtomicAi extends AiHandler {
             if (ai.checkMod(AI_MODIFIERS.COWARD)) {
                 threat *= 2;
             }
-            if (threat > ai.getUnit().calculatePower())
+            if (threat > ai.getUnit().calculatePower()) {
                 return true;
+            }
 
         }
         return false;
@@ -211,38 +220,48 @@ public class AtomicAi extends AiHandler {
 
     private boolean checkAtomicActionPrepare(UnitAI ai) {
         if (ai.getType() == AI_TYPE.ARCHER) {
-            if (ai.getUnit().getRangedWeapon() != null)
+            if (ai.getUnit().getRangedWeapon() != null) {
                 return ai.getUnit().getRangedWeapon().getAmmo() == null;
+            }
         }
         List<PARAMS> params = getParamAnalyzer().getRelevantParams(ai.getUnit());
-        for (PARAMS p : params)
-            if (getParamAnalyzer().checkStatus(false, ai.getUnit(), p))
+        for (PARAMS p : params) {
+            if (getParamAnalyzer().checkStatus(false, ai.getUnit(), p)) {
                 return true;
+            }
+        }
         return false;
     }
 
     public boolean checkAtomicActionApproach(UnitAI ai) {
         int maxDistance = 4;
-        if (ai.checkMod(AI_MODIFIERS.TRUE_BRUTE))
+        if (ai.checkMod(AI_MODIFIERS.TRUE_BRUTE)) {
             maxDistance--;
-        if (ai.getType() == AI_TYPE.BRUTE)
+        }
+        if (ai.getType() == AI_TYPE.BRUTE) {
             maxDistance--;
-        if (ai.getType() == AI_TYPE.ARCHER)
+        }
+        if (ai.getType() == AI_TYPE.ARCHER) {
             maxDistance++;
-        if (ai.getType() == AI_TYPE.CASTER)
+        }
+        if (ai.getType() == AI_TYPE.CASTER) {
             maxDistance++;
+        }
         int distance = getAnalyzer().getClosestEnemyDistance(ai.getUnit());
 
         if (distance > maxDistance && distance < 999) {
             return true;
         }
-        if (ai.getGroup() != null)
-            if (ai.getGroup().getMembers().size() > 8)
+        if (ai.getGroup() != null) {
+            if (ai.getGroup().getMembers().size() > 8) {
                 return true;
+            }
+        }
         Double average = ai.getGroup().getMembers().stream().collect(
                 Collectors.averagingInt((t) -> t.getIntParam(PARAMS.POWER)));
-        if (ai.getUnit().getIntParam(PARAMS.POWER) < average / 2)
+        if (ai.getUnit().getIntParam(PARAMS.POWER) < average / 2) {
             return true;
+        }
 
         return false;
     }

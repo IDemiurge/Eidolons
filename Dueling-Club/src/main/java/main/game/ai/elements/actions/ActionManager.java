@@ -115,13 +115,14 @@ public class ActionManager extends AiHandler {
                 // actions = createActionSequences(ai);
                 for (ActionSequence a : getActionSequenceConstructor().createActionSequences(
                         ai)) {
-                    if (checkNotBroken(a))
+                    if (checkNotBroken(a)) {
                         if (a.get(0).canBeActivated()) {
                             // if (a.getOrCreate(0).canBeTargeted())
                             {
                                 actions.add(a);
                             }
                         }
+                    }
 
                 }
                 if (ListMaster.isNotEmpty(actions)) {

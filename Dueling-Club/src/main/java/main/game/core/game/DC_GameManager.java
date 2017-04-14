@@ -279,8 +279,9 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public void infoSelect(Obj obj) {
-        if (!CoreEngine.isSwingOn())
+        if (!CoreEngine.isSwingOn()) {
             return;
+        }
         SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
         if (!(obj instanceof DC_Obj)) {
             return;

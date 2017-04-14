@@ -113,6 +113,28 @@ public class HeroManager {
         hero.cloneMaps(type);
     }
 
+    public static boolean isQuickItem(Entity type) {
+        // what about small weapons?!
+        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS) {
+            return true;
+        }
+        if (isQuickSlotWeapon(type)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isQuickSlotWeapon(Entity type) {
+        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) {
+            if (type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.SMALL + "")
+                    || type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.TINY + "")
+                    || type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void removeHero(Unit hero) {
         typeStacks.remove(hero);
     }
@@ -139,6 +161,7 @@ public class HeroManager {
         Stack<ObjType> stack = new Stack<>();
         typeStacks.put(hero, stack);
     }
+
 // for DC
     public boolean undo(Unit hero) {
         Stack<ObjType> stack = typeStacks.get(hero);
@@ -149,6 +172,7 @@ public class HeroManager {
         }
         return false;
     }
+
     // for HC
         public void stepBack(Unit hero) {
         if (!game.isSimulation()) {
@@ -375,10 +399,11 @@ public class HeroManager {
             slot = getItemSlot(hero, type);
         }
         if (slot == null) {
-            if (!alt)
+            if (!alt) {
                 if (isQuickSlotWeapon(type)) {
-                return  0;
+                    return 0;
                 }
+            }
             if (isQuickItem(type)) {
                 // type.getProp(G_PROPS.CUSTOM_SOUNDSET)
                 return addQuickItem(hero, type);
@@ -461,27 +486,6 @@ public class HeroManager {
         update(hero);
         return 1;
 
-    }
-
-    public static boolean isQuickItem(Entity type) {
-        // what about small weapons?!
-        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS) {
-            return true;
-        }
-        if (isQuickSlotWeapon(type))
-            return true;
-        return false;
-    }
-
-    public static boolean isQuickSlotWeapon(Entity type) {
-        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) {
-            if (type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.SMALL + "")
-             || type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.TINY + "")
-             || type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public boolean addItem(Unit hero, Entity type, OBJ_TYPE TYPE, PROPERTY PROP) {

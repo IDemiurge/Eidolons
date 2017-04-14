@@ -449,10 +449,11 @@ public class Ref implements Cloneable, Serializable {
 
 
     public void setObj(KEYS key, Obj obj) {
-        if (obj == null)
+        if (obj == null) {
             setID(key, null);
-        else
+        } else {
             setID(key, obj.getId());
+        }
     }
 
     public void setID(KEYS key, Integer id) {

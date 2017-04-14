@@ -46,8 +46,9 @@ public class Targeter extends ActiveHandler {
             if (getEntity().getTargeting() != null) {
                 if (!isForcePresetTarget()) {
                     if (!selectTarget(getRef())) {
-                        if (getEntity().getOwnerObj().isAiControlled())
+                        if (getEntity().getOwnerObj().isAiControlled()) {
                             throw new RuntimeException();
+                        }
                     }
                 } else {
                     if (getRef().getTargetObj() == null) {
@@ -104,7 +105,10 @@ public class Targeter extends ActiveHandler {
         return getAction().getTargeting();
     }
 
-    protected void initTargetingMode() { if (targetingInitialized)return ;
+    protected void initTargetingMode() {
+        if (targetingInitialized) {
+            return;
+        }
         if (targetingMode == null) {
             targetingMode = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(
                     TARGETING_MODE.class, getType().getProperty(G_PROPS.TARGETING_MODE));

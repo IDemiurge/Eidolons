@@ -73,40 +73,51 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     private OPERATIONS getOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick,
                                     boolean altClick, Entity cellContents) {
-        if (cellContents == null) return null;
+        if (cellContents == null) {
+            return null;
+        }
         switch (cell_type) {
             case AMULET:
             case RING:
             case WEAPON_MAIN:
             case WEAPON_OFFHAND:
-                if (altClick)
+                if (altClick) {
                     return OPERATIONS.DROP;
-                if (rightClick || clickCount > 1)
+                }
+                if (rightClick || clickCount > 1) {
                     return OPERATIONS.UNEQUIP;
+                }
                 return null;
 
             case QUICK_SLOT:
-                if (rightClick)
+                if (rightClick) {
                     return OPERATIONS.UNEQUIP_QUICK_SLOT;
-                if (clickCount > 1) {
-                    if (HeroManager.isQuickSlotWeapon(cellContents))
-                        return OPERATIONS.EQUIP;
-                    else return OPERATIONS.UNEQUIP_QUICK_SLOT;
                 }
-                if (altClick)
+                if (clickCount > 1) {
+                    if (HeroManager.isQuickSlotWeapon(cellContents)) {
+                        return OPERATIONS.EQUIP;
+                    } else {
+                        return OPERATIONS.UNEQUIP_QUICK_SLOT;
+                    }
+                }
+                if (altClick) {
                     return OPERATIONS.DROP;
+                }
                 return null;
             case ARMOR:
                 //preCheck can be unequipped
 
                 break;
             case INVENTORY:
-                if (altClick)
+                if (altClick) {
                     return OPERATIONS.EQUIP_QUICK_SLOT;
-                if (rightClick)
+                }
+                if (rightClick) {
                     return OPERATIONS.DROP;
-                if (clickCount > 1)
+                }
+                if (clickCount > 1) {
                     return OPERATIONS.EQUIP;
+                }
         }
         return null;
     }
@@ -121,14 +132,17 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     @Override
     public void undoClicked() {
-        if (!isUndoEnabled()) return;
+        if (!isUndoEnabled()) {
+            return;
+        }
 //        inventoryManager.getInvListManager().setOperationsLeft(getOperationsLeft());
         if (CharacterCreator.getHeroManager().undo(unit)) {
 //         modifications --;
             Integer op = unit.getGame().getInventoryManager().getOperationsLeft();
             op--;
-            if (op == unit.getGame().getInventoryManager().getOperationsPool())
+            if (op == unit.getGame().getInventoryManager().getOperationsPool()) {
                 dirty = false;
+            }
             refreshPanel();
         }
     }
@@ -140,7 +154,9 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     @Override
     public void doneClicked() {
-        if (!isDoneEnabled()) return;
+        if (!isDoneEnabled()) {
+            return;
+        }
 //        InventoryTransactionManager.updateType(unit); ???
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
         CharacterCreator.getHeroManager().removeHero(unit);
@@ -149,7 +165,9 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     @Override
     public void cancelClicked() {
-        if (!isCancelEnabled()) return;
+        if (!isCancelEnabled()) {
+            return;
+        }
         unit.applyType(buffer);
 //        cell.setProperty(PROPS.DROPPED_ITEMS, cachedValue);TODO
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, false);

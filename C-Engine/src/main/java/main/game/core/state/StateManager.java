@@ -109,9 +109,11 @@ public abstract class StateManager {
         }
         for (Effect effect : state.effects) {
             if (effect.getLayer() == layer) {
-                if (unit!=null )
-                if (effect.getRef().getTargetObj()!=unit)
-                    continue;
+                if (unit != null) {
+                    if (effect.getRef().getTargetObj() != unit) {
+                        continue;
+                    }
+                }
                 LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, layer
                  + " Layer, applying effect : " + state.effects);
                 if (!effect.apply()) {

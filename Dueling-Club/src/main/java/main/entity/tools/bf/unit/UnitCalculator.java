@@ -98,8 +98,9 @@ public class UnitCalculator extends EntityCalculator<Unit> {
         }
         PARAMS minDamage = (offhand) ? PARAMS.OFF_HAND_MIN_DAMAGE : PARAMS.MIN_DAMAGE;
 
-        if (set)
+        if (set) {
             setParam(minDamage, dmg);
+        }
         PARAMS damage = (offhand) ? PARAMS.OFF_HAND_DAMAGE : PARAMS.DAMAGE;
         DC_WeaponObj weapon = getEntity().getWeapon(offhand);
         if (weapon == null) {
@@ -111,11 +112,13 @@ public class UnitCalculator extends EntityCalculator<Unit> {
         if (mod != 0) {
             dieSize = dieSize * mod / 100;
         }
-        if (set)
+        if (set) {
             setParam(damage, MathMaster.getAverage(dmg, dmg + dieSize));
+        }
         PARAMS maxDamage = (offhand) ? PARAMS.OFF_HAND_MAX_DAMAGE : PARAMS.MAX_DAMAGE;
-        if (set)
+        if (set) {
             setParam(maxDamage, dmg + dieSize);
+        }
 
         if (isDiceAccountedElsewhere()){ //TODO review this
             Integer min = getIntParam(minDamage);
@@ -168,8 +171,9 @@ public class UnitCalculator extends EntityCalculator<Unit> {
 
     public int calculateInitiative(boolean current) {
         PARAMETER param=PARAMS.N_OF_ACTIONS;
-        if (current)
+        if (current) {
             param = ContentManager.getCurrentParam(param);
+        }
         int initiative =
      getIntParam(param)
       * getIntParam(PARAMS.INITIATIVE_MODIFIER);

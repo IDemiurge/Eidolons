@@ -18,8 +18,9 @@ Event
 //Remark: The idea was to use "<IdAttributeIdentifier>", not the same with context "Role".
     //it should have been a separate enum.
     public Obj resolveTarget(Stack<IdKey> queue, Obj obj){
-        if (queue.isEmpty())
+        if (queue.isEmpty()) {
             return obj;
+        }
         IdKey key = queue.pop();
         obj = getObj(key, obj);
         return resolveTarget(queue, obj);

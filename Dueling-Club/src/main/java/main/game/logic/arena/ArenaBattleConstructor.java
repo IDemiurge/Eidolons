@@ -214,8 +214,9 @@ public class ArenaBattleConstructor {
 
     private Coordinates pickSpawnCoordinateForWave(ENCOUNTER_TYPE type, Integer round,
                                                    ObjType waveType, boolean recursion) {
-        if (sideSpawnTestMode)
+        if (sideSpawnTestMode) {
             return null;
+        }
         int minDistance = Integer.MAX_VALUE;
         int maxDistance = 0;
         Map<Coordinates, Point> map = new HashMap<>();
