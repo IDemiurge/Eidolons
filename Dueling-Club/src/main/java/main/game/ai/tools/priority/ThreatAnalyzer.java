@@ -9,16 +9,8 @@ import java.util.Map;
 /**
  * Created by JustMe on 4/11/2017.
  */
-public class ThreatAnalyzer extends AiHandler{
+public class ThreatAnalyzer extends AiHandler {
 
-    public enum THREAT_TYPE{
-        RANGED,
-        MELEE,
-        MAGIC,
-        GRUDGE,
-        PRIORITY,
-        POWER
-    }
     Map<UnitAI, Map<Unit, Integer>> threatMemoryMap;
     Map<UnitAI, Map<Unit, Integer>> grudgeMemoryMap;
 
@@ -34,5 +26,14 @@ public class ThreatAnalyzer extends AiHandler{
     public int getRangedDangerFactor(Unit unit) {
 
         return 0;
+    }
+
+    public enum THREAT_TYPE {
+        RANGED,
+        MELEE,
+        MAGIC,
+        GRUDGE,
+        PRIORITY,
+        POWER
     }
 }

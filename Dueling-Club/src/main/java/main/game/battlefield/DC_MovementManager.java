@@ -75,16 +75,16 @@ public class DC_MovementManager implements MovementManager {
 
     public static Action getFirstAction(Unit unit, Coordinates coordinates) {
         FACING_SINGLE relative = FacingMaster.getSingleFacing(unit.getFacing(),
-         unit.getCoordinates(), coordinates);
-        if (relative== FACING_SINGLE.IN_FRONT)
-            return ActionFactory.newAction( "Move", unit.getAI());
-        boolean left =(unit.getFacing().isVertical()) ?
-         PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)
-         : PositionMaster.isAbove(unit.getCoordinates(), coordinates);
+                unit.getCoordinates(), coordinates);
+        if (relative == FACING_SINGLE.IN_FRONT)
+            return ActionFactory.newAction("Move", unit.getAI());
+        boolean left = (unit.getFacing().isVertical()) ?
+                PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)
+                : PositionMaster.isAbove(unit.getCoordinates(), coordinates);
         if (unit.getFacing().isMirrored())
-            left =!left;
+            left = !left;
 
-        return ActionFactory.newAction("Move "+ (left? "Left" : "Right"), unit.getAI());
+        return ActionFactory.newAction("Move " + (left ? "Left" : "Right"), unit.getAI());
 //        List<ActionPath> paths = instance.buildPath(unit, coordinates);
 //            if (!ListMaster.isNotEmpty(paths)) {
 //            return  null ;

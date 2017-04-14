@@ -50,7 +50,7 @@ public class Waiter {
                 waiting.signal();
                 lock.unlock();
             }
-        }, getId()+"'s pinging thread").start();
+        }, getId() + "'s pinging thread").start();
     }
 
     public synchronized Object startWaiting() {
@@ -59,7 +59,7 @@ public class Waiter {
 
     public synchronized Object startWaiting(Long timeLimit) {
         LogMaster.log(LogMaster.WAITING_DEBUG, operation.name() + " WAITING STARTED : " + input
-         + interrupted);
+                + interrupted);
         this.timeLimit = timeLimit;
 
         n++;
@@ -98,7 +98,7 @@ public class Waiter {
         }
 
         LogMaster.log(LogMaster.WAITING_DEBUG, operation.name()
-         + " WAIT LOOP EXITED WITH : " + input);
+                + " WAIT LOOP EXITED WITH : " + input);
         lock.lock();
         waiting.signal();
         lock.unlock();
@@ -137,7 +137,7 @@ public class Waiter {
         lock.unlock();
 
         LogMaster.log(LogMaster.WAITING_DEBUG, "WAITER INTERRUPTED: "
-         + operation.name());
+                + operation.name());
     }
 
 }

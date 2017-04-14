@@ -137,11 +137,11 @@ public class ExpressionTree {
 
                         if (!autoresolved && MathMaster.isAutoResolveParseExceptions()) {
                             LogMaster.log(1,
-                             "autoresolving malformed formula - crop last ')': " + s);
+                                    "autoresolving malformed formula - crop last ')': " + s);
                             String autoresolvedString = StringMaster.replaceLast(s, "-(", "-1*(");
                             return build(true, autoresolvedString,
-                             indexErrorOffset);
-                        }else
+                                    indexErrorOffset);
+                        } else
                             throw new ExpressionParseException("Open bracket found after negate.", i);
                     }
 

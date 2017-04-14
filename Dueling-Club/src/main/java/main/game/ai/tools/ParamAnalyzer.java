@@ -19,12 +19,12 @@ import java.util.List;
 
 public class ParamAnalyzer extends AiHandler {
     public final String COST_PENALTY_FORMULA =
-     // "100/lg({AMOUNT})";
-     // "10+180/(2+sqrt({AMOUNT}*10))";
-     // "100-(sqrt({AMOUNT}*10)-{AMOUNT}/15)+ ({AMOUNT}*{AMOUNT}/1000)";
-     // //min
-     // max!
-     "100-sqrt({AMOUNT}*5)-{AMOUNT}/20 ";
+            // "100/lg({AMOUNT})";
+            // "10+180/(2+sqrt({AMOUNT}*10))";
+            // "100-(sqrt({AMOUNT}*10)-{AMOUNT}/15)+ ({AMOUNT}*{AMOUNT}/1000)";
+            // //min
+            // max!
+            "100-sqrt({AMOUNT}*5)-{AMOUNT}/20 ";
     public final String ACTION_FORMULA = "1000/(({AMOUNT}+1)*10/2)";
     // "100/ {AMOUNT}*{AMOUNT}  x^2-bX = 100 " ;
     // "sqrt({AMOUNT}*10) -100/(100-{AMOUNT})"; TODO perhaps I should have a
@@ -41,11 +41,11 @@ public class ParamAnalyzer extends AiHandler {
             return false;
         }
         if (buffLevel == rule
-         .getMaxLevel()) {
+                .getMaxLevel()) {
             return false;
         }
         if (buffLevel == rule
-         .getMinLevel()) {
+                .getMinLevel()) {
             if (low_critical)
                 return true;
             else return false;
@@ -57,12 +57,12 @@ public class ParamAnalyzer extends AiHandler {
 
     public static boolean isFatigued(Unit unit) {
         int buffLevel = unit.getGame().getRules().getStaminaRule()
-         .getBuffLevel(unit);
+                .getBuffLevel(unit);
         if (buffLevel < 0) {
             return false;
         }
         if (buffLevel == unit.getGame().getRules().getStaminaRule()
-         .getMaxLevel()) {
+                .getMaxLevel()) {
             return false;
         }
         return true;
@@ -70,7 +70,7 @@ public class ParamAnalyzer extends AiHandler {
 
     public static boolean isHazed(Unit unit) {
         int buffLevel = unit.getGame().getRules().getFocusRule()
-         .getBuffLevel(unit);
+                .getBuffLevel(unit);
         if (buffLevel < 0) {
             return false;
         }
@@ -96,9 +96,9 @@ public class ParamAnalyzer extends AiHandler {
         if (p == PARAMS.C_ESSENCE) {
             if (low_critical)
                 return MathMaster.getCentimalPercent(
-                 unit.getIntParam(ContentManager.getPercentageParam(p))) < 30;
+                        unit.getIntParam(ContentManager.getPercentageParam(p))) < 30;
             else return MathMaster.getCentimalPercent(
-             unit.getIntParam(ContentManager.getPercentageParam(p))) < 10;
+                    unit.getIntParam(ContentManager.getPercentageParam(p))) < 10;
 
         }
         return false;
@@ -188,7 +188,7 @@ public class ParamAnalyzer extends AiHandler {
                 continue;
             }
             int perc = DC_MathManager.getCentimalPercentage(c.getPayment().getAmountFormula()
-             .getInt(unit.getRef()), unit.getIntParam(p));
+                    .getInt(unit.getRef()), unit.getIntParam(p));
             if (perc > 100) {
                 if (p != PARAMS.C_N_OF_ACTIONS) {
                     return 0;

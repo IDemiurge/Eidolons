@@ -1,31 +1,15 @@
 package main.game.ai.tools;
 
 import main.content.PARAMS;
-import main.content.enums.system.AiEnums;
-import main.content.values.parameters.PARAMETER;
-import main.elements.costs.Cost;
-import main.elements.costs.Costs;
-import main.entity.Entity;
-import main.entity.active.DC_UnitAction;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_UnitModel;
-import main.entity.obj.unit.Unit;
 import main.game.ai.AI;
 import main.game.ai.logic.BfAnalyzer;
 import main.game.ai.logic.DC_AI;
-import main.game.ai.tools.future.FutureBuilder;
-import main.game.ai.tools.priority.ParamPriorityAnalyzer;
 import main.game.battlefield.pathing.Path;
 import main.game.core.game.DC_Game;
 import main.game.core.game.MicroGame;
-import main.game.logic.generic.DC_ActionManager;
-import main.rules.UnitAnalyzer;
 import main.system.auxiliary.log.LogMaster;
-import main.system.math.DC_MathManager;
-import main.system.math.MathMaster;
-import main.system.math.PositionMaster;
-
-import java.util.List;
 
 // DECOUPLE FROM AI!!! 
 public class DC_Bf_Analyzer extends BfAnalyzer {

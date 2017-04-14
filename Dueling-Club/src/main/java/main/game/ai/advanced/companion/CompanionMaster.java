@@ -21,7 +21,7 @@ public class CompanionMaster {
     public static void initCompanionAiParams(UnitAI ai) {
         // prefs, ai type, ...
 
-            ai.setType(getAiType(ai.getUnit()));
+        ai.setType(getAiType(ai.getUnit()));
     }
 
     private static AI_TYPE getAiType(Unit hero) {
@@ -42,36 +42,36 @@ public class CompanionMaster {
         switch (v) {
             case BRUTE:
                 return hero.getSumOfParams(PARAMS.ATTACK,
-                 PARAMS.OFF_HAND_ATTACK, PARAMS.STRENGTH,
-                 PARAMS.STRENGTH)/2
-                 - hero.getSumOfParams(PARAMS.STEALTH, PARAMS.INTELLIGENCE )
-                 ;
+                        PARAMS.OFF_HAND_ATTACK, PARAMS.STRENGTH,
+                        PARAMS.STRENGTH) / 2
+                        - hero.getSumOfParams(PARAMS.STEALTH, PARAMS.INTELLIGENCE)
+                        ;
             case SNEAK:
-                return 2*hero.getIntParam(PARAMS.STEALTH);
+                return 2 * hero.getIntParam(PARAMS.STEALTH);
             case TANK:
                 return hero.getSumOfParams(PARAMS.VITALITY, PARAMS.VITALITY,
-                 PARAMS.WILLPOWER, PARAMS.ARMOR, PARAMS.STRENGTH)/3
-                 +hero.getIntParam(PARAMS.DEFENSE)/4
-                 ;
+                        PARAMS.WILLPOWER, PARAMS.ARMOR, PARAMS.STRENGTH) / 3
+                        + hero.getIntParam(PARAMS.DEFENSE) / 4
+                        ;
             case CASTER:
-                return (hero.getSumOfParams(PARAMS.SPELLPOWER,PARAMS.WISDOM,PARAMS.INTELLIGENCE)+hero.getSumOfParams(VALUE_GROUP.MAGIC.getParams())) / 2;
+                return (hero.getSumOfParams(PARAMS.SPELLPOWER, PARAMS.WISDOM, PARAMS.INTELLIGENCE) + hero.getSumOfParams(VALUE_GROUP.MAGIC.getParams())) / 2;
             case CASTER_MELEE:
                 return
-                 getWeight(AI_TYPE.BRUTE, hero)/4 +getWeight(AI_TYPE.TANK, hero)/4 +
-                  (hero.getSumOfParams(PARAMS.SPELLPOWER)+hero.getSumOfParams(VALUE_GROUP.COMBAT_MAGIC.getParams())/2);
+                        getWeight(AI_TYPE.BRUTE, hero) / 4 + getWeight(AI_TYPE.TANK, hero) / 4 +
+                                (hero.getSumOfParams(PARAMS.SPELLPOWER) + hero.getSumOfParams(VALUE_GROUP.COMBAT_MAGIC.getParams()) / 2);
             case CASTER_SUPPORT:
-                return  hero.getSumOfParams(PARAMS.SPELLPOWER,PARAMS.WISDOM,PARAMS.INTELLIGENCE)+hero.getSumOfParams(VALUE_GROUP.SUPPORT_MAGIC.getParams());
+                return hero.getSumOfParams(PARAMS.SPELLPOWER, PARAMS.WISDOM, PARAMS.INTELLIGENCE) + hero.getSumOfParams(VALUE_GROUP.SUPPORT_MAGIC.getParams());
             case CASTER_SUMMONER:
-                return  hero.getSumOfParams(PARAMS.SPELLPOWER,PARAMS.WISDOM)+hero.getSumOfParams(VALUE_GROUP.SUMMON_MAGIC.getParams());
+                return hero.getSumOfParams(PARAMS.SPELLPOWER, PARAMS.WISDOM) + hero.getSumOfParams(VALUE_GROUP.SUMMON_MAGIC.getParams());
             case CASTER_OFFENSE:
-                return  hero.getSumOfParams(PARAMS.SPELLPOWER,PARAMS.SPELLPOWER,PARAMS.RESISTANCE_PENETRATION)+hero.getSumOfParams(VALUE_GROUP.OFFENSE_MAGIC.getParams());
+                return hero.getSumOfParams(PARAMS.SPELLPOWER, PARAMS.SPELLPOWER, PARAMS.RESISTANCE_PENETRATION) + hero.getSumOfParams(VALUE_GROUP.OFFENSE_MAGIC.getParams());
             case ARCHER:
                 if (hero.getRangedWeapon() == null)
                     return 0;
                 return
-                 (int)
-                  (Math.sqrt(hero.getRangedWeapon().getIntParam(PARAMS.GOLD_COST)) * 2
-                   + hero.getIntParam(PARAMS.MARKSMANSHIP_MASTERY) * 5);
+                        (int)
+                                (Math.sqrt(hero.getRangedWeapon().getIntParam(PARAMS.GOLD_COST)) * 2
+                                        + hero.getIntParam(PARAMS.MARKSMANSHIP_MASTERY) * 5);
 
         }
         return 0;

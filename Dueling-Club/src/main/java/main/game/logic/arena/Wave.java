@@ -35,7 +35,7 @@ public class Wave extends DC_Obj {
     private int preferredPower;
     private boolean adjustmentDisabled;
     private boolean presetCoordinate;
-    private int unitLevel=0;
+    private int unitLevel = 0;
 
 
     public Wave(DC_Player player) {
@@ -58,7 +58,7 @@ public class Wave extends DC_Obj {
     @Override
     public String toString() {
         // unitMap
-        if (getCoordinates()==null )
+        if (getCoordinates() == null)
             return getName();
         String string = getNameAndCoordinate();
         return string;
@@ -73,6 +73,7 @@ public class Wave extends DC_Obj {
         // // level up and place units
         // }
     }
+
     public int getUnitLevel() {
         return unitLevel;
     }

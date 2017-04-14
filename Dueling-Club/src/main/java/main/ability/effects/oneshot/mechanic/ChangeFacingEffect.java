@@ -1,7 +1,7 @@
 package main.ability.effects.oneshot.mechanic;
 
-import main.ability.effects.OneshotEffect;
 import main.ability.effects.MicroEffect;
+import main.ability.effects.OneshotEffect;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BfObj;

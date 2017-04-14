@@ -49,13 +49,6 @@ public class ActionManager extends AiHandler {
         atomicAi = new AtomicAi(master);
     }
 
-    @Override
-    public void initialize() {
-        super.initialize();
-        atomicAi.initialize();
-        behaviorMaster.initialize();
-    }
-
     public static Costs getTotalCost(List<Action> actions) {
         XLinkedMap<PARAMETER, Formula> map = new XLinkedMap<>();
         for (PARAMETER p : DC_ContentManager.PAY_PARAMS) {
@@ -78,6 +71,13 @@ public class ActionManager extends AiHandler {
             }
         }
         return new Costs(map);
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        atomicAi.initialize();
+        behaviorMaster.initialize();
     }
 
     public Action chooseAction(UnitAI ai) {
@@ -109,32 +109,32 @@ public class ActionManager extends AiHandler {
         Coordinates originalCoordinates = unit.getCoordinates();
         Action action;
         ActionSequence sequence = null;
-if (!atomicAi.checkAtomicActionCaseAny(ai)) {
-    List<ActionSequence> actions = new LinkedList<>();
-    try {
-        // actions = createActionSequences(ai);
-        for (ActionSequence a : getActionSequenceConstructor().createActionSequences(
-         ai)) {
-            if (checkNotBroken(a))
-            if (a.get(0).canBeActivated()) {
-                // if (a.getOrCreate(0).canBeTargeted())
-                {
-                    actions.add(a);
+        if (!atomicAi.checkAtomicActionCaseAny(ai)) {
+            List<ActionSequence> actions = new LinkedList<>();
+            try {
+                // actions = createActionSequences(ai);
+                for (ActionSequence a : getActionSequenceConstructor().createActionSequences(
+                        ai)) {
+                    if (checkNotBroken(a))
+                        if (a.get(0).canBeActivated()) {
+                            // if (a.getOrCreate(0).canBeTargeted())
+                            {
+                                actions.add(a);
+                            }
+                        }
+
                 }
+                if (ListMaster.isNotEmpty(actions)) {
+                    sequence = DC_PriorityManager.chooseByPriority(actions);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                unit.setCoordinates(originalCoordinates);
+                unit.setFacing(originalFacing);
             }
 
         }
-        if (ListMaster.isNotEmpty(actions)) {
-            sequence = DC_PriorityManager.chooseByPriority(actions);
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
-        unit.setCoordinates(originalCoordinates);
-        unit.setFacing(originalFacing);
-    }
-
-}
 
         if (sequence == null) {
             action = atomicAi.getAtomicAction(ai);
@@ -270,7 +270,6 @@ if (!atomicAi.checkAtomicActionCaseAny(ai)) {
         }
 
     }
-
 
 
 }

@@ -7,8 +7,6 @@ import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.content.values.parameters.PARAMETER;
-import main.elements.costs.Cost;
-import main.elements.costs.Costs;
 import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
@@ -19,7 +17,6 @@ import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.ParamAnalyzer;
 import main.rules.UnitAnalyzer;
-import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;
 
 public class ParamPriorityAnalyzer {
@@ -33,7 +30,7 @@ public class ParamPriorityAnalyzer {
                 factor = getUnitParamRelevance(param, (Unit) target);
             }
         }
-       return  MathMaster.getFractionValueCentimal(
+        return MathMaster.getFractionValueCentimal(
                 getParamPercentPriority((PARAMS) param), factor);
     }
 
@@ -43,8 +40,8 @@ public class ParamPriorityAnalyzer {
         }
         // depending on AI_TYPE
         if (param.isDynamic())
-        param = (PARAMS) ContentManager.getCurrentParam(param);
-        switch (  param) {
+            param = (PARAMS) ContentManager.getCurrentParam(param);
+        switch (param) {
             case ATTACK:
             case DEFENSE:
             case ATTACK_MOD:

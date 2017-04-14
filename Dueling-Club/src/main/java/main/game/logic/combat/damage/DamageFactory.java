@@ -98,7 +98,8 @@ public class DamageFactory {
             if (ref.getActive() instanceof DC_ActiveObj) {
                 DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
                 dmg.setAction(activeObj);
-                if (damageType == null) {  damageType = activeObj.getDamageType();
+                if (damageType == null) {
+                    damageType = activeObj.getDamageType();
             }
         }
         dmg.setRef(ref);

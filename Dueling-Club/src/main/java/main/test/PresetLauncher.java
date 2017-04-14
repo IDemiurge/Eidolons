@@ -42,7 +42,7 @@ public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
             "AI", "Gui", "Last", "Recent", "New", "Anims", "Usability",
 //            "Emitters","Light",
-     "Standoff Test","Standoff Preset","Standoff",    "Profiling"
+            "Standoff Test", "Standoff Preset", "Standoff", "Profiling"
 
     };
     public static int PRESET_OPTION = -1;
@@ -362,7 +362,7 @@ public class PresetLauncher {
         Profiling(true),
         Standoff(null , RULE_SCOPE.FULL, null),
             Standoff_Test(null , RULE_SCOPE.TEST, true),
-            Standoff_Preset(null , RULE_SCOPE.FULL, null),
+            Standoff_Preset(null, RULE_SCOPE.FULL, null),
         Usability("Usability.xml", RULE_SCOPE.FULL, null)
             ;
         public Boolean immortal;

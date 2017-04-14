@@ -231,30 +231,16 @@ public class Analyzer extends AiHandler {
 
     public static List<? extends DC_Obj> getEnemies(Unit unit,
                                                     boolean checkAct, boolean
-                                                     checkAttack, boolean adjacentOnly) {
-        return getUnits(unit, true, checkAct, checkAttack, adjacentOnly );
+                                                            checkAttack, boolean adjacentOnly) {
+        return getUnits(unit, true, checkAct, checkAttack, adjacentOnly);
     }
 
-    public int getClosestEnemyDistance(Unit unit ) {
-        Unit enemy = getClosestEnemy(unit);
-        if (enemy==null ) return 999;
-        return PositionMaster.getDistance(enemy, unit);
-    }
-
-        public Unit getClosestEnemy(Unit unit ) {
-        List<? extends DC_Obj> list = getEnemies(unit, true, false, false);
-        if (list.isEmpty()) return null ;
-        list.sort(
-         SortMaster.getSorterByExpressionObj(
-          (t) -> PositionMaster.getDistance(t.getCoordinates(), unit.getCoordinates())));
-        return (Unit) list.get(0);
-    }
     public static List<Unit> getUnits(Unit unit,
                                       Boolean enemy_or_ally_only, boolean checkAct,
                                       boolean checkAttack, boolean adjacent) {
         List<Unit> list = new LinkedList<>();
-      Collection<Coordinates> coordinatesToCheck=adjacent?  unit.getCoordinates()
-         .getAdjacentCoordinates() :unit.getGame().getCoordinates();
+        Collection<Coordinates> coordinatesToCheck = adjacent ? unit.getCoordinates()
+                .getAdjacentCoordinates() : unit.getGame().getCoordinates();
         for (Coordinates coordinates : coordinatesToCheck) {
             Obj obj = unit.getGame().getUnitByCoordinate(coordinates);
             if (obj == null) {
@@ -266,7 +252,7 @@ public class Analyzer extends AiHandler {
                 if (enemy_or_ally_only) {
                     if (obj.getOwner().equals(unit.getOwner()))
                         continue;
-                }else {
+                } else {
                     if (!obj.getOwner().equals(unit.getOwner())) {
                         continue;
                     }
@@ -506,6 +492,21 @@ public class Analyzer extends AiHandler {
         // }
         // unit.setCoordinates(originalCoordinates);
         // return list;
+    }
+
+    public int getClosestEnemyDistance(Unit unit) {
+        Unit enemy = getClosestEnemy(unit);
+        if (enemy == null) return 999;
+        return PositionMaster.getDistance(enemy, unit);
+    }
+
+    public Unit getClosestEnemy(Unit unit) {
+        List<? extends DC_Obj> list = getEnemies(unit, true, false, false);
+        if (list.isEmpty()) return null;
+        list.sort(
+                SortMaster.getSorterByExpressionObj(
+                        (t) -> PositionMaster.getDistance(t.getCoordinates(), unit.getCoordinates())));
+        return (Unit) list.get(0);
     }
 
 

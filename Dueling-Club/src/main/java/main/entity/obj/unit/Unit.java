@@ -920,6 +920,11 @@ if (owner.getHeroObj()!= this){
 
         return getBehaviorMode() != null;
     }
+
+    public void setAiControlled(boolean aiControlled) {
+        this.aiControlled = aiControlled;
+    }
+
     public UnitAI getAI() {
         return getUnitAI();
     }
@@ -929,9 +934,6 @@ if (owner.getHeroObj()!= this){
             unitAI = new UnitAI(this);
         }
         return unitAI;
-    }
-    public void setAiControlled(boolean aiControlled) {
-        this.aiControlled = aiControlled;
     }
 
     public MACRO_MODES getMacroMode() {

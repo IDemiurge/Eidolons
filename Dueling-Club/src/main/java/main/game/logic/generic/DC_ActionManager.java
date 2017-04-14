@@ -296,21 +296,22 @@ public class DC_ActionManager implements ActionManager {
     public DC_ActiveObj getAction(String typeName, Entity entity) {
         return getAction(typeName, entity, true);
     }
+
     public DC_UnitAction getOrCreateAction(String typeName, Entity entity) {
         return (DC_UnitAction) getAction(typeName, entity, false);
     }
-    
+
     public DC_ActiveObj getAction(String typeName, Entity entity, boolean onlyIfAlreadyPresent) {
 
 
         if (actionsCache.get(entity) == null) {
             actionsCache.put(entity, new HashMap<>());
         }
-        ActiveObj   action = actionsCache.get(entity).get(typeName);
+        ActiveObj action = actionsCache.get(entity).get(typeName);
         if (action == null) {
             if (onlyIfAlreadyPresent)
-            if (!StringMaster.contains(entity.getProperty(G_PROPS.ACTIVES), typeName))
-                return null ;
+                if (!StringMaster.contains(entity.getProperty(G_PROPS.ACTIVES), typeName))
+                    return null;
 
 //            action =new SearchMaster<ActiveObj>().find(typeName, entity.getActives());
 //            if (action != null)
@@ -509,7 +510,7 @@ public class DC_ActionManager implements ActionManager {
             actives.addAll(getStandardActions(unit));
         }
 
-        String activesProp=entity.getProperty(ACTIVES);
+        String activesProp = entity.getProperty(ACTIVES);
         for (String typeName : StringMaster.openContainer(activesProp)) {
             ObjType type = DataManager.getType(typeName, DC_TYPE.ACTIONS);
             DC_UnitAction action;
@@ -543,7 +544,7 @@ public class DC_ActionManager implements ActionManager {
         // entity.setProperty(ACTIVES, StringMaster
         // .constructContainer(StringMaster.convertToIdList(actives)));
         entity.setActivesReady(true);
-        for   (ActiveObj a: actives) {
+        for (ActiveObj a : actives) {
             if (activesProp.contains(a.getName()))
                 activesProp += a.getName() + ";";
         }
@@ -612,7 +613,7 @@ public class DC_ActionManager implements ActionManager {
             // stunning blow, many possibilities! :) but it will be tricky...
             // TODO should add all dual actions
         }
-      actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
+        actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
 
         actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Wait.name(), unit));
 
@@ -776,25 +777,25 @@ public class DC_ActionManager implements ActionManager {
     }
 
     private void addHiddenActions(Unit unit, Collection<ActiveObj> actives) {
-        actives.addAll( getStandardActionsForGroup(ActionEnums.ACTION_TYPE.HIDDEN,  unit));
+        actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.HIDDEN, unit));
     }
 
-    private Collection<ActiveObj> getStandardActions(Unit unit ) {
-        Collection<ActiveObj> actives=    new LinkedList<>() ;
+    private Collection<ActiveObj> getStandardActions(Unit unit) {
+        Collection<ActiveObj> actives = new LinkedList<>();
         // TODO also add to Actives container!
         for (ACTION_TYPE type : ActionEnums.ACTION_TYPE.values()) {
             // I could actually centralize all action-adding to HERE! Dual, INV
             // and all the future ones
             if (type != ActionEnums.ACTION_TYPE.HIDDEN) {
                 if (type != ActionEnums.ACTION_TYPE.STANDARD_ATTACK) {
-                    actives.addAll( getStandardActionsForGroup(type,  unit));
+                    actives.addAll(getStandardActionsForGroup(type, unit));
                 }
             }
         }
         // checkDual(unit);
         // checkInv(unit);
 
-return actives;
+        return actives;
     }
 
     public void constructActionMaps(Unit unit) {
@@ -847,27 +848,27 @@ return actives;
                 break;
             case HIDDEN:
                 // TODO extract into separate?
-                actions.addAll(getActionTypes(hiddenActions,   unit));
+                actions.addAll(getActionTypes(hiddenActions, unit));
                 List<DC_ActiveObj> generatedSubactions = generateStandardSubactionsForUnit(unit);
                 actives.addAllCast(generatedSubactions);
                 break;
             case MODE:
-                actions.addAll(getActionTypes(modeActionTypes,  unit));
+                actions.addAll(getActionTypes(modeActionTypes, unit));
                 break;
             case STANDARD:
-                actions.addAll( getActionTypes(stdActionTypes,  unit));
+                actions.addAll(getActionTypes(stdActionTypes, unit));
                 break;
         }
         unit.getActionMap().put(type, actions);
         actives.addAll(actions);
-       return (actives);
+        return (actives);
 
     }
 
     private List<DC_UnitAction> getActionTypes(List<ActionType> actionTypes,
                                                Unit unit) {
-    List<DC_UnitAction> list = new LinkedList<>(); 
-    for (ActionType type : actionTypes) {
+        List<DC_UnitAction> list = new LinkedList<>();
+        for (ActionType type : actionTypes) {
             // Ref ref = Ref.getCopy(unit.getRef());
             DC_UnitAction action = getOrCreateAction(type.getName(), unit);
             // = getOrCreateAction(type, ref, unit.getOwner(), game);

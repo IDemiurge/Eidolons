@@ -60,7 +60,7 @@ public class Targeter extends ActiveHandler {
 
     }
     public Ref getRef() {
-        return getEntity(). getRef();
+        return getEntity().getRef();
     }
 
 
@@ -91,8 +91,7 @@ public class Targeter extends ActiveHandler {
         } else {
             getHandler().setCancelled(true);
         }
-if (result)
-{
+        if (result) {
     getAction().setTargetObj(getRef().getTargetObj());
     getAction().setTargetGroup(getRef().getGroup());
 }

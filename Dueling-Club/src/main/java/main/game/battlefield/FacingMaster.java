@@ -163,11 +163,11 @@ public class FacingMaster {
     }
 
     public static FACING_DIRECTION getRelativeFacing(Coordinates c, Coordinates c2) {
-        boolean x_y = Math.abs( c.x - c2.x) > Math.abs( c.y-c2.y);
-      if (Math.abs( c.x - c2.x) == Math.abs( c.y-c2.y))
-          x_y = RandomWizard.random();
+        boolean x_y = Math.abs(c.x - c2.x) > Math.abs(c.y - c2.y);
+        if (Math.abs(c.x - c2.x) == Math.abs(c.y - c2.y))
+            x_y = RandomWizard.random();
 
-        if (x_y){
+        if (x_y) {
             Boolean left = PositionMaster.isToTheLeftOr(c, c2);
             if (left != null) {
                 return left ? FACING_DIRECTION.EAST : FACING_DIRECTION.WEST;
@@ -177,7 +177,7 @@ public class FacingMaster {
         if (above != null) {
             return above ? FACING_DIRECTION.SOUTH : FACING_DIRECTION.NORTH;
         }
-       return null ;
+        return null;
 
 //        List<Coordinates> list = c.getAdjacent(false);
 //       return getRelativeFacing( list.get(RandomWizard.getRandomListIndex(list)), c2);
@@ -227,7 +227,7 @@ public class FacingMaster {
             FACING_DIRECTION facing = FacingMaster.getRelativeFacing(c, member.getCoordinates());
             if (facing == null) {
                 facing = FacingMaster.getFacingFromDirection(DirectionMaster.getRelativeDirection(
-                 c, member.getCoordinates()));
+                        c, member.getCoordinates()));
             }
 
             Integer i = map.get(facing);

@@ -47,6 +47,27 @@ public class ArmorMaster {
         return obj.getIntParam(DC_ContentManager.getArmorParamForDmgType(dmg_type));
     }
 
+    public static int getShieldReducedAmountForDealDamageEffect(
+            DealDamageEffect effect,
+            Unit targetObj, int amount, DC_ActiveObj active) {
+
+        if (effect.getGame().getArmorMaster().checkCanShieldBlock(active, targetObj)) {
+            int shieldBlock = effect.getGame().getArmorMaster().getShieldDamageBlocked(amount, targetObj,
+                    (Unit) effect.getRef().getSourceObj(), active, null, effect.getDamageType());
+            // event?
+            amount -= shieldBlock;
+        }
+
+
+        return amount;
+    }
+
+    public static boolean isArmorUnequipAllowed(Unit hero) {
+        if (hero.getGame().isSimulation()) {
+            return true;
+        }
+        return false;
+    }
 
     public int getArmorBlockDamage(Damage damage) {
         return getArmorBlockDamage(false, damage.isSpell(), damage.canCritOrBlock(),
@@ -54,7 +75,6 @@ public class ArmorMaster {
          damage.isOffhand(),
          damage.getDmgType(), damage.getAction());
     }
-
 
     public int getArmorBlockDamage(int damage, Unit attacked, Unit attacker,
                                    DC_ActiveObj action) {
@@ -85,13 +105,14 @@ public class ArmorMaster {
                 amount, targetObj, action.getOwnerObj(), action.isOffhand(),
                 action.getEnergyType(), action);
     }
+
     private int getArmorBlockDamage(boolean shield, boolean spell, boolean canCritOrBlock,
                                     boolean average, Integer damage, Unit attacked, Unit attacker,
                                     boolean offhand, DAMAGE_TYPE dmg_type, DC_ActiveObj action) {
         /*
          * if blocks, apply armor's resistance values too
 		 */
-        if (action==null )
+        if (action == null)
             return 0;
         if (!offhand) {
             offhand = action.isOffhand();
@@ -160,27 +181,6 @@ public class ArmorMaster {
         return blocked;
     }
 
-
-    public static int getShieldReducedAmountForDealDamageEffect(
-     DealDamageEffect effect,
-     Unit targetObj, int amount, DC_ActiveObj active ) {
-
-        if (effect.getGame().getArmorMaster().checkCanShieldBlock(active, targetObj)) {
-            int shieldBlock = effect.getGame().getArmorMaster().getShieldDamageBlocked(amount, targetObj,
-             (Unit)  effect. getRef()     .getSourceObj(), active, null,  effect.getDamageType());
-            // event?
-            amount -= shieldBlock;
-        }
-
-
-        return amount;
-    }
-    public static boolean isArmorUnequipAllowed(Unit hero) {
-        if (hero.getGame().isSimulation()) {
-            return true;
-        }
-        return false;
-    }
     public Integer getShieldBlockValue(int amount, DC_WeaponObj shield, Unit attacked,
                                        Unit attacker, DC_WeaponObj weapon, DC_ActiveObj action, boolean zone) {
         DAMAGE_TYPE dmg_type = action.getDamageType();
@@ -258,7 +258,7 @@ public class ArmorMaster {
         blockValue = Math.min(blockValue, damage);
         if (!simulation) {
             int durabilityLost = reduceDurability(blockValue, shield, spell, damage_type, attacker
-         .getActiveWeapon(offhand), damage);
+                    .getActiveWeapon(offhand), damage);
             // shield.getIntParam(PARAMS.DAMAGE_BONUS); TODO so strength may
             // increase it? ...
             // RandomWizard.getRandomIntBetween(attacked.getIntParam(PARAMS.OFF_HAND_MIN_DAMAGE),

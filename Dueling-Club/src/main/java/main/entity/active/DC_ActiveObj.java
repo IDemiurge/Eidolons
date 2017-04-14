@@ -127,8 +127,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public DAMAGE_TYPE getDamageType() {
         if (super.getDamageType()==null ){
-            if (getActiveWeapon()==null )
-                return null ;
+            if (getActiveWeapon() == null)
+                return null;
             getActiveWeapon().getDamageType();
         }
             return super.getDamageType();
@@ -249,8 +249,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public void setRef(Ref REF) {
         REF.setID(Ref.KEYS.ACTIVE, getId());
         super.setRef(REF);
-            ref.setObj(KEYS.TARGET,targetObj );
-            ref.setGroup(targetGroup );
+        ref.setObj(KEYS.TARGET, targetObj);
+        ref.setGroup(targetGroup);
 
         ref.setTriggered(false);
         setOwnerObj((Unit) ref.getObj(KEYS.SOURCE));
@@ -868,21 +868,21 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         this.damageDealt = damageDealt;
     }
 
-
-    public void setTargetObj(Obj targetObj) {
-        this.targetObj = targetObj;
-    }
 @Override
     public Obj getTargetObj() {
         return targetObj;
     }
 
-    public void setTargetGroup(GroupImpl targetGroup) {
-        this.targetGroup = targetGroup;
+    public void setTargetObj(Obj targetObj) {
+        this.targetObj = targetObj;
     }
 
     @Override
     public GroupImpl getTargetGroup() {
         return targetGroup;
+    }
+
+    public void setTargetGroup(GroupImpl targetGroup) {
+        this.targetGroup = targetGroup;
     }
 }

@@ -29,6 +29,7 @@ public class TemplateAutoTargeting extends AutoTargeting {
     public void setTemplate(AUTO_TARGETING_TEMPLATES template) {
         this.template = template;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof TemplateAutoTargeting))

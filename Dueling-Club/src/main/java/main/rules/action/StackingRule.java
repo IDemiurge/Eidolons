@@ -52,12 +52,13 @@ public class StackingRule implements ActionRule {
 
     }
 
-    public static boolean checkCanPlace( Coordinates c, Entity unit,
+    public static boolean checkCanPlace(Coordinates c, Entity unit,
                                         List<? extends Entity> otherUnits) {
-        return checkCanPlace(100, c,unit, otherUnits);
+        return checkCanPlace(100, c, unit, otherUnits);
     }
-        public static boolean checkCanPlace(Integer maxSpaceTakenPercentage,Coordinates c, Entity unit,
-         List<? extends Entity> otherUnits) {
+
+    public static boolean checkCanPlace(Integer maxSpaceTakenPercentage, Coordinates c, Entity unit,
+                                        List<? extends Entity> otherUnits) {
         if (EntityCheckMaster.isOverlaying(unit)) {
             boolean result = DC_Game.game.getOverlayingObjects(c).size() < MAX_OVERLAYING_ON_CELL;
             if (!result) {
@@ -69,7 +70,7 @@ public class StackingRule implements ActionRule {
             // TODO limit number of overlays?
         }
         try {
-            return instance.canBeMovedOnto(maxSpaceTakenPercentage,unit, c, 0, otherUnits);
+            return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c, 0, otherUnits);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -106,8 +107,9 @@ public class StackingRule implements ActionRule {
                                   List<? extends Entity> otherUnits) {
         return canBeMovedOnto(100, unit, c, z, otherUnits);
     }
-        private boolean canBeMovedOnto(Integer maxSpaceTakenPercentage, Entity unit, Coordinates c, Integer z,
-         List<? extends Entity> otherUnits) {
+
+    private boolean canBeMovedOnto(Integer maxSpaceTakenPercentage, Entity unit, Coordinates c, Integer z,
+                                   List<? extends Entity> otherUnits) {
         HashMap<Coordinates, Boolean> bools = cache.get(unit);
         Boolean result = false;
         if (bools != null) {
@@ -195,16 +197,16 @@ public class StackingRule implements ActionRule {
         // main.system.auxiliary.LogMaster.log(1, "****************** " + space
         // + " Space vs " + girth
         // + " Girth on " + c + " for " + unit);
-            space =space*maxSpaceTakenPercentage/100;
+        space = space * maxSpaceTakenPercentage / 100;
         if (space >= girth) {
             result = true;
         } else {
-            if (unit.getIntParam(PARAMS.GIRTH)>space)
+            if (unit.getIntParam(PARAMS.GIRTH) > space)
                 if (units.isEmpty())
                     result = true;
         }
-        if (maxSpaceTakenPercentage==100) //only cache for default cases!
-        bools.put(c, result);
+        if (maxSpaceTakenPercentage == 100) //only cache for default cases!
+            bools.put(c, result);
         return result;
     }
 

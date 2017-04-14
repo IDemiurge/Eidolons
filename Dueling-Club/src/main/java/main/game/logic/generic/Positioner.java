@@ -50,7 +50,7 @@ public class Positioner {
     private FACING_DIRECTION forcedSide;
     private Map<MapBlock, Map<Coordinates, ObjType>> unitDungeonGroups = new LinkedHashMap<>();
     private Map<Coordinates, List<ObjType>> unitCache;
-    private Integer maxSpacePercentageTaken=100;
+    private Integer maxSpacePercentageTaken = 100;
 
     public Positioner() {
 
@@ -599,7 +599,7 @@ public class Positioner {
 
     public FACING_DIRECTION getFacingOptimal(Coordinates c) {
         Collection<Obj> units = getGame().getPlayer(true).getControlledUnits();
-       return  FacingMaster.getOptimalFacingTowardsUnits(c, units);
+        return FacingMaster.getOptimalFacingTowardsUnits(c, units);
 
 
     }

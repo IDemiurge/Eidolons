@@ -52,10 +52,12 @@ public class GridCellContainer extends GridCell {
 
         for (Actor actor : getChildren()) {
             if (actor instanceof UnitView) {
-                actor.setX(perImageOffsetX * i);
-                actor.setY(perImageOffsetY * ((unitViewCount - 1) - i));
-                actor.setWidth(w);
-                actor.setHeight(h);
+                actor.setBounds(
+                        perImageOffsetX * i,
+                        perImageOffsetY * ((unitViewCount - 1) - i),
+                        w,
+                        h
+                );
                 i++;
             }
         }
@@ -115,8 +117,8 @@ public class GridCellContainer extends GridCell {
         }
 //        final int xOffset = (int) (getW() *OverlayView.SCALE);
 //        final int yOffset = (int) (getH() *OverlayView.SCALE);
-        final int xOffset = (int) (getW() /3);
-        final int yOffset = (int) (getH()/3);
+        final int xOffset = (int) (getW() / 3);
+        final int yOffset = (int) (getH() / 3);
         Map<Coordinates, Map<Unit, Coordinates.DIRECTION>> directionMap = DC_Game.game.getDirectionMap();
         Map<Unit, Coordinates.DIRECTION> heroObjDIRECTIONMap = directionMap.get(new Coordinates(getGridX(), getGridY()));
         overlays.forEach(unitViewOptions -> {

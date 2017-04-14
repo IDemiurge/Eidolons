@@ -39,8 +39,9 @@ public class AiEnums {
         CASTER_SUPPORT(true),
         CASTER_SUMMONER(true),
         CASTER_OFFENSE(true),
-        ARCHER(true)
-        ;
+        ARCHER(true);
+
+        private boolean ranged;
 
         AI_TYPE(boolean ranged) {
             this.ranged = ranged;
@@ -48,8 +49,6 @@ public class AiEnums {
 
         AI_TYPE() {
         }
-
-        private boolean ranged;
 
         public boolean isRanged() {
             return ranged;

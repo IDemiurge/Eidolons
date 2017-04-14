@@ -101,8 +101,8 @@ public class AtomicAi extends AiHandler {
         else {
             Collection<Unit> units = getAnalyzer().getVisibleEnemies(ai);
             FACING_DIRECTION facing = FacingMaster.
-             getOptimalFacingTowardsUnits(unit.getCoordinates(),
-              units);
+                    getOptimalFacingTowardsUnits(unit.getCoordinates(),
+                            units);
             pick = unit.getCoordinates().getAdjacentCoordinate(facing.getDirection());
         }
         Action action = null;
@@ -113,7 +113,7 @@ public class AtomicAi extends AiHandler {
             try {
                 action = DC_MovementManager.getFirstAction(ai.getUnit(), pick);
                 main.system.auxiliary.log.LogMaster.log(1, " ATOMIC ACTION " + action +
-                 " CHOSEN TO GET TO " + pick);
+                        " CHOSEN TO GET TO " + pick);
             } catch (Exception e) {
                 e.printStackTrace();
                 //TODO what to return???
@@ -147,16 +147,16 @@ public class AtomicAi extends AiHandler {
 
     private float getEnemyPriority(Coordinates c, Unit e, UnitAI ai, ATOMIC_LOGIC logic) {
         if (logic == ATOMIC_LOGIC.GEN_AGGRO || logic == ATOMIC_LOGIC.GROUP_AGGRO) {
-            return new Float (DC_PriorityManager.getUnitPriority(ai, e, null))
-             / (1 + PositionMaster.getDistance(e.getCoordinates(), c));
+            return new Float(DC_PriorityManager.getUnitPriority(ai, e, null))
+                    / (1 + PositionMaster.getDistance(e.getCoordinates(), c));
         }
         return 0;
     }
 
     private float getAllyPriority(Coordinates c, Unit a, UnitAI ai, ATOMIC_LOGIC logic) {
         if (logic == ATOMIC_LOGIC.PROTECT || logic == ATOMIC_LOGIC.FORMATION) {
-            return new Float (DC_PriorityManager.getUnitPriority(ai, a, null))
-             / (1 + PositionMaster.getDistance(a.getCoordinates(), c));
+            return new Float(DC_PriorityManager.getUnitPriority(ai, a, null))
+                    / (1 + PositionMaster.getDistance(a.getCoordinates(), c));
         }
         return 0;
     }
@@ -211,13 +211,13 @@ public class AtomicAi extends AiHandler {
 
     private boolean checkAtomicActionPrepare(UnitAI ai) {
         if (ai.getType() == AI_TYPE.ARCHER) {
-            if (ai.getUnit().getRangedWeapon()!=null )
+            if (ai.getUnit().getRangedWeapon() != null)
                 return ai.getUnit().getRangedWeapon().getAmmo() == null;
         }
-      List<PARAMS>  params = getParamAnalyzer().getRelevantParams(ai.getUnit());
+        List<PARAMS> params = getParamAnalyzer().getRelevantParams(ai.getUnit());
         for (PARAMS p : params)
-        if (getParamAnalyzer().checkStatus(false, ai.getUnit(), p))
-            return true;
+            if (getParamAnalyzer().checkStatus(false, ai.getUnit(), p))
+                return true;
         return false;
     }
 
@@ -236,11 +236,11 @@ public class AtomicAi extends AiHandler {
         if (distance > maxDistance && distance < 999) {
             return true;
         }
-        if (ai.getGroup()!=null )
-        if (ai.getGroup().getMembers().size() > 8)
-            return true;
+        if (ai.getGroup() != null)
+            if (ai.getGroup().getMembers().size() > 8)
+                return true;
         Double average = ai.getGroup().getMembers().stream().collect(
-         Collectors.averagingInt((t) -> t.getIntParam(PARAMS.POWER)));
+                Collectors.averagingInt((t) -> t.getIntParam(PARAMS.POWER)));
         if (ai.getUnit().getIntParam(PARAMS.POWER) < average / 2)
             return true;
 

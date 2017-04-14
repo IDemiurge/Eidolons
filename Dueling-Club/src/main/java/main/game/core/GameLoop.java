@@ -58,7 +58,7 @@ public class GameLoop {
 
     private Boolean makeAction() {
 
-        Boolean result=null ;
+        Boolean result = null;
         if (game.getManager().getActiveObj().isAiControlled()) {
             result = activateAction(waitForAI());
         } else {
@@ -71,28 +71,29 @@ public class GameLoop {
 
     private void waitForAnimations() {
         if (AnimMaster.getInstance().isDrawing())
-        WaitMaster.waitForInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, MAX_ANIM_TIME);
+            WaitMaster.waitForInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, MAX_ANIM_TIME);
     }
 
     private Boolean activateAction(ActionInput input) {
         if (input == null )
             return true;
-        boolean result=false;
+        boolean result = false;
         try {
             activatingAction = input.getAction();
             activatingAction.setTargetObj(input.getContext().getTargetObj());
             activatingAction.setTargetGroup(input.getContext().getGroup());
-            result=   input.getAction().getHandler().activateOn(input.getContext());
+            result = input.getAction().getHandler().activateOn(input.getContext());
         } catch (Exception e) {
             e.printStackTrace();
             getGame().getManager().unitActionCompleted(input.getAction(), true);
             return true;
         } finally {
             activatingAction = null;
-        }if (!result) return false;
-            int timeCost = input.getAction().getHandler().getTimeCost();
+        }
+        if (!result) return false;
+        int timeCost = input.getAction().getHandler().getTimeCost();
         Boolean endTurn = getGame().getRules().getTimeRule().
-        actionComplete(input.getAction(), timeCost);
+                actionComplete(input.getAction(), timeCost);
         if (!endTurn) {
             game.getManager().reset();
             if (ChargeRule.checkRetainUnitTurn(input.getAction())) {

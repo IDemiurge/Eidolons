@@ -80,7 +80,11 @@ public class ModifyCounterEffect extends MicroEffect  implements OneshotEffect, 
 
         }
         if (result) {
-          try{  getAnimation().addPhaseArgs(PHASE_TYPE.COUNTER, counterName, modtype, modValue);              }catch(Exception e){                e.printStackTrace();            }
+            try {
+                getAnimation().addPhaseArgs(PHASE_TYPE.COUNTER, counterName, modtype, modValue);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             return false;
         }

@@ -59,10 +59,10 @@ public class UnitAI {
     private Order currentOrder;
 
     public UnitAI(Unit unit) {
-        this.unit =   unit;
+        this.unit = unit;
         initType();
         setOriginalCoordinates(unit.getCoordinates());
-        if (unit.isMine()){
+        if (unit.isMine()) {
             CompanionMaster.initCompanionAiParams(this);
         }
     }

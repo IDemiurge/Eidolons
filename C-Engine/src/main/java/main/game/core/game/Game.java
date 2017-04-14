@@ -2,12 +2,11 @@ package main.game.core.game;
 
 import main.ability.effects.EffectManager;
 import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.ValueManager;
 import main.data.DataManager;
 import main.elements.conditions.RequirementsManager;
-import main.game.logic.generic.ActionManager;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
@@ -16,18 +15,19 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.GenericVisionManager;
 import main.game.battlefield.GraveyardManager;
 import main.game.battlefield.MovementManager;
-import main.game.logic.event.Event;
 import main.game.core.state.GameState;
 import main.game.logic.battle.turn.TurnManager;
+import main.game.logic.event.Event;
+import main.game.logic.generic.ActionManager;
 import main.swing.generic.components.GameGUI;
-import main.system.entity.ConditionMaster;
-import main.system.entity.IdManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Log;
+import main.system.entity.ConditionMaster;
+import main.system.entity.IdManager;
+import main.system.entity.ValueHelper;
 import main.system.math.MathMaster;
 import main.system.net.Communicator;
 import main.system.text.LogManager;
-import main.system.entity.ValueHelper;
 
 import javax.swing.*;
 import java.io.Serializable;
@@ -357,11 +357,11 @@ public abstract class Game  implements Serializable { // extends Entity? ;) Prop
         return !isOffline();
     }
 
-    public void setCloningMode(boolean cloningMode) {
-        this.cloningMode = cloningMode;
-    }
-
     public boolean isCloningMode() {
         return cloningMode;
+    }
+
+    public void setCloningMode(boolean cloningMode) {
+        this.cloningMode = cloningMode;
     }
 }

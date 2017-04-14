@@ -31,9 +31,11 @@ public class WaitMaster {
         }
         return waitForInput(operation);
     }
+
     public static Object waitForInput(WAIT_OPERATIONS animationFinished) {
-        return waitForInput(animationFinished, null );
+        return waitForInput(animationFinished, null);
     }
+
     public static Object waitForInput(WAIT_OPERATIONS operation,
                                       Integer maxTime) {
         if (operation== WAIT_OPERATIONS.ACTION_COMPLETE){
@@ -52,7 +54,7 @@ public class WaitMaster {
             waiters.put(operation, waiter);
         }
 
-        Object result = waiter.startWaiting(maxTime==null ? null : (long) maxTime);
+        Object result = waiter.startWaiting(maxTime == null ? null : (long) maxTime);
 
         LogMaster.log(LogMaster.WAIT_DEBUG, "INPUT RETURNED: " + result);
 
@@ -111,7 +113,6 @@ public class WaitMaster {
     public static Map<WAIT_OPERATIONS, Waiter> getWaiters() {
         return waiters;
     }
-
 
 
     // additional identifying for batch operations?

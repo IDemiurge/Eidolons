@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by JustMe on 4/9/2017.
  */
-public class SituationAnalyzer extends AiHandler{
+public class SituationAnalyzer extends AiHandler {
 
     public SituationAnalyzer(AiHandler master) {
         super(master);
@@ -31,7 +31,7 @@ public class SituationAnalyzer extends AiHandler{
 
     public int getMeleeDangerFactor(Unit unit, boolean adjacentOnly, boolean now) {
         List<? extends Entity> units = (!adjacentOnly) ? Analyzer.getAdjacentEnemies(unit, false)
-         : Analyzer.getMeleeEnemies(unit);
+                : Analyzer.getMeleeEnemies(unit);
         int factor = 0;
         for (Entity e : units) {
             Unit enemy = (Unit) e;
@@ -51,12 +51,12 @@ public class SituationAnalyzer extends AiHandler{
         return factor;
     }
 
-    
+
     public int getMeleeThreat(Unit enemy) {
         return getMeleeThreat(enemy, true);
     }
 
-    
+
     public int getMeleeThreat(Unit enemy, boolean now) {
         if (now) {
             if (!enemy.canActNow() || !enemy.canAttack()) {
@@ -73,14 +73,14 @@ public class SituationAnalyzer extends AiHandler{
             attack.initCosts();
             try {
                 int ap_factor = enemy.getIntParam(PARAMS.C_N_OF_ACTIONS)
-                 / attack.getCosts().getCost(PARAMS.C_N_OF_ACTIONS).getPayment()
-                 .getAmountFormula().getInt(enemy.getRef());
+                        / attack.getCosts().getCost(PARAMS.C_N_OF_ACTIONS).getPayment()
+                        .getAmountFormula().getInt(enemy.getRef());
                 int sta_factor = enemy.getIntParam(PARAMS.C_STAMINA)
-                 / attack.getCosts().getCost(PARAMS.C_STAMINA).getPayment()
-                 .getAmountFormula().getInt(enemy.getRef());
+                        / attack.getCosts().getCost(PARAMS.C_STAMINA).getPayment()
+                        .getAmountFormula().getInt(enemy.getRef());
                 int foc_factor = enemy.getIntParam(PARAMS.C_FOCUS)
-                 / attack.getCosts().getCost(PARAMS.C_FOCUS).getPayment().getAmountFormula()
-                 .getInt(enemy.getRef());
+                        / attack.getCosts().getCost(PARAMS.C_FOCUS).getPayment().getAmountFormula()
+                        .getInt(enemy.getRef());
                 factor = Math.min(sta_factor, ap_factor);
                 factor = Math.min(factor, foc_factor);// extract to
                 // getTimesActivate()
@@ -100,7 +100,7 @@ public class SituationAnalyzer extends AiHandler{
         return threat;
     }
 
-    
+
     public int getCastingPriority(Unit unit) {
         UnitAI unit_ai = unit.getAI();
         if (!Analyzer.hasSpells(unit)) {

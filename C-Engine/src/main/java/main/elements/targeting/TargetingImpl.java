@@ -27,7 +27,7 @@ public abstract class TargetingImpl implements Targeting
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof TargetingImpl){
+        if (obj instanceof TargetingImpl) {
             if (obj instanceof SelectiveTargeting)
                 if (!(this instanceof SelectiveTargeting))
                     return false;

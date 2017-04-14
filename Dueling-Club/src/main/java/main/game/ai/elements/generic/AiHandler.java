@@ -26,7 +26,7 @@ import java.util.List;
  * Created by JustMe on 3/3/2017.
  */
 public abstract class AiHandler {
-    protected    AiMaster master;
+    protected AiMaster master;
     protected   DC_Game game;
     protected   Unit unit;
 
@@ -58,52 +58,52 @@ public abstract class AiHandler {
         return master.getGoalManager();
     }
 
-    
+
     public ActionManager getActionManager() {
         return master.getActionManager();
     }
 
-    
+
     public PriorityManager getPriorityManager() {
         return master.getPriorityManager();
     }
 
-    
+
     public PruneMaster getPruneMaster() {
         return master.getPruneMaster();
     }
 
-    
+
     public PathBuilder getPathBuilder() {
         return master.getPathBuilder();
     }
 
-    
+
     public TargetingMaster getTargetingMaster() {
         return master.getTargetingMaster();
     }
 
-    
+
     public Analyzer getAnalyzer() {
         return master.getAnalyzer();
     }
 
-    
+
     public ParamAnalyzer getParamAnalyzer() {
         return master.getParamAnalyzer();
     }
 
-    
+
     public ActionSequenceConstructor getActionSequenceConstructor() {
         return master.getActionSequenceConstructor();
     }
 
-    
+
     public AiExecutor getExecutor() {
         return master.getExecutor();
     }
 
-    
+
     public CellPrioritizer getCellPrioritizer() {
         return master.getCellPrioritizer();
     }
@@ -113,12 +113,12 @@ public abstract class AiHandler {
         return master.getPathSequenceConstructor();
     }
 
-    
+
     public TurnSequenceConstructor getTurnSequenceConstructor() {
         return master.getTurnSequenceConstructor();
     }
 
-    
+
     public List<AiHandler> getHandlers() {
         return master.getHandlers();
     }

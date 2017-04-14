@@ -121,15 +121,14 @@ public class Executor extends ActiveHandler {
 
     public void activateOnGameLoopThread() {
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-         new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
+                new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }
 
     public boolean activate() {
         reset();
         syncActionRefWithSource();
         getTargeter().initTarget();
-        if ((isCancelled())!=null )
-        {
+        if ((isCancelled()) != null) {
             cancelled();
             return false;
         }

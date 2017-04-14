@@ -42,21 +42,21 @@ public class GroupAI {
     public GroupAI(Wave creepGroup) {
         this.creepGroup = creepGroup;
         members = new LinkedList<>();
-        if (creepGroup!=null ){
-      encounterType =  creepGroup.getWaveType();
-        if (creepGroup == null) {
-            return;
-        }
-        this.party = creepGroup.getParty();
-        leader = party.getLeader();
-        for (Unit m : party.getMembers()) {
-            add(m);
-        }
+        if (creepGroup != null) {
+            encounterType = creepGroup.getWaveType();
+            if (creepGroup == null) {
+                return;
+            }
+            this.party = creepGroup.getParty();
+            leader = party.getLeader();
+            for (Unit m : party.getMembers()) {
+                add(m);
+            }
 
-        originCoordinates = creepGroup.getCoordinates();
-        if (originCoordinates == null) {
-            originCoordinates = leader.getCoordinates();
-        }
+            originCoordinates = creepGroup.getCoordinates();
+            if (originCoordinates == null) {
+                originCoordinates = leader.getCoordinates();
+            }
         }
     }
 
@@ -238,13 +238,13 @@ public class GroupAI {
         return suspectedEnemyCoordinatesMap;
     }
 
-    public ENCOUNTER_TYPE getEncounterType() {
-        return encounterType;
-    }
-
     public void setSuspectedEnemyCoordinatesMap(
             Map<Unit, List<Coordinates>> suspectedEnemyCoordinatesMap) {
         this.suspectedEnemyCoordinatesMap = suspectedEnemyCoordinatesMap;
+    }
+
+    public ENCOUNTER_TYPE getEncounterType() {
+        return encounterType;
     }
 
 }

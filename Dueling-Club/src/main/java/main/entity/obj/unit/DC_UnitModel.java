@@ -67,9 +67,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     protected Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> actionMap;
 
     protected Deity deity;
+    protected UnitAI unitAI;
     private boolean hidden;
     private ImageIcon emblem;
-    protected UnitAI unitAI;
     private DC_ActiveObj preferredInstantAttack;
     private DC_ActiveObj preferredCounterAttack;
     private DC_ActiveObj preferredAttackOfOpportunity;

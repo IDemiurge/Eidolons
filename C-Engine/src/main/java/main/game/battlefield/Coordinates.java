@@ -1,8 +1,8 @@
 package main.game.battlefield;
 
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
-import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedList;
@@ -403,8 +403,8 @@ public class Coordinates {
 
         FACING_DIRECTION(DIRECTION direction, boolean vertical, boolean closerToZero) {
             this.setDirection(direction);
-            this.vertical=(vertical);
-            this.    closerToZero=(closerToZero);
+            this.vertical = (vertical);
+            this.closerToZero = (closerToZero);
         }
 
         public DIRECTION getDirection() {
@@ -427,6 +427,7 @@ public class Coordinates {
         public boolean isCloserToZero() {
             return closerToZero;
         }
+
         public boolean isMirrored() {
             return !closerToZero;
         }

@@ -10,7 +10,10 @@ import main.game.battlefield.Coordinates;
 import main.game.core.game.DC_Game;
 
 import java.awt.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Regulus

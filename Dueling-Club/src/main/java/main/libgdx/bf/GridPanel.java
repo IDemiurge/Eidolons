@@ -78,7 +78,7 @@ public class GridPanel extends Group {
                 TextureRegion texture = null;
                 if (outline != null) {
                     texture = TextureCache.getOrCreateR(
-                     Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
+                            Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
                 }
 
                 uv.setOutlineTexture(texture);
@@ -142,9 +142,8 @@ public class GridPanel extends Group {
         GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
             BattleFieldObject unit = (BattleFieldObject) param.get();
             UnitView view = (UnitView) unitMap.get(unit);
-            view.setVisibleVal(0);//set this val to zero remove unit from initiative queue
             GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL,
-             new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
+                    new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
             removeUnitView(unit);
         });
 
@@ -156,14 +155,14 @@ public class GridPanel extends Group {
             boolean caught = false;
             if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED) {
                 GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED,
-                 new EventCallbackParam<>(event.getRef().getEffect()));
+                        new EventCallbackParam<>(event.getRef().getEffect()));
                 caught = true;
             }
 
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING
-             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
-             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
+                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
+                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
 //                (r.getEffect() instanceof ChangeFacingEffect) nice try
             {
                 BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET);
@@ -183,7 +182,6 @@ public class GridPanel extends Group {
                 }
                 caught = true;
             }
-
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
 
@@ -271,7 +269,7 @@ public class GridPanel extends Group {
                 GuiEventManager.trigger(SHOW_GREEN_BORDER, new EventCallbackParam(view));
 
                 GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL,
-                 new EventCallbackParam(new PanelActionsDataSource((Unit) hero)));
+                        new EventCallbackParam(new PanelActionsDataSource((Unit) hero)));
 
                 if (CoreEngine.isGuiTestMode()) {
 
@@ -317,7 +315,7 @@ public class GridPanel extends Group {
                 }
 
                 GridCellContainer cellContainer =
-                 new GridCellContainer(emptyImage, coordinates.getX(), coordinates.getY()).init();
+                        new GridCellContainer(emptyImage, coordinates.getX(), coordinates.getY()).init();
                 cellContainer.setObjects(options);
                 cellContainer.setOverlays(overlays);
 

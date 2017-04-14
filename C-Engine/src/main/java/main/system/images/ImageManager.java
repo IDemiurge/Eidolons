@@ -673,7 +673,7 @@ public class ImageManager {
     }
 
     public static String getValueIconPath(VALUE value) {
-        if (value == null )
+        if (value == null)
             return "";
         Image img = getValueIcon(value);
         if (img == null) {

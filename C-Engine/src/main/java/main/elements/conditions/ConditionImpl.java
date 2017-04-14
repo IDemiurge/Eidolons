@@ -9,8 +9,8 @@ import main.system.auxiliary.log.LogMaster;
 public abstract class ConditionImpl  implements Condition {
     public static final int MAX_TOOLTIP_LENGTH = 50;
     private static final boolean FORCE_LOG =false ;
-    private boolean isTrue;
     protected Game game;
+    private boolean isTrue;
     private Entity match;
 
     @Override
@@ -25,8 +25,8 @@ public abstract class ConditionImpl  implements Condition {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj==null )
-            return this == null ;
+        if (obj == null)
+            return this == null;
         return toString().equals(obj.toString());
     }
 

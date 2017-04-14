@@ -137,7 +137,7 @@ public class RadialManager {
         if (target instanceof Unit)
             list.add(getExamineNode(target));
         if (!attacks.isEmpty())
-        list.add(getAttackParentNode(RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, attacks.get(0)));
+            list.add(getAttackParentNode(RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, attacks.get(0)));
         list.add(getParentNode(RADIAL_PARENT_NODE.TURN_ACTIONS, turns));
         list.add(getParentNode(RADIAL_PARENT_NODE.MOVES, moves));
         if (attacks.size() > 1)
@@ -170,7 +170,7 @@ public class RadialManager {
 
     private static RadialValueContainer getParentNode(RADIAL_PARENT_NODE type,
                                                       List<RadialValueContainer> containers) {
-      if (containers.isEmpty() )
+        if (containers.isEmpty())
           return null ;
         RadialValueContainer valueContainer = new RadialValueContainer(
          getOrCreateR(type.getIconPath()),
@@ -206,7 +206,7 @@ public class RadialManager {
     public static void addTooltip(RADIAL_PARENT_NODE parent, RadialValueContainer el, DC_ActiveObj activeObj) {
         new ActionCostTooltip();
 
-        new ActionCostSource(){
+        new ActionCostSource() {
 
             @Override
             public ValueContainer getName() {
@@ -219,7 +219,8 @@ public class RadialManager {
             }
         };
     }
-        public static void addSimpleTooltip(RadialValueContainer el, String name) {
+
+    public static void addSimpleTooltip(RadialValueContainer el, String name) {
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer(name, "")));
         el.addListener(tooltip.getController());

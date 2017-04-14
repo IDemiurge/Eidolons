@@ -26,10 +26,10 @@ public class GoalManager extends AiHandler {
     }
 
     public static Boolean isGoalVsEnemies(GOAL_TYPE g) {
-        switch (g){
+        switch (g) {
 
         }
-        return null ;
+        return null;
     }
     public static List<GOAL_TYPE> getGoalsForUnit(UnitAI ai) {
         Unit unit = ai.getUnit();

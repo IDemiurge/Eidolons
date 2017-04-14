@@ -133,7 +133,7 @@ public class PathBuilder extends AiHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (filteredPaths.isEmpty()){
+        if (filteredPaths.isEmpty()) {
             filteredPaths = paths;
         }
         return filteredPaths;
@@ -223,7 +223,7 @@ public class PathBuilder extends AiHandler {
         }
         Chronos.mark("Finding custom choices for " + path);
 
-        List<Choice> specialChoices=    new LinkedList<>();
+        List<Choice> specialChoices = new LinkedList<>();
         if (ListMaster.isNotEmpty(moveActions)) {
             // add special
             // will need to remove actions from list when used? preCheck CD
@@ -270,7 +270,7 @@ public class PathBuilder extends AiHandler {
                 }
                 if (objects != null) {
 
-                    List<Choice> choicesForAction=    new LinkedList<>();
+                    List<Choice> choicesForAction = new LinkedList<>();
                     for (Object obj : objects) {
                         if (obj instanceof DC_Cell) {
                             Coordinates coordinates = ((DC_Cell) obj).getCoordinates();
@@ -306,7 +306,7 @@ public class PathBuilder extends AiHandler {
         choices.addAll(specialChoices);
         Chronos.mark("Sort choices");
         sortChoices(choices);
-        Chronos.logTimeElapsedForMark("Sort choices"  );
+        Chronos.logTimeElapsedForMark("Sort choices");
 
         // resetUnit();// TODO is that right?
         Chronos.logTimeElapsedForMark("Finding choices for " + path);

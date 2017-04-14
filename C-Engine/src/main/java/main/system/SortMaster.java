@@ -111,13 +111,15 @@ public class SortMaster {
         return (Comparator<Entity>) (o1, o2) -> compareValue(p, descending, o1, o2);
 
     }
+
     public static Comparator<? super Entity> getSorterByExpression
-     (Function<Entity, Integer> function) {
+            (Function<Entity, Integer> function) {
         return Comparator.comparingInt(o -> function.apply(o));
 
     }
+
     public static Comparator<? super Obj> getSorterByExpressionObj
-     (Function<Obj, Integer> function) {
+            (Function<Obj, Integer> function) {
         return Comparator.comparingInt(o -> function.apply(o));
 
     }

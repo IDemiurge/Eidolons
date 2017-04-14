@@ -11,21 +11,21 @@ import main.system.math.Formula;
 public class TemplateSelectiveTargeting extends SelectiveTargeting {
     private boolean initialized;
 
-    @Override
-    public boolean equals(Object obj) {
-                if (!(obj instanceof TemplateSelectiveTargeting))
-                    return false;
-            return super.equals(obj);
-    }
     public TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES template) {
         super(null, new Formula("1"));
         this.template = template;
 
     }
-
     public TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES template, Condition c) {
         super(c, new Formula("1"));
         this.template = template;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TemplateSelectiveTargeting))
+            return false;
+        return super.equals(obj);
     }
 
     @Override

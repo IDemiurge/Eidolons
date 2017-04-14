@@ -1574,10 +1574,10 @@ public abstract class DataModel {
     }
 
     public int getSumOfParams(PARAMETER... params) {
-        Integer sum=0;
-        for (PARAMETER param : params){
-           sum += getIntParam(param);
-       }
+        Integer sum = 0;
+        for (PARAMETER param : params) {
+            sum += getIntParam(param);
+        }
         return sum;
     }
 }

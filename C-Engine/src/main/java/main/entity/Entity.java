@@ -356,12 +356,13 @@ public abstract class Entity extends DataModel implements OBJ {
     public List<AbilityObj> getPassives() {
         return passives;
     }
-    public List<AbilityObj> getPassivesFiltered() {
-        return null ;
-    }
 
     public void setPassives(List<AbilityObj> passives) {
         this.passives = passives;
+    }
+
+    public List<AbilityObj> getPassivesFiltered() {
+        return null;
     }
 
     public List<ActiveObj> getActives() {

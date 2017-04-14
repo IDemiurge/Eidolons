@@ -30,6 +30,7 @@ public class UnitView extends BaseView {
     private Label initiativeStrVal;
     private float alpha = 1f;
     private TextureRegion outlineTexture;
+    private Image clockImage;
 
 
     public UnitView(UnitViewOptions o) {
@@ -44,21 +45,22 @@ public class UnitView extends BaseView {
         this.portraitTexture = portraitTexture;
         portrait = new Image(portraitTexture);
 
-        baseHeight = portraitTexture.getRegionHeight();
+/*        baseHeight = portraitTexture.getRegionHeight();
         baseWidth = portraitTexture.getRegionWidth();
-        setSize(baseWidth * getScaleX(), baseHeight * getScaleY());
+        setSize(baseWidth * getScaleX(), baseHeight * getScaleY());*/
 
         imageContainer = new Container<>(portrait);
-        imageContainer.width(getW()).height(getH()).bottom().left();
+        imageContainer.width(getW()).height(getH()).fill().bottom().left();
         addActor(imageContainer);
 
         if (clockTexture != null) {
             this.clockTexture = clockTexture;
             initiativeStrVal = new Label("[#00FF00FF]" + String.valueOf(clockVal) + "[]", StyleHolder.getDefaultLabelStyle());
-            initiativeStrVal.setPosition(
+/*            initiativeStrVal.setPosition(
                     getWidth() - clockTexture.getRegionWidth() / 2 - initiativeStrVal.getWidth() / 2,
-                    clockTexture.getRegionHeight() / 2 - initiativeStrVal.getHeight() / 2);
-            addActor(new Image(clockTexture));
+                    clockTexture.getRegionHeight() / 2 - initiativeStrVal.getHeight() / 2);*/
+            clockImage = new Image(clockTexture);
+            addActor(clockImage);
             addActor(initiativeStrVal);
         }
 
@@ -79,91 +81,10 @@ public class UnitView extends BaseView {
         needRepaint = true;
     }
 
-    @Override
-    public void setScale(float scaleXY) {
-        super.setScale(scaleXY);
-        setHeight(baseHeight * getScaleY());
-        setWidth(baseWidth * getScaleX());
-        if (arrow != null) {
-            arrow.setOrigin(getWidth() / 2 + arrow.getWidth(), getHeight() / 2 + arrow.getHeight());
-            arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
-        }
-
-        needRepaint = true;
-    }
-
-/*    @Override
-    public void setBorder(Image image) {
-        border = image;
-        if (border != null) {
-            updateBorderSize();
-        }
-        needRepaint = true;
-    }*/
-
-/*    @Override
-    public void updateBorderSize() {
-        super.updateBorderSize();
-        border.setBounds(
-                -4, -4,
-                portraitTexture.getRegionWidth(), portraitTexture.getRegionHeight()
-        );
-    }*/
-
     public void setVisibleVal(int val) {
         val = Math.max(0, val);
         val = Math.min(100, val);
         alpha = val * 0.01f;
-        needRepaint = true;
-    }
-
-    @Override
-    public void act(float delta) {
-        if (needRepaint) {
-
-/*
-            if (border != null) {
-                border.draw(sp, 1);
-            }
-*/
-
-/*            if (clockTexture != null) {
-                textureData = clockTexture.getTexture().getTextureData();
-                if (!textureData.isPrepared()) {
-                    textureData.prepare();
-                }
-                source = textureData.consumePixmap();
-                dest.drawPixmap(source, portraitTexture.getRegionWidth() - clockTexture.getRegionWidth(), 0,
-                        clockTexture.getRegionX(), clockTexture.getRegionY(),
-                        clockTexture.getRegionWidth(), clockTexture.getRegionHeight());
-            }*/
-
-/*            if (initiativeStrVal != null) {
-                initiativeStrVal.draw(sp, alpha);
-            }
-  */
-/*            TextureRegion textureRegion = new TextureRegion(new Texture(dest));
-
-            imageContainer.setActor(new Image(textureRegion));
-
-            imageContainer.width(getWidth()).height(getHeight()).bottom().left().pack();
-
-            if (clockTexture != null) {
-                if (alpha != 0) {
-                    InitiativePanelParam panelParam = new InitiativePanelParam(textureRegion, curId, clockVal);
-                    GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE, new OnDemandEventCallBack(panelParam));
-                } else {
-                    InitiativePanelParam panelParam = new InitiativePanelParam(curId);
-                    GuiEventManager.trigger(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, new OnDemandEventCallBack(panelParam));
-                }
-            }*/
-            needRepaint = false;
-        }
-
-        if (arrow != null) {
-            arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
-            arrow.setRotation(arrowRotation);
-        }
     }
 
     @Override
@@ -172,33 +93,23 @@ public class UnitView extends BaseView {
     }
 
     public void updateRotation(int val) {
-
-
         if (arrow != null) {
-            if (val== HIDE_ARROW)
-            {
-                arrow.setVisible(false);
-                return;
-            }
             arrowRotation = val + 90;
             arrow.setRotation(arrowRotation);
-            arrow.setVisible(true);
         }
     }
 
     @Override
     protected void sizeChanged() {
-        //setHeight(baseHeight * getScaleY());
-        //setWidth(baseWidth * getScaleX());
 
         if (initiativeStrVal != null) {
             initiativeStrVal.setPosition(
-                    portraitTexture.getRegionWidth() - clockTexture.getRegionWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    getWidth() - clockTexture.getRegionWidth() / 2 - initiativeStrVal.getWidth() / 2,
                     clockTexture.getRegionHeight() / 2 - initiativeStrVal.getHeight() / 2);
         }
 
         if (imageContainer != null) {
-            imageContainer.width(getWidth()).height(getHeight());
+            imageContainer.size(getWidth(), getHeight());
         }
 
         if (icon != null) {
@@ -210,6 +121,8 @@ public class UnitView extends BaseView {
             arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
             arrow.setRotation(arrowRotation);
         }
+
+        updateBorderSize();
     }
 
     @Override
