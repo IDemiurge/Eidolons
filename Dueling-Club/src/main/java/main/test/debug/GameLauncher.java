@@ -51,10 +51,10 @@ public class GameLauncher {
     public boolean LEADER_MOVES_FIRST = false;
     public String ENEMY_PARTY = "Pirate";
     public String PLAYER_PARTY =
-     "Amaltha Soamdath;Anfina Ilarfis;Grufirant Grossklotz;Orthaelion Enloth"
+            "Amaltha Soamdath;Anfina Ilarfis;Grufirant Grossklotz;Orthaelion Enloth"
 //      ";Belia Haevril"
-     ;
-//     "Demir;Brother Anthin;Ogsit Tholmir;Imros the Rangerly;";//"Guy Fox;Fiona Emrin;Donkel Nogvir;";// "Elberen v2;";//"Bandit Archer";//Zail Adelwyn v4
+            ;
+    //     "Demir;Brother Anthin;Ogsit Tholmir;Imros the Rangerly;";//"Guy Fox;Fiona Emrin;Donkel Nogvir;";// "Elberen v2;";//"Bandit Archer";//Zail Adelwyn v4
     public boolean DUMMY_MODE = false;
     public boolean DUMMY_PP = false;
     public Boolean FAST_MODE;

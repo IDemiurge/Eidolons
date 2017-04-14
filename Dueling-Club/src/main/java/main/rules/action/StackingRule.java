@@ -112,9 +112,9 @@ public class StackingRule implements ActionRule {
                                    List<? extends Entity> otherUnits) {
         HashMap<Coordinates, Boolean> bools = cache.get(unit);
         boolean result = false;
-        if (maxSpaceTakenPercentage==100)
+        if (maxSpaceTakenPercentage == 100)
         if (bools != null) {
-            if (bools .containsKey(c)) {
+            if (bools.containsKey(c)) {
                 return bools.get(c);
             }
         } else {
@@ -123,16 +123,16 @@ public class StackingRule implements ActionRule {
         }
 
         //get all units on the cell
-            DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
-            for (Unit u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
-                if (!units.contains(u)) {
-                    units.addCast(u.getType());
-                }
+        DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
+        for (Unit u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
+            if (!units.contains(u)) {
+                units.addCast(u.getType());
             }
-            //check if '1 unit per cell' is on
-            if (maxSpaceTakenPercentage<=0)
-                if (!units.isEmpty())
-                    return false;
+        }
+        //check if '1 unit per cell' is on
+        if (maxSpaceTakenPercentage <= 0)
+            if (!units.isEmpty())
+                return false;
 
 
         if (unit == null) {

@@ -907,9 +907,9 @@ public class Unit extends DC_UnitModel {
             return true;
         }
         if (!getGame().isDebugMode())
-            if ( getGame().getGameMode()== GAME_MODES.ARENA)
-            if (owner.getHeroObj()!= null )
-                if (owner.getHeroObj()!= this){
+            if (getGame().getGameMode() == GAME_MODES.ARENA)
+                if (owner.getHeroObj() != null)
+                    if (owner.getHeroObj() != this) {
             return true;
 }
         if (owner.isAi()) {

@@ -23,11 +23,10 @@ public class OrderEffect extends DC_Effect implements OneshotEffect {
         Order order = OrderFactory.getOrder(partyTargeting, ref.getActive());
 
         if (partyTargeting) {
-            getSource().getAI().getGroup().getMembers().forEach(hero -> trySetOrder(hero,order));
-        }
-        else {
+            getSource().getAI().getGroup().getMembers().forEach(hero -> trySetOrder(hero, order));
+        } else {
             Unit unit = (Unit) ref.getTargetObj();
-              trySetOrder(unit , order);
+            trySetOrder(unit, order);
         }
 
         return true;
@@ -36,9 +35,8 @@ public class OrderEffect extends DC_Effect implements OneshotEffect {
     private void trySetOrder(Unit hero, Order order) {
         int chance = OrderMaster.getSuccessChance(partyTargeting, order, hero, getSource(), ref.getActive());
         if (RandomWizard.chance(chance)) {
-            getGame().getLogManager().logOrderFailed(  order, hero);
-        }
-        else {
+            getGame().getLogManager().logOrderFailed(order, hero);
+        } else {
             hero.getAI().setCurrentOrder(order);
         }
     }

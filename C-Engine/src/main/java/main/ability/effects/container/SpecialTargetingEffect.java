@@ -1,7 +1,7 @@
 package main.ability.effects.container;
 
-import main.ability.effects.Effect;
 import main.ability.effects.ContainerEffect;
+import main.ability.effects.Effect;
 import main.ability.effects.MicroEffect;
 import main.data.ability.OmittedConstructor;
 import main.elements.conditions.Conditions;

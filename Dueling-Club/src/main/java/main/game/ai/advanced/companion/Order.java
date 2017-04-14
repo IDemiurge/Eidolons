@@ -13,10 +13,11 @@ public class Order {
     String actionType;
     private Map<GOAL_TYPE, Integer> priorityModsMap;
 
-    public Order(  String arg) {
+    public Order(String arg) {
         this.arg = arg;
     }
-    public Order(  ORDER_TYPE type, String arg) {
+
+    public Order(ORDER_TYPE type, String arg) {
         this.arg = arg;
         this.type = type;
     }
@@ -53,12 +54,11 @@ public class Order {
         this.actionType = actionType;
     }
 
+    public Map<GOAL_TYPE, Integer> getPriorityModsMap() {
+        return priorityModsMap;
+    }
 
     public void setPriorityModsMap(Map<GOAL_TYPE, Integer> priorityModsMap) {
         this.priorityModsMap = priorityModsMap;
-    }
-
-    public Map<GOAL_TYPE, Integer> getPriorityModsMap() {
-        return priorityModsMap;
     }
 }

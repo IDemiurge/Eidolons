@@ -43,26 +43,26 @@ public class AiMaster extends AiHandler {
     protected CellPrioritizer cellPrioritizer;
     protected PathSequenceConstructor pathSequenceConstructor;
     protected TurnSequenceConstructor turnSequenceConstructor;
-    private   SituationAnalyzer situationAnalyzer;
+    private SituationAnalyzer situationAnalyzer;
     private ThreatAnalyzer threatAnalyzer;
-    private List<AiHandler> handlers=     new LinkedList<>() ;
+    private List<AiHandler> handlers = new LinkedList<>();
 
     public AiMaster(DC_Game game) {
-        super(null );
+        super(null);
         this.game = game;
         this.master = this;
         this.actionSequenceConstructor = new ActionSequenceConstructor(this);
-        this.taskManager =  new TaskManager(this);
-        this.goalManager =  new GoalManager(this);
-        this.actionManager =  new ActionManager(this);
-        this.pruneMaster =  new PruneMaster(this);
-        this.pathBuilder =  PathBuilder.getInstance(this);
-        this.targetingMaster =  new TargetingMaster(this);
-        this.analyzer =  new Analyzer(this);
-        this.paramAnalyzer =  new ParamAnalyzer(this);
-        this.situationAnalyzer =  new SituationAnalyzer(this);
-        this.threatAnalyzer =  new ThreatAnalyzer(this);
-        this.cellPrioritizer =  new CellPrioritizer(this);
+        this.taskManager = new TaskManager(this);
+        this.goalManager = new GoalManager(this);
+        this.actionManager = new ActionManager(this);
+        this.pruneMaster = new PruneMaster(this);
+        this.pathBuilder = PathBuilder.getInstance(this);
+        this.targetingMaster = new TargetingMaster(this);
+        this.analyzer = new Analyzer(this);
+        this.paramAnalyzer = new ParamAnalyzer(this);
+        this.situationAnalyzer = new SituationAnalyzer(this);
+        this.threatAnalyzer = new ThreatAnalyzer(this);
+        this.cellPrioritizer = new CellPrioritizer(this);
         pathSequenceConstructor = new PathSequenceConstructor(master);
         turnSequenceConstructor = new TurnSequenceConstructor(master);
 
@@ -73,18 +73,18 @@ public class AiMaster extends AiHandler {
 
     @Override
     public void initialize() {
-        this.actionSequenceConstructor  .initialize();
-        this.taskManager  .initialize();
-        this.goalManager  .initialize();
-        this.actionManager  .initialize();
-        this.pruneMaster  .initialize();
-        this.pathBuilder  .initialize();
-        this.targetingMaster  .initialize();
-        this.analyzer  .initialize();
-        this.paramAnalyzer  .initialize();
-        this.cellPrioritizer  .initialize();
-        this.pathSequenceConstructor  .initialize();
-        this.turnSequenceConstructor  .initialize();
+        this.actionSequenceConstructor.initialize();
+        this.taskManager.initialize();
+        this.goalManager.initialize();
+        this.actionManager.initialize();
+        this.pruneMaster.initialize();
+        this.pathBuilder.initialize();
+        this.targetingMaster.initialize();
+        this.analyzer.initialize();
+        this.paramAnalyzer.initialize();
+        this.cellPrioritizer.initialize();
+        this.pathSequenceConstructor.initialize();
+        this.turnSequenceConstructor.initialize();
     }
 
     public void setUnit(Unit unit) {

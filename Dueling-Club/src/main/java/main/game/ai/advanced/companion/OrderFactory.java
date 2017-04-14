@@ -24,9 +24,9 @@ public class OrderFactory {
         Map<GOAL_TYPE, Integer> modMap = new HashMap<>();
 
         Arrays.stream(ORDER_PRIORITY_MODS.values()).forEach(mod ->
-         Arrays.stream(mod.getGoalTypes()).forEach(type ->
-          MapMaster.addToIntegerMap(modMap, type,
-          active.getIntParam(getParam(mod), false))));
+                Arrays.stream(mod.getGoalTypes()).forEach(type ->
+                        MapMaster.addToIntegerMap(modMap, type,
+                                active.getIntParam(getParam(mod), false))));
 
         order.setPriorityModsMap(modMap);
         return order;

@@ -76,8 +76,8 @@ public class Choice {
             return actions.get(0).getActive().getName() + " to " + coordinates;
         }
         return StringMaster.joinStringList(StringMaster.convertToNameIntList(AiUnitActionMaster
-         .getActionObjectList(actions)), ", ")
-         + " to " + coordinates;
+                .getActionObjectList(actions)), ", ")
+                + " to " + coordinates;
     }
 
     public Coordinates getCoordinates() {

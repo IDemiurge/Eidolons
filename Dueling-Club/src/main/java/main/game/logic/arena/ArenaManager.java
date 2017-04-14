@@ -124,17 +124,17 @@ public class ArenaManager {
         spawnManager.init();
 
         spawnManager.spawnParty(true);
-        LogMaster.log(1, "spawned Party "+ game.getPlayer(true).getControlledUnits());
+        LogMaster.log(1, "spawned Party " + game.getPlayer(true).getControlledUnits());
 
         if (game.getGameMode() == GAME_MODES.ARENA) {
             Unit hero = (Unit) game.getPlayer(true).getControlledUnits().iterator().next();
             game.getPlayer(true).setHeroObj(hero);
-            LogMaster.log(1, "MAIN HERO: "+ hero);
+            LogMaster.log(1, "MAIN HERO: " + hero);
         }
 
         spawnManager.spawnParty(false);
         if (!game.getPlayer(false).getControlledUnits().isEmpty())
-        LogMaster.log(1, "spawn enemy party "+ game.getPlayer(false).getControlledUnits());
+            LogMaster.log(1, "spawn enemy party " + game.getPlayer(false).getControlledUnits());
 
         if (game.getData() != null) {
             LogMaster.log(1, "processing UnitData " + game.getData());

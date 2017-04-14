@@ -18,12 +18,12 @@ public class OrderMaster extends AiHandler {
                                        Unit target, Unit source, ActiveObj active) {
         int chance = DEFAULT_CHANCE;
         chance += source.getIntParam(PARAMS.LEADERSHIP_MASTERY);
-        chance += target.getIntParam(PARAMS.ORGANIZATION)-50;
+        chance += target.getIntParam(PARAMS.ORGANIZATION) - 50;
 //        order.geti
 //      chance=MathMaster.applyMod(chance, active.getIntParam(PARAMS.ORDER_CHANCE_MOD,
 //       false));
         if (partyTargeting)
-            chance = chance*75/100;
+            chance = chance * 75 / 100;
 
         //battle spirit?
 
@@ -32,7 +32,7 @@ public class OrderMaster extends AiHandler {
 
     //atomic logic effects?
 
-    public enum ORDER_PRIORITY_MODS{
+    public enum ORDER_PRIORITY_MODS {
         ATTACK(GOAL_TYPE.ATTACK),
         APPROACH,
         RESTORE,
@@ -45,30 +45,17 @@ public class OrderMaster extends AiHandler {
 
 
         STEALTH,
-        GUARD(),
-        ;
+        GUARD(),;
         GOAL_TYPE[] goalTypes;
-
-        public GOAL_TYPE[] getGoalTypes() {
-            return goalTypes;
-        }
 
         ORDER_PRIORITY_MODS(GOAL_TYPE... goalTypes) {
             this.goalTypes = goalTypes;
         }
+
+        public GOAL_TYPE[] getGoalTypes() {
+            return goalTypes;
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //    public Action checkFollowOrder(UnitAI ai) {
@@ -86,7 +73,6 @@ public class OrderMaster extends AiHandler {
 //        return order.getSequence().getNextAction();
 //        // preCheck re-build sequence
 //    }
-
 
 
 //    private GOAL_TYPE getGoalType(ORDER_TYPE type) {

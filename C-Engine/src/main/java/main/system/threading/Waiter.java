@@ -42,12 +42,12 @@ public class Waiter {
         new Thread(new Runnable() {
             public void run() {
                 Object monitor = new Object();
-                while(true){
-                        if (timeElapsed >= timeLimit) {
-                            break;
-                        }
+                while (true) {
+                    if (timeElapsed >= timeLimit) {
+                        break;
+                    }
                     try {
-                       monitor. wait(PING_PERIOD);
+                        monitor.wait(PING_PERIOD);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

@@ -2,8 +2,8 @@ package main.system.entity;
 
 import main.content.C_OBJ_TYPE;
 import main.content.ContentManager;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -21,8 +21,8 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.Formula;
 
@@ -39,16 +39,16 @@ public class FilterMaster {
 
     }
 
-    public static Collection<? extends  Entity> filterByPropJ8
-     (Collection<? extends  Entity> list,
-                                               String prop, String value) {
+    public static Collection<? extends Entity> filterByPropJ8
+            (Collection<? extends Entity> list,
+             String prop, String value) {
         list.removeIf(getPredicateProperty(prop, value));
         return list;
     }
 
     private static Predicate<Entity> getPredicateProperty(String prop, String value) {
         return e -> {
-         return    e.checkProperty(ContentManager.getPROP(prop), value);
+            return e.checkProperty(ContentManager.getPROP(prop), value);
         };
     }
 
