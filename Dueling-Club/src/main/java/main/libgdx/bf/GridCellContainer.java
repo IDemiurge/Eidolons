@@ -3,12 +3,9 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
-import main.game.core.game.DC_Game;
 
 import java.util.List;
-import java.util.Map;
 
 public class GridCellContainer extends GridCell {
 
@@ -33,11 +30,8 @@ public class GridCellContainer extends GridCell {
         return this;
     }
 
-    public void setObjects(List<UnitViewOptions> objects) {
-        for (UnitViewOptions object : objects) {
-            BaseView im = new UnitView(object);
-            addActor(im);
-        }
+    public void setObjects(List<BaseView> objects) {
+        objects.forEach(this::addActor);
     }
 
     private void recalcUnitViewBounds() {
@@ -111,21 +105,16 @@ public class GridCellContainer extends GridCell {
         return a != null ? a : null;
     }
 
-    public void setOverlays(List<UnitViewOptions> overlays) {
+    public void setOverlays(List<OverlayView> overlays) {
         if (overlays.size() == 0) {
             return;
         }
 //        final int xOffset = (int) (getW() *OverlayView.SCALE);
 //        final int yOffset = (int) (getH() *OverlayView.SCALE);
-        final int xOffset = (int) (getW() / 3);
-        final int yOffset = (int) (getH() / 3);
-        Map<Coordinates, Map<Unit, Coordinates.DIRECTION>> directionMap = DC_Game.game.getDirectionMap();
-        Map<Unit, Coordinates.DIRECTION> heroObjDIRECTIONMap = directionMap.get(new Coordinates(getGridX(), getGridY()));
-        overlays.forEach(unitViewOptions -> {
-            Coordinates.DIRECTION direction = null;
-            if (heroObjDIRECTIONMap != null) {
-                direction = heroObjDIRECTIONMap.get(unitViewOptions.getObj());
-            }
+        final int xOffset = (int) (getWidth() / 3);
+        final int yOffset = (int) (getHeight() / 3);
+        overlays.forEach(view -> {
+            Coordinates.DIRECTION direction = view.getDirection();
             int calcXOffset = 0;
             int calcYOffset = 0;
             if (direction == null) {
@@ -162,9 +151,7 @@ public class GridCellContainer extends GridCell {
                 }
             }
 
-            OverlayView view = new OverlayView(unitViewOptions);
             view.setBounds(calcXOffset, calcYOffset, xOffset, yOffset);
-            view.setScale(OverlayView.SCALE, OverlayView.SCALE);
             addActor(view);
             overlayCount++;
         });
