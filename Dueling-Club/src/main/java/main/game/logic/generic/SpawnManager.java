@@ -50,7 +50,7 @@ import java.util.*;
 public class SpawnManager {
 
     public static final Integer MAX_SPACE_PERC_CREEPS = 25 ; // 1 per cell only
-    private static final Integer MAX_SPACE_PERC_PARTY = 100;
+    private static final Integer MAX_SPACE_PERC_PARTY = 0;
     private static boolean playerUnitGroupMode;
     private static boolean enemyUnitGroupMode;
     Map<Dungeon, Map<MapBlock, Map<Coordinates, ObjType>>> specialEncounters = new HashMap<>();

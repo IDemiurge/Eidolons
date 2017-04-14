@@ -56,7 +56,7 @@ public class AiMaster extends AiHandler {
         this.goalManager =  new GoalManager(this);
         this.actionManager =  new ActionManager(this);
         this.pruneMaster =  new PruneMaster(this);
-        this.pathBuilder =  new PathBuilder(this);
+        this.pathBuilder =  PathBuilder.getInstance(this);
         this.targetingMaster =  new TargetingMaster(this);
         this.analyzer =  new Analyzer(this);
         this.paramAnalyzer =  new ParamAnalyzer(this);

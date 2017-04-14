@@ -58,10 +58,12 @@ public class PresetLauncher {
 
         LAUNCH.Standoff_Preset.gameMode = GAME_MODES.ARENA;
         LAUNCH.Standoff_Preset.dungeonPath = "Pit.xml";
+        LAUNCH.Standoff_Preset.maxAnimTime=2000;
 
         LAUNCH.Standoff.gameMode = GAME_MODES.ARENA;
         LAUNCH.Standoff. workspaceFilter=WORKSPACE_GROUP.TEST;
         LAUNCH.Standoff. PARTY_CODE= CODE.CHOOSE;
+        LAUNCH.Standoff.maxAnimTime=2000;
 
         LAUNCH.Gui.graphicsTest = true;
         LAUNCH.Gui.visionHacked = true;
@@ -388,6 +390,7 @@ public class PresetLauncher {
         public int PARTY_CODE;
         public GAME_MODES gameMode;
             public WORKSPACE_GROUP workspaceFilter;
+            public int maxAnimTime;
 
             //test launches
         LAUNCH() {

@@ -422,6 +422,10 @@ public class UnitAI {
         return currentOrder;
     }
 
+    public Integer getGoalPriorityMod(GOAL_TYPE goalType) {
+        return currentOrder.getPriorityModsMap().get(goalType);
+    }
+
     public void setCurrentOrder(Order currentOrder) {
         this.currentOrder = currentOrder;
     }

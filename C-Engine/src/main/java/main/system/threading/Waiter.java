@@ -41,11 +41,18 @@ public class Waiter {
     private void startPingingThread() {
         new Thread(new Runnable() {
             public void run() {
-                try {
-                    wait(PING_PERIOD);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                Object monitor = new Object();
+                while(true){
+                        if (timeElapsed >= timeLimit) {
+                            break;
+                        }
+                    try {
+                       monitor. wait(PING_PERIOD);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+
                 lock.lock();
                 waiting.signal();
                 lock.unlock();

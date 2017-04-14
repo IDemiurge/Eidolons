@@ -124,10 +124,13 @@ public class ArenaManager {
         spawnManager.init();
 
         spawnManager.spawnParty(true);
-     Unit   hero = (Unit) game.getPlayer(true).getControlledUnits().iterator().next();
-        game.getPlayer(true).setHeroObj(hero);
         LogMaster.log(1, "spawned Party "+ game.getPlayer(true).getControlledUnits());
-        LogMaster.log(1, "MAIN HERO: "+ hero);
+
+        if (game.getGameMode() == GAME_MODES.ARENA) {
+            Unit hero = (Unit) game.getPlayer(true).getControlledUnits().iterator().next();
+            game.getPlayer(true).setHeroObj(hero);
+            LogMaster.log(1, "MAIN HERO: "+ hero);
+        }
 
         spawnManager.spawnParty(false);
         if (!game.getPlayer(false).getControlledUnits().isEmpty())

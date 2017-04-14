@@ -3,6 +3,8 @@ package main.system.text;
 import main.content.enums.rules.VisionEnums;
 import main.entity.Ref;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.unit.Unit;
+import main.game.ai.advanced.companion.Order;
 import main.game.battlefield.Coordinates;
 import main.game.core.game.Game;
 import main.system.EventCallbackParam;
@@ -23,6 +25,12 @@ public class DC_LogManager extends LogManager {
      * Do I need to have information levels? What is the best way to access the
      * log and control its filtering?
      */
+
+    public void logOrderFailed(Order order, Unit unit) {
+        String entry = unit.getName() + " has failed to obey " + order.toString();
+        entry = StringMaster.MESSAGE_PREFIX_PROCEEDING + entry;
+        LogMaster.log(1, entry);
+    }
     public void logMovement(DC_Obj obj, Coordinates c) {
         if (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE) {
             return;
@@ -58,4 +66,5 @@ public class DC_LogManager extends LogManager {
     public boolean log(LOG log, String entry, ENTRY_TYPE enclosingEntryType) {
         return super.log(log, entry, enclosingEntryType);
     }
+
 }

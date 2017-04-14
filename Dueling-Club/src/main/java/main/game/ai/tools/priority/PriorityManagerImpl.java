@@ -228,6 +228,11 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         // if (behaviorMode != BEHAVIOR_MODE.PANIC)
         applyCostPenalty(as);
         applySequenceLengthPenalty(as);
+
+        mod = unit_ai.getGoalPriorityMod(as.getTask().getType());
+        if (mod != null) {
+            priority = MathMaster.applyMod(priority, mod);
+        }
         LogMaster.log(1, "AI: " + priority + " priority for " + as);
         return priority;
 

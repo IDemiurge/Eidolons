@@ -106,7 +106,8 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
     }
 
     protected boolean isZLevelDependent() {
-        return true;
+//        return getGame().isMultiLevel();
+        return false;
     }
 
     public Effect getEffects() {

@@ -16,7 +16,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
  * Created by JustMe on 3/23/2017.
  */
 public class GameLoop {
-    private static final int MAX_ANIM_TIME = 2500;
+    private static   Integer MAX_ANIM_TIME  ;
     private Unit activeUnit;
     private DC_Game game;
     private DC_ActiveObj activatingAction;
@@ -70,6 +70,8 @@ public class GameLoop {
     }
 
     private void waitForAnimations() {
+        if (MAX_ANIM_TIME!=null )
+            if (MAX_ANIM_TIME>0)
         if (AnimMaster.getInstance().isDrawing())
         WaitMaster.waitForInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, MAX_ANIM_TIME);
     }
@@ -127,4 +129,7 @@ public class GameLoop {
         return activatingAction;
     }
 
+    public static void setMaxAnimTime(int maxAnimTime) {
+        MAX_ANIM_TIME = maxAnimTime;
+    }
 }
