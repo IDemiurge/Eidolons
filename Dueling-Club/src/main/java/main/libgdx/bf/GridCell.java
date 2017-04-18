@@ -30,9 +30,9 @@ public class GridCell extends Group implements Borderable {
 
     public GridCell init() {
         backImage = new Image(backTexture);
+        backImage.setFillParent(true);
         addActor(backImage);
-        setWidth(backImage.getWidth());
-        setHeight(backImage.getHeight());
+        setSize(GridConst.CELL_W, GridConst.CELL_H);
 
         cordsText = new Label(getGridX() + ":" + getGridY(), StyleHolder.getDefaultLabelStyle());
         cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2, getHeight() / 2 - cordsText.getHeight() / 2);
