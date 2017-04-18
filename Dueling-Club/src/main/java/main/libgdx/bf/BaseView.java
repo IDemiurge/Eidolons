@@ -8,7 +8,6 @@ public class BaseView extends Group implements Borderable {
     protected Image border = null;
 
     public BaseView(UnitViewOptions o) {
-        o.getUnitMap().put(o.getObj(), this);//todo fix this shit
     }
 
     @Override

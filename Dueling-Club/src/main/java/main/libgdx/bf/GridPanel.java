@@ -20,14 +20,12 @@ import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.bf.mouse.GridMouseListener;
 import main.libgdx.gui.panels.dc.InitiativePanelParam;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
-import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
@@ -61,7 +59,6 @@ public class GridPanel extends Group {
     private int cols;
     private int rows;
     private LightingManager lightingManager;
-    private boolean muteEventLog = true;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -161,8 +158,7 @@ public class GridPanel extends Group {
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING
                     || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
-            {
+                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE) {
                 BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET);
                 BaseView view = unitMap.get(hero);
                 if (view != null && view instanceof UnitView) {
@@ -235,11 +231,10 @@ public class GridPanel extends Group {
 
                 caught = true;
             }
-            if (!muteEventLog) {
-                if (!caught) {
-                    System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
-                }
-            }
+
+/*            if (!caught) {
+                System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
+            }*/
         });
 
 
@@ -250,26 +245,18 @@ public class GridPanel extends Group {
                 System.out.println("unitMap not initiatilized at ACTIVE_UNIT_SELECTED!");
                 return;
             }
+
             if (view.getParent() instanceof GridCellContainer) {
                 ((GridCellContainer) view.getParent()).popupUnitView(view);
             }
 
             if (hero.isMine()) {
-                GuiEventManager.trigger(SHOW_GREEN_BORDER, new EventCallbackParam(view));
+                GuiEventManager.trigger(SHOW_GREEN_BORDER, view);
 
-                GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL,
-                        new EventCallbackParam(new PanelActionsDataSource((Unit) hero)));
-
-                if (CoreEngine.isGuiTestMode()) {
-
-                    Eidolons.game.getInventoryManager().setOperationsPool(2);
-                    GuiEventManager.trigger(SHOW_INVENTORY,
-                            new EventCallbackParam(new InventoryDataSource((Unit) hero)));
-                }
-
+                GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL, new PanelActionsDataSource((Unit) hero));
             } else {
-                GuiEventManager.trigger(SHOW_RED_BORDER, new EventCallbackParam(view));
-                GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL, new EventCallbackParam(null));
+                GuiEventManager.trigger(SHOW_RED_BORDER, view);
+                GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL, null);
             }
         });
 
@@ -289,23 +276,27 @@ public class GridPanel extends Group {
             }
 
             for (Coordinates coordinates : map.keySet()) {
-                List<UnitViewOptions> options = new ArrayList<>();
-                List<UnitViewOptions> overlays = new ArrayList<>();
-// TODO how can it throw NullPointer? (21.02)
+                List<BaseView> views = new ArrayList<>();
+                List<OverlayView> overlays = new ArrayList<>();
+
                 if (map.get(coordinates) == null) {
                     continue;
                 }
                 for (BattleFieldObject object : map.get(coordinates)) {
                     if (!object.isOverlaying()) {
-                        options.add(new UnitViewOptions(object, unitMap));
+                        final BaseView baseView = UnitViewFactory.create(object);
+                        unitMap.put(object, baseView);
+                        views.add(baseView);
                     } else {
-                        overlays.add(new UnitViewOptions(object, unitMap));
+                        final OverlayView overlay = UnitViewFactory.createOverlay(object);
+                        unitMap.put(object, overlay);
+                        overlays.add(overlay);
                     }
                 }
 
                 GridCellContainer cellContainer =
                         new GridCellContainer(emptyImage, coordinates.getX(), coordinates.getY()).init();
-                cellContainer.setObjects(options);
+                cellContainer.setObjects(views);
                 cellContainer.setOverlays(overlays);
 
                 cells[coordinates.getX()][rows - 1 - coordinates.getY()].addInnerDrawable(cellContainer);
@@ -349,8 +340,8 @@ public class GridPanel extends Group {
     }
 
     private void addUnitView(BattleFieldObject heroObj) {
-        UnitViewOptions uvo = new UnitViewOptions(heroObj, unitMap);
-        new UnitView(uvo);
+        BaseView uv = UnitViewFactory.create(heroObj);
+        unitMap.put(heroObj, uv);
         moveUnitView(heroObj);
     }
 

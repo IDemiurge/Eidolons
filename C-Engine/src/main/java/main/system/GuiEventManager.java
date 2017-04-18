@@ -27,8 +27,16 @@ public class GuiEventManager {
         getInstance().bind_(type, event);
     }
 
-    public static void trigger(final GuiEventType type, final EventCallbackParam obj) {
-        getInstance().trigger_(type, obj);
+    public static void trigger(final GuiEventType type, Object obj) {
+        EventCallbackParam eventCallback;
+
+        if (obj instanceof EventCallbackParam) {
+            eventCallback = (EventCallbackParam) obj;
+        } else {
+            eventCallback = new EventCallbackParam(obj);
+        }
+
+        getInstance().trigger_(type, eventCallback);
     }
 
     public static void processEvents() {
