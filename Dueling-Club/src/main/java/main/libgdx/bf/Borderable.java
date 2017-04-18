@@ -1,15 +1,9 @@
 package main.libgdx.bf;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public interface Borderable {
-    int getW();
+    TextureRegion getBorder();
 
-    int getH();
-
-    Image getBorder();
-
-    void setBorder(Image image);
-
-    void updateBorderSize();
+    void setBorder(TextureRegion texture);
 }

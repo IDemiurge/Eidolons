@@ -45,7 +45,7 @@ public class GridCellContainer extends GridCell {
         int i = 0;
 
         for (Actor actor : getChildren()) {
-            if (actor instanceof UnitView) {
+            if (actor instanceof GridUnitView) {
                 actor.setBounds(
                         perImageOffsetX * i,
                         perImageOffsetY * ((unitViewCount - 1) - i),
@@ -59,7 +59,7 @@ public class GridCellContainer extends GridCell {
 
     public void addActor(Actor actor) {
         super.addActor(actor);
-        if (actor instanceof UnitView) {
+        if (actor instanceof GridUnitView) {
             unitViewCount++;
             recalcUnitViewBounds();
         }
@@ -68,7 +68,7 @@ public class GridCellContainer extends GridCell {
     public boolean removeActor(Actor actor) {
         boolean result = super.removeActor(actor);
 
-        if (result && actor instanceof UnitView) {
+        if (result && actor instanceof GridUnitView) {
             unitViewCount--;
             recalcUnitViewBounds();
             if (unitViewCount <= 0) {
@@ -84,7 +84,7 @@ public class GridCellContainer extends GridCell {
         final int perImageOffsetX = ((int) getWidth()) / 2 / unitViewCount;
         final int perImageOffsetY = ((int) getHeight()) / 2 / unitViewCount;
         for (Actor actor : getChildren()) {
-            if (actor instanceof UnitView) {
+            if (actor instanceof GridUnitView) {
                 actor.setX(perImageOffsetX * i);
                 actor.setY(perImageOffsetY * ((unitViewCount - 1) - i++));
             }

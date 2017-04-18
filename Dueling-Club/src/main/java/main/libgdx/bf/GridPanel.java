@@ -69,7 +69,7 @@ public class GridPanel extends Group {
         unitMap.keySet().forEach(obj -> {
             if (!obj.isOverlaying()) {
                 OUTLINE_TYPE outline = obj.getOutlineType();
-                UnitView uv = (UnitView) unitMap.get(obj);
+                GridUnitView uv = (GridUnitView) unitMap.get(obj);
 
                 TextureRegion texture = null;
                 if (outline != null) {
@@ -137,7 +137,7 @@ public class GridPanel extends Group {
         });
         GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
             BattleFieldObject unit = (BattleFieldObject) param.get();
-            UnitView view = (UnitView) unitMap.get(unit);
+            GridUnitView view = (GridUnitView) unitMap.get(unit);
             GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL,
                     new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
             removeUnitView(unit);
@@ -161,8 +161,8 @@ public class GridPanel extends Group {
                     || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE) {
                 BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET);
                 BaseView view = unitMap.get(hero);
-                if (view != null && view instanceof UnitView) {
-                    UnitView unitView = ((UnitView) view);
+                if (view != null && view instanceof GridUnitView) {
+                    GridUnitView unitView = ((GridUnitView) view);
                     unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
                 }
                 caught = true;
@@ -304,7 +304,7 @@ public class GridPanel extends Group {
 
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
                 Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
-                UnitView uv = (UnitView) unitMap.get(p.getLeft());
+                GridUnitView uv = (GridUnitView) unitMap.get(p.getLeft());
                 uv.updateInitiative(p.getRight());
             });
             GuiEventManager.bind(UNIT_CREATED, p -> {
@@ -330,8 +330,6 @@ public class GridPanel extends Group {
         }
         uv.setVisible(true);
         cells[c.x][rows1 - c.y].getInnerDrawable().addActor(uv);
-
-        getCellBorderManager().updateBorderSize();
 
         if (lightingManager != null) {
             lightingManager.updatePos(heroObj);
