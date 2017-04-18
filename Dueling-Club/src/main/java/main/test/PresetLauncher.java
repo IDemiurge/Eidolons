@@ -67,6 +67,7 @@ public class PresetLauncher {
 
         LAUNCH.Gui.graphicsTest = true;
         LAUNCH.Gui.visionHacked = true;
+        LAUNCH.Gui.freeActions = true;
 
         LAUNCH.Anims.visionHacked = true;
         LAUNCH.AI.visionHacked = true;

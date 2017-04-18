@@ -293,15 +293,15 @@ public class RadialManager {
          DC_Game.game.getUnits().parallelStream().distinct().collect(Collectors.toSet())
          : getFilter(active).getObjects();
 
-        final boolean valid = objSet.size() > 0;
-
+        final  boolean valid  = objSet.size() > 0 &&
+         active.canBeActivated();
         return getRadialValueContainer(
          valid ?
           getOrCreateR(active.getImagePath()) :
           getOrCreateGrayscaleR(active.getImagePath()),
          () -> {
              if (valid) {
-                 WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(active, new Context(active.getRef())));
+                 WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(active, new Context(active.getOwnerObj().getRef())));
              } else {
                  FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.ERROR, "", active);
              }
