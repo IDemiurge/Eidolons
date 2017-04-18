@@ -20,19 +20,23 @@ public static void replaceSpecEffectsWithBonusDamage(){
     private static String removeDuplicateWalls(String content) {
         int begin = content.lastIndexOf("<Objects>") + "<Objects>".length();
         int finish = content.indexOf("</Objects>");
-        if (begin>finish)
+        if (begin > finish) {
             return content;
-        if (begin<0)
+        }
+        if (begin < 0) {
             return content;
-        if (finish<0)
+        }
+        if (finish < 0) {
             return content;
+        }
         String objectsNode = content.substring(begin, finish);
         String cleanedObjectsNode = objectsNode;
         List<String> list = new LinkedList<>();
         for (String substring : StringMaster.openContainer(cleanedObjectsNode, ",")) {
 
-            if (list.contains(substring))
-                cleanedObjectsNode=   cleanedObjectsNode.replaceFirst(substring+",", "");
+            if (list.contains(substring)) {
+                cleanedObjectsNode = cleanedObjectsNode.replaceFirst(substring + ",", "");
+            }
             if (check(substring)) {
                 list.add(substring);
                 continue;
@@ -40,8 +44,9 @@ public static void replaceSpecEffectsWithBonusDamage(){
 
         }
 
-        if (objectsNode.length() !=cleanedObjectsNode.length() )
-            content=content.replace(objectsNode, cleanedObjectsNode);
+        if (objectsNode.length() != cleanedObjectsNode.length()) {
+            content = content.replace(objectsNode, cleanedObjectsNode);
+        }
 
         return content;
     }

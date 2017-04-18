@@ -25,9 +25,12 @@ public class DC_HeroManager extends HeroManager {
     @Override
     protected int addJewelryItem(Unit hero, Entity type) {
         DC_HeroItemObj item = null;
-        if (type instanceof DC_JewelryObj) item = (DC_HeroItemObj) type;
-        else item = (DC_HeroItemObj) ObjUtilities
-         .findObjByType(type, hero.getInventory());
+        if (type instanceof DC_JewelryObj) {
+            item = (DC_HeroItemObj) type;
+        } else {
+            item = (DC_HeroItemObj) ObjUtilities
+                    .findObjByType(type, hero.getInventory());
+        }
         int result = super.addJewelryItem(hero, type);
         if (result == 0) {
             return 0;
@@ -92,8 +95,9 @@ public class DC_HeroManager extends HeroManager {
     @Override
     public void removeQuickSlotItem(Unit hero, Entity type) {
         DC_QuickItemObj item = null;
-        if (type instanceof DC_QuickItemObj)
+        if (type instanceof DC_QuickItemObj) {
             item = (DC_QuickItemObj) type;
+        }
         for (DC_QuickItemObj itemObj : hero.getQuickItems()) {
             if (itemObj.getType() == type) {
                 item = itemObj;
@@ -126,8 +130,9 @@ public class DC_HeroManager extends HeroManager {
         if (hero.isQuickSlotsFull()) {
             return 0;
         }
-        if (type instanceof DC_HeroItemObj)
+        if (type instanceof DC_HeroItemObj) {
             return addQuickItem_(hero, (DC_HeroItemObj) type);
+        }
         for (DC_HeroItemObj itemObj : hero.getInventory()) {
             if (itemObj.getType() == type) {
                 return addQuickItem_(hero, itemObj);
@@ -155,18 +160,20 @@ public class DC_HeroManager extends HeroManager {
         }
         if (type instanceof DC_HeroItemObj) {
             slotItem = (DC_HeroItemObj) type;
-        } else
+        } else {
             for (DC_HeroItemObj item : hero.getInventory()) {
                 if (item.getType() == type) {
                     slotItem = item;
                     break;
                 }
             }// item
+        }
         hero.setItem(slotItem, slot);
         if (quick != null) {
             hero.removeQuickItem(quick);
-        }  else
-        hero.removeFromInventory(slotItem);
+        } else {
+            hero.removeFromInventory(slotItem);
+        }
 
         result++;
 

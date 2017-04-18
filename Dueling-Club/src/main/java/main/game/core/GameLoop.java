@@ -16,13 +16,17 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
  * Created by JustMe on 3/23/2017.
  */
 public class GameLoop {
-    private static   Integer MAX_ANIM_TIME  ;
+    private static Integer MAX_ANIM_TIME;
     private Unit activeUnit;
     private DC_Game game;
     private DC_ActiveObj activatingAction;
 
     public GameLoop(DC_Game game) {
         this.game = game;
+    }
+
+    public static void setMaxAnimTime(int maxAnimTime) {
+        MAX_ANIM_TIME = maxAnimTime;
     }
 
     public void start() {
@@ -34,22 +38,35 @@ public class GameLoop {
     //
     private void roundLoop() {
         game.getStateManager().newRound();
+        boolean retainActiveUnit=false;
         while (true) {
             Boolean result = game.getTurnManager().nextAction();
-            if (result == null)
+            if (result == null) {
                 break;
-            if (!result)
+            }
+            if (!result) {
                 continue;
+            }
+            if (!retainActiveUnit)
             activeUnit = game.getTurnManager().getActiveUnit();
-            if (activeUnit == null) break;
-
-
-            if (makeAction())
+            retainActiveUnit=false;
+            if (activeUnit == null) {
                 break;
+            }
+            result = makeAction();
+            if (result == null )
+            {
+                retainActiveUnit=true;
+                continue;
+            }
+            if (result) {
+                //end round
+                break;
+            }
 
 
         }
-        game.getManager().endTurn();
+        game.getManager().endRound();
     }
 
     public DC_Game getGame() {
@@ -58,7 +75,7 @@ public class GameLoop {
 
     private Boolean makeAction() {
 
-        Boolean result=null ;
+        Boolean result = null;
         if (game.getManager().getActiveObj().isAiControlled()) {
             result = activateAction(waitForAI());
         } else {
@@ -70,31 +87,37 @@ public class GameLoop {
     }
 
     private void waitForAnimations() {
-        if (MAX_ANIM_TIME!=null )
-            if (MAX_ANIM_TIME>0)
-        if (AnimMaster.getInstance().isDrawing())
-        WaitMaster.waitForInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, MAX_ANIM_TIME);
+        if (MAX_ANIM_TIME != null) {
+            if (MAX_ANIM_TIME > 0) {
+                if (AnimMaster.getInstance().isDrawing()) {
+                    WaitMaster.waitForInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, MAX_ANIM_TIME);
+                }
+            }
+        }
     }
 
     private Boolean activateAction(ActionInput input) {
-        if (input == null )
+        if (input == null) {
             return true;
-        boolean result=false;
+        }
+        boolean result = false;
         try {
             activatingAction = input.getAction();
             activatingAction.setTargetObj(input.getContext().getTargetObj());
             activatingAction.setTargetGroup(input.getContext().getGroup());
-            result=   input.getAction().getHandler().activateOn(input.getContext());
+            result = input.getAction().getHandler().activateOn(input.getContext());
         } catch (Exception e) {
             e.printStackTrace();
-            getGame().getManager().unitActionCompleted(input.getAction(), true);
             return true;
         } finally {
             activatingAction = null;
-        }if (!result) return false;
-            int timeCost = input.getAction().getHandler().getTimeCost();
+        }
+        if (!result) {
+            return false;
+        }
+        int timeCost = input.getAction().getHandler().getTimeCost();
         Boolean endTurn = getGame().getRules().getTimeRule().
-        actionComplete(input.getAction(), timeCost);
+                actionComplete(input.getAction(), timeCost);
         if (!endTurn) {
             game.getManager().reset();
             if (ChargeRule.checkRetainUnitTurn(input.getAction())) {
@@ -102,11 +125,10 @@ public class GameLoop {
             }
         }
 
-        getGame().getManager().unitActionCompleted(input.getAction(), endTurn);
 
-        if (BooleanMaster.isTrue(endTurn))
+        if (BooleanMaster.isTrue(endTurn)) {
             return true;
-        else {
+        } else {
             game.getTurnManager().
              resetInitiative(false);
         }
@@ -119,17 +141,11 @@ public class GameLoop {
         return new ActionInput(aiAction.getActive(), new Context(aiAction.getRef()));
     }
 
-
     private ActionInput waitForPlayerInput() {
         return (ActionInput) WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_INPUT);
     }
 
-
     public DC_ActiveObj getActivatingAction() {
         return activatingAction;
-    }
-
-    public static void setMaxAnimTime(int maxAnimTime) {
-        MAX_ANIM_TIME = maxAnimTime;
     }
 }

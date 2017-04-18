@@ -1,8 +1,8 @@
 package main.ability.effects.triggered;
 
 import main.ability.Interruptable;
-import main.ability.effects.TriggeredEffect;
 import main.ability.effects.MicroEffect;
+import main.ability.effects.TriggeredEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 
@@ -25,8 +25,9 @@ public class InterruptEffect extends MicroEffect implements TriggeredEffect{
         //
         // return true;
         // }
-        if (ref.getEvent()==null )
-         return false;
+        if (ref.getEvent() == null) {
+            return false;
+        }
         Ref REF = ref.getEvent().getRef();
         Interruptable i = REF.getEffect();
         // if (OBJ_REF != null) {

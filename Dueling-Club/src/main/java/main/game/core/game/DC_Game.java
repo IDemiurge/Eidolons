@@ -74,7 +74,6 @@ import main.system.net.DC_IdManager;
 import main.system.net.data.PartyData;
 import main.system.test.TestMasterContent;
 import main.system.text.DC_LogManager;
-import main.system.text.LogManager;
 import main.system.text.ToolTipMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;

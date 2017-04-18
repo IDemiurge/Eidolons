@@ -33,7 +33,7 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
 import main.entity.type.ObjType;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.CounterMaster;
 
@@ -46,37 +46,37 @@ public class AI_SpellMaster {
         if (spellLogic == null) {
             LogMaster.log(1, "*** No spell logic for "
                     + spell.getName());
-            return GOAL_TYPE.OTHER;
+            return AiEnums.GOAL_TYPE.OTHER;
         }
         switch (spellLogic) {
             case MOVE:
-                return GOAL_TYPE.MOVE;
+                return AiEnums.GOAL_TYPE.MOVE;
             case BUFF_NEGATIVE:
-                return GOAL_TYPE.DEBUFF;
+                return AiEnums.GOAL_TYPE.DEBUFF;
             case BUFF_POSITIVE:
-                return GOAL_TYPE.BUFF;
+                return AiEnums.GOAL_TYPE.BUFF;
 
             case SELF:
-                return GOAL_TYPE.SELF;
+                return AiEnums.GOAL_TYPE.SELF;
             case DEBILITATE:
-                return GOAL_TYPE.DEBILITATE;
+                return AiEnums.GOAL_TYPE.DEBILITATE;
             case RESTORE:
-                return GOAL_TYPE.RESTORE;
+                return AiEnums.GOAL_TYPE.RESTORE;
 
             case DAMAGE:
-                return GOAL_TYPE.ATTACK;
+                return AiEnums.GOAL_TYPE.ATTACK;
             case DAMAGE_ZONE:
-                return GOAL_TYPE.ZONE_DAMAGE;
+                return AiEnums.GOAL_TYPE.ZONE_DAMAGE;
             case SUMMON:
-                return GOAL_TYPE.SUMMONING;
+                return AiEnums.GOAL_TYPE.SUMMONING;
             case AUTO_DAMAGE:
-                return GOAL_TYPE.AUTO_DAMAGE;
+                return AiEnums.GOAL_TYPE.AUTO_DAMAGE;
             case CUSTOM_HOSTILE:
-                return GOAL_TYPE.CUSTOM_HOSTILE;
+                return AiEnums.GOAL_TYPE.CUSTOM_HOSTILE;
             case CUSTOM_SUPPORT:
-                return GOAL_TYPE.CUSTOM_SUPPORT;
+                return AiEnums.GOAL_TYPE.CUSTOM_SUPPORT;
             case COATING:
-                return GOAL_TYPE.COATING;
+                return AiEnums.GOAL_TYPE.COATING;
             // ++ teleport -> move
             // ++ vision -> search
             // ++ special spells
@@ -84,7 +84,7 @@ public class AI_SpellMaster {
             default:
                 break;
         }
-        return GOAL_TYPE.OTHER;
+        return AiEnums.GOAL_TYPE.OTHER;
     }
 
     public static AI_LOGIC getSpellLogic(DC_ActiveObj spell) {

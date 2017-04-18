@@ -3,16 +3,18 @@ package main.game.ai.tools.priority;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.oneshot.mechanic.RollEffect;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.entity.active.DC_ActiveObj;
+import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.sequence.ActionSequence;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+import main.game.logic.action.context.Context;
 
 import java.util.List;
 
@@ -38,6 +40,7 @@ public interface PriorityManager {
 
 
     int getSpellPriority(GOAL_TYPE type, Action action);
+    int getSpellPriority(DC_SpellObj spell, Context context);
 
     int getSelfSpellPriority(Action action);
 

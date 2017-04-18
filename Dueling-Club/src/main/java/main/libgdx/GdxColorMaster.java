@@ -15,7 +15,7 @@ public class GdxColorMaster {
     public static final Color ENEMY_COLOR = getColor(150, 100, 50, 1f);
     // new Color(55, 215, 65)
     public static final Color HEALTH = getColor(210, 100, 110, 1f);
-    public static final Color ENDURANCE =  getColor(210, 100, 110, 1f);
+    public static final Color ENDURANCE = getColor(210, 100, 110, 1f);
     public static final Color TOUGHNESS = getColor(65, 35, 15, 1f);
     public static final Color STAMINA = getColor(180, 150, 45, 1f);
     public static final Color ESSENCE = getColor(80, 30, 225, 1f);
@@ -51,8 +51,8 @@ public class GdxColorMaster {
     public static final Color METEORITE = getColor(175, 115, 25, 1f);
     public static final Color COLD_IRON = getColor(175, 115, 25, 1f);
     public static final Color GREY = getColor(115, 115, 125, 1f);
-    public static final Color BACKGROUND_TRANSPARENT = getColor(0, 0, 0, 208 );
-    public static final Color BACKGROUND_MORE_TRANSPARENT = getColor(0, 0, 0, 158 );
+    public static final Color BACKGROUND_TRANSPARENT = getColor(0, 0, 0, 208);
+    public static final Color BACKGROUND_MORE_TRANSPARENT = getColor(0, 0, 0, 158);
     public static final Color STANDARD_TEXT = GOLDEN_WHITE;
     private static final Color LIGHT_YELLOW = getColor(195, 205, 125, 1f);
     public static final Color COPPER = LIGHT_YELLOW;
@@ -65,34 +65,34 @@ public class GdxColorMaster {
     }
 
     public static Color getDamageTypeColor(DAMAGE_TYPE dmgType) {
-        switch (dmgType){
+        switch (dmgType) {
 
             case POISON:
-               return DARK_GREEN;
+                return DARK_GREEN;
             case FIRE:
-               return Color.ORANGE;
+                return Color.ORANGE;
             case COLD:
-               return DARK_BLUE;
+                return DARK_BLUE;
             case LIGHTNING:
-               return BLUE;
+                return BLUE;
             case ACID:
-               return GREEN;
+                return GREEN;
             case SONIC:
-               return MAGENTA;
+                return MAGENTA;
             case LIGHT:
-               return LIGHT_YELLOW;
+                return LIGHT_YELLOW;
             case ARCANE:
-               return Color.CYAN;
+                return Color.CYAN;
             case CHAOS:
-               return CRIMSON;
+                return CRIMSON;
             case SHADOW:
-               return LILAC;
+                return LILAC;
             case HOLY:
-               return GOLDEN_WHITE;
+                return GOLDEN_WHITE;
             case DEATH:
-               return GREY;
+                return GREY;
             case PSIONIC:
-               return Color.PURPLE;
+                return Color.PURPLE;
             case MAGICAL:
                 return Color.BLUE;
         }

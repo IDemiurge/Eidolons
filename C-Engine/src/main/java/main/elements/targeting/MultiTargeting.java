@@ -18,16 +18,9 @@ public class MultiTargeting extends TargetingImpl {
     private Formula nOfTargets;
     private boolean noDuplicates = true;
     private boolean ignoreGroupTargeting = true;
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof MultiTargeting ))
-            return false;
-        return super.equals(obj);
-    }
     public MultiTargeting(Targeting targeting1, Targeting targeting2) {
         this(true, targeting1, targeting2);
     }
-
     public MultiTargeting(Targeting targeting1, Targeting targeting2, Targeting targeting3) {
         this(true, targeting1, targeting2, targeting3);
     }
@@ -46,6 +39,14 @@ public class MultiTargeting extends TargetingImpl {
     public MultiTargeting(Targeting targeting, Formula nOfTargets) {
         this.targeting = targeting;
         this.nOfTargets = nOfTargets;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MultiTargeting)) {
+            return false;
+        }
+        return super.equals(obj);
     }
 
     @Override

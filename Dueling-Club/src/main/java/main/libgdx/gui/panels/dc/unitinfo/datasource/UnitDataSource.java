@@ -207,9 +207,10 @@ public class UnitDataSource implements
 
     @Override
     public String getParam2() {
-        if (unit.checkProperty(G_PROPS.RACE))
+        if (unit.checkProperty(G_PROPS.RACE)) {
             return
                     unit.getValue(G_PROPS.RACE);
+        }
         return
                 unit.getValue(G_PROPS.GROUP);
     }

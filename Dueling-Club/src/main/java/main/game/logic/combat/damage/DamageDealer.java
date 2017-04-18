@@ -118,8 +118,9 @@ public class DamageDealer {
         }
         // VITAL!
         amount = ref.getAmount();
-        if (isLogOn())
-        ref.getGame().getLogManager().logDamageBeingDealt(amount, attacker, targetObj, damage_type);
+        if (isLogOn()) {
+            ref.getGame().getLogManager().logDamageBeingDealt(amount, attacker, targetObj, damage_type);
+        }
 
         if (!processDamageEvent(damage_type, ref, amount, new EventType(
          CONSTRUCTED_EVENT_TYPE.UNIT_IS_DEALT_DAMAGE_OF_TYPE, damage_type.toString()))) {
@@ -171,14 +172,15 @@ public class DamageDealer {
         int blocked = 0;
         if (!DamageCalculator.isUnblockable(ref)) {
             if (ref.getSource() != ref.getTarget()) {
-                if (isAttack(ref))
+                if (isAttack(ref)) {
                     blocked = attacked.getGame()
-                     .getArmorMaster().getArmorBlockDamage(amount,
-                      attacked, attacker, active);
-                else
+                            .getArmorMaster().getArmorBlockDamage(amount,
+                                    attacked, attacker, active);
+                } else {
                     blocked = attacked.getGame()
-                     .getArmorMaster().getArmorBlockForActionDamage(amount, dmg_type,
-                      attacker, active);
+                            .getArmorMaster().getArmorBlockForActionDamage(amount, dmg_type,
+                                    attacker, active);
+                }
             }
         }
 
@@ -207,8 +209,9 @@ public class DamageDealer {
          : STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PHYSICAL_DAMAGE, ref).fire();
 
 
-        if (isLogOn())
-        attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked, amount);
+        if (isLogOn()) {
+            attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked, amount);
+        }
         return result;
     }
 
@@ -223,8 +226,9 @@ public class DamageDealer {
         MultiDamage multiDamage = null;
         if (active.getDamageDealt() instanceof MultiDamage) {
             multiDamage = (MultiDamage) active.getDamageDealt();
-        } else
-            multiDamage =  DamageFactory.getMultiDamage(active.getDamageDealt());
+        } else {
+            multiDamage = DamageFactory.getMultiDamage(active.getDamageDealt());
+        }
 
         multiDamage.getAdditionalDamage().add(DamageFactory.
          getGenericDamage(damage_type, amount, active.getRef()));
@@ -236,8 +240,9 @@ public class DamageDealer {
     protected static boolean processDamageEvent(DAMAGE_TYPE damage_type, Ref ref,
                                                 int amount,
                                                 EVENT_TYPE event_type) {
-        if (damage_type != null)
+        if (damage_type != null) {
             ref.setValue(KEYS.DAMAGE_TYPE, damage_type.toString());
+        }
         ref.setAmount(amount);
         KEYS key = null;
         PARAMETER statsParam = null;
@@ -380,9 +385,10 @@ public class DamageDealer {
         LogMaster.log(1, toughness_dmg + " / " + endurance_dmg + " damage has been dealt to "
          + attacked.toString());
 
-        if (isLogOn())
+        if (isLogOn()) {
             attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked,
-             damageDealt);
+                    damageDealt);
+        }
         processDamageEvent(null, ref, damageDealt, STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE);
         return damageDealt;
     }

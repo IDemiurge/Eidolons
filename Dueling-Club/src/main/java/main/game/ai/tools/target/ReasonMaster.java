@@ -87,11 +87,11 @@ public class ReasonMaster {
     }
 
     public static List<FILTER_REASON> getReasonsCannotTarget(Action action
-//     , boolean ignoreFacing
+//     , boolean ignoreOthersIfNotFacing
     ) {
 
         List<FILTER_REASON> reasonsCannotTarget = getReasonsCannotTarget(action, true, false, null);
-
+        // if reasons are something other than single FACING, we don't care about OTHERS
         if (!reasonsCannotTarget.isEmpty()) {
             if (reasonsCannotTarget.size() != 1
                     && reasonsCannotTarget.get(0) != (FILTER_REASON.FACING)) {
@@ -99,7 +99,7 @@ public class ReasonMaster {
             }
         }
 
-        reasonsCannotTarget = getReasonsCannotTarget(action, true, null, null);
+        reasonsCannotTarget = getReasonsCannotTarget(action, true, true, null);
         return reasonsCannotTarget;
     }
 

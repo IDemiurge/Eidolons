@@ -111,8 +111,9 @@ public class ForceRule {
         //TODO DEXTERITY ROLL TO AVOID ALL?
         if (target.getIntParam(PARAMS.TOTAL_WEIGHT) < getMinWeightKnock(action)) {
             result = RollMaster.rollForceKnockdown(target, action, force);
-            if (BooleanMaster.isFalse(result))
+            if (BooleanMaster.isFalse(result)) {
                 result = null; //ALWAYS INTERRUPT AT LEAST
+            }
         } else if (target.getIntParam(PARAMS.TOTAL_WEIGHT) > getMaxWeightKnock(action)) {
             result = false;
         } else {
@@ -155,8 +156,9 @@ public class ForceRule {
 
 
     public static void addForceEffects(DC_ActiveObj action) {
-        if (!isForceEnabled(action))
-            return ;
+        if (!isForceEnabled(action)) {
+            return;
+        }
         Unit source = action.getOwnerObj();
         Unit target = (Unit) action.getRef().getTargetObj();
         Damage dmg = getDamageObject(action, source, target);
@@ -185,13 +187,16 @@ public class ForceRule {
             Ref ref = action.getRef();
             //TODO won't be initialized here yet!!!
             DC_SpellObj spell = (DC_SpellObj) action;
-            if (spell.isDamageSpell())
-                if (spell.isMissile())
-                    if (spell.getResistanceType()== RESISTANCE_TYPE.REDUCE_DAMAGE)
-            if (!DamageCalculator.isPeriodic(ref)) {
-                if (!ref.isTriggered()) {
-                        return true;
+            if (spell.isDamageSpell()) {
+                if (spell.isMissile()) {
+                    if (spell.getResistanceType() == RESISTANCE_TYPE.REDUCE_DAMAGE) {
+                        if (!DamageCalculator.isPeriodic(ref)) {
+                            if (!ref.isTriggered()) {
+                                return true;
 
+                            }
+                        }
+                    }
                 }
             }
             }
@@ -214,7 +219,9 @@ public class ForceRule {
 
     public static Damage getDamageObject(DC_ActiveObj action, Unit attacker, Unit attacked) {
         int amount = getDamage(action, attacker, attacked);
-        if (amount <= 0) return null;
+        if (amount <= 0) {
+            return null;
+        }
         DAMAGE_TYPE type = getForceDamageType(action);
         return DamageFactory.getGenericDamage(
          type, amount, new Ref(attacker, attacked));
@@ -222,10 +229,12 @@ public class ForceRule {
 
     private static DAMAGE_TYPE getForceDamageType
      (DC_ActiveObj action) {
-        if (!action.getDamageType().isMagical())
+        if (!action.getDamageType().isMagical()) {
             return DAMAGE_TYPE.BLUDGEONING;
-        if (action.getDamageType().isNatural())
+        }
+        if (action.getDamageType().isNatural()) {
             return DAMAGE_TYPE.SONIC;
+        }
 
         return DAMAGE_TYPE.PSIONIC;
     }

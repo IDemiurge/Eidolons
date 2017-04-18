@@ -99,9 +99,11 @@ public class FloatingTextMaster {
                 Cost cost = (Cost) arg;
                 return String.valueOf(-cost.getPayment().getLastPaid());
         }
-        if (arg != null)
-            if (!StringMaster.isEmpty(arg.toString()))
+        if (arg != null) {
+            if (!StringMaster.isEmpty(arg.toString())) {
                 return arg.toString();
+            }
+        }
 
         return aCase.getText();
     }
@@ -112,7 +114,9 @@ public class FloatingTextMaster {
 
     private TEXT_CASES getCase(Event e) {
         TEXT_CASES CASE = new EnumMaster<TEXT_CASES>().retrieveEnumConst(TEXT_CASES.class, e.getType().toString());
-        if (CASE != null) return CASE;
+        if (CASE != null) {
+            return CASE;
+        }
         if (e.getType() instanceof STANDARD_EVENT_TYPE) {
             switch ((STANDARD_EVENT_TYPE) e.getType()) {
                 case COSTS_HAVE_BEEN_PAID:

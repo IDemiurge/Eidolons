@@ -67,9 +67,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     protected Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> actionMap;
 
     protected Deity deity;
+    protected UnitAI unitAI;
     private boolean hidden;
     private ImageIcon emblem;
-    protected UnitAI unitAI;
     private DC_ActiveObj preferredInstantAttack;
     private DC_ActiveObj preferredCounterAttack;
     private DC_ActiveObj preferredAttackOfOpportunity;
@@ -225,26 +225,23 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public void recalculateInitiative() {
 
-        int before = getIntParam(PARAMS.C_INITIATIVE);
-        int initiative = getCalculator().calculateInitiative(true);
+        final int before = getIntParam(PARAMS.C_INITIATIVE);
+        final int initiative = getCalculator().calculateInitiative(true);
 
         setParam(PARAMS.C_INITIATIVE, initiative, true);
 
-        int base_initiative = getCalculator().calculateInitiative(false);
-        setParam(PARAMS.INITIATIVE, base_initiative, true);
+        int baseInitiative = getCalculator().calculateInitiative(false);
+        setParam(PARAMS.INITIATIVE, baseInitiative, true);
 
         resetPercentage(PARAMS.INITIATIVE);
 
-        int after = getIntParam(PARAMS.C_INITIATIVE);
-        if (before == after) {
-            return;
-        }
-        int diff = before - after;
+        final int after = getIntParam(PARAMS.C_INITIATIVE);
 
-        if (diff != 0) {
-            GuiEventManager.trigger(INITIATIVE_CHANGED,
-                    new EventCallbackParam(new ImmutablePair<>(this, after)));
-
+        if (before - after != 0) {
+            GuiEventManager.trigger(
+                    INITIATIVE_CHANGED,
+                    new EventCallbackParam(new ImmutablePair<>(this, after))
+            );
         }
     }
 
@@ -454,8 +451,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public DC_UnitAction getAction(String name) {
         ActiveObj action = getGame().getActionManager().getAction(name, this);
-      if (action instanceof  DC_UnitAction)
-          return (DC_UnitAction) action;
+        if (action instanceof DC_UnitAction) {
+            return (DC_UnitAction) action;
+        }
         return getAction(name, false);
     }
 

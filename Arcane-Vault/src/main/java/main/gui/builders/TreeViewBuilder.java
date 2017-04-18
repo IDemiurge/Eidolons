@@ -168,6 +168,7 @@ public class TreeViewBuilder extends Builder {
         } else {
             ObjType type = DataManager.getType(node.getUserObject() + "", TYPE);
             newType = CloneMaster.getTypeCopy(type, newName, ArcaneVault.getGame(), TYPE);
+            newType.setGenerated(false);
             newNode = (DefaultMutableTreeNode) CloneMaster.deepCopy(node);
 
             newNode.setUserObject(newName);

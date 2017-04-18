@@ -26,6 +26,7 @@ public enum PARAMS implements PARAMETER {
     FREE_MASTERIES(null, "", false, DC_MathManager.DEFAULT_FREE_MASTERY_COUNT, "chars"),
     GLORY("party"),
     MAX_HEROES(null, "", false, 0, "party", "arcades"),
+    ORDER_CHANCE_MOD(null, "", false,  100, "chars", "units"),
     ORGANIZATION(null, "", true, 100, "chars", "units", "party"),
     BATTLE_SPIRIT(null, "", true, 100, "chars", "units", "party"),
     PRINCIPLE_CLASHES(null, "", true, 0, "chars", "units", "party"),

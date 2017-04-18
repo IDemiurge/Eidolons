@@ -208,9 +208,10 @@ public class FAST_DC {
 
             }
         }
-        if (!CoreEngine.isGraphicsOff())
+        if (!CoreEngine.isGraphicsOff()) {
             if (!CoreEngine.isSwingOn()) {
-            DENIS_Launcher.main(new String[]{});
+                DENIS_Launcher.main(new String[]{});
+            }
         }
 
         CoreEngine.setTEST_MODE(true);

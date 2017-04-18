@@ -10,7 +10,7 @@ public class Chronos {
     public static final boolean CONSTRUCT = false;
     private static final Logger logger = LogMaster.getInstance();
     private static Map<String, Calendar> timeMap = new ConcurrentMap<>();
-    private static boolean on=true;
+    private static boolean on = true;
 
     public static boolean isOn() {
         return on;
@@ -21,15 +21,17 @@ public class Chronos {
     }
 
     public static void mark(String string) {
-        if (!on)
+        if (!on) {
             return;
+        }
         Calendar calendar = Calendar.getInstance();
         timeMap.put(string, calendar);
     }
 
     public static Long getTimeElapsedForMark(String string) {
-        if (!on)
+        if (!on) {
             return new Long(0);
+        }
         Calendar calendar = Calendar.getInstance();
         // Logger l = ;
 
@@ -54,8 +56,9 @@ public class Chronos {
     }
 
     public static void logTimeElapsedForMark(String string) {
-        if (!on)
+        if (!on) {
             return;
+        }
         long timeElapsedForMark = getTimeElapsedForMark(string);
 
         if (timeElapsedForMark == -1) {

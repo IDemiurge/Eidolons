@@ -51,10 +51,10 @@ public class GameLauncher {
     public boolean LEADER_MOVES_FIRST = false;
     public String ENEMY_PARTY = "Pirate";
     public String PLAYER_PARTY =
-     "Amaltha Soamdath;Anfina Ilarfis;Grufirant Grossklotz;Orthaelion Enloth"
-//      ";Belia Haevril"
-     ;
-//     "Demir;Brother Anthin;Ogsit Tholmir;Imros the Rangerly;";//"Guy Fox;Fiona Emrin;Donkel Nogvir;";// "Elberen v2;";//"Bandit Archer";//Zail Adelwyn v4
+            "Anfina Ilarfis;Grufirant Grossklotz;Orthaelion Enloth"
+//      ";Amaltha Soamdath;Belia Haevril"
+            ;
+    //     "Demir;Brother Anthin;Ogsit Tholmir;";//"Guy Fox;Fiona Emrin;Donkel Nogvir;";// "Elberen v2;";//"Bandit Archer";//Zail Adelwyn v4
     public boolean DUMMY_MODE = false;
     public boolean DUMMY_PP = false;
     public Boolean FAST_MODE;
@@ -166,8 +166,9 @@ public class GameLauncher {
         }
         if (PresetMaster.getPreset() == null) {
 
-            if (DEBUG_MODE == null)
+            if (DEBUG_MODE == null) {
                 game.setDebugMode(Launcher.isDEBUG_MODE_DEFAULT());
+            }
             initPlayerParties();
             if (PARTY_CODE != CODE.NONE) {
                 game.setPlayerParty(PLAYER_PARTY);
@@ -281,8 +282,9 @@ public class GameLauncher {
         UnitTrainingMaster.setSkillsOn(!launch.fast);
 
         UnitTrainingMaster.setRandom(!launch.deterministicUnitTraining);
-        if (launch.gameMode != null)
+        if (launch.gameMode != null) {
             game.setGameMode(launch.gameMode);
+        }
         DC_KeyManager.DEFAULT_CONTROLLER = launch.controller;
 
         GameLoop.setMaxAnimTime(launch.maxAnimTime);
@@ -332,8 +334,9 @@ public class GameLauncher {
         // OBJ_TYPES.PARTY).getProperty(PROPS.MEMBERS));
         // }
 
-        if (workspaceFilter!=null )
+        if (workspaceFilter != null) {
             return chooseFiltered(DC_TYPE.CHARS);
+        }
 
 
         game.setTestMode(true);
@@ -384,8 +387,9 @@ public class GameLauncher {
 
     public String chooseFiltered(DC_TYPE TYPE) {
         List<ObjType> data = DataManager.getTypes(TYPE);
-        if (workspaceFilter!=null )
-        data.removeIf(type -> type.getWorkspaceGroup() != workspaceFilter);
+        if (workspaceFilter != null) {
+            data.removeIf(type -> type.getWorkspaceGroup() != workspaceFilter);
+        }
         String objects =  ListChooser.chooseTypes(data);
         return objects;
 

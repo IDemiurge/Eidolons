@@ -17,7 +17,7 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.elements.actions.Action;
-import main.game.ai.elements.actions.ActionFactory;
+import main.game.ai.elements.actions.AiActionFactory;
 import main.game.ai.elements.actions.AiUnitActionMaster;
 import main.game.ai.tools.path.ActionPath;
 import main.game.ai.tools.path.PathBuilder;
@@ -75,16 +75,18 @@ public class DC_MovementManager implements MovementManager {
 
     public static Action getFirstAction(Unit unit, Coordinates coordinates) {
         FACING_SINGLE relative = FacingMaster.getSingleFacing(unit.getFacing(),
-         unit.getCoordinates(), coordinates);
-        if (relative== FACING_SINGLE.IN_FRONT)
-            return ActionFactory.newAction( "Move", unit.getAI());
-        boolean left =(unit.getFacing().isVertical()) ?
-         PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)
-         : PositionMaster.isAbove(unit.getCoordinates(), coordinates);
-        if (unit.getFacing().isMirrored())
-            left =!left;
+                unit.getCoordinates(), coordinates);
+        if (relative == FACING_SINGLE.IN_FRONT) {
+            return AiActionFactory.newAction("Move", unit.getAI());
+        }
+        boolean left = (unit.getFacing().isVertical()) ?
+                PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)
+                : PositionMaster.isAbove(unit.getCoordinates(), coordinates);
+        if (unit.getFacing().isMirrored()) {
+            left = !left;
+        }
 
-        return ActionFactory.newAction("Move "+ (left? "Left" : "Right"), unit.getAI());
+        return AiActionFactory.newAction("Move " + (left ? "Left" : "Right"), unit.getAI());
 //        List<ActionPath> paths = instance.buildPath(unit, coordinates);
 //            if (!ListMaster.isNotEmpty(paths)) {
 //            return  null ;

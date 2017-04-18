@@ -16,6 +16,12 @@ public class Abilities implements Ability, Iterable<Ability> {
 
     }
 
+    public Abilities(Ability ability, Ability ability1) {
+        this();
+        add(ability);
+        add(ability1);
+    }
+
     public boolean add(Ability e) {
         return abils.add(e);
     }

@@ -18,11 +18,12 @@ public class NotCondition extends ConditionImpl {
     @Override
     public boolean preCheck(Ref ref) {
         if (switcher != null) {
-            return (switcher) == c.preCheck(ref);
-        }
-        return !c.preCheck(ref);
-
+            setTrue((switcher) == !c.preCheck(ref));
+        } else
+            setTrue(!c.preCheck(ref));
+        return isTrue();
     }
+
 
     @Override
     public String toString() {

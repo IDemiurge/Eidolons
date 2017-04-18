@@ -1,6 +1,6 @@
 package main.system.auxiliary;
 
-import main.entity.Ref;
+import main.ability.AbilityType;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.system.auxiliary.log.LogMaster;
@@ -8,7 +8,8 @@ import main.system.auxiliary.log.LogMaster;
 import java.io.*;
 
 public class CloneMaster<T> {
-
+    //this used to work for ObjTypes too until 'somefilename' was deleted....
+    // now it only works for tree nodes
     public static Object deepCopy(Object object) {
         FileOutputStream fos;
         ObjectOutputStream out;
@@ -39,16 +40,22 @@ public class CloneMaster<T> {
     }
 
     public static ObjType getTypeCopy(ObjType type, String newName, Game game, String group) {
-        Ref ref = type.getRef();
-        type.setGame(null);
-        type.setRef(null);
+//        Ref ref = type.getRef();
+//        type.setGame(null);
+//        type.setRef(null);
 
-        ObjType newType = (ObjType) CloneMaster.deepCopy(type);
+        ObjType newType = null;
+        if (type instanceof AbilityType)
+            newType =
+             new AbilityType((AbilityType) type);
+        else newType =
+         new ObjType(type);
+//         (ObjType) CloneMaster.deepCopy(type);
         newType.cloned();
-        type.setRef(ref);
-        if (ref != null) {
-            type.setGame(ref.getGame());
-        }
+//        type.setRef(ref);n
+//        if (ref != null) {
+//            type.setGame(ref.getGame());
+//        }
 
         return newType;
     }

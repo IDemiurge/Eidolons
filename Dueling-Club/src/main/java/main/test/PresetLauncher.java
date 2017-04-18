@@ -42,7 +42,7 @@ public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
             "AI", "Gui", "Last", "Recent", "New", "Anims", "Usability",
 //            "Emitters","Light",
-     "Standoff Test","Standoff Preset","Standoff",    "Profiling"
+            "Standoff Test", "Standoff Preset", "Standoff", "Profiling"
 
     };
     public static int PRESET_OPTION = -1;
@@ -58,12 +58,12 @@ public class PresetLauncher {
 
         LAUNCH.Standoff_Preset.gameMode = GAME_MODES.ARENA;
         LAUNCH.Standoff_Preset.dungeonPath = "Pit.xml";
-        LAUNCH.Standoff_Preset.maxAnimTime=2000;
+        LAUNCH.Standoff_Preset.maxAnimTime = 2000;
 
         LAUNCH.Standoff.gameMode = GAME_MODES.ARENA;
         LAUNCH.Standoff. workspaceFilter=WORKSPACE_GROUP.TEST;
         LAUNCH.Standoff. PARTY_CODE= CODE.CHOOSE;
-        LAUNCH.Standoff.maxAnimTime=2000;
+        LAUNCH.Standoff.maxAnimTime = 2000;
 
         LAUNCH.Gui.graphicsTest = true;
         LAUNCH.Gui.visionHacked = true;
@@ -92,36 +92,38 @@ public class PresetLauncher {
             }
         }
         Preset p = null;
-        if (isInitLaunch)
-            launch=initLaunch(LAUNCH_OPTIONS[i]);
-        if (launch != null)
+        if (isInitLaunch) {
+            launch = initLaunch(LAUNCH_OPTIONS[i]);
+        }
+        if (launch != null) {
             return customInit(launch);
-        else
-        switch (LAUNCH_OPTIONS[i]) {
-            case "Last":
-                Preset lastPreset = PresetMaster.loadLastPreset();
-                UnitGroupMaster.setFactionMode(false);
-                UnitTrainingMaster.setRandom(false);
-                PresetMaster.setPreset(lastPreset);
-                break;
-            case "Recent":
-                chooseRecentPreset();
-                break;
-            case "New":
-                FAST_DC.getGameLauncher().DUMMY_MODE = false;
-                FAST_DC.getGameLauncher().DUMMY_PP = false;
-                UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
-                return null;
-            case "Superfast":
-                FAST_DC.getGameLauncher().DUMMY_MODE = true;
-                FAST_DC.getGameLauncher().DUMMY_PP = true;
-                FAST_DC.getGameLauncher().setSUPER_FAST_MODE(true);
-                return false;
-            case "Load":
-                // if (choosePreset()==null)
-                choosePreset();
-                break;
+        } else {
+            switch (LAUNCH_OPTIONS[i]) {
+                case "Last":
+                    Preset lastPreset = PresetMaster.loadLastPreset();
+                    UnitGroupMaster.setFactionMode(false);
+                    UnitTrainingMaster.setRandom(false);
+                    PresetMaster.setPreset(lastPreset);
+                    break;
+                case "Recent":
+                    chooseRecentPreset();
+                    break;
+                case "New":
+                    FAST_DC.getGameLauncher().DUMMY_MODE = false;
+                    FAST_DC.getGameLauncher().DUMMY_PP = false;
+                    UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
+                    return null;
+                case "Superfast":
+                    FAST_DC.getGameLauncher().DUMMY_MODE = true;
+                    FAST_DC.getGameLauncher().DUMMY_PP = true;
+                    FAST_DC.getGameLauncher().setSUPER_FAST_MODE(true);
+                    return false;
+                case "Load":
+                    // if (choosePreset()==null)
+                    choosePreset();
+                    break;
 
+            }
         }
 
         return null;
@@ -158,15 +160,19 @@ public class PresetLauncher {
 
     public static LAUNCH initLaunch(String option) {
         launch = new EnumMaster<LAUNCH>().retrieveEnumConst(LAUNCH.class, option);
-        if (launch==null ) return null;
-        if (launch.logChannelsOff!=null )
-        Arrays.stream(launch.logChannelsOn).forEach(c->{
-            c.setOn(true);
-        });
-        if (launch.logChannelsOff!=null )
-        Arrays.stream(launch.logChannelsOff).forEach(c->{
-            c.setOn(false);
-        });
+        if (launch == null) {
+            return null;
+        }
+        if (launch.logChannelsOff != null) {
+            Arrays.stream(launch.logChannelsOn).forEach(c -> {
+                c.setOn(true);
+            });
+        }
+        if (launch.logChannelsOff != null) {
+            Arrays.stream(launch.logChannelsOff).forEach(c -> {
+                c.setOn(false);
+            });
+        }
 
         if (launch.preset != null) {
             Preset p = PresetMaster.loadPreset(launch.preset);
@@ -364,7 +370,7 @@ public class PresetLauncher {
         Profiling(true),
         Standoff(null , RULE_SCOPE.FULL, null),
             Standoff_Test(null , RULE_SCOPE.TEST, true),
-            Standoff_Preset(null , RULE_SCOPE.FULL, null),
+            Standoff_Preset(null, RULE_SCOPE.FULL, null),
         Usability("Usability.xml", RULE_SCOPE.FULL, null)
             ;
         public Boolean immortal;
@@ -401,20 +407,22 @@ public class PresetLauncher {
         LAUNCH(String preset, RULE_SCOPE ruleScope, Boolean dummyPlus) {
             this.preset = preset;
             this.ruleScope = ruleScope;
-            if (dummyPlus != null)
+            if (dummyPlus != null) {
                 if (dummyPlus) {
                     initDummyPlusFlags();
                 } else {
                     initDummyFlags();
                 }
+            }
         }
 
         LAUNCH(Boolean dummyPlus) {
-            if (dummyPlus != null)
-            if (dummyPlus) {
-                initDummyPlusFlags();
-            } else {
-                initDummyFlags();
+            if (dummyPlus != null) {
+                if (dummyPlus) {
+                    initDummyPlusFlags();
+                } else {
+                    initDummyFlags();
+                }
             }
         }
 

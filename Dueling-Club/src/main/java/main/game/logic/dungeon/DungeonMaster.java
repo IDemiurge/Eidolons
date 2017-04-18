@@ -50,9 +50,9 @@ public class DungeonMaster {
     // "Dungeon"; //
     // Arcane Tower
     private static final String DUNGEON_BACKGROUND_FOLDER = "\\big\\dungeons";
-    private static final  String RANDOM_DUNGEON_WORKSPACE_FILTER =
-     MetaEnums.WORKSPACE_GROUP.FOCUS
-      + ""+ MetaEnums.WORKSPACE_GROUP.COMPLETE;
+    private static final String RANDOM_DUNGEON_WORKSPACE_FILTER =
+            MetaEnums.WORKSPACE_GROUP.FOCUS
+                    + "" + MetaEnums.WORKSPACE_GROUP.COMPLETE;
     public static boolean RANDOM_DUNGEON = false;
     public static boolean CHOOSE_LEVEL = false;
     private static String DEFAULT_DUNGEON_LEVEL = "Forest.xml"; // "Arena.xml";
@@ -157,7 +157,9 @@ public class DungeonMaster {
     }
 
     public static String getRawDungeonName(String levelFilePath) {
-        if (levelFilePath == null) return "null dungeon";
+        if (levelFilePath == null) {
+            return "null dungeon";
+        }
         String name = StringMaster.getLastPathSegment(levelFilePath);
         name = StringMaster.cropFormat(name);
         name = StringMaster.cropVersion(name);
@@ -238,7 +240,7 @@ public class DungeonMaster {
 
         FilterMaster.filterByProp(list,
          G_PROPS.WORKSPACE_GROUP.getName(),
-         RANDOM_DUNGEON_WORKSPACE_FILTER);
+                RANDOM_DUNGEON_WORKSPACE_FILTER);
         if (list.isEmpty()) {
             list = DataManager.getTypes(DC_TYPE.DUNGEONS);
             FilterMaster.filterByProp(list, G_PROPS.WORKSPACE_GROUP.getName(),
@@ -257,8 +259,9 @@ public class DungeonMaster {
     }
 
     public String getPresetDungeonType() {
-        if (presetDungeonType==null )
-           return  DEFAULT_DUNGEON;
+        if (presetDungeonType == null) {
+            return DEFAULT_DUNGEON;
+        }
         return presetDungeonType;
     }
 

@@ -1,7 +1,7 @@
 package main.ability.effects.container;
 
-import main.ability.effects.Effect;
 import main.ability.effects.ContainerEffect;
+import main.ability.effects.Effect;
 import main.ability.effects.MicroEffect;
 import main.data.ability.OmittedConstructor;
 import main.elements.conditions.Conditions;
@@ -63,8 +63,9 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
 
     @Override
     public boolean applyThis() {
-        if (reductionFormula!=null )
-        ref.setValue(KEYS.FORMULA, reductionFormula.toString());
+        if (reductionFormula != null) {
+            ref.setValue(KEYS.FORMULA, reductionFormula.toString());
+        }
         initTargeting();
         if (isZLevelDependent()) {
             getFilteringConditions().add(new ZLevelCondition(true));

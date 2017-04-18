@@ -11,6 +11,7 @@ import main.data.XLinkedMap;
 import main.elements.Filter;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.StringComparison;
+import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
@@ -28,6 +29,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.entity.FilterMaster;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
@@ -143,6 +145,31 @@ public class ArenaBattleConstructor {
         return RandomWizard.chance(ALT_ENCOUNTER_DEFAULT_CHANCE);
     }
 
+    private List<ObjType> getWaveTypes(Entity dungeonType, boolean alt) {
+        List<ObjType> waves;
+        // if (SkirmishMaster.isSkirmish()) {
+        // return SkirmishMaster.getWaveTypes();
+        // }
+        if (!getDungeon().getProperty(PROPS.ENCOUNTER_SETS).isEmpty()) {
+            return getEncountersFromSets(dungeonType, alt);
+        } else
+        waves = DataManager.toTypeList(dungeonType.getProperty(alt ? PROPS.ALT_ENCOUNTERS
+         : PROPS.ENCOUNTERS), DC_TYPE.ENCOUNTERS);
+        // TODO need a better preCheck...
+        if (waves.size() < 3) {
+            waves = DataManager.toTypeList(dungeonType
+              .getProperty(!alt ? PROPS.ALT_ENCOUNTERS : PROPS.ENCOUNTERS),
+             DC_TYPE.ENCOUNTERS);
+        }
+        return waves;
+    }
+
+    private List<ObjType> getEncountersFromSets(Entity dungeonType, boolean alt) {
+ List<String> list = StringMaster.openContainer(dungeonType.getProperty(  PROPS.ENCOUNTER_SETS ));
+        String set = list.get(alt ? 0 : RandomWizard.getRandomListIndex(list));
+      return   FilterMaster.getFilteredTypeList(DC_TYPE.ENCOUNTERS, PROPS.ENCOUNTER_SETS, set );
+    }
+
     public Map<Wave, Integer> constructWaveSequence(ENCOUNTER_TYPE[] encounter_sequence) {
 
         Integer round = getRoundNumber();
@@ -152,18 +179,17 @@ public class ArenaBattleConstructor {
 
         Map<Wave, Integer> map = new XLinkedMap<>();
 
-        if (!getDungeon().getProperty(PROPS.ENCOUNTER_GROUPS).isEmpty()) {
-            return constructEncounterGroup();
-        }
+
+//        if (!getDungeon().getProperty(PROPS.ENCOUNTER_GROUPS).isEmpty()) {
+//            return constructEncounterGroup();
+//        }
 
         if (alt != null) {
             alt = !alt;
         } else {
             alt = checkAltEncounter();
         }
-        List<ObjType> waves;
-
-        waves = getWaveTypes();
+        List<ObjType> waves = getWaveTypes(getDungeon().getType(), alt);
         List<ObjType> waveBuffer = new LinkedList<>(waves);
 
         for (ENCOUNTER_TYPE type : encounter_sequence) {
@@ -214,8 +240,9 @@ public class ArenaBattleConstructor {
 
     private Coordinates pickSpawnCoordinateForWave(ENCOUNTER_TYPE type, Integer round,
                                                    ObjType waveType, boolean recursion) {
-       if (sideSpawnTestMode)
-           return null ;
+        if (sideSpawnTestMode) {
+            return null;
+        }
         int minDistance = Integer.MAX_VALUE;
         int maxDistance = 0;
         Map<Coordinates, Point> map = new HashMap<>();
@@ -287,23 +314,6 @@ public class ArenaBattleConstructor {
     private StringComparison getPlayableCondition() {
         return new StringComparison(StringMaster.PLAYABLE, StringMaster.getValueRef(KEYS.MATCH,
                 G_PROPS.GROUP), true);
-    }
-
-    private List<ObjType> getWaveTypes() {
-        List<ObjType> waves;
-        // if (SkirmishMaster.isSkirmish()) {
-        // return SkirmishMaster.getWaveTypes();
-        // }
-        ObjType dungeonType = getDungeon().getType();
-        waves = DataManager.toTypeList(dungeonType.getProperty(alt ? PROPS.ALT_ENCOUNTERS
-                : PROPS.ENCOUNTERS), DC_TYPE.ENCOUNTERS);
-        // TODO need a better preCheck...
-        if (waves.size() < 3) {
-            waves = DataManager.toTypeList(dungeonType
-                            .getProperty(!alt ? PROPS.ALT_ENCOUNTERS : PROPS.ENCOUNTERS),
-                    DC_TYPE.ENCOUNTERS);
-        }
-        return waves;
     }
 
     private Dungeon getDungeon() {

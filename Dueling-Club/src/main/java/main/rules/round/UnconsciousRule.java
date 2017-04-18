@@ -3,8 +3,8 @@ package main.rules.round;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
-import main.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.ability.effects.common.ModifyValueEffect;
+import main.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.ability.effects.oneshot.rule.UnconsciousBuffEffect;
 import main.ability.effects.oneshot.rule.UnconsciousFallEffect;
 import main.content.PARAMS;
@@ -150,7 +150,8 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         // special? vampires and such...
         return true;
     }
-//returns true if unit Recovers
+
+    //returns true if unit Recovers
     public boolean checkStatusUpdate(Unit unit) {
         if (unit.isDead()) {
             if (checkUnitDies(unit, DEFAULT_ANNIHILATION_BARRIER, false)) {

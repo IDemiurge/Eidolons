@@ -45,7 +45,7 @@ public class EffectFinder {
         return effects;
     }
 
-    public static Effects getEffectsFromSpell(DC_ActiveObj active) {
+    public static Effects getEffectsFromSpell(ActiveObj active) {
         Effects effects = new Effects();
         // if (!active.isConstructed())
         active.construct();

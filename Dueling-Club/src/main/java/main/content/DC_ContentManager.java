@@ -172,8 +172,9 @@ public class DC_ContentManager extends ContentManager {
 
     static {
         Arrays.stream(PARAMS.values()).forEach(param -> {
-            if (param.isDynamic())
-            dynamicParams.add(param);
+            if (param.isDynamic()) {
+                dynamicParams.add(param);
+            }
         });
         // DEFAULT_VALUES
         // ArrayMaster.join();

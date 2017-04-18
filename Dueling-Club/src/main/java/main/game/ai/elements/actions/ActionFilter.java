@@ -2,7 +2,7 @@ package main.game.ai.elements.actions;
 
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.ai.tools.target.AI_SpellMaster;
 
 import java.util.Collection;

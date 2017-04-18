@@ -7,15 +7,23 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 
-public class ActivateEffect extends DC_Effect  implements OneshotEffect {
+public class ActivateEffect extends DC_Effect implements OneshotEffect {
     private KEYS key;
     private boolean spell;
     private String name;
+    private boolean free;
+    private KEYS sourceKey=KEYS.SOURCE;
 
     public ActivateEffect(String name, KEYS key, boolean spell) {
         this.name = name;
         this.key = key;
         this.spell = spell;
+    }
+
+    public ActivateEffect(String name, boolean free) {
+        this(name, KEYS.TARGET, false);
+        this.free = free;
+
     }
 
     public ActivateEffect(String name) {
@@ -24,17 +32,26 @@ public class ActivateEffect extends DC_Effect  implements OneshotEffect {
 
     @Override
     public boolean applyThis() {
-        Unit hero = (Unit) ref.getObj(key);
+        Unit source = (Unit) ref.getObj(sourceKey);
+        Unit target = (Unit) ref.getObj(key);
         DC_ActiveObj active;
 
         if (!spell) {
-            active = hero.getAction(name);
+            active = source.getAction(name);
         } else {
-            active = hero.getSpell(name);
+            active = source.getSpell(name);
         }
+        if (free) {
+            active.setFree(free);
+        }
+        try {
+            active.activatedOn(Ref.getSelfTargetingRefCopy(target));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            active.setFree(false);
 
-        active.activatedOn(Ref.getSelfTargetingRefCopy(hero));
-
+        }
         return true;
     }
 

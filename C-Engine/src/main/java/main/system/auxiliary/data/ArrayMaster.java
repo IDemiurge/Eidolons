@@ -56,10 +56,14 @@ public class ArrayMaster<T> {
 
     public boolean contains(T[] damage_mods, T unblockable) {
         for (T d: damage_mods){
-            if (unblockable==null )
-                if (d==null )
+            if (unblockable == null) {
+                if (d == null) {
                     return true;
-            if (unblockable.equals(d)) return true;
+                }
+            }
+            if (unblockable.equals(d)) {
+                return true;
+            }
         }
         return false;
     }

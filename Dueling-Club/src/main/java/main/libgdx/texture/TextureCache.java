@@ -2,6 +2,7 @@ package main.libgdx.texture;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
@@ -11,20 +12,28 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TextureCache {
     private static TextureCache textureCache;
     private static Lock creationLock = new ReentrantLock();
+    private static AtomicInteger counter = new AtomicInteger(0);
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
     private String imagePath;
+    private TextureAtlas textureAtlas;
+    private Pattern pattern;
 
     private TextureCache() {
         this.imagePath = PathFinder.getImagePath();
         this.cache = new HashMap<>();
         this.greyscaleCache = new HashMap<>();
+        textureAtlas = new TextureAtlas(imagePath + "/testAtlas.txt");
+        pattern = Pattern.compile("^.*[/\\\\]([a-z _\\-0-9]*)\\..*$");
     }
 
     private static void init() {
@@ -55,7 +64,25 @@ public class TextureCache {
     }
 
     public static TextureRegion getOrCreateR(String path) {
-        return new TextureRegion(getOrCreate(path));
+        if (textureCache == null) {
+            init();
+        }
+
+
+        path = path.toLowerCase();
+        final Matcher matcher = textureCache.pattern.matcher(path);
+
+
+        if (matcher.matches()) {
+            final String name = matcher.group(1);
+            final TextureAtlas.AtlasRegion region = textureCache.textureAtlas.findRegion(name);
+            if (region != null) {
+                counter.incrementAndGet();
+                return region;
+            }
+        }
+
+        return new TextureRegion(textureCache._getOrCreate(path));
     }
 
     public static TextureRegion getOrCreateGrayscaleR(String path) {
@@ -95,6 +122,7 @@ public class TextureCache {
         if (!path.startsWith("/")) {
             path = "/" + path;
         }
+
         if (!this.cache.containsKey(path)) {
             try {
                 Path p = Paths.get(imagePath, path);

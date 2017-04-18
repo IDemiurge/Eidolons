@@ -10,7 +10,7 @@ import main.game.ai.UnitAI;
 /**
  * Created by JustMe on 3/3/2017.
  */
-public class ActionFactory {
+public class AiActionFactory {
     public static DC_UnitAction getUnitAction(Unit unit, String name) {
         return unit.getAction(name, true);
     }

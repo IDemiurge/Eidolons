@@ -23,10 +23,12 @@ public class ConditionalMultiTargeting extends SelectiveTargeting {
 
 
     }
+
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ConditionalMultiTargeting))
+        if (!(obj instanceof ConditionalMultiTargeting)) {
             return false;
+        }
         return super.equals(obj);
     }
     @Override

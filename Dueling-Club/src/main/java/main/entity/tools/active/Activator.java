@@ -34,8 +34,9 @@ public class Activator extends ActiveHandler {
     }
 
     public boolean canBeActivated(Ref ref, boolean first) {
-        if (getMaster().getGame().getTestMaster().isActionFree(getEntity().getName()))
+        if (getMaster().getGame().getTestMaster().isActionFree(getEntity().getName())) {
             return true;
+        }
         if (!first || broken) {
             if (canActivate != null) {
 

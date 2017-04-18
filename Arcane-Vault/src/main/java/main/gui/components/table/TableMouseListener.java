@@ -92,7 +92,9 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
     public static final Class<?>[] VAR_ENUM_CLASS_LIST = {SPECIAL_REQUIREMENTS.class
 
     };
-    public static final String[] SINGLE_ENUM_LIST_IDS = {PROPS.WEAPON_ATTACKS.name(),
+    public static final String[] SINGLE_ENUM_LIST_IDS = {
+
+     PROPS.WEAPON_ATTACKS.name(),
             G_PROPS.UNIT_GROUP.name(), G_PROPS.CUSTOM_HERO_GROUP.name(),
             PROPS.BF_OBJ_MATERIAL.name(), PROPS.BF_OBJECT_SIZE.name(), PROPS.LINK_VARIANT.name(),
             G_PROPS.GAME_VERSION.name(), PROPS.SUBDUNGEON_TYPE.name(),
@@ -121,7 +123,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             // "DEITY",
             PROPS.BF_OBJECT_SIZE.name(), PROPS.OBJECT_ARMOR_TYPE.name(), PROPS.DIMENSION.name()};
     public static final String[] MULTIPLE_ENUM_LIST_IDS = {
-
+     PROPS.ENCOUNTER_SETS.getName(),
             PROPS.PARAMETER_BONUSES.getName(),
             PROPS.PALETTE.name(), PROPS.ATTRIBUTE_BONUSES.getName(), PROPS.DUNGEON_TAGS.name(),
             PROPS.MASTERY_GROUPS_MAGIC.name(), PROPS.MASTERY_GROUPS_WEAPONS.name(),

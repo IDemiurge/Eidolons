@@ -2,12 +2,14 @@ package main.game.ai.elements.generic;
 
 import main.entity.obj.unit.Unit;
 import main.game.ai.AI_Logic;
+import main.game.ai.advanced.behavior.BehaviorMaster;
 import main.game.ai.elements.actions.ActionManager;
 import main.game.ai.elements.actions.sequence.ActionSequenceConstructor;
 import main.game.ai.elements.actions.sequence.PathSequenceConstructor;
 import main.game.ai.elements.actions.sequence.TurnSequenceConstructor;
 import main.game.ai.elements.goal.GoalManager;
 import main.game.ai.elements.task.TaskManager;
+import main.game.ai.logic.types.atomic.AtomicAi;
 import main.game.ai.tools.AiExecutor;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.ParamAnalyzer;
@@ -43,28 +45,31 @@ public class AiMaster extends AiHandler {
     protected CellPrioritizer cellPrioritizer;
     protected PathSequenceConstructor pathSequenceConstructor;
     protected TurnSequenceConstructor turnSequenceConstructor;
-    private   SituationAnalyzer situationAnalyzer;
+    private SituationAnalyzer situationAnalyzer;
     private ThreatAnalyzer threatAnalyzer;
-    private List<AiHandler> handlers=     new LinkedList<>() ;
+    private BehaviorMaster behaviorMaster;
+    private AtomicAi atomicAi;
+    private List<AiHandler> handlers = new LinkedList<>();
 
     public AiMaster(DC_Game game) {
-        super(null );
         this.game = game;
         this.master = this;
         this.actionSequenceConstructor = new ActionSequenceConstructor(this);
-        this.taskManager =  new TaskManager(this);
-        this.goalManager =  new GoalManager(this);
-        this.actionManager =  new ActionManager(this);
-        this.pruneMaster =  new PruneMaster(this);
-        this.pathBuilder =  PathBuilder.getInstance(this);
-        this.targetingMaster =  new TargetingMaster(this);
-        this.analyzer =  new Analyzer(this);
-        this.paramAnalyzer =  new ParamAnalyzer(this);
-        this.situationAnalyzer =  new SituationAnalyzer(this);
-        this.threatAnalyzer =  new ThreatAnalyzer(this);
-        this.cellPrioritizer =  new CellPrioritizer(this);
-        pathSequenceConstructor = new PathSequenceConstructor(master);
-        turnSequenceConstructor = new TurnSequenceConstructor(master);
+        this.taskManager = new TaskManager(this);
+        this.goalManager = new GoalManager(this);
+        this.actionManager = new ActionManager(this);
+        this.pruneMaster = new PruneMaster(this);
+        this.pathBuilder = PathBuilder.getInstance(this);
+        this.targetingMaster = new TargetingMaster(this);
+        this.analyzer = new Analyzer(this);
+        this.paramAnalyzer = new ParamAnalyzer(this);
+        this.situationAnalyzer = new SituationAnalyzer(this);
+        this.threatAnalyzer = new ThreatAnalyzer(this);
+        this.cellPrioritizer = new CellPrioritizer(this);
+        this.pathSequenceConstructor = new PathSequenceConstructor(master);
+        this. turnSequenceConstructor = new TurnSequenceConstructor(master);
+        this.behaviorMaster = new BehaviorMaster(master);
+        this. atomicAi = new AtomicAi(master);
 
         executor = new AiExecutor(game);
 
@@ -73,23 +78,35 @@ public class AiMaster extends AiHandler {
 
     @Override
     public void initialize() {
-        this.actionSequenceConstructor  .initialize();
-        this.taskManager  .initialize();
-        this.goalManager  .initialize();
-        this.actionManager  .initialize();
-        this.pruneMaster  .initialize();
-        this.pathBuilder  .initialize();
-        this.targetingMaster  .initialize();
-        this.analyzer  .initialize();
-        this.paramAnalyzer  .initialize();
-        this.cellPrioritizer  .initialize();
-        this.pathSequenceConstructor  .initialize();
-        this.turnSequenceConstructor  .initialize();
+        this.actionSequenceConstructor.initialize();
+        this.taskManager.initialize();
+        this.goalManager.initialize();
+        this.actionManager.initialize();
+        this.pruneMaster.initialize();
+        this.pathBuilder.initialize();
+        this.targetingMaster.initialize();
+        this.analyzer.initialize();
+        this.paramAnalyzer.initialize();
+        this.cellPrioritizer.initialize();
+        this.pathSequenceConstructor.initialize();
+        this.turnSequenceConstructor.initialize();
+        this.behaviorMaster.initialize();
+        this.atomicAi.initialize();
+        this.threatAnalyzer.initialize();
+        this.situationAnalyzer.initialize();
     }
 
     public void setUnit(Unit unit) {
         this.unit=unit;
 getHandlers().forEach(handler -> handler.setUnit(unit));
+    }
+
+    public BehaviorMaster getBehaviorMaster() {
+        return behaviorMaster;
+    }
+
+    public AtomicAi getAtomicAi() {
+        return atomicAi;
     }
 
     public AI_Logic getLogic() {

@@ -11,16 +11,18 @@ public class SpriteAnimationFactory {
 
     public static SpriteAnimation
     getSpriteAnimation(String texturePath) {
-        if (!ImageManager.isImage(texturePath))
+        if (!ImageManager.isImage(texturePath)) {
             texturePath = ImageManager.getEmptyItemIconPath(false);
+        }
         return new SpriteAnimation(texturePath);
     }
 
 
     public static SpriteAnimation getSpriteAnimation(String path
      , boolean singleSprite) {
-        if (!ImageManager.isImage(path))
+        if (!ImageManager.isImage(path)) {
             path = ImageManager.getEmptyItemIconPath(false);
+        }
         return new SpriteAnimation(defaultFrameDuration, false, 1, path, null, singleSprite);
     }
 
@@ -28,8 +30,9 @@ public class SpriteAnimationFactory {
                                                      String path,
                                                      Texture texture
      , boolean singleSprite) {
-        if (!ImageManager.isImage(path))
+        if (!ImageManager.isImage(path)) {
             path = ImageManager.getEmptyItemIconPath(false);
+        }
         return new SpriteAnimation(defaultFrameDuration, looping, loops, path, null, singleSprite);
 
     }

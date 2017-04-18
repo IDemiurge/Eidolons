@@ -2,7 +2,6 @@ package main.game.ai;
 
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
-import main.data.XLinkedMap;
 import main.entity.obj.unit.Unit;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.ActionManager;
@@ -16,22 +15,13 @@ import main.game.ai.tools.priority.PriorityManager;
 import main.game.battlefield.Coordinates;
 import main.game.core.game.DC_Game;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class AI_Manager extends AiMaster {
-    static Set<Action> brokenActions = new HashSet<>();
-    private static GroupAI customGroup;
     private static boolean running;
-    private   ExecutorService executorService;
-    private Map<Unit, UnitAI> aiMap = new XLinkedMap<>();
-    private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
     private static GroupAI allyGroup;
     private static GroupAI enemyGroup;
+    private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
 
     public AI_Manager(DC_Game game) {
         super(game);
@@ -54,6 +44,39 @@ public class AI_Manager extends AiMaster {
         return enemyGroup;
     }
 
+    public static Unit chooseEnemyToEngage(Unit obj, List<Unit> units) {
+        if (obj.getAiType() == AiEnums.AI_TYPE.CASTER) {
+            return null;
+        }
+        if (obj.getAiType() == AiEnums.AI_TYPE.ARCHER) {
+            return null;
+        }
+        if (obj.getAiType() == AiEnums.AI_TYPE.SNEAK) {
+            return null;
+        }
+        Unit topPriorityUnit = null;
+        int topPriority = -1;
+        for (Unit u : units) {
+            int priority = DC_PriorityManager.getUnitPriority(u, true);
+            if (priority > topPriority) {
+                topPriority = priority;
+                topPriorityUnit = u;
+            }
+        }
+        return topPriorityUnit;
+    }
+
+    public static GroupAI getCustomUnitGroup(Unit unit) {
+        if (unit.isMine()) {
+            return
+                    getAllyGroup();
+        }
+        return getEnemyGroup();
+    }
+
+    public static boolean isRunning() {
+        return running;
+    }
 
     public void init() {
         initialize();
@@ -61,7 +84,7 @@ public class AI_Manager extends AiMaster {
     }
 
     public Action getAction(Unit unit) {
-        if (unit.isMine()){
+        if (unit.isMine()) {
             unit.getQuickItemActives();
         }
         Action action = null;
@@ -90,80 +113,8 @@ public class AI_Manager extends AiMaster {
         }
         return action;
     }
-    public boolean makeAction(final Unit unit) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-        getExecutorService().execute(() -> {
-            Action action = getAction(unit);
-                if (action == null) {
-                    game.getManager().freezeUnit(unit);
-                    game.getManager().unitActionCompleted(null, true);
-                } else {
-                    try {
-                        getAI(unit).setLastAction(action);
-                        if (!executor.execute(action)) {
-                            brokenActions.add(action);
-                        } else {
-                            brokenActions.remove(action);
-                        }
-                        getAI(unit).standingOrderActionComplete();
-                    } catch (Exception e2) {
-                        e2.printStackTrace();
-                        // TODO block action, and try again!
-                    }
-                }
-
-//            WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_COMPLETE);
-         });
-//        , unit.getName() + " AI Thread").start();
-
-        return true;
-
-    }
-
-    public   ExecutorService getExecutorService() {
-        if (executorService == null)
-            executorService = Executors.newSingleThreadExecutor();
-        return executorService;
-    }
 
 
-    public static Unit chooseEnemyToEngage(Unit obj, List<Unit> units) {
-        if (obj.getAiType() == AiEnums.AI_TYPE.CASTER) {
-            return null;
-        }
-        if (obj.getAiType() == AiEnums.AI_TYPE.ARCHER) {
-            return null;
-        }
-        if (obj.getAiType() == AiEnums.AI_TYPE.SNEAK) {
-            return null;
-        }
-        Unit topPriorityUnit = null;
-        int topPriority = -1;
-        for (Unit u : units) {
-            int priority = DC_PriorityManager.getUnitPriority(u, true);
-            if (priority > topPriority) {
-                topPriority = priority;
-                topPriorityUnit = u;
-            }
-        }
-        return topPriorityUnit;
-    }
-
-    public static GroupAI getCustomUnitGroup(Unit unit) {
-        if (unit.isMine())
-            return
-             getAllyGroup();
-        return getEnemyGroup();
-    }
-    public static boolean isRunning() {
-        return running;
-    }
-
-    public static Set<Action> getBrokenActions() {
-        return brokenActions;
-    }
     public UnitAI getAI(Unit unit) {
         return unit.getUnitAI();
     }

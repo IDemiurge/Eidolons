@@ -2,13 +2,14 @@ package main.game.ai.elements.actions;
 
 import main.content.PROPS;
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_LOGIC;
 import main.data.XList;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.unit.Unit;
 import main.game.ai.elements.actions.sequence.ActionSequence;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.ai.tools.target.AI_SpellMaster;
 import main.game.logic.generic.DC_ActionManager;
 import main.game.logic.generic.DC_ActionManager.STD_MODE_ACTIONS;
@@ -58,7 +59,7 @@ public class AiUnitActionMaster {
             case MOVE:
             case APPROACH:
                 // dummy action!
-                actions.add(ActionFactory.getUnitAction(unit, "Move"));
+                actions.add(AiActionFactory.getUnitAction(unit, "Move"));
                 break;
 
             case ATTACK:
@@ -69,7 +70,7 @@ public class AiUnitActionMaster {
                     actions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK));
                 }
 
-                actions.remove(ActionFactory.getUnitAction(unit, DC_ActionManager.OFFHAND_ATTACK));
+                actions.remove(AiActionFactory.getUnitAction(unit, DC_ActionManager.OFFHAND_ATTACK));
                 DC_UnitAction
                         action = unit.getAction(
                         "Throw", false);
@@ -80,21 +81,21 @@ public class AiUnitActionMaster {
                 break;
 
             case DEFEND:
-                actions.add(ActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.Defend.name()));
-                actions.add(ActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.On_Alert.name()));
+                actions.add(AiActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.Defend.name()));
+                actions.add(AiActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.On_Alert.name()));
                 break;
 
             case COWER:
-                actions.add(ActionFactory.getUnitAction(unit, "Cower"));
+                actions.add(AiActionFactory.getUnitAction(unit, "Cower"));
                 break;
             case AMBUSH:
                 if (!checkAddStealth(true, unit, actions)) {
-                    actions.add(ActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.On_Alert.name()));
+                    actions.add(AiActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.On_Alert.name()));
                 }
                 break;
             case STALK:
                 if (!checkAddStealth(false, unit, actions)) {
-                    actions.add(ActionFactory.getUnitAction(unit, "Move"));
+                    actions.add(AiActionFactory.getUnitAction(unit, "Move"));
                 }
                 break;
             case STEALTH:
@@ -102,22 +103,22 @@ public class AiUnitActionMaster {
                 break;
             case SEARCH: // can it be MOVE?
                 if (unit.getBuff("Search Mode") == null) {
-                    actions.add(ActionFactory.getUnitAction(unit, "Search Mode"));
+                    actions.add(AiActionFactory.getUnitAction(unit, "Search Mode"));
                 } else {
-                    actions.add(ActionFactory.getUnitAction(unit, "Move"));
+                    actions.add(AiActionFactory.getUnitAction(unit, "Move"));
                 }
                 break;
             case WAIT:
-                actions.add(ActionFactory.getUnitAction(unit,  "Wait"));
+                actions.add(AiActionFactory.getUnitAction(unit,  "Wait"));
                 break;
             case PREPARE:
                 actions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.MODE));
                 if (!unit.isLiving()) {
-                    actions.remove(ActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.Defend.name()));
+                    actions.remove(AiActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.Defend.name()));
 
                 }
-                actions.remove(ActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.Defend.name()));
-                actions.remove(ActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.On_Alert.name()));
+                actions.remove(AiActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.Defend.name()));
+                actions.remove(AiActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.On_Alert.name()));
                 break;
         }
         actions.addAll(ActionFilter.filterActives(type, (unit.getSpells())));
@@ -138,16 +139,16 @@ public class AiUnitActionMaster {
         }
 
         if (!hidePref) {
-            if (ActionFactory.getUnitAction(unit, "Stealth Mode") != null) {
-                actions.add(ActionFactory.getUnitAction(unit, "Stealth Mode"));
+            if (AiActionFactory.getUnitAction(unit, "Stealth Mode") != null) {
+                actions.add(AiActionFactory.getUnitAction(unit, "Stealth Mode"));
                 return true;
             }
         }
-        if (ActionFactory.getUnitAction(unit, "Hide Mode") != null) {
-            actions.add(ActionFactory.getUnitAction(unit, "Hide Mode"));
+        if (AiActionFactory.getUnitAction(unit, "Hide Mode") != null) {
+            actions.add(AiActionFactory.getUnitAction(unit, "Hide Mode"));
             return true;
-        } else if (ActionFactory.getUnitAction(unit, "Stealth Mode") != null) {
-            actions.add(ActionFactory.getUnitAction(unit, "Stealth Mode"));
+        } else if (AiActionFactory.getUnitAction(unit, "Stealth Mode") != null) {
+            actions.add(AiActionFactory.getUnitAction(unit, "Stealth Mode"));
             return true;
         }
         return false;
@@ -161,8 +162,8 @@ public class AiUnitActionMaster {
         if (ListMaster.isNotEmpty(actionList)) {
             list.addAll(actionList);
         }
-        list.addAll(ActionFilter.filterActives(GOAL_TYPE.MOVE, (unit.getSpells())));
-        list.add(ActionFactory.getUnitAction(unit, "Move"));
+        list.addAll(ActionFilter.filterActives(AiEnums.GOAL_TYPE.MOVE, (unit.getSpells())));
+        list.add(AiActionFactory.getUnitAction(unit, "Move"));
         return list;
     }
 

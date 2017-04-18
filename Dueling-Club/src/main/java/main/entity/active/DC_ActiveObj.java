@@ -65,6 +65,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     private RESISTANCE_TYPE resistType;
     private DAMAGE_TYPE energyType;
     private ACTION_TYPE_GROUPS actionTypeGroup;
+    private ACTION_TYPE actionType;
     private AI_LOGIC aiLogic;
     private String customTooltip;
     private DC_ActiveObj parentAction;
@@ -127,8 +128,13 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public DAMAGE_TYPE getDamageType() {
         if (super.getDamageType()==null ){
-            if (getActiveWeapon()==null )
-                return null ;
+            if (getActiveWeapon() == null) {
+                if (isAttackAny())
+                    return DAMAGE_TYPE.PHYSICAL;
+                if (isSpell())
+                    return DAMAGE_TYPE.MAGICAL;
+                return null;
+            }
             getActiveWeapon().getDamageType();
         }
             return super.getDamageType();
@@ -159,10 +165,12 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         }
 
         if (resistType == null) {
-            if (isDamageSpell())
+            if (isDamageSpell()) {
                 return RESISTANCE_TYPE.REDUCE_DAMAGE;
-            if (isDebuffSpell())
+            }
+            if (isDebuffSpell()) {
                 return RESISTANCE_TYPE.REDUCE_DURATION;
+            }
 
             return RESISTANCE_TYPE.CHANCE_TO_BLOCK;
         }
@@ -249,8 +257,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public void setRef(Ref REF) {
         REF.setID(Ref.KEYS.ACTIVE, getId());
         super.setRef(REF);
-            ref.setObj(KEYS.TARGET,targetObj );
-            ref.setGroup(targetGroup );
+        ref.setObj(KEYS.TARGET, targetObj);
+        ref.setGroup(targetGroup);
 
         ref.setTriggered(false);
         setOwnerObj((Unit) ref.getObj(KEYS.SOURCE));
@@ -483,8 +491,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public ACTION_TYPE getActionType() {
-        return new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
+        if (actionType == null )
+            actionType  =
+         new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
                 getProperty(G_PROPS.ACTION_TYPE));
+        return actionType ;
     }
 
     public String getActionMode() {
@@ -868,21 +879,21 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         this.damageDealt = damageDealt;
     }
 
-
-    public void setTargetObj(Obj targetObj) {
-        this.targetObj = targetObj;
-    }
 @Override
     public Obj getTargetObj() {
         return targetObj;
     }
 
-    public void setTargetGroup(GroupImpl targetGroup) {
-        this.targetGroup = targetGroup;
+    public void setTargetObj(Obj targetObj) {
+        this.targetObj = targetObj;
     }
 
     @Override
     public GroupImpl getTargetGroup() {
         return targetGroup;
+    }
+
+    public void setTargetGroup(GroupImpl targetGroup) {
+        this.targetGroup = targetGroup;
     }
 }

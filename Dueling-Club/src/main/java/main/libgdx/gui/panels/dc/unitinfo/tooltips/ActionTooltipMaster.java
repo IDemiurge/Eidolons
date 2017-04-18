@@ -85,16 +85,18 @@ public class ActionTooltipMaster {
     }
 
     public static String getValueForTableParam(PARAMS value, DC_ActiveObj action) {
-        if (isParamDisplayedAsCustomString(value))
+        if (isParamDisplayedAsCustomString(value)) {
             try {
                 return getStringForTableValue(value, action);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        if (DC_ValueManager.isCentimalModParam(value))
+        }
+        if (DC_ValueManager.isCentimalModParam(value)) {
             if (action.getIntParam(value) == 0) {
                 return "100";
             }
+        }
         return action.getParam(value);
     }
 
@@ -105,10 +107,11 @@ public class ActionTooltipMaster {
 //            if (isIgnoreIfZero(p) ) {
 //
 //            }
-            if (DC_ValueManager.isCentimalModParam(p))
+            if (DC_ValueManager.isCentimalModParam(p)) {
                 if (action.getIntParam(p) == 100) {
                     return null;
                 }
+            }
             if (action.getIntParam(p) == 0) {
                 return null; //don't show any text!
             }
@@ -130,8 +133,9 @@ public class ActionTooltipMaster {
     }
 
     public static String tryGetStringForTableValue(VALUE value, DC_ActiveObj action) {
-        if (value == G_PROPS.NAME)
+        if (value == G_PROPS.NAME) {
             return action.getName();
+        }
         if (value instanceof PARAMS) {
 
             PARAMS p = (PARAMS) value;
@@ -238,8 +242,9 @@ public class ActionTooltipMaster {
     public static void test(DC_ActiveObj action, PARAMS[] params) {
         for (PARAMS p : params) {
             String s = getStringForTableValue(p, action);
-            if (s != null)
+            if (s != null) {
                 main.system.auxiliary.log.LogMaster.log(1, " " + s);
+            }
         }
     }
 
@@ -301,8 +306,9 @@ public class ActionTooltipMaster {
         if (chance <= 0) {
             defense = 0;
             chance = CriticalAttackRule.getCriticalChance(attack, defense, action);
-            if (chance <= 0)
+            if (chance <= 0) {
                 return "Crit: Impossible";
+            }
         }
 
         return "Crit: has " +
@@ -321,8 +327,9 @@ public class ActionTooltipMaster {
         if (chance <= 0) {
             defense = action.getOwnerObj().getIntParam(PARAMS.DEFENSE);
             chance = DefenseVsAttackRule.getMissChance(attack, defense, action);
-            if (chance <= 0)
+            if (chance <= 0) {
                 return "Accuracy: Miss Impossible";
+            }
         }
         return "Accuracy: has " +
          chance +

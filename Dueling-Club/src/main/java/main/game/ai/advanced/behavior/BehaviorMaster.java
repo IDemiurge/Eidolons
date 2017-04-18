@@ -1,5 +1,6 @@
 package main.game.ai.advanced.behavior;
 
+import main.content.enums.system.AiEnums;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
@@ -8,7 +9,7 @@ import main.game.ai.UnitAI;
 import main.game.ai.UnitAI.AI_BEHAVIOR_MODE;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.generic.AiHandler;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.ai.tools.path.ActionPath;
 import main.game.battlefield.Coordinates;
 import main.game.logic.generic.DC_ActionManager.STD_ACTIONS;
@@ -52,19 +53,19 @@ public class BehaviorMaster extends AiHandler {
     private static GOAL_TYPE getGoalFromBehavior(AI_BEHAVIOR_MODE b) {
         switch (b) {
             case AGGRO:
-                return (GOAL_TYPE.AGGRO);
+                return (AiEnums.GOAL_TYPE.AGGRO);
             case AMBUSH:
-                return (GOAL_TYPE.AMBUSH);
+                return (AiEnums.GOAL_TYPE.AMBUSH);
             case GUARD:
-                return (GOAL_TYPE.GUARD);
+                return (AiEnums.GOAL_TYPE.GUARD);
             case PATROL:
-                return (GOAL_TYPE.PATROL);
+                return (AiEnums.GOAL_TYPE.PATROL);
             case STALK:
-                return (GOAL_TYPE.STALK);
+                return (AiEnums.GOAL_TYPE.STALK);
             case WANDER:
-                return (GOAL_TYPE.WANDER);
+                return (AiEnums.GOAL_TYPE.WANDER);
         }
-        return GOAL_TYPE.MOVE;
+        return AiEnums.GOAL_TYPE.MOVE;
     }
 
     public AI_BEHAVIOR_MODE getBehavior(UnitAI ai) {

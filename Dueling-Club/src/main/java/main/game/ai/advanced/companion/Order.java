@@ -1,8 +1,9 @@
 package main.game.ai.advanced.companion;
 
 import main.content.CONTENT_CONSTS2.ORDER_TYPE;
+import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.game.ai.elements.actions.sequence.ActionSequence;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 
 import java.util.Map;
 
@@ -12,11 +13,13 @@ public class Order {
     ActionSequence sequence;
     String actionType;
     private Map<GOAL_TYPE, Integer> priorityModsMap;
+    private ORDER_PRIORITY_MODS strictPriority;
 
-    public Order(  String arg) {
+    public Order(String arg) {
         this.arg = arg;
     }
-    public Order(  ORDER_TYPE type, String arg) {
+
+    public Order(ORDER_TYPE type, String arg) {
         this.arg = arg;
         this.type = type;
     }
@@ -53,12 +56,19 @@ public class Order {
         this.actionType = actionType;
     }
 
+    public Map<GOAL_TYPE, Integer> getPriorityModsMap() {
+        return priorityModsMap;
+    }
 
     public void setPriorityModsMap(Map<GOAL_TYPE, Integer> priorityModsMap) {
         this.priorityModsMap = priorityModsMap;
     }
 
-    public Map<GOAL_TYPE, Integer> getPriorityModsMap() {
-        return priorityModsMap;
+    public void setStrictPriority(ORDER_PRIORITY_MODS strictPriority) {
+        this.strictPriority = strictPriority;
+    }
+
+    public ORDER_PRIORITY_MODS getStrictPriority() {
+        return strictPriority;
     }
 }

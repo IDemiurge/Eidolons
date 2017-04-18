@@ -374,31 +374,34 @@ public class DC_AttackMaster {
         if (!new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_HIT, ref).fire()) {
             return false;
         }
-        if (attacked.getSecondWeapon() != null)
-            if (attacked.getSecondWeapon().isShield())
+        if (attacked.getSecondWeapon() != null) {
+            if (attacked.getSecondWeapon().isShield()) {
                 if (!attack.isSneak() && !isCounter) {
                     int blocked = game.getArmorMaster().getShieldDamageBlocked(final_amount, attacked,
-                     attacker, action, getAttackWeapon(ref, attack.isOffhand()),
-                     attack.getDamageType());
+                            attacker, action, getAttackWeapon(ref, attack.isOffhand()),
+                            attack.getDamageType());
                     final_amount -= blocked;
                     if (blocked > 0) {
                         Ref REF = ref.getCopy();
                         REF.setAmount(blocked);
                         if (checkEffectsInterrupt(attacked, attacker, SPECIAL_EFFECTS_CASE.ON_SHIELD_BLOCK,
-                         REF, offhand)) {
+                                REF, offhand)) {
                             return true;
                         }
                         if (checkEffectsInterrupt(attacker, attacked,
-                         SPECIAL_EFFECTS_CASE.ON_SHIELD_BLOCK_SELF, REF, offhand)) {
+                                SPECIAL_EFFECTS_CASE.ON_SHIELD_BLOCK_SELF, REF, offhand)) {
                             return true;
                         }
                     }
 
                 }
+            }
+        }
         // armor penetration?
         attack.setDamage(final_amount);
-        if (checkAttackEventsInterrupt(attack, ref))
+        if (checkAttackEventsInterrupt(attack, ref)) {
             return true;
+        }
 
 //        ForceRule.addForceEffects(action); now in executor.resolve() for all actions
 
@@ -465,30 +468,36 @@ public class DC_AttackMaster {
     }
 
     private boolean checkAttackEventsInterrupt(Attack attack, Ref ref) {
-        if (attack.isSneak())
+        if (attack.isSneak()) {
             if (!EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_SNEAK, ref)) {
                 return true;
             }
-        if (attack.isAttackOfOpportunity())
+        }
+        if (attack.isAttackOfOpportunity()) {
             if (!EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_OF_OPPORTUNITY, ref)) {
                 return true;
             }
-        if (attack.isCounter())
+        }
+        if (attack.isCounter()) {
             if (!EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_COUNTER, ref)) {
                 return true;
             }
-        if (attack.isCritical())
+        }
+        if (attack.isCritical()) {
             if (!EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_CRITICAL, ref)) {
                 return true;
             }
-        if (attack.isInstant())
+        }
+        if (attack.isInstant()) {
             if (!EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_INSTANT, ref)) {
                 return true;
             }
-        if (attack.isDodged())
+        }
+        if (attack.isDodged()) {
             if (!EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_DODGED, ref)) {
                 return true;
             }
+        }
 //         ATTACK_BLOCKED,
 //         ATTACK_MISSED,
         return false;

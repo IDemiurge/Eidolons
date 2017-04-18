@@ -70,7 +70,8 @@ public class DataManager {
         return lists;
     }
 
-    public static ObjType getType(String typeName) {
+
+        public static ObjType getType(String typeName) {
         return getType(typeName, false);
     }
 

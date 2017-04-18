@@ -203,13 +203,14 @@ public class WaveAssembler {
         List<ObjType> types = wave.getUnitMap().stream().map(t -> t.getType()).collect(Collectors.toList());
         positioner.setMaxSpacePercentageTaken(SpawnManager.MAX_SPACE_PERC_CREEPS);
         List<ObjAtCoordinate> group =
-         positioner.getCoordinatesForUnitGroup(types, wave, wave.getUnitLevel());
+                positioner.getCoordinatesForUnitGroup(types, wave, wave.getUnitLevel());
         wave.setUnitMap(group);
     }
-        public void applyLevel() {
+
+    public void applyLevel() {
         // TODO foreach unit add level and break if exceeding power
-            unitLevel++;
-            wave.setUnitLevel(unitLevel);
+        unitLevel++;
+        wave.setUnitLevel(unitLevel);
         for (ObjAtCoordinate type : typeMap) {
             ObjType newType = new UnitLevelManager().getLeveledType(type.getType(), 1, true);
             type.setType(newType);

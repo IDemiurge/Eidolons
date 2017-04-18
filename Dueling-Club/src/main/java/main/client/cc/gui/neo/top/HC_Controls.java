@@ -217,7 +217,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                     new Thread(new Runnable() {
                         public void run() {
                             CharacterCreator.saveAs(
-                             CharacterCreator.getSelectedHeroType(), !alt);
+                                    CharacterCreator.getSelectedHeroType(), !alt);
                             // CharacterCreator.savePreset(hero.getType());
                             SoundMaster.playStandardSound(STD_SOUNDS.OK);
                         }

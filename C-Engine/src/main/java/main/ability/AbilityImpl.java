@@ -167,7 +167,7 @@ public class AbilityImpl extends ReferredElement implements Ability {
     public void setForceTargeting(boolean forceTargeting) {
         this.forceTargeting = forceTargeting;
     }
-
+@Override
     public boolean isForcePresetTargeting() {
         return forcePresetTargeting;
     }

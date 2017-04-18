@@ -30,7 +30,7 @@ public class PathBuilder extends AiHandler {
     private Unit unit;
     private Action targetAction;
     private List<Coordinates> targetCells;
-    private Coordinates targetCoordinate;
+    protected Coordinates targetCoordinate;
     private Coordinates originalCoordinate;
     private Coordinates c_coordinate;
     private Coordinates previousCoordinate;
@@ -64,7 +64,7 @@ public class PathBuilder extends AiHandler {
     public PathBuilder init(List<DC_ActiveObj> moveActions, Action targetAction) {
         this.targetAction = targetAction;
         init();
-        pathChoiceMaster.init(unit,targetAction, targetCoordinate,moveActions);
+        pathChoiceMaster.init(unit, targetAction, targetCoordinate, moveActions);
         return this;
     }
 
@@ -88,12 +88,14 @@ public class PathBuilder extends AiHandler {
         unit.setFacing(originalFacing);
 
     }
+
     protected boolean checkEmpty(Coordinates c) {
         return unit.getGame().getRules().getStackingRule().canBeMovedOnto(unit, c);
         // return !unit.getGame().getBattleField().getGrid().isOccupied(c);
         // unit.getGame().getRules().getStackingRule().canBeMovedOnto(unit, c);
         // unit.getGame().getBattleField().getGrid().getObj(c) == null;
     }
+
     protected void adjustUnit() {
         unit.setCoordinates(c_coordinate);
         unit.setFacing(c_facing);
@@ -104,7 +106,7 @@ public class PathBuilder extends AiHandler {
             , List<DC_ActiveObj> moveActions, Action targetAction) {
         this.targetAction = targetAction;
         init();
-        pathChoiceMaster.init(unit,targetAction, targetCoordinate,moveActions);
+        pathChoiceMaster.init(unit, targetAction, targetCoordinate, moveActions);
         return build(targetCoordinates);
     }
 
@@ -121,7 +123,7 @@ public class PathBuilder extends AiHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (filteredPaths.isEmpty()){
+        if (filteredPaths.isEmpty()) {
             filteredPaths = paths;
         }
         return filteredPaths;

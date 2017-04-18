@@ -57,7 +57,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
         } else {
             try {
                 costs = DC_CostsFactory.getCostsForSpell(getEntity(),
-                        getChecker().isSpell());
+                 getChecker().isSpell());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -67,14 +67,14 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             boolean noCounterCost = cp_cost == null;
             if (!noCounterCost) {
                 noCounterCost = cp_cost.getPayment().getAmountFormula().toString().isEmpty()
-                        || cp_cost.getPayment().getAmountFormula().toString().equals("0");
+                 || cp_cost.getPayment().getAmountFormula().toString().equals("0");
             }
             if (noCounterCost) { // if not specifically set...
                 if (getHandler().isExtraAttackMode()) {
                     cp_cost = new CostImpl(new Payment(PARAMS.C_N_OF_COUNTERS, ap_cost.getPayment()
-                            .getAmountFormula()));
+                     .getAmountFormula()));
                     cp_cost.getPayment().getAmountFormula().applyModifier(
-                            getEntity().getOwnerObj().getIntParam(PARAMS.EXTRA_ATTACKS_POINT_COST_MOD));
+                     getEntity().getOwnerObj().getIntParam(PARAMS.EXTRA_ATTACKS_POINT_COST_MOD));
                     cp_cost.setCostParam(PARAMS.CP_COST);
 
                 }
@@ -106,7 +106,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
         Costs costs = getEntity().getCosts();
         Costs channelingResolveCosts = new Costs(costs.getRequirements(), costs.getCosts());
         Costs channelingActivateCosts = new Costs(costs.getRequirements(), costs
-                .getCost(PARAMS.C_N_OF_ACTIONS));
+         .getCost(PARAMS.C_N_OF_ACTIONS));
         channelingResolveCosts.removeCost(PARAMS.C_N_OF_ACTIONS);
         channelingResolveCosts.removeRequirement(InfoMaster.COOLDOWN_REASON);
 
@@ -116,14 +116,20 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
 
 
     public ACTION_TYPE_GROUPS initActionTypeGroup() {
+        if (checkProperty(G_PROPS.ACTION_TYPE_GROUP)) {
+            return new EnumMaster<ACTION_TYPE_GROUPS>()
+             .retrieveEnumConst(ACTION_TYPE_GROUPS.class, getProperty(G_PROPS.ACTION_TYPE_GROUP));
+        }
         if (getChecker().isStandardAttack()) {
             return ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
         }
         if (StringMaster.isEmpty(getProperty(G_PROPS.ACTION_TYPE))) {
             return ActionEnums.ACTION_TYPE_GROUPS.SPELL;
         }
-        ACTION_TYPE type = new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
-                getProperty(G_PROPS.ACTION_TYPE));
+        ACTION_TYPE type =
+         getEntity().getActionType();
+//         new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
+//         getProperty(G_PROPS.ACTION_TYPE));
         if (type == null) {
             return ActionEnums.ACTION_TYPE_GROUPS.SPELL;
         }
@@ -154,7 +160,8 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
 
     @Override
     public void init() {
-super.init();
+        super.init();
+        addDynamicValues();
     }
 
     public void addDynamicValues() {

@@ -35,10 +35,11 @@ public class EntityHandler<E extends Entity> {
         return StringMaster.getPossessive(getEntity().getName()) + " " + getClass().getSimpleName();
     }
     protected void log(String string, boolean gameLog) {
-        if (gameLog)
+        if (gameLog) {
             getGame().getLogManager().log(string);
-        else
-        main.system.auxiliary.log.LogMaster.log(getLogChannel(),string);
+        } else {
+            main.system.auxiliary.log.LogMaster.log(getLogChannel(), string);
+        }
     }
 
     protected int getLogChannel() {
@@ -76,6 +77,9 @@ public class EntityHandler<E extends Entity> {
         return getEntity().checkParameter(param, value);
     }
 
+    public boolean checkProperty(PROPERTY p ) {
+        return getEntity().checkProperty(p );
+    }
     public boolean checkProperty(PROPERTY p, String value) {
         return getEntity().checkProperty(p, value);
     }

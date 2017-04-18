@@ -14,7 +14,6 @@ import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.TestMaster;
 import main.test.frontend.FAST_DC;
 
@@ -90,6 +89,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 
 
     public Boolean nextAction() {
+        //TODO retain active unit
         resetQueue();
 
         if (getUnitQueue().isEmpty()) {
@@ -106,59 +106,6 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         return result;
     }
 
-    public boolean doUnitAction() {
-        // game.getState().newRound();
-
-        if (!nextAction()) {
-            return true; // if killed or immobilized...
-        }
-        // if (game.isStarted())
-        // game.getManager().refreshGUI();
-        // else
-
-        return waitForUnitAction();
-    }
-
-    private Boolean waitForUnitAction() {
-        Boolean result;
-        // timer
-
-        while (game.isPaused()) {
-            WaitMaster.WAIT(100);
-        }
-
-        if (isUnitAI_Controlled(activeUnit)) {
-            game.getAiManager().makeAction(activeUnit);
-        } else {
-            game.getMovementManager().promptContinuePath(activeUnit);
-        }
-
-        // else
-        result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_COMPLETE); // failsafe?
-
-        // == INTERRUPTED ANOTHER_TURN NORMAL
-        if (game.isStarted()) {
-            resetInitiative(false);
-            game.getManager().deselectActive();
-        }
-
-        return result;
-    }
-
-    private boolean isUnitAI_Controlled(Unit activeUnit2) {
-        if (activeUnit.getMode().isBehavior()) {
-            return true;
-        }
-        if (!game.getAiManager().getAI(activeUnit).getForcedActions().isEmpty()) {
-            return true;
-        }
-        if (game.isRunning()) {
-            if (activeUnit.isAiControlled()) {
-                return true;
-            }
-        }
-        return false;
-    }
 
 
     public void resetInitiative(boolean first) {

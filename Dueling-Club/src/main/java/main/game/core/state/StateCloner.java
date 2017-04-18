@@ -20,7 +20,10 @@ import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_ArmorObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
-import main.entity.obj.*;
+import main.entity.obj.Attachment;
+import main.entity.obj.DC_Cell;
+import main.entity.obj.Obj;
+import main.entity.obj.Structure;
 import main.entity.obj.attach.DC_BuffObj;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.unit.Unit;
@@ -95,7 +98,9 @@ public class StateCloner {
         for (OBJ_TYPE TYPE : state.getObjMaps().keySet()) {
             Map<Integer, Obj> cloneMap = getObjMap();
             Map<Integer, Obj> map = state.getObjMaps().get(TYPE);
-            if (map == null) continue;
+            if (map == null) {
+                continue;
+            }
             for (Obj e : map.values()) {
                 Obj cloneObj = cloneObj(e);
                 cloneMap.put(cloneObj.getId(), cloneObj);
@@ -121,8 +126,9 @@ public class StateCloner {
             Attachment a = cloneAttachment(attachment);
             clone.getAttachments().add(a);
             Obj basis = a.getBasis();
-            if (basis != null)
+            if (basis != null) {
                 MapMaster.addToListMap(clone.getAttachmentsMap(), basis, a);
+            }
         });
     }
 
@@ -150,20 +156,22 @@ public class StateCloner {
 
     private Effect cloneEffect(Effect e) {
         Effect cloneEffect = null;
-        if (e.getConstruct() != null)
+        if (e.getConstruct() != null) {
             cloneEffect = (Effect) e.getConstruct().construct();
-        else {
+        } else {
             //TODO
         }
         if (e instanceof ContinuousEffect) {
             e=((ContinuousEffect) e).getEffect();
-            if (e.getConstruct() == null)
+            if (e.getConstruct() == null) {
                 return ContinuousEffect.transformEffectToContinuous(e);
+            }
             cloneEffect = (Effect) e.getConstruct().construct();
             cloneEffect = ContinuousEffect.transformEffectToContinuous(cloneEffect);
         }
-        if (cloneEffect == null)
+        if (cloneEffect == null) {
             return e;
+        }
         return cloneEffect;
     }
 
@@ -215,7 +223,7 @@ public class StateCloner {
     private Obj getInstance(Obj e) {
         DC_OBJ_CLASSES c = new EnumMaster<DC_OBJ_CLASSES>()
          .retrieveEnumConst(DC_OBJ_CLASSES.class, e.getClass().getSimpleName());
-        if (c != null)
+        if (c != null) {
             switch (c) {
                 case Unit:
                     return new Unit((Unit) e);
@@ -223,7 +231,7 @@ public class StateCloner {
                     return new Structure(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_WeaponObj:
                     return new DC_WeaponObj(
-                     e.getType(), e.getOwner(), game, e.getRef().getCopy());
+                            e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_ArmorObj:
                     return new DC_ArmorObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_QuickItemObj:
@@ -238,18 +246,19 @@ public class StateCloner {
                     return new DC_FeatObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_BuffObj:
                     return new DC_BuffObj(
-                     (DC_BuffObj) e);
+                            (DC_BuffObj) e);
                 case DC_Cell:
 //                Cell cell = (Cell) e;
                     return new DC_Cell(
-                     e.getType(), e.getX(), e.getY(), game, e.getRef().getCopy()
-                     ,
+                            e.getType(), e.getX(), e.getY(), game, e.getRef().getCopy()
+                            ,
 //                 cell.
-                     game.getDungeon());
+                            game.getDungeon());
 
                 case Wave:
                     return new Wave(e.getType(), game, e.getRef().getCopy(), (DC_Player) e.getOwner());
             }
+        }
         switch (e.getOBJ_TYPE_ENUM()) {
             case ABILS:
                 return (Obj) AbilityConstructor.newAbility(e.getName(), e.getRef().getSourceObj(), e instanceof PassiveAbilityObj);

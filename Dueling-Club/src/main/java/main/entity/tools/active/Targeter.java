@@ -1,5 +1,6 @@
 package main.entity.tools.active;
 
+import main.ability.Ability;
 import main.ability.ActivesConstructor;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
@@ -46,8 +47,9 @@ public class Targeter extends ActiveHandler {
             if (getEntity().getTargeting() != null) {
                 if (!isForcePresetTarget()) {
                     if (!selectTarget(getRef())) {
-                        if (getEntity().getOwnerObj().isAiControlled())
+                        if (getEntity().getOwnerObj().isAiControlled()) {
                             throw new RuntimeException();
+                        }
                     }
                 } else {
                     if (getRef().getTargetObj() == null) {
@@ -60,7 +62,7 @@ public class Targeter extends ActiveHandler {
 
     }
     public Ref getRef() {
-        return getEntity(). getRef();
+        return getEntity().getRef();
     }
 
 
@@ -91,8 +93,7 @@ public class Targeter extends ActiveHandler {
         } else {
             getHandler().setCancelled(true);
         }
-if (result)
-{
+        if (result) {
     getAction().setTargetObj(getRef().getTargetObj());
     getAction().setTargetGroup(getRef().getGroup());
 }
@@ -105,7 +106,10 @@ if (result)
         return getAction().getTargeting();
     }
 
-    protected void initTargetingMode() { if (targetingInitialized)return ;
+    protected void initTargetingMode() {
+        if (targetingInitialized) {
+            return;
+        }
         if (targetingMode == null) {
             targetingMode = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(
                     TARGETING_MODE.class, getType().getProperty(G_PROPS.TARGETING_MODE));
@@ -114,7 +118,8 @@ if (result)
         if (targetingMode == null) {
             targetingMode = AbilityEnums.TARGETING_MODE.MULTI;
         }
-        ActivesConstructor.constructActive(targetingMode, getEntity());targetingInitialized=true;
+        ActivesConstructor.constructActive(targetingMode, getEntity());
+        targetingInitialized=true;
 //        if (targeting == null) {
 //            LogMaster.log(LOG_CHANNELS.CONSTRUCTION_DEBUG,
 //             "null targeting for " + getName() + targetingMode + abilities);
@@ -216,6 +221,15 @@ if (result)
                 a.setForcePresetTarget(b);
             }
         }
+        if (getEntity().getAbilities() != null) {
+            for (Ability a : getEntity().getAbilities()) {
+                a.setForcePresetTargeting(b);
+            }
+        }
+    }
+
+    public void setTargetingInitialized(boolean targetingInitialized) {
+        this.targetingInitialized = targetingInitialized;
     }
 
     public TARGETING_MODE getTargetingMode() {

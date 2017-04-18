@@ -31,7 +31,7 @@ public class HitAnim extends ActionAnim {
 
 
     public HitAnim(DC_ActiveObj active, AnimData params) {
-        this(active, params, true, null , () -> String.valueOf(
+        this(active, params, true, null, () -> String.valueOf(
                 active.getIntParam(PARAMS.DAMAGE_LAST_DEALT)),
                 () -> ImageManager.getDamageTypeImagePath(
                         active.getDamageType() == null ? "Physical" : active.getDamageType().getName()));
@@ -55,10 +55,12 @@ public class HitAnim extends ActionAnim {
         fade.setAlpha(0);
         addAction(fade);
         setLoops(1);
-        if (c==null ){
-            if (active.getDamageType()!=null )
-            c = GdxColorMaster.getDamageTypeColor(active.getDamageType());
-            else c = Color.RED;
+        if (c == null) {
+            if (active.getDamageType() != null) {
+                c = GdxColorMaster.getDamageTypeColor(active.getDamageType());
+            } else {
+                c = Color.RED;
+            }
         }
         //TODO //        FloatingTextMaster.getInstance().getFloatingText(active, HIT, active);
         floatingText =

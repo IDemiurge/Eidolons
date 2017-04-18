@@ -2,7 +2,7 @@ package main.game.ai.elements.task;
 
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 
 public class Task {
     private GOAL_TYPE type;

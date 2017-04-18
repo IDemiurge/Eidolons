@@ -143,7 +143,9 @@ public class DamageCalculator {
     }
 
     public static boolean isUnblockable(Ref ref) {
-        if (isPeriodic(ref)) return true;
+        if (isPeriodic(ref)) {
+            return true;
+        }
         return StringMaster.compare(ref.getValue(KEYS.DAMAGE_MODS),
          DAMAGE_MODIFIER.UNBLOCKABLE
           .toString());
@@ -182,21 +184,25 @@ public class DamageCalculator {
         //TODO make BonusDamage all add to source?
         DC_Obj obj = (DC_Obj) ref.getSourceObj();
         for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
-            if (e == CASE)
+            if (e == CASE) {
                 list.addAll(obj.getBonusDamage().get(e));
+            }
         }
         obj = (DC_Obj) ref.getObj(KEYS.ACTIVE);
         for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
-            if (e == CASE)
+            if (e == CASE) {
                 list.addAll(obj.getBonusDamage().get(e));
+            }
         }
         if (obj instanceof DC_ActiveObj) {
             obj = ((DC_ActiveObj) obj).getActiveWeapon();
-            if (obj!=null )
+            if (obj != null) {
                 for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
-                    if (e == CASE)
+                    if (e == CASE) {
                         list.addAll(obj.getBonusDamage().get(e));
+                    }
                 }
+            }
         }
 
         return list;

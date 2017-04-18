@@ -52,14 +52,14 @@ public class MusicKeyMaster implements HotkeyListener {
             public void run() {
                 if (aIdentifier >= 1000) {
 //                    while (true) {
-                        try {
-                            playRandomFromGroupHotkey(aIdentifier);
-                            return;
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            playFromGroupHotkey(aIdentifier, false);
-                            return ;
-                        }
+                    try {
+                        playRandomFromGroupHotkey(aIdentifier);
+                        return;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        playFromGroupHotkey(aIdentifier, false);
+                        return;
+                    }
 //                    }
                 }
                 if (!checkSpecialHotkey(aIdentifier)) {
@@ -117,7 +117,7 @@ public class MusicKeyMaster implements HotkeyListener {
         for (int i = 1; i < 60; i++) {
             int mod = getModFromHotkeyId(i);
             int keyCode = KeyEvent.getExtendedKeyCodeForChar(Character.forDigit(i == 10 ? 0
-             : i % 10, 10));
+                    : i % 10, 10));
             if (mod == JIntellitype.MOD_CONTROL) {
                 if (i % 10 == 1) {
                     continue;// eclipse :)
@@ -128,7 +128,7 @@ public class MusicKeyMaster implements HotkeyListener {
         int i = 1;// win+f1 taken by windows help...
         // GYM!
         JIntellitype.getInstance().registerHotKey(1000,
-         JIntellitype.MOD_CONTROL + JIntellitype.MOD_SHIFT, getFx(0));
+                JIntellitype.MOD_CONTROL + JIntellitype.MOD_SHIFT, getFx(0));
         for (MUSIC_TYPE n : MUSIC_TYPE.values()) {
             if (getFx(i) == 0) {
                 break;
@@ -150,7 +150,7 @@ public class MusicKeyMaster implements HotkeyListener {
                 break;
             }
             JIntellitype.getInstance().registerHotKey(3000 + i,
-             JIntellitype.MOD_WIN + JIntellitype.MOD_SHIFT, getFx(i));
+                    JIntellitype.MOD_WIN + JIntellitype.MOD_SHIFT, getFx(i));
             i++;
         }
         i = 0;
@@ -159,18 +159,18 @@ public class MusicKeyMaster implements HotkeyListener {
                 break;
             }
             JIntellitype.getInstance().registerHotKey(4000 + i,
-             JIntellitype.MOD_WIN + JIntellitype.MOD_CONTROL, getFx(i));
+                    JIntellitype.MOD_WIN + JIntellitype.MOD_CONTROL, getFx(i));
             i++;
 //            helpInfo+= "win+ctrl+" +"\nF"+i+" for random " + n;
         }
 
         JIntellitype.getInstance().registerHotKey(keyIdDialog,
-         JIntellitype.MOD_ALT + JIntellitype.MOD_WIN, KeyEvent.VK_SPACE);
+                JIntellitype.MOD_ALT + JIntellitype.MOD_WIN, KeyEvent.VK_SPACE);
         JIntellitype.getInstance().registerHotKey(keyIdDialogLast,
-         JIntellitype.MOD_ALT + JIntellitype.MOD_WIN + JIntellitype.MOD_SHIFT,
-         KeyEvent.VK_SPACE);
+                JIntellitype.MOD_ALT + JIntellitype.MOD_WIN + JIntellitype.MOD_SHIFT,
+                KeyEvent.VK_SPACE);
         JIntellitype.getInstance().registerHotKey(keyIdDialogLastToggle,
-         JIntellitype.MOD_CONTROL + JIntellitype.MOD_ALT, KeyEvent.VK_SPACE);
+                JIntellitype.MOD_CONTROL + JIntellitype.MOD_ALT, KeyEvent.VK_SPACE);
 
         JIntellitype.getInstance().registerHotKey(keyIdCycleView, getMod(4), KeyEvent.VK_SPACE);
         // JIntellitype.getInstance().registerHotKey(keyIdCyclePlayMode,
@@ -377,16 +377,16 @@ public class MusicKeyMaster implements HotkeyListener {
 
     private boolean randomFromView() {
         List<JButton> list = new RandomWizard<List<JButton>>().getRandomListItem(AHK_Master
-         .getButtonLists());
+                .getButtonLists());
         new RandomWizard<JButton>().getRandomListItem(list)
 
-         .doClick();
+                .doClick();
         return false;
     }
 
     private boolean randomFromActive() {
         new RandomWizard<JButton>().getRandomListItem(AHK_Master.getButtonsFromActiveSubPanel())
-         .doClick();
+                .doClick();
         return false;
     }
 

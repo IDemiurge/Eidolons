@@ -12,6 +12,7 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.ai.elements.task.Task;
 import main.game.ai.tools.target.TargetingMaster;
 import main.system.ObjUtilities;
 import main.system.auxiliary.StringMaster;
@@ -21,6 +22,7 @@ public class Action {
     DC_ActiveObj active;
 
     boolean complete;
+    private Task task;
 
     public Action(DC_ActiveObj actives, Ref ref) {
         this.active = actives;
@@ -163,4 +165,11 @@ public class Action {
         // getActive().getName().equals("Move");
     }
 
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
 }

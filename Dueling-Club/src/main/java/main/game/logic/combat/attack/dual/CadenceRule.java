@@ -1,4 +1,4 @@
-package main.game.logic.combat.mechanics;
+package main.game.logic.combat.attack.dual;
 
 import main.ability.ActiveAbility;
 import main.ability.effects.Effect.MOD;
@@ -102,10 +102,12 @@ public class CadenceRule {
 
         DC_WeaponObj weapon = unit.getActiveWeapon(offhand);
         List<Obj> targets = new LinkedList<>();
-        if (unit.getWeapon(!offhand)!=null )
-        targets.add(unit.getWeapon(!offhand));
-        if (unit.getNaturalWeapon(!offhand)!=null )
-        targets.add(unit.getNaturalWeapon(!offhand));
+        if (unit.getWeapon(!offhand) != null) {
+            targets.add(unit.getWeapon(!offhand));
+        }
+        if (unit.getNaturalWeapon(!offhand) != null) {
+            targets.add(unit.getNaturalWeapon(!offhand));
+        }
         GroupImpl group = new GroupImpl(  targets);
         LogMaster.log(LogMaster.RULES_DEBUG, "Cadence Rule applies to " + group);
         ref.setGroup(group);
@@ -142,16 +144,18 @@ public class CadenceRule {
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
 
         effects.add(valueEffect);
-        if (unit.getIntParam(PARAMS.CADENCE_DAMAGE_MOD) > 0)
-        effects.add(new ModifyValueEffect(
-         PARAMS. DAMAGE_MOD,
-           MOD.MODIFY_BY_CONST, unit
-                .getParam(PARAMS.CADENCE_DAMAGE_MOD)));
-        if (unit.getIntParam(PARAMS.CADENCE_ATTACK_MOD) > 0)
-        effects.add(new ModifyValueEffect(
-         PARAMS. ATTACK_MOD
-         , MOD.MODIFY_BY_CONST, unit
-                .getParam(PARAMS.CADENCE_ATTACK_MOD)));
+        if (unit.getIntParam(PARAMS.CADENCE_DAMAGE_MOD) > 0) {
+            effects.add(new ModifyValueEffect(
+                    PARAMS.DAMAGE_MOD,
+                    MOD.MODIFY_BY_CONST, unit
+                    .getParam(PARAMS.CADENCE_DAMAGE_MOD)));
+        }
+        if (unit.getIntParam(PARAMS.CADENCE_ATTACK_MOD) > 0) {
+            effects.add(new ModifyValueEffect(
+                    PARAMS.ATTACK_MOD
+                    , MOD.MODIFY_BY_CONST, unit
+                    .getParam(PARAMS.CADENCE_ATTACK_MOD)));
+        }
         String buffTypeName = (!offhand) ? buffTypeNameOffHand : buffTypeNameMainHand;
 
         // ADD REMOVE TRIGGER

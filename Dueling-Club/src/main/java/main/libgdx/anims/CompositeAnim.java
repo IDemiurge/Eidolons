@@ -222,9 +222,11 @@ public class CompositeAnim implements Animation {
             return;
         }
 
-try{       currentAnim.start();         }catch(Exception e){
+        try {
+            currentAnim.start();
+        } catch (Exception e) {
             e.printStackTrace();
-        return ;
+            return;
         }
 
         triggerStartEvents();

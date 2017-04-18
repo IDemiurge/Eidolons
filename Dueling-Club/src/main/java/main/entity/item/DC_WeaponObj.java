@@ -341,12 +341,15 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         return checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.RANGED.toString(), true);
     }
     public   boolean isMelee() {
-        if (isRanged())
+        if (isRanged()) {
             return false;
-        if (isAmmo())
+        }
+        if (isAmmo()) {
             return false;
-        if (isMagical())
+        }
+        if (isMagical()) {
             return false;
+        }
         return true;
     }
     public WEAPON_TYPE getWeaponType() {
@@ -399,9 +402,10 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     public void setAmmo(DC_QuickItemObj ammo) {
         this.ammo = ammo;
-        if (ammo == null)
+        if (ammo == null) {
             ref.removeValue(KEYS.AMMO);
-        else
+        } else {
             ref.setID(KEYS.AMMO, ammo.getId());
+        }
     }
 }

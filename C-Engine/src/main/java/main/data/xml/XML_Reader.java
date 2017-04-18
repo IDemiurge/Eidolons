@@ -1,7 +1,7 @@
 package main.data.xml;
 
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -371,8 +371,9 @@ public class XML_Reader {
             loadXml();
         } else {
             loadXml(false);
-            if (macro)
-            loadXml(true);
+            if (macro) {
+                loadXml(true);
+            }
         }
         if (!concurrentReadingOn) {
             loadMaps();
