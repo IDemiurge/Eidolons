@@ -175,9 +175,9 @@ public class Ref implements Cloneable, Serializable {
         String result = "REF values: \n";
         for (KEYS key : values.keySet()) {
             String value;
-            Integer id;
+            Integer id=null ;
             try {
-                value = values.get(key);
+                value = values.get(key); if (value != null )
                 id = Integer.valueOf(value);
             } catch (Exception e) {
                 continue;

@@ -1,5 +1,6 @@
 package main.entity.tools.active;
 
+import main.ability.Ability;
 import main.ability.ActivesConstructor;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
@@ -117,7 +118,8 @@ public class Targeter extends ActiveHandler {
         if (targetingMode == null) {
             targetingMode = AbilityEnums.TARGETING_MODE.MULTI;
         }
-        ActivesConstructor.constructActive(targetingMode, getEntity());targetingInitialized=true;
+        ActivesConstructor.constructActive(targetingMode, getEntity());
+        targetingInitialized=true;
 //        if (targeting == null) {
 //            LogMaster.log(LOG_CHANNELS.CONSTRUCTION_DEBUG,
 //             "null targeting for " + getName() + targetingMode + abilities);
@@ -219,6 +221,15 @@ public class Targeter extends ActiveHandler {
                 a.setForcePresetTarget(b);
             }
         }
+        if (getEntity().getAbilities() != null) {
+            for (Ability a : getEntity().getAbilities()) {
+                a.setForcePresetTargeting(b);
+            }
+        }
+    }
+
+    public void setTargetingInitialized(boolean targetingInitialized) {
+        this.targetingInitialized = targetingInitialized;
     }
 
     public TARGETING_MODE getTargetingMode() {

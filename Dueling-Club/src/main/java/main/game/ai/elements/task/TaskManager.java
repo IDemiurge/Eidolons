@@ -3,6 +3,7 @@ package main.game.ai.elements.task;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.XList;
 import main.entity.active.DC_ActiveObj;
@@ -11,11 +12,11 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.generic.AiHandler;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.Analyzer;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -103,6 +104,10 @@ public class TaskManager extends AiHandler {
 
     public List<Task> getTasks(GOAL_TYPE goal, UnitAI ai, boolean forced, DC_ActiveObj action) {
         List<Task> list = new XList<>();
+        if (ai.getCurrentOrder() != null)
+            if (ai.getCurrentOrder().getArg() != null)
+                return new LinkedList<>(
+                 Arrays.asList(new Task[]{new Task(ai, goal, ai.getCurrentOrder().getArg())}));
 
         List<Integer> ids = new LinkedList<>();
         List<? extends DC_Obj> targets = new LinkedList<>();
@@ -206,9 +211,9 @@ public class TaskManager extends AiHandler {
             case COATING:
                 Set<Obj> objects = action.getTargeting().getFilter().getObjects(action.getRef());
                 for (Obj q : objects) {
-                    if (q.isOwnedBy(ai.getUnit().getOwner())) {
+                    if ( q.getRef().getSourceObj()==unit) { //q.isOwnedBy(ai.getUnit().getOwner())
                         ids.add(q.getId());
-                    }
+                   }
                 }
                 break;
 

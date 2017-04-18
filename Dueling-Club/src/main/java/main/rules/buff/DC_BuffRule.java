@@ -174,7 +174,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         return new Conditions();
     }
 
-    public int getBuffLevel(Unit unit) {
+    public Integer getBuffLevel(Unit unit) {
         return levelCache.get(unit);
     }
 

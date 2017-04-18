@@ -27,6 +27,10 @@ public class ObjType extends Entity {
         return null;
     }
 
+    public ObjType(String newName, ObjType type) {
+        this(type);
+        setName(newName);
+    }
     public ObjType(ObjType type) {
         this.var = true;
         this.setType(type);

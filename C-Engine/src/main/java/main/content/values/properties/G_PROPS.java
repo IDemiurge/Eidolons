@@ -9,10 +9,10 @@ import java.util.Map;
 
 public enum G_PROPS implements PROPERTY {
     LAST_EDITOR("meta", null),
-    VERSION("meta", null),
+    VERSION("all", null),
     WORKSPACE_GROUP("all", null),
     DEV_NOTES("all", null),
-    GAME_VERSION("all", null),
+    GAME_VERSION("meta", null),
     NAME("all", "Name"),
     DISPLAYED_NAME("all", "Name"),
     ID("all", "Id"),
@@ -34,6 +34,7 @@ public enum G_PROPS implements PROPERTY {
     ABILITY_TYPE("abils", "Ability_Type"),
 
     ACTION_TYPE("actions", "Action_Type"),
+    ACTION_TYPE_GROUP("actions", null ),
     ACTION_TAGS("Action tags", true, "actions"),
     ABILITIES("abils", "Abilities"),
     SOUNDSET("Soundset", "units", "chars", "spells", "items"),

@@ -924,7 +924,9 @@ public class Unit extends DC_UnitModel {
         if (checkBool(DYNAMIC_BOOLS.AI_CONTROLLED)) {
             return true;
         }
-
+        if (! getAI().getForcedActions().isEmpty()) {
+            return true;
+        }
         return getBehaviorMode() != null;
     }
 

@@ -38,6 +38,7 @@ public class GameLoop {
     //
     private void roundLoop() {
         game.getStateManager().newRound();
+        boolean retainActiveUnit=false;
         while (true) {
             Boolean result = game.getTurnManager().nextAction();
             if (result == null) {
@@ -46,19 +47,26 @@ public class GameLoop {
             if (!result) {
                 continue;
             }
+            if (!retainActiveUnit)
             activeUnit = game.getTurnManager().getActiveUnit();
+            retainActiveUnit=false;
             if (activeUnit == null) {
                 break;
             }
-
-
-            if (makeAction()) {
+            result = makeAction();
+            if (result == null )
+            {
+                retainActiveUnit=true;
+                continue;
+            }
+            if (result) {
+                //end round
                 break;
             }
 
 
         }
-        game.getManager().endTurn();
+        game.getManager().endRound();
     }
 
     public DC_Game getGame() {
@@ -100,7 +108,6 @@ public class GameLoop {
             result = input.getAction().getHandler().activateOn(input.getContext());
         } catch (Exception e) {
             e.printStackTrace();
-            getGame().getManager().unitActionCompleted(input.getAction(), true);
             return true;
         } finally {
             activatingAction = null;
@@ -118,7 +125,6 @@ public class GameLoop {
             }
         }
 
-        getGame().getManager().unitActionCompleted(input.getAction(), endTurn);
 
         if (BooleanMaster.isTrue(endTurn)) {
             return true;

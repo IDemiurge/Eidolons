@@ -330,7 +330,7 @@ public class DC_KeyManager
     private void hotkeyPressed(HOTKEYS hotKey) {
         switch (hotKey) {
             case END_TURN:
-                mngr.endTurn();
+                mngr.endRound();
                 break;
             case SELECT_HERO:
                 mngr.selectMyHero();

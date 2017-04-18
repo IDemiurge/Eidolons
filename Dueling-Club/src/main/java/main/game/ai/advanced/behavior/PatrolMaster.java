@@ -1,12 +1,12 @@
 package main.game.ai.advanced.behavior;
 
+import main.content.enums.system.AiEnums;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.GroupAI;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.CoordinatesMaster;
@@ -200,7 +200,7 @@ public class PatrolMaster {
         } else {
             if (distance == null) {
                 distance = WanderMaster.getMaxWanderTotalDistance(patrol.getGroup(),
-                        GOAL_TYPE.PATROL);
+                        AiEnums.GOAL_TYPE.PATROL);
                 patrol.setDistance(distance);
             }
             if (distance == null) {

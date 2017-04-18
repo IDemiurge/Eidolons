@@ -1,11 +1,12 @@
 package main.game.ai.advanced.behavior;
 
+import main.content.enums.system.AiEnums;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.GroupAI;
 import main.game.ai.UnitAI;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.ai.tools.Analyzer;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
@@ -210,7 +211,7 @@ public class WanderMaster {
     public static void changeGroupMoveDirection(GroupAI group, GOAL_TYPE type) {
         DIRECTION wanderDirection = group.getWanderDirection();
 
-        if (type == GOAL_TYPE.PATROL) {
+        if (type == AiEnums.GOAL_TYPE.PATROL) {
             // back-forth or in circle (square); alternate or always
             // one-way-turn
             if (group.isBackAndForth()) // GUARD?
@@ -222,7 +223,7 @@ public class WanderMaster {
                         .isClockwisePatrol());
             }
 
-        } else if (type == GOAL_TYPE.WANDER) {
+        } else if (type == AiEnums.GOAL_TYPE.WANDER) {
             if (PositionMaster.getDistance(group.getOriginCoordinates(), group.getLeader()
                     .getCoordinates()) >= getMaxWanderTotalDistance(group, type)) {
                 wanderDirection = DirectionMaster.getRelativeDirection(group.getLeader()

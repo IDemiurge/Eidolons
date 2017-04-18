@@ -510,7 +510,7 @@ public class DC_GameManager extends GameManager {
     }
 
     @Override
-    public void endTurn() {
+    public void endRound() {
         getGame().getRules().getTimeRule().reset();
         getStateManager().endTurn();
     }

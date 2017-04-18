@@ -9,6 +9,7 @@ import main.content.PROPS;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.obj.DC_Cell;
@@ -18,7 +19,6 @@ import main.game.ai.advanced.companion.CompanionMaster;
 import main.game.ai.advanced.companion.Order;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.sequence.ActionSequence;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.AiExecutor;
 import main.game.battlefield.Coordinates;
 import main.game.logic.dungeon.ai.DungeonCrawler.ENGAGEMENT_LEVEL;
@@ -27,9 +27,11 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class UnitAI {
 
@@ -59,10 +61,16 @@ public class UnitAI {
     private Order currentOrder;
 
     public UnitAI(Unit unit) {
-        this.unit = unit;
+        this.unit =   unit;
         initType();
         setOriginalCoordinates(unit.getCoordinates());
-        if (unit.isMine()) {
+
+    }
+
+    private void initType() {
+        type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class, unit
+         .getProperty(PROPS.AI_TYPE));
+        if (unit.isMine() || type ==null ){
             CompanionMaster.initCompanionAiParams(this);
         }
     }
@@ -105,14 +113,6 @@ public class UnitAI {
         /*
          * verbatim spell list per mastery
 		 */
-    }
-
-    private void initType() {
-        type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class, unit
-                .getProperty(PROPS.AI_TYPE));
-        if (type == null) {
-            type = AiEnums.AI_TYPE.NORMAL;
-        }
     }
 
     public synchronized Unit getUnit() {
@@ -358,14 +358,14 @@ public class UnitAI {
     }
 
     public void setStandingOrders(ActionSequence standingOrders) {
-        if (standingOrders.getType() == GOAL_TYPE.MOVE) {
+        if (standingOrders.getType() == AiEnums.GOAL_TYPE.MOVE) {
             orderType = ORDER_TYPE.MOVE;
-        } else if (standingOrders.getType() == GOAL_TYPE.WANDER) {
+        } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.WANDER) {
             orderType = ORDER_TYPE.WANDER;
-        } else if (standingOrders.getType() == GOAL_TYPE.WANDER) {
+        } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.WANDER) {
             orderType = ORDER_TYPE.PATROL;
-        } else if (standingOrders.getType() == GOAL_TYPE.STALK
-                || standingOrders.getType() == GOAL_TYPE.AGGRO) {
+        } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.STALK
+                || standingOrders.getType() == AiEnums.GOAL_TYPE.AGGRO) {
             orderType = ORDER_TYPE.PURSUIT;
         }
         this.standingOrders = standingOrders;
@@ -373,10 +373,10 @@ public class UnitAI {
 
     public void checkSetOrders(ActionSequence sequence) {
         orderType = null;
-        if ((sequence.getType() == GOAL_TYPE.WANDER)) {
+        if ((sequence.getType() == AiEnums.GOAL_TYPE.WANDER)) {
             orderType = ORDER_TYPE.WANDER;
         }
-        if ((sequence.getType() == GOAL_TYPE.PATROL)) {
+        if ((sequence.getType() == AiEnums.GOAL_TYPE.PATROL)) {
             orderType = ORDER_TYPE.PATROL;
         }
 
@@ -422,12 +422,19 @@ public class UnitAI {
         return currentOrder;
     }
 
-    public void setCurrentOrder(Order currentOrder) {
-        this.currentOrder = currentOrder;
+    public Integer getGoalPriorityMod(GOAL_TYPE goalType) {
+        if (currentOrder==null ) return null ;
+
+        if (currentOrder.getStrictPriority()!=null ){
+           return  Arrays.stream(currentOrder.getStrictPriority().getGoalTypes()).collect(Collectors.toList()).contains(goalType)
+             ? 1000 : 0;
+        }
+
+        return currentOrder.getPriorityModsMap().get(goalType);
     }
 
-    public Integer getGoalPriorityMod(GOAL_TYPE goalType) {
-        return currentOrder.getPriorityModsMap().get(goalType);
+    public void setCurrentOrder(Order currentOrder) {
+        this.currentOrder = currentOrder;
     }
 
     public enum AI_BEHAVIOR_MODE {

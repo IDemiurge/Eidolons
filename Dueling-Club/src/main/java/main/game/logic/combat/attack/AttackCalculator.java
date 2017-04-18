@@ -97,7 +97,10 @@ public class AttackCalculator {
         this.precalc = precalc;
         amount = 0;
     }
-
+public AttackCalculator initTarget(Unit target){
+    attacked = target;
+    return this;
+}
     public AttackCalculator(DC_ActiveObj t, AttackAnimation animation) {
         this(EffectFinder.getAttackFromAction(t), true);
         this.anim = animation;

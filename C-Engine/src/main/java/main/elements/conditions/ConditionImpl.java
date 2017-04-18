@@ -53,27 +53,27 @@ public abstract class ConditionImpl  implements Condition {
             }
         }
         try {
-            isTrue = check(ref);
+            setTrue( check(ref));
             if (logged) {
-                LogMaster.log((FORCE_LOG ? 1 : LogMaster.CONDITION_DEBUG),
-                        toString() + " checks " + isTrue + " on " + ref);
+//                LogMaster.log((FORCE_LOG ? 1 : LogMaster.CONDITION_DEBUG),
+//                        toString() + " checks " + isTrue + " on " + ref);
             }
 
         } catch (Exception e) {
-            LogMaster.log(1, "*" + toString() + " failed on " + ref);
+//            LogMaster.log(1, "*" + toString() + " failed on " + ref);
             e.printStackTrace();
             return false;
         }
         if (isTrue) {
-             LogMaster.log(LogMaster.CONDITION_DEBUG, "" + toString()
-             + " checks TRUE for " + ref);
+//             LogMaster.log(LogMaster.CONDITION_DEBUG, "" + toString()
+//             + " checks TRUE for " + ref);
 
             return true;
         }
         // LogMaster.log(LogMaster.CONDITION_DEBUG, "" + toString()
         // + " checks FALSE for " + ref);
         // TODO init REASON!
-        isTrue = false;
+       setTrue(false);
         return false;
     }
 

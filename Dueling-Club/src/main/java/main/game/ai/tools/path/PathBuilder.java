@@ -30,7 +30,7 @@ public class PathBuilder extends AiHandler {
     private Unit unit;
     private Action targetAction;
     private List<Coordinates> targetCells;
-    private Coordinates targetCoordinate;
+    protected Coordinates targetCoordinate;
     private Coordinates originalCoordinate;
     private Coordinates c_coordinate;
     private Coordinates previousCoordinate;

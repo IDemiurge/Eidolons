@@ -196,8 +196,9 @@ public class AbilityConstructor {
         for (String s : addList) {
             list.add(s);
         }
-
-        entity.setProperty(property, StringMaster.constructContainer(list));
+if ( list.isEmpty())
+    entity.removeProperty(property);
+    else entity.setProperty(property, StringMaster.constructContainer(list));
 
     }
 

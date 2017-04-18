@@ -175,7 +175,7 @@ public class MacroGameManager extends GameManager {
     }
 
     @Override
-    public void endTurn() {
+    public void endRound() {
         // TODO Auto-generated method stub
 
     }

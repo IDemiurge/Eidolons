@@ -3,10 +3,12 @@ package main.game.ai.tools;
 import main.ability.conditions.WaitingFilterCondition;
 import main.ability.effects.oneshot.unit.RaiseEffect;
 import main.content.DC_TYPE;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.rules.VisionEnums;
 import main.data.XList;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
+import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -18,12 +20,15 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.vision.VisionManager;
-import main.game.core.game.DC_Game;
+import main.game.core.Eidolons;
 import main.game.logic.battle.player.Player;
-import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
+import main.game.logic.generic.DC_ActionManager;
+import main.game.logic.generic.DC_ActionManager.STD_SPEC_ACTIONS;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 
 import java.util.Collection;
@@ -37,7 +42,7 @@ public class Analyzer extends AiHandler {
 
     public static List<Unit> getAllies(UnitAI ai) {
         List<Unit> list = new XList<>();
-        for (Unit unit : getGame().getUnits()) {
+        for (Unit unit : Eidolons.game.getUnits()) {
             if (unit.getOwner() != ai.getUnit().getOwner()) {
                 continue;
             }
@@ -52,7 +57,7 @@ public class Analyzer extends AiHandler {
 
     public static List<Unit> getWaitUnits(UnitAI ai) {
         List<Unit> list = new XList<>();
-        for (Unit unit : getGame().getUnits()) {
+        for (Unit unit :Eidolons.game.getUnits()) {
             if (unit.equals(ai.getUnit())) {
                 continue;
             }
@@ -79,7 +84,7 @@ public class Analyzer extends AiHandler {
                                       Boolean neutral) {
 
         List<Unit> list = new XList<>();
-        for (Unit unit : getGame().getUnits()) {
+        for (Unit unit : Eidolons.game.getUnits()) {
             if (unit.getZ() != ai.getUnit().getZ())// TODO
             {
                 continue;
@@ -116,22 +121,29 @@ public class Analyzer extends AiHandler {
         return list;
     }
 
-    private static DC_Game getGame() {
-        return DC_Game.game;
-
+    public static boolean hasSpecialActions(Unit unit) {
+        DequeImpl<DC_UnitAction> actions =     new DequeImpl<>((unit.getActionMap().get(
+         ACTION_TYPE.SPECIAL_ACTION)));
+        if (!ListMaster.isNotEmpty(actions))
+            return false;
+        for (STD_SPEC_ACTIONS action : DC_ActionManager.STD_SPEC_ACTIONS.values()){
+            actions.remove(unit.getAction(
+              StringMaster.getWellFormattedString(
+             action.toString())));
+        }
+        if (!ListMaster.isNotEmpty(actions))
+            return false;
+        return true;
     }
 
-    public static boolean hasSpecialActions(Unit unit) {
+        public static boolean hasAnySpecialActions(Unit unit) {
         if (hasSpells(unit)) {
             return true;
         }
-        if (unit.getQuickItems() != null) {
-            if (!unit.getQuickItems().isEmpty()) {
+        if (hasQuickItems(unit)) {
                 return true;
-            }
         }
-        return ListMaster.isNotEmpty(unit.getActionMap().get(
-                ACTION_DISPLAY_GROUP.SPEC_ACTIONS));
+            return hasSpecialActions(unit);
     }
 
     public static boolean hasQuickItems(Unit unit) {
@@ -167,7 +179,7 @@ public class Analyzer extends AiHandler {
     }
 
     public static boolean checkRangedThreat(Unit target) {
-        if (!hasSpecialActions(target)) {
+        if (!hasAnySpecialActions(target)) {
             return false;
         }
         return canCast(target);
@@ -235,46 +247,50 @@ public class Analyzer extends AiHandler {
         return getUnits(unit, true, checkAct, checkAttack, adjacentOnly);
     }
 
-    public static List<Unit> getUnits(Unit unit,
-                                      Boolean enemy_or_ally_only, boolean checkAct,
-                                      boolean checkAttack, boolean adjacent) {
+    private static List<Unit> getUnits(Unit unit, Boolean enemy_or_ally_only, boolean checkAct, boolean checkAttack, Collection<Coordinates> coordinatesToCheck) {
         List<Unit> list = new LinkedList<>();
-        Collection<Coordinates> coordinatesToCheck = adjacent ? unit.getCoordinates()
-                .getAdjacentCoordinates() : unit.getGame().getCoordinates();
-        for (Coordinates coordinates : coordinatesToCheck) {
-            Obj obj = unit.getGame().getUnitByCoordinate(coordinates);
-            if (obj == null) {
-                continue;
-            }
+        for (Coordinates coordinates : coordinatesToCheck)
+            for (  Obj obj  :  unit.getGame().getUnitsForCoordinates(coordinates)) {
+                if (obj == null) {
+                    continue;
+                }
 
-            Unit enemy = (Unit) obj;
-            if (enemy_or_ally_only != null) {
-                if (enemy_or_ally_only) {
-                    if (obj.getOwner().equals(unit.getOwner())) {
-                        continue;
-                    }
-                } else {
-                    if (!obj.getOwner().equals(unit.getOwner())) {
-                        continue;
+                Unit enemy = (Unit) obj;
+                if (enemy_or_ally_only != null) {
+                    if (enemy_or_ally_only) {
+                        if (obj.getOwner().equals(unit.getOwner())) {
+                            continue;
+                        }
+                    } else {
+                        if (!obj.getOwner().equals(unit.getOwner())) {
+                            continue;
+                        }
                     }
                 }
-            }
 
-            if (!checkAct) {
-                list.add(enemy);
-            }
-            if (enemy.canActNow()) {
-                if (!checkAttack) {
-                    list.add(enemy);
-                } else if (enemy.canAttack()) {
+                if (!checkAct) {
                     list.add(enemy);
                 }
-            }
+                if (enemy.canActNow()) {
+                    if (!checkAttack) {
+                        list.add(enemy);
+                    } else if (enemy.canAttack()) {
+                        list.add(enemy);
+                    }
+                }
 
-        }
+            }
 
         return list;
     }
+    public static List<Unit> getUnits(Unit unit,
+                                      Boolean enemy_or_ally_only, boolean checkAct,
+                                      boolean checkAttack, boolean adjacent) {
+        Collection<Coordinates> coordinatesToCheck = adjacent ? unit.getCoordinates()
+                .getAdjacentCoordinates() : unit.getGame().getCoordinates();
+        return getUnits(unit, enemy_or_ally_only, checkAct, checkAttack, coordinatesToCheck);
+    }
+
 
     public static List<DC_Cell> getSafeCells(UnitAI ai) {
         // filter by distance?

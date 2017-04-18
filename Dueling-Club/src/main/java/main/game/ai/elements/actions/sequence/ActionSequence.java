@@ -2,7 +2,7 @@ package main.game.ai.elements.actions.sequence;
 
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.ai.elements.task.Task;
 import main.system.auxiliary.data.ListMaster;
 

@@ -20,6 +20,10 @@ public class Payment implements Serializable {
         this.amountFormula = amountFormula;
     }
 
+    public Payment(PARAMETER p, Integer value) {
+        this(p, new Formula(String.valueOf(value)));
+    }
+
     @Override
     public String toString() {
         if (amountFormula.toString().equals("0")

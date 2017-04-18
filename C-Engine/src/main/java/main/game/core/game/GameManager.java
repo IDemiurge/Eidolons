@@ -129,7 +129,7 @@ public abstract class GameManager implements GenericGameManager {
         setActiveObjSelected(selectedActiveObj != null);
     }
 
-    public abstract void endTurn();
+    public abstract void endRound();
 
     public abstract void resetValues(Player owner);
 

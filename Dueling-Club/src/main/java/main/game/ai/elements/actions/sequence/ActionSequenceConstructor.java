@@ -1,10 +1,10 @@
 package main.game.ai.elements.actions.sequence;
 
-import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
@@ -14,12 +14,11 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
-import main.game.ai.elements.actions.ActionFactory;
+import main.game.ai.elements.actions.AiActionFactory;
 import main.game.ai.elements.actions.AiQuickItemAction;
 import main.game.ai.elements.actions.AiUnitActionMaster;
 import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.elements.goal.Goal;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.elements.goal.GoalManager;
 import main.game.ai.elements.task.Task;
 import main.game.ai.elements.task.TaskManager;
@@ -56,9 +55,21 @@ public class ActionSequenceConstructor extends AiHandler {
     public List<ActionSequence> createActionSequences(UnitAI ai) {
         List<ActionSequence> list = new ArrayList<>();
         getActionSequenceConstructor().setPrioritizedCells(null);
+        boolean forced=false;
+        if (ai.getCurrentOrder()!=null )
+            forced = true;
         for (GOAL_TYPE type : GoalManager.getGoalsForUnit(ai)) {
-            list.addAll(createActionSequences(new Goal(type, null // ???
-                    , ai), ai));
+            List<ActionSequence> sequences = null;
+            try {
+                Goal goal=new Goal(type, null // ???
+                 , ai);
+                goal.setForced(forced);
+                sequences = createActionSequences(goal, ai);
+                list.addAll(sequences);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
         return list;
     }
@@ -82,7 +93,7 @@ public class ActionSequenceConstructor extends AiHandler {
                     long time = TimeLimitMaster.getTimeLimitForAction();
                     if (Chronos.getTimeElapsedForMark(getChronosPrefix() + action) > time) {
                         LogMaster.log(1, "*********** TIME ELAPSED FOR  "
-                                + action + StringMaster.wrapInParenthesis(time + ""));
+                         + action + StringMaster.wrapInParenthesis(time + ""));
                         break;
                     }
                 }
@@ -112,8 +123,8 @@ public class ActionSequenceConstructor extends AiHandler {
 //        }
         ref.setTarget(arg);
         List<ActionSequence> newSequences = null;
-        Action action = ActionFactory.newAction(active, ref);
-
+        Action action = AiActionFactory.newAction(active, ref);
+        action.setTask(task);
         try {
             newSequences = getSequences(action, task.getArg(), task);
         } catch (Exception e) {
@@ -164,10 +175,10 @@ public class ActionSequenceConstructor extends AiHandler {
         if (task.getAI().getBehaviorMode() == AiEnums.BEHAVIOR_MODE.PANIC) {
             // target action = FLEE;
         }
-        if (task.getType() == GOAL_TYPE.RETREAT) {
+        if (task.getType() == AiEnums.GOAL_TYPE.RETREAT) {
             {
                 List<ActionSequence> sequencesFromPaths = getSequencesFromPaths(
-                        getPathSequenceConstructor().getRetreatPaths(arg), task, action);
+                 getPathSequenceConstructor().getRetreatPaths(arg), task, action);
                 return sequencesFromPaths;
             } // TODO
         }
@@ -176,10 +187,10 @@ public class ActionSequenceConstructor extends AiHandler {
         if (!singleAction) {
             if (arg != null) {
                 singleAction =
-                        // action.canBeTargeted(StringMaster.getInteger(arg
-                        // .toString()));
+                 // action.canBeTargeted(StringMaster.getInteger(arg
+                 // .toString()));
 
-                        TargetingMaster.canBeTargeted(action, true);
+                 TargetingMaster.canBeTargeted(action, true);
             } else {
                 singleAction = (action).canBeActivated();
             }
@@ -195,16 +206,16 @@ public class ActionSequenceConstructor extends AiHandler {
             return list;
         }
         if (!task.isForced()) {
-            if (task.getType() != GOAL_TYPE.ATTACK && task.getType() != GOAL_TYPE.RETREAT
-                    && task.getType() != GOAL_TYPE.SEARCH && task.getType() != GOAL_TYPE.MOVE
-                    && !task.getType().isBehavior()) {
+            if (task.getType() != AiEnums.GOAL_TYPE.ATTACK && task.getType() != AiEnums.GOAL_TYPE.RETREAT
+             && task.getType() != AiEnums.GOAL_TYPE.SEARCH && task.getType() != AiEnums.GOAL_TYPE.MOVE
+             && !task.getType().isBehavior()) {
                 return null;
             }
         }
-        if (task.getType() == GOAL_TYPE.SUMMONING) {
+        if (task.getType() == AiEnums.GOAL_TYPE.SUMMONING) {
             return null;
         }
-        if (task.getType() == GOAL_TYPE.ZONE_DAMAGE) {
+        if (task.getType() == AiEnums.GOAL_TYPE.ZONE_DAMAGE) {
             return null; // TODO until pathing/cell-pr. is fixed
         }
         if (!task.isForced()) {
@@ -216,7 +227,7 @@ public class ActionSequenceConstructor extends AiHandler {
                 return null;
             }
             if ((!action.getActive().isRanged() && task.getAI().getType() == AiEnums.AI_TYPE.ARCHER)
-                    || (task.getAI().getType() == AiEnums.AI_TYPE.CASTER && !unit.getSpells().isEmpty())) {
+             || (task.getAI().getType() == AiEnums.AI_TYPE.CASTER && !unit.getSpells().isEmpty())) {
                 return null;
             }
         }
@@ -227,9 +238,9 @@ public class ActionSequenceConstructor extends AiHandler {
         if (!ListMaster.isNotEmpty(moveActions)) {
             // [QUICK FIX]
             if (!unit.getAction(DC_ActionManager.STD_ACTIONS.Turn_Anticlockwise.name())
-                    .canBeActivated(action.getRef(), true)
-                    && !unit.getAction(DC_ActionManager.STD_ACTIONS.Move.name()).canBeActivated(
-                    action.getRef(), true)) {
+             .canBeActivated(action.getRef(), true)
+             && !unit.getAction(DC_ActionManager.STD_ACTIONS.Move.name()).canBeActivated(
+             action.getRef(), true)) {
                 return null;
             }
         } else {
@@ -241,6 +252,10 @@ public class ActionSequenceConstructor extends AiHandler {
 
         List<ActionPath> paths = getPathSequenceConstructor().getPathSequences(moveActions, action);
         list = getSequencesFromPaths(paths, task, action);
+        if (list.isEmpty()) {
+            paths = getPathSequenceConstructor().getPathSequences(moveActions, action);
+            list = getSequencesFromPaths(paths, task, action);
+        }
         return list;
 
     }
@@ -339,8 +354,8 @@ public class ActionSequenceConstructor extends AiHandler {
         Action action = actions.get(0);
         if (!action.canBeActivated()) {
             LogMaster.log(1, "No sequence for "
-                    + actions.get(actions.size() - 1) + " - " + action.getActive().getName() + ": "
-                    + action.getActive().getCosts().getReason());
+             + actions.get(actions.size() - 1) + " - " + action.getActive().getName() + ": "
+             + action.getActive().getCosts().getReason());
             return null;
         }
 
@@ -352,21 +367,21 @@ public class ActionSequenceConstructor extends AiHandler {
         if (task.getArg() instanceof Integer) {
             Integer id = (Integer) task.getArg();
 
-            if (targetAction.getActive().isRanged()) {
-                targetAction.getActive().setForcePresetTarget(true);
-                if (!targetAction.canBeActivated()) {
-                    if (ReasonMaster.checkReasonCannotActivate(targetAction,
-                            SPECIAL_REQUIREMENTS.REF_NOT_EMPTY.getText(KEYS.RANGED.toString(),
-                                    KEYS.AMMO.toString()))) {
-                        List<AiQuickItemAction> reloadActions = getRangedReloadAction(targetAction);
-                        // will then split- ActionManager.splitRangedSequence()
-                        if (reloadActions.isEmpty()) {
-                            return list;
-                        }
-                        list.addAll(reloadActions);
-                    }
-                }
-            }
+//            if (targetAction.getActive().isRanged()) {
+//                targetAction.getActive().setForcePresetTarget(true);
+//                if (!targetAction.canBeActivated()) {
+//                    if (ReasonMaster.checkReasonCannotActivate(targetAction,
+//                            SPECIAL_REQUIREMENTS.REF_NOT_EMPTY.getText(KEYS.RANGED.toString(),
+//                                    KEYS.AMMO.toString()))) {
+//                        List<AiQuickItemAction> reloadActions = getRangedReloadAction(targetAction);
+//                        // will then split- ActionManager.splitRangedSequence()
+//                        if (reloadActions.isEmpty()) {
+//                            return list;
+//                        }
+//                        list.addAll(reloadActions);
+//                    }
+//                }
+//            }
             if (targetAction.canBeTargeted(id)) {
                 list.add(targetAction);
             } else {

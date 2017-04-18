@@ -62,9 +62,9 @@ public abstract class MathMaster {
         // if (c_percentage<100){
         // =100;
         // }
-        if (c_percentage * 100 / PERCENTAGE == 0) {
-
-        }
+//        if (c_percentage * 100 / PERCENTAGE == 0) {
+//TODO ?
+//        }
         return round(getFractionValueFloat(base_value, c_percentage));
     }
 
@@ -225,7 +225,23 @@ public abstract class MathMaster {
         }
         return mode ? n : -n;
     }
+    public static int getTotalOrMinMax(Boolean mode, int n, int n2) {
+        if (mode == null) {
+            return  (n + n2);
+        }
+        if (mode)
+            return Math.min(n, n2);
+        return Math.max(n, n2);
+    }
 
+    public static int getAverageMinMax(Boolean mode, int n, int n2) {
+        if (mode == null) {
+            return getAverage(n, n2);
+        }
+        if (mode)
+            return Math.min(n, n2);
+        return Math.max(n, n2);
+    }
     public Integer evaluateMeditation(Obj obj) {
 
         return null;

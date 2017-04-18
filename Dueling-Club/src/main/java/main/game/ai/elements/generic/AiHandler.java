@@ -2,12 +2,14 @@ package main.game.ai.elements.generic;
 
 import main.entity.obj.unit.Unit;
 import main.game.ai.AI_Logic;
+import main.game.ai.advanced.behavior.BehaviorMaster;
 import main.game.ai.elements.actions.ActionManager;
 import main.game.ai.elements.actions.sequence.ActionSequenceConstructor;
 import main.game.ai.elements.actions.sequence.PathSequenceConstructor;
 import main.game.ai.elements.actions.sequence.TurnSequenceConstructor;
 import main.game.ai.elements.goal.GoalManager;
 import main.game.ai.elements.task.TaskManager;
+import main.game.ai.logic.types.atomic.AtomicAi;
 import main.game.ai.tools.AiExecutor;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.ParamAnalyzer;
@@ -31,9 +33,14 @@ public abstract class AiHandler {
     protected   Unit unit;
 
 
+    public AiHandler() {
+
+    }
     public AiHandler(AiHandler master) {
         this.master = (AiMaster) master;
+        this.game= master.getGame();
     }
+
     public void initialize() {
         master.getHandlers().add(this);
     }
@@ -123,8 +130,20 @@ public abstract class AiHandler {
         return master.getHandlers();
     }
 
+    public BehaviorMaster getBehaviorMaster() {
+        return master.getBehaviorMaster();
+    }
+
+    public AtomicAi getAtomicAi() {
+        return master.getAtomicAi();
+    }
+
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
 
+
+    public DC_Game getGame() {
+        return game;
+    }
 }

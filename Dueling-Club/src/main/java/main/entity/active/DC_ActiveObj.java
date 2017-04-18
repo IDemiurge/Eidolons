@@ -65,6 +65,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     private RESISTANCE_TYPE resistType;
     private DAMAGE_TYPE energyType;
     private ACTION_TYPE_GROUPS actionTypeGroup;
+    private ACTION_TYPE actionType;
     private AI_LOGIC aiLogic;
     private String customTooltip;
     private DC_ActiveObj parentAction;
@@ -128,6 +129,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public DAMAGE_TYPE getDamageType() {
         if (super.getDamageType()==null ){
             if (getActiveWeapon() == null) {
+                if (isAttackAny())
+                    return DAMAGE_TYPE.PHYSICAL;
+                if (isSpell())
+                    return DAMAGE_TYPE.MAGICAL;
                 return null;
             }
             getActiveWeapon().getDamageType();
@@ -486,8 +491,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public ACTION_TYPE getActionType() {
-        return new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
+        if (actionType == null )
+            actionType  =
+         new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
                 getProperty(G_PROPS.ACTION_TYPE));
+        return actionType ;
     }
 
     public String getActionMode() {

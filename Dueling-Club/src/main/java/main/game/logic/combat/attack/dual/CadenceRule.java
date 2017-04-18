@@ -1,4 +1,4 @@
-package main.game.logic.combat.mechanics;
+package main.game.logic.combat.attack.dual;
 
 import main.ability.ActiveAbility;
 import main.ability.effects.Effect.MOD;

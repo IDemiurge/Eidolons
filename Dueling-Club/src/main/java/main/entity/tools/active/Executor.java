@@ -139,10 +139,10 @@ public class Executor extends ActiveHandler {
         boolean gameLog = getAction().getLogger().isActivationLogged();
         String targets = " ";
         if (getAction().getTargetObj() != null) {
-            targets += getAction().getTargetObj().getNameAndCoordinate();
-        }
+            targets = getAction().getTargetObj().getNameAndCoordinate();
+        } else
         if (getAction().getTargetGroup() != null) {
-            targets += getAction().getTargetGroup().toString();
+            targets = getAction().getTargetGroup().toString();
         }
         log(getAction().getOwnerObj().getNameIfKnown() + " activates "
          + getAction().getNameIfKnown() + targets, gameLog);

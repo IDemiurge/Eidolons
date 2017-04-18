@@ -42,16 +42,27 @@ public class FilterMaster {
     public static Collection<? extends Entity> filterByPropJ8
             (Collection<? extends Entity> list,
              String prop, String value) {
-        list.removeIf(getPredicateProperty(prop, value));
+        list.removeIf(getPredicateProperty(ContentManager.getPROP(prop), value));
         return list;
     }
 
-    private static Predicate<Entity> getPredicateProperty(String prop, String value) {
-        return e -> {
-            return e.checkProperty(ContentManager.getPROP(prop), value);
-        };
+    private static Predicate<Entity> getPredicateProperty(PROPERTY prop,
+                                                          String value) {
+        return getPredicateProperty(prop, value, false);
     }
 
+        private static Predicate<Entity> getPredicateProperty(PROPERTY prop, String value, boolean negative) {
+            return e -> {
+            if (negative) return !e.checkProperty((prop), value);
+            return e.checkProperty((prop), value);
+        };
+    }
+    public static List<ObjType> getFilteredTypeList(OBJ_TYPE TYPE, PROPERTY prop, String value) {
+         List<ObjType> list = new LinkedList<>(DataManager.getTypes(TYPE));
+
+        list.removeIf(getPredicateProperty(prop, value, true));
+        return list;
+    }
     public static Collection<?> filterByProp(Collection<?> list, String prop, String value) {
         return filterByProp(list, prop, value, false);
     }
@@ -247,5 +258,6 @@ public class FilterMaster {
 
         return set;
     }
+
 
 }

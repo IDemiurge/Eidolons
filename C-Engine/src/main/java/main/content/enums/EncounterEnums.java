@@ -13,7 +13,19 @@ public class EncounterEnums {
         LIGHT, DARK, UNDEAD, ARCANE, DUNGEON, MONSTERS, DEMONS, HUMANS, MISC, MECHANICUM,
     }
 
-    public enum ENCOUNTER_SUBGROUP {
+    public enum ENCOUNTER_SETS {
+        BANDITS,
+        MERCENARIES,
+        GREENSKINS,
+        UNDEAD_HORDES,
+        DUNGEON_MONSTERS,
+        FOREST_GUARDIANS,
+        DARK_WOOD,
+        AVIANS,
+        DEMONS_OF_ABYSS,
+
+    }
+        public enum ENCOUNTER_SUBGROUP {
         AVIANS,
         NOCTURNAL,
         WULFEN,

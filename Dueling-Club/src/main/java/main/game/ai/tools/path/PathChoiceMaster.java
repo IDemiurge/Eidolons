@@ -203,8 +203,8 @@ public class PathChoiceMaster {
         return new Comparator<Choice>() {
             @Override
             public int compare(Choice c1, Choice c2) {
-                int distance = PositionMaster.getDistance(c1.getCoordinates(), targetCoordinate);
-                int distance2 = PositionMaster.getDistance(c2.getCoordinates(), targetCoordinate);
+                double distance = PositionMaster.getExactDistance(c1.getCoordinates(), pathBuilder.targetCoordinate);
+                double distance2 = PositionMaster.getExactDistance(c2.getCoordinates(), pathBuilder.targetCoordinate);
                 if (distance > distance2) {
                     return 1;
                 }

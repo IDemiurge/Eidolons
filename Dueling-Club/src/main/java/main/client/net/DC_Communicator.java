@@ -167,7 +167,7 @@ public class DC_Communicator extends Communicator {
     }
 
     private void endTurn() {
-        game.getManager().endTurn();
+        game.getManager().endRound();
 
     }
 

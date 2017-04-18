@@ -77,6 +77,9 @@ public class EntityHandler<E extends Entity> {
         return getEntity().checkParameter(param, value);
     }
 
+    public boolean checkProperty(PROPERTY p ) {
+        return getEntity().checkProperty(p );
+    }
     public boolean checkProperty(PROPERTY p, String value) {
         return getEntity().checkProperty(p, value);
     }

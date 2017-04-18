@@ -414,8 +414,8 @@ public class DC_ConditionMaster extends ConditionMaster {
         return null;
     }
 
-    public static NumericCondition getRangeCondition() {
-        return ConditionMaster.getDistanceFilterCondition("SOURCE", "{ACTIVE_RANGE}");
+    public static RangeCondition getRangeCondition() {
+        return new RangeCondition();
     }
 
     public static Condition getAutoTargetingTemplateConditions(AUTO_TARGETING_TEMPLATES template) {

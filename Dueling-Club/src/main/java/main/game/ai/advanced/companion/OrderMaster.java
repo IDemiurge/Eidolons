@@ -3,8 +3,11 @@ package main.game.ai.advanced.companion;
 import main.content.PARAMS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.unit.Unit;
+import main.game.ai.UnitAI;
+import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.generic.AiHandler;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+import main.game.ai.elements.task.Task;
+import main.system.math.MathMaster;
 
 public class OrderMaster extends AiHandler {
     private static final int DEFAULT_CHANCE = 75;
@@ -14,14 +17,20 @@ public class OrderMaster extends AiHandler {
         super(master);
     }
 
-    public static int getSuccessChance(boolean partyTargeting, Order order,
-                                       Unit target, Unit source, ActiveObj active) {
+    public static boolean checkOrderCompleted(Action action) {
+        UnitAI ai = action.getSource().getAI();
+        Order order = ai.getCurrentOrder();
+        Task task = action.getTask();
+        return false;
+    }
+        public static int getSuccessChance(boolean partyTargeting, Order order,
+         Unit target, Unit source, ActiveObj active) {
         int chance = DEFAULT_CHANCE;
         chance += source.getIntParam(PARAMS.LEADERSHIP_MASTERY);
         chance += target.getIntParam(PARAMS.ORGANIZATION) - 50;
 //        order.geti
-//      chance=MathMaster.applyMod(chance, active.getIntParam(PARAMS.ORDER_CHANCE_MOD,
-//       false));
+      chance= MathMaster.applyMod(chance, active.getIntParam(PARAMS.ORDER_CHANCE_MOD,
+             false));
         if (partyTargeting) {
             chance = chance * 75 / 100;
         }
@@ -32,31 +41,6 @@ public class OrderMaster extends AiHandler {
     }
 
     //atomic logic effects?
-
-    public enum ORDER_PRIORITY_MODS {
-        ATTACK(GOAL_TYPE.ATTACK),
-        APPROACH,
-        RESTORE,
-        MOVE,
-        WAIT,
-        PREPARE,
-        DEFEND,
-        RETREAT,
-        SEARCH,
-
-
-        STEALTH,
-        GUARD(),;
-        GOAL_TYPE[] goalTypes;
-
-        ORDER_PRIORITY_MODS(GOAL_TYPE... goalTypes) {
-            this.goalTypes = goalTypes;
-        }
-
-        public GOAL_TYPE[] getGoalTypes() {
-            return goalTypes;
-        }
-    }
 
 
 //    public Action checkFollowOrder(UnitAI ai) {

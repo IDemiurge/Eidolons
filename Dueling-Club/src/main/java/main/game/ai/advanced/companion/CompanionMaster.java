@@ -27,14 +27,22 @@ public class CompanionMaster {
     private static AI_TYPE getAiType(Unit hero) {
         AI_TYPE type = AI_TYPE.NORMAL;
         int maxWeight = 0;
+        int total = 0;
         for (AI_TYPE v : AI_TYPE.values()) {
             int weight = getWeight(v, hero);
+
+            total += weight;
+            main.system.auxiliary.log.LogMaster.log(1, v + "-Ai Type has " + weight + " weight for " + hero.getName()
+            );
             if (weight > maxWeight) {
                 maxWeight = weight;
                 type = v;
             }
         }
-
+        int average = total / AI_TYPE.values().length;
+        if (average > maxWeight)
+            type = AI_TYPE.NORMAL;
+        main.system.auxiliary.log.LogMaster.log(1, hero.getName() + "'s Ai Type chosen: " + type);
         return type;
     }
 
@@ -42,23 +50,23 @@ public class CompanionMaster {
         switch (v) {
             case BRUTE:
                 return hero.getSumOfParams(PARAMS.ATTACK,
-                        PARAMS.OFF_HAND_ATTACK, PARAMS.STRENGTH,
-                        PARAMS.STRENGTH) / 2
-                        - hero.getSumOfParams(PARAMS.STEALTH, PARAMS.INTELLIGENCE)
-                        ;
+                 PARAMS.OFF_HAND_ATTACK, PARAMS.STRENGTH,
+                 PARAMS.STRENGTH) / 2
+                 - hero.getSumOfParams(PARAMS.STEALTH, PARAMS.INTELLIGENCE)
+                 ;
             case SNEAK:
                 return 2 * hero.getIntParam(PARAMS.STEALTH);
             case TANK:
                 return hero.getSumOfParams(PARAMS.VITALITY, PARAMS.VITALITY,
-                        PARAMS.WILLPOWER, PARAMS.ARMOR, PARAMS.STRENGTH) / 3
-                        + hero.getIntParam(PARAMS.DEFENSE) / 4
-                        ;
+                 PARAMS.WILLPOWER, PARAMS.ARMOR, PARAMS.STRENGTH) / 3
+                 + hero.getIntParam(PARAMS.DEFENSE) / 4
+                 ;
             case CASTER:
                 return (hero.getSumOfParams(PARAMS.SPELLPOWER, PARAMS.WISDOM, PARAMS.INTELLIGENCE) + hero.getSumOfParams(VALUE_GROUP.MAGIC.getParams())) / 2;
             case CASTER_MELEE:
                 return
-                        getWeight(AI_TYPE.BRUTE, hero) / 4 + getWeight(AI_TYPE.TANK, hero) / 4 +
-                                (hero.getSumOfParams(PARAMS.SPELLPOWER) + hero.getSumOfParams(VALUE_GROUP.COMBAT_MAGIC.getParams()) / 2);
+                 getWeight(AI_TYPE.BRUTE, hero) / 4 + getWeight(AI_TYPE.TANK, hero) / 4 +
+                  (hero.getSumOfParams(PARAMS.SPELLPOWER) + hero.getSumOfParams(VALUE_GROUP.COMBAT_MAGIC.getParams()) / 2);
             case CASTER_SUPPORT:
                 return hero.getSumOfParams(PARAMS.SPELLPOWER, PARAMS.WISDOM, PARAMS.INTELLIGENCE) + hero.getSumOfParams(VALUE_GROUP.SUPPORT_MAGIC.getParams());
             case CASTER_SUMMONER:
@@ -70,9 +78,9 @@ public class CompanionMaster {
                     return 0;
                 }
                 return
-                        (int)
-                                (Math.sqrt(hero.getRangedWeapon().getIntParam(PARAMS.GOLD_COST)) * 2
-                                        + hero.getIntParam(PARAMS.MARKSMANSHIP_MASTERY) * 5);
+                 (int)
+                  (Math.sqrt(hero.getRangedWeapon().getIntParam(PARAMS.GOLD_COST)) * 2
+                   + hero.getIntParam(PARAMS.MARKSMANSHIP_MASTERY) * 5);
 
         }
         return 0;

@@ -12,7 +12,7 @@ import main.entity.obj.unit.Unit;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.sequence.ActionSequence;
 import main.game.ai.elements.generic.AiHandler;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.ai.elements.goal.GoalManager;
 import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.ai.tools.target.ReasonMaster.FILTER_REASON;
@@ -132,7 +132,7 @@ public class TargetingMaster extends AiHandler {
         // visionRemoved = true;
         // }
         // }
-        if (action.getActive().isMelee()) {
+//        if (action.getActive().isMelee()) {
             if (reasons.size() == 1) // what about DISTANCE?
             {
                 if (reasons.get(0) == (FILTER_REASON.FACING)) {
@@ -142,7 +142,7 @@ public class TargetingMaster extends AiHandler {
                     return true;
                 }
             }
-        }
+//        }
 
         return false;
     }

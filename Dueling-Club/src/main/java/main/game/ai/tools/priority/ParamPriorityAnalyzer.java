@@ -4,6 +4,7 @@ import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.content.values.parameters.PARAMETER;
@@ -14,7 +15,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.PlayerAI.SITUATION;
 import main.game.ai.elements.actions.Action;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.ai.tools.ParamAnalyzer;
 import main.rules.UnitAnalyzer;
 import main.system.math.MathMaster;
@@ -298,7 +299,7 @@ public class ParamPriorityAnalyzer {
     public static int getAI_TypeFactor(GOAL_TYPE goal, PLAYER_AI_TYPE type) {
         switch (type) {
             case BRUTE:
-                if (goal == GOAL_TYPE.ATTACK) {
+                if (goal == AiEnums.GOAL_TYPE.ATTACK) {
                     return 65;
                 }
                 break;
@@ -315,25 +316,25 @@ public class ParamPriorityAnalyzer {
         }
         switch (situation) {
             case STALLING: {
-                if (type == GOAL_TYPE.WAIT) {
+                if (type == AiEnums.GOAL_TYPE.WAIT) {
                     return 30;
                 }
                 break;
             }
             case PREPARING: {
-                if (type == GOAL_TYPE.PREPARE) {
+                if (type == AiEnums.GOAL_TYPE.PREPARE) {
                     return 20;
                 }
                 break;
             }
             case ENGAGED: {
-                if (type == GOAL_TYPE.ATTACK) {
+                if (type == AiEnums.GOAL_TYPE.ATTACK) {
                     return 25;
                 }
-                if (type == GOAL_TYPE.DEBILITATE) {
+                if (type == AiEnums.GOAL_TYPE.DEBILITATE) {
                     return 15;
                 }
-                if (type == GOAL_TYPE.DEBUFF) {
+                if (type == AiEnums.GOAL_TYPE.DEBUFF) {
                     return 15;
                 }
                 break;
@@ -350,22 +351,22 @@ public class ParamPriorityAnalyzer {
             case ARCHER:
                 break;
             case BRUTE:
-                if (goal == GOAL_TYPE.ATTACK) {
+                if (goal == AiEnums.GOAL_TYPE.ATTACK) {
                     return 50;
                 }
                 break;
             case CASTER:
-                if (goal == GOAL_TYPE.DEBUFF) {
+                if (goal == AiEnums.GOAL_TYPE.DEBUFF) {
                     return 50;
                 }
-                if (goal == GOAL_TYPE.BUFF) {
+                if (goal == AiEnums.GOAL_TYPE.BUFF) {
                     return 50;
                 }
                 break;
             case SNEAK:
                 break;
             case TANK:
-                if (goal == GOAL_TYPE.DEFEND) {
+                if (goal == AiEnums.GOAL_TYPE.DEFEND) {
                     return 50;
                 }
                 break;

@@ -33,6 +33,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
+import main.game.logic.combat.attack.dual.DualAttackMaster;
 import main.game.logic.combat.attack.extra_attack.ExtraAttacksRule;
 import main.game.logic.dungeon.DungeonLevelMaster;
 import main.game.logic.dungeon.Entrance;
@@ -93,6 +94,7 @@ public class DC_ActionManager implements ActionManager {
     private static LinkedList<ActionType> stdActionTypes;
     private static LinkedList<ActionType> hiddenActions;
     private static LinkedList<ActionType> modeActionTypes;
+    private static LinkedList<ActionType> orderActionTypes;
     private MicroGame game;
     private HashMap<Entity, Map<String, ActiveObj>> actionsCache = new HashMap<>();
 
@@ -116,6 +118,14 @@ public class DC_ActionManager implements ActionManager {
 
             modeActionTypes.add(type);
         }
+
+         orderActionTypes = new LinkedList<>();
+        for (STD_ORDER_ACTIONS type : STD_ORDER_ACTIONS.values()) {
+            ActionType actionType = (ActionType) DataManager.getType(StringMaster
+             .getWellFormattedString(type.toString()), DC_TYPE.ACTIONS);
+            orderActionTypes.add(actionType);
+        }
+
         hiddenActions = new LinkedList<>();
         for (HIDDEN_ACTIONS name : HIDDEN_ACTIONS.values()) {
             ActionType type = (ActionType) DataManager.getType(StringMaster
@@ -335,6 +345,7 @@ public class DC_ActionManager implements ActionManager {
         actions.addAll(getSpecialModesFromUnit(unit));
         return actions;
     }
+
 
     private List<DC_ActiveObj> getSpecialModesFromUnit(Unit unit) {
         List<DC_ActiveObj> subActions = new LinkedList<>();
@@ -612,14 +623,15 @@ public class DC_ActionManager implements ActionManager {
             ActionGenerator.generateOffhandActions();
             addOffhandActions(actives, unit);
         }
+
+        actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
+
         if (UnitAnalyzer.checkDualWielding(unit)) {
-            actives.add(getOrCreateAction(DUAL_ATTACK, unit));
-            // addDualActions(actives, unit); good idea! :) dual thrust, dual
+            actives.addAll(   DualAttackMaster.getDualAttacks(unit)) ;
+            // good idea! :) dual thrust, dual
             // stunning blow, many possibilities! :) but it will be tricky...
             // TODO should add all dual actions
         }
-        actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
-
         actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Wait.name(), unit));
 
         if (RuleMaster.checkFeature(FEATURE.USE_INVENTORY)) {
@@ -673,6 +685,7 @@ public class DC_ActionManager implements ActionManager {
         // actives.add(getDisarmAction(unit, trap));
         // }
     }
+
 
     private ActiveObj getDisarmAction(final Unit hero, final Trap trap) {
         DC_UnitAction action = new DC_UnitAction(DataManager.getType(DISARM, DC_TYPE.ACTIONS),
@@ -797,10 +810,16 @@ public class DC_ActionManager implements ActionManager {
                 }
             }
         }
+
+        actives.addAll(getOrderActions( unit));
         // checkDual(unit);
         // checkInv(unit);
 
         return actives;
+    }
+
+    private Collection<? extends ActiveObj> getOrderActions(Unit unit) {
+        return getActionTypes(orderActionTypes, unit);
     }
 
     public void constructActionMaps(Unit unit) {
@@ -876,6 +895,8 @@ public class DC_ActionManager implements ActionManager {
                                                Unit unit) {
         List<DC_UnitAction> list = new LinkedList<>();
         for (ActionType type : actionTypes) {
+            if (type==null )
+                continue;
             // Ref ref = Ref.getCopy(unit.getRef());
             DC_UnitAction action = getOrCreateAction(type.getName(), unit);
             // = getOrCreateAction(type, ref, unit.getOwner(), game);
@@ -941,7 +962,27 @@ public class DC_ActionManager implements ActionManager {
         }
     }
 
-    public enum STD_MODE_ACTIONS {
+    public enum STD_ORDER_ACTIONS {
+        Press_the_Attack,
+          Hold_Fast,
+          Protect_me,
+          Heal_me,
+          Kill_Him,
+        Retreat,
+        Cancel_Order{
+            @Override
+            public String toString() {
+                return StringMaster.getWellFormattedString(name());
+            }
+        },
+        ;
+public String toString() {
+            return "Order: " +StringMaster.getWellFormattedString(name()+
+             "!");
+        }
+
+        }
+        public enum STD_MODE_ACTIONS {
         Defend, Concentrate, Rest, Meditate, On_Alert;
 
         public String toString() {

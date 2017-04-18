@@ -35,8 +35,44 @@ public class ParamAnalyzer extends AiHandler {
         super(master);
     }
 
+    public int getCostPriorityFactor(Costs cost, Unit unit) {
+        // if (!cost.canBePaid(unit.getRef()))
+        // return -100;
+        int penalty = 0;
+        for (Cost c : cost.getCosts()) {
+            PARAMETER p = c.getPayment().getParamToPay();
+            int base_value = getParamPriority(p, unit); // return a *formula*
+            // perhaps?
+            if (base_value <= 0) {
+                continue;
+            }
+            int perc = DC_MathManager.getCentimalPercentage(c.getPayment().getAmountFormula()
+             .getInt(unit.getRef()), unit.getIntParam(p));
+            if (perc > 100) {
+                // not enough
+                if (p != PARAMS.C_N_OF_ACTIONS) {
+                    // actions can be gained on next  round
+                    return 0;
+                }
+            }
+            if (perc <= 0) {
+                continue;
+            }
+
+            // speaking of real numbers, stamina/foc should have a non-linear
+            // formula I reckon
+            //
+
+            int amount = MathMaster.getFractionValueCentimal(base_value, perc);
+            penalty += (amount);
+        }
+        return MathMaster.calculateFormula(COST_PENALTY_FORMULA, penalty);
+    }
     public static boolean checkStatus(boolean low_critical, Unit unit, DC_BuffRule rule) {
-        int buffLevel = rule.getBuffLevel(unit);
+        Integer buffLevel = rule.getBuffLevel(unit);
+        if (buffLevel==null ){
+            return false;
+        }
         if (buffLevel < 0) {
             return false;
         }
@@ -85,11 +121,11 @@ public class ParamAnalyzer extends AiHandler {
 
     public static boolean checkStatus(boolean low_critical, Unit unit, PARAMETER p) {
         if (p == PARAMS.C_STAMINA) {
-            return checkStatus(low_critical, unit, unit.getGame().getRules().getMoraleBuffRule());
+            return checkStatus(low_critical, unit, unit.getGame().getRules().getStaminaRule());
 
         }
         if (p == PARAMS.C_FOCUS) {
-            return checkStatus(low_critical, unit, unit.getGame().getRules().getMoraleBuffRule());
+            return checkStatus(low_critical, unit, unit.getGame().getRules().getFocusBuffRule());
 
         }
         if (p == PARAMS.C_MORALE) {
@@ -181,37 +217,6 @@ public class ParamAnalyzer extends AiHandler {
 
     }
 
-    public int getCostFactor(Costs cost, Unit unit) {
-        // if (!cost.canBePaid(unit.getRef()))
-        // return -100;
-        int penalty = 0;
-        for (Cost c : cost.getCosts()) {
-            PARAMETER p = c.getPayment().getParamToPay();
-            int base_value = getParamPriority(p, unit); // return a *formula*
-            // perhaps?
-            if (base_value <= 0) {
-                continue;
-            }
-            int perc = DC_MathManager.getCentimalPercentage(c.getPayment().getAmountFormula()
-                    .getInt(unit.getRef()), unit.getIntParam(p));
-            if (perc > 100) {
-                if (p != PARAMS.C_N_OF_ACTIONS) {
-                    return 0;
-                }
-            }
-            if (perc <= 0) {
-                continue;
-            }
-
-            // speaking of real numbers, stamina/foc should have a non-linear
-            // formula I reckon
-            //
-
-            int amount = MathMaster.getFractionValueCentimal(base_value, perc);
-            penalty += (amount);
-        }
-        return MathMaster.calculateFormula(COST_PENALTY_FORMULA, penalty);
-    }
 
     public int getParamPriority(PARAMETER p, Unit unit) {
         // int percentage = DC_MathManager.getParamPercentage(unit, p);

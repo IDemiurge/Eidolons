@@ -5,6 +5,7 @@ import main.content.DC_ContentManager;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.elements.costs.Cost;
@@ -12,14 +13,10 @@ import main.elements.costs.Costs;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.ai.AI_Manager;
 import main.game.ai.UnitAI;
-import main.game.ai.advanced.behavior.BehaviorMaster;
 import main.game.ai.elements.actions.sequence.ActionSequence;
 import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.elements.goal.Goal;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
-import main.game.ai.logic.types.atomic.AtomicAi;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.ParamAnalyzer;
 import main.game.ai.tools.priority.DC_PriorityManager;
@@ -40,13 +37,10 @@ import java.util.List;
 
 public class ActionManager extends AiHandler {
 
-    BehaviorMaster behaviorMaster;
-    private AtomicAi atomicAi;
 
     public ActionManager(AiHandler master) {
         super(master);
-        this.behaviorMaster = new BehaviorMaster(master);
-        atomicAi = new AtomicAi(master);
+
     }
 
     public static Costs getTotalCost(List<Action> actions) {
@@ -76,8 +70,8 @@ public class ActionManager extends AiHandler {
     @Override
     public void initialize() {
         super.initialize();
-        atomicAi.initialize();
-        behaviorMaster.initialize();
+        getAtomicAi().initialize();
+        getBehaviorMaster().initialize();
     }
 
     public Action chooseAction(UnitAI ai) {
@@ -90,7 +84,7 @@ public class ActionManager extends AiHandler {
             getCellPrioritizer().reset();
         } else {
         }
-        unit = ai.getUnit();
+        setUnit(ai.getUnit());
         ai.setEngaged(DungeonCrawler.checkEngaged(ai));
 
         checkDeactivate();
@@ -108,25 +102,25 @@ public class ActionManager extends AiHandler {
         FACING_DIRECTION originalFacing = unit.getFacing();
         Coordinates originalCoordinates = unit.getCoordinates();
         Action action;
-        ActionSequence sequence = null;
-        if (!atomicAi.checkAtomicActionCaseAny(ai)) {
+        ActionSequence chosenSequence = null;
+        boolean atomic = false;
+        try {
+            atomic = getAtomicAi().checkAtomicActionCaseAny(ai);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!atomic) {
             List<ActionSequence> actions = new LinkedList<>();
             try {
-                // actions = createActionSequences(ai);
-                for (ActionSequence a : getActionSequenceConstructor().createActionSequences(
-                        ai)) {
-                    if (checkNotBroken(a)) {
-                        if (a.get(0).canBeActivated()) {
-                            // if (a.getOrCreate(0).canBeTargeted())
-                            {
-                                actions.add(a);
-                            }
-                        }
+                List<ActionSequence> sequences = getActionSequenceConstructor().createActionSequences(ai);
+                for (ActionSequence a : sequences) {
+                    if (a.get(0).canBeActivated()) {
+                        // if (a.getOrCreate(0).canBeTargeted())
+                        actions.add(a);
                     }
-
                 }
                 if (ListMaster.isNotEmpty(actions)) {
-                    sequence = DC_PriorityManager.chooseByPriority(actions);
+                    chosenSequence = DC_PriorityManager.chooseByPriority(actions);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -137,35 +131,31 @@ public class ActionManager extends AiHandler {
 
         }
 
-        if (sequence == null) {
-            action = atomicAi.getAtomicAction(ai);
+        if (chosenSequence == null) {
+            action = getAtomicAi().getAtomicAction(ai);
             if (action == null) {
                 action = getForcedAction(ai);
             }
             return action;
         }
-        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE) {
-            LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Action sequence chosen: "
-                    + sequence + StringMaster.wrapInParenthesis(sequence.getPriority() + ""));
+        else {
+            if (chosenSequence.getType()==GOAL_TYPE.DEFEND)
+                return chosenSequence.getNextAction();
+
         }
-        ai.checkSetOrders(sequence);
-        return sequence.getNextAction();
+        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE) {
+            LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Action chosenSequence chosen: "
+             + chosenSequence + StringMaster.wrapInParenthesis(chosenSequence.getPriority() + ""));
+        }
+        //TODO for behaviors? ai-issued-orders?
+        ai.checkSetOrders(chosenSequence);
+        return chosenSequence.getNextAction();
     }
 
-    private boolean checkNotBroken(ActionSequence as) {
-        for (Action a : as.getActions()) {
-            for (Action ba : AI_Manager.getBrokenActions()) {
-                if (a.getActive().getType().getName().equals(ba.getActive().getType().getName())) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 
     public Action getForcedAction(UnitAI ai) {
         BEHAVIOR_MODE behaviorMode = ai.getBehaviorMode();
-        GOAL_TYPE goal = GOAL_TYPE.PREPARE;
+        GOAL_TYPE goal = AiEnums.GOAL_TYPE.PREPARE;
 
         List<ActionSequence> actions;
 
@@ -181,17 +171,17 @@ public class ActionManager extends AiHandler {
 
         actions = getActionSequenceConstructor().createActionSequences(new Goal(goal, ai, true), ai);
         if (ai.checkMod(AI_MODIFIERS.TRUE_BRUTE)) {
-            goal = GOAL_TYPE.ATTACK;
+            goal = AiEnums.GOAL_TYPE.ATTACK;
             actions.addAll(getActionSequenceConstructor().createActionSequences(new Goal(goal, ai, true), ai));
         }
         if (behaviorMode == null) {
             if (ParamAnalyzer.isFatigued(unit)) {
-                actions.add(new ActionSequence(GOAL_TYPE.PREPARE, getAction(unit,
-                        STD_MODE_ACTIONS.Rest.name())));
+                actions.add(new ActionSequence(AiEnums.GOAL_TYPE.PREPARE, getAction(unit,
+                 STD_MODE_ACTIONS.Rest.name())));
             }
             if (ParamAnalyzer.isHazed(unit)) { // when is that used?
-                actions.add(new ActionSequence(GOAL_TYPE.PREPARE, getAction(unit,
-                        STD_MODE_ACTIONS.Concentrate.name())));
+                actions.add(new ActionSequence(AiEnums.GOAL_TYPE.PREPARE, getAction(unit,
+                 STD_MODE_ACTIONS.Concentrate.name())));
             }
             // Integer id = checkWaitForBlockingAlly(); TODO can actually preCheck
             // if movement is blocked and wait on the least sturdy in line...
@@ -216,7 +206,7 @@ public class ActionManager extends AiHandler {
     private Integer checkWaitForBlockingAlly() {
 
         Coordinates c = unit.getCoordinates()
-                .getAdjacentCoordinate(unit.getFacing().getDirection());
+         .getAdjacentCoordinate(unit.getFacing().getDirection());
         Obj obj = unit.getGame().getObjectVisibleByCoordinate(c);
         if (obj instanceof Unit) {
             if (((Unit) obj).canActNow())
@@ -231,7 +221,7 @@ public class ActionManager extends AiHandler {
 
     private Action getAction(Unit unit, String name, Integer target) {
 
-        Action action = new Action(ActionFactory.getUnitAction(unit, name));
+        Action action = new Action(AiActionFactory.getUnitAction(unit, name));
         if (target != null) {
             action.getRef().setTarget(target);
         }
@@ -239,7 +229,7 @@ public class ActionManager extends AiHandler {
     }
 
     private Action getAction(Unit unit, String name) {
-        return new Action(ActionFactory.getUnitAction(unit, name));
+        return new Action(AiActionFactory.getUnitAction(unit, name));
     }
 
     private void checkDeactivate() {

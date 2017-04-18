@@ -1,5 +1,6 @@
 package main.game.ai.elements.goal;
 
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.ai.UnitAI;
 
 /**
@@ -40,64 +41,7 @@ public class Goal {
         return forced;
     }
 
-    // AI_TYPE can influence preferred goals
-    // getting task arguments based on GOAL TYPE???
-    public enum GOAL_TYPE {
-        ATTACK, // ALL HOSTILE GOALS
-        APPROACH,
-        BUFF, // ALL ALLIES
-        SELF, // ALL non-std SELFIES
-        DEBUFF,
-        RESTORE,
-        DEBILITATE,
-
-        SUMMONING,
-        MOVE, // STD AND CUSTOM MOVE ACTIONS
-        WAIT, // on allies or enemies!
-        PREPARE, // BUFFS, MODES
-        DEFEND, // ALERT OR DEFEND
-        RETREAT, // USUALLY FORCED
-        SEARCH, // IF NO ENEMIES DETECTED, LOOK AROUND
-
-        ZONE_SPECIAL,
-        AUTO_DAMAGE,
-        AUTO_BUFF,
-        AUTO_DEBUFF,
-        OTHER,
-        ZONE_DAMAGE,
-        CUSTOM_HOSTILE,
-        CUSTOM_SUPPORT,
-        STEALTH,
-        COWER,
-        COATING,
-
-        AMBUSH(true), // SPEC MODE - KIND OF ON ALERT...
-        WANDER(true), // RANDOM DESTINATION MOVEMENT, BLOCK SPECIAL MOVES
-        STALK(true),
-        AGGRO(true),
-        PATROL(true),
-        GUARD(true),
-        IDLE(true),;
-        private boolean behavior;
-
-        GOAL_TYPE() {
-
-        }
-
-        GOAL_TYPE(boolean b) {
-            behavior = b;
-        }
-
-        public boolean isFilterByCanActivate() {
-            if (isBehavior()) {
-                return false;
-            }
-            return true;
-        } // FOLLOW AT SAFE DISTANCE
-
-        public boolean isBehavior() {
-            return behavior;
-        }
-
+    public void setForced(boolean forced) {
+        this.forced = forced;
     }
 }

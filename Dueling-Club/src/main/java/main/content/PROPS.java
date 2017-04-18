@@ -23,41 +23,75 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ARCADE_STATUS(null, false, "party"),
     DUNGEON_TAGS(null, true, "dungeons"),
     MAP_BACKGROUND(null, false, "dungeons", "area", "route", "place"),
-    DUNGEON_MAP_TEMPLATE(null, false, "area", "dungeons", "route", "place"),
-    DUNGEON_MAP_MODIFIER(null, false, "dungeons", "route", "place"),
-    MAP_OBJECTS(null, true, "dungeons", "route", "place"),
-    MAP_PRESET_OBJECTS(null, true, "dungeons"),
-    COLOR_THEME(null, false, "dungeons", "route", "place"),
-    ALT_COLOR_THEME(null, false, "dungeons"),
-    LOOT_GROUPS(null, true, "dungeons"),
-    // THEMED BACKGROUND?
-    PARTY_SPAWN_COORDINATES(null, false, "dungeons"),
-    ENEMY_SPAWN_COORDINATES(null, false, "dungeons"),
-    DUNGEON_PLAN(null, false, "dungeons"),
 
-    SUBLEVELS(null, true, "dungeons"),
-    FILLER_TYPE(null, false, "dungeons"),
-    ARCADE_LOOT_TYPE(null, true, "dungeons"),
-    SUBDUNGEON_TYPE(null, false, "dungeons"),
-    SPAWNING_DELAYS(null, true, "dungeons"),
+    ENCOUNTER_SETS(null, true, "dungeons", "encounters"),
     ENCOUNTERS(null, true, "dungeons"),
     ALT_ENCOUNTERS(null, true, "dungeons"),
-    POWER_ENCOUNTERS(null, true, "dungeons"),
+    
+    // TODO remove useless props... (just disabled for now)
+    DUNGEON_MAP_TEMPLATE(null, false//, "area", "dungeons", "route", "place"
+    ),
+    DUNGEON_MAP_MODIFIER(null, false//, "dungeons", "route", "place"
+    ),
+    MAP_OBJECTS(null, true//, "dungeons","route", "place"
+      ),
+    MAP_PRESET_OBJECTS(null, true//, "dungeons"
+    ),
+    COLOR_THEME(null, false, "dungeons", "route", "place"),
+    ALT_COLOR_THEME(null, false//, "dungeons"
+     ),
+    LOOT_GROUPS(null, true//, "dungeons"
+      ),
+    // THEMED BACKGROUND?
+    PARTY_SPAWN_COORDINATES(null, false//, "dungeons"
+    ),
+    ENEMY_SPAWN_COORDINATES(null, false//, "dungeons"
+    ),
+    DUNGEON_PLAN(null, false//, "dungeons"
+    ),
 
-    REGULAR_ENCOUNTERS(null, true, "dungeons"),
-    ELITE_ENCOUNTERS(null, true, "dungeons"),
-    BOSS_ENCOUNTERS(null, true, "dungeons"),
-    DUNGEON_MAIN_ENTRANCES(null, true, "dungeons"),
-    ENCOUNTER_GROUPS(null, true, "dungeons", "route", "place", "area"),
-    ENCOUNTER_SPAWN_POINTS(null, true, "dungeons"),
-    ENCOUNTER_BOSS_SPAWN_POINTS(null, true, "dungeons"),
+    SUBLEVELS(null, true//, "dungeons"
+    ),
+    FILLER_TYPE(null, false//, "dungeons"
+    ),
+    ARCADE_LOOT_TYPE(null, true//, "dungeons"
+    ),
+    SUBDUNGEON_TYPE(null, false//, "dungeons"
+    ),
+    SPAWNING_DELAYS(null, true//, "dungeons"
+    ),
+    
+    POWER_ENCOUNTERS(null, true//, "dungeons"
+    ),
 
-    ALT_POWER_ENCOUNTERS(null, true, "dungeons"),
-    ALT_SPAWNING_DELAYS(null, true, "dungeons"),
-    ALT_ARCADE_LOOT_TYPE(null, true, "dungeons"),
-    DUNGEON_TEMPLATES(null, true, "dungeons"),
-    DUNGEON_TEMPLATE_TYPE(null, false, "dungeons"),
-    ADDITIONAL_ROOM_TYPES(null, true, "dungeons"),
+    REGULAR_ENCOUNTERS(null, true//, "dungeons"
+    ),
+    ELITE_ENCOUNTERS(null, true//, "dungeons"
+    ),
+    BOSS_ENCOUNTERS(null, true//, "dungeons"
+    ),
+    DUNGEON_MAIN_ENTRANCES(null, true//, "dungeons"
+    ),
+    ENCOUNTER_GROUPS(null, true//, "dungeons", "route", "place", "area"
+    ),
+    
+    ENCOUNTER_SPAWN_POINTS(null, true//, "dungeons"
+    ),
+    ENCOUNTER_BOSS_SPAWN_POINTS(null, true//, "dungeons"
+    ),
+
+    ALT_POWER_ENCOUNTERS(null, true//, "dungeons"
+    ),
+    ALT_SPAWNING_DELAYS(null, true//, "dungeons"
+    ),
+    ALT_ARCADE_LOOT_TYPE(null, true//, "dungeons"
+    ),
+    DUNGEON_TEMPLATES(null, true//, "dungeons"
+    ),
+    DUNGEON_TEMPLATE_TYPE(null, false//, "dungeons"
+    ),
+    ADDITIONAL_ROOM_TYPES(null, true//, "dungeons"
+    ),
 
     MASTERY_GROUPS_MAGIC(null, true, "units", "chars"),
     MASTERY_GROUPS_WEAPONS(null, true, "units", "chars"),
@@ -442,9 +476,14 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     private Map<OBJ_TYPE, Object> defaultValuesMap;
 
     PROPS(String shortName, boolean container, String... entityTypes) {
-        this(entityTypes[0], shortName, "", false, ContentManager.getDefaultEmptyValue(), 0);
+        this(null , shortName, "", false,
+         ContentManager.getDefaultEmptyValue(), 0);
         this.entityTypes = entityTypes;
         this.container = container;
+        if (entityTypes.length>0 )
+            entityType=             entityTypes[0];
+        else
+            entityType=             "meta";
     }
 
     PROPS(String entityType, String shortName) {

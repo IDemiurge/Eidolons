@@ -6,7 +6,7 @@ import main.system.auxiliary.log.LogMaster;
 
 public class TimeLimitMaster {
     public static final long CRITICAL_FAIL_FACTOR = 10;
-    private static double TIME_LIMIT_FACTOR = 1;
+    private static double TIME_LIMIT_FACTOR = 5;
     private static int ACTION_TIME_LIMIT = 3000;
     private static int PATH_TIME_LIMIT = 2000;
     private static int CELL_PATH_TIME_LIMIT = 500;
@@ -45,7 +45,7 @@ public class TimeLimitMaster {
     }
 
     public static Long getTimeLimitMetric(METRIC metric) {
-        return Math.round(getTimeLimitMetricBase(metric) * TIME_LIMIT_FACTOR);
+        return new Long(Math.round(getTimeLimitMetricBase(metric) * TIME_LIMIT_FACTOR));
     }
 
     public static int getTimeLimitMetricBase(METRIC metric) {

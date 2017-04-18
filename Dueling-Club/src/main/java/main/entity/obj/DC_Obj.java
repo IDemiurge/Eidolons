@@ -214,6 +214,7 @@ public abstract class DC_Obj extends MicroObj {
             dmg_type = new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class, name);
         }
 
+        if (dmg_type == null) dmg_type=DAMAGE_TYPE.PHYSICAL;
         return dmg_type;
     }
 

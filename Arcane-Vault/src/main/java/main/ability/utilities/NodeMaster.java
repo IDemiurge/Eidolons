@@ -121,7 +121,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
             }
 
             AE_Item childItem = getEnumItem(rootItem.getArg(), EnumMaster.getEnumConstIndex(
-                    rootItem.getArg().getCoreClass(), e.getTextContent()));
+             rootItem.getArg().getCoreClass(), e.getTextContent()));
 
             DefaultMutableTreeNode child = new DefaultMutableTreeNode(childItem.getName());
             result.add(child);
@@ -134,7 +134,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
             }
 
             DefaultMutableTreeNode child = new DefaultMutableTreeNode(rootItem.getArg().name()
-                    + e.getTextContent());
+             + e.getTextContent());
             result.add(child);
             return result;
         }
@@ -151,7 +151,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
             node.setUserObject(Mapper.getItem(child));
             result.add(build(child));
             LogMaster.log(LogMaster.AV_AE, "node added: "
-                    + child.getNodeName());
+             + child.getNodeName());
         }
 
         return result;
@@ -161,7 +161,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
         String text = selectedItem.toString();
         int index = new SearchMaster<AE_Item>().getIndex(text, element.getItemList());
         LogMaster.log(1, element.getItem().getName() + selectedItem + " is "
-                + index + "th in " + element.getItemList());
+         + index + "th in " + element.getItemList());
         return index;
     }
 
@@ -200,7 +200,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
         List<AE_Item> itemList = Mapper.getItemList(arg);
         if (!itemList.contains(item)) {
             LogMaster.log(1, "indexing item not found: " + item.getName()
-                    + ";  " + arg + "= " + itemList);
+             + ";  " + arg + "= " + itemList);
             return 0;
         }
         return itemList.indexOf(item);
@@ -273,7 +273,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 
     private void textBoxAction(Object source) {
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode) tree
-                .getLastSelectedPathComponent();
+         .getLastSelectedPathComponent();
 
         AE_Item parentItem = (AE_Item) parent.getUserObject();
         JTextField tb = (JTextField) source;
@@ -290,7 +290,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 
     private void comboboxAction(Object source) {
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode) tree
-                .getLastSelectedPathComponent();
+         .getLastSelectedPathComponent();
         JComboBox<AE_Item> cb = (JComboBox<AE_Item>) source;
 
         // I could store previous selection of each combobox...
@@ -301,7 +301,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
             AE_Item item = getEnumItem(element.getArg(), cb.getSelectedItem().toString());
             if (item == null) {
                 LogMaster.log(2, "NULL ITEM: "
-                        + cb.getSelectedItem().toString());
+                 + cb.getSelectedItem().toString());
             }
             DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(item.getName());
             node.add(newChild);
@@ -322,9 +322,13 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 
     private DefaultMutableTreeNode newNode(DefaultMutableTreeNode node, int index) {
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode) tree
-                .getLastSelectedPathComponent();
+         .getLastSelectedPathComponent();
 //		if (parent.isLeaf())
-        createEmptyNodes(parent, (AE_Item) parent.getUserObject());
+        try {
+            createEmptyNodes(parent, (AE_Item) parent.getUserObject());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (parent.getChildCount() > index) {
             if (parent.getChildAt(index) != null) {
@@ -350,10 +354,10 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
         for (Argument arg : item.getArgList()) {
             if (!arg.isPrimitive()) {
                 DefaultMutableTreeNode newChild = new DefaultMutableTreeNode("<" +
-                        arg.name() +
-                        ">" + VariableManager.VARIABLE + "</" +
-                        arg.name() +
-                        ">");
+                 arg.name() +
+                 ">" + VariableManager.VARIABLE + "</" +
+                 arg.name() +
+                 ">");
                 if (!Mapper.getItemList(arg).isEmpty()) {
                     newChild = new DefaultMutableTreeNode(Mapper.getItemList(arg).get(0));
                 }
@@ -484,7 +488,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
             public void run() {
                 WaitMaster.WAIT(100);
                 ArcaneVault.getSelectedType().setProperty(G_PROPS.BASE_TYPE,
-                        ArcaneVault.getPreviousSelectedType().getName());
+                 ArcaneVault.getPreviousSelectedType().getName());
                 // main.system.auxiliary.LogMaster.log(1, )
             }
         }, " thread").start();
@@ -513,7 +517,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
                 return;
             }
             ((DefaultTreeModel) tree.getModel()).insertNodeInto(newNode, parent, node.getParent()
-                    .getChildCount() - 1);
+             .getChildCount() - 1);
 
         } catch (Exception e) {
             e.printStackTrace();

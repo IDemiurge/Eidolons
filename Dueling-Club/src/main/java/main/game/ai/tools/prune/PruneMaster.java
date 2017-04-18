@@ -10,7 +10,7 @@ import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.generic.AiHandler;
-import main.game.ai.elements.goal.Goal.GOAL_TYPE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.ai.elements.goal.GoalManager;
 import main.game.ai.tools.ParamAnalyzer;
 import main.game.ai.tools.priority.DC_PriorityManager;
