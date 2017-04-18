@@ -10,7 +10,7 @@ import java.util.Map;
 public class UnitViewFactory {
     public static BaseView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
-        BaseView baseView = new UnitView(options);
+        BaseView baseView = new GridUnitView(options);
         return baseView;
     }
 

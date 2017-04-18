@@ -2,7 +2,6 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 
@@ -18,21 +17,17 @@ public class CellBorderManager extends Group {
     private static final String orangePath = "UI\\Borders\\neo\\color flag\\orange 132.png";
     private static final String purplePath = "UI\\Borders\\neo\\color flag\\purple 132.png";
     private static final String redPath = "UI\\Borders\\neo\\color flag\\red 132.png";
-    public Image singleBorderImageBackup = null;
-    protected Image greenBorder;
-    protected Image redBorder;
-    protected Image orangeBorder;
-    protected TextureRegion blueBorderTexture;
+    public TextureRegion singleBorderImageBackup = null;
+    protected TextureRegion blueTexture;
     private Borderable unitBorderOwner = null;
     private Map<Borderable, Runnable> blueBorderOwners = new HashMap<>();
+    private TextureRegion redTexture;
+    private TextureRegion greenTexture;
 
     public CellBorderManager() {
-        greenBorder = new Image(TextureCache.getOrCreateR(cyanPath));
-        greenBorder.setBounds(2, 2, 4, 4);
-
-        redBorder = new Image(TextureCache.getOrCreateR(redPath));
-
-        blueBorderTexture = TextureCache.getOrCreateR(bluePath);
+        greenTexture = TextureCache.getOrCreateR(cyanPath);
+        redTexture = TextureCache.getOrCreateR(redPath);
+        blueTexture = TextureCache.getOrCreateR(bluePath);
 
         bindEvents();
     }
@@ -53,14 +48,14 @@ public class CellBorderManager extends Group {
         GuiEventManager.bind(SHOW_GREEN_BORDER, obj -> {
             if (obj != null) {
                 Borderable b = (Borderable) obj.get();
-                showBorder(greenBorder, b);
+                showBorder(greenTexture, b);
             }
         });
 
         GuiEventManager.bind(SHOW_RED_BORDER, obj -> {
             if (obj != null) {
                 Borderable b = (Borderable) obj.get();
-                showBorder(redBorder, b);
+                showBorder(redTexture, b);
             }
         });
 
@@ -76,7 +71,7 @@ public class CellBorderManager extends Group {
                     if (entry.getKey() == null) {
                         return;
                     }
-                    entry.getKey().setBorder(new Image(blueBorderTexture));
+                    entry.getKey().setBorder(blueTexture);
                 });
 
                 blueBorderOwners = map;
@@ -98,18 +93,12 @@ public class CellBorderManager extends Group {
         return (entity != null);
     }
 
-    private void showBorder(Image border, Borderable owner) {
+    private void showBorder(TextureRegion border, Borderable owner) {
         owner.setBorder(border);
 
         if (unitBorderOwner != null && unitBorderOwner != owner) {
             unitBorderOwner.setBorder(null);
         }
         unitBorderOwner = owner;
-    }
-
-    public void updateBorderSize() {
-        if (unitBorderOwner != null && unitBorderOwner.getBorder() != null) {
-            unitBorderOwner.updateBorderSize();
-        }
     }
 }

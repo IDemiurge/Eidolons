@@ -115,7 +115,7 @@ public class UnitResetter extends EntityResetter<Unit> {
         if (getEntity().isMine()) {
             if (CoreEngine.isAnimationTestMode()) {
                 TestMasterContent.addANIM_TEST_Spells(getEntity());
-            } else if (CoreEngine.isGraphicTestMode()) {
+            } else if (CoreEngine.isGuiTestMode()) {
                 TestMasterContent.addGRAPHICS_TEST_Spells(getEntity());
             }
         }

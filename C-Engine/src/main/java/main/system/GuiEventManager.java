@@ -43,7 +43,7 @@ public class GuiEventManager {
         getInstance().processEvents_();
     }
 
-    public static GuiEventManager getInstance() {
+    private static GuiEventManager getInstance() {
         if (instance == null) {
             if (!isInitialized) {
                 try {

@@ -13,10 +13,12 @@ import main.libgdx.StyleHolder;
 public class GridCell extends Group implements Borderable {
     protected Image backImage;
     protected TextureRegion backTexture;
+    protected Image border = null;
     private int gridX;
     private int gridY;
     private GridCell innerDrawable;
-    private Image border = null;
+    private TextureRegion borderTexture;
+
     private Label cordsText;
     private float gamma;
 
@@ -46,7 +48,6 @@ public class GridCell extends Group implements Borderable {
         if (old != null) {
             removeActor(old);
             old.dispose();
-            //return;
         }
         if (innerDrawable != null) {
             cordsText.setVisible(false);
@@ -110,33 +111,27 @@ public class GridCell extends Group implements Borderable {
     }
 
     @Override
-    public int getW() {
-        return (int) getWidth();
+    public TextureRegion getBorder() {
+        return borderTexture;
     }
 
     @Override
-    public int getH() {
-        return (int) getHeight();
-    }
-
-    @Override
-    public Image getBorder() {
-        return border;
-    }
-
-    @Override
-    public void setBorder(Image image) {
-        if (image == null) {
+    public void setBorder(TextureRegion texture) {
+        if (border != null) {
             removeActor(border);
+        }
+
+        if (texture == null) {
             border = null;
+            borderTexture = null;
         } else {
-            addActor(image);
-            border = image;
+            addActor(border = new Image(texture));
+            borderTexture = texture;
+            updateBorderSize();
         }
     }
 
-    @Override
-    public void updateBorderSize() {
+    private void updateBorderSize() {
         border.setX(-4);
         border.setY(-4);
         border.setHeight(getWidth() - 8);

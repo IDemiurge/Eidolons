@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
+import main.libgdx.bf.UnitView;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -27,14 +28,14 @@ public class InitiativePanel extends Group {
     private void registerCallback() {
 
         GuiEventManager.bind(GuiEventType.ADD_OR_UPDATE_INITIATIVE, obj -> {
-            InitiativePanelParam p = (InitiativePanelParam) obj.get();
+            UnitView p = (UnitView) obj.get();
             addOrUpdate(p);
         });
 
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
-            InitiativePanelParam p = (InitiativePanelParam) obj.get();
+            UnitView p = (UnitView) obj.get();
             for (int i = 0; i < queue.length; i++) {
-                if (queue[i] != null && queue[i].id == p.getId()) {
+                if (queue[i] != null && queue[i].id == p.getCurId()) {
                     queueGroup.removeActor(queue[i]);
                     queue[i] = null;
                     sort();
@@ -59,21 +60,21 @@ public class InitiativePanel extends Group {
         setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
     }
 
-    private void addOrUpdate(InitiativePanelParam panelParam) {
-        ImageContainer container = getIfExists(panelParam.getId());
+    private void addOrUpdate(UnitView unitView) {
+        ImageContainer container = getIfExists(unitView.getCurId());
         if (container == null) {
             container = new ImageContainer();
-            container.initiative = panelParam.getVal();
-            container.id = panelParam.getId();
+            container.initiative = unitView.getInitiativeIntVal();
+            container.id = unitView.getCurId();
             container.size(imageSize, imageSize);
             container.left().bottom();
             int lastSlot = getLastEmptySlot();
-            container.setActor(newImage(lastSlot, panelParam));
+            container.setActor(unitView);
             queue[lastSlot] = container;
             queueGroup.addActor(container);
         } else {
-            container.initiative = panelParam.getVal();
-            container.setActor(newImage(container.getActor(), panelParam));
+            container.initiative = unitView.getInitiativeIntVal();
+            container.setActor(unitView);
         }
         sort();
     }
@@ -217,7 +218,7 @@ public class InitiativePanel extends Group {
     }
 
 
-    private class ImageContainer extends Container<Image> {
+    private class ImageContainer extends Container<UnitView> {
         public int initiative;
         public int id;
     }
