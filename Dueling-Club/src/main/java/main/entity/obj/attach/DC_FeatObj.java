@@ -148,7 +148,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
             }
             getRef().setInfoEntity(this);
             bonus = TextParser.parse(bonus, getRef());
-            Integer amount = Integer.valueOf(bonus);// StringMaster.getInteger(bonus);
+            Integer amount =new Formula( bonus).getInt(getRef());// StringMaster.getInteger(bonus);
             if (amount == 0) {
                 continue;
             }
