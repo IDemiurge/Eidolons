@@ -94,9 +94,9 @@ public class RadialMenu extends Group {
         if (currentNode.getChilds().size() > 10) {
             coefficient = 2.5;
         }
-        boolean isWave = false;
+        boolean makeSecondRing = false;
         if (currentNode.getChilds().size() > 15) {
-            isWave = true;
+            makeSecondRing = true;
             coefficient = 3.5;
         }
 
@@ -104,7 +104,7 @@ public class RadialMenu extends Group {
 
         for (int i = 0; i < currentNode.getChilds().size(); i++) {
             int r = radius;
-            if (isWave && i % 2 == 0) {
+            if (makeSecondRing && i % 2 == 0) {
                 r = (int) (72 * (coefficient - 1));
             }
             pos = i * step;
