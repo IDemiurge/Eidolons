@@ -5,9 +5,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.libgdx.StyleHolder;
+import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static main.system.GuiEventType.REMOVE_FROM_INITIATIVE_PANEL;
 
 public class UnitView extends BaseView {
     protected static AtomicInteger lastId = new AtomicInteger(1);
@@ -35,8 +38,6 @@ public class UnitView extends BaseView {
             addActor(clockImage);
             addActor(initiativeLabel);
         }
-
-        setSize(portraitTexture.getRegionWidth(), portraitTexture.getRegionHeight());
     }
 
     @Override
@@ -80,5 +81,13 @@ public class UnitView extends BaseView {
 
     public int getInitiativeIntVal() {
         return initiativeIntVal;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        if (!visible) {
+            GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL, this);
+        }
     }
 }
