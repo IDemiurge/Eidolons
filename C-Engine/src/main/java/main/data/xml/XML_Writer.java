@@ -439,7 +439,7 @@ public class XML_Writer {
     }
 
     private static String repair(String result) {
-        return result.replace(" ", " ");
+        return result.replaceAll("\\s+", " ");//.replace("\n", "").replace("  ", " ");
     }
 
     private static boolean isRepairMode() {
