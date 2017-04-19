@@ -26,7 +26,7 @@ public class GridUnitView extends UnitView {
     }
 
     private void initQueueView(UnitViewOptions o) {
-        initiativeQueueUnitView = new UnitView(o);
+        initiativeQueueUnitView = new UnitView(o, curId);
     }
 
     @Override

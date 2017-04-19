@@ -26,7 +26,7 @@ public class RadialMenu extends Group {
 //        new Texture(RadialMenu.class.getResource(
 //         /data/marble_green.png).getPath());
         closeButton = new RadialValueContainer(new TextureRegion(t), () ->
-         close());
+                close());
         closeButton.setX(-20);
 
         ValueTooltip tooltip = new ValueTooltip();
@@ -89,13 +89,27 @@ public class RadialMenu extends Group {
         int step = 360 / currentNode.getChilds().size();
         int pos;
 
-        final double coefficient = currentNode.getChilds().size() > 6 ? 2 : 1.5;
+        double coefficient = currentNode.getChilds().size() > 6 ? 2 : 1.5;
+
+        if (currentNode.getChilds().size() > 10) {
+            coefficient = 2.5;
+        }
+        boolean isWave = false;
+        if (currentNode.getChilds().size() > 15) {
+            isWave = true;
+            coefficient = 3.5;
+        }
+
         radius = (int) (72 * coefficient);
 
         for (int i = 0; i < currentNode.getChilds().size(); i++) {
+            int r = radius;
+            if (isWave && i % 2 == 0) {
+                r = (int) (72 * (coefficient - 1));
+            }
             pos = i * step;
-            int y = (int) (radius * Math.sin(Math.toRadians(pos + 90)));
-            int x = (int) (radius * Math.cos(Math.toRadians(pos + 90)));
+            int y = (int) (r * Math.sin(Math.toRadians(pos + 90)));
+            int x = (int) (r * Math.cos(Math.toRadians(pos + 90)));
             currentNode.getChilds().get(i).setPosition(x + currentNode.getX(), y + currentNode.getY());
         }
     }
@@ -107,7 +121,7 @@ public class RadialMenu extends Group {
         for (final RadialValueContainer child : currentNode.getChilds()) {
             if (child.getChilds().size() > 0) {
                 child.bindAction(() -> setCurrentNode(child));
-            }else {
+            } else {
                 Runnable action = child.getClickAction();
                 child.bindAction(() -> {
                     close();

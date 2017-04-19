@@ -35,10 +35,10 @@ public class BaseView extends Group implements Borderable {
 
     private void updateBorderSize() {
         if (border != null) {
-            border.setX(-4);
-            border.setY(-4);
-            border.setHeight(getHeight() + 8);
-            border.setWidth(getWidth() + 8);
+            border.setX(-6);
+            border.setY(-6);
+            border.setHeight(getHeight() + 12);
+            border.setWidth(getWidth() + 12);
         }
     }
 }

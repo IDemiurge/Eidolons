@@ -26,6 +26,12 @@ public class UnitView extends BaseView {
         init(o.getClockTexture(), o.getClockValue(), o.getPortrateTexture());
     }
 
+    protected UnitView(UnitViewOptions o, int curId) {
+        super(o);
+        this.curId = curId;
+        init(o.getClockTexture(), o.getClockValue(), o.getPortrateTexture());
+    }
+
     private void init(TextureRegion clockTexture, int clockVal, TextureRegion portraitTexture) {
         this.initiativeIntVal = clockVal;
         portrait = new Image(portraitTexture);
