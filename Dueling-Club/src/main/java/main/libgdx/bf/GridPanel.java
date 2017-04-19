@@ -2,9 +2,7 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -313,10 +311,6 @@ public class GridPanel extends Group {
         });
     }
 
-    public Actor hitChildren(float x, float y, boolean touchable) {
-        return super.hit(x, y, touchable);
-    }
-
     private void moveUnitView(BattleFieldObject heroObj) {
         int rows1 = rows - 1;
         BaseView uv = unitMap.get(heroObj);
@@ -355,30 +349,8 @@ public class GridPanel extends Group {
     }
 
     @Override
-    public Actor hit(float x, float y, boolean touchable) {
-        if (touchable && getTouchable() != Touchable.enabled) {
-            return null;
-        }
-        return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-        for (BaseView view : unitMap.values()) {
-            if (view.getActions().size > 0) {
-                view.act(delta);
-            }
-        }
-    }
-
-    @Override
     public void draw(Batch batch, float parentAlpha) {
-        for (int x = 0; x < cols; x++) {
-            for (int y = 0; y < rows; y++) {
-                cells[x][y].draw(batch, parentAlpha);
-            }
-        }
+        super.draw(batch, parentAlpha);
 
         getCellBorderManager().draw(batch, parentAlpha);
 

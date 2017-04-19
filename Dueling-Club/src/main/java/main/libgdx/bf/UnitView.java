@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.libgdx.StyleHolder;
+import main.libgdx.gui.tooltips.ToolTip;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 
@@ -30,6 +31,10 @@ public class UnitView extends BaseView {
         super(o);
         this.curId = curId;
         init(o.getClockTexture(), o.getClockValue(), o.getPortrateTexture());
+    }
+
+    public void setToolTip(ToolTip toolTip) {
+        addListener(toolTip.getController());
     }
 
     private void init(TextureRegion clockTexture, int clockVal, TextureRegion portraitTexture) {
@@ -77,7 +82,6 @@ public class UnitView extends BaseView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.flush();
         super.draw(batch, parentAlpha);
     }
 

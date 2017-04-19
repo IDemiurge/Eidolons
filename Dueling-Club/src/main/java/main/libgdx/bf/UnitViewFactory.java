@@ -10,8 +10,9 @@ import java.util.Map;
 public class UnitViewFactory {
     public static BaseView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
-        BaseView baseView = new GridUnitView(options);
-        return baseView;
+        GridUnitView view = new GridUnitView(options);
+        view.setToolTip(UnitViewTooltip.create(bfObj));
+        return view;
     }
 
     public static OverlayView createOverlay(BattleFieldObject bfObj) {

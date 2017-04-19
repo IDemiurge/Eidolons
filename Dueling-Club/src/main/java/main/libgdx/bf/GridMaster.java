@@ -34,10 +34,8 @@ public class GridMaster {
         InputController controller = GameScreen.getInstance().getController();
         float x = sourceCoordinates.getX() * GridConst.CELL_W / controller.getZoom();
         float y = (getGrid().getRows() - sourceCoordinates.getY()) * GridConst.CELL_H / controller.getZoom();
-        if (true) {
-            x += GridConst.CELL_W / 2;
-            y -= GridConst.CELL_H / 2;
-        }
+        x += GridConst.CELL_W / 2;
+        y -= GridConst.CELL_H / 2;
         return new Vector2(x, y);
     }
 
@@ -72,15 +70,7 @@ public class GridMaster {
         double ratio = (hypotenuse + additionalDistance) / hypotenuse;
         float xDiff = (float) (ratio * v.x) - v.x;
         float yDiff = (float) (ratio * v.y) - v.y;
-        v.set(v.x + xDiff, v.y +
-                yDiff
-        );
-
-        /*
-
-
-
-         */
+        v.add(xDiff, yDiff);
     }
 
     public static boolean isGammaOn() {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.libgdx.gui.tooltips.ToolTip;
 import main.system.GuiEventManager;
 
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
@@ -23,6 +24,14 @@ public class GridUnitView extends UnitView {
         init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getIconTexture());
 
         initQueueView(o);
+    }
+
+    @Override
+    public void setToolTip(ToolTip toolTip) {
+        super.setToolTip(toolTip);
+        if (initiativeQueueUnitView != null) {
+            initiativeQueueUnitView.setToolTip(toolTip);
+        }
     }
 
     private void initQueueView(UnitViewOptions o) {

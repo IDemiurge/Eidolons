@@ -2,9 +2,7 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.game.core.game.DC_Game;
@@ -62,19 +60,6 @@ public class GridCell extends Group implements Borderable {
         return innerDrawable;
     }
 
-    public void updateInnerDrawable(GridCell cell) {
-        addInnerDrawable(null);
-        addInnerDrawable(cell);
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-//        if (GridMaster.isGammaOn()) {
-//            backImage.setColor(gamma, gamma, gamma, 1 - gamma / 2);
-//        }
-    }
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (getInnerDrawable() == null) {
@@ -95,19 +80,6 @@ public class GridCell extends Group implements Borderable {
     private void dispose() {
         removeActor(backImage);
         backImage = null;
-    }
-
-    public Actor hitChilds(float x, float y, boolean touchable) {
-        return super.hit(x, y, touchable);
-    }
-
-
-    @Override
-    public Actor hit(float x, float y, boolean touchable) {
-        if (touchable && getTouchable() != Touchable.enabled) {
-            return null;
-        }
-        return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
     }
 
     @Override
