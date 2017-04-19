@@ -294,6 +294,8 @@ public class UnitEnums {
         Disease_Counter,
         Ensnared_Counter,
         Moist_Counter,
+        Clay_Counter,
+        Encase_Counter,
 
         Rage_Counter,
         Madness_Counter,

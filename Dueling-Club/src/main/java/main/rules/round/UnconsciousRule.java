@@ -14,6 +14,7 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.rules.action.ActionRule;
+import main.system.math.MathMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -103,7 +104,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     public static boolean checkUnitDies(Unit unit) {
-        return checkUnitDies(unit, DEFAULT_DEATH_BARRIER, true);
+        return checkUnitDies(unit, getDeathBarrier(unit), true);
     }
 
     public static boolean checkUnitDies(Unit unit, int barrier, boolean unconscious) {
@@ -160,7 +161,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
             }
             return false;
         }
-        if (checkUnitDies(unit, DEFAULT_DEATH_BARRIER, true)) {
+        if (checkUnitDies(unit, getDeathBarrier(unit), true)) {
             unit.getGame().getManager().unitDies(unit, unit, true, false);
             return false;
         }
@@ -195,4 +196,8 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         unitRecovers(unit);
     }
 
+    public static int getDeathBarrier(Unit attacked) {
+        return MathMaster.applyModIfNotZero(DEFAULT_DEATH_BARRIER,
+         attacked.getIntParam(PARAMS.TOUGHNESS_DEATH_BARRIER_MOD));
+    }
 }

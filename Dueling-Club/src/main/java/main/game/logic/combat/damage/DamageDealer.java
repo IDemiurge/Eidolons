@@ -321,7 +321,7 @@ public class DamageDealer {
                 // amount!
                 actual_t_damage = Math.min(
                  attacked.getIntParam(PARAMS.C_TOUGHNESS)
-                  * (100 + UnconsciousRule.DEFAULT_DEATH_BARRIER) / 100
+                  * (100 + UnconsciousRule.getDeathBarrier(attacked)) / 100
                  , toughness_dmg);
                 ref.setAmount(actual_t_damage);
                 // for cleave and other sensitive effects

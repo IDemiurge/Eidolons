@@ -656,7 +656,7 @@ public enum PARAMS implements PARAMETER {
     ACCURACY(null, "", false, 0, "actions", "weapons", "skills", "units", "chars"),
     TOUGHNESS_RECOVERY(null, "", false, 25, "bf obj", "skills", "chars", "units"),
     VIGILANCE_MOD(true, null, "", false, 0, "skills", "units", "chars"),
-
+    TOUGHNESS_DEATH_BARRIER_MOD(null, "", false, 100, "bf obj","chars", "units"),
     ARMOR_BLOCK_DEFENSE_MOD(true, null, "", false, 0, "weapons", "skills", "units", "chars"),
     SHIELD_BLOCK_DEFENSE_MOD(true, null, "", false, 0, "weapons", "skills", "units", "chars"),
     BLOCK_CHANCE(null, "", false, 0, "weapons", "skills", "units", "chars"),
