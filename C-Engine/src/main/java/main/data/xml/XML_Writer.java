@@ -1,8 +1,8 @@
 package main.data.xml;
 
 import main.content.ContentManager;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
@@ -10,10 +10,10 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.system.auxiliary.data.FileManager;
-import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 
@@ -332,7 +332,7 @@ public class XML_Writer {
         for (PROPERTY prop : type.getPropMap().keySet()) {
 
             String value = formatXmlTextContent(type.getPropMap().get(prop));
-            if (parent != null) {
+            if (parent != null) { // don't duplicate
                 if (parent.getProperty(prop).equals(value)) {
                     continue;
                 }
@@ -426,7 +426,24 @@ public class XML_Writer {
     private static String formatXmlTextContent(String string) {
         String result = string.replace(replacedTextContent, StringMaster
                 .getCodeFromChar(replacedTextContent));
-        return XML_Parser.encodeNonASCII(result);
+        result = XML_Parser.encodeNonASCII(result);
+        if (isRepairMode())
+            result = repair(result);
+        result = checkWrapInCDATA(result);
+        return result;
+    }
+
+    private static String checkWrapInCDATA(String result) {
+        if (result.length() < 80) return result;
+        return "<![CDATA[" + result + "]]>";
+    }
+
+    private static String repair(String result) {
+        return result.replace(" ", " ");
+    }
+
+    private static boolean isRepairMode() {
+        return true;
     }
 
     public static String formatStringForXmlNodeName(String s) {
