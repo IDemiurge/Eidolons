@@ -63,23 +63,6 @@ public class GridMouseListener extends ClickListener {
 //
                 }
             }
-            if (event.getButton() == Buttons.RIGHT) {
-                if (cell.getInnerDrawable() != null) {
-                    Actor unit = cell.getInnerDrawable().hit(x, y, true);
-                    if (unit != null && unit instanceof BaseView) {
-                        BattleFieldObject obj = unitViewMap.entrySet()
-                                .stream().filter(entry -> entry.getValue() == unit).findFirst()
-                                .get().getKey();
-
-                        if (event.getButton() == Buttons.RIGHT) {
-                            GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(obj));
-                        }
-                    }
-                } else {
-                    DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(new Coordinates(cell.getGridX(), cell.getGridY()));
-                    GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(dc_cell));
-                }
-            }
             event.stop();
             return true;
         }*/

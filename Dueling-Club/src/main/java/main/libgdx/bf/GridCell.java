@@ -3,10 +3,18 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import main.entity.obj.DC_Obj;
+import main.game.battlefield.Coordinates;
+import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.libgdx.StyleHolder;
+import main.system.GuiEventManager;
+
+import static main.system.GuiEventType.CREATE_RADIAL_MENU;
 
 public class GridCell extends Group implements Borderable {
     protected Image backImage;
@@ -36,6 +44,20 @@ public class GridCell extends Group implements Borderable {
         cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2, getHeight() / 2 - cordsText.getHeight() / 2);
         cordsText.setVisible(false);
         addActor(cordsText);
+
+        addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(new Coordinates(getGridX(), getGridY()));
+                GuiEventManager.trigger(CREATE_RADIAL_MENU, dc_cell);
+                event.handle();
+            }
+        });
 
         return this;
     }
