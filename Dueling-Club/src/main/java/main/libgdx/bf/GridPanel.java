@@ -118,11 +118,11 @@ public class GridPanel extends Group {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Actor a;
 
                 if (PhaseAnimator.getInstance().checkAnimClicked(x, y, pointer, button)) {
                     return true;
                 }
+                Actor a;
               /*  a = gridPanel.hitChildren(x, y, true);
                 if (a != null && a instanceof GridCell) {
                     GridCell cell = (GridCell) a;
