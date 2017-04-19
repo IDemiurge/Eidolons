@@ -1,1 +1,1034 @@
-<XML><Item><Wand:_Spellpower_Bonus><params></params><props><Unique_Id>buffs Wand: Spellpower Bonus-4338662336390022205</Unique_Id><Type>buffs</Type><Image>mini\abils\New folder\xp2_textures_bif-0000000550.jpg</Image><Name>Wand: Spellpower Bonus</Name><Buff_Type>Item</Buff_Type><Group>Standard</Group></props></Wand:_Spellpower_Bonus><Orb:_Essence_Regeneration><params></params><props><Unique_Id>buffs Orb: Essence Regeneration1805362255000696642</Unique_Id><Type>buffs</Type><Image>mini\abils\xp2_textures_bif-0000000256.jpg</Image><Name>Orb: Essence Regeneration</Name><Displayed_Name>Orb: Essence Regeneration</Displayed_Name><Buff_Type>Item</Buff_Type><Group>Standard</Group></props></Orb:_Essence_Regeneration><Spellpower_Bonus><params></params><props><Unique_Id>buffs Spellpower Bonus8637406409922425955</Unique_Id><Type>buffs</Type><Image>mini\abils\xp2_textures_bif-0000000256.jpg</Image><Name>Spellpower Bonus</Name><Buff_Type>Item</Buff_Type><Group>Standard</Group></props></Spellpower_Bonus><Poison_Coating><params></params><props><Version>0.1003b</Version><Unique_Id>buffs Poison Coating908319983083418322</Unique_Id><Type>buffs</Type><Custom_Props>Poison Counter</Custom_Props><Image>mini\buff\Poison.jpg</Image><Name>Poison Coating</Name><Displayed_Name>Poison Coating</Displayed_Name><Buff_Type>Item</Buff_Type><Group>Item</Group></props></Poison_Coating><Weakening_Poison_Coating><params></params><props><Version>0.1003b</Version><Unique_Id>buffs Weakening Poison Coating-2207180264620962920</Unique_Id><Type>buffs</Type><Custom_Props>Poison Counter</Custom_Props><Base_Type>Poison Coating</Base_Type><Image>mini\buff\Poison4.jpg</Image><Name>Weakening Poison Coating</Name><Displayed_Name>Weakening Poison Coating</Displayed_Name><Buff_Type>Item</Buff_Type><Group>Item</Group></props></Weakening_Poison_Coating><Hallucinogetic_Poison_Coating><params></params><props><Version>0.1003b</Version><Unique_Id>buffs Hallucinogetic Poison Coating7373186371532913090</Unique_Id><Type>buffs</Type><Custom_Props>Poison Counter</Custom_Props><Base_Type>Poison Coating</Base_Type><Image>mini\buff\Poison3.jpg</Image><Name>Hallucinogetic Poison Coating</Name><Displayed_Name>Hallucinogetic Poison Coating</Displayed_Name><Buff_Type>Item</Buff_Type><Group>Item</Group></props></Hallucinogetic_Poison_Coating><Paralyzing_Poison_Coating><params></params><props><Version>0.1003b</Version><Unique_Id>buffs Paralyzing Poison Coating8490200278112205406</Unique_Id><Type>buffs</Type><Custom_Props>Poison Counter</Custom_Props><Base_Type>Poison Coating</Base_Type><Image>mini\buff\Poison2.jpg</Image><Std_Bools></Std_Bools><Name>Paralyzing Poison Coating</Name><Displayed_Name>Paralyzing Poison Coating</Displayed_Name><Buff_Type>Item</Buff_Type><Group>Item</Group></props></Paralyzing_Poison_Coating></Item><Passive><Increased_Spellpower><params></params><props><Unique_Id>buffs Increased Spellpower4620323852132597761</Unique_Id><Type>buffs</Type><Image>mini\abils\xp2_textures_bif-0000000256.jpg</Image><Name>Increased Spellpower</Name><Buff_Type>Passive</Buff_Type><Group>Standard</Group></props></Increased_Spellpower><Increased_Intelligence><params></params><props><Unique_Id>buffs Increased Intelligence1910077473855001418</Unique_Id><Type>buffs</Type><Image>mini\abils\xp2_textures_bif-0000000256.jpg</Image><Name>Increased Intelligence</Name><Buff_Type>Passive</Buff_Type><Group>Standard</Group></props></Increased_Intelligence><Heavenly_Might><params></params><props><Unique_Id>buffs Heavenly Might2902142246273278720</Unique_Id><Type>buffs</Type><Image>mini\abils\New folder\illumination.jpg</Image><Name>Heavenly Might</Name><Buff_Type>Passive</Buff_Type><Group>Skill</Group></props></Heavenly_Might><Righteous_Might><params></params><props><Unique_Id>buffs Righteous Might8350039750087213879</Unique_Id><Type>buffs</Type><Image>mini\buff\Divine Aura2.jpg</Image><Name>Righteous Might</Name><Buff_Type>Passive</Buff_Type><Group>Skill</Group></props></Righteous_Might><Celestial_Grace><params></params><props><Unique_Id>buffs Celestial Grace-6340155938670141137</Unique_Id><Type>buffs</Type><Image>mini\abils\xp2_textures_bif-0000000294.jpg</Image><Name>Celestial Grace</Name><Buff_Type>Passive</Buff_Type><Group>Skill</Group></props></Celestial_Grace></Passive><Standard><On_Cooldown><params></params><props><Unique_Id>buffs On Cooldown3745242557269336372</Unique_Id><Type>buffs</Type><Image>mini\abils\xp2_textures_bif-0000000280.jpg</Image><Name>On Cooldown</Name><Buff_Type>Standard</Buff_Type><Group>Standard</Group></props></On_Cooldown><Claimed><params></params><props><Unique_Id>buffs Claimed847304815958866352</Unique_Id><Type>buffs</Type><Image>mini\abils\xp2_textures_bif-0000000272.jpg</Image><Name>Claimed</Name><Buff_Type>Standard</Buff_Type><Group>Standard</Group></props></Claimed><Concentration><params></params><props><Unique_Id>buffs Concentration5160955733577852455</Unique_Id><Type>buffs</Type><Image>mini\abils\xp2_textures_bif-0000000280.jpg</Image><Name>Concentration</Name><Buff_Type>Standard</Buff_Type><Group>Mode</Group></props></Concentration><Resting><params></params><props><Unique_Id>buffs Resting8751223112413878946</Unique_Id><Type>buffs</Type><Image>mini\buff\Pure Heart.jpg</Image><Name>Resting</Name><Buff_Type>Standard</Buff_Type><Group>Mode</Group></props></Resting><Channeling><params></params><props><Unique_Id>buffs Channeling4558991883960715985</Unique_Id><Type>buffs</Type><Image>mini\abils\xp2_textures_bif-0000000255.jpg</Image><Name>Channeling</Name><Buff_Type>Standard</Buff_Type><Group>Mode</Group></props></Channeling><Meditation><params></params><props><Unique_Id>buffs Meditation2769715748942481952</Unique_Id><Type>buffs</Type><Image>mini\abils\xp2_textures_bif-0000000282.jpg</Image><Name>Meditation</Name><Buff_Type>Standard</Buff_Type><Group>Mode</Group></props></Meditation><Defending><params></params><props><Unique_Id>buffs Defending-1669481035602062087</Unique_Id><Type>buffs</Type><Image>UI\BUFFS (2).jpg</Image><Name>Defending</Name><Buff_Type>Standard</Buff_Type><Group>Standard</Group></props></Defending><Waiting><params></params><props><Unique_Id>buffs Waiting-5085777422528463216</Unique_Id><Type>buffs</Type><Image>mini\buff\new\xp2_textures_bif-0000000756.jpg</Image><Name>Waiting</Name><Buff_Type>Standard</Buff_Type><Group>Standard</Group></props></Waiting><Alert><params></params><props><Unique_Id>buffs Alert-5832514521698988051</Unique_Id><Type>buffs</Type><Image>mini\abils\Concentration.jpg</Image><Name>Alert</Name><Buff_Type>Standard</Buff_Type><Group>Mode</Group></props></Alert><Treason><params></params><props><Unique_Id>buffs Treason5746993903216379032</Unique_Id><Type>buffs</Type><Image>mini\buff\Cursed2.jpg</Image><Name>Treason</Name><Buff_Type>Standard</Buff_Type><Group>Debuff</Group></props></Treason><Encumbered><params></params><props><Unique_Id>buffs Encumbered7377896216588440062</Unique_Id><Type>buffs</Type><Image>mini\buff\Weakened.jpg</Image><Name>Encumbered</Name><Buff_Type>Standard</Buff_Type><Group>Debuff</Group></props></Encumbered><Overburdened><params></params><props><Unique_Id>buffs Overburdened8390540257184766162</Unique_Id><Type>buffs</Type><Image>mini\buff\Incapacitate.jpg</Image><Name>Overburdened</Name><Buff_Type>Standard</Buff_Type><Group>Debuff</Group></props></Overburdened><Exhausted><params></params><props><Unique_Id>buffs Exhausted7898522421236210729</Unique_Id><Type>buffs</Type><Image>mini\buff\Wounded.jpg</Image><Name>Exhausted</Name><Buff_Type>Standard</Buff_Type><Group>Debuff</Group></props></Exhausted><Discombobulated><params></params><props><Unique_Id>buffs Discombobulated-7189381549128613361</Unique_Id><Type>buffs</Type><Image>mini\buff\Haze3.jpg</Image><Name>Discombobulated</Name><Buff_Type>Standard</Buff_Type><Group>Debuff</Group></props></Discombobulated><Razorsharp><params></params><props><Unique_Id>buffs Razorsharp5535073390816172091</Unique_Id><Type>buffs</Type><Image>mini\buff\Alert.jpg</Image><Name>Razorsharp</Name><Buff_Type>Standard</Buff_Type><Group>Buff</Group></props></Razorsharp><Inspired><params></params><props><Unique_Id>buffs Inspired-3850133831478628667</Unique_Id><Type>buffs</Type><Image>mini\buff\Divine Grace.jpg</Image><Name>Inspired</Name><Buff_Type>Standard</Buff_Type><Group>Buff</Group></props></Inspired><Dizzy><params></params><props><Unique_Id>buffs Dizzy2870705120570045444</Unique_Id><Type>buffs</Type><Image>mini\buff\Haze.jpg</Image><Name>Dizzy</Name><Buff_Type>Standard</Buff_Type><Group>Debuff</Group></props></Dizzy><Fatigued><params></params><props><Unique_Id>buffs Fatigued-626621204515061604</Unique_Id><Type>buffs</Type><Image>mini\buff\xp2_textures_bif-0000000577.jpg</Image><Name>Fatigued</Name><Buff_Type>Standard</Buff_Type><Group>Debuff</Group></props></Fatigued><Fearful><params></params><props><Unique_Id>buffs Fearful1684706938200723399</Unique_Id><Type>buffs</Type><Image>mini\buff\Cursed.jpg</Image><Name>Fearful</Name><Buff_Type>Standard</Buff_Type><Group>Debuff</Group></props></Fearful><Energized><params></params><props><Unique_Id>buffs Energized1890899386213481994</Unique_Id><Type>buffs</Type><Image>mini\buff\Fire Rage.jpg</Image><Name>Energized</Name><Buff_Type>Standard</Buff_Type><Group>Buff</Group></props></Energized><Main_Hand_Cadence><params></params><props><Unique_Id>buffs Main Hand Cadence7944265677179636962</Unique_Id><Type>buffs</Type><Image>mini\abils\Piercing.jpg</Image><Name>Main Hand Cadence</Name><Buff_Type>Standard</Buff_Type><Group>Standard</Group></props></Main_Hand_Cadence><Off_Hand_Cadence><params></params><props><Unique_Id>buffs Off Hand Cadence-6015528518773188496</Unique_Id><Type>buffs</Type><Image>mini\abils\Piercing.jpg</Image><Name>Off Hand Cadence</Name><Buff_Type>Standard</Buff_Type><Group>Standard</Group></props></Off_Hand_Cadence><Concealed><params></params><props><Unique_Id>buffs Concealed1385647201156671486</Unique_Id><Type>buffs</Type><Image>mini\abils\Fearsome.jpg</Image><Name>Concealed</Name><Buff_Type>Standard</Buff_Type><Group>Standard</Group></props></Concealed><Illuminated><params></params><props><Unique_Id>buffs Illuminated1926781426686140230</Unique_Id><Type>buffs</Type><Image>mini\abils\New folder\illumination.jpg</Image><Std_Bools>Apply Thru;</Std_Bools><Name>Illuminated</Name><Displayed_Name>Illuminated</Displayed_Name><Buff_Type>Standard</Buff_Type><Group>Standard</Group></props></Illuminated><Concealment><params></params><props><Unique_Id>buffs Concealment-8013369681346478770</Unique_Id><Type>buffs</Type><Image>mini\abils\Fearsome.jpg</Image><Std_Bools>Stacking;Dispelable</Std_Bools><Name>Concealment</Name><Displayed_Name>Concealment</Displayed_Name><Buff_Type>Standard</Buff_Type><Group>Standard</Group></props></Concealment><Wounded><params></params><props><Unique_Id>buffs Wounded29952224310985623</Unique_Id><Type>buffs</Type><Image>mini\buff\xp2_textures_bif-0000000551.jpg</Image><Name>Wounded</Name><Buff_Type>Standard</Buff_Type><Group>Debuff</Group></props></Wounded><Critically_Wounded><params></params><props><Unique_Id>buffs Critically Wounded-9112645495270860495</Unique_Id><Type>buffs</Type><Image>mini\buff\new\xp2_textures_bif-0000000804.jpg</Image><Name>Critically Wounded</Name><Buff_Type>Standard</Buff_Type><Group>Debuff</Group></props></Critically_Wounded><Essence_Regeneration><params></params><props><Unique_Id>buffs Essence Regeneration630970314815163842</Unique_Id><Type>buffs</Type><Image>mini\abils\xp2_textures_bif-0000000313.jpg</Image><Name>Essence Regeneration</Name><Buff_Type>Standard</Buff_Type><Group>Standard</Group></props></Essence_Regeneration><Late><params></params><props><Unique_Id>buffs Late-4724808420650916481</Unique_Id><Type>buffs</Type><Image>mini\buff\new\xp2_textures_bif-000000075623.jpg</Image><Name>Late</Name><Buff_Type>Standard</Buff_Type><Group>Standard</Group></props></Late><Favored><params></params><props><Unique_Id>buffs Favored-4036066444856484916</Unique_Id><Type>buffs</Type><Image>mini\abils\xp2_textures_bif-0000000294.jpg</Image><Name>Favored</Name><Buff_Type>Standard</Buff_Type><Group>Standard</Group></props></Favored><Panic><params></params><props><Unique_Id>buffs Panic2654635003196553950</Unique_Id><Type>buffs</Type><Image>mini\buff\Cursed2.jpg</Image><Name>Panic</Name><Buff_Type>Standard</Buff_Type><Group>Debuff</Group></props></Panic><Immobilized><params></params><props><Unique_Id>buffs Immobilized-4971192317382916049</Unique_Id><Type>buffs</Type><Image>mini\buff\Slow.jpg</Image><Name>Immobilized</Name><Buff_Type>Standard</Buff_Type><Group>Debuff</Group></props></Immobilized><Crippled_Legs><params></params><props><Version>0.05</Version><Unique_Id>buffs Crippled Legs-5074803380757831618</Unique_Id><Type>buffs</Type><Image>mini\buff\Slow.jpg</Image><Name>Crippled Legs</Name><Displayed_Name>Crippled Legs</Displayed_Name><Buff_Type>Standard</Buff_Type><Group>Debuff</Group></props></Crippled_Legs></Standard><Rules><Bleeding><params></params><props><Unique_Id>buffs Bleeding850693384497297510</Unique_Id><Type>buffs</Type><Image>UI\emblems\std\chaos\1flame.jpg</Image><Name>Bleeding</Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Bleeding><Frost><params></params><props><Unique_Id>buffs Frost8451556182454136003</Unique_Id><Type>buffs</Type><Image>mini\buff\Freeze.jpg</Image><Name>Frost</Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Frost><Frozen><params></params><props><Unique_Id>buffs Frozen5023026600354439134</Unique_Id><Type>buffs</Type><Image>mini\buff\Freeze.jpg</Image><Name>Frozen</Name><Buff_Type>Rules</Buff_Type><Group>Standard</Group></props></Frozen><Ablaze><params></params><props><Unique_Id>buffs Ablaze5596024747217277024</Unique_Id><Type>buffs</Type><Image>mini\buff\Aflame.jpg</Image><Name>Ablaze</Name><Buff_Type>Rules</Buff_Type><Group>Standard</Group></props></Ablaze><Spotted><params><Duration>1</Duration></params><props><Unique_Id>buffs Spotted1738472436745326281</Unique_Id><Type>buffs</Type><Image>mini\buff\Alert.jpg</Image><Name>Spotted</Name><Buff_Type>Rules</Buff_Type><Group>Standard</Group></props></Spotted><Enraged><params></params><props><Unique_Id>buffs Enraged-6169904816739505372</Unique_Id><Type>buffs</Type><Image>mini\buff\Rage.jpg</Image><Name>Enraged</Name><Buff_Type>Rules</Buff_Type><Group>Standard</Group></props></Enraged><Poison><params></params><props><Unique_Id>buffs Poison-571499375518286021</Unique_Id><Type>buffs</Type><Image>mini\buff\Poison.jpg</Image><Name>Poison</Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Poison><Contaminated><params></params><props><Version>0.1001</Version><Unique_Id>buffs Contaminated6806167670898970445</Unique_Id><Type>buffs</Type><Image>mini\buff\new2\xp2_textures_bif-0000000562.jpg</Image><Name>Contaminated</Name><Displayed_Name>Contaminated</Displayed_Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Contaminated><Weakening_Poison><params></params><props><Version>0.1003b</Version><Unique_Id>buffs Weakening Poison-7854456389437871099</Unique_Id><Type>buffs</Type><Base_Type>Weakening Poison Coating</Base_Type><Image>mini\buff\Poison4.jpg</Image><Std_Bools>Duration added</Std_Bools><Name>Weakening Poison</Name><Displayed_Name>Weakening Poison</Displayed_Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Weakening_Poison><Hallucinogetic_Poison><params></params><props><Version>0.1003b</Version><Unique_Id>buffs Hallucinogetic Poison-6677410251824879018</Unique_Id><Type>buffs</Type><Base_Type>Upgraded Poison Coating</Base_Type><Image>mini\buff\Poison3.jpg</Image><Std_Bools>Duration added</Std_Bools><Name>Hallucinogetic Poison</Name><Displayed_Name>Hallucinogetic Poison</Displayed_Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Hallucinogetic_Poison><Entangled><params></params><props><Version>0.1002b</Version><Unique_Id>buffs Entangled-5887291084350462469</Unique_Id><Type>buffs</Type><Image>mini\buff\new\xp2_textures_bif-0000000594.jpg</Image><Name>Entangled</Name><Displayed_Name>Entangled</Displayed_Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Entangled><Ensnared><params></params><props><Version>0.1002b</Version><Unique_Id>buffs Ensnared-2936785468387078058</Unique_Id><Type>buffs</Type><Image>mini\buff\new\textures_02_bif-0000002980.jpg</Image><Name>Ensnared</Name><Displayed_Name>Ensnared</Displayed_Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Ensnared><Blighted><params></params><props><Version>0.1002b</Version><Unique_Id>buffs Blighted8462337699853471610</Unique_Id><Type>buffs</Type><Image>mini\buff\new2\xp2_textures_bif-0000000646.jpg</Image><Name>Blighted</Name><Displayed_Name>Blighted</Displayed_Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Blighted><Corroding><params></params><props><Version>0.1002b</Version><Unique_Id>buffs Corroding-1223419038668932428</Unique_Id><Type>buffs</Type><Image>mini\buff\new2\xp2_textures_bif-0000000651.jpg</Image><Name>Corroding</Name><Displayed_Name>Corroding</Displayed_Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Corroding><Knocked_Down><params></params><props><Version>0.1002b</Version><Unique_Id>buffs Knocked Down1041068699405324615</Unique_Id><Type>buffs</Type><Image>mini\buff\new\xp2_textures_bif-0000000536.jpg</Image><Name>Knocked Down</Name><Displayed_Name>Knocked Down</Displayed_Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Knocked_Down><Paralyzing_Poison><params></params><props><Version>0.1003b</Version><Unique_Id>buffs Paralyzing Poison7106473266074898889</Unique_Id><Type>buffs</Type><Custom_Props></Custom_Props><Base_Type>Weakening Poison Coating</Base_Type><Image>mini\buff\Poison2.jpg</Image><Std_Bools>Duration Added;</Std_Bools><Name>Paralyzing Poison</Name><Displayed_Name>Paralyzing Poison</Displayed_Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Paralyzing_Poison><Watching><params></params><props><Version>0.05</Version><Unique_Id>buffs Watching-7778348172627794077</Unique_Id><Type>buffs</Type><Image>mini\abils\charm.jpg</Image><Name>Watching</Name><Displayed_Name>Watching</Displayed_Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Watching><Unconscious><params></params><props><Version>0.05</Version><Unique_Id>buffs Unconscious-7341840251050126617</Unique_Id><Type>buffs</Type><Image>mini\buff\new\unconscious.jpg</Image><Name>Unconscious</Name><Displayed_Name>Unconscious</Displayed_Name><Buff_Type>Rules</Buff_Type><Group>Rules</Group></props></Unconscious></Rules><Spell><Aflame><params></params><props><Unique_Id>buffs Aflame-6569055333454061265</Unique_Id><Type>buffs</Type><Image>mini\buff\Aflame.jpg</Image><Name>Aflame</Name><Buff_Type>Spell</Buff_Type><Group>Standard</Group></props></Aflame><Haze><params></params><props><Unique_Id>buffs Haze3302548952484578575</Unique_Id><Type>buffs</Type><Image>mini\buff\Haze.jpg</Image><Name>Haze</Name><Buff_Type>Spell</Buff_Type><Group>Darkness</Group></props></Haze><Weakened><params></params><props><Unique_Id>buffs Weakened5938412770487192918</Unique_Id><Type>buffs</Type><Image>mini\buff\Weakened.jpg</Image><Name>Weakened</Name><Buff_Type>Spell</Buff_Type><Group>Darkness</Group></props></Weakened><Incapacitate><params></params><props><Unique_Id>buffs Incapacitate-8744159587433953205</Unique_Id><Type>buffs</Type><Image>mini\buff\Incapacitate.jpg</Image><Name>Incapacitate</Name><Buff_Type>Spell</Buff_Type><Group>Standard</Group></props></Incapacitate><Scared><params></params><props><Unique_Id>buffs Scared-5756335917705621573</Unique_Id><Type>buffs</Type><Image>mini\buff\Scared.jpg</Image><Name>Scared</Name><Buff_Type>Spell</Buff_Type><Group>Darkness</Group></props></Scared><Silence><params></params><props><Unique_Id>buffs Silence7654754562923240698</Unique_Id><Type>buffs</Type><Image>mini\buff\Silence.jpg</Image><Name>Silence</Name><Buff_Type>Spell</Buff_Type><Group>Standard</Group></props></Silence><Charm><params></params><props><Unique_Id>buffs Charm-6368971303862022967</Unique_Id><Type>buffs</Type><Image>mini\buff\Mesmerized2.jpg</Image><Name>Charm</Name><Buff_Type>Spell</Buff_Type><Group>Darkness</Group></props></Charm><Witchblade><params></params><props><Unique_Id>buffs Witchblade4137677231406558162</Unique_Id><Type>buffs</Type><Image>mini\buff\Witchblade.jpg</Image><Name>Witchblade</Name><Buff_Type>Spell</Buff_Type><Group>Darkness</Group></props></Witchblade><Undeath><params></params><props><Unique_Id>buffs Undeath-6075292450812479581</Unique_Id><Type>buffs</Type><Image>mini\buff\xp2_textures_bif-0000000553.jpg</Image><Name>Undeath</Name><Buff_Type>Spell</Buff_Type><Group>Darkness</Group></props></Undeath><Lobotomize><params></params><props><Unique_Id>buffs Lobotomize3679042442533051895</Unique_Id><Type>buffs</Type><Image>mini\buff\Haze.jpg</Image><Name>Lobotomize</Name><Buff_Type>Spell</Buff_Type><Group>Darkness</Group></props></Lobotomize><Corruption><params></params><props><Unique_Id>buffs Corruption-5428019870949113313</Unique_Id><Type>buffs</Type><Image>mini\buff\new\Corruption.jpg</Image><Name>Corruption</Name><Buff_Type>Spell</Buff_Type><Group>Debuff</Group></props></Corruption><Cursed_Weapon><params></params><props><Unique_Id>buffs Cursed Weapon-5743505139148002803</Unique_Id><Type>buffs</Type><Image>mini\buff\Witchblade.jpg</Image><Name>Cursed Weapon</Name><Buff_Type>Spell</Buff_Type><Group>Debuff</Group></props></Cursed_Weapon><Greater_Blessing><params></params><props><Unique_Id>buffs Greater Blessing8919487532677975524</Unique_Id><Type>buffs</Type><Image>mini\buff\Divine Aura.jpg</Image><Name>Greater Blessing</Name><Buff_Type>Spell</Buff_Type><Group>Light</Group></props></Greater_Blessing><Lesser_Blessing><params></params><props><Unique_Id>buffs Lesser Blessing5815846362994794864</Unique_Id><Type>buffs</Type><Image>mini\buff\Bless.jpg</Image><Name>Lesser Blessing</Name><Buff_Type>Spell</Buff_Type><Group>Light</Group></props></Lesser_Blessing><Regeneration><params></params><props><Unique_Id>buffs Regeneration-2195140401770805125</Unique_Id><Type>buffs</Type><Image>mini\buff\Pure Heart.jpg</Image><Name>Regeneration</Name><Buff_Type>Spell</Buff_Type><Group>Light</Group></props></Regeneration><Shielded><params></params><props><Unique_Id>buffs Shielded7359575160229824856</Unique_Id><Type>buffs</Type><Image>mini\buff\Shielded.jpg</Image><Name>Shielded</Name><Buff_Type>Spell</Buff_Type><Group>Standard</Group></props></Shielded><Witch_KingUNICODE39CODEENDs_Boon><params></params><props><Unique_Id>buffs Witch King's Boon8075845179971221488</Unique_Id><Type>buffs</Type><Image>mini\buff\new\Corruption.jpg</Image><Std_Bools>Stacking;</Std_Bools><Name>Witch King's Boon</Name><Displayed_Name>Witch King's Boon</Displayed_Name><Buff_Type>Spell</Buff_Type><Group>Deity</Group></props></Witch_KingUNICODE39CODEENDs_Boon><Sorcerous_Might><params></params><props><Unique_Id>buffs Sorcerous Might-4585287144772884923</Unique_Id><Type>buffs</Type><Image>mini\buff\new\xp2_textures_bif-0000000827.jpg</Image><Std_Bools>Stacking;</Std_Bools><Name>Sorcerous Might</Name><Buff_Type>Spell</Buff_Type><Group>Deity</Group></props></Sorcerous_Might><Raised><params></params><props><Unique_Id>buffs Raised 1228275004087505143</Unique_Id><Type>buffs</Type><Image>mini\buff\xp2_textures_bif-0000000553.jpg</Image><Name>Raised</Name><Buff_Type>Spell</Buff_Type><Group>Death</Group></props></Raised><Spell_Matrix><params></params><props><Unique_Id>buffs Spell Matrix463384452788140995</Unique_Id><Type>buffs</Type><Image>mini\buff\new\xp2_textures_bif-0000000827.jpg</Image><Std_Bools>Dispelable;</Std_Bools><Name>Spell Matrix</Name><Buff_Type>Spell</Buff_Type><Group>Arcane</Group></props></Spell_Matrix><Soul_Catcher><params></params><props><Unique_Id>buffs Soul Catcher-2484438346931508373</Unique_Id><Type>buffs</Type><Image>UI\emblems\std\death\0Wraith God.jpg</Image><Name>Soul Catcher</Name><Buff_Type>Spell</Buff_Type><Group>Death</Group></props></Soul_Catcher><Bloodlust><params></params><props><Version>0.1002</Version><Unique_Id>buffs Bloodlust1293733581796249478</Unique_Id><Type>buffs</Type><Image>mini\buff\Cursed2.jpg</Image><Name>Bloodlust</Name><Displayed_Name>Bloodlust</Displayed_Name><Buff_Type>Spell</Buff_Type><Group>Death</Group></props></Bloodlust><Light><params></params><props><Version>0.05</Version><Unique_Id>buffs Light-4865745675799908120</Unique_Id><Type>buffs</Type><Image>mini\abils\New folder\illumination.jpg</Image><Std_Bools>Stacking;</Std_Bools><Name>Light</Name><Displayed_Name>Light</Displayed_Name><Buff_Type>Spell</Buff_Type><Group>Light</Group></props></Light></Spell><Other><Dummy_Buff><params></params><props><Unique_Id>buffs Dummy Buff-3057836841921045125</Unique_Id><Type>buffs</Type><Image>mini\abils\xp2_textures_bif-0000000256.jpg</Image><Name>Dummy Buff</Name><Buff_Type>Other</Buff_Type><Group>Standard</Group></props></Dummy_Buff></Other></XML>
+<XML>
+    <Item>
+        <Wand:_Spellpower_Bonus>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Item</Buff_Type>
+                <Unique_Id>buffs Wand: Spellpower Bonus-4338662336390022205</Unique_Id>
+                <Image>mini\abils\New folder\xp2_textures_bif-0000000550.jpg</Image>
+                <Name>Wand: Spellpower Bonus</Name>
+                <Group>Standard</Group>
+            </props>
+        </Wand:_Spellpower_Bonus>
+        <Orb:_Essence_Regeneration>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Orb: Essence Regeneration</Displayed_Name>
+                <Buff_Type>Item</Buff_Type>
+                <Unique_Id>buffs Orb: Essence Regeneration1805362255000696642</Unique_Id>
+                <Image>mini\abils\xp2_textures_bif-0000000256.jpg</Image>
+                <Name>Orb: Essence Regeneration</Name>
+                <Group>Standard</Group>
+            </props>
+        </Orb:_Essence_Regeneration>
+        <Spellpower_Bonus>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Item</Buff_Type>
+                <Unique_Id>buffs Spellpower Bonus8637406409922425955</Unique_Id>
+                <Image>mini\abils\xp2_textures_bif-0000000256.jpg</Image>
+                <Name>Spellpower Bonus</Name>
+                <Group>Standard</Group>
+            </props>
+        </Spellpower_Bonus>
+        <Poison_Coating>
+            <params></params>
+            <props>
+                <Custom_Props>Poison Counter</Custom_Props>
+                <Type>buffs</Type>
+                <Displayed_Name>Poison Coating</Displayed_Name>
+                <Buff_Type>Item</Buff_Type>
+                <Version>0.1003b</Version>
+                <Unique_Id>buffs Poison Coating908319983083418322</Unique_Id>
+                <Image>mini\buff\Poison.jpg</Image>
+                <Name>Poison Coating</Name>
+                <Group>Item</Group>
+            </props>
+        </Poison_Coating>
+        <Weakening_Poison_Coating>
+            <params></params>
+            <props>
+                <Custom_Props>Poison Counter</Custom_Props>
+                <Type>buffs</Type>
+                <Displayed_Name>Weakening Poison Coating</Displayed_Name>
+                <Buff_Type>Item</Buff_Type>
+                <Version>0.1003b</Version>
+                <Unique_Id>buffs Weakening Poison Coating-2207180264620962920</Unique_Id>
+                <Base_Type>Poison Coating</Base_Type>
+                <Image>mini\buff\Poison4.jpg</Image>
+                <Name>Weakening Poison Coating</Name>
+                <Group>Item</Group>
+            </props>
+        </Weakening_Poison_Coating>
+        <Hallucinogetic_Poison_Coating>
+            <params></params>
+            <props>
+                <Custom_Props>Poison Counter</Custom_Props>
+                <Type>buffs</Type>
+                <Displayed_Name>Hallucinogetic Poison Coating</Displayed_Name>
+                <Buff_Type>Item</Buff_Type>
+                <Version>0.1003b</Version>
+                <Unique_Id>buffs Hallucinogetic Poison Coating7373186371532913090</Unique_Id>
+                <Base_Type>Poison Coating</Base_Type>
+                <Image>mini\buff\Poison3.jpg</Image>
+                <Name>Hallucinogetic Poison Coating</Name>
+                <Group>Item</Group>
+            </props>
+        </Hallucinogetic_Poison_Coating>
+        <Paralyzing_Poison_Coating>
+            <params></params>
+            <props>
+                <Custom_Props>Poison Counter</Custom_Props>
+                <Type>buffs</Type>
+                <Displayed_Name>Paralyzing Poison Coating</Displayed_Name>
+                <Buff_Type>Item</Buff_Type>
+                <Version>0.1003b</Version>
+                <Unique_Id>buffs Paralyzing Poison Coating8490200278112205406</Unique_Id>
+                <Std_Bools></Std_Bools>
+                <Base_Type>Poison Coating</Base_Type>
+                <Image>mini\buff\Poison2.jpg</Image>
+                <Name>Paralyzing Poison Coating</Name>
+                <Group>Item</Group>
+            </props>
+        </Paralyzing_Poison_Coating>
+    </Item>
+    <Passive>
+        <Increased_Spellpower>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Passive</Buff_Type>
+                <Unique_Id>buffs Increased Spellpower4620323852132597761</Unique_Id>
+                <Image>mini\abils\xp2_textures_bif-0000000256.jpg</Image>
+                <Name>Increased Spellpower</Name>
+                <Group>Standard</Group>
+            </props>
+        </Increased_Spellpower>
+        <Increased_Intelligence>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Passive</Buff_Type>
+                <Unique_Id>buffs Increased Intelligence1910077473855001418</Unique_Id>
+                <Image>mini\abils\xp2_textures_bif-0000000256.jpg</Image>
+                <Name>Increased Intelligence</Name>
+                <Group>Standard</Group>
+            </props>
+        </Increased_Intelligence>
+        <Heavenly_Might>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Passive</Buff_Type>
+                <Unique_Id>buffs Heavenly Might2902142246273278720</Unique_Id>
+                <Image>mini\abils\New folder\illumination.jpg</Image>
+                <Name>Heavenly Might</Name>
+                <Group>Skill</Group>
+            </props>
+        </Heavenly_Might>
+        <Righteous_Might>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Passive</Buff_Type>
+                <Unique_Id>buffs Righteous Might8350039750087213879</Unique_Id>
+                <Image>mini\buff\Divine Aura2.jpg</Image>
+                <Name>Righteous Might</Name>
+                <Group>Skill</Group>
+            </props>
+        </Righteous_Might>
+        <Celestial_Grace>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Passive</Buff_Type>
+                <Unique_Id>buffs Celestial Grace-6340155938670141137</Unique_Id>
+                <Image>mini\abils\xp2_textures_bif-0000000294.jpg</Image>
+                <Name>Celestial Grace</Name>
+                <Group>Skill</Group>
+            </props>
+        </Celestial_Grace>
+    </Passive>
+    <Standard>
+        <On_Cooldown>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs On Cooldown3745242557269336372</Unique_Id>
+                <Image>mini\abils\xp2_textures_bif-0000000280.jpg</Image>
+                <Name>On Cooldown</Name>
+                <Group>Standard</Group>
+            </props>
+        </On_Cooldown>
+        <Claimed>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Claimed847304815958866352</Unique_Id>
+                <Image>mini\abils\xp2_textures_bif-0000000272.jpg</Image>
+                <Name>Claimed</Name>
+                <Group>Standard</Group>
+            </props>
+        </Claimed>
+        <Concentration>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Concentration5160955733577852455</Unique_Id>
+                <Image>mini\abils\xp2_textures_bif-0000000280.jpg</Image>
+                <Name>Concentration</Name>
+                <Group>Mode</Group>
+            </props>
+        </Concentration>
+        <Resting>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Resting8751223112413878946</Unique_Id>
+                <Image>mini\buff\Pure Heart.jpg</Image>
+                <Name>Resting</Name>
+                <Group>Mode</Group>
+            </props>
+        </Resting>
+        <Channeling>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Channeling4558991883960715985</Unique_Id>
+                <Image>mini\abils\xp2_textures_bif-0000000255.jpg</Image>
+                <Name>Channeling</Name>
+                <Group>Mode</Group>
+            </props>
+        </Channeling>
+        <Meditation>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Meditation2769715748942481952</Unique_Id>
+                <Image>mini\abils\xp2_textures_bif-0000000282.jpg</Image>
+                <Name>Meditation</Name>
+                <Group>Mode</Group>
+            </props>
+        </Meditation>
+        <Defending>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Defending-1669481035602062087</Unique_Id>
+                <Image>UI\BUFFS (2).jpg</Image>
+                <Name>Defending</Name>
+                <Group>Standard</Group>
+            </props>
+        </Defending>
+        <Waiting>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Waiting-5085777422528463216</Unique_Id>
+                <Image>mini\buff\new\xp2_textures_bif-0000000756.jpg</Image>
+                <Name>Waiting</Name>
+                <Group>Standard</Group>
+            </props>
+        </Waiting>
+        <Alert>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Alert-5832514521698988051</Unique_Id>
+                <Image>mini\abils\Concentration.jpg</Image>
+                <Name>Alert</Name>
+                <Group>Mode</Group>
+            </props>
+        </Alert>
+        <Treason>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Treason5746993903216379032</Unique_Id>
+                <Image>mini\buff\Cursed2.jpg</Image>
+                <Name>Treason</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Treason>
+        <Encumbered>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Encumbered7377896216588440062</Unique_Id>
+                <Image>mini\buff\Weakened.jpg</Image>
+                <Name>Encumbered</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Encumbered>
+        <Overburdened>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Overburdened8390540257184766162</Unique_Id>
+                <Image>mini\buff\Incapacitate.jpg</Image>
+                <Name>Overburdened</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Overburdened>
+        <Exhausted>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Exhausted7898522421236210729</Unique_Id>
+                <Image>mini\buff\Wounded.jpg</Image>
+                <Name>Exhausted</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Exhausted>
+        <Discombobulated>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Discombobulated-7189381549128613361</Unique_Id>
+                <Image>mini\buff\Haze3.jpg</Image>
+                <Name>Discombobulated</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Discombobulated>
+        <Razorsharp>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Razorsharp5535073390816172091</Unique_Id>
+                <Image>mini\buff\Alert.jpg</Image>
+                <Name>Razorsharp</Name>
+                <Group>Buff</Group>
+            </props>
+        </Razorsharp>
+        <Inspired>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Inspired-3850133831478628667</Unique_Id>
+                <Image>mini\buff\Divine Grace.jpg</Image>
+                <Name>Inspired</Name>
+                <Group>Buff</Group>
+            </props>
+        </Inspired>
+        <Dizzy>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Dizzy2870705120570045444</Unique_Id>
+                <Image>mini\buff\Haze.jpg</Image>
+                <Name>Dizzy</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Dizzy>
+        <Fatigued>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Fatigued-626621204515061604</Unique_Id>
+                <Image>mini\buff\xp2_textures_bif-0000000577.jpg</Image>
+                <Name>Fatigued</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Fatigued>
+        <Fearful>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Fearful1684706938200723399</Unique_Id>
+                <Image>mini\buff\Cursed.jpg</Image>
+                <Name>Fearful</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Fearful>
+        <Energized>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Energized1890899386213481994</Unique_Id>
+                <Image>mini\buff\Fire Rage.jpg</Image>
+                <Name>Energized</Name>
+                <Group>Buff</Group>
+            </props>
+        </Energized>
+        <Main_Hand_Cadence>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Main Hand Cadence7944265677179636962</Unique_Id>
+                <Image>mini\abils\Piercing.jpg</Image>
+                <Name>Main Hand Cadence</Name>
+                <Group>Standard</Group>
+            </props>
+        </Main_Hand_Cadence>
+        <Off_Hand_Cadence>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Off Hand Cadence-6015528518773188496</Unique_Id>
+                <Image>mini\abils\Piercing.jpg</Image>
+                <Name>Off Hand Cadence</Name>
+                <Group>Standard</Group>
+            </props>
+        </Off_Hand_Cadence>
+        <Concealed>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Concealed1385647201156671486</Unique_Id>
+                <Image>mini\abils\Fearsome.jpg</Image>
+                <Name>Concealed</Name>
+                <Group>Standard</Group>
+            </props>
+        </Concealed>
+        <Illuminated>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Illuminated</Displayed_Name>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Illuminated1926781426686140230</Unique_Id>
+                <Std_Bools>Apply Thru;</Std_Bools>
+                <Image>mini\abils\New folder\illumination.jpg</Image>
+                <Name>Illuminated</Name>
+                <Group>Standard</Group>
+            </props>
+        </Illuminated>
+        <Concealment>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Concealment</Displayed_Name>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Concealment-8013369681346478770</Unique_Id>
+                <Std_Bools>Stacking;Dispelable</Std_Bools>
+                <Image>mini\abils\Fearsome.jpg</Image>
+                <Name>Concealment</Name>
+                <Group>Standard</Group>
+            </props>
+        </Concealment>
+        <Wounded>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Wounded29952224310985623</Unique_Id>
+                <Image>mini\buff\xp2_textures_bif-0000000551.jpg</Image>
+                <Name>Wounded</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Wounded>
+        <Critically_Wounded>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Critically Wounded-9112645495270860495</Unique_Id>
+                <Image>mini\buff\new\xp2_textures_bif-0000000804.jpg</Image>
+                <Name>Critically Wounded</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Critically_Wounded>
+        <Essence_Regeneration>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Essence Regeneration630970314815163842</Unique_Id>
+                <Image>mini\abils\xp2_textures_bif-0000000313.jpg</Image>
+                <Name>Essence Regeneration</Name>
+                <Group>Standard</Group>
+            </props>
+        </Essence_Regeneration>
+        <Late>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Late-4724808420650916481</Unique_Id>
+                <Image>mini\buff\new\xp2_textures_bif-000000075623.jpg</Image>
+                <Name>Late</Name>
+                <Group>Standard</Group>
+            </props>
+        </Late>
+        <Favored>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Favored-4036066444856484916</Unique_Id>
+                <Image>mini\abils\xp2_textures_bif-0000000294.jpg</Image>
+                <Name>Favored</Name>
+                <Group>Standard</Group>
+            </props>
+        </Favored>
+        <Panic>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Panic2654635003196553950</Unique_Id>
+                <Image>mini\buff\Cursed2.jpg</Image>
+                <Name>Panic</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Panic>
+        <Immobilized>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Standard</Buff_Type>
+                <Unique_Id>buffs Immobilized-4971192317382916049</Unique_Id>
+                <Image>mini\buff\Slow.jpg</Image>
+                <Name>Immobilized</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Immobilized>
+        <Crippled_Legs>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Crippled Legs</Displayed_Name>
+                <Buff_Type>Standard</Buff_Type>
+                <Version>0.05</Version>
+                <Unique_Id>buffs Crippled Legs-5074803380757831618</Unique_Id>
+                <Image>mini\buff\Slow.jpg</Image>
+                <Name>Crippled Legs</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Crippled_Legs>
+    </Standard>
+    <Rules>
+        <Bleeding>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Rules</Buff_Type>
+                <Unique_Id>buffs Bleeding850693384497297510</Unique_Id>
+                <Image>UI\emblems\std\chaos\1flame.jpg</Image>
+                <Name>Bleeding</Name>
+                <Group>Rules</Group>
+            </props>
+        </Bleeding>
+        <Frost>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Rules</Buff_Type>
+                <Unique_Id>buffs Frost8451556182454136003</Unique_Id>
+                <Image>mini\buff\Freeze.jpg</Image>
+                <Name>Frost</Name>
+                <Group>Rules</Group>
+            </props>
+        </Frost>
+        <Frozen>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Rules</Buff_Type>
+                <Unique_Id>buffs Frozen5023026600354439134</Unique_Id>
+                <Image>mini\buff\Freeze.jpg</Image>
+                <Name>Frozen</Name>
+                <Group>Standard</Group>
+            </props>
+        </Frozen>
+        <Ablaze>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Rules</Buff_Type>
+                <Unique_Id>buffs Ablaze5596024747217277024</Unique_Id>
+                <Image>mini\buff\Aflame.jpg</Image>
+                <Name>Ablaze</Name>
+                <Group>Standard</Group>
+            </props>
+        </Ablaze>
+        <Spotted>
+            <params>
+                <Duration>1</Duration>
+            </params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Rules</Buff_Type>
+                <Unique_Id>buffs Spotted1738472436745326281</Unique_Id>
+                <Image>mini\buff\Alert.jpg</Image>
+                <Name>Spotted</Name>
+                <Group>Standard</Group>
+            </props>
+        </Spotted>
+        <Enraged>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Rules</Buff_Type>
+                <Unique_Id>buffs Enraged-6169904816739505372</Unique_Id>
+                <Image>mini\buff\Rage.jpg</Image>
+                <Name>Enraged</Name>
+                <Group>Standard</Group>
+            </props>
+        </Enraged>
+        <Poison>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Rules</Buff_Type>
+                <Unique_Id>buffs Poison-571499375518286021</Unique_Id>
+                <Image>mini\buff\Poison.jpg</Image>
+                <Name>Poison</Name>
+                <Group>Rules</Group>
+            </props>
+        </Poison>
+        <Contaminated>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Contaminated</Displayed_Name>
+                <Buff_Type>Rules</Buff_Type>
+                <Version>0.1001</Version>
+                <Unique_Id>buffs Contaminated6806167670898970445</Unique_Id>
+                <Image>mini\buff\new2\xp2_textures_bif-0000000562.jpg</Image>
+                <Name>Contaminated</Name>
+                <Group>Rules</Group>
+            </props>
+        </Contaminated>
+        <Weakening_Poison>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Weakening Poison</Displayed_Name>
+                <Buff_Type>Rules</Buff_Type>
+                <Version>0.1003b</Version>
+                <Unique_Id>buffs Weakening Poison-7854456389437871099</Unique_Id>
+                <Std_Bools>Duration added</Std_Bools>
+                <Base_Type>Weakening Poison Coating</Base_Type>
+                <Image>mini\buff\Poison4.jpg</Image>
+                <Name>Weakening Poison</Name>
+                <Group>Rules</Group>
+            </props>
+        </Weakening_Poison>
+        <Hallucinogetic_Poison>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Hallucinogetic Poison</Displayed_Name>
+                <Buff_Type>Rules</Buff_Type>
+                <Version>0.1003b</Version>
+                <Unique_Id>buffs Hallucinogetic Poison-6677410251824879018</Unique_Id>
+                <Std_Bools>Duration added</Std_Bools>
+                <Base_Type>Upgraded Poison Coating</Base_Type>
+                <Image>mini\buff\Poison3.jpg</Image>
+                <Name>Hallucinogetic Poison</Name>
+                <Group>Rules</Group>
+            </props>
+        </Hallucinogetic_Poison>
+        <Entangled>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Entangled</Displayed_Name>
+                <Buff_Type>Rules</Buff_Type>
+                <Version>0.1002b</Version>
+                <Unique_Id>buffs Entangled-5887291084350462469</Unique_Id>
+                <Image>mini\buff\new\xp2_textures_bif-0000000594.jpg</Image>
+                <Name>Entangled</Name>
+                <Group>Rules</Group>
+            </props>
+        </Entangled>
+        <Ensnared>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Ensnared</Displayed_Name>
+                <Buff_Type>Rules</Buff_Type>
+                <Version>0.1002b</Version>
+                <Unique_Id>buffs Ensnared-2936785468387078058</Unique_Id>
+                <Image>mini\buff\new\textures_02_bif-0000002980.jpg</Image>
+                <Name>Ensnared</Name>
+                <Group>Rules</Group>
+            </props>
+        </Ensnared>
+        <Blighted>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Blighted</Displayed_Name>
+                <Buff_Type>Rules</Buff_Type>
+                <Version>0.1002b</Version>
+                <Unique_Id>buffs Blighted8462337699853471610</Unique_Id>
+                <Image>mini\buff\new2\xp2_textures_bif-0000000646.jpg</Image>
+                <Name>Blighted</Name>
+                <Group>Rules</Group>
+            </props>
+        </Blighted>
+        <Corroding>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Corroding</Displayed_Name>
+                <Buff_Type>Rules</Buff_Type>
+                <Version>0.1002b</Version>
+                <Unique_Id>buffs Corroding-1223419038668932428</Unique_Id>
+                <Image>mini\buff\new2\xp2_textures_bif-0000000651.jpg</Image>
+                <Name>Corroding</Name>
+                <Group>Rules</Group>
+            </props>
+        </Corroding>
+        <Knocked_Down>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Knocked Down</Displayed_Name>
+                <Buff_Type>Rules</Buff_Type>
+                <Version>0.1002b</Version>
+                <Unique_Id>buffs Knocked Down1041068699405324615</Unique_Id>
+                <Image>mini\buff\new\xp2_textures_bif-0000000536.jpg</Image>
+                <Name>Knocked Down</Name>
+                <Group>Rules</Group>
+            </props>
+        </Knocked_Down>
+        <Paralyzing_Poison>
+            <params></params>
+            <props>
+                <Custom_Props></Custom_Props>
+                <Type>buffs</Type>
+                <Displayed_Name>Paralyzing Poison</Displayed_Name>
+                <Buff_Type>Rules</Buff_Type>
+                <Version>0.1003b</Version>
+                <Unique_Id>buffs Paralyzing Poison7106473266074898889</Unique_Id>
+                <Std_Bools>Duration Added;</Std_Bools>
+                <Base_Type>Weakening Poison Coating</Base_Type>
+                <Image>mini\buff\Poison2.jpg</Image>
+                <Name>Paralyzing Poison</Name>
+                <Group>Rules</Group>
+            </props>
+        </Paralyzing_Poison>
+        <Watching>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Watching</Displayed_Name>
+                <Buff_Type>Rules</Buff_Type>
+                <Version>0.05</Version>
+                <Unique_Id>buffs Watching-7778348172627794077</Unique_Id>
+                <Image>mini\abils\charm.jpg</Image>
+                <Name>Watching</Name>
+                <Group>Rules</Group>
+            </props>
+        </Watching>
+        <Unconscious>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Unconscious</Displayed_Name>
+                <Buff_Type>Rules</Buff_Type>
+                <Version>0.05</Version>
+                <Unique_Id>buffs Unconscious-7341840251050126617</Unique_Id>
+                <Image>mini\buff\new\unconscious.jpg</Image>
+                <Name>Unconscious</Name>
+                <Group>Rules</Group>
+            </props>
+        </Unconscious>
+    </Rules>
+    <Spell>
+        <Aflame>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Aflame-6569055333454061265</Unique_Id>
+                <Image>mini\buff\Aflame.jpg</Image>
+                <Name>Aflame</Name>
+                <Group>Standard</Group>
+            </props>
+        </Aflame>
+        <Haze>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Haze3302548952484578575</Unique_Id>
+                <Image>mini\buff\Haze.jpg</Image>
+                <Name>Haze</Name>
+                <Group>Darkness</Group>
+            </props>
+        </Haze>
+        <Weakened>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Weakened5938412770487192918</Unique_Id>
+                <Image>mini\buff\Weakened.jpg</Image>
+                <Name>Weakened</Name>
+                <Group>Darkness</Group>
+            </props>
+        </Weakened>
+        <Incapacitate>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Incapacitate-8744159587433953205</Unique_Id>
+                <Image>mini\buff\Incapacitate.jpg</Image>
+                <Name>Incapacitate</Name>
+                <Group>Standard</Group>
+            </props>
+        </Incapacitate>
+        <Scared>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Scared-5756335917705621573</Unique_Id>
+                <Image>mini\buff\Scared.jpg</Image>
+                <Name>Scared</Name>
+                <Group>Darkness</Group>
+            </props>
+        </Scared>
+        <Silence>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Silence7654754562923240698</Unique_Id>
+                <Image>mini\buff\Silence.jpg</Image>
+                <Name>Silence</Name>
+                <Group>Standard</Group>
+            </props>
+        </Silence>
+        <Charm>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Charm-6368971303862022967</Unique_Id>
+                <Image>mini\buff\Mesmerized2.jpg</Image>
+                <Name>Charm</Name>
+                <Group>Darkness</Group>
+            </props>
+        </Charm>
+        <Witchblade>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Witchblade4137677231406558162</Unique_Id>
+                <Image>mini\buff\Witchblade.jpg</Image>
+                <Name>Witchblade</Name>
+                <Group>Darkness</Group>
+            </props>
+        </Witchblade>
+        <Undeath>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Undeath-6075292450812479581</Unique_Id>
+                <Image>mini\buff\xp2_textures_bif-0000000553.jpg</Image>
+                <Name>Undeath</Name>
+                <Group>Darkness</Group>
+            </props>
+        </Undeath>
+        <Lobotomize>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Lobotomize3679042442533051895</Unique_Id>
+                <Image>mini\buff\Haze.jpg</Image>
+                <Name>Lobotomize</Name>
+                <Group>Darkness</Group>
+            </props>
+        </Lobotomize>
+        <Corruption>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Corruption-5428019870949113313</Unique_Id>
+                <Image>mini\buff\new\Corruption.jpg</Image>
+                <Name>Corruption</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Corruption>
+        <Cursed_Weapon>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Cursed Weapon-5743505139148002803</Unique_Id>
+                <Image>mini\buff\Witchblade.jpg</Image>
+                <Name>Cursed Weapon</Name>
+                <Group>Debuff</Group>
+            </props>
+        </Cursed_Weapon>
+        <Greater_Blessing>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Greater Blessing8919487532677975524</Unique_Id>
+                <Image>mini\buff\Divine Aura.jpg</Image>
+                <Name>Greater Blessing</Name>
+                <Group>Light</Group>
+            </props>
+        </Greater_Blessing>
+        <Lesser_Blessing>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Lesser Blessing5815846362994794864</Unique_Id>
+                <Image>mini\buff\Bless.jpg</Image>
+                <Name>Lesser Blessing</Name>
+                <Group>Light</Group>
+            </props>
+        </Lesser_Blessing>
+        <Regeneration>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Regeneration-2195140401770805125</Unique_Id>
+                <Image>mini\buff\Pure Heart.jpg</Image>
+                <Name>Regeneration</Name>
+                <Group>Light</Group>
+            </props>
+        </Regeneration>
+        <Shielded>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Shielded7359575160229824856</Unique_Id>
+                <Image>mini\buff\Shielded.jpg</Image>
+                <Name>Shielded</Name>
+                <Group>Standard</Group>
+            </props>
+        </Shielded>
+        <Witch_KingUNICODE39CODEENDs_Boon>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Witch King's Boon</Displayed_Name>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Witch King's Boon8075845179971221488</Unique_Id>
+                <Std_Bools>Stacking;</Std_Bools>
+                <Image>mini\buff\new\Corruption.jpg</Image>
+                <Name>Witch King's Boon</Name>
+                <Group>Deity</Group>
+            </props>
+        </Witch_KingUNICODE39CODEENDs_Boon>
+        <Sorcerous_Might>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Sorcerous Might-4585287144772884923</Unique_Id>
+                <Std_Bools>Stacking;</Std_Bools>
+                <Image>mini\buff\new\xp2_textures_bif-0000000827.jpg</Image>
+                <Name>Sorcerous Might</Name>
+                <Group>Deity</Group>
+            </props>
+        </Sorcerous_Might>
+        <Raised>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Raised 1228275004087505143</Unique_Id>
+                <Image>mini\buff\xp2_textures_bif-0000000553.jpg</Image>
+                <Name>Raised</Name>
+                <Group>Death</Group>
+            </props>
+        </Raised>
+        <Spell_Matrix>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Spell Matrix463384452788140995</Unique_Id>
+                <Std_Bools>Dispelable;</Std_Bools>
+                <Image>mini\buff\new\xp2_textures_bif-0000000827.jpg</Image>
+                <Name>Spell Matrix</Name>
+                <Group>Arcane</Group>
+            </props>
+        </Spell_Matrix>
+        <Soul_Catcher>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Spell</Buff_Type>
+                <Unique_Id>buffs Soul Catcher-2484438346931508373</Unique_Id>
+                <Image>UI\emblems\std\death\0Wraith God.jpg</Image>
+                <Name>Soul Catcher</Name>
+                <Group>Death</Group>
+            </props>
+        </Soul_Catcher>
+        <Bloodlust>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Bloodlust</Displayed_Name>
+                <Buff_Type>Spell</Buff_Type>
+                <Version>0.1002</Version>
+                <Unique_Id>buffs Bloodlust1293733581796249478</Unique_Id>
+                <Image>mini\buff\Cursed2.jpg</Image>
+                <Name>Bloodlust</Name>
+                <Group>Death</Group>
+            </props>
+        </Bloodlust>
+        <Light>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Displayed_Name>Light</Displayed_Name>
+                <Buff_Type>Spell</Buff_Type>
+                <Version>0.05</Version>
+                <Unique_Id>buffs Light-4865745675799908120</Unique_Id>
+                <Std_Bools>Stacking;</Std_Bools>
+                <Image>mini\abils\New folder\illumination.jpg</Image>
+                <Name>Light</Name>
+                <Group>Light</Group>
+            </props>
+        </Light>
+    </Spell>
+    <Other>
+        <Dummy_Buff>
+            <params></params>
+            <props>
+                <Type>buffs</Type>
+                <Buff_Type>Other</Buff_Type>
+                <Unique_Id>buffs Dummy Buff-3057836841921045125</Unique_Id>
+                <Image>mini\abils\xp2_textures_bif-0000000256.jpg</Image>
+                <Name>Dummy Buff</Name>
+                <Group>Standard</Group>
+            </props>
+        </Dummy_Buff>
+    </Other>
+</XML>
