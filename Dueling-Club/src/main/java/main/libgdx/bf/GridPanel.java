@@ -18,7 +18,6 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.bf.mouse.GridMouseListener;
-import main.libgdx.gui.panels.dc.InitiativePanelParam;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
@@ -138,8 +137,6 @@ public class GridPanel extends Group {
         GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
             BattleFieldObject unit = (BattleFieldObject) param.get();
             GridUnitView view = (GridUnitView) unitMap.get(unit);
-            GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL,
-                    new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
             removeUnitView(unit);
         });
 
