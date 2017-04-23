@@ -4,7 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -16,8 +17,8 @@ import main.game.battlefield.Coordinates;
 import main.game.core.Eidolons;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.particles.lighting.LightingManager;
+import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.anims.std.DeathAnim;
-import main.libgdx.bf.mouse.GridMouseListener;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
@@ -107,7 +108,52 @@ public class GridPanel extends Group {
         setHeight(cells[0][0].getHeight() * rows);
         setWidth(cells[0][0].getWidth() * cols);
 
-        addListener(new GridMouseListener(this, cells, unitMap));
+        addListener(new ClickListener() {
+
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                GridPanel.this.getStage().setScrollFocus(GridPanel.this);
+                return false;
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Actor a;
+
+                if (PhaseAnimator.getInstance().checkAnimClicked(x, y, pointer, button)) {
+                    return true;
+                }
+              /*  a = gridPanel.hitChildren(x, y, true);
+                if (a != null && a instanceof GridCell) {
+                    GridCell cell = (GridCell) a;
+                    if (gridPanel.getCellBorderManager().isBlueBorderActive()
+                            && event.getButton() == Input.Buttons.LEFT) {
+                        Borderable b = cell;
+                        if (cell.getInnerDrawable() != null) {
+                            Actor unit = cell.getInnerDrawable().hit(x, y, true);
+                            if (unit != null && unit instanceof Borderable) {
+                                b = (Borderable) unit;
+                            }
+                        }
+                        boolean selected = gridPanel.getCellBorderManager().hitAndCall(b);
+                        if (!selected) {
+                            DC_Cell cellObj = Eidolons.game.getCellByCoordinate(new Coordinates(cell.getGridX(), cell.getGridY()));
+                            cellObj.invokeClicked();
+                            // selection cancel works this way, but....
+                            //TODO  RADIAL SELECTIVE-NODE MUST ACTIVATE()
+                            // ACTION IS NOT BEING ACTIVATED HERE YET!
+        //                  WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, cellObj.getId());
+        //                    cellObj.getGame().getManager().setSelecting(true);
+        //                    cellObj.getGame().getManager().objClicked(cellObj);
+        //
+                        }
+                    }
+                    event.stop();
+                    return true;
+                }*/
+                return false;
+            }
+        });
         return this;
     }
 
@@ -313,10 +359,6 @@ public class GridPanel extends Group {
         });
     }
 
-    public Actor hitChildren(float x, float y, boolean touchable) {
-        return super.hit(x, y, touchable);
-    }
-
     private void moveUnitView(BattleFieldObject heroObj) {
         int rows1 = rows - 1;
         BaseView uv = unitMap.get(heroObj);
@@ -355,30 +397,8 @@ public class GridPanel extends Group {
     }
 
     @Override
-    public Actor hit(float x, float y, boolean touchable) {
-        if (touchable && getTouchable() != Touchable.enabled) {
-            return null;
-        }
-        return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-        for (BaseView view : unitMap.values()) {
-            if (view.getActions().size > 0) {
-                view.act(delta);
-            }
-        }
-    }
-
-    @Override
     public void draw(Batch batch, float parentAlpha) {
-        for (int x = 0; x < cols; x++) {
-            for (int y = 0; y < rows; y++) {
-                cells[x][y].draw(batch, parentAlpha);
-            }
-        }
+        super.draw(batch, parentAlpha);
 
         getCellBorderManager().draw(batch, parentAlpha);
 

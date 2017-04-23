@@ -1,18 +1,12 @@
 package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.game.battlefield.Coordinates;
 
 import java.util.List;
 
 public class GridCellContainer extends GridCell {
-
-    private final int maxW = 96;
-    private final int maxH = 99;
-    private final int offsetX = 18;
-    private final int offsetY = 7;
     private int unitViewCount = 0;
     private int overlayCount = 0;
 
@@ -97,12 +91,12 @@ public class GridCellContainer extends GridCell {
         recalcImagesPos();
     }
 
-    @Override
+/*    @Override
     public Actor hit(float x, float y, boolean touchable) {
         Vector2 v = new Vector2(x, y);
         v = getParent().parentToLocalCoordinates(v);
         return super.hitChilds(v.x, v.y, touchable);
-    }
+    }*/
 
     public void setOverlays(List<OverlayView> overlays) {
         if (overlays.size() == 0) {
