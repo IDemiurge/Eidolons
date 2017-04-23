@@ -6,6 +6,7 @@ import main.game.core.game.MicroGame;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
+import main.system.launch.CoreEngine;
 import main.system.text.EntryNodeMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.text.LogEntryNode;
@@ -24,6 +25,7 @@ public abstract class MicroEffect extends EffectImpl {
 
         boolean result = super.apply();
 // FOR PHASE ANIMATIONS
+        if (CoreEngine.isPhaseAnimsOn())
         if (result) {
             if (!isContinuousWrapped() || !isApplied()) {
                 if (!isAnimationDisabled()) {

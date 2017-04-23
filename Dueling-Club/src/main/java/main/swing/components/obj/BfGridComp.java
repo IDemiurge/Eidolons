@@ -249,7 +249,7 @@ public class BfGridComp {
         }
         if (comp.getTopObj() != null) {
             if (comp.getTopObj().getOutlineType() != null) {
-                // VisibilityMaster.getImage(type, unit)
+                // VisibilityMaster.getEmitterPath(type, unit)
 
                 // return;
             }
@@ -261,9 +261,9 @@ public class BfGridComp {
                 : BORDER.NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT.getImage();
         // if (!single)
         // selectionFrame = info ?
-        // BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_96.getImage() : obj
-        // .isMine() ? BORDER.NEO_ACTIVE_SELECT_HIGHLIGHT_SQUARE_96.getImage()
-        // : BORDER.NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT_SQUARE_96.getImage();
+        // BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_96.getEmitterPath() : obj
+        // .isMine() ? BORDER.NEO_ACTIVE_SELECT_HIGHLIGHT_SQUARE_96.getEmitterPath()
+        // : BORDER.NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT_SQUARE_96.getEmitterPath();
 
         int offsetX = (single ? 9 : 13 + comp.getObjects().size()) * zoom / 100;
         int offsetY = (single ? 9 : 13 + comp.getObjects().size()) * zoom / 100;

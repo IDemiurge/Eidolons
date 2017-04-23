@@ -51,8 +51,8 @@ import java.util.List;
  * events
  */
 public class Executor extends ActiveHandler {
+    protected boolean result;
     private boolean interrupted;
-    private boolean result;
     private Activator activator;
     private Targeter targeter;
     private List<DC_ActiveObj> pendingAttacksOpportunity;
@@ -93,9 +93,10 @@ public class Executor extends ActiveHandler {
 //            ref.setTarget(context.getTarget());
             targeter.setForcePresetTarget(true);
             targeter.presetTarget = context.getTargetObj();
-                getAction().setTargetObj(context.getTargetObj());
-                getAction().setTargetGroup(context.getGroup());
-        }
+            getAction().setTargetObj(context.getTargetObj());
+            getAction().setTargetGroup(context.getGroup());
+        } else
+            targeter.setForcePresetTarget(false);
         this.context = context;
         activate();
         return result;
@@ -111,6 +112,7 @@ public class Executor extends ActiveHandler {
 
     public void activateOn(DC_Obj t) {
         if (Thread.currentThread() == getGame().getGameLoopThread()) {
+            // for triggered activation, e.g. Extra Attacks
             targeter.presetTarget = t;
             activate();
             return;
@@ -121,7 +123,7 @@ public class Executor extends ActiveHandler {
 
     public void activateOnGameLoopThread() {
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-                new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
+         new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }
 
     public boolean activate() {
@@ -140,8 +142,7 @@ public class Executor extends ActiveHandler {
         String targets = " ";
         if (getAction().getTargetObj() != null) {
             targets = getAction().getTargetObj().getNameAndCoordinate();
-        } else
-        if (getAction().getTargetGroup() != null) {
+        } else if (getAction().getTargetGroup() != null) {
             targets = getAction().getTargetGroup().toString();
         }
         log(getAction().getOwnerObj().getNameIfKnown() + " activates "
@@ -165,8 +166,7 @@ public class Executor extends ActiveHandler {
         //TODO BEFORE RESOLVE???
         GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new EventCallbackParam(getAction()));
 
-        activationOver();
-
+        actionComplete();
         return isResult();
     }
 
@@ -190,7 +190,7 @@ public class Executor extends ActiveHandler {
 
     private boolean interrupted() {
         log(getAction().getNameAndCoordinate() + " is interrupted", false);
-        activationOver();
+        actionComplete();
         return isResult();
     }
 
@@ -254,7 +254,7 @@ public class Executor extends ActiveHandler {
     }
 
 
-    private void resolve() {
+    protected void resolve() {
         log(getAction() + " resolves", false);
         addStdPassives();
         ForceRule.addForceEffects(getAction());
@@ -308,6 +308,7 @@ public class Executor extends ActiveHandler {
     private void reset() {
         setInterrupted(false);
         setResult(false);
+        setCancelled(null);
     }
 
 
@@ -352,15 +353,9 @@ public class Executor extends ActiveHandler {
 //            this.result=result;
     }
 
-    public void activationOver() {
-        getGame().getManager().setActivatingAction(null);
-//        if (result) TODO !!! always!
-        actionComplete();
-    }
-
 
     public void actionComplete() {
-
+        getGame().getManager().setActivatingAction(null);
         if (isResult()) {
             log(getAction() + " done", false);
         } else {
@@ -395,8 +390,8 @@ public class Executor extends ActiveHandler {
 //        boolean result = (checkExtraAttacksDoNotInterrupt(ENTRY_TYPE.ACTION));
 //        if (result) {
 //            this.channeling = true;
-//            ChannelingRule.playChannelingSound(this, HeroAnalyzer.isFemale(ownerObj));
-//            result = ChannelingRule.activateChanneing(this);
+////            ChannelingRule.playChannelingSound(getAction(), HeroAnalyzer.isFemale(ownerObj));
+//            result = ChannelingRule.activateChanneing(getAction());
 //        }
 //
 //        channelingActivateCosts.pay(ref);

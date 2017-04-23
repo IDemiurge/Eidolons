@@ -33,6 +33,13 @@ public class SneakCondition extends MicroCondition {
 
     @Override
     public boolean check(Ref ref) {
+        boolean result = checkSneak(ref);
+        if (result){
+            main.system.auxiliary.log.LogMaster.log(1,"ya sneaky, ser!" );
+        }
+        return result;
+    }
+        public boolean checkSneak(Ref ref) {
         if (!(ref.getObj(key) instanceof Unit)) {
             return false;
         }

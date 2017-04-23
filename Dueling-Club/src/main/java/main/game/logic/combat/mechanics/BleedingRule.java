@@ -3,7 +3,7 @@ package main.game.logic.combat.mechanics;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import main.content.DC_TYPE;
-import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;
 import main.elements.conditions.NumericCondition;
@@ -45,7 +45,7 @@ public class BleedingRule extends DC_RuleImpl {
     @Override
     public void initEffects() {
         // LIMIT BY MAX
-        effects = new ModifyCounterEffect(UnitEnums.STD_COUNTERS.Bleeding_Counter.getName(),
+        effects = new ModifyCounterEffect(COUNTER.Bleeding_Counter.getName(),
                 MOD.MODIFY_BY_CONST,
 
 //                "{ACTIVE_PARAMS.BLEEDING_MOD}/100*"+

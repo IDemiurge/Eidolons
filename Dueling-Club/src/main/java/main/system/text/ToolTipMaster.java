@@ -8,7 +8,7 @@ import main.content.VALUE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.system.AiEnums.AI_LOGIC;
 import main.content.values.parameters.PARAMETER;
 import main.elements.conditions.Condition;
@@ -323,7 +323,7 @@ public class ToolTipMaster {
                 + entity.getIntParam(PARAMS.DURABILITY);
 
         String counters = "";
-        for (STD_COUNTERS c : CoatingRule.COATING_COUNTERS) {
+        for (COUNTER c : CoatingRule.COATING_COUNTERS) {
             Integer n = entity.getCounter(c);
             if (n > 0) {
                 counters += c.getName() + " " + n + "; ";

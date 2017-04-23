@@ -9,6 +9,7 @@ import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.elements.targeting.FixedTargeting;
@@ -56,20 +57,16 @@ public class BlazeRule extends DamageCounterRule {
 
     @Override
     public boolean isEnduranceOnly() {
-        if (getNumberOfCounters(unit) <= THRESHOLD) {
-            return true;
-        }
+//        if (getNumberOfCounters(unit) <= THRESHOLD) {
+//            return true;
+//        }
         return false;
     }
 
-    @Override
-    protected String getClashingCounter() {
-        return UnitEnums.STD_COUNTERS.Freeze_Counter.getName();
-    }
 
     @Override
     public String getCounterName() {
-        return UnitEnums.STD_COUNTERS.Blaze_Counter.getName();
+        return COUNTER.Blaze_Counter.getName();
 
     }
 
@@ -96,11 +93,6 @@ public class BlazeRule extends DamageCounterRule {
             return UnitEnums.STATUS.ABLAZE; // panic? spreading?
         }
         return null;
-    }
-
-    @Override
-    public String getImage() {
-        return "mini\\spell\\Life\\Elemental\\screen_33.jpg";
     }
 
 }

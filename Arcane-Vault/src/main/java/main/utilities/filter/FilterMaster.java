@@ -3,15 +3,13 @@ package main.utilities.filter;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
-import main.data.xml.XML_Converter;
 import main.elements.conditions.Conditions;
 import main.entity.Ref.KEYS;
 import main.launch.ArcaneVault;
 import main.swing.generic.services.dialog.DialogMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;
-import main.system.auxiliary.StringMaster;
-import org.w3c.dom.Document;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,9 +36,10 @@ public class FilterMaster {
 
         Conditions conditions = new Conditions();
         OBJ_TYPE TYPE = ArcaneVault.getSelectedOBJ_TYPE();
+        CONDITION_TEMPLATES[] templates = CONDITION_TEMPLATES.values();
         while (true) {
             // CHOOSE TYPE? OR USE SELECTED TAB!
-            int i = DialogMaster.optionChoice(CONDITION_TEMPLATES.values(),
+            int i = DialogMaster.optionChoice(templates,
                     "choose filter template");
             if (i == -1) {
                 break;
@@ -66,9 +65,9 @@ public class FilterMaster {
         if (TYPE == null) {
 
         }
-        Document node = XML_Converter.getDoc(XML_Converter.openXml("conditions")
-                + XML_Converter.closeXml("conditions"));
-        String conditionString = XML_Converter.getStringFromXML(node);
+//        Document node = XML_Converter.getDoc(XML_Converter.openXml("conditions")
+//                + XML_Converter.closeXml("conditions"));
+//        String conditionString = XML_Converter.getStringFromXML(node);
 
         TypeFilter filter = new TypeFilter(conditions, TYPE);
         filters.add(filter); // save!

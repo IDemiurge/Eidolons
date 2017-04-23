@@ -139,7 +139,7 @@ public class ListItem<E> extends JLabel {
         if (!noImage) {
             try {
                 img = (entity.getCustomIcon() != null ? entity.getCustomIcon().getImage()
-                        : ImageManager.getImage(entity.getProperty(G_PROPS.IMAGE, true)));
+                        : ImageManager.getImage(entity.getProperty(G_PROPS.IMAGE, false)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -147,7 +147,7 @@ public class ListItem<E> extends JLabel {
         if (img == null) {
             noImage=true;
             if (entity.getRef() != null) {
-                img = ImageManager.getImage(new Property(entity.getProperty(G_PROPS.IMAGE, true))
+                img = ImageManager.getImage(new Property(entity.getProperty(G_PROPS.IMAGE, false))
                         .getStr(entity.getRef()));
             }
         }

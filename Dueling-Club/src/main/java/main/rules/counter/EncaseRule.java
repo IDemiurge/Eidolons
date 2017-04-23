@@ -6,7 +6,7 @@ import main.ability.effects.Effects;
 import main.ability.effects.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums.STATUS;
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 
@@ -26,7 +26,7 @@ public class EncaseRule extends  DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return STD_COUNTERS.Encase_Counter.getName();
+        return COUNTER.Encase_Counter.getName();
     }
 
     @Override

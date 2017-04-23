@@ -112,6 +112,10 @@ public class SortMaster {
 
     }
 
+    public static Comparator<? super String> getSorterString(final VALUE p,final OBJ_TYPE TYPE, final Boolean descending) {
+        return (Comparator<String>) (o1, o2) -> compareValue(p, descending, DataManager.getType(o1, TYPE), DataManager.getType(o2, TYPE));
+
+    }
     //        public static Comparator<? super Entity> getSorterByNaturalOrder
 //        (Function<Entity, Integer> function) {
 //        return Comparator.naturalOrder(p -> function.apply(p));

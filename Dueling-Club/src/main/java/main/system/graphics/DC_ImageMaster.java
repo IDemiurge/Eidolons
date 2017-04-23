@@ -89,7 +89,7 @@ public class DC_ImageMaster {
         }
         return base_image;
         // return new ImageIcon(
-        // ImageManager.applyBorder(base_image.getImage(),
+        // ImageManager.applyBorder(base_image.getEmitterPath(),
         // BORDER.SPELL_NORMAL));
     }
 

@@ -9,7 +9,7 @@ public class SummoningSicknessRule {
         // getBuffEffect().apply(Ref.getSelfTargetingRefCopy(unit));
         // unit.setParam(PARAMS.C_INITIATIVE_BONUS, i);
         // unit.getParam(PARAMS.C_INITIATIVE, i);
-        // unit.getGame().getRules().getLateActionsRule().getTimePercentageRemaining();
+        // unit.getGame().getRules().getTimeRule().getTimePercentageRemaining();
         unit.modifyParameter(PARAMS.C_INITIATIVE_BONUS, -(unit.getGame()
                 .getRules().getTimeRule().getBaseTime() - unit.getGame()
                 .getRules().getTimeRule().getTimeRemaining()));

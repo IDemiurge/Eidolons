@@ -513,7 +513,8 @@ public class TabBuilder extends Builder implements ChangeListener {
             if (filter.getTYPE() instanceof C_OBJ_TYPE) {
 
             }
-            for (Builder sub : builders.keySet()) {
+            for (Builder sub : builders.isEmpty() ? builderArray : builders.keySet().toArray(new Builder[builders.size()])) {
+
                 TabBuilder builder = (TabBuilder) sub;
                 if (builder.getType().equalsIgnoreCase(filter.getTYPE().getName())) {
                     builder.addFilter(filter);
@@ -524,7 +525,7 @@ public class TabBuilder extends Builder implements ChangeListener {
         } else {
             List<ObjType> types = filter.getTypes();
             if (!types.isEmpty()) {
-                getTabbedPane().addTab("F", new TreeViewBuilder(new Workspace("F", types)).build());
+                getTabbedPane().addTab("F", new TreeViewBuilder(new Workspace("F", types, true)).build());
             } else {
                 DialogMaster.error("No types matching " + filter.getCondition());
             }

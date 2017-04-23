@@ -180,13 +180,13 @@ public class AttackAnimation extends ActionAnimation {
             drawCriticalAttack(phase);
         }
         // if (attack.getWeapon() != null) {
-        // Image image = attack.getWeapon().getIcon().getImage();
+        // Image image = attack.getWeapon().getIcon().getEmitterPath();
         // if (image.getWidth(null) > 50) {
         // image = ImageTransformer.getCircleCroppedImage(image);
         // }
         // // could be a 64x64 or 50 circle!
         // image = ImageManager.applyGlowFrame(image,
-        // BORDER.CIRCLE_GLOW_50.getImage());
+        // BORDER.CIRCLE_GLOW_50.getEmitterPath());
         // Point point = GeometryMaster
         // .getFarthestPointInRectangleForImage(w, h, image, direction);
         // drawOnSource(image, point.x, point.y);
@@ -214,11 +214,11 @@ public class AttackAnimation extends ActionAnimation {
             }
             // image = ImageTransformer.getCircleCroppedImage(image);
             // image = ImageManager.applyGlowFrame(image,
-            // BORDER.CIRCLE_GLOW_64.getImage());
+            // BORDER.CIRCLE_GLOW_64.getEmitterPath());
             point = GeometryMaster.getFarthestPointInRectangleForImage(w, h, image, direction
                     .flip());
             drawOnSource(image, point.x, point.y);
-            // image = STD_IMAGES.DIRECTION_POINTER.getImage(); TODO
+            // image = STD_IMAGES.DIRECTION_POINTER.getEmitterPath(); TODO
             // image = ImageTransformer.rotate(image, direction.getDegrees());
             // drawOnSource(image, point.x, point.y);
         }

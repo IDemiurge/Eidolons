@@ -142,6 +142,7 @@ public class Event implements Referred {
         ATTACK_INSTANT,
 
         UNIT_HAS_BEEN_KILLED,
+        UNIT_HAS_BEEN_ANNIHILATED,
         UNIT_HAS_CHANGED_FACING,
         UNIT_HAS_TURNED_CLOCKWISE,
         UNIT_HAS_TURNED_ANTICLOCKWISE,

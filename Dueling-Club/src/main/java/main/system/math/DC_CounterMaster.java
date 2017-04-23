@@ -1,6 +1,6 @@
 package main.system.math;
 
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.system.auxiliary.EnumMaster;
@@ -12,8 +12,8 @@ public class DC_CounterMaster {
         if (target instanceof Unit) {
             Unit heroObj = (Unit) target;
             String realName = CounterMaster.findCounter(counterName);
-            switch (new EnumMaster<STD_COUNTERS>().retrieveEnumConst(
-                    STD_COUNTERS.class, realName)) {
+            switch (new EnumMaster<COUNTER>().retrieveEnumConst(
+                    COUNTER.class, realName)) {
                 case Blaze_Counter:
                     if (!target.getGame().getRules().getBlazeRule()
                             .checkApplies(heroObj)) {

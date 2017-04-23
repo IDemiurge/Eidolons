@@ -566,6 +566,8 @@ public class ConditionMaster {
     public Condition getConditionFromTemplate(CONDITION_TEMPLATES template, String str1, String str2) {
         Condition c = null;
         switch (template) {
+            case INVALID_ABILITIES:
+                return new InvalidCondition();
             case REF:
                 c = new RefCondition(str1, str2);
                 break;
@@ -612,6 +614,7 @@ public class ConditionMaster {
         NUMERIC_EQUAL("numEqual", "numeric equal", "equal"),
         NUMERIC_LESS("numLess", "numeric less", "less"),
         ITEM("item", "slot"),
+        INVALID_ABILITIES("item", "slot"),
         CAN_ACTIVATE("cost", "can activate", "can pay");
 
         private String[] names;

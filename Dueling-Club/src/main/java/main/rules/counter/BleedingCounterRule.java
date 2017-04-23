@@ -5,6 +5,7 @@ import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.entity.Ref.KEYS;
@@ -22,7 +23,7 @@ public class BleedingCounterRule extends DamageCounterRule {
 
     @Override
     public String getCounterName() {
-        return UnitEnums.STD_COUNTERS.Bleeding_Counter.toString();
+        return COUNTER.Bleeding_Counter.toString();
     }
 
     @Override
@@ -71,9 +72,5 @@ public class BleedingCounterRule extends DamageCounterRule {
         return null;
     }
 
-    @Override
-    public String getImage() {
-        return "mini\\spell\\Death\\Ability_CriticalStrike.jpg";
-    }
 
 }

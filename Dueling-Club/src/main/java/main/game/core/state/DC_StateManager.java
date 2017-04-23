@@ -16,12 +16,15 @@ import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.GameManager;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Rule;
 import main.game.logic.generic.PartyManager;
+import main.rules.DC_RuleImpl;
 import main.rules.counter.DC_CounterRule;
 import main.rules.counter.DamageCounterRule;
 import main.rules.mechanics.IlluminationRule;
 import main.rules.round.RoundRule;
 import main.system.config.ConfigMaster;
+import main.system.datatypes.DequeImpl;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.Arrays;
@@ -220,6 +223,24 @@ public class DC_StateManager extends StateManager {
         for (Unit unit : getGame().getUnits()) {
             if (!unit.isDead()) {
                 unit.resetObjects();
+            }
+        }
+    }
+
+    @Override
+    public void checkRules(Event e) {
+        DequeImpl<DC_RuleImpl> triggerRules = getGame().getRules().getTriggerRules();
+        if ( triggerRules.size() == 0) {
+            return;
+        }
+
+        for (Rule rule :  triggerRules) {
+            if (rule.isOn()) {
+                if (rule.check(e)) {
+                    Ref ref = Ref.getCopy(e.getRef());
+                    ref.setEvent(e);
+                    rule.apply(ref);
+                }
             }
         }
     }

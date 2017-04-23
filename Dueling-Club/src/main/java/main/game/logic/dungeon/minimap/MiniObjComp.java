@@ -204,10 +204,10 @@ public class MiniObjComp implements Refreshable {
     // } else {
     // if (detection == UNIT_TO_PLAYER_VISION.DETECTED) {
     // setPic(new ImageIcon(ImageManager.applyBorder(getPic()
-    // .getImage(), BORDER.CONCEALED)));
+    // .getEmitterPath(), BORDER.CONCEALED)));
     // } else
     // setPic(new ImageIcon(ImageManager.applyBorder(getPic()
-    // .getImage(), BORDER.HIDDEN)));
+    // .getEmitterPath(), BORDER.HIDDEN)));
     //
     // }
     // }

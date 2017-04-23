@@ -143,7 +143,7 @@ public class AE_Element extends G_Panel implements MouseListener {
     }
 
     private void initTextBoxElement() {
-        String text = arg.name();
+        String text = arg.getEmptyName();
         DefaultMutableTreeNode elementNode = getElementNode();
         if (elementNode != null) {
             if (!elementNode.isLeaf()) {

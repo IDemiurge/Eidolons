@@ -68,10 +68,10 @@ public class DrawHelper {
     public static void init() {
         master = new DrawMaster();
         // ACTION_POINTS =
-        // ImageManager.getSizedVersion(STD_IMAGES.ACTIONS.getImage(),
+        // ImageManager.getSizedVersion(STD_IMAGES.ACTIONS.getEmitterPath(),
         // DrawHelper.ACTIVE_IMG_DIMENSION);
         // COUNTER_POINTS =
-        // ImageManager.getSizedVersion(STD_IMAGES.COUNTERS.getImage(),
+        // ImageManager.getSizedVersion(STD_IMAGES.COUNTERS.getEmitterPath(),
         // DrawHelper.ACTIVE_IMG_DIMENSION);
         // ACTIVE_POINTS_Y = (int) (DC_GuiManager.getCellSize().getHeight() -
         // ACTIVE_IMG_DIMENSION

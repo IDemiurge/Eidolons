@@ -48,9 +48,8 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
         if (getOwnerObj() == null) {
             return;
         }
-        if (getOwnerObj().isAiControlled()) {
+//        if (getOwnerObj().isAiControlled()) {
             getHandler().getTargeter().resetTargetingCache();
-        }
         addCostMods();
         getHandler().getActivator().setCanActivate(null);
 

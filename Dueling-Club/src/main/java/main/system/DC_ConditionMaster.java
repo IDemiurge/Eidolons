@@ -28,6 +28,7 @@ import main.data.ability.construct.VariableManager;
 import main.elements.conditions.*;
 import main.elements.conditions.standard.ClassificationCondition;
 import main.elements.conditions.standard.OwnershipCondition;
+import main.elements.conditions.standard.PositionCondition;
 import main.elements.conditions.standard.ZLevelCondition;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
@@ -420,6 +421,9 @@ public class DC_ConditionMaster extends ConditionMaster {
 
     public static Condition getAutoTargetingTemplateConditions(AUTO_TARGETING_TEMPLATES template) {
         switch (template) {
+            case CELL:
+                return new PositionCondition(KEYS.TARGET.toString());
+
             case PARTY:
                 return new RefCondition("source_party", "match_party");
 

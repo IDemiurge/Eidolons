@@ -113,7 +113,7 @@ public class ActionAnimation extends PhaseAnimation {
         int y = 0;
         // DC_HeroObj killer = (DC_HeroObj) phase.getArgs()[0];
         // source?
-        // Image image = BORDER.PETRIFIED.getImage();
+        // Image image = BORDER.PETRIFIED.getEmitterPath();
         // drawOnTarget(image, x, y);
 
         Image image = ImageManager.getDeadIconBig();

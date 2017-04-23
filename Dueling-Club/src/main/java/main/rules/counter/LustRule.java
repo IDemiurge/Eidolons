@@ -2,7 +2,7 @@ package main.rules.counter;
 
 import main.ability.effects.Effect;
 import main.content.PARAMS;
-import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
@@ -15,7 +15,7 @@ public class LustRule extends DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return UnitEnums.STD_COUNTERS.Lust_Counter.getName();
+        return COUNTER.Lust_Counter.getName();
     }
 
     @Override

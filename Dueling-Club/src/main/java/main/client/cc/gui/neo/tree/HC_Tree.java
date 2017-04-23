@@ -744,7 +744,7 @@ public class HC_Tree {
             }
             if (n.isAcquired()) {
                 // Image img =
-                // BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImage();
+                // BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getEmitterPath();
                 // overlayMap2.put(new Point(p.x - 6, p.y - 6), img);
             } else if (!CoreEngine.isArcaneVault()) {
                 if (n.isAvailable()) {

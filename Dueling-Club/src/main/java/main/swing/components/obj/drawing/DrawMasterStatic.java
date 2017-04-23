@@ -94,7 +94,7 @@ public class DrawMasterStatic {
                 // punctir...
                 // visualize clear shot too?
                 // Painter.paintImagesInLine(g, new XLine(p, p2),
-                // STD_IMAGES.EYE.getImage(),
+                // STD_IMAGES.EYE.getEmitterPath(),
                 // 40 * zoom / 100);
             } else {
                 Image image = ImageManager.STD_IMAGES.WATCHER.getImage();

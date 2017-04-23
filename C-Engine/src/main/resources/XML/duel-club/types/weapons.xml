@@ -6371,7 +6371,7 @@
                 <Dice>3</Dice>
                 <Durability_Self_Damage_Mod>100</Durability_Self_Damage_Mod>
                 <Cooldown>1</Cooldown>
-                <Armor_Penetration>{Weapon_C_Durability}</Armor_Penetration>
+                <Armor_Penetration>{this_C_Durability}</Armor_Penetration>
                 <Durability_Modifier>100</Durability_Modifier>
                 <Base_Damage_Modifier>175</Base_Damage_Modifier>
                 <Sp_Dmg_Modifier>0</Sp_Dmg_Modifier>
@@ -6454,7 +6454,7 @@
                 <Weight>1</Weight>
                 <C_Durability>5</C_Durability>
                 <Attack_Bonus>0</Attack_Bonus>
-                <Defense_Bonus>{Weapon_C_Durability}</Defense_Bonus>
+                <Defense_Bonus>{this_C_Durability}</Defense_Bonus>
                 <Armor_Penetration>0</Armor_Penetration>
                 <Material_Quantity>3</Material_Quantity>
                 <Damage_Bonus>0</Damage_Bonus>
@@ -6470,8 +6470,8 @@
                 <Counter_Mod>100</Counter_Mod>
                 <Durability_Self_Damage_Mod>100</Durability_Self_Damage_Mod>
                 <Durability_Damage_Mod>100</Durability_Damage_Mod>
-                <Spell_Foc_Penalty>-{Weapon_C_Durability}/2</Spell_Foc_Penalty>
-                <Spell_Sta_Penalty>-{Weapon_C_Durability}/2</Spell_Sta_Penalty>
+                <Spell_Foc_Penalty>-{this_C_Durability}/2</Spell_Foc_Penalty>
+                <Spell_Sta_Penalty>-{this_C_Durability}/2</Spell_Sta_Penalty>
                 <Cadence_Sta_Mod>35</Cadence_Sta_Mod>
                 <Cadence_Ap_Mod>25</Cadence_Ap_Mod>
                 <Impact_Area>15</Impact_Area>
@@ -6530,7 +6530,7 @@
                 <Weight>1</Weight>
                 <C_Durability>5</C_Durability>
                 <Attack_Bonus>0</Attack_Bonus>
-                <Defense_Bonus>{Weapon_C_Durability}</Defense_Bonus>
+                <Defense_Bonus>{this_C_Durability}</Defense_Bonus>
                 <Armor_Penetration>0</Armor_Penetration>
                 <Material_Quantity>4</Material_Quantity>
                 <Damage_Bonus>0</Damage_Bonus>
@@ -6546,8 +6546,8 @@
                 <Counter_Mod>100</Counter_Mod>
                 <Durability_Self_Damage_Mod>100</Durability_Self_Damage_Mod>
                 <Durability_Damage_Mod>100</Durability_Damage_Mod>
-                <Spell_Sta_Penalty>-{Weapon_C_Durability}/4</Spell_Sta_Penalty>
-                <Spell_Foc_Penalty>-{Weapon_C_Durability}/4</Spell_Foc_Penalty>
+                <Spell_Sta_Penalty>-{this_C_Durability}/4</Spell_Sta_Penalty>
+                <Spell_Foc_Penalty>-{this_C_Durability}/4</Spell_Foc_Penalty>
                 <Cadence_Sta_Mod>35</Cadence_Sta_Mod>
                 <Cadence_Ap_Mod>25</Cadence_Ap_Mod>
                 <Impact_Area>20</Impact_Area>
@@ -6681,7 +6681,7 @@
                 <C_Durability>5</C_Durability>
                 <Attack_Bonus>0</Attack_Bonus>
                 <Defense_Bonus>0</Defense_Bonus>
-                <Armor_Penetration>{Weapon_C_Durability}</Armor_Penetration>
+                <Armor_Penetration>{this_C_Durability}</Armor_Penetration>
                 <Material_Quantity>4</Material_Quantity>
                 <Damage_Bonus>0</Damage_Bonus>
                 <Durability>5</Durability>
@@ -6757,7 +6757,7 @@
                 <C_Durability>5</C_Durability>
                 <Attack_Bonus>0</Attack_Bonus>
                 <Defense_Bonus>0</Defense_Bonus>
-                <Armor_Penetration>{Weapon_C_Durability}</Armor_Penetration>
+                <Armor_Penetration>{this_C_Durability}</Armor_Penetration>
                 <Material_Quantity>3</Material_Quantity>
                 <Damage_Bonus>0</Damage_Bonus>
                 <Durability>3</Durability>
@@ -6979,7 +6979,7 @@
                 <C_Durability>5</C_Durability>
                 <Attack_Bonus>0</Attack_Bonus>
                 <Defense_Bonus>0</Defense_Bonus>
-                <Armor_Penetration>{Weapon_C_Durability}</Armor_Penetration>
+                <Armor_Penetration>{this_C_Durability}</Armor_Penetration>
                 <Material_Quantity>4</Material_Quantity>
                 <Damage_Bonus>0</Damage_Bonus>
                 <Durability>2</Durability>

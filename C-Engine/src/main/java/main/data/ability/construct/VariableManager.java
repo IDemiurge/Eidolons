@@ -38,7 +38,7 @@ public class VariableManager {
     public static final String BOOLEAN_VAR_CLASS = VARIABLE_TYPES.BOOLEAN.toString();
     public static final String PROP_VALUE_VAR_CLASS = VARIABLE_TYPES.PROP.toString();
 
-    public static final String VARIABLE = "^VAR";
+    public static final String VARIABLE = StringMaster.VAR_STRING;
     private static boolean variableInputRequesting = false;
     private static List<ObjType> varCache = new LinkedList<>();
     private static String prevValue;
@@ -446,6 +446,8 @@ public class VariableManager {
                     }
                 }
                 PARAMETER param;
+                if (entity==null )
+                    return 0;
                 if (entity.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS) {
                     param = ContentManager.findMasteryScore(entity.getProperty(G_PROPS.MASTERY));
                 } else {

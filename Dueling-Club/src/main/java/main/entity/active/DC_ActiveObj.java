@@ -59,8 +59,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     protected boolean interrupted;
     protected boolean free = false;
     protected boolean quietMode = false;
-    protected Costs channelingActivateCosts;
-    protected Costs channelingResolveCosts;
     protected List<DC_ActiveObj> subActions;
     private RESISTANCE_TYPE resistType;
     private DAMAGE_TYPE energyType;
@@ -569,9 +567,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     //INIT
 
-    protected void initChannelingCosts() {
-        getInitializer().initChannelingCosts();
-    }
 
     @Override
     protected void addDynamicValues() {
@@ -814,21 +809,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return getMaster().getResetter();
     }
 
-    public Costs getChannelingActivateCosts() {
-        return channelingActivateCosts;
-    }
 
-    public void setChannelingActivateCosts(Costs channelingActivateCosts) {
-        this.channelingActivateCosts = channelingActivateCosts;
-    }
-
-    public Costs getChannelingResolveCosts() {
-        return channelingResolveCosts;
-    }
-
-    public void setChannelingResolveCosts(Costs channelingResolveCosts) {
-        this.channelingResolveCosts = channelingResolveCosts;
-    }
 
     public boolean isContinuous() {
         return continuous;

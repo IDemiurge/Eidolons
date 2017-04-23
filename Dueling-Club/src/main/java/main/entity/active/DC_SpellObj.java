@@ -8,6 +8,7 @@ import main.content.enums.entity.SpellEnums.SPELL_POOL;
 import main.content.enums.entity.SpellEnums.SPELL_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
+import main.elements.costs.Costs;
 import main.entity.Ref;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.active.spell.SpellActiveMaster;
@@ -26,7 +27,8 @@ public class DC_SpellObj extends DC_ActiveObj {
     private SPELL_POOL spellPool;
     private SPELL_GROUP spellGroup;
     private ObjType rawType;
-
+    protected Costs channelingActivateCosts;
+    protected Costs channelingResolveCosts;
     public DC_SpellObj(ObjType type, Player owner, DC_Game game, Ref ref) {
         super(type, owner, game, ref);
 
@@ -168,6 +170,21 @@ public class DC_SpellObj extends DC_ActiveObj {
         // return getIntParam(PARAMS.CHANNELING) > 0;
     }
 
+    public Costs getChannelingActivateCosts() {
+        return channelingActivateCosts;
+    }
+
+    public void setChannelingActivateCosts(Costs channelingActivateCosts) {
+        this.channelingActivateCosts = channelingActivateCosts;
+    }
+
+    public Costs getChannelingResolveCosts() {
+        return channelingResolveCosts;
+    }
+
+    public void setChannelingResolveCosts(Costs channelingResolveCosts) {
+        this.channelingResolveCosts = channelingResolveCosts;
+    }
     @Override
     public void setRef(Ref ref) {
         ref.setID(Ref.KEYS.SPELL, id);

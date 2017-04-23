@@ -82,7 +82,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         // }
         //
         // }
-        // paletteTabs.addTab(type.getName(), type.getImage(), comp);
+        // paletteTabs.addTab(type.getName(), type.getEmitterPath(), comp);
         //
         // }
 

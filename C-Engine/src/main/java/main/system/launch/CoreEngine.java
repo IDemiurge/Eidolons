@@ -39,6 +39,7 @@ public class CoreEngine {
     private static boolean graphicsOff;
     private static boolean guiTestMode;
     private static boolean actionTargetingFiltersOff;
+    private static boolean phaseAnimsOn;
 
     public static void dataInit(boolean newThread, final boolean macro) {
         if (newThread) {
@@ -241,6 +242,14 @@ public class CoreEngine {
 
     public static void setActionTargetingFiltersOff(boolean actionTargetingFiltersOff) {
         CoreEngine.actionTargetingFiltersOff = actionTargetingFiltersOff;
+    }
+
+    public static boolean isPhaseAnimsOn() {
+        return phaseAnimsOn;
+    }
+
+    public static void setPhaseAnimsOn(boolean phaseAnimsOn) {
+        CoreEngine.phaseAnimsOn = phaseAnimsOn;
     }
 
     public void dataInit(boolean macro) {

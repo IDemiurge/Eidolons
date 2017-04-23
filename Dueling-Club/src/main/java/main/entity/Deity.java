@@ -132,7 +132,7 @@ public class Deity extends Entity {
         // if (ImageManager.getIcon(getProperty(G_PROPS.EMBLEM, true)) != null)
         // // if hero is party commander; diversified emblems for monsters
         // owner.setEmblem(ImageManager
-        // .getIcon(getProperty(G_PROPS.EMBLEM, true)).getImage());
+        // .getIcon(getProperty(G_PROPS.EMBLEM, true)).getEmitterPath());
     }
 
     @Override

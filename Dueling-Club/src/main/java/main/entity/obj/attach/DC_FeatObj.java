@@ -28,7 +28,7 @@ import java.util.Map;
 public class DC_FeatObj extends DC_HeroAttachedObj {
 
     public static PARAMS[] rankParams = {PARAMS.RANK_XP_MOD, PARAMS.RANK_SD_MOD,
-            PARAMS.RANK_FORMULA_MOD};
+     PARAMS.RANK_FORMULA_MOD};
     private boolean rankApplied;
     private boolean paramStringParsed;
     private Map<PARAMETER, String> modMap;
@@ -67,7 +67,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
         if (!checkApplyReqs()) {
             return;
         }
-        if (!paramStringParsed) {
+        if (game.isSimulation() || !paramStringParsed) {
             try {
                 parseParamBonusString();
             } catch (Exception e) {
@@ -125,11 +125,14 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
         for (String substring : StringMaster.openContainer(prop)) {
             // String[] array = substring.split(" ");
             String bonus = // array[array.length - 1];
-                    VariableManager.getVar(substring);
+             VariableManager.getVar(substring);
             boolean mod = false;
             if (bonus.contains("%")) {
                 mod = true;
                 bonus = bonus.replace("%", "");
+            } else if (bonus.contains("mod")) {
+                mod = true;
+                bonus = bonus.replace("mod", "");
             }
             String paramName = VariableManager.removeVarPart(substring);
             // substring.replace(bonus, "");
@@ -147,8 +150,8 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
                 continue;
             }
             getRef().setInfoEntity(this);
-            bonus = TextParser.parse(bonus, getRef());
-            Integer amount =new Formula( bonus).getInt(getRef());// StringMaster.getInteger(bonus);
+            bonus = TextParser.parse(bonus, getRef(), TextParser.ABILITY_PARSING_CODE);
+            Integer amount = new Formula(bonus).getInt(getRef());// StringMaster.getInteger(bonus);
             if (amount == 0) {
                 continue;
             }
@@ -165,7 +168,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
     private void addParamBonuses() {
         float quotientSum = 0;
         for (PARAMETER param : getBonusMap().keySet()) {
-            Integer amount = StringMaster.getInteger(getBonusMap().get(param));
+            Integer amount = StringMaster.getInteger(getBonusMap().get(param), getRef());
             float d = new Float(amount * getRankTotalFormulaMod()) / 100;
 
             if (param.isAttribute()) {
@@ -186,7 +189,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
                 }
             } else {
                 paramName = StringMaster.openContainer(
-                        VariableManager.removeVarPart(getProperty(PROPS.ATTRIBUTE_BONUSES))).get(0);
+                 VariableManager.removeVarPart(getProperty(PROPS.ATTRIBUTE_BONUSES))).get(0);
             }
 
             int rounded = Math.round(quotientSum);

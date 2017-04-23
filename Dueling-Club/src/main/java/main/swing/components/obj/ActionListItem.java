@@ -36,7 +36,7 @@ public class ActionListItem extends ListItem<Entity> {
         if (isSelected) {
             // g.drawImage(ImageManager.getSizedVersion(
             // BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImagePath(),
-            // 64).getImage(),
+            // 64).getEmitterPath(),
             // 0, 0, null);
 
         }

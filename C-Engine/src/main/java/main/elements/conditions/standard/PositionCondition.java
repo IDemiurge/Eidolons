@@ -9,6 +9,9 @@ public class PositionCondition extends MicroCondition {
     private String key;
     private Obj cell;
 
+    public PositionCondition(String key ) {
+        this.key = key;
+    }
     public PositionCondition(String key, Obj cell) {
         this.key = key;
         this.cell = cell;
@@ -17,11 +20,15 @@ public class PositionCondition extends MicroCondition {
     @Override
     public boolean check(Ref ref) {
         Obj obj = ref.getObj(key);
-        if (cell != null) {
-            return obj.getCoordinates().equals(cell.getCoordinates());
+        if (cell == null){
+            cell = ref.getMatchObj();
         }
+            if (cell == null)
+                return false;
 
-        return false;
+                return obj.getCoordinates().equals(cell.getCoordinates());
+
+
     }
 
     public enum POSITION_CONDITIONS {

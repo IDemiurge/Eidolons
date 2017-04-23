@@ -19,7 +19,6 @@ import main.game.ai.tools.ParamAnalyzer;
 import main.game.ai.tools.target.EffectFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -334,9 +333,9 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                 // new Formula(obj.getParam(param) + "+" + mod)
                 // .getInt();
 
-                LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, getLayer() + " layer - " + obj.getName()
-                 + "'s " + param.getName() + " is modified by " + amount + "% ("
-                 + obj.getParam(param) + " + " + mod + " = " + final_amount + ")");
+//                LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, getLayer() + " layer - " + obj.getName()
+//                 + "'s " + param.getName() + " is modified by " + amount + "% ("
+//                 + obj.getParam(param) + " + " + mod + " = " + final_amount + ")");
                 break;
             }
             case MODIFY_BY_CONST: {
@@ -351,13 +350,13 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                     game.getLogManager().logValueMod(param, amount, obj);
                 }
 
-                LogMaster.log(LogMaster.COMBAT_DEBUG, obj.getName() + "'s " + param.getName()
-                 + " is modified by " + amount);
+//                LogMaster.log(LogMaster.COMBAT_DEBUG, obj.getName() + "'s " + param.getName()
+//                 + " is modified by " + amount);
                 break;
             }
             case SET: {
                 final_amount = amount;
-                LogMaster.log(1, obj.getName() + "'s " + param.getName() + " is set to " + amount);
+//                LogMaster.log(1, obj.getName() + "'s " + param.getName() + " is set to " + amount);
                 break;
             }
         }

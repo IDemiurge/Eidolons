@@ -139,20 +139,26 @@ public class DC_Game extends MicroGame {
     private NetGame netGame;
     private boolean dummyPlus;
     private GameLoop loop;
-     ;
+
 
     public DC_Game(Player player1, Player player2, GameConnector connector, HostedGame hostedGame,
                    PartyData partyData1, PartyData partyData2) {
         this(player1, player2, hostedGame.getTitle(), partyData1.getObjData(), partyData2
-                .getObjData());
+         .getObjData());
         this.setHostedGame(hostedGame);
         setHost(hostedGame.isHost());
         this.setConnector(connector);
         connection = connector.getConnection();
-
     }
 
+    @Deprecated
+    public DC_Game(Player player1, Player player2, String gamename, String objData, String objData2) {
+        super(player1, player2, gamename, objData, objData2);
+    }
+
+    @Deprecated
     public DC_Game(HostClientConnection connection, HostedGame hostedGame, DC_Player... players) {
+        this();
         this.setConnector(connection.getGameConnector());
         this.connection = connection;
         this.setHostedGame(hostedGame);
@@ -161,7 +167,9 @@ public class DC_Game extends MicroGame {
         // TODO players' data should already be available?
     }
 
+    @Deprecated
     public DC_Game(NetGame netGame, DC_Player... players) {
+        this();
         this.setConnector(netGame.getGameHost().getGameConnector());
         this.hostedGame = netGame.getHostedGame();
         this.netGame = netGame;
@@ -169,23 +177,19 @@ public class DC_Game extends MicroGame {
         playerMaster = new PlayerMaster(this, players);
     }
 
-    public DC_Game(Player player1, Player player2, String gamename, String objData, String objData2) {
-        super(player1, player2, gamename, objData, objData2);
-    }
-
-    public DC_Game(DC_GameData data) {
-        this(data.getPlayer1(), data.getPlayer2(), data.getName(), data.getPlayerUnitData(), data
-                .getPlayer2UnitData());
-        this.data = data;
-    }
 
     public DC_Game() {
-        this.simulation = true;
+        this(false);
     }
 
     public DC_Game(boolean simulation) {
+        Game.game = this;
+        game = this;
+        this.simulation = true;
         this.simulation = simulation;
         setGameMode((isSimulation()) ? GAME_MODES.SIMULATION : GAME_MODES.DUNGEON_CRAWL);
+        initState();
+        initMasters();
     }
 
     public static void setGame(DC_Game game2) {
@@ -193,16 +197,13 @@ public class DC_Game extends MicroGame {
 
     }
 
-    @Override
-    public void init() {
-        Chronos.mark("GAME_INIT");
-
-
-        //TempEventManager.trigger("create-cell-object" + i + ":" + j, objects);
-        Game.game = this;
-        game = this;
+    public void initState() {
 
         setState(new DC_GameState(this));
+    }
+
+    public void initMasters() {
+
         master = new DC_GameMaster(this);
 //        if (!CoreEngine.isArcaneVault()) {
         manager = new DC_GameManager(getState(), this);
@@ -230,9 +231,16 @@ public class DC_Game extends MicroGame {
         arenaArcadeMaster = new ArenaArcadeMaster(this);
         arcadeManager = new ArcadeManager(this);
         conditionMaster = new DC_ConditionMaster();
-
         logManager = new DC_LogManager(this);
         rules = new DC_Rules(this);
+    }
+
+    @Override
+    public void init() {
+        Chronos.mark("GAME_INIT");
+
+        //TempEventManager.trigger("create-cell-object" + i + ":" + j, objects);
+
         initObjTypes();
         if (!CoreEngine.isLevelEditor() && (!CoreEngine.isArcaneVault() || !XML_Reader.isMacro())) {
             ItemGenerator.init();
@@ -618,7 +626,7 @@ public class DC_Game extends MicroGame {
     }
 
     public GAME_MODES getGameMode() {
-            return gameMode;
+        return gameMode;
     }
 
     public void setGameMode(GAME_MODES gameMode) {
@@ -937,7 +945,7 @@ public class DC_Game extends MicroGame {
     }
 
     public Obj getObjectByCoordinate(Coordinates
-                                             c) {
+                                      c) {
         return getObjectByCoordinate(c, false);
     }
 
@@ -950,13 +958,13 @@ public class DC_Game extends MicroGame {
     }
 
 
+    public enum GAME_MODES {
+        ARENA, SIMULATION, DUEL, ENCOUNTER, DUNGEON_CRAWL, ARENA_ARCADE
+    }
+
     public enum GAME_TYPE {
         SCENARIO, ARCADE, SKIRMISH,
 
-    }
-
-    public enum GAME_MODES {
-        ARENA, SIMULATION, DUEL, ENCOUNTER, DUNGEON_CRAWL, ARENA_ARCADE
     }
 
 }

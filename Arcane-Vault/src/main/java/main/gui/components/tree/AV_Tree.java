@@ -1,5 +1,6 @@
 package main.gui.components.tree;
 
+import main.content.PARAMS;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
@@ -12,6 +13,7 @@ import main.data.xml.XML_Reader;
 import main.elements.Filter;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
+import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
@@ -233,11 +235,11 @@ public class AV_Tree extends G_Panel {
                 result.add(subNode);
             } // TODO is it ok?
             DefaultMutableTreeNode subNode2 = subNode;
-            if (isFullNodeStructureOn()) {
+            if (isFullNodeStructureOn()  ) { //???
                 for (String typeName : upgrades) {
                     subNode.add(new DefaultMutableTreeNode(typeName));
                 }
-            } else {
+            } else { // add upgrade nodes - works only for 3 levels
                 while (true) {
                     List<String> upgrades2 = new LinkedList<>(upgrades);
                     for (String typeName : upgrades2) { // subnode could be a
@@ -307,6 +309,12 @@ public class AV_Tree extends G_Panel {
 
     private Comparator<? super String> getComparator() {
         // if (sortAlphabetically){
+        if (type instanceof DC_TYPE) {
+             switch (((DC_TYPE) type)){
+                 case SPELLS:
+                     return SortMaster.getSorterString(PARAMS.SPELL_DIFFICULTY,type,false);
+             }
+        }
         return new DefaultComparator<>();
         // }else
         // if (sortById){
@@ -316,7 +324,7 @@ public class AV_Tree extends G_Panel {
     }
 
     private void addNode(DefaultMutableTreeNode subNode, String typeName, List<String> list) {
-        if (checkUpgrade(typeName)) {
+      if (workspace==null )  if (checkUpgrade(typeName)) {
             list.add(typeName);
             return;
         }

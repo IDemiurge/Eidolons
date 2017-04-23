@@ -1,8 +1,7 @@
 package main.rules.mechanics;
 
 import main.content.DC_ContentManager;
-import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
@@ -27,16 +26,16 @@ public class CoatingRule {
 	 * ++ CoatingEffect ++ Charges on Coating and Item Mastery as variable
 	 */
 
-    public static final STD_COUNTERS[] COATING_COUNTERS = {
-            UnitEnums.STD_COUNTERS.Poison_Counter, UnitEnums.STD_COUNTERS.Disease_Counter,
-            UnitEnums.STD_COUNTERS.Blight_Counter, UnitEnums.STD_COUNTERS.Corrosion_Counter,
-            UnitEnums.STD_COUNTERS.Blaze_Counter, UnitEnums.STD_COUNTERS.Freeze_Counter,
-            UnitEnums.STD_COUNTERS.Moist_Counter,};
+    public static final COUNTER[] COATING_COUNTERS = {
+            COUNTER.Poison_Counter, COUNTER.Disease_Counter,
+            COUNTER.Blight_Counter, COUNTER.Corrosion_Counter,
+            COUNTER.Blaze_Counter, COUNTER.Freeze_Counter,
+            COUNTER.Moist_Counter,};
     public static final Integer RANGED_MOD = 2;
     public static final Integer THROWING_MOD = 5;
 
     public static int getMaxNumberOfCountersApplied(Obj item,
-                                                    STD_COUNTERS counter) {
+                                                    COUNTER counter) {
         // SIZE
         // 'SKILL'!
         return 0;
@@ -44,7 +43,7 @@ public class CoatingRule {
     }
 
     public static int getMaxNumberOfCountersPerAttack(Obj item,
-                                                      STD_COUNTERS counter) {
+                                                      COUNTER counter) {
         switch (counter) {
             case Blaze_Counter:
                 return 5;
@@ -99,7 +98,7 @@ public class CoatingRule {
         // if (armor == null) //interesting....
         // armor = source;
 
-        for (STD_COUNTERS c : COATING_COUNTERS) {
+        for (COUNTER c : COATING_COUNTERS) {
             boolean ranged = action.isRanged() || throwing;
             applyCounters(target, weapon, source, c, action, throwing);
 
@@ -117,7 +116,7 @@ public class CoatingRule {
     }
 
     private static void applyCounters(Unit target, DC_Obj item,
-                                      Unit source, STD_COUNTERS c, DC_ActiveObj action,
+                                      Unit source, COUNTER c, DC_ActiveObj action,
                                       boolean throwing) {
         if (item.getCounter(c) <= 0) {
             return;

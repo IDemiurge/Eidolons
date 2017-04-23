@@ -6,6 +6,7 @@ import main.ability.effects.Effects;
 import main.ability.effects.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.entity.obj.unit.Unit;
@@ -67,13 +68,11 @@ public class MoistRule extends DC_CounterRule {
         return false;
     }
 
-    protected String getClashingCounter() {
-        return UnitEnums.STD_COUNTERS.Blaze_Counter.getName();
-    }
+
 
     @Override
     public String getCounterName() {
-        return UnitEnums.STD_COUNTERS.Moist_Counter.getName();
+        return COUNTER.Moist_Counter.getName();
     }
 
     @Override

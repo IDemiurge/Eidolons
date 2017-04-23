@@ -42,7 +42,7 @@ public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
         } catch (Exception e) {
             LogMaster.log(1,
                     "AE tree failed to build for type: " + typeName);
-            // e.printStackTrace();
+             e.printStackTrace();
         }
 
     }

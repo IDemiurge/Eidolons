@@ -2,7 +2,7 @@ package main.rules.perk;
 
 import main.ability.effects.Effect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
@@ -25,7 +25,7 @@ public class AbsorptionRule extends DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return UnitEnums.STD_COUNTERS.Blaze_Counter.getName();
+        return COUNTER.Blaze_Counter.getName();
     }
 
     @Override

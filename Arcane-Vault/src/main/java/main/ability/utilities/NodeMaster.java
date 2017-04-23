@@ -12,7 +12,6 @@ import main.data.ability.AE_Item;
 import main.data.ability.ARGS;
 import main.data.ability.Argument;
 import main.data.ability.Mapper;
-import main.data.ability.construct.VariableManager;
 import main.launch.ArcaneVault;
 import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
@@ -115,26 +114,29 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
         AE_Item rootItem = Mapper.getItem(e);
         DefaultMutableTreeNode result = new DefaultMutableTreeNode(rootItem);
 
+        boolean primitive = rootItem.isPrimitive();
         if (rootItem.isENUM()) {
-            if (e.getTextContent() == null) {
-                return new DefaultMutableTreeNode(rootItem.getArg().getEmptyName());
+            AE_Item childItem = null;
+            if (StringMaster.isEmpty(e.getTextContent()) || e.getTextContent().equals(StringMaster.VAR_STRING)) {
+                primitive = true;
+            } else {
+                childItem = getEnumItem(rootItem.getArg(), EnumMaster.getEnumConstIndex(
+                 rootItem.getArg().getCoreClass(), e.getTextContent()));
+
+                DefaultMutableTreeNode child = new DefaultMutableTreeNode(childItem.getName());
+                result.add(child);
+                return result;
             }
-
-            AE_Item childItem = getEnumItem(rootItem.getArg(), EnumMaster.getEnumConstIndex(
-             rootItem.getArg().getCoreClass(), e.getTextContent()));
-
-            DefaultMutableTreeNode child = new DefaultMutableTreeNode(childItem.getName());
-            result.add(child);
-            return result;
         }
-        if (rootItem.isPrimitive()) {
+        if (primitive) {
 
             if (e.getTextContent() == null) {
                 return new DefaultMutableTreeNode(rootItem.getArg().getEmptyName());
             }
 
-            DefaultMutableTreeNode child = new DefaultMutableTreeNode(rootItem.getArg().name()
-             + e.getTextContent());
+            DefaultMutableTreeNode child = new DefaultMutableTreeNode(
+//             rootItem.getArg().name()             +
+              e.getTextContent());
             result.add(child);
             return result;
         }
@@ -248,7 +250,13 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
         if (source instanceof JComboBox) {
             // toggle this how? perhaps based on n_of_items?
             if (e.getModifiers() == COMBO_BOX_MOUSE_MODIFIER) {
-                comboboxAction(source);
+                try {
+                    comboboxAction(source);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    //TODO I dunno why, but exception seem to remove it!
+                    ((JComboBox) source).addActionListener(this);
+                }
             }
         } else if (source instanceof JTextField) {
             textBoxAction(source);
@@ -351,28 +359,33 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
         if (item.isContainer()) {
             return;
         }
+        if (item.getArgList() == null)
+            return;
+        if (item.getArgList().size() <= node.getChildCount())
+            return;
+
+
         for (Argument arg : item.getArgList()) {
-            if (!arg.isPrimitive()) {
-                DefaultMutableTreeNode newChild = new DefaultMutableTreeNode("<" +
-                 arg.name() +
-                 ">" + VariableManager.VARIABLE + "</" +
-                 arg.name() +
-                 ">");
-                if (!Mapper.getItemList(arg).isEmpty()) {
-                    newChild = new DefaultMutableTreeNode(Mapper.getItemList(arg).get(0));
-                }
-                createEmptyNodes(newChild, Mapper.getItemList(arg).get(0));
+//if (!arg.isENUM() &&!arg.isPrimitive())
+            DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(
+             arg.name()  );
+            DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(arg.getEmptyName());
+//                    if (!Mapper.getItemList(arg).isEmpty()) {
+//                        newChild = new DefaultMutableTreeNode(Mapper.getItemList(arg).get(0));
+//                    }
+
+            newChild.add(subNode);
+//                if (!Mapper.getItemList(arg).isEmpty()) {
+//                    createEmptyNodes(newChild, Mapper.getItemList(arg).get(0));
+//                }
                 node.add(newChild);
-                continue;
 
-            }
-
-            Object value = VariableManager.VARIABLE;
-            if (arg.equals(ARGS.BOOLEAN)) {
-                value = false;
-            }
-            DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(Mapper.getPrimitiveItem(arg));
-            itemNode.add(new DefaultMutableTreeNode(value));
+//            Object value = VariableManager.VARIABLE;
+//            if (arg.equals(ARGS.BOOLEAN)) {
+//                value = false;
+//            }
+//            DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(Mapper.getPrimitiveItem(arg));
+//            itemNode.add(new DefaultMutableTreeNode(value));
 
 
         }

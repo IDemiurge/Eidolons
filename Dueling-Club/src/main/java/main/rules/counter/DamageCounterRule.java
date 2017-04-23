@@ -21,7 +21,6 @@ public abstract class DamageCounterRule extends DC_CounterRule {
         return null;
     }
 
-    public abstract String getImage();
 
     public abstract DAMAGE_TYPE getDamageType();
 

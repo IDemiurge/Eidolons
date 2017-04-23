@@ -689,9 +689,12 @@ public class StringMaster {
     }
 
     public static Integer getInteger(String value) {
+        return getInteger(value, null);
+    }
+        public static Integer getInteger(String value, Ref ref) {
         if (!isInteger(value)) {
             try {
-                return new Formula(value).getInt(new Ref());
+                return new Formula(value).getInt(ref==null  ? new Ref(): ref);
             } catch (Exception e2) {
                 e2.printStackTrace();
             }

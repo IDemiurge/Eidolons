@@ -28,5 +28,10 @@ public class ActionInput {
         public Context getContext() {
             return context;
         }
+
+    @Override
+    public String toString() {
+        return action+" with context: "+context;
     }
+}
 
