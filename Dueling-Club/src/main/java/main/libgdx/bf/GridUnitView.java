@@ -79,6 +79,9 @@ public class GridUnitView extends UnitView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (alpha != 1f) {
+            parentAlpha = alpha;
+        }
         super.draw(batch, parentAlpha);
     }
 
@@ -114,9 +117,5 @@ public class GridUnitView extends UnitView {
 
     public int getId() {
         return curId;
-    }
-
-    public void setOutlineTexture(TextureRegion outlineTexture) {
-
     }
 }

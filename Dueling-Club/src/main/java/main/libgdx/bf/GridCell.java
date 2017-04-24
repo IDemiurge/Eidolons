@@ -1,5 +1,6 @@
 package main.libgdx.bf;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -14,6 +15,7 @@ import main.game.core.game.DC_Game;
 import main.libgdx.StyleHolder;
 import main.system.GuiEventManager;
 
+import static main.system.GuiEventType.CALL_BLUE_BORDER_ACTION;
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
 
 public class GridCell extends Group implements Borderable {
@@ -30,8 +32,8 @@ public class GridCell extends Group implements Borderable {
 
     public GridCell(TextureRegion backTexture, int gridX, int gridY) {
         this.backTexture = backTexture;
-        this.setGridX(gridX);
-        this.setGridY(gridY);
+        this.gridX = gridX;
+        this.gridY = gridY;
     }
 
     public GridCell init() {
@@ -54,8 +56,14 @@ public class GridCell extends Group implements Borderable {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(new Coordinates(getGridX(), getGridY()));
-                GuiEventManager.trigger(CREATE_RADIAL_MENU, dc_cell);
-                event.handle();
+                if (button == Input.Buttons.RIGHT) {
+                    GuiEventManager.trigger(CREATE_RADIAL_MENU, dc_cell);
+                    event.handle();
+                }
+
+                if (button == Input.Buttons.LEFT) {
+                    GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, this);
+                }
             }
         });
 
@@ -136,19 +144,8 @@ public class GridCell extends Group implements Borderable {
         return gridX;
     }
 
-    public void setGridX(int gridX) {
-        this.gridX = gridX;
-    }
-
     public int getGridY() {
         return gridY;
     }
 
-    public void setGridY(int gridY) {
-        this.gridY = gridY;
-    }
-
-    public void setGamma(float gamma) {
-        this.gamma = gamma;
-    }
 }

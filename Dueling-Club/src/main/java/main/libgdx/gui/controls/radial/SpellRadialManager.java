@@ -2,6 +2,7 @@ package main.libgdx.gui.controls.radial;
 
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;
+import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
@@ -11,6 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static main.libgdx.gui.controls.radial.RadialManager.addSimpleTooltip;
+import static main.libgdx.texture.TextureCache.getOrCreateGrayscaleR;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 /**
@@ -78,8 +80,11 @@ public class SpellRadialManager {
         RadialValueContainer valueContainer;
         if (object instanceof EntityNode) {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
+            Ref ref = action.getOwnerObj().getRef().getTargetingRef(target);
             valueContainer = new RadialValueContainer(
-                    RadialManager.getTextureRForActive(action, target),
+                    !action.canBeActivated(ref) ?
+                            getOrCreateGrayscaleR(action.getImagePath())
+                            : getOrCreateR(action.getImagePath()),
                     () -> {
                         if (checkForceTargeting(source, target, action)) {
                             action.activate();

@@ -25,7 +25,7 @@ import static main.system.GuiEventType.SHOW_TOOLTIP;
  */
 public class GuiStage extends Stage {
 
-    protected ToolTipManager toolTipManager;
+    private ToolTipManager toolTipManager;
     private LogPanel log;
     private InventoryWithAction inventoryForm;
     private RadialMenu radialMenu;
@@ -48,7 +48,6 @@ public class GuiStage extends Stage {
 
         addActor(radialMenu = new RadialMenu());
         addActor(toolTipManager = new ToolTipManager());
-
 
         log = new LogPanel();
         addActor(log);
@@ -77,43 +76,11 @@ public class GuiStage extends Stage {
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
             DC_Obj dc_obj = (DC_Obj) obj.get();
             GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(null));
-            if (Gdx.input.isButtonPressed(0) || Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-                try {
-                    radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+                radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
             } else {
-                try {
-                    radialMenu.init(createNew(dc_obj));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                radialMenu.init(createNew(dc_obj));
             }
         });
-    }
-
-    public ToolTipManager getToolTipManager() {
-        return toolTipManager;
-    }
-
-    public LogPanel getLog() {
-        return log;
-    }
-
-    public InventoryWithAction getInventoryForm() {
-        return inventoryForm;
-    }
-
-    public RadialMenu getRadialMenu() {
-        return radialMenu;
-    }
-
-    public UnitInfoPanel getInfoPanel() {
-        return infoPanel;
-    }
-
-    public InitiativePanel getInitiativePanel() {
-        return initiativePanel;
     }
 }
