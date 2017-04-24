@@ -40,6 +40,7 @@ import java.util.List;
  */
 public class ChannelingRule {
 
+    static boolean testMode;
     private static final String PATH = "effects\\channeling\\";
     private static final PARAMS[] costParamsResolve = {
      PARAMS.AP_COST,
@@ -156,11 +157,13 @@ public class ChannelingRule {
     }
 
     public static boolean isTestMode() {
-        return true;
+        return testMode;
     }
 
-
-    // Targeting targeting = new FixedTargeting(KEYS.TARGET);
+    public static void setTestMode(boolean testMode) {
+        ChannelingRule.testMode = testMode;
+    }
+// Targeting targeting = new FixedTargeting(KEYS.TARGET);
     // spell_ability.setTargeting(targeting);
     // Effect ELSEeffect = new
     // RemoveBuffEffect(modeEffect.getBuffTypeName());

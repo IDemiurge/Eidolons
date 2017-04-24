@@ -40,9 +40,9 @@ import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
 
 public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
-            "AI", "Gui", "Last", "Recent", "New", "Anims", "Usability",
+     "AI", "Gui", "Last", "Recent", "New", "Anims", "Usability",
 //            "Emitters","Light",
-            "Standoff Test", "Standoff Preset", "Standoff", "Profiling"
+     "Standoff Test", "Standoff Preset", "Standoff", "Profiling"
 
     };
     public static int PRESET_OPTION = -1;
@@ -61,8 +61,8 @@ public class PresetLauncher {
         LAUNCH.Standoff_Preset.maxAnimTime = 2000;
 
         LAUNCH.Standoff.gameMode = GAME_MODES.ARENA;
-        LAUNCH.Standoff. workspaceFilter=WORKSPACE_GROUP.FOCUS;
-        LAUNCH.Standoff. PARTY_CODE= CODE.CHOOSE;
+        LAUNCH.Standoff.workspaceFilter = WORKSPACE_GROUP.FOCUS;
+        LAUNCH.Standoff.PARTY_CODE = CODE.CHOOSE;
         LAUNCH.Standoff.maxAnimTime = 2000;
 
         LAUNCH.Gui.graphicsTest = true;
@@ -72,11 +72,11 @@ public class PresetLauncher {
         LAUNCH.Anims.visionHacked = true;
         LAUNCH.AI.visionHacked = true;
         LAUNCH.Anims.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
-                LOG_CHANNELS.ANIM_DEBUG
+         LOG_CHANNELS.ANIM_DEBUG
         };
         LAUNCH.AI.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
-                LOG_CHANNELS.AI_DEBUG,
-                LOG_CHANNELS.AI_DEBUG2,
+         LOG_CHANNELS.AI_DEBUG,
+         LOG_CHANNELS.AI_DEBUG2,
         };
 
         LAUNCH.JUnit.graphicsOff = true;
@@ -131,14 +131,14 @@ public class PresetLauncher {
     }
 
     private static boolean customInit(LAUNCH launch) {
-        switch (launch){
+        switch (launch) {
             case Emitters:
                 ParticleManager.setAmbienceOn(true);
                 EmitterController.setTestMode(true);
                 CoreEngine.setActionTargetingFiltersOff(true);
                 return true;
             case Anims:
-                CoreEngine.animationTestMode=true;
+                CoreEngine.animationTestMode = true;
                 EmitterController.overrideKeys = true;
                 TestMasterContent.setImmortal(false);
                 CoreEngine.setActionTargetingFiltersOff(true);
@@ -279,7 +279,7 @@ public class PresetLauncher {
     private static void initOptions(String value) {
         for (String optionString : StringMaster.openContainer(value)) {
             PRESET_OPTION option = new EnumMaster<PRESET_OPTION>().retrieveEnumConst(
-                    PRESET_OPTION.class, optionString);
+             PRESET_OPTION.class, optionString);
             switch (option) {
                 case DEBUG:
                     DC_Game.game.setDebugMode(true);
@@ -360,27 +360,27 @@ public class PresetLauncher {
         SELECT_config,
 
     }
-        public enum LAUNCH {
+
+    public enum LAUNCH {
         AI("ai.xml", RULE_SCOPE.TEST, false),
         Gui("graphics test.xml", RULE_SCOPE.BASIC, null),
         Playtest("ai full.xml", RULE_SCOPE.FULL, null),
-        Anims(null , RULE_SCOPE.BASIC, true),
+        Anims(null, RULE_SCOPE.BASIC, true),
         Emitters(true),
         Light("light preview.xml", RULE_SCOPE.BASIC, true),
         JUnit(),
         Profiling(true),
-        Standoff(null , RULE_SCOPE.FULL, null),
-            Standoff_Test(null , RULE_SCOPE.TEST, true),
-            Standoff_Preset(null, RULE_SCOPE.FULL, null),
-        Usability("Usability.xml", RULE_SCOPE.FULL, null)
-            ;
+        Standoff(null, RULE_SCOPE.FULL, null),
+        Standoff_Test(null, RULE_SCOPE.TEST, true),
+        Standoff_Preset(null, RULE_SCOPE.FULL, null),
+        Usability("Usability.xml", RULE_SCOPE.FULL, null);
         public Boolean immortal;
         public CONTROLLER controller;
         public String preset;
         public String dungeonType;
         public String dungeonPath;
         public RULE_SCOPE ruleScope;
-        public boolean graphicsTest  ;
+        public boolean graphicsTest;
         public boolean debugMode;
         public boolean dummy;
         public boolean dummy_pp;
@@ -393,15 +393,16 @@ public class PresetLauncher {
         public LOG_CHANNELS[] logChannelsOn;
         public LOG_CHANNELS[] logChannelsOff;
         public boolean graphicsOff;
+        public boolean logicTest;
         public int ENEMY_CODE;
         public int PARTY_CODE;
         public GAME_MODES gameMode;
-            public WORKSPACE_GROUP workspaceFilter;
-            public int maxAnimTime;
+        public WORKSPACE_GROUP workspaceFilter;
+        public int maxAnimTime;
 
-            //test launches
+        //test launches
         LAUNCH() {
-            deterministicUnitTraining=true;
+            deterministicUnitTraining = true;
 
         }
 
@@ -465,6 +466,7 @@ public class PresetLauncher {
             this.freeActions = true;
             this.fast = true;
             ruleScope = RULE_SCOPE.TEST;
+            logicTest=true;
         }
 
 
