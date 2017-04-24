@@ -140,6 +140,13 @@ public class GridPanel extends Group {
                 if (b == null) {
                     b = cells[obj1.getX()][rows - 1 - obj1.getY()];
                 }
+
+                if (b instanceof GridUnitView) {
+                    final GridUnitView gridView = (GridUnitView) b;
+                    final UnitView unitView = gridView.getInitiativeQueueUnitView();
+                    map.put(unitView, () -> p.getRight().run(obj1));
+                }
+
                 map.put(b, () -> p.getRight().run(obj1));
             }
             GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
