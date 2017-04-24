@@ -3,7 +3,7 @@ package main.game.ai.tools.priority;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
@@ -281,7 +281,7 @@ public class ParamPriorityAnalyzer {
 
     }
 
-    public static int getPriorityForCounters(STD_COUNTERS c) {
+    public static int getPriorityForCounters(COUNTER c) {
         return 0;
 
     }

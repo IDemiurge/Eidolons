@@ -51,8 +51,9 @@ public class GameLauncher {
     public boolean LEADER_MOVES_FIRST = false;
     public String ENEMY_PARTY = "Pirate";
     public String PLAYER_PARTY =
-            "Anfina Ilarfis;Grufirant Grossklotz;Orthaelion Enloth;Belia Haevril"
-//      ";Amaltha Soamdath;Belia Haevril"
+            "Nelia Valrith;"
+            // +"Grufirant Grossklotz;Orthaelion Enloth;Belia Haevril"
+//      ";Anfina Ilarfis;Amaltha Soamdath;Belia Haevril"
             ;
     //     "Demir;Brother Anthin;Ogsit Tholmir;";//"Guy Fox;Fiona Emrin;Donkel Nogvir;";// "Elberen v2;";//"Bandit Archer";//Zail Adelwyn v4
     public boolean DUMMY_MODE = false;
@@ -265,6 +266,7 @@ public class GameLauncher {
         }
 
         workspaceFilter= launch.workspaceFilter;
+        game.getDungeonMaster(). setWorkspaceFilter(workspaceFilter);
         DUMMY_MODE = launch.dummy;
         DUMMY_PP = launch.dummy_pp;
         DEBUG_MODE = launch.debugMode;

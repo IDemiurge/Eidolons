@@ -8,7 +8,7 @@ import main.content.enums.GenericEnums.ASPECT;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
@@ -25,6 +25,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.ColorManager.FLAG_COLOR;
@@ -667,7 +668,7 @@ public class ImageManager {
         return getValueIcon(value, true);
     }
 
-    public static Image getCounterImage(STD_COUNTERS std_COUNTERS) {
+    public static Image getCounterImage(COUNTER COUNTER) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -1001,7 +1002,7 @@ public class ImageManager {
         for (String path : paths) {
             folder = new File(getPATH() + path);
             path += "\\";
-            for (String file : folder.list()) {
+            for (String file :FileManager.listFiles(folder)) {
                 if (new File(getPATH() + path + file).isFile()) {
                     if (!ListMaster.contains(list, file, false)) {
                         list.add(path + file);
@@ -1045,7 +1046,7 @@ public class ImageManager {
             File folder = new File(PATH + path);
 
             path += "\\";
-            for (String file : folder.list()) {
+            for (String file : FileManager.listFiles(folder )) {
                 list.add(path + file);
             }
         }

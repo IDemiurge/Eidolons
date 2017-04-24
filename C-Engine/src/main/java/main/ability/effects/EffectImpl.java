@@ -242,11 +242,11 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             return false;
         }
 
-        try {
-            animateSprite();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            animateSprite();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         if (ref.getObj(KEYS.ABILITY) instanceof ActiveAbilityObj) {
             if (ref.getActive() != null) {
                 if (!ref.getActive().isEffectSoundPlayed()) {
@@ -310,7 +310,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             formula = new Formula(originalFormula.toString());
         }
     }
-
+@Deprecated
     protected void animateSprite() {
         if (!hasSprite()) {
             return;

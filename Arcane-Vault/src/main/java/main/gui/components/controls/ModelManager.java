@@ -136,6 +136,10 @@ public class ModelManager {
             try {
                 TreeMaster.collapseTree(tb.getTree());
                 DefaultMutableTreeNode node = TreeMaster.findNode(tb.getTree(), type.getName());
+                if (node == null ) {
+//                    tb.getTabbedPane().setSelectedIndex(prevIndex);
+                    return ;
+                }
                 tb.getTree().setSelectionPath(new TreePath(node.getPath()));
             } catch (Exception e) {
                 e.printStackTrace();

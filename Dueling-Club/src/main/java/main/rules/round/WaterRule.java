@@ -6,6 +6,7 @@ import main.ability.effects.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.unit.Unit;
@@ -133,11 +134,11 @@ public class WaterRule extends RoundRule implements ActionRule {
     private void addMoistCounters(Unit unit) {
         float factor = Math.min(1, getSubmergedFactor(unit));
         // new effect?
-        int counters = unit.getCounter(UnitEnums.STD_COUNTERS.Moist_Counter);
+        int counters = unit.getCounter(COUNTER.Moist_Counter);
         int max = Math.round(factor * 100);
         int mod = Math.round(factor * 50);
         int newValue = Math.min(max, counters + mod);
-        unit.setCounter(UnitEnums.STD_COUNTERS.Moist_Counter.getName(), newValue);
+        unit.setCounter(COUNTER.Moist_Counter.getName(), newValue);
 
     }
 

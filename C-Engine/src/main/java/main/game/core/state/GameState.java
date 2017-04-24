@@ -10,7 +10,6 @@ import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.core.game.MicroGame;
 import main.game.logic.event.Event;
-import main.game.logic.event.Rule;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -35,7 +34,6 @@ public abstract class GameState {
     protected Map<Integer, ObjType> typeMap = new ConcurrentMap<>();
     protected Map<Obj, List<Attachment>> attachmentsMap = new ConcurrentMap<>();
     protected DequeImpl<Trigger> triggers = new DequeImpl<>();
-    protected DequeImpl<Rule> triggerRules = new DequeImpl<>();
     protected DequeImpl<Effect> effects = new DequeImpl<>();
     protected DequeImpl<Attachment> attachments = new DequeImpl<>();
     //TODO remove spaghetti!
@@ -170,9 +168,7 @@ public abstract class GameState {
         return triggers;
     }
 
-    public synchronized DequeImpl<Rule> getTriggerRules() {
-        return triggerRules;
-    }
+
 
 
     public synchronized DequeImpl<Effect> getEffects() {

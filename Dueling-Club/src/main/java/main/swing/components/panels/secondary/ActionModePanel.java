@@ -99,7 +99,7 @@ public class ActionModePanel extends G_Panel implements MouseListener {
 
         drawActions(g, x, y);
 
-        // g.drawImage(STD_IMAGES.ATTACKS.getImage(), 4, getHeight() - auto,
+        // g.drawImage(STD_IMAGES.ATTACKS.getEmitterPath(), 4, getHeight() - auto,
         // null);
 
         if (isDrawAuto()) {

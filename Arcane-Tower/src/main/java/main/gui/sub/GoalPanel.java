@@ -119,9 +119,9 @@ public class GoalPanel extends G_Panel {
 //		for (TASK_COMMAND cmd : TASK_COMMAND.values()) {
 //			if (!goal.checkCommandShown(cmd))
 //				continue;
-//			Image image = cmd.getImage();
+//			Image image = cmd.getEmitterPath();
 //			if (image == null)
-//				image = ImageManager.getEmptyItemIcon(true).getImage();
+//				image = ImageManager.getEmptyItemIcon(true).getEmitterPath();
 //			CustomButton btn = new ActionButtonEnum<GOAL_COMMAND>(null, image, cmd, this);
 ////			i++;
 ////			y += height;

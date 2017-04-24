@@ -397,7 +397,7 @@ public class TreeMap {
             }
 
             if (isToLeft()) {
-                return -32; // -getImage().getWidth(null) / 2 + 32;
+                return -32; // -getEmitterPath().getWidth(null) / 2 + 32;
             }
             return getImage().getWidth(null) - 32;
             // getXOffsetForLink(this);

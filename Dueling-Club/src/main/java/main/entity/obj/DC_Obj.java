@@ -14,7 +14,7 @@ import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.entity.UnitEnums.STATUS;
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.*;
 import main.content.values.properties.G_PROPS;
@@ -107,7 +107,7 @@ public abstract class DC_Obj extends MicroObj {
         return (DC_Player) super.getOwner();
     }
 
-    public Integer getCounter(STD_COUNTERS c) {
+    public Integer getCounter(COUNTER c) {
         return getCounter(c.getName());
     }
     @Override

@@ -114,7 +114,7 @@ public class HeroTabsPanel extends G_Panel implements TabChangeListener {
         panel.initSelection();
         panelList.add(panel);
         // ImageIcon icon = new ImageIcon(ImageManager.getSizedVersion(hero
-        // .getIcon().getImage(), iconSize));
+        // .getIcon().getEmitterPath(), iconSize));
         // HC_Tab tab = new HC_Tab(hero.getImagePath(),
         // panel.getComp());
         tabs.addTab(hero.getImagePath(), panel.getComp());

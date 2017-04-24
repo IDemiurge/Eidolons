@@ -2,7 +2,7 @@ package main.system.text;
 
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.ROLL_TYPES;
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.values.parameters.PARAMETER;
@@ -534,7 +534,7 @@ public abstract class LogManager {
         log(StringMaster.MESSAGE_PREFIX_PROCEEDING + string);
     }
 
-    public void logCoating(Obj target, Obj item, Obj source, STD_COUNTERS c) {
+    public void logCoating(Obj target, Obj item, Obj source, COUNTER c) {
         // TODO Auto-generated method stub
 
     }

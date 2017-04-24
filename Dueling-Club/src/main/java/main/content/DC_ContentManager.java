@@ -12,7 +12,7 @@ import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
 import main.content.enums.entity.SkillEnums;
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.values.parameters.*;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
@@ -39,36 +39,36 @@ import java.util.*;
 
 public class DC_ContentManager extends ContentManager {
     public static final PARAMETER[] DYNAMIC_PARAMETERS = {
-            PARAMS.C_TOUGHNESS,
-            PARAMS.C_ENDURANCE,
-            PARAMS.C_STAMINA,
-            PARAMS.C_MORALE,
-            PARAMS.C_FOCUS,
-            PARAMS.C_ESSENCE,
+     PARAMS.C_TOUGHNESS,
+     PARAMS.C_ENDURANCE,
+     PARAMS.C_STAMINA,
+     PARAMS.C_MORALE,
+     PARAMS.C_FOCUS,
+     PARAMS.C_ESSENCE,
     };
     public static final PARAMETER[] MAIN_PARAMETERS = {
-            PARAMS.C_ESSENCE,
+     PARAMS.C_ESSENCE,
     };
     public static final VALUE[] ATTRIBUTES = {PARAMS.STRENGTH, PARAMS.VITALITY, PARAMS.AGILITY,
-            PARAMS.DEXTERITY, PARAMS.WILLPOWER, PARAMS.INTELLIGENCE, PARAMS.SPELLPOWER,
-            PARAMS.KNOWLEDGE, PARAMS.WISDOM, PARAMS.CHARISMA,};
+     PARAMS.DEXTERITY, PARAMS.WILLPOWER, PARAMS.INTELLIGENCE, PARAMS.SPELLPOWER,
+     PARAMS.KNOWLEDGE, PARAMS.WISDOM, PARAMS.CHARISMA,};
     public static final PARAMS[] COST_PARAMS = {PARAMS.ESS_COST, PARAMS.ENDURANCE_COST,
-            PARAMS.FOC_COST, PARAMS.STA_COST, PARAMS.AP_COST,};
+     PARAMS.FOC_COST, PARAMS.STA_COST, PARAMS.AP_COST,};
     public static final PARAMS[] PAY_PARAMS = {PARAMS.C_ESSENCE, PARAMS.C_ENDURANCE,
-            PARAMS.C_FOCUS, PARAMS.C_STAMINA, PARAMS.C_N_OF_ACTIONS,};
+     PARAMS.C_FOCUS, PARAMS.C_STAMINA, PARAMS.C_N_OF_ACTIONS,};
     private final static PARAMETER[] ARMOR_MODIFYING_PARAMS = {PARAMS.NOISE, PARAMS.QUICK_SLOTS,
-            PARAMS.ARMOR, PARAMS.DEFENSE, PARAMS.TOUGHNESS, PARAMS.ENDURANCE,
-            PARAMS.SIDE_SIGHT_PENALTY, PARAMS.SIGHT_RANGE, PARAMS.STEALTH, PARAMS.DETECTION,
-            PARAMS.STAMINA_PENALTY, PARAMS.FOCUS_PENALTY, PARAMS.AP_PENALTY,
-            PARAMS.ESSENCE_PENALTY, PARAMS.SPELL_STA_PENALTY, PARAMS.SPELL_FOC_PENALTY,
-            PARAMS.SPELL_AP_PENALTY, PARAMS.SPELL_ESS_PENALTY,
-            // PARAMS.ATTACK_AP_PENALTY, PARAMS.ATTACK_STA_PENALTY, //TODO
-            // OFFHAND?!
-            PARAMS.MOVE_AP_PENALTY, PARAMS.MOVE_STA_PENALTY,
+     PARAMS.ARMOR, PARAMS.DEFENSE, PARAMS.TOUGHNESS, PARAMS.ENDURANCE,
+     PARAMS.SIDE_SIGHT_PENALTY, PARAMS.SIGHT_RANGE, PARAMS.STEALTH, PARAMS.DETECTION,
+     PARAMS.STAMINA_PENALTY, PARAMS.FOCUS_PENALTY, PARAMS.AP_PENALTY,
+     PARAMS.ESSENCE_PENALTY, PARAMS.SPELL_STA_PENALTY, PARAMS.SPELL_FOC_PENALTY,
+     PARAMS.SPELL_AP_PENALTY, PARAMS.SPELL_ESS_PENALTY,
+     // PARAMS.ATTACK_AP_PENALTY, PARAMS.ATTACK_STA_PENALTY, //TODO
+     // OFFHAND?!
+     PARAMS.MOVE_AP_PENALTY, PARAMS.MOVE_STA_PENALTY,
 
     };
     private static final DC_TYPE[] BF_OBJ_TYPES = {DC_TYPE.CHARS, DC_TYPE.BF_OBJ,
-            DC_TYPE.UNITS};
+     DC_TYPE.UNITS};
     private static final Integer[] defaultUnitParams = null;
     // dynamic will be sorted out if need be
 
@@ -80,20 +80,20 @@ public class DC_ContentManager extends ContentManager {
     private static final Class<?>[] PROP_ENUM_CLASSES = {G_PROPS.class, PROPS.class};
     private static final String DEFAULT_DEITY = "Faithless";
     private static final List<VALUE> DEFAULTED_VALUES = new LinkedList<>(Arrays
-            .asList(
+     .asList(
 
-                    PARAMS.COUNTER_MOD));
+      PARAMS.COUNTER_MOD));
     private static final String DEFAULT_WEAPON = "Petty Fist";
     private static PARAMETER[] WEAPON_MODIFYING_PARAMS = {
 
-            PARAMS.ARMOR, PARAMS.DEFENSE, PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.STAMINA_PENALTY,
-            PARAMS.FOCUS_PENALTY, PARAMS.AP_PENALTY, PARAMS.ESSENCE_PENALTY,
-            PARAMS.SPELL_STA_PENALTY, PARAMS.SPELL_FOC_PENALTY, PARAMS.SPELL_AP_PENALTY,
-            PARAMS.SPELL_ESS_PENALTY,
-            // PARAMS.ATTACK_AP_PENALTY, PARAMS.ATTACK_STA_PENALTY,
-            PARAMS.MOVE_AP_PENALTY, PARAMS.MOVE_STA_PENALTY,};
+     PARAMS.ARMOR, PARAMS.DEFENSE, PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.STAMINA_PENALTY,
+     PARAMS.FOCUS_PENALTY, PARAMS.AP_PENALTY, PARAMS.ESSENCE_PENALTY,
+     PARAMS.SPELL_STA_PENALTY, PARAMS.SPELL_FOC_PENALTY, PARAMS.SPELL_AP_PENALTY,
+     PARAMS.SPELL_ESS_PENALTY,
+     // PARAMS.ATTACK_AP_PENALTY, PARAMS.ATTACK_STA_PENALTY,
+     PARAMS.MOVE_AP_PENALTY, PARAMS.MOVE_STA_PENALTY,};
     private static PROPERTY[] headerUnitProps = {G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.STATUS,
-            G_PROPS.MODE};
+     G_PROPS.MODE};
     private static PROPERTY[] headerCharProps = {G_PROPS.RACE, G_PROPS.RANK,};
     // takes
     // weapon
@@ -106,18 +106,18 @@ public class DC_ContentManager extends ContentManager {
     // masteries
     public final static PROPERTY[][] headerProps = {headerUnitProps, headerCharProps,};
     private static PARAMETER[] headerUnitParams = {PARAMS.BASE_DAMAGE, PARAMS.ARMOR,
-            PARAMS.DEFENSE, PARAMS.ATTACK, PARAMS.C_MORALE, PARAMS.RESISTANCE, PARAMS.SPELL_ARMOR,
-            PARAMS.SIGHT_RANGE,
+     PARAMS.DEFENSE, PARAMS.ATTACK, PARAMS.C_MORALE, PARAMS.RESISTANCE, PARAMS.SPELL_ARMOR,
+     PARAMS.SIGHT_RANGE,
 
     };
     private static PARAMETER[] headerUnitParams2 = {PARAMS.C_N_OF_COUNTERS, PARAMS.C_N_OF_ACTIONS,
-            PARAMS.C_INITIATIVE, PARAMS.C_ENDURANCE,
+     PARAMS.C_INITIATIVE, PARAMS.C_ENDURANCE,
 
-            PARAMS.STEALTH, PARAMS.CONCEALMENT, PARAMS.DETECTION, PARAMS.BEHIND_SIGHT_BONUS,
-            PARAMS.SIDE_SIGHT_PENALTY,
+     PARAMS.STEALTH, PARAMS.CONCEALMENT, PARAMS.DETECTION, PARAMS.BEHIND_SIGHT_BONUS,
+     PARAMS.SIDE_SIGHT_PENALTY,
 
-            PARAMS.ENDURANCE_REGEN, PARAMS.C_CARRYING_WEIGHT, PARAMS.INITIATIVE_MODIFIER,
-            PARAMS.INITIATIVE_BONUS,
+     PARAMS.ENDURANCE_REGEN, PARAMS.C_CARRYING_WEIGHT, PARAMS.INITIATIVE_MODIFIER,
+     PARAMS.INITIATIVE_BONUS,
 
     };
 
@@ -126,33 +126,33 @@ public class DC_ContentManager extends ContentManager {
     private static PARAMETER[] headerCharParams = null;
     public final static PARAMETER[][] headerParams = {headerUnitParams, headerCharParams,};
     private static PARAMETER[] FEAT_MODIFYING_PARAMS = {PARAMS.XP_COST_REDUCTION,
-            PARAMS.XP_COST_REDUCTION_VERBATIM_SPELLS, PARAMS.XP_COST_REDUCTION_LEARNED_SPELLS,
-            PARAMS.XP_COST_REDUCTION_MASTERIES,
+     PARAMS.XP_COST_REDUCTION_VERBATIM_SPELLS, PARAMS.XP_COST_REDUCTION_LEARNED_SPELLS,
+     PARAMS.XP_COST_REDUCTION_MASTERIES,
 
-            PARAMS.CRITICAL_REDUCTION, PARAMS.CRITICAL_MOD, PARAMS.COUNTER_MOD,
-            PARAMS.COOLDOWN_MOD, PARAMS.BLOCK_CHANCE, PARAMS.PARRY_CHANCE,
+     PARAMS.CRITICAL_REDUCTION, PARAMS.CRITICAL_MOD, PARAMS.COUNTER_MOD,
+     PARAMS.COOLDOWN_MOD, PARAMS.BLOCK_CHANCE, PARAMS.PARRY_CHANCE,
 
     }; // also
     private static VALUE[] priorityValues = {
 
-            PARAMS.C_N_OF_ACTIONS, PARAMS.C_ENDURANCE, PARAMS.C_TOUGHNESS, PARAMS.LEVEL,};
+     PARAMS.C_N_OF_ACTIONS, PARAMS.C_ENDURANCE, PARAMS.C_TOUGHNESS, PARAMS.LEVEL,};
     private static VALUE[] excludedValuesFromAll = {G_PARAMS.POS_X, G_PARAMS.POS_Y,
-            G_PROPS.BF_OBJECT_TYPE, G_PROPS.IMAGE, G_PROPS.TYPE, G_PROPS.LORE, G_PROPS.DEITY,
-            G_PROPS.DESCRIPTION, G_PROPS.GROUP, G_PROPS.SOUNDSET, PARAMS.QUANTITY};
+     G_PROPS.BF_OBJECT_TYPE, G_PROPS.IMAGE, G_PROPS.TYPE, G_PROPS.LORE, G_PROPS.DEITY,
+     G_PROPS.DESCRIPTION, G_PROPS.GROUP, G_PROPS.SOUNDSET, PARAMS.QUANTITY};
     private static VALUE[][] excludedValues = {
-            //
-            {PROPS.DAMAGE_TYPE,},
-            //
-            {},
-            //
-            {PROPS.DAMAGE_TYPE,}, // CHARS
-            {}, {}};
+     //
+     {PROPS.DAMAGE_TYPE,},
+     //
+     {},
+     //
+     {PROPS.DAMAGE_TYPE,}, // CHARS
+     {}, {}};
     private static String[] unknownValues = {G_PROPS.TYPE.name(), PROPS.VISIBILITY_STATUS.name(),
-            PROPS.DETECTION_STATUS.name(), PROPS.FACING_DIRECTION.name(),
-            // size
-            // type
+     PROPS.DETECTION_STATUS.name(), PROPS.FACING_DIRECTION.name(),
+     // size
+     // type
 
-            PARAMS.C_INITIATIVE.name(), PARAMS.C_N_OF_ACTIONS.name(),
+     PARAMS.C_INITIATIVE.name(), PARAMS.C_N_OF_ACTIONS.name(),
 
     };
     private static List<VALUE> NO_SHOW_NAME_VALUES = new LinkedList<>();
@@ -168,7 +168,7 @@ public class DC_ContentManager extends ContentManager {
     private static Map<PRINCIPLES, PARAMETER> identityMap = new HashMap<>();
     private static String focusMasteries;
     private static String focusClassGroups;
-    private static LinkedList<PARAMETER> dynamicParams=    new LinkedList<>() ;
+    private static LinkedList<PARAMETER> dynamicParams = new LinkedList<>();
 
     static {
         Arrays.stream(PARAMS.values()).forEach(param -> {
@@ -222,7 +222,7 @@ public class DC_ContentManager extends ContentManager {
             }
         }
 
-        for (STD_COUNTERS c : CoatingRule.COATING_COUNTERS) {
+        for (COUNTER c : CoatingRule.COATING_COUNTERS) {
             list.add(generateCoatingParam(c, PARAMS.COATING_COUNTERS_APPLIED_PER_HIT_MOD));
             list.add(generateCoatingParam(c, PARAMS.COATING_COUNTERS_APPLIED_TO_ITEM_MOD));
             list.add(generateCoatingParam(c, PARAMS.COATING_COUNTERS_SPENT_MOD));
@@ -232,20 +232,20 @@ public class DC_ContentManager extends ContentManager {
 
     }
 
-    private static PARAMETER generateCoatingParam(STD_COUNTERS c, PARAMS p) {
+    private static PARAMETER generateCoatingParam(COUNTER c, PARAMS p) {
         Param coatingParam = new Param(p);
         coatingParam.setName(p.getName().replace("Coating Counters", c.getName()));
         return coatingParam;
     }
 
-    public static PARAMETER getCoatingMaxPerHitModParam(STD_COUNTERS c) {
+    public static PARAMETER getCoatingMaxPerHitModParam(COUNTER c) {
         return ContentManager.getPARAM(PARAMS.COATING_COUNTERS_APPLIED_PER_HIT_MOD.getName()
-                .replace("Coating Counters", c.getName()));
+         .replace("Coating Counters", c.getName()));
     }
 
-    public static PARAMETER getCoatingAppliedModParam(STD_COUNTERS c) {
+    public static PARAMETER getCoatingAppliedModParam(COUNTER c) {
         return ContentManager.getPARAM(PARAMS.COATING_COUNTERS_APPLIED_TO_ITEM_MOD.getName()
-                .replace("Coating Counters", c.getName()));
+         .replace("Coating Counters", c.getName()));
     }
 
     public static Collection<PROPERTY> generateDerivedProperties() {
@@ -362,7 +362,7 @@ public class DC_ContentManager extends ContentManager {
 
     public static PARAMETER[] getArmorModifyingParams() {
         return ARMOR_MODIFYING_PARAMS_FULL
-                .toArray(new PARAMETER[ARMOR_MODIFYING_PARAMS_FULL.size()]);
+         .toArray(new PARAMETER[ARMOR_MODIFYING_PARAMS_FULL.size()]);
     }
 
     public static PARAMETER[] getWeaponModifyingParams() {
@@ -461,16 +461,16 @@ public class DC_ContentManager extends ContentManager {
 
     public static PARAMETER[] getWeaponWeightPenaltyParams() {
         return new PARAMETER[]{
-                // PARAMS.ATTACK_MOD,
-                PARAMS.ATTACK_STA_PENALTY, PARAMS.ATTACK_AP_PENALTY, PARAMS.SPELL_FOC_PENALTY,
-                PARAMS.SPELL_AP_PENALTY,};
+         // PARAMS.ATTACK_MOD,
+         PARAMS.ATTACK_STA_PENALTY, PARAMS.ATTACK_AP_PENALTY, PARAMS.SPELL_FOC_PENALTY,
+         PARAMS.SPELL_AP_PENALTY,};
     }
 
     public static PARAMETER[] getArmorWeightPenaltyParams() {
         return new PARAMETER[]{
-                // PARAMS.DEFENSE_MOD,
-                PARAMS.MOVE_STA_PENALTY, PARAMS.MOVE_AP_PENALTY, PARAMS.SPELL_STA_PENALTY,
-                PARAMS.SPELL_ESS_PENALTY,};
+         // PARAMS.DEFENSE_MOD,
+         PARAMS.MOVE_STA_PENALTY, PARAMS.MOVE_AP_PENALTY, PARAMS.SPELL_STA_PENALTY,
+         PARAMS.SPELL_ESS_PENALTY,};
     }
 
     public static void addDefaultValues(Entity entity, boolean dynamic) {
@@ -496,15 +496,15 @@ public class DC_ContentManager extends ContentManager {
             boolean unit = C_OBJ_TYPE.UNITS_CHARS.equals(entity.getOBJ_TYPE_ENUM());
 
             if (DEFAULTED_VALUES.contains(VAL)
-                    || (!unit && StringMaster.isEmpty(entity.getValue(VAL)) && !StringMaster
-                    .isEmpty(value))) {
+             || (!unit && StringMaster.isEmpty(entity.getValue(VAL)) && !StringMaster
+             .isEmpty(value))) {
                 if (entity instanceof Obj) {
                     entity.getType().setValue(VAL, value);
                 }
                 entity.setValue(VAL, value);
                 if (unit) {
                     LogMaster.log(1, entity + ":: Added Default Value " + ""
-                            + VAL + "=" + value);
+                     + VAL + "=" + value);
                 }
             }
 
@@ -527,7 +527,7 @@ public class DC_ContentManager extends ContentManager {
                 continue;
             }
             if (StringMaster.isEmpty(entity.getValue(VAL))
-                    && !StringMaster.isEmptyOrZero(VAL.getDefaultValue())) {
+             && !StringMaster.isEmptyOrZero(VAL.getDefaultValue())) {
                 if (entity instanceof Obj) {
                     entity.getType().setValue(VAL, VAL.getDefaultValue());
                 }
@@ -787,7 +787,7 @@ public class DC_ContentManager extends ContentManager {
 
     public static CLASS_GROUP getMainClassGroup(Unit hero) {
         return new EnumMaster<CLASS_GROUP>().retrieveEnumConst(CLASS_GROUP.class, hero
-                .getProperty(PROPS.FIRST_CLASS));
+         .getProperty(PROPS.FIRST_CLASS));
 
     }
 
@@ -815,7 +815,7 @@ public class DC_ContentManager extends ContentManager {
 
     public static PRINCIPLES getPrinciple(PARAMETER param) {
         return new EnumMaster<PRINCIPLES>().retrieveEnumConst(PRINCIPLES.class, StringMaster
-                .openContainer(param.getName(), " ").get(0));
+         .openContainer(param.getName(), " ").get(0));
     }
 
     public static List<String> getStandardDeities() {
@@ -831,7 +831,7 @@ public class DC_ContentManager extends ContentManager {
     public static String getMainAttributeForClass(DC_FeatObj classObj) {
 
         CLASS_GROUP group = new EnumMaster<CLASS_GROUP>().retrieveEnumConst(CLASS_GROUP.class,
-                classObj.getProperty(G_PROPS.CLASS_GROUP));
+         classObj.getProperty(G_PROPS.CLASS_GROUP));
         if (group != null) {
             switch (group) {
                 case ACOLYTE:
@@ -897,7 +897,7 @@ public class DC_ContentManager extends ContentManager {
             if (dmg_type != GenericEnums.DAMAGE_TYPE.POISON && dmg_type != GenericEnums.DAMAGE_TYPE.PHYSICAL) {
                 if (dmg_type.isNatural() || !dmg_type.isMagical()) {
                     list.add(new MultiParameter(" / ", getArmorParamForDmgType(dmg_type),
-                            getArmorSelfDamageParamForDmgType(dmg_type)));
+                     getArmorSelfDamageParamForDmgType(dmg_type)));
                 }
             }
         }
@@ -928,6 +928,24 @@ public class DC_ContentManager extends ContentManager {
 
     public static LinkedList<PARAMETER> getDynamicParams() {
         return dynamicParams;
+    }
+
+    public static PARAMS getPayParameterForCost(PARAMS costParam) {
+        switch (costParam) {
+            case AP_COST:
+                return PARAMS.C_N_OF_ACTIONS;
+            case ESS_COST:
+                return PARAMS.C_ESSENCE;
+            case STA_COST:
+                return PARAMS.C_STAMINA;
+            case FOC_COST:
+                return PARAMS.C_FOCUS;
+            case ENDURANCE_COST:
+                return PARAMS.C_ENDURANCE;
+            case CP_COST:
+                return PARAMS.C_N_OF_COUNTERS;
+        }
+        return costParam;
     }
 
     public void init() {

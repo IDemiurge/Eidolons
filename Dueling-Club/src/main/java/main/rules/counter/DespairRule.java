@@ -5,7 +5,7 @@ import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.common.ModifyValueEffect;
 import main.content.PARAMS;
-import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
@@ -29,7 +29,7 @@ public class DespairRule extends DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return UnitEnums.STD_COUNTERS.Despair_Counter.getName();
+        return COUNTER.Despair_Counter.getName();
     }
 
     @Override

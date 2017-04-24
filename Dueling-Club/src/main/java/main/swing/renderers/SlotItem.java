@@ -1,6 +1,6 @@
 package main.swing.renderers;
 
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
@@ -41,7 +41,7 @@ public class SlotItem extends ListItem<DC_HeroAttachedObj> {
         int y = 0;
         BufferedImage bufferedImage = ImageManager.getBufferedImage(image);
         Graphics g = bufferedImage.getGraphics();
-        for (STD_COUNTERS c : CoatingRule.COATING_COUNTERS) {
+        for (COUNTER c : CoatingRule.COATING_COUNTERS) {
             if (coatedObj.getCounter(c.getName()) > 0) {
                 g.drawImage(c.getImage(), x, y, null);
                 x++;

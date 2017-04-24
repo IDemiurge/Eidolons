@@ -1,6 +1,8 @@
 package main.entity.tools.active.spell;
 
+import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
+import main.entity.tools.EntityInitializer;
 import main.entity.tools.active.ActiveMaster;
 import main.entity.tools.active.Executor;
 
@@ -16,9 +18,12 @@ public class SpellActiveMaster extends ActiveMaster {
      */
 
     @Override
-    protected Executor createHandler() {
-        return new Executor(getEntity(), this) {
+    protected EntityInitializer<DC_ActiveObj> createInitializer() {
+        return new SpellInitializer(getEntity(), this);
+    }
 
-        };
+    @Override
+    protected Executor createHandler() {
+        return new SpellExecutor(getEntity(), this) ;
     }
 }

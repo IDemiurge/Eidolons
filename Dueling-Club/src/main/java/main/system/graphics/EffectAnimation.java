@@ -2,7 +2,7 @@ package main.system.graphics;
 
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.entity.active.DC_ActiveObj;
@@ -47,7 +47,7 @@ public class EffectAnimation extends ActionAnimation {
 
     private boolean drawCounterMod(AnimPhase phase) {
         String counterName = (String) phase.getArgs()[0];
-        STD_COUNTERS counter = CounterMaster.findCounterConst(counterName);
+        COUNTER counter = CounterMaster.findCounterConst(counterName);
         MOD modtype = (MOD) phase.getArgs()[1];
         Integer modValue = (Integer) phase.getArgs()[2];
 

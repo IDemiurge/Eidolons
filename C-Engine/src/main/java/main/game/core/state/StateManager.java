@@ -3,13 +3,11 @@ package main.game.core.state;
 import main.ability.effects.Effect;
 import main.content.OBJ_TYPE;
 import main.elements.triggers.Trigger;
-import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.core.game.GameManager;
 import main.game.logic.event.Event;
-import main.game.logic.event.Rule;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 
@@ -83,21 +81,7 @@ public abstract class StateManager {
         }
     }
 
-    public void checkRules(Event e) {
-        if (state.triggerRules.size() == 0) {
-            return;
-        }
 
-        for (Rule rule : state.triggerRules) {
-            if (rule.isOn()) {
-                if (rule.check(e)) {
-                    Ref ref = Ref.getCopy(e.getRef());
-                    ref.setEvent(e);
-                    rule.apply(ref);
-                }
-            }
-        }
-    }
 
 
     public void applyEffects(int layer ) {
@@ -193,4 +177,6 @@ public abstract class StateManager {
 
     public void resetValues() {
     }
+
+    public abstract void checkRules(Event e);
 }

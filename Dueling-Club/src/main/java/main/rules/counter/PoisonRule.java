@@ -9,6 +9,7 @@ import main.content.consts.Constants;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.entity.obj.unit.Unit;
@@ -69,7 +70,7 @@ public class PoisonRule extends DamageCounterRule {
 
     @Override
     public String getCounterName() {
-        return UnitEnums.STD_COUNTERS.Poison_Counter.toString();
+        return COUNTER.Poison_Counter.toString();
     }
 
     @Override
@@ -100,9 +101,5 @@ public class PoisonRule extends DamageCounterRule {
                 / 100;
     }
 
-    @Override
-    public String getImage() {
-        return "mini\\spell\\Death\\Poison.jpg";
-    }
 
 }

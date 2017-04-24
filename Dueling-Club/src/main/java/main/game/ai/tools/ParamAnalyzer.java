@@ -108,12 +108,12 @@ public class ParamAnalyzer extends AiHandler {
     }
 
     public static boolean isHazed(Unit unit) {
-        int buffLevel = unit.getGame().getRules().getFocusRule()
+        int buffLevel = unit.getGame().getRules().getFocusBuffRule()
                 .getBuffLevel(unit);
         if (buffLevel < 0) {
             return false;
         }
-        if (buffLevel == unit.getGame().getRules().getFocusRule().getMaxLevel()) {
+        if (buffLevel == unit.getGame().getRules().getFocusBuffRule().getMaxLevel()) {
             return false;
         }
         return true;
@@ -164,7 +164,7 @@ public class ParamAnalyzer extends AiHandler {
     }
 
     public static boolean isMoraleIgnore(Unit unit) {
-        return !unit.getGame().getRules().getMoraleRule().check(unit);
+        return !unit.getGame().getRules().getMoraleBuffRule().check(unit);
     }
 
     public static boolean isStaminaIgnore(Unit unit) {
@@ -172,7 +172,7 @@ public class ParamAnalyzer extends AiHandler {
     }
 
     public static boolean isFocusIgnore(Unit unit) {
-        return !unit.getGame().getRules().getFocusRule().check(unit);
+        return !unit.getGame().getRules().getFocusBuffRule().check(unit);
     }
 
     public static int getParamMinValue(PARAMETER param) {

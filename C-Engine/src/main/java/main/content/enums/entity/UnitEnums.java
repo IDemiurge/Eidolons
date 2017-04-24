@@ -4,6 +4,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
 import java.awt.*;
+import java.util.Map;
 
 /**
  * Created by JustMe on 2/14/2017.
@@ -285,8 +286,7 @@ public class UnitEnums {
             return StringMaster.getWellFormattedString(name());
         }
     }
-
-    public enum STD_COUNTERS {
+    public enum COUNTER {
         Bleeding_Counter,
         Blaze_Counter,
         Poison_Counter,
@@ -294,19 +294,60 @@ public class UnitEnums {
         Disease_Counter,
         Ensnared_Counter,
         Moist_Counter,
+        Electrified_Counter{
+            public boolean isNegativeAllowed() {
+                return true ;
+            }
+        },
+        Lava_Counter,
+        Ash_Counter,
         Clay_Counter,
         Encase_Counter,
-
+        Grease_Counter,
         Rage_Counter,
         Madness_Counter,
         Despair_Counter,
         Lust_Counter,
         Hatred_Counter,
 
+        Virtue_Counter,
+        Illumination_Counter,
+        Concealment_Counter,
+        Haze_Counter,
+        Zeal_Counter,
+        Encryption_Counter,
+        Void_Counter,
+        Magnetized,
+        Time_Warped{
+            public boolean isNegativeAllowed() {
+                return true ;
+            }
+        },
+        Mutagenic,
+        Zen,
+        Loyalty,
+        Demon_debt{
+            public boolean isNegativeAllowed() {
+                return true ;
+            }
+        },
+        Demon_names,
+        Ward,
+
         Soul_Counter,
         Undying_Counter,
         Blight_Counter,
-        Corrosion_Counter,;
+        Corrosion_Counter, Oblivion_Counter, Taint_Counter, Aether_Counter, Warp_Counter, Suffocation_Counter;
+
+        private Map<COUNTER, COUNTER_INTERACTION> interactionMap;
+        private COUNTER down;
+        private COUNTER up;
+        public boolean isNegativeAllowed(){
+            return false;
+        }
+
+        COUNTER() {
+        }
 
         public String toString() {
             return StringMaster.getWellFormattedString(name());
@@ -325,9 +366,43 @@ public class UnitEnums {
 
         }
 
-    }
+        public void setInteractionMap(Map<COUNTER, COUNTER_INTERACTION> interactionMap) {
+            this.interactionMap = interactionMap;
+        }
 
-    public enum STD_UNIT_TYPES {
+        public Map<COUNTER, COUNTER_INTERACTION> getInteractionMap() {
+            return interactionMap;
+        }
+
+        public void setDown(COUNTER down) {
+            this.down = down;
+        }
+
+        public COUNTER getDown() {
+            return down;
+        }
+
+        public void setUp(COUNTER up) {
+            this.up = up;
+        }
+
+        public COUNTER getUp() {
+            return up;
+        }
+    }
+    public enum COUNTER_INTERACTION {
+        CONVERT_TO,  CONVERT_FROM, MUTUAL_DELETION, DELETE_OTHER, DELETE_SELF,
+        TRANSFORM_UP, TRANSFORM_DOWN,
+        GROW_SELF,GROW_OTHER,GROW_BOTH,
+    }
+        public enum COUNTER_OPERATION {
+        TRANSFER_TO,
+            TRANSFER_FROM,
+
+            ;
+
+        }
+    public enum STD_UNDEAD_TYPES {
         GHOST,
         GHOUL,
         LICH,

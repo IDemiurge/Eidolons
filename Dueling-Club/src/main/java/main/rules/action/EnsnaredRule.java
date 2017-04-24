@@ -7,6 +7,7 @@ import main.ability.effects.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.entity.Ref;
@@ -56,7 +57,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
 
     @Override
     public String getCounterName() {
-        return UnitEnums.STD_COUNTERS.Ensnared_Counter.getName();
+        return COUNTER.Ensnared_Counter.getName();
     }
 
     @Override

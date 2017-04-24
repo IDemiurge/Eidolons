@@ -9,6 +9,7 @@ import main.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import main.ability.effects.common.AddStatusEffect;
 import main.ability.targeting.TemplateAutoTargeting;
 import main.content.enums.entity.UnitEnums.STATUS;
+import main.data.filesys.PathFinder;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
@@ -47,6 +48,10 @@ public abstract class DC_CounterRule {
     }
 
     public abstract String getBuffName();
+
+    public final String getEmitterPath() {
+        return PathFinder.getSfxPath()+"counters\\"+getCounterName();
+    }
 
     public void initEffects() {
         effects = new Effects();
@@ -109,7 +114,9 @@ public abstract class DC_CounterRule {
             if (getNumberOfCounters(unit) <= 0) {
                 continue;
             }
-            applyCountersClash(unit);
+            applyCountersInteractions(unit);
+            applyCountersConversions(unit);
+            applyCountersTranfers(unit);
             // log TODO spread
             int counterMod = getCounterNumberReductionPerTurn(unit);
             if (counterMod != 0) {
@@ -122,6 +129,7 @@ public abstract class DC_CounterRule {
             }
         }
     }
+
 
     public boolean checkApplies(Unit unit) {
         return true;
@@ -184,17 +192,21 @@ public abstract class DC_CounterRule {
         return null;
     }
 
-    protected void applyCountersClash(Unit unit) {
-        if (getClashingCounter() != null) {
-            int c = unit.getCounter(getClashingCounter());
-            unit.modifyCounter(getClashingCounter(), -c);
-            unit.modifyCounter(getCounterName(), -c);
-        }
+    protected void applyCountersTranfers(Unit unit) {
     }
 
-    protected String getClashingCounter() {
-        return null;
+    protected void applyCountersConversions(Unit unit) {
     }
+    protected void applyCountersInteractions(Unit unit) {
+
+//        if (getClashingCounter() != null) {
+//            int c = unit.getCounter(getClashingCounter());
+//            unit.modifyCounter(getClashingCounter(), -c);
+//            unit.modifyCounter(getCounterName(), -c);
+//        }
+    }
+
+
 
     public abstract STATUS getStatus();
 

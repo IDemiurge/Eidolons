@@ -178,7 +178,7 @@ public class MusicListPanel extends G_Panel {
         Map<String, List<String>> customMap = null;
 
         List<File> rootDirs = FileManager.getFilesFromDirectory(AHK_Master.GENERATED_LISTS_FOLDER,
-                true);
+         true);
         for (File dir : rootDirs) {
             String rootFolder = dir.getPath();
             List<File> filesFromDirectory = FileManager.getFilesFromDirectory(rootFolder, true);
@@ -209,7 +209,7 @@ public class MusicListPanel extends G_Panel {
             if (file.isDirectory()) {
                 String name = file.getName();
                 G_Panel view = initView(getCustomMap(name, FileManager.getFilesFromDirectory(file
-                        .getPath(), false), customMap), isLetterShown());
+                 .getPath(), false), customMap), isLetterShown());
                 // viewsPanel.addView(file.getName(), view);
             } else {
                 topList.add(file);
@@ -280,10 +280,15 @@ public class MusicListPanel extends G_Panel {
                 descending = !descending;
             }
             lines = SortMaster.sortByValue(lines, getSortValue(), AT_OBJ_TYPE.MUSIC_LIST,
-                    descending);
+             descending);
             restoreLineFormat(lines);
         } else {
-            Collections.sort(lines, getComparator(chars));
+            try {
+                Collections.sort(lines, getComparator(chars));
+            } catch (Exception e) {
+                e.printStackTrace();
+                main.system.auxiliary.log.LogMaster.log(1,"sorting failed: " +chars );
+            }
         }
 
         return lines;
@@ -307,7 +312,7 @@ public class MusicListPanel extends G_Panel {
         for (String sub : list) {
 
             String formatted = StringMaster.getWellFormattedString(StringMaster
-                    .getLastPathSegment(StringMaster.cropFormat(sub)));
+             .getLastPathSegment(StringMaster.cropFormat(sub)));
             ObjType type = DataManager.getType(formatted, AT_OBJ_TYPE.MUSIC_LIST);
             if (type == null) {
                 // formatted = StringMaster.getTypeNameFormat(generic);
@@ -356,8 +361,8 @@ public class MusicListPanel extends G_Panel {
 
         if (filterProp != null) {
             boolean result = DataManager.getType(name, AT_OBJ_TYPE.MUSIC_LIST).
-                    // mouseListener.getList().
-                            checkProperty(filterProp, filterValue);
+             // mouseListener.getList().
+              checkProperty(filterProp, filterValue);
             if (result) {
                 if (filterOut) {
                     applyResult(button);

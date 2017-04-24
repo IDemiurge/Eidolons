@@ -5,7 +5,7 @@ import main.ability.effects.OneshotEffect;
 import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
 import main.content.DC_ContentManager;
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroItemObj;
@@ -28,7 +28,7 @@ public class ModifyCounterEffect extends MicroEffect  implements OneshotEffect, 
         this.counterName = name;
     }
 
-    public ModifyCounterEffect(STD_COUNTERS counter, MOD modtype, String initialValue) {
+    public ModifyCounterEffect(COUNTER counter, MOD modtype, String initialValue) {
         this(counter.getName(), modtype, initialValue);
     }
 

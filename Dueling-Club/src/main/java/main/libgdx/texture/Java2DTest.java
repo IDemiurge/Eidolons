@@ -101,7 +101,7 @@ public class Java2DTest implements ApplicationListener {
 //        try {
 //            batch.draw(TextureManager.toTexture(
 //             ImageManager.getBufferedImage8bit(      ImageManager.getBufferedImage(
-//             ImageManager.getImage(ImageManager.DEFAULT_BACKGROUND)))), 0, 0);
+//             ImageManager.getEmitterPath(ImageManager.DEFAULT_BACKGROUND)))), 0, 0);
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }

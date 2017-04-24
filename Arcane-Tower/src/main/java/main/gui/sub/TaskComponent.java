@@ -344,8 +344,8 @@ public class TaskComponent extends G_Panel implements ClickListenerEnum<TASK_COM
         BLOCK(VISUALS.CANCEL.getImage()),
         DONE(STD_IMAGES.BAG.getImage()),
         REMOVE(STD_IMAGES.DEATH.getImage()),
-        // INSPECT(STD_IMAGES.waSEARCH.getImage()),
-        // RESET(STD_IMAGES.FOOT.getImage())
+        // INSPECT(STD_IMAGES.waSEARCH.getEmitterPath()),
+        // RESET(STD_IMAGES.FOOT.getEmitterPath())
         ;
         private Image image;
 

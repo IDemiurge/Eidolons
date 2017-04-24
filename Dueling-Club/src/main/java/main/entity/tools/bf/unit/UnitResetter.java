@@ -470,10 +470,10 @@ public class UnitResetter extends EntityResetter<Unit> {
             if (!getGame().getRules().getStaminaRule().apply(getEntity())) {
                 getEntity().setInfiniteValue(PARAMS.STAMINA, 0.2f);
             }
-            if (!getGame().getRules().getFocusRule().apply(getEntity())) {
+            if (!getGame().getRules().getFocusBuffRule().apply(getEntity())) {
                 getEntity().setInfiniteValue(PARAMS.FOCUS, 1);
             }
-            if (!getGame().getRules().getMoraleRule().apply(getEntity())) {
+            if (!getGame().getRules().getMoraleBuffRule().apply(getEntity())) {
                 getEntity().setInfiniteValue(PARAMS.MORALE, 0.5f);
             }
             if (!getGame().getRules().getWeightRule().apply(getEntity())) {

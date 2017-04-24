@@ -661,9 +661,9 @@ public class DrawMaster {
                 // if (cellComp.getTerrainObj().getUnitVisionStatus() ==
                 // UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
                 // if (ds == UNIT_TO_PLAYER_VISION.DETECTED) {
-                // img = (ImageManager.getHiddenCellIcon().getImage());
+                // img = (ImageManager.getHiddenCellIcon().getEmitterPath());
                 // } else
-                // img = ImageManager.getUnknownCellIcon().getImage();
+                // img = ImageManager.getUnknownCellIcon().getEmitterPath();
                 // } else
                 {
                     img = ImageManager.getEmptyCellIcon().getImage();
@@ -688,14 +688,14 @@ public class DrawMaster {
 
                 // TODO new Image()
                 // g.drawImage(ImageTransformer.getTransparent(ImageManager.getUnknownCellIcon()
-                // .getImage(), gammaMod), 0, 0, null);
+                // .getEmitterPath(), gammaMod), 0, 0, null);
                 // another layer perhaps? EmptyCell?
 
                 // TODO Colored lighting !
                 // Image blended = ImageTransformer.blendImages(
-                // ImageManager.getEmptyCellIcon().getImage(),
+                // ImageManager.getEmptyCellIcon().getEmitterPath(),
                 // ImageManager.getUnknownCellIcon()
-                // .getImage(), factor, 100
+                // .getEmitterPath(), factor, 100
                 // new Random().nextInt(100) // alpha
                 // doesn't
                 // work
@@ -704,16 +704,16 @@ public class DrawMaster {
                 // use same method as for coloring obj pics!
                 // g.drawImage(coloredCenter, 4, 4, null);
 
-                // g.drawImage(ImageManager.getEmptyCellIcon().getImage(), 0, 0,
+                // g.drawImage(ImageManager.getEmptyCellIcon().getEmitterPath(), 0, 0,
                 // null);
                 // Image darkeningOverlay =
                 // ImageTransformer.getTransparent(ImageManager
-                // .getUnknownCellIcon().getImage(), 255 * gammaMod / 100);
+                // .getUnknownCellIcon().getEmitterPath(), 255 * gammaMod / 100);
                 // g.drawImage(darkeningOverlay, 0, 0, null);
 
                 // BufferedImage bufferedImage =
                 // ImageManager.getBufferedImage(ImageManager
-                // .getEmptyCellIcon().getImage());
+                // .getEmptyCellIcon().getEmitterPath());
                 // ImageTransformer.gammaScale(bufferedImage, factor);
                 // Image scaled = bufferedImage;
                 // g.drawImage(scaled, 0, 0, null);
@@ -1324,7 +1324,7 @@ public class DrawMaster {
         image = new BufferedImage(GuiManager.getFullObjSize(), GuiManager.getFullObjSize(),
                 BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
-        // Image img = ImageManager.getSizedVersion(obj.getIcon().getImage(),
+        // Image img = ImageManager.getSizedVersion(obj.getIcon().getEmitterPath(),
         // new Dimension(objSize,
         // objSize));
 
@@ -1459,12 +1459,12 @@ public class DrawMaster {
     // switch (obj.getUnitVisionStatus()) {
     // case BEYOND_SIGHT:
     // applyBeyondSight(image, obj);
-    // image.getGraphics().drawImage(ImageManager.BORDER_BEYOND_SIGHT.getImage(),
+    // image.getGraphics().drawImage(ImageManager.BORDER_BEYOND_SIGHT.getEmitterPath(),
     // 0, 0,
     // null);
     // break;
     // case CONCEALED:
-    // image.getGraphics().drawImage(BORDER.CONCEALED.getImage(), 0, 0, null);
+    // image.getGraphics().drawImage(BORDER.CONCEALED.getEmitterPath(), 0, 0, null);
     // break; // darken
     // case IN_SIGHT:
     // break; // highlight
@@ -1477,7 +1477,7 @@ public class DrawMaster {
             BORDER border = obj.isMine() ? ImageManager.BORDER_ALLY_HIGHLIGHT
                     : ImageManager.BORDER_ENEMY_HIGHLIGHT;
             g.drawImage(
-                    // ImageManager.getSizedVersion(border.getImage(), new
+                    // ImageManager.getSizedVersion(border.getEmitterPath(), new
                     // Dimension(objSize,
                     // objSize))
                     border.getImage(), 0, 0, null);
@@ -1485,13 +1485,13 @@ public class DrawMaster {
         // if (obj.isInfoSelected()) {
         // if (obj.getGame().getManager().getInfoObj() == obj) {
         // BORDER border = BORDER.HIGHLIGHTED;
-        // g.drawImage(border.getImage(), 0, 0, null);
+        // g.drawImage(border.getEmitterPath(), 0, 0, null);
         // } else
         {
             if (obj.isActiveSelected()) {
                 // BORDER border = obj.isMine() ? BORDER.HIGHLIGHTED_GREEN
                 // : ImageManager.BORDER_ENEMY_HIGHLIGHT;
-                // g.drawImage(border.getImage(), 0, 0, null);
+                // g.drawImage(border.getEmitterPath(), 0, 0, null);
             }
         }
 
@@ -1607,7 +1607,7 @@ public class DrawMaster {
             return;
             // unitEmblem=
             // ImageManager.getSizedVersion(
-            // ImageManager.getEmptyEmblem().getImage(), zoom);
+            // ImageManager.getEmptyEmblem().getEmitterPath(), zoom);
         }
         // if (obj.isActiveSelected()) {
         // if (obj.isMine())

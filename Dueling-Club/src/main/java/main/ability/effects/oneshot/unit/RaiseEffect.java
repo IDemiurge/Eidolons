@@ -6,6 +6,7 @@ import main.ability.effects.Effects;
 import main.ability.effects.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.STD_UNDEAD_TYPES;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -209,40 +210,40 @@ public class RaiseEffect extends SummonEffect {
             // per Spellpower/Mastery?
             case GHOST:
                 if (!humanoid) {
-                    return UnitEnums.STD_UNIT_TYPES.WRAITH_BEAST.toString();
+                    return STD_UNDEAD_TYPES.WRAITH_BEAST.toString();
                 }
                 if (raiseMod == null) // ++ init raiseMod from skills?
                 {
-                    return UnitEnums.STD_UNIT_TYPES.GHOST.toString();
+                    return STD_UNDEAD_TYPES.GHOST.toString();
                 }
             case GHOUL:
                 if (!humanoid) {
-                    return UnitEnums.STD_UNIT_TYPES.UNDEAD_BEAST.toString(); // ++
+                    return STD_UNDEAD_TYPES.UNDEAD_BEAST.toString(); // ++
                 }
                 // monstrocity!
-                return UnitEnums.STD_UNIT_TYPES.GHOUL.toString();
+                return STD_UNDEAD_TYPES.GHOUL.toString();
             case LICH:
                 if (!humanoid) {
-                    return UnitEnums.STD_UNIT_TYPES.WRAITH_BEAST.toString();
+                    return STD_UNDEAD_TYPES.WRAITH_BEAST.toString();
                 }
-                return UnitEnums.STD_UNIT_TYPES.LICH.toString();
+                return STD_UNDEAD_TYPES.LICH.toString();
             case SKELETON:
                 if (!humanoid) {
-                    return UnitEnums.STD_UNIT_TYPES.SKELETAL_BEAST.toString();
+                    return STD_UNDEAD_TYPES.SKELETAL_BEAST.toString();
                 }
-                return UnitEnums.STD_UNIT_TYPES.SKELETON.toString();
+                return STD_UNDEAD_TYPES.SKELETON.toString();
             case VAMPIRE:
                 if (!humanoid) {
-                    return UnitEnums.STD_UNIT_TYPES.VAMPIRE_BEAST.toString();
+                    return STD_UNDEAD_TYPES.VAMPIRE_BEAST.toString();
                 }
-                return UnitEnums.STD_UNIT_TYPES.VAMPIRE.toString();
+                return STD_UNDEAD_TYPES.VAMPIRE.toString();
             case WRAITH_LORD:
-                return UnitEnums.STD_UNIT_TYPES.WRAITH_MONSTROCITY.toString();
+                return STD_UNDEAD_TYPES.WRAITH_MONSTROCITY.toString();
             case ZOMBIE:
                 if (!humanoid) {
-                    return UnitEnums.STD_UNIT_TYPES.ZOMBIE_BEAST.toString();
+                    return STD_UNDEAD_TYPES.ZOMBIE_BEAST.toString();
                 }
-                return UnitEnums.STD_UNIT_TYPES.ZOMBIE.toString();
+                return STD_UNDEAD_TYPES.ZOMBIE.toString();
         }
         // depending on corpse type? Skeleton Warrior/Mage/Rogue?
         // advanced necromancers should retain masteries/skills/spells of the

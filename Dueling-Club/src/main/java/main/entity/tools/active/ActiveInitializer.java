@@ -14,6 +14,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.tools.EntityInitializer;
 import main.entity.tools.EntityMaster;
 import main.game.logic.generic.DC_ActionManager;
+import main.rules.magic.ChannelingRule;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
@@ -102,17 +103,9 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
         getEntity().setCosts(costs);
     }
 
-    public void initChannelingCosts() {
-        Costs costs = getEntity().getCosts();
-        Costs channelingResolveCosts = new Costs(costs.getRequirements(), costs.getCosts());
-        Costs channelingActivateCosts = new Costs(costs.getRequirements(), costs
-         .getCost(PARAMS.C_N_OF_ACTIONS));
-        channelingResolveCosts.removeCost(PARAMS.C_N_OF_ACTIONS);
-        channelingResolveCosts.removeRequirement(InfoMaster.COOLDOWN_REASON);
 
-        getEntity().setChannelingActivateCosts(channelingActivateCosts);
-        getEntity().setChannelingResolveCosts(channelingResolveCosts);
-    }
+
+
 
 
     public ACTION_TYPE_GROUPS initActionTypeGroup() {

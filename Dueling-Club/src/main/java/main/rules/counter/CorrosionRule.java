@@ -7,7 +7,7 @@ import main.ability.effects.continuous.CustomTargetEffect;
 import main.ability.effects.common.ModifyValueEffect;
 import main.content.DC_ValueManager.VALUE_GROUP;
 import main.content.PARAMS;
-import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
@@ -29,7 +29,7 @@ public class CorrosionRule extends DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return UnitEnums.STD_COUNTERS.Corrosion_Counter.getName();
+        return COUNTER.Corrosion_Counter.getName();
     }
 
     @Override

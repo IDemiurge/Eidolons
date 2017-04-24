@@ -157,7 +157,7 @@ public class AutoTargeting extends TargetingImpl {
         WAVE,
         ACTIONS,
         SPELLS,
-        PARTY,;
+        PARTY, CELL;
 
         public TARGETING_MODE getMode() {
             switch (this) {

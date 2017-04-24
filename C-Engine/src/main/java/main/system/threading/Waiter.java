@@ -44,12 +44,16 @@ public class Waiter {
                 Object monitor = new Object();
                 while (true) {
                     if (timeElapsed >= timeLimit) {
-                        break;
+                        break; //TODO remake to
+                        // makeWakeupNeeded();
+                        // lock.notifyAll();
                     }
+                    synchronized (monitor){
                     try {
                         monitor.wait(PING_PERIOD);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                    }
                     }
                 }
 

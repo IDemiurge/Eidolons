@@ -75,7 +75,7 @@ public class XML_Reader {
 
     ) {
 
-        key = key.replace("_", " ");
+        key = key.replace("_", " ").toLowerCase();
         LogMaster.log(LogMaster.DATA_DEBUG, "type map: " + key);
 
         Map<String, ObjType> type_map = typeMaps.get(key);
@@ -83,7 +83,7 @@ public class XML_Reader {
             type_map = new XLinkedMap<>();
         }
         // else split = true;
-        typeMaps.put(key, type_map);
+        getTypeMaps().put(key, type_map);
 
         NodeList nl = doc.getFirstChild().getChildNodes();
         Set<String> group_set = new LinkedHashSet<>();

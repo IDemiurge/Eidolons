@@ -21,7 +21,6 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.attach.DC_FeatObj;
 import main.game.core.game.DC_Game;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
@@ -116,7 +115,7 @@ public class DC_RequirementsManager implements RequirementsManager {
     public Requirements getRequirements(Entity type, int mode) {
 
         Map<Entity, Requirements> map = getReqMap(mode);
-        if (map != null) {
+       if (map != null) {
             if (map.get(type) != null) // TODO
             {
                 return map.get(type);
@@ -316,8 +315,8 @@ public class DC_RequirementsManager implements RequirementsManager {
             valRef = StringMaster.replace(true, valRef, "total", "");
             return getTotalCondition(valRef, value);
         }
-        VALUE_GROUP template = new EnumMaster<VALUE_GROUP>().retrieveEnumConst(VALUE_GROUP.class,
-                valRef);
+        VALUE_GROUP template = DC_ValueManager.getValueGroup(valRef);
+
 
         if (template == null) {
             if (!checkSimpleValRef(valRef)) {
@@ -358,14 +357,12 @@ public class DC_RequirementsManager implements RequirementsManager {
                 if (p != null) {
                     params.add(p);
                 } else {
-                    VALUE_GROUP template = new EnumMaster<VALUE_GROUP>().retrieveEnumConst(
-                            VALUE_GROUP.class, s);
+                    VALUE_GROUP template = DC_ValueManager.getValueGroup(s);
                     params.addAll(new ListMaster<PARAMETER>().getList(template.getParams()));
                 }
             }
         } else { // TODO can we use VG_Condition here?
-            VALUE_GROUP template = new EnumMaster<VALUE_GROUP>().retrieveEnumConst(
-                    VALUE_GROUP.class, valRef);
+            VALUE_GROUP template = DC_ValueManager.getValueGroup(valRef);
             params = new ListMaster<PARAMETER>().getList(template.getParams());
         }
         for (PARAMETER p : params) {

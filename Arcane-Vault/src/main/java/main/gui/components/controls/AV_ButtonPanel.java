@@ -443,14 +443,19 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                     while (selectedTypeName != null) {
                         selectedTypeName = (String) WaitMaster.waitForInput(operation);
                         if (selectedTypeName != null) {
+                            final String name = selectedTypeName;
+                            SwingUtilities.invokeAndWait(()->
                             ArcaneVault.getMainBuilder().getEditViewPanel().selectType(true,
-                                    DataManager.getType(selectedTypeName, TYPE));
+                                    DataManager.getType(name, TYPE))
+                            );
                         }
                         if (window != null) {
                             if (!window.isVisible()) {
                                 break;
                             }
-                            AV_T3View.selected(selectedTypeName, TYPE);
+                            final String name = selectedTypeName;
+                            SwingUtilities.invokeAndWait(()->
+                            AV_T3View.selected(name, TYPE)  );
                         }
                     }
                 } catch (Exception e) {

@@ -1,21 +1,21 @@
 package main.system.entity;
 
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.entity.obj.Obj;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
 public class CounterMaster {
 
-    public static STD_COUNTERS findCounterConst(String valueName) {
+    public static COUNTER findCounterConst(String valueName) {
         if (valueName == null) {
             return null;
         }
-        STD_COUNTERS counter = new EnumMaster<STD_COUNTERS>().retrieveEnumConst(STD_COUNTERS.class,
-                valueName);
+        COUNTER counter = new EnumMaster<COUNTER>().retrieveEnumConst(COUNTER.class,
+         valueName);
         if (counter == null) {
-            counter = new EnumMaster<STD_COUNTERS>().retrieveEnumConst(STD_COUNTERS.class,
-                    valueName, true);
+            counter = new EnumMaster<COUNTER>().retrieveEnumConst(COUNTER.class,
+             valueName, true);
         }
         return counter;
     }
@@ -25,37 +25,42 @@ public class CounterMaster {
     }
 
     public static String findCounter(String valueName, boolean strict) {
+        COUNTER c = getCounter(valueName, strict);
+        if (c != null)
+            return c.getName();
+        valueName = StringMaster.getWellFormattedString(valueName);
+        if (!valueName.contains(StringMaster.COUNTER)) {
+            valueName = StringMaster.getWellFormattedString(valueName.trim())
+             + StringMaster.COUNTER;
+        }
+
+        return valueName;
+    }
+
+    public static COUNTER getCounter(String valueName, boolean strict) {
         if (valueName == null) {
             return null;
         }
         if (!StringMaster.contains(valueName, StringMaster.COUNTER, true, true)) {
             valueName = valueName + StringMaster.COUNTER;
         }
-        STD_COUNTERS counter = new EnumMaster<STD_COUNTERS>().retrieveEnumConst(STD_COUNTERS.class,
-                valueName);
+        COUNTER counter = new EnumMaster<COUNTER>().retrieveEnumConst(COUNTER.class,
+         valueName);
         if (counter == null) {
             if (strict) {
                 return null;
             }
         } else {
-            counter = new EnumMaster<STD_COUNTERS>().retrieveEnumConst(STD_COUNTERS.class,
-                    valueName, true);
+            counter = new EnumMaster<COUNTER>().retrieveEnumConst(COUNTER.class,
+             valueName, true);
         }
-        if (counter != null) {
-            return counter.getName();
-        }
-        valueName = StringMaster.getWellFormattedString(valueName);
-        if (!valueName.contains(StringMaster.COUNTER)) {
-            valueName = StringMaster.getWellFormattedString(valueName.trim())
-                    + StringMaster.COUNTER;
-        }
+        return counter;
 
-        return valueName;
     }
 
     public static float getCounterPriority(String counterName, Obj target) {
         String realName = findCounter(counterName);
-        switch (new EnumMaster<STD_COUNTERS>().retrieveEnumConst(STD_COUNTERS.class, realName)) {
+        switch (new EnumMaster<COUNTER>().retrieveEnumConst(COUNTER.class, realName)) {
             case Blaze_Counter:
                 return 3; // percentage of health?
             case Bleeding_Counter:
@@ -102,7 +107,7 @@ public class CounterMaster {
 
     public static boolean isCounterPositive(String counterName) {
         String realName = findCounter(counterName);
-        switch (new EnumMaster<STD_COUNTERS>().retrieveEnumConst(STD_COUNTERS.class, realName)) {
+        switch (new EnumMaster<COUNTER>().retrieveEnumConst(COUNTER.class, realName)) {
             case Blaze_Counter:
 
             case Bleeding_Counter:

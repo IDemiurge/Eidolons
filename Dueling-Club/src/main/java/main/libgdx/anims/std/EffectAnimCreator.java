@@ -6,6 +6,7 @@ import main.ability.effects.common.ModifyValueEffect;
 import main.data.filesys.PathFinder;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
+import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
@@ -64,8 +65,9 @@ public class EffectAnimCreator {
         if (anim == null) {
             return null;
         }
-        if (e.getRef().getTargetObj() != null) {
-            anim.setForcedDestination(e.getRef().getTargetObj().getCoordinates());
+        Obj target = e.getRef().getTargetObj();
+        if (target != null) {
+            anim.setForcedDestination(target.getCoordinates());
         }
         anim.setPart(ANIM_PART.MAIN); //TODO gotta be some way to generalize this
         return anim;

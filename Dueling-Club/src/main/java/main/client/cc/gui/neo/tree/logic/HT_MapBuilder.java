@@ -859,7 +859,7 @@ public class HT_MapBuilder {
     // LINK_VARIANT link = new EnumMaster<LINK_VARIANT>().retrieveEnumConst(
     // LINK_VARIANT.class, type.getProperty(PROPS.LINK_VARIANT));
     // if (link != null) {
-    // Image img = ImageManager.getImage(link.getImageFileName());
+    // Image img = ImageManager.getEmitterPath(link.getImageFileName());
     // point = new PointX(parentX + link.getXOffset()
     // + (link.isToRight() ? defSize : 0)
     // // from the other corner...

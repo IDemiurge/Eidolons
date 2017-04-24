@@ -370,7 +370,13 @@ public class FileManager {
         return true;
     }
 
-    public static List<File> getFilesFromDirectory(String path, boolean allowDirectories) {
+//    public static List<String> listFiles(File file, boolean allowDirs) {
+//        return getFileNames(getFilesFromDirectory(file.getPath(), allowDirs));
+//    }
+    public static List<String> listFiles(File file) {
+        return getFileNames(getFilesFromDirectory(file.getPath(), true));
+    }
+        public static List<File> getFilesFromDirectory(String path, boolean allowDirectories) {
         return getFilesFromDirectory(path, allowDirectories, false);
     }
 

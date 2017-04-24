@@ -8,8 +8,9 @@ import main.entity.obj.Attachment;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.logic.combat.damage.DamageCalculator;
 import main.game.core.game.DC_Game;
+import main.game.logic.action.context.Context;
+import main.game.logic.combat.damage.DamageCalculator;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.generic.PartyManager;
@@ -42,6 +43,8 @@ public class DeathMaster extends Master {
 
     public void unitAnnihilated(Obj _killed, Obj _killer) {
         getGame().getGraveyardManager().removeCorpse(_killed);
+        getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ANNIHILATED,
+         new Context(_killer, _killed)));
 //	TODO 	getGame().getDroppedItemManager().remove((DC_HeroObj) _killed, item);
 
     }

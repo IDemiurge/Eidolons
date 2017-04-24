@@ -6,6 +6,7 @@ import main.content.PROPS;
 import main.content.VALUE;
 import main.content.enums.DungeonEnums.DUNGEON_SUBFOLDER;
 import main.content.enums.system.MetaEnums;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
@@ -72,6 +73,7 @@ public class DungeonMaster {
     // public static final int BASE_HEIGHT = 15;
     private Integer z;
     private String dungeonPath;
+    private WORKSPACE_GROUP workspaceFilter;
 
     public DungeonMaster(DC_Game game) {
         DungeonMaster.game = game;
@@ -212,20 +214,19 @@ public class DungeonMaster {
         if (type == null) {
             if (!FAST_DC.isRunning()) {
                 type = DataManager.getType(getPresetDungeonType(), DC_TYPE.DUNGEONS);
+                setDungeon(new Dungeon(type));
             } else {
                 if (RANDOM_DUNGEON) {
-
                     type =
                             pickRandomDungeon();
+                    setDungeon(new Dungeon(type));
                 } else if (type == null) {
-                    type = DataManager.getType(ListChooser.chooseType(DC_TYPE.DUNGEONS));
-                }
-
-                if (type == null) {
+//                    type = DataManager.getType(ListChooser.chooseType(DC_TYPE.DUNGEONS));
+//                }
+//                if (type == null) {
                     initDungeonLevelChoice();
                 }
             }
-            setDungeon(new Dungeon(type));
             getDungeons().add(dungeon);
             rootDungeon = getDungeon();
         }
@@ -356,15 +357,27 @@ public class DungeonMaster {
     }
 
     public void initDungeonLevelChoice() {
+        setDungeon(null);
         if (RANDOM_DUNGEON) {
             setDungeon(DungeonBuilder.loadDungeon(getRandomDungeonPath()));
             return;
         }
+        List<ObjType> types = DataManager.getTypes(DC_TYPE.DUNGEONS);
+        if (workspaceFilter!=null ) {
+            FilterMaster.filterByPropJ8(types, G_PROPS.WORKSPACE_GROUP.getName(), workspaceFilter.toString());
+        }
+        ObjType type = ListChooser.chooseType(types);
+            if (type != null)
+            {
+                setDungeon(new Dungeon(type));
+            }
+        if (getDungeon()==null ){
         if (getDungeonPath() == null) {
             setDungeonPath(chooseDungeonLevel());
         }
         if (getDungeonPath() != null) {
             setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
+        }
         }
 //        else //if (isChooseLevel())
 //            setDungeonPath(chooseDungeonLevel());
@@ -519,4 +532,11 @@ public class DungeonMaster {
         this.chooseLevel = chooseLevel;
     }
 
+    public void setWorkspaceFilter(WORKSPACE_GROUP workspaceFilter) {
+        this.workspaceFilter = workspaceFilter;
+    }
+
+    public WORKSPACE_GROUP getWorkspaceFilter() {
+        return workspaceFilter;
+    }
 }

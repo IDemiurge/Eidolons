@@ -8,6 +8,7 @@ import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.entity.obj.unit.Unit;
@@ -77,7 +78,7 @@ public class DiseaseRule extends DamageCounterRule {
 
     @Override
     public String getCounterName() {
-        return UnitEnums.STD_COUNTERS.Disease_Counter.getName();
+        return COUNTER.Disease_Counter.getName();
     }
 
     // @Override
@@ -110,9 +111,5 @@ public class DiseaseRule extends DamageCounterRule {
         return UnitEnums.STATUS.CONTAMINATED;
     }
 
-    @Override
-    public String getImage() {
-        return "mini\\spell\\Death\\Contagion.jpg";
-    }
 
 }

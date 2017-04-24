@@ -42,7 +42,7 @@ public class FilterMaster {
     public static Collection<? extends Entity> filterByPropJ8
             (Collection<? extends Entity> list,
              String prop, String value) {
-        list.removeIf(getPredicateProperty(ContentManager.getPROP(prop), value));
+        list.removeIf(getPredicateProperty(ContentManager.getPROP(prop), value, true));
         return list;
     }
 

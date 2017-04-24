@@ -5,7 +5,6 @@ import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.data.DataManager;
 import main.data.ability.AE_Item;
-import main.data.ability.Argument;
 import main.data.ability.Mapper;
 import main.entity.type.ObjType;
 import main.system.auxiliary.TreeMaster;
@@ -180,20 +179,27 @@ public class XML_Converter {
     public static String getXmlFromNode(DefaultMutableTreeNode node)
             throws java.lang.ClassCastException {
         String nodeName;
-        if (!(node.getUserObject() instanceof AE_Item)) {
-            return "";
+        boolean primitive=false;
+        if ((node.getUserObject() instanceof AE_Item)) {
+            nodeName = ((AE_Item) node.getUserObject()).getName();
+            AE_Item item = (AE_Item) node.getUserObject();
+            if (item == null) {
+                return "";
+            }
+            if (item.isENUM()) {
+                return wrapLeaf(((AE_Item) node.getUserObject()).getName(), getEnumNodeValue(node));
+            }
+            primitive=item.isPrimitive();
+        } else {
+            nodeName =node.getUserObject().toString() ;
+            primitive = true;
         }
-        nodeName = ((AE_Item) node.getUserObject()).getName();
-        AE_Item item = (AE_Item) node.getUserObject();
-        if (item == null) {
-            return "";
-        }
-        if (item.isENUM()) {
-            return wrapLeaf(((AE_Item) node.getUserObject()).getName(), getEnumNodeValue(node));
-        }
-        if (item.isPrimitive()) {
-            return wrapLeaf(((AE_Item) node.getUserObject()).getName(), getPrimitiveNodeValue(
-                    (item).getArg(), node));
+
+        if (primitive) {
+            return wrapLeaf( nodeName, getPrimitiveNodeValue(
+//                    (item).getArg()
+             nodeName
+             , node));
         }
         String xml = openXmlFormatted(nodeName);
         if (!node.isLeaf()) {
@@ -219,13 +225,13 @@ public class XML_Converter {
         return object.toString();
     }
 
-    private static String getPrimitiveNodeValue(Argument argument, DefaultMutableTreeNode node) {
+    private static String getPrimitiveNodeValue(String argumentName, DefaultMutableTreeNode node) {
         if (node.isLeaf()) {
             return "";
         }
         TreeNode child = node.getFirstChild();
         Object object = ((DefaultMutableTreeNode) child).getUserObject();
-        return object.toString().replace(argument.name(), "");
+        return object.toString().replace(argumentName , "");
     }
 
     private static String getStringFromXMLNode(Node node) {

@@ -82,7 +82,7 @@ public class ClassLine extends G_Panel {
                 // BORDER newBorder=classObj.getRankBorder();
                 // if (newBorder!=null)
                 // icon =new
-                // ImageIcon(ImageManager.applyBorder(getImage(),newBorder));
+                // ImageIcon(ImageManager.applyBorder(getEmitterPath(),newBorder));
                 // super.initDefaultBorders();
                 // }
 

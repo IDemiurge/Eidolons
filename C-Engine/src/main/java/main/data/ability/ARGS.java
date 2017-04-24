@@ -10,8 +10,12 @@ import main.content.enums.*;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.UnitEnums.COUNTER_INTERACTION;
+import main.content.enums.entity.UnitEnums.COUNTER_OPERATION;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.rules.VisionEnums;
+import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
@@ -69,11 +73,16 @@ public enum ARGS implements Argument {
     FORMULA(Formula.class, true, AE_ELEMENT_TYPE.TEXT),
     STRING(String.class, true, AE_ELEMENT_TYPE.TEXT),
     INTEGER(Integer.class, true, AE_ELEMENT_TYPE.TEXT),
-    BOOLEAN(Boolean.class, true, AE_ELEMENT_TYPE.BOOLEAN),
+    BOOLEAN(Boolean.class, true, AE_ELEMENT_TYPE.BOOLEAN){
+        @Override
+        public String getEmptyName() {
+            return "FALSE";
+        }
+    },
 
     // ENUMS
     STANDARD_EVENT_TYPE(STANDARD_EVENT_TYPE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
-    STD_COUNTERS(UnitEnums.STD_COUNTERS.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
+    STD_COUNTERS(COUNTER.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     STANDARD_PASSIVES(UnitEnums.STANDARD_PASSIVES.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
 
     MODVAL_TYPE(MOD.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
@@ -124,6 +133,9 @@ public enum ARGS implements Argument {
 
     INJURY(INJURY.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     DAMAGE_CASE(DAMAGE_CASE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
+    COUNTER_INTERACTION_TYPE(COUNTER_INTERACTION.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
+    COUNTER_OPERATION(COUNTER_OPERATION.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
+    ORDER_PRIORITY_MODS(ORDER_PRIORITY_MODS.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     UNKNOWN(Object.class),;
 
     private AE_ELEMENT_TYPE ELEMENT_TYPE;
@@ -167,7 +179,8 @@ public enum ARGS implements Argument {
 
     @Override
     public String getEmptyName() {
-        return "<<< " + name + " >>>"; // TODO empty node HANDLED!
+        return StringMaster.VAR_STRING;
+//        return "<<< " + name + " >>>"; // TODO empty node HANDLED!
     }
 
     @Override

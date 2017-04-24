@@ -92,7 +92,7 @@ public class ArcaneVault {
     private static String types;
     private static ContentManager contentManager;
     private static boolean artGen = false;
-    private static boolean workspaceLaunch = true;
+    private static boolean workspaceLaunch = false;
 
     static {
         WORKSPACE_TEMPLATE.presetTypes.setTypes("skills;classes;party;chars;");

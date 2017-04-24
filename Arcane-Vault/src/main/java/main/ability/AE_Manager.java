@@ -53,7 +53,11 @@ public class AE_Manager {
 
     public static AE_MainPanel getAE_View(String typeName) {
         AE_MainPanel panel = cacheMap.get(typeName);
-        if (panel == null) {
+        boolean valid=panel != null;
+        if (valid){
+            valid = panel.getEditPanel()!=null ;
+        }
+        if (!valid) {
             LogMaster.log(0, "creating AE view ..."
                     + typeName);
             panel = new AE_MainPanel((typeName));

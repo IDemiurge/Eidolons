@@ -5,6 +5,7 @@ import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -312,7 +313,7 @@ public class XML_Writer {
                 continue;
             }
 
-            String value = formatXmlTextContent(type.getParamMap().get(param));
+            String value = formatXmlTextContent(type.getParamMap().get(param), param);
             if (parent != null) {
                 if (parent.getParam(param).equals(value)) {
                     continue;
@@ -331,7 +332,7 @@ public class XML_Writer {
 
         for (PROPERTY prop : type.getPropMap().keySet()) {
 
-            String value = formatXmlTextContent(type.getPropMap().get(prop));
+            String value = formatXmlTextContent(type.getPropMap().get(prop), prop);
             if (parent != null) { // don't duplicate
                 if (parent.getProperty(prop).equals(value)) {
                     continue;
@@ -423,14 +424,24 @@ public class XML_Writer {
                 .replace(StringMaster.CODE_SLASH, "/").replace(StringMaster.CODE_BACK_SLASH, "\\");
     }
 
-    private static String formatXmlTextContent(String string) {
+    private static String formatXmlTextContent(String string, VALUE value) {
         String result = string.replace(replacedTextContent, StringMaster
                 .getCodeFromChar(replacedTextContent));
         result = XML_Parser.encodeNonASCII(result);
         if (isRepairMode())
             result = repair(result);
+        if (isValueWrappedInCDATA(value))
         result = checkWrapInCDATA(result);
         return result;
+    }
+
+    private static boolean isValueWrappedInCDATA(VALUE value) {
+        if (value instanceof PARAMETER)
+            return false;
+        if (value == G_PROPS.ABILITIES)
+            return false;
+
+        return true;
     }
 
     private static String checkWrapInCDATA(String result) {
@@ -439,7 +450,7 @@ public class XML_Writer {
     }
 
     private static String repair(String result) {
-        return result.replace(" ", " ");
+        return result.replaceAll("\\s+", " ");//.replace("\n", "").replace("  ", " ");
     }
 
     private static boolean isRepairMode() {
