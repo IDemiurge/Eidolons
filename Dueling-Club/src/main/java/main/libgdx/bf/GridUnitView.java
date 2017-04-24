@@ -34,6 +34,10 @@ public class GridUnitView extends UnitView {
         }
     }
 
+    public UnitView getInitiativeQueueUnitView() {
+        return initiativeQueueUnitView;
+    }
+
     private void initQueueView(UnitViewOptions o) {
         initiativeQueueUnitView = new UnitView(o, curId);
     }
