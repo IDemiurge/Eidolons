@@ -57,12 +57,13 @@ public class GridCell extends Group implements Borderable {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(new Coordinates(getGridX(), getGridY()));
                 if (button == Input.Buttons.RIGHT) {
-                    GuiEventManager.trigger(CREATE_RADIAL_MENU, dc_cell);
                     event.handle();
+                    GuiEventManager.trigger(CREATE_RADIAL_MENU, dc_cell);
                 }
 
                 if (button == Input.Buttons.LEFT) {
-                    GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, this);
+                    event.handle();
+                    GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, GridCell.this);
                 }
             }
         });
