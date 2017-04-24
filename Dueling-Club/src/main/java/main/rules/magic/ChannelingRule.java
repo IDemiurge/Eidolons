@@ -155,6 +155,10 @@ public class ChannelingRule {
         return null;
     }
 
+    public static boolean isTestMode() {
+        return true;
+    }
+
 
     // Targeting targeting = new FixedTargeting(KEYS.TARGET);
     // spell_ability.setTargeting(targeting);

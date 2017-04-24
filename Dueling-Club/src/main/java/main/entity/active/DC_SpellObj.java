@@ -15,6 +15,7 @@ import main.entity.tools.active.spell.SpellActiveMaster;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
+import main.rules.magic.ChannelingRule;
 import main.system.auxiliary.EnumMaster;
 import main.system.graphics.Sprite;
 import main.system.sound.SoundMaster;
@@ -165,6 +166,8 @@ public class DC_SpellObj extends DC_ActiveObj {
     }
 
     public boolean isChanneling() {
+        if (ChannelingRule.isTestMode())
+            return true;
         return checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.CHANNELING.toString());
         // fix
         // return getIntParam(PARAMS.CHANNELING) > 0;

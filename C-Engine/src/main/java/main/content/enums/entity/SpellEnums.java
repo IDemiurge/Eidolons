@@ -55,9 +55,30 @@ public class SpellEnums {
 
     public enum SPELL_TAGS {
         MIND_AFFECTING,
+
+        FIRE,
+        LAVA,
+        CLAY,
+        SAND,
+        STONE,
+        ICE,
+        WATER,
+        LIGHTNING,
+        WIND,
+        BONE,
+        WRAITH,
+        SOUL,
+        FLESH,
+        BLOOD,
+        VAMPIRIC,
         DEATH_MAGIC,
         POISON,
+
         DEMONIC,
+        UNHOLY,
+        ENTROPY,
+
+
         DIVINE,
         ELDRITCH,
         RANGED_TOUCH,
