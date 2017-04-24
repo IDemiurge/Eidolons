@@ -77,20 +77,22 @@ public class CellBorderManager extends Group {
                 blueBorderOwners = map;
             }
         });
-    }
 
-    public boolean hitAndCall(Borderable borderable) {
-        Runnable entity = blueBorderOwners.get(borderable);
-        if (entity != null) {
-            entity.run();
-        }
-        clearBlueBorder();
+        GuiEventManager.bind(CALL_BLUE_BORDER_ACTION, obj -> {
+            final Borderable borderable = (Borderable) obj.get();
+            if (borderable != null) {
+                Runnable entity = blueBorderOwners.get(borderable);
+                if (entity != null) {
+                    entity.run();
+                }
+                clearBlueBorder();
 
-        if (singleBorderImageBackup != null) {
-            showBorder(singleBorderImageBackup, unitBorderOwner);
-            singleBorderImageBackup = null;
-        }
-        return (entity != null);
+                if (singleBorderImageBackup != null) {
+                    showBorder(singleBorderImageBackup, unitBorderOwner);
+                    singleBorderImageBackup = null;
+                }
+            }
+        });
     }
 
     private void showBorder(TextureRegion border, Borderable owner) {

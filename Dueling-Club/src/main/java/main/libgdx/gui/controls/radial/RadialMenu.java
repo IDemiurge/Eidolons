@@ -23,10 +23,7 @@ public class RadialMenu extends Group {
 
     public RadialMenu() {
         final TextureRegion t = TextureCache.getOrCreateR(getEmptyNodePath());
-//        new Texture(RadialMenu.class.getResource(
-//         /data/marble_green.png).getPath());
-        closeButton = new RadialValueContainer(new TextureRegion(t), () ->
-                close());
+        closeButton = new RadialValueContainer(new TextureRegion(t), this::close);
         closeButton.setX(-20);
 
         ValueTooltip tooltip = new ValueTooltip();
@@ -36,17 +33,13 @@ public class RadialMenu extends Group {
         addListener(new InputListener() {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
-                if (event.getTarget() == RadialMenu.this) {
-                    return true;
-                } else {
-                    return super.mouseMoved(event, x, y);
-                }
+                return event.getTarget() == RadialMenu.this || super.mouseMoved(event, x, y);
             }
         });
     }
 
     public void close() {
-        RadialMenu.this.setVisible(false);
+        setVisible(false);
     }
 
     private String getEmptyNodePath() {
@@ -85,7 +78,7 @@ public class RadialMenu extends Group {
         setVisible(true);
     }
 
-    public void updatePosition() {
+    private void updatePosition() {
         int step = 360 / currentNode.getChilds().size();
         int pos;
 

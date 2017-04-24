@@ -23,8 +23,6 @@ import main.game.logic.action.context.Context;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
-import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.EventCallbackParam;
@@ -45,21 +43,6 @@ public class RadialManager {
 
     public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
         Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
-        return getTextureForActive(obj, ref);
-    }
-
-    public static TextureRegion getTextureRForActive(DC_ActiveObj obj, DC_Obj target) {
-        Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
-        return getTextureRForActive(obj, ref);
-    }
-
-    public static TextureRegion getTextureRForActive(DC_ActiveObj obj, Ref ref) {
-        return !obj.canBeActivated(ref) ?
-         getOrCreateGrayscaleR(obj.getImagePath())
-         : getOrCreateR(obj.getImagePath());
-    }
-
-    public static TextureRegion getTextureForActive(DC_ActiveObj obj, Ref ref) {
         return !obj.canBeActivated(ref) ?
          getOrCreateGrayscaleR(obj.getImagePath())
          : getOrCreateR(obj.getImagePath());
@@ -211,9 +194,7 @@ public class RadialManager {
         if (containers.isEmpty()) {
             return null;
         }
-        RadialValueContainer valueContainer = getRadialValueContainer(
-         getOrCreateR(type.getIconPath()),
-         null);
+        RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR(type.getIconPath()), null);
 //        getOrCreateGrayscaleR(
         valueContainer.setChilds(containers);
         addSimpleTooltip(valueContainer, type.getName());
@@ -228,35 +209,15 @@ public class RadialManager {
 
     private static RadialValueContainer getExamineNode(DC_Obj target) {
 
-        final RadialValueContainer valueContainer = getRadialValueContainer(
-         getOrCreateR("UI/components\\2017\\radial/examine.png"),
-         () -> {
-             GuiEventManager.trigger(
-              GuiEventType.SHOW_UNIT_INFO_PANEL,
-              new EventCallbackParam<>(new UnitDataSource(((Unit) target))));
+        Runnable runnable = () -> {
+            GuiEventManager.trigger(
+                    GuiEventType.SHOW_UNIT_INFO_PANEL,
+                    new EventCallbackParam<>(new UnitDataSource(((Unit) target))));
 
-         }
-        );
+        };
+        final RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR("UI/components\\2017\\radial/examine.png"), runnable);
         addSimpleTooltip(valueContainer, "Examine");
         return valueContainer;
-    }
-
-
-    public static void addTooltip(RADIAL_PARENT_NODE parent, RadialValueContainer el, DC_ActiveObj activeObj) {
-        new ActionCostTooltip();
-
-        new ActionCostSource() {
-
-            @Override
-            public ValueContainer getName() {
-                return null;
-            }
-
-            @Override
-            public List<ValueContainer> getCostsList() {
-                return null;
-            }
-        };
     }
 
     public static void addSimpleTooltip(RadialValueContainer el, String name) {
@@ -280,9 +241,7 @@ public class RadialManager {
             }
         }
 
-        RadialValueContainer valueContainer = getRadialValueContainer(
-         new TextureRegion(getTextureForActive(el, target)),
-         getRunnable(target, el));
+        RadialValueContainer valueContainer = new RadialValueContainer(new TextureRegion(getTextureForActive(el, target)), getRunnable(target, el));
         addSimpleTooltip(valueContainer, el.getName());
         return valueContainer;
     }
@@ -295,18 +254,18 @@ public class RadialManager {
 
         final  boolean valid  = objSet.size() > 0 &&
          active.canBeActivated();
-        return getRadialValueContainer(
-         valid ?
-          getOrCreateR(active.getImagePath()) :
-          getOrCreateGrayscaleR(active.getImagePath()),
-         () -> {
-             if (valid) {
-                 WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(active, new Context(active.getOwnerObj().getRef())));
-             } else {
-                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.ERROR, "", active);
-             }
+        TextureRegion textureRegion = valid ?
+                getOrCreateR(active.getImagePath()) :
+                getOrCreateGrayscaleR(active.getImagePath());
+        Runnable runnable = () -> {
+            if (valid) {
+                WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(active, new Context(active.getOwnerObj().getRef())));
+            } else {
+                FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.ERROR, "", active);
+            }
 
-         });
+        };
+        return new RadialValueContainer(textureRegion, runnable);
     }
 
     private static RadialValueContainer configureAttackParentNode(DC_Obj target, DC_ActiveObj parent) {
@@ -320,10 +279,7 @@ public class RadialManager {
         if (activeWeapon != null && activeWeapon.isRanged()) {
             if (parent.getRef().getObj(Ref.KEYS.AMMO) == null) {
                 for (DC_QuickItemObj ammo : parent.getOwnerObj().getQuickItems()) {
-                    final RadialValueContainer valueContainer = getRadialValueContainer(
-                     getOrCreateR(ammo.getImagePath()),
-                     getRunnable(target, ammo)
-                    );
+                    final RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR(ammo.getImagePath()), getRunnable(target, ammo));
                     addSimpleTooltip(valueContainer, ammo.getName());
                     list.add(valueContainer);
                 }
@@ -331,8 +287,7 @@ public class RadialManager {
         }
 
         RadialValueContainer valueContainer =
-         getRadialValueContainer(
-          new TextureRegion(getTextureForActive(parent, target)), null);
+                new RadialValueContainer(new TextureRegion(getTextureForActive(parent, target)), null);
         addSimpleTooltip(valueContainer, parent.getName());
         valueContainer.setChilds(list);
 
@@ -346,9 +301,7 @@ public class RadialManager {
             addSimpleTooltip(valueContainer, activeObj.getName());
             return (valueContainer);
         } else if (activeObj.getTargeting() instanceof SelectiveTargeting) {
-            final RadialValueContainer valueContainer = getRadialValueContainer(
-             getOrCreateR(activeObj.getImagePath()),
-             getRunnable(target, activeObj));
+            final RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR(activeObj.getImagePath()), getRunnable(target, activeObj));
             addSimpleTooltip(valueContainer, activeObj.getName());
             return (valueContainer);
         }
@@ -363,29 +316,14 @@ public class RadialManager {
             result = configureSelectiveTargetedNode(dcActiveObj);
         } else {
             if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
-                result = getRadialValueContainer(
-                 getOrCreateR(dcActiveObj.getImagePath()),
-                 getRunnable(target, dcActiveObj)
-
-                );
+                result = new RadialValueContainer(getOrCreateR(dcActiveObj.getImagePath()), getRunnable(target, dcActiveObj));
             } else {
-                result = getRadialValueContainer(
-                 new TextureRegion(getTextureForActive(dcActiveObj, target)),
-                 getRunnable(target, dcActiveObj)
-                );
+                result = new RadialValueContainer(new TextureRegion(getTextureForActive(dcActiveObj, target)), getRunnable(target, dcActiveObj));
             }
         }
         addSimpleTooltip(result, dcActiveObj.getName());
 
         return result;
-    }
-
-    private static RadialValueContainer getRadialValueContainer(
-     TextureRegion textureRegion, Runnable runnable) {
-        RadialValueContainer container = new RadialValueContainer(textureRegion, runnable);
-//        if ()
-//            cache.put();
-        return container;
     }
 
 
