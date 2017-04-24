@@ -14,6 +14,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.core.Eidolons;
+import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.phased.PhaseAnimator;
@@ -126,7 +127,6 @@ public class GridPanel extends Group {
 
     private void bindEvents() {
 
-
         GuiEventManager.bind(UPDATE_GUI, obj -> {
             if (Eidolons.game.getVisionMaster().getVisibilityMaster().isOutlinesOn()) {
                 updateOutlines();
@@ -144,9 +144,11 @@ public class GridPanel extends Group {
             }
             GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
         });
+
         GuiEventManager.bind(UNIT_MOVED, param -> {
             moveUnitView((BattleFieldObject) param.get());
         });
+
         GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
             BattleFieldObject unit = (BattleFieldObject) param.get();
             GridUnitView view = (GridUnitView) unitMap.get(unit);
@@ -155,7 +157,7 @@ public class GridPanel extends Group {
 
 
         GuiEventManager.bind(INGAME_EVENT_TRIGGERED, param -> {
-            main.game.logic.event.Event event = (main.game.logic.event.Event) param.get();
+            Event event = (main.game.logic.event.Event) param.get();
             Ref ref = event.getRef();
 
             boolean caught = false;

@@ -25,6 +25,7 @@ public class BaseView extends Group implements Borderable {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (button == Input.Buttons.LEFT) {
+                    event.handle();
                     GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, BaseView.this);
                 }
             }
