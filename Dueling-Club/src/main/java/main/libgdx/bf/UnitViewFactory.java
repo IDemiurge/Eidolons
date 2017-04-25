@@ -17,7 +17,7 @@ public class UnitViewFactory {
     public static BaseView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view = new GridUnitView(options);
-        view.setToolTip(UnitViewTooltip.create(bfObj));
+        view.setToolTip(UnitViewTooltipFactory.create(bfObj));
         view.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -29,6 +29,7 @@ public class UnitViewFactory {
                 if (event.getButton() == Input.Buttons.RIGHT) {
                     GuiEventManager.trigger(CREATE_RADIAL_MENU, bfObj);
                     event.handle();
+                    event.stop();
                 }
             }
         });

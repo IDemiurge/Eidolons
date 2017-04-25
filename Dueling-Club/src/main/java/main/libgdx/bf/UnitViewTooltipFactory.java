@@ -13,8 +13,8 @@ import java.util.List;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
-public class UnitViewTooltip {
-    private UnitViewTooltip() {
+public class UnitViewTooltipFactory {
+    private UnitViewTooltipFactory() {
 
     }
 

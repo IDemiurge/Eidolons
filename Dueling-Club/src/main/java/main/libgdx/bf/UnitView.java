@@ -6,12 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.tooltips.ToolTip;
-import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static main.system.GuiEventType.REMOVE_FROM_INITIATIVE_PANEL;
 
 public class UnitView extends BaseView {
     protected static AtomicInteger lastId = new AtomicInteger(1);
@@ -20,6 +17,7 @@ public class UnitView extends BaseView {
     protected TextureRegion clockTexture;
     protected Label initiativeLabel;
     protected Image clockImage;
+    protected boolean mobilityState = true;//mobility state, temporary.
 
     public UnitView(UnitViewOptions o) {
         super(o);
@@ -93,11 +91,15 @@ public class UnitView extends BaseView {
         return initiativeIntVal;
     }
 
-    @Override
-    public void setVisible(boolean visible) {
-        super.setVisible(visible);
-        if (!visible) {
-            GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL, this);
-        }
+    public boolean isMobilityState() {
+        return mobilityState;
+    }
+
+    public boolean getMobilityState() {
+        return mobilityState;
+    }
+
+    public void setMobilityState(boolean mobilityState) {
+        this.mobilityState = mobilityState;
     }
 }

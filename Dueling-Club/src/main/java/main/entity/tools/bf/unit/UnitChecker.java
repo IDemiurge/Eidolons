@@ -108,7 +108,7 @@ public class UnitChecker extends EntityChecker<Unit> {
         }
         if (getGame().getTestMaster().isImmortal() != null) {
             return
-             getGame().getTestMaster().isImmortal();
+                    getGame().getTestMaster().isImmortal();
         }
         return getGame().isDummyPlus();
     }
@@ -142,9 +142,9 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean isTransparent() {
-        if (getEntity(). isDead()) {
-        return true;
-    }
+        if (getEntity().isDead()) {
+            return true;
+        }
         if (checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
             return true;
         }
@@ -156,11 +156,11 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean isBfObj() {
-        return getEntity().getOBJ_TYPE_ENUM()== DC_TYPE.BF_OBJ;
+        return getEntity().getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ;
     }
 
     public boolean isHero() {
-        return getEntity().getOBJ_TYPE_ENUM()== DC_TYPE.CHARS;
+        return getEntity().getOBJ_TYPE_ENUM() == DC_TYPE.CHARS;
     }
 
     public boolean isDone() {
@@ -232,7 +232,7 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean canAttack() {
-        return getEntity(). getAttack().canBeActivated(getRef(), true);
+        return getEntity().getAttack().canBeActivated(getRef(), true);
     }
 
     // melee/ranged separate!
@@ -287,10 +287,8 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean canActNow() {
-        if (getGame().isDummyPlus()) {
-            if (!isMine()) {
-                return false;
-            }
+        if (getGame().isDummyPlus() && !isMine()) {
+            return false;
         }
         if (getEntity().getOwner() == Player.NEUTRAL) {
             return false;
@@ -365,7 +363,7 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean checkModeDisablesCounters() {
-        if (getEntity(). getBehaviorMode() != null) {
+        if (getEntity().getBehaviorMode() != null) {
             return getEntity().getBehaviorMode().isDisableCounters();
         }
 
@@ -376,8 +374,6 @@ public class UnitChecker extends EntityChecker<Unit> {
         return getEntity().getMode().isDisableActions();
 
     }
-
-
 
 
     public boolean isLiving() {
@@ -410,8 +406,9 @@ public class UnitChecker extends EntityChecker<Unit> {
 
     public boolean hasDoubleStrike() {
         return
-         checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_STRIKE);
+                checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_STRIKE);
     }
+
     public boolean checkImmunity(IMMUNITIES type) {
         return checkProperty(G_PROPS.IMMUNITIES, type.toString());
     }

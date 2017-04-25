@@ -10,6 +10,7 @@ import main.libgdx.gui.tooltips.ToolTip;
 import main.system.GuiEventManager;
 
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
+import static main.system.GuiEventType.REMOVE_FROM_INITIATIVE_PANEL;
 
 public class GridUnitView extends UnitView {
     private Image arrow;
@@ -79,6 +80,11 @@ public class GridUnitView extends UnitView {
         val = Math.max(0, val);
         val = Math.min(100, val);
         alpha = val * 0.01f;
+        if (alpha < 1) {
+            GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL, initiativeQueueUnitView);
+        } else {
+            GuiEventManager.trigger(ADD_OR_UPDATE_INITIATIVE, initiativeQueueUnitView);
+        }
     }
 
     @Override
@@ -108,6 +114,15 @@ public class GridUnitView extends UnitView {
             arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
             arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
             arrow.setRotation(arrowRotation);
+        }
+    }
+
+    @Override
+    public void setMobilityState(boolean mobilityState) {
+        super.setMobilityState(mobilityState);
+        if (initiativeQueueUnitView != null) {
+            initiativeQueueUnitView.setMobilityState(mobilityState);
+            GuiEventManager.trigger(ADD_OR_UPDATE_INITIATIVE, initiativeQueueUnitView);
         }
     }
 

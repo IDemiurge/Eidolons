@@ -65,9 +65,6 @@ public class GridCellContainer extends GridCell {
         if (result && actor instanceof GridUnitView) {
             unitViewCount--;
             recalcUnitViewBounds();
-            if (unitViewCount <= 0) {
-                ((GridCell) getParent()).addInnerDrawable(null);
-            }
         }
 
         return result;

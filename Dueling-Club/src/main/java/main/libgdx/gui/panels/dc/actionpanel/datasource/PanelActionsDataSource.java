@@ -1,7 +1,7 @@
 package main.libgdx.gui.panels.dc.actionpanel.datasource;
 
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
+import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.unit.Unit;
 import main.libgdx.gui.panels.dc.ValueContainer;
@@ -14,6 +14,7 @@ import main.system.datatypes.DequeImpl;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource.getActionCostList;
@@ -32,12 +33,6 @@ public class PanelActionsDataSource implements
         unitDataSource = new UnitDataSource(unit);
     }
 
-    private static InputListener getToolTipController(String name) {
-        ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer(name, "")));
-        return tooltip.getController();
-    }
-
     @Override
     public List<ActionValueContainer> getQuickSlotActions() {
         final DequeImpl<DC_QuickItemObj> items = unit.getQuickItems();
@@ -46,11 +41,11 @@ public class PanelActionsDataSource implements
                 .map((DC_QuickItemObj key) -> {
                     final ActionValueContainer valueContainer = new ActionValueContainer(
                             getOrCreateR(key.getImagePath()),
-                            () -> {
-                                key.invokeClicked();
-                            }
+                            key::invokeClicked
                     );
-                    valueContainer.addListener(getToolTipController(key.getName()));
+                    ValueTooltip tooltip = new ValueTooltip();
+                    tooltip.setUserObject(Arrays.asList(new ValueContainer(key.getName(), "")));
+                    valueContainer.addListener(tooltip.getController());
                     return valueContainer;
                 })
                 .collect(Collectors.toList());
@@ -65,58 +60,47 @@ public class PanelActionsDataSource implements
     @Override
     public List<ActionValueContainer> getDisplayedActions() {
         List<ActionValueContainer> list = new LinkedList<>();
-        list.addAll(getModeActions());
-        list.addAll(getSpecialActions());
+        list.addAll(getActions(ACTION_TYPE.MODE));
+        list.addAll(getActions(ACTION_TYPE.SPECIAL_ACTION));
         return list;
-    }
-
-    private List<ActionValueContainer> getSpecialActions() {
-        return getActions(ACTION_TYPE.SPECIAL_ACTION);
-    }
-
-    public List<ActionValueContainer> getModeActions() {
-        return getActions(ACTION_TYPE.MODE);
     }
 
     public List<ActionValueContainer> getActions(ACTION_TYPE type) {
         return unit.getActionMap().get(type).stream()
-                .map(key -> {
-                    final ActionValueContainer valueContainer = new ActionValueContainer(
-                            getOrCreateR(key.getImagePath()),
-                            key::invokeClicked
-                    );
-                    ActionCostTooltip tooltip = new ActionCostTooltip();
-                    tooltip.setUserObject(new ActionCostSource() {
-
-                        @Override
-                        public ValueContainer getName() {
-                            return new ValueContainer(key.getName(), "");
-                        }
-
-                        @Override
-                        public List<ValueContainer> getCostsList() {
-                            return getActionCostList(key);
-                        }
-                    });
-                    valueContainer.addListener(tooltip.getController());
-                    return valueContainer;
-                })
+                .map(getActiveObjValueContainerFunction())
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<ActionValueContainer> getSpells() {
-
         return unit.getSpells().stream()
-                .map(el -> {
-                    final ActionValueContainer container = new ActionValueContainer(
-                            getOrCreateR(el.getImagePath()),
-                            el::invokeClicked
-                    );
-                    container.addListener(getToolTipController(el.getName()));
+                .map(getActiveObjValueContainerFunction())
+                .collect(Collectors.toList());
+    }
 
-                    return container;
-                }).collect(Collectors.toList());
+    private Function<DC_ActiveObj, ActionValueContainer> getActiveObjValueContainerFunction() {
+        return el -> {
+            final ActionValueContainer container = new ActionValueContainer(
+                    getOrCreateR(el.getImagePath()),
+                    el::invokeClicked
+            );
+            ActionCostTooltip tooltip = new ActionCostTooltip();
+            tooltip.setUserObject(new ActionCostSource() {
+
+                @Override
+                public ValueContainer getName() {
+                    return new ValueContainer(el.getName(), "");
+                }
+
+                @Override
+                public List<ValueContainer> getCostsList() {
+                    return getActionCostList(el);
+                }
+            });
+
+            container.addListener(tooltip.getController());
+            return container;
+        };
     }
 
     @Override
