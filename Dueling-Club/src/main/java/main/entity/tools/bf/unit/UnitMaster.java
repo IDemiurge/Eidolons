@@ -52,7 +52,6 @@ public class UnitMaster extends EntityMaster<Unit> {
 
     @Override
     protected EntityHandler createHandler() {
-//        return new UnitHandler(getUnit(), this);
-        return null;
+        return new UnitHandler(getUnit(), this);
     }
 }

@@ -426,7 +426,7 @@ public class DC_GameManager extends GameManager {
         buffMaster.copyBuff(buff, obj, retainCondition);
     }
 
-    private void selectingStopped(boolean cancelled) {
+    public void selectingStopped(boolean cancelled) {
         selectingSet.clear();
         if (cancelled) {
             try {
