@@ -132,6 +132,7 @@ public class GridPanel extends Group {
                 updateOutlines();
             }
         });
+
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p = (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
@@ -152,9 +153,7 @@ public class GridPanel extends Group {
             GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
         });
 
-        GuiEventManager.bind(UNIT_MOVED, param -> {
-            moveUnitView((BattleFieldObject) param.get());
-        });
+        GuiEventManager.bind(UNIT_MOVED, param -> moveUnitView((BattleFieldObject) param.get()));
 
         GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
             BattleFieldObject unit = (BattleFieldObject) param.get();

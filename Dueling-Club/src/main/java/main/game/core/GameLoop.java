@@ -63,8 +63,6 @@ public class GameLoop {
                 //end round
                 break;
             }
-
-
         }
         game.getManager().endRound();
     }
@@ -75,7 +73,7 @@ public class GameLoop {
 
     private Boolean makeAction() {
 
-        Boolean result = null;
+        Boolean result;
         if (game.getManager().getActiveObj().isAiControlled()) {
             result = activateAction(waitForAI());
         } else {
@@ -100,7 +98,7 @@ public class GameLoop {
         if (input == null) {
             return true;
         }
-        boolean result = false;
+        boolean result;
         try {
             activatingAction = input.getAction();
             activatingAction.setTargetObj(input.getContext().getTargetObj());
@@ -124,7 +122,6 @@ public class GameLoop {
                 endTurn = null;
             }
         }
-
 
         if (BooleanMaster.isTrue(endTurn)) {
             return true;

@@ -4,7 +4,6 @@ import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.rules.mechanics.WaitRule;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -85,15 +84,13 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         return false;
     }
 
-
-
-
     public Boolean nextAction() {
         //TODO retain active unit
         resetQueue();
 
         if (getUnitQueue().isEmpty()) {
-            resetDisplayedQueue();  return null ;
+            resetDisplayedQueue();
+            return null;
         }
 
         boolean result;
@@ -105,8 +102,6 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         result &= activeUnit.turnStarted();
         return result;
     }
-
-
 
     public void resetInitiative(boolean first) {
         for (Unit unit : game.getUnits()) {
@@ -130,6 +125,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
                 unitQueue.addFirst(activeUnit);
             }
         }
+
         for (Unit unit : unitQueue) {
             if (game.getVisionMaster().checkDetectedEnemy(unit)) {
                 displayedUnitQueue.add(unit);
@@ -189,10 +185,9 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
                 }
             }
 
-//            WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
             LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
-             + "Active unit: " + getActiveUnit());
-            GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, new EventCallbackParam(activeUnit));
+                    + "Active unit: " + getActiveUnit());
+            GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -216,9 +211,8 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         }
         if (isStarted()) {
             if (!playerHasActiveUnits()) {
-                LogMaster
-                 .log(1,
-                  "************** GAME PAUSED WHILE NO UNITS UNDER PLAYER CONTROL **************");
+                LogMaster.log(1,
+                        "************** GAME PAUSED WHILE NO UNITS UNDER PLAYER CONTROL **************");
             }
 
             while (!playerHasActiveUnits()) {
@@ -243,7 +237,6 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 
         }
         unit.recalculateInitiative();
-
     }
 
     @Override
@@ -257,10 +250,8 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
                     if (u1.isMine() && u2.isMainHero()) {
                         return 1;
                     }
-
                 }
             }
-
         }
         int a1 = u1.getIntParam(PARAMS.C_INITIATIVE);
         int a2 = u2.getIntParam(PARAMS.C_INITIATIVE);
