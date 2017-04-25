@@ -15,11 +15,7 @@ import main.game.core.game.DC_Game;
 public class MoistRule extends DC_CounterRule {
 
     private static final String LIGHTNING_RES_PER_COUNTER = "(-2)";
-    private static final String COLD_RES_PER_COUNTER = "(-1)";    // already
-    // syng
-    // with
-    // Freeze
-    // rule...
+    private static final String COLD_RES_PER_COUNTER = "(-1)";
     private static final String FIRE_RES_PER_COUNTER = "(2)";
     private static final String WEIGHT_PER_COUNTER = "(0.5)";
 

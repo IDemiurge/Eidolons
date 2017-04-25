@@ -101,8 +101,8 @@ public class ModeEffect extends MicroEffect  implements OneshotEffect {
         addParamBonuses();
         addPropMods();
 
-        // if (mode.equals(STD_MODES.ALERT))
-        // addBuffEffect.addEffect(AlertRule.getWakeUpTriggerEffect());
+         if (mode.equals(STD_MODES.ALERT))
+         addBuffEffect.addEffect(AlertRule.getWakeUpTriggerEffect());
         if (addBuffEffect.getDuration() == null) {
             if (mode.isContinuous()) {
                 addBuffEffect.setDuration(ContentManager.INFINITE_VALUE);

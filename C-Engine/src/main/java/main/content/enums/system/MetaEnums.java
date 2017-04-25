@@ -165,6 +165,6 @@ public class MetaEnums {
     }
 
     public enum WORKSPACE_GROUP {
-        FOCUS, FIX, TEST, IMPLEMENT, DESIGN, POLISH, COMPLETE,
+        FOCUS, FIX, TEST, IMPLEMENT, DESIGN, POLISH, COMPLETE,  EXLCUDED, DEMO, DEMO_READY
     }
 }

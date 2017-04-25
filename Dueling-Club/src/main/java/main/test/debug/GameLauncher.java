@@ -20,6 +20,7 @@ import main.game.logic.generic.SpawnManager;
 import main.game.logic.macro.travel.EncounterMaster;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE_SCOPE;
+import main.rules.magic.ChannelingRule;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -274,6 +275,10 @@ public class GameLauncher {
         if (launch.ruleScope != null) {
             RuleMaster.setScope(launch.ruleScope);
         }
+        if (launch.logicTest) {
+            initLogicTest();
+        }
+
         ItemGenerator.setGenerationOn(!launch.itemGenerationOff);
         TestMasterContent.setForceFree(launch.freeActions);
 
@@ -290,6 +295,10 @@ public class GameLauncher {
         DC_KeyManager.DEFAULT_CONTROLLER = launch.controller;
 
         GameLoop.setMaxAnimTime(launch.maxAnimTime);
+    }
+
+    private void initLogicTest() {
+        ChannelingRule.setTestMode(true);
     }
 
     private void initPlayerParties() {

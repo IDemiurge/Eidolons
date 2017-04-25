@@ -49,11 +49,11 @@ public class CastSpellEffect extends MicroEffect  implements OneshotEffect {
         }
 
         if (isForceTargeting()) {
-            // ref.setTarget(null);
+             ref.setTarget(null);
             if (!active.selectTarget(ref)) {
                 game.getLogManager().log(
                         active.getOwnerObj().getName()
-                                + "'s channeling has failed ("
+                                + "'s channeling has been cancelled ("
                                 + active.getName() + ")");
                 SoundMaster.playStandardSound(STD_SOUNDS.SPELL_CANCELLED);
                 return false;
