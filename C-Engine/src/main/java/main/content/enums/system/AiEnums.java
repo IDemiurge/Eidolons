@@ -104,6 +104,7 @@ public class AiEnums {
         WAIT, // on allies or enemies!
         PREPARE, // BUFFS, MODES
         DEFEND, // ALERT OR DEFEND
+        PROTECT,
         RETREAT, // USUALLY FORCED
         SEARCH, // IF NO ENEMIES DETECTED, LOOK AROUND
 

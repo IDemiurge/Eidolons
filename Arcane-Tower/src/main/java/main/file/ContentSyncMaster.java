@@ -55,8 +55,6 @@ public class ContentSyncMaster {
 
     }
 
-    public enum CONTENT_SCOPE {
 
-    }
 
 }
