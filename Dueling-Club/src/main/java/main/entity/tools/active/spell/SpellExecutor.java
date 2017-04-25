@@ -5,7 +5,6 @@ import main.client.cc.logic.HeroAnalyzer;
 import main.client.cc.logic.spells.DivinationMaster;
 import main.content.PARAMS;
 import main.content.enums.entity.SpellEnums;
-import main.elements.costs.Costs;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
@@ -28,8 +27,6 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
  */
 public class SpellExecutor extends Executor {
 
-    Costs channelingActivateCosts;
-    Costs channelingResolveCosts;
     private boolean channeling;
 
     public SpellExecutor(DC_ActiveObj active, ActiveMaster entityMaster) {
@@ -96,7 +93,7 @@ public class SpellExecutor extends Executor {
 //                communicate(ref);
 //            }
         }
-        channelingActivateCosts.pay(getRef());
+      getSpell().getChannelingActivateCosts().pay(getRef());
         actionComplete();
         return result;
     }

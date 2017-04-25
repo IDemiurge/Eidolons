@@ -102,10 +102,9 @@ public class RadialManager {
         List<RadialValueContainer> modes = new ArrayList<>();
         List<RadialValueContainer> orders = new ArrayList<>();
         List<RadialValueContainer> quickItems = new ArrayList<>();
-        List<RadialValueContainer> spells = new ArrayList<>();
         List<RadialValueContainer> dualAttacks = new ArrayList<>();
         List<ActiveObj> actives = sourceUnit.getActives();
-        actives.addAll(sourceUnit.getSpells());
+//        actives.addAll(sourceUnit.getSpells());
         sourceUnit.getQuickItems().forEach(item -> {
             if (isQuickItemShown(item, target)) {
                 actives.add(item.getActive());
@@ -130,9 +129,10 @@ public class RadialManager {
                  attacks.add(configureAttackParentNode(target, el));
              } else {
                  final RadialValueContainer valueContainer = configureActionNode(target, el);
-                 if (el.isSpell()) {
-                     spells.add(valueContainer);
-                 } else if (el instanceof DC_QuickItemAction) {
+//                 if (el.isSpell()) { DONE VIA SpellRadialManager
+//                     spells.add(valueContainer);
+//                 } else
+                     if (el instanceof DC_QuickItemAction) {
                      quickItems.add(valueContainer);
                  } else if (el.getActionGroup() == ACTION_TYPE_GROUPS.ORDER) {
                      orders.add(valueContainer);
@@ -162,7 +162,6 @@ public class RadialManager {
         list.add(getParentNode(RADIAL_PARENT_NODE.QUICK_ITEMS, quickItems));
         list.add(getParentNode(RADIAL_PARENT_NODE.MODES, modes));
         list.add(getParentNode(RADIAL_PARENT_NODE.ORDERS, orders));
-        list.add(getParentNode(RADIAL_PARENT_NODE.SPELLS, spells));
         list.add(getParentNode(RADIAL_PARENT_NODE.DUAL_ATTACKS, dualAttacks));
 
 
