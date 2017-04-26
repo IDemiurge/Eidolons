@@ -11,7 +11,6 @@ import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.mode.STD_MODES;
-import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
@@ -24,7 +23,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
-import main.entity.active.DC_UnitAction;
+import main.entity.obj.unit.Unit;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
@@ -81,21 +80,25 @@ public class ChannelingRule {
             costs.removeRequirement(InfoMaster.COOLDOWN_REASON);
         return costs;
     }
-
-    public static boolean activateChanneing(DC_ActiveObj spell) {
+    public static void channelingResolves(Unit activeUnit) {
+        activeUnit.removeBuff( STD_MODES.CHANNELING.getBuffName());
+    }
+    public static boolean activateChanneing(DC_SpellObj spell) {
 
         // ActiveAbility spell_ability = ActivesConstructor
         // .mergeActiveList(spell, TARGETING_MODE.SINGLE);
+        spell.getOwnerObj().getHandler().initChannelingSpellData(spell);
+
 
         boolean result = true;
         ModeEffect modeEffect = new ModeEffect(STD_MODES.CHANNELING);
         String string = STD_MODES.CHANNELING.toString();
-        if (spell instanceof DC_UnitAction) {
-            if (spell.checkProperty(G_PROPS.CUSTOM_PROPS)) {
-                modeEffect.getModPropEffect().setValue(
-                 spell.getProperty(G_PROPS.CUSTOM_PROPS));
-            }
-        }
+//        if (spell instanceof DC_UnitAction) {
+//            if (spell.checkProperty(G_PROPS.CUSTOM_PROPS)) {
+//                modeEffect.getModPropEffect().setValue(
+//                 spell.getProperty(G_PROPS.CUSTOM_PROPS));
+//            }
+//        }
         Ref REF = spell.getRef().getCopy();
         REF.setTarget(spell.getOwnerObj().getId());
         // modeEffect.getAddBuffEffect().setEffect(effect)
@@ -163,6 +166,8 @@ public class ChannelingRule {
     public static void setTestMode(boolean testMode) {
         ChannelingRule.testMode = testMode;
     }
+
+
 // Targeting targeting = new FixedTargeting(KEYS.TARGET);
     // spell_ability.setTargeting(targeting);
     // Effect ELSEeffect = new

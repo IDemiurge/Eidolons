@@ -36,11 +36,9 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.KeyResolver;
 import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_FeatObj;
+import main.entity.tools.EntityHandler;
 import main.entity.tools.EntityMaster;
-import main.entity.tools.bf.unit.UnitCalculator;
-import main.entity.tools.bf.unit.UnitInitializer;
-import main.entity.tools.bf.unit.UnitLogger;
-import main.entity.tools.bf.unit.UnitMaster;
+import main.entity.tools.bf.unit.*;
 import main.entity.type.ObjType;
 import main.game.ai.UnitAI;
 import main.game.battlefield.CoordinatesMaster;
@@ -153,6 +151,11 @@ public class Unit extends DC_UnitModel {
         }
 
 //        WaitMaster.receiveInput(WAIT_OPERATIONS.UNIT_OBJ_INIT, true);
+    }
+
+    @Override
+    public UnitHandler getHandler() {
+        return (UnitHandler) super.getHandler();
     }
 
     public void saveRanks(boolean skills) {

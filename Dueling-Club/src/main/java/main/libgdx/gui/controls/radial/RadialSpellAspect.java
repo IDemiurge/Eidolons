@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class RadialSpellAspect implements RADIAL_ITEM {
     private SPELL_ASPECT aspect;
-    private int maxPlainSize = 12;
+    private int maxPlainSize = 40;
 
     public RadialSpellAspect(SPELL_ASPECT aspect) {
         this.aspect = aspect;

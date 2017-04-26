@@ -3,6 +3,7 @@ package main.libgdx.gui.controls.radial;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.unit.Unit;
+import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
 import java.util.LinkedList;
@@ -41,6 +42,6 @@ public class RadialSpellGroup implements RADIAL_ITEM {
     @Override
     public String getTexturePath() {
         return ImageManager.getValueIconsPath() + "masteries\\"
-                + group.toString() + ".png";
+                + StringMaster.getWellFormattedString(group.toString()) + ".png";
     }
 }

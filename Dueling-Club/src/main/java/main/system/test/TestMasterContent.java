@@ -14,6 +14,7 @@ import main.game.core.game.DC_Game;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
+import main.system.entity.FilterMaster;
 import main.test.frontend.FAST_DC;
 
 import java.util.LinkedList;
@@ -21,36 +22,37 @@ import java.util.List;
 
 public class TestMasterContent {
     private static final String DEFAULT_SKILLS = "Turn About;Leap;Side Step;Quick Turn;";
+    private static final String testGroups ="Fire;Water;Air;Earth;";
     private static final String TEST_SKILLS = "Warcry: To Arms!;Druidic Visions;Roots of Wisdom;Coating Expert;Coating Mastery III;Toss Item;Feint Throw;Cleave (Axe);"
-            + "Slam;Knockdown (Polearm);Power Strike;"
-            + ""
-            + "Nimble Fingers;"
-            + ""
-            + "Aura of Resilience;"
-            + ""
-            + ""
-            + "Quick Swap;"
-            + "Practiced Channeler;"
-            + "Shortcut Schematics;Fast Reload;"
-            + ""
-            + "Spellcasting Algorithms;"
-            + "Maneuver: Swap Positions;"
-            + "Maneuver: Displace;"
-            + "Hide;"
-            + "Stealth Mode;"
+     + "Slam;Knockdown (Polearm);Power Strike;"
+     + ""
+     + "Nimble Fingers;"
+     + ""
+     + "Aura of Resilience;"
+     + ""
+     + ""
+     + "Quick Swap;"
+     + "Practiced Channeler;"
+     + "Shortcut Schematics;Fast Reload;"
+     + ""
+     + "Spellcasting Algorithms;"
+     + "Maneuver: Swap Positions;"
+     + "Maneuver: Displace;"
+     + "Hide;"
+     + "Stealth Mode;"
 
-            + "Offensive Formation;"
+     + "Offensive Formation;"
 
-            + "Dirty Tactics;"
-            + "Noble Tactics;"
-            + "Command: Retreat!;"
-            + "Command: Forward!;"
-            + "Command: Hold Position!;" + "" + "" + "";
+     + "Dirty Tactics;"
+     + "Noble Tactics;"
+     + "Command: Retreat!;"
+     + "Command: Forward!;"
+     + "Command: Hold Position!;" + "" + "" + "";
     private static final String TEST_ITEMS = "" + "Potent Liquid Shadow;" + "Potent Fire Bomb;"
-            + "Potent Paralyzing Poison;" + "Potent Poison Coating;" + "Normal Poison Coating;"
-            + "Cheap Poison Coating;" + "Potent Weakening Poison;" + "Inferior Dark Steel Dagger;"
-            + "Masterpiece Dark Steel Dagger;" + "Ancient Dark Steel Bolts;"
-            + "Ancient Dark Steel Bolts;";
+     + "Potent Paralyzing Poison;" + "Potent Poison Coating;" + "Normal Poison Coating;"
+     + "Cheap Poison Coating;" + "Potent Weakening Poison;" + "Inferior Dark Steel Dagger;"
+     + "Masterpiece Dark Steel Dagger;" + "Ancient Dark Steel Bolts;"
+     + "Ancient Dark Steel Bolts;";
     public static boolean addSpells;
     public static boolean test_on = true;
     static boolean auto_test_list = false;
@@ -67,29 +69,29 @@ public class TestMasterContent {
     private static String FIX_LIST = "";
     private static String POLISH_LIST = "";
     private static String ANIM_TEST_LIST = //Gust of Wind
-            "Searing Light;Summon Vampire Bat;Sorcerous Flame;Ray of Arcanum;Chaos Shockwave;" +
-                    "Fire Bolt;Chaos Bolt;" +
-                    "Light;Haze;" +
-                    "Scare;Freeze;" +
-                    "Scorching Light";
+     "Searing Light;Summon Vampire Bat;Sorcerous Flame;Ray of Arcanum;Chaos Shockwave;" +
+      "Fire Bolt;Chaos Bolt;" +
+      "Light;Haze;" +
+      "Scare;Freeze;" +
+      "Scorching Light";
 
     private static String GRAPHICS_TEST_LIST = "Fire Bolt;Chaos Bolt;Force Field;" +
-            "Summon Vampire Bat;Blink";
+     "Summon Vampire Bat;Blink";
     private static String TEST_LIST =
 //     "Raise Skeleton;" +
      "Light;Haze;" +
-            "Leap into Darkness;Blink;Summon Vampire Bat;"
-            // + "Enchant Weapon;"
-            // + "Enchant Armor;"
-            + "Arcane Bolt;Ray of Arcanum;Time Warp;"
-            // + "Sorcerous Flames;"
-            + "Force Field;" +
-            // "Arms of Faith;Armor of Faith;Resurrection;"+
-            "Mass Terror;Mass Confusion;Mass Madness;" + "Conjure Weapon;Conjure Armor;" + ""
-            // + "Awaken Treant;"
-            // + "Sacrifice;"
-            // + "Soul Web;Rapid Growth;"
-            ;
+      "Leap into Darkness;Blink;Summon Vampire Bat;"
+      // + "Enchant Weapon;"
+      // + "Enchant Armor;"
+      + "Arcane Bolt;Ray of Arcanum;Time Warp;"
+      // + "Sorcerous Flames;"
+      + "Force Field;" +
+      // "Arms of Faith;Armor of Faith;Resurrection;"+
+      "Mass Terror;Mass Confusion;Mass Madness;" + "Conjure Weapon;Conjure Armor;" + ""
+     // + "Awaken Treant;"
+     // + "Sacrifice;"
+     // + "Soul Web;Rapid Growth;"
+     ;
     private static String AI_SPELL_TEST_LIST = "Summon Lesser Demon;";
     private static List<ObjType> addedSpells = new LinkedList<>();
     private static String FOCUS_SKILL_LIST = "";
@@ -166,7 +168,7 @@ public class TestMasterContent {
         }
         try {
             if (DataManager.getType(type.getProperty(G_PROPS.DEITY), DC_TYPE.DEITIES).getAspect() == spellType
-                    .getAspect()) {
+             .getAspect()) {
                 result = true;
             }
         } catch (Exception e) {
@@ -283,7 +285,7 @@ public class TestMasterContent {
     public static void addSpells(Entity type, String list) {
         for (String s : StringMaster.openContainer(list)) {
             type.addProperty(PROPS.VERBATIM_SPELLS, s
-                    , true);
+             , true);
         }
 
     }
@@ -295,13 +297,31 @@ public class TestMasterContent {
     public static void addGRAPHICS_TEST_Spells(Entity type) {
         for (String s : StringMaster.openContainer(GRAPHICS_TEST_LIST)) {
             type.addProperty(PROPS.VERBATIM_SPELLS, s
-                    , true);
+             , true);
         }
     }
 
+    public static void addTestGroupSpells(Entity type) {
+        if (testGroups != null) {
+            for (String substring : StringMaster.openContainer(testGroups)) {
+                String prop = G_PROPS.SPELL_GROUP.getName();
+                String spells = "";
+                try {
+                    spells =
+                     StringMaster.constructEntityNameContainer(
+                      (List<? extends Entity>) FilterMaster.filterByPropJ8(DataManager.getTypes(DC_TYPE.SPELLS),
+                       prop, substring));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                addSpells(type, spells);
+
+            }
+        }
+    }
     private static void addTestSpells(ObjType type, boolean last) {
         type.addProperty(PROPS.VERBATIM_SPELLS, "Blink;"
-                + getTEST_LIST(), true);
+         + getTEST_LIST(), true);
         if (DrawMasterStatic.GRAPHICS_TEST_MODE) {
             type.addProperty(PROPS.VERBATIM_SPELLS, "Light", true);
             type.addProperty(PROPS.VERBATIM_SPELLS, "Haze", true);
@@ -309,6 +329,7 @@ public class TestMasterContent {
         if (!addSpells) {
             return;
         }
+
         for (String s : StringMaster.openContainer(getFOCUS_LIST())) {
             if (checkHeroForTestSpell(type, s, last)) {
                 type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
@@ -471,17 +492,17 @@ public class TestMasterContent {
         return StringMaster.constructContainer(list);
     }
 
+    public enum TEST_OPTIONS {
+        GOD_MODE,
+
+    }
+
     public enum TEST_PROFILES {
         MAGE_DARK, MAGE_DEATH, MAGE_CHAOS, MAGE_ARCANE, MAGE_APOSTATE, MAGE_WIZARD, MAGE,
 
         WARRIOR, ROGUE, PRIEST,
 
         ALL,
-
-    }
-
-    public enum TEST_OPTIONS {
-        GOD_MODE,
 
     }
 

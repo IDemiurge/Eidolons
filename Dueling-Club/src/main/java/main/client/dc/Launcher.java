@@ -169,7 +169,7 @@ public class Launcher {
         initMainMenu();
         welcome();
 
-        CoreEngine.setTEST_MODE(false);
+        CoreEngine.setLogicTest(false);
         initAutoLaunches();
 
         // CharacterCreator.getPanel().getTabs().select(0);

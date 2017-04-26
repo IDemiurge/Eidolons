@@ -275,6 +275,7 @@ public class GameLauncher {
         if (launch.ruleScope != null) {
             RuleMaster.setScope(launch.ruleScope);
         }
+        CoreEngine.setLogicTest(launch.logicTest);
         if (launch.logicTest) {
             initLogicTest();
         }
