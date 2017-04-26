@@ -145,7 +145,9 @@ public class TextureCache {
     }
 
     private String getEmptyPath() {
-        return ImageManager.getDefaultEmptyListIcon();
+        return
+         ImageManager.getImageFolderPath()+
+         ImageManager.getDefaultEmptyListIcon();
     }
 }
 

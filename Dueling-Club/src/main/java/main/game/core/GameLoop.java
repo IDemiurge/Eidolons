@@ -76,8 +76,9 @@ public class GameLoop {
         Boolean result;
         if (activeUnit.getHandler().getChannelingSpellData() != null)
         {
+            ActionInput data = activeUnit.getHandler().getChannelingSpellData();
             ChannelingRule.channelingResolves(activeUnit);
-            result = activateAction(activeUnit.getHandler().getChannelingSpellData());
+            result = activateAction(data);
         }
         else if (game.getManager().getActiveObj().isAiControlled()) {
             result = activateAction(waitForAI());

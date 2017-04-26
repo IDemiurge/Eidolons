@@ -118,8 +118,8 @@ public class ImageManager {
         // DEFAULT + f.list()[new Random().nextInt(f.list().length)]
 
         CustomImageIcon img;
-        if (!imgName.toLowerCase().contains(getPATH().toLowerCase())) {
-            img = new CustomImageIcon(getPATH() + imgName);
+        if (!imgName.toLowerCase().contains(getImageFolderPath().toLowerCase())) {
+            img = new CustomImageIcon(getImageFolderPath() + imgName);
         } else {
             img = new CustomImageIcon(imgName);
         }
@@ -130,8 +130,8 @@ public class ImageManager {
             }
             // return "broken skull" image! at least for units and list items!
             // if (imgName.contains(".")) {
-            if (!imgName.contains(getPATH())) {
-                imgName = getPATH() + imgName;
+            if (!imgName.contains(getImageFolderPath())) {
+                imgName = getImageFolderPath() + imgName;
             }
             if (StringMaster.getFormat(imgName).length() < 2) {
                 for (String format : STD_FORMATS) {
@@ -184,7 +184,7 @@ public class ImageManager {
     public static ImageIcon getEmptyIcon(int obj_size) {
         // if (obj_size==128)
         // return getEmptyUnitIcon();
-        return new ImageIcon(getPATH() + "UI\\empty" + obj_size + ".jpg");
+        return new ImageIcon(getImageFolderPath() + "UI\\empty" + obj_size + ".jpg");
     }
 
     public static String getGraveyardEmptyItemIconPath() {
@@ -202,13 +202,13 @@ public class ImageManager {
 
     public static ImageIcon getEmptyItemIcon(boolean alt) {
         if (alt) {
-            return new ImageIcon(getPATH() + "UI\\EMPTY_ITEM_ALT.jpg");
+            return new ImageIcon(getImageFolderPath() + "UI\\EMPTY_ITEM_ALT.jpg");
         }
-        return new ImageIcon(getPATH() + "UI\\EMPTY_ITEM.jpg");
+        return new ImageIcon(getImageFolderPath() + "UI\\EMPTY_ITEM.jpg");
     }
 
     public static ImageIcon getEmptyUnitIcon() {
-        return new ImageIcon(getPATH() + "UI\\Empty.jpg");
+        return new ImageIcon(getImageFolderPath() + "UI\\Empty.jpg");
     }
 
     public static String getDEFAULT() {
@@ -220,7 +220,7 @@ public class ImageManager {
     }
 
     public static String getDefaultImageLocation() {
-        return getPATH();
+        return getImageFolderPath();
     }
 
     public static Image applyBorder(Image img, BORDER border) {
@@ -608,7 +608,7 @@ public class ImageManager {
 
     }
 
-    public static String getPATH() {
+    public static String getImageFolderPath() {
         return PATH;
     }
 
@@ -1000,15 +1000,15 @@ public class ImageManager {
         }
 
         for (String path : paths) {
-            folder = new File(getPATH() + path);
+            folder = new File(getImageFolderPath() + path);
             path += "\\";
             for (String file :FileManager.listFiles(folder)) {
-                if (new File(getPATH() + path + file).isFile()) {
+                if (new File(getImageFolderPath() + path + file).isFile()) {
                     if (!ListMaster.contains(list, file, false)) {
                         list.add(path + file);
                     }
-                } else if (new File(getPATH() + path + file).isDirectory()) {
-                    for (String subfile : new File(getPATH() + path + file).list()) {
+                } else if (new File(getImageFolderPath() + path + file).isDirectory()) {
+                    for (String subfile : new File(getImageFolderPath() + path + file).list()) {
                         if (!ListMaster.contains(list, subfile, false)) {
                             list.add(path + file + "\\" + subfile);
                         } else {

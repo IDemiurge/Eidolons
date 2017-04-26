@@ -50,12 +50,12 @@ public class ResourceMaster {
             }
         }
 
-        for (File f : FileManager.getFilesFromDirectory(ImageManager.getPATH() + "mini\\", false,
+        for (File f : FileManager.getFilesFromDirectory(ImageManager.getImageFolderPath() + "mini\\", false,
                 true)) {
             if (!ImageManager.isImageFile(f.getName())) {
                 continue;
             }
-            if (map.get(f.getPath().replace(ImageManager.getPATH(), "")) == null) {
+            if (map.get(f.getPath().replace(ImageManager.getImageFolderPath(), "")) == null) {
                 try {
                     writeToUnused(f, getImage(f));
                 } catch (Exception e) {
@@ -67,12 +67,12 @@ public class ResourceMaster {
 
     private static void writeToUnused(File f, Image image) {
         List<String> segments = StringMaster.getPathSegments(f.getPath().replace(
-                ImageManager.getPATH(), ""));
+                ImageManager.getImageFolderPath(), ""));
         String pathPart = segments.get(1) + "\\";
         if (!segments.get(2).contains(".")) {
             pathPart += segments.get(2) + "\\";
         }
-        File outputfile = new File(ImageManager.getPATH() + folderName + "\\unused\\" + pathPart
+        File outputfile = new File(ImageManager.getImageFolderPath() + folderName + "\\unused\\" + pathPart
                 + "\\" + f.getName());
 
         BufferedImage bufferedImage = ImageManager.getBufferedImage(image);

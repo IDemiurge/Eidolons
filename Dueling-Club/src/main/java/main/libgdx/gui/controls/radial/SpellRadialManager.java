@@ -20,7 +20,7 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
  * Created by JustMe on 12/29/2016.
  */
 public class SpellRadialManager {
-    private static int MAX_SPELLS_DISPLAYED = 16;
+    private static int MAX_SPELLS_DISPLAYED = 36;
 
     public static List<RadialValueContainer> getSpellNodes(Unit source,
                                                            DC_Obj target) {

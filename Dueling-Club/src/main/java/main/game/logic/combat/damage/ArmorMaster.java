@@ -24,6 +24,7 @@ import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.PhaseAnimation;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
@@ -164,6 +165,7 @@ public class ArmorMaster {
                  attacked, damage, blocked);
                 int durabilityLost = reduceDurability(blocked, armorObj, spell, dmg_type, attacker
                  .getActiveWeapon(offhand), damage);
+                if (CoreEngine.isPhaseAnimsOn())
                 if (!simulation) {
                     if (!shield) {
                         PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
@@ -278,11 +280,12 @@ public class ArmorMaster {
             DC_SoundMaster.playBlockedSound(attacker, attacked, shield, weapon, blockValue, damage);
             // shield.reduceDurabilityForDamage(damage, blockValue,
             // durabilityMod);
-            PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
-                    Attack.getAnimationKey(action));
-            animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_SHIELD, chance, blockValue,
-                    durabilityLost, damage, damage_type, shield));
-
+            if (CoreEngine.isPhaseAnimsOn()) {
+                PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
+                 Attack.getAnimationKey(action));
+                animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_SHIELD, chance, blockValue,
+                 durabilityLost, damage, damage_type, shield));
+            }
             message = attacked.getName() + " uses " + shield.getName() + " to block" + "" + " "
                     + blockValue + " out of " + damage + " " + damage_type + " damage from " +
                     // StringMaster.wrapInParenthesis
