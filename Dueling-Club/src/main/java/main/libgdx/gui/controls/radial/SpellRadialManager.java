@@ -7,10 +7,15 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
+import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
+import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static main.libgdx.gui.controls.radial.RadialManager.addCostTooltip;
 import static main.libgdx.gui.controls.radial.RadialManager.addSimpleTooltip;
 import static main.libgdx.texture.TextureCache.getOrCreateGrayscaleR;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
@@ -30,7 +35,7 @@ public class SpellRadialManager {
             return spells.stream()
                     .map(el -> {
                         final RadialValueContainer valueContainer = createNodeBranch(new EntityNode(el), source, target);
-                        addSimpleTooltip(valueContainer, el.getName());
+                        addCostTooltip(el, valueContainer);
                         return valueContainer;
                     })
                     .collect(Collectors.toList());
@@ -93,7 +98,19 @@ public class SpellRadialManager {
                         }
                     }
             );
-            addSimpleTooltip(valueContainer, action.getName());
+            ActionCostTooltip tooltip = new ActionCostTooltip();
+            tooltip.setUserObject(new ActionCostSource() {
+                @Override
+                public ValueContainer getName() {
+                    return new ValueContainer(action.getName() + " !!!!", "");
+                }
+
+                @Override
+                public List<ValueContainer> getCostsList() {
+                    return UnitDataSource.getActionCostList(action);
+                }
+            });
+            valueContainer.addListener(tooltip.getController());
         } else {
             valueContainer = new RadialValueContainer(
                     getOrCreateR(object.getTexturePath()),
