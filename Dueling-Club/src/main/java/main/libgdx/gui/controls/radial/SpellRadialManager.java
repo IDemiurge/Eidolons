@@ -7,6 +7,10 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
+import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
+import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
@@ -20,21 +24,21 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
  * Created by JustMe on 12/29/2016.
  */
 public class SpellRadialManager {
-    private static int MAX_SPELLS_DISPLAYED = 36;
+    private static int MAX_SPELLS_DISPLAYED = 16;
 
     public static List<RadialValueContainer> getSpellNodes(Unit source,
                                                            DC_Obj target) {
         List<DC_SpellObj> spells = source.getSpells().stream()
-         .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
-         .collect(Collectors.toList());
+                .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
+                .collect(Collectors.toList());
         if (spells.size() <= MAX_SPELLS_DISPLAYED) {
             return spells.stream()
-             .map(el -> {
-                 final RadialValueContainer valueContainer = createNodeBranch(new EntityNode(el), source, target);
-                 addSimpleTooltip(valueContainer, el.getName());
-                 return valueContainer;
-             })
-             .collect(Collectors.toList());
+                    .map(el -> {
+                        final RadialValueContainer valueContainer = createNodeBranch(new EntityNode(el), source, target);
+                        addSimpleTooltip(valueContainer, el.getName());
+                        return valueContainer;
+                    })
+                    .collect(Collectors.toList());
 
         }
 
@@ -55,7 +59,7 @@ public class SpellRadialManager {
             for (SPELL_ASPECT g : SPELL_ASPECT.values()) {
                 if (!aspects.contains(g)) {
                     if (new LinkedList<>(Arrays.asList(g.groups))
-                     .contains(spell.getSpellGroup())) {
+                            .contains(spell.getSpellGroup())) {
                         aspects.add(g);
                     }
                 }
@@ -63,12 +67,12 @@ public class SpellRadialManager {
         }
 
         return spell_groups.size() > 8 ?
-         aspects.stream()
-          .map(el -> createNodeBranch(new RadialSpellAspect(el), source, target))
-          .collect(Collectors.toList()) :
-         spell_groups.stream()
-          .map(el -> createNodeBranch(new RadialSpellGroup(el), source, target))
-          .collect(Collectors.toList());
+                aspects.stream()
+                        .map(el -> createNodeBranch(new RadialSpellAspect(el), source, target))
+                        .collect(Collectors.toList()) :
+                spell_groups.stream()
+                        .map(el -> createNodeBranch(new RadialSpellGroup(el), source, target))
+                        .collect(Collectors.toList());
     }
 
     private static boolean checkForceTargeting(Unit source,
@@ -83,27 +87,39 @@ public class SpellRadialManager {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
             Ref ref = action.getOwnerObj().getRef().getTargetingRef(target);
             valueContainer = new RadialValueContainer(
-             !action.canBeActivated(ref) ?
-              getOrCreateGrayscaleR(action.getImagePath())
-              : getOrCreateR(action.getImagePath()),
-             () -> {
-                 if (checkForceTargeting(source, target, action)) {
-                     action.activate();
-                 } else {
-                     action.activateOn(target);
-                 }
-             }
+                    !action.canBeActivated(ref) ?
+                            getOrCreateGrayscaleR(action.getImagePath())
+                            : getOrCreateR(action.getImagePath()),
+                    () -> {
+                        if (checkForceTargeting(source, target, action)) {
+                            action.activate();
+                        } else {
+                            action.activateOn(target);
+                        }
+                    }
             );
-            addSimpleTooltip(valueContainer, action.getName());
+            ActionCostTooltip tooltip = new ActionCostTooltip();
+            tooltip.setUserObject(new ActionCostSource() {
+                @Override
+                public ValueContainer getName() {
+                    return new ValueContainer(action.getName() + " !!!!", "");
+                }
+
+                @Override
+                public List<ValueContainer> getCostsList() {
+                    return UnitDataSource.getActionCostList(action);
+                }
+            });
+            valueContainer.addListener(tooltip.getController());
         } else {
             valueContainer = new RadialValueContainer(
-             getOrCreateR(object.getTexturePath()),
-             null
+                    getOrCreateR(object.getTexturePath()),
+                    null
             );
 
             valueContainer.setChilds(object.getItems(source).stream()
-             .map(el -> createNodeBranch(el, source, target))
-             .collect(Collectors.toList()));
+                    .map(el -> createNodeBranch(el, source, target))
+                    .collect(Collectors.toList()));
 
             String tooltip = StringMaster.getWellFormattedString(object.getContents().toString());
             addSimpleTooltip(valueContainer, tooltip);
