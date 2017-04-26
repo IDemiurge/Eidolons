@@ -5,6 +5,7 @@ import main.content.PARAMS;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
+import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_ArmorObj;
 import main.entity.item.DC_WeaponObj;
@@ -79,7 +80,7 @@ public class UnitDataSource implements
         };
     }
 
-    public static List<ValueContainer> getActionCostList(DC_UnitAction el) {
+    public static List<ValueContainer> getActionCostList(DC_ActiveObj el) {
         List<ValueContainer> costsList = new ArrayList<>();
         for (int i = 0, costsLength = RESOURCE_COSTS.length; i < costsLength; i++) {
             PARAMETER cost = RESOURCE_COSTS[i];
