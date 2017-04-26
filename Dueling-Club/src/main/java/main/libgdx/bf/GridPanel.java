@@ -53,7 +53,7 @@ public class GridPanel extends Group {
     protected TextureRegion unknownImage;
     protected TextureRegion cellBorderTexture;
     protected DequeImpl<BattleFieldObject> units;
-    protected GridCell[][] cells;
+    protected GridCellContainer[][] cells;
     private CellBorderManager cellBorderManager;
     private Map<BattleFieldObject, BaseView> unitMap;
     private int cols;
@@ -88,14 +88,14 @@ public class GridPanel extends Group {
         unknownImage = TextureCache.getOrCreateR(unknownCellPath);
         cellBorderTexture = TextureCache.getOrCreateR(cellBorderPath);
 
-        cells = (new GridCell[cols][rows]);
+        cells = new GridCellContainer[cols][rows];
 
         setCellBorderManager(new CellBorderManager());
         int rows1 = rows - 1;
         int cols1 = cols - 1;
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
-                cells[x][y] = new GridCell(emptyImage, x, rows1 - y);
+                cells[x][y] = new GridCellContainer(emptyImage, x, rows1 - y);
                 cells[x][y].setX(x * GridConst.CELL_W);
                 cells[x][y].setY(y * GridConst.CELL_H);
                 addActor(cells[x][y].init());
@@ -153,14 +153,11 @@ public class GridPanel extends Group {
             GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
         });
 
-        GuiEventManager.bind(UNIT_MOVED, param -> moveUnitView((BattleFieldObject) param.get()));
-
         GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
             BattleFieldObject unit = (BattleFieldObject) param.get();
             GridUnitView view = (GridUnitView) unitMap.get(unit);
             removeUnitView(unit);
         });
-
 
         GuiEventManager.bind(INGAME_EVENT_TRIGGERED, param -> {
             Event event = (main.game.logic.event.Event) param.get();
@@ -312,12 +309,8 @@ public class GridPanel extends Group {
                     }
                 }
 
-                GridCellContainer cellContainer =
-                        new GridCellContainer(emptyImage, coordinates.getX(), coordinates.getY()).init();
-                cellContainer.setObjects(views);
-                cellContainer.setOverlays(overlays);
-
-                cells[coordinates.getX()][rows - 1 - coordinates.getY()].addInnerDrawable(cellContainer);
+                cells[coordinates.getX()][rows - 1 - coordinates.getY()].setObjects(views);
+                cells[coordinates.getX()][rows - 1 - coordinates.getY()].setOverlays(overlays);
             }
 
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
@@ -356,12 +349,9 @@ public class GridPanel extends Group {
         int rows1 = rows - 1;
         BaseView uv = unitMap.get(heroObj);
         Coordinates c = heroObj.getCoordinates();
-        if (cells[c.x][rows1 - c.y].getInnerDrawable() == null) {
-            GridCellContainer cellContainer = new GridCellContainer(cells[c.x][rows1 - c.y]).init();
-            cells[c.x][rows1 - c.y].addInnerDrawable(cellContainer);
-        }
+
         uv.setVisible(true);
-        cells[c.x][rows1 - c.y].getInnerDrawable().addActor(uv);
+        cells[c.x][rows1 - c.y].addActor(uv);
 
         if (lightingManager != null) {
             lightingManager.updatePos(heroObj);

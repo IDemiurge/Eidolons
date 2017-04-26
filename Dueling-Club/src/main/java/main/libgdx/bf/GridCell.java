@@ -24,7 +24,6 @@ public class GridCell extends Group implements Borderable {
     protected Image border = null;
     private int gridX;
     private int gridY;
-    private GridCell innerDrawable;
     private TextureRegion borderTexture;
 
     private Label cordsText;
@@ -56,7 +55,7 @@ public class GridCell extends Group implements Borderable {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(new Coordinates(getGridX(), getGridY()));
-                if (innerDrawable == null && button == Input.Buttons.RIGHT) {
+                if (button == Input.Buttons.RIGHT) {
                     event.handle();
                     GuiEventManager.trigger(CREATE_RADIAL_MENU, dc_cell);
                 }
@@ -71,46 +70,23 @@ public class GridCell extends Group implements Borderable {
         return this;
     }
 
-    public void addInnerDrawable(GridCell cell) { //add null to reset cell
-        GridCell old = innerDrawable;
-        innerDrawable = cell;
-        if (old != null) {
-            removeActor(old);
-            old.dispose();
-        }
-        if (innerDrawable != null) {
-            cordsText.setVisible(false);
-            addActor(innerDrawable);
-            removeActor(backImage);
-        } else {
-            addActor(backImage);
-        }
-    }
-
-    public GridCell getInnerDrawable() {
-        return innerDrawable;
-    }
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (getInnerDrawable() == null) {
-            if (DC_Game.game.isDebugMode()) {
-                if (!cordsText.isVisible()) {
-                    cordsText.setVisible(true);
-                }
-            } else {
-                if (cordsText.isVisible()) {
-                    cordsText.setVisible(false);
-                }
-            }
-        }
-
         super.draw(batch, parentAlpha);
     }
 
-    private void dispose() {
-        removeActor(backImage);
-        backImage = null;
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (DC_Game.game.isDebugMode()) {
+            if (!cordsText.isVisible()) {
+                cordsText.setVisible(true);
+            }
+        } else {
+            if (cordsText.isVisible()) {
+                cordsText.setVisible(false);
+            }
+        }
     }
 
     @Override
