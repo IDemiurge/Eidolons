@@ -1,6 +1,7 @@
 package main.libgdx.gui.panels.dc;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -11,14 +12,15 @@ import main.libgdx.bf.UnitView;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
+import static main.libgdx.texture.TextureCache.getOrCreateR;
+
 public class InitiativePanel extends Group {
     private final int maxSize = 25;
     private final int visualSize = 8;
-    private final int imageSize = 100;
+    private final int imageSize = 96;
     private final int offset = 2;
     private ImageContainer[] queue;
     private WidgetGroup queueGroup;
-
 
     public InitiativePanel() {
         init();
@@ -46,17 +48,25 @@ public class InitiativePanel extends Group {
     }
 
     private void init() {
+
+
         queue = new ImageContainer[maxSize];
         queueGroup = new WidgetGroup();
         queueGroup.setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
         //queueGroup.debug();
         Container<WidgetGroup> container = new Container<>(queueGroup);
-        container.setBounds(imageSize, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
+        container.setBounds(imageSize + offset, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
         container.size(imageSize * visualSize + (offset - 1) * visualSize, imageSize);
         container.left().bottom();
         //container.setClip(true);
         //container.debug();
         addActor(container);
+
+        final TextureRegion textureRegion = getOrCreateR("UI/custom/time_100x100.jpg");
+        final Image image = new Image(textureRegion);
+        image.setPosition(0, 0);
+        image.setSize(imageSize, imageSize);
+        addActor(image);
         setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
     }
 
@@ -106,29 +116,6 @@ public class InitiativePanel extends Group {
         System.arraycopy(queue, 0, newc, 3, queue.length);
         queue = newc;
     }
-
-/*    @Override
-    public void act(float delta) {
-        for (int i = 0; i < queue.length; i++) {
-            if (queue[i] != null) queue[i].image.act(delta);
-        }
-    }*/
-
-/*    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        int startPos = queue.length - visualSize - 1;
-        for (int i = startPos; i < queue.length; i++) {
-            if (queue[i] != null) {
-                Image im = queue[i].image;
-                Vector2 v2 = new Vector2(im.getX(), im.getY());
-                Vector2 vv2 = new Vector2(v2);
-                v2 = localToParentCoordinates(v2);
-                im.setPosition(v2.x, v2.y);
-                im.draw(batch, parentAlpha);
-                im.setPosition(vv2.x, vv2.y);
-            }
-        }
-    }*/
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
