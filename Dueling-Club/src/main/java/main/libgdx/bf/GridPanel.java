@@ -332,6 +332,24 @@ public class GridPanel extends Group {
             WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
             WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
         });
+
+        GuiEventManager.bind(UPDATE_UNIT_VISIBLE, obj -> {
+            final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
+            final BaseView baseView = unitMap.get(pair.getLeft());
+            if (baseView instanceof GridUnitView) {
+                final Boolean isVisible = pair.getRight();
+                ((GridUnitView) baseView).setVisibleVal(isVisible ? 100 : 50);
+            }
+        });
+
+        GuiEventManager.bind(UPDATE_UNIT_ACT_STATE, obj -> {
+            final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
+            final BaseView baseView = unitMap.get(pair.getLeft());
+            if (baseView instanceof GridUnitView) {
+                final boolean mobilityState = pair.getRight();
+                ((GridUnitView) baseView).setMobilityState(mobilityState);
+            }
+        });
     }
 
     private void moveUnitView(BattleFieldObject heroObj) {

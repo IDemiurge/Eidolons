@@ -64,18 +64,17 @@ public class InitiativePanel extends Group {
         ImageContainer container = getIfExists(unitView.getCurId());
         if (container == null) {
             container = new ImageContainer();
-            container.initiative = unitView.getInitiativeIntVal();
             container.id = unitView.getCurId();
             container.size(imageSize, imageSize);
             container.left().bottom();
             int lastSlot = getLastEmptySlot();
-            container.setActor(unitView);
             queue[lastSlot] = container;
             queueGroup.addActor(container);
-        } else {
-            container.initiative = unitView.getInitiativeIntVal();
-            container.setActor(unitView);
         }
+
+        container.setActor(unitView);
+        container.initiative = unitView.getInitiativeIntVal();
+        container.mobilityState = unitView.getMobilityState();
         sort();
     }
 
@@ -174,6 +173,23 @@ public class InitiativePanel extends Group {
                 }
             }
         }
+
+        for (int i = 0; i < queue.length; i++) {
+            ImageContainer cur = queue[i];
+            if (cur != null && !cur.mobilityState) {
+                for (int y = i; y > 0; y--) {
+                    if (queue[y - 1] == null) {
+                        break;
+                    }
+                    if (!queue[y - 1].mobilityState) {
+                        break;
+                    }
+                    ImageContainer buff = queue[y - 1];
+                    queue[y - 1] = queue[y];
+                    queue[y] = buff;
+                }
+            }
+        }
         applyImageMove();
     }
 
@@ -221,5 +237,6 @@ public class InitiativePanel extends Group {
     private class ImageContainer extends Container<UnitView> {
         public int initiative;
         public int id;
+        public boolean mobilityState;
     }
 }

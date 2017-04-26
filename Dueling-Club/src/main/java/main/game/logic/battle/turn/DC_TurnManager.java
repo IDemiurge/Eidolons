@@ -15,12 +15,13 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.test.TestMaster;
 import main.test.frontend.FAST_DC;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
+import static main.system.GuiEventType.*;
 
 /**
  * After each Action, recalculates Initiative for each unit,
@@ -129,6 +130,9 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         for (Unit unit : unitQueue) {
             if (game.getVisionMaster().checkDetectedEnemy(unit)) {
                 displayedUnitQueue.add(unit);
+                GuiEventManager.trigger(UPDATE_UNIT_VISIBLE, new ImmutablePair<>(unit, true));
+            } else {
+                GuiEventManager.trigger(UPDATE_UNIT_VISIBLE, new ImmutablePair<>(unit, false));
             }
         }
 
@@ -137,7 +141,6 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private void resetQueue() {
@@ -153,10 +156,11 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
                     }
                 }
             }
-            if (unit.canActNow()) {
+            final boolean actNow = unit.canActNow();
+            if (actNow) {
                 unitQueue.add(unit);
-
             }
+            GuiEventManager.trigger(UPDATE_UNIT_ACT_STATE, new ImmutablePair<>(unit, actNow));
         }
 
         ArrayList<Unit> list = new ArrayList<>(getUnitQueue());
@@ -171,7 +175,6 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     public void setActiveUnit(Unit activeUnit) {
         this.activeUnit = activeUnit;
     }
-
 
     private boolean chooseUnit() {
         setActiveUnit(unitQueue.peek());
