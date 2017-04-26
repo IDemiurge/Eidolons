@@ -55,7 +55,7 @@ public class GridCell extends Group implements Borderable {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(new Coordinates(getGridX(), getGridY()));
-                if (button == Input.Buttons.RIGHT) {
+                if (button == Input.Buttons.RIGHT && !event.isHandled()) {
                     event.handle();
                     GuiEventManager.trigger(CREATE_RADIAL_MENU, dc_cell);
                 }
