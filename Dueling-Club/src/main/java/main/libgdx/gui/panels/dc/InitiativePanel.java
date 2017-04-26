@@ -57,12 +57,9 @@ public class InitiativePanel extends Group {
         queue = new ImageContainer[maxSize];
         queueGroup = new WidgetGroup();
         queueGroup.setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
-        //queueGroup.debug();
         Container<WidgetGroup> container = new Container<>(queueGroup);
         container.setBounds(imageSize + offset, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
         container.left().bottom();
-        //container.setClip(true);
-        //container.debug();
         addActor(container);
 
         final TextureRegion textureRegion = getOrCreateR("UI/custom/time_100x100.jpg");
@@ -71,10 +68,11 @@ public class InitiativePanel extends Group {
         image.align(Align.bottomLeft);
         image.overrideImageSize(imageSize, imageSize);
         image.setSize(imageSize, imageSize);
-        addActor(image);
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer("Good time to die!", "")));
         image.addListener(tooltip.getController());
+        addActor(image);
+
         setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
     }
 
