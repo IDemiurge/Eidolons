@@ -311,6 +311,7 @@ public class RuleMaster implements Controller {
 
     public enum RULE {
         FORCE(RULE_SCOPE.FULL),
+        CHANNELING(RULE_SCOPE.TEST),
         ATTACK_OF_OPPORTUNITY(RULE_SCOPE.FULL),
         INSTANT_ATTACK(RULE_SCOPE.FULL),
         COUNTER_ATTACK(RULE_SCOPE.BASIC),
@@ -328,7 +329,7 @@ public class RuleMaster implements Controller {
         WOUNDS,
         BLEEDING,
         WEIGHT,
-        INJURY(RULE_SCOPE.FULL),;
+        INJURY(RULE_SCOPE.FULL);
 
         String tooltip;
         RULE_SCOPE scope;

@@ -143,9 +143,12 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             applyResistPenalty(action);
         } else {
             switch (goal) {
-
+                case PROTECT:
                 case ATTACK:
                     setBasePriority(getAttackPriority(as));
+                    if (goal== GOAL_TYPE.PROTECT){
+
+                    }
                     // preview results?
                     break;
                 case WAIT:

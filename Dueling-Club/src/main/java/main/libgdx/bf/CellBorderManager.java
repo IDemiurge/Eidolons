@@ -2,6 +2,7 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import main.game.core.Eidolons;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 
@@ -84,6 +85,12 @@ public class CellBorderManager extends Group {
                 Runnable entity = blueBorderOwners.get(borderable);
                 if (entity != null) {
                     entity.run();
+                } else {
+                    //TODO replace this quick-fix:
+                    // click on non-blue-border cell must still do cell.invokeClicked() (run()) somehow
+
+                    if (Eidolons.game.getManager().isSelecting())
+                    Eidolons.game.getManager().selectingStopped(true);
                 }
                 clearBlueBorder();
 
