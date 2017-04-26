@@ -8,9 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
+import com.badlogic.gdx.utils.Align;
 import main.libgdx.bf.UnitView;
+import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+
+import java.util.Arrays;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
@@ -56,17 +60,21 @@ public class InitiativePanel extends Group {
         //queueGroup.debug();
         Container<WidgetGroup> container = new Container<>(queueGroup);
         container.setBounds(imageSize + offset, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
-        container.size(imageSize * visualSize + (offset - 1) * visualSize, imageSize);
         container.left().bottom();
         //container.setClip(true);
         //container.debug();
         addActor(container);
 
         final TextureRegion textureRegion = getOrCreateR("UI/custom/time_100x100.jpg");
-        final Image image = new Image(textureRegion);
+        final ValueContainer image = new ValueContainer(textureRegion);
         image.setPosition(0, 0);
+        image.align(Align.bottomLeft);
+        image.overrideImageSize(imageSize, imageSize);
         image.setSize(imageSize, imageSize);
         addActor(image);
+        ValueTooltip tooltip = new ValueTooltip();
+        tooltip.setUserObject(Arrays.asList(new ValueContainer("Good time to die!", "")));
+        image.addListener(tooltip.getController());
         setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
     }
 
