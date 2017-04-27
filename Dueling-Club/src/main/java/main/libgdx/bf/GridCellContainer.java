@@ -10,6 +10,9 @@ public class GridCellContainer extends GridCell {
     private int unitViewCount = 0;
     private int overlayCount = 0;
 
+    private GraveyardView graveyard;
+
+
     public GridCellContainer(TextureRegion backTexture, int gridX, int gridY) {
         super(backTexture, gridX, gridY);
     }
@@ -21,6 +24,11 @@ public class GridCellContainer extends GridCell {
     @Override
     public GridCellContainer init() {
         super.init();
+
+        graveyard = new GraveyardView();
+        addActor(graveyard);
+        graveyard.setWidth(getWidth());
+        graveyard.setHeight(getHeight());
         return this;
     }
 
@@ -48,6 +56,10 @@ public class GridCellContainer extends GridCell {
                 );
                 i++;
             }
+        }
+
+        if (graveyard != null) {
+            graveyard.setZIndex(Integer.MAX_VALUE);
         }
     }
 
@@ -86,6 +98,7 @@ public class GridCellContainer extends GridCell {
         super.removeActor(uv); //call super for only popup
         super.addActorAt(getChildren().size - overlayCount, uv);
         recalcImagesPos();
+        graveyard.setZIndex(Integer.MAX_VALUE);
     }
 
 /*    @Override

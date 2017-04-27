@@ -3,8 +3,6 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.system.GuiEventManager;
@@ -126,13 +124,13 @@ public class GridUnitView extends UnitView {
         }
     }
 
-    @Override
+/*    @Override
     public Actor hit(float x, float y, boolean touchable) {
         if (touchable && this.getTouchable() != Touchable.enabled) {
             return null;
         }
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
-    }
+    }*/
 
     public int getId() {
         return curId;

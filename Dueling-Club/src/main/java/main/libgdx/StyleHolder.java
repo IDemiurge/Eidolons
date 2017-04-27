@@ -22,6 +22,7 @@ public class StyleHolder {
     private static final String OVER = "_over";
     private static final String DOWN = "_down";
     private static final String UP = "_up";
+    private static final String CHECKED = "_down";
     private static Label.LabelStyle defaultLabelStyle;
     private static Label.LabelStyle avqLabelStyle;
     private static Color defaultColor = new Color(ColorManager.GOLDEN_WHITE.getRGB());
@@ -96,17 +97,20 @@ public class StyleHolder {
         final String overPath = baseString + OVER + endString;
         final String downPath = baseString + DOWN + endString;
         final String upPath = baseString + UP + endString;
+        final String checkedPath = baseString + CHECKED + endString;
 
         final TextureRegion disabledTexture = getOrCreateR(disabledPath);
         final TextureRegion overTexture = getOrCreateR(overPath);
         final TextureRegion downTexture = getOrCreateR(downPath);
         final TextureRegion upTexture = getOrCreateR(upPath);
+        final TextureRegion checkedTexture = new TextureRegion(getOrCreateR(checkedPath));
 
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.disabled = new TextureRegionDrawable(disabledTexture);
         style.over = new TextureRegionDrawable(overTexture);
         style.down = new TextureRegionDrawable(downTexture);
         style.up = new TextureRegionDrawable(upTexture);
+        style.checked = new TextureRegionDrawable(checkedTexture);
 
         return style;
     }
