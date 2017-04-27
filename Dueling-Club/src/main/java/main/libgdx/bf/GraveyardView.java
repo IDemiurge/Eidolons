@@ -4,6 +4,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.TablePanel;
+import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.tooltips.ValueTooltip;
+
+import java.util.Arrays;
 
 public class GraveyardView extends TablePanel {
     private static final int SIZE = 4;
@@ -28,6 +32,11 @@ public class GraveyardView extends TablePanel {
             graves[i] = graveTables.add().expand().fill();
         }
         add(graveTables).expand().fill();
+        ValueTooltip tooltip = new ValueTooltip();
+        tooltip.setUserObject(Arrays.asList(
+                new ValueContainer("\"Death smiles at us all", ""),
+                new ValueContainer("all we can do is smile back.\"", "")));
+        graveyardButton.addListener(tooltip.getController());
     }
 
     public void AddCorpse(UnitView unitView) {
