@@ -40,6 +40,7 @@ public class CoreEngine {
     private static boolean guiTestMode;
     private static boolean actionTargetingFiltersOff;
     private static boolean phaseAnimsOn;
+    private static boolean logicTest;
 
     public static void dataInit(boolean newThread, final boolean macro) {
         if (newThread) {
@@ -149,13 +150,12 @@ public class CoreEngine {
         return true;
     }
 
-    public static boolean isTEST_MODE() {
-        // return TEST_MODE;
-        return true;
+    public static boolean isLogicTest() {
+         return logicTest;
     }
 
-    public static void setTEST_MODE(boolean tEST_MODE) {
-        TEST_MODE = tEST_MODE;
+    public static void setLogicTest(boolean tEST_MODE) {
+        logicTest = tEST_MODE;
     }
 
     public static boolean isMenuScope() {

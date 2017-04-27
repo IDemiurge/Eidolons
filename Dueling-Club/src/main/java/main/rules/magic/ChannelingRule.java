@@ -1,31 +1,19 @@
 package main.rules.magic;
 
-import main.ability.ActiveAbility;
 import main.ability.DC_CostsFactory;
-import main.ability.effects.Effects;
-import main.ability.effects.attachment.AddTriggerEffect;
-import main.ability.effects.oneshot.activation.CastSpellEffect;
-import main.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.ability.effects.oneshot.mechanic.ModeEffect;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.mode.STD_MODES;
-import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
-import main.elements.conditions.Condition;
-import main.elements.conditions.Conditions;
-import main.elements.conditions.RefCondition;
-import main.elements.conditions.StringComparison;
 import main.elements.costs.Cost;
 import main.elements.costs.CostRequirements;
 import main.elements.costs.Costs;
 import main.entity.Ref;
-import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
-import main.entity.active.DC_UnitAction;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.sound.SoundMaster;
@@ -81,45 +69,46 @@ public class ChannelingRule {
             costs.removeRequirement(InfoMaster.COOLDOWN_REASON);
         return costs;
     }
-
-    public static boolean activateChanneing(DC_ActiveObj spell) {
+    public static void channelingInterrupted(Unit sourceObj) {
+        sourceObj.getHandler().clearChannelingData();
+    }
+    public static void channelingResolves(Unit activeUnit) {
+        activeUnit.getHandler().clearChannelingData();
+        activeUnit.removeBuff( STD_MODES.CHANNELING.getBuffName());
+    }
+    public static boolean activateChanneing(DC_SpellObj spell) {
 
         // ActiveAbility spell_ability = ActivesConstructor
         // .mergeActiveList(spell, TARGETING_MODE.SINGLE);
+        spell.getOwnerObj().getHandler().initChannelingSpellData(spell);
+
 
         boolean result = true;
         ModeEffect modeEffect = new ModeEffect(STD_MODES.CHANNELING);
-        String string = STD_MODES.CHANNELING.toString();
-        if (spell instanceof DC_UnitAction) {
-            if (spell.checkProperty(G_PROPS.CUSTOM_PROPS)) {
-                modeEffect.getModPropEffect().setValue(
-                 spell.getProperty(G_PROPS.CUSTOM_PROPS));
-            }
-        }
+//        String string = STD_MODES.CHANNELING.toString();
+//        if (spell instanceof DC_UnitAction) {
+//            if (spell.checkProperty(G_PROPS.CUSTOM_PROPS)) {
+//                modeEffect.getModPropEffect().setValue(
+//                 spell.getProperty(G_PROPS.CUSTOM_PROPS));
+//            }
+//        }
         Ref REF = spell.getRef().getCopy();
         REF.setTarget(spell.getOwnerObj().getId());
         // modeEffect.getAddBuffEffect().setEffect(effect)
 
-        Condition conditions = new Conditions(new RefCondition(
-         KEYS.EVENT_SOURCE, KEYS.SOURCE), new StringComparison(
-         "{SOURCE_MODE}", string, true));
+//        Condition conditions = new Conditions(new RefCondition(
+//         KEYS.EVENT_SOURCE, KEYS.SOURCE), new StringComparison(
+//         "{SOURCE_MODE}", string, true));
 
-        CastSpellEffect castEffect = new CastSpellEffect(spell);
-        castEffect.setForceTargeting(true);
+//        CastSpellEffect castEffect = new CastSpellEffect(spell);
+//        castEffect.setForceTargeting(true);
 
-        AddTriggerEffect triggerEffect = new AddTriggerEffect(
-         STANDARD_EVENT_TYPE.UNIT_TURN_STARTED, conditions,
-         new ActiveAbility(null, new Effects(
-          new RemoveBuffEffect(string), castEffect)));
-        // triggerEffect
-        // .getTrigger()
-        // .getAbilities()
-        // .addEffect(new RemoveBuffEffect(
-        // STD_MODES.CHANNELING.getBuffName()));
-        // triggerEffect.getTrigger().setOneShot(true);
-        // triggerEffect.getTrigger().setForceTargeting(false);
+//        AddTriggerEffect triggerEffect = new AddTriggerEffect(
+//         STANDARD_EVENT_TYPE.UNIT_TURN_STARTED, conditions,
+//         new ActiveAbility(null, new Effects(
+//          new RemoveBuffEffect(string), castEffect)));
         modeEffect.setReinit(false);
-        modeEffect.getAddBuffEffect().addEffect(triggerEffect);
+//        modeEffect.getAddBuffEffect().addEffect(triggerEffect);
         modeEffect.getAddBuffEffect().setDuration(2);
         result &= modeEffect.apply(REF);
         return result;
@@ -163,6 +152,14 @@ public class ChannelingRule {
     public static void setTestMode(boolean testMode) {
         ChannelingRule.testMode = testMode;
     }
+
+    public static boolean isPreTargetingNeeded(DC_SpellObj spell) {
+        return true;
+    }
+
+
+
+
 // Targeting targeting = new FixedTargeting(KEYS.TARGET);
     // spell_ability.setTargeting(targeting);
     // Effect ELSEeffect = new

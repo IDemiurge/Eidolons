@@ -300,7 +300,7 @@ public class PresetLauncher {
     private static void initOptionParams(String value) {
         // DebugMaster.setOmnivisionOn(VISION_HACK);
         // game.setDebugMode(FAST_MODE || SUPER_FAST_MODE);
-        // CoreEngine.setTEST_MODE(true);
+        // CoreEngine.setLogicTest(true);
 
     }
 

@@ -116,7 +116,6 @@ public class LevelEditor {
         // WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.READING_DONE);
         // XML_Reader.readTypes(true);
         CoreEngine.setLevelEditor(true);
-        CoreEngine.setTEST_MODE(true);
         // simulation = new LE_Simulation();
         objMaster = new LE_ObjMaster();
         mouseMaster = new LE_MouseMaster();

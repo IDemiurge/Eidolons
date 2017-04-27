@@ -166,7 +166,6 @@ public class ArcaneVault {
         }
         ItemGenerator.setGenerationOn(!ENABLE_ITEM_GENERATION);
         LogMaster.PERFORMANCE_DEBUG_ON = showTime;
-        CoreEngine.setTEST_MODE(true);
         if (args != null) {
             if (args.length > 0) {
                 setMacroMode(true);

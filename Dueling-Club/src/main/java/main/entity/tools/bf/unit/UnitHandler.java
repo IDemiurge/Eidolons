@@ -6,6 +6,7 @@ import main.entity.tools.EntityHandler;
 import main.entity.tools.EntityMaster;
 import main.game.core.ActionInput;
 import main.game.logic.action.context.Context;
+import main.rules.magic.ChannelingRule;
 
 /**
  * Created by JustMe on 3/8/2017.
@@ -17,13 +18,26 @@ public class UnitHandler extends EntityHandler<Unit> {
         super(entity, entityMaster);
     }
 
-    public void initChannelingSpellData(DC_SpellObj spell){
+    public void initChannelingSpellData(DC_SpellObj spell) {
         Context context = new Context(getRef());
+        if (ChannelingRule.isPreTargetingNeeded(spell)){
+        spell.getTargeter().initTarget();
 //        context.setTarget(target); // group?
+        if (spell.getTargetGroup() != null)
+            context.setGroup(spell.getTargetGroup());
+        else
+            context.setTarget(spell.getTargetObj().getId());
+        }
         channelingSpellData = new ActionInput(spell, context);
 
     }
-        public ActionInput getChannelingSpellData(){
+
+    public ActionInput getChannelingSpellData() {
+        //try recheck and reselect target?
         return channelingSpellData;
+    }
+
+    public void clearChannelingData() {
+        channelingSpellData = null;
     }
 }

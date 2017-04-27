@@ -1,13 +1,10 @@
 package main.ability.effects.oneshot.mechanic;
 
-import main.ability.effects.Effect;
-import main.ability.effects.Effects;
-import main.ability.effects.OneshotEffect;
+import main.ability.effects.*;
 import main.ability.effects.continuous.SetCustomModeEffect;
 import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.ability.effects.oneshot.spell.DivinationEffect;
-import main.ability.effects.MicroEffect;
 import main.ability.effects.common.ModifyPropertyEffect;
 import main.ability.effects.common.ModifyValueEffect;
 import main.content.ContentManager;
@@ -25,7 +22,9 @@ import main.elements.conditions.RefCondition;
 import main.elements.conditions.StringComparison;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.Unit;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.rules.magic.ChannelingRule;
 import main.rules.mechanics.InterruptRule;
 import main.rules.perk.AlertRule;
 import main.system.auxiliary.RandomWizard;
@@ -206,6 +205,15 @@ public class ModeEffect extends MicroEffect  implements OneshotEffect {
             effects.add(InterruptRule.getEffect());
         } else {
             effects.add(AlertRule.getInterruptEffect());
+        }
+        if (mode.equals(STD_MODES.CHANNELING)){
+            effects.add(new EffectImpl() {
+                @Override
+                public boolean applyThis() {
+                    ChannelingRule.channelingInterrupted((Unit) getRef().getSourceObj());
+                    return true;
+                }
+            });
         }
 
         STANDARD_EVENT_TYPE event_type = STANDARD_EVENT_TYPE.UNIT_IS_DEALT_TOUGHNESS_DAMAGE; // TODO

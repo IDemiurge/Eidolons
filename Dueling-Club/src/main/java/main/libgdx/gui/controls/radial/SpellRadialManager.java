@@ -11,11 +11,11 @@ import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
+import main.system.auxiliary.StringMaster;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static main.libgdx.gui.controls.radial.RadialManager.addCostTooltip;
 import static main.libgdx.gui.controls.radial.RadialManager.addSimpleTooltip;
 import static main.libgdx.texture.TextureCache.getOrCreateGrayscaleR;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
@@ -35,7 +35,7 @@ public class SpellRadialManager {
             return spells.stream()
                     .map(el -> {
                         final RadialValueContainer valueContainer = createNodeBranch(new EntityNode(el), source, target);
-                        addCostTooltip(el, valueContainer);
+                        addSimpleTooltip(valueContainer, el.getName());
                         return valueContainer;
                     })
                     .collect(Collectors.toList());
@@ -121,17 +121,16 @@ public class SpellRadialManager {
                     .map(el -> createNodeBranch(el, source, target))
                     .collect(Collectors.toList()));
 
-            addSimpleTooltip(valueContainer, "unknown name");
+            String tooltip = StringMaster.getWellFormattedString(object.getContents().toString());
+            addSimpleTooltip(valueContainer, tooltip);
         }
         return valueContainer;
     }
 
     public enum SPELL_ASPECT {
+        NEUTRAL(SpellEnums.SPELL_GROUP.FIRE, SpellEnums.SPELL_GROUP.AIR, SpellEnums.SPELL_GROUP.WATER),
         ARCANE(SpellEnums.SPELL_GROUP.CONJURATION, SpellEnums.SPELL_GROUP.SORCERY, SpellEnums.SPELL_GROUP.ENCHANTMENT),
-        LIFE(SpellEnums.SPELL_GROUP.SAVAGE, SpellEnums.SPELL_GROUP.SYLVAN, SpellEnums.SPELL_GROUP.FIRE
-                , SpellEnums.SPELL_GROUP.AIR, SpellEnums.SPELL_GROUP.EARTH, SpellEnums.SPELL_GROUP.WATER
-
-        ),
+        LIFE(SpellEnums.SPELL_GROUP.SAVAGE, SpellEnums.SPELL_GROUP.SYLVAN, SpellEnums.SPELL_GROUP.EARTH),
         CHAOS(SpellEnums.SPELL_GROUP.DESTRUCTION, SpellEnums.SPELL_GROUP.DEMONOLOGY, SpellEnums.SPELL_GROUP.WARP),
         DARKNESS(SpellEnums.SPELL_GROUP.SHADOW, SpellEnums.SPELL_GROUP.WITCHERY, SpellEnums.SPELL_GROUP.PSYCHIC),
         LIGHT(SpellEnums.SPELL_GROUP.BENEDICTION, SpellEnums.SPELL_GROUP.REDEMPTION, SpellEnums.SPELL_GROUP.CELESTIAL),

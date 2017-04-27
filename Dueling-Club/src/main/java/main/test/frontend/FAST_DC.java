@@ -214,7 +214,6 @@ public class FAST_DC {
             }
         }
 
-        CoreEngine.setTEST_MODE(true);
         DC_Engine.init();
         Chronos.mark("GAME LAUNCHED");
         if (host_client != null) {

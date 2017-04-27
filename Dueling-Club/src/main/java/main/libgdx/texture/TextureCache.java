@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.GreyscaleUtils;
+import main.system.images.ImageManager;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -130,11 +131,23 @@ public class TextureCache {
                 cache.put(path, t);
             } catch (Exception e) {
                 e.printStackTrace();
-                return null;
+                 if (cache.get(getEmptyPath()) == null){
+                    Texture emptyTexture = new Texture(getEmptyPath());
+                    cache.put(getEmptyPath(), emptyTexture );
+                     return emptyTexture;
+                }
+                return cache.get(getEmptyPath());
+
             }
         }
 
         return this.cache.get(path);
+    }
+
+    private String getEmptyPath() {
+        return
+         ImageManager.getImageFolderPath()+
+         ImageManager.getDefaultEmptyListIcon();
     }
 }
 
