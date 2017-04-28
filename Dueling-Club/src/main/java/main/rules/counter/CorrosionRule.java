@@ -29,7 +29,7 @@ public class CorrosionRule extends DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Corrosion_Counter.getName();
+        return COUNTER.Corrosion.getName();
     }
 
     @Override

@@ -1,13 +1,14 @@
 package main.rules.counter;
 
-import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
+import main.ability.effects.attachment.AddBuffEffect;
+import main.ability.effects.common.AddStatusEffect;
 import main.ability.effects.continuous.CustomTargetEffect;
 import main.ability.effects.oneshot.mechanic.ModifyCounterEffect;
-import main.ability.effects.common.AddStatusEffect;
 import main.ability.targeting.TemplateAutoTargeting;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.data.filesys.PathFinder;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
@@ -39,7 +40,12 @@ public abstract class DC_CounterRule {
         this.game = game;
     }
 
-    public abstract String getCounterName();
+    public   String getCounterName(){
+        return getCounter().getName();
+    }
+    public COUNTER getCounter(){
+        return null;
+    }
 
     public abstract int getCounterNumberReductionPerTurn(Unit unit);
 

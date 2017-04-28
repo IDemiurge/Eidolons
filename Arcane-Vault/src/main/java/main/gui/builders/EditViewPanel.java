@@ -131,10 +131,10 @@ public class EditViewPanel implements TableModelListener {
 
     public void refresh() {
         getPanel().requestFocusInWindow();
-        if (!isDirty()) {
-            getPanel().repaint();
-            return;
-        }
+//        if (!isDirty()) {
+//            getPanel().repaint();
+//            return;
+//        }
         getPanel().removeAll();
         if (!isMenuHidden()) {
             getPanel().add(menu.getBar(), "id menu, pos 0 0");

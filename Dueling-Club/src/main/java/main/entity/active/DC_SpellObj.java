@@ -98,10 +98,12 @@ public class DC_SpellObj extends DC_ActiveObj {
     }
 
     public SPELL_GROUP getSpellGroup() {
-        if (spellPool == null) {
+        if (spellGroup == null) {
             spellGroup = new EnumMaster<SPELL_GROUP>().retrieveEnumConst(SPELL_GROUP.class,
                     getProperty(G_PROPS.SPELL_GROUP));
         }
+        if (spellGroup == null)
+            return SPELL_GROUP.VOID;
         return spellGroup;
     }
 

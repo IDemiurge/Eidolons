@@ -141,6 +141,6 @@ public interface PriorityManager {
     }
 
     public enum PRIORITY_FUNCS {
-        DURATION, DANGER, CAPACITY,
+        DURATION, DANGER, CAPACITY, DANGER_TO_ALLY,
     }
 }

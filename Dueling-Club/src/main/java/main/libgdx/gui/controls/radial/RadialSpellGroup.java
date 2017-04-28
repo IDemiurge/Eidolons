@@ -26,7 +26,7 @@ public class RadialSpellGroup implements RADIAL_ITEM {
         LinkedList<RADIAL_ITEM> nodes = new LinkedList<>();
         List<DC_SpellObj> spells = source.getSpells()
                 .stream()
-                .filter(spell -> spell.getSpellGroup().equals(group))
+                .filter(spell -> spell.getSpellGroup()== (group))
                 .collect(Collectors.toList());
         spells.forEach(s -> {
             nodes.add(new EntityNode(s));

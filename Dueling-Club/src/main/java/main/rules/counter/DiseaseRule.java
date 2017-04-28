@@ -78,7 +78,7 @@ public class DiseaseRule extends DamageCounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Disease_Counter.getName();
+        return COUNTER.Disease.getName();
     }
 
     // @Override

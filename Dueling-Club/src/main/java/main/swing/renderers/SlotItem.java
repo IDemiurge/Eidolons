@@ -43,7 +43,7 @@ public class SlotItem extends ListItem<DC_HeroAttachedObj> {
         Graphics g = bufferedImage.getGraphics();
         for (COUNTER c : CoatingRule.COATING_COUNTERS) {
             if (coatedObj.getCounter(c.getName()) > 0) {
-                g.drawImage(c.getImage(), x, y, null);
+//                g.drawImage(c.getImage(), x, y, null);
                 x++;
             }
         }

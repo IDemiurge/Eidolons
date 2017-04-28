@@ -6,6 +6,7 @@ import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
 import main.content.DC_ContentManager;
 import main.content.enums.entity.UnitEnums.COUNTER;
+import main.data.ability.AE_ConstrArgs;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroItemObj;
@@ -13,6 +14,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.entity.CounterMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
+import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 
@@ -22,18 +24,20 @@ public class ModifyCounterEffect extends MicroEffect  implements OneshotEffect, 
     private MOD modtype;
     private Integer resistanceMod;
 
-    public ModifyCounterEffect(String name, MOD modtype, Formula initialValue) {
+
+    public ModifyCounterEffect(String name, MOD modtype, Formula formula) {
         this.modtype = modtype;
-        this.formula = initialValue;
+        this.formula = formula;
         this.counterName = name;
     }
 
-    public ModifyCounterEffect(COUNTER counter, MOD modtype, String initialValue) {
-        this(counter.getName(), modtype, initialValue);
+    public ModifyCounterEffect(COUNTER counter, MOD modtype, String amount) {
+        this(counter.getName(), modtype, amount);
     }
 
-    public ModifyCounterEffect(String name, MOD modtype, String initialValue) {
-        this(name, modtype, new Formula(initialValue));
+    @AE_ConstrArgs(argNames = {"name","modtype","amount",})
+    public ModifyCounterEffect(String name, MOD modtype, String amount) {
+        this(name, modtype, new Formula(amount));
     }
 
     public String toString() {
@@ -79,6 +83,7 @@ public class ModifyCounterEffect extends MicroEffect  implements OneshotEffect, 
                 break;
 
         }
+        if (CoreEngine.isPhaseAnimsOn())
         if (result) {
             try {
                 getAnimation().addPhaseArgs(PHASE_TYPE.COUNTER, counterName, modtype, modValue);

@@ -27,7 +27,7 @@ public class GreaseRule extends  DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Grease_Counter.getName();
+        return COUNTER.Grease.getName();
     }
 
     @Override

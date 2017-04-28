@@ -14,65 +14,65 @@ public class DC_CounterMaster {
             String realName = CounterMaster.findCounter(counterName);
             switch (new EnumMaster<COUNTER>().retrieveEnumConst(
                     COUNTER.class, realName)) {
-                case Blaze_Counter:
+                case Blaze:
                     if (!target.getGame().getRules().getBlazeRule()
                             .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;
-                case Bleeding_Counter:
+                case Bleeding:
                     if (!target.getGame().getRules().getBleedingRule()
                             .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;
-                case Blight_Counter:
+                case Blight:
                     if (!target.getGame().getRules().getBlightRule()
                             .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;
-                case Corrosion_Counter:
+                case Corrosion:
                     break;
-                case Despair_Counter:
+                case Despair:
                     break;
-                case Disease_Counter:
+                case Disease:
                     if (!target.getGame().getRules().getDiseaseRule()
                             .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;
-                case Ensnared_Counter:
+                case Ensnared:
                     if (!target.getGame().getRules().getEnsnareRule()
                             .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;
-                case Freeze_Counter:
+                case Freeze:
                     if (!target.getGame().getRules().getFreezeRule()
                             .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;
-                case Hatred_Counter:
+                case Hatred:
                     break;
-                case Lust_Counter:
+                case Lust:
                     break;
-                case Madness_Counter:
+                case Madness:
                     break;
-                case Moist_Counter:
+                case Moist:
                     break;
-                case Poison_Counter:
+                case Poison:
                     if (!target.getGame().getRules().getPoisonRule()
                             .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;
-                case Rage_Counter:
+                case Rage:
                     break;
-                case Soul_Counter:
+                case Soul:
                     break;
-                case Undying_Counter:
+                case Undying:
                     break;
                 default:
                     break;

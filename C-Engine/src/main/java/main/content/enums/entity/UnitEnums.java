@@ -1,9 +1,7 @@
 package main.content.enums.entity;
 
 import main.system.auxiliary.StringMaster;
-import main.system.images.ImageManager;
 
-import java.awt.*;
 import java.util.Map;
 
 /**
@@ -287,36 +285,35 @@ public class UnitEnums {
         }
     }
     public enum COUNTER {
-        Bleeding_Counter,
-        Blaze_Counter,
-        Poison_Counter,
-        Freeze_Counter,
-        Disease_Counter,
-        Ensnared_Counter,
-        Moist_Counter,
-        Electrified_Counter{
+        Bleeding,
+        Blaze,
+        Poison,
+        Freeze,
+        Disease,
+        Ensnared,
+        Moist,
+        Charge{
             public boolean isNegativeAllowed() {
                 return true ;
             }
         },
-        Lava_Counter,
-        Ash_Counter,
-        Clay_Counter,
-        Encase_Counter,
-        Grease_Counter,
-        Rage_Counter,
-        Madness_Counter,
-        Despair_Counter,
-        Lust_Counter,
-        Hatred_Counter,
+        Lava,
+        Ash,
+        Clay,
+        Encase,
+        Grease,
+        Rage,
+        Madness,
+        Despair,
+        Lust,
+        Hatred,
 
-        Virtue_Counter,
-        Illumination_Counter,
-        Concealment_Counter,
-        Haze_Counter,
-        Zeal_Counter,
-        Encryption_Counter,
-        Void_Counter,
+        Virtue,
+        Light,
+        Haze,
+        Zeal,
+        Encryption,
+        Void,
         Magnetized,
         Time_Warped{
             public boolean isNegativeAllowed() {
@@ -326,39 +323,43 @@ public class UnitEnums {
         Mutagenic,
         Zen,
         Loyalty,
-        Demon_debt{
+        Demon_Debt{
             public boolean isNegativeAllowed() {
                 return true ;
             }
         },
-        Demon_names,
+        Demon_Names,
         Ward,
 
-        Soul_Counter,
-        Undying_Counter,
-        Blight_Counter,
-        Corrosion_Counter, Oblivion_Counter, Taint_Counter, Aether_Counter, Warp_Counter, Suffocation_Counter;
+        Soul,
+        Undying,
+        Blight,
+        Corrosion, Oblivion,
+        Taint, Aether,
+        Warp, Suffocation;
 
         private Map<COUNTER, COUNTER_INTERACTION> interactionMap;
         private COUNTER down;
         private COUNTER up;
+        private String imagePath;
+        private String name=StringMaster.getWellFormattedString(name());
+
         public boolean isNegativeAllowed(){
             return false;
         }
 
+        COUNTER(String imagePath) {
+            this. imagePath= imagePath;
+        }
         COUNTER() {
         }
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return name;
         }
 
         public String getName() {
-            return toString();
-        }
-
-        public Image getImage() {
-            return ImageManager.getCounterImage(this);
+            return toString()+" Counter";
         }
 
         public void isNegative() {
@@ -389,6 +390,11 @@ public class UnitEnums {
         public COUNTER getUp() {
             return up;
         }
+
+        public String getImagePath() {
+            return imagePath;
+        }
+
     }
     public enum COUNTER_INTERACTION {
         CONVERT_TO,  CONVERT_FROM, MUTUAL_DELETION, DELETE_OTHER, DELETE_SELF,

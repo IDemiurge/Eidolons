@@ -240,7 +240,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
         if (param == null) {
             if (params == null) { // TODO
-                return new ModifyCounterEffect(sparam, mod_type, formula).apply(ref);
+                return new ModifyCounterEffect(sparam, mod_type, formula.toString()).apply(ref);
             }
             for (PARAMETER p : params) {
                 if (p == null) {

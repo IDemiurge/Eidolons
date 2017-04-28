@@ -57,7 +57,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Ensnared_Counter.getName();
+        return COUNTER.Ensnared.getName();
     }
 
     @Override

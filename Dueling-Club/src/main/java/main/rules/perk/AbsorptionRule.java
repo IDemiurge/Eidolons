@@ -25,7 +25,7 @@ public class AbsorptionRule extends DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Blaze_Counter.getName();
+        return COUNTER.Blaze.getName();
     }
 
     @Override

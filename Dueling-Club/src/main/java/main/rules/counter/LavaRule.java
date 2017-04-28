@@ -72,7 +72,7 @@ public class LavaRule extends DamageCounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Lava_Counter.getName();
+        return COUNTER.Lava.getName();
 
     }
     @Override

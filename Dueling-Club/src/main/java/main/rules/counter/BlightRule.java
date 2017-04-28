@@ -30,7 +30,7 @@ public class BlightRule extends DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Blight_Counter.getName();
+        return COUNTER.Blight.getName();
     }
 
     @Override

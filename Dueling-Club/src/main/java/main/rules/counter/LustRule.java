@@ -15,7 +15,7 @@ public class LustRule extends DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Lust_Counter.getName();
+        return COUNTER.Lust.getName();
     }
 
     @Override

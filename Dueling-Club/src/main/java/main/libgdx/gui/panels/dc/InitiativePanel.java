@@ -62,7 +62,7 @@ public class InitiativePanel extends Group {
         container.left().bottom();
         addActor(container);
 
-        final TextureRegion textureRegion = getOrCreateR("UI/custom/time_100x100.jpg");
+        final TextureRegion textureRegion = getOrCreateR("UI/custom/time_100x100.png");
         final ValueContainer image = new ValueContainer(textureRegion);
         image.setPosition(0, 0);
         image.align(Align.bottomLeft);

@@ -4,10 +4,15 @@ import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.targeting.AutoTargeting;
 import main.system.DC_ConditionMaster;
+import main.system.auxiliary.EnumMaster;
 
 public class TemplateAutoTargeting extends AutoTargeting {
 
     private AUTO_TARGETING_TEMPLATES template;
+
+    public TemplateAutoTargeting(String template) {
+        this((new EnumMaster<AUTO_TARGETING_TEMPLATES>().retrieveEnumConst(AUTO_TARGETING_TEMPLATES.class, template)), null);
+    }
 
     public TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES template) {
         this((template), null);
@@ -16,9 +21,9 @@ public class TemplateAutoTargeting extends AutoTargeting {
     public TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES template,
                                  Condition conditions) {
         super(
-                new Conditions(conditions,
-                        DC_ConditionMaster
-                                .getAutoTargetingTemplateConditions(template)));
+         new Conditions(conditions,
+          DC_ConditionMaster
+           .getAutoTargetingTemplateConditions(template)));
         this.setTemplate(template);
     }
 

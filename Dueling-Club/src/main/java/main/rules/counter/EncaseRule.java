@@ -26,7 +26,7 @@ public class EncaseRule extends  DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Encase_Counter.getName();
+        return COUNTER.Encase.getName();
     }
 
     @Override

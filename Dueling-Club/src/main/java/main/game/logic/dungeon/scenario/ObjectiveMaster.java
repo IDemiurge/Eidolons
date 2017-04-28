@@ -41,7 +41,7 @@ public class ObjectiveMaster {
 
     }
 
-    private static void addTrigger(EVENT_TEMPLATE ET, String eventData, CONDITION_TEMPLATE CT,
+    private static void addTrigger(EVENT_TEMPLATE ET, String eventData, SCRIPT_CONDITION_TEMPLATE CT,
                                    String conditionData, ACTION_TEMPLATE AT, String actionData) {
         STANDARD_EVENT_TYPE eventType = null;
         Conditions conditions = null;
@@ -130,7 +130,7 @@ public class ObjectiveMaster {
         SUBOBJECTIVE_EFFECT, OBJECTIVE_EFFECT, INIT_DIALOG,
     }
 
-    public enum CONDITION_TEMPLATE {
+    public enum SCRIPT_CONDITION_TEMPLATE {
         OBJ_REF, NUMERIC, STRING,
     }
 

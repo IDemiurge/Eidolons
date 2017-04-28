@@ -45,7 +45,7 @@ public class BleedingRule extends DC_RuleImpl {
     @Override
     public void initEffects() {
         // LIMIT BY MAX
-        effects = new ModifyCounterEffect(COUNTER.Bleeding_Counter.getName(),
+        effects = new ModifyCounterEffect(COUNTER.Bleeding.getName(),
                 MOD.MODIFY_BY_CONST,
 
 //                "{ACTIVE_PARAMS.BLEEDING_MOD}/100*"+

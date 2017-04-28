@@ -202,9 +202,9 @@ public class StringMaster {
         }
 
         if (anotherString.length() != string.length()) {
-            if (strict) {
-                return false;
-            }
+//            if (strict) {
+//                return false;
+//            }
             // anotherString.replace("_", " "); costly!
             // string.replace("_", " ");
 

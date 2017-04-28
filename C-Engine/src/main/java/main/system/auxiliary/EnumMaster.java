@@ -354,7 +354,7 @@ public class EnumMaster<T> {
 
     public Object getEnum(String content, Object[] enumConstants) {
         for (Object CONST : enumConstants) {
-            if (CONST.toString().equals(content)) {
+            if (StringMaster.compare(CONST.toString(), content, true)) {
                 return CONST;
             }
         }

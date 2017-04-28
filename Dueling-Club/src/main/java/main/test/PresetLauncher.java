@@ -48,6 +48,7 @@ public class PresetLauncher {
     public static int PRESET_OPTION = -1;
     static LAUNCH launch;
     private static boolean isInitLaunch = true;
+    public static String PRESET_LAUNCH;
 
     static {
         LAUNCH.Profiling.gameMode = GAME_MODES.ARENA;
@@ -84,6 +85,9 @@ public class PresetLauncher {
     }
 
     public static Boolean chooseLaunchOption() {
+        if (PRESET_LAUNCH !=null )
+            return init(PRESET_LAUNCH);
+
         int i = PRESET_OPTION;
         if (i == -1) {
             if (!FAST_DC.forceRunGT) {
@@ -92,14 +96,19 @@ public class PresetLauncher {
                 i = 1;
             }
         }
-        Preset p = null;
+        return init(LAUNCH_OPTIONS[i]);
+
+    }
+
+    private static Boolean init(String launchOption) {
         if (isInitLaunch) {
-            launch = initLaunch(LAUNCH_OPTIONS[i]);
+            launch = initLaunch(launchOption);
         }
+        Preset p = null;
         if (launch != null) {
             return customInit(launch);
         } else {
-            switch (LAUNCH_OPTIONS[i]) {
+            switch (launchOption) {
                 case "Last":
                     Preset lastPreset = PresetMaster.loadLastPreset();
                     UnitGroupMaster.setFactionMode(false);
@@ -365,7 +374,7 @@ public class PresetLauncher {
         AI("ai.xml", RULE_SCOPE.TEST, false),
         Gui("graphics test.xml", RULE_SCOPE.BASIC, null),
         Playtest("ai full.xml", RULE_SCOPE.FULL, null),
-        Anims(null, RULE_SCOPE.BASIC, true),
+        Anims("graphics test.xml", RULE_SCOPE.BASIC, true),
         Emitters(true),
         Light("light preview.xml", RULE_SCOPE.BASIC, true),
         JUnit(),
@@ -407,15 +416,8 @@ public class PresetLauncher {
         }
 
         LAUNCH(String preset, RULE_SCOPE ruleScope, Boolean dummyPlus) {
-            this.preset = preset;
+         this(dummyPlus);   this.preset = preset;
             this.ruleScope = ruleScope;
-            if (dummyPlus != null) {
-                if (dummyPlus) {
-                    initDummyPlusFlags();
-                } else {
-                    initDummyFlags();
-                }
-            }
         }
 
         LAUNCH(Boolean dummyPlus) {

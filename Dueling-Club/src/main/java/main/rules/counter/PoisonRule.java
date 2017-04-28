@@ -70,7 +70,7 @@ public class PoisonRule extends DamageCounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Poison_Counter.toString();
+        return COUNTER.Poison.toString();
     }
 
     @Override

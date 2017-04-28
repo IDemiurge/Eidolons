@@ -1,11 +1,11 @@
 package main.gui.components.tree;
 
-import main.content.PARAMS;
-import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.ContentManager;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
+import main.content.PARAMS;
 import main.content.enums.system.MetaEnums;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -15,9 +15,9 @@ import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TreeMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.DefaultComparator;
 import main.utilities.workspace.Workspace;
@@ -196,7 +196,7 @@ public class AV_Tree extends G_Panel {
             List<String> list;
             if (workspace == null) {
                 Set<String> c = XML_Reader.getTreeSubGroupedTypeMap(XML_Reader.isMacro()).get(
-                        subGroup);
+                 subGroup);
                 if (!ListMaster.isNotEmpty(c)) {
                     c = XML_Reader.getTreeSubGroupedTypeMap(!XML_Reader.isMacro()).get(subGroup);
                 }
@@ -205,8 +205,19 @@ public class AV_Tree extends G_Panel {
             } else {
                 if (workspace.isSearch()) {
                     list = DataManager.toStringList(new Filter<ObjType>().filter(workspace
-                            .getTypeList(), G_PROPS.TYPE, subGroup));
-                    Collections.sort(list, new EnumMaster<>().getEnumSorter(DC_TYPE.class));
+                     .getTypeList(), G_PROPS.TYPE, subGroup));
+                    try {
+                        Collections.sort(list, new EnumMaster<>().getEnumSorter(DC_TYPE.class));
+                    } catch (Exception e) {
+                        try {
+                            Collections.sort(list, new EnumMaster<>().getEnumSorter(
+                             EnumMaster.getEnumClass(type.getGroupingKey().getName())));
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                        e.printStackTrace();
+                    }
+
 
                 } else {
 
@@ -215,10 +226,10 @@ public class AV_Tree extends G_Panel {
                         filterValue = workspace.getSubgroupingProp();
                     }
                     list = DataManager.toStringList(new Filter<ObjType>().filter(workspace
-                            .getTypeList(), filterValue, subGroup));
+                     .getTypeList(), filterValue, subGroup));
                     try {
                         Collections.sort(list, new EnumMaster<>()
-                                .getEnumSorter(WORKSPACE_GROUP.class));
+                         .getEnumSorter(WORKSPACE_GROUP.class));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -235,7 +246,7 @@ public class AV_Tree extends G_Panel {
                 result.add(subNode);
             } // TODO is it ok?
             DefaultMutableTreeNode subNode2 = subNode;
-            if (isFullNodeStructureOn()  ) { //???
+            if (isFullNodeStructureOn()) { //???
                 for (String typeName : upgrades) {
                     subNode.add(new DefaultMutableTreeNode(typeName));
                 }
@@ -272,7 +283,7 @@ public class AV_Tree extends G_Panel {
                         parent = null;
                         i = 0;
                         LogMaster.log(1, upgrades + " remain, parent="
-                                + parent + i);
+                         + parent + i);
                         for (String typeName : upgrades) {
                             subNode.add(new DefaultMutableTreeNode(typeName));
                         }
@@ -299,7 +310,7 @@ public class AV_Tree extends G_Panel {
 
     private boolean addUpgradeNode(DefaultMutableTreeNode subNode, String typeName) {
         DefaultMutableTreeNode node = TreeMaster.findChildNode(subNode, DataManager.getType(
-                typeName).getProperty(G_PROPS.BASE_TYPE));
+         typeName).getProperty(G_PROPS.BASE_TYPE));
         if (node == null) {
             return false;
         }
@@ -310,10 +321,10 @@ public class AV_Tree extends G_Panel {
     private Comparator<? super String> getComparator() {
         // if (sortAlphabetically){
         if (type instanceof DC_TYPE) {
-             switch (((DC_TYPE) type)){
-                 case SPELLS:
-                     return SortMaster.getSorterString(PARAMS.SPELL_DIFFICULTY,type,false);
-             }
+            switch (((DC_TYPE) type)) {
+                case SPELLS:
+                    return SortMaster.getSorterString(PARAMS.SPELL_DIFFICULTY, type, false);
+            }
         }
         return new DefaultComparator<>();
         // }else
@@ -324,7 +335,7 @@ public class AV_Tree extends G_Panel {
     }
 
     private void addNode(DefaultMutableTreeNode subNode, String typeName, List<String> list) {
-      if (workspace==null )  if (checkUpgrade(typeName)) {
+        if (workspace == null) if (checkUpgrade(typeName)) {
             list.add(typeName);
             return;
         }
@@ -364,8 +375,8 @@ public class AV_Tree extends G_Panel {
 
     public String getSelectedItemName() {
         return ((DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent())
-                .getUserObject()
-                + "";
+         .getUserObject()
+         + "";
     }
 
     public boolean isSimpleTree() {

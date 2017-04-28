@@ -147,7 +147,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 case ATTACK:
                     setBasePriority(getAttackPriority(as));
                     if (goal== GOAL_TYPE.PROTECT){
-
+                        Unit  unitToProtect = (Unit) as.getAi().getArgMap().get(GOAL_TYPE.PROTECT);
+                        applyCustomPriorityMethod(PRIORITY_FUNCS.DANGER_TO_ALLY, unitToProtect, as.getTask().getArg());
                     }
                     // preview results?
                     break;
@@ -243,6 +244,16 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         LogMaster.log(1, "AI: " + priority + " priority for " + as);
         return priority;
 
+    }
+
+    private void applyCustomPriorityMethod(PRIORITY_FUNCS func, Object... args) {
+        switch (func) {
+            case DANGER_TO_ALLY:
+                Unit enemy = (Unit) game.getObjectById((Integer) args[1]);
+                Unit ally = (Unit) args[0];
+                int threat = getThreatAnalyzer().getThreat(ally.getAI(), enemy);
+                applyMultiplier(threat, "protect danger");
+        }
     }
 
     @Override

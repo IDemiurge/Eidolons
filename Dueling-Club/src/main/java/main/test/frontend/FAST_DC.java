@@ -114,6 +114,8 @@ public class FAST_DC {
                 forceRunGT = true;
             } else if (StringMaster.isInteger(args[0])) {
                 PresetLauncher.PRESET_OPTION = StringMaster.getInteger(args[0]);
+            } else {
+                PresetLauncher.PRESET_LAUNCH = args[0];
             }
         }
         CoreEngine.setExceptionTypes(exceptions);

@@ -134,11 +134,11 @@ public class WaterRule extends RoundRule implements ActionRule {
     private void addMoistCounters(Unit unit) {
         float factor = Math.min(1, getSubmergedFactor(unit));
         // new effect?
-        int counters = unit.getCounter(COUNTER.Moist_Counter);
+        int counters = unit.getCounter(COUNTER.Moist);
         int max = Math.round(factor * 100);
         int mod = Math.round(factor * 50);
         int newValue = Math.min(max, counters + mod);
-        unit.setCounter(COUNTER.Moist_Counter.getName(), newValue);
+        unit.setCounter(COUNTER.Moist.getName(), newValue);
 
     }
 

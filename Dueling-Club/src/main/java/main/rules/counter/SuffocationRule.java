@@ -37,7 +37,7 @@ public class SuffocationRule extends DamageCounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Suffocation_Counter.getName();
+        return COUNTER.Suffocation.getName();
     }
 
     @Override

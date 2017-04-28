@@ -24,7 +24,7 @@ public class ClayRule extends  DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Clay_Counter.getName();
+        return COUNTER.Clay.getName();
     }
 
     @Override

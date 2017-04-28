@@ -16,6 +16,7 @@ public class OrbElement extends ValueContainer {
     private TextureRegion backTexture;
     private int orbFullness = 62;
     private Vector2 backOffset = new Vector2();
+    private boolean logged;
 
     public OrbElement(TextureRegion texture, String value) {
         super(getOrCreateR(EMPTY_PATH), null, null);
@@ -63,7 +64,11 @@ public class OrbElement extends ValueContainer {
         try {
             ScissorStack.popScissors();
         } catch (Exception e) {
-            e.printStackTrace();
+            if (!logged)
+            {
+                e.printStackTrace(); //TODO spams into console!
+                logged=true;
+            }
         }
 
         //Vector2 v2 = new Vector2(-24, -4);

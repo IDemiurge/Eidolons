@@ -66,7 +66,7 @@ public class BlazeRule extends DamageCounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Blaze_Counter.getName();
+        return COUNTER.Blaze.getName();
 
     }
 

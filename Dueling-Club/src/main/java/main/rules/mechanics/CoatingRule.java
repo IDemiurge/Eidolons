@@ -27,10 +27,10 @@ public class CoatingRule {
 	 */
 
     public static final COUNTER[] COATING_COUNTERS = {
-            COUNTER.Poison_Counter, COUNTER.Disease_Counter,
-            COUNTER.Blight_Counter, COUNTER.Corrosion_Counter,
-            COUNTER.Blaze_Counter, COUNTER.Freeze_Counter,
-            COUNTER.Moist_Counter,};
+            COUNTER.Poison, COUNTER.Disease,
+            COUNTER.Blight, COUNTER.Corrosion,
+            COUNTER.Blaze, COUNTER.Freeze,
+            COUNTER.Moist,};
     public static final Integer RANGED_MOD = 2;
     public static final Integer THROWING_MOD = 5;
 
@@ -45,24 +45,24 @@ public class CoatingRule {
     public static int getMaxNumberOfCountersPerAttack(Obj item,
                                                       COUNTER counter) {
         switch (counter) {
-            case Blaze_Counter:
+            case Blaze:
                 return 5;
-            case Bleeding_Counter:
+            case Bleeding:
                 return 5;
-            case Blight_Counter:
+            case Blight:
                 return 5;
-            case Corrosion_Counter:
-                return 5;
-
-            case Disease_Counter:
+            case Corrosion:
                 return 5;
 
-            case Freeze_Counter:
+            case Disease:
                 return 5;
 
-            case Moist_Counter:
+            case Freeze:
                 return 5;
-            case Poison_Counter:
+
+            case Moist:
+                return 5;
+            case Poison:
                 return 5;
 
         }

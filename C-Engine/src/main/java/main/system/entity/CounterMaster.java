@@ -61,44 +61,44 @@ public class CounterMaster {
     public static float getCounterPriority(String counterName, Obj target) {
         String realName = findCounter(counterName);
         switch (new EnumMaster<COUNTER>().retrieveEnumConst(COUNTER.class, realName)) {
-            case Blaze_Counter:
+            case Blaze:
                 return 3; // percentage of health?
-            case Bleeding_Counter:
+            case Bleeding:
                 return 5;
-            case Blight_Counter:
+            case Blight:
                 return 2;
-            case Corrosion_Counter:
+            case Corrosion:
                 return 2.25f;
-            case Despair_Counter:
+            case Despair:
                 return 2.45f;
 
-            case Freeze_Counter:
+            case Freeze:
                 return 4.5f;
-            case Poison_Counter:
+            case Poison:
                 return 4.5f;
-            case Disease_Counter:
+            case Disease:
                 return 6;
 
-            case Ensnared_Counter:
+            case Ensnared:
                 return 7;
-            case Hatred_Counter:
+            case Hatred:
                 return 1;
 
-            case Lust_Counter:
+            case Lust:
                 return 2;
 
-            case Madness_Counter:
+            case Madness:
                 return 3;
 
-            case Moist_Counter:
+            case Moist:
                 return 2;
 
-            case Rage_Counter:
+            case Rage:
 
                 return 5;
 
-            case Soul_Counter:
-            case Undying_Counter:
+            case Soul:
+            case Undying:
                 return 25;
 
         }
@@ -108,38 +108,38 @@ public class CounterMaster {
     public static boolean isCounterPositive(String counterName) {
         String realName = findCounter(counterName);
         switch (new EnumMaster<COUNTER>().retrieveEnumConst(COUNTER.class, realName)) {
-            case Blaze_Counter:
+            case Blaze:
 
-            case Bleeding_Counter:
+            case Bleeding:
 
-            case Blight_Counter:
+            case Blight:
 
-            case Corrosion_Counter:
+            case Corrosion:
 
-            case Despair_Counter:
+            case Despair:
 
-            case Disease_Counter:
+            case Disease:
 
-            case Ensnared_Counter:
+            case Ensnared:
 
-            case Freeze_Counter:
+            case Freeze:
 
-            case Hatred_Counter:
+            case Hatred:
 
-            case Lust_Counter:
+            case Lust:
 
-            case Madness_Counter:
+            case Madness:
 
-            case Moist_Counter:
+            case Moist:
 
-            case Poison_Counter:
+            case Poison:
 
-            case Rage_Counter:
+            case Rage:
 
                 return false;
 
-            case Soul_Counter:
-            case Undying_Counter:
+            case Soul:
+            case Undying:
                 return true;
 
         }
@@ -147,4 +147,7 @@ public class CounterMaster {
         return false;
     }
 
+    public static String getImagePath(String counter) {
+        return getCounter(counter, false).getImagePath();
+    }
 }

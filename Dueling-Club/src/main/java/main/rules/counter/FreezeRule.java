@@ -79,7 +79,7 @@ new Effects( new ModifyValueEffect(RESISTANCES_REDUCED,
 
     @Override
     public String getCounterName() {
-        return COUNTER.Freeze_Counter.getName();
+        return COUNTER.Freeze.getName();
     }
 
     @Override
@@ -111,7 +111,7 @@ new Effects( new ModifyValueEffect(RESISTANCES_REDUCED,
         }
         return COUNTERS_PER_TURN
                 - Math.min(getNumberOfCounters(unit),
-                (unit.getCounter(COUNTER.Moist_Counter.getName())));
+                (unit.getCounter(COUNTER.Moist.getName())));
     }
 
 }

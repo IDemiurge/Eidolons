@@ -336,10 +336,10 @@ public class AnimationConstructor {
 //         getValuesForPart(part);
         PROPERTY[] props = {
                 G_PROPS.NAME,
+         G_PROPS.SPELL_GROUP,
                 G_PROPS.ASPECT,
+         PROPS.DAMAGE_TYPE,
                 G_PROPS.SPELL_TYPE,
-                G_PROPS.SPELL_GROUP,
-                PROPS.DAMAGE_TYPE,
         };
         for (ANIM_VALUES s : values) {
 
@@ -380,13 +380,35 @@ public class AnimationConstructor {
 //        spell.getTargeting();
         String file = null;
         for (PROPERTY p : props) {
-            String name = spell.getProperty(p) + " " + partPath + size;
+            String name = spell.getProperty(p)  ;
+            file = FileManager.findFirstFile(path, name, closest);
+            if (file != null) {
+                break;
+            }
+            name = spell.getProperty(p) ;
+            file = FileManager.findFirstFile(path, name, closest);
+            if (file != null) {
+                break;
+            }
+              name = spell.getProperty(p) + " " + partPath + size;
             file = FileManager.findFirstFile(path, name, closest);
             if (file != null) {
                 break;
             }
         }
+        if (file != null || closest || isPartIgnored(partPath))
         return file;
+        return findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+    }
+
+    private boolean isPartIgnored(String partPath) {
+        switch (new EnumMaster<ANIM_PART>().retrieveEnumConst(ANIM_PART.class, partPath)) {
+            case CAST:
+            case MAIN:
+            case IMPACT:
+                return false;
+        }
+        return true;
     }
 
 

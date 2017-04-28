@@ -668,10 +668,7 @@ public class ImageManager {
         return getValueIcon(value, true);
     }
 
-    public static Image getCounterImage(COUNTER COUNTER) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+
 
     public static String getValueIconPath(VALUE value) {
         if (value == null) {

@@ -30,7 +30,7 @@ public class AshAnnihilationRule extends DC_RuleImpl {
     public void initEffects() {
         effects=
          new CustomTargetEffect(new TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES.CELL),
-          new ModifyCounterEffect(COUNTER.Ash_Counter, MOD.MODIFY_BY_CONST, "{target_weight}/50"));
+          new ModifyCounterEffect(COUNTER.Ash, MOD.MODIFY_BY_CONST, "{target_weight}/50"));
 
     }
 

@@ -374,9 +374,8 @@ public class ConditionMaster {
 
     public static Condition toConditions(String string) {
         Conditions conditions = new Conditions();
-        for (String conditionString : StringMaster.openContainer(string, StringMaster.AND
-
-        )) {
+        for (String conditionString :
+         StringMaster.openContainer(string, StringMaster.AND)) {
             Condition c;
             if (conditionString.contains(StringMaster.OR)) {
                 String[] parts = conditionString.split(StringMaster.OR);
@@ -604,12 +603,20 @@ public class ConditionMaster {
         return null;
     }
 
-    public enum CONDITION_TEMPLATES {
+    public enum CONDITION_SHORTCUTS {
+isMe("ref(source, match)"),
+        ;
+CONDITION_SHORTCUTS(String s){
+
+}
+
+    }
+        public enum CONDITION_TEMPLATES {
         STRING("string", "fullString", "has"),
         STRING_STRICT("strStrict", "strEqual", "strict"),
         CONTAINER("contains"),
         CONTAINER_STRICT("containerStrict"),
-        REF("ref", "preCheck"),
+        REF("ref", "refCheck"),
         NUMERIC("num", "numeric", "greater"),
         NUMERIC_EQUAL("numEqual", "numeric equal", "equal"),
         NUMERIC_LESS("numLess", "numeric less", "less"),

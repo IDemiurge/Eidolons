@@ -116,110 +116,106 @@ public class CounterMasterAdvanced {
         Map<COUNTER, COUNTER_INTERACTION> map = new HashMap<>();
         s.setInteractionMap(map);
         switch (s) {
-            case Blaze_Counter:
-                s.setDown(COUNTER.Corrosion_Counter);
-                s.setUp(COUNTER.Electrified_Counter);
+            case Blaze:
+                s.setDown(COUNTER.Corrosion);
+                s.setUp(COUNTER.Charge);
                 break;
-            case Freeze_Counter:
-                s.setDown(COUNTER.Encase_Counter);
-                s.setUp(COUNTER.Moist_Counter);
-                initInteraction(s, COUNTER.Blaze_Counter, COUNTER_INTERACTION.MUTUAL_DELETION);
-                map.put(COUNTER.Moist_Counter, COUNTER_INTERACTION.GROW_SELF);
+            case Freeze:
+                s.setDown(COUNTER.Encase);
+                s.setUp(COUNTER.Moist);
+                initInteraction(s, COUNTER.Blaze, COUNTER_INTERACTION.MUTUAL_DELETION);
+                map.put(COUNTER.Moist, COUNTER_INTERACTION.GROW_SELF);
                 break;
-            case Blight_Counter:
-                s.setDown(COUNTER.Poison_Counter);
-                s.setUp(COUNTER.Corrosion_Counter);
+            case Blight:
+                s.setDown(COUNTER.Poison);
+                s.setUp(COUNTER.Corrosion);
                 break;
-            case Corrosion_Counter:
-                s.setDown(COUNTER.Blight_Counter);
-                s.setUp(COUNTER.Blaze_Counter);
+            case Corrosion:
+                s.setDown(COUNTER.Blight);
+                s.setUp(COUNTER.Blaze);
                 break;
-            case Electrified_Counter:
-                s.setDown(COUNTER.Blaze_Counter);
+            case Charge:
+                s.setDown(COUNTER.Blaze);
                 s.setUp(COUNTER.Magnetized);
                 break;
-            case Moist_Counter:
-                s.setDown(COUNTER.Freeze_Counter);
-                s.setUp(COUNTER.Corrosion_Counter);
+            case Moist:
+                s.setDown(COUNTER.Freeze);
+                s.setUp(COUNTER.Corrosion);
                 break;
-            case Grease_Counter:
-                s.setDown(COUNTER.Clay_Counter);
-                s.setUp(COUNTER.Moist_Counter);
+            case Grease:
+                s.setDown(COUNTER.Clay);
+                s.setUp(COUNTER.Moist);
                 break;
-            case Clay_Counter:
-                s.setDown(COUNTER.Encase_Counter);
-                s.setUp(COUNTER.Grease_Counter);
+            case Clay:
+                s.setDown(COUNTER.Encase);
+                s.setUp(COUNTER.Grease);
                 break;
-            case Encase_Counter:
-                s.setUp(COUNTER.Ensnared_Counter);
+            case Encase:
+                s.setUp(COUNTER.Ensnared);
                 break;
-            case Ensnared_Counter:
-                s.setDown(COUNTER.Encase_Counter);
+            case Ensnared:
+                s.setDown(COUNTER.Encase);
                 break;
-            case Bleeding_Counter:
+            case Bleeding:
                 break;
-            case Disease_Counter:
+            case Disease:
                 break;
-            case Poison_Counter:
+            case Poison:
                 break;
-            case Illumination_Counter:
-                break;
-            case Concealment_Counter:
-                break;
-            case Haze_Counter:
+            case Haze:
                 break;
             case Magnetized:
                 break;
             case Mutagenic:
                 break;
 
-            case Rage_Counter:
-                s.setDown(COUNTER.Hatred_Counter);
-                s.setUp(COUNTER.Oblivion_Counter);
+            case Rage:
+                s.setDown(COUNTER.Hatred);
+                s.setUp(COUNTER.Oblivion);
                 break;
-            case Oblivion_Counter:
-                s.setDown(COUNTER.Taint_Counter);
-                s.setUp(COUNTER.Void_Counter);
+            case Oblivion:
+                s.setDown(COUNTER.Taint);
+                s.setUp(COUNTER.Void);
                 break;
-            case Madness_Counter:
-                s.setDown(COUNTER.Madness_Counter);
-                s.setUp(COUNTER.Hatred_Counter);
+            case Madness:
+                s.setDown(COUNTER.Madness);
+                s.setUp(COUNTER.Hatred);
                 break;
-            case Despair_Counter:
-                s.setDown(COUNTER.Oblivion_Counter);
-                s.setUp(COUNTER.Madness_Counter);
+            case Despair:
+                s.setDown(COUNTER.Oblivion);
+                s.setUp(COUNTER.Madness);
                 break;
-            case Lust_Counter:
-                s.setDown(COUNTER.Madness_Counter);
-                s.setUp(COUNTER.Hatred_Counter);
+            case Lust:
+                s.setDown(COUNTER.Madness);
+                s.setUp(COUNTER.Hatred);
                 break;
-            case Hatred_Counter:
-                s.setDown(COUNTER.Lust_Counter);
-                s.setUp(COUNTER.Rage_Counter);
+            case Hatred:
+                s.setDown(COUNTER.Lust);
+                s.setUp(COUNTER.Rage);
                 break;
 
-            case Virtue_Counter:
-                s.setDown(COUNTER.Zeal_Counter);
-                s.setUp(COUNTER.Void_Counter);
+            case Virtue:
+                s.setDown(COUNTER.Zeal);
+                s.setUp(COUNTER.Void);
                 break;
-            case Zeal_Counter:
-                s.setDown(COUNTER.Rage_Counter);
-                s.setUp(COUNTER.Virtue_Counter);
+            case Zeal:
+                s.setDown(COUNTER.Rage);
+                s.setUp(COUNTER.Virtue);
                 break;
-            case Void_Counter:
+            case Void:
                 s.setDown(COUNTER.Time_Warped);
                 s.setUp(COUNTER.Zen);
                 break;
-            case Warp_Counter:
-                s.setDown(COUNTER.Lust_Counter);
-                s.setUp(COUNTER.Zeal_Counter);
+            case Warp:
+                s.setDown(COUNTER.Lust);
+                s.setUp(COUNTER.Zeal);
                 break;
-            case Aether_Counter:
-                s.setDown(COUNTER.Electrified_Counter);
+            case Aether:
+                s.setDown(COUNTER.Charge);
                 s.setUp(COUNTER.Magnetized);
                 break;
-            case Encryption_Counter:
-                s.setDown(COUNTER.Aether_Counter);
+            case Encryption:
+                s.setDown(COUNTER.Aether);
                 s.setUp(COUNTER.Time_Warped);
                 break;
             case Time_Warped:

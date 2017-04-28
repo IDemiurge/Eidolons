@@ -68,7 +68,7 @@ public class MoistRule extends DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Moist_Counter.getName();
+        return COUNTER.Moist.getName();
     }
 
     @Override

@@ -7,6 +7,8 @@ import main.entity.obj.BattleFieldObject;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.gui.tooltips.ValueTooltip;
+import main.libgdx.texture.TextureCache;
+import main.system.entity.CounterMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,8 +76,12 @@ public class UnitViewTooltipFactory {
 
         if (hero.getCustomParamMap() != null) {
             hero.getCustomParamMap().keySet().forEach(counter -> {
-                final String name = counter + " " + hero.getCustomParamMap().get(counter);
-                final ValueContainer valueContainer = new ValueContainer(name, "");
+                final String name = counter  ;
+                TextureRegion texture = TextureCache.getOrCreateR(CounterMaster.getImagePath(counter));
+                final ValueContainer valueContainer = new ValueContainer(
+                 texture,
+                 name,
+                 hero.getCustomParamMap().get(counter));
                 valueContainer.setNameAlignment(Align.left);
                 valueContainer.setValueAlignment(Align.right);
                 values.add(valueContainer);

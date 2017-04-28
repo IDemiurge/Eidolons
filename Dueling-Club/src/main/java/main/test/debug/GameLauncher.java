@@ -188,7 +188,7 @@ public class GameLauncher {
         if (DUMMY_MODE) {
             game.setDummyMode(true);
             game.setDummyPlus(DUMMY_PP);
-            TestMasterContent.setForceFree(!DUMMY_PP);
+
             if (DUMMY_PP) {
                 RuleMaster.setScope(RULE_SCOPE.TEST);
             }

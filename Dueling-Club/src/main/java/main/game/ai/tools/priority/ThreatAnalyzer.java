@@ -42,13 +42,14 @@ public class ThreatAnalyzer extends AiHandler {
         return threat;
     }
 
-    public int getRangedThreat(Unit source,Unit unit) {
+    public int getRangedThreat(Unit target,Unit unit) {
         if (unit.getAI().getType() != AI_TYPE.ARCHER)
         return     new FuncMaster().total(unit.getSpells(), s-> {
             DC_SpellObj spell = (DC_SpellObj) s;
 //            if (spell.isDamageSpell())
 //            return FutureBuilder.precalculateDamage(spell, source, false);
-            return getPriorityManager().getSpellPriority(spell, new Context(source, unit));
+            return getPriorityManager().getSpellPriority(spell, new Context( unit,target))
+             /getRangedThreatFactorSpell(unit, target);
         });
 
         return new FuncMaster().getGreatestValue(unit.getRangedWeapon().getAttackActions(),
@@ -57,9 +58,18 @@ public class ThreatAnalyzer extends AiHandler {
              if (action.isRanged())
                  return new AttackCalculator(
                   DC_AttackMaster.getAttackFromAction(action), true)
-                  .initTarget(unit).calculateFinalDamage();
+                  .initTarget(unit).calculateFinalDamage()
+                  /getRangedThreatFactorAttack(unit, target);
              return 0;
          });
+    }
+
+    private int getRangedThreatFactorAttack(Unit unit, Unit target) {
+        return 5;
+    }
+
+    private int getRangedThreatFactorSpell(Unit unit, Unit target) {
+        return 10;
     }
 
     public int getMeleeThreat(Unit enemy) {

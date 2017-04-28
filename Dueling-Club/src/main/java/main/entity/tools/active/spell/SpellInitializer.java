@@ -13,8 +13,6 @@ import main.entity.tools.active.ActiveInitializer;
 import main.rules.magic.ChannelingRule;
 import main.system.auxiliary.secondary.InfoMaster;
 
-import java.util.LinkedList;
-
 /**
  * Created by JustMe on 2/26/2017.
  */
@@ -38,9 +36,6 @@ public class SpellInitializer extends ActiveInitializer {
     @Override
     public void initCosts() {
         Costs costs;
-        if (game.isDebugMode() && getMaster().getGame().getTestMaster().isActionFree(getName())) {
-            costs = new Costs(new LinkedList<>());
-        } else {
             costs = DC_CostsFactory.getCostsForSpell(getEntity(),
 //             isSpell()
                     true);
@@ -48,7 +43,6 @@ public class SpellInitializer extends ActiveInitializer {
                     new Requirement(new NotCondition(
                             new StatusCheckCondition(UnitEnums.STATUS.SILENCED)),
                             InfoMaster.SILENCE));
-        }
         costs.setActive(getEntity());
         getEntity().getActivator().setCanActivate(costs.canBePaid(getRef()));
         getEntity().setCosts(costs);

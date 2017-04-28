@@ -64,7 +64,7 @@ public class EmitterController implements Controller {
     }
 
     public void save() {
-        EmitterPresetMaster.save(last, "custom");
+        EmitterPresetMaster.save(last, "target");
     }
 
     private void removeLast() {
@@ -78,7 +78,7 @@ public class EmitterController implements Controller {
     }
 
     private void saveAs() {
-        EmitterPresetMaster.save(last, "custom", DialogMaster.inputText("name?"));
+        EmitterPresetMaster.save(last, "target", DialogMaster.inputText("name?"));
     }
 
     public void create() {

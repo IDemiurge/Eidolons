@@ -29,7 +29,7 @@ public class DespairRule extends DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Despair_Counter.getName();
+        return COUNTER.Despair.getName();
     }
 
     @Override

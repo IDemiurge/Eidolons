@@ -27,10 +27,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class UnitAI {
@@ -59,6 +56,7 @@ public class UnitAI {
     private boolean pathBlocked;
     private int logLevel = LOG_LEVEL_RESULTS;
     private Order currentOrder;
+    private Map<GOAL_TYPE, Object> argMap;
 
     public UnitAI(Unit unit) {
         this.unit =   unit;
@@ -66,6 +64,8 @@ public class UnitAI {
         setOriginalCoordinates(unit.getCoordinates());
 
     }
+
+
 
     private void initType() {
         type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class, unit
@@ -435,6 +435,16 @@ public class UnitAI {
 
     public void setCurrentOrder(Order currentOrder) {
         this.currentOrder = currentOrder;
+    }
+
+    public Map<GOAL_TYPE, Object> getArgMap() {
+        if (argMap==null )
+            argMap = new HashMap<>();
+        return argMap;
+    }
+
+    public void setArg(GOAL_TYPE goalType, Object arg) {
+        getArgMap().put(goalType, arg);
     }
 
     public enum AI_BEHAVIOR_MODE {
