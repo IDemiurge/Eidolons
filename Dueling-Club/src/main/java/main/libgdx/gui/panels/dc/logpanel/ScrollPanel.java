@@ -1,4 +1,4 @@
-package main.libgdx.gui.panels.dc;
+package main.libgdx.gui.panels.dc.logpanel;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import main.libgdx.gui.panels.dc.InnerScrollContainer;
 
 public class ScrollPanel<T extends Actor> extends Container<Container> {
 

@@ -32,7 +32,6 @@ public class GraveyardView extends TablePanel {
         add(graveyardButton).left().bottom();
         row();
         graveTables = new TablePanel<>();
-        graveTables.debug();
         graveTables.setBackground(new NinePatchDrawable(NinePathFactory.get3pxBorder()));
         graves = new Cell[SIZE];
         for (int i = 0; i < SIZE; i++) {
@@ -85,5 +84,7 @@ public class GraveyardView extends TablePanel {
         final List<BaseView> userObject = ((GraveyardDataSource) getUserObject()).getGraveyard();
 
         userObject.forEach(this::addCorpse);
+
+        setVisible(userObject.size() > 0);
     }
 }

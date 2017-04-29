@@ -7,9 +7,10 @@ import main.entity.obj.DC_Obj;
 import main.libgdx.gui.controls.radial.DebugRadialManager;
 import main.libgdx.gui.controls.radial.RadialMenu;
 import main.libgdx.gui.panels.dc.InitiativePanel;
-import main.libgdx.gui.panels.dc.LogPanel;
 import main.libgdx.gui.panels.dc.actionpanel.ActionPanelController;
 import main.libgdx.gui.panels.dc.inventory.InventoryWithAction;
+import main.libgdx.gui.panels.dc.logpanel.FullLogPanel;
+import main.libgdx.gui.panels.dc.logpanel.SimpleLogPanel;
 import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
 import main.libgdx.gui.tooltips.ToolTipManager;
 import main.system.EventCallbackParam;
@@ -26,7 +27,8 @@ import static main.system.GuiEventType.SHOW_TOOLTIP;
 public class GuiStage extends Stage {
 
     private ToolTipManager toolTipManager;
-    private LogPanel log;
+    private SimpleLogPanel log;
+    private FullLogPanel fullLogPanel;
     private InventoryWithAction inventoryForm;
     private RadialMenu radialMenu;
     private UnitInfoPanel infoPanel;
@@ -49,9 +51,13 @@ public class GuiStage extends Stage {
         addActor(radialMenu = new RadialMenu());
         addActor(toolTipManager = new ToolTipManager());
 
-        log = new LogPanel();
+        log = new SimpleLogPanel();
         addActor(log);
         log.setPosition(Gdx.graphics.getWidth() - log.getWidth(), 0);
+
+        fullLogPanel = new FullLogPanel();
+        addActor(fullLogPanel);
+        fullLogPanel.setPosition(100, 200);
 
         bindEvents();
     }
