@@ -49,6 +49,8 @@ public class UnitView extends BaseView {
 
     @Override
     protected void sizeChanged() {
+        super.sizeChanged();
+
         if (initiativeLabel != null) {
             clockImage.setPosition(
                     getWidth() - clockTexture.getRegionWidth(),
@@ -59,8 +61,6 @@ public class UnitView extends BaseView {
                     clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()),
                     clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
         }
-
-        portrait.setSize(getWidth(), getHeight());
     }
 
     public void updateInitiative(Integer val) {
