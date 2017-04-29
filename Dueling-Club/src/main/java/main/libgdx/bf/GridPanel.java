@@ -81,7 +81,7 @@ public class GridPanel extends Group {
     }
 
     public GridPanel init() {
-        setUnitMap(new HashMap<>());
+        this.unitMap = new HashMap<>();
         emptyImage = TextureCache.getOrCreateR(emptyCellPath);
         hiddenImage = TextureCache.getOrCreateR(hiddenCellPath);
         highlightImage = TextureCache.getOrCreateR(highlightCellPath);
@@ -90,7 +90,8 @@ public class GridPanel extends Group {
 
         cells = new GridCellContainer[cols][rows];
 
-        setCellBorderManager(new CellBorderManager());
+        this.cellBorderManager = new CellBorderManager();
+
         int rows1 = rows - 1;
         int cols1 = cols - 1;
         for (int x = 0; x < cols; x++) {
@@ -107,7 +108,6 @@ public class GridPanel extends Group {
         setWidth(cells[0][0].getWidth() * cols);
 
         addListener(new ClickListener() {
-
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 GridPanel.this.getStage().setScrollFocus(GridPanel.this);
@@ -116,12 +116,10 @@ public class GridPanel extends Group {
 
             @Override
             public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
-                if (PhaseAnimator.getInstance().checkAnimClicked(x, y, pointer, button)) {
-                    return true;
-                }
-                return false;
+                return PhaseAnimator.getInstance().checkAnimClicked(x, y, pointer, button);
             }
         });
+
         return this;
     }
 
@@ -252,6 +250,11 @@ public class GridPanel extends Group {
             }*/
         });
 
+        GuiEventManager.bind(UPDATE_GRAVEYARD, obj -> {
+            final Coordinates coordinates = (Coordinates) obj.get();
+            cells[coordinates.getX()][rows - 1 - coordinates.getY()].updateGraveyard();
+        });
+
 
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             BattleFieldObject hero = (BattleFieldObject) obj.get();
@@ -309,8 +312,9 @@ public class GridPanel extends Group {
                     }
                 }
 
-                cells[coordinates.getX()][rows - 1 - coordinates.getY()].setObjects(views);
-                cells[coordinates.getX()][rows - 1 - coordinates.getY()].setOverlays(overlays);
+                final GridCellContainer gridCellContainer = cells[coordinates.getX()][rows - 1 - coordinates.getY()];
+                views.forEach(gridCellContainer::addActor);
+                gridCellContainer.setOverlays(overlays);
             }
 
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
@@ -383,29 +387,16 @@ public class GridPanel extends Group {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        getCellBorderManager().draw(batch, parentAlpha);
+        cellBorderManager.draw(batch, parentAlpha);
 
         if (lightingManager != null) {
             lightingManager.updateLight();
         }
     }
 
-    public CellBorderManager getCellBorderManager() {
-        return cellBorderManager;
-    }
-
-    public void setCellBorderManager(CellBorderManager cellBorderManager) {
-        this.cellBorderManager = cellBorderManager;
-    }
-
     public Map<BattleFieldObject, BaseView> getUnitMap() {
         return unitMap;
     }
-
-    public void setUnitMap(Map<BattleFieldObject, BaseView> unitMap) {
-        this.unitMap = unitMap;
-    }
-
 
     public int getRows() {
         return rows;

@@ -3,7 +3,7 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.game.battlefield.Coordinates;
-import main.system.launch.CoreEngine;
+import main.libgdx.bf.datasource.GridCellDataSource;
 
 import java.util.List;
 
@@ -25,21 +25,16 @@ public class GridCellContainer extends GridCell {
     @Override
     public GridCellContainer init() {
         super.init();
-        if (CoreEngine.isGuiTestMode())
-            if (isGraveyardTestMode()){
+
         graveyard = new GraveyardView();
         addActor(graveyard);
         graveyard.setWidth(getWidth());
         graveyard.setHeight(getHeight());
-}
+
+        setUserObject(new GridCellDataSource(
+                new Coordinates(getGridX(), getGridY())
+        ));
         return this;
-    }
-
-    private boolean isGraveyardTestMode() {
-        return true;}
-
-    public void setObjects(List<BaseView> objects) {
-        objects.forEach(this::addActor);
     }
 
     private void recalcUnitViewBounds() {
@@ -101,27 +96,16 @@ public class GridCellContainer extends GridCell {
     }
 
     public void popupUnitView(BaseView uv) {
-        super.removeActor(uv); //call super for only popup
-        super.addActorAt(getChildren().size - overlayCount, uv);
+        uv.setZIndex(getChildren().size - overlayCount);
         recalcImagesPos();
-        if (graveyard != null){
-            graveyard.setZIndex(Integer.MAX_VALUE);
-        }
+        graveyard.setZIndex(Integer.MAX_VALUE);
     }
-
-/*    @Override
-    public Actor hit(float x, float y, boolean touchable) {
-        Vector2 v = new Vector2(x, y);
-        v = getParent().parentToLocalCoordinates(v);
-        return super.hitChilds(v.x, v.y, touchable);
-    }*/
 
     public void setOverlays(List<OverlayView> overlays) {
         if (overlays.size() == 0) {
             return;
         }
-//        final int xOffset = (int) (getW() *OverlayView.SCALE);
-//        final int yOffset = (int) (getH() *OverlayView.SCALE);
+
         final int xOffset = (int) (getWidth() / 3);
         final int yOffset = (int) (getHeight() / 3);
         overlays.forEach(view -> {
@@ -166,5 +150,9 @@ public class GridCellContainer extends GridCell {
             addActor(view);
             overlayCount++;
         });
+    }
+
+    public void updateGraveyard() {
+        graveyard.updateGraveyard();
     }
 }

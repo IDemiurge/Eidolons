@@ -77,7 +77,7 @@ public class TestMasterContent {
 //      "Scorching Light"
      ;
 
-    private static String GRAPHICS_TEST_LIST = "Fire Bolt;Chaos Bolt;Force Field;" +
+    private static String GRAPHICS_TEST_LIST = "Raise Skeleton;Fire Bolt;Chaos Bolt;Force Field;" +
      "Summon Vampire Bat;Blink";
     private static String TEST_LIST =
 //     "Raise Skeleton;" +

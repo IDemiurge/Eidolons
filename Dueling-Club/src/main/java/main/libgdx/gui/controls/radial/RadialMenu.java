@@ -94,8 +94,9 @@ public class RadialMenu extends Group {
         }
 
         radius = (int) (72 * coefficient);
-
-        for (int i = 0; i < currentNode.getChilds().size(); i++) {
+        final List<RadialValueContainer> childs = currentNode.getChilds();
+        for (int i = 0; i < childs.size(); i++) {
+            final RadialValueContainer valueContainer = childs.get(i);
             int r = radius;
             if (makeSecondRing && i % 2 == 0) {
                 r = (int) (72 * (coefficient - 1));
@@ -103,9 +104,23 @@ public class RadialMenu extends Group {
             pos = i * step;
             int y = (int) (r * Math.sin(Math.toRadians(pos + 90)));
             int x = (int) (r * Math.cos(Math.toRadians(pos + 90)));
-            currentNode.getChilds().get(i).setPosition(x + currentNode.getX(), y + currentNode.getY());
+            valueContainer.setPosition(x + currentNode.getX(), y + currentNode.getY());
         }
     }
+
+/*    final List<RadialValueContainer> childs = currentNode.getChilds();
+    final int length = childs.size() * (step+1);
+        for (int i = 90, c = 0; i <= length; i += step, c++) {
+        final RadialValueContainer valueContainer = childs.get(c);
+        int r = radius;
+        if (makeSecondRing && c % 2 == 0) {
+            r = (int) (72 * (coefficient - 1));
+        }
+        int y = (int) (r * Math.sin(Math.toRadians(180)));
+        int x = (int) (r * Math.cos(Math.toRadians(180)));
+
+        valueContainer.setPosition(x + currentNode.getX(), y + currentNode.getY());
+    }*/
 
     private void updateCallbacks() {
         if (currentNode.getParent() != null) {

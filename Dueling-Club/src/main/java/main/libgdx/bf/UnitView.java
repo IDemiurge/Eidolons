@@ -22,23 +22,21 @@ public class UnitView extends BaseView {
     public UnitView(UnitViewOptions o) {
         super(o);
         curId = lastId.getAndIncrement();
-        init(o.getClockTexture(), o.getClockValue(), o.getPortrateTexture());
+        init(o.getClockTexture(), o.getClockValue());
     }
 
     protected UnitView(UnitViewOptions o, int curId) {
         super(o);
         this.curId = curId;
-        init(o.getClockTexture(), o.getClockValue(), o.getPortrateTexture());
+        init(o.getClockTexture(), o.getClockValue());
     }
 
     public void setToolTip(ToolTip toolTip) {
         addListener(toolTip.getController());
     }
 
-    private void init(TextureRegion clockTexture, int clockVal, TextureRegion portraitTexture) {
+    private void init(TextureRegion clockTexture, int clockVal) {
         this.initiativeIntVal = clockVal;
-        portrait = new Image(portraitTexture);
-        addActor(portrait);
 
         if (clockTexture != null) {
             this.clockTexture = clockTexture;
@@ -51,6 +49,8 @@ public class UnitView extends BaseView {
 
     @Override
     protected void sizeChanged() {
+        super.sizeChanged();
+
         if (initiativeLabel != null) {
             clockImage.setPosition(
                     getWidth() - clockTexture.getRegionWidth(),
@@ -61,8 +61,6 @@ public class UnitView extends BaseView {
                     clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()),
                     clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
         }
-
-        portrait.setSize(getWidth(), getHeight());
     }
 
     public void updateInitiative(Integer val) {

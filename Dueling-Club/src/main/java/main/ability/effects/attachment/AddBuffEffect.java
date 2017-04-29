@@ -1,11 +1,7 @@
 package main.ability.effects.attachment;
 
-import main.ability.effects.Effect;
-import main.ability.effects.OneshotEffect;
-import main.ability.effects.ReducedEffect;
-import main.ability.effects.ResistibleEffect;
+import main.ability.effects.*;
 import main.ability.effects.continuous.ContinuousEffect;
-import main.ability.effects.ContainerEffect;
 import main.content.CONTENT_CONSTS.RETAIN_CONDITIONS;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
@@ -180,6 +176,9 @@ public class AddBuffEffect extends MultiEffect  implements OneshotEffect, Resist
 
         this.buffType = (BuffType) DataManager.getType(getBuffTypeName(), DC_TYPE.BUFFS);
         if (buffType == null) {
+            if (getBuffTypeName()==null ){
+                return new BuffType();
+            }
             boolean invisible = getBuffTypeName().contains(StringMaster.INVISIBLE_BUFF_CODE);
             if (TextParser.checkHasRefs(getBuffTypeName())) {
                 ref.setID(KEYS.INFO, ref.getId(KEYS.ABILITY));

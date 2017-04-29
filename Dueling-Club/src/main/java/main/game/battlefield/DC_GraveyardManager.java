@@ -5,9 +5,12 @@ import main.content.values.parameters.G_PARAMS;
 import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
 import main.game.core.game.DC_Game;
+import main.system.GuiEventManager;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static main.system.GuiEventType.UPDATE_GRAVEYARD;
 
 /**
  * Created by JustMe on 2/21/2017.
@@ -62,6 +65,8 @@ public class DC_GraveyardManager implements GraveyardManager {
 
         removed.add(unit);
 
+        GuiEventManager.trigger(UPDATE_GRAVEYARD, unit.getCoordinates());
+
         return unit;
     }
 
@@ -87,6 +92,8 @@ public class DC_GraveyardManager implements GraveyardManager {
                     G_PARAMS.N_OF_CORPSES,
                     graveMap.get(getZCoordinate(unit.getCoordinates())).size());
         }
+
+        GuiEventManager.trigger(UPDATE_GRAVEYARD, unit.getCoordinates());
     }
 
 
