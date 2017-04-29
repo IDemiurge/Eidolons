@@ -11,6 +11,7 @@ import main.system.GuiEventManager;
 
 import java.util.Map;
 
+import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
 
 public class UnitViewFactory {
@@ -20,7 +21,21 @@ public class UnitViewFactory {
         final UnitViewTooltip tooltip = new UnitViewTooltip();
         tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
         view.setToolTip(tooltip);
-        view.addListener(new InputListener() {
+        view.addListener(createListener(bfObj));
+        return view;
+    }
+
+    public static BaseView createBaseView(BattleFieldObject bfObj) {
+        BaseView view = new BaseView(getOrCreateR(bfObj.getImagePath()));
+        final UnitViewTooltip tooltip = new UnitViewTooltip();
+        tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
+        view.addListener(tooltip.getController());
+        view.addListener(createListener(bfObj));
+        return view;
+    }
+
+    private static InputListener createListener(BattleFieldObject bfObj) {
+        return new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return event.getButton() == Input.Buttons.RIGHT;
@@ -34,9 +49,9 @@ public class UnitViewFactory {
                     event.stop();
                 }
             }
-        });
-        return view;
+        };
     }
+
 
     public static OverlayView createOverlay(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);

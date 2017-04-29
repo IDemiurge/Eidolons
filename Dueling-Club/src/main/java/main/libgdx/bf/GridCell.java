@@ -117,12 +117,17 @@ public class GridCell extends Group implements Borderable {
         border.setWidth(getHeight() - 8);
     }
 
-    public int getGridX() {
+    protected int getGridX() {
         return gridX;
     }
 
-    public int getGridY() {
+    protected int getGridY() {
         return gridY;
     }
 
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        getChildren().forEach(ch -> ch.setUserObject(userObject));
+    }
 }

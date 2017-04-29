@@ -1,13 +1,19 @@
 package main.libgdx.bf;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.libgdx.StyleHolder;
+import main.libgdx.bf.datasource.GraveyardDataSource;
+import main.libgdx.gui.NinePathFactory;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.ValueTooltip;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class GraveyardView extends TablePanel {
     private static final int SIZE = 4;
@@ -26,9 +32,12 @@ public class GraveyardView extends TablePanel {
         add(graveyardButton).left().bottom();
         row();
         graveTables = new TablePanel<>();
+        graveTables.debug();
+        graveTables.setBackground(new NinePatchDrawable(NinePathFactory.get3pxBorder()));
         graves = new Cell[SIZE];
         for (int i = 0; i < SIZE; i++) {
-            if (i % ROW_SIZE == 0) row();
+            if (i % ROW_SIZE == 0)
+                graveTables.row();
             graves[i] = graveTables.add().expand().fill();
         }
         add(graveTables).expand().fill();
@@ -37,19 +46,44 @@ public class GraveyardView extends TablePanel {
                 new ValueContainer("\"Death smiles at us all,", ""),
                 new ValueContainer("but all a man can do is smile back.\"", "")));
         graveyardButton.addListener(tooltip.getController());
+
+        graveyardButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                graveTables.setVisible(graveyardButton.isChecked());
+            }
+        });
+
+        graveTables.setVisible(false);
+        graveyardButton.setChecked(false);
     }
 
-    public void AddCorpse(UnitView unitView) {
+    public void addCorpse(BaseView unitView) {
         addAt(unitView, 0);
     }
 
-    private void addAt(UnitView unitView, int pos) {
+    private void addAt(BaseView unitView, int pos) {
         if (pos >= graves.length) return;
 
-        final UnitView current = graves[pos].getActor();
+        final BaseView current = graves[pos].getActor();
         graves[pos].setActor(unitView);
         if (current != null) {
             addAt(current, ++pos);
         }
+    }
+
+    public void updateGraveyard() {
+        updateRequired = true;
+    }
+
+    @Override
+    public void updateAct(float delta) {
+        super.updateAct(delta);
+
+        Arrays.stream(graves).forEach(el -> el.setActor(null));
+
+        final List<BaseView> userObject = ((GraveyardDataSource) getUserObject()).getGraveyard();
+
+        userObject.forEach(this::addCorpse);
     }
 }

@@ -71,6 +71,7 @@ public class ValueContainer extends TablePanel {
         }
 
         if (name != null) {
+            setName(name);
             nameContainer.setActor(new Label(name, StyleHolder.getDefaultLabelStyle())).grow().center();
         }
 

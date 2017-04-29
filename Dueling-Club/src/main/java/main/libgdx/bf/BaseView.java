@@ -16,6 +16,8 @@ public class BaseView extends Group implements Borderable {
     private TextureRegion borderTexture;
 
     public BaseView(UnitViewOptions o) {
+        portrait = new Image(o.getPortrateTexture());
+        addActor(portrait);
         addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -30,6 +32,10 @@ public class BaseView extends Group implements Borderable {
                 }
             }
         });
+    }
+
+    public BaseView(TextureRegion portraitTexture) {
+        this.portrait = new Image(portraitTexture);
     }
 
     @Override

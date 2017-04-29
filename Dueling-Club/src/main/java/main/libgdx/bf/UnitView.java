@@ -22,23 +22,21 @@ public class UnitView extends BaseView {
     public UnitView(UnitViewOptions o) {
         super(o);
         curId = lastId.getAndIncrement();
-        init(o.getClockTexture(), o.getClockValue(), o.getPortrateTexture());
+        init(o.getClockTexture(), o.getClockValue());
     }
 
     protected UnitView(UnitViewOptions o, int curId) {
         super(o);
         this.curId = curId;
-        init(o.getClockTexture(), o.getClockValue(), o.getPortrateTexture());
+        init(o.getClockTexture(), o.getClockValue());
     }
 
     public void setToolTip(ToolTip toolTip) {
         addListener(toolTip.getController());
     }
 
-    private void init(TextureRegion clockTexture, int clockVal, TextureRegion portraitTexture) {
+    private void init(TextureRegion clockTexture, int clockVal) {
         this.initiativeIntVal = clockVal;
-        portrait = new Image(portraitTexture);
-        addActor(portrait);
 
         if (clockTexture != null) {
             this.clockTexture = clockTexture;
