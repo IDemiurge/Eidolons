@@ -36,7 +36,7 @@ public class ZoneEffect extends SpecialTargetingEffect
         }
         effects.setReconstruct(true);
     }
-
+    @AE_ConstrArgs(argNames = {"effects", "radius", "allyOrEnemyOnly", "notSelf"})
     public ZoneEffect(Effect effects, Formula radius, Boolean allyOrEnemyOnly, Boolean notSelf) {
         this(effects, radius, allyOrEnemyOnly, notSelf, null);
     }

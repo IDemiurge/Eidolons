@@ -69,25 +69,27 @@ public class TestMasterContent {
     private static String FIX_LIST = "";
     private static String POLISH_LIST = "";
     private static String ANIM_TEST_LIST = //Gust of Wind
-     "Searing Light;Summon Vampire Bat;Sorcerous Flame;Ray of Arcanum;Chaos Shockwave;" +
-      "Fire Bolt;Chaos Bolt;" +
-      "Light;Haze;" +
-      "Scare;Freeze;" +
-      "Scorching Light";
+     "Searing Light;Summon Vampire Bat;"
+//      +"Sorcerous Flame;Ray of Arcanum;Chaos Shockwave;" +
+//      "Fire Bolt;Chaos Bolt;" +
+//      "Light;Haze;" +
+//      "Scare;Freeze;" +
+//      "Scorching Light"
+     ;
 
     private static String GRAPHICS_TEST_LIST = "Fire Bolt;Chaos Bolt;Force Field;" +
      "Summon Vampire Bat;Blink";
     private static String TEST_LIST =
 //     "Raise Skeleton;" +
-     "Light;Haze;" +
-      "Leap into Darkness;Blink;Summon Vampire Bat;"
+//     "Light;Haze;" +
+//      "Leap into Darkness;Blink;Summon Vampire Bat;"+
       // + "Enchant Weapon;"
       // + "Enchant Armor;"
-      + "Arcane Bolt;Ray of Arcanum;Time Warp;"
+//      + "Arcane Bolt;Ray of Arcanum;Time Warp;"
       // + "Sorcerous Flames;"
-      + "Force Field;" +
+       "Force Field;"
       // "Arms of Faith;Armor of Faith;Resurrection;"+
-      "Mass Terror;Mass Confusion;Mass Madness;" + "Conjure Weapon;Conjure Armor;" + ""
+//      "Mass Terror;Mass Confusion;Mass Madness;" + "Conjure Weapon;Conjure Armor;" + ""
      // + "Awaken Treant;"
      // + "Sacrifice;"
      // + "Soul Web;Rapid Growth;"

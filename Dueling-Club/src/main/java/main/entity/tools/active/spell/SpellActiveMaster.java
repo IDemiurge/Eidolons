@@ -2,6 +2,7 @@ package main.entity.tools.active.spell;
 
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
+import main.entity.tools.EntityChecker;
 import main.entity.tools.EntityInitializer;
 import main.entity.tools.active.ActiveMaster;
 import main.entity.tools.active.Executor;
@@ -16,6 +17,16 @@ public class SpellActiveMaster extends ActiveMaster {
     /*
 
      */
+
+    @Override
+    public DC_SpellObj getEntity() {
+        return (DC_SpellObj) super.getEntity();
+    }
+
+    @Override
+    protected EntityChecker<DC_ActiveObj> createEntityChecker() {
+        return new SpellChecker(getEntity(), this);
+    }
 
     @Override
     protected EntityInitializer<DC_ActiveObj> createInitializer() {

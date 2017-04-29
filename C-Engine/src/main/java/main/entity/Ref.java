@@ -577,6 +577,10 @@ public class Ref implements Cloneable, Serializable {
         return ref;
     }
 
+    public String getInfoString() {
+        return "Ref: target ="+getTargetObj()+"\n ; group ="+ getGroup();
+    }
+
     //
 
     public enum KEYS {

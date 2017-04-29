@@ -52,7 +52,8 @@ public class GameLauncher {
     public boolean LEADER_MOVES_FIRST = false;
     public String ENEMY_PARTY = "Pirate";
     public String PLAYER_PARTY =
-            "Nelia Valrith;"
+     "Luwien Tulanir v3;Blauri Kinter v2"
+//            "Nelia Valrith;"
             // +"Grufirant Grossklotz;Orthaelion Enloth;Belia Haevril"
 //      ";Anfina Ilarfis;Amaltha Soamdath;Belia Haevril"
             ;

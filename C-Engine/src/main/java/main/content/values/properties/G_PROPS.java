@@ -47,6 +47,7 @@ public enum G_PROPS implements PROPERTY {
     BF_OBJECT_TAGS(null, true, "bf obj"),
 
     SPELL_GROUP("spells", "Spell group"),
+    SPELL_SUBGROUP("spells", "Spell group"),
     SPELL_UPGRADE_GROUPS(null, true, "spells", "chars", "units"),
     SPELL_TYPE("spells", "Spell type"),
     SPELL_TAGS("Spell tags", true, "spells"),

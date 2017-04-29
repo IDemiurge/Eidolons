@@ -254,7 +254,7 @@ public class RadialManager {
         return filter;
     }
 
-    private static RadialValueContainer configureActionNode(DC_Obj target, DC_ActiveObj el) {
+    protected static RadialValueContainer configureActionNode(DC_Obj target, DC_ActiveObj el) {
         if (el.getTargeting() instanceof SelectiveTargeting) {
             if (target == el.getOwnerObj()) {
                 return configureSelectiveTargetedNode(el);
@@ -347,7 +347,7 @@ public class RadialManager {
     }
 
 
-    private static Runnable getRunnable(DC_Obj target, Entity activeObj) {
+    protected static Runnable getRunnable(DC_Obj target, Entity activeObj) {
 //        Runnable runnable=        runnableCaches.get(target).get(activeObj);
 
         if (activeObj instanceof DC_ActiveObj) {

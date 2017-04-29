@@ -49,23 +49,22 @@ public class ArcaneVault {
     public final static boolean PRESENTATION_MODE = false;
     public static final int AE_WIDTH = 500;
     public static final int AE_HEIGHT = 800;
-    public static final int WIDTH = 1670;
+    public static final int WIDTH = 1680;
     public static final int HEIGHT = 999;
     public static final int TREE_WIDTH = 415;
     public static final int TREE_HEIGHT = HEIGHT * 11 / 12;
     public static final int TABLE_WIDTH = (WIDTH - TREE_WIDTH) / 2;
     public static final int TABLE_HEIGHT = TREE_HEIGHT * 19 / 20;
     public final static boolean defaultTypesGenerateOn = false;
-    public final static String presetTypes = "abils-ACTIVES;abils-PASSIVES;spells;skills;"
-            + "weapons;armor;actions;" + "";
     private static final boolean ENABLE_ITEM_GENERATION = true;
     private static final String[] LAUNCH_OPTIONS = {"Last", "Selective", "Selective Custom",
             "Full", "Battlecraft", "Arcane Tower",};
-    private static final String actions = "buffs;actions;abils-ACTIVES;abils-PASSIVES;";
-    private static final String skills = "skills;classes;";
+    public final static String presetTypes = "abils;spells;skills;"
+     + "weapons;armor;actions;" + "";
+    private static final String actions = "actions;spells;buffs;abils;";
+    private static final String skills = "skills;classes;buffs;abils;";
     private static final String units = "chars;units;deities;dungeons;factions;";
     private static final String items = "weapons;armor;actions;";
-    public final static String[] selectiveTemplates = {presetTypes, actions, skills, units, items,};
     public static boolean selectiveInit = true;
     public static boolean arcaneTower;
     public static boolean selectiveLaunch = true;
@@ -95,13 +94,13 @@ public class ArcaneVault {
     private static boolean workspaceLaunch = false;
 
     static {
-        WORKSPACE_TEMPLATE.presetTypes.setTypes("skills;classes;party;chars;");
+        WORKSPACE_TEMPLATE.presetTypes.setTypes(presetTypes);
         // WORKSPACE_TEMPLATE.presetTypes
         // .setTypes("chars;dungeons;factions;units;deities;weapons;armor;actions;");
-        WORKSPACE_TEMPLATE.actions.setTypes("buffs;actions;abils;");
-        WORKSPACE_TEMPLATE.skills.setTypes("skills;classes;actions;abils;buffs;");
-        WORKSPACE_TEMPLATE.units.setTypes("chars;units;deities;dungeons;factions;");
-        WORKSPACE_TEMPLATE.items.setTypes("weapons;armor;actions;buffs;");
+        WORKSPACE_TEMPLATE.actions.setTypes(actions);
+        WORKSPACE_TEMPLATE.skills.setTypes(skills);
+        WORKSPACE_TEMPLATE.units.setTypes(units);
+        WORKSPACE_TEMPLATE.items.setTypes(items);
     }
 
     public static void main(String[] args) {

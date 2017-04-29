@@ -13,6 +13,7 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
 import main.entity.tools.EntityChecker;
@@ -39,7 +40,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     }
 
     public boolean isThrow() {
-        if (getName().contains(ActionEnums.ACTION_TAGS.THROW + "")) {
+        if (getName().contains(ActionEnums.ACTION_TAGS.THROW .toString())) {
             return true;
         }
         if (getEntity() instanceof DC_QuickItemAction) {
@@ -50,8 +51,8 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
                 }
             }
         }
-        return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.THROW + "")
-                || checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.THROW + "");
+        return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.THROW .toString())
+                || checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.THROW .toString());
     }
 
     public boolean isBlocked() {
@@ -107,16 +108,22 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     }
 
     public boolean isOffhand() {
-        return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.OFF_HAND + "");
+        return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.OFF_HAND .toString());
+    }
+    public boolean isTopDown() {
+        return checkProperty(getTagProp(), ActionEnums.ACTION_TAGS.TOP_DOWN .toString());
     }
 
+    protected PROPERTY getTagProp() {
+        return G_PROPS.ACTION_TAGS;
+    }
 
     public boolean isRanged() {
         if (getEntity().getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
             return false;
         }
-        return (checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.RANGED + "") || checkProperty(
-                G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED + ""));
+        return (checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.RANGED .toString()) || checkProperty(
+                G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED .toString()));
         // return false;
         // return getIntParam(PARAMS.RANGE) > 1;
     }
@@ -203,4 +210,6 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     public boolean isDualAttack() {
         return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.DUAL.toString());
     }
+
+    
 }

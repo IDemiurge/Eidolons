@@ -4,6 +4,10 @@ import com.badlogic.gdx.tools.particleeditor.ParticleEditor;
 import main.libgdx.anims.particles.ParticleEffect;
 import main.system.auxiliary.secondary.ReflectionMaster;
 
+import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
+import java.awt.*;
+
 /**
  * Created by JustMe on 2/4/2017.
  */
@@ -17,7 +21,23 @@ public class MyParticleEditor extends ParticleEditor {
     }
 
     public static void main(String[] args) {
-        ParticleEditor.main(args);
+        for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                try {
+                    UIManager.setLookAndFeel(info.getClassName());
+                } catch (Throwable ignored) {
+                }
+                break;
+            }
+        }
+        EventQueue.invokeLater(new Runnable() {
+            public void run () {
+                ParticleEditor editor = new ParticleEditor(){
+                };
+
+//                editor.getEmitter().
+            }
+        });
 
 //        EffectPanel myEffectPanel = new EffectPanel(instance){
 //
@@ -26,4 +46,6 @@ public class MyParticleEditor extends ParticleEditor {
 //
 //        new ReflectionMaster().setValue("effect", new ParticleEffect() , this);
     }
+
+
 }

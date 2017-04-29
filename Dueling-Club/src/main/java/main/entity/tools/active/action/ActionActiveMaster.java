@@ -27,9 +27,7 @@ public class ActionActiveMaster extends ActiveMaster {
 
     @Override
     protected EntityChecker<DC_ActiveObj> createEntityChecker() {
-        return new ActiveChecker(getEntity(), this) {
-
-        };
+        return new ActiveChecker(getEntity(), this) ;
     }
 
     @Override

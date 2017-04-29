@@ -5,13 +5,12 @@ import com.badlogic.gdx.utils.Align;
 import main.content.PARAMS;
 import main.entity.obj.BattleFieldObject;
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.tooltips.ToolTip;
-import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.texture.TextureCache;
 import main.system.entity.CounterMaster;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
@@ -31,66 +30,65 @@ public class UnitViewTooltipFactory {
         return valueContainer;
     }
 
-    public static ToolTip create(BattleFieldObject hero) {
-        List<ValueContainer> values = new ArrayList<>();
+    public static Supplier<List<ValueContainer>> create(BattleFieldObject hero) {
+        return () -> {
+            List<ValueContainer> values = new ArrayList<>();
 
-        final ValueContainer nameContainer = new ValueContainer(hero.getName(), "");
-        nameContainer.setNameAlignment(Align.left);
-        values.add(nameContainer);
+            final ValueContainer nameContainer = new ValueContainer(hero.getName(), "");
+            nameContainer.setNameAlignment(Align.left);
+            values.add(nameContainer);
 
-        values.add(getValueContainer(hero, PARAMS.C_TOUGHNESS, PARAMS.TOUGHNESS));
-        values.add(getValueContainer(hero, PARAMS.C_ENDURANCE, PARAMS.ENDURANCE));
+            values.add(getValueContainer(hero, PARAMS.C_TOUGHNESS, PARAMS.TOUGHNESS));
+            values.add(getValueContainer(hero, PARAMS.C_ENDURANCE, PARAMS.ENDURANCE));
 
-        if (hero.getIntParam(PARAMS.N_OF_ACTIONS) > 0) {
-            values.add(getValueContainer(hero, PARAMS.C_N_OF_ACTIONS, PARAMS.N_OF_ACTIONS));
-        }
-        if (hero.getIntParam(PARAMS.N_OF_COUNTERS) > 0) {
-            values.add(getValueContainer(hero, PARAMS.C_N_OF_COUNTERS, PARAMS.N_OF_COUNTERS));
-        }
+            if (hero.getIntParam(PARAMS.N_OF_ACTIONS) > 0) {
+                values.add(getValueContainer(hero, PARAMS.C_N_OF_ACTIONS, PARAMS.N_OF_ACTIONS));
+            }
+            if (hero.getIntParam(PARAMS.N_OF_COUNTERS) > 0) {
+                values.add(getValueContainer(hero, PARAMS.C_N_OF_COUNTERS, PARAMS.N_OF_COUNTERS));
+            }
 
-        {
-            final ValueContainer valueContainer =
-                    new ValueContainer("coord:", hero.getCoordinates().toString());
-            valueContainer.setNameAlignment(Align.left);
-            valueContainer.setValueAlignment(Align.right);
-            values.add(valueContainer);
-        }
-
-        if (hero.getFacing() != null || hero.getDirection() != null) {
-            final String name = "direction: " + (hero.getFacing() != null ?
-                    hero.getFacing().getDirection() :
-                    hero.getDirection());
-            final ValueContainer valueContainer = new ValueContainer(name, hero.getCoordinates().toString());
-            valueContainer.setNameAlignment(Align.left);
-            valueContainer.setValueAlignment(Align.right);
-            values.add(valueContainer);
-        }
-
-        if (hero.getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
-            final ValueContainer valueContainer =
-                    new ValueContainer("LIGHT_EMISSION", hero.getStrParam(PARAMS.LIGHT_EMISSION));
-            valueContainer.setNameAlignment(Align.left);
-            valueContainer.setValueAlignment(Align.right);
-            values.add(valueContainer);
-        }
-
-        if (hero.getCustomParamMap() != null) {
-            hero.getCustomParamMap().keySet().forEach(counter -> {
-                final String name = counter  ;
-                TextureRegion texture = TextureCache.getOrCreateR(CounterMaster.getImagePath(counter));
-                final ValueContainer valueContainer = new ValueContainer(
-                 texture,
-                 name,
-                 hero.getCustomParamMap().get(counter));
+            {
+                final ValueContainer valueContainer =
+                 new ValueContainer("coord:", hero.getCoordinates().toString());
                 valueContainer.setNameAlignment(Align.left);
                 valueContainer.setValueAlignment(Align.right);
                 values.add(valueContainer);
-            });
-        }
+            }
 
-        final ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(values);
+            if (hero.getFacing() != null || hero.getDirection() != null) {
+                final String name = "direction: " + (hero.getFacing() != null ?
+                 hero.getFacing().getDirection() :
+                 hero.getDirection());
+                final ValueContainer valueContainer = new ValueContainer(name, hero.getCoordinates().toString());
+                valueContainer.setNameAlignment(Align.left);
+                valueContainer.setValueAlignment(Align.right);
+                values.add(valueContainer);
+            }
 
-        return tooltip;
+            if (hero.getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
+                final ValueContainer valueContainer =
+                 new ValueContainer("LIGHT_EMISSION", hero.getStrParam(PARAMS.LIGHT_EMISSION));
+                valueContainer.setNameAlignment(Align.left);
+                valueContainer.setValueAlignment(Align.right);
+                values.add(valueContainer);
+            }
+
+            if (hero.getCustomParamMap() != null) {
+                hero.getCustomParamMap().keySet().forEach(counter -> {
+                    final String name = counter;
+                    TextureRegion texture = TextureCache.getOrCreateR(
+                     CounterMaster.getImagePath(counter));
+
+                    final ValueContainer valueContainer = (texture == null)
+                     ? new ValueContainer(name, hero.getCustomParamMap().get(counter))
+                     : new ValueContainer(texture, name, hero.getCustomParamMap().get(counter));
+                    valueContainer.setNameAlignment(Align.left);
+                    valueContainer.setValueAlignment(Align.right);
+                    values.add(valueContainer);
+                });
+            }
+            return values;
+        };
     }
 }

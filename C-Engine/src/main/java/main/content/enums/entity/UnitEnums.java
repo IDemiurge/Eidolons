@@ -1,6 +1,7 @@
 package main.content.enums.entity;
 
 import main.system.auxiliary.StringMaster;
+import main.system.images.ImageManager;
 
 import java.util.Map;
 
@@ -348,10 +349,8 @@ public class UnitEnums {
             return false;
         }
 
-        COUNTER(String imagePath) {
-            this. imagePath= imagePath;
-        }
         COUNTER() {
+            imagePath= ImageManager.getValueIconsPath()+"counters\\"+ toString()+".jpg";
         }
 
         public String toString() {

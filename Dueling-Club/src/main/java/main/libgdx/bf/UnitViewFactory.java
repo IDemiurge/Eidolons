@@ -17,7 +17,9 @@ public class UnitViewFactory {
     public static BaseView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view = new GridUnitView(options);
-        view.setToolTip(UnitViewTooltipFactory.create(bfObj));
+        final UnitViewTooltip tooltip = new UnitViewTooltip();
+        tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
+        view.setToolTip(tooltip);
         view.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

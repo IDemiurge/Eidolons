@@ -95,7 +95,7 @@ public class LogMaster {
     public static boolean AI_DEBUG_ON2 = true;
     public static boolean MOVEMENT_DEBUG_ON = false;
     public static boolean GUI_DEBUG_ON = false;
-    public static boolean ANIM_DEBUG_ON = false;
+    public static boolean ANIM_DEBUG_ON = true;
     public static boolean EVENT_DEBUG_ON = false;
     public static boolean EFFECT_DEBUG_ON = false;
     public static boolean TRIGGER_DEBUG_ON = false;

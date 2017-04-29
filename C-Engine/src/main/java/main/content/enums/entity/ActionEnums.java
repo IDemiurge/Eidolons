@@ -32,7 +32,7 @@ public class ActionEnums {
         THROW,
         MISSILE,
         INSTANT_ATTACK,
-        RESTORATION,;
+        RESTORATION, TOP_DOWN;
 
         public String toString() {
             return StringMaster.getWellFormattedString(name());

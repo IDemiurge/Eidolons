@@ -3,12 +3,16 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.game.battlefield.Coordinates;
+import main.system.launch.CoreEngine;
 
 import java.util.List;
 
 public class GridCellContainer extends GridCell {
     private int unitViewCount = 0;
     private int overlayCount = 0;
+
+    private GraveyardView graveyard;
+
 
     public GridCellContainer(TextureRegion backTexture, int gridX, int gridY) {
         super(backTexture, gridX, gridY);
@@ -21,8 +25,18 @@ public class GridCellContainer extends GridCell {
     @Override
     public GridCellContainer init() {
         super.init();
+        if (CoreEngine.isGuiTestMode())
+            if (isGraveyardTestMode()){
+        graveyard = new GraveyardView();
+        addActor(graveyard);
+        graveyard.setWidth(getWidth());
+        graveyard.setHeight(getHeight());
+}
         return this;
     }
+
+    private boolean isGraveyardTestMode() {
+        return true;}
 
     public void setObjects(List<BaseView> objects) {
         objects.forEach(this::addActor);
@@ -48,6 +62,10 @@ public class GridCellContainer extends GridCell {
                 );
                 i++;
             }
+        }
+
+        if (graveyard != null) {
+            graveyard.setZIndex(Integer.MAX_VALUE);
         }
     }
 
@@ -86,6 +104,9 @@ public class GridCellContainer extends GridCell {
         super.removeActor(uv); //call super for only popup
         super.addActorAt(getChildren().size - overlayCount, uv);
         recalcImagesPos();
+        if (graveyard != null){
+            graveyard.setZIndex(Integer.MAX_VALUE);
+        }
     }
 
 /*    @Override

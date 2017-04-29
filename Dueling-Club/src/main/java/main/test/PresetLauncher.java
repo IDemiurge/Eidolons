@@ -173,7 +173,7 @@ public class PresetLauncher {
         if (launch == null) {
             return null;
         }
-        if (launch.logChannelsOff != null) {
+        if (launch.logChannelsOn != null) {
             Arrays.stream(launch.logChannelsOn).forEach(c -> {
                 c.setOn(true);
             });
@@ -374,7 +374,7 @@ public class PresetLauncher {
         AI("ai.xml", RULE_SCOPE.TEST, false),
         Gui("graphics test.xml", RULE_SCOPE.BASIC, null),
         Playtest("ai full.xml", RULE_SCOPE.FULL, null),
-        Anims("graphics test.xml", RULE_SCOPE.BASIC, true),
+        Anims(null , RULE_SCOPE.BASIC, true),
         Emitters(true),
         Light("light preview.xml", RULE_SCOPE.BASIC, true),
         JUnit(),

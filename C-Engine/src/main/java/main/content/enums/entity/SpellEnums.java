@@ -53,7 +53,27 @@ public class SpellEnums {
         ARCANE,
     }
 
-    public enum SPELL_TAGS {
+    public enum SPELL_SUBGROUP {
+        FIRE,
+        LAVA,
+        CLAY,
+        SAND,
+        STONE,
+        ICE,
+        WATER,
+        LIGHTNING,
+        WIND,
+        BONE,
+        WRAITH,
+        SOUL,
+        FLESH,
+        BLOOD,
+        VAMPIRIC,
+        DEATH_MAGIC,
+        POISON,
+        ENTROPY,
+    }
+        public enum SPELL_TAGS {
         MIND_AFFECTING,
 
         FIRE,
@@ -85,7 +105,7 @@ public class SpellEnums {
         CHANNELING,
         INSTANT,
         MISSILE,
-
+TOP_DOWN,
     }
 
     public enum SPELL_TYPE {

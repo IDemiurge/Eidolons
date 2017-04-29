@@ -17,7 +17,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static main.libgdx.gui.controls.radial.RadialManager.addSimpleTooltip;
-import static main.libgdx.texture.TextureCache.getOrCreateGrayscaleR;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 /**
@@ -78,6 +77,7 @@ public class SpellRadialManager {
     private static boolean checkForceTargeting(Unit source,
                                                DC_Obj target, DC_ActiveObj action) {
 
+
         return false; //TODO
     }
 
@@ -86,18 +86,21 @@ public class SpellRadialManager {
         if (object instanceof EntityNode) {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
             Ref ref = action.getOwnerObj().getRef().getTargetingRef(target);
-            valueContainer = new RadialValueContainer(
-                    !action.canBeActivated(ref) ?
-                            getOrCreateGrayscaleR(action.getImagePath())
-                            : getOrCreateR(action.getImagePath()),
-                    () -> {
-                        if (checkForceTargeting(source, target, action)) {
-                            action.activate();
-                        } else {
-                            action.activateOn(target);
-                        }
-                    }
-            );
+            valueContainer =
+             RadialManager.configureActionNode(target, action);
+//             new RadialValueContainer(
+//                    !action.canBeActivated(ref) ?
+//                            getOrCreateGrayscaleR(action.getImagePath())
+//                            : getOrCreateR(action.getImagePath()),
+//                    RadialManager.getRunnable(target,action)
+////                    () -> {
+////                        if (checkForceTargeting(source, target, action)) {
+////                            action.activate();
+////                        } else {
+////                            action.activateOn(target);
+////                        }
+////                    }
+//            );
             ActionCostTooltip tooltip = new ActionCostTooltip();
             tooltip.setUserObject(new ActionCostSource() {
                 @Override

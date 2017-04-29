@@ -18,19 +18,31 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
         return new InputListener() {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
-                GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new EventCallbackParam<>(ToolTip.this));
+                onMouseMoved(event, x, y);
                 return true;
             }
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new EventCallbackParam<>(ToolTip.this));
+                onMouseEnter(event, x, y, pointer, fromActor);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new EventCallbackParam<>(null));
+                onMouseExit(event, x, y, pointer, toActor);
             }
         };
+    }
+
+    protected void onMouseMoved(InputEvent event, float x, float y) {
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new EventCallbackParam<>(this));
+    }
+
+    protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new EventCallbackParam<>(this));
+    }
+
+    protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new EventCallbackParam<>(null));
     }
 }

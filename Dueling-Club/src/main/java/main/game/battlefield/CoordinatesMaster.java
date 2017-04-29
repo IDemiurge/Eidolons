@@ -29,6 +29,8 @@ public class CoordinatesMaster {
     public static Coordinates getFarmostCoordinateInDirection(DIRECTION d,
                                                               List<Coordinates> coordinates, final Boolean prefLessMoreMiddle) {
         coordinates = getSortedByProximityToEdge(d, coordinates, prefLessMoreMiddle);
+if (coordinates==null )
+    return null ;
         return coordinates.get(0);
     }
 

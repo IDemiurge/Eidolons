@@ -39,21 +39,21 @@ public class AnimationConstructor {
     VALUE[] anim_vals = {
 //     PROPS.ANIM_MODS,
 //
-            PROPS.ANIM_SPRITE_CAST,
-            PROPS.ANIM_SPRITE_RESOLVE,
-            PROPS.ANIM_SPRITE_MAIN,
-            PROPS.ANIM_SPRITE_IMPACT,
-            PROPS.ANIM_SPRITE_AFTEREFFECT,
-            PROPS.ANIM_MISSILE_SPRITE,
-            PROPS.ANIM_MODS_SPRITE,
-            PROPS.ANIM_MISSILE_SFX,
+     PROPS.ANIM_SPRITE_CAST,
+     PROPS.ANIM_SPRITE_RESOLVE,
+     PROPS.ANIM_SPRITE_MAIN,
+     PROPS.ANIM_SPRITE_IMPACT,
+     PROPS.ANIM_SPRITE_AFTEREFFECT,
+     PROPS.ANIM_MISSILE_SPRITE,
+     PROPS.ANIM_MODS_SPRITE,
+     PROPS.ANIM_MISSILE_SFX,
 //
-            PROPS.ANIM_SFX_CAST,
-            PROPS.ANIM_SFX_RESOLVE,
-            PROPS.ANIM_SFX_MAIN,
-            PROPS.ANIM_SFX_IMPACT,
-            PROPS.ANIM_SFX_AFTEREFFECT,
-            PROPS.ANIM_MODS_SFX,
+     PROPS.ANIM_SFX_CAST,
+     PROPS.ANIM_SFX_RESOLVE,
+     PROPS.ANIM_SFX_MAIN,
+     PROPS.ANIM_SFX_IMPACT,
+     PROPS.ANIM_SFX_AFTEREFFECT,
+     PROPS.ANIM_MODS_SFX,
 //
 //
 //     PROPS.ANIM_SPRITE_COLOR,
@@ -72,8 +72,8 @@ public class AnimationConstructor {
 //     PARAMS.ANIM_LIGHT_TARGET,
 //
 //     PARAMS.ANIM_MAGNITUDE,
-            PARAMS.ANIM_SPEED,
-            PARAMS.ANIM_FRAME_DURATION,
+     PARAMS.ANIM_SPEED,
+     PARAMS.ANIM_FRAME_DURATION,
 //     PARAMS.ANIM_SIZE,
     };
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
@@ -93,7 +93,7 @@ public class AnimationConstructor {
         }
         try {
             anim =
-                    construct((DC_ActiveObj) active);
+             construct((DC_ActiveObj) active);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,7 +128,7 @@ public class AnimationConstructor {
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {
             if (val instanceof PARAMETER || //TODO add filtering
-                    StringMaster.contains(val.getName(), part.toString())) {
+             StringMaster.contains(val.getName(), part.toString())) {
                 data.add(val, active.getValue(val));
             }
         }
@@ -184,6 +184,10 @@ public class AnimationConstructor {
                 if (part == ANIM_PART.IMPACT) {
                     return new HitAnim(active, data);
                 }
+            }else if (part == ANIM_PART.MAIN) {
+//                if (active.getTargetingMode().isSingle())
+                    if (active.getChecker(). isTopDown())
+                return null ;
             }
             SPELL_ANIMS template = getTemplateFromTargetMode(active.getTargetingMode());
             return new SpellAnim(active, data, template);
@@ -209,7 +213,7 @@ public class AnimationConstructor {
         boolean exists = false;
         List<SpriteAnimation> sprites = new LinkedList<>();
         for (String path :
-                StringMaster.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
+         StringMaster.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
             if (path.isEmpty()) {
                 continue;
             }
@@ -266,11 +270,11 @@ public class AnimationConstructor {
         if (!isAnimated(e)) {
             return null;
         }
-        LogMaster.log(LogMaster.ANIM_DEBUG, "EFFECT ANIM CONSTRUCTED FOR " + e + e.getRef());
+        LogMaster.log(LogMaster.ANIM_DEBUG, "EFFECT ANIM CONSTRUCTED FOR " + e + e.getRef().getInfoString());
         Anim effectAnim = EffectAnimCreator.getOrCreateEffectAnim(e);
         initAnim(effectAnim.getData(), (DC_ActiveObj) effectAnim.getActive(),
-                effectAnim.getPart(),
-                effectAnim);
+         effectAnim.getPart(),
+         effectAnim);
         if (!isValid(effectAnim)) {
             return null;
         }
@@ -329,45 +333,60 @@ public class AnimationConstructor {
             size = " small";
         }
 
-        ANIM_VALUES[] values = {
-                ANIM_VALUES.SPRITES,
-                ANIM_VALUES.PARTICLE_EFFECTS,
-        };
-//         getValuesForPart(part);
-        PROPERTY[] props = {
-                G_PROPS.NAME,
+        PROPERTY[] propsExact = {
+         G_PROPS.NAME, G_PROPS.SPELL_SUBGROUP,
          G_PROPS.SPELL_GROUP,
-                G_PROPS.ASPECT,
-         PROPS.DAMAGE_TYPE,
-                G_PROPS.SPELL_TYPE,
         };
-        for (ANIM_VALUES s : values) {
+        PROPERTY[] props = {
+         G_PROPS.ASPECT,PROPS.DAMAGE_TYPE,
 
-            String pathRoot = getPath(s);
-            String file = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
+         G_PROPS.SPELL_TYPE,
+        };
+         /*
+        first, check for exact fit...
+        if either has one, then don't search for other (unless also exact fit)
+         */
+        String pathRoot = getPath(ANIM_VALUES.SPRITES);
+        String sprite = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, false);
+        pathRoot = getPath(ANIM_VALUES.PARTICLE_EFFECTS);
+        String emitter = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, false);
+        if (sprite == null)
+        if (emitter == null) {
+            emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
+            if (emitter == null)
+                emitter = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
+            if (emitter == null)
+                emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
 
-            if (file == null) {
-                if (!isFindClosestResource(part, s)) {
-                    continue;
-                }
-                file = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
-                if (file == null) {
-                    continue;
-                }
+            if (emitter == null) {
+                pathRoot = getPath(ANIM_VALUES.SPRITES);
+                sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
+                if (sprite == null)
+                    sprite = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
+                if (sprite == null)
+                    sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+
+
             }
-            String val = StringMaster.buildPath(
-                    partPath, StringMaster.removePreviousPathSegments(file, pathRoot));
-            LogMaster.log(LogMaster.ANIM_DEBUG,
-                    "AUTO ANIM CONSTRUCTION FOR " + spell + "-" + part + ": " + s + " is set automatically to " + val);
-            data.setValue(s, val);
         }
-//        for (String substring : StringMaster.openContainer(
-//         spell.getProperty(G_PROPS.SPELL_TAGS))) {
-//            SPELL_TAGS tag = new EnumMaster<SPELL_TAGS>().retrieveEnumConst(SPELL_TAGS.class, substring);
-//            if (tag == SPELL_TAGS.MISSILE) {
-//                data.setValue(ANIM_VALUES.MISSILE_SPEED, "");
-//            }
-//        }
+        if (sprite!=null ){
+            String val = StringMaster.buildPath(
+             partPath, StringMaster.removePreviousPathSegments(sprite, pathRoot));
+            LogMaster.log(LogMaster.ANIM_DEBUG,
+             "AUTO ANIM CONSTRUCTION FOR " + spell + "-" + part +
+              ": " + ANIM_VALUES.SPRITES + " is set automatically to " + val);
+            data.setValue(ANIM_VALUES.SPRITES, val);
+        }
+        if (emitter!=null ){
+            String val = StringMaster.buildPath(
+             partPath, StringMaster.removePreviousPathSegments(emitter, pathRoot));
+            LogMaster.log(LogMaster.ANIM_DEBUG,
+             "AUTO ANIM CONSTRUCTION FOR " + spell + "-" + part +
+              ": " + ANIM_VALUES.PARTICLE_EFFECTS + " is set automatically to " + val);
+            data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, val);
+        }
+
+
         return data;
     }
 
@@ -376,32 +395,33 @@ public class AnimationConstructor {
                                         PROPERTY[] props, String pathRoot,
                                         boolean closest) {
         String path = StringMaster.buildPath(
-                pathRoot, partPath);
+         pathRoot, partPath);
 //        spell.getTargeting();
         String file = null;
         for (PROPERTY p : props) {
-            String name = spell.getProperty(p)  ;
+            String name = spell.getProperty(p);
             file = FileManager.findFirstFile(path, name, closest);
             if (file != null) {
                 break;
             }
-            name = spell.getProperty(p) ;
+            name = spell.getProperty(p);
             file = FileManager.findFirstFile(path, name, closest);
             if (file != null) {
                 break;
             }
-              name = spell.getProperty(p) + " " + partPath + size;
+            name = spell.getProperty(p) + " " + partPath + size;
             file = FileManager.findFirstFile(path, name, closest);
             if (file != null) {
                 break;
             }
         }
-        if (file != null || closest || isPartIgnored(partPath))
-        return file;
-        return findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+//        if (file != null || closest || isPartIgnored(partPath))
+            return file;
+//        return findResourceForSpell(spell, partPath, size, props, pathRoot, true);
     }
 
     private boolean isPartIgnored(String partPath) {
+        partPath = partPath.replace("missile", "main");
         switch (new EnumMaster<ANIM_PART>().retrieveEnumConst(ANIM_PART.class, partPath)) {
             case CAST:
             case MAIN:
