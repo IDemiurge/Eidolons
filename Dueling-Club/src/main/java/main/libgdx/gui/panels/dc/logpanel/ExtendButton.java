@@ -1,4 +1,4 @@
-package main.libgdx.gui.panels.dc;
+package main.libgdx.gui.panels.dc.logpanel;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -17,7 +17,6 @@ public class ExtendButton extends Group {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-
         return super.hit(x, y, touchable) != null ? this : null;
     }
 }

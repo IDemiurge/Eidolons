@@ -1,4 +1,4 @@
-package main.libgdx.gui.panels.dc;
+package main.libgdx.gui.panels.dc.logpanel;
 
 import main.system.GuiEventType;
 
