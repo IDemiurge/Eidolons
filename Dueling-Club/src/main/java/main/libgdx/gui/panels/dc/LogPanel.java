@@ -13,6 +13,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.ColorManager;
 
+import static main.system.GuiEventType.LOG_ENTRY_ADDED;
+
 /**
  * Created by JustMe on 1/5/2017.
  */
@@ -29,7 +31,7 @@ public class LogPanel extends Group {
     private ScrollPanel<LogMessage> scrollPanel;
 
     public LogPanel() {
-        setSize(400, 250);
+        setDefaultSize();
         Image bg = new Image(TextureCache.getOrCreateR(bgPath));
         bg.setFillParent(true);
         addActor(bg);
@@ -93,8 +95,16 @@ public class LogPanel extends Group {
         bind();
     }
 
+    protected void setDefaultSize() {
+        setSize(400, 250);
+    }
+
+    protected GuiEventType getCallbackEvent() {
+        return LOG_ENTRY_ADDED;
+    }
+
     public void bind() {
-        GuiEventManager.bind(GuiEventType.LOG_ENTRY_ADDED, p -> {
+        GuiEventManager.bind(getCallbackEvent(), p -> {
             LogMessageBuilder builder = LogMessageBuilder.createNew();
 
             builder.addString(
@@ -105,7 +115,6 @@ public class LogPanel extends Group {
             message.setFillParent(true);
             scrollPanel.addElement(message);
         });
-
     }
 
     @Override

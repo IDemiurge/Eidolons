@@ -52,14 +52,6 @@ public class GridMaster {
                 new Vector2(Gdx.input.getX(), Gdx.input.getY()));
     }
 
-    public static int getCellWidth() {
-        return GridConst.CELL_W;
-    }
-
-    public static int getCellHeight() {
-        return GridConst.CELL_H;
-    }
-
     public static void offset(Vector2 orig, Vector2 dest, int additionalDistance, boolean xPositive, boolean yPositive) {
         Vector2 v = new Vector2(dest.x - orig.x, dest.y - orig.y);
 

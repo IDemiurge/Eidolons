@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.entity.obj.DC_Obj;
 import main.libgdx.gui.controls.radial.DebugRadialManager;
 import main.libgdx.gui.controls.radial.RadialMenu;
+import main.libgdx.gui.panels.dc.FullLogPanel;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.LogPanel;
 import main.libgdx.gui.panels.dc.actionpanel.ActionPanelController;
@@ -27,6 +28,7 @@ public class GuiStage extends Stage {
 
     private ToolTipManager toolTipManager;
     private LogPanel log;
+    private FullLogPanel fullLogPanel;
     private InventoryWithAction inventoryForm;
     private RadialMenu radialMenu;
     private UnitInfoPanel infoPanel;
@@ -52,6 +54,10 @@ public class GuiStage extends Stage {
         log = new LogPanel();
         addActor(log);
         log.setPosition(Gdx.graphics.getWidth() - log.getWidth(), 0);
+
+        fullLogPanel = new FullLogPanel();
+        addActor(fullLogPanel);
+        fullLogPanel.setPosition(100, 200);
 
         bindEvents();
     }
