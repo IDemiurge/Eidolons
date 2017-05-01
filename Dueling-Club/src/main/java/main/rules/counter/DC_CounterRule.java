@@ -5,6 +5,7 @@ import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.common.AddStatusEffect;
+import main.ability.effects.continuous.ContinuousEffect;
 import main.ability.effects.continuous.CustomTargetEffect;
 import main.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import main.ability.targeting.TemplateAutoTargeting;
@@ -13,6 +14,7 @@ import main.content.enums.entity.UnitEnums.STATUS;
 import main.data.filesys.PathFinder;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.entity.Ref;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.rules.magic.ImmunityRule;
@@ -35,15 +37,17 @@ public abstract class DC_CounterRule {
     // BuffObj>();
     protected Unit unit;
     protected Map<Unit, AddBuffEffect> effectCache;
+    Map<BattleFieldObject, Effects> effectsCache = new HashMap<>();
 
     public DC_CounterRule(DC_Game game) {
         this.game = game;
     }
 
-    public   String getCounterName(){
+    public String getCounterName() {
         return getCounter().getName();
     }
-    public COUNTER getCounter(){
+
+    public COUNTER getCounter() {
         return null;
     }
 
@@ -56,7 +60,7 @@ public abstract class DC_CounterRule {
     public abstract String getBuffName();
 
     public final String getEmitterPath() {
-        return PathFinder.getSfxPath()+"counters\\"+getCounterName();
+        return PathFinder.getSfxPath() + "counters\\" + getCounterName();
     }
 
     public void initEffects() {
@@ -81,8 +85,8 @@ public abstract class DC_CounterRule {
 
     protected String getCounterRef() {
         return "{" + getObjRef() + "_"
-                // + StringMaster.COUNTER_CHAR
-                + getCounterName() + "}";
+         // + StringMaster.COUNTER_CHAR
+         + getCounterName() + "}";
     }
 
     protected String getObjRef() {
@@ -112,7 +116,7 @@ public abstract class DC_CounterRule {
 
     protected String getCounterModifiedLogString(int counterMod) {
         return unit.getName() + "'s " + getCounterName()
-                + " number modified by " + counterMod;
+         + " number modified by " + counterMod;
     }
 
     public void newTurn() {
@@ -136,7 +140,6 @@ public abstract class DC_CounterRule {
         }
     }
 
-
     public boolean checkApplies(Unit unit) {
         return true;
     }
@@ -150,7 +153,8 @@ public abstract class DC_CounterRule {
             if (!isAppliedAlways()) {
                 // if (checkAlreadyApplied(unit)) TODO that's bullshit!
                 // log(getLiftedLogString());
-                removeBuff(unit); // may not be needed now
+//                removeBuff(unit); // may not be needed now
+                removeEffects(unit);
                 return false;
             }
         }
@@ -168,12 +172,12 @@ public abstract class DC_CounterRule {
 
         if (getSpread() != null) {
             new CustomTargetEffect(new TemplateAutoTargeting(
-                    AUTO_TARGETING_TEMPLATES.ADJACENT),
-                    new ModifyCounterEffect(getCounterName(),
-                            MOD.MODIFY_BY_CONST,
+             AUTO_TARGETING_TEMPLATES.ADJACENT),
+             new ModifyCounterEffect(getCounterName(),
+              MOD.MODIFY_BY_CONST,
 
-                            getSpread())).apply(Ref
-                    .getSelfTargetingRefCopy(unit));
+              getSpread())).apply(Ref
+             .getSelfTargetingRefCopy(unit));
         }
 
         // TODO ++ APPLY THRU to cells!
@@ -203,6 +207,7 @@ public abstract class DC_CounterRule {
 
     protected void applyCountersConversions(Unit unit) {
     }
+
     protected void applyCountersInteractions(Unit unit) {
 
 //        if (getClashingCounter() != null) {
@@ -212,13 +217,11 @@ public abstract class DC_CounterRule {
 //        }
     }
 
-
-
     public abstract STATUS getStatus();
 
     protected Integer getNumberOfCounters(Unit unit) {
         return Math.min(getMaxNumberOfCounters(unit),
-                unit.getCounter(getCounterName()));
+         unit.getCounter(getCounterName()));
         // return unit.getCounter(getCounterName());
     }
 
@@ -226,36 +229,78 @@ public abstract class DC_CounterRule {
         unit.removeBuff(getBuffName());
     }
 
-    protected void addBuff(Unit unit) {
-        if (unit.hasBuff(getBuffName())) {
-            unit.removeBuff(getBuffName());
+    protected void removeEffects(Unit unit) {
+        Effect effects = getEffects(unit);
+        effects.remove();
+    }
+
+    protected void applyEffects(Unit unit) {
+        Effect effects = getEffects(unit);
+        effects.apply(Ref.getSelfTargetingRefCopy(unit));
+        if (effects instanceof AddBuffEffect){
+            ((AddBuffEffect) effects).getBuff().setCounterRef(getCounterName());
         }
-        AddBuffEffect effect = null;
-        if (isUseBuffCache()) {
-            effect = getEffectCache().get(unit); // buff effect cache!
+        //TODO animation?
+//        startContinuousAnimation();
+//        playAddAnimation();
+//        playIntensifyAnimation();
+//        playTickAnimation();
+    }
+
+    private Effect getEffects(Unit unit) {
+        if (getBuffName() != null) {
+            return getBuffEffect();
         }
+        Effects effect = effectsCache.get(unit);
         if (effect == null) {
-            // Ref REF = new Ref(unit.getGame(), unit.getId());
-            // REF.setTarget(unit.getId());
-            // REF.setBasis(unit.getId());
-            // buff = new DC_BuffObj(DataManager.getType(getBuffName(),
-            // OBJ_TYPES.BUFFS), Player.NEUTRAL, game, REF, effects,
-            // ContentManager.INFINITE_VALUE, null);
-            // buff.setCounterRef(getCounterName());
+            effect = new Effects(ContinuousEffect.transformEffectToContinuous(getEffect()));
+            effectsCache.put(unit, effect);
+        }
+        return effect;
+    }
+
+    private Effect getBuffEffect() {
+        AddBuffEffect effect = getEffectCache().get(unit);
+        if (effect == null) {
             effect = new AddBuffEffect(getBuffName(), effects);
             if (isUseBuffCache()) {
                 getEffectCache().put(unit, effect);
             }
-            // else getUnitList().add(unit); // for logging!
-
-            // disappear
-            // tooltip should update number of counters
-            // could status also have the number?
         }
+        return effect;
+    }
 
-        effect.apply(Ref.getSelfTargetingRefCopy(unit)); // retain/duration? has
-        // to
-        effect.getBuff().setCounterRef(getCounterName());
+    protected void addBuff(Unit unit) {
+        applyEffects(unit);
+//        if (unit.hasBuff(getBuffName())) {
+//            unit.removeBuff(getBuffName());
+//        }
+//        AddBuffEffect effect = null;
+//        if (isUseBuffCache()) {
+//            effect = getEffectCache().get(unit); // buff effect cache!
+//        }
+//        if (effect == null) {
+//            // Ref REF = new Ref(unit.getGame(), unit.getId());
+//            // REF.setTarget(unit.getId());
+//            // REF.setBasis(unit.getId());
+//            // buff = new DC_BuffObj(DataManager.getType(getBuffName(),
+//            // OBJ_TYPES.BUFFS), Player.NEUTRAL, game, REF, effects,
+//            // ContentManager.INFINITE_VALUE, null);
+//            // buff.setCounterRef(getCounterName());
+//            effect = new AddBuffEffect(getBuffName(), effects);
+//            if (isUseBuffCache()) {
+//                getEffectCache().put(unit, effect);
+//            }
+//            // else getUnitList().add(unit); // for logging!
+//
+//            // disappear
+//            // tooltip should update number of counters
+//            // could status also have the number?
+//        }
+//
+//        effect.apply(Ref.getSelfTargetingRefCopy(unit)); // retain/duration? has
+//        // to
+//        effect.getBuff().setCounterRef(getCounterName());
 
     }
 

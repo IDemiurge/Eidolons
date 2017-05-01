@@ -280,7 +280,7 @@ public class GameLauncher {
         if (launch.logicTest) {
             initLogicTest();
         }
-
+CoreEngine.setGraphicsOff(launch.graphicsOff);
         ItemGenerator.setGenerationOn(!launch.itemGenerationOff);
         TestMasterContent.setForceFree(launch.freeActions);
 

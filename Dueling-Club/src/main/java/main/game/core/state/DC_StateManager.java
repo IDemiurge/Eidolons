@@ -109,15 +109,9 @@ public class DC_StateManager extends StateManager {
     }
 
 
-
-
-
-
-
-
     public void checkContinuousRules() {
         for (Unit unit : getGame().getUnits()) {
-            checkContinuousRules (unit);
+            checkContinuousRules(unit);
         }
     }
 
@@ -126,18 +120,25 @@ public class DC_StateManager extends StateManager {
     }
 
     public void checkCounterRules() {
-            for (Unit unit : getGame().getUnits()) {
-                checkCounterRules(unit);
+        for (Unit unit : getGame().getUnits()) {
+            checkCounterRules(unit);
         }
     }
+
     private void checkCounterRules(Unit unit) {
         if (getGame().getRules().getCounterRules() != null) {
             for (DC_CounterRule rule : getGame().getRules().getCounterRules()) {
                 // rule.newTurn();
-                rule.check((unit));
+                try {
+                    rule.check((unit));
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
             }
         }
     }
+
     private void applyEndOfTurnDamage() {
         if (getGame().getRules().getDamageRules() != null) {
             for (Unit unit : getGame().getUnits()) {
@@ -230,11 +231,11 @@ public class DC_StateManager extends StateManager {
     @Override
     public void checkRules(Event e) {
         DequeImpl<DC_RuleImpl> triggerRules = getGame().getRules().getTriggerRules();
-        if ( triggerRules.size() == 0) {
+        if (triggerRules.size() == 0) {
             return;
         }
 
-        for (Rule rule :  triggerRules) {
+        for (Rule rule : triggerRules) {
             if (rule.isOn()) {
                 if (rule.check(e)) {
                     Ref ref = Ref.getCopy(e.getRef());

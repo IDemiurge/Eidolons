@@ -95,6 +95,9 @@ public class AddBuffEffect extends MultiEffect  implements OneshotEffect, Resist
 
     @Override
     public boolean applyThis() {
+        if (!getGame().getEffectManager().checkNotResisted(this)) {
+            return false;
+        }
         // if (buff == null)
         buff = getBuffCache().get(target);
         if (buff != null) {
@@ -140,9 +143,7 @@ public class AddBuffEffect extends MultiEffect  implements OneshotEffect, Resist
         initRetainConditions();
         ref.setBasis(target);
 
-        if (!getGame().getEffectManager().checkNotResisted(this)) {
-            return false;
-        }
+
         buffType.setTransient(isTransient());
         buff = (BuffObj) game.createBuff(buffType, active, ref.getSourceObj().getOwner(), ref,
                 effect, duration, getRetainConditions());

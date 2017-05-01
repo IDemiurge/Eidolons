@@ -6,6 +6,7 @@ import main.content.ContentManager;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.STD_BOOLS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.parameters.MultiParameter;
 import main.content.values.parameters.PARAMETER;
@@ -174,6 +175,9 @@ public abstract class DataModel {
 
     public boolean modifyCounter(String name, int modValue) {
         return modifyCounter(name, modValue, true);
+    }
+    public boolean modifyCounter(COUNTER counter   , int modValue) {
+        return modifyCounter(counter.getName(), modValue, true);
     }
 
     public boolean modifyCounter(String name, int modValue, boolean strict) {

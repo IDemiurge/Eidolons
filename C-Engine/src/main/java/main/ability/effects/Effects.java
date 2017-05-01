@@ -71,6 +71,11 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
     }
 
     @Override
+    public void remove() {
+        getEffects().forEach(e-> e.remove());
+    }
+
+    @Override
     public Formula getFormula() {
         return effects.get(0).getFormula();
     }
