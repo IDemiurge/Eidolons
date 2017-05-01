@@ -1,5 +1,6 @@
 package tests.logic.combat;
 
+import TestUtils.printingAsserts;
 import main.entity.active.DC_ActiveObj;
 import main.game.logic.combat.attack.Attack;
 import main.game.logic.combat.attack.DC_AttackMaster;
@@ -21,7 +22,7 @@ public class AttackDamageTest extends TwoUnitsTest {
         Attack attack = DC_AttackMaster.getAttackFromAction(action);
         int precalc = DamageCalculator.precalculateDamage(attack);
 //        DamageFactory.getDamageFromAttack(attack);
-        assertEqualAndLog(action.getDamageDealt().getAmount(), precalc,
+        printingAsserts.assertEqualAndLog(action.getDamageDealt().getAmount(), precalc,
                 action + " dmg precalc",
                 action + " Damage Dealt");
 

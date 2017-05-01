@@ -49,8 +49,6 @@ public class Ref implements Cloneable, Serializable {
     protected boolean quiet;
     protected boolean debug;
     protected boolean triggered;
-
-
     protected ActiveObj animationActive;
     protected boolean animationDisabled;
     protected Entity infoEntity;

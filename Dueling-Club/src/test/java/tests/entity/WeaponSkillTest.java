@@ -38,8 +38,6 @@ public class WeaponSkillTest extends CreateUnitTest {
     @Test
     public void testAssignSkill() {
 
-        assertTrue(entity != null);
-        assertTrue(entity.getName().equals(typeName));
         int temp = entity.getIntParam(PARAMS.TOUGHNESS);
         assert (!entity.getSkills().contains(skill));
         entity.getSkills().add(skill);
