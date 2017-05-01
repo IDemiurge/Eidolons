@@ -36,7 +36,6 @@ public class GameLoop {
         }
     }
 
-    //
     private void roundLoop() {
         game.getStateManager().newRound();
         boolean retainActiveUnit = false;

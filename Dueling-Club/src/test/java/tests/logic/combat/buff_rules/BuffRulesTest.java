@@ -1,5 +1,6 @@
 package tests.logic.combat.buff_rules;
 
+import TestUtils.printingAsserts;
 import main.content.PARAMS;
 import main.entity.Ref;
 import main.rules.buff.*;
@@ -12,6 +13,9 @@ import tests.entity.CreateUnitTest;
  * Created by JustMe on 3/26/2017.
  * <p>
  * DOES NOT TEST ADDITIONAL EFFECTS (PANIC, TREASON, CONFUSION ETC)
+ *
+ * //TODO but what exactly does it test?
+ * // which buff rules?
  */
 public class BuffRulesTest extends CreateUnitTest {
 
@@ -74,7 +78,7 @@ public class BuffRulesTest extends CreateUnitTest {
             Integer reduced = entity.getIntParam(reduced_params[i]);
 
             if (isReductionOn(root_param)) {
-                assertAndLog(initial, reduced, root_param + " rule");
+                printingAsserts.assertGreaterThanAndLog(initial, reduced, root_param + " rule");
             }
 
             if (!isIncreaseOn(root_param)) {
@@ -88,7 +92,7 @@ public class BuffRulesTest extends CreateUnitTest {
             );
             judi.game.getStateManager().reset(entity);
             Integer increased = entity.getIntParam(increased_params[i]);
-            assertAndLog(increased, initial, root_param + " rule");
+            printingAsserts.assertGreaterThanAndLog(increased, initial, root_param + " rule");
             i++;
         }
 

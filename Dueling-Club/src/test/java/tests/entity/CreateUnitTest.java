@@ -22,23 +22,35 @@ public class CreateUnitTest extends GenericTest {
     protected Unit entity;
 
 
-
+    /**
+     * Creates a unit with standard name.
+     */
     @Before
     public void createEntity() {
         ObjType type= DataManager.getType(typeName, DC_TYPE.UNITS);
-        entity = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
+        entity = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0,
+                judi.game.getPlayer(true), new Ref(judi.game));
+
+    }
+
+    /**
+     * Tests that an entity object was created in @Before and it received expected name.
+     */
+    @Test
+    public void testUnitCreatedWithRightName() {
+
+        assertTrue (entity!=null );
+        assertTrue (entity.getName().equals(typeName));
 
     }
 
 
-
-
-
+    /**
+     * Tests that a modified parameter will return to its basic value upon calling entity.toBase()
+     */
     @Test
     public void testToBase() {
 
-        assertTrue (entity!=null );
-        assertTrue (entity.getName().equals(typeName));
         entity.setParam(PARAMS.ACID_ARMOR, entity.getType().getParam(PARAMS.ACID_ARMOR)+5);
         entity.toBase();
         assertTrue (entity.getParam(PARAMS.ACID_ARMOR) == entity.getType().getParam(PARAMS.ACID_ARMOR));
