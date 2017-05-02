@@ -355,6 +355,9 @@ public class Executor extends ActiveHandler {
 
 
     public void actionComplete() {
+        getAnimator().initAnimData();
+        getAction().setTargetGroup(null );
+        getAction().setTargetObj(null );
         getGame().getManager().setActivatingAction(null);
         if (isResult()) {
             log(getAction() + " done", false);

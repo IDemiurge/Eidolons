@@ -137,10 +137,10 @@ public class ExpressionTree {
 
                         if (!autoresolved && MathMaster.isAutoResolveParseExceptions()) {
                             LogMaster.log(1,
-                                    "autoresolving malformed formula - crop last ')': " + s);
+                             "autoresolving malformed formula - crop last ')': " + s);
                             String autoresolvedString = StringMaster.replaceLast(s, "-(", "-1*(");
                             return build(true, autoresolvedString,
-                                    indexErrorOffset);
+                             indexErrorOffset);
                         } else {
                             throw new ExpressionParseException("Open bracket found after negate.", i);
                         }
@@ -160,7 +160,7 @@ public class ExpressionTree {
                         if (c >= '0' && c <= '9' || c == '.') {
                             j++;
                         }// code to account for
-                            // "computerized scientific notation"
+                        // "computerized scientific notation"
                         else if (c == 'e' || c == 'E') {
                             j++;
 
@@ -169,8 +169,8 @@ public class ExpressionTree {
 
                                 if (c != '+' && c != '-' && (c < '0' || c > '9')) {
                                     throw new ExpressionParseException(
-                                            "Expected digit, plus sign or minus sign but found: "
-                                                    + String.valueOf(c), j + indexErrorOffset);
+                                     "Expected digit, plus sign or minus sign but found: "
+                                      + String.valueOf(c), j + indexErrorOffset);
                                 }
 
                                 j++;
@@ -196,7 +196,7 @@ public class ExpressionTree {
                         d = Double.parseDouble(_d);
                     } catch (Throwable t) {
                         throw new ExpressionParseException("Improperly formatted value: " + _d, i
-                                + indexErrorOffset);
+                         + indexErrorOffset);
                     }
 
                     if (negate) {
@@ -209,12 +209,12 @@ public class ExpressionTree {
                     term = false;
                     signed = false;
                 } else if (c != ',' && c != ')' && c != '^' && c != '*' && c != '/' && c != '+'
-                        && c != '-') {
+                 && c != '-') {
                     int j = i + 1;
                     while (j < s.length()) {
                         c = s.charAt(j);
                         if (c != ',' && c != ' ' && c != '\t' && c != '\n' && c != '(' && c != ')'
-                                && c != '^' && c != '*' && c != '/' && c != '+' && c != '-') {
+                         && c != '^' && c != '*' && c != '/' && c != '+' && c != '-') {
                             j++;
                         } else {
                             break;
@@ -240,7 +240,7 @@ public class ExpressionTree {
 
                                 if (k >= s.length()) {
                                     throw new ExpressionParseException(
-                                            "Missing function close bracket.", i + indexErrorOffset);
+                                     "Missing function close bracket.", i + indexErrorOffset);
                                 }
 
                                 c = s.charAt(k);
@@ -253,7 +253,7 @@ public class ExpressionTree {
                                     Expression o = build(s.substring(kOld, k), kOld);
                                     if (o == null) {
                                         throw new ExpressionParseException("Incomplete function.",
-                                                kOld + indexErrorOffset);
+                                         kOld + indexErrorOffset);
                                     }
                                     fn.add(o);
                                     kOld = k + 1;
@@ -263,7 +263,7 @@ public class ExpressionTree {
                             if (o == null) {
                                 if (fn.numChildren() > 0) {
                                     throw new ExpressionParseException("Incomplete function.", kOld
-                                            + indexErrorOffset);
+                                     + indexErrorOffset);
                                 }
                             } else {
                                 fn.add(o);
@@ -284,7 +284,7 @@ public class ExpressionTree {
                     signed = false;
                 } else {
                     throw new ExpressionParseException(
-                            "Unexpected character: " + String.valueOf(c), i + indexErrorOffset);
+                     "Unexpected character: " + String.valueOf(c), i + indexErrorOffset);
                 }
             } else {
                 if (c == ')') {
@@ -294,12 +294,24 @@ public class ExpressionTree {
                         if (s2.isEmpty()) {
                             if (!autoresolved && MathMaster.isAutoResolveParseExceptions()) {
                                 LogMaster.log(1,
-                                        "autoresolving malformed formula - crop last ')': " + s);
-                                return build(true, StringMaster.replaceLast(s, ")", ""),
-                                        indexErrorOffset);
+                                 "autoresolving malformed formula - crop last ')': " + s);
+                                try {
+                                    return build(true, StringMaster.replaceLast(s, ")", ""),
+                                     indexErrorOffset);
+                                } catch (Exception e) {
+                                    LogMaster.log(1,
+                                     "autoresolving malformed formula - added '(': " + s);
+                                    try {
+                                        return build(true, "(" + s, indexErrorOffset);
+                                    } catch (Exception e1) {
+                                        e1.printStackTrace();
+                                    }
+                                    e.printStackTrace();
+                                }
+
                             }
                             throw new ExpressionParseException("Missing open bracket.", i
-                                    + indexErrorOffset);
+                             + indexErrorOffset);
                         }
                         Object o = s2.pop();
                         if (o.equals("(")) {
@@ -318,8 +330,8 @@ public class ExpressionTree {
                     LogMaster.log(1, "ExpressionParseException - " + s);
                     if (!CoreEngine.isMinimizeLogging()) {
                         throw new ExpressionParseException(
-                                "Expected operator or close bracket but found: "
-                                        + String.valueOf(c), i + indexErrorOffset);
+                         "Expected operator or close bracket but found: "
+                          + String.valueOf(c), i + indexErrorOffset);
                     }
                 }
             }
@@ -327,7 +339,7 @@ public class ExpressionTree {
 
         if (s1.size() != s2.size() + 1) {
             throw new ExpressionParseException("Incomplete expression.", indexErrorOffset
-                    + s.length());
+             + s.length());
         }
 
         return build(s1, s2);

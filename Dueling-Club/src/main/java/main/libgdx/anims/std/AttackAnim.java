@@ -231,10 +231,10 @@ size - elongate
         MoveByAction mainMove = new MoveByAction();
         mainMove.setDuration(duration);
         int distanceX = active.getRef().getSourceObj().getX() -
-                getActive().getTargetObj().getX();
+                getActive().getAnimator().getAnimRef(). getTargetObj().getX();
         x -= distanceX * GridConst.CELL_W;
         int distanceY = active.getRef().getSourceObj().getY() -
-         getActive().getTargetObj().getY();
+         getActive().getAnimator().getAnimRef().getTargetObj().getY();
         y += distanceY * GridConst.CELL_H;
 
         mainMove.setAmount(x, y);

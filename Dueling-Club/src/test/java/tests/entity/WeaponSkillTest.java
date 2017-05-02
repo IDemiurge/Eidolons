@@ -5,11 +5,8 @@ import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
-import main.entity.Ref;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.attach.DC_FeatObj;
-import main.entity.obj.unit.Unit;
-import main.entity.type.ObjType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,8 +25,8 @@ public class WeaponSkillTest extends CreateUnitTest {
     @Before
     public void createEntity() {
         judi = new JUnitDcInitializer();
-        ObjType type = DataManager.getType(typeName, DC_TYPE.UNITS);
-        entity = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
+//        ObjType type = DataManager.getType(typeName, DC_TYPE.UNITS);
+//        entity = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
         skill = new DC_FeatObj(DataManager.getType(skillName, DC_TYPE.SKILLS), entity.getRef());
         dagger = new DC_WeaponObj(DataManager.getType(itemName, DC_TYPE.WEAPONS), entity);
 

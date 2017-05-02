@@ -3,10 +3,10 @@ package main.ability.effects.containers.customtarget;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.C_OBJ_TYPE;
-import main.content.values.parameters.G_PARAMS;
 import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;
+import main.elements.conditions.NumericCondition;
 import main.elements.targeting.AutoTargeting;
 import main.entity.Ref.KEYS;
 import main.system.entity.ConditionMaster;
@@ -48,11 +48,14 @@ public class ZoneEffect extends SpecialTargetingEffect
     public void initTargeting() {
         Conditions conditions = new Conditions();
         int spell_radius = radius.getInt(ref);
-        if (spell_radius == 0) {
-            spell_radius = ref.getObj(KEYS.ACTIVE.name()).getIntParam(G_PARAMS.RADIUS);
-        }
+//        if (spell_radius == 0) {
+//            spell_radius = ref.getObj(KEYS.ACTIVE.name()).getIntParam(G_PARAMS.RADIUS);
+//        }
+        NumericCondition condition = ConditionMaster.getDistanceFilterCondition(KEYS.TARGET.name(), spell_radius);
         conditions
-                .add(ConditionMaster.getDistanceFilterCondition(KEYS.TARGET.name(), spell_radius));
+                .add(condition);
+        if (spell_radius == 0)   //just on same cell
+            condition.setStrict(false);
         conditions.add(ConditionMaster.getNotDeadCondition()); // TODO really???
 
         if (notSelf) {

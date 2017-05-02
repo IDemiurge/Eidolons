@@ -230,12 +230,12 @@ public abstract class DC_CounterRule {
     }
 
     protected void removeEffects(Unit unit) {
-        Effect effects = getEffects(unit);
+        Effect effects = getWrappedEffects(unit);
         effects.remove();
     }
 
     protected void applyEffects(Unit unit) {
-        Effect effects = getEffects(unit);
+        Effect effects = getWrappedEffects(unit);
         effects.apply(Ref.getSelfTargetingRefCopy(unit));
         if (effects instanceof AddBuffEffect){
             ((AddBuffEffect) effects).getBuff().setCounterRef(getCounterName());
@@ -247,7 +247,9 @@ public abstract class DC_CounterRule {
 //        playTickAnimation();
     }
 
-    private Effect getEffects(Unit unit) {
+    private Effect getWrappedEffects(Unit unit) {
+        if (getEffect()==null )
+            return new Effects() ;
         if (getBuffName() != null) {
             return getBuffEffect();
         }

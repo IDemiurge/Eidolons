@@ -4,13 +4,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import main.ability.effects.Effect;
-import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.values.parameters.G_PARAMS;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
-import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.CoordinatesMaster;
@@ -98,13 +95,10 @@ public class AnimMultiplicator implements Runnable {
     }
 
     public void applyTemplate() {
+        Set<Coordinates> coordinates =
+         getActive().getAnimator().getZoneAnimCoordinates();
+//         CoordinatesMaster.getZoneCoordinates(getActive());
 
-        Effect effect = EffectFinder.getFirstEffectOfClass(getActive(), SpecialTargetingEffect.class);
-        Set<Coordinates> coordinates = null;
-        if (effect != null) {
-            SpecialTargetingEffect targetEffect = (SpecialTargetingEffect) effect;
-            coordinates = targetEffect.getCoordinates();
-        }
 //        if (coordinates == null) { TODO GROUP MUST NOT BE COPIED FROM OTHER SPELLS!
 //            if (getRef().getGroup() != null) {
 //                Set<Coordinates> set = new LinkedHashSet();
@@ -167,6 +161,7 @@ public class AnimMultiplicator implements Runnable {
 
                 case BLAST:
                     break;
+                case WAVE:
                 case SPRAY: {
                     boolean xOrY = !facing.isVertical();
                     filtered.removeIf(c ->
@@ -183,14 +178,15 @@ public class AnimMultiplicator implements Runnable {
                         );
                         Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection(
                                 facing.getDirection(),
-                                list, null);
+                                list, null); if (c!=null )
                         filtered.add(c);
                     }
-
+if (ListMaster.isNotEmpty(filtered))
                     return filtered;
+                    else
+                    return coordinates;
                 }
-                case WAVE:
-                    break;
+
                 case RING:
                     break;
                 case NOVA:

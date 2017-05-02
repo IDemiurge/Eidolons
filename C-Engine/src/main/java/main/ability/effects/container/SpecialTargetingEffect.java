@@ -12,7 +12,6 @@ import main.game.battlefield.Coordinates;
 import main.system.math.Formula;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 public abstract class SpecialTargetingEffect extends MicroEffect implements ContainerEffect {
@@ -78,7 +77,7 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
 //        if (         (coordinates == null || getActiveObj().checkBool(STD_BOOLS.APPLY_THRU))) {
         if (ref.getGroup() != null) {
             if (!ref.getGroup().getObjects().isEmpty()) {
-                coordinates = new LinkedHashSet();
+//                coordinates = new LinkedHashSet(); TODO why clear like this??
                 ref.getGroup().getObjects().forEach(o -> coordinates.add(o.getCoordinates()));
             }
         } else {

@@ -872,9 +872,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     @Override
     public GroupImpl getTargetGroup() {
         return targetGroup;
+
     }
 
     public void setTargetGroup(GroupImpl targetGroup) {
         this.targetGroup = targetGroup;
+        getRef().setGroup(targetGroup);
     }
 }

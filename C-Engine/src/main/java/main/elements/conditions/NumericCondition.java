@@ -44,11 +44,12 @@ public class NumericCondition extends ConditionImpl {
 
         int a = greater.getInt(ref);
         int b = than.getInt(ref);
-        boolean result = (!equal) ? (!strict) ? a >= b : a > b : a == b;
-        if ((!strict)) {
-            if (a == 0 && b == 0) {
-                result = false;
-            }
+        boolean result = equal ? a == b : strict ? a > b : a >= b;
+        if (strict) {
+            return result;
+        }
+        if (a == 0 && b == 0) {
+            result = false;
         }
         // LogMaster.log(LogMaster.CONDITION_DEBUG, "Numeric Condition "
         // + comparedValue + " = " + a

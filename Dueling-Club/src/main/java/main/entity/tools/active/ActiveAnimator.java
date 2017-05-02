@@ -5,12 +5,16 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.tools.EntityAnimator;
 import main.entity.tools.EntityMaster;
+import main.game.battlefield.Coordinates;
+import main.game.battlefield.CoordinatesMaster;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.AttackAnimation;
 import main.system.graphics.PhaseAnimation;
 import main.system.threading.WaitMaster;
+
+import java.util.Set;
 
 /**
  * Created by JustMe on 2/23/2017.
@@ -23,8 +27,18 @@ public class ActiveAnimator extends EntityAnimator<DC_ActiveObj> {
     private String animationKey;
     private ANIM animation;
 
+    Ref animRef;
+    Set<Coordinates> zoneAnimCoordinates;
+
+
     public ActiveAnimator(DC_ActiveObj entity, EntityMaster<DC_ActiveObj> entityMaster) {
         super(entity, entityMaster);
+    }
+
+    public void initAnimData(){
+        //after activation, before actionComplete!
+        animRef = getRef().getCopy();
+        zoneAnimCoordinates = CoordinatesMaster. getZoneCoordinates(getEntity());
     }
 
     public void waitForAnimation() {
@@ -126,6 +140,14 @@ public class ActiveAnimator extends EntityAnimator<DC_ActiveObj> {
 
     public ANIM getAnimation() {
         return animation;
+    }
+
+    public Ref getAnimRef() {
+        return animRef;
+    }
+
+    public Set<Coordinates> getZoneAnimCoordinates() {
+        return zoneAnimCoordinates;
     }
 
     @Override

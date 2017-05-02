@@ -10,7 +10,10 @@ import main.entity.item.DC_WeaponObj;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.core.ActionInput;
+import main.game.logic.action.context.Context;
 import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,8 +44,11 @@ public class AttackTest {
         public void createEntity() {
             judi = new JUnitDcInitializer();
             ObjType type= DataManager.getType(typeName, DC_TYPE.UNITS);
-            source = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
-            target = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
+            source =judi.game.getUnits().get(0);
+//             (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
+            target = (Unit) judi.game.getManager().getObjCreator().createUnit(type,
+             source.getX(),
+             source.getY(), judi.game.getPlayer(true), new Ref(judi.game));
 
 
         }
@@ -61,12 +67,12 @@ public class AttackTest {
 
             DC_UnitAction attackAction = source.getAction("punch");
             assertTrue (attackAction !=null );
-
-            attackAction.activateOn(target);
-            WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.ACTION_COMPLETE);
-
-
-            Integer newToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
+            WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
+             new ActionInput(attackAction, new Context(source, target)));
+//            old! attackAction.activateOn(target);
+           Boolean result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_COMPLETE);
+            assertTrue (result);
+             Integer newToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
             Integer newEndurance = target.getIntParam(PARAMS.C_ENDURANCE);
             assertTrue(newToughness < origToughness);
             assertTrue(newEndurance < origEndurance);

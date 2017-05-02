@@ -1,5 +1,6 @@
 package init;
 
+import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.log.LogMaster;
 import main.test.PresetLauncher.LAUNCH;
@@ -21,6 +22,7 @@ public class JUnitDcInitializer {
         FAST_DC.main(new String[]{
          LAUNCH.JUnit.name()
         });
+        game = Eidolons.game;
 //        DC_Engine.systemInit();
 //        DC_Engine.gameInit(false);
 //        JUnitResources.init();

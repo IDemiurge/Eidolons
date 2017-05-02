@@ -79,7 +79,7 @@ public class TypeBuilder {
         setProps(type, node.getChildNodes());
     }
 
-    public static void setProps(Entity type, NodeList childNodes) {
+    private static void setProps(Entity type, NodeList childNodes) {
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node child = childNodes.item(i);
             if (child.getNodeName().equals(XML_Converter.TEXT_NODE)) {
@@ -118,7 +118,7 @@ public class TypeBuilder {
         setParams(type, node.getChildNodes());
     }
 
-    public static void setParams(Entity type, NodeList childNodes) {
+    private static void setParams(Entity type, NodeList childNodes) {
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node child = childNodes.item(i);
 
@@ -136,7 +136,7 @@ public class TypeBuilder {
 
     }
 
-    public static TypeInitializer getTypeInitializer() {
+    private static TypeInitializer getTypeInitializer() {
         return typeInitializer;
     }
 

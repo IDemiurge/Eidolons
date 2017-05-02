@@ -377,7 +377,7 @@ public class PresetLauncher {
         Anims(null , RULE_SCOPE.BASIC, true),
         Emitters(true),
         Light("light preview.xml", RULE_SCOPE.BASIC, true),
-        JUnit(),
+        JUnit("junit.xml", RULE_SCOPE.FULL, null),
         Profiling(true),
         Standoff(null, RULE_SCOPE.FULL, null),
         Standoff_Test(null, RULE_SCOPE.TEST, true),

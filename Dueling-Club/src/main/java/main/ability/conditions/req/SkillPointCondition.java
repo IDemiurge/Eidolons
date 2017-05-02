@@ -29,6 +29,9 @@ public class SkillPointCondition extends MicroCondition {
         if (match == null) {
             match = ref.getType("match");
         }
+        if (match == null) {
+            return false;
+        }
         PARAMETER masteryParam = ContentManager.getPARAM(match.getProperty(G_PROPS.MASTERY));
         if (masteryParam == null) {
             masteryParam = ContentManager.getMastery(match.getProperty(G_PROPS.MASTERY));

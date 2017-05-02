@@ -1,9 +1,14 @@
 package main.game.battlefield;
 
+import main.ability.effects.Effect;
+import main.ability.effects.container.SpecialTargetingEffect;
+import main.entity.active.DC_ActiveObj;
+import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.math.PositionMaster;
 
 import java.util.*;
@@ -29,7 +34,7 @@ public class CoordinatesMaster {
     public static Coordinates getFarmostCoordinateInDirection(DIRECTION d,
                                                               List<Coordinates> coordinates, final Boolean prefLessMoreMiddle) {
         coordinates = getSortedByProximityToEdge(d, coordinates, prefLessMoreMiddle);
-if (coordinates==null )
+if (!ListMaster.isNotEmpty(coordinates))
     return null ;
         return coordinates.get(0);
     }
@@ -492,6 +497,17 @@ if (coordinates==null )
 
     public boolean isOnEdge(Coordinates c, int border) {
         return false;
+    }
+
+    public static Set<Coordinates> getZoneCoordinates(DC_ActiveObj entity) {
+        Effect effect = EffectFinder.getFirstEffectOfClass(entity,
+         SpecialTargetingEffect.class);
+        Set<Coordinates> coordinates = null;
+        if (effect != null) {
+            SpecialTargetingEffect targetEffect = (SpecialTargetingEffect) effect;
+            coordinates = targetEffect.getCoordinates();
+        }
+        return coordinates;
     }
 
     // public boolean isOnEdgeX(Coordinates coordinates, int border) {

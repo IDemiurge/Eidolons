@@ -52,28 +52,37 @@ public class ConcealmentRule {
         // if (source.checkPassive(STANDARD_PASSIVES.LIGHTVISION))
         // return false;
         int chance = target.getIntParam(PARAMS.CONCEALMENT) - source.getIntParam(PARAMS.DETECTION)
-                - source.getIntParam(PARAMS.PERCEPTION) / 2 - target.getIntParam(PARAMS.NOISE) / 2
-                - source.getIntParam(PARAMS.ACCURACY) - source.getIntParam(PARAMS.ILLUMINATION) // if
-                // normal
-                // vision...
-                + cell.getIntParam(PARAMS.CONCEALMENT);
+//                - source.getIntParam(PARAMS.PERCEPTION) / 2
+//         - target.getIntParam(PARAMS.NOISE) / 2
+         - source.getIntParam(PARAMS.ACCURACY)
+         - source.getIntParam(PARAMS.ILLUMINATION)
+         // if
+         // normal
+         // vision...
+         + cell.getIntParam(PARAMS.CONCEALMENT);
         if (chance < 0) {
             chance = 0;
         }
-
         chance -= source.getIntParam(PARAMS.ILLUMINATION);
-        return Math.abs(chance);
+        if (chance < 0) {
+            chance += 100;
+            if (chance < 0)
+                return Math.abs(chance);
+            else
+                return 0;
+        }
+        return (chance);
     }
 
     public static void logMissed(LogManager logManager, DC_ActiveObj activeObj) {
         logManager.log(StringMaster.getMessagePrefix(true,
-                activeObj.getOwnerObj().getOwner().isMe())
-                + StringMaster.getPossessive(activeObj.getOwnerObj().getName())
-                + " "
-                + activeObj.getDisplayedName()
-                + " has missed due to Concealment"
-                + StringMaster.wrapInParenthesis(""
-                + getMissChance(activeObj) + "%"));
+         activeObj.getOwnerObj().getOwner().isMe())
+         + StringMaster.getPossessive(activeObj.getOwnerObj().getName())
+         + " "
+         + activeObj.getDisplayedName()
+         + " has missed due to Concealment"
+         + StringMaster.wrapInParenthesis(""
+         + getMissChance(activeObj) + "%"));
 
     }
 
