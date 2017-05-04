@@ -16,6 +16,7 @@ import main.game.battlefield.Coordinates;
 import main.game.core.Eidolons;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.anims.std.DeathAnim;
@@ -59,6 +60,7 @@ public class GridPanel extends Group {
     private int cols;
     private int rows;
     private LightingManager lightingManager;
+    private AnimMaster animMaster;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -120,6 +122,8 @@ public class GridPanel extends Group {
             }
         });
 
+        animMaster= new AnimMaster();
+        addActor(animMaster);
         return this;
     }
 

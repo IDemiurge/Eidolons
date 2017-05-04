@@ -2,7 +2,6 @@ package main.libgdx.anims;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.data.ConcurrentMap;
@@ -35,6 +34,7 @@ import java.util.Stack;
  * Created by JustMe on 1/9/2017.
  */
 public class AnimMaster extends Group {
+// Animation does not support ZOOM!
 
     static private boolean on;
     private static AnimMaster instance;
@@ -52,7 +52,7 @@ public class AnimMaster extends Group {
     private boolean drawing;
 
     //animations will use emitters, light, sprites, text and icons
-    public AnimMaster(Stage stage) {
+    public AnimMaster() {
         instance = this;
         floatingTextMaster = new FloatingTextMaster();
         continuousAnimsOn =
@@ -63,7 +63,7 @@ public class AnimMaster extends Group {
         constructor = new AnimationConstructor();
         controller = new AnimController();
         bindEvents();
-        stage.addActor(this);
+
     }
 
     public static boolean isOn() {
@@ -353,6 +353,7 @@ public class AnimMaster extends Group {
         if (!result) {
             startNext();
         }
+        // not turned on
         if (parallelDrawing) {
             leadQueue.forEach(a -> {
                 a.draw(batch);
@@ -361,7 +362,7 @@ public class AnimMaster extends Group {
 
             leadQueue.removeIf((CompositeAnim anim) -> anim.isFinished());
         }
-
+// ???
         if (getChildren().size > 0) {
             super.draw(batch, parentAlpha);
         }

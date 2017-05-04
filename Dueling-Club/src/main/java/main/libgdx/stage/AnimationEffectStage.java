@@ -9,7 +9,6 @@ import main.libgdx.anims.phased.PhaseAnimator;
 public class AnimationEffectStage extends Stage {
     public AnimationEffectStage() {
         new ParticleManager(this);
-        new AnimMaster(this);
         new PhaseAnimator(this);
     }
 
