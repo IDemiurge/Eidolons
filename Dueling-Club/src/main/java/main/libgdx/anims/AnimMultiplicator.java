@@ -11,7 +11,7 @@ import main.entity.active.DC_ActiveObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.CoordinatesMaster;
-import main.libgdx.GameScreen;
+import main.libgdx.DungeonScreen;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
 import main.libgdx.anims.std.SpellAnim;
@@ -202,7 +202,7 @@ if (ListMaster.isNotEmpty(filtered))
         actor.setAttached(false);
         actor.setGenerated(true);
         ActorMaster.addRemoveAfter(actor);
-        GameScreen.getInstance().getAnimsStage().addActor(actor);
+        DungeonScreen.getInstance().getAnimsStage().addActor(actor);
 
         if (angle != null) {
             createAndAddEmitterActions(actor, angle, template);

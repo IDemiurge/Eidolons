@@ -4,17 +4,10 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.core.game.DC_Game;
-import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.lighting.FireLightProt;
 import main.libgdx.anims.particles.lighting.LightMap;
 import main.libgdx.anims.particles.lighting.LightingManager;
-import main.libgdx.gui.dialog.Dialog;
-import main.libgdx.gui.dialog.DialogDisplay;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
-import main.system.graphics.MigMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -119,23 +112,6 @@ public class InputController implements InputProcessor {
             y_cam_pos = i1;
             is_it_Left_Click = true;
         }
-        Dialog dialog = GameScreen.getInstance().getDialogDisplay().getDialog();
-        if (dialog != null) {
-            int w = MigMaster.getCenteredPosition(
-                    (int) GameScreen.getInstance().getBackground().getWidth()
-                    , (int) dialog.getWidth());
-            boolean
-                    outside = x < w || x > w + (int) dialog.getWidth();
-            if (!outside) {
-                int h = MigMaster.getCenteredPosition(
-                        (int) GameScreen.getInstance().getBackground().getHeight()
-                        , (int) dialog.getHeight());
-                outside = y < h || y > h + (int) dialog.getHeight();
-            }
-            if (outside) {
-                GuiEventManager.trigger(GuiEventType.DIALOG_CLOSED, null);
-            }
-        }
 
         return false;
     }
@@ -150,23 +126,13 @@ public class InputController implements InputProcessor {
     @Override
     public boolean touchDragged(int i, int i1, int i2) {
 
-        if (DialogDisplay.isDisplaying()) {
-            return false;
-        }
 //        System.out.println("i = " + i + " || i1 = " + i1 + " || i2 = "  + i2);
         if (is_it_Left_Click) {
             camera.position.x += (x_cam_pos - i) * camera.zoom;
             camera.position.y -= (y_cam_pos - i1) * camera.zoom;
             x_cam_pos = i;
             y_cam_pos = i1;
-            Image background = GameScreen.getInstance().getBackground().getImage();
-            background.setBounds(
-                    camera.position.x - background.getWidth() / 2,
-                    camera.position.y - background.getHeight() / 2,
-                    background.getWidth(),
-                    background.getHeight());
         }
-
 
         return false;
     }

@@ -1,4 +1,4 @@
-package main.test.libgdx.prototype;
+package main.test.libgdx;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;

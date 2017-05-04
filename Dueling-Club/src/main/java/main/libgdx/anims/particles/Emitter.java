@@ -3,7 +3,7 @@ package main.libgdx.anims.particles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
-import main.libgdx.GameScreen;
+import main.libgdx.DungeonScreen;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.ReflectionMaster;
 
@@ -88,13 +88,13 @@ public class Emitter extends ParticleEmitter {
             if (p != null) {
 //                GridMaster.getMouseCoordinates;
                 Vector2 v = new Vector2(Gdx.input.getX(), (Gdx.graphics.getHeight() - Gdx.input.getY()));
-                Vector2 pos = GameScreen.getInstance().getGridStage().screenToStageCoordinates(v);
+                Vector2 pos = DungeonScreen.getInstance().getGridStage().screenToStageCoordinates(v);
                 float xDiff = pos.x
-                        - GameScreen.getInstance().getController().getX_cam_pos()
+                        - DungeonScreen.getInstance().getController().getX_cam_pos()
                         - (getX() + p.getX());
                 float yDiff = pos.y //fuck that shit
                         - (getY() + p.getY())
-                        - GameScreen.getInstance().getController().getY_cam_pos();
+                        - DungeonScreen.getInstance().getController().getY_cam_pos();
                 Float distance = (float) (Math.sqrt(xDiff * xDiff + yDiff * yDiff));
                 if (particleLogOn) {
                     LogMaster.log(1,
@@ -102,8 +102,8 @@ public class Emitter extends ParticleEmitter {
                                     + " Mouse y: " + pos.y //fuck that shit
                                     + " Particle x: " + (getY() + p.getX())
                                     + " Particle y: " + (getY() + p.getY())
-                                    + " cam x: " + (GameScreen.getInstance().getController().getX_cam_pos())
-                                    + " cam y: " + (GameScreen.getInstance().getController().getY_cam_pos())
+                                    + " cam x: " + (DungeonScreen.getInstance().getController().getX_cam_pos())
+                                    + " cam y: " + (DungeonScreen.getInstance().getController().getY_cam_pos())
                                     + " distance: " + (distance)
                     );
                 }
