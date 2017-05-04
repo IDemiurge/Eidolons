@@ -9,8 +9,8 @@ import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 
@@ -26,19 +26,16 @@ public class ResourceMaster {
 
     // private static final OBJ_TYPES[] types = { OBJ_TYPES.BUFFS, };
     private static final PROPERTY[] props = {G_PROPS.IMAGE, G_PROPS.BACKGROUND,};
+    private static final String UNUSED_FOLDER = "\\unused\\";
+    private static final String USED_FOLDER = "entity";
+    static boolean setProperty = true;
+    static boolean useFirstEntityIfOverlap = true;
     private static Map<String, ObjType> map = new XLinkedMap<>();
-    private static String folderName = "Ordered";
+    private static String folderName = "gen";
 
-    public static void createArtFolders(String arg) {
-        List<DC_TYPE> types = new EnumMaster<DC_TYPE>().getEnumList(DC_TYPE.class, arg);
-        for (DC_TYPE t : types) {
-            createArtFolder(t);
-        }
-        boolean unused;
-    }
     public static void updateImagePaths() {
 
-        for (ObjType type :  DataManager.getTypes()) {
+        for (ObjType type : DataManager.getTypes()) {
             updateImagePath(type);
         }
 
@@ -48,13 +45,14 @@ public class ResourceMaster {
         String path = getNewImagePath(G_PROPS.IMAGE, type);
         type.setProperty(G_PROPS.IMAGE, path);
     }
+
     public static void createUpdatedArtDirectory() {
         Map<String, ObjType> map = new XLinkedMap<>();
         // String path;
         for (PROPERTY prop : props) {
             for (DC_TYPE t : DC_TYPE.values()) {
                 try {
-                    createArtFolder(t, true, prop, map);
+                    createArtFolder(t, setProperty, prop, map);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -62,7 +60,7 @@ public class ResourceMaster {
         }
 // unused
         for (File f : FileManager.getFilesFromDirectory(ImageManager.getImageFolderPath() + "mini\\", false,
-                true)) {
+         true)) {
             if (!ImageManager.isImageFile(f.getName())) {
                 continue;
             }
@@ -78,13 +76,14 @@ public class ResourceMaster {
 
     private static void writeToUnused(File f, Image image) {
         List<String> segments = StringMaster.getPathSegments(f.getPath().replace(
-                ImageManager.getImageFolderPath(), ""));
+         ImageManager.getImageFolderPath(), ""));
         String pathPart = segments.get(1) + "\\";
         if (!segments.get(2).contains(".")) {
             pathPart += segments.get(2) + "\\";
         }
-        File outputfile = new File(ImageManager.getImageFolderPath() + folderName + "\\unused\\" + pathPart
-                + "\\" + f.getName());
+        File outputfile = new File(ImageManager.getImageFolderPath() + folderName +
+         UNUSED_FOLDER + pathPart
+         + "\\" + f.getName());
 
         BufferedImage bufferedImage = ImageManager.getBufferedImage(image);
         try {
@@ -104,39 +103,26 @@ public class ResourceMaster {
         return ImageManager.getImage(f.getPath());
     }
 
-    public static void createArtFolder(DC_TYPE TYPE) {
-        createArtFolder(TYPE, false, G_PROPS.IMAGE, map);
-    }
 
     public static void createArtFolder(DC_TYPE TYPE, boolean update, PROPERTY imgProp,
                                        Map<String, ObjType> map) {
 
         for (ObjType type : DataManager.getTypes(TYPE)) {
             String path = getNewImagePath(imgProp, type);
-            File outputfile = new File(path);
-
             String oldPath = type.getProperty(imgProp);
             Entity cached = map.get(oldPath);
             if (cached != null) {
-                // ???
+                if (useFirstEntityIfOverlap)
+                    path = getNewImagePath(imgProp, cached);
+                //else  ???
             } else {
-                BufferedImage bufferedImage = ImageManager.getBufferedImage(oldPath);
-                if (!ImageManager.isValidImage(bufferedImage)) {
+                try {
+                    writeImage(oldPath, path);
+                    map.put(oldPath, type);
+                } catch (Exception e) {
+                    e.printStackTrace();
                     continue;
                 }
-                try {
-                    if (!outputfile.isFile())
-                    // {}
-                    // if (!outputfile.exists())
-                    {
-                        outputfile.mkdirs();
-                        outputfile.createNewFile();
-                        ImageIO.write(bufferedImage, getNewImageFormat(), outputfile);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                map.put(oldPath, type);
             }
             if (update) {
                 type.setProperty(imgProp, path);
@@ -144,16 +130,48 @@ public class ResourceMaster {
         }
     }
 
+    private static void writeImage(String oldPath, String path) {
+        File outputfile = new File(path);
+        BufferedImage bufferedImage = ImageManager.getBufferedImage(oldPath);
+        if (!ImageManager.isValidImage(bufferedImage)) {
+            throw new RuntimeException() ;
+        }
+        try {
+            if (!outputfile.isFile())
+            // {}
+            // if (!outputfile.exists())
+            {
+                outputfile.mkdirs();
+                outputfile.createNewFile();
+                ImageIO.write(bufferedImage, getNewImageFormat(), outputfile);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static String getNewImagePath(PROPERTY imgProp, Entity type) {
         String group = type.getGroupingKey() + "\\";
         String subgroup = type.getSubGroupingKey() + "\\";
-        return PathFinder.getImagePath() + folderName + "\\" + imgProp.getName() + "\\"
-                + type.getOBJ_TYPE() + "\\" + group + subgroup + "\\" + type.getName() + "."
-                + getNewImageFormat();
+        return PathFinder.getImagePath() + folderName + "\\"
+         + USED_FOLDER + "\\"
+         + imgProp.getName() + "\\"
+         + type.getOBJ_TYPE() + "\\" + group + subgroup + "\\" + type.getName() + "."
+         + getNewImageFormat();
     }
 
     private static String getNewImageFormat() {
         return "png";
     }
 
+    public static void createArtFolders(String arg) {
+        List<DC_TYPE> types = new EnumMaster<DC_TYPE>().getEnumList(DC_TYPE.class, arg);
+        for (DC_TYPE t : types) {
+            createArtFolder(t);
+        }
+    }
+
+    public static void createArtFolder(DC_TYPE TYPE) {
+        createArtFolder(TYPE, false, G_PROPS.IMAGE, map);
+    }
 }
