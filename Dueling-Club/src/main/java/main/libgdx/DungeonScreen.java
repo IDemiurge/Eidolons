@@ -14,8 +14,8 @@ import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.mouse.InputController;
-import main.libgdx.gui.LoadingStage;
 import main.libgdx.stage.GuiStage;
+import main.libgdx.stage.LoadingStage;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -42,9 +42,6 @@ public class DungeonScreen implements Screen {
     private InputController controller;
     private Stage effects;
 
-    private ParticleManager particleManager;
-    private AnimMaster animMaster;
-    private PhaseAnimator phaseAnimator;
     private TextureRegion backTexture;
     private boolean showLoading = true;
     private LoadingStage loadingStage;
@@ -60,11 +57,12 @@ public class DungeonScreen implements Screen {
 
         gridStage = new Stage();
 
-        initEffects();
         guiStage = new GuiStage();
 
         initAnims();
+
         initCamera();
+
         controller = new InputController(cam);
 
         GL30 gl = Gdx.graphics.getGL30();
@@ -89,16 +87,13 @@ public class DungeonScreen implements Screen {
         effects.getViewport().setCamera(cam);
     }
 
-    private void initEffects() {
-        effects = new Stage();
-        particleManager = new ParticleManager(effects);
-    }
-
     private void initAnims() {
+        effects = new Stage();
+        ParticleManager particleManager = new ParticleManager(effects);
         animsStage = new Stage();
         phaseAnimsStage = new Stage();
-        animMaster = new AnimMaster(animsStage);
-        phaseAnimator = new PhaseAnimator(phaseAnimsStage);
+        AnimMaster animMaster = new AnimMaster(animsStage);
+        PhaseAnimator phaseAnimator = new PhaseAnimator(phaseAnimsStage);
     }
 
     private void bindEvents() {
