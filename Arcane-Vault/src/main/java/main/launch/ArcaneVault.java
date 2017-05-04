@@ -90,9 +90,9 @@ public class ArcaneVault {
     private static WORKSPACE_TEMPLATE template;
     private static String types;
     private static ContentManager contentManager;
-    private static boolean artGen = false;
+    private static boolean artGen = true;
     private static boolean workspaceLaunch = false;
-    private static boolean imgPathUpdate= true;
+    private static boolean imgPathUpdate= false;
 
     static {
         WORKSPACE_TEMPLATE.presetTypes.setTypes(presetTypes);
