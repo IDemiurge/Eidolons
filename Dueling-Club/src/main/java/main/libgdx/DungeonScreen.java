@@ -9,11 +9,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.core.game.DC_Game;
-import main.libgdx.anims.AnimMaster;
-import main.libgdx.anims.particles.ParticleManager;
-import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.mouse.InputController;
+import main.libgdx.stage.AnimationEffectStage;
 import main.libgdx.stage.GuiStage;
 import main.libgdx.stage.LoadingStage;
 import main.system.GuiEventManager;
@@ -35,16 +33,14 @@ public class DungeonScreen implements Screen {
     private static DungeonScreen instance;
     private Stage gridStage;
     private GuiStage guiStage;
-    private Stage animsStage;
-    private Stage phaseAnimsStage;
     private GridPanel gridPanel;
     private OrthographicCamera cam;
     private InputController controller;
-    private Stage effects;
 
     private TextureRegion backTexture;
     private boolean showLoading = true;
     private LoadingStage loadingStage;
+    private AnimationEffectStage animationEffectStage;
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -59,7 +55,7 @@ public class DungeonScreen implements Screen {
 
         guiStage = new GuiStage();
 
-        initAnims();
+        animationEffectStage = new AnimationEffectStage();
 
         initCamera();
 
@@ -82,18 +78,7 @@ public class DungeonScreen implements Screen {
         camera = cam = new OrthographicCamera();
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gridStage.getViewport().setCamera(cam);
-        animsStage.getViewport().setCamera(cam);
-        phaseAnimsStage.getViewport().setCamera(cam);
-        effects.getViewport().setCamera(cam);
-    }
-
-    private void initAnims() {
-        effects = new Stage();
-        ParticleManager particleManager = new ParticleManager(effects);
-        animsStage = new Stage();
-        phaseAnimsStage = new Stage();
-        AnimMaster animMaster = new AnimMaster(animsStage);
-        PhaseAnimator phaseAnimator = new PhaseAnimator(phaseAnimsStage);
+        animationEffectStage.getViewport().setCamera(cam);
     }
 
     private void bindEvents() {
@@ -124,6 +109,7 @@ public class DungeonScreen implements Screen {
         GuiEventManager.processEvents();
 
         guiStage.act(delta);
+        animationEffectStage.act(delta);
         gridStage.act(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -142,17 +128,7 @@ public class DungeonScreen implements Screen {
 
             gridStage.draw();
 
-            effects.draw();
-            if (DC_Game.game != null) {
-                if (DC_Game.game.getAnimationManager() != null) {
-                    DC_Game.game.getAnimationManager().updateAnimations();
-                }
-            }
-
-            if (AnimMaster.isOn()) {
-                phaseAnimsStage.draw();
-                animsStage.draw();
-            }
+            animationEffectStage.draw();
 
             guiStage.draw();
         }
@@ -167,9 +143,7 @@ public class DungeonScreen implements Screen {
 /*        camera = cam = new OrthographicCamera(width, height);
         cam.update();*/
         cam.setToOrtho(false, width, height);
-        animsStage.getViewport().update(width, height);
-        phaseAnimsStage.getViewport().update(width, height);
-        effects.getViewport().update(width, height);
+        animationEffectStage.getViewport().update(width, height);
         gridStage.getViewport().update(width, height);
         guiStage.getViewport().update(width, height);
 /*        to disable pixelperfect
@@ -219,6 +193,6 @@ public class DungeonScreen implements Screen {
     }
 
     public Stage getAnimsStage() {
-        return animsStage;
+        return animationEffectStage;
     }
 }
