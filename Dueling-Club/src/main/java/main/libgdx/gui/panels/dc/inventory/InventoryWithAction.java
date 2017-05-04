@@ -51,6 +51,8 @@ public class InventoryWithAction extends TablePanel {
                 .pad(20, 10, 20, 10).size(50, 50);
 
         bindListeners();
+
+        setVisible(false);
     }
 
     private void bindListeners() {
@@ -86,6 +88,7 @@ public class InventoryWithAction extends TablePanel {
         doneButton.getActor().clearListeners();
         cancelButton.getActor().clearListeners();
         undoButton.getActor().clearListeners();
+        setVisible(false);
     }
 
     @Override

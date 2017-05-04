@@ -12,6 +12,7 @@ import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.bf.GridMaster;
 import main.rules.action.WatchRule;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 
 /**
@@ -89,9 +90,10 @@ public class Activator extends ActiveHandler {
     }
 
     public void cannotActivate() {
-        main.system.auxiliary.log.LogMaster.log(1, "Cannot Activate " +
+        LogMaster.log(1, "Cannot Activate " +
                 getEntity().getName() +
                 ": " + getEntity().getCosts().getReasonsString());
+
         FloatingText f = FloatingTextMaster.getInstance().getFloatingText(getEntity(),
          TEXT_CASES.REQUIREMENT,
          getEntity().getCosts().getReasonsString());
