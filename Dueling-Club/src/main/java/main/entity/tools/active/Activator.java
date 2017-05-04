@@ -6,7 +6,7 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.unit.Unit;
-import main.libgdx.GameScreen;
+import main.libgdx.DungeonScreen;
 import main.libgdx.anims.text.FloatingText;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
@@ -97,7 +97,7 @@ public class Activator extends ActiveHandler {
          getEntity().getCosts().getReasonsString());
         f.setDisplacementY(100);
         f.setDuration(3);
-        f.addToStage(GameScreen.getInstance().getAnimsStage(),
+        f.addToStage(DungeonScreen.getInstance().getAnimsStage(),
                 GridMaster.getVectorForCoordinateWithOffset(getEntity().getOwnerObj().getCoordinates()));
     }
 

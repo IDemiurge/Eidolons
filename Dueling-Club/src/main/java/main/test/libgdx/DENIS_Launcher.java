@@ -6,7 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import main.client.dc.Launcher;
-import main.libgdx.GameScreen;
+import main.libgdx.DungeonScreen;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,7 +39,7 @@ public class DENIS_Launcher implements ApplicationListener {
 
     @Override
     public void create() {
-        screen = new GameScreen().PostConstruct();
+        screen = new DungeonScreen().PostConstruct();
 
     }
 

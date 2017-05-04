@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.ability.Ability;
 import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;
-import main.libgdx.GameScreen;
+import main.libgdx.DungeonScreen;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimData;
@@ -67,7 +67,7 @@ public class ActionAnim extends Anim {
     }
 
     public Actor getActor() {
-        return GameScreen.getInstance().getGridPanel().getUnitMap()
+        return DungeonScreen.getInstance().getGridPanel().getUnitMap()
                 .get(getActive().getOwnerObj());
     }
 

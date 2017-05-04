@@ -11,7 +11,7 @@ import javafx.util.Pair;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.battlefield.Coordinates;
-import main.libgdx.GameScreen;
+import main.libgdx.DungeonScreen;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import main.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
@@ -706,7 +706,7 @@ public class Anim extends Group implements Animation {
     public void checkAddFloatingText() {
         getFloatingText().forEach(floatingText1 -> {
             if (time >= floatingText1.getDelay()) {
-                floatingText1.addToStage(GameScreen.getInstance().getAnimsStage());
+                floatingText1.addToStage(DungeonScreen.getInstance().getAnimsStage());
             }
         });
     }

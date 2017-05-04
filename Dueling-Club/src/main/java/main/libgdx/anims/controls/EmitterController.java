@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import main.data.filesys.PathFinder;
 import main.entity.obj.ActiveObj;
 import main.game.core.game.DC_Game;
-import main.libgdx.GameScreen;
+import main.libgdx.DungeonScreen;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.CompositeAnim;
 import main.libgdx.anims.particles.Ambience;
@@ -140,7 +140,7 @@ public class EmitterController implements Controller {
     }
 
     public void add(EmitterActor actor, Vector2 v) {
-        GameScreen.getInstance().getAnimsStage().addActor(actor);
+        DungeonScreen.getInstance().getAnimsStage().addActor(actor);
         if (v == null) {
             v = GridMaster.getMouseCoordinates();
         }
