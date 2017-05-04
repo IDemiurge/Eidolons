@@ -1,4 +1,4 @@
-package main.libgdx.gui;
+package main.libgdx.stage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
