@@ -9,7 +9,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.game.logic.combat.damage.Damage;
-import main.libgdx.GameScreen;
+import main.libgdx.DungeonScreen;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
@@ -89,7 +89,7 @@ public class HitAnim extends ActionAnim {
     @Override
     public void start() {
         super.start();
-        floatingText.init(GameScreen.getInstance().getAnimsStage()
+        floatingText.init(DungeonScreen.getInstance().getAnimsStage()
                 , destination, 0, 128, 1.5f);
         Damage damage = getActive().getDamageDealt();
         FloatingTextMaster.getInstance().initFloatTextForDamage(damage, this);

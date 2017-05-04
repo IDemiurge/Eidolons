@@ -7,22 +7,23 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.core.game.DC_Game;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.anims.phased.PhaseAnimator;
-import main.libgdx.bf.Background;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.mouse.InputController;
-import main.libgdx.gui.dialog.DialogDisplay;
+import main.libgdx.gui.LoadingStage;
 import main.libgdx.stage.GuiStage;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
 
-import static main.system.GuiEventType.GRID_CREATED;
+import static main.libgdx.texture.TextureCache.getOrCreateR;
+import static main.system.GuiEventType.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,28 +31,27 @@ import static main.system.GuiEventType.GRID_CREATED;
  * Time: 23:55
  * To change this template use File | Settings | File Templates.
  */
-public class GameScreen implements Screen {
+public class DungeonScreen implements Screen {
     public static OrthographicCamera camera;
-    private static GameScreen instance;
+    private static DungeonScreen instance;
     private Stage gridStage;
     private GuiStage guiStage;
-    private Stage dialogStage;
     private Stage animsStage;
-    private Stage ambienceStage;
     private Stage phaseAnimsStage;
-    private Background background;
     private GridPanel gridPanel;
     private SpriteBatch batch;
     private OrthographicCamera cam;
     private InputController controller;
-    private DialogDisplay dialogDisplay;
     private Stage effects;
 
     private ParticleManager particleManager;
     private AnimMaster animMaster;
     private PhaseAnimator phaseAnimator;
+    private TextureRegion backTexture;
+    private boolean showLoading = true;
+    private LoadingStage loadingStage;
 
-    public static GameScreen getInstance() {
+    public static DungeonScreen getInstance() {
         return instance;
     }
 
@@ -60,14 +60,16 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(multiplexer);
     }
 
-    public GameScreen PostConstruct() {
+    public DungeonScreen PostConstruct() {
         instance = this;
+
+        loadingStage = new LoadingStage();
 
         gridStage = new Stage();
 
-        initDialog();
         initEffects();
-        initGui();
+        guiStage = new GuiStage();
+
         initAnims();
         initCamera();
         controller = new InputController(cam);
@@ -79,8 +81,6 @@ public class GameScreen implements Screen {
 
         batch = new SpriteBatch();
 
-        background = new Background().init();
-
         bindEvents();
 
         WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
@@ -91,8 +91,7 @@ public class GameScreen implements Screen {
 
     private void initCamera() {
         camera = cam = new OrthographicCamera();
-        cam.setToOrtho(false, 1600, 900);
-        ambienceStage.getViewport().setCamera(cam);
+        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gridStage.getViewport().setCamera(cam);
         animsStage.getViewport().setCamera(cam);
         phaseAnimsStage.getViewport().setCamera(cam);
@@ -101,7 +100,6 @@ public class GameScreen implements Screen {
 
     private void initEffects() {
         effects = new Stage();
-        ambienceStage = new Stage();
         particleManager = new ParticleManager(effects);
     }
 
@@ -112,17 +110,6 @@ public class GameScreen implements Screen {
         phaseAnimator = new PhaseAnimator(phaseAnimsStage);
     }
 
-    private void initDialog() {
-        dialogStage = new Stage();
-        dialogDisplay = new DialogDisplay();
-        dialogStage.addActor(dialogDisplay);
-    }
-
-    private void initGui() {
-        guiStage = new GuiStage();
-
-    }
-
     private void bindEvents() {
         GuiEventManager.bind(GRID_CREATED, param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
@@ -130,7 +117,14 @@ public class GameScreen implements Screen {
             gridStage.addActor(gridPanel);
         });
 
+        GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
+            final String path = (String) param.get();
+            backTexture = getOrCreateR(path);
+        });
 
+        GuiEventManager.bind(DUNGEON_LOADED, param -> {
+            showLoading = false;
+        });
     }
 
     @Override
@@ -145,44 +139,37 @@ public class GameScreen implements Screen {
 
         guiStage.act(delta);
         gridStage.act(delta);
-        ambienceStage.act(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         cam.update();
 
-        batch.setProjectionMatrix(cam.combined);
-        batch.begin();
-
-        if (background.isDirty()) {
-            background.update();
-        }
-        batch.disableBlending();
-        background.draw(batch, 1);
-        batch.enableBlending();
-
-        batch.end();
-
-        gridStage.draw();
-        ambienceStage.draw();
-        effects.draw();
-        if (DC_Game.game != null) {
-            if (DC_Game.game.getAnimationManager() != null) {
-                DC_Game.game.getAnimationManager().updateAnimations();
+        if (showLoading) {
+            loadingStage.act(delta);
+            loadingStage.draw();
+        } else {
+            if (backTexture != null) {
+                guiStage.getBatch().begin();
+                guiStage.getBatch().draw(backTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                guiStage.getBatch().end();
             }
+
+            gridStage.draw();
+            effects.draw();
+            if (DC_Game.game != null) {
+                if (DC_Game.game.getAnimationManager() != null) {
+                    DC_Game.game.getAnimationManager().updateAnimations();
+                }
+            }
+
+            if (animMaster.isOn()) {
+                phaseAnimsStage.draw();
+                animsStage.draw();
+            }
+
+            guiStage.draw();
         }
 
-        if (animMaster.isOn()) {
-            phaseAnimsStage.draw();
-            animsStage.draw();
-        }
-
-        guiStage.draw();
-
-
-        if (dialogDisplay.getDialog() != null) {
-            dialogStage.draw();
-        }
     }
 
     @Override
@@ -198,7 +185,6 @@ public class GameScreen implements Screen {
         effects.getViewport().update(width, height);
         gridStage.getViewport().update(width, height);
         guiStage.getViewport().update(width, height);
-        ambienceStage.getViewport().setCamera(cam);
 /*        to disable pixelperfect
         float camWidth = MapView.TILE_WIDTH * 10.0f;
         float camHeight = camWidth * ((float)height / (float)width);
@@ -233,10 +219,6 @@ public class GameScreen implements Screen {
 
     }
 
-    public Background getBackground() {
-        return background;
-    }
-
     public GridPanel getGridPanel() {
         return gridPanel;
     }
@@ -245,31 +227,11 @@ public class GameScreen implements Screen {
         return controller;
     }
 
-    public DialogDisplay getDialogDisplay() {
-        return dialogDisplay;
-    }
-
     public Stage getGridStage() {
         return gridStage;
     }
 
-    public GuiStage getGuiStage() {
-        return guiStage;
-    }
-
-    public Stage getDialogStage() {
-        return dialogStage;
-    }
-
     public Stage getAnimsStage() {
         return animsStage;
-    }
-
-    public Stage getAmbienceStage() {
-        return ambienceStage;
-    }
-
-    public Stage getPhaseAnimsStage() {
-        return phaseAnimsStage;
     }
 }

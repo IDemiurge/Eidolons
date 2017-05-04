@@ -12,7 +12,7 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.MicroObj;
 import main.game.battlefield.Coordinates;
 import main.game.core.game.DC_Game;
-import main.libgdx.GameScreen;
+import main.libgdx.DungeonScreen;
 import main.libgdx.bf.GridConst;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -211,10 +211,10 @@ public class LightMap {
             entry.getValue().update();
         }
         world.step(1 / 60, 4, 4);
-        rayHandler.setCombinedMatrix(GameScreen.camera);
+        rayHandler.setCombinedMatrix(DungeonScreen.camera);
         rayHandler.updateAndRender();
         if (LightingManager.debug) {
-            debugRenderer.render(world, GameScreen.camera.combined);
+            debugRenderer.render(world, DungeonScreen.camera.combined);
         }
     }
 

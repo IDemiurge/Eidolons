@@ -7,7 +7,6 @@ import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.core.game.DC_Game;
-import main.libgdx.GameScreen;
 import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -117,7 +116,7 @@ public class EmitterMap {
         fog.setTarget(c);
         fogMap.put(c, fog);
         fog.setPosition(v.x, v.y);
-        GameScreen.getInstance().getAmbienceStage().addActor(fog);
+        //DungeonScreen.getInstance().getAmbienceStage().addActor(fog);
         fog.setVisible(true);
         fog.getEffect().start();
     }
