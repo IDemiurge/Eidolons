@@ -24,6 +24,8 @@ import main.system.auxiliary.secondary.GeometryMaster;
 
 import java.util.*;
 
+import static main.libgdx.bf.GridMaster.getVectorForCoordinateWithOffset;
+
 /**
  * Created by JustMe on 1/29/2017.
  */
@@ -57,10 +59,7 @@ public class AnimMultiplicator implements Runnable {
     }
 
     private static boolean isMultiplied(Anim anim) {
-        if (anim instanceof SpellAnim) {
-            return true;
-        }
-        return false;
+        return anim instanceof SpellAnim;
     }
 
     @Override
@@ -96,7 +95,7 @@ public class AnimMultiplicator implements Runnable {
 
     public void applyTemplate() {
         Set<Coordinates> coordinates =
-         getActive().getAnimator().getZoneAnimCoordinates();
+                getActive().getAnimator().getZoneAnimCoordinates();
 //         CoordinatesMaster.getZoneCoordinates(getActive());
 
 //        if (coordinates == null) { TODO GROUP MUST NOT BE COPIED FROM OTHER SPELLS!
@@ -155,9 +154,7 @@ public class AnimMultiplicator implements Runnable {
                 case RAY:
                     anim.setForcedDestinationForAll(farthest);
 
-                    return Arrays.asList(new Coordinates[]{
-                            farthest
-                    });
+                    return Arrays.asList(farthest);
 
                 case BLAST:
                     break;
@@ -178,13 +175,14 @@ public class AnimMultiplicator implements Runnable {
                         );
                         Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection(
                                 facing.getDirection(),
-                                list, null); if (c!=null )
-                        filtered.add(c);
+                                list, null);
+                        if (c != null)
+                            filtered.add(c);
                     }
-if (ListMaster.isNotEmpty(filtered))
-                    return filtered;
+                    if (ListMaster.isNotEmpty(filtered))
+                        return filtered;
                     else
-                    return coordinates;
+                        return coordinates;
                 }
 
                 case RING:
@@ -246,15 +244,19 @@ if (ListMaster.isNotEmpty(filtered))
 
     private void createAndAddEmitterActions(EmitterActor actor, Coordinates c) {
 //        MoveToAction action = ActorMaster.getMoveToAction(c, actor, pixelsPerSecond);
-        Vector2 v = GridMaster.
-                getVectorForCoordinateWithOffset(c);
+        Vector2 v = getVectorForCoordinateWithOffset(c);
         int speed = getPixelsPerSecond();
         if (template != null) {
-            GridMaster.offset(getOrigin(), v, template.getAdditionalDistance(getActive()), getOrigin().x > c.x, getOrigin().y > c.y);
+            GridMaster.offset(
+                    getOrigin(),
+                    v,
+                    template.getAdditionalDistance(getActive())
+            );
+
             speed = template.speed;
         }
-        MoveByAction action = ActorMaster.getMoveByAction(getOrigin(),
-                v, actor, speed);
+        MoveByAction action =
+                ActorMaster.getMoveByAction(getOrigin(), v, actor, speed);
 
 
         if (action.getDuration() > this.duration) {

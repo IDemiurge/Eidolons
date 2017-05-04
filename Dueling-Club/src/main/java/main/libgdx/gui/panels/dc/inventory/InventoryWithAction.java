@@ -10,8 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import main.system.GuiEventManager;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
+import static main.system.GuiEventType.SHOW_INVENTORY;
 
 public class InventoryWithAction extends TablePanel {
     private InventoryPanel inventoryPanel;
@@ -48,6 +50,12 @@ public class InventoryWithAction extends TablePanel {
                 .fill(false).expand(0, 0).right()
                 .pad(20, 10, 20, 10).size(50, 50);
 
+        bindListeners();
+
+        setVisible(false);
+    }
+
+    private void bindListeners() {
         addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -61,6 +69,16 @@ public class InventoryWithAction extends TablePanel {
                 return true;
             }
         });
+
+        GuiEventManager.bind(SHOW_INVENTORY, (obj) -> {
+            final Object param = obj.get();
+            if (param == null) {
+                setVisible(false);
+            } else {
+                setVisible(true);
+                setUserObject(param);
+            }
+        });
     }
 
     @Override
@@ -70,6 +88,7 @@ public class InventoryWithAction extends TablePanel {
         doneButton.getActor().clearListeners();
         cancelButton.getActor().clearListeners();
         undoButton.getActor().clearListeners();
+        setVisible(false);
     }
 
     @Override

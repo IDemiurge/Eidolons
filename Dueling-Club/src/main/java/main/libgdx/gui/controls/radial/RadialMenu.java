@@ -1,6 +1,7 @@
 package main.libgdx.gui.controls.radial;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -8,12 +9,17 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import main.entity.obj.DC_Obj;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.texture.TextureCache;
+import main.system.GuiEventManager;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static main.libgdx.gui.controls.radial.RadialManager.createNew;
+import static main.system.GuiEventType.CREATE_RADIAL_MENU;
 
 public class RadialMenu extends Group {
     private RadialValueContainer currentNode;
@@ -34,6 +40,15 @@ public class RadialMenu extends Group {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 return event.getTarget() == RadialMenu.this || super.mouseMoved(event, x, y);
+            }
+        });
+
+        GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
+            DC_Obj dc_obj = (DC_Obj) obj.get();
+            if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+                init(DebugRadialManager.getDebugNodes(dc_obj));
+            } else {
+                init(createNew(dc_obj));
             }
         });
     }

@@ -50,6 +50,11 @@ public class ActionPanelController extends Group {
         initListeners();
     }
 
+    public ActionPanelController(int x, int y) {
+        this();
+        setPosition(x, y);
+    }
+
     private void initListeners() {
         GuiEventManager.bind(UPDATE_QUICK_SLOT_PANEL, obj -> {
             final ActiveQuickSlotsDataSource source = (ActiveQuickSlotsDataSource) obj.get();

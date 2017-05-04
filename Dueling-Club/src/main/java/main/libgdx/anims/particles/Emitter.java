@@ -90,11 +90,11 @@ public class Emitter extends ParticleEmitter {
                 Vector2 v = new Vector2(Gdx.input.getX(), (Gdx.graphics.getHeight() - Gdx.input.getY()));
                 Vector2 pos = DungeonScreen.getInstance().getGridStage().screenToStageCoordinates(v);
                 float xDiff = pos.x
-                        - DungeonScreen.getInstance().getController().getX_cam_pos()
+                        - DungeonScreen.getInstance().getController().getXCamPos()
                         - (getX() + p.getX());
                 float yDiff = pos.y //fuck that shit
                         - (getY() + p.getY())
-                        - DungeonScreen.getInstance().getController().getY_cam_pos();
+                        - DungeonScreen.getInstance().getController().getYCamPos();
                 Float distance = (float) (Math.sqrt(xDiff * xDiff + yDiff * yDiff));
                 if (particleLogOn) {
                     LogMaster.log(1,
@@ -102,8 +102,8 @@ public class Emitter extends ParticleEmitter {
                                     + " Mouse y: " + pos.y //fuck that shit
                                     + " Particle x: " + (getY() + p.getX())
                                     + " Particle y: " + (getY() + p.getY())
-                                    + " cam x: " + (DungeonScreen.getInstance().getController().getX_cam_pos())
-                                    + " cam y: " + (DungeonScreen.getInstance().getController().getY_cam_pos())
+                                    + " cam x: " + (DungeonScreen.getInstance().getController().getXCamPos())
+                                    + " cam y: " + (DungeonScreen.getInstance().getController().getYCamPos())
                                     + " distance: " + (distance)
                     );
                 }

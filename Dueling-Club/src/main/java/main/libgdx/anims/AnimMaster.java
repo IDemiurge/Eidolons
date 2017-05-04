@@ -68,7 +68,6 @@ public class AnimMaster extends Group {
 
     public static boolean isOn() {
         return on;
-
     }
 
     public void setOn(boolean on) {

@@ -49,6 +49,11 @@ public class UnitInfoPanel extends Container<TablePanel> {
         setTouchable(Touchable.enabled);
     }
 
+    public UnitInfoPanel(int x, int y) {
+        this();
+        setPosition(0, 0);
+    }
+
     private void initInnerPanels() {
         TablePanel left = new TablePanel();
         MainWeaponPanel mainWeaponPanel = new MainWeaponPanel();

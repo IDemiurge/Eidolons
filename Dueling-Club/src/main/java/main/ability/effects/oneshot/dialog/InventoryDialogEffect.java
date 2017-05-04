@@ -4,7 +4,6 @@ import main.ability.InventoryTransactionManager;
 import main.client.cc.CharacterCreator;
 import main.entity.obj.unit.Unit;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.math.Formula;
@@ -29,8 +28,7 @@ public class InventoryDialogEffect extends DialogEffect {
         getGame().getInventoryManager().setHero(getSource());
          getGame().getInventoryManager().setOperationsPool(operations);
         CharacterCreator.getHeroManager().addHero(getSource());
-        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
-         new EventCallbackParam(new InventoryDataSource((Unit) ref.getSourceObj())));
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, new InventoryDataSource((Unit) ref.getSourceObj()));
         return (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
     }
 
