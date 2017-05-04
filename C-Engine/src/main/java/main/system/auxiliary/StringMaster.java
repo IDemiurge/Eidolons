@@ -933,11 +933,11 @@ public class StringMaster {
         return idList;
     }
 
-    public static List<String> convertToNameIntList(List<? extends Entity> list) {
-        return convertToNameIntList(false, list);
+    public static List<String> toNameList(List<? extends Entity> list) {
+        return toNameList(false, list);
     }
 
-    public static List<String> convertToNameIntList(boolean base, List<? extends Entity> list) {
+    public static List<String> toNameList(boolean base, List<? extends Entity> list) {
         List<String> nameList = new LinkedList<>();
         if (list != null) {
             for (Entity object : list) {

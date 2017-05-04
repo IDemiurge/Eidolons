@@ -311,7 +311,7 @@ public class SpawnManager {
     }
 
     public void spawnUnitsAt(List<Unit> units, Coordinates coordinates) {
-        List<String> partyTypes = StringMaster.convertToNameIntList(units);
+        List<String> partyTypes = StringMaster.toNameList(units);
         List<Coordinates> coordinateList = game.getArenaManager().getSpawnManager()
                 .initPartyCoordinates(partyTypes, null);
         int index = 0;

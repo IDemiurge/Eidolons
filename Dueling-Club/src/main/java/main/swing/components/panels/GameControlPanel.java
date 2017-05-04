@@ -64,7 +64,7 @@ public class GameControlPanel extends G_Panel {
             bfBuilder.toggleMinimap();
             bfBuilder.refresh();
         } else {
-            List<String> convertToNameIntList = StringMaster.convertToNameIntList(true,
+            List<String> convertToNameIntList = StringMaster.toNameList(true,
                     DungeonMaster.getDungeons());
             String result = new ListChooser(SELECTION_MODE.SINGLE, convertToNameIntList,
                     DC_TYPE.DUNGEONS).choose();

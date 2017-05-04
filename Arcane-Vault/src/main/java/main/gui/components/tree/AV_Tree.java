@@ -195,13 +195,23 @@ public class AV_Tree extends G_Panel {
             List<String> upgrades = new LinkedList<>();
             List<String> list;
             if (workspace == null) {
-                Set<String> c = XML_Reader.getTreeSubGroupedTypeMap(XML_Reader.isMacro()).get(
-                 subGroup);
-                if (!ListMaster.isNotEmpty(c)) {
-                    c = XML_Reader.getTreeSubGroupedTypeMap(!XML_Reader.isMacro()).get(subGroup);
+//                Set<String> c = XML_Reader.getTreeSubGroupedTypeMap(XML_Reader.isMacro()).get(
+//                 subGroup);
+//                if (!ListMaster.isNotEmpty(c)) {
+//                    c = XML_Reader.getTreeSubGroupedTypeMap(!XML_Reader.isMacro()).get(subGroup);
+//                }
+//                list = new LinkedList<>(c);
+//                list.removeIf(t-> t==null );
+                list =  StringMaster.toNameList(
+                 main.system.entity.FilterMaster.
+                  getFilteredTypeList(type, type.getSubGroupingKey(), subGroup));
+
+
+                try {
+                    Collections.sort(list, getComparator());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                list = new LinkedList<>(c);
-                Collections.sort(list, getComparator());
             } else {
                 if (workspace.isSearch()) {
                     list = DataManager.toStringList(new Filter<ObjType>().filter(workspace

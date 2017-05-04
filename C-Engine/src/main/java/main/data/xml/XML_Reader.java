@@ -14,7 +14,6 @@ import main.game.core.game.Game;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.Chronos;
-import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
@@ -42,11 +41,9 @@ public class XML_Reader {
     static Map<String, String> xmlMap = new ConcurrentMap<>();
     static Map<String, Set<String>> tabGroupMap = new XLinkedMap<>();
     static Map<String, Set<String>> treeSubGroupMap = new ConcurrentMap<>();
-    static Map<String, Set<String>> treeSubGroupedTypeMap = new ConcurrentMap<>();
 
     static Map<String, Set<String>> macroTabGroupMap = new ConcurrentMap<>();
     static Map<String, Set<String>> macroTreeSubGroupMap = new ConcurrentMap<>();
-    static Map<String, Set<String>> macroTreeSubGroupedTypeMap = new ConcurrentMap<>();
 
     private static Map<String, Map<String, ObjType>> typeMaps =
             new ConcurrentSkipListMap
@@ -70,9 +67,8 @@ public class XML_Reader {
     private static boolean brokenXml;
 
     public static void constructTypeMap(Document doc, String key,
-                                        Map<String, Set<String>> tabGroupMap, Map<String, Set<String>> treeSubGroupMap,
-                                        Map<String, Set<String>> treeSubGroupedTypeMap
-
+                                        Map<String, Set<String>> tabGroupMap,
+                                        Map<String, Set<String>> treeSubGroupMap
     ) {
 
         key = key.replace("_", " ").toLowerCase();
@@ -117,13 +113,6 @@ public class XML_Reader {
                     treeSubGroupMap.put(aspect, subSet);
                 }
                 subSet.add(subKey);
-
-                Set<String> groupedSet = treeSubGroupedTypeMap.get(subKey);
-                if (groupedSet == null) {
-                    groupedSet = new HashSet<>();
-                    treeSubGroupedTypeMap.put(subKey, groupedSet);
-                }
-                groupedSet.add(name);
 
                 type_map.put(name, type);
                 LogMaster.log(LogMaster.DATA_DEBUG, nl1.item(a).getNodeName()
@@ -397,26 +386,11 @@ public class XML_Reader {
         // xmlMap.put(name, text);
         Chronos.mark("TYPE MAPPING " + name);
         if (DC_TYPE.isOBJ_TYPE(name)) {
-            try {
-                constructTypeMap(XML_Converter.getDoc(text), name, tabGroupMap, treeSubGroupMap,
-                        treeSubGroupedTypeMap);
-            } catch (ConcurrentModificationException ex) {
-                ex.printStackTrace();
-                if (Err.getErrorsShown().contains(name)) {
-                    Err.error("Data file could not be parsed: " + name);
-                    return;
-                }
-                Err.getErrorsShown().add(name);
-                loadMap(name, text);
-            } catch (Exception e) {
-                e.printStackTrace();
-                LogMaster.log(1, "***Failed to load xml: " + name);
-
-                removeReadingThread(Thread.currentThread());
-            }
+                constructTypeMap(XML_Converter.getDoc(text), name, tabGroupMap,
+                 treeSubGroupMap);
         } else {
             constructTypeMap(XML_Converter.getDoc(text), name, macroTabGroupMap,
-                    macroTreeSubGroupMap, macroTreeSubGroupedTypeMap);
+                    macroTreeSubGroupMap);
         }
         LogMaster.getInstance().log(LogMaster.INFO,
                 "" + Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
@@ -431,9 +405,6 @@ public class XML_Reader {
         return xmlMap;
     }
 
-    public static void setXmlMap(Map<String, String> xmlMap) {
-        XML_Reader.xmlMap = xmlMap;
-    }
 
     public static Map<String, Map<String, ObjType>> getTypeMaps() {
         return typeMaps;
@@ -505,36 +476,7 @@ public class XML_Reader {
         return treeSubGroupMap;
     }
 
-    /**
-     * @param treeSubGroupMap the treeSubGroupMap to set
-     */
-    public static void setTreeSubGroupMap(Map<String, Set<String>> treeSubGroupMap) {
-        XML_Reader.treeSubGroupMap = treeSubGroupMap;
-    }
 
-    public static Map<String, Set<String>> getTreeSubGroupedTypeMap(boolean macro) {
-        if (macro) {
-            return macroTreeSubGroupedTypeMap;
-        }
-        return treeSubGroupedTypeMap;
-    }
-
-    /**
-     * @return the treeSubGroupedTypeMap
-     */
-    public static Map<String, Set<String>> getTreeSubGroupedTypeMap() {
-        if (macro) {
-            return macroTreeSubGroupedTypeMap;
-        }
-        return treeSubGroupedTypeMap;
-    }
-
-    /**
-     * @param treeSubGroupedTypeMap the treeSubGroupedTypeMap to set
-     */
-    public static void setTreeSubGroupedTypeMap(Map<String, Set<String>> treeSubGroupedTypeMap) {
-        XML_Reader.treeSubGroupedTypeMap = treeSubGroupedTypeMap;
-    }
 
     public static boolean isMacro() {
         return macro;
