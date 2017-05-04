@@ -1,9 +1,6 @@
 package main.libgdx.bf;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.vision.VisionManager;
 import main.libgdx.DungeonScreen;
@@ -16,18 +13,10 @@ public class GridMaster {
 
     private static boolean gammaOn = true;
 
-    public static boolean isCoordinateVisible(Coordinates c) {
-        Vector2 v = GridMaster.getVectorForCoordinateWithOffset(c);
-        InputController controller = DungeonScreen.getInstance().getController();
-        return controller.getCamera().frustum.pointInFrustum(new Vector3(v.x, v.y, 0));
-    }
-
     public static float getDistance(Coordinates coordinates, Coordinates coordinates2) {
         Vector2 v1 = getVectorForCoordinateWithOffset(coordinates);
         Vector2 v2 = getVectorForCoordinateWithOffset(coordinates2);
-        float xDiff = v1.x - v2.x;
-        float yDiff = v1.y - v2.y;
-        return (float) Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+        return (float) Math.sqrt(v1.dst2(v2));
     }
 
     public static Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates) {
@@ -39,13 +28,8 @@ public class GridMaster {
         return new Vector2(x, y);
     }
 
-    private static Stage getStage() {
-        return DungeonScreen.getInstance().getGridStage();
-    }
-
     public static Vector2 getMouseCoordinates() {
-        return getStage().screenToStageCoordinates(
-                new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+        return DungeonScreen.getInstance().getGridStage().screenToStageCoordinates(new Vector2());
     }
 
     public static void offset(Vector2 orig, Vector2 dest, int additionalDistance, boolean xPositive, boolean yPositive) {

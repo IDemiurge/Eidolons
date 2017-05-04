@@ -3,7 +3,6 @@ package main.libgdx.bf.mouse;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.core.game.DC_Game;
 import main.libgdx.anims.particles.lighting.FireLightProt;
 import main.libgdx.anims.particles.lighting.LightMap;
@@ -12,20 +11,22 @@ import main.libgdx.anims.particles.lighting.LightingManager;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.badlogic.gdx.Input.Buttons.LEFT;
+import static com.badlogic.gdx.Input.Keys.ALT_LEFT;
+import static com.badlogic.gdx.Input.Keys.CONTROL_LEFT;
+
 /**
  * Created by PC on 25.10.2016.
  */
 public class InputController implements InputProcessor {
 
 
-    float x_cam_pos;
-    float y_cam_pos;
-    OrthographicCamera camera;
-    boolean is_it_Left_Click = false;
-    boolean alt = false;
-    boolean ctrl = false;
-    private Stage bf;
-    private Stage gui;
+    private float xCamPos;
+    private float yCamPos;
+    private OrthographicCamera camera;
+    private boolean isLeftClick = false;
+    private boolean alt = false;
+    private boolean ctrl = false;
     private char lastTyped;
     private char lastUp;
     private List<String> charsUp = new LinkedList<>();
@@ -34,21 +35,13 @@ public class InputController implements InputProcessor {
         this.camera = camera;
     }
 
-    public InputController(Stage bf, Stage gui, OrthographicCamera cam) {
-        this.bf = bf;
-        this.gui = gui;
-        this.camera = cam;
-
-    }
-
-
     // сюда передаются все обьекты, что есть в мире, и потом отсюда они управляются
     @Override
     public boolean keyDown(int i) {
-        if (i == 57) {
+        if (i == ALT_LEFT) {
             alt = true;
         }
-        if (i == 129) {
+        if (i == CONTROL_LEFT) {
             ctrl = true;
         }
 
@@ -66,16 +59,21 @@ public class InputController implements InputProcessor {
 
     @Override
     public boolean keyUp(int i) {
-        if (i == 57) {
-            alt = false;
-        } else if (i == 129) {
-            ctrl = false;
-        } else {
-            lastUp = ((char) i);
-            String c = Keys.toString(i);//Character.valueOf((char) i);
-            if (!charsUp.contains(c)) {
-                charsUp.add(c);
-            }
+        switch (i) {
+            case ALT_LEFT:
+                alt = false;
+                break;
+            case CONTROL_LEFT:
+                ctrl = false;
+                break;
+            default:
+                lastUp = ((char) i);
+                String c = Keys.toString(i);//Character.valueOf((char) i);
+
+                if (!charsUp.contains(c)) {
+                    charsUp.add(c);
+                }
+                break;
         }
 
         return false;
@@ -99,18 +97,18 @@ public class InputController implements InputProcessor {
     }
 
     @Override
-    public boolean touchDown(int i, int i1, int i2, int i3) {
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 /*        bf.addActor(new ParticleInterface(PARTICLE_EFFECTS.SMOKE_TEST.getPath(),
          GameScreen.getInstance().getWorld()
-         , i, i1));*/
+         , screenX, screenY));*/
         // Условно у меня на ширину приложения пикселей приходится ширина камеры абстрактрых едениц
 
-        int x = i;
-        int y = i1;
-        if (i3 == 0) {
-            x_cam_pos = i;
-            y_cam_pos = i1;
-            is_it_Left_Click = true;
+        int x = screenX;
+        int y = screenY;
+        if (button == LEFT) {
+            xCamPos = screenX;
+            yCamPos = screenY;
+            isLeftClick = true;
         }
 
         return false;
@@ -118,20 +116,20 @@ public class InputController implements InputProcessor {
 
     @Override
     public boolean touchUp(int i, int i1, int i2, int i3) {
-        is_it_Left_Click = false;
+        isLeftClick = false;
 
         return false;
     }
 
     @Override
-    public boolean touchDragged(int i, int i1, int i2) {
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
 
-//        System.out.println("i = " + i + " || i1 = " + i1 + " || i2 = "  + i2);
-        if (is_it_Left_Click) {
-            camera.position.x += (x_cam_pos - i) * camera.zoom;
-            camera.position.y -= (y_cam_pos - i1) * camera.zoom;
-            x_cam_pos = i;
-            y_cam_pos = i1;
+//        System.out.println("screenX = " + screenX + " || screenY = " + screenY + " || pointer = "  + pointer);
+        if (isLeftClick) {
+            camera.position.x += (xCamPos - screenX) * camera.zoom;
+            camera.position.y -= (yCamPos - screenY) * camera.zoom;
+            xCamPos = screenX;
+            yCamPos = screenY;
         }
 
         return false;
@@ -218,11 +216,11 @@ public class InputController implements InputProcessor {
         return camera.zoom;
     }
 
-    public float getX_cam_pos() {
-        return x_cam_pos;
+    public float getXCamPos() {
+        return xCamPos;
     }
 
-    public float getY_cam_pos() {
-        return y_cam_pos;
+    public float getYCamPos() {
+        return yCamPos;
     }
 }
