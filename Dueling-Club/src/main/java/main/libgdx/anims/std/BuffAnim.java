@@ -106,29 +106,22 @@ public class BuffAnim extends ActionAnim {
         return "buffs\\" + name.getName();
     }
 
-    public boolean isPlayContinuous() {
+    private boolean isPlayContinuous() {
         return playContinuous;
     }
 
-    public void setPlayContinuous(boolean playContinuous) {
-        this.playContinuous = playContinuous;
-    }
-
-    public boolean isPlayOnHover() {
+    private boolean isPlayOnHover() {
         return playOnHover;
     }
 
-    public void setPlayOnHover(boolean playOnHover) {
+    private void setPlayOnHover(boolean playOnHover) {
         this.playOnHover = playOnHover;
     }
 
-    public boolean isPlayOnNewRound() {
+    private boolean isPlayOnNewRound() {
         return playOnNewRound;
     }
 
-    public void setPlayOnNewRound(boolean playOnNewRound) {
-        this.playOnNewRound = playOnNewRound;
-    }
 
     @Override
     public String toString() {

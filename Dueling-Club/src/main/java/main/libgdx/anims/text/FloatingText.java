@@ -70,8 +70,7 @@ public class FloatingText extends Group {
         init(animsStage, vector2, displacementX, displacementY, getDuration());
     }
 
-    public FloatingText
-    init(Stage stage, Vector2 origin, float x, float y, float duration) {
+    public FloatingText init(Stage stage, Vector2 origin, float x, float y, float duration) {
         SequenceAction alphaActionSequence = new SequenceAction();
         for (int i = alphaLoops; i > 0; i--) {
             AlphaAction fadeOutAction = new AlphaAction();
