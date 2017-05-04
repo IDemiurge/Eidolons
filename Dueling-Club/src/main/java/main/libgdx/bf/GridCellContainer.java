@@ -26,6 +26,7 @@ public class GridCellContainer extends GridCell {
     public GridCellContainer init() {
         super.init();
 
+
         graveyard = new GraveyardView();
         addActor(graveyard);
         graveyard.setWidth(getWidth());
