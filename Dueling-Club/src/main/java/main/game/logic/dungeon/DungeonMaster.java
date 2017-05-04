@@ -18,7 +18,6 @@ import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.building.DungeonBuilder;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.travel.Encounter;
-import main.libgdx.DungeonScreen;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
@@ -486,12 +485,6 @@ public class DungeonMaster {
         if (!ImageManager.isImage(dungeon.getMapBackground())) {
             LogMaster.log(1,
                     dungeon.getMapBackground() + " is not a valid image! >> " + dungeon);
-            return;
-        }
-        if (DungeonScreen.getInstance() == null) {
-            LogMaster.log(1,
-                    dungeon.getMapBackground() + "failed to set as bg;" +
-                            " GameScreen is not ready! >> " + dungeon);
             return;
         }
 

@@ -7,7 +7,12 @@ import static main.system.GuiEventType.FULL_LOG_ENTRY_ADDED;
 public class FullLogPanel extends LogPanel {
 
     public FullLogPanel() {
+        this(0, 0);
+    }
+
+    public FullLogPanel(int x, int y) {
         super();
+        setPosition(x, y);
         setVisible(false);
     }
 

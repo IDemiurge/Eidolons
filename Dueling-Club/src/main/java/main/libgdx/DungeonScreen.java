@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.core.game.DC_Game;
@@ -39,7 +38,6 @@ public class DungeonScreen implements Screen {
     private Stage animsStage;
     private Stage phaseAnimsStage;
     private GridPanel gridPanel;
-    private SpriteBatch batch;
     private OrthographicCamera cam;
     private InputController controller;
     private Stage effects;
@@ -53,11 +51,6 @@ public class DungeonScreen implements Screen {
 
     public static DungeonScreen getInstance() {
         return instance;
-    }
-
-    public void PostGameStart() {
-        InputMultiplexer multiplexer = new InputMultiplexer(guiStage, controller, gridStage);
-        Gdx.input.setInputProcessor(multiplexer);
     }
 
     public DungeonScreen PostConstruct() {
@@ -78,8 +71,6 @@ public class DungeonScreen implements Screen {
         gl.glEnable(GL30.GL_BLEND);
         gl.glEnable(GL30.GL_TEXTURE_2D);
         gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
-
-        batch = new SpriteBatch();
 
         bindEvents();
 
@@ -124,6 +115,8 @@ public class DungeonScreen implements Screen {
 
         GuiEventManager.bind(DUNGEON_LOADED, param -> {
             showLoading = false;
+            InputMultiplexer multiplexer = new InputMultiplexer(guiStage, controller, gridStage);
+            Gdx.input.setInputProcessor(multiplexer);
         });
     }
 
@@ -134,8 +127,6 @@ public class DungeonScreen implements Screen {
         }
 
         GuiEventManager.processEvents();
-
-        //System.out.println(((SpriteBatch) guiStage.getBatch()).renderCalls + " " + ((SpriteBatch) gridStage.getBatch()).renderCalls + " " + delta);
 
         guiStage.act(delta);
         gridStage.act(delta);
@@ -155,6 +146,7 @@ public class DungeonScreen implements Screen {
             }
 
             gridStage.draw();
+
             effects.draw();
             if (DC_Game.game != null) {
                 if (DC_Game.game.getAnimationManager() != null) {
@@ -162,7 +154,7 @@ public class DungeonScreen implements Screen {
                 }
             }
 
-            if (animMaster.isOn()) {
+            if (AnimMaster.isOn()) {
                 phaseAnimsStage.draw();
                 animsStage.draw();
             }
