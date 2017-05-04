@@ -16,6 +16,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_TYPE;
+import main.game.demo.DemoManager;
 import main.game.logic.arcade.ArcadeManager.ARCADE_STATUS;
 import main.game.logic.dungeon.scenario.ScenarioMaster;
 import main.game.logic.dungeon.scenario.ScenarioMaster.SCENARIO_MODES;
@@ -296,6 +297,13 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
     }
 
     public void fight() {
+
+        if (hero.getGame().getGameType() == GAME_TYPE.ARCADE){
+//            ArcadeManager.
+            DemoManager.init();
+            Launcher.launchDC();
+        }
+
         if (Launcher.getMainManager().getSequenceMaster().prebattleChoiceSequence(hero)) {
             if (hero.getGame().getGameType() == GAME_TYPE.SKIRMISH) {
                 SkirmishMaster.preLaunch();

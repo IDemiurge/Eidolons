@@ -36,7 +36,18 @@ public class ResourceMaster {
         }
         boolean unused;
     }
+    public static void updateImagePaths() {
 
+        for (ObjType type :  DataManager.getTypes()) {
+            updateImagePath(type);
+        }
+
+    }
+
+    private static void updateImagePath(ObjType type) {
+        String path = getNewImagePath(G_PROPS.IMAGE, type);
+        type.setProperty(G_PROPS.IMAGE, path);
+    }
     public static void createUpdatedArtDirectory() {
         Map<String, ObjType> map = new XLinkedMap<>();
         // String path;
@@ -49,7 +60,7 @@ public class ResourceMaster {
                 }
             }
         }
-
+// unused
         for (File f : FileManager.getFilesFromDirectory(ImageManager.getImageFolderPath() + "mini\\", false,
                 true)) {
             if (!ImageManager.isImageFile(f.getName())) {

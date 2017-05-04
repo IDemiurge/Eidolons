@@ -34,7 +34,12 @@ public class EmitterPools {
             pool = new Pool<EmitterActor>() {
                 @Override
                 protected EmitterActor newObject() {
-                    return new EmitterActor(finalPath);
+                    try {
+                        return new EmitterActor(finalPath);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
                 }
             };
             actorPoolMap.put(finalPath, pool);
@@ -81,10 +86,10 @@ public class EmitterPools {
     public static List<EmitterActor> getEmitters(String data) {
         List<EmitterActor> list = new LinkedList<>();
         for (String path :
-                StringMaster.openContainer(data)) {
+         StringMaster.openContainer(data)) {
             EmitterActor emitter = null;
             SFX sfx = new EnumMaster<SFX>().
-                    retrieveEnumConst(SFX.class, path);
+             retrieveEnumConst(SFX.class, path);
             if (sfx == null) {
                 emitter = EmitterPools.getEmitterActor(path);
             } else {

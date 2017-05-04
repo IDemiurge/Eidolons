@@ -92,6 +92,7 @@ public class ArcaneVault {
     private static ContentManager contentManager;
     private static boolean artGen = false;
     private static boolean workspaceLaunch = false;
+    private static boolean imgPathUpdate= true;
 
     static {
         WORKSPACE_TEMPLATE.presetTypes.setTypes(presetTypes);
@@ -181,11 +182,14 @@ public class ArcaneVault {
 
         if (artGen) {
             // ResourceMaster.createArtFolders(types);
-            ResourceMaster.createUpdatedArtDirectory();
+            ResourceMaster.   createUpdatedArtDirectory();
             // ModelManager.saveAll();
-            // return;
+             // return;
         }
+        if (imgPathUpdate) {
+            ResourceMaster. updateImagePaths();
 
+        }
         mainBuilder = new MainBuilder();
         mainBuilder.setKeyListener(new AV_KeyListener(getGame()));
         if (!isCustomLaunch()) {

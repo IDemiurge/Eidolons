@@ -268,6 +268,7 @@ public class ModelManager {
         }
     }
 
+
     private static void checkTypeModifications(OBJ_TYPE obj_type) {
         if (obj_type == DC_TYPE.CHARS || obj_type == DC_TYPE.BF_OBJ
                 || obj_type == DC_TYPE.UNITS) {
@@ -757,6 +758,7 @@ public class ModelManager {
 
     }
 
+
     private static void saveAllTypes() {
         ArcaneVault.getWorkspaceManager().save();
         if (saving) {
@@ -879,4 +881,5 @@ public class ModelManager {
     public static void refresh() {
         ArcaneVault.getMainBuilder().getTree().getTreeSelectionListeners()[0].valueChanged(null);
     }
+
 }
