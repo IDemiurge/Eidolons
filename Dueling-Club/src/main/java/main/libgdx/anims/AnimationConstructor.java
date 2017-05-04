@@ -11,7 +11,6 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.filesys.PathFinder;
-import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_SpellObj;
@@ -36,7 +35,8 @@ import java.util.*;
  * Created by JustMe on 1/11/2017.
  */
 public class AnimationConstructor {
-    VALUE[] anim_vals = {
+    Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
+    private VALUE[] anim_vals = {
 //     PROPS.ANIM_MODS,
 //
      PROPS.ANIM_SPRITE_CAST,
@@ -76,8 +76,7 @@ public class AnimationConstructor {
      PARAMS.ANIM_FRAME_DURATION,
 //     PARAMS.ANIM_SIZE,
     };
-    Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
-    boolean reconstruct = false;
+    private boolean reconstruct = false;
     private boolean findClosestResource;
 
     public CompositeAnim getOrCreate(ActiveObj active) {
@@ -92,24 +91,18 @@ public class AnimationConstructor {
             }
         }
         try {
-            anim =
-             construct((DC_ActiveObj) active);
+            anim = construct((DC_ActiveObj) active);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return anim;
     }
 
-    CompositeAnim construct(DC_ActiveObj active) {
-        return construct(active.getRef(), null, active);
-    }
-
-    private CompositeAnim construct(Ref ref, AnimData data, DC_ActiveObj active) {
+    private CompositeAnim construct(DC_ActiveObj active) {
 
         //re-construct sometimes?
         CompositeAnim anim = new CompositeAnim(active);
 //        active.getActionGroup()
-
 
         Arrays.stream(ANIM_PART.values()).forEach(part -> {
             Anim animPart = getPartAnim(active, part);
