@@ -1,17 +1,19 @@
 package main.entity.tools.active;
 
+import com.badlogic.gdx.math.Vector2;
 import main.content.enums.entity.UnitEnums;
 import main.content.mode.STD_MODES;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.unit.Unit;
-import main.libgdx.DungeonScreen;
 import main.libgdx.anims.text.FloatingText;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.bf.GridMaster;
 import main.rules.action.WatchRule;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 
@@ -99,8 +101,11 @@ public class Activator extends ActiveHandler {
          getEntity().getCosts().getReasonsString());
         f.setDisplacementY(100);
         f.setDuration(3);
-        f.addToStage(DungeonScreen.getInstance().getAnimsStage(),
-                GridMaster.getVectorForCoordinateWithOffset(getEntity().getOwnerObj().getCoordinates()));
+        Vector2 c = GridMaster.getVectorForCoordinateWithOffset(getEntity()
+         .getOwnerObj().getCoordinates());
+        f.setX(c.x);
+        f.setY(c.y);
+        GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, f);
     }
 
     public DC_UnitAction getModeAction() {

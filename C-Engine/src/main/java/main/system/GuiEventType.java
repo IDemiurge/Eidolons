@@ -10,7 +10,7 @@ package main.system;
 //
 //}
 public enum GuiEventType {
-
+ADD_FLOATING_TEXT,
     ADD_CORPSE,
     REMOVE_CORPSE,
 

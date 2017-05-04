@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -31,6 +30,7 @@ public class FloatingText extends Group {
     private Supplier<String> imageSupplier;
     private float duration;
     private float delay;
+    private boolean initialized;
 
     public FloatingText(String text, Color c) {
         this.text = text;
@@ -62,15 +62,13 @@ public class FloatingText extends Group {
         return getClass().getSimpleName() + ": " + getText() + "; delay: " + delay;
     }
 
-    public void addToStage(Stage animsStage) {
-        addToStage(animsStage, new Vector2(getX(), getY()));
-    }
 
-    public void addToStage(Stage animsStage, Vector2 vector2) {
-        init(animsStage, vector2, displacementX, displacementY, getDuration());
-    }
 
-    public FloatingText init(Stage stage, Vector2 origin, float x, float y, float duration) {
+    public FloatingText init() {
+        return
+        init(new Vector2(getX(), getY()), displacementX, displacementY, getDuration());
+    }
+    public FloatingText init( Vector2 origin, float x, float y, float duration) {
         SequenceAction alphaActionSequence = new SequenceAction();
         for (int i = alphaLoops; i > 0; i--) {
             AlphaAction fadeOutAction = new AlphaAction();
@@ -119,12 +117,11 @@ public class FloatingText extends Group {
         addActor(label);
 
         setPosition(origin.x, origin.y);
-        stage.addActor(this);
         addAction(parallelAction);
         addAction(afterAction);
         parallelAction.setTarget(this);
         afterAction.setTarget(this);
-
+        setInitialized(true);
         return this;
     }
 
@@ -137,10 +134,12 @@ public class FloatingText extends Group {
 
     public void setDisplacementX(float displacementX) {
         this.displacementX = displacementX;
+        setInitialized(false);
     }
 
     public void setDisplacementY(float displacementY) {
         this.displacementY = displacementY;
+        setInitialized(false);
     }
 
     public float getDuration() {
@@ -149,6 +148,7 @@ public class FloatingText extends Group {
 
     public void setDuration(float duration) {
         this.duration = duration;
+        setInitialized(false);
     }
 
     public float getDelay() {
@@ -157,10 +157,19 @@ public class FloatingText extends Group {
 
     public void setDelay(float delay) {
         this.delay = delay;
+        setInitialized(false);
     }
 
     public void setPosition(Vector2 origin) {
         setPosition(origin.x, origin.y);
+        setInitialized(false);
     }
 
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    public void setInitialized(boolean initialized) {
+        this.initialized = initialized;
+    }
 }

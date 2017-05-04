@@ -9,14 +9,11 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GdxColorMaster;
+import main.libgdx.anims.*;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
-import main.libgdx.anims.Anim;
-import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
-import main.libgdx.anims.Animation;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
-import main.libgdx.anims.CompositeAnim;
 import main.libgdx.bf.GridMaster;
 import main.system.images.ImageManager;
 
@@ -70,6 +67,7 @@ public class EffectAnimCreator {
             anim.setForcedDestination(target.getCoordinates());
         }
         anim.setPart(ANIM_PART.MAIN); //TODO gotta be some way to generalize this
+        anim.setMaster(AnimMaster.getInstance());
         return anim;
     }
 

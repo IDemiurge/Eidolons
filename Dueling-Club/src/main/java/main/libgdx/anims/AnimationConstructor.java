@@ -144,6 +144,7 @@ public class AnimationConstructor {
                 return null;
             }
         }
+        anim.setMaster(AnimMaster.getInstance());
         return anim;
     }
 

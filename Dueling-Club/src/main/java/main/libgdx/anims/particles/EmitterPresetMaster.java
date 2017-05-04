@@ -296,8 +296,9 @@ public class EmitterPresetMaster {
         if (parts.length > 2) {
             valuePart = valuePart.split("\n\n")[0];
         }
-
-        String text = valuePart.split("- ")[0];
+        if (valuePart == null )
+            return null ;
+            String text = valuePart.split("- ")[0];
         return text;
     }
 

@@ -12,11 +12,12 @@ import main.game.logic.combat.damage.Damage;
 import main.game.logic.combat.damage.MultiDamage;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.libgdx.DungeonScreen;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.CompositeAnim;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.Producer;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -214,12 +215,14 @@ public class FloatingTextMaster {
     }
 
     public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {
+        FloatingText text;
         try {
-            getFloatingText(entity, CASE, arg).addToStage(DungeonScreen.getInstance().getAnimsStage());
+            text = getFloatingText(entity, CASE, arg) ;
         } catch (Exception e) {
             e.printStackTrace();
+            return ;
         }
-
+        GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT,text);
     }
 
 

@@ -11,7 +11,6 @@ import javafx.util.Pair;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.battlefield.Coordinates;
-import main.libgdx.DungeonScreen;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import main.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
@@ -25,6 +24,7 @@ import main.libgdx.bf.GridMaster;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallback;
 import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
@@ -76,6 +76,7 @@ public class Anim extends Group implements Animation {
     EventCallbackParam callbackParam;
     private boolean emittersWaitingDone;
     private List<FloatingText> floatingText;
+    private AnimMaster master;
 
     public Anim(Entity active, AnimData params) {
         data = params;
@@ -706,8 +707,8 @@ public class Anim extends Group implements Animation {
     public void checkAddFloatingText() {
         getFloatingText().forEach(floatingText1 -> {
             if (time >= floatingText1.getDelay()) {
-                floatingText1.addToStage(DungeonScreen.getInstance().getAnimsStage());
-            }
+                GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText1);
+                  }
         });
     }
 
@@ -722,5 +723,13 @@ public class Anim extends Group implements Animation {
             floatingText = new LinkedList<>();
         }
         return floatingText;
+    }
+
+    public void setMaster(AnimMaster master) {
+        this.master = master;
+    }
+
+    public AnimMaster getMaster() {
+        return master;
     }
 }

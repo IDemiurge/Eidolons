@@ -16,6 +16,7 @@ import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.controls.AnimController;
 import main.libgdx.anims.std.BuffAnim;
 import main.libgdx.anims.std.EventAnimCreator;
+import main.libgdx.anims.text.FloatingText;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.system.EventCallback;
 import main.system.EventCallbackParam;
@@ -91,6 +92,13 @@ public class AnimMaster extends Group {
 
     private void bindEvents() {
 
+
+        GuiEventManager.bind(GuiEventType.ADD_FLOATING_TEXT, p -> {
+            FloatingText floatingText = (FloatingText) p.get();
+            if (!floatingText.isInitialized())
+            floatingText .init( );
+       addActor(floatingText);
+        });
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
             if (!(p.get() instanceof Unit)) {
                 return;
