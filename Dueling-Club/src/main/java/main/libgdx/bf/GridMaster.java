@@ -33,14 +33,10 @@ public class GridMaster {
     public static Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates) {
         InputController controller = DungeonScreen.getInstance().getController();
         float x = sourceCoordinates.getX() * GridConst.CELL_W / controller.getZoom();
-        float y = (getGrid().getRows() - sourceCoordinates.getY()) * GridConst.CELL_H / controller.getZoom();
+        float y = (DungeonScreen.getInstance().getGridPanel().getRows() - sourceCoordinates.getY()) * GridConst.CELL_H / controller.getZoom();
         x += GridConst.CELL_W / 2;
         y -= GridConst.CELL_H / 2;
         return new Vector2(x, y);
-    }
-
-    public static GridPanel getGrid() {
-        return DungeonScreen.getInstance().getGridPanel();
     }
 
     private static Stage getStage() {
