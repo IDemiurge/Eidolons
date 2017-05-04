@@ -143,8 +143,8 @@ public class PhaseAnimator extends Group {
 //             GridMaster.getRows();
 //            x = 0;
 //            y = 0;
-//            y = 255+GameScreen.getInstance().getController().getY_cam_pos();
-//            x = 255+  GameScreen.getInstance().getController().getX_cam_pos();
+//            y = 255+GameScreen.getInstance().getController().getYCamPos();
+//            x = 255+  GameScreen.getInstance().getController().getXCamPos();
 
             anim.setX(x);
             anim.setY(y);
