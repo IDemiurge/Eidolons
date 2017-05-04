@@ -17,6 +17,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
  * Created by JustMe on 3/23/2017.
  */
 public class GameLoop {
+
     private static Integer MAX_ANIM_TIME;
     private Unit activeUnit;
     private DC_Game game;
