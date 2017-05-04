@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.vision.VisionManager;
-import main.libgdx.GameScreen;
+import main.libgdx.DungeonScreen;
 import main.libgdx.bf.mouse.InputController;
 
 /**
@@ -18,7 +18,7 @@ public class GridMaster {
 
     public static boolean isCoordinateVisible(Coordinates c) {
         Vector2 v = GridMaster.getVectorForCoordinateWithOffset(c);
-        InputController controller = GameScreen.getInstance().getController();
+        InputController controller = DungeonScreen.getInstance().getController();
         return controller.getCamera().frustum.pointInFrustum(new Vector3(v.x, v.y, 0));
     }
 
@@ -31,7 +31,7 @@ public class GridMaster {
     }
 
     public static Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates) {
-        InputController controller = GameScreen.getInstance().getController();
+        InputController controller = DungeonScreen.getInstance().getController();
         float x = sourceCoordinates.getX() * GridConst.CELL_W / controller.getZoom();
         float y = (getGrid().getRows() - sourceCoordinates.getY()) * GridConst.CELL_H / controller.getZoom();
         x += GridConst.CELL_W / 2;
@@ -40,11 +40,11 @@ public class GridMaster {
     }
 
     public static GridPanel getGrid() {
-        return GameScreen.getInstance().getGridPanel();
+        return DungeonScreen.getInstance().getGridPanel();
     }
 
     private static Stage getStage() {
-        return GameScreen.getInstance().getGridStage();
+        return DungeonScreen.getInstance().getGridStage();
     }
 
     public static Vector2 getMouseCoordinates() {

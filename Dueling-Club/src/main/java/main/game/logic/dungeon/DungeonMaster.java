@@ -18,10 +18,12 @@ import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.building.DungeonBuilder;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.travel.Encounter;
-import main.libgdx.GameScreen;
+import main.libgdx.DungeonScreen;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
+import main.system.GuiEventManager;
+import main.system.OnDemandEventCallBack;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -35,6 +37,8 @@ import main.test.frontend.FAST_DC;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+
+import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
 
 /*
  * 
@@ -240,7 +244,7 @@ public class DungeonMaster {
         List<ObjType> list = DataManager.getTypes(DC_TYPE.DUNGEONS);
 
         FilterMaster.filterByProp(list,
-         G_PROPS.WORKSPACE_GROUP.getName(),
+                G_PROPS.WORKSPACE_GROUP.getName(),
                 RANDOM_DUNGEON_WORKSPACE_FILTER);
         if (list.isEmpty()) {
             list = DataManager.getTypes(DC_TYPE.DUNGEONS);
@@ -363,21 +367,20 @@ public class DungeonMaster {
             return;
         }
         List<ObjType> types = DataManager.getTypes(DC_TYPE.DUNGEONS);
-        if (workspaceFilter!=null ) {
+        if (workspaceFilter != null) {
             FilterMaster.filterByPropJ8(types, G_PROPS.WORKSPACE_GROUP.getName(), workspaceFilter.toString());
         }
         ObjType type = ListChooser.chooseType(types);
-            if (type != null)
-            {
-                setDungeon(new Dungeon(type));
+        if (type != null) {
+            setDungeon(new Dungeon(type));
+        }
+        if (getDungeon() == null) {
+            if (getDungeonPath() == null) {
+                setDungeonPath(chooseDungeonLevel());
             }
-        if (getDungeon()==null ){
-        if (getDungeonPath() == null) {
-            setDungeonPath(chooseDungeonLevel());
-        }
-        if (getDungeonPath() != null) {
-            setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
-        }
+            if (getDungeonPath() != null) {
+                setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
+            }
         }
 //        else //if (isChooseLevel())
 //            setDungeonPath(chooseDungeonLevel());
@@ -485,18 +488,14 @@ public class DungeonMaster {
                     dungeon.getMapBackground() + " is not a valid image! >> " + dungeon);
             return;
         }
-        if (GameScreen.getInstance() == null) {
+        if (DungeonScreen.getInstance() == null) {
             LogMaster.log(1,
                     dungeon.getMapBackground() + "failed to set as bg;" +
                             " GameScreen is not ready! >> " + dungeon);
             return;
         }
-        try {
-            GameScreen.getInstance().getBackground().setImagePath(dungeon.getMapBackground());
-            LogMaster.log(1, dungeon.getMapBackground() + " bg set for " + dungeon);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, new OnDemandEventCallBack<>(dungeon.getMapBackground()));
     }
 
     public G_Panel getMinimapComponent() {
@@ -532,11 +531,11 @@ public class DungeonMaster {
         this.chooseLevel = chooseLevel;
     }
 
-    public void setWorkspaceFilter(WORKSPACE_GROUP workspaceFilter) {
-        this.workspaceFilter = workspaceFilter;
-    }
-
     public WORKSPACE_GROUP getWorkspaceFilter() {
         return workspaceFilter;
+    }
+
+    public void setWorkspaceFilter(WORKSPACE_GROUP workspaceFilter) {
+        this.workspaceFilter = workspaceFilter;
     }
 }

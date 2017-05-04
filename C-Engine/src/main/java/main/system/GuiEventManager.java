@@ -27,6 +27,10 @@ public class GuiEventManager {
         getInstance().bind_(type, event);
     }
 
+    public static void trigger(final GuiEventType type) {
+        trigger(type, new EventCallbackParam(null));
+    }
+
     public static void trigger(final GuiEventType type, Object obj) {
         EventCallbackParam eventCallback;
 

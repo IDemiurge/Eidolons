@@ -100,7 +100,6 @@ public class FAST_DC {
     private static int unitGroupLevel;
     private static GameLauncher gameLauncher;
     private static DENIS_Launcher guiLauncher;
-    private static main.test.libgdx.prototype.Launcher launcher;
 
     public static boolean isRunning() {
         return running;

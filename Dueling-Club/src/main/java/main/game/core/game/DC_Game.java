@@ -55,7 +55,7 @@ import main.game.logic.combat.damage.ArmorMaster;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.DungeonMaster;
 import main.game.logic.generic.DC_ActionManager;
-import main.libgdx.GameScreen;
+import main.libgdx.DungeonScreen;
 import main.rules.DC_Rules;
 import main.rules.action.ActionRule;
 import main.rules.mechanics.WaitRule;
@@ -253,7 +253,6 @@ public class DC_Game extends MicroGame {
         }
         if (!simulation) {
             battleInit();
-
         }
 
         setInitialized(true);
@@ -375,8 +374,8 @@ public class DC_Game extends MicroGame {
         }
         playerMaster.initPlayerFlags();
 
-        if (GameScreen.getInstance() != null) {
-            GameScreen.getInstance().PostGameStart();
+        if (DungeonScreen.getInstance() != null) {
+            DungeonScreen.getInstance().PostGameStart();
         }
         Chronos.logTimeElapsedForMark("GAME_START");
     }

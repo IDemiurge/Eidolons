@@ -1,5 +1,6 @@
 package main.libgdx.texture;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -127,7 +128,9 @@ public class TextureCache {
         if (!this.cache.containsKey(path)) {
             try {
                 Path p = Paths.get(imagePath, path);
-                Texture t = new Texture(p.toString());
+                Texture t = new Texture(
+                        new FileHandle(p.toString()), Pixmap.Format.RGBA8888, false
+                );
                 cache.put(path, t);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -146,8 +149,8 @@ public class TextureCache {
 
     private String getEmptyPath() {
         return
-         ImageManager.getImageFolderPath()+
-         ImageManager.getDefaultEmptyListIcon();
+                ImageManager.getImageFolderPath() +
+                        ImageManager.getDefaultEmptyListIcon();
     }
 }
 

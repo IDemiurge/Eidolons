@@ -317,6 +317,8 @@ public class GridPanel extends Group {
                 gridCellContainer.setOverlays(overlays);
             }
 
+            GuiEventManager.trigger(DUNGEON_LOADED);
+
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
                 Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
                 GridUnitView uv = (GridUnitView) unitMap.get(p.getLeft());
