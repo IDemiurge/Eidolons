@@ -25,10 +25,14 @@ public class TypeBuilder {
         if (typeInitializer == null) {
             typeInitializer = new TypeInitializer();
         }
-        OBJ_TYPE obj_type = ContentManager.getOBJ_TYPE(typeType);
-        ObjType type = getTypeInitializer().getNewType(obj_type);
-
-        buildType(node, type);
+        OBJ_TYPE objType = ContentManager.getOBJ_TYPE(typeType);
+        ObjType type = null;
+        if (objType != null) {
+            type = getTypeInitializer().getNewType(objType);
+            buildType(node, type);
+        } else {
+            LogMaster.error("type with name \"" + typeType + "\" not found!");
+        }
 
         return type;
     }

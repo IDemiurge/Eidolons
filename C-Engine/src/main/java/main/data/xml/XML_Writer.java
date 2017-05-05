@@ -180,17 +180,6 @@ public class XML_Writer {
         fileName = (!StringMaster.isEmpty(group)) ? TYPE + "-" + group + ".xml" : TYPE + ".xml";
     }
 
-    private static void setPathForOBJ_TYPE(OBJ_TYPE TYPE) {
-        setPathForOBJ_TYPE(TYPE, null);
-
-    }
-
-    private static String getXML(OBJ_TYPE TYPE) {
-
-        // XML_Reader.loadXml(); //overwrite any manual changes
-        return XML_Reader.getXmlMap().get(TYPE.getName());
-    }
-
     public static boolean writeXML_ForType(ObjType type) {
         return writeXML_ForType(type, type.getOBJ_TYPE_ENUM());
     }

@@ -2,8 +2,8 @@ package main.gui.builders;
 
 import main.content.C_OBJ_TYPE;
 import main.content.ContentManager;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.DC_TYPE;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.TableDataManager;
@@ -18,7 +18,7 @@ import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.components.G_TabbedPanel;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.layout.LayoutInfo;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.CollectionsMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
@@ -544,7 +544,7 @@ public class TabBuilder extends Builder implements ChangeListener {
         if (!file.isFile()) {
             return;
         }
-        XML_Reader.readTypeXmlFile(file, false);
+        XML_Reader.readFile(file);
         TabBuilder tabBuilder = new TabBuilder(name);
         JComponent tabs = tabBuilder.build();
         builders.put(tabBuilder, null);
