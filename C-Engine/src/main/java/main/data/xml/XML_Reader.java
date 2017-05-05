@@ -124,10 +124,8 @@ public class XML_Reader {
                 if (checkFile(file)) {
                     try {
                         XML_File xmlFile = readFile(file);
-
                         getFiles().add(xmlFile);
-
-                        final Document doc = XML_Converter.getDoc(xmlFile.contents);
+                        Document doc = XML_Converter.getDoc(xmlFile.contents);
                         loadMap(xmlFile.type == null ? xmlFile.name : xmlFile.type.getName(), doc);
                     } catch (Exception e) {
                         brokenXml = true;
