@@ -49,9 +49,14 @@ public class DungeonScreen implements Screen {
     public DungeonScreen PostConstruct() {
         instance = this;
 
-        loadingStage = new LoadingStage();
-
         gridStage = new Stage();
+        GuiEventManager.bind(GRID_CREATED, param -> {
+            Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
+            gridPanel = new GridPanel(p.getLeft(), p.getRight()).init();
+            gridStage.addActor(gridPanel);
+        });
+
+        loadingStage = new LoadingStage();
 
         guiStage = new GuiStage();
 
@@ -66,7 +71,16 @@ public class DungeonScreen implements Screen {
         gl.glEnable(GL30.GL_TEXTURE_2D);
         gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
 
-        bindEvents();
+        GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
+            final String path = (String) param.get();
+            backTexture = getOrCreateR(path);
+        });
+
+        GuiEventManager.bind(DUNGEON_LOADED, param -> {
+            showLoading = false;
+            InputMultiplexer multiplexer = new InputMultiplexer(guiStage, controller, gridStage);
+            Gdx.input.setInputProcessor(multiplexer);
+        });
 
         WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
@@ -79,25 +93,6 @@ public class DungeonScreen implements Screen {
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gridStage.getViewport().setCamera(cam);
         animationEffectStage.getViewport().setCamera(cam);
-    }
-
-    private void bindEvents() {
-        GuiEventManager.bind(GRID_CREATED, param -> {
-            Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
-            gridPanel = new GridPanel(p.getLeft(), p.getRight()).init();
-            gridStage.addActor(gridPanel);
-        });
-
-        GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
-            final String path = (String) param.get();
-            backTexture = getOrCreateR(path);
-        });
-
-        GuiEventManager.bind(DUNGEON_LOADED, param -> {
-            showLoading = false;
-            InputMultiplexer multiplexer = new InputMultiplexer(guiStage, controller, gridStage);
-            Gdx.input.setInputProcessor(multiplexer);
-        });
     }
 
     @Override
