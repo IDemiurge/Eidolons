@@ -94,7 +94,8 @@ public class PartyObj extends Obj {
 
     public void initMembers() {
         members.clear();
-        for (String heroName : StringMaster.openContainer(type.getProperty(PROPS.MEMBERS))) {
+        for (String heroName : StringMaster.openContainer
+         (type.getProperty(PROPS.MEMBERS))) {
             addMember(HeroCreator.initHero(heroName));
         }
     }
@@ -106,6 +107,10 @@ public class PartyObj extends Obj {
     }
 
     public void addMember(Unit hero) {
+        if (hero==null )
+            return ;
+        if (leader!=null )
+            setLeader(hero);
         members.add(hero);
         addProperty(PROPS.MEMBERS, hero.getName());
         type.addProperty(PROPS.MEMBERS, hero.getName());
@@ -135,6 +140,7 @@ public class PartyObj extends Obj {
     }
 
     public List<Unit> getMembers() {
+        members.removeIf(m -> m == null);
         return members;
     }
 

@@ -40,6 +40,7 @@ import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import main.test.libgdx.DENIS_Launcher;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -95,6 +96,7 @@ public class Launcher {
     private static GAME_TYPE gameType;
     private static GAME_MODES gameMode;
     private static String LAUNCH_OPTION;
+    private static boolean isAutoHC;
 
     private static void initKeyListeners() {
         // dcKeyListener= new dcKeyListener();
@@ -170,6 +172,7 @@ public class Launcher {
         welcome();
 
         CoreEngine.setLogicTest(false);
+        if (isAutoHC)
         initAutoLaunches();
 
         // CharacterCreator.getPanel().getTabs().select(0);
@@ -559,7 +562,6 @@ public class Launcher {
             game.setSimulation(true);
             CharacterCreator.getHeroManager().prebattleCleanSave();
             game.setSimulation(false);
-            game.setGameMode(GAME_MODES.DUNGEON_CRAWL);
             game.setDebugMode(isDEBUG_MODE_DEFAULT());
             // game.getState().init();
 
@@ -578,6 +580,7 @@ public class Launcher {
 
             if (!CoreEngine.isSwingOn()) {
                 //TODO INSERT NEW GUI HERE
+                DENIS_Launcher.main(new String[]{});
             } else {
                 DC_GameGUI GUI = new DC_GameGUI(game, fullscreen, false);
                 GUI.initGUI();

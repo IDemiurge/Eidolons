@@ -236,7 +236,37 @@ public class HC_SequenceMaster implements SequenceManager {
         this.sequence = sequence;
     }
 
-    public boolean prebattleChoiceSequence(Unit hero) {
+    public boolean mainHeroChoiceSequence(Unit hero) {
+        final ChoiceSequence cs = new ChoiceSequence();
+       final  List<Entity> list = ListMaster.getEntityList(PartyManager.getParty().getMembers());
+        PresetEntityChoiceView view = new PresetEntityChoiceView(cs, hero, InfoMaster.MIDDLE_HERO, list) {
+
+            protected int getColumnsCount() {
+                return list.size();
+            }
+
+            protected int getPageSize() {
+                return list.size();
+            }
+
+            protected void ok() {
+                hero.getOwner().setHeroObj((Unit) getSelectedItem());
+                PartyManager.getParty().setLeader((Unit) getSelectedItem());
+                super.ok();
+            }
+
+        };
+        cs.addView(view);
+        SequenceManager manager = HC_SequenceMaster.getHC_SequenceManager();
+        cs.setManager(manager);
+        cs.start();
+        boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECTION);
+        if (!result) {
+            manager.cancelSelection();
+        }
+        return result;
+    }
+        public boolean prebattleChoiceSequence(Unit hero) {
 
         final ChoiceSequence cs = new ChoiceSequence();
         List<Entity> list = ListMaster.getEntityList(PartyManager.getParty().getMembers());

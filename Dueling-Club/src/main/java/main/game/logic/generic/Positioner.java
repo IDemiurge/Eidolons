@@ -17,7 +17,6 @@ import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.FacingMaster;
 import main.game.battlefield.map.DungeonMapGenerator.MAP_ZONES;
 import main.game.core.game.DC_Game;
-import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.logic.arena.Wave;
 import main.game.logic.dungeon.building.MapBlock;
@@ -620,9 +619,7 @@ public class Positioner {
     }
 
     public FACING_DIRECTION getPartyMemberFacing(Coordinates c) {
-        if (getGame().getGameMode() == GAME_MODES.ARENA_ARCADE) {
-            return FacingMaster.getPresetFacing(true);
-        }
+
         if (facingMap.containsKey(c)) {
             return facingMap.get(c);
         }

@@ -23,7 +23,6 @@ import main.game.logic.dungeon.scenario.ScenarioMaster.SCENARIO_MODES;
 import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.town.Tavern;
-import main.game.meta.skirmish.SkirmishMaster;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -32,7 +31,6 @@ import main.system.auxiliary.data.FileManager;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.NameMaster;
-import main.system.threading.Weaver;
 
 import java.awt.*;
 //reset could be used for preset parties 
@@ -197,21 +195,18 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                 case FIGHT_2:
                 case FIGHT_3:
                 case FIGHT_ARCADE:
-                    Weaver.inNewThread(new Runnable() {
-                        public void run() {
-                            if (Launcher.DEV_MODE) {
-                                if (!alt && isNameGenTest()) {
-                                    testFightLaunch();
+                    new Thread(() -> fight(), " thread").start();
+//                            if (Launcher.DEV_MODE) {
+//                                if (!alt && isNameGenTest()) {
+//                                    testFightLaunch();
+//
+//                                    // testNameGen();
+//                                } else
+//                                // DC_Game.game.getDungeonMaster().initDungeonLevelChoice();
+//                                {
 
-                                    // testNameGen();
-                                } else
-                                // DC_Game.game.getDungeonMaster().initDungeonLevelChoice();
-                                {
-                                    fight();
-                                }
-                            }
-                        }
-                    });
+//                                }
+//                            }
                     break;
                 case EXPORT_HERO: {
                     SoundMaster.playStandardSound(STD_SOUNDS.DONE);
@@ -298,25 +293,28 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
 
     public void fight() {
 
-        if (hero.getGame().getGameType() == GAME_TYPE.ARCADE){
-//            ArcadeManager.
-            DemoManager.init();
+        if (Launcher.getMainManager().getSequenceMaster().mainHeroChoiceSequence(hero)) {
+            DemoManager.battleEntered();
             Launcher.launchDC();
         }
 
-        if (Launcher.getMainManager().getSequenceMaster().prebattleChoiceSequence(hero)) {
-            if (hero.getGame().getGameType() == GAME_TYPE.SKIRMISH) {
-                SkirmishMaster.preLaunch();
-            } else if (hero.getGame().getGameType() == GAME_TYPE.SCENARIO) {
-                ScenarioMaster.preLaunch();
-            }
-            Launcher.launchDC();
-
-            if (hero.getGame().getGameType() == GAME_TYPE.SKIRMISH
-                    || hero.getGame().getGameType() == GAME_TYPE.SCENARIO) {
-                ScenarioMaster.afterLaunch();
-            }
-        }
+//        if (hero.getGame().getGameType() == GAME_TYPE.ARCADE){
+////            ArcadeManager.
+//            DemoManager.init();
+//            Launcher.launchDC();
+//        }
+//          if (hero.getGame().getGameType() == GAME_TYPE.SKIRMISH) {
+//                SkirmishMaster.preLaunch();
+//            } else if (hero.getGame().getGameType() == GAME_TYPE.SCENARIO) {
+//                ScenarioMaster.preLaunch();
+//            }
+//            Launcher.launchDC();
+//
+//            if (hero.getGame().getGameType() == GAME_TYPE.SKIRMISH
+//                    || hero.getGame().getGameType() == GAME_TYPE.SCENARIO) {
+//                ScenarioMaster.afterLaunch();
+//            }
+//        }
     }
 
     private void testFightLaunch() {

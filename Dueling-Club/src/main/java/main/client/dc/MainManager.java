@@ -13,6 +13,7 @@ import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;
+import main.game.demo.DemoManager;
 import main.game.logic.arcade.ArenaArcadeMaster;
 import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.dungeon.scenario.ScenarioMaster;
@@ -32,10 +33,18 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainManager implements SequenceManager {
-    public static final MAIN_MENU_ITEMS[] default_items = {MAIN_MENU_ITEMS.NEW_ADVENTURE,
-            MAIN_MENU_ITEMS.SCENARIO, MAIN_MENU_ITEMS.NEW_ARCADE, MAIN_MENU_ITEMS.NEW_SKIRMISH,
-            MAIN_MENU_ITEMS.CONTINUE_ARCADE, MAIN_MENU_ITEMS.OPTIONS, MAIN_MENU_ITEMS.EDITOR,
-            MAIN_MENU_ITEMS.EXIT};
+    public static final MAIN_MENU_ITEMS[] default_items = {
+//     MAIN_MENU_ITEMS.NEW_ADVENTURE,
+//            MAIN_MENU_ITEMS.SCENARIO,
+//      MAIN_MENU_ITEMS.NEW_ARCADE,
+//      MAIN_MENU_ITEMS.NEW_SKIRMISH,
+     MAIN_MENU_ITEMS.NEW_DEMO,
+     MAIN_MENU_ITEMS.CONTINUE_DEMO,
+     MAIN_MENU_ITEMS.HERO_CREATOR,
+//     MAIN_MENU_ITEMS.CONTINUE_ARCADE,
+//      MAIN_MENU_ITEMS.OPTIONS,
+//      MAIN_MENU_ITEMS.EDITOR,
+     MAIN_MENU_ITEMS.EXIT};
     MAIN_MENU_ITEMS currentItem = MAIN_MENU_ITEMS.MAIN;
     MAIN_MENU_ITEMS previousItem;
     MainMenu menuComp;
@@ -45,8 +54,10 @@ public class MainManager implements SequenceManager {
     private HC_SequenceMaster sequenceMaster;
     private GlobalKeys globalKeys;
     private boolean macroMode;
+    private DC_Game game;
 
     public MainManager(MainMenu menuComp) {
+        game = DC_Game.game;
         this.menuComp = menuComp;
         sequenceMaster = new HC_SequenceMaster();
         keyManager = new HC_KeyManager();
@@ -63,7 +74,7 @@ public class MainManager implements SequenceManager {
         }
 
         return StringMaster.BATTLE_READY + StringMaster.OR + StringMaster.PRESET + StringMaster.OR
-                + StringMaster.PLAYTEST;
+         + StringMaster.PLAYTEST;
     }
 
     public void refresh() {
@@ -126,17 +137,24 @@ public class MainManager implements SequenceManager {
                 DC_Game.game.setGameType(GAME_TYPE.SCENARIO);
                 break;
             }
+
+            case NEW_DEMO:
+
+                launchHC(PartyManager.loadParty(DemoManager.PARTY_NAME, game, false));
+                DemoManager.hqEntered();
+                break;
+            case CONTINUE_DEMO:
             case CONTINUE_LAST:
-                if (DC_Game.game.getGameType() == GAME_TYPE.SCENARIO) {
+                if ( game.getGameType() == GAME_TYPE.SCENARIO) {
                     // TODO
                 } else {
                     List<Unit> party = PartyManager.loadParty(PartyManager
-                            .readLastPartyType());
+                     .readLastPartyType());
                     if (DC_Game.game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
                         DC_Game.game.getArenaArcadeMaster().continueArcade(PartyManager.getParty());
                         break;
                     }
-                    DC_Game.game.getArcadeManager().initializeArcade(PartyManager.getParty());
+//                    DC_Game.game.getArcadeManager().initializeArcade(PartyManager.getParty());
                     launchHC(party);
                 }
                 break;
@@ -198,8 +216,7 @@ public class MainManager implements SequenceManager {
                 CharacterCreator.setArcadeMode(true);
                 break;
             }
-            case NEW_PARTY:
-                break;
+
             case NEW_SKIRMISH:
                 CharacterCreator.setArcadeMode(false);
                 break;
@@ -303,12 +320,7 @@ public class MainManager implements SequenceManager {
     public void doneSelection() {
         switch (currentItem) {
             case PRESET_HERO:
-                initSelectedHero();
-                newParty();
-                launchHC();
-                break;
             case MY_HERO:
-
                 initSelectedHero();
                 newParty();
                 launchHC();
@@ -462,6 +474,7 @@ public class MainManager implements SequenceManager {
         SELECT_MY_PARTY(PLAY, EDIT),
         NEW_LEADER,
         SELECT_LEADER(PRESET_HERO, MY_HERO),
+
         NEW_PARTY(NEW_LEADER, SELECT_LEADER),
         SELECT_PARTY(SELECT_PRESET_PARTY, SELECT_MY_PARTY),
         NEW_ARCADE(NEW_PARTY, SELECT_PARTY),
@@ -477,7 +490,7 @@ public class MainManager implements SequenceManager {
         EXIT,
         BACK,
         NEW_HERO,
-        HERO_CREATOR(NEW_HERO, NEW_PARTY),
+        HERO_CREATOR(NEW_HERO ),
         NEW_ADVENTURE(NEW_LEADER, SELECT_LEADER),
         LOAD_ADVENTURE,
         ADVENTURE(NEW_ADVENTURE, LOAD_ADVENTURE, CONTINUE_LAST),
@@ -489,7 +502,7 @@ public class MainManager implements SequenceManager {
         NEW_PRESET,
         CREATE_PRESET(NEW_PRESET, NEW_HERO, SELECT_LEADER, COPY_PRESET),
         FACTION(CREATE_PRESET, SELECT_LEADER),
-        EDITOR(NEW_HERO, FACTION),;
+        EDITOR(NEW_HERO, FACTION), NEW_DEMO(), CONTINUE_DEMO(),  ;
 
         private MAIN_MENU_ITEMS[] items;
 

@@ -91,7 +91,7 @@ public class SpawnManager {
     public void init() {
         // this.level = battle.getIntValue(BATTLE_STATS.LEVEL);
         if (!isPlayerUnitGroupMode() // && PresetMaster.getPreset() == null
-                ) {
+         ) {
             initPlayerParty();
         } else {
             playerPartyData = getGame().getPlayerParty();
@@ -111,7 +111,7 @@ public class SpawnManager {
         // if (!CharacterCreator.isPartyMode())
         // waveCleared(); TODO what for???
         this.roundsToWait = arenaManager.getArenaOptions().getIntValue(
-                ARENA_GAME_OPTIONS.TURNS_TO_PREPARE);
+         ARENA_GAME_OPTIONS.TURNS_TO_PREPARE);
 
     }
 
@@ -158,8 +158,8 @@ public class SpawnManager {
         int power = 0;
 
         int preferredPower = dungeon.getLevel()
-                // + PartyManager.getParty().getPower()
-                + getGame().getArenaManager().getBattleLevel();
+         // + PartyManager.getParty().getPower()
+         + getGame().getArenaManager().getBattleLevel();
         int min = preferredPower * 2 / 3;
         int max = preferredPower * 3 / 2;
 
@@ -168,13 +168,13 @@ public class SpawnManager {
 
             if (specialEncounters.get(dungeon) != null) {
                 Map<Coordinates, ObjType> specEncounters = specialEncounters.get(dungeon)
-                        .get(block);
+                 .get(block);
                 for (Coordinates c : specEncounters.keySet()) {
                     ObjType waveType = specEncounters.get(c);
 
                     if (waveType.getGroup().equalsIgnoreCase("Substitute")) {
                         waveType = EncounterMaster.getSubstituteEncounterType(waveType, dungeon,
-                                preferredPower);
+                         preferredPower);
                     }
 
                     group = new Wave(waveType, game, new Ref(), game.getPlayer(false));
@@ -237,10 +237,10 @@ public class SpawnManager {
             return block.getId() < 2;
         }
         return block.getRoomType() == ROOM_TYPE.GUARD_ROOM
-                || block.getRoomType() == ROOM_TYPE.COMMON_ROOM
-                || block.getRoomType() == ROOM_TYPE.THRONE_ROOM
-                || block.getRoomType() == ROOM_TYPE.EXIT_ROOM
-                || block.getRoomType() == ROOM_TYPE.DEATH_ROOM;
+         || block.getRoomType() == ROOM_TYPE.COMMON_ROOM
+         || block.getRoomType() == ROOM_TYPE.THRONE_ROOM
+         || block.getRoomType() == ROOM_TYPE.EXIT_ROOM
+         || block.getRoomType() == ROOM_TYPE.DEATH_ROOM;
     }
 
     private Wave getCreepGroupForBlock(int preferredPower, Dungeon dungeon, MapBlock block,
@@ -313,7 +313,7 @@ public class SpawnManager {
     public void spawnUnitsAt(List<Unit> units, Coordinates coordinates) {
         List<String> partyTypes = StringMaster.toNameList(units);
         List<Coordinates> coordinateList = game.getArenaManager().getSpawnManager()
-                .initPartyCoordinates(partyTypes, null);
+         .initPartyCoordinates(partyTypes, null);
         int index = 0;
         for (Unit m : units) {
             m.setCoordinates(coordinateList.get(index));
@@ -365,7 +365,7 @@ public class SpawnManager {
             if (!game.isOffline()) {
                 // TODO not always vertical!
                 facing = FacingMaster.getFacingFromDirection(getPositioner().getClosestEdgeY(
-                        unit.getCoordinates()).getDirection().flip());
+                 unit.getCoordinates()).getDirection().flip());
             } else
 //             TODO    if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
             {
@@ -383,7 +383,7 @@ public class SpawnManager {
             player.setHeroObj(list.get(0));
             try {
                 player.setEmblem( // TODO ???
-                        ((Unit) list.get(0)).getEmblem().getImage());
+                 ((Unit) list.get(0)).getEmblem().getImage());
             } catch (Exception e) {
 //                e.printStackTrace();
             }
@@ -423,7 +423,7 @@ public class SpawnManager {
 
         }
         spawnCoordinates = (me) ? game.getDungeon().getPlayerSpawnCoordinates() : game.getDungeon()
-                .getEnemySpawningCoordinates();
+         .getEnemySpawningCoordinates();
         offset_coordinate = spawnCoordinates.getOffsetByX(offsetX).getOffsetByY(offsetY);
         DC_ObjInitializer.processObjData(game.getPlayer(me), data, offset_coordinate);
 
@@ -449,10 +449,10 @@ public class SpawnManager {
         // offset_coordinate);
         // }
         LogMaster.logToFile("spawnCoordinates=" + spawnCoordinates + " ;offset_coordinate="
-                + offset_coordinate + ";height=" + height + "; width=" + width);
+         + offset_coordinate + ";height=" + height + "; width=" + width);
         LogMaster.log(1, "spawnCoordinates=" + spawnCoordinates
-                + " ;offset_coordinate=" + offset_coordinate + ";height=" + height + "; width="
-                + width);
+         + " ;offset_coordinate=" + offset_coordinate + ";height=" + height + "; width="
+         + width);
     }
 
     public boolean isEnemyUnitGroupMode() {
@@ -482,7 +482,12 @@ public class SpawnManager {
             // }
 
             if (party.getPartyCoordinates() == null) {
-                hero.setFacing(getPositioner().getPartyMemberFacing(hero.getCoordinates()));
+                if (
+                 getGame().getGameMode() == GAME_MODES.ARENA ||
+                  getGame().getGameMode() == GAME_MODES.ARENA_ARCADE) {
+                    hero.setFacing(FacingMaster.getPresetFacing(true));
+                } else
+                    hero.setFacing(getPositioner().getPartyMemberFacing(hero.getCoordinates()));
             }
 
             hero.setOriginalOwner(game.getPlayer(true));
@@ -523,15 +528,15 @@ public class SpawnManager {
         if (PartyManager.getParty() != null) {
             if (MapMaster.isNotEmpty(PartyManager.getParty().getPartyCoordinates())) {
                 coordinates = new LinkedList<>(PartyManager.getParty().getPartyCoordinates()
-                        .values());
+                 .values());
                 partyTypes = ListMaster.toNameList(PartyManager.getParty().getPartyCoordinates()
-                        .keySet());
+                 .keySet());
             }
 
         }
         if (coordinates == null) {
             coordinates = positioner.getPartyCoordinates(null, BooleanMaster
-                    .isTrue(mine_enemy_third), partyTypes);
+             .isTrue(mine_enemy_third), partyTypes);
         }
 
         int i = 0;
@@ -623,11 +628,9 @@ public class SpawnManager {
             boolean invalid = false;
             if (c == null) {
                 invalid = true;
-            } else
-            if (c.isInvalid()) {
+            } else if (c.isInvalid()) {
                 invalid = true;
-            } else
-            if (game.getBattleField().getGrid().isCoordinateObstructed(c)) {
+            } else if (game.getBattleField().getGrid().isCoordinateObstructed(c)) {
                 invalid = true;
             }
             if (invalid) {
@@ -640,7 +643,7 @@ public class SpawnManager {
             unit.setFacing(facing);
             wave.addUnit(unit);
             game.fireEvent(
-                    new Event(STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING, Ref.getSelfTargetingRefCopy(unit)));
+             new Event(STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING, Ref.getSelfTargetingRefCopy(unit)));
         }
         if (!PartyManager.checkMergeParty(wave)) {
             try {
@@ -654,13 +657,13 @@ public class SpawnManager {
     public void waveCleared() {
         if (game.isStarted()) {
             game.getLogManager().log(
-                    "*** Enemies cleared! Encounters left: " + getScheduledWaves().toString());
+             "*** Enemies cleared! Encounters left: " + getScheduledWaves().toString());
             if (game.getParty() != null) {
                 SoundMaster.playEffectSound(SOUNDS.TAUNT, game.getParty().getLeader());
             }
         }
         roundsToWait = arenaManager.getArenaOptions().getIntValue(
-                ARENA_GAME_OPTIONS.TURNS_BETWEEN_WAVES);
+         ARENA_GAME_OPTIONS.TURNS_BETWEEN_WAVES);
         roundsToWait++;
     }
 
@@ -681,7 +684,7 @@ public class SpawnManager {
             return;
         }
         newWave(new Wave(DataManager.getType(type, DC_TYPE.ENCOUNTERS), game, new Ref(game),
-                player));
+         player));
     }
 
     public void newRound() {

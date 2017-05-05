@@ -286,11 +286,12 @@ public class PartyManager {
     }
 
     public static List<Unit> loadParty(String typeName) {
-        return loadParty(typeName, Simulation.getGame());
+        return loadParty(typeName, Simulation.getGame(), true);
     }
 
-    public static List<Unit> loadParty(String typeName, DC_Game game) {
+    public static List<Unit> loadParty(String typeName, DC_Game game, boolean readTypes) {
         // invoke before obj init, to getOrCreate full obj string
+       if (readTypes){
         File file = getPartyFile(typeName);
         String xml = FileManager.readFile(file);
         if (xml.contains(XML_Converter.openXmlFormatted(typeName))) {
@@ -299,6 +300,7 @@ public class PartyManager {
             XML_Reader.createCustomTypeList(partyTypeData, DC_TYPE.PARTY, game, true);
         }
         XML_Reader.readCustomTypeFile(file, DC_TYPE.CHARS, game);
+       }
         ObjType partyType = DataManager.getType(typeName, DC_TYPE.PARTY);
         setParty(newParty(partyType));
         party.toBase();

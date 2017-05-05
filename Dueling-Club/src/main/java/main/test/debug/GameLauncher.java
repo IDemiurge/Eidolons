@@ -20,7 +20,6 @@ import main.game.logic.generic.SpawnManager;
 import main.game.logic.macro.travel.EncounterMaster;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE_SCOPE;
-import main.rules.magic.ChannelingRule;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -300,7 +299,7 @@ CoreEngine.setGraphicsOff(launch.graphicsOff);
     }
 
     private void initLogicTest() {
-        ChannelingRule.setTestMode(true);
+//        ChannelingRule.setTestMode(true);
     }
 
     private void initPlayerParties() {

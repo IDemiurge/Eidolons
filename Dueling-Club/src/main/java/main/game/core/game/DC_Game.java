@@ -186,7 +186,7 @@ public class DC_Game extends MicroGame {
         game = this;
         this.simulation = true;
         this.simulation = simulation;
-        setGameMode((isSimulation()) ? GAME_MODES.SIMULATION : GAME_MODES.DUNGEON_CRAWL);
+        setGameMode((isSimulation()) ? GAME_MODES.SIMULATION : GAME_MODES.ARENA);
         initState();
         initMasters();
     }
