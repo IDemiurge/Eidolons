@@ -38,8 +38,6 @@ import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.libgdx.DENIS_Launcher;
 import net.miginfocom.swing.MigLayout;
 
@@ -161,12 +159,9 @@ public class Launcher {
         MetaManager.init();
         initKeyListeners();
 
-        boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.READING_DONE);
-        if (result) {
+
             simulationInit();
-        } else {
-            exit();
-        }
+
         initTopGUI();
         initMainMenu();
         welcome();

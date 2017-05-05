@@ -5,13 +5,13 @@ import main.ability.AE_Manager;
 import main.ability.ActionGenerator;
 import main.client.cc.CharacterCreator;
 import main.client.cc.logic.HeroCreator;
-import main.content.enums.entity.HeroEnums.RACE;
 import main.content.CONTENT_CONSTS2.FACTION;
 import main.content.*;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.HeroEnums;
-import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -29,7 +29,9 @@ import main.swing.generic.services.dialog.DialogMaster;
 import main.system.BfObjPropGenerator;
 import main.system.ContentGenerator;
 import main.system.DC_Formulas;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.TreeMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.DC_MathManager;
@@ -38,7 +40,6 @@ import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.TimerTaskMaster;
 import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.system.threading.Weaver;
 import main.utilities.search.TypeFinder;
 
@@ -804,9 +805,7 @@ public class ModelManager {
     }
 
     public static void reload() {
-        WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.READING_DONE);
         XML_Reader.readTypes(ArcaneVault.isMacroMode());
-        WaitMaster.waitForInput(WAIT_OPERATIONS.READING_DONE);
         ArcaneVault.getGame().initObjTypes();
     }
 
