@@ -40,7 +40,6 @@ public class DENIS_Launcher implements ApplicationListener {
     @Override
     public void create() {
         screen = new DungeonScreen().PostConstruct();
-
     }
 
     @Override

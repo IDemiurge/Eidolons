@@ -47,14 +47,14 @@
         <module>Arcane-Vault</module>
         <module>C-Engine</module>
         <module>Dueling-Club</module>
-        <module>resources</module>
+        <!--<module>resources</module>-->
     </modules>
 
     <dependencies>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.4</version>
+            <version>3.5</version>
         </dependency>
 
         <dependency>

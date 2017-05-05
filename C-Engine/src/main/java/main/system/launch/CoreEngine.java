@@ -113,16 +113,18 @@ public class CoreEngine {
     public static boolean checkReadNecessary(String name) {
 
         if (selectivelyReadTypes != null) {
-            return StringMaster.checkContainer(selectivelyReadTypes, StringMaster
-                            .cropFormat(StringMaster.cropLast(name, "-"))
-
-                    , false);
+            return StringMaster.checkContainer(
+                    selectivelyReadTypes,
+                    StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
+                    false);
         }
 
         if (exceptionTypes != null) {
-            if (StringMaster.checkContainer(exceptionTypes, StringMaster
-                            .cropFormat(StringMaster.cropLast(name, "-"))
-                    , false)) {
+            if (StringMaster.checkContainer(
+                    exceptionTypes,
+                    StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
+                    false
+            )) {
                 return false;
             }
         }
@@ -151,7 +153,7 @@ public class CoreEngine {
     }
 
     public static boolean isLogicTest() {
-         return logicTest;
+        return logicTest;
     }
 
     public static void setLogicTest(boolean tEST_MODE) {
@@ -229,7 +231,7 @@ public class CoreEngine {
 
     public static void setGraphicsOff(boolean graphicsOff) {
         CoreEngine.graphicsOff = graphicsOff;
-        if (graphicsOff){
+        if (graphicsOff) {
 
             WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
             WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
@@ -255,7 +257,9 @@ public class CoreEngine {
     public void dataInit(boolean macro) {
 
         Chronos.mark("TYPES INIT");
+
         XML_Reader.readTypes(macro);
+
         Chronos.logTimeElapsedForMark("TYPES INIT");
         // if (!macro)
         try {

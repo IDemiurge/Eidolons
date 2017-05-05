@@ -8,7 +8,6 @@ import main.data.ability.AE_Item;
 import main.data.ability.Mapper;
 import main.entity.type.ObjType;
 import main.system.auxiliary.TreeMaster;
-import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.XMap;
 import org.w3c.dom.Document;
@@ -30,7 +29,7 @@ import java.util.regex.Pattern;
 
 public class XML_Converter {
     public static final String TEXT_NODE = "#text";
-    final static DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+    private final static DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
     private static final String TYPES_NODE = "Types";
     private static final String DOCUMENT_ROOT = null;
     public static Pattern p = Pattern.compile("\n");
@@ -38,8 +37,8 @@ public class XML_Converter {
     // public Document reformDocument(Collection<String> newGroups)
     // {
 
-    public static Document getGroupDoc(String sub, String type) {
-        Document doc = XML_Reader.getDocForGroup(type);
+/*    public static Document getGroupDoc(String sub, String type) {
+        Document doc = XML_Converter.getDoc(XML_Reader.xmlMap.get(type));
         Document groupDoc = null;
         NodeList nl = doc.getFirstChild().getChildNodes();
         Node node = null;
@@ -66,7 +65,7 @@ public class XML_Converter {
         }
         return groupDoc;
 
-    }
+    }*/
 
     public static List<Node> getNodeList(Node node) {
         List<Node> list = new LinkedList<>();
@@ -156,23 +155,19 @@ public class XML_Converter {
             builder = builderFactory.newDocumentBuilder();
             document = builder.parse(new InputSource(new StringReader(myString)));
 
+            if (removeDocumentRootNode) {
+                if (document.getNodeName().equalsIgnoreCase("#document")) {
+                    Node childAt = getChildAt(document, 0);
+                    String stringFromXML = getStringFromXML(childAt, false);
+                    document = getDoc(stringFromXML);
+                }
+            }
         } catch (Exception e) {
             LogMaster.log(LogMaster.DATA_DEBUG,
-
                     "failed to parse xml: " + myString);
             e.printStackTrace();
         }
-        if (document == null) {
-            document = null;
-        }
-        if (removeDocumentRootNode) {
-            if (document.getNodeName().equalsIgnoreCase("#document")) {
-                Node childAt = getChildAt(document, 0);
-                String stringFromXML = getStringFromXML(childAt, false);
-                Document doc = getDoc(stringFromXML);
-                return doc;
-            }
-        }
+
         return document;
     }
 

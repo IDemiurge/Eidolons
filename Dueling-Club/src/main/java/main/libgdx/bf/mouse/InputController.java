@@ -3,7 +3,6 @@ package main.libgdx.bf.mouse;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import main.game.core.game.DC_Game;
 import main.libgdx.anims.particles.lighting.FireLightProt;
 import main.libgdx.anims.particles.lighting.LightMap;
 import main.libgdx.anims.particles.lighting.LightingManager;
@@ -90,8 +89,6 @@ public class InputController implements InputProcessor {
         }
         charsUp.remove(str);
         lastTyped = c;
-
-        DC_Game.game.getBattleField().getKeyListener().handleKeyTyped(0, c);
 
         return true;
     }
@@ -208,9 +205,6 @@ public class InputController implements InputProcessor {
         }
     }
 
-    public OrthographicCamera getCamera() {
-        return camera;
-    }
 
     public float getZoom() {
         return camera.zoom;

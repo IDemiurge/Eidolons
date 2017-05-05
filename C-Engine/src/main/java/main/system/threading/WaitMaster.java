@@ -41,8 +41,8 @@ public class WaitMaster {
         if (getCompleteOperations().contains(operation)) {
             return true;
         }
-        LogMaster.log(LOG_CHANNELS.WAIT_DEBUG, " waiting for "
-                + operation.toString());
+        LogMaster.log(LOG_CHANNELS.WAIT_DEBUG,
+                " waiting for " + operation.toString());
         Waiter waiter = waiters.get(operation);
         boolean remove = true;
         if (waiter == null) {

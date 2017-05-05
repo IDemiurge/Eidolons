@@ -5,7 +5,6 @@ import main.content.OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
-import main.data.ConcurrentMap;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
@@ -15,47 +14,35 @@ import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.launch.TypeBuilder;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * contains methods for reading Types' xml files, constructing ObjType's and putting them into maps
  * also managed dynamic reload of hero types to avoid data overwriting between HC and AV
  */
 public class XML_Reader {
-    final static DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
     // private static final Logger = Logger.getLogger(XML_Reader.class);
 
-    static Map<String, String> xmlMap = new ConcurrentMap<>();
-    static Map<String, Set<String>> tabGroupMap = new XLinkedMap<>();
-    static Map<String, Set<String>> treeSubGroupMap = new ConcurrentMap<>();
+    private static Map<String, String> xmlMap = new HashMap<>();
+    private static Map<String, Set<String>> tabGroupMap = new HashMap<>();
+    private static Map<String, Set<String>> treeSubGroupMap = new HashMap<>();
 
-    static Map<String, Set<String>> macroTabGroupMap = new ConcurrentMap<>();
-    static Map<String, Set<String>> macroTreeSubGroupMap = new ConcurrentMap<>();
+    private static Map<String, Set<String>> macroTabGroupMap = new HashMap<>();
+    private static Map<String, Set<String>> macroTreeSubGroupMap = new HashMap<>();
 
-    private static Map<String, Map<String, ObjType>> typeMaps =
-            new ConcurrentSkipListMap
-//     new XLinkedMap
-                    <>(
-            );
-    private static Map<String, ObjType> bufferCharTypeMap = new XLinkedMap<>(20);
+    private static Map<String, Map<String, ObjType>> typeMaps = new HashMap<>();
+    private static Map<String, ObjType> bufferCharTypeMap = new HashMap<>(20);
     private static boolean macro;
 
     private static boolean concurrentReadingOn = true;
-    private static boolean superConcurrentReadingOn = true;
-    private static DequeImpl<Thread> threads = new DequeImpl<>();
     private static Map<String, XML_File> heroFiles = new HashMap<>();
     private static Map<String, XML_File> partyFiles = new HashMap<>();
     private static DequeImpl<XML_File> files = new DequeImpl<>();
@@ -74,15 +61,11 @@ public class XML_Reader {
         key = key.replace("_", " ").toLowerCase();
         LogMaster.log(LogMaster.DATA_DEBUG, "type map: " + key);
 
-        Map<String, ObjType> type_map = typeMaps.get(key);
-        if (type_map == null) {
-            type_map = new XLinkedMap<>();
-        }
-        // else split = true;
-        getTypeMaps().put(key, type_map);
+        Map<String, ObjType> typeMap =
+                typeMaps.computeIfAbsent(key, k -> new XLinkedMap<>());
 
         NodeList nl = doc.getFirstChild().getChildNodes();
-        Set<String> group_set = new LinkedHashSet<>();
+        Set<String> groupSet = new LinkedHashSet<>();
         for (int i = 0; i < nl.getLength(); i++) {
             Node node = nl.item(i);
             NodeList nl1 = node.getChildNodes();
@@ -90,40 +73,39 @@ public class XML_Reader {
             PROPERTY groupingKey = DataManager.getGroupingKey(key);
             PROPERTY subGroupingKey = DataManager.getSubGroupingKey(key);
             Set<String> subSet;
+
             for (int a = 0; a < nl1.getLength(); a++) {
                 Node typeNode = nl1.item(a);
                 String name = typeNode.getNodeName();
-                if (name.equals("#text")) {
+                if ("#text".equals(name)) {
                     continue;
                 }
                 ObjType type = TypeBuilder.buildType(nl1.item(a), key);
-                name = type.getName();
-                // TAB GROUPS
-                if (type.getProperty(groupingKey) == null) {
-                    type.setProperty(G_PROPS.ASPECT, aspect);
-                }
-                group_set.add(type.getProperty(groupingKey));
-                aspect = type.getProperty(groupingKey);
-                // TREE SUB GROUPS
-                String subKey = type.getProperty(subGroupingKey);
+                if (type != null) {
+                    name = type.getName();
+                    // TAB GROUPS
+                    if (type.getProperty(groupingKey) == null) {
+                        type.setProperty(G_PROPS.ASPECT, aspect);
+                    }
+                    groupSet.add(type.getProperty(groupingKey));
+                    aspect = type.getProperty(groupingKey);
+                    // TREE SUB GROUPS
+                    String subKey = type.getProperty(subGroupingKey);
 
-                subSet = treeSubGroupMap.get(aspect);
-                if (subSet == null) {
-                    subSet = new HashSet<>();
-                    treeSubGroupMap.put(aspect, subSet);
-                }
-                subSet.add(subKey);
+                    subSet = treeSubGroupMap.computeIfAbsent(aspect, k -> new HashSet<>());
+                    subSet.add(subKey);
 
-                type_map.put(name, type);
-                LogMaster.log(LogMaster.DATA_DEBUG, nl1.item(a).getNodeName()
-                        + " has been put into map as " + type);
+                    typeMap.put(name, type);
+                    LogMaster.log(LogMaster.DATA_DEBUG, nl1.item(a).getNodeName()
+                            + " has been put into map as " + type);
+                }
             }
         }
 
         if (tabGroupMap.get(key) == null) {
-            tabGroupMap.put(key, group_set);
+            tabGroupMap.put(key, groupSet);
         } else {
-            tabGroupMap.get(key).addAll(group_set);
+            tabGroupMap.get(key).addAll(groupSet);
         }
         // if (key.equals(StringS.ABILS.getName())) {
         // Err.info(set + "");
@@ -133,30 +115,38 @@ public class XML_Reader {
 
     public static void loadXml(String path) {
         File folder = new File(path);
-        List<File> list = new LinkedList<>(
-                Arrays.asList(folder.listFiles()));
-        list.sort((p1, p2) ->
-                BooleanMaster.compare(
-                        p1.getTotalSpace(), (p2.getTotalSpace())
-                ));
-        for (File file : list) {
-            file.getTotalSpace();
-            if (checkFile(file)) {
-                readTypeXmlFile(file, isConcurrentReadingOn());
 
-            } else {
-                // TODO create empty type file
+        final File[] files = folder.listFiles();
+        if (files != null) {
+            //DO NOT FOREACH - its slow on arrays
+            for (int i = 0; i < files.length; i++) {
+                File file = files[i];
+                if (checkFile(file)) {
+                    try {
+                        XML_File xmlFile = readFile(file);
+                        getFiles().add(xmlFile);
+                        Document doc = XML_Converter.getDoc(xmlFile.contents);
+                        loadMap(xmlFile.type == null ? xmlFile.name : xmlFile.type.getName(), doc);
+                    } catch (Exception e) {
+                        brokenXml = true;
+                        e.printStackTrace();
+                    }
+                }
             }
+
+/*            Arrays.stream(files)
+                    .filter(XML_Reader::checkFile)
+                    .forEach(el -> {
+                        XML_File xmlFile = safeReadFile(el);
+                        if (xmlFile != null) {
+                            getFiles().add(xmlFile);
+                            final Document doc = safeParseDoc(xmlFile);
+                            if (doc != null) {
+                                safeLoadMap(xmlFile, doc);
+                            }
+                        }
+                    });*/
         }
-        // WaitMaster.waitForCondition(isReading());
-        if (isConcurrentReadingOn() && !CoreEngine.isConcurrentLaunch()) {
-            WaitMaster.waitForInput(WAIT_OPERATIONS.READING_DONE);
-        }
-        WaitMaster.markAsComplete(WAIT_OPERATIONS.READING_DONE);
-        // if (MapMaster.isNotEmpty(typeMaps))
-        // for (String key : typeMaps.keySet())
-        // main.system.auxiliary.LogMaster.log(1, key + " types: " +
-        // typeMaps.get(key).size());
     }
 
     private static boolean checkFile(File file) {
@@ -167,104 +157,39 @@ public class XML_Reader {
 
     }
 
-    public static void readTypeXmlFile(final File file, boolean concurrentReadingOn) {
-        if (concurrentReadingOn) {
-            if (superConcurrentReadingOn) {
-                // how to split it into groups?
-            }
-            final String name = file.getName() + " read file thread";
-            Thread t = new Thread(new Runnable() {
-
-                public void run() {
-                    Chronos.mark(name);
-                    Thread t = Thread.currentThread();
-                    addReadingThread(t);
-                    try {
-                        readFile(file);
-                    } catch (Exception e) {
-                        brokenXml = true;
-                        e.printStackTrace();
-                    }
-                    removeReadingThread(t);
-                    Chronos.logTimeElapsedForMark(name);
-                }
-            }, name) {
-
-                @Override
-                public String toString() {
-                    return getName();
-                }
-
-            };
-            t.start();
-        } else {
-            readFile(file);
-        }
-
-    }
-
-    protected static void addReadingThread(Thread t) {
-        threads.add(t);
-        LogMaster.log(LogMaster.THREADING_DEBUG, t.getName() + " added to "
-                + threads);
-
-    }
-
-    protected static void removeReadingThread(Thread thread) {
-        threads.remove(thread);
-        LogMaster.log(1, thread.getName() + " removed from " + threads);
-
-        if (threads.isEmpty()) {
-            WaitMaster.receiveInput(WAIT_OPERATIONS.READING_DONE, true);
-        }
-
-    }
-
-    public static String readFile(File file) {
+    public static XML_File readFile(File file) {
         String text = FileManager.readFile(file);
-        String fileName = file.getName().replace(".xml", "");
+        final String name = file.getName();
+        String fileName = name.substring(0, name.length() - ".xml".length());
+
         if (fileName.contains(DC_TYPE.CHARS.getName())) {
-            XML_File heroFile = new XML_File(DC_TYPE.CHARS, fileName, "", // TODO
-                    macro, text);
+            XML_File heroFile = new XML_File(DC_TYPE.CHARS, fileName, "", macro, text);
             heroFile.setFile(file);
             heroFiles.put(fileName, heroFile);
         }
+
         XML_File xmlFile;
+
+        String xmlName = fileName, group = null;
+
         if (fileName.contains("-")) {
-            String typeName = fileName.substring(0, fileName.indexOf("-")).trim();
-            String fullText = xmlMap.get(typeName);
-            if (fullText == null) {
-                xmlMap.put(typeName, text);
-            } else {
-                fullText += text;
-                xmlMap.put(typeName, fullText);
-            }
-
-            xmlFile = new XML_File(DC_TYPE.getType(typeName), fileName, fileName.substring(
-                    fileName.indexOf("-") + 1, fileName.length()), macro, text);
-
-            fileName = typeName;
-        } else {
-            xmlFile = new XML_File(DC_TYPE.getType(fileName), fileName, null, macro, text);
-
-            xmlMap.put(fileName, text);
+            final int indexOf = fileName.indexOf("-");
+            xmlName = fileName.substring(0, indexOf).trim();
+            group = fileName.substring(indexOf + 1, fileName.length());
         }
 
-        getFiles().add(xmlFile);
-
-        if (isConcurrentReadingOn()) {
-            loadMap(fileName, text);
-        }
-
-        return text;
+        xmlMap.put(xmlName, "");
+        xmlFile = new XML_File(DC_TYPE.getType(xmlName), xmlName, group, macro, text);
+        return xmlFile;
     }
+
 
     public static void readCustomTypeFile(File file, OBJ_TYPE TYPE, Game game) {
         String xml = FileManager.readFile(file);
         createCustomTypeList(xml, TYPE, game);
     }
 
-    public static List<ObjType> createCustomTypeList(String xml, OBJ_TYPE TYPE, Game game) {
+    private static List<ObjType> createCustomTypeList(String xml, OBJ_TYPE TYPE, Game game) {
         return createCustomTypeList(xml, TYPE, game, true, false, false);
     }
 
@@ -331,12 +256,7 @@ public class XML_Reader {
         return brokenXml;
     }
 
-    public static void loadXml() {
-        loadXml(isMacro());
-    }
-
     public static void loadXml(boolean macro) {
-
         if (macro) {
             loadXml(PathFinder.getMACRO_TYPES_PATH());
         } else {
@@ -350,55 +270,42 @@ public class XML_Reader {
     }
 
     static public void readTypes(boolean macro) {
-        readTypes(macro, concurrentReadingOn);
+        readTypes(macro, isConcurrentReadingOn());
     }
 
     static public void readTypes(boolean macro, boolean concurrentReadingOn) {
         setMacro(macro);
         setConcurrentReadingOn(concurrentReadingOn);
+
         if (CoreEngine.isArcaneVault()) {
-            loadXml();
+            loadXml(isMacro());
         } else {
             loadXml(false);
             if (macro) {
                 loadXml(true);
             }
         }
-        if (!concurrentReadingOn) {
-            loadMaps();
-        }
-
     }
 
-    public static void loadMaps() {
+    private static void loadMap(String name, Document doc) {
+        Chronos.mark("TYPE MAPPING " + name);
+        Map<String, Set<String>> tabGroupMap = XML_Reader.macroTabGroupMap;
+        Map<String, Set<String>> treeSubGroupMap = XML_Reader.macroTreeSubGroupMap;
 
-        for (String name : xmlMap.keySet()) {
-            String text = xmlMap.get(name);
-            loadMap(name, text);
+        if (DC_TYPE.isOBJ_TYPE(name)) {
+            tabGroupMap = XML_Reader.tabGroupMap;
+            treeSubGroupMap = XML_Reader.treeSubGroupMap;
         }
 
+        constructTypeMap(doc, name, tabGroupMap, treeSubGroupMap);
+
+        LogMaster.getInstance().log(LogMaster.INFO,
+                "" + Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
     }
 
     private static void loadMap(String name, String text) {
-        if (text == null) {
-            // createTypeDataFile(name, OBJ_TYPES.isOBJ_TYPE(name));
-        }
-        // xmlMap.put(name, text);
-        Chronos.mark("TYPE MAPPING " + name);
-        if (DC_TYPE.isOBJ_TYPE(name)) {
-                constructTypeMap(XML_Converter.getDoc(text), name, tabGroupMap,
-                 treeSubGroupMap);
-        } else {
-            constructTypeMap(XML_Converter.getDoc(text), name, macroTabGroupMap,
-                    macroTreeSubGroupMap);
-        }
-        LogMaster.getInstance().log(LogMaster.INFO,
-                "" + Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
-
-    }
-
-    public static Document getDocForGroup(String name) {
-        return XML_Converter.getDoc(xmlMap.get(name));
+        final Document doc = XML_Converter.getDoc(text);
+        loadMap(name, doc);
     }
 
     public static Map<String, String> getXmlMap() {
@@ -475,7 +382,6 @@ public class XML_Reader {
         }
         return treeSubGroupMap;
     }
-
 
 
     public static boolean isMacro() {
