@@ -523,22 +523,6 @@ public class Launcher {
         // initSave(Launcher.getLoadPath());
         /*
          * initObjectString buffs and dynamic params non-bf objects - items,
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
 		 */
 
         try {
@@ -549,7 +533,7 @@ public class Launcher {
                 first = true;
                 new DC_Engine().microInitialization();
             }
-
+            DENIS_Launcher.main(new String[]{});
             game = Simulation.getGame();
             if (game == null) {
                 game = new DC_Game(false);
@@ -575,7 +559,7 @@ public class Launcher {
 
             if (!CoreEngine.isSwingOn()) {
                 //TODO INSERT NEW GUI HERE
-                DENIS_Launcher.main(new String[]{});
+
             } else {
                 DC_GameGUI GUI = new DC_GameGUI(game, fullscreen, false);
                 GUI.initGUI();
