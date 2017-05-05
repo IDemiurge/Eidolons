@@ -242,7 +242,7 @@ public class HC_SequenceMaster implements SequenceManager {
         PresetEntityChoiceView view = new PresetEntityChoiceView(cs, hero, InfoMaster.MIDDLE_HERO, list) {
 
             protected int getColumnsCount() {
-                return list.size();
+                return 4;
             }
 
             protected int getPageSize() {
