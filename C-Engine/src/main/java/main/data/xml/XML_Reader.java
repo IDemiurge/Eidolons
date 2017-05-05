@@ -118,7 +118,7 @@ public class XML_Reader {
 
         final File[] files = folder.listFiles();
         if (files != null) {
-            //DO NOT FOREACH - it slow on arrays
+            //DO NOT FOREACH - its slow on arrays
             for (int i = 0; i < files.length; i++) {
                 File file = files[i];
                 if (checkFile(file)) {
