@@ -1,10 +1,8 @@
 package main.game.ai;
 
 import main.entity.obj.Obj;
-import main.game.core.game.MicroGame;
 import main.game.ai.logic.ActionTypeManager.ACTION_TYPES;
-import main.system.auxiliary.log.LogMaster;
-import main.system.threading.WaitMaster;
+import main.game.core.game.MicroGame;
 
 import java.util.Set;
 
@@ -25,45 +23,6 @@ public class AI_Controller {
         this.executor = ai.getExecutor();
     }
 
-    public boolean makeTurn() {
-        this.logic.newTurn();
-
-        // while (!logic.isTurnOver()) {
-        // Obj unit = logic.getPriorityUnit();
-        for (Obj unit : logic.getUnits()) {
-            LogMaster
-                    .log(LogMaster.AI_DEBUG, "unit chosen:" + unit);
-            if (!makeTurn(unit)) {
-                return false;
-            }
-
-        }
-
-        LogMaster.log(LogMaster.AI_DEBUG, "Turn made!");
-        return true;
-    }
-
-    public boolean makeTurn(Obj unit) {
-        while (!logic.isUnitDone(unit)) {
-            try {
-                Object[] args = logic.getArgsForExecution(unit);
-                executor.execute(args);
-                logic.reset();
-                WaitMaster.WAIT(100);
-            } catch (Exception e) {
-                // e.printStackTrace();
-                LogMaster.log(LogMaster.AI_DEBUG, unit
-                        + " failed!");
-                logic.reset();
-                e.printStackTrace();
-                break;
-            }
-
-        }
-        LogMaster.log(LogMaster.AI_DEBUG, "Unit done: "
-                + unit);
-        return true;
-    }
 
     public AI getAi() {
         return ai;

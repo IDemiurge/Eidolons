@@ -57,7 +57,7 @@ public class CoreEngine {
     public static void init(boolean macro) {
 
         systemInit();
-        new CoreEngine().dataInit(macro);
+        CoreEngine.dataInit(macro);
     }
 
     public static SoundMaster getSm() {
@@ -240,7 +240,7 @@ public class CoreEngine {
         CoreEngine.phaseAnimsOn = phaseAnimsOn;
     }
 
-    public void dataInit(boolean macro) {
+    public static void  dataInit(boolean macro) {
 
         Chronos.mark("TYPES INIT");
 

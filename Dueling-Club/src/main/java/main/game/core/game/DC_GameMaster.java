@@ -196,7 +196,7 @@ public class DC_GameMaster extends GameMaster {
     }
 
     public Unit getUnitByCoordinate(Coordinates coordinates) {
-        Collection<Obj> list = getUnitsForCoordinates(coordinates);
+        Collection<Unit> list = getUnitsOnCoordinates(coordinates);
         //sort?? TODO
         if (list.isEmpty()) {
             return null;
@@ -205,12 +205,12 @@ public class DC_GameMaster extends GameMaster {
 //         getGame().getBattleField().getObj(coordinates);
     }
 
-    public Collection<Obj> getUnitsForCoordinates(Coordinates... coordinates) {
+    public Collection<Unit> getUnitsOnCoordinates(Coordinates... coordinates) {
         return getUnitsForCoordinates(new HashSet<>(Arrays.asList(coordinates)));
     }
 
-    public Collection<Obj> getUnitsForCoordinates(Set<Coordinates> coordinates) {
-        Collection<Obj> list = new LinkedList<>();
+    public Collection<Unit> getUnitsForCoordinates(Set<Coordinates> coordinates) {
+        Collection<Unit> list = new LinkedList<>();
         for (Coordinates c : coordinates) {
             for (Unit unit : getUnits()) {
                 if (unit.getCoordinates().equals(c)) {

@@ -20,7 +20,6 @@ public class MenuButton extends CustomButton implements Runnable {
             if (game.isSimulation()) {
                 game.getDebugMaster().showDebugWindow();
             } else {
-                game.getDebugMaster().toggleDebugGui();
             }
         }
     }

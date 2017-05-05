@@ -243,9 +243,6 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
     public void mouseClicked(MouseEvent e) {
         ObjType item = getList().locationToItem(e.getPoint());
         getList().setSelectedValue(item, true);
-        if (SwingUtilities.isRightMouseButton(e)) {
-            hero.getGame().getToolTipMaster().addListItemTooltip(e, item);
-        }
     }
 
     @Override

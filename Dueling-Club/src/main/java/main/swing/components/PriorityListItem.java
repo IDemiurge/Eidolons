@@ -1,9 +1,7 @@
 package main.swing.components;
 
 import main.content.PARAMS;
-import main.content.values.properties.G_PROPS;
 import main.entity.obj.unit.DC_UnitModel;
-import main.swing.components.panels.page.DC_PagedPriorityPanel;
 import main.swing.generic.components.G_Panel;
 import main.swing.renderers.SmartTextManager;
 import main.system.graphics.ColorManager;
@@ -42,10 +40,6 @@ public class PriorityListItem extends G_Panel {
     public PriorityListItem(DC_UnitModel unit) {
         this.unit = unit;
         if (unit != null) {
-            if (unit.getName().equals(DC_PagedPriorityPanel.CLOCK_UNIT)) {
-                clock = true;
-                unit.setProperty(G_PROPS.IMAGE, "UI\\custom\\Time2.JPG");
-            }
         }
         init();
     }

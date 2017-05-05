@@ -1,10 +1,9 @@
 package main.game.ai;
 
 import main.entity.obj.Obj;
-import main.game.core.game.MicroGame;
 import main.game.ai.logic.ActionTypeManager.ACTION_TYPES;
+import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
-import main.system.net.Communicator;
 
 import java.util.Set;
 
@@ -14,7 +13,6 @@ public abstract class AI {
     protected AI_Executor executor;
     protected MicroGame game;
     protected Player player;
-    protected Communicator communicator;
 
     public AI(MicroGame game, Player player) {
 
@@ -25,12 +23,9 @@ public abstract class AI {
     public void init() {
         this.executor = new AI_Executor(this);
         this.controller = new AI_Controller(this);
-        this.communicator = game.getCommunicator();
     }
 
-    public boolean makeTurn() {
-        return controller.makeTurn();
-    }
+
 
     public AI_Controller getController() {
         return controller;
@@ -64,13 +59,6 @@ public abstract class AI {
         this.player = player;
     }
 
-    public Communicator getCommunicator() {
-        return communicator;
-    }
-
-    public void setCommunicator(Communicator communicator) {
-        this.communicator = communicator;
-    }
 
     public Set<Obj> getUnits() {
         return controller.getUnits();

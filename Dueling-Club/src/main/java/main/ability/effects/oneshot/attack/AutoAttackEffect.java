@@ -2,13 +2,9 @@ package main.ability.effects.oneshot.attack;
 
 import main.ability.effects.DC_Effect;
 import main.ability.effects.OneshotEffect;
-import main.client.net.GameConnector.HOST_CLIENT_CODES;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.tools.priority.DC_PriorityManager;
-import main.swing.generic.services.dialog.AttackChoicePanel;
-import main.system.auxiliary.data.ListMaster;
-import main.system.net.WaitingThread;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -62,8 +58,8 @@ public class AutoAttackEffect extends DC_Effect  implements OneshotEffect {
         }
         if (!getGame().isOffline()) {
             if (!getUnit().isMine()) {
-                String name = WaitingThread.waitOrGetInput(HOST_CLIENT_CODES.CUSTOM_PICK);
-                return new ListMaster<DC_ActiveObj>().findType(name, subActions);
+//                String name = WaitingThread.waitOrGetInput(HOST_CLIENT_CODES.CUSTOM_PICK);
+//                return new ListMaster<DC_ActiveObj>().findType(name, subActions);
             }
         }
         if (getUnit().isAiControlled() || isPickAutomaticallyOn()) {
@@ -91,17 +87,17 @@ public class AutoAttackEffect extends DC_Effect  implements OneshotEffect {
         if (!isManualOn) {
             throw new RuntimeException();
         }
-        AttackChoicePanel dialog = new AttackChoicePanel(subActions, getTarget());
-        DC_ActiveObj action =
-         dialog.chooseEntity();
-        if (action != null) {
-            if (!getGame().isOffline()) {
-                if (getGame().getConnection() != null) {
-                    getGame().getConnection().send(HOST_CLIENT_CODES.CUSTOM_PICK, action.getName());
-                }
-            }
-        }
-        return action;
+//        AttackChoicePanel dialog = new AttackChoicePanel(subActions, getTarget());
+//        DC_ActiveObj action =
+//         dialog.chooseEntity();
+//        if (action != null) {
+//            if (!getGame().isOffline()) {
+//                if (getGame().getConnection() != null) {
+//                    getGame().getConnection().send(HOST_CLIENT_CODES.CUSTOM_PICK, action.getName());
+//                }
+//            }
+//        }
+//        return action;
         // Obj obj = DialogMaster.objChoice("Pick an Attack Type", subActions
         // .toArray(new DC_ActiveObj[subActions.size()]));
         // if (obj == null)
@@ -111,6 +107,7 @@ public class AutoAttackEffect extends DC_Effect  implements OneshotEffect {
         // getGame().getConnection().send(HOST_CLIENT_CODES.CUSTOM_PICK,
         // obj.getName());
         // return (DC_ActiveObj) obj;
+        return null;
     }
 
     private DC_ActiveObj pickAutomatically(List<DC_ActiveObj> subActions) {

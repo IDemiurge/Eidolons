@@ -276,7 +276,6 @@ public class MainPanel implements TabChangeListener {
     public void typeSelected(Entity type) {
         getMiddlePanel().getArc().refresh();
         if (currentTab == itemTab) {
-            itemTab.getActionPanel().refresh();
         }
     }
 

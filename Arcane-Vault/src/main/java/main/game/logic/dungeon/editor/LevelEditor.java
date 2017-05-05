@@ -112,7 +112,7 @@ public class LevelEditor {
         SwingMaster.DEBUG_ON = false;
         DC_Engine.systemInit();
         initFullData();
-        DC_Engine.microInitialization(false);
+        DC_Engine.microInitialization( );
         // WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.READING_DONE);
         // XML_Reader.readTypes(true);
         CoreEngine.setLevelEditor(true);
@@ -133,7 +133,7 @@ public class LevelEditor {
 
     private static void initFullData() {
         CoreEngine.setMenuScope(false);
-        DC_Engine.dataInit(false, false);
+        DC_Engine.dataInit(   );
     }
 
     public static Level newLevel(String baseDungeonType, String data, boolean empty) {

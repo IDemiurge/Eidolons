@@ -80,7 +80,7 @@ public class DC_BuffPanel extends G_ListPanel<DC_BuffObj> {
     public void setInts() {
 
         sizeInfo = "w " + 1.5f * GuiManager.getSquareCellSize() + ", h "
-                + GuiManager.getSmallObjSize() / 2 + "+" + GuiManager.SCROLL_BAR_WIDTH * 5 / 3;
+         + GuiManager.getSmallObjSize() / 2 + "+" + GuiManager.SCROLL_BAR_WIDTH * 5 / 3;
         vpolicy = JScrollPane.VERTICAL_SCROLLBAR_NEVER;
         hpolicy = JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED;
         if (minItems == 0) {

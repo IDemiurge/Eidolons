@@ -2,19 +2,12 @@ package main.game.core.game;
 
 import main.ability.ActionGenerator;
 import main.ability.InventoryTransactionManager;
-import main.ability.UnitTrainingMaster;
 import main.ability.effects.DC_EffectManager;
 import main.client.cc.gui.lists.dc.DC_InventoryManager;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.cc.logic.party.PartyObj;
 import main.client.cc.logic.spells.SpellGenerator;
 import main.client.dc.Launcher;
-import main.client.game.NetGame;
-import main.client.game.gui.DC_GameGUI;
-import main.client.net.DC_Communicator;
-import main.client.net.GameConnector;
-import main.client.net.GameConnector.HOST_CLIENT_CODES;
-import main.client.net.HostClientConnection;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.DC_TYPE;
 import main.content.DC_ValueManager;
@@ -33,7 +26,6 @@ import main.game.ai.AI_Manager;
 import main.game.ai.tools.DC_Bf_Analyzer;
 import main.game.battlefield.*;
 import main.game.battlefield.Coordinates.DIRECTION;
-import main.game.battlefield.map.DC_Map;
 import main.game.battlefield.options.UIOptions;
 import main.game.battlefield.pathing.PathingManager;
 import main.game.battlefield.vision.VisionManager;
@@ -56,21 +48,20 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.DungeonMaster;
 import main.game.logic.generic.DC_ActionManager;
 import main.rules.DC_Rules;
-import main.rules.action.ActionRule;
 import main.rules.mechanics.WaitRule;
+import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.GuiMaster;
 import main.system.DC_ConditionMaster;
 import main.system.DC_RequirementsManager;
 import main.system.auxiliary.log.Chronos;
-import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
 import main.system.entity.ValueHelper;
 import main.system.graphics.AnimationManager;
+import main.system.hotkey.DC_KeyManager;
 import main.system.launch.CoreEngine;
 import main.system.math.DC_MathManager;
 import main.system.net.DC_IdManager;
-import main.system.net.data.PartyData;
 import main.system.test.TestMasterContent;
 import main.system.text.DC_LogManager;
 import main.system.text.ToolTipMaster;
@@ -80,7 +71,6 @@ import main.test.PresetLauncher;
 import main.test.PresetMaster;
 import main.test.debug.DebugMaster;
 
-import javax.swing.*;
 import java.util.*;
 
 /**
@@ -102,6 +92,7 @@ public class DC_Game extends MicroGame {
     private TestMasterContent testMaster;
     private ArenaManager arenaManager;
     private BattleManager battleManager;
+
     private ToolTipMaster toolTipMaster;
     private PlayerMaster playerMaster;
     private GuiMaster guiMaster;
@@ -114,67 +105,32 @@ public class DC_Game extends MicroGame {
     private AnimationManager animationManager;
     private DroppedItemManager droppedItemManager;
     private DungeonMaster dungeonMaster;
-    private GameConnector connector;
-    private HostedGame hostedGame;
-    private DC_GameGUI GUI;
+    private DC_KeyManager keyManager;
     private boolean AI_ON = true;
     private Thread gameLoopThread;
     private DC_Rules rules;
-    private DC_Map map;
     private GAME_MODES gameMode;
     private GAME_TYPE gameType;
     private String playerParty;
     private Map<Unit, Map<String, DC_HeroAttachedObj>> simulationCache;
     private PartyObj party;
     private DC_GameData data;
-    private DequeImpl<ActionRule> actionRules;
     private boolean battleInit;
     private String enemyParty;
     private boolean paused;
     private Map<Coordinates, Map<Unit, DIRECTION>> directionMap;
     private HashMap<Coordinates, Map<Unit, FLIP>> flipMap;
     private boolean testMode;
-    private Boolean hostClient;
-    private NetGame netGame;
     private boolean dummyPlus;
     private GameLoop loop;
 
 
-    public DC_Game(Player player1, Player player2, GameConnector connector, HostedGame hostedGame,
-                   PartyData partyData1, PartyData partyData2) {
-        this(player1, player2, hostedGame.getTitle(), partyData1.getObjData(), partyData2
-         .getObjData());
-        this.setHostedGame(hostedGame);
-        setHost(hostedGame.isHost());
-        this.setConnector(connector);
-        connection = connector.getConnection();
-    }
 
     @Deprecated
     public DC_Game(Player player1, Player player2, String gamename, String objData, String objData2) {
         super(player1, player2, gamename, objData, objData2);
     }
 
-    @Deprecated
-    public DC_Game(HostClientConnection connection, HostedGame hostedGame, DC_Player... players) {
-        this();
-        this.setConnector(connection.getGameConnector());
-        this.connection = connection;
-        this.setHostedGame(hostedGame);
-        setHost(hostedGame.isHost());
-        playerMaster = new PlayerMaster(this, players);
-        // TODO players' data should already be available?
-    }
-
-    @Deprecated
-    public DC_Game(NetGame netGame, DC_Player... players) {
-        this();
-        this.setConnector(netGame.getGameHost().getGameConnector());
-        this.hostedGame = netGame.getHostedGame();
-        this.netGame = netGame;
-        setHost(hostedGame.isHost());
-        playerMaster = new PlayerMaster(this, players);
-    }
 
 
     public DC_Game() {
@@ -208,7 +164,7 @@ public class DC_Game extends MicroGame {
         manager = new DC_GameManager(getState(), this);
         manager.init();
 //        } //TODO FIX classdefnotfound!
-        this.setIdManager(new DC_IdManager(getConnector(), this));
+        this.setIdManager(new DC_IdManager( this));
         guiMaster = new GuiMaster(this);
         armorMaster = new ArmorMaster(false);
         armorSimulator = new ArmorMaster(true);
@@ -232,12 +188,13 @@ public class DC_Game extends MicroGame {
         conditionMaster = new DC_ConditionMaster();
         logManager = new DC_LogManager(this);
         rules = new DC_Rules(this);
+        keyManager = new DC_KeyManager( getManager());
+        keyManager.init();
     }
 
     @Override
     public void init() {
         Chronos.mark("GAME_INIT");
-
         //TempEventManager.trigger("create-cell-object" + i + ":" + j, objects);
 
         initObjTypes();
@@ -262,7 +219,7 @@ public class DC_Game extends MicroGame {
     public DC_BattleFieldManager getBattleFieldManager() {
 
         if (battleFieldManager == null) {
-            battleFieldManager = new DC_BattleFieldManager(this, battlefield);
+            battleFieldManager = new DC_BattleFieldManager(this );
         }
         return (DC_BattleFieldManager) super.getBattleFieldManager();
     }
@@ -274,7 +231,6 @@ public class DC_Game extends MicroGame {
         arenaManager = new ArenaManager(this);
         arenaManager.init();
         battleManager = new BattleManager(this);
-        this.map = arenaManager.getMap();
 
         player1 = arenaManager.getPlayer();
         player2 = arenaManager.getEnemyPlayer();
@@ -284,8 +240,6 @@ public class DC_Game extends MicroGame {
         unitData1 = "";
         unitData2 = "";
 
-        communicator = new DC_Communicator(this);
-        if (netGame == null && connection == null) {
             setOffline(true);
             if (isAI_ON()) {
                 player2.setAi(true);
@@ -293,16 +247,11 @@ public class DC_Game extends MicroGame {
                 setAnalyzer(new DC_Bf_Analyzer((MicroGame) Game.game));
             }
 
-        } else {
-            setOffline(false);
-
-        }
         // if (battlefield == null) {
 
-
-        battlefield = new DC_BattleField(map, player1, player2, getState());
+        battlefield = new DC_BattleField(new DC_BattleFieldGrid(getDungeon()));
         setGraveyardManager(new DC_GraveyardManager(this));
-        battleFieldManager = new DC_BattleFieldManager(this, battlefield);
+        battleFieldManager = new DC_BattleFieldManager(this );
         movementManager.setGrid(battlefield.getGrid());
         // }
         if (getUiOptions() == null) {
@@ -316,36 +265,6 @@ public class DC_Game extends MicroGame {
         setBattleInit(true);
     }
 
-    public void playerJoined(HostClientConnection hcc, String data) {
-        if (isHost()) {
-            if (getGameMode() == GAME_MODES.DUEL) {
-                connection = hcc;
-
-                // getPlayer(false).setConnection(hcc);
-            }
-            // else
-            // communicator.addConnection(hcc);
-
-        } else {
-            DC_Player player = playerMaster.initPlayer(hcc, data);
-            if (player.isEnemy())// ??? TODO
-            {
-                setEnemyParty(player.getPartyDataString());
-            }
-        }
-        getCommunicator().setConnectionHandler(hcc);
-    }
-
-    public DC_Communicator getCommunicator() {
-        if (communicator == null) {
-            communicator = new DC_Communicator(this);
-            connector.setCommunicator(communicator);
-            if (connection != null) {
-                communicator.setConnectionHandler(connection);
-            }
-        }
-        return (DC_Communicator) communicator;
-    }
 
     public void start(boolean first) {
         Chronos.mark("GAME_START");
@@ -354,7 +273,7 @@ public class DC_Game extends MicroGame {
         turnManager.init();
 
         if (isDebugMode()) {
-            debugMaster = new DebugMaster(getState(), getBattleField().getBuilder());
+            debugMaster = new DebugMaster(getState() );
         }
 
         arenaManager.startGame();
@@ -365,10 +284,6 @@ public class DC_Game extends MicroGame {
         // TODO: 30.10.2016 insert gui init here
 
         startGameLoop();
-
-        if (BooleanMaster.isFalse(hostClient)) {
-            getConnection().send(HOST_CLIENT_CODES.CHECK_READY, getPlayer(true).getName());
-        }
 
         if (playerMaster == null) {
             playerMaster = new PlayerMaster(game, getPlayer(true), getPlayer(false));
@@ -519,8 +434,8 @@ public class DC_Game extends MicroGame {
         return getMaster().getUnitByCoordinate(coordinates);
     }
 
-    public Collection<Obj> getUnitsForCoordinates(Coordinates... coordinates) {
-        return getMaster().getUnitsForCoordinates(coordinates);
+    public Collection<Unit> getUnitsForCoordinates(Coordinates... coordinates) {
+        return getMaster().getUnitsOnCoordinates(coordinates);
     }
 
     public void removeUnit(Unit unit) {
@@ -549,29 +464,12 @@ public class DC_Game extends MicroGame {
             return idManager;
         }
 
-        return idManager = new DC_IdManager(null, this);
+        return idManager = new DC_IdManager(  this);
 
     }
 
 
-    public void setHostedGame(HostedGame hostedGame) {
-        this.hostedGame = hostedGame;
-    }
 
-    public DC_GameGUI getGUI() {
-        return GUI;
-    }
-
-    public void setGUI(DC_GameGUI GUI) {
-        this.GUI = GUI;
-    }
-
-    public JFrame getWindow() {
-        if (getGUI() == null) {
-            return null;
-        }
-        return getGUI().getWindow();
-    }
 
     public boolean isAI_ON() {
         return AI_ON;
@@ -604,7 +502,7 @@ public class DC_Game extends MicroGame {
     public synchronized DebugMaster getDebugMaster() {
         if (debugMaster == null) {
             if (getBattleField() != null) {
-                debugMaster = new DebugMaster(getState(), getBattleField().getBuilder());
+                debugMaster = new DebugMaster(getState()  );
             }
         }
         return debugMaster;
@@ -764,13 +662,6 @@ public class DC_Game extends MicroGame {
         this.data = data;
     }
 
-    public DequeImpl<ActionRule> getActionRules() {
-        return actionRules;
-    }
-
-    public void setActionRules(DequeImpl<ActionRule> actionRules2) {
-        this.actionRules = actionRules2;
-    }
 
     public TestMasterContent getTestMaster() {
         return testMaster;
@@ -888,26 +779,6 @@ public class DC_Game extends MicroGame {
         return arenaArcadeMaster;
     }
 
-    public Boolean getHostClient() {
-        return hostClient;
-    }
-
-    public void setHostClient(Boolean hostClient) {
-        this.hostClient = hostClient;
-        if (hostClient != null) {
-            UnitTrainingMaster.setRandom(false);
-        }
-    }
-
-    public GameConnector getConnector() {
-        return connector;
-    }
-
-    public void setConnector(GameConnector connector) {
-        this.connector = connector;
-        connector.setGame(this);
-    }
-
     public GuiMaster getGuiMaster() {
         return guiMaster;
     }
@@ -952,6 +823,10 @@ public class DC_Game extends MicroGame {
 
     public void setLoop(GameLoop loop) {
         this.loop = loop;
+    }
+
+    public DC_KeyManager getKeyManager() {
+        return keyManager;
     }
 
 

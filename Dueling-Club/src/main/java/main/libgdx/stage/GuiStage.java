@@ -44,7 +44,7 @@ public class GuiStage extends Stage {
 
     @Override
     public boolean keyTyped(char character) {
-        DC_Game.game.getBattleField().getKeyListener().handleKeyTyped(0, character);
+        DC_Game.game. getKeyManager().handleKeyTyped(0, character);
         return super.keyTyped(character);
     }
 }

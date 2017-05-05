@@ -143,25 +143,11 @@ public abstract class Game  implements Serializable { // extends Entity? ;) Prop
         return actionManager;
     }
 
-    public void setActionManager(ActionManager actionManager) {
-        this.actionManager = actionManager;
-    }
 
     public MovementManager getMovementManager() {
         return movementManager;
     }
 
-    public void setMovementManager(MovementManager movementManager) {
-        this.movementManager = movementManager;
-    }
-
-    public Communicator getCommunicator() {
-        return communicator;
-    }
-
-    public void setCommunicator(Communicator communicator) {
-        this.communicator = communicator;
-    }
 
     public Log getLog() {
         return log;

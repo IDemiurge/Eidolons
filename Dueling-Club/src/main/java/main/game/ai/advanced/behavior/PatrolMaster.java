@@ -93,7 +93,7 @@ public class PatrolMaster {
         // TODO more than 1 coordinate?
         Unit unitByCoordinate = null;// unit.getGame().getUnitByCoordinate(coordinates);
         // preCheck leader?
-        Collection<Obj> units = unit.getGame().getUnitsForCoordinates(coordinates);
+        Collection<Unit> units = unit.getGame().getUnitsForCoordinates(coordinates);
         for (Obj u : units) {
             // sort?
             Unit blocker = (Unit) u;
@@ -149,7 +149,7 @@ public class PatrolMaster {
     }
 
     private static void isBlocked(Coordinates destination, Unit obj) {
-        boolean blocked = obj.getGame().getBattleField().canMoveOnto(obj, destination);
+//        boolean blocked = obj.getGame().getBattleField().canMoveOnto(obj, destination);
     }
 
     private static boolean checkCatchersUp(Patrol patrol, int i) {

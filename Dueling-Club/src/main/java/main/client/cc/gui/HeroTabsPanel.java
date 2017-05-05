@@ -7,7 +7,6 @@ import main.client.cc.gui.neo.tabs.TabChangeListener;
 import main.client.cc.logic.party.PartyObj;
 import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.logic.generic.PartyManager;
 import main.swing.components.panels.DC_TopPanel;
 import main.swing.components.panels.page.info.element.TextCompDC;
@@ -77,9 +76,6 @@ public class HeroTabsPanel extends G_Panel implements TabChangeListener {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        if (DC_Game.game.getToolTipMaster() != null) {
-            DC_Game.game.getToolTipMaster().drawToolTips(this);
-        }
     }
 
     @Override

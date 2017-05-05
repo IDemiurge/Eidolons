@@ -1,7 +1,5 @@
 package main.ability.effects.oneshot.unit;
 
-import main.ability.effects.oneshot.unit.SummonEffect;
-import main.client.net.GameConnector.HOST_CLIENT_CODES;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
@@ -17,13 +15,10 @@ import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.net.WaitingThread;
-import main.system.net.socket.ServerConnector.NetCode;
 
 import java.util.List;
 
 public class GatewayEffect extends SummonEffect {
-    private static final NetCode code = HOST_CLIENT_CODES.CUSTOM_PICK;
     private PROPERTY prop;
     private String filter;
     private List<ObjType> typeList;
@@ -94,7 +89,7 @@ public class GatewayEffect extends SummonEffect {
         } else {
             if (!getGame().isOffline()) {
                 if (!obj.isMine()) {
-                    unitType = WaitingThread.waitOrGetInput(code);
+//                    unitType = WaitingThread.waitOrGetInput(code);
                     return unitType;
                 }
             }
@@ -103,7 +98,7 @@ public class GatewayEffect extends SummonEffect {
                     C_OBJ_TYPE.BF_OBJ);
             if (!getGame().isOffline()) {
                 if (obj.isMine()) {
-                    getGame().getConnection().send(code, unitType);
+//                    getGame().getConnection().send(code, unitType);
                 }
             }
         }

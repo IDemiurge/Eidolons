@@ -17,12 +17,10 @@ import java.util.List;
 
 public class GameControlPanel extends G_Panel {
     private VIEWS prevView;
-    private DC_Builder bfBuilder;
 
     public GameControlPanel(DC_Builder bfBuilder) {
         super("fill, ins 1 17 0 0");
         setVisuals(VISUALS.CONTROL_PANEL_HORIZONTAL);
-        this.bfBuilder = bfBuilder;
         addButton(GAME_CONTROL.CHAR);
         addButton(GAME_CONTROL.LOG);
         addMinimapButton(true);
@@ -60,10 +58,7 @@ public class GameControlPanel extends G_Panel {
     }
 
     public void minimapButtonClicked(boolean viewMode) {
-        if (!viewMode) {
-            bfBuilder.toggleMinimap();
-            bfBuilder.refresh();
-        } else {
+
             List<String> convertToNameIntList = StringMaster.toNameList(true,
                     DungeonMaster.getDungeons());
             String result = new ListChooser(SELECTION_MODE.SINGLE, convertToNameIntList,
@@ -82,7 +77,6 @@ public class GameControlPanel extends G_Panel {
             // } else {
             // Launcher.resetView(prevView);
             // }
-        }
     }
 
     public enum GAME_CONTROL {

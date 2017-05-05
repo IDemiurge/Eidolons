@@ -36,7 +36,6 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.KeyResolver;
 import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_FeatObj;
-import main.entity.tools.EntityHandler;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.bf.unit.*;
 import main.entity.type.ObjType;
@@ -1027,9 +1026,8 @@ public class Unit extends DC_UnitModel {
         }
         return animation.isDrawReady();
     }
-
+@Deprecated
     public void initToolTip() {
-        getGame().getToolTipMaster().initUnitTooltip(this, false);
 
     }
 

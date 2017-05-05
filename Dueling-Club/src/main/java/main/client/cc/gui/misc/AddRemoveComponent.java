@@ -21,7 +21,6 @@ import main.swing.generic.services.listener.MouseClickListener;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.math.Formula;
-import main.system.text.ToolTipMaster.TOOLTIP_TYPE;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,9 +62,6 @@ public class AddRemoveComponent extends G_Panel {
             public void mouseClicked(MouseEvent e) {
                 PointX p = new PointX(e.getPoint(), getX(), getY());
                 p.translate(buffComp.getX(), buffComp.getY());
-                CharacterCreator.getHero().getGame().getToolTipMaster().initTooltip(
-                        TOOLTIP_TYPE.CUSTOM_TOOLTIP, e, p,
-                        buffComp.getList().getSelectedValue().getToolTip());
             }
         });
         buffComp2.setCustomMouseListener(new MouseClickListener() {
@@ -73,9 +69,6 @@ public class AddRemoveComponent extends G_Panel {
             public void mouseClicked(MouseEvent e) {
                 PointX p = new PointX(e.getPoint(), getX(), getY());
                 p.translate(buffComp2.getX(), buffComp2.getY());
-                CharacterCreator.getHero().getGame().getToolTipMaster().initTooltip(
-                        TOOLTIP_TYPE.CUSTOM_TOOLTIP, e, p,
-                        buffComp2.getList().getSelectedValue().getToolTip());
             }
         });
         addComps();

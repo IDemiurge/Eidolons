@@ -4,9 +4,8 @@ import main.content.DC_TYPE;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
-import main.entity.obj.MicroObj;
+import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
@@ -26,14 +25,12 @@ public class DC_BattleFieldManager extends BattleFieldManager {
     private Map<Coordinates, List<DIRECTION>> wallMap = new HashMap<>();
     private Map<Coordinates, List<DIRECTION>> diagonalJoints = new HashMap<>();
 
-    public DC_BattleFieldManager(DC_Game game, SwingBattleField battlefield) {
-        super(game, battlefield);
+    public DC_BattleFieldManager(DC_Game game ) {
+        super(game );
         this.game = game;
     }
 
-    public DC_BattleField getBattlefield() {
-        return (DC_BattleField) super.getBattlefield();
-    }
+
 
     public Coordinates pickCoordinate() {
         Integer id = game.getManager().select(game.getCells(), new Ref(game));
@@ -47,11 +44,11 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
     @Override
     public boolean isCellVisiblyFree(Coordinates c) {
-        for (Unit obj : getBattlefield().getGrid().getCellCompMap().get(c).getObjects()) {
+        for (Obj obj : game.getUnitsForCoordinates(c) ) {
             boolean free = false;
             // getBattlefield().getGrid().getObjCompMap().getOrCreate(c) == null;
             if (!free) {
-                free = !VisionManager.checkVisible(obj);
+                free = !VisionManager.checkVisible((DC_Obj) obj);
             }
             if (!free) {
                 return false;
@@ -62,14 +59,10 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
 
     public boolean canMoveOnto(Entity unit, Coordinates c) {
-        return getBattlefield().canMoveOnto(unit, c);
+        return game.getMovementManager().getPathingManager().isGroundPassable(unit, c);
     }
 
-    @Override
-    public boolean placeUnit(MicroObj unit, int x, int y) {
-        game.getBattleField().createObj(unit);
-        return true;
-    }
+
 
 
     public void resetWallMap() {

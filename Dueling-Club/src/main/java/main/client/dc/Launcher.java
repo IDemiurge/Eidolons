@@ -6,9 +6,6 @@ import main.client.cc.HC_Master;
 import main.client.cc.gui.MainPanel;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.MainManager.MAIN_MENU_ITEMS;
-import main.client.game.gui.DC_GameGUI;
-import main.client.gui.key.MenuKeyListener;
-import main.client.gui.key.SelectionKeyListener;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -84,7 +81,6 @@ public class Launcher {
     private static KeyListener dcKeyListener;
     private static HC_KeyManager hcKeyListener;
     private static KeyListener menuKeyListener;
-    private static SelectionKeyListener selectionKeyListener;
     private static boolean dataInitialized;
     private static boolean running = false;
     private static boolean fastMacroTest = false;
@@ -393,8 +389,6 @@ public class Launcher {
 
     public static KeyListener getKeyListener(VIEWS newView) {
         switch (newView) {
-            case CHOICE:
-                return selectionKeyListener;
             case DC:
                 return dcKeyListener;
             case HC:
@@ -457,8 +451,6 @@ public class Launcher {
         mainMenu = new MainMenu();
         setMainManager(new MainManager(mainMenu));
 
-        menuKeyListener = new MenuKeyListener(getMainManager());
-        selectionKeyListener = new SelectionKeyListener(getMainManager());
         mainMenu.setManager(getMainManager());
         setView(mainMenu, VIEWS.MENU);
         if (!CoreEngine.isArcaneVault() && autoPressSequence == null) {
@@ -498,7 +490,7 @@ public class Launcher {
         if (isDataInitialized()) {
             return;
         }
-        DC_Engine.dataInit( false);
+        DC_Engine.dataInit(  );
         setDataInitialized(true);
     }
 
@@ -531,7 +523,7 @@ public class Launcher {
             boolean first = false;
             if (game == null) {
                 first = true;
-                new DC_Engine().microInitialization();
+                DC_Engine.microInitialization();
             }
             DENIS_Launcher.main(new String[]{});
             game = Simulation.getGame();
@@ -557,21 +549,6 @@ public class Launcher {
             }
             game.start(first);
 
-
-            if (!CoreEngine.isSwingOn()) {
-                //TODO INSERT NEW GUI HERE
-
-            } else {
-                DC_GameGUI GUI = new DC_GameGUI(game, fullscreen, false);
-                GUI.initGUI();
-                game.setGUI(GUI);
-                GUI.setWindow(frame);
-                frame.setLayout(new BorderLayout());
-                frame.setSize(GuiManager.getScreenSize());
-                frame.setLocationRelativeTo(null);
-                //TODO remove SWING DEPENDENCY
-                setView(GUI.getPanel(), VIEWS.DC);
-            }
         } catch (Exception e) {
             e.printStackTrace();
             game.setSimulation(true);

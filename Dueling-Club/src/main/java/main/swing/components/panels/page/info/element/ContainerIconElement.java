@@ -7,7 +7,6 @@ import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
-import main.game.core.game.DC_Game;
 import main.swing.components.panels.page.small.IconListPanel;
 import main.swing.components.panels.page.small.SmallItem;
 import main.swing.generic.components.G_Component;
@@ -16,8 +15,6 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.GuiManager;
-import main.system.text.ToolTipMaster.TOOLTIP_TYPE;
-import main.system.text.TooltipMouseListener;
 
 import java.awt.*;
 import java.util.Collection;
@@ -36,8 +33,6 @@ public class ContainerIconElement extends G_PagePanel<SmallItem> implements Enti
     public ContainerIconElement(PROPERTY p) {
         super(0, false, VERSION);
         this.property = p;
-        setPageMouseListener(new TooltipMouseListener(TOOLTIP_TYPE.DC_INFO_PAGE_PASSIVE,
-                DC_Game.game.getToolTipMaster()));
     }
 
     @Override

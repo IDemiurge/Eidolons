@@ -28,7 +28,6 @@ import main.libgdx.bf.TargetRunnable;
 import main.rules.action.ActionRule;
 import main.rules.mechanics.IlluminationRule;
 import main.swing.components.obj.drawing.DrawMasterStatic;
-import main.swing.components.panels.page.DC_PagedPriorityPanel;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -38,7 +37,6 @@ import main.system.graphics.ColorManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
-import main.system.text.ToolTipMaster.SCREEN_POSITION;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -121,7 +119,7 @@ public class DC_GameManager extends GameManager {
 
     public boolean activeSelect(final Obj obj) {
         boolean result = true;
-        for (ActionRule ar : getGame().getActionRules()) {
+        for (ActionRule ar : getGame().getRules().getActionRules()) {
             try {
                 result &= ar.unitBecomesActive((Unit) obj);
             } catch (Exception e) {
@@ -338,12 +336,6 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public Integer select(Filter<Obj> filter, Ref ref) {
-        if (ref.getActive() instanceof DC_ActiveObj) {
-            if (getGame().getToolTipMaster()
-             .isTargetingTooltipShown((DC_ActiveObj) ref.getActive())) {
-                getGame().getToolTipMaster().initTargetingTooltip((DC_ActiveObj) ref.getActive());
-            }
-        }
         selectingSet = filter.getObjects();
 
 
@@ -366,10 +358,8 @@ public class DC_GameManager extends GameManager {
             if (obj instanceof DC_Obj) {
                 DC_Obj unit = (DC_Obj) obj;
                 if (getActiveObj() != null) {
-                    if (!getActiveObj().getName().equals(DC_PagedPriorityPanel.CLOCK_UNIT)) {
-                        if (getActiveObj().getZ() != unit.getZ()) {
-                            selectingSet.remove(unit);
-                        }
+                    if (getActiveObj().getZ() != unit.getZ()) {
+                        selectingSet.remove(unit);
                     }
                 }
             }
@@ -377,8 +367,8 @@ public class DC_GameManager extends GameManager {
         this.selectingSet = selectingSet;
 
         if (selectingSet.isEmpty()) {
-            getGame().getToolTipMaster().addTooltip(SCREEN_POSITION.ACTIVE_UNIT_BOTTOM,
-             "No targets available!");
+//            getGame().getToolTipMaster().addTooltip(SCREEN_POSITION.ACTIVE_UNIT_BOTTOM,
+//             "No targets available!");
             SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
             return null;
         }
@@ -519,7 +509,8 @@ public class DC_GameManager extends GameManager {
     public Unit getActiveObj() {
         if (game.isStarted()) {
             if (selectedActiveObj == null) {
-                return DC_PagedPriorityPanel.getClockUnit();
+                //it's ticking madness!
+//                return DC_PagedPriorityPanel.getClockUnit();
             }
         }
         return (Unit) selectedActiveObj;
@@ -554,7 +545,7 @@ public class DC_GameManager extends GameManager {
 
     public void applyActionRules(DC_ActiveObj action) {
         if (action != null) {
-            for (ActionRule a : getGame().getActionRules()) {
+            for (ActionRule a : getGame().getRules().getActionRules()) {
                 try {
                     a.actionComplete(action);
                 } catch (Exception e) {

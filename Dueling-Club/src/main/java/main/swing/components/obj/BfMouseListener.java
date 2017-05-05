@@ -5,10 +5,9 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.swing.components.buttons.DynamicButton;
+import main.swing.components.obj.drawing.DrawMaster.INTERACTIVE_ELEMENT;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.swing.generic.services.dialog.DialogPanel;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.AnimPhase;
@@ -59,21 +58,22 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
         component = (JComponent) c;
     }
 
+    //WHAT IS THIS HORROR?
     @Override
     public void run() {
         while (true) {
             try {
-                if (xOffset == null) {
-                    xOffset = gridComp.getHolder().getDungeon().getGame().getBattleField()
-                            .getBuilder().getBfGridPosX();
-                }
-                if (yOffset == null) {
-                    yOffset = gridComp.getHolder().getDungeon().getGame().getBattleField()
-                            .getBuilder().getBfGridPosY();
-                }
-                if (!DC_Game.game.getGUI().getWindow().isActive()) {
-                    continue;
-                }
+//                if (xOffset == null) {
+//                    xOffset = gridComp.getHolder().getDungeon().getGame().getBattleField()
+//                            .getBuilder().getBfGridPosX();
+//                }
+//                if (yOffset == null) {
+//                    yOffset = gridComp.getHolder().getDungeon().getGame().getBattleField()
+//                            .getBuilder().getBfGridPosY();
+//                }
+//                if (!DC_Game.game.getGUI().getWindow().isActive()) {
+//                    continue;
+//                }
                 Point onScreen = MouseInfo.getPointerInfo().getLocation();
                 Point point = new Point(onScreen.x - xOffset, onScreen.y - yOffset);
                 if (point.x < 0 || point.x > GuiManager.getBfGridWidth() || point.y < 0
@@ -199,8 +199,6 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
     private boolean checkToggleTooltip(PhaseAnimation anim, MouseEvent e) {
         for (Rectangle rect : anim.getTooltipMap().keySet()) {
             if (rect.contains(e.getPoint())) {
-                gridComp.getGame().getToolTipMaster().toggleToolTip(anim.getTooltipMap().get(rect));
-
                 return true;
             }
         }
@@ -210,8 +208,6 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
 
     private void displayTooltip(PhaseAnimation anim, MouseItem item) {
         // TODO
-        gridComp.getGame().getToolTipMaster().addTooltip(anim, item.getPoint(),
-                item.getRectangle(), item);
 
     }
 
@@ -249,27 +245,11 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
         return false;
     }
 
-    private boolean checkDialogClick(MouseEvent e) {
-        if (gridComp == null) {
-            return false;
-        }
-        if (gridComp.getGame().getBattleField() == null) {
-            return false;
-        }
-        DialogPanel d = gridComp.getGame().getBattleField().getBuilder().getDialog();
-        if (d == null) {
-            return false;
-        }
-        return d.checkClick(e);
-    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         // new ToolTipManager().
-        gridComp.getGame().getToolTipMaster().removeToolTips();
-        if (checkDialogClick(e)) {
-            return;
-        }
+
         if (checkAnimationClick(e)) {
             return;
         }
@@ -491,9 +471,6 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
 
     }
 
-    public enum INTERACTIVE_ELEMENT {
-        AP, COUNTERS, ITEMS, TRAPS, LOCKS, CORPSES, STACK,
 
-    }
 
 }

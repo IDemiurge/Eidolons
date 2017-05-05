@@ -705,20 +705,8 @@ public class SpawnManager {
 
     }
 
-    public FACING_DIRECTION getMultiplayerFacingForUnit(MicroObj unit) {
-        return getMultiplayerFacingMap().get(unit.getId());
-    }
 
-    public Map<Integer, FACING_DIRECTION> getMultiplayerFacingMap() {
-        if (multiplayerFacingMap == null) {
-            multiplayerFacingMap = game.getConnector().getFacingMap();
-        }
-        return multiplayerFacingMap;
-    }
 
-    public void setMultiplayerFacingMap(Map<Integer, FACING_DIRECTION> multiplayerFacingMap) {
-        this.multiplayerFacingMap = multiplayerFacingMap;
-    }
 
     public synchronized DC_Game getGame() {
         return game;

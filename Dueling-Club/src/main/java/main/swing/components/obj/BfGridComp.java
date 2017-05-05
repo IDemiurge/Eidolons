@@ -344,9 +344,6 @@ public class BfGridComp {
             game.getBattleFieldManager().resetWallMap(wallMap);
         }
 
-        if (getGame().getBattleField() != null) {
-            panel.setKeyManager(getGame().getBattleField().getKeyListener());
-        }
         if (!panel.requestFocusInWindow()) {
             panel.requestFocus();
         }

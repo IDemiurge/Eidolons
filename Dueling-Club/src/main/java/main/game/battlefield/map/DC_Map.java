@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
+@Deprecated
 public class DC_Map {
     /**
      * Gotta refactor this - generator should have all those fields and methods

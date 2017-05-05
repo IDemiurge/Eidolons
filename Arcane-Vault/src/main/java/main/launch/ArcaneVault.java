@@ -253,7 +253,7 @@ public class ArcaneVault {
         AV_DataManager.init();
 
         CoreEngine.systemInit();
-        new CoreEngine().dataInit(macroMode);
+        CoreEngine.dataInit(macroMode);
 
         workspaceManager = new WorkspaceManager(macroMode, getGame());
 

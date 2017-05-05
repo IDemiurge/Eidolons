@@ -17,7 +17,6 @@ import main.system.images.ImageManager.BORDER;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -63,8 +62,8 @@ public class DC_ItemPanel extends G_ListPanel<DC_HeroAttachedObj> implements BOR
         int w = minItems / rowsVisible * GuiManager.getSmallObjSize();
         int h = rowsVisible * GuiManager.getSmallObjSize();
         sizeInfo = "w " + w
-                // + "/2" + ((width == 0) ? GuiManager.getCellSize() : width)
-                + ", h " + h;
+         // + "/2" + ((width == 0) ? GuiManager.getCellSize() : width)
+         + ", h " + h;
 
         hpolicy = JScrollPane.HORIZONTAL_SCROLLBAR_NEVER;
         vpolicy = JScrollPane.VERTICAL_SCROLLBAR_NEVER;
@@ -75,13 +74,6 @@ public class DC_ItemPanel extends G_ListPanel<DC_HeroAttachedObj> implements BOR
     @Override
     protected G_List<DC_HeroAttachedObj> createList() {
         return new CustomList<DC_HeroAttachedObj>(data) {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (SwingUtilities.isRightMouseButton(e)) {
-                    game.getToolTipMaster().initItemTooltip(e, this, info);
-                }
-                super.mouseClicked(e);
-            }
 
             @Override
             protected ListItem<DC_HeroAttachedObj> getListItem(DC_HeroAttachedObj value,

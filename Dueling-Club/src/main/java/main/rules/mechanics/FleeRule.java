@@ -1,13 +1,5 @@
 package main.rules.mechanics;
 
-import main.entity.Ref;
-import main.entity.obj.Obj;
-import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
-
-import java.util.LinkedList;
-import java.util.List;
-
 public class FleeRule {
     /*
      * preCheck facing
@@ -18,45 +10,45 @@ public class FleeRule {
 	 * distaster!
 	 */
 
-    private List<Unit> fledUnits = new LinkedList<>();
-    private DC_Game game;
-
-    public FleeRule(DC_Game game) {
-        this.game = game;
-    }
-
+//    private List<Unit> fledUnits = new LinkedList<>();
+//    private DC_Game game;
+//
+//    public FleeRule(DC_Game game) {
+//        this.game = game;
+//    }
+//
     public static boolean isFleeAllowed() {
         // TODO Auto-generated method stub
         return false;
     }
-
-    public void flee(Ref ref, boolean permanent) {
-        flee(ref.getSourceObj(), permanent);
-    }
-
-    // public void comeBack(){ }
-    public void flee(Obj obj, boolean permanent) {
-        /*
-		 * should it take some time? ;)
-		 *
-		 * Yes it should...
-		 *
-		 * Perhaps a kind of channeling?
-		 *
-		 * the action itself could be like that
-		 */
-        game.getBattleField().remove(obj);
-//        fledUnits.added(obj);
-		/*
-		 * is it permanent? perhaps some effects should allow a 'come back' ;)
-		 *
-		 * some effects may actually feign flight - sky strike, atral
-		 * banishment, so the unit cannot be remove from the game... and I also
-		 * don't want to remove anything from it, it will be just invisible ;)
-		 */
-        // if (permanent)
-        // ref.getSourceObj().kill(ref.getSourceObj(), false, true);
-
-    }
+//
+//    public void flee(Ref ref, boolean permanent) {
+//        flee(ref.getSourceObj(), permanent);
+//    }
+//
+//    // public void comeBack(){ }
+//    public void flee(Obj obj, boolean permanent) {
+//        /*
+//		 * should it take some time? ;)
+//		 *
+//		 * Yes it should...
+//		 *
+//		 * Perhaps a kind of channeling?
+//		 *
+//		 * the action itself could be like that
+//		 */
+//        game.getBattleField().remove(obj);
+////        fledUnits.added(obj);
+//		/*
+//		 * is it permanent? perhaps some effects should allow a 'come back' ;)
+//		 *
+//		 * some effects may actually feign flight - sky strike, atral
+//		 * banishment, so the unit cannot be remove from the game... and I also
+//		 * don't want to remove anything from it, it will be just invisible ;)
+//		 */
+//        // if (permanent)
+//        // ref.getSourceObj().kill(ref.getSourceObj(), false, true);
+//
+//    }
 
 }

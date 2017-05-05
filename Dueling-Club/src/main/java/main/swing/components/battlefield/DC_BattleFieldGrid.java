@@ -706,7 +706,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     @Override
     public boolean canMoveOnto(Entity obj, Coordinates c) {
-        return game.getRules().getStackingRule().canBeMovedOnto(obj, c, dungeon.getZ(), null);
+        return game.getRules().getStackingRule().canBeMovedOnto(obj,
+         c, dungeon.getZ(), null);
     }
 
     @Override

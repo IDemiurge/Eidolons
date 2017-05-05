@@ -1,6 +1,5 @@
 package main.game.logic.battle.player;
 
-import main.client.net.HostClientConnection;
 import main.content.enums.system.AiEnums;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -26,7 +25,6 @@ public class DC_Player extends Player {
         Player.NEUTRAL = NEUTRAL;
     }
 
-    HostClientConnection connection;
     boolean host;
     private Map<DC_Obj, Coordinates> detectionCache = new HashMap<>();
     private PlayerAI playerAI;
@@ -109,13 +107,6 @@ public class DC_Player extends Player {
         this.playerAI = playerAI;
     }
 
-    public HostClientConnection getConnection() {
-        return connection;
-    }
-
-    public boolean isHost() {
-        return host;
-    }
 
     public String getData() {
         return data;

@@ -75,7 +75,7 @@ public class Positioner {
             coordinate = c.getAdjacentCoordinate(direction);
             if (coordinate != null) {
                 if (!DC_Game.game.isSimulation()) {
-                    if (DC_Game.game.getBattleField().canMoveOnto(entity, coordinate)) {
+                    if (DC_Game.game.getBattleFieldManager().canMoveOnto(entity, coordinate)) {
                         break;
                     }
                 }
@@ -86,13 +86,15 @@ public class Positioner {
         }
         loop = new Loop(50); // second layer in case first one is fully
         // blocked
-        while (!loop.continues() && !DC_Game.game.getBattleField().canMoveOnto(entity, coordinate)
+        while (!loop.continues() &&
 
-                // (DC_Game.game.getBattleField().getGrid().isCoordinateObstructed(coordinate)
-                || coordinate == null) {
+         !DC_Game.game.getBattleFieldManager().canMoveOnto(entity, c)
+
+         // (DC_Game.game.getBattleField().getGrid().isCoordinateObstructed(coordinate)
+         || coordinate == null) {
 
             Coordinates adjacentCoordinate = c
-                    .getAdjacentCoordinate(getRandomSpawnAdjustDirection());
+             .getAdjacentCoordinate(getRandomSpawnAdjustDirection());
             coordinate = adjustCoordinate(adjacentCoordinate, facing);
         }
         if (coordinate.isInvalid()) {

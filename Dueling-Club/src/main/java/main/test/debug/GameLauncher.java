@@ -3,7 +3,6 @@ package main.test.debug;
 import main.ability.UnitTrainingMaster;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.Launcher;
-import main.client.game.NetGame;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.PROPS;
@@ -64,8 +63,6 @@ public class GameLauncher {
     private Boolean DEBUG_MODE;
     private Integer PLAYER_CHOICE_OPTION = null;
     private Integer ENEMY_CHOICE_OPTION = 0;
-    private Boolean host_client;
-    private NetGame netGame;
     private DC_Game game;
     private String partyName;
     private String encounterName;
@@ -74,14 +71,12 @@ public class GameLauncher {
     private String dungeon;
     private WORKSPACE_GROUP workspaceFilter;
 
-    public GameLauncher(DC_Game game, Boolean host_client) {
-        this(game, null, null, host_client);
+    public GameLauncher(DC_Game game ) {
+        this(game, null, null );
     }
 
-    public GameLauncher(DC_Game game, Boolean FAST_MODE, Boolean SUPER_FAST_MODE,
-                        Boolean host_client) {
+    public GameLauncher(DC_Game game, Boolean FAST_MODE, Boolean SUPER_FAST_MODE ) {
         this.game = game;
-        this.host_client = host_client;
         this.FAST_MODE = BooleanMaster.isTrue(FAST_MODE);
         this.SUPER_FAST_MODE = BooleanMaster.isTrue(SUPER_FAST_MODE);
         instance = this;
@@ -92,8 +87,8 @@ public class GameLauncher {
     }
 
     private String initFactionData() {
-        unitGroupLevel = BooleanMaster.isFalse(host_client) ? UnitGroupMaster.getPowerLevel()
-                : DialogMaster.inputInt(UnitGroupMaster.getPowerLevel());
+//        unitGroupLevel = BooleanMaster.isFalse(host_client) ? UnitGroupMaster.getPowerLevel()
+//                : DialogMaster.inputInt(UnitGroupMaster.getPowerLevel());
         UnitGroupMaster.setPowerLevel(unitGroupLevel);
         UnitGroupMaster.setFactionLeaderRequired(factionLeaderRequired);
         // Faction faction = chooseFaction();
@@ -134,10 +129,6 @@ public class GameLauncher {
         PresetMaster.savePreset(PresetMaster.getPreset(), true);
     }
 
-    private void initMultiplayerFlags() {
-        DUMMY_MODE = false;
-        VISION_HACK = true;
-    }
 
     public void selectiveInit() {
 
@@ -220,9 +211,7 @@ public class GameLauncher {
         if (launch != null) {
             initLaunch(launch);
         }
-        if (host_client != null) {
-            initMultiplayerFlags();
-        }
+
         DC_Game.setGame(game);
         // select code?
 
@@ -233,7 +222,7 @@ public class GameLauncher {
         if (PresetMaster.getPreset() == null) {
             if (getFAST_MODE()) {
 
-                if (netGame == null && dungeon == null) {
+                if (  dungeon == null) {
                     DungeonMaster.RANDOM_DUNGEON = true;
                 } else {
                     DungeonMaster.setDEFAULT_DUNGEON_LEVEL(dungeon);

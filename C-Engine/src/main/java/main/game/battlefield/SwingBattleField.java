@@ -3,20 +3,14 @@ package main.game.battlefield;
 import main.entity.obj.Obj;
 import main.game.core.game.MicroGame;
 import main.game.core.state.MicroGameState;
-import main.game.logic.battle.player.Player;
 import main.swing.generic.components.Builder;
 import main.system.launch.CoreEngine;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseWheelListener;
 import java.lang.reflect.InvocationTargetException;
-
+//for Level Editor and other legacy....
 public abstract class SwingBattleField implements BattleField {
     protected BattleFieldGrid grid;
-    protected Component c;
-    protected Player player2;
-    protected Player player1;
     protected Builder builder;
     MicroGameState state;
     MicroGame game;
@@ -25,26 +19,14 @@ public abstract class SwingBattleField implements BattleField {
     private Obj activeSelectedObj;
     private Obj infoSelectedObj;
 
-    public SwingBattleField(Player player1, Player player2, MicroGameState state) {
+    public SwingBattleField(  MicroGameState state) {
         this.state = state;
-        this.player1 = player1;
-        this.player2 = player2;
         this.game = state.getGame();
 
     }
 
-    public void addMouseWheelListener(MouseWheelListener l) {
-        c.addMouseWheelListener(l);
-    }
 
-    public Component getBF_Comp() {
-        if (c == null) {
-            init();
-        }
-        return c;
-    }
 
-    public abstract void init();
 
     public Builder getBuilder() {
         return builder;
@@ -130,7 +112,6 @@ public abstract class SwingBattleField implements BattleField {
         this.infoSelectedObj = infoSelectedObj;
     }
 
-    public abstract void refreshSpellbook();
 
     public Obj getCell(Coordinates coordinates) {
         return getGrid().getCell(coordinates);

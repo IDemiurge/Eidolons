@@ -298,12 +298,7 @@ public class DC_ObjInitializer {
                 BattleFieldObject unit = (BattleFieldObject) game.createUnit(type, c, owner);
 
 
-                if (!game.isOffline()) {
-                    if (!game.isHost()) {
-                        unit.setFacing(unit.getGame().getArenaManager().getSpawnManager()
-                                .getMultiplayerFacingForUnit(unit));
-                    }
-                } else if (FAST_DC.isRunning()) {
+               if (FAST_DC.isRunning()) {
                     if (!owner.isMe()) {
                         creeps = true;
                     } else {

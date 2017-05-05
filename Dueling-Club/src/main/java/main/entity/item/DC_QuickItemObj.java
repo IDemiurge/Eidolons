@@ -16,7 +16,6 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.dungeon.special.Trap;
 import main.game.logic.generic.DC_ActionManager;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
 import main.system.launch.TypeInitializer;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -209,9 +208,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
             // if (!game.isDebugMode())
             removeCharge();
         } else {
-            if (CoreEngine.isSwingOn()) {
-                getGame().getToolTipMaster().initQuickItemTooltip(this, false);
-            }
+
         }
 
         return true;
@@ -292,7 +289,6 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
     @Override
     public void invokeRightClicked() {
-        getGame().getToolTipMaster().initQuickItemTooltip(this, true);
         super.invokeRightClicked();
     }
 

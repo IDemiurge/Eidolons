@@ -182,7 +182,6 @@ public class ArenaManager {
         for (Unit u : game.getUnits()) {
             map.put(u.getId(), u.getFacing());
         }
-        spawnManager.setMultiplayerFacingMap(map);
     }
 
     private boolean isEncountersConstructed() {

@@ -269,18 +269,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     @Override
     public void invokeRightClicked() {
-        if (!getSubActions().isEmpty()) {
-            getGame().getBattleField().getBuilder().toggleDisplayActionModePanel(this);
-            SoundMaster.blockNextSound();
-        }
         super.invokeRightClicked();
 
     }
 
-    @Override
-    public void initToolTip() {
-        getGame().getToolTipMaster().initActionToolTip(this, true);
-    }
 
     public void invokeClicked() {
         if (!getActivator().canBeManuallyActivated()) {

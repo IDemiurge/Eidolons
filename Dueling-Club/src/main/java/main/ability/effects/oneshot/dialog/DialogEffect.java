@@ -13,8 +13,8 @@ public abstract class DialogEffect extends DC_Effect  implements OneshotEffect {
         hero = (Unit) ref.getTargetObj();
         if (!ref.getSourceObj().isMine() || hero.isAiControlled()) {
             if (getGame().isOnline() && !hero.isAiControlled()) {
-                String string = getGame().getCommunicator().getChoiceData();
-                processOperationCommand(string);
+//                String string = getGame().getCommunicator().getChoiceData();
+//                processOperationCommand(string);
             } else {
                 automaticDialogResolve();
             }
@@ -26,7 +26,7 @@ public abstract class DialogEffect extends DC_Effect  implements OneshotEffect {
             ref.getActive().setCancelled(true);
         } else if (getGame().isOnline()) {
             if (hero.isMine()) {
-                getGame().getCommunicator().sendChoiceData(getOperationsData());
+//                getGame().getCommunicator().sendChoiceData(getOperationsData());
             }
         }
 

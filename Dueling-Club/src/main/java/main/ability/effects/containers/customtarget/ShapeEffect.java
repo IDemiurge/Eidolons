@@ -12,12 +12,12 @@ import main.entity.group.GroupImpl;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.core.game.DC_Game;
+import main.system.datatypes.DequeImpl;
 import main.system.entity.FilterMaster;
 import main.system.math.DC_PositionMaster;
 import main.system.math.Formula;
 import main.system.math.PositionMaster.SHAPES;
-
-import java.util.Collection;
 
 public abstract class ShapeEffect extends SpecialTargetingEffect {
 
@@ -42,6 +42,11 @@ public abstract class ShapeEffect extends SpecialTargetingEffect {
     }
 
     @Override
+    public DC_Game getGame() {
+        return (DC_Game) super.getGame();
+    }
+
+    @Override
     public void initTargeting() {
         // init unit group
 
@@ -51,7 +56,10 @@ public abstract class ShapeEffect extends SpecialTargetingEffect {
         coordinates = DC_PositionMaster.getShapedCoordinates(baseCoordinate,
                 getFacing(), base_width, distance, getShape());
 
-        Collection<Obj> objects = game.getUnitsForCoordinates(coordinates);
+        DequeImpl< Obj> objects =    new DequeImpl<>() ;
+        objects.addAllCast(
+        getGame().getMaster()
+         .getUnitsForCoordinates(coordinates));
 
         Filter.filter(objects, targetType);
         if (allyOrEnemyOnly != null) {

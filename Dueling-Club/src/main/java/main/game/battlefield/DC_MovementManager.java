@@ -31,7 +31,6 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.generic.DC_ActionManager;
 import main.rules.mechanics.CollisionRule;
-import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.CustomValueManager;
 import main.system.auxiliary.EnumMaster;
@@ -276,6 +275,11 @@ public class DC_MovementManager implements MovementManager {
     }
 
     @Override
+    public BattleFieldGrid getGrid() {
+        return game.getBattleField().getGrid();
+    }
+
+    @Override
     public boolean move(Obj obj, Coordinates c, boolean free, Path path) {
         return free;
         // return move((DC_HeroObj) obj,
@@ -348,7 +352,6 @@ public class DC_MovementManager implements MovementManager {
         if (!game.getRules().getEngagedRule().unitMoved(obj, x, y)) {
             return false;
         }
-        getBf().moveBattleFieldObj(obj, x, y);
 
         event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
         return game.fireEvent(event);
@@ -388,11 +391,6 @@ public class DC_MovementManager implements MovementManager {
 
         return (int) Math.round(cost);
 
-    }
-
-    @Override
-    public DC_BattleFieldGrid getGrid() {
-        return ((DC_BattleField) getBf()).getGrid();
     }
 
     @Override

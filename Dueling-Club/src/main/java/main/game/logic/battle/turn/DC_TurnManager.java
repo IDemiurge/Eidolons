@@ -13,8 +13,6 @@ import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
-import main.test.TestMaster;
-import main.test.frontend.FAST_DC;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.ArrayList;
@@ -136,11 +134,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
             }
         }
 
-        try {
-            game.getBattleField().refreshInitiativeQueue();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     private void resetQueue() {
@@ -149,13 +143,11 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         WaitRule.checkMap();
 
         for (Unit unit : game.getUnits()) {
-            if (TestMaster.isSublevelFreezeOn()) {
-                if (game.getMainHero() != null) {
-                    if (game.getMainHero().getZ() != unit.getZ()) {
-                        continue;
-                    }
-                }
-            }
+//                if (game.getMainHero() != null) {
+//                    if (game.getMainHero().getZ() != unit.getZ()) {
+//                        continue;
+//                    }
+//                }
             final boolean actNow = unit.canActNow();
             if (actNow) {
                 unitQueue.add(unit);
@@ -244,18 +236,6 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 
     @Override
     public int compare(Unit u1, Unit u2) {
-        if (game.getState().getRound() == 0) {
-            if (FAST_DC.LEADER_MOVES_FIRST) {
-                if (FAST_DC.isRunning()) {
-                    if (u1.isMine() && u1.isMainHero()) {
-                        return -1;
-                    }
-                    if (u1.isMine() && u2.isMainHero()) {
-                        return 1;
-                    }
-                }
-            }
-        }
         int a1 = u1.getIntParam(PARAMS.C_INITIATIVE);
         int a2 = u2.getIntParam(PARAMS.C_INITIATIVE);
         // TODO re-random if match?

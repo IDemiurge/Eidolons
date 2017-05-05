@@ -1,7 +1,5 @@
 package main.system.net;
 
-import main.client.net.GameConnector;
-import main.client.net.GameConnector.HOST_CLIENT_CODES;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
@@ -11,7 +9,6 @@ import main.system.entity.IdManager;
 public class DC_IdManager implements IdManager {
 
     public static final int TIME_ID = Integer.MAX_VALUE;
-    private GameConnector connector;
     private Game game;
     private boolean host;
     private Integer ID = 0;
@@ -21,9 +18,8 @@ public class DC_IdManager implements IdManager {
 
     }
 
-    public DC_IdManager(GameConnector connector, MicroGame game) {
+    public DC_IdManager( MicroGame game) {
         super();
-        this.connector = connector;
         this.game = game;
         this.setHost(game.isHost());
     }
@@ -44,21 +40,7 @@ public class DC_IdManager implements IdManager {
         // return typeID;
     }
 
-    private Integer requestNewId() {
-        connector.send(HOST_CLIENT_CODES.ID_REQUEST);
-        String id = "";
-        if (!new WaitingThread(HOST_CLIENT_CODES.ID_REQUEST).Wait()) {
-            id = WaitingThread.getINPUT(HOST_CLIENT_CODES.ID_REQUEST);
 
-        }
-        try {
-            ID = Integer.valueOf(id);
-        } catch (Exception e) {
-
-        }
-
-        return ID;
-    }
 
     public boolean isHost() {
         return host;

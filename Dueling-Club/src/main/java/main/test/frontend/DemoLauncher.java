@@ -8,7 +8,6 @@ import main.system.hotkey.DC_KeyManager;
 public class DemoLauncher {
     private Game frontGame;
     private DC_Game coreGame;
-    private DC_KeyManager keyManager;
 
     public DemoLauncher() {
 
@@ -28,8 +27,7 @@ public class DemoLauncher {
         DC_Game.setGame(coreGame);
         coreGame.start(true);
 
-        keyManager = new DC_KeyManager(coreGame.getManager());
-        keyManager.init();
+
 
     }
 

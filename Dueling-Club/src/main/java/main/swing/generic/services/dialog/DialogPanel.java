@@ -178,9 +178,6 @@ public class DialogPanel extends G_Panel {
 
     public void close() {
         visible = false;
-        getGame().getToolTipMaster().removeToolTips();
-        getGame().getBattleField().getBuilder().setDialog(null);
-        getGame().getBattleField().getBuilder().refresh();
 
     }
 
@@ -194,12 +191,10 @@ public class DialogPanel extends G_Panel {
     @Override
     public void refresh() {
         // target.getGame().getBattleField().refresh();
-        getGame().getBattleField().getBF_Comp().repaint();
     }
 
     public void show() {
         visible = true;
-        getGame().getBattleField().getBuilder().setDialog(this);
         getGame().getBattleField().getBuilder().refresh();
     }
 

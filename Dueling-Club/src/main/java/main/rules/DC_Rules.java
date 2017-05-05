@@ -95,7 +95,6 @@ public class DC_Rules implements GameRules {
         actionRules.add(ensnareRule);
         actionRules.add(stackingRule);
         actionRules.add(engagedRule);
-        getGame().setActionRules(actionRules);
 
         cleaveRule = new CleaveRule(getGame());
 

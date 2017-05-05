@@ -262,7 +262,7 @@ public class DungeonMaster {
 
     public void initSublevel(Dungeon subLevel) {
         setDungeon(subLevel);
-        game.getBattleField().getBuilder().newDungeon(subLevel);
+//        game.getBattleField().getBuilder().newDungeon(subLevel);
         if (!getDungeons().contains(subLevel)) {
             getDungeons().add(subLevel);
         }

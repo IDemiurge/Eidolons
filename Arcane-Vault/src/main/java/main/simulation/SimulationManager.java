@@ -90,9 +90,6 @@ public class SimulationManager {
 
     }
 
-    public static void refreshAll() {
-
-    }
 
     public static boolean isUnitType(String selected) {
         return Arrays.asList(unitTypes).contains(selected);
@@ -103,6 +100,6 @@ public class SimulationManager {
     }
 
     public static void init() {
-        DC_Engine.microInitialization(true);
+        DC_Engine.microInitialization( );
     }
 }

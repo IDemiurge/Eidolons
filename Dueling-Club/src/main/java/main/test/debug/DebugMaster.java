@@ -54,7 +54,6 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.generic.DC_ActionManager;
 import main.libgdx.anims.controls.EmitterController;
-import main.swing.builders.DC_Builder;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
@@ -180,7 +179,6 @@ public class DebugMaster {
     Unit selectedTarget = null;
     private String lastFunction;
     private Stack<String> executedFunctions = new Stack<>();
-    private DC_Builder bf;
     // public void editAi(DC_HeroObj unit) {
     // UnitAI ai = unit.getUnitAI();
     // }
@@ -196,10 +194,9 @@ public class DebugMaster {
     private boolean debugFunctionRunning;
 
 
-    public DebugMaster(DC_GameState state, DC_Builder bf) {
+    public DebugMaster(DC_GameState state ) {
         this.state = state;
         this.game = state.getGame();
-        this.bf = bf;
     }
 
     public static boolean isOmnivisionOn() {
@@ -895,10 +892,10 @@ public class DebugMaster {
         reset();
 
         if (transmitted) {
-            String transmittedData = lastType + StringMaster.NET_DATA_SEPARATOR + infoObj
-                    + StringMaster.NET_DATA_SEPARATOR + data + StringMaster.NET_DATA_SEPARATOR
-                    + ref;
-            game.getCommunicator().transmitDebugFunction(func, transmittedData);
+//            String transmittedData = lastType + StringMaster.NET_DATA_SEPARATOR + infoObj
+//                    + StringMaster.NET_DATA_SEPARATOR + data + StringMaster.NET_DATA_SEPARATOR
+//                    + ref;
+//            game.getCommunicator().transmitDebugFunction(func, transmittedData);
         }
         return func;
 
@@ -1280,13 +1277,7 @@ public class DebugMaster {
         return null;
     }
 
-    public DC_Builder getBf() {
-        return bf;
-    }
 
-    public void setBf(DC_Builder bf) {
-        this.bf = bf;
-    }
 
     public DC_Game getGame() {
         return game;
@@ -1312,10 +1303,6 @@ public class DebugMaster {
         this.debugPanel = debugPanel;
     }
 
-    public void toggleDebugGui() {
-        getBf().getTopPanel().toggleDebugGui();
-
-    }
 
     public Obj getArg() {
         return arg;

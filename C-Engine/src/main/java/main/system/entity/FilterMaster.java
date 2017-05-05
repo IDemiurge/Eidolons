@@ -186,7 +186,7 @@ public class FilterMaster {
         return list;
     }
 
-    public static void applyFilter(Collection<Obj> objects, FILTERS filter, Ref ref, boolean out) {
+    public static void applyFilter(Collection<? extends  Obj> objects, FILTERS filter, Ref ref, boolean out) {
         List<Obj> objectsToRemove = new LinkedList<>();
         for (Obj obj : objects) {
             if ((out) == checkFilter(obj, filter, ref)) {

@@ -23,7 +23,6 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.dungeon.Dungeon;
 import main.swing.XLine;
 import main.swing.components.obj.BfGridComp;
-import main.swing.components.obj.BfMouseListener.INTERACTIVE_ELEMENT;
 import main.swing.components.obj.CellComp;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.renderers.SmartTextManager;
@@ -65,7 +64,10 @@ public class DrawMaster {
     private int topObjY;
     private BufferedImage infoObjImage;
     private Map<Obj, Point> offsetMap;
+    public enum INTERACTIVE_ELEMENT {
+        AP, COUNTERS, ITEMS, TRAPS, LOCKS, CORPSES, STACK,
 
+    }
     public boolean isStackedPaintZoom() {
         return zoom >= 50;
     }

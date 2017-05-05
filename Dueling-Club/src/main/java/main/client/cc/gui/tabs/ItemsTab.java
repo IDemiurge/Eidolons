@@ -5,7 +5,6 @@ import main.client.cc.gui.MainViewPanel.HERO_VIEWS;
 import main.client.cc.gui.lists.ItemListManager;
 import main.client.cc.gui.lists.dc.DC_InventoryManager;
 import main.client.cc.gui.misc.PoolComp;
-import main.client.cc.gui.tabs.lists.ActionInfoList;
 import main.client.cc.gui.tabs.lists.HeroItemSlots;
 import main.client.cc.gui.tabs.lists.JewelrySlots;
 import main.client.cc.gui.tabs.lists.QuickItemList;
@@ -29,7 +28,6 @@ public class ItemsTab extends HeroItemTab {
     private PoolComp poolComp;
     private QuickItemList quickSlots;
     private JewelrySlots jewelrySlots;
-    private ActionInfoList actionPanel;
 
     public ItemsTab(Unit hero) {
         this(null, hero);
@@ -70,9 +68,6 @@ public class ItemsTab extends HeroItemTab {
 
         addItemSlots();
         super.addComps();
-        if (isActionPanelVisible()) {
-            addActionPanel();
-        }
         addJewelrySlots();
         addQuickSlots();
         addWeightPool();
@@ -80,38 +75,8 @@ public class ItemsTab extends HeroItemTab {
 
     }
 
-    private boolean isActionPanelVisible() {
-        if (!game.isSimulation()) {
-            return false;
-        }
-        return true;
-        // if (CharacterCreator.getInfoSelected() == null)
-        // return false;
-        // if (CharacterCreator.getInfoSelected().getOBJ_TYPE_ENUM() ==
-        // OBJ_TYPES.ACTIONS)
-        // return true;
-        // if
-        // (hero.getActiveWeapon(false).getType().equals(CharacterCreator.getInfoSelected()))
-        // return true;
-        // if
-        // (hero.getActiveWeapon(true).getType().equals(CharacterCreator.getInfoSelected()))
-        // return true;
-        // return false;
-    }
 
-    private void addActionPanel() {
-        if (actionPanel == null) {
-            actionPanel = new ActionInfoList(hero);
-        } else {
-            actionPanel.refresh();
-        }
-        String x = "0";
-        // if ()
-        // x = "@center_x";
 
-        add(actionPanel, "id AP_ID" + ", pos " + x + " " + SLOTS_ID + ".y2");
-
-    }
 
     private void addItemSlots() {
         if (slots == null) {
@@ -219,8 +184,6 @@ public class ItemsTab extends HeroItemTab {
         return PROPS.QUICK_ITEMS;
     }
 
-    public ActionInfoList getActionPanel() {
-        return actionPanel;
-    }
+
 
 }

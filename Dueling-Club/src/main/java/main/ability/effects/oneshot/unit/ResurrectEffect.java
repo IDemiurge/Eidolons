@@ -27,7 +27,7 @@ public class ResurrectEffect extends DC_Effect  implements OneshotEffect {
         InventoryTransactionManager.equipOriginalItems(target, target);
         target.removeStatus(UnitEnums.STATUS.DEAD);
 
-        getGame().getBattleField().createUnit(target);
+//        getGame().getManager(). getObjCreator().createUnit(target.getType())
 
         target.setParam(PARAMS.C_ENDURANCE, endFormula.getInt(ref));
         // perhaps modify instead, in case the lethal damage was exceeding

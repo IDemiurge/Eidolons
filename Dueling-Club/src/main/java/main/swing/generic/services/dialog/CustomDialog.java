@@ -60,7 +60,6 @@ public abstract class CustomDialog<T> {
     }
 
     public void close() {
-        target.getGame().getToolTipMaster().removeToolTips();
         visible = false;
     }
 

@@ -26,11 +26,11 @@ public abstract class MicroGame extends Game {
     protected Player player2;
     protected String gameName;
     protected BattleFieldManager battleFieldManager;
-    protected SwingBattleField battlefield;
     protected String unitData1;
     protected String unitData2;
     private boolean hotseatMode = false;
     private UIOptions uiOptions;
+    protected SwingBattleField battlefield;
 
     public MicroGame() {
         this.gameName = "Battlecraft Game";
@@ -170,8 +170,6 @@ public abstract class MicroGame extends Game {
         return null;
     }
 
-    public Collection<Obj> getUnitsForCoordinates(Set<Coordinates> coordinates) {
-        return getMaster().getUnitsForCoordinates(coordinates);
-    }
+
 
 }

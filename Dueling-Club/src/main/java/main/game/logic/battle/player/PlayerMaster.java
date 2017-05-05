@@ -1,12 +1,10 @@
 package main.game.logic.battle.player;
 
-import main.client.net.HostClientConnection;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,15 +52,6 @@ public class PlayerMaster {
     // public void addPlayer(String data) {
     // new DC_Player(name, false, party);
     // }
-
-    public DC_Player initPlayer(HostClientConnection hcc, String data) {
-        String name = null;
-        Color color = null;
-        DC_Player player = new DC_Player(name, color, false, false, data);
-        // from data? choose color?
-        initPlayerFlag(player);
-        return player;
-    }
 
     public DC_Player getPlayer(boolean me) {
         if (me) {

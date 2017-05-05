@@ -2,7 +2,6 @@ package main.system.text;
 
 import main.system.text.ToolTipMaster.TOOLTIP_TYPE;
 
-import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -24,9 +23,6 @@ public class TooltipMouseListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (SwingUtilities.isRightMouseButton(e)) {
-            master.initTooltip(type, e, arg);
-        }
 
     }
 

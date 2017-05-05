@@ -1,7 +1,6 @@
 package main.client.dc;
 
 import main.client.cc.CharacterCreator;
-import main.client.game.DC_GameInitializer;
 import main.game.core.game.DC_Game;
 
 public class Simulation {
@@ -13,7 +12,9 @@ public class Simulation {
     }
 
     public static void init(boolean testmode) {
-        setGame(DC_GameInitializer.initSimulation());
+          game = new DC_Game();
+        game.setSimulation(true);
+        game.init();
         if (testmode) {
             return;
         }
