@@ -29,7 +29,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
-import main.system.util.ResourceMaster;
+import main.utilities.res.ResourceMaster;
 import main.utilities.hotkeys.AV_KeyListener;
 import main.utilities.workspace.WorkspaceManager;
 import net.miginfocom.swing.MigLayout;

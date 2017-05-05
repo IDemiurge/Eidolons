@@ -1,11 +1,11 @@
-package main.system.util;
+package main.utilities.res;
 
 import main.content.DC_TYPE;
+import main.content.PROPS;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
-import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
@@ -22,23 +22,22 @@ import java.util.List;
 import java.util.Map;
 
 public class ResourceMaster {
-//    private static final String  copyImageTypes = "encounters;";
     private static final String  ignoredTypes = "chars;";
-    private static final String ignoreGroupTypes = "units;deities;";
-    private static final String  ignoreSubGroupTypes = "abils;actions;encounters;buffs;weapons;armor;actions;";
+    private static final String ignoreGroupTypes = "encounters;dungeons;units;deities;";
+    private static final String  ignoreSubGroupTypes =
+     "abils;actions;buffs;weapons;armor;actions;";
 
 //    ignore {} img path
 //    add item variants (generate if missing?)
 
-    // private static final OBJ_TYPES[] types = { OBJ_TYPES.BUFFS, };
-    private static final PROPERTY[] props = {G_PROPS.IMAGE, G_PROPS.BACKGROUND,};
+    private static final PROPERTY[] props = {PROPS.MAP_BACKGROUND,G_PROPS.IMAGE, };
     private static final String UNUSED_FOLDER = "\\unused\\";
     private static final String USED_FOLDER = "entity";
+    private static String folderName = "gen";
+    private static Map<String, ObjType> map = new XLinkedMap<>();
     static boolean setProperty = true;
     static boolean useFirstEntityIfOverlap = true;
-    private static Map<String, ObjType> map = new XLinkedMap<>();
-    private static String folderName = "gen";
-    private static boolean writeUnused;
+    private static boolean writeUnused=false;
 
     public static void updateImagePaths() {
 
@@ -49,18 +48,23 @@ public class ResourceMaster {
     }
 
     private static void updateImagePath(ObjType type) {
-        String path = getNewImagePath(G_PROPS.IMAGE, type);
-        type.setProperty(G_PROPS.IMAGE, path);
+        for (PROPERTY prop : props) {
+            if (!type.checkProperty(prop))continue;
+            String path = getNewImagePath(prop, type);
+            type.setProperty(prop, path);
+        }
     }
 
     public static void createUpdatedArtDirectory() {
-        Map<String, ObjType> map = new XLinkedMap<>();
+//        Map<String, ObjType> map = new XLinkedMap<>();
         // String path;
         for (PROPERTY prop : props) {
             for (DC_TYPE t : DC_TYPE.values()) {
                 if (ignoredTypes.contains(t.getName()))
                     continue;
                 for (ObjType type : DataManager.getTypes(t)) {
+                    if (!type.checkProperty(prop))
+                        continue;
                 try {
                     writeAndUpdateImage(type, setProperty, prop, map);
                 } catch (Exception e) {
@@ -131,6 +135,7 @@ public class ResourceMaster {
             return ; // variable value!
 
             String path = getNewImagePath(imgProp, type);
+        path = checkDuplicate(path, map);
         Entity cached = map.get(oldPath);
             if (cached != null) {
                 if (useFirstEntityIfOverlap)
@@ -150,8 +155,25 @@ public class ResourceMaster {
             }
     }
 
+    private static String checkDuplicate(String oldPath, Map<String, ObjType> map) {
+        for (String path: map.keySet()){
+            if (StringMaster.getLastPathSegment(oldPath).equals(
+             StringMaster.getLastPathSegment(path)))
+            {
+                File f1 = FileManager.getFile(ImageManager.getImageFolderPath()+ oldPath);
+                File f2 = FileManager.getFile(ImageManager.getImageFolderPath()+path);
+                if (f1.length()==f2.length())
+                {
+                    oldPath= path;
+                    break;
+                }
+            }
+        }
+        return oldPath;
+    }
+
     private static void writeImage(String oldPath, String path) {
-        File outputfile = new File(path);
+        File outputfile = new File(ImageManager.getImageFolderPath() + path);
         BufferedImage bufferedImage = ImageManager.getBufferedImage(oldPath);
         if (!ImageManager.isValidImage(bufferedImage)) {
             throw new RuntimeException() ;
@@ -178,10 +200,17 @@ public class ResourceMaster {
         if (ignoreSubGroupTypes.contains(type.getOBJ_TYPE()))
             subgroup = "";
 
-        return PathFinder.getImagePath() + folderName + "\\"
+        String propString=   imgProp.getName() + "\\";
+        if (imgProp==G_PROPS.IMAGE)
+            propString = "";
+
+        String typeName=type.getName().replace(":", "-");
+//        for (String s: XML_Writer.)
+
+        return  folderName + "\\"
          + USED_FOLDER + "\\"
-         + imgProp.getName() + "\\"
-         + type.getOBJ_TYPE() + "\\" + group + subgroup + "\\" + type.getName() + "."
+        +propString
+         + type.getOBJ_TYPE() + "\\" + group + subgroup + "\\" + typeName + "."
          + getNewImageFormat();
     }
 

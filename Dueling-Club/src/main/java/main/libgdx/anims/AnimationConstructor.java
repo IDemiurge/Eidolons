@@ -178,10 +178,10 @@ public class AnimationConstructor {
                 if (part == ANIM_PART.IMPACT) {
                     return new HitAnim(active, data);
                 }
-            }else if (part == ANIM_PART.MAIN) {
+            } else if (part == ANIM_PART.MAIN) {
 //                if (active.getTargetingMode().isSingle())
-                    if (active.getChecker(). isTopDown())
-                return null ;
+                if (active.getChecker().isTopDown())
+                    return null;
             }
             SPELL_ANIMS template = getTemplateFromTargetMode(active.getTargetingMode());
             return new SpellAnim(active, data, template);
@@ -266,9 +266,13 @@ public class AnimationConstructor {
         }
         LogMaster.log(LogMaster.ANIM_DEBUG, "EFFECT ANIM CONSTRUCTED FOR " + e + e.getRef().getInfoString());
         Anim effectAnim = EffectAnimCreator.getOrCreateEffectAnim(e);
-        initAnim(effectAnim.getData(), (DC_ActiveObj) effectAnim.getActive(),
-         effectAnim.getPart(),
-         effectAnim);
+        try {
+            initAnim(effectAnim.getData(), (DC_ActiveObj) effectAnim.getActive(),
+             effectAnim.getPart(),
+             effectAnim);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
         if (!isValid(effectAnim)) {
             return null;
         }
@@ -332,7 +336,7 @@ public class AnimationConstructor {
          G_PROPS.SPELL_GROUP,
         };
         PROPERTY[] props = {
-         G_PROPS.ASPECT,PROPS.DAMAGE_TYPE,
+         G_PROPS.ASPECT, PROPS.DAMAGE_TYPE,
 
          G_PROPS.SPELL_TYPE,
         };
@@ -345,25 +349,25 @@ public class AnimationConstructor {
         pathRoot = getPath(ANIM_VALUES.PARTICLE_EFFECTS);
         String emitter = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, false);
         if (sprite == null)
-        if (emitter == null) {
-            emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
-            if (emitter == null)
-                emitter = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
-            if (emitter == null)
-                emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
-
             if (emitter == null) {
-                pathRoot = getPath(ANIM_VALUES.SPRITES);
-                sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
-                if (sprite == null)
-                    sprite = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
-                if (sprite == null)
-                    sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+                emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
+                if (emitter == null)
+                    emitter = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
+                if (emitter == null)
+                    emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+
+                if (emitter == null) {
+                    pathRoot = getPath(ANIM_VALUES.SPRITES);
+                    sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
+                    if (sprite == null)
+                        sprite = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
+                    if (sprite == null)
+                        sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
 
 
+                }
             }
-        }
-        if (sprite!=null ){
+        if (sprite != null) {
             String val = StringMaster.buildPath(
              partPath, StringMaster.removePreviousPathSegments(sprite, pathRoot));
             LogMaster.log(LogMaster.ANIM_DEBUG,
@@ -371,7 +375,7 @@ public class AnimationConstructor {
               ": " + ANIM_VALUES.SPRITES + " is set automatically to " + val);
             data.setValue(ANIM_VALUES.SPRITES, val);
         }
-        if (emitter!=null ){
+        if (emitter != null) {
             String val = StringMaster.buildPath(
              partPath, StringMaster.removePreviousPathSegments(emitter, pathRoot));
             LogMaster.log(LogMaster.ANIM_DEBUG,
@@ -410,7 +414,7 @@ public class AnimationConstructor {
             }
         }
 //        if (file != null || closest || isPartIgnored(partPath))
-            return file;
+        return file;
 //        return findResourceForSpell(spell, partPath, size, props, pathRoot, true);
     }
 
