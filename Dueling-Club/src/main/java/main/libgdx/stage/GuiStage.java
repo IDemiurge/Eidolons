@@ -2,6 +2,7 @@ package main.libgdx.stage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import main.game.core.game.DC_Game;
 import main.libgdx.gui.controls.radial.RadialMenu;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.actionpanel.ActionPanelController;
@@ -39,5 +40,11 @@ public class GuiStage extends Stage {
         addActor(log);
 
         addActor(new FullLogPanel(100, 200));
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        DC_Game.game.getBattleField().getKeyListener().handleKeyTyped(0, character);
+        return super.keyTyped(character);
     }
 }
