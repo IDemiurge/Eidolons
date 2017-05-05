@@ -70,14 +70,11 @@ public class DC_Engine {
         TextMaster.init(locale);
     }
 
-    public static void dataInit(boolean macroMode) {
-        dataInit(macroMode, true);
-    }
 
-    public static void dataInit(boolean macroMode, boolean concurrent) {
+
+    public static void dataInit(boolean macroMode ) {
         new DC_ContentManager().init();
-        CoreEngine.setConcurrentLaunch(concurrent);
-        CoreEngine.dataInit(concurrent, macroMode);
+       new CoreEngine().dataInit(  macroMode);
         DC_ContentManager.initTypeDynamicValues();
     }
 

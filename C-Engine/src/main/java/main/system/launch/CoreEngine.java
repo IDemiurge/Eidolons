@@ -42,20 +42,6 @@ public class CoreEngine {
     private static boolean phaseAnimsOn;
     private static boolean logicTest;
 
-    public static void dataInit(boolean newThread, final boolean macro) {
-        if (newThread) {
-            new Thread(new Runnable() {
-                public void run() {
-                    new CoreEngine().dataInit(macro);
-                }
-
-            }).start();
-            return;
-        }
-        new CoreEngine().dataInit(macro);
-
-    }
-
     public static void systemInit() {
 
         Chronos.mark("SYSTEM INIT");

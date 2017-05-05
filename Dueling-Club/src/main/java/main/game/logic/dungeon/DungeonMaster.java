@@ -195,7 +195,7 @@ public class DungeonMaster {
             ObjType objType = new ObjType("Test Dungeon", DC_TYPE.DUNGEONS);
             objType.setParam(PARAMS.BF_WIDTH, 3);
             objType.setParam(PARAMS.BF_HEIGHT, 3);
-            setDungeon(new Dungeon(objType));
+//            setDungeon(new SimulationDungeon(objType));
             return;
         }
 //        if (FAST_DC.isRunning()) {
@@ -234,6 +234,12 @@ public class DungeonMaster {
             rootDungeon = getDungeon();
         }
         if (dungeon != null) {
+
+            //IDEA simulationDungeon subclass
+            //LEVEL EDITOR NEEDS GRID???
+//            grid = new DC_BattleFieldGrid( getDungeon());
+
+
             initialized = true;
         }
     }

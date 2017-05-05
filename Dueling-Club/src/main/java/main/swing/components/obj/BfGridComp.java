@@ -13,20 +13,15 @@ import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.DrawHelper;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.generic.components.G_Panel;
-import main.system.EventCallbackParam;
-import main.system.GuiEventManager;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
-
-import static main.system.GuiEventType.GRID_CREATED;
 
 //++ better animations! 
 public class BfGridComp {
@@ -136,7 +131,8 @@ public class BfGridComp {
             }
         }
 
-        GuiEventManager.trigger(GRID_CREATED, new EventCallbackParam(new ImmutablePair<>(getCellsX(), getCellsY())));
+//        GuiEventManager.trigger(GRID_CREATED, new OnDemandEventCallBack<>(
+//         new ImmutablePair<>(getCellsX(), getCellsY())));
 
         panel = new G_Panel() {
             protected void paintComponent(Graphics g) {
@@ -257,8 +253,8 @@ public class BfGridComp {
         boolean single = !comp.isMultiObj();
         // preCheck overlaying
         Image selectionFrame = info ? getInfoGlowFrame(obj)
-                : obj.isMine() ? BORDER.NEO_ACTIVE_SELECT_HIGHLIGHT.getImage()
-                : BORDER.NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT.getImage();
+         : obj.isMine() ? BORDER.NEO_ACTIVE_SELECT_HIGHLIGHT.getImage()
+         : BORDER.NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT.getImage();
         // if (!single)
         // selectionFrame = info ?
         // BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_96.getEmitterPath() : obj
@@ -285,7 +281,7 @@ public class BfGridComp {
             }
             if (size > 0) {
                 selectionFrame = ImageManager.getSizedVersion(selectionFrame, new Dimension(size,
-                        size));
+                 size));
             }
         }
         // }
@@ -298,7 +294,7 @@ public class BfGridComp {
         // if (obj.getGame().isOnline())
         if (!obj.isNeutral()) {
             return ImageManager.getGlowFrame(obj.getOwner().getFlagColor(), GuiManager
-                    .getCellWidth());
+             .getCellWidth());
         }
         return BORDER.NEO_INFO_SELECT_HIGHLIGHT.getImage();
     }
@@ -396,7 +392,7 @@ public class BfGridComp {
         }
 
         DrawMasterStatic.drawDiagonalJoints(zoom, g, getOffsetX(), getOffsetY(), getCellWidth(),
-                getCellHeight(), getGame().getBattleFieldManager().getDiagonalJoints());
+         getCellHeight(), getGame().getBattleFieldManager().getDiagonalJoints());
 
         Unit activeObj = getGame().getManager().getActiveObj();
         if (activeObj != null) {
@@ -541,12 +537,12 @@ public class BfGridComp {
 
     public int getDisplayedCellsX() {
         return Math.min(getCellsX(), getWidth() / getCellWidth()
-                + (getWidth() % getCellWidth() != 0 ? 1 : 0));
+         + (getWidth() % getCellWidth() != 0 ? 1 : 0));
     }
 
     public int getDisplayedCellsY() {
         return Math.min(getCellsY(), getHeight() / getCellHeight()
-                + (getHeight() % getCellHeight() != 0 ? 1 : 0));
+         + (getHeight() % getCellHeight() != 0 ? 1 : 0));
     }
 
     public CellComp[][] getCells() {

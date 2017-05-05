@@ -20,7 +20,7 @@ import main.system.hotkey.DC_KeyManager;
 import main.system.launch.CoreEngine;
 
 import java.util.Set;
-
+@Deprecated
 public class DC_BattleField extends SwingBattleField {
 
     private DC_Builder dc_builder;
@@ -29,12 +29,16 @@ public class DC_BattleField extends SwingBattleField {
 
     public DC_BattleField(Player player1, Player player2, DC_GameState state) {
         super(player1, player2, state);
-        builder = new DC_Builder(state);
-        keyListener = new DC_KeyManager(state.getGame().getManager());
-        keyListener.init();
-        builder.setKeyListener(keyListener);
-        state.getGame().setGui(builder);
-        dc_builder = (DC_Builder) builder;
+//        builder = new DC_Builder(state);
+//        grid = new DC_BattleFieldGrid(state.getGame().getDungeon());
+//
+//        GuiEventManager.trigger(GRID_CREATED, new OnDemandEventCallBack<>(
+//         new ImmutablePair<>( getGrid().getWidth(),  getGrid().getHeight())));
+//        keyListener = new DC_KeyManager(state.getGame().getManager());
+//        keyListener.init();
+//        builder.setKeyListener(keyListener);
+//        state.getGame().setGui(builder);
+//        dc_builder = (DC_Builder) builder;
     }
 
     public DC_BattleField(Player player1, Player player2, MicroGameState state, boolean sim) {
@@ -180,7 +184,7 @@ public class DC_BattleField extends SwingBattleField {
     // return getBuilder().getGrid(getState().getGame().getDungeon().getZ());
     // }
     public DC_BattleFieldGrid getGrid() {
-        return ((DC_Builder) builder).getGrid();
+        return (DC_BattleFieldGrid) grid;
     }
 
     public BattleFieldGrid getGrid(Integer z) {

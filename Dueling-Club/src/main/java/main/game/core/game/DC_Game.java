@@ -266,7 +266,7 @@ public class DC_Game extends MicroGame {
         }
         return (DC_BattleFieldManager) super.getBattleFieldManager();
     }
-
+//call each time Battlefield is launched
     public void battleInit() {
 
         inventoryTransactionManager = new InventoryTransactionManager(this);
@@ -298,6 +298,8 @@ public class DC_Game extends MicroGame {
 
         }
         // if (battlefield == null) {
+
+
         battlefield = new DC_BattleField(map, player1, player2, getState());
         setGraveyardManager(new DC_GraveyardManager(this));
         battleFieldManager = new DC_BattleFieldManager(this, battlefield);

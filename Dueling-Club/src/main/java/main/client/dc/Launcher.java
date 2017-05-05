@@ -160,7 +160,7 @@ public class Launcher {
         initKeyListeners();
 
 
-            simulationInit();
+        simulationInit();
 
         initTopGUI();
         initMainMenu();
@@ -498,7 +498,7 @@ public class Launcher {
         if (isDataInitialized()) {
             return;
         }
-        DC_Engine.dataInit(false, false);
+        DC_Engine.dataInit( false);
         setDataInitialized(true);
     }
 
@@ -538,6 +538,7 @@ public class Launcher {
             if (game == null) {
                 game = new DC_Game(false);
             }
+            game.init();
             game.setSimulation(true);
             CharacterCreator.getHeroManager().prebattleCleanSave();
             game.setSimulation(false);

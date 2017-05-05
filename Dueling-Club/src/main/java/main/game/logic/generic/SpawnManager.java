@@ -93,7 +93,7 @@ public class SpawnManager {
         if (!isPlayerUnitGroupMode() // && PresetMaster.getPreset() == null
          ) {
             initPlayerParty();
-        } else {
+        } else {// "unit=0-0;
             playerPartyData = getGame().getPlayerParty();
         }
         if (playerPartyData.isEmpty()) {

@@ -28,6 +28,8 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.net.data.MapData;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -146,10 +148,13 @@ public class ArenaManager {
             LogMaster.log(1, "NO UNITS! ");
         }
 
-//        WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
+        WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
         GuiEventManager.trigger(CREATE_UNITS_MODEL,
                 new EventCallbackParam(game.getBfObjects()));
-
+//game.getDungeon().getCellsX()
+//        GuiEventManager.trigger(GRID_CREATED, new OnDemandEventCallBack<>(
+//         new ImmutablePair<>( getDungeon().getCellsX(),
+//          getDungeon().getCellsY())));
         if (!game.isOffline()) {
             saveFacing();
         }

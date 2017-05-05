@@ -41,7 +41,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Deprecated
 public class DC_Builder extends Builder {
 
     public static final int OFFSET_X = 18;
@@ -82,7 +82,7 @@ public class DC_Builder extends Builder {
 
         comp.setBackground(ColorManager.getTranslucent(ColorManager.OBSIDIAN, 10));
         levelGrids = new HashMap<>();
-        newDungeon((state.getGame().getDungeonMaster().getDungeon()));
+        newDungeon(state.getGame().getDungeonMaster().getDungeon());
     }
 
     public static int getBfGridPosY() {
