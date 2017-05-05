@@ -25,6 +25,7 @@ import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.OnDemandEventCallBack;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.threading.WaitMaster;
@@ -122,7 +123,7 @@ public class GridPanel extends Group {
             }
         });
 
-        animMaster= new AnimMaster();
+        animMaster = new AnimMaster();
         addActor(animMaster);
         return this;
     }
@@ -321,7 +322,7 @@ public class GridPanel extends Group {
                 gridCellContainer.setOverlays(overlays);
             }
 
-            GuiEventManager.trigger(DUNGEON_LOADED);
+            GuiEventManager.trigger(DUNGEON_LOADED, new OnDemandEventCallBack<>(null));
 
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
                 Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
