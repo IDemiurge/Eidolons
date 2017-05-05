@@ -21,7 +21,7 @@ import main.game.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.generic.SpawnManager;
-import main.system.EventCallbackParam;
+import main.libgdx.bf.BFDataCreatedEvent;
 import main.system.GuiEventManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -36,7 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static main.system.GuiEventType.CREATE_UNITS_MODEL;
+import static main.system.GuiEventType.BF_CREATED;
 
 public class ArenaManager {
 
@@ -148,13 +148,13 @@ public class ArenaManager {
             LogMaster.log(1, "NO UNITS! ");
         }
 
+        final Integer cellsX = game.getDungeon().getCellsX();
+        final Integer cellsY = game.getDungeon().getCellsY();
+        GuiEventManager.trigger(BF_CREATED,
+                new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
+
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
-        GuiEventManager.trigger(CREATE_UNITS_MODEL,
-                new EventCallbackParam(game.getBfObjects()));
-//game.getDungeon().getCellsX()
-//        GuiEventManager.trigger(GRID_CREATED, new OnDemandEventCallBack<>(
-//         new ImmutablePair<>( getDungeon().getCellsX(),
-//          getDungeon().getCellsY())));
+
         if (!game.isOffline()) {
             saveFacing();
         }

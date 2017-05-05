@@ -54,7 +54,6 @@ public class GridPanel extends Group {
     protected TextureRegion highlightImage;
     protected TextureRegion unknownImage;
     protected TextureRegion cellBorderTexture;
-    protected DequeImpl<BattleFieldObject> units;
     protected GridCellContainer[][] cells;
     private CellBorderManager cellBorderManager;
     private Map<BattleFieldObject, BaseView> unitMap;
@@ -83,7 +82,7 @@ public class GridPanel extends Group {
         });
     }
 
-    public GridPanel init() {
+    public GridPanel init(DequeImpl<BattleFieldObject> units) {
         this.unitMap = new HashMap<>();
         emptyImage = TextureCache.getOrCreateR(emptyCellPath);
         hiddenImage = TextureCache.getOrCreateR(hiddenCellPath);
@@ -106,6 +105,8 @@ public class GridPanel extends Group {
             }
         }
         bindEvents();
+
+        createUnitsViews(units);
 
         setHeight(cells[0][0].getHeight() * rows);
         setWidth(cells[0][0].getWidth() * cols);
@@ -283,60 +284,6 @@ public class GridPanel extends Group {
             }
         });
 
-        GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
-            units = (DequeImpl<BattleFieldObject>) param.get();
-
-            lightingManager = new LightingManager(units, rows, cols);
-
-            Map<Coordinates, List<BattleFieldObject>> map = new HashMap<>();
-            for (BattleFieldObject object : units) {
-                Coordinates c = object.getCoordinates();
-                if (!map.containsKey(c)) {
-                    map.put(c, new ArrayList<>());
-                }
-                List<BattleFieldObject> list = map.get(c);
-                list.add(object);
-            }
-
-            for (Coordinates coordinates : map.keySet()) {
-                List<BaseView> views = new ArrayList<>();
-                List<OverlayView> overlays = new ArrayList<>();
-
-                if (map.get(coordinates) == null) {
-                    continue;
-                }
-                for (BattleFieldObject object : map.get(coordinates)) {
-                    if (!object.isOverlaying()) {
-                        final BaseView baseView = UnitViewFactory.create(object);
-                        unitMap.put(object, baseView);
-                        views.add(baseView);
-                    } else {
-                        final OverlayView overlay = UnitViewFactory.createOverlay(object);
-                        unitMap.put(object, overlay);
-                        overlays.add(overlay);
-                    }
-                }
-
-                final GridCellContainer gridCellContainer = cells[coordinates.getX()][rows - 1 - coordinates.getY()];
-                views.forEach(gridCellContainer::addActor);
-                gridCellContainer.setOverlays(overlays);
-            }
-
-            GuiEventManager.trigger(DUNGEON_LOADED, new OnDemandEventCallBack<>(null));
-
-            GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
-                Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
-                GridUnitView uv = (GridUnitView) unitMap.get(p.getLeft());
-                uv.updateInitiative(p.getRight());
-            });
-            GuiEventManager.bind(UNIT_CREATED, p -> {
-                addUnitView((BattleFieldObject) p.get());
-            });
-
-            WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
-            WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
-        });
-
         GuiEventManager.bind(UPDATE_UNIT_VISIBLE, obj -> {
             final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
             final BaseView baseView = unitMap.get(pair.getLeft());
@@ -354,6 +301,58 @@ public class GridPanel extends Group {
                 ((GridUnitView) baseView).setMobilityState(mobilityState);
             }
         });
+    }
+
+    private void createUnitsViews(DequeImpl<BattleFieldObject> units) {
+        lightingManager = new LightingManager(units, rows, cols);
+
+        Map<Coordinates, List<BattleFieldObject>> map = new HashMap<>();
+        for (BattleFieldObject object : units) {
+            Coordinates c = object.getCoordinates();
+            if (!map.containsKey(c)) {
+                map.put(c, new ArrayList<>());
+            }
+            List<BattleFieldObject> list = map.get(c);
+            list.add(object);
+        }
+
+        for (Coordinates coordinates : map.keySet()) {
+            List<BaseView> views = new ArrayList<>();
+            List<OverlayView> overlays = new ArrayList<>();
+
+            if (map.get(coordinates) == null) {
+                continue;
+            }
+            for (BattleFieldObject object : map.get(coordinates)) {
+                if (!object.isOverlaying()) {
+                    final BaseView baseView = UnitViewFactory.create(object);
+                    unitMap.put(object, baseView);
+                    views.add(baseView);
+                } else {
+                    final OverlayView overlay = UnitViewFactory.createOverlay(object);
+                    unitMap.put(object, overlay);
+                    overlays.add(overlay);
+                }
+            }
+
+            final GridCellContainer gridCellContainer = cells[coordinates.getX()][rows - 1 - coordinates.getY()];
+            views.forEach(gridCellContainer::addActor);
+            gridCellContainer.setOverlays(overlays);
+        }
+
+        GuiEventManager.trigger(DUNGEON_LOADED, new OnDemandEventCallBack<>(null));
+
+        GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
+            Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
+            GridUnitView uv = (GridUnitView) unitMap.get(p.getLeft());
+            uv.updateInitiative(p.getRight());
+        });
+        GuiEventManager.bind(UNIT_CREATED, p -> {
+            addUnitView((BattleFieldObject) p.get());
+        });
+
+        WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
+        WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
     }
 
     private void moveUnitView(BattleFieldObject heroObj) {
