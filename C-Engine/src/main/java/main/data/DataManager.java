@@ -15,7 +15,10 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.SearchMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
@@ -702,7 +705,7 @@ public class DataManager {
         return list;
     }
 
-    public static Map<OBJ_TYPE, Map<String, List<String>>> getTypesSubGroups() {
+    private static Map<OBJ_TYPE, Map<String, List<String>>> getTypesSubGroups() {
         if (typesSubGroups == null) {
             typesSubGroups = new HashMap<>();
             for (String sub : XML_Reader.getXmlMap().keySet()) {
@@ -778,7 +781,7 @@ public class DataManager {
     }
 
 
-    public static List<String> getSubGroupsForTYPE(OBJ_TYPE TYPE, String group) {
+    private static List<String> getSubGroupsForTYPE(OBJ_TYPE TYPE, String group) {
         if (TYPE instanceof C_OBJ_TYPE) {
             for (DC_TYPE T : ((C_OBJ_TYPE) TYPE).getTypes()) {
                 List<String> list = getSubGroupsForTYPE(T, group);
