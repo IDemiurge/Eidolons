@@ -21,7 +21,7 @@ public class LightingManager {
 
     public LightingManager(DequeImpl<BattleFieldObject> units, int rows, int cols) {
         lightMap = new LightMap(units, rows, cols);
-        GuiEventManager.bind(GuiEventType.GRID_CREATED, p -> {
+        GuiEventManager.bind(GuiEventType.BF_CREATED, p -> {
             //TODO init emitterMap and lightMap
         });
     }

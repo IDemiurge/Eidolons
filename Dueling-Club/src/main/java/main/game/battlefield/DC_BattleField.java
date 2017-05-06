@@ -32,7 +32,7 @@ public class DC_BattleField extends SwingBattleField {
 //        builder = new DC_Builder(state);
 //        grid = new DC_BattleFieldGrid(state.getGame().getDungeon());
 //
-//        GuiEventManager.trigger(GRID_CREATED, new OnDemandEventCallBack<>(
+//        GuiEventManager.trigger(BF_CREATED, new OnDemandEventCallBack<>(
 //         new ImmutablePair<>( getGrid().getWidth(),  getGrid().getHeight())));
 //        keyListener = new DC_KeyManager(state.getGame().getManager());
 //        keyListener.init();

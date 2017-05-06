@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.core.game.DC_Game;
+import main.libgdx.bf.BFDataCreatedEvent;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.stage.AnimationEffectStage;
@@ -17,7 +18,6 @@ import main.libgdx.stage.LoadingStage;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import org.apache.commons.lang3.tuple.Pair;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.*;
@@ -50,9 +50,9 @@ public class DungeonScreen implements Screen {
         instance = this;
 
         gridStage = new Stage();
-        GuiEventManager.bind(GRID_CREATED, param -> {
-            Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
-            gridPanel = new GridPanel(p.getLeft(), p.getRight()).init();
+        GuiEventManager.bind(BF_CREATED, param -> {
+            final BFDataCreatedEvent data = (BFDataCreatedEvent) param;
+            gridPanel = new GridPanel(data.getGridW(), data.getGridH()).init(data.getObjects());
             gridStage.addActor(gridPanel);
         });
 
