@@ -70,6 +70,7 @@ public class XML_Reader {
             NodeList nl1 = node.getChildNodes();
             String aspect = node.getNodeName();
             PROPERTY groupingKey = DataManager.getGroupingKey(key);
+            PROPERTY subGroupingKey = DataManager.getSubGroupingKey(key);
 
             for (int a = 0; a < nl1.getLength(); a++) {
                 Node typeNode = nl1.item(a);
@@ -86,6 +87,9 @@ public class XML_Reader {
                     }
                     groupSet.add(type.getProperty(groupingKey));
                     aspect = type.getProperty(groupingKey);
+                    // TREE SUB GROUPS
+                    String subKey = type.getProperty(subGroupingKey);
+                    treeSubGroupMap.computeIfAbsent(aspect, k -> new HashSet<>()).add(subKey);
 
                     typeMap.put(name, type);
                     LogMaster.log(LogMaster.DATA_DEBUG, typeNode.getNodeName()
