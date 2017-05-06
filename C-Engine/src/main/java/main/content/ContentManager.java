@@ -153,12 +153,14 @@ public class ContentManager {
         }
         return getPARAM(StringMaster.CURRENT + p.getName(), true);
     }
+
     public static PARAMETER getBaseParameterFromCurrent(PARAMETER param) {
         if (!param.name().startsWith(StringMaster.CURRENT)) {
             return param;
         }
         return getPARAM(param.getFullName().replace(StringMaster.CURRENT, ""), true);
     }
+
     public static PARAMETER getReqParam(PARAMETER p) {
         return getPARAM(p.getName() + StringMaster.REQUIREMENT, true);
     }
@@ -171,7 +173,6 @@ public class ContentManager {
         PARAMETER param = getPARAM(mastery.getName() + (StringMaster.SCORE));
         return param;
     }
-
 
 
     public static PARAMETER getRegenParam(PARAMETER p) {
@@ -265,7 +266,7 @@ public class ContentManager {
 
         if (param == null) {
             LogMaster.log(LogMaster.CORE_DEBUG, "PARAM NOT FOUND: "
-             + valueName + "!");
+                    + valueName + "!");
             param = G_PARAMS.EMPTY_PARAMETER;
         }
 
@@ -438,7 +439,7 @@ public class ContentManager {
                 PARAMETER param = findPARAM(valueName);
                 if (prop != null && param != null) {
                     v = StringMaster.compareSimilar(prop.toString(), valueName) >= StringMaster
-                     .compareSimilar(param.toString(), valueName) ? prop : param;
+                            .compareSimilar(param.toString(), valueName) ? prop : param;
                 } else if (prop != null) {
                     v = prop;
                 } else {
@@ -520,7 +521,7 @@ public class ContentManager {
 
     public static List<PARAMETER> getParamsForType(String entity, boolean dynamic) {
         List<PARAMETER> paramList = (dynamic) ? paramListsMap.get(entity) : paramListsMapAV
-         .get(entity);
+                .get(entity);
         if (paramList != null) {
             return paramList;
         }
@@ -545,7 +546,7 @@ public class ContentManager {
 
     public static List<String> getParamNames(String entity, boolean dynamic) {
         List<String> paramList = (dynamic) ? sparamListsMap.get(entity) : sparamListsMapAV
-         .get(entity);
+                .get(entity);
         if (paramList != null) {
             return paramList;
         }
@@ -643,7 +644,7 @@ public class ContentManager {
             return Collections.EMPTY_LIST;
         }
         List<String> valueNames = (av) ? getValueNamesMapAV().get(objType) : getValueNamesMap()
-         .get(objType);
+                .get(objType);
         if (valueNames != null) {
             return valueNames;
         }
@@ -754,21 +755,11 @@ public class ContentManager {
         if (typeMaster != null) {
             return typeMaster.getOBJ_TYPE(typeName);
         }
-        OBJ_TYPE type = null;
 
-        try {
-            type = DC_TYPE.getType(typeName);
-        } catch (Exception e) {
+        OBJ_TYPE type = DC_TYPE.getType(typeName);
 
-        }
         if (type == null || XML_Reader.isMacro()) {
-            try {
-                if (MACRO_OBJ_TYPES.getType(typeName) != null) {
-                    type = MACRO_OBJ_TYPES.getType(typeName);
-                }
-            } catch (Exception e) {
-
-            }
+            type = MACRO_OBJ_TYPES.getType(typeName);
         }
 
         return type;
