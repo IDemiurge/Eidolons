@@ -15,7 +15,6 @@ import main.system.options.OptionsMaster;
 
 public class DC_Engine {
 
-
     public static void init() {
         Chronos.mark("DC INIT");
         systemInit();
@@ -23,19 +22,12 @@ public class DC_Engine {
         Chronos.logTimeElapsedForMark("DC INIT");
     }
 
-
-
-
-
-
     public static void systemInit() {
         CoreEngine.systemInit();
         OptionsMaster.init();
         DC_GuiManager.init();
 //        TextMaster.init(locale);
     }
-
-
 
     public static void dataInit(  ) {
         new DC_ContentManager().init();

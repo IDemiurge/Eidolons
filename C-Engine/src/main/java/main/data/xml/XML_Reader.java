@@ -53,11 +53,10 @@ public class XML_Reader {
 
     private static boolean brokenXml;
 
-    public static void constructTypeMap(Document doc, String key,
-                                        Map<String, Set<String>> tabGroupMap,
-                                        Map<String, Set<String>> treeSubGroupMap
+    private static void constructTypeMap(Document doc, String key,
+                                         Map<String, Set<String>> tabGroupMap,
+                                         Map<String, Set<String>> treeSubGroupMap
     ) {
-
         key = key.replace("_", " ").toLowerCase();
         LogMaster.log(LogMaster.DATA_DEBUG, "type map: " + key);
 
@@ -71,8 +70,6 @@ public class XML_Reader {
             NodeList nl1 = node.getChildNodes();
             String aspect = node.getNodeName();
             PROPERTY groupingKey = DataManager.getGroupingKey(key);
-            PROPERTY subGroupingKey = DataManager.getSubGroupingKey(key);
-            Set<String> subSet;
 
             for (int a = 0; a < nl1.getLength(); a++) {
                 Node typeNode = nl1.item(a);
@@ -80,7 +77,7 @@ public class XML_Reader {
                 if ("#text".equals(name)) {
                     continue;
                 }
-                ObjType type = TypeBuilder.buildType(nl1.item(a), key);
+                ObjType type = TypeBuilder.buildType(typeNode, key);
                 if (type != null) {
                     name = type.getName();
                     // TAB GROUPS
@@ -89,14 +86,9 @@ public class XML_Reader {
                     }
                     groupSet.add(type.getProperty(groupingKey));
                     aspect = type.getProperty(groupingKey);
-                    // TREE SUB GROUPS
-                    String subKey = type.getProperty(subGroupingKey);
-
-                    subSet = treeSubGroupMap.computeIfAbsent(aspect, k -> new HashSet<>());
-                    subSet.add(subKey);
 
                     typeMap.put(name, type);
-                    LogMaster.log(LogMaster.DATA_DEBUG, nl1.item(a).getNodeName()
+                    LogMaster.log(LogMaster.DATA_DEBUG, typeNode.getNodeName()
                             + " has been put into map as " + type);
                 }
             }
@@ -133,7 +125,6 @@ public class XML_Reader {
                     }
                 }
             }
-
 /*            Arrays.stream(files)
                     .filter(XML_Reader::checkFile)
                     .forEach(el -> {

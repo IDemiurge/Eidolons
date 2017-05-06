@@ -43,7 +43,6 @@ public class CoreEngine {
     private static boolean logicTest;
 
     public static void systemInit() {
-
         Chronos.mark("SYSTEM INIT");
         ImageManager.init();
         FontMaster.init();
@@ -252,11 +251,7 @@ public class CoreEngine {
             Chronos.mark("MAPPER INIT");
             Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()), Arrays.asList(classFolderPaths));
             Chronos.logTimeElapsedForMark("MAPPER INIT");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ClassNotFoundException | SecurityException | IOException e) {
             e.printStackTrace();
         }
 

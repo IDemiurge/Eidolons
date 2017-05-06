@@ -1,7 +1,7 @@
 package main.content.enums.macro;
 
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
@@ -10,7 +10,9 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public enum
 
@@ -64,6 +66,18 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
      */
     ;
 
+    private static Map<String, MACRO_OBJ_TYPES> searchMap;
+
+    static {
+        final MACRO_OBJ_TYPES[] values = values();
+        searchMap = new HashMap<>(values.length, 1f);
+
+        for (int i = 0, valuesLength = values.length; i < valuesLength; i++) {
+            MACRO_OBJ_TYPES value = values[i];
+            searchMap.put(value.getName(), value);
+        }
+    }
+
     private String name;
     private PROPERTY groupingKey;
     private PROPERTY subGroupingKey;
@@ -110,6 +124,16 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
 
     }
 
+    private static MACRO_OBJ_TYPES getFromName(String name) {
+        MACRO_OBJ_TYPES objTypes = searchMap.get(name);
+        if (objTypes == null) {
+            name = name.toLowerCase();
+            objTypes = searchMap.get(name);
+        }
+
+        return objTypes;
+    }
+
     public static OBJ_TYPE getTypeByCode(int code) {
         for (OBJ_TYPE type : values()) {
             if (type.getCode() == code) {
@@ -121,11 +145,9 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
 
     public static MACRO_OBJ_TYPES getType(String s) {
         MACRO_OBJ_TYPES type = null;
-        try {
-            type = valueOf(s.toUpperCase().replace(" ", "_"));
-        } catch (Exception e) {
 
-        }
+        type = getFromName(s);
+
         if (type == null) {
             type = new EnumMaster<MACRO_OBJ_TYPES>().retrieveEnumConst(MACRO_OBJ_TYPES.class, s);
         }

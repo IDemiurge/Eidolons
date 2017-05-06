@@ -8,7 +8,6 @@ import main.content.enums.GenericEnums.ASPECT;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
-import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
@@ -102,7 +101,9 @@ public class ImageManager {
         setPATH(PathFinder.getImagePath());
         DEFAULT = "chars\\";
         colorImgCache = new HashMap<>();
-        for (COLOR_THEME c : COLOR_THEME.values()) {
+        COLOR_THEME[] values = COLOR_THEME.values();
+        for (int i = 0, valuesLength = values.length; i < valuesLength; i++) {
+            COLOR_THEME c = values[i];
             colorImgCache.put(c, new HashMap<>());
         }
     }

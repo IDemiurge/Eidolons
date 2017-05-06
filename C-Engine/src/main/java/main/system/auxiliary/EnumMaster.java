@@ -18,6 +18,7 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -301,37 +302,34 @@ public class EnumMaster<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public T retrieveEnumConst(Class<? extends T> class1, String name, boolean findClosest) {
-        if (name == null) {
-            return null;
-        }
-        if (name.equals("")) {
+    public T retrieveEnumConst(Class<? extends T> clazz, String name, boolean findClosest) {
+
+        if (StringUtils.isEmpty(name)) {
             return null;
         }
 
-        T[] array = class1.getEnumConstants();
-        Collection<T> list;
+        T[] array = clazz.getEnumConstants();
+        List list;
+
         if (array == null) {
             list = new LinkedList<>();
-            if (class1 == VALUE.class) {
-                list = (Collection<T>) new LinkedList<>(Arrays.asList(ContentManager.getPropList()
-                 .toArray(new VALUE[ContentManager.getPropList().size()])));
-                list.addAll((Collection<T>) Arrays.asList(ContentManager.getParamList().toArray(
-                 new VALUE[ContentManager.getParamList().size()])));
+            if (clazz == VALUE.class) {
+                list = ContentManager.getPropList();
+                list.addAll(ContentManager.getParamList());
             }
-            if (class1 == PROPERTY.class) {
-                list = (Collection<T>) ContentManager.getPropList();
+            if (clazz == PROPERTY.class) {
+                list = ContentManager.getPropList();
             }
-            if (class1 == PARAMETER.class) {
-                list = (Collection<T>) ContentManager.getParamList();
+            if (clazz == PARAMETER.class) {
+                list = ContentManager.getParamList();
             }
         } else {
             list = Arrays.asList(array);
         }
-        // name = StringMaster.getEnumFormat(name);
+
         T t = null;
         try {
-            t = new SearchMaster<T>().find(name, list);
+            t = (T) new SearchMaster<T>().find(name, list);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -341,7 +339,7 @@ public class EnumMaster<T> {
         }
         if (findClosest) {
             try {
-                t = new SearchMaster<T>().findClosest(name, list);
+                t = (T) new SearchMaster<T>().findClosest(name, list);
             } catch (Exception e) {
                 e.printStackTrace();
             }
