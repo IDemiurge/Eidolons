@@ -1,6 +1,5 @@
 package main.gui;
 
-import main.client.game.gui.DC_GameGUI;
 import main.gui.gateway.GatewayView;
 import main.swing.generic.components.CompVisuals;
 import main.swing.generic.components.G_Panel;
@@ -63,7 +62,7 @@ public class GatewayWindow {
     private G_Panel initBackgroundPanel() {
         Image img = getBackgroundPicture();
         G_Panel panel = new G_Panel(new CompVisuals(img));
-        img = DC_GameGUI.createBackgroundOverlay();
+//        img = DC_GameGUI.createBackgroundOverlay();
         panel.add(new JLabel(new ImageIcon(img)));
         return panel;
     }
