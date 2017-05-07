@@ -2,6 +2,7 @@ package main.test.libgdx;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import main.test.frontend.GdxLauncher;
 
 import javax.swing.*;
 
@@ -51,7 +52,7 @@ public class TEST_JFRAME_LIBGDX_INTEGRATION extends JFrame {
         lwjglApplicationConfiguration.height = 900;
         lwjglApplicationConfiguration.fullscreen = true;
 
-        canvas = new LwjglAWTCanvas(new DENIS_Launcher(), lwjglApplicationConfiguration);
+        canvas = new LwjglAWTCanvas(new GdxLauncher(), lwjglApplicationConfiguration);
         //canvas.getCanvas().setSize(1600, 900);
 
         graphicsScrollPane = new JScrollPane(canvas.getCanvas());

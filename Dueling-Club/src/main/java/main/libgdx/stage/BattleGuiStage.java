@@ -15,9 +15,9 @@ import main.libgdx.gui.tooltips.ToolTipManager;
 /**
  * Created by JustMe on 3/31/2017.
  */
-public class GuiStage extends Stage {
+public class BattleGuiStage extends Stage {
 
-    public GuiStage() {
+    public BattleGuiStage() {
 
         InitiativePanel initiativePanel = new InitiativePanel();
         initiativePanel.setPosition(0, Gdx.graphics.getHeight() - initiativePanel.getHeight());

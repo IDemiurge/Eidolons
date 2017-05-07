@@ -1,4 +1,4 @@
-package main.test.libgdx;
+package main.test.frontend;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import main.client.dc.Launcher;
-import main.libgdx.DungeonScreen;
+import main.libgdx.screens.DungeonScreen;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,12 +14,12 @@ import main.libgdx.DungeonScreen;
  * Time: 23:48
  * To change this template use File | Settings | File Templates.
  */
-public class DENIS_Launcher implements ApplicationListener {
+public class GdxLauncher implements ApplicationListener {
 
     Screen screen;
 
     public static void main(String[] args) {
-        new LwjglApplication(new DENIS_Launcher(), getConf());
+        new LwjglApplication(new GdxLauncher(), getConf());
     }
 
     private static LwjglApplicationConfiguration getConf() {

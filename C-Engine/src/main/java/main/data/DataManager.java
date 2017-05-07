@@ -56,7 +56,6 @@ public class DataManager {
         for (DC_TYPE T : DC_TYPE.values()) {
             subGroupsMaps.put(T, new HashMap<>());
         }
-
     }
 
     public static List<List<String>> getTabTreeData(PROPERTY filterValue, String type) {
@@ -73,8 +72,7 @@ public class DataManager {
         return lists;
     }
 
-
-        public static ObjType getType(String typeName) {
+    public static ObjType getType(String typeName) {
         return getType(typeName, false);
     }
 
@@ -377,7 +375,6 @@ public class DataManager {
 
     public static void removeType(ObjType t) {
         ObjType removed = getTypeMap(t.getOBJ_TYPE_ENUM()).remove(t.getName());
-
     }
 
     public static void removeType(String name, String group) {
@@ -550,7 +547,7 @@ public class DataManager {
                     list.add(objName);
                 }
             } else if (StringMaster.compare(objName.getValue(filterValue),
-             filter, true)) {
+                    filter, true)) {
                 list.add(objName);
             }
         }

@@ -108,7 +108,6 @@ public abstract class StateManager {
         }
     }
     public void addTrigger(Trigger t) {
-        LogMaster.log(LogMaster.TRIGGER_DEBUG, " added " + t);
         this.state.getTriggers().add(t);
     }
 

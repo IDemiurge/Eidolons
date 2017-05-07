@@ -517,9 +517,10 @@ public class StringMaster {
                 }
             }
         }
-
-        return new LinkedList<>(Arrays
-         .asList(containerString.split(Pattern.quote(delimiter))));
+        List<String> list = new LinkedList<>(Arrays
+ .asList(containerString.split(Pattern.quote(delimiter))));
+        list.removeIf(s -> isEmpty(s));
+        return list;
     }
 
     public static List<String> openContainer(String containerString, String separator) {
@@ -1541,10 +1542,7 @@ public class StringMaster {
         return property.replace(";", "");
     }
 
-    public static String convertVarStringToObjCoordinates(String partyData) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+
 
     public static String removePreviousPathSegments(String string, String path) {
         String p = string.toLowerCase();

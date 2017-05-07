@@ -88,7 +88,7 @@ public class SpawnManager {
 
     public void init() {
         // this.level = battle.getIntValue(BATTLE_STATS.LEVEL);
-        if (!isPlayerUnitGroupMode() // && PresetMaster.getPreset() == null
+        if (!isPlayerUnitGroupMode()   && PresetMaster.getPreset() == null
          ) {
             initPlayerParty();
         } else {// "unit=0-0;
@@ -337,7 +337,7 @@ public class SpawnManager {
         if (StringMaster.isEmpty(partyData)) {
             return;
         }
-        if ((isUnitGroupMode(me)) || partyData.contains(".xml")) {
+        if ((isUnitGroupMode(me))  || partyData.contains(".xml")) {
             spawnUnitGroup(me, partyData);
             return;
         }
@@ -352,7 +352,7 @@ public class SpawnManager {
 
         }
         if (!partyData.contains(DC_ObjInitializer.COORDINATES_OBJ_SEPARATOR)) {
-            partyData = StringMaster.convertVarStringToObjCoordinates(partyData);
+            partyData = DC_ObjInitializer.convertVarStringToObjCoordinates(partyData);
         }
         List<MicroObj> list = DC_ObjInitializer.processUnitDataString(player, partyData, game);
         if (!ListMaster.isNotEmpty(list)) {

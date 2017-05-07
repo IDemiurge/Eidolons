@@ -35,7 +35,7 @@ import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
-import main.test.libgdx.DENIS_Launcher;
+import main.test.frontend.GdxLauncher;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -525,7 +525,7 @@ public class Launcher {
                 first = true;
                 DC_Engine.microInitialization();
             }
-            DENIS_Launcher.main(new String[]{});
+            GdxLauncher.main(new String[]{});
             game = Simulation.getGame();
             if (game == null) {
                 game = new DC_Game(false);

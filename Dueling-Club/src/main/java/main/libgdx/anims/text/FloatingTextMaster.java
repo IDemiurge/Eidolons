@@ -138,8 +138,11 @@ public class FloatingTextMaster {
         }
         ANIM_PART part = getPart(CASE);
         Anim anim = compositeAnim.getMap().get(part);
-        if (anim==null   )
-            return;
+        if (anim == null) {
+            if (compositeAnim.getMap().values().iterator().hasNext())
+                return;
+            anim = compositeAnim.getMap().values().iterator().next();
+        }
         Object[] args = CASE.getArgs(e);
         DC_ActiveObj active = (DC_ActiveObj) e.getRef().getActive();
         float delay = 0;
@@ -219,12 +222,12 @@ public class FloatingTextMaster {
     public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {
         FloatingText text;
         try {
-            text = getFloatingText(entity, CASE, arg) ;
+            text = getFloatingText(entity, CASE, arg);
         } catch (Exception e) {
             e.printStackTrace();
-            return ;
+            return;
         }
-        GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT,text);
+        GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, text);
     }
 
 

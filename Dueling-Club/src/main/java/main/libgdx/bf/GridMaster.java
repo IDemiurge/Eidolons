@@ -2,9 +2,9 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.math.Vector2;
 import main.game.bf.Coordinates;
-import main.libgdx.DungeonScreen;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.gui.CursorPosVector2;
+import main.libgdx.screens.DungeonScreen;
 
 /**
  * Created by JustMe on 1/29/2017.

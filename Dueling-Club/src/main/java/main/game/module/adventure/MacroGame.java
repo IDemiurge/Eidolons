@@ -34,10 +34,10 @@ public class MacroGame extends Game {
     static MacroGame game;
     DC_Game microGame;
     MacroParty playerParty;
-    main.game.logic.macro.global.World world;
+    main.game.module.adventure.global.World world;
     MacroRef ref; // with active party/route/region/place/town
     DequeImpl<TurnRule> turnRules;
-    private main.game.logic.macro.global.Campaign campaign;
+    private main.game.module.adventure.global.Campaign campaign;
 
     // ...masters
 
@@ -59,17 +59,17 @@ public class MacroGame extends Game {
         ref = new MacroRef(this);
         state = new MacroGameState(this);
         manager = new MacroGameManager(this);
-        logManager = new main.game.logic.macro.global.Journal(this);
+        logManager = new main.game.module.adventure.global.Journal(this);
         idManager = new DC_IdManager();
         turnRules = new DequeImpl<>();
         turnRules.add(new HungerRule());
         initObjTypes();
         ObjType cType = DataManager.getType(MacroManager.getCampaignName(),
                 MACRO_OBJ_TYPES.CAMPAIGN);
-        campaign = new main.game.logic.macro.global.Campaign(this, cType, ref);
+        campaign = new main.game.module.adventure.global.Campaign(this, cType, ref);
         MacroManager.setCampaignName(campaign.getName());
-        main.game.logic.macro.global.TimeMaster.setCampaign(campaign);
-        world = main.game.logic.macro.global.WorldGenerator.generateWorld(ref);
+        main.game.module.adventure.global.TimeMaster.setCampaign(campaign);
+        world = main.game.module.adventure.global.WorldGenerator.generateWorld(ref);
         ref.setMacroId(MACRO_KEYS.WORLD, world.getId());
         MacroManager.setWorldName(world.getName());
         Region region;
@@ -179,15 +179,15 @@ public class MacroGame extends Game {
         this.playerParty = playerParty;
     }
 
-    public main.game.logic.macro.global.World takeWorld() {
+    public main.game.module.adventure.global.World takeWorld() {
         return getGame().getWorld();
     }
 
-    public main.game.logic.macro.global.World getWorld() {
+    public main.game.module.adventure.global.World getWorld() {
         return world;
     }
 
-    public void setWorld(main.game.logic.macro.global.World world) {
+    public void setWorld(main.game.module.adventure.global.World world) {
         this.world = world;
     }
 
@@ -195,7 +195,7 @@ public class MacroGame extends Game {
         return ref;
     }
 
-    public main.game.logic.macro.global.Campaign getCampaign() {
+    public main.game.module.adventure.global.Campaign getCampaign() {
         return campaign;
     }
 

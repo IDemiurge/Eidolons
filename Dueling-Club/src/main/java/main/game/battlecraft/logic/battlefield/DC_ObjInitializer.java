@@ -13,20 +13,21 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battle.arena.Positioner;
+import main.game.battlecraft.logic.battle.arena.UnitGroupMaster;
+import main.game.battlecraft.logic.battle.player.DC_Player;
+import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.building.MapBlock;
+import main.game.battlecraft.logic.meta.party.PartyManager;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.ZCoordinates;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_GameData;
-import main.game.battlecraft.logic.battle.arena.UnitGroupMaster;
-import main.game.battlecraft.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.building.MapBlock;
-import main.game.battlecraft.logic.meta.party.PartyManager;
-import main.game.battlecraft.logic.battle.arena.Positioner;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.test.TestMasterContent;
 import main.test.frontend.FAST_DC;
@@ -441,4 +442,19 @@ public class DC_ObjInitializer {
         }
     }
 
+    public static String convertVarStringToObjCoordinates(String partyData) {
+        String reformatted="";
+            for (String subString :  StringMaster.openContainer(partyData )) {
+                Coordinates c =new Coordinates (VariableManager.getVar(subString));
+                if (c == null) {
+                    LogMaster.log(1, subString + " coordinate BLAST!!!");
+                }
+                subString = VariableManager.removeVarPart(subString);
+                subString = c +   COORDINATES_OBJ_SEPARATOR
+                 + subString;
+                reformatted += subString +  OBJ_SEPARATOR;
+            }
+
+            return reformatted;
+        }
 }

@@ -13,7 +13,6 @@ import main.system.launch.CoreEngine;
 import main.test.PresetLauncher;
 import main.test.debug.GameLauncher;
 import main.test.debug.GameLauncher.CODE;
-import main.test.libgdx.DENIS_Launcher;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -48,7 +47,7 @@ public class FAST_DC {
     private static boolean running;
     private static int unitGroupLevel;
     private static GameLauncher gameLauncher;
-    private static DENIS_Launcher guiLauncher;
+    private static GdxLauncher guiLauncher;
 
     public static boolean isRunning() {
         return running;
@@ -137,7 +136,7 @@ public class FAST_DC {
         }
         if (!CoreEngine.isGraphicsOff()) {
             if (!CoreEngine.isSwingOn()) {
-                DENIS_Launcher.main(new String[]{});
+                GdxLauncher.main(new String[]{});
             }
         }
 
