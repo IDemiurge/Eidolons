@@ -1,9 +1,13 @@
 package main.libgdx.screens;
 
 import com.badlogic.gdx.Screen;
+import main.libgdx.stage.LoadingStage;
+import main.libgdx.stage.MainMenuStage;
 
 public class MainMenuScreen implements Screen {
 
+    private LoadingStage loadingStage;
+    private MainMenuStage menuStage;
 
     @Override
     public void show() {
