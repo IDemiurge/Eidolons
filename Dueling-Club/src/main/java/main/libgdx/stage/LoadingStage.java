@@ -10,7 +10,7 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class LoadingStage extends Stage {
     private Image loadingImage;
-
+    private float counter = 0;
 
     public LoadingStage() {
         final TextureRegion loadingTexture = getOrCreateR("UI/loading-wheel-trans_256х256.png");
@@ -20,6 +20,7 @@ public class LoadingStage extends Stage {
                 Gdx.graphics.getWidth() / 2 - loadingImage.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2 - loadingImage.getHeight() / 2);
 
+        //loadingTexture.getTexture();
         addActor(loadingImage);
     }
 
@@ -27,6 +28,12 @@ public class LoadingStage extends Stage {
     public void act(float delta) {
         super.act(delta);
 
-        loadingImage.setRotation(loadingImage.getRotation() + 5);
+        counter += delta;
+
+        if (counter >= 0.1) {
+            loadingImage.setRotation(loadingImage.getRotation() + 30);
+            counter = 0;
+        }
+
     }
 }
