@@ -12,8 +12,8 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.MicroObj;
 import main.game.battlefield.Coordinates;
 import main.game.core.game.DC_Game;
-import main.libgdx.DungeonScreen;
 import main.libgdx.bf.GridConst;
+import main.libgdx.screens.DungeonScreen;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 

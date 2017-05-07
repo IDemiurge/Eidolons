@@ -5,11 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.ability.Ability;
 import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;
-import main.libgdx.DungeonScreen;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimMaster;
+import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.log.LogMaster;
 

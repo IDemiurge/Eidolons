@@ -6,7 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import main.client.dc.Launcher;
-import main.libgdx.DungeonScreen;
+import main.libgdx.screens.DungeonScreen;
 
 /**
  * Created with IntelliJ IDEA.

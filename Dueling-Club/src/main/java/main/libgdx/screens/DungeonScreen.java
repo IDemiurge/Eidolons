@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,7 +13,7 @@ import main.libgdx.bf.BFDataCreatedEvent;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.stage.AnimationEffectStage;
-import main.libgdx.stage.GuiStage;
+import main.libgdx.stage.BattleGuiStage;
 import main.libgdx.stage.LoadingStage;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
@@ -32,7 +32,7 @@ public class DungeonScreen implements Screen {
     public static OrthographicCamera camera;
     private static DungeonScreen instance;
     private Stage gridStage;
-    private GuiStage guiStage;
+    private BattleGuiStage guiStage;
     private GridPanel gridPanel;
     private OrthographicCamera cam;
     private InputController controller;
@@ -58,7 +58,7 @@ public class DungeonScreen implements Screen {
 
         loadingStage = new LoadingStage();
 
-        guiStage = new GuiStage();
+        guiStage = new BattleGuiStage();
 
         animationEffectStage = new AnimationEffectStage();
 
