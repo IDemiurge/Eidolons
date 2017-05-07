@@ -1,7 +1,7 @@
 package main.content;
 
-import main.content.enums.entity.AbilityEnums;
 import main.content.enums.GenericEnums;
+import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.HeroEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -10,7 +10,10 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 //it's actually ENTITY_TYPE
 public enum DC_TYPE implements OBJ_TYPE {
     UNITS("units", G_PROPS.ASPECT, 0, G_PROPS.UNIT_GROUP),
@@ -55,6 +58,8 @@ public enum DC_TYPE implements OBJ_TYPE {
     META("meta", G_PROPS.GROUP, -1, true),
     ALL("all"),;
 
+    private static Map<String, DC_TYPE> searchMap;
+
     static {
         GARMENT.hidden = true;
         GARMENT.battlecraft = false;
@@ -62,6 +67,13 @@ public enum DC_TYPE implements OBJ_TYPE {
         ENCOUNTERS.battlecraft = false;
         ARCADES.battlecraft = false;
         FACTIONS.battlecraft = false;
+
+        final DC_TYPE[] values = DC_TYPE.values();
+        searchMap = new HashMap<>(values.length, 1f);
+        for (int i = 0; i < values.length; i++) {
+            final DC_TYPE value = values[i];
+            searchMap.put(value.getName(), value);
+        }
     }
 
     boolean battlecraft = true;
@@ -73,7 +85,6 @@ public enum DC_TYPE implements OBJ_TYPE {
     private String image;
     private boolean hidden;
     private PARAMETER param;
-
     DC_TYPE(String name, PROPERTY groupingKey, int code, boolean hidden) {
         this(name, groupingKey, code);
         this.setHidden(hidden);
@@ -101,6 +112,16 @@ public enum DC_TYPE implements OBJ_TYPE {
 
     }
 
+    private static DC_TYPE getFromName(String name) {
+        DC_TYPE dcType = searchMap.get(name);
+        if (dcType == null) {
+            name = name.toLowerCase().replace("_", " ");
+            dcType = searchMap.get(name);
+        }
+
+        return dcType;
+    }
+
     public static OBJ_TYPE getTypeByCode(int code) {
         for (OBJ_TYPE type : values()) {
             if (type.getCode() == code) {
@@ -110,15 +131,17 @@ public enum DC_TYPE implements OBJ_TYPE {
         return null;
     }
 
+
     public static DC_TYPE getType(String s) {
         if (s == null) {
             return null;
         }
         DC_TYPE type = null;
-        try {
+       /* try {
             type = valueOf(s.toUpperCase().replace(" ", "_"));
         } catch (Exception e) {
-        }
+        }*/
+        type = getFromName(s);
         if (type == null) {
             LogMaster.log(0, "OBJ_TYPE not found: " + s);
             // throw new RuntimeException();
@@ -128,7 +151,8 @@ public enum DC_TYPE implements OBJ_TYPE {
 
     public static int getCode(String objType) {
 
-        OBJ_TYPE TYPE = valueOf(objType.toUpperCase().replace(" ", "_"));
+        //OBJ_TYPE TYPE = valueOf(objType.toUpperCase().replace(" ", "_"));
+        OBJ_TYPE TYPE = getFromName(objType);
         return TYPE.getCode();
     }
 

@@ -101,7 +101,9 @@ public class ImageManager {
         setPATH(PathFinder.getImagePath());
         DEFAULT = "chars\\";
         colorImgCache = new HashMap<>();
-        for (COLOR_THEME c : COLOR_THEME.values()) {
+        COLOR_THEME[] values = COLOR_THEME.values();
+        for (int i = 0, valuesLength = values.length; i < valuesLength; i++) {
+            COLOR_THEME c = values[i];
             colorImgCache.put(c, new HashMap<>());
         }
     }

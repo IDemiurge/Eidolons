@@ -40,9 +40,8 @@ public class TypeBuilder {
     public static ObjType buildType(Node node, ObjType type) {
 
         NodeList nl = node.getChildNodes();
-        LogMaster.log(0, "building type: " +
-
-                node.getNodeName());
+        LogMaster.log(0, "building type: " + node.getNodeName());
+        
         for (int i = 0; i < nl.getLength(); i++) {
             Node child = nl.item(i);
 
