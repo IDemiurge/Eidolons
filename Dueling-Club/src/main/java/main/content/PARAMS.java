@@ -2,7 +2,7 @@ package main.content;
 
 import main.content.text.Descriptions;
 import main.content.values.parameters.PARAMETER;
-import main.rules.round.UnconsciousRule;
+import main.game.battlecraft.rules.round.UnconsciousRule;
 import main.system.DC_Formulas;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ColorManager;

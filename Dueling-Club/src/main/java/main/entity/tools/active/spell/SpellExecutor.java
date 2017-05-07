@@ -15,7 +15,7 @@ import main.entity.tools.active.ActiveMaster;
 import main.entity.tools.active.Executor;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.rules.magic.ChannelingRule;
+import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;

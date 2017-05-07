@@ -5,7 +5,7 @@ import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.COUNTER_INTERACTION;
 import main.content.enums.entity.UnitEnums.COUNTER_OPERATION;
 import main.data.ability.AE_ConstrArgs;
-import main.rules.counter.CounterMasterAdvanced;
+import main.game.battlecraft.rules.counter.CounterMasterAdvanced;
 import main.system.auxiliary.EnumMaster;
 import main.system.math.Formula;
 

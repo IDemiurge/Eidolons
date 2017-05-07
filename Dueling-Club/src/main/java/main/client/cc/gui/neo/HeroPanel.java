@@ -6,7 +6,7 @@ import main.client.cc.gui.neo.header.HeroHeader;
 import main.content.PARAMS;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.rules.rpg.IntegrityRule;
+import main.game.battlecraft.rules.rpg.IntegrityRule;
 import main.swing.components.panels.DC_ItemPanel;
 import main.swing.components.panels.ValueIconPanel;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;

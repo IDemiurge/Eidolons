@@ -12,8 +12,7 @@ public class Simulation {
     }
 
     public static void init(boolean testmode) {
-          game = new DC_Game();
-        game.setSimulation(true);
+          game = new DC_Game(true);
         game.init();
         if (testmode) {
             return;

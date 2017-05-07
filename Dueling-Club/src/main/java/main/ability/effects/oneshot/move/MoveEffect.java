@@ -5,10 +5,10 @@ import main.ability.effects.OneshotEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.Coordinates;
-import main.game.battlefield.Coordinates.UNIT_DIRECTION;
-import main.game.battlefield.DirectionMaster;
-import main.game.battlefield.MovementManager.MOVE_MODIFIER;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.UNIT_DIRECTION;
+import main.game.bf.DirectionMaster;
+import main.game.bf.MovementManager.MOVE_MODIFIER;
 import main.system.math.Formula;
 
 public class MoveEffect extends DC_Effect implements OneshotEffect {

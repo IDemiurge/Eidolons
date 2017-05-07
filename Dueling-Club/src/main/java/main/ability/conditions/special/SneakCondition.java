@@ -8,8 +8,8 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.FacingMaster;
-import main.game.battlefield.vision.VisionManager;
+import main.game.battlecraft.logic.battlefield.FacingMaster;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 
 public class SneakCondition extends MicroCondition {
 

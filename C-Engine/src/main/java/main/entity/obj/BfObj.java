@@ -3,7 +3,7 @@ package main.entity.obj;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
 import main.entity.OBJ;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 
 public interface BfObj extends OBJ {
 

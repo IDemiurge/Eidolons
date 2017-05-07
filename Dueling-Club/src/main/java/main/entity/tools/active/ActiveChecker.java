@@ -18,8 +18,8 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
 import main.entity.tools.EntityChecker;
 import main.entity.tools.EntityMaster;
-import main.game.ai.tools.target.EffectFinder;
-import main.game.logic.generic.DC_ActionManager;
+import main.game.battlecraft.ai.tools.target.EffectFinder;
+import main.entity.active.DC_ActionManager;
 
 /**
  * Created by JustMe on 2/23/2017.

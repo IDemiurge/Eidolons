@@ -6,7 +6,7 @@ import main.content.ValuePages;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.entity.obj.unit.Unit;
-import main.rules.UnitAnalyzer;
+import main.game.battlecraft.rules.UnitAnalyzer;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.test.frontend.FAST_DC;

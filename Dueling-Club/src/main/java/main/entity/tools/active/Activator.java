@@ -11,7 +11,7 @@ import main.libgdx.anims.text.FloatingText;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.bf.GridMaster;
-import main.rules.action.WatchRule;
+import main.game.battlecraft.rules.action.WatchRule;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;

@@ -5,8 +5,8 @@ import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.elements.conditions.Condition;
 import main.entity.obj.DC_Obj;
-import main.game.logic.combat.damage.Damage;
-import main.game.logic.combat.damage.DamageFactory;
+import main.game.battlecraft.rules.combat.damage.Damage;
+import main.game.battlecraft.rules.combat.damage.DamageFactory;
 import main.system.auxiliary.EnumMaster;
 import main.system.math.Formula;
 

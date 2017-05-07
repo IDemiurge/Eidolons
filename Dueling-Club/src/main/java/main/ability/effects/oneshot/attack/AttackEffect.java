@@ -11,7 +11,7 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.unit.Unit;
-import main.game.logic.combat.attack.Attack;
+import main.game.battlecraft.rules.combat.attack.Attack;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;

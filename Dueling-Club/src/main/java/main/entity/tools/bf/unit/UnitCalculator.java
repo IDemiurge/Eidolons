@@ -10,7 +10,7 @@ import main.entity.tools.EntityCalculator;
 import main.entity.tools.EntityMaster;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
-import main.game.logic.combat.damage.DamageCalculator;
+import main.game.battlecraft.rules.combat.damage.DamageCalculator;
 import main.system.auxiliary.StringMaster;
 import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;

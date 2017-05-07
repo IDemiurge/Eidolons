@@ -12,7 +12,7 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;

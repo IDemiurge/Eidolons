@@ -3,7 +3,7 @@ package tests.logic.combat.buff_rules;
 import TestUtils.printingAsserts;
 import main.content.PARAMS;
 import main.entity.Ref;
-import main.rules.buff.*;
+import main.game.battlecraft.rules.buff.*;
 import main.system.math.Formula;
 import org.junit.Before;
 import org.junit.Test;

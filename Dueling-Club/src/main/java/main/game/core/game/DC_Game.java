@@ -22,33 +22,34 @@ import main.entity.obj.*;
 import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.ai.AI_Manager;
-import main.game.ai.tools.DC_Bf_Analyzer;
-import main.game.battlefield.*;
-import main.game.battlefield.Coordinates.DIRECTION;
-import main.game.battlefield.options.UIOptions;
-import main.game.battlefield.pathing.PathingManager;
-import main.game.battlefield.vision.VisionManager;
-import main.game.battlefield.vision.VisionMaster;
+import main.game.battlecraft.ai.AI_Manager;
+import main.game.battlecraft.ai.tools.DC_Bf_Analyzer;
+import main.game.battlecraft.logic.battlefield.*;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.options.UIOptions;
+import main.game.bf.pathing.PathingManager;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import main.game.core.GameLoop;
 import main.game.core.state.DC_GameState;
 import main.game.core.state.DC_StateManager;
-import main.game.logic.arcade.ArcadeManager;
-import main.game.logic.arcade.ArenaArcadeMaster;
-import main.game.logic.arena.ArenaManager;
-import main.game.logic.battle.BattleManager;
-import main.game.logic.battle.BattleOptions;
-import main.game.logic.battle.player.DC_Player;
+import main.game.battlecraft.logic.meta.arcade.ArcadeManager;
+import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
+import main.game.battlecraft.logic.battle.arena.ArenaManager;
+import main.game.battlecraft.logic.battle.BattleManager;
+import main.game.battlecraft.logic.battle.BattleOptions;
+import main.game.battlecraft.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
-import main.game.logic.battle.player.PlayerMaster;
-import main.game.logic.battle.turn.DC_TurnManager;
-import main.game.logic.combat.attack.DC_AttackMaster;
-import main.game.logic.combat.damage.ArmorMaster;
-import main.game.logic.dungeon.Dungeon;
-import main.game.logic.dungeon.DungeonMaster;
-import main.game.logic.generic.DC_ActionManager;
-import main.rules.DC_Rules;
-import main.rules.mechanics.WaitRule;
+import main.game.battlecraft.logic.battle.player.PlayerMaster;
+import main.game.battlecraft.logic.battle.turn.DC_TurnManager;
+import main.game.battlecraft.rules.combat.attack.DC_AttackMaster;
+import main.game.battlecraft.rules.combat.damage.ArmorMaster;
+import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.DungeonMaster;
+import main.entity.active.DC_ActionManager;
+import main.game.battlecraft.rules.DC_Rules;
+import main.game.battlecraft.rules.mechanics.WaitRule;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.GuiMaster;
 import main.system.DC_ConditionMaster;
@@ -124,15 +125,6 @@ public class DC_Game extends MicroGame {
     private boolean dummyPlus;
     private GameLoop loop;
 
-
-
-    @Deprecated
-    public DC_Game(Player player1, Player player2, String gamename, String objData, String objData2) {
-        super(player1, player2, gamename, objData, objData2);
-    }
-
-
-
     public DC_Game() {
         this(false);
     }
@@ -188,8 +180,10 @@ public class DC_Game extends MicroGame {
         conditionMaster = new DC_ConditionMaster();
         logManager = new DC_LogManager(this);
         rules = new DC_Rules(this);
+        if (!isSimulation()){
         keyManager = new DC_KeyManager( getManager());
         keyManager.init();
+}
     }
 
     @Override

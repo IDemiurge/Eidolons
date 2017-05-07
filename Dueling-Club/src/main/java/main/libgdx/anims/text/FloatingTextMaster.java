@@ -7,9 +7,9 @@ import main.elements.costs.Cost;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
-import main.game.ai.tools.target.EffectFinder;
-import main.game.logic.combat.damage.Damage;
-import main.game.logic.combat.damage.MultiDamage;
+import main.game.battlecraft.ai.tools.target.EffectFinder;
+import main.game.battlecraft.rules.combat.damage.Damage;
+import main.game.battlecraft.rules.combat.damage.MultiDamage;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.GdxColorMaster;
@@ -138,6 +138,8 @@ public class FloatingTextMaster {
         }
         ANIM_PART part = getPart(CASE);
         Anim anim = compositeAnim.getMap().get(part);
+        if (anim==null   )
+            return;
         Object[] args = CASE.getArgs(e);
         DC_ActiveObj active = (DC_ActiveObj) e.getRef().getActive();
         float delay = 0;

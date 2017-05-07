@@ -9,7 +9,7 @@ import main.entity.type.ObjType;
 import main.game.logic.dungeon.editor.Level;
 import main.game.logic.dungeon.editor.LevelEditor;
 import main.game.logic.dungeon.editor.Mission;
-import main.game.logic.macro.gui.MacroGuiManager;
+import main.game.module.adventure.gui.MacroGuiManager;
 import main.gui.builders.EditViewPanel;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;

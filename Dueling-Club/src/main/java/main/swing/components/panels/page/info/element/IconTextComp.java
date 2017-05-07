@@ -1,6 +1,6 @@
 package main.swing.components.panels.page.info.element;
 
-import main.game.battlefield.Coordinates.DIRECTION;
+import main.game.bf.Coordinates.DIRECTION;
 import main.swing.generic.components.CompVisuals;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;

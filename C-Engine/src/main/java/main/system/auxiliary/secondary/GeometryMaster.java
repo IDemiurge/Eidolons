@@ -1,7 +1,7 @@
 package main.system.auxiliary.secondary;
 
-import main.game.battlefield.Coordinates;
-import main.game.battlefield.Coordinates.DIRECTION;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.DIRECTION;
 
 import java.awt.*;
 

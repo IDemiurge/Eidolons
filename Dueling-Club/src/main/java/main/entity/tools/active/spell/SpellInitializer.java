@@ -10,7 +10,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.active.ActiveInitializer;
-import main.rules.magic.ChannelingRule;
+import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.system.auxiliary.secondary.InfoMaster;
 
 /**

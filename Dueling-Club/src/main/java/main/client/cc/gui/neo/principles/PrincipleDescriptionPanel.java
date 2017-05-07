@@ -4,7 +4,7 @@ import main.client.cc.gui.neo.points.HC_InfoTextPanel;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
-import main.rules.rpg.PrincipleMaster;
+import main.game.battlecraft.rules.rpg.PrincipleMaster;
 
 import java.awt.*;
 

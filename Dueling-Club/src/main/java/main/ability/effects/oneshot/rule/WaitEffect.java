@@ -20,7 +20,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.rules.mechanics.WaitRule;
+import main.game.battlecraft.rules.mechanics.WaitRule;
 
 public class WaitEffect extends MicroEffect implements OneshotEffect{
 

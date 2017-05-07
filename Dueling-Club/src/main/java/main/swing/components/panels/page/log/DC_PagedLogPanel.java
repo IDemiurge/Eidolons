@@ -2,7 +2,7 @@ package main.swing.components.panels.page.log;
 
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.Obj;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.swing.components.ImageButton;
 import main.swing.components.buttons.CustomButton;

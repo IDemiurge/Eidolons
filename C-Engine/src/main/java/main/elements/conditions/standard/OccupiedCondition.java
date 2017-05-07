@@ -6,7 +6,7 @@ import main.content.values.properties.G_PROPS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 
 public class OccupiedCondition extends ConditionImpl {
     protected String obj_ref;

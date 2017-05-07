@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Rectangle;
 import main.data.filesys.PathFinder;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 
 import java.io.IOException;
 import java.util.*;

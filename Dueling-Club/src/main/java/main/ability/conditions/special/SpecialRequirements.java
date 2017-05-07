@@ -4,7 +4,7 @@ import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
 import main.entity.obj.unit.DC_UnitModel;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 
 public class SpecialRequirements extends ConditionImpl {

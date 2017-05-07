@@ -6,7 +6,7 @@ import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.game.logic.macro.gui.MacroGuiManager;
+import main.game.module.adventure.gui.MacroGuiManager;
 import main.gui.builders.EditViewPanel;
 import main.gui.components.table.AV_TableCellRenderer;
 import main.launch.ArcaneVault;

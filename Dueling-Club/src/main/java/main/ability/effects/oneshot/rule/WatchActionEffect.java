@@ -5,7 +5,7 @@ import main.ability.effects.OneshotEffect;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.rules.action.WatchRule;
+import main.game.battlecraft.rules.action.WatchRule;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster;

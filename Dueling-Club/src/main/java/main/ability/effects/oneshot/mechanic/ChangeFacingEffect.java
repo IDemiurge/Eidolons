@@ -7,8 +7,8 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.battlefield.FacingMaster;
+import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 

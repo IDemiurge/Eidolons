@@ -22,7 +22,7 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.ai.tools.target.EffectFinder;
+import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;

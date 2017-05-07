@@ -2,7 +2,7 @@ package main.game.logic.dungeon.editor;
 
 import main.entity.obj.Obj;
 import main.entity.type.ObjAtCoordinate;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.game.logic.dungeon.editor.logic.AiGroupData;
 import main.swing.generic.services.dialog.DialogMaster;
 

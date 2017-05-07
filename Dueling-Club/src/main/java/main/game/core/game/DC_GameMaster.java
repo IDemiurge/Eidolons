@@ -5,7 +5,7 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.system.datatypes.DequeImpl;
 

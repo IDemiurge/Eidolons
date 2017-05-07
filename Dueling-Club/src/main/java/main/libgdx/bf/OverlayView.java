@@ -2,7 +2,7 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 
 public class OverlayView extends BaseView {
     public static final float SCALE = 0.5F;

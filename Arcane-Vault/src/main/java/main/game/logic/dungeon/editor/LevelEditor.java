@@ -1,12 +1,12 @@
 package main.game.logic.dungeon.editor;
 
-import main.client.DC_Engine;
+import main.game.battlecraft.DC_Engine;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.DC_TYPE;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
-import main.game.battlefield.Coordinates;
-import main.game.battlefield.vision.VisionManager;
+import main.game.bf.Coordinates;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.logic.dungeon.editor.gui.LE_MainPanel;
 import main.swing.SwingMaster;
 import main.swing.components.obj.BfGridComp;

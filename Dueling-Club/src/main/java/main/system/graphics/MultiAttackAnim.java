@@ -3,7 +3,7 @@ package main.system.graphics;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.logic.combat.attack.Attack;
+import main.game.battlecraft.rules.combat.attack.Attack;
 import main.system.graphics.AnimationManager.ANIM_TYPE;
 
 import java.awt.*;

@@ -6,7 +6,7 @@ import main.entity.tools.EntityHandler;
 import main.entity.tools.EntityMaster;
 import main.game.core.ActionInput;
 import main.game.logic.action.context.Context;
-import main.rules.magic.ChannelingRule;
+import main.game.battlecraft.rules.magic.ChannelingRule;
 
 /**
  * Created by JustMe on 3/8/2017.

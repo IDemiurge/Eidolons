@@ -4,7 +4,7 @@ import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.MicroEffect;
-import main.game.ai.tools.target.EffectFinder;
+import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.system.auxiliary.StringMaster;
 
 public class AbilityEffect extends MicroEffect {

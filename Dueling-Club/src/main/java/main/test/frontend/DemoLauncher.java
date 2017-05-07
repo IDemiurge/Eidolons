@@ -1,9 +1,8 @@
 package main.test.frontend;
 
 import com.badlogic.gdx.Game;
-import main.client.DC_Engine;
+import main.game.battlecraft.DC_Engine;
 import main.game.core.game.DC_Game;
-import main.system.hotkey.DC_KeyManager;
 
 public class DemoLauncher {
     private Game frontGame;

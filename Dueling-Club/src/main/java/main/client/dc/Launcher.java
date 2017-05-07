@@ -1,6 +1,6 @@
 package main.client.dc;
 
-import main.client.DC_Engine;
+import main.game.battlecraft.DC_Engine;
 import main.client.cc.CharacterCreator;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.MainPanel;
@@ -16,9 +16,9 @@ import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.core.game.Game;
-import main.game.logic.arcade.ArenaArcadeMaster;
-import main.game.logic.generic.PartyManager;
-import main.game.logic.macro.MacroManager;
+import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
+import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.module.adventure.MacroManager;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.windows.G_Frame;

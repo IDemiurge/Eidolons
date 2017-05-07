@@ -1,6 +1,6 @@
 package main.swing;
 
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 
 import java.awt.*;
 

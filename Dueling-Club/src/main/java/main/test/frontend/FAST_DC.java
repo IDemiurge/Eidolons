@@ -1,10 +1,10 @@
 package main.test.frontend;
 
-import main.client.DC_Engine;
+import main.game.battlecraft.DC_Engine;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.Launcher;
 import main.game.core.game.DC_Game;
-import main.game.logic.dungeon.DungeonMaster;
+import main.game.battlecraft.logic.dungeon.DungeonMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.secondary.BooleanMaster;

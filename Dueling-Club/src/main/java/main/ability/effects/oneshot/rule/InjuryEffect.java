@@ -7,7 +7,7 @@ import main.content.CONTENT_CONSTS2.INJURY;
 import main.content.CONTENT_CONSTS2.INJURY_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.game.ai.tools.target.EffectFinder;
+import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.test.Untested;

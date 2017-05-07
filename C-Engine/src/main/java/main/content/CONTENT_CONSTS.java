@@ -7,7 +7,7 @@ import main.content.values.parameters.PARAMETER;
 import main.data.ability.construct.VarHolder;
 import main.data.ability.construct.VariableManager;
 import main.entity.Ref.KEYS;
-import main.game.battlefield.Coordinates.UNIT_DIRECTION;
+import main.game.bf.Coordinates.UNIT_DIRECTION;
 
 public class CONTENT_CONSTS {
 

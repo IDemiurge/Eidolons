@@ -27,7 +27,7 @@ import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
-import main.rules.mechanics.CoatingRule;
+import main.game.battlecraft.rules.mechanics.CoatingRule;
 import main.swing.generic.components.editors.EDITOR;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;

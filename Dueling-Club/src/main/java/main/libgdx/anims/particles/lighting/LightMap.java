@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import main.content.PARAMS;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.MicroObj;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.libgdx.DungeonScreen;
 import main.libgdx.bf.GridConst;

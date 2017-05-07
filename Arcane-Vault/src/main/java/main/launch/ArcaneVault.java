@@ -13,7 +13,7 @@ import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
-import main.game.logic.arena.UnitGroupMaster;
+import main.game.battlecraft.logic.battle.arena.UnitGroupMaster;
 import main.gui.builders.MainBuilder;
 import main.gui.builders.TabBuilder;
 import main.gui.components.controls.AV_ButtonPanel;

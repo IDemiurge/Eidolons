@@ -5,7 +5,7 @@ import main.entity.tools.EntityMaster;
 import main.entity.tools.bf.structure.StructureMaster;
 import main.entity.tools.bf.structure.StructureResetter;
 import main.entity.type.ObjType;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;

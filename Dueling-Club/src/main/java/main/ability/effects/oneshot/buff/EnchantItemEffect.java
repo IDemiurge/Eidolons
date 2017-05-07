@@ -19,7 +19,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_SpellObj;
 import main.entity.type.BuffType;
-import main.game.ai.tools.target.EffectFinder;
+import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 

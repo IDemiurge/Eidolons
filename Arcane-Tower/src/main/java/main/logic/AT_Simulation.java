@@ -7,7 +7,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.DC_GameMaster;
 import main.game.core.game.Game;
 import main.game.core.state.GameState;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.session.Session;
 import main.system.net.DC_IdManager;
 

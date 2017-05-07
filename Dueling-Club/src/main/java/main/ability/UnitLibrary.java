@@ -15,7 +15,7 @@ import main.elements.conditions.RequirementsManager;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
-import main.rules.UnitAnalyzer;
+import main.game.battlecraft.rules.UnitAnalyzer;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;

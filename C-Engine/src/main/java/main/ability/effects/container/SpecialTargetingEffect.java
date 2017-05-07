@@ -1,6 +1,5 @@
 package main.ability.effects.container;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import main.ability.effects.ContainerEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.MicroEffect;
@@ -9,7 +8,7 @@ import main.elements.conditions.Conditions;
 import main.elements.conditions.standard.ZLevelCondition;
 import main.elements.targeting.AutoTargeting;
 import main.entity.Ref.KEYS;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.system.math.Formula;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 

@@ -8,7 +8,7 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.core.game.MicroGame;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
 
 public class MicroObj extends Obj {

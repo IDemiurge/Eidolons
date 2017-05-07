@@ -3,7 +3,7 @@ package main.ability.conditions;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
-import main.rules.action.WatchRule;
+import main.game.battlecraft.rules.action.WatchRule;
 
 public class WatchedCondition extends MicroCondition {
 

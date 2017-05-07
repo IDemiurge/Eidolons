@@ -2,8 +2,8 @@ package main.swing.components.panels;
 
 import main.client.dc.Launcher.VIEWS;
 import main.content.DC_TYPE;
-import main.game.logic.dungeon.Dungeon;
-import main.game.logic.dungeon.DungeonMaster;
+import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.DungeonMaster;
 import main.swing.builders.DC_Builder;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;

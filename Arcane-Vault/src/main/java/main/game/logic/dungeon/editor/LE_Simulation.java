@@ -7,7 +7,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.swing.components.obj.CellComp;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;

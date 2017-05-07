@@ -6,7 +6,7 @@ import main.ability.effects.Effects;
 import main.ability.effects.common.AddStatusEffect;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
-import main.game.ai.tools.target.EffectFinder;
+import main.game.battlecraft.ai.tools.target.EffectFinder;
 
 public class UnconsciousBuffEffect extends AddBuffEffect {
     private static final String BUFF_TYPE_NAME = "Unconscious";

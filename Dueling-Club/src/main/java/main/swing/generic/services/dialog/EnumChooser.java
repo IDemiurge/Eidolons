@@ -1,6 +1,6 @@
 package main.swing.generic.services.dialog;
 
-import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 
 public class EnumChooser<E> {
 

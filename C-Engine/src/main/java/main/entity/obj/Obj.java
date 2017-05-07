@@ -13,7 +13,7 @@ import main.entity.Ref;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.ObjMaster;
 import main.entity.type.ObjType;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;

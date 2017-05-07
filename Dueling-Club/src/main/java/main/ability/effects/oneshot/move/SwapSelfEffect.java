@@ -1,7 +1,7 @@
 package main.ability.effects.oneshot.move;
 
-import main.game.battlefield.Coordinates;
-import main.game.battlefield.MovementManager.MOVE_MODIFIER;
+import main.game.bf.Coordinates;
+import main.game.bf.MovementManager.MOVE_MODIFIER;
 
 public class SwapSelfEffect extends SelfMoveEffect {
 

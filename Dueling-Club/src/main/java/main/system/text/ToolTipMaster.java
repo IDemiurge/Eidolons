@@ -9,11 +9,11 @@ import main.entity.active.DC_SpellObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.game.ai.tools.future.FutureBuilder;
-import main.game.ai.tools.target.AI_SpellMaster;
+import main.game.battlecraft.ai.tools.future.FutureBuilder;
+import main.game.battlecraft.ai.tools.target.AI_SpellMaster;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
-import main.game.logic.combat.damage.DamageCalculator;
+import main.game.battlecraft.rules.combat.damage.DamageCalculator;
 import main.swing.components.obj.CellComp;
 import main.swing.generic.components.G_Panel;
 

@@ -7,7 +7,7 @@ import main.ability.effects.ContainerEffect;
 import main.ability.effects.MicroEffect;
 import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.data.ability.construct.VariableManager;
-import main.game.ai.tools.target.EffectFinder;
+import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.roll.RollMaster;

@@ -13,9 +13,9 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
-import main.game.ai.tools.target.TargetingMaster;
-import main.game.battlefield.Coordinates;
-import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.battlecraft.ai.tools.target.TargetingMaster;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
 

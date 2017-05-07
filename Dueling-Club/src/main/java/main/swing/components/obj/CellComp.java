@@ -5,7 +5,7 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.swing.components.obj.drawing.DrawMaster;
 import main.swing.generic.components.G_Panel;

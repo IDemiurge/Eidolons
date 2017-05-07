@@ -1,7 +1,7 @@
 package main.entity.type;
 
 import main.entity.obj.Obj;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 
 public class ObjAtCoordinate {
     ObjType type;

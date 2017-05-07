@@ -1,6 +1,6 @@
 package main.system.text;
 
-import main.client.DC_Engine;
+import main.game.battlecraft.DC_Engine;
 import main.content.DC_ContentManager.ATTRIBUTE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;

@@ -1,7 +1,7 @@
 package main.game.ai;
 
 import main.entity.obj.Obj;
-import main.game.ai.logic.ActionTypeManager.ACTION_TYPES;
+import main.game.ai.ActionTypeManager.ACTION_TYPES;
 import main.game.core.game.MicroGame;
 
 import java.util.Set;

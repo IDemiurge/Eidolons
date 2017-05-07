@@ -23,7 +23,7 @@ import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.logic.generic.DC_ActionManager.WEAPON_ATTACKS;
+import main.entity.active.DC_ActionManager.WEAPON_ATTACKS;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;

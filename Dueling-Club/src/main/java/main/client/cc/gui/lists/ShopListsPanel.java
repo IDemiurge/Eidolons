@@ -10,9 +10,9 @@ import main.data.XLinkedMap;
 import main.elements.Filter;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.logic.macro.MacroGame;
-import main.game.logic.macro.town.Shop;
-import main.game.logic.macro.town.Town;
+import main.game.module.adventure.MacroGame;
+import main.game.module.adventure.town.Shop;
+import main.game.module.adventure.town.Town;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.StringMaster;
 

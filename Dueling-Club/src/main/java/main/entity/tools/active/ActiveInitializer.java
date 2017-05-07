@@ -13,11 +13,9 @@ import main.elements.costs.Payment;
 import main.entity.active.DC_ActiveObj;
 import main.entity.tools.EntityInitializer;
 import main.entity.tools.EntityMaster;
-import main.game.logic.generic.DC_ActionManager;
-import main.rules.magic.ChannelingRule;
+import main.entity.active.DC_ActionManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.secondary.InfoMaster;
 
 import java.util.LinkedList;
 

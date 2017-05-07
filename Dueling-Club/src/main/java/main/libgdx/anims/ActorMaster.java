@@ -3,7 +3,7 @@ package main.libgdx.anims;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.bf.GridMaster;
 import main.system.auxiliary.log.LogMaster;

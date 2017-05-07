@@ -8,7 +8,7 @@ import main.content.PARAMS;
 import main.content.mode.STD_MODES;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.rules.action.WatchRule;
+import main.game.battlecraft.rules.action.WatchRule;
 
 import java.util.List;
 

@@ -15,8 +15,8 @@ import main.entity.tools.active.Activator;
 import main.entity.tools.active.ActiveMaster;
 import main.entity.tools.active.Executor;
 import main.entity.tools.active.Targeter;
-import main.game.ai.AI_Manager;
-import main.game.logic.combat.attack.dual.CadenceRule;
+import main.game.battlecraft.ai.AI_Manager;
+import main.game.battlecraft.rules.combat.attack.dual.CadenceRule;
 import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
 

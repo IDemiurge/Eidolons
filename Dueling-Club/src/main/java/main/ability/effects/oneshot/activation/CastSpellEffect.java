@@ -5,7 +5,7 @@ import main.ability.effects.MicroEffect;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
-import main.game.ai.tools.target.ReasonMaster;
+import main.game.battlecraft.ai.tools.target.ReasonMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;

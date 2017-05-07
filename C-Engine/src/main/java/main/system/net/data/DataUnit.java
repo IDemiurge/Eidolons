@@ -3,7 +3,7 @@ package main.system.net.data;
 import main.data.ConcurrentMap;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.StringMaster;

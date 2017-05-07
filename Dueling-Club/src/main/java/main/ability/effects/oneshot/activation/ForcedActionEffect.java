@@ -5,7 +5,7 @@ import main.ability.effects.MicroEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
-import main.game.ai.elements.actions.Action;
+import main.game.battlecraft.ai.elements.actions.Action;
 
 public class ForcedActionEffect extends MicroEffect  implements OneshotEffect {
 

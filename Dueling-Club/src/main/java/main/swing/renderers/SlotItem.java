@@ -5,7 +5,7 @@ import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_HeroAttachedObj;
-import main.rules.mechanics.CoatingRule;
+import main.game.battlecraft.rules.mechanics.CoatingRule;
 import main.swing.generic.components.list.ListItem;
 import main.system.graphics.ImageTransformer;
 import main.system.images.ImageManager;

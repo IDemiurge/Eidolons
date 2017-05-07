@@ -12,8 +12,8 @@ import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.DC_UnitModel;
-import main.game.battlefield.DirectionMaster;
-import main.game.battlefield.FacingMaster;
+import main.game.bf.DirectionMaster;
+import main.game.battlecraft.logic.battlefield.FacingMaster;
 
 import java.util.Arrays;
 

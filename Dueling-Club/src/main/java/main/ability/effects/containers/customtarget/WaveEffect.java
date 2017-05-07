@@ -3,8 +3,8 @@ package main.ability.effects.containers.customtarget;
 import main.ability.effects.Effect;
 import main.content.OBJ_TYPE;
 import main.entity.obj.BattleFieldObject;
-import main.game.battlefield.Coordinates;
-import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.math.Formula;
 import main.system.math.PositionMaster.SHAPES;
 

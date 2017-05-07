@@ -11,7 +11,7 @@ import main.data.xml.XML_Converter;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.logic.dungeon.Location;
+import main.game.module.dungeoncrawl.dungeon.Location;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;

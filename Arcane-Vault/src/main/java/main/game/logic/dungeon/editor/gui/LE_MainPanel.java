@@ -8,7 +8,7 @@ import main.game.logic.dungeon.editor.LE_DataMaster;
 import main.game.logic.dungeon.editor.Level;
 import main.game.logic.dungeon.editor.LevelEditor;
 import main.game.logic.dungeon.editor.Mission;
-import main.game.logic.dungeon.minimap.MiniGrid;
+import main.game.module.dungeoncrawl.dungeon.minimap.MiniGrid;
 import main.swing.generic.components.G_Panel;
 import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;

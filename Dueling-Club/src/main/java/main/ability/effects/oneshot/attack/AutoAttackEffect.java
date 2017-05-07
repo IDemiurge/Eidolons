@@ -4,7 +4,7 @@ import main.ability.effects.DC_Effect;
 import main.ability.effects.OneshotEffect;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
-import main.game.ai.tools.priority.DC_PriorityManager;
+import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 
 import java.util.LinkedList;
 import java.util.List;

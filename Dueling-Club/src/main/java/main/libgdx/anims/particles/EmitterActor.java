@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.content.CONTENT_CONSTS2.SFX;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 
 /**
  * Created by JustMe on 1/10/2017.

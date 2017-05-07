@@ -1,10 +1,10 @@
 package main.client.cc.gui.neo.choice;
 
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.Coordinates;
-import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.logic.generic.PartyManager;
-import main.game.logic.generic.Positioner;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.battle.arena.Positioner;
 import main.swing.generic.components.list.G_List;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.system.auxiliary.data.ListMaster;

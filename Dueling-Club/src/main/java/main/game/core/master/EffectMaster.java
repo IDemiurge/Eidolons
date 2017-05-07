@@ -3,7 +3,7 @@ package main.game.core.master;
 import main.ability.effects.oneshot.attack.AttackEffect;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.ActiveObj;
-import main.game.ai.tools.target.EffectFinder;
+import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.core.game.DC_Game;
 
 /**

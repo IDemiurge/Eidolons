@@ -4,11 +4,11 @@ import main.ability.conditions.FacingCondition;
 import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Conditions;
 import main.entity.obj.BattleFieldObject;
-import main.game.battlefield.Coordinates;
-import main.game.battlefield.Coordinates.UNIT_DIRECTION;
-import main.game.battlefield.DirectionMaster;
-import main.game.battlefield.MovementManager.MOVE_MODIFIER;
-import main.game.battlefield.MovementManager.MOVE_TEMPLATES;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.UNIT_DIRECTION;
+import main.game.bf.DirectionMaster;
+import main.game.bf.MovementManager.MOVE_MODIFIER;
+import main.game.bf.MovementManager.MOVE_TEMPLATES;
 import main.system.DC_ConditionMaster;
 import main.system.math.Formula;
 

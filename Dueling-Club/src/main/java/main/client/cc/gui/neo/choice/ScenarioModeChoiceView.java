@@ -1,6 +1,6 @@
 package main.client.cc.gui.neo.choice;
 
-import main.game.logic.dungeon.scenario.ScenarioMaster.SCENARIO_MODES;
+import main.game.battlecraft.logic.meta.scenario.ScenarioMaster.SCENARIO_MODES;
 
 import javax.swing.*;
 

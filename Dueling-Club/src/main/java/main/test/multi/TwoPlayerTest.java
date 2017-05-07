@@ -1,6 +1,6 @@
 package main.test.multi;
 
-import main.client.DC_Engine;
+import main.game.battlecraft.DC_Engine;
 
 /**
  * request host/client input or Create game (specs) => Join game (game list

@@ -2,9 +2,9 @@ package main.system.math;
 
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
-import main.game.battlefield.BattleFieldGrid;
-import main.game.battlefield.Coordinates;
-import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.bf.BattleFieldGrid;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.swing.XLine;
 import main.system.graphics.GuiManager;
 import main.system.auxiliary.secondary.BooleanMaster;

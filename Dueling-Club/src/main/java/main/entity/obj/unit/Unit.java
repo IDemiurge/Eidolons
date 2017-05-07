@@ -39,18 +39,19 @@ import main.entity.obj.attach.DC_FeatObj;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.bf.unit.*;
 import main.entity.type.ObjType;
-import main.game.ai.UnitAI;
-import main.game.battlefield.CoordinatesMaster;
+import main.game.battlecraft.ai.UnitAI;
+import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.action.context.Context.IdKey;
-import main.game.logic.battle.player.DC_Player;
+import main.game.battlecraft.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
-import main.game.logic.dungeon.Dungeon;
-import main.game.logic.generic.DC_ActionManager;
-import main.game.logic.generic.hero.DC_Attributes;
-import main.game.logic.generic.hero.DC_Masteries;
-import main.game.logic.macro.entity.MacroActionManager.MACRO_MODES;
+import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.entity.active.DC_ActionManager;
+import main.entity.obj.hero.DC_Attributes;
+import main.entity.obj.hero.DC_Masteries;
+import main.game.module.adventure.entity.MacroActionManager.MACRO_MODES;
 import main.system.DC_Constants;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
@@ -1072,7 +1073,7 @@ public class Unit extends DC_UnitModel {
         return item;
     }
 
-    public void setCoordinates(main.game.battlefield.Coordinates coordinates) {
+    public void setCoordinates(Coordinates coordinates) {
         if (coordinates.isInvalid()) {
             coordinates = CoordinatesMaster.getClosestValid(coordinates);
             super.setCoordinates(coordinates);

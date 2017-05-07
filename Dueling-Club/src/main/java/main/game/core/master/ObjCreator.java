@@ -11,7 +11,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.game.logic.dungeon.Entrance;
+import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

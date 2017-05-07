@@ -7,7 +7,7 @@ import main.data.filesys.PathFinder;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.*;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;

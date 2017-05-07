@@ -1,7 +1,7 @@
 package main.system.net.data;
 
 import main.entity.type.ObjType;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 import main.system.net.data.MapData.MAP_VALUES;
 

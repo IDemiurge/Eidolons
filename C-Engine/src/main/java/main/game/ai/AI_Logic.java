@@ -2,11 +2,7 @@ package main.game.ai;
 
 import main.entity.obj.Active;
 import main.entity.obj.Obj;
-import main.game.ai.logic.ActionTypeManager;
-import main.game.ai.logic.ActionTypeManager.ACTION_TYPES;
-import main.game.ai.logic.BfAnalyzer;
-import main.game.ai.logic.OldPriorityManager;
-import main.game.ai.logic.TargetingManager;
+import main.game.ai.ActionTypeManager.ACTION_TYPES;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.generic.ActionManager;

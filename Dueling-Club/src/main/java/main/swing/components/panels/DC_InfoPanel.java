@@ -5,7 +5,7 @@ import main.entity.Entity;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.DC_UnitModel;
 import main.entity.type.ObjType;
-import main.game.battlefield.vision.VisionManager;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
 import main.game.core.state.MicroGameState;
 import main.swing.generic.components.panels.G_InfoPanel;

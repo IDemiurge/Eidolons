@@ -3,7 +3,7 @@ package main.client.cc.gui.neo.principles;
 import main.client.cc.gui.neo.bars.SpecialValueBar;
 import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
-import main.rules.rpg.IntegrityRule;
+import main.game.battlecraft.rules.rpg.IntegrityRule;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.G_Panel;

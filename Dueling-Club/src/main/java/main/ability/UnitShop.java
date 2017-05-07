@@ -17,7 +17,7 @@ import main.entity.item.ItemFactory;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
-import main.game.logic.macro.town.ShopMaster;
+import main.game.module.adventure.town.ShopMaster;
 import main.system.DC_Formulas;
 import main.system.SortMaster;
 import main.system.auxiliary.Loop;

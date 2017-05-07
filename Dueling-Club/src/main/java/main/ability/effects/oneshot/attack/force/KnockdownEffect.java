@@ -2,7 +2,7 @@ package main.ability.effects.oneshot.attack.force;
 
 import main.ability.effects.DC_Effect;
 import main.entity.obj.unit.Unit;
-import main.rules.combat.KnockdownRule;
+import main.game.battlecraft.rules.combat.misc.KnockdownRule;
 import main.system.math.Formula;
 
 /**

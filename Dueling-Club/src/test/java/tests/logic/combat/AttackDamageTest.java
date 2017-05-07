@@ -2,9 +2,9 @@ package tests.logic.combat;
 
 import TestUtils.printingAsserts;
 import main.entity.active.DC_ActiveObj;
-import main.game.logic.combat.attack.Attack;
-import main.game.logic.combat.attack.DC_AttackMaster;
-import main.game.logic.combat.damage.DamageCalculator;
+import main.game.battlecraft.rules.combat.attack.Attack;
+import main.game.battlecraft.rules.combat.attack.DC_AttackMaster;
+import main.game.battlecraft.rules.combat.damage.DamageCalculator;
 import org.junit.Test;
 import tests.entity.TwoUnitsTest;
 

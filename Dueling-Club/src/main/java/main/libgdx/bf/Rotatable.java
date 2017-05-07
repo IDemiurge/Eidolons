@@ -1,6 +1,6 @@
 package main.libgdx.bf;
 
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 
 public interface Rotatable {
     Coordinates.DIRECTION getDirection();

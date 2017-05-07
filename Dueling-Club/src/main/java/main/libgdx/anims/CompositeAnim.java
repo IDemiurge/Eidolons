@@ -6,7 +6,7 @@ import javafx.util.Pair;
 import main.ability.effects.Effect;
 import main.data.XLinkedMap;
 import main.entity.active.DC_ActiveObj;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.phased.PhaseAnim;

@@ -7,7 +7,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.tools.EntityLogger;
 import main.entity.tools.EntityMaster;
-import main.game.battlefield.vision.VisionManager;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;

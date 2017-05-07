@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Pool;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;

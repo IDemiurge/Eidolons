@@ -8,7 +8,7 @@ import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.parameters.PARAMETER;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.rules.rpg.IntegrityRule;
+import main.game.battlecraft.rules.rpg.IntegrityRule;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.sound.SoundMaster;

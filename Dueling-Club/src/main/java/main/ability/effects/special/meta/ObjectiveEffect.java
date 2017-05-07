@@ -1,7 +1,7 @@
 package main.ability.effects.special.meta;
 
 import main.ability.effects.DC_Effect;
-import main.game.logic.dungeon.scenario.ObjectiveMaster.OBJECTIVE_TYPE;
+import main.game.battlecraft.logic.meta.scenario.ObjectiveMaster.OBJECTIVE_TYPE;
 
 public class ObjectiveEffect extends DC_Effect {
     String objectiveData;

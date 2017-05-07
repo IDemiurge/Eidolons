@@ -5,10 +5,10 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_UnitModel;
-import main.game.battlefield.Coordinates;
-import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.battlefield.Coordinates.UNIT_DIRECTION;
-import main.game.battlefield.DirectionMaster;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.Coordinates.UNIT_DIRECTION;
+import main.game.bf.DirectionMaster;
 
 public class CellCondition extends OccupiedCondition {
     boolean free;

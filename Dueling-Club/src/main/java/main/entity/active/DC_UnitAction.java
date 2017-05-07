@@ -11,7 +11,7 @@ import main.entity.tools.EntityMaster;
 import main.entity.tools.active.action.ActionActiveMaster;
 import main.entity.tools.active.action.ActionExecutor;
 import main.entity.type.ObjType;
-import main.game.ai.tools.target.EffectFinder;
+import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;

@@ -2,7 +2,7 @@ package main.libgdx.bf.datasource;
 
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.libgdx.bf.BaseView;
 import main.libgdx.bf.UnitViewFactory;
 

@@ -5,8 +5,8 @@ import main.content.PARAMS;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.entity.obj.unit.Unit;
-import main.rules.rpg.IntegrityRule;
-import main.rules.rpg.IntegrityRule.ALIGNMENT_LEVEL;
+import main.game.battlecraft.rules.rpg.IntegrityRule;
+import main.game.battlecraft.rules.rpg.IntegrityRule.ALIGNMENT_LEVEL;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;

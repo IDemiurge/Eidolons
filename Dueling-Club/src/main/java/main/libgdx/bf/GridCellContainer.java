@@ -2,7 +2,7 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.libgdx.bf.datasource.GridCellDataSource;
 
 import java.util.List;

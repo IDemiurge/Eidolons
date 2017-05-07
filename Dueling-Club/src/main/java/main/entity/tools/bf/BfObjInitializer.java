@@ -4,7 +4,7 @@ import main.content.enums.rules.VisionEnums;
 import main.entity.obj.BattleFieldObject;
 import main.entity.tools.EntityInitializer;
 import main.entity.tools.EntityMaster;
-import main.game.battlefield.DC_MovementManager;
+import main.game.battlecraft.logic.battlefield.DC_MovementManager;
 
 /**
  * Created by JustMe on 3/25/2017.

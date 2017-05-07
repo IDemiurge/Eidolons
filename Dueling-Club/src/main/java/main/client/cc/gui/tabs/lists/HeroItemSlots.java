@@ -11,7 +11,7 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.logic.combat.damage.ArmorMaster;
+import main.game.battlecraft.rules.combat.damage.ArmorMaster;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.ListItem;
 import main.system.auxiliary.StringMaster;

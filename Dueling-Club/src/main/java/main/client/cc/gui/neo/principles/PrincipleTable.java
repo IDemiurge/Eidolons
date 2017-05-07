@@ -5,7 +5,7 @@ import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
-import main.rules.rpg.IntegrityRule;
+import main.game.battlecraft.rules.rpg.IntegrityRule;
 import main.swing.generic.components.G_Panel;
 import main.system.graphics.ColorManager;
 import main.system.graphics.GuiManager;

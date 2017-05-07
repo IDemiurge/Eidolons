@@ -10,7 +10,7 @@ import javafx.util.Pair;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.Coordinates;
+import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimData;

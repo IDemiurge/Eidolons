@@ -1,9 +1,9 @@
 package main.ability.effects.oneshot.move;
 
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.Coordinates;
-import main.game.battlefield.DirectionMaster;
-import main.game.battlefield.MovementManager.MOVE_MODIFIER;
+import main.game.bf.Coordinates;
+import main.game.bf.DirectionMaster;
+import main.game.bf.MovementManager.MOVE_MODIFIER;
 import main.system.auxiliary.RandomWizard;
 
 public class DisplacementEffect extends SelfMoveEffect {
