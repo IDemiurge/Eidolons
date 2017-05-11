@@ -12,6 +12,8 @@ import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.ROO
 import main.game.bf.Coordinates;
 import main.game.bf.ZCoordinates;
 import main.game.core.game.DC_Game;
+import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.BLOCK_TYPE;
+import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.ROOM_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;

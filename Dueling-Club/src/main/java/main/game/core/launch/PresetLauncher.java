@@ -51,6 +51,11 @@ public class PresetLauncher {
     static LAUNCH launch;
     private static boolean isInitLaunch = true;
     private static DataUnit<?> data;
+    private static DataUnit<?> data;
+
+    public static DataUnit<?> getData() {
+        return data;
+    }
 
     static {
         LAUNCH.Profiling.gameMode = GAME_MODES.ARENA;
@@ -289,10 +294,10 @@ public class PresetLauncher {
                         initDungeonsList(value);
                         break;
                     case FIRST_DUNGEON:
-                        if (value.contains("."))
-                            valueName = DUNGEON_VALUE.PATH.toString();
+                        if(value.contains("."))
+                            valueName= DUNGEON_VALUE.PATH.toString();
                         else
-                            valueName = DUNGEON_VALUE.TYPE_NAME.toString();
+                            valueName= DUNGEON_VALUE.TYPE_NAME.toString();
                         break;
                 }
             }
@@ -379,7 +384,6 @@ public class PresetLauncher {
         // TODO Auto-generated method stub
 
     }
-
 
     public enum LAUNCH_MODS {
         //modify launch!

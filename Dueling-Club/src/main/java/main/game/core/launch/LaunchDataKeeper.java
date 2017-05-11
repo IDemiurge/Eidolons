@@ -27,6 +27,7 @@ public class LaunchDataKeeper {
     for ARENA
      */
     PlayerData[] playerData;
+
     UnitData[] unitData;
     DungeonData dungeonData;
 
@@ -45,6 +46,7 @@ public class LaunchDataKeeper {
         unitData[0] = Spawner.generateData(preset.getValue(PRESET_DATA.PLAYER_UNITS));
         unitData[1] = Spawner.generateData(preset.getValue(PRESET_DATA.ENEMIES));
         dungeonData = DungeonInitializer.generateDungeonData(
+
                 preset.getValue(PRESET_DATA.FIRST_DUNGEON));
         PresetLauncher.initPresetData(dungeonData, preset);
     }

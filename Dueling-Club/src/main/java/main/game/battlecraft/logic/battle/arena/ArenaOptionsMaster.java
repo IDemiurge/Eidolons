@@ -8,7 +8,7 @@ import main.game.battlecraft.logic.battle.BattleOptions.DIFFICULTY;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle> {
+public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle>{
 
 
     private static final String DEFAULT_LIVES = "2";
@@ -25,6 +25,7 @@ public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle> {
         // TODO
         arenaOptions = new BattleOptions();
         arenaOptions.setValue(ARENA_GAME_OPTIONS.NUMBER_OF_HEROES, ""
+
                 +
                 getMaster().getMetaMaster().getPartyManager().getParty().getMembers().size());
 

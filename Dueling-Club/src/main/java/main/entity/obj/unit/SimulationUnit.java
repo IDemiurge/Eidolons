@@ -9,7 +9,7 @@ import main.game.core.game.SimulationGame;
 /**
  * Created by JustMe on 5/11/2017.
  */
-public class SimulationUnit extends Unit {
+public class SimulationUnit extends Unit{
     public SimulationUnit(ObjType type, DC_Game game) {
         super(type, game);
     }
@@ -20,6 +20,7 @@ public class SimulationUnit extends Unit {
     }
 
     public DC_FeatObj getFeat(boolean skill, ObjType type) {
+
         return (DC_FeatObj) getGame().getSimulationObj(this, type,
                 skill ? PROPS.SKILLS : PROPS.CLASSES);
     }

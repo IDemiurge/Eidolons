@@ -8,11 +8,12 @@ import java.util.List;
  * Created by JustMe on 5/8/2017.
  */
 public class LocationTraverser {
+
     /*
     manages dungeon to dungeon travels during a Crawl
      */
     private Integer z;
-    private List<Dungeon> dungeons;
+    private   List<Dungeon> dungeons;
     private Dungeon rootDungeon;
 
 //    public static void goToDungeon(Dungeon newDungeon) {

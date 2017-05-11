@@ -83,8 +83,7 @@ public class DungeonChoiceView extends EntityChoiceView {
 
     @Override
     protected void applyChoice() {
-        hero.getGame().getDungeonMaster().getInitializer().
-                initDungeon(getSelectedItem().getName());
+        hero.getGame().getDungeonMaster().getInitializer().initDungeon(getSelectedItem().getName());
         party.setProperty(getPROP(), getSelectedItem().getName());
     }
 

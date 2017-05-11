@@ -54,6 +54,7 @@ public class LocationInitializer extends DungeonInitializer<Location> {
 //        }
     }
 
+
     //TODO this is macro!
     public void initEncounterDungeon(Encounter e) {
         ObjType type = new ObjType(e.getRoute().getName(), DC_TYPE.DUNGEONS);

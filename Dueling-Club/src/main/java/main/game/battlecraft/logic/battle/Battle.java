@@ -1,7 +1,7 @@
 package main.game.battlecraft.logic.battle;
 
-public class Battle {
-    // subset of State?
+public classBattle{
+// subset of State?
     BattleOptions options;
     BattleStats stats;
 /*

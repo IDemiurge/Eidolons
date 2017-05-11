@@ -139,7 +139,7 @@ public class TestLauncher {
     }
 
 
-    public DC_Game initDC_Game() {
+        public DC_Game initDC_Game() {
 
         initData();
         if (DEBUG_MODE != null) {
@@ -193,7 +193,7 @@ public class TestLauncher {
             initLaunch(launch);
         }
 
-        DC_Game.game = (game);
+        DC_Game.game=(game);
         // select code?
 
 
@@ -203,7 +203,7 @@ public class TestLauncher {
         if (PresetMaster.getPreset() == null) {
             if (getFAST_MODE()) {
                 if (  dungeon == null) {
-                    dungeon = DungeonInitializer.RANDOM_DUNGEON;
+                    dungeon= DungeonInitializer.RANDOM_DUNGEON;
                 }
                 TestMasterContent.test_on = false;
             }

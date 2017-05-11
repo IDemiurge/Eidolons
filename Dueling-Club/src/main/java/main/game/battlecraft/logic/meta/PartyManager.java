@@ -37,7 +37,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PartyManager<E extends MetaGame> extends MetaGameHandler<E> {
+public class PartyManager<E extends MetaGame> extends  MetaGameHandler<E> {
 
     private static final String DEFAULT_TYPE_NAME = "Inglorious Bastards";
     private static final String PARTY_FOLDER = "\\parties";

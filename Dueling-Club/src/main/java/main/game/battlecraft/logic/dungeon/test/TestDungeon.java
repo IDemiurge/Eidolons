@@ -15,7 +15,7 @@ import main.system.math.MathMaster;
  * Created by JustMe on 5/8/2017.
  */
 public class TestDungeon extends DungeonWrapper {
-    public TestDungeon(Dungeon dungeon, DungeonMaster master) {
+    public TestDungeon(Dungeon dungeon,  DungeonMaster master) {
         super(dungeon, master);
     }
 

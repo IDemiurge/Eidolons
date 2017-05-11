@@ -188,26 +188,21 @@ public class DC_Game extends MicroGame {
     }
 
 
-    protected BattleMaster createBattleMaster() {
-        return new TestBattleMaster(this);
+        protected BattleMaster createBattleMaster() {
+            return new TestBattleMaster(this );
+        }
+protected DungeonMaster createDungeonMaster() {        return new TestDungeonMaster(this);
     }
-
-    protected DungeonMaster createDungeonMaster() {
-        return new TestDungeonMaster(this);
-    }
-
-    protected MetaGameMaster createMetaMaster() {
+protected MetaGameMaster createMetaMaster() {
         return new MetaGameMaster(this);
     }
-
     // after meta
     public void dungeonInit() {
         dungeonMaster = createDungeonMaster();
     }
-
     // before all other masters?
     public void metaGameInit() {
-        metaMaster = createMetaMaster();
+        metaMaster= createMetaMaster();
     }
 
     public void dataInit() {
@@ -215,9 +210,7 @@ public class DC_Game extends MicroGame {
 
 
     }
-
-    public void battleInit() {
-        battleMaster = createBattleMaster();
+    public void battleInit() {battleMaster = createBattleMaster();
 
         inventoryTransactionManager = new InventoryTransactionManager(this);
         inventoryManager = new DC_InventoryManager(this);
@@ -259,8 +252,9 @@ public class DC_Game extends MicroGame {
             debugMaster = new DebugMaster(getState() );
         }
 
+
         getGraveyardManager().init();//TODO in init?
-        battleMaster.startGame();
+battleMaster.startGame();
         dungeonMaster.gameStarted();
         getState().gameStarted(first);
 
@@ -300,15 +294,14 @@ public class DC_Game extends MicroGame {
         setRunning(false);
         setStarted(false);
     }
-
-    @Override
+@Override
     public DC_BattleFieldManager getBattleFieldManager() {
 
-        if (battleFieldManager == null) {
-            battleFieldManager = new DC_BattleFieldManager(this);
+    if (battleFieldManager == null) {
+            battleFieldManager = new DC_BattleFieldManager(this );
         }
         return (DC_BattleFieldManager) super.getBattleFieldManager();
-    }
+}
     @Override
     public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
         BattleFieldObject unit = ((BattleFieldObject) super.createUnit(type, x, y, owner, ref.getCopy()));
@@ -488,8 +481,7 @@ public class DC_Game extends MicroGame {
     public GAME_MODES getGameMode() {
         return gameMode;
     }
-
-    @Deprecated
+@Deprecated
     public void setGameMode(GAME_MODES gameMode) {
         this.gameMode = gameMode;
     }

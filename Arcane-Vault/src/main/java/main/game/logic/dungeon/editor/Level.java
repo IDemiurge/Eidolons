@@ -58,8 +58,8 @@ public class Level extends DungeonWrapper<Location> {
     }
 
     public Level(Dungeon dungeon, Mission mission) {
-        super(dungeon, null);
-        setDungeonMaster(LevelEditor.getSimulation().getDungeonMaster());
+        super(dungeon , null );
+        setDungeonMaster( LevelEditor.getSimulation().getDungeonMaster());
         this.mission = mission;
     }
     public Level(String baseDungeonType, Mission mission, String data, boolean empty) {

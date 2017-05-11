@@ -14,6 +14,7 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
+import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.module.dungeoncrawl.dungeon.minimap.Minimap;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
@@ -27,6 +28,7 @@ public class Dungeon extends Entity {
     private DUNGEON_TEMPLATES template;
     private Minimap minimap;
     private String levelFilePath;
+    Integer z;
 
     /*
      * Encounters Levels Rewards Loot
@@ -93,6 +95,8 @@ public class Dungeon extends Entity {
     public Integer getHeight() {
         return getIntParam(PARAMS.BF_HEIGHT);
     }
+
+
 
 
     public Integer getZ() {

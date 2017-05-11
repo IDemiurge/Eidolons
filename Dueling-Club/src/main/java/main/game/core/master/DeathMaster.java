@@ -14,6 +14,7 @@ import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -98,7 +99,7 @@ public class DeathMaster extends Master {
             REF.setTarget(killed.getId());
             REF.setSource(killer.getId());
             if (killed instanceof Unit) {
-                getGame().getBattleMaster().getStatManager().unitDies((Unit) killed);
+                getGame().getBattleMaster().getStatManager(). unitDies((Unit) killed);
                 getGame().getRules().getMoraleKillingRule().unitDied((Unit) killed,
                         killer.getRef().getAnimationActive());
             }

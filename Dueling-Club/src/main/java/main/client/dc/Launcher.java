@@ -18,6 +18,8 @@ import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.core.game.Game;
+import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.module.adventure.MacroManager;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.dialog.DialogMaster;

@@ -37,7 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
+public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle>{
     public static final ENCOUNTER_TYPE[] default_encounter_sequence_1 = {EncounterEnums.ENCOUNTER_TYPE.REGULAR,
             EncounterEnums.ENCOUNTER_TYPE.ELITE,
             // ENCOUNTER_TYPE.REGULAR,
@@ -207,7 +207,7 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
             ObjType waveType = getWaveType(waves, type);
 
             waveType = new ObjType(waveType);
-            FACING_DIRECTION side = null;
+            FACING_DIRECTION side = null ;
 //             getMaster().getDungeonMaster().getPositioner().nextSide();
             waveType.setProperty(PROPS.SPAWNING_SIDE, side.getName());
 
@@ -390,8 +390,7 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
             amount = 1;
         }
         return MathMaster.applyMod(amount, getOptionManager().
-                getOptions().
-                getDifficulty()
+         getOptions().getDifficulty()
                 .getRoundsToFightMod());
 
     } // more on higher levels? battle.getLevel()

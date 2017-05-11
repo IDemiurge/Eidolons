@@ -15,6 +15,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.core.game.DC_Game;
+import main.game.battlecraft.logic.battle.DC_Player;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;

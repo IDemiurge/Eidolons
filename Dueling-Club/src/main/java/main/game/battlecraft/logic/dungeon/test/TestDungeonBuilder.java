@@ -8,7 +8,7 @@ import main.game.battlecraft.logic.dungeon.DungeonWrapper;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class TestDungeonBuilder<E extends DungeonWrapper> extends DungeonBuilder<E> {
+public class TestDungeonBuilder<E extends DungeonWrapper> extends DungeonBuilder<E>{
     public static final Integer testWidth = 21;
     public static final Integer testHeight = 15;
     public static final int BASE_WIDTH = 21;

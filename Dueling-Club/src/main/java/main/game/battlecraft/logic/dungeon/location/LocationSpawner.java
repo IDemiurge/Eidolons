@@ -76,6 +76,7 @@ public class LocationSpawner extends Spawner<Location> {
         int power = 0;
 
         int preferredPower = dungeon.getLevel()
+
                 // + PartyManager.getParty().getPower()
                 + getBattleMaster().getOptionManager().getOptions().getBattleLevel();
         int min = preferredPower * 2 / 3;
@@ -86,12 +87,14 @@ public class LocationSpawner extends Spawner<Location> {
 
             if (specialEncounters.get(dungeon) != null) {
                 Map<Coordinates, ObjType> specEncounters = specialEncounters.get(dungeon)
+
                         .get(block);
                 for (Coordinates c : specEncounters.keySet()) {
                     ObjType waveType = specEncounters.get(c);
 
                     if (waveType.getGroup().equalsIgnoreCase("Substitute")) {
                         waveType = EncounterMaster.getSubstituteEncounterType(waveType, dungeon.getDungeon(),
+
                                 preferredPower);
                     }
 
@@ -138,6 +141,7 @@ public class LocationSpawner extends Spawner<Location> {
             return block.getId() < 2;
         }
         return block.getRoomType() == ROOM_TYPE.GUARD_ROOM
+
                 || block.getRoomType() == ROOM_TYPE.COMMON_ROOM
                 || block.getRoomType() == ROOM_TYPE.THRONE_ROOM
                 || block.getRoomType() == ROOM_TYPE.EXIT_ROOM

@@ -14,6 +14,8 @@ import main.game.battlecraft.logic.meta.faction.FactionObj;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
+import main.game.battlecraft.logic.meta.faction.FactionObj;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.module.adventure.MacroRef.MACRO_KEYS;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
@@ -23,6 +25,7 @@ import main.game.module.adventure.town.Town;
 import main.game.module.adventure.travel.HungerRule;
 import main.game.module.adventure.travel.MacroParty;
 import main.system.datatypes.DequeImpl;
+import main.entity.DC_IdManager;
 
 /*
  * restored from save file? 

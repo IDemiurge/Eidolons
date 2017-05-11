@@ -3,7 +3,7 @@ package main.game.battlecraft.logic.dungeon;
 import main.game.battlecraft.logic.dungeon.UnitData.PARTY_VALUE;
 import main.system.net.data.DataUnit;
 
-public class UnitData extends DataUnit<PARTY_VALUE> {
+public class UnitData extends DataUnit<PARTY_VALUE>{
 
 
     public UnitData(String data) {

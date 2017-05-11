@@ -19,6 +19,7 @@ import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.logic.meta.arcade.ArcadeManager.ARCADE_STATUS;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMaster;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMaster.SCENARIO_MODES;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.module.adventure.MacroManager;

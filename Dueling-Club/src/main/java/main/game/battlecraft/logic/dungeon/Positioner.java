@@ -69,13 +69,14 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         // blocked
         while (!loop.continues() &&
 
+
                 !DC_Game.game.getBattleFieldManager().canMoveOnto(entity, c)
 
-                // (DC_Game.game.getBattleField().getGrid().isCoordinateObstructed(coordinate)
-                || coordinate == null) {
+         // (DC_Game.game.getBattleField().getGrid().isCoordinateObstructed(coordinate)
+         || coordinate == null) {
 
             Coordinates adjacentCoordinate = c
-                    .getAdjacentCoordinate(ArenaPositioner.getRandomSpawnAdjustDirection());
+             .getAdjacentCoordinate(ArenaPositioner.getRandomSpawnAdjustDirection());
             coordinate = adjustCoordinate(adjacentCoordinate, facing);
         }
         if (coordinate.isInvalid()) {
@@ -180,12 +181,12 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
                     }
 
                     if (getPlayerSpawnCoordinates() != null) {
-                        origin = getPlayerSpawnCoordinates();
+                        origin =  getPlayerSpawnCoordinates();
                     }
 
                 } else {
 
-                    origin = getEnemySpawningCoordinates();
+                    origin =  getEnemySpawningCoordinates();
                     if (origin == null) {
                         // getGame().getDungeon().getDefaultEnemyCoordinates();
                         // for
@@ -225,7 +226,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         // default - getOrCreate a random point in some range from player start
 
-        Coordinates playerC = getPlayerSpawnCoordinates();
+        Coordinates playerC =  getPlayerSpawnCoordinates();
         if (playerC == null) {
             playerC = Coordinates.getMiddleCoordinate(ArenaPositioner.DEFAULT_PLAYER_SIDE);
         }
@@ -267,6 +268,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         }
         Coordinates adjacentCoordinate = c.getAdjacentCoordinate(spawnSide);
         if (checkCanPlaceUnitOnCoordinate(adjacentCoordinate, objType)) {
+
             getFacingAdjuster().unitPlaced(adjacentCoordinate,
                     FacingMaster.getFacingFromDirection(
                             ArenaPositioner.DEFAULT_CENTER_SPAWN_SIDE, false, false));
@@ -280,6 +282,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
             direction = DirectionMaster.rotate90(direction, false);
             nextCoordinate = c.getAdjacentCoordinate(direction);
             if (checkCanPlaceUnitOnCoordinate(nextCoordinate, objType)) {
+
                 getFacingAdjuster().unitPlaced(nextCoordinate, FacingMaster.getFacingFromDirection(direction, true,
                         true));
                 return nextCoordinate;

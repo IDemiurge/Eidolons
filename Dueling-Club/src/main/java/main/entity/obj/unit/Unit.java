@@ -50,6 +50,7 @@ import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.action.context.Context.IdKey;
+import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.logic.battle.player.Player;
 import main.game.module.adventure.entity.MacroActionManager.MACRO_MODES;
 import main.system.DC_Constants;

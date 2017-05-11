@@ -31,11 +31,12 @@ import java.util.List;
 public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
     public static final String PRESET_PLAN = "Spire";
     static final VALUE[] encounterDungeonValues = {PROPS.DUNGEON_MAP_MODIFIER,
+
             PROPS.DUNGEON_MAP_TEMPLATE, PROPS.MAP_PRESET_OBJECTS, PROPS.MAP_OBJECTS,};
     private static final String DUNGEON_BACKGROUND_FOLDER = "\\big\\dungeons";
     private static final String RANDOM_DUNGEON_WORKSPACE_FILTER =
-            MetaEnums.WORKSPACE_GROUP.FOCUS
-                    + "" + MetaEnums.WORKSPACE_GROUP.COMPLETE;
+     MetaEnums.WORKSPACE_GROUP.FOCUS
+      + "" + MetaEnums.WORKSPACE_GROUP.COMPLETE;
     public static boolean RANDOM_DUNGEON = false;
     public static boolean CHOOSE_LEVEL = false;
     private static String DEFAULT_DUNGEON_LEVEL = "Forest.xml"; // "Arena.xml";
@@ -75,6 +76,7 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
         } else {
             if (RANDOM_DUNGEON) {
                 type =
+
                         pickRandomDungeon();
                 return createDungeon(type);
             } else if (type == null) {
@@ -90,6 +92,7 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
 
 
     private TestDungeon createDummyDungeon() {
+
         return createDungeon(new ObjType("Test Dungeon", DC_TYPE.DUNGEONS));
     }
 
@@ -98,12 +101,13 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
         List<ObjType> list = DataManager.getTypes(DC_TYPE.DUNGEONS);
 
         FilterMaster.filterByProp(list,
+
                 G_PROPS.WORKSPACE_GROUP.getName(),
                 RANDOM_DUNGEON_WORKSPACE_FILTER);
         if (list.isEmpty()) {
             list = DataManager.getTypes(DC_TYPE.DUNGEONS);
             FilterMaster.filterByProp(list, G_PROPS.WORKSPACE_GROUP.getName(),
-                    MetaEnums.WORKSPACE_GROUP.FOCUS + "");
+             MetaEnums.WORKSPACE_GROUP.FOCUS + "");
         }
         type = list.get(RandomWizard.getRandomListIndex(list));
         return type;
@@ -131,19 +135,20 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
         }
         ObjType type = ListChooser.chooseType(types);
         if (type != null) {
-            return createDungeon(type);
+            return createDungeon(type) ;
         }
-        if (getDungeonPath() == null) {
-            setDungeonPath(chooseDungeonLevel());
-        }
-        if (getDungeonPath() != null) {
-            return (TestDungeon) getBuilder().buildDungeon(getDungeonPath());
-        }
+            if (getDungeonPath() == null) {
+                setDungeonPath(chooseDungeonLevel());
+            }
+            if (getDungeonPath() != null) {
+                return (TestDungeon) getBuilder().buildDungeon(getDungeonPath());
+            }
         return null;
     }
 
     private String getRandomDungeonPath() {
         return FileManager.getRandomFile(
+
                 FileManager.getFilesFromDirectory(PathFinder.getDungeonLevelFolder()
                         + getDungeonLevelSubfolder(), false)).getPath();
     }
@@ -157,6 +162,7 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
         }
         File folder = FileManager.getFile(path);
         List<String> files = FileManager.getFileNames(FileManager.findFiles(folder, ".xml", false,
+
                 false));
 
         ListChooser listChooser = new ListChooser(SELECTION_MODE.SINGLE, files, false);

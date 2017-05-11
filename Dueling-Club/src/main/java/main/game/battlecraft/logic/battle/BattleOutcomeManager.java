@@ -5,7 +5,7 @@ import main.game.logic.battle.player.Player;
 import main.system.audio.MusicMaster;
 import main.system.audio.MusicMaster.MUSIC_MOMENT;
 
-public abstract class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
+public abstract class BattleOutcomeManager<E extends Battle> extends BattleHandler<E>{
     Boolean outcome;
 
     public BattleOutcomeManager(BattleMaster<E> master) {
@@ -53,6 +53,7 @@ public abstract class BattleOutcomeManager<E extends Battle> extends BattleHandl
         // unlock stuff for the party
 
     }
+
 
 
     public void checkOutcomeClear() {

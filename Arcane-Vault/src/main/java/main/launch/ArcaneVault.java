@@ -17,6 +17,7 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
+import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.gui.builders.MainBuilder;
 import main.gui.builders.TabBuilder;
 import main.gui.components.controls.AV_ButtonPanel;

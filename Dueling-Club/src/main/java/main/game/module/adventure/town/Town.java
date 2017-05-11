@@ -5,6 +5,7 @@ import main.client.dc.HC_SequenceMaster;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.logic.meta.faction.FactionObj;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.map.Place;

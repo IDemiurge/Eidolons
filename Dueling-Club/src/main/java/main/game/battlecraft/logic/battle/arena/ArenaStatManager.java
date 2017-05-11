@@ -8,7 +8,7 @@ import main.game.battlecraft.logic.battle.BattleStatManager;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class ArenaStatManager extends BattleStatManager<ArenaBattle> {
+public class ArenaStatManager extends BattleStatManager<ArenaBattle>{
     private static float GLORY_FACTOR = 1;
     private int glory;
 
@@ -19,6 +19,7 @@ public class ArenaStatManager extends BattleStatManager<ArenaBattle> {
 
     public void unitDies(Unit killed) {
         if (killed.getGame().isDummyMode()
+
                 // TODO until fixed
                 || true
                 ) {

@@ -8,6 +8,10 @@ import main.content.enums.DungeonEnums.MAP_FILL_TEMPLATE;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.dungeon.*;
+import main.game.battlecraft.logic.dungeon.location.Location;
+import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
+import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.ROOM_TYPE;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.dungeon.DungeonHandler;
 import main.game.battlecraft.logic.dungeon.DungeonMaster;
@@ -30,7 +34,7 @@ import main.system.math.MathMaster;
 
 import java.util.*;
 
-public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandler<E> {
+public class DungeonMapGenerator <E extends DungeonWrapper> extends DungeonHandler<E>{
     private static final String ENTRANCE_TYPE = "Dungeon Entrance";
     private static final boolean subLevelTest = false;
     DUNGEON_MAP_TEMPLATE template;
@@ -90,7 +94,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
         if (dungeon.getPlan() == null) {
             try {
                 if (dungeon.checkProperty(PROPS.DUNGEON_PLAN)) {
-                    this.plan = getBuilder().setParam(params).loadDungeonMap(dungeon
+                    this.plan = getBuilder().setParam(params). loadDungeonMap(dungeon
                             .getProperty(PROPS.DUNGEON_PLAN));
                 } else {
                     this.plan = getBuilder().setParam(params).buildDungeonPlan(dungeon);
@@ -176,7 +180,8 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
         // objMap.put(c, obj);
         // } TODO
 
-        sizeMod = getSizeMod(dungeon.getDungeon());
+
+            sizeMod = getSizeMod(dungeon.getDungeon());
 
         objects.addAll(StringMaster.openContainer(dungeon.getProperty(PROPS.MAP_OBJECTS)));
         for (String s : objects) {

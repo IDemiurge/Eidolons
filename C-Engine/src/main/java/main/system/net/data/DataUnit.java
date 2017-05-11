@@ -29,13 +29,10 @@ public class DataUnit<T extends Enum<T>> {
     public String getContainerValue(T t, int index) {
         return getContainerValues(t).get(index);
     }
-
-    public List<String> getContainerValues(T t) {
-        return
-                StringMaster.openContainer(getValue(t), getSeparator(getFormat()));
-    }
-
-    public boolean getBooleanValue(T t) {
+        public List<String> getContainerValues(T t) {
+      return
+            StringMaster.openContainer(getValue(t) , getSeparator(getFormat()));
+    }public boolean getBooleanValue(T t) {
         return StringMaster.getBoolean(getValue(t));
     }
 

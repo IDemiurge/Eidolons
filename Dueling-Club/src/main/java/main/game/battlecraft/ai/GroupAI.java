@@ -12,6 +12,7 @@ import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.module.dungeoncrawl.ai.DungeonCrawler.ENGAGEMENT_LEVEL;
+import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.module.dungeoncrawl.ai.Patrol;
 import main.system.auxiliary.data.ListMaster;
 

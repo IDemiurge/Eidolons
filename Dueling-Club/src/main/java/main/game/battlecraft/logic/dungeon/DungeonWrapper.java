@@ -13,9 +13,9 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
     protected Dungeon dungeon;
 
     public DungeonWrapper(Dungeon entity, DungeonMaster<E> master) {
-        super(entity);
+        super(  entity);
         dungeon = entity;
-        this.master = master;
+        this.master= master;
     }
 
     public DungeonMaster<E> getDungeonMaster() {

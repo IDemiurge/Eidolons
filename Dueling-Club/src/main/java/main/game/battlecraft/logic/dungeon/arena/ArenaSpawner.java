@@ -93,7 +93,7 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
             unitMap = wave.getUnitMap();
         }
         try {
-            getBattleMaster().getWaveAssembler().resetPositions(wave);
+            getBattleMaster(). getWaveAssembler().resetPositions(wave);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -118,6 +118,7 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
             unit.setFacing(facing);
             wave.addUnit(unit);
             game.fireEvent(
+
                     new Event(STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING, Ref.getSelfTargetingRefCopy(unit)));
         }
         if (!PartyManager.checkMergeParty(wave)) {
@@ -132,6 +133,7 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
     public void waveCleared() {
         if (game.isStarted()) {
             game.getLogManager().log(
+
                     "*** Enemies cleared! Encounters left: " + getScheduledWaves().toString());
             if (getBattleMaster().getMetaMaster().getPartyManager().getParty() != null) {
 //                SoundMaster.playEffectSound(SOUNDS.TAUNT, game.getParty().getLeader());
@@ -157,6 +159,7 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
             return;
         }
         newWave(new Wave(DataManager.getType(type, DC_TYPE.ENCOUNTERS), game, new Ref(game),
+
                 player));
     }
 

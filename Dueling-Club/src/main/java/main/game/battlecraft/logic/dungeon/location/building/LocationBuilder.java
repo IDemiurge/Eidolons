@@ -61,6 +61,12 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     private boolean flipX;
     private boolean flipY;
     private BuildParameters params;
+    public LocationBuilder() {
+        super(null);
+    }
+    public LocationBuilder(DungeonMaster master) {
+        super(master);
+    }
 
     public LocationBuilder() {
         super(null);
@@ -69,7 +75,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     public LocationBuilder(DungeonMaster master) {
         super(master);
     }
-
     public static List<ROOM_TYPE> getDefaultMainRooms(DUNGEON_TEMPLATES template) {
         List<ROOM_TYPE> list = new LinkedList<>();
         switch (template) {
@@ -469,6 +474,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
     public DungeonPlan loadDungeonMap(String data) {
         return buildDungeon(data).getPlan();
+
     }
 
     private void initZones(Node planNode, DungeonPlan plan) {
