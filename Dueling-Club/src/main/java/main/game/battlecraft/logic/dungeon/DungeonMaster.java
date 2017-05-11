@@ -38,6 +38,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public void gameStarted() {
+        spawner.spawn();
     }
     public void init(){
         dungeonWrapper = initializer.initDungeon();

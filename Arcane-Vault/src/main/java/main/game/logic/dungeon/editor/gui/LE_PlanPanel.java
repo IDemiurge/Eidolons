@@ -285,8 +285,8 @@ public class LE_PlanPanel extends G_Panel {
     public void handleLevelControl(LEVEL_CONTROLS control, boolean alt) {
         switch (control) {
             case ENTRANCES:
-                Entrance entrance = getLevel().getDungeon().getMainEntrance();
-                Entrance exit = getLevel().getDungeon().getMainExit();
+                Entrance entrance = getLevel().getLocation().getMainEntrance();
+                Entrance exit = getLevel().getLocation().getMainExit();
                 DialogMaster.ask(" Entrance: "
                                 + (entrance == null ? "" : entrance.getNameAndCoordinate()) + ", exit: "
                                 + (exit == null ? "" : exit.getNameAndCoordinate()) + " What to do?", true,
@@ -294,14 +294,14 @@ public class LE_PlanPanel extends G_Panel {
                         "Set Entrance", "Set Exit", "Swap");
                 Boolean result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.OPTION_DIALOG);
                 if (result == null) {
-                    getLevel().getDungeon().setMainEntrance(exit);
-                    getLevel().getDungeon().setMainExit(entrance);
+                    getLevel().getLocation().setMainEntrance(exit);
+                    getLevel().getLocation().setMainExit(entrance);
 
                 } else {
                     if (result) {
                         // swap places?
                         //
-                        int index = DialogMaster.optionChoice(getLevel().getDungeon()
+                        int index = DialogMaster.optionChoice(getLevel().getLocation()
                                 .getEntrances().toArray(), "Choose an entrance");
 
                     } else {
@@ -533,7 +533,7 @@ public class LE_PlanPanel extends G_Panel {
     }
 
     public DungeonPlan getPlan() {
-        return getLevel().getDungeon().getPlan();
+        return getLevel().getLocation().getPlan();
     }
 
     public MapBlock getSelectedBlock() {

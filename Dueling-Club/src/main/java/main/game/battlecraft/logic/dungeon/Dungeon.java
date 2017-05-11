@@ -99,6 +99,8 @@ public class Dungeon extends Entity {
 
 
     public Integer getZ() {
+        if (z==null )
+            return 0;
         return z;
     }
 

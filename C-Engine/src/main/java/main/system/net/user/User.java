@@ -1,6 +1,6 @@
 package main.system.net.user;
 
-import main.system.net.data.DataUnit;
+import main.system.data.DataUnit;
 import main.system.net.user.User.USER_VALUES;
 
 import java.util.Arrays;

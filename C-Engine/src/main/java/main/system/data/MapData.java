@@ -1,9 +1,9 @@
-package main.system.net.data;
+package main.system.data;
 
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
-import main.system.net.data.MapData.MAP_VALUES;
+import main.system.data.MapData.MAP_VALUES;
 
 import java.util.HashMap;
 import java.util.Map;

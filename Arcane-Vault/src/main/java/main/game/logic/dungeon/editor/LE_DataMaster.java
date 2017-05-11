@@ -1,11 +1,11 @@
 package main.game.logic.dungeon.editor;
 
-import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
-import main.content.enums.system.MetaEnums;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.content.enums.DungeonEnums.DUNGEON_SUBFOLDER;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.ability.construct.VariableManager;
@@ -14,13 +14,13 @@ import main.data.xml.XML_Writer;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.location.Location;
 import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.text.NameMaster;
@@ -284,17 +284,17 @@ public class LE_DataMaster {
 
     public static void levelSaved(Level level) {
         String dungeon_main_entrances = "";
-        Dungeon dungeon = level.getDungeon();
-        if (dungeon.getMainEntrance() != null) {
-            dungeon_main_entrances += dungeon.getMainEntrance().getNameAndCoordinate()
+        Location location = level.getLocation();
+        if (location.getMainEntrance() != null) {
+            dungeon_main_entrances += location.getMainEntrance().getNameAndCoordinate()
                     + DungeonLevelMaster.ENTRANCE_SEPARATOR;
         }
-        if (dungeon.getMainExit() != null) {
-            dungeon_main_entrances += dungeon.getMainExit().getNameAndCoordinate();
+        if (location.getMainExit() != null) {
+            dungeon_main_entrances += location.getMainExit().getNameAndCoordinate();
         }
-        dungeon.setProperty(PROPS.DUNGEON_MAIN_ENTRANCES, dungeon_main_entrances);
+        location.setProperty(PROPS.DUNGEON_MAIN_ENTRANCES, dungeon_main_entrances);
 
-        String subFolder = dungeon.getProperty(G_PROPS.DUNGEON_SUBFOLDER);
+        String subFolder = location.getProperty(G_PROPS.DUNGEON_SUBFOLDER);
         if (subFolder.isEmpty()) {
             subFolder = ListChooser.chooseEnum(DUNGEON_SUBFOLDER.class);
         }
@@ -303,23 +303,23 @@ public class LE_DataMaster {
             // slashes FAILED!
             subFolder = StringMaster.getLastPathSegment(subFolder);
             subFolder = subFolder.replace(";", "");
-            dungeon.setProperty(G_PROPS.DUNGEON_SUBFOLDER, subFolder);
+            location.setProperty(G_PROPS.DUNGEON_SUBFOLDER, subFolder);
             // path = subFolder + "\\" + path; // by class?
         }
         String xml = level.getXml();
-        String fileName = dungeon.getName();
+        String fileName = location.getName();
 
         String path = fileName;
         if (!StringMaster.isEmpty(subFolder)) {
             path = subFolder + "\\" + path;
         }
-        if (dungeon.getWorkspaceGroup() == null) {
-            dungeon.setWorkspaceGroup(MetaEnums.WORKSPACE_GROUP.IMPLEMENT);
+        if (location.getWorkspaceGroup() == null) {
+            location.setWorkspaceGroup(MetaEnums.WORKSPACE_GROUP.IMPLEMENT);
 
         }
-        fileName += InfoMaster.getWorkspaceTip(dungeon);
-        if (dungeon.getWorkspaceGroup() == null
-                || dungeon.getWorkspaceGroup() == MetaEnums.WORKSPACE_GROUP.COMPLETE) {
+        fileName += InfoMaster.getWorkspaceTip(location.getDungeon());
+        if (location.getWorkspaceGroup() == null
+                || location.getWorkspaceGroup() == MetaEnums.WORKSPACE_GROUP.COMPLETE) {
             deleteIncompleteVersions(fileName);
         }
         // if (level.getDungeon().isSurface()) {

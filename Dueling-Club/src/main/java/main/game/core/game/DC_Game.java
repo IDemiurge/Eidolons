@@ -22,7 +22,6 @@ import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.AI_Manager;
-import main.game.battlecraft.ai.tools.DC_Bf_Analyzer;
 import main.game.battlecraft.logic.battle.BattleMaster;
 import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.battlecraft.logic.battle.test.TestBattleMaster;
@@ -183,6 +182,7 @@ public class DC_Game extends MicroGame {
         if (PresetMaster.getPreset() != null) {
             PresetLauncher.launchPreset();
         }
+        dungeonInit();
         if (!simulation) {
             battleInit();
         }
@@ -221,15 +221,11 @@ battleMaster = createBattleMaster();
         inventoryTransactionManager = new InventoryTransactionManager(this);
         inventoryManager = new DC_InventoryManager(this);
 
-//        battleMaster.init();
+        battleMaster.init();
         dungeonMaster.init();
 
             setOffline(true);
-            if (isAI_ON()) {
-                player2.setAi(true);
-            } else {
-                setAnalyzer(new DC_Bf_Analyzer((MicroGame) Game.game));
-            }
+
 
         // if (battlefield == null) {
 
