@@ -310,7 +310,7 @@ public class ComponentResizer extends MouseAdapter {
      * Resize the component ensuring location and size is within the bounds of
      * the parent container and that the size is within the minimum and maximum
      * constraints.
-     * <p>
+     * <portrait>
      * All calculations are done using the bounds of the component when the
      * resizing started.
      */

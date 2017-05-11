@@ -4,7 +4,7 @@ import main.content.VALUE;
 
 /**
  * Property types: [by obj type], e.g. UNIT - Race, Class. , ...
- * <p>
+ * <portrait>
  * Property values: (for race - human , ...
  *
  * @author JustMe

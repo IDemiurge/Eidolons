@@ -46,14 +46,14 @@ public class BlurUtils {
 	 */
 
     /**
-     * <p>
+     * <portrait>
      * Blurs the source pixels into the destination pixels. The force of the
      * blur is specified by the radius which must be greater than 0.
-     * </p>
-     * <p>
+     * </portrait>
+     * <portrait>
      * The source and destination pixels arrays are expected to be in the RGBA
      * format.
-     * </p>
+     * </portrait>
      *
      * @param srcPixels the source pixels
      * @param dstPixels the destination pixels
@@ -262,10 +262,10 @@ public class BlurUtils {
 
     /**
      * Blurs the specified pixmap with the given source and destination regions.
-     * <p>
+     * <portrait>
      * The pixmap does not need to be in RGBA8888 format, however, it is
      * recommended for better performance.
-     * <p>
+     * <portrait>
      * A new pixmap will be returned containing the blurred image. The old
      * pixmap will only be disposed of if <tt>disposePixmap</tt> returns true.
      *
@@ -325,14 +325,14 @@ public class BlurUtils {
 
     /**
      * Blurs the mipmaps of the currently bound texture with the given settings.
-     * <p>
+     * <portrait>
      * For each mipmap level, the image will be scaled to half (using
      * nearest-neighbour scaling) and then blurred in software, before sending
      * the bytes to GL.
-     * <p>
+     * <portrait>
      * The first mipmap level should already be uploaded to GL, i.e. through the
      * Texture constructor. No blur will be applied to it.
-     * <p>
+     * <portrait>
      * The texture needs to have been created with format RGBA8888 to work
      * correctly on all devices.
      *

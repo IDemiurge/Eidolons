@@ -1,18 +1,17 @@
 package main.test.frontend;
 
-import main.game.battlecraft.DC_Engine;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.Launcher;
+import main.game.battlecraft.DC_Engine;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.dungeon.DungeonMaster;
+import main.game.core.launch.PresetLauncher;
+import main.game.core.launch.TestLauncher;
+import main.game.core.launch.TestLauncher.CODE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.hotkey.GlobalKeys;
 import main.system.launch.CoreEngine;
-import main.test.PresetLauncher;
-import main.test.debug.GameLauncher;
-import main.test.debug.GameLauncher.CODE;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -46,7 +45,7 @@ public class FAST_DC {
     private static DC_Game game;
     private static boolean running;
     private static int unitGroupLevel;
-    private static GameLauncher gameLauncher;
+    private static TestLauncher testLauncher;
     private static GdxLauncher guiLauncher;
 
     public static boolean isRunning() {
@@ -82,27 +81,27 @@ public class FAST_DC {
             }
         }
 
-        gameLauncher = new GameLauncher(game, FAST_MODE, SUPER_FAST_MODE );
+        testLauncher = new TestLauncher(game, FAST_MODE, SUPER_FAST_MODE );
         if (skipChoice) {
             if (args[0] == PRESET_OPTION_ARG) {
                 PresetLauncher.PRESET_OPTION = StringMaster.getInteger(args[1]);
                 FAST_MODE = PresetLauncher.chooseLaunchOption();
             } else if (arglist.contains(PRESET_ARG)) {
                 if (arglist.size() > 1) {
-                    gameLauncher.PLAYER_PARTY = arglist.get(1);
+                    testLauncher.PLAYER_PARTY = arglist.get(1);
                 }
                 if (arglist.size() > 2) {
-                    gameLauncher.ENEMY_PARTY = arglist.get(2);
+                    testLauncher.ENEMY_PARTY = arglist.get(2);
                 }
                 if (arglist.size() > 3) {
                     DEFAULT_DUNGEON = arglist.get(3);
                 }
 
             }
-            gameLauncher.ENEMY_CODE = CODE.PRESET;
-            gameLauncher.PARTY_CODE = CODE.PRESET;
+            testLauncher.ENEMY_CODE = CODE.PRESET;
+            testLauncher.PARTY_CODE = CODE.PRESET;
         }
-        gameLauncher.setDungeon(DEFAULT_DUNGEON);
+        testLauncher.setDungeon(DEFAULT_DUNGEON);
         if (!skipChoice) {
             if (BEHAVIOR_TEST_ON) {
                 SUPER_FAST_MODE = true;
@@ -116,13 +115,11 @@ public class FAST_DC {
         if (!skipChoice) {
             if (FAST_MODE != null) {
                 if (FAST_MODE || SUPER_FAST_MODE) {
-                    gameLauncher.ENEMY_CODE = CODE.NONE;
-                    gameLauncher.PARTY_CODE = CODE.PRESET;
-                    gameLauncher.LEADER_MOVES_FIRST = true;
-                    gameLauncher.VISION_HACK = SUPER_FAST_MODE;
-                    if (SUPER_FAST_MODE) {
-                        DungeonMaster.CHOOSE_LEVEL = false;
-                    }
+                    testLauncher.ENEMY_CODE = CODE.NONE;
+                    testLauncher.PARTY_CODE = CODE.PRESET;
+                    testLauncher.LEADER_MOVES_FIRST = true;
+                    testLauncher.VISION_HACK = SUPER_FAST_MODE;
+
                     // preset
                     ItemGenerator.setGenerationOn(!SUPER_FAST_MODE
 //                      &&!FAST_MODE
@@ -143,7 +140,7 @@ public class FAST_DC {
         DC_Engine.init();
         Chronos.mark("GAME LAUNCHED");
 
-        game = gameLauncher.initDC_Game();
+        game = testLauncher.initDC_Game();
         game.start(true);
         initKeyManager();
 
@@ -158,16 +155,16 @@ public class FAST_DC {
         }
     }
 
-    public static GameLauncher getGameLauncher() {
-        if (gameLauncher == null) {
-            gameLauncher = new GameLauncher(game, FAST_MODE, SUPER_FAST_MODE );
+    public static TestLauncher getTestLauncher() {
+        if (testLauncher == null) {
+            testLauncher = new TestLauncher(game, FAST_MODE, SUPER_FAST_MODE );
         }
 
-        return gameLauncher;
+        return testLauncher;
     }
 
-    public static void setGameLauncher(GameLauncher gameLauncher) {
-        FAST_DC.gameLauncher = gameLauncher;
+    public static void setTestLauncher(TestLauncher testLauncher) {
+        FAST_DC.testLauncher = testLauncher;
     }
 
 }

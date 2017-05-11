@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 1) preCheck forced 2) create action sequences for default goal 3) choose the
  * topmost
- * <p>
+ * <portrait>
  * to choose an action sequence, first create all possible tasks if there are X
  * enemies, create X Engage tasks, for instance Then for each of these tasks,
  * create all possible action sequences. >> Engage via Attack = turn > turn >

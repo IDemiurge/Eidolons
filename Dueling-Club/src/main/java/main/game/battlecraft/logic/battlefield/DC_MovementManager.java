@@ -92,10 +92,10 @@ public class DC_MovementManager implements MovementManager {
 //            return  null ;
 //            }
 //        ActionPath path =paths.get(0);
-//        for (ActionPath p : paths){
-//            if (p.getActions().get(0).getActive().isTurn())
+//        for (ActionPath portrait : paths){
+//            if (portrait.getActions().get(0).getActive().isTurn())
 //            {
-//                path = p;
+//                path = portrait;
 //                break;
 //            }
 //        }

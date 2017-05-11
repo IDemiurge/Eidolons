@@ -29,7 +29,7 @@ public class DragOffsetMouseListener implements MouseListener, AWTEventListener,
         // mapping
         e.getPoint();
 
-        // SwingMaster.findComponentUnderGlassPaneAt(p, top);
+        // SwingMaster.findComponentUnderGlassPaneAt(portrait, top);
         // grid.getComp().grid.getCellWidth();
         // overlaying?
     }

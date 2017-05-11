@@ -7,7 +7,7 @@ import main.client.cc.gui.neo.tabs.TabChangeListener;
 import main.client.cc.logic.party.PartyObj;
 import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.swing.components.panels.DC_TopPanel;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.components.panels.page.info.element.ValueTextComp;

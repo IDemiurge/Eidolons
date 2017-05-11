@@ -1,18 +1,16 @@
 package main.game.battlecraft.rules.round;
 
-import main.content.enums.GenericEnums;
 import main.entity.Entity;
-import main.entity.Ref;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlecraft.logic.battle.arena.Wave;
-import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.core.game.DC_Game;
 import main.game.module.adventure.travel.Encounter;
 import main.system.auxiliary.StringMaster;
-import main.system.math.roll.RollMaster;
+import main.test.Refactor;
 
 import java.util.List;
-
+@Refactor
 public class ScoutingRule extends RoundRule {
     private Entity scout;
 
@@ -30,36 +28,36 @@ public class ScoutingRule extends RoundRule {
         // "detection roll vs least stealth among the wave units?"
         // only vs next wave of course
 
-        for (Wave enemyWave : game.getArenaManager().getSpawnManager().getScheduledWaves().keySet()) {
-            scout = hero;
-            // detection = scout.getIntParam(PARAMS.DETECTION);
-            int distance = 1
-                    + game.getArenaManager().getSpawnManager().getScheduledWaves().get(enemyWave)
-                    - game.getState().getRound();
-            Ref ref = new Ref(game);
-            ref.setTarget(enemyWave.getId());
-            ref.setSource(scout.getId());
-            SCOUT_INFO_LEVEL level = null;
-            for (SCOUT_INFO_LEVEL l : SCOUT_INFO_LEVEL.values()) {
-                // enemyWave.getUnitMap().values()){
-                // } //spotting each unit separately?
-                // String success =detection+ "*" + l.getDifficulty();
-                String fail = distance + "*" + l.getDifficulty(); // TODO
-                try {
-                    if (RollMaster.roll(GenericEnums.ROLL_TYPES.DETECTION, fail, "-", ref)) {
-                        level = l;
-                        break;
-                    }
-                } catch (Exception e) {
-                    // e.printStackTrace();
-
-                }
-            }
-            if (level == null) {
-                continue;
-            }
-            logInfo(level, enemyWave);
-        }
+//        for (Wave enemyWave : game.getBattleMaster().getSpawner().getScheduledWaves().keySet()) {
+//            scout = hero;
+//            // detection = scout.getIntParam(PARAMS.DETECTION);
+//            int distance = 1
+//                    + game.getBattleMaster().getSpawner().getScheduledWaves().get(enemyWave)
+//                    - game.getState().getRound();
+//            Ref ref = new Ref(game);
+//            ref.setTarget(enemyWave.getId());
+//            ref.setSource(scout.getId());
+//            SCOUT_INFO_LEVEL level = null;
+//            for (SCOUT_INFO_LEVEL l : SCOUT_INFO_LEVEL.values()) {
+//                // enemyWave.getUnitMap().values()){
+//                // } //spotting each unit separately?
+//                // String success =detection+ "*" + l.getDifficulty();
+//                String fail = distance + "*" + l.getDifficulty(); // TODO
+//                try {
+//                    if (RollMaster.roll(GenericEnums.ROLL_TYPES.DETECTION, fail, "-", ref)) {
+//                        level = l;
+//                        break;
+//                    }
+//                } catch (Exception e) {
+//                    // e.printStackTrace();
+//
+//                }
+//            }
+//            if (level == null) {
+//                continue;
+//            }
+//            logInfo(level, enemyWave);
+//        }
     }
 
     @Override

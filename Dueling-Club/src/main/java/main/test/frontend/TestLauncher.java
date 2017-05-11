@@ -3,7 +3,7 @@ package main.test.frontend;
 import main.client.cc.logic.items.ItemGenerator;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.battle.arena.UnitGroupMaster;
+import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.test.debug.DebugMaster;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
@@ -29,9 +29,9 @@ public class TestLauncher {
         // .getRandomReadyGroup(1));
 
         if (FAST_DC.isRunning()) {
-            FAST_DC.getGameLauncher().ENEMY_PARTY = enemyParty;
-            FAST_DC.getGameLauncher().PLAYER_PARTY = playerParty;
-            FAST_DC.getGameLauncher().initData();
+            FAST_DC.getTestLauncher().ENEMY_PARTY = enemyParty;
+            FAST_DC.getTestLauncher().PLAYER_PARTY = playerParty;
+            FAST_DC.getTestLauncher().initData();
             DebugMaster.setAltMode(true);
             DC_Game.game.getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.RESTART);
 

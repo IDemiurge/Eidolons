@@ -20,7 +20,7 @@ public class DemoLauncher extends Game {
         DC_Engine.init();
         coreGame = new DC_Game(false);
         coreGame.init();
-        DC_Game.setGame(coreGame);
+        DC_Game.game=(coreGame);
         coreGame.start(true);*/
 
     }

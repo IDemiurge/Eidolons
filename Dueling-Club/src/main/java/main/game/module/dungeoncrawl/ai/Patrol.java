@@ -4,7 +4,7 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.GroupAI;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
-import main.game.battlecraft.logic.dungeon.building.MapBlock;
+import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.system.auxiliary.RandomWizard;
 
 public class Patrol {

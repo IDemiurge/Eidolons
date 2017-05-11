@@ -179,9 +179,9 @@ public class ToolTipMaster {
 //    }
 //
 //    public void initRuleTooltip(RULE rule) {
-//        Point p = getPointForRule(rule);
-//        TextItem textItem = getCustomTooltip(p, rule.getTooltip(), 400, null);
-//        adjustPointForTextItem(textItem, p);
+//        Point portrait = getPointForRule(rule);
+//        TextItem textItem = getCustomTooltip(portrait, rule.getTooltip(), 400, null);
+//        adjustPointForTextItem(textItem, portrait);
 //
 //    }
 //
@@ -266,7 +266,7 @@ public class ToolTipMaster {
 //
 //        unitToolTip = new TextItem(lines, TEXT_TYPE.UNIT_TOOLTIP);
 //        // TODO for stacked?
-//        Point p = new Point(DC_Builder.getBfGridPosX()
+//        Point portrait = new Point(DC_Builder.getBfGridPosX()
 //         + (unit.getX() - game.getBattleField().getGrid().getOffsetX())
 //         * GuiManager.getCellWidth()
 //         + MigMaster.getCenteredPosition(GuiManager.getCellWidth(), FontMaster
@@ -274,9 +274,9 @@ public class ToolTipMaster {
 //         + (unit.getY() - game.getBattleField().getGrid().getOffsetY())
 //         * GuiManager.getCellHeight() + 3);
 //
-//        // alignPoint(p, ALIGNMENT.NORTH);
+//        // alignPoint(portrait, ALIGNMENT.NORTH);
 //
-//        adjustPointForTextItem(unitToolTip, p);
+//        adjustPointForTextItem(unitToolTip, portrait);
 //
 //        // zoom!
 //        // unit.getCellCompPoint()
@@ -347,13 +347,13 @@ public class ToolTipMaster {
 //        G_List list = ((G_ListPanel) (info_active_panel ? getBuilder().getUnitInfoPanel()
 //         .getBuffPanel().getCurrentComponent() : getBuilder().getActiveUnitPanel()
 //         .getBuffPanel().getCurrentComponent())).getList();
-//        Point p = list.getItemPosition(item);
+//        Point portrait = list.getItemPosition(item);
 //        // right above
-//        p = new Point(MigMaster.getCenteredPosition(GuiManager.getBfGridWidth(), (int) buffTooltip
+//        portrait = new Point(MigMaster.getCenteredPosition(GuiManager.getBfGridWidth(), (int) buffTooltip
 //         .getRectangle().getWidth())
-//         + DC_Builder.getBfGridPosX(), p.y);
+//         + DC_Builder.getBfGridPosX(), portrait.y);
 //
-//        adjustPointForTextItem(buffTooltip, p);
+//        adjustPointForTextItem(buffTooltip, portrait);
 //    }
 //
 //    public void initTargetingTooltip(DC_ActiveObj activeObj) {
@@ -364,12 +364,12 @@ public class ToolTipMaster {
 //        }
 //        toolTipTextItems.remove(targetingText);
 //        targetingText = new TextItem(lines, TEXT_TYPE.TARGETING);
-//        Point p = getBuilder().getUap().getLocation();
+//        Point portrait = getBuilder().getUap().getLocation();
 //        // right above
-//        p = new Point(MigMaster.getCenteredPosition(GuiManager.getBfGridWidth(),
+//        portrait = new Point(MigMaster.getCenteredPosition(GuiManager.getBfGridWidth(),
 //         (int) targetingText.getRectangle().getWidth())
-//         + DC_Builder.getBfGridPosX(), p.y);
-//        adjustPointForTextItem(targetingText, p);
+//         + DC_Builder.getBfGridPosX(), portrait.y);
+//        adjustPointForTextItem(targetingText, portrait);
 //
 //    }
 //
@@ -380,13 +380,13 @@ public class ToolTipMaster {
 //    public TextItem initActionToolTip(DC_ActiveObj activeObj, boolean info) {
 //        // game.getBattleField().getBuilder().getUap()
 //
-//        Point p = getBuilder().getScreenPointForAction(activeObj);
-//        p = new Point(p.x + GuiManager.getSmallObjSize() / 4 * 3, p.y
+//        Point portrait = getBuilder().getScreenPointForAction(activeObj);
+//        portrait = new Point(portrait.x + GuiManager.getSmallObjSize() / 4 * 3, portrait.y
 //         + GuiManager.getSmallObjSize() / 2);
-//        return initActionTooltip(activeObj, info, p);
+//        return initActionTooltip(activeObj, info, portrait);
 //    }
 //
-//    private TextItem initActionTooltip(DC_ActiveObj activeObj, boolean info, Point p) {
+//    private TextItem initActionTooltip(DC_ActiveObj activeObj, boolean info, Point portrait) {
 //        Costs costs = activeObj.getCosts();
 //        if (activeObj.isAttackGeneric()) {
 //            if (activeObj.getModeAction() != null)// TODO ??
@@ -410,7 +410,7 @@ public class ToolTipMaster {
 //        toolTipTextItems.remove(actionRequirementText);
 //        actionRequirementText = new TextItem(lines, info ? TEXT_TYPE.INFO : TEXT_TYPE.REQUIREMENT);
 //        if (!activeObj.isSpell()) {
-//            adjustPointForTextItem(actionRequirementText, p);
+//            adjustPointForTextItem(actionRequirementText, portrait);
 //        } else {
 //            toolTipTextItems.add(actionRequirementText);
 //        }
@@ -427,11 +427,11 @@ public class ToolTipMaster {
 //        return initTooltip(type, e, e.getPoint(), arg);
 //    }
 //
-//    public boolean initTooltip(TOOLTIP_TYPE type, MouseEvent e, Point p, Object arg) {
+//    public boolean initTooltip(TOOLTIP_TYPE type, MouseEvent e, Point portrait, Object arg) {
 //
 //        switch (type) {
 //            case CUSTOM_TOOLTIP:
-//                return initCustomTooltip(p, arg.toString(), 300);
+//                return initCustomTooltip(portrait, arg.toString(), 300);
 //            case DC_INFO_PAGE_PASSIVE:
 //                return initPassiveTooltip(e);
 //            case DC_INFO_PAGE_PARAMETER:
@@ -471,31 +471,31 @@ public class ToolTipMaster {
 //
 //    }
 //
-//    private boolean initParamTooltip(Point p, PARAMETER param, int w) {
+//    private boolean initParamTooltip(Point portrait, PARAMETER param, int w) {
 //        int wrapLength = FontMaster.getStringLengthForWidth(
 //         TextItem.getFontForType(TEXT_TYPE.INFO), w);
 //        List<String> lines = TextWrapper.wrap(param.getDescription(), wrapLength);
 //        lines.add(0, param.getName());
 //        toolTipTextItems.remove(paramTooltip);
-//        paramTooltip = new TextItem(p, TEXT_TYPE.INFO, lines);
+//        paramTooltip = new TextItem(portrait, TEXT_TYPE.INFO, lines);
 //        toolTipTextItems.add(paramTooltip);
-//        adjustPointForTextItem(paramTooltip, p);
+//        adjustPointForTextItem(paramTooltip, portrait);
 //        return true;
 //    }
 //
 //    private boolean initParamTooltip(MouseEvent e) {
-//        Point p = e.getLocationOnScreen();
+//        Point portrait = e.getLocationOnScreen();
 //        ValueIconPanel iconPanel = getBuilder().getUnitInfoPanel().getValueIconPanel();
 //        VALUE v = iconPanel.getValueAt(e.getPoint());
 //        int minX = DC_Builder.getBfGridPosX() + GuiManager.getSmallObjSize()
 //         + GuiManager.getBattleFieldWidth();
-//        int x = MathMaster.getMinMax(p.x, minX, minX + iconPanel.getWidth()); // /
+//        int x = MathMaster.getMinMax(portrait.x, minX, minX + iconPanel.getWidth()); // /
 //        // 2?
-//        int y = MathMaster.getMinMax(p.y, iconPanel.getY(), iconPanel.getY()
+//        int y = MathMaster.getMinMax(portrait.y, iconPanel.getY(), iconPanel.getY()
 //         + iconPanel.getHeight());
-//        p = new Point(x, y);
+//        portrait = new Point(x, y);
 //        // TODO far-right params will need adjustment!!!
-//        return initParamTooltip(p, (PARAMETER) v, iconPanel.getWidth());
+//        return initParamTooltip(portrait, (PARAMETER) v, iconPanel.getWidth());
 //
 //    }
 //
@@ -506,7 +506,7 @@ public class ToolTipMaster {
 //        // IconListPanel<SmallItem> list= (IconListPanel<SmallItem>)
 //        // comp.getCurrentComponent();
 //        // list.getList().getItemPosition(e);
-//        Point p = e.getLocationOnScreen();
+//        Point portrait = e.getLocationOnScreen();
 //        G_List<SmallItem> list = (G_List<SmallItem>) e.getSource();
 //        SmallItem item = (SmallItem) list.locationToItem(e.getPoint());
 //        Object arg = item.getArg();
@@ -529,9 +529,9 @@ public class ToolTipMaster {
 //        }
 //        List<String> lines = TextWrapper.wrap(text, wrapLength);
 //        toolTipTextItems.remove(paramTooltip);
-//        paramTooltip = new TextItem(p, TEXT_TYPE.INFO, lines.toArray());
+//        paramTooltip = new TextItem(portrait, TEXT_TYPE.INFO, lines.toArray());
 //        toolTipTextItems.add(paramTooltip);
-//        adjustPointForTextItem(paramTooltip, p);
+//        adjustPointForTextItem(paramTooltip, portrait);
 //        return true;
 //    }
 //
@@ -539,14 +539,14 @@ public class ToolTipMaster {
 //        return game.getBattleField().getBuilder();
 //    }
 //
-//    private void adjustPointForTextItem(TextItem textItem, Point p) {
+//    private void adjustPointForTextItem(TextItem textItem, Point portrait) {
 //        Rectangle rect = textItem.getRectangle();
-//        int x = Math.min(GuiManager.getScreenWidthInt() - rect.width, p.x);
-//        int y = Math.min(p.y, GuiManager.getScreenHeightInt() - rect.height);
+//        int x = Math.min(GuiManager.getScreenWidthInt() - rect.width, portrait.x);
+//        int y = Math.min(portrait.y, GuiManager.getScreenHeightInt() - rect.height);
 //        x = Math.max(0, x);
 //        y = Math.max(y, 0);
-//        p = new Point(x, y);
-//        textItem.setPoint(p);
+//        portrait = new Point(x, y);
+//        textItem.setPoint(portrait);
 //        toolTipTextItems.remove(textItem);
 //        for (TextItem text : new LinkedList<>(toolTipTextItems)) {
 //            Rectangle rectangle = text.getRectangle();

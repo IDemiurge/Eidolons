@@ -26,7 +26,7 @@ public abstract class CustomDialog<T> {
 
     public void draw(Graphics g) {
         // instead of adding?..
-//        panel.setLocation(p);
+//        panel.setLocation(portrait);
         // buffer image?
         panel.paint(g);
 

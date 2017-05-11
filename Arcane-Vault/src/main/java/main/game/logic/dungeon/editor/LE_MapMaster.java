@@ -9,25 +9,26 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import main.game.bf.DirectionMaster;
-import main.game.battlecraft.logic.battlefield.map.DungeonMapGenerator;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.building.*;
-import main.game.battlecraft.logic.dungeon.building.BuildHelper.BUILD_PARAMS;
-import main.game.battlecraft.logic.dungeon.building.BuildHelper.BuildParameters;
-import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.BLOCK_TYPE;
-import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.DUNGEON_TEMPLATES;
-import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
+import main.game.battlecraft.logic.dungeon.DungeonMaster;
+import main.game.battlecraft.logic.dungeon.location.Location;
+import main.game.battlecraft.logic.dungeon.location.building.*;
+import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BUILD_PARAMS;
+import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
+import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.BLOCK_TYPE;
+import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
+import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.ROOM_TYPE;
+import main.game.bf.Coordinates;
+import main.game.bf.DirectionMaster;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.TextEditor;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.GuiManager;
-import main.system.auxiliary.StringMaster;
 import main.system.math.DC_PositionMaster;
 import main.system.math.PositionMaster;
 import main.system.sound.SoundMaster;
@@ -56,17 +57,22 @@ public class LE_MapMaster {
             }
         }
         Dungeon dungeon = level.getDungeon();
-        dungeon.setPlan(null);
+
+//        dungeon.setPlan(null);
         // ++ size, fills, zone prefs ++ BUILD PARAMS
         dungeon.setTemplate(template);
 
-        initBuildParams(alt, dungeon);
+        initBuildParams(alt, level.getLocation());
+//        new DungeonMapGenerator()
+//        new Location()
+
+        DungeonMaster master = level.getDungeonMaster();
 
         LevelEditor.getSimulation().getUnits().clear();
-        level.setMap(new DungeonMapGenerator().generateMap(dungeon));
+        level.setMap(master.getMapGenerator().generateMap(level.getLocation()));
         level.init();
-        dungeon.getMinimap().init();
-        dungeon.getMinimap().getGrid().refresh();
+        level.getMinimap().init();
+        level.getMinimap().getGrid().refresh();
     }
 
     public static void transform() {
@@ -75,7 +81,7 @@ public class LE_MapMaster {
         if (transform == null) {
             return;
         }
-        Dungeon dungeon = LevelEditor.getCurrentLevel().getDungeon();
+        Location dungeon = LevelEditor.getCurrentLevel().getLocation();
         DungeonPlan plan = dungeon.getPlan();
         switch (transform) {
             case FLIP_X:
@@ -89,40 +95,40 @@ public class LE_MapMaster {
                 break;
         }
         dungeon.setPlan(plan);
-        plan = new DungeonBuilder().transformDungeonPlan(plan);
+        plan = new LocationBuilder().transformDungeonPlan(plan);
         dungeon.setPlan(plan);
         LevelEditor.getSimulation().getUnits().clear();
         LevelEditor.getCurrentLevel().init();
-        dungeon.getMinimap().init();
-        dungeon.getMinimap().getGrid().refresh();
+        LevelEditor.getCurrentLevel().getMinimap().init();
+        LevelEditor.getCurrentLevel().getMinimap().getGrid().refresh();
     }
 
-    public static BuildParameters initBuildParams(boolean empty, Dungeon dungeon) {
-        BuildParameters params = new BuildHelper(dungeon).new BuildParameters(empty);
-        params.setValue(BUILD_PARAMS.WIDTH, "" + dungeon.getCellsX());
-        params.setValue(BUILD_PARAMS.HEIGHT, "" + dungeon.getCellsY());
-        if (dungeon.getPlan() != null) {
-            params.setValue(BUILD_PARAMS.WIDTH_MOD, "" + dungeon.getPlan().getWidthMod());
-            params.setValue(BUILD_PARAMS.HEIGHT_MOD, "" + dungeon.getPlan().getHeightMod());
-            params.setValue(BUILD_PARAMS.SIZE_MOD, "" + dungeon.getPlan().getSizeMod());
+    public static BuildParameters initBuildParams(boolean empty, Location location) {
+        BuildParameters params = new BuildHelper(location ).new BuildParameters(empty);
+        params.setValue(BUILD_PARAMS.WIDTH, "" + location.getCellsX());
+        params.setValue(BUILD_PARAMS.HEIGHT, "" + location.getCellsY());
+        if (location.getPlan() != null) {
+            params.setValue(BUILD_PARAMS.WIDTH_MOD, "" + location.getPlan().getWidthMod());
+            params.setValue(BUILD_PARAMS.HEIGHT_MOD, "" + location.getPlan().getHeightMod());
+            params.setValue(BUILD_PARAMS.SIZE_MOD, "" + location.getPlan().getSizeMod());
         }
 
         String data = params.getDataMapFormat();
         data = TextEditor.inputTextLargeField("Alter build parameters...", data);
         if (data != null) {
 
-            params = new BuildHelper(dungeon).new BuildParameters(data);
-            dungeon.setParam(PARAMS.BF_WIDTH, params.getIntValue(BUILD_PARAMS.WIDTH));
-            dungeon.setParam(PARAMS.BF_HEIGHT, params.getIntValue(BUILD_PARAMS.HEIGHT));
-            dungeon.setProperty(PROPS.FILLER_TYPE, params.getValue(BUILD_PARAMS.FILLER_TYPE));
-            dungeon.getType().setParam(PARAMS.BF_WIDTH, params.getIntValue(BUILD_PARAMS.WIDTH));
-            dungeon.getType().setParam(PARAMS.BF_HEIGHT, params.getIntValue(BUILD_PARAMS.HEIGHT));
-            dungeon.getType().setProperty(PROPS.FILLER_TYPE,
+            params = new BuildHelper(location ).new BuildParameters(data);
+            location.setParam(PARAMS.BF_WIDTH, params.getIntValue(BUILD_PARAMS.WIDTH));
+            location.setParam(PARAMS.BF_HEIGHT, params.getIntValue(BUILD_PARAMS.HEIGHT));
+            location.setProperty(PROPS.FILLER_TYPE, params.getValue(BUILD_PARAMS.FILLER_TYPE));
+            location.getType().setParam(PARAMS.BF_WIDTH, params.getIntValue(BUILD_PARAMS.WIDTH));
+            location.getType().setParam(PARAMS.BF_HEIGHT, params.getIntValue(BUILD_PARAMS.HEIGHT));
+            location.getType().setProperty(PROPS.FILLER_TYPE,
                     params.getValue(BUILD_PARAMS.FILLER_TYPE));
-            dungeon.setBuildParams(params);
+            location.setBuildParams(params);
         }
-        GuiManager.setCurrentLevelCellsX(dungeon.getCellsX());
-        GuiManager.setCurrentLevelCellsY(dungeon.getCellsY());
+        GuiManager.setCurrentLevelCellsX(location.getCellsX());
+        GuiManager.setCurrentLevelCellsY(location.getCellsY());
 
         return params;
     }
@@ -182,8 +188,8 @@ public class LE_MapMaster {
 		 *
 		 */
 
-        dungeon.getMinimap().init();
-        dungeon.getMinimap().getGrid().refresh();
+        LevelEditor.getCurrentLevel().getMinimap().init();
+        LevelEditor.getCurrentLevel().getMinimap().getGrid().refresh();
     }
 
     public void addZone() {
@@ -367,7 +373,7 @@ public class LE_MapMaster {
     }
 
     public DungeonPlan getPlan() {
-        return getLevel().getDungeon().getPlan();
+        return getLevel().getLocation().getPlan();
     }
 
     public void newCorridor() {
@@ -417,7 +423,7 @@ public class LE_MapMaster {
         }
         Document node = XML_Converter.getDoc(FileManager.readFile(filePath));
         Dungeon dungeon = getLevel().getDungeon();
-        DungeonBuilder.constructBlock(node, getPlan().getBlocks().size(), null, getPlan(), dungeon);
+        LocationBuilder.constructBlock(node, getPlan().getBlocks().size(), null, getPlan(), dungeon);
     }
 
     public void loadBlock(MapBlock block) {

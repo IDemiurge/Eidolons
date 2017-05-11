@@ -124,7 +124,7 @@ public class AnimMaster extends Group {
             leadAnimation.interrupt();
         });
         GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
-//            CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) p.get());
+//            CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) portrait.get());
 
         });
 

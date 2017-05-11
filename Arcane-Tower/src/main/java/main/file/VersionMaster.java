@@ -138,10 +138,10 @@ public class VersionMaster {
             int diff = type.getIntParam(p) - oldType.getIntParam(p);
             map.put(p, diff + "");
         }
-        // for (PROPERTY p : oldType.getPropMap().keySet()) {
-        // String diff = StringMaster.getChanges( type .getProperty(p) ,
-        // oldType.getProperty(p));
-        // map.put(p, diff );
+        // for (PROPERTY portrait : oldType.getPropMap().keySet()) {
+        // String diff = StringMaster.getChanges( type .getProperty(portrait) ,
+        // oldType.getProperty(portrait));
+        // map.put(portrait, diff );
         // }
         // oldType.compareValues(type);
 

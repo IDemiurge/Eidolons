@@ -22,7 +22,7 @@ public class TextItem {
     private Boolean imageLineAlignment = true; // true == left, false == right,
     // null == center
 
-    // public TextItem(Point p, TEXT_TYPE type, List<Object> lines) {
+    // public TextItem(Point portrait, TEXT_TYPE type, List<Object> lines) {
     //
     // }
 

@@ -3,11 +3,8 @@ package main.game.module.dungeoncrawl.special;
 import main.content.PARAMS;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
-import main.game.bf.ZCoordinates;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.module.dungeoncrawl.dungeon.Entrance;
-import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.BLOCK_TYPE;
-import main.game.battlecraft.logic.dungeon.building.MapBlock;
+import main.game.bf.ZCoordinates;
 
 import java.util.*;
 
@@ -39,19 +36,19 @@ public class TrapMaster {
         // this method can be run last... or I can init traps one at a time for
         // each of those
         int trapDangerPool = dungeon.getIntParam(PARAMS.BATTLE_SPIRIT);
-        for (MapBlock b : dungeon.getPlan().getBlocks()) {
-
-            if (b.getType() == BLOCK_TYPE.CORRIDOR) {
-                // at random point
-            } else {
-                b.getKeyCoordinate();
-                // if (b.getRoomType()==ROOM_TYPE.DEATH_ROOM ||
-            }
-        }
-        for (Entrance e : dungeon.getEntrances()) {
-            // Trap trap = new Trap(type, owner, game, ref);
-
-        }
+//        for (MapBlock b : dungeon.getPlan().getBlocks()) {
+//
+//            if (b.getType() == BLOCK_TYPE.CORRIDOR) {
+//                // at random point
+//            } else {
+//                b.getKeyCoordinate();
+//                // if (b.getRoomType()==ROOM_TYPE.DEATH_ROOM ||
+//            }
+//        }
+//        for (Entrance e : dungeon.getEntrances()) {
+//            // Trap trap = new Trap(type, owner, game, ref);
+//
+//        }
     }
 
     public static Set<Trap> getTraps(Unit unit) {

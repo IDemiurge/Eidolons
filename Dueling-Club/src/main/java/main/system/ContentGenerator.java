@@ -627,37 +627,37 @@ public class ContentGenerator {
     // // stone/wood/metal/ ...
     // int i = 0;
     // List<String> list = getParamsFor(armorType);
-    // for (PARAMS p : params) {
-    // t.setParam(p, list.getOrCreate(i));
+    // for (PARAMS portrait : params) {
+    // t.setParam(portrait, list.getOrCreate(i));
     // i++;
     // }
     // list = getResistancesForArmorType(armorType);
-    // for (PARAMETER p : ValuePages.RESISTANCES) {
-    // t.setParam(p, list.getOrCreate(i));
+    // for (PARAMETER portrait : ValuePages.RESISTANCES) {
+    // t.setParam(portrait, list.getOrCreate(i));
     // i++;
     // }
     //
     // }
 
     // TODO use mods from size? or multiply later...
-    // private static String getParam(OBJECT_ARMOR_TYPE armorType, PARAMS p) {
+    // private static String getParam(OBJECT_ARMOR_TYPE armorType, PARAMS portrait) {
     // switch (armorType) {
     // case AETHER:
-    // return getAETHERParam(p);
+    // return getAETHERParam(portrait);
     // case BONE:
-    // return getBONEParam(p);
+    // return getBONEParam(portrait);
     // case CRYSTAL:
-    // return getCRYSTALParam(p);
+    // return getCRYSTALParam(portrait);
     // case ETHEREAL:
-    // return getETHEREALParam(p);
+    // return getETHEREALParam(portrait);
     // case FLESH:
-    // return getFLESHParam(p);
+    // return getFLESHParam(portrait);
     // case METAL:
-    // return getMETALParam(p);
+    // return getMETALParam(portrait);
     // case STONE:
-    // return getSTONEParam(p);
+    // return getSTONEParam(portrait);
     // case WOOD:
-    // return getWOODParam(p);
+    // return getWOODParam(portrait);
     //
     // }
     //
@@ -667,8 +667,8 @@ public class ContentGenerator {
     // private static List<String> getResistancesForArmorType(OBJECT_ARMOR_TYPE
     // armorType) {
     // List<String> list = new LinkedList<>();
-    // for (PARAMETER p : ValuePages.RESISTANCES) {
-    // switch ((PARAMS) p) {
+    // for (PARAMETER portrait : ValuePages.RESISTANCES) {
+    // switch ((PARAMS) portrait) {
     // case PIERCING_RESISTANCE:
     // list.add(getPIERCING_RESISTANCE(armorType));
     // list.add(getOrCreate(armorType));
@@ -726,8 +726,8 @@ public class ContentGenerator {
     //
     // private static List<String> getParamsFor(OBJECT_ARMOR_TYPE armorType) {
     // List<String> list = new LinkedList<>();
-    // for (PARAMS p : params) {
-    // list.add(getParam(armorType, p));
+    // for (PARAMS portrait : params) {
+    // list.add(getParam(armorType, portrait));
     // }
     //
     // return list;

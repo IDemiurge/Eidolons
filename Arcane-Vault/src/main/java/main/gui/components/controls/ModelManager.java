@@ -490,21 +490,21 @@ public class ModelManager {
 
         // String attrString = "";
         // String paramString = "";
-        // for (PARAMETER p : type.getParamMap().keySet()) {
-        // String value = type.getParam(p);
+        // for (PARAMETER portrait : type.getParamMap().keySet()) {
+        // String value = type.getParam(portrait);
         // if (value.isEmpty())
         // continue;
         // if (value.equals("0"))
         // continue;
-        // if (ContentManager.isValueForOBJ_TYPE(OBJ_TYPES.CHARS, p)) {
-        // if (p.isAttribute())
-        // attrString += p.getName() + StringMaster.wrapInParenthesis(value) +
+        // if (ContentManager.isValueForOBJ_TYPE(OBJ_TYPES.CHARS, portrait)) {
+        // if (portrait.isAttribute())
+        // attrString += portrait.getName() + StringMaster.wrapInParenthesis(value) +
         // ";";
         // else
-        // paramString += p.getName() + StringMaster.wrapInParenthesis(value) +
+        // paramString += portrait.getName() + StringMaster.wrapInParenthesis(value) +
         // ";";
         //
-        // type.setParam(p, 0);
+        // type.setParam(portrait, 0);
         // }
         // }
         // type.addProperty(PROPS.ATTRIBUTE_BONUSES, attrString);

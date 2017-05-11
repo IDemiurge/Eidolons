@@ -36,7 +36,7 @@ import java.util.Map;
 
 /**
  * wait mode - set target initiative position?
- * <p>
+ * <portrait>
  * how to modify Modes? I.e., a perk enables acting while Alert... ?
  *
  * @author JustMe

@@ -1,0 +1,977 @@
+package main.entity;
+
+import main.ability.AbilityObj;
+import main.ability.effects.Effect.MOD_PROP_TYPE;
+import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
+import main.content.OBJ_TYPE;
+import main.content.VALUE;
+import main.content.enums.GenericEnums.ASPECT;
+import main.content.enums.GenericEnums.STD_BOOLS;
+import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.parameters.ParamMap;
+import main.content.values.properties.PROPERTY;
+import main.content.values.properties.PropMap;
+import main.data.XLinkedMap;
+import main.entity.obj.ActiveObj;
+import main.entity.tools.*;
+import main.entity.type.ObjType;
+import main.game.core.game.Game;
+import main.game.logic.battle.player.Player;
+import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by JustMe on 5/10/2017.
+ */
+public class EntityWrapper<E extends Entity> {
+    E entity;
+
+    public EntityWrapper(E entity) {
+        this.entity = entity;
+    }
+
+    public void init() {
+        entity.init();
+    }
+
+    public String getToolTip() {
+        return entity.getToolTip();
+    }
+
+    public String getDescription() {
+        return entity.getDescription();
+    }
+
+    public String getCustomValue(String value_ref) {
+        return entity.getCustomValue(value_ref);
+    }
+
+    public EntityMaster initMaster() {
+        return entity.initMaster();
+    }
+
+    public String getCustomProperty(String value_ref) {
+        return entity.getCustomProperty(value_ref);
+    }
+
+    public Integer getCounter(String value_ref) {
+        return entity.getCounter(value_ref);
+    }
+
+    public void addToState() {
+        entity.addToState();
+    }
+
+    public boolean isMicroGameObj() {
+        return entity.isMicroGameObj();
+    }
+
+    public void setGroup(String group, boolean base) {
+        entity.setGroup(group, base);
+    }
+
+    public EntityMaster getMaster() {
+        return entity.getMaster();
+    }
+
+    public void toBase() {
+        entity.toBase();
+    }
+
+    public boolean setCounter(String name, int newValue) {
+        return entity.setCounter(name, newValue);
+    }
+
+    public boolean setCounter(String name, int newValue, boolean strict) {
+        return entity.setCounter(name, newValue, strict);
+    }
+
+    public void removeCounter(String name) {
+        entity.removeCounter(name);
+    }
+
+    public boolean modifyCounter(String name, int modValue) {
+        return entity.modifyCounter(name, modValue);
+    }
+
+    public boolean modifyCounter(COUNTER counter, int modValue) {
+        return entity.modifyCounter(counter, modValue);
+    }
+
+    public boolean modifyCounter(String name, int modValue, boolean strict) {
+        return entity.modifyCounter(name, modValue, strict);
+    }
+
+    public String find(String p) {
+        return entity.find(p);
+    }
+
+    public void constructConcurrently() {
+        entity.constructConcurrently();
+    }
+
+    public String getParam(String p) {
+        return entity.getParam(p);
+    }
+
+    public String getParam(PARAMETER param) {
+        return entity.getParam(param);
+    }
+
+    public void construct() {
+        entity.construct();
+    }
+
+    public String getParamRounded(PARAMETER param, boolean base) {
+        return entity.getParamRounded(param, base);
+    }
+
+    public boolean isConstructAlways() {
+        return entity.isConstructAlways();
+    }
+
+    public void resetRef() {
+        entity.resetRef();
+    }
+
+    public void addStatus(String value) {
+        entity.addStatus(value);
+    }
+
+    public void removeStatus(String value) {
+        entity.removeStatus(value);
+    }
+
+    public void newRound() {
+        entity.newRound();
+    }
+
+    public void clicked() {
+        entity.clicked();
+    }
+
+    public Double getParamDouble(PARAMETER param) {
+        return entity.getParamDouble(param);
+    }
+
+    public void invokeRightClicked() {
+        entity.invokeRightClicked();
+    }
+
+
+
+    public void invokeClicked() {
+        entity.invokeClicked();
+    }
+
+    public boolean kill() {
+        return entity.kill();
+    }
+
+    public Double getParamDouble(PARAMETER param, boolean base) {
+        return entity.getParamDouble(param, base);
+    }
+
+    public boolean kill(Entity killer, boolean leaveCorpse, Boolean quietly) {
+        return entity.kill(killer, leaveCorpse, quietly);
+    }
+
+    public String getDoubleParam(PARAMETER param) {
+        return entity.getDoubleParam(param);
+    }
+
+    public Game getGame() {
+        return entity.getGame();
+    }
+
+    public String getDoubleParam(PARAMETER param, boolean base) {
+        return entity.getDoubleParam(param, base);
+    }
+
+    public void setGame(Game game) {
+        entity.setGame(game);
+    }
+
+    public Game getGenericGame() {
+        return entity.getGenericGame();
+    }
+
+    public String getOBJ_TYPE() {
+        return entity.getOBJ_TYPE();
+    }
+
+    public OBJ_TYPE getOBJ_TYPE_ENUM() {
+        return entity.getOBJ_TYPE_ENUM();
+    }
+
+    public void setOBJ_TYPE_ENUM(OBJ_TYPE TYPE_ENUM) {
+        entity.setOBJ_TYPE_ENUM(TYPE_ENUM);
+    }
+
+    public Integer getIntParam(String param) {
+        return entity.getIntParam(param);
+    }
+
+    public String getStrParam(PARAMETER param) {
+        return entity.getStrParam(param);
+    }
+
+    public Player getOwner() {
+        return entity.getOwner();
+    }
+
+    public void setOwner(Player owner) {
+        entity.setOwner(owner);
+    }
+
+    public Integer getIntParam(PARAMETER param) {
+        return entity.getIntParam(param);
+    }
+
+    public List<AbilityObj> getPassives() {
+        return entity.getPassives();
+    }
+
+    public Integer getIntParam(PARAMETER param, boolean base) {
+        return entity.getIntParam(param, base);
+    }
+
+    public void setPassives(List<AbilityObj> passives) {
+        entity.setPassives(passives);
+    }
+
+    public List<AbilityObj> getPassivesFiltered() {
+        return entity.getPassivesFiltered();
+    }
+
+    public List<ActiveObj> getActives() {
+        return entity.getActives();
+    }
+
+    public void setActives(List<ActiveObj> list) {
+        entity.setActives(list);
+    }
+
+    public boolean isUpgrade() {
+        return entity.isUpgrade();
+    }
+
+    public Player getOriginalOwner() {
+        return entity.getOriginalOwner();
+    }
+
+    public void setOriginalOwner(Player originalOwner) {
+        entity.setOriginalOwner(originalOwner);
+    }
+
+    public boolean isNeutral() {
+        return entity.isNeutral();
+    }
+
+    public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
+        return entity.getIntegerMap(base);
+    }
+
+    public boolean isOwnedBy(Player player) {
+        return entity.isOwnedBy(player);
+    }
+
+    public ASPECT getAspect() {
+        return entity.getAspect();
+    }
+
+    public ParamMap getParamMap() {
+        return entity.getParamMap();
+    }
+
+    public void setParamMap(ParamMap paramMap) {
+        entity.setParamMap(paramMap);
+    }
+
+    public ImageIcon getDefaultIcon() {
+        return entity.getDefaultIcon();
+    }
+
+    public void getBoolean(VALUE prop, Boolean b) {
+        entity.getBoolean(prop, b);
+    }
+
+    public Image getImage() {
+        return entity.getImage();
+    }
+
+    public Boolean getBoolean(String prop) {
+        return entity.getBoolean(prop);
+    }
+
+    public void setImage(String image) {
+        entity.setImage(image);
+    }
+
+    public String getProperty(String prop) {
+        return entity.getProperty(prop);
+    }
+
+    public ImageIcon getIcon() {
+        return entity.getIcon();
+    }
+
+    public String getProp(String prop) {
+        return entity.getProp(prop);
+    }
+
+    public String getGroup() {
+        return entity.getGroup();
+    }
+
+    public String getProperty(PROPERTY prop) {
+        return entity.getProperty(prop);
+    }
+
+    public boolean checkValue(VALUE v) {
+        return entity.checkValue(v);
+    }
+
+    public boolean isDead() {
+        return entity.isDead();
+    }
+
+    public void setDead(boolean dead) {
+        entity.setDead(dead);
+    }
+
+    public boolean isMine() {
+        return entity.isMine();
+    }
+
+    public boolean checkValue(VALUE v, String value) {
+        return entity.checkValue(v, value);
+    }
+
+    public String getImagePath() {
+        return entity.getImagePath();
+    }
+
+    public void resetRawValues() {
+        entity.resetRawValues();
+    }
+
+    public boolean checkParam(PARAMETER param) {
+        return entity.checkParam(param);
+    }
+
+    public String getGroupingKey() {
+        return entity.getGroupingKey();
+    }
+
+    public boolean checkParameter(PARAMETER param, int value) {
+        return entity.checkParameter(param, value);
+    }
+
+    public EntityAnimator getAnimator() {
+        return entity.getAnimator();
+    }
+
+    public boolean checkParam(PARAMETER param, String value) {
+        return entity.checkParam(param, value);
+    }
+
+    public EntityLogger getLogger() {
+        return entity.getLogger();
+    }
+
+    public EntityInitializer getInitializer() {
+        return entity.getInitializer();
+    }
+
+    public EntityCalculator getCalculator() {
+        return entity.getCalculator();
+    }
+
+    public EntityChecker getChecker() {
+        return entity.getChecker();
+    }
+
+    public EntityHandler getHandler() {
+        return entity.getHandler();
+    }
+
+    public EntityResetter getResetter() {
+        return entity.getResetter();
+    }
+
+    public boolean checkProperty(PROPERTY p, String value) {
+        return entity.checkProperty(p, value);
+    }
+
+    public void reset() {
+        entity.reset();
+    }
+
+    public Map<PROPERTY, Map<String, Boolean>> getPropCache(boolean base) {
+        return entity.getPropCache(base);
+    }
+
+    public boolean checkProperty(PROPERTY p, String value, boolean base) {
+        return entity.checkProperty(p, value, base);
+    }
+
+    public boolean checkSingleProp(String PROP, String value) {
+        return entity.checkSingleProp(PROP, value);
+    }
+
+    public boolean checkSingleProp(PROPERTY PROP, String value) {
+        return entity.checkSingleProp(PROP, value);
+    }
+
+    public boolean checkContainerProp(PROPERTY PROP, String value) {
+        return entity.checkContainerProp(PROP, value);
+    }
+
+    public boolean checkContainerProp(PROPERTY PROP, String value, boolean any) {
+        return entity.checkContainerProp(PROP, value, any);
+    }
+
+    public boolean checkSubGroup(String string) {
+        return entity.checkSubGroup(string);
+    }
+
+    public boolean checkProperty(PROPERTY p) {
+        return entity.checkProperty(p);
+    }
+
+    public boolean checkGroup(String string) {
+        return entity.checkGroup(string);
+    }
+
+    public String getProperty(PROPERTY prop, boolean base) {
+        return entity.getProperty(prop, base);
+    }
+
+    public PropMap getPropMap() {
+        return entity.getPropMap();
+    }
+
+    public void setPropMap(PropMap propMap) {
+        entity.setPropMap(propMap);
+    }
+
+    public Ref getRef() {
+        return entity.getRef();
+    }
+
+    public void setRef(Ref ref) {
+        entity.setRef(ref);
+    }
+
+    public ObjType getType() {
+        return entity.getType();
+    }
+
+    public void setType(ObjType type) {
+        entity.setType(type);
+    }
+
+    public String getValue(String valName) {
+        return entity.getValue(valName);
+    }
+
+    public String getValue(VALUE valName) {
+        return entity.getValue(valName);
+    }
+
+    public String getValue(VALUE val, boolean base) {
+        return entity.getValue(val, base);
+    }
+
+    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax, boolean quietly, String modifierKey) {
+        return entity.modifyParameter(param, amount, minMax, quietly, modifierKey);
+    }
+
+    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax, boolean quietly) {
+        return entity.modifyParameter(param, amount, minMax, quietly);
+    }
+
+    public boolean modifyParameter(PARAMETER param, String amountString, Integer minMax, boolean quietly) {
+        return entity.modifyParameter(param, amountString, minMax, quietly);
+    }
+
+    public boolean modifyParameter(PARAMETER param, String amountString, Integer minMax, boolean quietly, String modifierKey) {
+        return entity.modifyParameter(param, amountString, minMax, quietly, modifierKey);
+    }
+
+    public Map<PARAMETER, Map<String, Double>> getModifierMaps() {
+        return entity.getModifierMaps();
+    }
+
+    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax, String modifierKey) {
+        return entity.modifyParameter(param, amount, minMax, modifierKey);
+    }
+
+    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax) {
+        return entity.modifyParameter(param, amount, minMax);
+    }
+
+    public void modifyParameter(PARAMETER param, int amount, boolean base) {
+        entity.modifyParameter(param, amount, base);
+    }
+
+    public void modifyParameter(PARAMETER param, int amount, boolean base, String modifierKey) {
+        entity.modifyParameter(param, amount, base, modifierKey);
+    }
+
+    public boolean modifyParameter(PARAMETER param, int amount, String modifierKey) {
+        return entity.modifyParameter(param, amount, modifierKey);
+    }
+
+    public boolean modifyParameter(PARAMETER param, int amount) {
+        return entity.modifyParameter(param, amount);
+    }
+
+    public void decrementParam(PARAMETER param) {
+        entity.decrementParam(param);
+    }
+
+    public int getContainerCount(PROPERTY p) {
+        return entity.getContainerCount(p);
+    }
+
+    public void incrementParam(PARAMETER param) {
+        entity.incrementParam(param);
+    }
+
+    public boolean multiplyParamByPercent(PARAMETER param, int perc, boolean base) {
+        return entity.multiplyParamByPercent(param, perc, base);
+    }
+
+    public boolean modifyParamByPercent(PARAMETER[] params, int perc) {
+        return entity.modifyParamByPercent(params, perc);
+    }
+
+    public boolean modifyParamByPercent(PARAMETER param, int perc) {
+        return entity.modifyParamByPercent(param, perc);
+    }
+
+    public boolean modifyParamByPercent(PARAMETER param, int perc, boolean base) {
+        return entity.modifyParamByPercent(param, perc, base);
+    }
+
+    public boolean firePropEvent(CONSTRUCTED_EVENT_TYPE EVENT_TYPE, String val) {
+        return entity.firePropEvent(EVENT_TYPE, val);
+    }
+
+    public boolean fireParamEvent(PARAMETER param, String amount, CONSTRUCTED_EVENT_TYPE event_type) {
+        return entity.fireParamEvent(param, amount, event_type);
+    }
+
+    public void resetParam(PARAMETER param) {
+        entity.resetParam(param);
+    }
+
+    public void setParam(PARAMETER param, int i, boolean quietly, boolean base) {
+        entity.setParam(param, i, quietly, base);
+    }
+
+    public void setParam(PARAMETER param, int i, boolean quietly) {
+        entity.setParam(param, i, quietly);
+    }
+
+    public void setParamDouble(PARAMETER param, double i, boolean quietly) {
+        entity.setParamDouble(param, i, quietly);
+    }
+
+    public void setParameter(PARAMETER param, int i) {
+        entity.setParameter(param, i);
+    }
+
+    public void setParam(PARAMETER param, int i) {
+        entity.setParam(param, i);
+    }
+
+    public void setParam(String param, int i) {
+        entity.setParam(param, i);
+    }
+
+    public void setParamMax(PARAMETER p, int i) {
+        entity.setParamMax(p, i);
+    }
+
+    public void setParamMin(PARAMETER p, int i) {
+        entity.setParamMin(p, i);
+    }
+
+    public String getDisplayedName() {
+        return entity.getDisplayedName();
+    }
+
+    public void modifyParameter(String param, String string) {
+        entity.modifyParameter(param, string);
+    }
+
+    public void modifyParamByPercent(String param, String string) {
+        entity.modifyParamByPercent(param, string);
+    }
+
+    public boolean setParam(PARAMETER param, String value, boolean quiety) {
+        return entity.setParam(param, value, quiety);
+    }
+
+    public void resetPercentages() {
+        entity.resetPercentages();
+    }
+
+    public void resetCurrentValues() {
+        entity.resetCurrentValues();
+    }
+
+    public void resetCurrentValue(PARAMETER base_p) {
+        entity.resetCurrentValue(base_p);
+    }
+
+    public void resetPercentage(PARAMETER p) {
+        entity.resetPercentage(p);
+    }
+
+    public boolean setParam(PARAMETER param, String value) {
+        return entity.setParam(param, value);
+    }
+
+    public void setProperty(PROPERTY name, String value, boolean base) {
+        entity.setProperty(name, value, base);
+    }
+
+    public void setProperty(String prop, String value) {
+        entity.setProperty(prop, value);
+    }
+
+    public void setProperty(PROPERTY prop, String value) {
+        entity.setProperty(prop, value);
+    }
+
+    public void modifyProperty(MOD_PROP_TYPE p, PROPERTY prop, String value) {
+        entity.modifyProperty(p, prop, value);
+    }
+
+    public void removeLastPartFromProperty(PROPERTY prop) {
+        entity.removeLastPartFromProperty(prop);
+    }
+
+    public void removeFromProperty(PROPERTY prop, String value) {
+        entity.removeFromProperty(prop, value);
+    }
+
+    public void appendProperty(PROPERTY prop, String value) {
+        entity.appendProperty(prop, value);
+    }
+
+    public boolean addOrRemoveProperty(PROPERTY prop, String value) {
+        return entity.addOrRemoveProperty(prop, value);
+    }
+
+    public boolean addProperty(PROPERTY prop, String value) {
+        return entity.addProperty(prop, value);
+    }
+
+    public boolean addProperty(PROPERTY prop, List<String> values, boolean noDuplicates) {
+        return entity.addProperty(prop, values, noDuplicates);
+    }
+
+    public boolean addProperty(PROPERTY prop, String value, boolean noDuplicates) {
+        return entity.addProperty(prop, value, noDuplicates);
+    }
+
+    public boolean addProperty(PROPERTY prop, String value, boolean noDuplicates, boolean addInFront) {
+        return entity.addProperty(prop, value, noDuplicates, addInFront);
+    }
+
+    public void putProperty(PROPERTY prop, String value) {
+        entity.putProperty(prop, value);
+    }
+
+    public void putParameter(PARAMETER param, String value) {
+        entity.putParameter(param, value);
+    }
+
+    public boolean isTypeLinked() {
+        return entity.isTypeLinked();
+    }
+
+    public void addProperty(String prop, String value) {
+        entity.addProperty(prop, value);
+    }
+
+    public boolean clearProperty(PROPERTY prop) {
+        return entity.clearProperty(prop);
+    }
+
+    public boolean removeProperty(PROPERTY prop) {
+        return entity.removeProperty(prop);
+    }
+
+    public boolean removeProperty(PROPERTY prop, String value) {
+        return entity.removeProperty(prop, value);
+    }
+
+    public boolean removeProperty(PROPERTY prop, String value, boolean all) {
+        return entity.removeProperty(prop, value, all);
+    }
+
+    public boolean removeMultiProp(String prop, String value, boolean all) {
+        return entity.removeMultiProp(prop, value, all);
+    }
+
+    public String getSubGroupingKey() {
+        return entity.getSubGroupingKey();
+    }
+
+    public boolean isSetThis() {
+        return entity.isSetThis();
+    }
+
+    public void setValue(VALUE valName, String value) {
+        entity.setValue(valName, value);
+    }
+
+    public void setValue(VALUE valName, String value, boolean base) {
+        entity.setValue(valName, value, base);
+    }
+
+    public void setValue(String name, String value) {
+        entity.setValue(name, value);
+    }
+
+    public void setValue(String name, String value, boolean base) {
+        entity.setValue(name, value, base);
+    }
+
+    public void cloneMaps(Entity type) {
+        entity.cloneMaps(type);
+    }
+
+    public void mergeValues(Entity type, VALUE... vals) {
+        entity.mergeValues(type, vals);
+    }
+
+    public void addParam(PARAMETER parameter, String param, boolean base) {
+        entity.addParam(parameter, param, base);
+    }
+
+    public void copyValues(Entity type, List<VALUE> list) {
+        entity.copyValues(type, list);
+    }
+
+    public void copyValues(Entity type, VALUE... vals) {
+        entity.copyValues(type, vals);
+    }
+
+    public void cloneMapsWithExceptions(Entity type, VALUE... exceptions) {
+        entity.cloneMapsWithExceptions(type, exceptions);
+    }
+
+    public ParamMap cloneParamMap(Map<PARAMETER, String> map) {
+        return entity.cloneParamMap(map);
+    }
+
+    public PropMap clonePropMap(Map<PROPERTY, String> map) {
+        return entity.clonePropMap(map);
+    }
+
+    public Integer getId() {
+        return entity.getId();
+    }
+
+    public void setId(Integer id) {
+        entity.setId(id);
+    }
+
+    public String getNameIfKnown() {
+        return entity.getNameIfKnown();
+    }
+
+    public String getName() {
+        return entity.getName();
+    }
+
+    public void setName(String name) {
+        entity.setName(name);
+    }
+
+    public String getUniqueId() {
+        return entity.getUniqueId();
+    }
+
+    public boolean isConstructed() {
+        return entity.isConstructed();
+    }
+
+    public void setConstructed(boolean b) {
+        entity.setConstructed(b);
+    }
+
+    public boolean isDirty() {
+        return entity.isDirty();
+    }
+
+    public void setDirty(boolean dirty) {
+        entity.setDirty(dirty);
+    }
+
+    public boolean isPassivesReady() {
+        return entity.isPassivesReady();
+    }
+
+    public void setPassivesReady(boolean passivesReady) {
+        entity.setPassivesReady(passivesReady);
+    }
+
+    public boolean isActivesReady() {
+        return entity.isActivesReady();
+    }
+
+    public void setActivesReady(boolean activesReady) {
+        entity.setActivesReady(activesReady);
+    }
+
+    public boolean checkBool(DYNAMIC_BOOLS bool) {
+        return entity.checkBool(bool);
+    }
+
+    public boolean checkBool(STD_BOOLS bool) {
+        return entity.checkBool(bool);
+    }
+
+    public boolean checkCustomProp(String name) {
+        return entity.checkCustomProp(name);
+    }
+
+    public Map<String, String> getCustomPropMap() {
+        return entity.getCustomPropMap();
+    }
+
+    public void setCustomPropMap(Map<String, String> customPropMap) {
+        entity.setCustomPropMap(customPropMap);
+    }
+
+    public void addCustomProperty(String name, String value) {
+        entity.addCustomProperty(name, value);
+    }
+
+    public void addCustomParameter(String name, String value) {
+        entity.addCustomParameter(name, value);
+    }
+
+    public Map<String, String> getCustomParamMap() {
+        return entity.getCustomParamMap();
+    }
+
+    public void setCustomParamMap(Map<String, String> customParamMap) {
+        entity.setCustomParamMap(customParamMap);
+    }
+
+    public boolean replaceContainerPropItem(PROPERTY prop, String replacing, String replaced) {
+        return entity.replaceContainerPropItem(prop, replacing, replaced);
+    }
+
+    public void copyValue(VALUE param, Entity entity) {
+        this.entity.copyValue(param, entity);
+    }
+
+    public void setModifierKey(String modifierKey) {
+        entity.setModifierKey(modifierKey);
+    }
+
+    public void removed() {
+        entity.removed();
+    }
+
+    public boolean isInitialized() {
+        return entity.isInitialized();
+    }
+
+    public void setInitialized(boolean initialized) {
+        entity.setInitialized(initialized);
+    }
+
+    public String getNameOrId() {
+        return entity.getNameOrId();
+    }
+
+    public String getRawValue(VALUE value) {
+        return entity.getRawValue(value);
+    }
+
+    public XLinkedMap<VALUE, String> getRawValues() {
+        return entity.getRawValues();
+    }
+
+    public void setRawValues(XLinkedMap<VALUE, String> rawValues) {
+        entity.setRawValues(rawValues);
+    }
+
+    public boolean isDefaultValuesInitialized() {
+        return entity.isDefaultValuesInitialized();
+    }
+
+    public void setDefaultValuesInitialized(boolean defaultValuesInitialized) {
+        entity.setDefaultValuesInitialized(defaultValuesInitialized);
+    }
+
+    public void cloned() {
+        entity.cloned();
+    }
+
+    public int getLevel() {
+        return entity.getLevel();
+    }
+
+    public String getOriginalName() {
+        return entity.getOriginalName();
+    }
+
+    public void setOriginalName(String originalName) {
+        entity.setOriginalName(originalName);
+    }
+
+    public ImageIcon getCustomIcon() {
+        return entity.getCustomIcon();
+    }
+
+    public void setCustomIcon(ImageIcon customIcon) {
+        entity.setCustomIcon(customIcon);
+    }
+
+    public WORKSPACE_GROUP getWorkspaceGroup() {
+        return entity.getWorkspaceGroup();
+    }
+
+    public void setWorkspaceGroup(WORKSPACE_GROUP value) {
+        entity.setWorkspaceGroup(value);
+    }
+
+    public int getTypeId() {
+        return entity.getTypeId();
+    }
+
+    public List<ObjType> getListFromProperty(OBJ_TYPE TYPE, PROPERTY prop) {
+        return entity.getListFromProperty(TYPE, prop);
+    }
+
+    public void resetPropertyFromList(PROPERTY prop, List<? extends Entity> list) {
+        entity.resetPropertyFromList(prop, list);
+    }
+
+    public HashMap<PROPERTY, Map<String, Boolean>> getPropCache() {
+        return entity.getPropCache();
+    }
+
+    public int getSumOfParams(PARAMETER... params) {
+        return entity.getSumOfParams(params);
+    }
+}

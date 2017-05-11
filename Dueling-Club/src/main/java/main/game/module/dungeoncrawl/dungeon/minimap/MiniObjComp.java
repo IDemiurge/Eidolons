@@ -47,7 +47,7 @@ public class MiniObjComp implements Refreshable {
         this.overlaying = overlaying;
         this.obj = obj;
         this.map = map;
-        dungeon = obj.getGame().getDungeonMaster().getDungeon();
+        dungeon = obj.getGame().getDungeonMaster().getDungeonWrapper().getDungeon();
         initSize(map.getSize());
         refresh();
     }

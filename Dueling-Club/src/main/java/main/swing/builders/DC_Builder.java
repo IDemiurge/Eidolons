@@ -402,13 +402,13 @@ public class DC_Builder  {
 //    }
 //
 //    private void drawActionListOverlay(DC_ActiveObj activeObj, Graphics g, Image image) {
-//        Point p = getScreenPointForAction(activeObj);
-//        if (p == null) {
+//        Point portrait = getScreenPointForAction(activeObj);
+//        if (portrait == null) {
 //            return;
 //        }
 //        int offsetX = image.getWidth(null) / 2 - (image.getWidth(null) - 64);
 //        int offsetY = -(image.getHeight(null) - 64) / 2;
-//        g.drawImage(image, p.x + offsetX, p.y + offsetY, null);
+//        g.drawImage(image, portrait.x + offsetX, portrait.y + offsetY, null);
 //    }
 //
 //    private Point getScreenPointForQuickItem(DC_QuickItemAction activeObj) {
@@ -453,8 +453,8 @@ public class DC_Builder  {
 //         - ImageManager.getArrowImage(false, true, DC_PagedUnitActionPanel.ARROW_VERSION)
 //         .getWidth(null);
 //        int y = uap.getY() + unitActionPanel.getY();
-//        Point p = new Point(x, y);
-//        return p;
+//        Point portrait = new Point(x, y);
+//        return portrait;
 //    }
 //
 //    public TurnTimer getTimer() {

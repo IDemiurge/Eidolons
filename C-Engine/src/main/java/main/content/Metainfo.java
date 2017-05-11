@@ -5,10 +5,10 @@ import java.awt.*;
 /**
  * EDITOR (which also has details (arg validity/type, default, tooltip, range,
  * numeric scale, color, font etc)
- * <p>
+ * <portrait>
  * height of row default value boundaries
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>
  * RENDERER ENUM GROUP
  *
  * @author JustMe

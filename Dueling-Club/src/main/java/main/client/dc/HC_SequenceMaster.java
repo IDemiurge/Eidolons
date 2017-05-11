@@ -15,12 +15,11 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
+import main.game.battlecraft.logic.battle.BattleOptions.DIFFICULTY;
+import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;
-import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
-import main.game.battlecraft.logic.battle.BattleOptions.DIFFICULTY;
-import main.game.battlecraft.logic.meta.party.PartyManager;
 import main.system.SortMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -28,6 +27,7 @@ import main.system.auxiliary.secondary.InfoMaster;
 import main.system.entity.ConditionMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import main.test.Refactor;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -266,6 +266,8 @@ public class HC_SequenceMaster implements SequenceManager {
         }
         return result;
     }
+
+    @Refactor
         public boolean prebattleChoiceSequence(Unit hero) {
 
         final ChoiceSequence cs = new ChoiceSequence();
@@ -274,7 +276,7 @@ public class HC_SequenceMaster implements SequenceManager {
 
         ChoiceView positionChoiceView = null;
         if (ArenaArcadeMaster.isTestMode()) {
-            hero.getGame().getArenaArcadeMaster().prebattle(cs);
+//            hero.getGame().getArenaArcadeMaster().prebattle(cs);
         }
 
         if (PartyManager.getParty().checkTactics()
@@ -319,7 +321,7 @@ public class HC_SequenceMaster implements SequenceManager {
             @Override
             protected void applyChoice() {
                 // TODO will it be initialized at the time?
-                DC_Game.game.getArenaManager().setDEFAULT_DIFFICULTY(getSelectedItem().toString());
+//                DC_Game.game.getBattleMaster().setDEFAULT_DIFFICULTY(getSelectedItem().toString());
             }
         });
         if (positionChoiceView != null) {
@@ -328,7 +330,7 @@ public class HC_SequenceMaster implements SequenceManager {
         if (!ArenaArcadeMaster.isTestMode()) {
             if (hero.getGame().getGameType() != GAME_TYPE.SCENARIO) {
                 if (hero.getGame().getGameMode() == GAME_MODES.ARENA_ARCADE) {
-                    hero.getGame().getArenaArcadeMaster().prebattle(cs);
+//                    hero.getGame().getArenaArcadeMaster().prebattle(cs);
                 } else {
                     cs.addView(new DungeonChoiceView(cs, PartyManager.getParty()));
                 }

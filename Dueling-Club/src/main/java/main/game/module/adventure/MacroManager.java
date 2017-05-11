@@ -361,15 +361,15 @@ public class MacroManager {
     //
     // }
     // for (Region r : game.getRegions()) {
-    // for (Place p : r.getPlaces()) {
-    // String node = p.getSaveData();
-    // node = XML_Converter.wrap(p.getName(), node);
+    // for (Place portrait : r.getPlaces()) {
+    // String node = portrait.getSaveData();
+    // node = XML_Converter.wrap(portrait.getName(), node);
     // data += node;
     // // TODO IS IT BETTER TO JUST WRITE FOR *ALL* MACRO_OBJECTS?
     // // just separate by TYPE at least... and don't forget custom
     // // heroes/items!
-    // if (p instanceof Town) {
-    // Town town = (Town) p;
+    // if (portrait instanceof Town) {
+    // Town town = (Town) portrait;
     //
     // parts.getOrCreate(MACRO_OBJ_TYPES.TOWN).append("");
     //

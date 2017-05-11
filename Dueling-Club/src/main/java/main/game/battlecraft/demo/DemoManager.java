@@ -15,7 +15,7 @@ import main.entity.type.ObjType;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.battlecraft.logic.meta.arcade.Arcade;
-import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -115,7 +115,7 @@ public class DemoManager {
 
     public static void battleEntered() {
         String path = getDungeonPath(PartyManager.getParty().getLevel());
-        Eidolons.game.getDungeonMaster().initDungeon(path);
+//        Eidolons.game.getDungeonMaster().initDungeon(path);
         Eidolons.game.setGameMode(GAME_MODES.ARENA);
     }
 

@@ -9,14 +9,13 @@ import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
-import main.game.module.dungeoncrawl.dungeon.Location;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.global.Journal;
 import main.game.module.adventure.global.TimeMaster;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Route;
+import main.game.module.dungeoncrawl.dungeon.Location;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
@@ -207,11 +206,11 @@ public class TravelMaster {
         // int outcome = 0;
         String typeName = "";
         // destination.getTopDungeonName();
-        // DC_Game.game.getDungeonMaster().initDungeon(typeName, destination);
+        // DC_Game.game.getDungeonMaster().buildDungeon(typeName, destination);
         if (destination.getTopDungeon() == null) {
             destination.setTopDungeon(new Location(destination).construct());
         }
-        DC_Game.game.getDungeonMaster().setDungeon(destination.getTopDungeon());
+//        DC_Game.game.getDungeonMaster().setDungeon(destination.getTopDungeon());
         // other setups? battlemanager...
         Launcher.launchDC(party.getName());
 

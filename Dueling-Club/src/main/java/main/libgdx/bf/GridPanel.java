@@ -193,7 +193,7 @@ public class GridPanel extends Group {
                     GuiEventManager.trigger(DESTROY_UNIT_MODEL, new EventCallbackParam(ref.getTargetObj()));
                 }
 //                else //TODO make it work instead of onFinishEvents!
-//                AnimMaster.getInstance(). onDone(event,p ->
+//                AnimMaster.getInstance(). onDone(event,portrait ->
 //                GuiEventManager.trigger(DESTROY_UNIT_MODEL,
 //                 new EventCallbackParam(r.getTargetObj())
 //                )

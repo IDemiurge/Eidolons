@@ -327,8 +327,8 @@ public class DC_RequirementsManager implements RequirementsManager {
         }
         // TODO
         // OrConditions conditions = new OrConditions();
-        // for (PARAMETER p : template.getParams()) {
-        // conditions.add(getCondition(p.getName(), value));
+        // for (PARAMETER portrait : template.getParams()) {
+        // conditions.add(getCondition(portrait.getName(), value));
         // }
         return new ValueGroupCondition(template, value, false);
         // return conditions;

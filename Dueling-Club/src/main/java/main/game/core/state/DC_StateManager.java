@@ -11,18 +11,17 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
-import main.game.core.game.DC_Game.GAME_MODES;
-import main.game.core.game.GameManager;
-import main.game.logic.event.Event;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.logic.event.Rule;
-import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.rules.DC_RuleImpl;
 import main.game.battlecraft.rules.counter.DC_CounterRule;
 import main.game.battlecraft.rules.counter.DamageCounterRule;
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.battlecraft.rules.round.RoundRule;
+import main.game.core.game.DC_Game;
+import main.game.core.game.GameManager;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Rule;
 import main.system.config.ConfigMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -314,14 +313,7 @@ public class DC_StateManager extends StateManager {
         newTurnTick();
         getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.NEW_ROUND, game));
 
-        if (getGame().getGameMode() == GAME_MODES.ARENA) {
-            try {
-                getGame().getArenaManager().newRound();
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
 
         if (game.isStarted()) {

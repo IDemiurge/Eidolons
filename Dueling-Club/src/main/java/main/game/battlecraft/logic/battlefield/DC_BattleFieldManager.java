@@ -72,7 +72,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         Map<Coordinates, BattleFieldObject> wallMap = new HashMap<>();
         for (Obj obj : game.getObjects(DC_TYPE.BF_OBJ)) {
             BattleFieldObject bfObj = (BattleFieldObject) obj;
-            if (bfObj.getZ() == game.getDungeonMaster().getZ()) {
+            if (bfObj.getZ() == game.getDungeon().getZ()) {
                 if (bfObj.isWall()) {
                     wallMap.put(obj.getCoordinates(), bfObj);
                 }

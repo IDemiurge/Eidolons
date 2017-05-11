@@ -5,9 +5,9 @@ import main.system.datatypes.DequeImpl;
 
 /**
  * Initiative
- * <p>
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>
+ * <portrait>
  * Lock-in the Active Unit ++ Action Panel ++ Remove BF highlight
  */
 

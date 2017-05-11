@@ -104,7 +104,7 @@ public class ActionTooltipMaster {
                                               DC_ActiveObj action) {
         if (value instanceof PARAMS) {
             PARAMS p = (PARAMS) value;
-//            if (isIgnoreIfZero(p) ) {
+//            if (isIgnoreIfZero(portrait) ) {
 //
 //            }
             if (DC_ValueManager.isCentimalModParam(p)) {

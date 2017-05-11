@@ -15,11 +15,10 @@ import main.elements.conditions.Conditions;
 import main.elements.conditions.NumericCondition;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.module.dungeoncrawl.dungeon.Location;
-import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.logic.meta.skirmish.SkirmishMaster;
+import main.game.module.dungeoncrawl.dungeon.Location;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 
@@ -98,7 +97,7 @@ public class ScenarioMaster {
     private static void generateLocation() {
         location = new Location(getScenario());
         Dungeon dungeon = location.construct();
-        DC_Game.game.getDungeonMaster().setDungeon(dungeon);
+//        DC_Game.game.getDungeonMaster().setDungeon(dungeon);
     }
 
     // launch

@@ -20,7 +20,7 @@ import main.game.battlecraft.demo.DemoManager;
 import main.game.battlecraft.logic.meta.arcade.ArcadeManager.ARCADE_STATUS;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMaster;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMaster.SCENARIO_MODES;
-import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.town.Tavern;
 import main.swing.generic.components.G_Panel;

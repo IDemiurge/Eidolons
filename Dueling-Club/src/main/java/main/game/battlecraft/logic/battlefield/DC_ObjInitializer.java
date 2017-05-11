@@ -13,17 +13,17 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.battle.arena.Positioner;
-import main.game.battlecraft.logic.battle.arena.UnitGroupMaster;
-import main.game.battlecraft.logic.battle.player.DC_Player;
+import main.game.battlecraft.logic.dungeon.Positioner;
+import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
+import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.building.MapBlock;
-import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.ZCoordinates;
 import main.game.core.game.DC_Game;
-import main.game.core.game.DC_GameData;
+import main.game.battlecraft.logic.dungeon.UnitData;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -47,17 +47,17 @@ public class DC_ObjInitializer {
     public static final String OBJ_SEPARATOR = StringMaster.getAltSeparator();
     public static final String COORDINATES_OBJ_SEPARATOR = StringMaster.getAltPairSeparator();
     private static final String MULTI_DIRECTION_SUFFIX = "MULTI_DIRECTION-";
-    private static DC_GameData data;
+    private static UnitData data;
     private static boolean mapBlockMode;
     private static MapBlock block;
     private static Dungeon c_dungeon;
     private static Coordinates offset;
 
 
-    public static void processUnitData(DC_GameData gameData, DC_Game game) {
+    public static void processUnitData(UnitData gameData, DC_Game game) {
         data = gameData;
-        processUnitDataStringToMap(game.getPlayer(true), data.getPlayerUnitData(), game, true);
-        processUnitDataStringToMap(game.getPlayer(false), data.getPlayer2UnitData(), game, true);
+//        processUnitDataStringToMap(game.getPlayer(true), data.getPlayerUnitData(), game, true);
+//        processUnitDataStringToMap(game.getPlayer(false), data.getPlayer2UnitData(), game, true);
     }
 
     public static Map<Coordinates, ? extends Obj> initMapBlockObjects(Dungeon dungeon, MapBlock b,
@@ -260,8 +260,8 @@ public class DC_ObjInitializer {
                     }
                     if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
                         if (!game.isSimulation()) {
-                            game.getArenaManager().getSpawnManager().addDungeonEncounter(c_dungeon,
-                                    block, c, type);
+//                            game.getBattleMaster().getSpawner().addDungeonEncounter(c_dungeon,
+//                                    block, c, type);
                         }
                         continue;
                     }
@@ -284,7 +284,7 @@ public class DC_ObjInitializer {
                     continue;
                 }
                 if (data != null) {
-                    data.addType(type, owner.isMe());
+//                    data.addType(type, owner.isMe());
                 }
 
                 if (game.isDebugMode()) {
@@ -344,12 +344,12 @@ public class DC_ObjInitializer {
         return map;
     }
 
-    public static List<MicroObj> processObjData(Player player, String data) {
-        return processObjData(player, data, null);
+    public static List<MicroObj> createUnits(Player player, String data) {
+        return createUnits(player, data, null);
     }
 
-    public static List<MicroObj> processObjData(Player player, String data,
-                                                Coordinates offset_coordinate) {
+    public static List<MicroObj> createUnits(Player player, String data,
+                                             Coordinates offset_coordinate) {
         offset = offset_coordinate;
         List<MicroObj> list = null;
         try {

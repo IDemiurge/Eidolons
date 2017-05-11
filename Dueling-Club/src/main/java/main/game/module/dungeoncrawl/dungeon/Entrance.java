@@ -2,14 +2,19 @@ package main.game.module.dungeoncrawl.dungeon;
 
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
-import main.game.battlecraft.logic.battle.player.DC_Player;
+import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.bf.Coordinates;
+import main.game.core.game.ScenarioGame;
 
 //can be a door, a tunnel, a staircase, a portal... possibly trapped
-public class Entrance extends Unit {
+public class Entrance extends Unit { //ScenarioUnit
     Dungeon dungeon, sublevel;
 
+    @Override
+    public ScenarioGame getGame() {
+        return (ScenarioGame) super.getGame();
+    }
     public Entrance(int x, int y, ObjType type, Dungeon dungeon,
                     Dungeon sublevel) {
         super(type, x, y, DC_Player.NEUTRAL, dungeon.getGame(),
@@ -38,8 +43,9 @@ public class Entrance extends Unit {
         unit.setCoordinates(getOffsetCoordinates(back));
         unit.setDungeon(targetDungeon);
         // if (sublevel.isInitialized())
-        getGame().getDungeonMaster().initSublevel(targetDungeon);
+        getGame().getDungeonMaster().getInitializer(). initSublevel(targetDungeon);
     }
+
 
     private Coordinates getOffsetCoordinates(boolean back) {
         if (back) {

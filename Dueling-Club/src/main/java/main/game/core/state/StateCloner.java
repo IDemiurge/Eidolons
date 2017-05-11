@@ -31,7 +31,7 @@ import main.entity.type.ObjType;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.battlecraft.logic.battle.arena.Wave;
-import main.game.battlecraft.logic.battle.player.DC_Player;
+import main.game.battlecraft.logic.battle.DC_Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.Chronos;

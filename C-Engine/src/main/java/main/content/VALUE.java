@@ -7,10 +7,10 @@ import java.io.Serializable;
  * ArcaneVault integration: meta-info, classMap for Ability Constr. Easy
  * extension Rigorous Classifications Convenience Methods Enumeration utilities
  * - nomenclature lookup, class loading
- * <p>
+ * <portrait>
  * Potential Issues: Namespace overshadowing Return type - int, string, or what?
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>
  * VALUE must provide: structural info (group, tags...), metainfo, optionally -
  * list of values (Races)? a lot of parameters must be given to each VALUE type
  * what is the best way of maintaining and expanding the system?

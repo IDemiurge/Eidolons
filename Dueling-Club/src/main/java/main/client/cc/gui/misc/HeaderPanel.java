@@ -51,8 +51,8 @@ public class HeaderPanel extends G_Panel implements MouseListener,
     private void addComponents() {
         add(title, "id t, pos 0 0 ");
         add(topValues, "id tv, pos 0 t.y2 ");
-        add(portrait, "id p, pos 0 tv.y2 ");
-        add(bottomValues, "id bv, pos 0 p.y2 ");
+        add(portrait, "id portrait, pos 0 tv.y2 ");
+        add(bottomValues, "id bv, pos 0 portrait.y2 ");
         add(controlPanel, "id cp, pos 0 bv.y2 ");
 
     }

@@ -332,7 +332,7 @@ public class LevelEditor {
         if (getGrid() != null) {
 
         } else {
-            getCurrentLevel().getDungeon().getMinimap().getGrid().highlight(list);
+            getCurrentLevel().getMinimap().getGrid().highlight(list);
         }
     }
 
@@ -340,7 +340,7 @@ public class LevelEditor {
         if (getGrid() != null) {
 
         } else {
-            getCurrentLevel().getDungeon().getMinimap().getGrid().highlight(Arrays.asList(list));
+            getCurrentLevel().getMinimap().getGrid().highlight(Arrays.asList(list));
         }
     }
 
@@ -348,7 +348,7 @@ public class LevelEditor {
         if (getGrid() != null) {
 
         } else {
-            getCurrentLevel().getDungeon().getMinimap().getGrid().highlightsOff();
+            getCurrentLevel().getMinimap().getGrid().highlightsOff();
         }
     }
 

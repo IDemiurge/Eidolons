@@ -4,7 +4,6 @@ import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.building.DungeonBuilder;
 import main.game.battlecraft.logic.meta.scenario.Objective;
 import main.game.battlecraft.logic.meta.scenario.Scenario;
 import main.game.battlecraft.logic.meta.skirmish.SkirmishMaster.NEMESIS_GROUP;
@@ -30,7 +29,7 @@ public class Skirmish extends Scenario {
             type = DataManager.getType(levelPath, DC_TYPE.DUNGEONS);
             dungeon = new Dungeon(type);
         } else {
-            dungeon = new DungeonBuilder().loadDungeon(levelPath);
+//            dungeon = new LocationBuilder().buildDungeon(levelPath);
         }
 
         toBase();

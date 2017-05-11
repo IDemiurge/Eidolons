@@ -1564,7 +1564,7 @@ public class StringMaster {
 
 
 //        for (String sub : getPathSegments(path)) {
-//            if (p.startsWith(sub)) {
+//            if (portrait.startsWith(sub)) {
 //                break;
 //            }
 //            prefix += sub + PATH_SEPARATOR;
@@ -1574,14 +1574,14 @@ public class StringMaster {
 //        if (string.startsWith(PATH_SEPARATOR)) {
 //            string = string.substring(1);
 //        }
-//        final String p = string.toLowerCase();
+//        final String portrait = string.toLowerCase();
 //        path = path.toLowerCase();
 //        final List<String> segments = getPathSegments(path);
 //        String prefix = buildPartsIf(segments,
 //         PATH_SEPARATOR, false, (String sub) ->
-//          getPathSegments(p).indexOf(sub) < 0
+//          getPathSegments(portrait).indexOf(sub) < 0
 //           ||
-//           getPathSegments(p).indexOf(sub) < segments.indexOf(sub)
+//           getPathSegments(portrait).indexOf(sub) < segments.indexOf(sub)
 //         //TODO THIS IS NOT GUARANTEED TO WORK!!
 //
 //        );

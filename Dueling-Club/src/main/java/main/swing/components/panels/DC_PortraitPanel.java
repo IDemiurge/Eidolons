@@ -4,7 +4,6 @@ import main.client.dc.Launcher;
 import main.entity.Entity;
 import main.entity.obj.unit.DC_UnitModel;
 import main.game.core.game.Game;
-import main.game.core.game.MicroGame;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.ImageChooser;
 import main.system.graphics.GuiManager;
@@ -29,7 +28,7 @@ public class DC_PortraitPanel extends G_Panel implements MouseListener {
         super(VISUALS.PORTRAIT_BORDER);
 
         // comp.setSize(size);
-        portrait = new JLabel(((MicroGame) game).getPlayer(!info).getPortrait());
+//        portrait = new JLabel(((MicroGame) game).getPlayer(!info).getPortrait());
         add(portrait, "pos 5 17");
         addMouseListener(this);
     }
