@@ -1,7 +1,7 @@
 package main.game.battlecraft.logic.battle;
 
 import main.game.battlecraft.logic.battle.BattleStats.BATTLE_STATS;
-import main.system.net.data.DataUnit;
+import main.system.data.DataUnit;
 
 /**
  * Created by JustMe on 5/7/2017.

@@ -1,6 +1,6 @@
 package main.client.options;
 
-import main.system.net.data.DataUnit;
+import main.system.data.DataUnit;
 
 public class GameOptions extends DataUnit<GAME_OPTIONS> {
     // enums + collections

@@ -1,7 +1,7 @@
 package main.system.net.game;
 
-import main.system.net.data.DataUnit;
-import main.system.net.data.DataUnit.GAME_VALUES;
+import main.system.data.DataUnit;
+import main.system.data.DataUnit.GAME_VALUES;
 import main.system.net.user.User;
 
 import java.net.ServerSocket;

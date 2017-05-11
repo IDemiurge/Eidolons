@@ -1,4 +1,4 @@
-package main.system.net.data;
+package main.system.data;
 
 import main.data.ConcurrentMap;
 import main.data.DataManager;
@@ -27,12 +27,14 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public String getContainerValue(T t, int index) {
-        return getContainerValues(t).get(index);
+       List<String> values = getContainerValues(t);
+       if (values.size()<=index)
+           return null ;
+        return values.get(index);
     }
-
-    public List<String> getContainerValues(T t) {
-        return
-                StringMaster.openContainer(getValue(t), getSeparator(getFormat()));
+        public List<String> getContainerValues(T t) {
+      return
+            StringMaster.openContainer(getValue(t) );
     }
 
     public boolean getBooleanValue(T t) {
@@ -108,9 +110,9 @@ public class DataUnit<T extends Enum<T>> {
 
 
     public void setData(String data, Boolean std_alt_map) {
-        String[] entries = data.split(getSeparator(std_alt_map));
+        String[] entries = data.split(DataUnitFactory.getSeparator(std_alt_map));
         for (String entry : entries) {
-            String[] pair = entry.split(getPairSeparator(std_alt_map));
+            String[] pair = entry.split(DataUnitFactory.getPairSeparator(std_alt_map));
             if (pair.length != 2) {
                 LogMaster.log(4, "malformed data:" + data);
                 continue;
@@ -120,14 +122,6 @@ public class DataUnit<T extends Enum<T>> {
 
             setValue(name, pair[1]);
         }
-    }
-
-    private String getPairSeparator(Boolean std_alt_map) {
-        return std_alt_map ? StringMaster.getPairSeparator() : StringMaster.getAltPairSeparator();
-    }
-
-    private String getSeparator(Boolean std_alt_map) {
-        return std_alt_map ? StringMaster.getSeparator() : StringMaster.getAltSeparator();
     }
 
     public Map<Coordinates, ObjType> buildObjCoordinateMapFromString(String string) {
@@ -186,7 +180,7 @@ public class DataUnit<T extends Enum<T>> {
     public String getData(Set<String> set, Boolean format) {
         String data = "";
         for (String v : set) {
-            data += v + getPairSeparator(format) + values.get(v) + getSeparator(format);
+            data += v + DataUnitFactory.getPairSeparator(format) + values.get(v) + DataUnitFactory.getSeparator(format);
         }
         return data;
     }

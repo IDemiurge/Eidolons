@@ -5,11 +5,11 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.PlayerAI;
-import main.game.battlecraft.logic.battle.PlayerManager.ALLEGIENCE;
 import main.game.battlecraft.logic.dungeon.UnitData;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
+import main.system.data.PlayerData.ALLEGIENCE;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
 import java.awt.*;
@@ -42,7 +42,7 @@ public class DC_Player extends Player {
 
 
     public DC_Player(String name, FLAG_COLOR color,
-                     String emblem, String portrait, ALLEGIENCE allegience) {
+                     String emblem, String portrait,  ALLEGIENCE allegience) {
         super(name, color.getColor(), allegience.isNeutral(), allegience.isMe()
                 , portrait, emblem);
     }

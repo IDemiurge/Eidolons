@@ -16,7 +16,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.DC_PositionMaster;
 import main.system.math.MathMaster;
-import main.system.net.data.DataUnit;
+import main.system.data.DataUnit;
 
 import java.util.LinkedList;
 import java.util.List;

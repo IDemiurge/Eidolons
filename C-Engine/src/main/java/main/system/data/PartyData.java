@@ -1,10 +1,10 @@
-package main.system.net.data;
+package main.system.data;
 
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.system.net.data.PartyData.PARTY_VALUES;
+import main.system.data.PartyData.PARTY_VALUES;
 
 import java.util.Map;
 
