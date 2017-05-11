@@ -12,7 +12,7 @@ import main.data.xml.XML_Reader;
 import main.data.xml.XML_Transformer;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.battle.arena.UnitGroupMaster;
+import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.gui.builders.EditViewPanel;
 import main.gui.builders.TabBuilder;
 import main.gui.components.table.TableMouseListener;

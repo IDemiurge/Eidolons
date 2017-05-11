@@ -3,15 +3,15 @@ package com.graphbuilder.math;
 import com.graphbuilder.math.func.*;
 
 /**
- * <p>FuncMap maps a name to a function.  A FuncMap is used in the eval method of an Expression object.
+ * <portrait>FuncMap maps a name to a function.  A FuncMap is used in the eval method of an Expression object.
  * This class can be used as the default function-map.  The loadDefaultFunctions() method can be used
  * to take advantage of the many already implemented functions (see below).
- * <p>
- * <p>During the evaluation of an expression, if a function is not supported then a RuntimeException is thrown.
- * <p>
- * <p>Default functions:
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>During the evaluation of an expression, if a function is not supported then a RuntimeException is thrown.
+ * <portrait>
+ * <portrait>Default functions:
+ * <portrait>
+ * <portrait>
  * <dl>
  * <dt>No Parameters</dt>
  * <dd>
@@ -69,11 +69,11 @@ import com.graphbuilder.math.func.*;
  * <li>avg(x1,x2,...,xn) &rarr; (x1 + x2 + ... + xn) / n</li>
  * </ul>
  * </dd>
- * <p>
+ * <portrait>
  * </dl>
- * </p>
- * <p>
- * <p>Note: Case sensitivity can only be specified in the constructor (for consistency).  When case sensitivity is false,
+ * </portrait>
+ * <portrait>
+ * <portrait>Note: Case sensitivity can only be specified in the constructor (for consistency).  When case sensitivity is false,
  * the String.equalsIgnoreCase method is used.  When case sensitivity is true, the String.equals method is used.  The
  * matching does not include the parenthesis.  For example, when case sensitivity is false and the default functions have been
  * loaded, then "RaNd", "rand", and "RAND" all map to the RandFunction().  By default, case sensitivity is false.

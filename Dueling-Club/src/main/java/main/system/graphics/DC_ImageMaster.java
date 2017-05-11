@@ -35,17 +35,24 @@ public class DC_ImageMaster {
         return base_image;
     }
 
-    public static Image getUnitEmblem(Unit obj, int size, boolean player) {
+    public static String getUnitEmblem(Unit obj, boolean player) {
+// TODO
+        return null;
+    }
+        public static Image getUnitEmblem(Unit obj, int size, boolean player) {
         Image unitEmblem = null;
-        if (player && obj.getOwner().getEmblem() != null) {
-            unitEmblem = ImageManager.getSizedVersion(obj.getOwner().getEmblem(), new Dimension(
-                    size, size));
-        } else if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.CHARS) {
+//        if (player && obj.getOwner().getEmblem() != null) {
+//            unitEmblem = ImageManager.getSizedVersion(obj.getOwner()
+//             .getEmblem(), new Dimension(
+//                    size, size));
+//        } else
+            if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.CHARS) {
             unitEmblem = ImageManager.getSizedIcon(obj.getProperty(G_PROPS.EMBLEM),
                     new Dimension(size, size)).getImage();
         } else {
             if (obj.getDeity() != null) {
-                ImageIcon icon = ImageManager.getSizedIcon(obj.getDeity().getType().getProperty(
+                ImageIcon icon = ImageManager.getSizedIcon(obj.getDeity()
+                 .getType().getProperty(
                         G_PROPS.EMBLEM), new Dimension(size, size));
                 if (icon == null) {
                     icon = ImageManager.getEmptyEmblem();

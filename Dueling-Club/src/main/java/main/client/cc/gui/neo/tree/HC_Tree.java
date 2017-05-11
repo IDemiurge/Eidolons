@@ -745,7 +745,7 @@ public class HC_Tree {
             if (n.isAcquired()) {
                 // Image img =
                 // BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getEmitterPath();
-                // overlayMap2.put(new Point(p.x - 6, p.y - 6), img);
+                // overlayMap2.put(new Point(portrait.x - 6, portrait.y - 6), img);
             } else if (!CoreEngine.isArcaneVault()) {
                 if (n.isAvailable()) {
                     Image img = BORDER.NEO_CYAN_HIGHLIGHT_SQUARE_64.getImage();

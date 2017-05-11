@@ -35,7 +35,7 @@ public class SortMaster {
             Collections.sort(pool, getSorter(p, descending));
             // OBJ_TYPE TYPE = pool.get(0).getOBJ_TYPE_ENUM();
             // List<String> types = sortByValue(DataManager.toStringList(pool),
-            // p, TYPE, descending);
+            // portrait, TYPE, descending);
             // return DataManager.toTypeList(types, TYPE);
         }
         return pool;
@@ -118,7 +118,7 @@ public class SortMaster {
     }
     //        public static Comparator<? super Entity> getSorterByNaturalOrder
 //        (Function<Entity, Integer> function) {
-//        return Comparator.naturalOrder(p -> function.apply(p));
+//        return Comparator.naturalOrder(portrait -> function.apply(portrait));
 //    }
     public static Comparator<? super Entity> getSorterByExpression
             (Function<Entity, Integer> function) {

@@ -9,7 +9,7 @@ import main.content.values.properties.PROPERTY;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game.GAME_TYPE;
-import main.game.battlecraft.logic.battle.arena.UnitGroupMaster;
+import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMaster;
 
 import java.util.LinkedList;

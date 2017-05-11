@@ -1,10 +1,10 @@
 package com.graphbuilder.math;
 
 /**
- * <p>VarMap maps a name to a value.  A VarMap is used in the eval method of an Expression object.
+ * <portrait>VarMap maps a name to a value.  A VarMap is used in the eval method of an Expression object.
  * This class can be used as the default variable-map.
- * <p>
- * <p>During the evaluation of an expression, if a variable is not supported then a RuntimeException is thrown.
+ * <portrait>
+ * <portrait>During the evaluation of an expression, if a variable is not supported then a RuntimeException is thrown.
  * Case sensitivity can only be specified in the constructor (for consistency).  When case sensitivity is false,
  * the String.equalsIgnoreCase method is used.  When case sensitivity is true, the String.equals method is used.
  * By default, case sensitivity is true.

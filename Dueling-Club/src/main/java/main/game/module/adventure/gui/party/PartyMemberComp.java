@@ -45,8 +45,8 @@ public class PartyMemberComp extends G_Panel implements MouseListener {
         // }
         // };
         // add(nameComp, "id n, pos 0 0");
-        add(portrait.getComp(), "id p, pos 0 n.y2");
-        add(slidePanel, "id s, pos p.x2 n.y2");
+        add(portrait.getComp(), "id portrait, pos 0 n.y2");
+        add(slidePanel, "id s, pos portrait.x2 n.y2");
         refresh();
     }
 

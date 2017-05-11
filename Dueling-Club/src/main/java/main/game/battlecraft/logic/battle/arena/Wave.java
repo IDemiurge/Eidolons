@@ -14,8 +14,8 @@ import main.game.battlecraft.ai.GroupAI;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.battle.player.DC_Player;
-import main.game.battlecraft.logic.dungeon.building.MapBlock;
+import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.module.adventure.travel.EncounterMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -66,7 +66,8 @@ public class Wave extends DC_Obj {
     }
 
     public void initUnitMap() {
-        getGame().getArenaManager().getWaveAssembler().assembleWave(this, !adjustmentDisabled,
+      ArenaBattleMaster master = (ArenaBattleMaster) getGame().getBattleMaster();
+       master.getWaveAssembler().assembleWave(this, !adjustmentDisabled,
                 presetCoordinate);
         // unitMap = new HashMap<ObjType, Coordinates>();
         // for (String typeName : StringMaster

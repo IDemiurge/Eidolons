@@ -11,7 +11,7 @@ import tests.entity.CreateUnitTest;
 
 /**
  * Created by JustMe on 3/26/2017.
- * <p>
+ * <portrait>
  * DOES NOT TEST ADDITIONAL EFFECTS (PANIC, TREASON, CONFUSION ETC)
  *
  * //TODO but what exactly does it test?

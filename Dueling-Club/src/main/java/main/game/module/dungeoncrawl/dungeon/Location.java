@@ -10,17 +10,16 @@ import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
+import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder;
+import main.game.battlecraft.logic.meta.scenario.Scenario;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
-import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.bf.DirectionMaster;
-import main.game.battlecraft.logic.battlefield.map.DungeonMapGenerator;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_LAYOUT;
-import main.game.battlecraft.logic.dungeon.building.DungeonBuilder;
-import main.game.battlecraft.logic.dungeon.building.DungeonPlan;
-import main.game.battlecraft.logic.meta.scenario.Scenario;
 import main.game.module.adventure.map.Place;
+import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_LAYOUT;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -83,7 +82,7 @@ public class Location {
             if (data.isEmpty()) {
                 return;
             }
-            DungeonPlan plan = new DungeonBuilder().loadDungeonMap(data);
+            DungeonPlan plan = new LocationBuilder().loadDungeonMap(data);
             bossLevel = plan.getDungeon();
             return;
         } else {
@@ -100,7 +99,7 @@ public class Location {
         if (isScenario()) {
             String data = FileManager.readFile(PathFinder.getDungeonLevelFolder()
                     + getPlaceOrScenario().getProperty(MACRO_PROPS.ROOT_LEVEL));
-            DungeonPlan plan = new DungeonBuilder().loadDungeonMap(data);
+            DungeonPlan plan = new LocationBuilder().loadDungeonMap(data);
             root = plan.getDungeon();
             return;
         } else {
@@ -183,7 +182,7 @@ public class Location {
                         + typeName);
                 // filter?
                 String data = FileManager.readFile(randomFile);
-                DungeonPlan plan = new DungeonBuilder().loadDungeonMap(data);
+                DungeonPlan plan = new LocationBuilder().loadDungeonMap(data);
                 ObjType dungeonType = null;
 
                 newSublevel(dungeon, dungeonType, z, level, entranceLayout);
@@ -216,7 +215,7 @@ public class Location {
                 prevType = type;
             }
         }
-        dungeon.getSubLevels().add(bossLevel);
+//        dungeon.getSubLevels().add(bossLevel);
     }
 
     // TODO FILTER BY CHOSEN SUBDUNGEON TYPE!
@@ -246,18 +245,18 @@ public class Location {
 
         File file = FileManager.getRandomFile(path);
         String data = FileManager.readFile(file);
-        DungeonPlan plan = new DungeonBuilder().loadDungeonMap(data);
+        DungeonPlan plan = new LocationBuilder().loadDungeonMap(data);
         adjustPlanToEntrance(plan, entranceLayout, file.getName());
 
-        new DungeonBuilder().transformDungeonPlan(plan);
+        new LocationBuilder().transformDungeonPlan(plan);
 
         Dungeon sublevel = new Dungeon(dungeonType);
-        sublevel.setPlan(plan);
-        sublevel.setSublevel(true);
-        String entranceData = DungeonLevelMaster.getEntranceData(sublevel, entranceLayout);
-        sublevel.setEntranceData(entranceData);
-        new DungeonMapGenerator().generateMap(sublevel);
-        dungeon.getSubLevels().add(sublevel);
+//        sublevel.setPlan(plan);
+//        sublevel.setSublevel(true);
+//        String entranceData = DungeonLevelMaster.getEntranceData(sublevel, entranceLayout);
+//        sublevel.setEntranceData(entranceData);
+//        new DungeonMapGenerator().generateMap(sublevel);
+//        dungeon.getSubLevels().add(sublevel);
         return sublevel;
     }
 
@@ -326,16 +325,16 @@ public class Location {
     }
 
     private void initDungeonPlanAdjustments(Coordinates enterCoordinate) {
-        if (!CoordinatesMaster.getClosestEdge(enterCoordinate, dungeon.getCellsX(),
-                dungeon.getCellsY()).isVertical()) {
-            dungeon.setRotated(true);
-        }
-        if (isFlipX(enterCoordinate)) {
-            dungeon.setFlippedX(true);
-        }
-        if (isFlipY(enterCoordinate)) {
-            dungeon.setFlippedY(true);
-        }
+//        if (!CoordinatesMaster.getClosestEdge(enterCoordinate, dungeon.getCellsX(),
+//                dungeon.getCellsY()).isVertical()) {
+//            dungeon.setRotated(true);
+//        }
+//        if (isFlipX(enterCoordinate)) {
+//            dungeon.setFlippedX(true);
+//        }
+//        if (isFlipY(enterCoordinate)) {
+//            dungeon.setFlippedY(true);
+//        }
     }
 
     public boolean isFlipY(Coordinates enterCoordinate) {

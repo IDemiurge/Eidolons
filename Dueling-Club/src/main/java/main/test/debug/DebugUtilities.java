@@ -83,9 +83,9 @@ public class DebugUtilities {
             i++;
         }
         i = 0;
-        // for (PARAMETER p : GOD_MODE_INFINITE_PARAMETERS) {
-        // p = ContentManager.getCurrentParam(p);
-        // entity.setParam(p, GOD_MODE_INFINITE_VALS[i]);
+        // for (PARAMETER portrait : GOD_MODE_INFINITE_PARAMETERS) {
+        // portrait = ContentManager.getCurrentParam(portrait);
+        // entity.setParam(portrait, GOD_MODE_INFINITE_VALS[i]);
         // i++;
         // }
         // entity.setParam(PARAMS.C_MORALE, QUASI_INFINITE_VALUE / 10);

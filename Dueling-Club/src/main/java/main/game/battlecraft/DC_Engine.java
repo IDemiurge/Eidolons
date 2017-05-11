@@ -14,7 +14,9 @@ import main.system.launch.CoreEngine;
 import main.system.options.OptionsMaster;
 
 public class DC_Engine {
-
+/*
+supposed to give access to Audio, Data, utilities, ...
+ */
     public static void init() {
         Chronos.mark("DC INIT");
         systemInit();

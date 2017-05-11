@@ -11,11 +11,15 @@ import main.content.enums.EncounterEnums.GROWTH_PRIORITIES;
 import main.data.DataManager;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.battlecraft.logic.battle.BattleHandler;
+import main.game.battlecraft.logic.battle.BattleMaster;
 import main.game.battlecraft.logic.battle.BattleOptions;
 import main.game.battlecraft.logic.battle.BattleOptions.DIFFICULTY;
 import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.Spawner;
+import main.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
@@ -32,7 +36,7 @@ import java.util.stream.Collectors;
 
 //TODO  support WEIGHT-format: pick from unit pool until target-power is filled or 
 // apply growth per random 
-public class WaveAssembler {
+public class WaveAssembler extends BattleHandler<ArenaBattle> {
 
     public static final int REGULAR_POWER = 100;
     public static final int ELITE_POWER = 100;
@@ -42,8 +46,7 @@ public class WaveAssembler {
     public static final Integer DUNGEON_DEFAULT_BOSS_POWER_MOD = 125;
     public static final Integer ENCOUNTER_DEFAULT_BOSS_POWER_MOD = 120;
 
-    public ArenaManager manager;
-    public Positioner positioner;
+    public ArenaPositioner positioner;
     public BattleOptions options;
     public Wave wave;
     public DIFFICULTY difficulty;
@@ -60,13 +63,13 @@ public class WaveAssembler {
     List<ObjAtCoordinate> typeMap = new LinkedList<>();
     Integer forcedPower;
 
-    public WaveAssembler(ArenaManager manager) {
-        this.manager = manager;
-        this.options = manager.getArenaOptions();
-        this.difficulty = options.getDifficulty();
+    public WaveAssembler(BattleMaster<ArenaBattle> master) {
+        super(master);
+
     }
 
-    public synchronized void assembleWave(Wave wave) {
+
+    public void assembleWave(Wave wave) {
         try {
             assembleWave(wave, true, false);
         } catch (Exception e) {
@@ -75,14 +78,21 @@ public class WaveAssembler {
 
     }
 
-    public synchronized void assembleWave(Wave wave, boolean adjustPower, boolean presetCoordinate) {
+    public void init() {
+        this.options = master.getOptionManager().getOptions();
+        this.difficulty = options.getDifficulty();
+        dungeon = getMaster().getDungeon();
+        positioner = (ArenaPositioner) getMaster().getPositioner();
+
+    }
+
+    public void assembleWave(Wave wave, boolean adjustPower, boolean presetCoordinate) {
+
+
         groupsExtended = 0;
         fillApplied = 0;
         groups = 0;
-        positioner = manager.getSpawnManager().getPositioner();
-        if (positioner == null) {
-            positioner = manager.getBattleConstructor().getPositioner();
-        }
+        positioner = positioner;
         this.wave = wave;
         typeMap = new LinkedList<>();
         unitGroups = new LinkedList<>();
@@ -115,7 +125,7 @@ public class WaveAssembler {
         if (wave.getPreferredPower() != 0) {
             target_power = wave.getPreferredPower() * percentage / 100;
         } else {
-            target_power = manager.getBattleLevel() * percentage / 100;
+//      TODO       target_power = options.getBattleLevel() * percentage / 100;
         }
     }
 
@@ -140,7 +150,7 @@ public class WaveAssembler {
 
     public void applyGrowth(GROWTH_PRIORITIES priority) {
         LogMaster.log(LOG_CHANNELS.WAVE_ASSEMBLING, priority + " is being applied" + "; Power = "
-                + power);
+         + power);
         switch (priority) {
             case EXTEND:
                 applyExtend();
@@ -171,10 +181,10 @@ public class WaveAssembler {
         String presetGroupTypes = wave.getPresetGroupTypes();
         if (shrunk_or_extended != null) {
             presetGroupTypes = (shrunk_or_extended) ? wave.getShrunkenGroupTypes() : wave
-                    .getExtendedGroupTypes();
+             .getExtendedGroupTypes();
         }
         List<ObjType> types = DataManager.toTypeList(presetGroupTypes,
-                C_OBJ_TYPE.UNITS_CHARS);
+         C_OBJ_TYPE.UNITS_CHARS);
         if (groups >= MAX_GROUPS) {
             return false;
         }
@@ -189,7 +199,7 @@ public class WaveAssembler {
                 return false;
             }
         }
-        positioner.setMaxSpacePercentageTaken(SpawnManager.MAX_SPACE_PERC_CREEPS);
+        positioner.setMaxSpacePercentageTaken(Spawner.MAX_SPACE_PERC_CREEPS);
         List<ObjAtCoordinate> group = positioner.getCoordinatesForUnitGroup(types, wave, unitLevel);
         typeMap.addAll(group);
         unitGroups.add(group);
@@ -199,9 +209,9 @@ public class WaveAssembler {
 
     public void resetPositions(Wave wave) {
         List<ObjType> types = wave.getUnitMap().stream().map(t -> t.getType()).collect(Collectors.toList());
-        positioner.setMaxSpacePercentageTaken(SpawnManager.MAX_SPACE_PERC_CREEPS);
+        positioner.setMaxSpacePercentageTaken(Spawner.MAX_SPACE_PERC_CREEPS);
         List<ObjAtCoordinate> group =
-                positioner.getCoordinatesForUnitGroup(types, wave, wave.getUnitLevel());
+         positioner.getCoordinatesForUnitGroup(types, wave, wave.getUnitLevel());
         wave.setUnitMap(group);
     }
 
@@ -260,7 +270,7 @@ public class WaveAssembler {
     }
 
     public int getMaxFillNumber() {
-        return GuiManager.getCellNumber() - typeMap.size() - manager.getGame().getUnits().size();
+        return GuiManager.getCellNumber() - typeMap.size() - getMaster().getGame().getUnits().size();
     }
 
     public ObjType getFillingType() {
@@ -274,7 +284,7 @@ public class WaveAssembler {
 
         if (objType == null) {
             List<ObjType> fillingTypes = DataManager
-                    .toTypeList(list, C_OBJ_TYPE.UNITS_CHARS);
+             .toTypeList(list, C_OBJ_TYPE.UNITS_CHARS);
             if (fillingTypes.isEmpty()) {
                 return null;
             }
@@ -296,9 +306,9 @@ public class WaveAssembler {
         unitGroups.remove(group);
         groups--;
         if (wave.getBlock() != null) {
-            manager.getSpawnManager().getPositioner().blockGroupRemoved(wave.getBlock(), group);
+            positioner.blockGroupRemoved(wave.getBlock(), group);
         } else {
-            manager.getSpawnManager().getPositioner().sideRemoved();
+            positioner.sideRemoved();
         }
     }
 
@@ -330,7 +340,7 @@ public class WaveAssembler {
         }
         int diff = (getTargetPower() - power) * 100 / getTargetPower();
         LogMaster.log(LOG_CHANNELS.WAVE_ASSEMBLING, wave.getName() + "' Power = " + power
-                + " vs target of " + getTargetPower() + ", diff = " + diff);
+         + " vs target of " + getTargetPower() + ", diff = " + diff);
         return diff > POWER_GAP;
 
     }
@@ -348,13 +358,13 @@ public class WaveAssembler {
         }
         int diff = (i - getTargetPower()) * 100 / i;
         LogMaster.log(LOG_CHANNELS.WAVE_ASSEMBLING, i + " vs target of " + getTargetPower()
-                + ", diff = " + diff);
+         + ", diff = " + diff);
         return diff > POWER_GAP;
     }
 
     private List<GROWTH_PRIORITIES> getPriorities(Wave wave) {
         return new EnumMaster<GROWTH_PRIORITIES>().getEnumList(GROWTH_PRIORITIES.class, wave
-                .getProperty(PROPS.GROWTH_PRIORITIES));
+         .getProperty(PROPS.GROWTH_PRIORITIES));
     }
 
     public int getPowerPercentage(Wave wave) {
@@ -382,7 +392,7 @@ public class WaveAssembler {
         }
         power = MathMaster.applyMod(power, mod);
 
-        dungeon = manager.getGame().getDungeonMaster().getDungeon();
+//        dungeon = manager.getGame().getDungeonMaster().getDungeon();
         if (dungeon != null) {
             mod = dungeon.getIntParam(PARAMS.POWER_MOD);
             if (mod == 0) {

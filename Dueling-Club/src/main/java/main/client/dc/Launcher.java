@@ -17,7 +17,7 @@ import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.core.game.Game;
 import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
-import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.module.adventure.MacroManager;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -541,8 +541,6 @@ public class Launcher {
                 PartyManager.initArcade();
             }
 
-            game.setPlayerParty(PartyManager.getParty());
-
             PartyManager.getParty().setGame(game);
             if (forceBattleInit || !game.isBattleInit()) {
                 game.battleInit();
@@ -592,9 +590,6 @@ public class Launcher {
 
     public static void setView(VIEWS newView) {
         switch (newView) {
-            case MINI_MAP:
-                setView(game.getDungeonMaster().getMinimapComponent(), newView);
-                break;
             case CHOICE:
                 break;
             case DC:

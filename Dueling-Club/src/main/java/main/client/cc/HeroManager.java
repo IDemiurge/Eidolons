@@ -34,7 +34,7 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.core.game.DC_Game;
 import main.game.logic.event.MessageManager;
-import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.town.Shop;
 import main.system.DC_Formulas;

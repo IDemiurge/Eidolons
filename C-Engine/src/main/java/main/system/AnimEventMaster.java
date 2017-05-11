@@ -30,7 +30,7 @@ public class AnimEventMaster extends GuiEventManager {
         }
 
         LogMaster.log(LogMaster.ANIM_DEBUG, e + " trigger queued with " + p);
-//        trigger(e, p);
+//        trigger(e, portrait);
     }
 
     public static void queue(main.system.GuiEventType e) {

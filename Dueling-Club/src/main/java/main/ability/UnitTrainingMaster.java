@@ -27,7 +27,7 @@ public class UnitTrainingMaster {
     }
 
     public static void train(Unit unit) {
-        if (!FAST_DC.getGameLauncher().getFAST_MODE()) {
+        if (!FAST_DC.getTestLauncher().getFAST_MODE()) {
             if (CoreEngine.isGraphicTestMode()) {
                 return;
             }

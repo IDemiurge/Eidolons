@@ -215,8 +215,8 @@ public class IntegrityRule {
         // mod = mod - 150;
         // else
         // mod = mod - 50;
-        // for (PARAMETER p : ContentManager.getMasteries()) {
-        // hero.multiplyParamByPercent(p, mod, false);
+        // for (PARAMETER portrait : ContentManager.getMasteries()) {
+        // hero.multiplyParamByPercent(portrait, mod, false);
         // }
         // }
     }

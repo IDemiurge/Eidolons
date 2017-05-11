@@ -10,10 +10,9 @@ import main.data.DataManager;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.battle.arena.UnitGroupMaster;
-import main.game.battlecraft.logic.meta.party.PartyManager;
-import main.game.battlecraft.logic.battle.arena.SpawnManager;
-import main.game.battlecraft.logic.battle.BattleLevel;
+import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
+import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.dungeon.Spawner;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
@@ -38,10 +37,10 @@ public class ArenaArcadeMaster {
     }
 
     public void initBattle(BattleLevel battleLevel) {
-        game.setEnemyParty(battleLevel.getGroupData());
-        game.getDungeonMaster().setDungeonPath(battleLevel.getLevelData());
+//        game.setEnemyParty(battleLevel.getGroupData());
+//        game.getDungeonMaster().setDungeonPath(battleLevel.getLevelData());
         UnitGroupMaster.setPowerLevel(arcade.getLevel());
-        SpawnManager.setEnemyUnitGroupMode(true);
+        Spawner.setEnemyUnitGroupMode(true);
         // UnitGroupMaster.setUnitList(unitList);
     }
 

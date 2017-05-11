@@ -10,11 +10,11 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.bf.BattleFieldGrid;
 import main.game.bf.Coordinates;
-import main.game.battlecraft.logic.battlefield.map.DC_Map;
+import main.game.battlecraft.logic.dungeon.location.building.DC_Map;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.CellComp;
 import main.swing.generic.components.G_Panel;
@@ -62,10 +62,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         this.game = dungeon.getGame();
         this.w = GuiManager.getBF_CompDisplayedCellsX();
         this.h = GuiManager.getBF_CompDisplayedCellsY();
-        if (game.getDungeonMaster().isExtendedBattlefield()) {
-            this.w = game.getDungeonMaster().getLevelWidth();
-            this.h = game.getDungeonMaster().getLevelHeight();
-        }
+            this.w = game.getDungeonMaster().getDungeonWrapper(). getWidth();
+            this.h = game.getDungeonMaster().getDungeonWrapper(). getHeight();
         comp = new G_Panel();
         comp.setBackground(ColorManager.getTranslucent(ColorManager.OBSIDIAN, 10));
 
@@ -108,9 +106,6 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         return "Grid for " + dungeon.getName() + "; Z=" + dungeon.getZ() + ";X=" + w + ";Y=" + h;
     }
 
-    private boolean isExtendedBattlefield() {
-        return game.getDungeonMaster().isExtendedBattlefield();
-    }
 
     public void refresh() {
         gridComp.refresh(getOffsetX(), getOffsetY());
@@ -211,9 +206,6 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     private int getOffset(boolean x) {
         // 6*132 = 7* x ;
 
-        if (!isExtendedBattlefield()) {
-            return 0;
-        }
         if (getOffsetCoordinate() == null) {
             // TODO initial camera
             Unit obj = getActiveObj();

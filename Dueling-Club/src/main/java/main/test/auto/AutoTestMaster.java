@@ -14,14 +14,13 @@ import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.dungeon.DungeonMaster;
+import main.game.core.launch.TestLauncher.CODE;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.auto.AutoTest.TEST_ARGS;
-import main.test.debug.GameLauncher.CODE;
 import main.test.frontend.FAST_DC;
 
 import java.util.LinkedList;
@@ -53,13 +52,13 @@ public class AutoTestMaster {
         running = true;
         FAST_DC.ENEMY_CODE = CODE.PRESET;
         FAST_DC.PARTY_CODE = CODE.PRESET;
-        DungeonMaster.RANDOM_DUNGEON = false;
-        DungeonMaster.setDEFAULT_DUNGEON_PATH(TEST_DUNGEON);
+//        DungeonMaster.RANDOM_DUNGEON = false;
+//        DungeonMaster.setDEFAULT_DUNGEON_PATH(TEST_DUNGEON);
         FAST_DC.DEFAULT_DUNGEON = TEST_DUNGEON;
         FAST_DC.ENEMY_PARTY = "Base Hero Type";
         FAST_DC.PLAYER_PARTY = "Base Hero Type";
-        FAST_DC.getGameLauncher().DUMMY_MODE = true; // TODO not all of it
-        FAST_DC.getGameLauncher().DUMMY_PP = false;
+        FAST_DC.getTestLauncher().DUMMY_MODE = true; // TODO not all of it
+        FAST_DC.getTestLauncher().DUMMY_PP = false;
 
         FAST_DC.main(FAST_DC.SKIP_CHOICE_ARGS);
 
@@ -207,7 +206,7 @@ public class AutoTestMaster {
 
     private void clear() {
         DC_Game.game.getManager().getDeathMaster().killAll(false);
-        // DC_Game.game.getArenaManager().getSpawnManager().
+        // DC_Game.game.getBattleMaster().getSpawner().
         // DC_Game.game.getDebugMaster().setArg(arg)
 
     }

@@ -45,7 +45,7 @@ import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.action.context.Context.IdKey;
-import main.game.battlecraft.logic.battle.player.DC_Player;
+import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.logic.battle.player.Player;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.entity.active.DC_ActionManager;
@@ -102,8 +102,8 @@ public class Unit extends DC_UnitModel {
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
         setDungeon(getGame().getDungeonMaster().getDungeon());
-        if (getGame().getDungeonMaster().getZ() != null) {
-            setZ(getGame().getDungeonMaster().getZ());
+        if (getGame().getDungeon().getZ() != null) {
+            setZ(getGame().getDungeon().getZ());
         } else {
             setZ(0);
         }
@@ -198,10 +198,6 @@ public class Unit extends DC_UnitModel {
     }
 
     public DC_FeatObj getFeat(boolean skill, ObjType type) {
-        if (game.isSimulation()) {
-            return (DC_FeatObj) getGame().getSimulationObj(this, type,
-             skill ? PROPS.SKILLS : PROPS.CLASSES);
-        }
         return null;// TODO
     }
 
@@ -974,9 +970,9 @@ public class Unit extends DC_UnitModel {
     }
 
     public Dungeon getDungeon() {
-        if (dungeon == null) {
-            return getGame().getDungeonMaster().getRootDungeon();
-        }
+//        if (dungeon == null) {
+//            return getGame().getDungeonMaster().getRootDungeon();
+//        }
         return dungeon;
     }
 

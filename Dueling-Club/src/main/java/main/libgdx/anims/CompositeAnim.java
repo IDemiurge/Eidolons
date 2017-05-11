@@ -324,7 +324,7 @@ public class CompositeAnim implements Animation {
 //    }
     public void interrupt() {
         //at what part?
-//        setInterruptPart(p);
+//        setInterruptPart(portrait);
 //        setInterruptMethod(method); //fade, flash, drop, skip
     }
 

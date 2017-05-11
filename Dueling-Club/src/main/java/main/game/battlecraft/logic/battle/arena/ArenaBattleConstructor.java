@@ -16,14 +16,13 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.core.Eidolons;
-import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.battle.BattleOptions;
+import main.game.battlecraft.logic.battle.BattleConstructor;
 import main.game.battlecraft.logic.battle.BattleOptions.ARENA_GAME_OPTIONS;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.meta.skirmish.SkirmishMaster;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.core.Eidolons;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -38,7 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ArenaBattleConstructor {
+public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle>{
     public static final ENCOUNTER_TYPE[] default_encounter_sequence_1 = {EncounterEnums.ENCOUNTER_TYPE.REGULAR,
             EncounterEnums.ENCOUNTER_TYPE.ELITE,
             // ENCOUNTER_TYPE.REGULAR,
@@ -74,30 +73,23 @@ public class ArenaBattleConstructor {
     private static final Integer BOSS_ROUNDS_TO_FIGHT_MAX = 8;
     private static final int ALT_ENCOUNTER_DEFAULT_CHANCE = 50;
     private static final Integer BOSS_DUNGEON_SPAWN_DELAY_MOD = 65;
-    private ArenaManager manager;
-    private DC_Game game;
-    private BattleOptions arenaOptions;
     private ENCOUNTER_TYPE[][] sequences;
     private int index = 0;
     private Boolean alt;
-    private Positioner positioner;
-    private boolean encounter;
+    private boolean encounter; //TODO into Location!
     private List<Coordinates> usedSpawnCoordinates;
     private boolean sideSpawnTestMode = true;
 
-    public ArenaBattleConstructor(ArenaManager manager) {
-        this.manager = manager;
-        this.game = manager.getGame();
-        this.arenaOptions = manager.getArenaOptions();
+    public ArenaBattleConstructor(ArenaBattleMaster master) {
+        super(master);
         sequences = default_sequences;
-        positioner = new Positioner();
     }
 
     public void init() {
     }
 
     public void setEncounterSequence(Map<Wave, Integer> waveSequence) {
-        manager.getSpawnManager().setScheduledWaves(waveSequence);
+//        manager.getSpawnManager().setScheduledWaves(waveSequence);
         setEncounter(true);
     }
 
@@ -114,8 +106,12 @@ public class ArenaBattleConstructor {
         if (waves.isEmpty()) {
             return false;
         }
-        manager.getSpawnManager().setScheduledWaves(waves);
-        manager.getSpawnManager().setPositioner(positioner);
+        //TODO
+        //TODO
+        //TODO
+        //TODO
+//        manager.getSpawnManager().setScheduledWaves(waves);
+//        manager.getSpawnManager().setPositioner(positioner);
 
         String encounters = "";
         for (Wave type : waves.keySet()) {
@@ -211,7 +207,8 @@ public class ArenaBattleConstructor {
             ObjType waveType = getWaveType(waves, type);
 
             waveType = new ObjType(waveType);
-            FACING_DIRECTION side = positioner.nextSide();
+            FACING_DIRECTION side = null ;
+//             getMaster().getDungeonMaster().getPositioner().nextSide();
             waveType.setProperty(PROPS.SPAWNING_SIDE, side.getName());
 
             Coordinates c = pickSpawnCoordinateForWave(type, round, waveType);
@@ -294,7 +291,8 @@ public class ArenaBattleConstructor {
     private Coordinates getDefaultSpawnCoordinate(ENCOUNTER_TYPE type, Integer round,
                                                   ObjType waveType) {
         // ENEMY_SPAWN_COORDINATES TODO
-        return getDungeon().getDefaultEnemyCoordinates();
+//        return getPositioner().getDefaultEnemyCoordinates();
+        return null;
     }
 
     private int getOptimalMaxDistance() {
@@ -316,7 +314,7 @@ public class ArenaBattleConstructor {
     }
 
     private Dungeon getDungeon() {
-        return game.getDungeonMaster().getDungeon();
+        return game.getDungeonMaster().getDungeonWrapper().getDungeon();
     }
 
     private Map<Wave, Integer> constructEncounterGroup(String group) {
@@ -326,7 +324,7 @@ public class ArenaBattleConstructor {
 
     private int getRoundNumber() {
         return game.getState().getRound()
-                + StringMaster.getInteger(arenaOptions
+                + StringMaster.getInteger(getOptionManager().getOptions()
                 .getValue(ARENA_GAME_OPTIONS.TURNS_TO_PREPARE));
     }
 
@@ -391,7 +389,9 @@ public class ArenaBattleConstructor {
         if (amount < 0) {
             amount = 1;
         }
-        return MathMaster.applyMod(amount, game.getArenaManager().getArenaOptions().getDifficulty()
+        return MathMaster.applyMod(amount,   getOptionManager().
+         getOptions().
+         getDifficulty()
                 .getRoundsToFightMod());
 
     } // more on higher levels? battle.getLevel()
@@ -404,14 +404,6 @@ public class ArenaBattleConstructor {
         this.index = index;
     }
 
-    public Positioner getPositioner() {
-        return positioner;
-    }
-
-    public void setPositioner(Positioner positioner) {
-        this.positioner = positioner;
-    }
-
     public boolean isEncounter() {
         return encounter;
     }
@@ -420,9 +412,5 @@ public class ArenaBattleConstructor {
         this.encounter = encounter;
     }
 
-    public void addDungeonEncounter(Coordinates c, ObjType type) {
-        // TODO Auto-generated method stub
-
-    }
 
 }

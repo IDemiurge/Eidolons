@@ -52,17 +52,18 @@ public class TopComp extends WrappedTextComp {
         if (!game.isSimulation()) {
             String name = "";
             try {
-                name = StringMaster.getWellFormattedString(game.getDungeonMaster().getDungeon()
+                name = StringMaster.getWellFormattedString(game.getDungeonMaster().getDungeonWrapper()
                         .getName());
             } catch (Exception e) {
 
             }
             if (name.isEmpty()) {
-                name = StringMaster.getWellFormattedString(game.getArenaManager().getMapName());
+//                name = StringMaster.getWellFormattedString(game.getBattleMaster()
+//                 .getMapName());
             }
 
             if (game.isDebugMode()) {
-                name += StringMaster.wrapInCurlyBraces("" + game.getDungeonMaster().getZ());
+                name += StringMaster.wrapInCurlyBraces("" + game.getDungeon().getZ());
             }
 
             setTextLines(Arrays.asList(name, getRoundString()));

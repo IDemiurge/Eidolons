@@ -11,7 +11,7 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.battle.turn.DC_TurnManager;
+import main.game.core.DC_TurnManager;
 import main.system.math.PositionMaster;
 import main.test.debug.DebugMaster;
 

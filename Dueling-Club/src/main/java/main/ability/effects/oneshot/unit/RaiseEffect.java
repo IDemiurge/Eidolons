@@ -113,7 +113,7 @@ public class RaiseEffect extends SummonEffect {
     private AddBuffEffect getRevenantBuff() {
         Effects effect = new Effects();
         // based on RAISE_TYPE?
-        // for (PARAMETER p : getModifiedParam()) {
+        // for (PARAMETER portrait : getModifiedParam()) {
         // TODO gotta make sure that the corpse is *RESET* well and has
         // *ACTUAL* values!
 

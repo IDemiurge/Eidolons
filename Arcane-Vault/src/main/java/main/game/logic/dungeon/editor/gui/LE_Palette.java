@@ -104,16 +104,16 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         }
 
         // TODO subpalettes? use ws ?
-        // for (PALETTE p : PALETTE.values())
-        // list.add(new Palette(p));
+        // for (PALETTE portrait : PALETTE.values())
+        // list.add(new Palette(portrait));
         //
         // for (OBJ_TYPES TYPE : default_palette) {
         // List<ObjType> types = DataManager.getTypes(TYPE);
         // for (ObjType t : types)
-        // for (Palette p : list) {
-        // if (!checkPaletteForType(p, t))
+        // for (Palette portrait : list) {
+        // if (!checkPaletteForType(portrait, t))
         // continue;
-        // p.add(t);
+        // portrait.add(t);
         // }
         // }
     }

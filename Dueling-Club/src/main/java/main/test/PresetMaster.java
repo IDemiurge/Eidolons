@@ -8,8 +8,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.DungeonMaster;
+import main.game.core.launch.PresetLauncher;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
@@ -215,9 +214,17 @@ public class PresetMaster {
         // }
         String enemyName = StringMaster.getFirstItem(enemies);
         return partyName + " vs " + enemyName + " on "
-                + DungeonMaster.getRawDungeonName(levelFilePath);
+                +   getRawDungeonName(levelFilePath);
     }
-
+    private static String getRawDungeonName(String levelFilePath) {
+        if (levelFilePath == null) {
+            return "null dungeon";
+        }
+        String name = StringMaster.getLastPathSegment(levelFilePath);
+        name = StringMaster.cropFormat(name);
+        name = StringMaster.cropVersion(name);
+        return name;
+    }
     public static boolean choosePreset() {
         int i = DialogMaster.optionChoice("Choose a preset to launch", getPresets().toArray());
         if (i == -1) {
@@ -293,7 +300,7 @@ public class PresetMaster {
         String PLAYER_UNITS = "";
         String ENEMY_PARTY = "";
         String ENEMIES = "";
-        String levelFilePath = DC_Game.game.getDungeonMaster().getDungeon().getLevelFilePath();
+        String levelFilePath = DC_Game.game.getDungeonMaster().getDungeonWrapper().getLevelFilePath();
         String dungeons = "";
         boolean partyType = false;
         ObjType encounterType = DataManager.getType(preset.getValue(PRESET_DATA.ENEMY_PARTY),
@@ -304,10 +311,10 @@ public class PresetMaster {
             // enemyUnits = encounterType.getProperty(PROPS.UNIT_TYPES);// TODO
         }
 
-        if (DC_Game.game.getParty() != null) {
-            partyType = true;
-            PLAYER_PARTY = DC_Game.game.getParty().getName();
-        }
+//      TODO   if (DC_Game.game.getParty() != null) {
+//            partyType = true;
+//            PLAYER_PARTY = DC_Game.game.getParty().getName();
+//        }
 
         for (Obj obj : DC_Game.game.getPlayer(true).getControlledUnits()) {
             if (!partyType) {
@@ -328,12 +335,12 @@ public class PresetMaster {
             ENEMIES += DC_ObjInitializer.getObjStringAlt(obj) + ";";
             // custom hacks - spells, skills, items..
         }
-        for (Dungeon d : DungeonMaster.getDungeons()) {
-            dungeons += d.getLevelFilePath() + ";";
-            if (levelFilePath.isEmpty()) {
-                levelFilePath = d.getLevelFilePath();
-            }
-        }
+//     TODO    for (Dungeon d : DungeonMaster.getDungeons()) {
+//            dungeons += d.getLevelFilePath() + ";";
+//            if (levelFilePath.isEmpty()) {
+//                levelFilePath = d.getLevelFilePath();
+//            }
+//        }
 
         getPreset().setValue(PRESET_DATA.PLAYER_PARTY, PLAYER_PARTY);
         getPreset().setValue(PRESET_DATA.ENEMY_PARTY, ENEMY_PARTY);

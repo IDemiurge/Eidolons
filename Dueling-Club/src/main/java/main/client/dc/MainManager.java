@@ -15,9 +15,9 @@ import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.battlecraft.demo.DemoManager;
 import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
-import main.game.battlecraft.logic.battle.arena.UnitGroupMaster;
+import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMaster;
-import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.module.adventure.MacroManager;
 import main.game.battlecraft.logic.meta.skirmish.SkirmishMaster;
 import main.system.auxiliary.StringMaster;
@@ -151,7 +151,7 @@ public class MainManager implements SequenceManager {
                     List<Unit> party = PartyManager.loadParty(PartyManager
                      .readLastPartyType());
                     if (DC_Game.game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
-                        DC_Game.game.getArenaArcadeMaster().continueArcade(PartyManager.getParty());
+//                        DC_Game.game.getArenaArcadeMaster().continueArcade(PartyManager.getParty());
                         break;
                     }
 //                    DC_Game.game.getArcadeManager().initializeArcade(PartyManager.getParty());
@@ -188,7 +188,7 @@ public class MainManager implements SequenceManager {
 
             case SELECT_ARCADE:
                 launchSelection(DC_TYPE.PARTY, StringMaster.ARCADE, InfoMaster.CHOOSE_ARCADE);
-                DC_Game.game.getArcadeManager().initializeArcade(PartyManager.getParty());
+//                DC_Game.game.getArcadeManager().initializeArcade(PartyManager.getParty());
                 break;
             case PRESET_HERO:
                 launchSelection(DC_TYPE.CHARS, getPresetGroup(), InfoMaster.CHOOSE_HERO);
@@ -349,9 +349,9 @@ public class MainManager implements SequenceManager {
         PartyManager.newParty(hero);
         PartyManager.saveParty();
         if (CharacterCreator.isArcadeMode()) {
-            DC_Game.game.getArcadeManager().initializeArcade(PartyManager.getParty());
+//            DC_Game.game.getArcadeManager().initializeArcade(PartyManager.getParty());
         } else {
-            DC_Game.game.getArcadeManager().initializeSkirmish(PartyManager.getParty());
+//            DC_Game.game.getArcadeManager().initializeSkirmish(PartyManager.getParty());
         }
     }
 
