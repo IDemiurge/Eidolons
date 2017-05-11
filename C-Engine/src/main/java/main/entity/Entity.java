@@ -33,15 +33,15 @@ import java.util.List;
  * Root class of every CoreEngine object
  * Contains property and parameter maps and an array of methods for retrieving and modifying them
  * Has ID by which it can be found from GameState
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>
  * has OBJ_TYPE that defines how it is treated by things like Targeting (Filter)
- * <p>
+ * <portrait>
  * has ObjType that defines its [base] values  (property and parameter)
- * <p>
+ * <portrait>
  * toBase() is called whenever we need to update them - first they are set to their base,
  * then modified by various effects
- * <p>
+ * <portrait>
  * esetObjects, afterEffects (apply masteries/attributes), preCheck parameter buff rules (focus, stamina, …)
  * :: Dynamic values are not reset to base on toBase()
  * :: Properties – container (; separated), variable(value),

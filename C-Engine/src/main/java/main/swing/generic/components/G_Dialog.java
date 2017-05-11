@@ -29,7 +29,7 @@ public abstract class G_Dialog {
 
         JPanel p = new G_Panel();
         p.setOpaque(false);
-        // p.setLayout(new FlowLayout());
+        // portrait.setLayout(new FlowLayout());
         p.add(createComponent);
         p.setBackground(ColorManager.BACKGROUND);
         createComponent.setBackground(ColorManager.BACKGROUND);

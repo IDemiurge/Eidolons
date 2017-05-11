@@ -17,16 +17,16 @@ public class BattleCraft {
      * BattleCraft ReCapture To Fix Spawn wave failed? AI thinking is visible
      * on refresh  preCheck this! Check dungeon-spawning Jewelry selection, armor
      * filtering Allied but not controlled units (mercs, fodder, summons)
-     * <p>
+     * <portrait>
      * Unknown unit priority DC_INV slot items and refresh Stacking  girth for
      * miss-hits, update trample Upkeep should be displayed Warcries dont work
      * Actions  knockdown, disarm, knockback - ++ AI Update  maneuvers, Add
      * Resurrect, gift Conjurate, Spell Upgrades Weight Rule review/transparency
-     * <p>
+     * <portrait>
      * A New Artist for real icons? Make a capture Some icons are *missing*!
      * Skills especially Review Alchemy/Enchantments plan
-     * <p>
-     * <p>
+     * <portrait>
+     * <portrait>
      * Meta Dev Saving Log into txt would be great! Waiter time limit  at least
      * optional
      */

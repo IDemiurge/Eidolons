@@ -445,7 +445,7 @@ public class DrawMaster {
             Point p = cellComp.getAnimOverlayingImages().get(img);
             g.drawImage(img, p.x, p.y, null);
             // main.system.auxiliary.LogMaster.log(1, cellComp +
-            // "'s custom animation drawn at " + p);
+            // "'s custom animation drawn at " + portrait);
         }
         Image centerOverlayingImage = cellComp.getCenterOverlayingImage();
         if (centerOverlayingImage != null) {

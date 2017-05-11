@@ -9,7 +9,7 @@ import main.game.core.game.Game;
 import main.game.core.state.GameState;
 import main.game.bf.Coordinates;
 import main.session.Session;
-import main.system.net.DC_IdManager;
+import main.entity.DC_IdManager;
 
 import java.util.HashMap;
 import java.util.Map;

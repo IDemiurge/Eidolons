@@ -26,6 +26,7 @@ import main.elements.conditions.Conditions;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
 import main.entity.Ref;
+import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_SpellObj;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_QuickItemObj;
@@ -39,26 +40,23 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.GroupAI;
 import main.game.battlecraft.ai.UnitAI;
+import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.battlecraft.logic.battle.arena.ArenaBattleMaster;
+import main.game.battlecraft.logic.battle.arena.Wave;
+import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
+import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
-import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.core.game.DC_Game;
 import main.game.core.state.DC_GameState;
 import main.game.core.state.StateCloner;
 import main.game.core.state.StatesKeeper;
-import main.game.battlecraft.logic.battle.arena.UnitGroupMaster;
-import main.game.battlecraft.logic.battle.arena.Wave;
-import main.game.battlecraft.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.entity.active.DC_ActionManager;
 import main.libgdx.anims.controls.EmitterController;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.swing.generic.services.dialog.EnumChooser;
 import main.system.DC_Formulas;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -81,7 +79,6 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.PresetMaster;
 import main.test.auto.AutoTestMaster;
-import main.test.frontend.FAST_DC;
 
 import javax.swing.*;
 import java.io.File;
@@ -130,7 +127,6 @@ public class DebugMaster {
 //     TOGGLE_FOG,
     };
     public static final DEBUG_FUNCTIONS[] group_add = {
-            DEBUG_FUNCTIONS.ADD_DUNGEON,
             DEBUG_FUNCTIONS.ADD_SKILL,
             DEBUG_FUNCTIONS.ADD_ACTIVE,
             DEBUG_FUNCTIONS.ADD_SPELL,
@@ -461,7 +457,7 @@ public class DebugMaster {
                     // else
                     // UnitGroupMaster.setFlip(null);
                     try {
-                        DC_ObjInitializer.processObjData(game.getPlayer(isAltMode()), data, coordinate);
+                        DC_ObjInitializer.createUnits(game.getPlayer(isAltMode()), data, coordinate);
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
@@ -482,28 +478,12 @@ public class DebugMaster {
                     PresetMaster.handlePreset(isAltMode());
 
                     break;
-                case DUNGEON_PLAN_INFO: {
-                    LogMaster.log(1, ""
-                            + game.getDungeonMaster().getDungeon().getPlan());
-                    break;
-                }
-                case DUNGEON_BLOCK_INFO: {
-                    displayList("", game.getDungeonMaster().getDungeon().getPlan().getBlocks(), 1);
-                    break;
-                }
-                case DUNGEON_ZONES_INFO: {
-                    break;
-                }
+
                 case TOGGLE_DUNGEON_DEBUG: {
                     mapDebugOn = !mapDebugOn;
                     break;
                 }
-                case DUNGEON_ADD_SUBLEVEL: {
-                    Dungeon sublevel = null;
-                    game.getDungeonMaster().getDungeon().getSubLevels().add(sublevel);
 
-                    break;
-                }
 
                 case HIDDEN_FUNCTION: {
                     int i = DialogMaster.optionChoice(HIDDEN_DEBUG_FUNCTIONS.values(), "...");
@@ -522,24 +502,11 @@ public class DebugMaster {
                     WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, true);
                     break;
 
-                case ADD_DUNGEON:
-                    DC_Game.game.getDungeonMaster().addDungeon();
 
-                    // game.getManager().killAllUnits(isAltMode());
-                    // DC_Game.game.getDungeonMaster().addDungeon();
-                    // if (!isAltMode())
-                    // game.getArenaManager().getSpawnManager().spawnParty(true);
-                    // else {
-                    // game.getArenaManager().getSpawnManager().spawnParty(false);
-                    // }
-                    return func;
 
                 case EDIT_AI:
                     break;
-                case LOAD_DUNGEON:
-                    DC_Game.game.getDungeonMaster().reloadDungeon();
 
-                    return func;
                 case PAUSE:
                     DC_Game.game.setPaused(!DC_Game.game.isPaused());
                     break;
@@ -587,15 +554,15 @@ public class DebugMaster {
                     break;
 
                 case RESTART:
-                    if (!altMode) {
-                        if (DialogMaster.confirm("Select anew?")) {
-                            FAST_DC.getGameLauncher().selectiveInit();
-                        }
-                    }
+//                    if (!altMode) {
+//                        if (DialogMaster.confirm("Select anew?")) {
+//                            FAST_DC.getTestLauncher().selectiveInit();
+//                        }
+//                    }
 
                     game.getManager().getDeathMaster().killAllUnits(true, false, quiet);
-                    game.getArenaManager().getSpawnManager().spawnParty(true);
-                    game.getArenaManager().getSpawnManager().spawnParty(false);
+                    game.getBattleMaster().getSpawner().spawnParty(true);
+                    game.getBattleMaster().getSpawner().spawnParty(false);
                     game.getManager().refreshAll();
                     WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, true);
                     return func;
@@ -604,8 +571,8 @@ public class DebugMaster {
                     game.getManager().getDeathMaster().killAllUnits(!isAltMode());
                     if (respawn) {
                         // /respawn!
-                        game.getArenaManager().getSpawnManager().spawnParty(true);
-                        game.getArenaManager().getSpawnManager().spawnParty(false);
+                        game.getBattleMaster().getSpawner().spawnParty(true);
+                        game.getBattleMaster().getSpawner().spawnParty(false);
                     }
                     game.getManager().refreshAll();
 
@@ -763,7 +730,8 @@ public class DebugMaster {
                     if (forcedPower < 0) {
                         forcedPower = null;
                     }
-                    game.getArenaManager().getWaveAssembler().setForcedPower(forcedPower);
+                    ArenaBattleMaster a = (ArenaBattleMaster) game.getBattleMaster();
+                    a.getWaveAssembler().setForcedPower(forcedPower);
                     break;
                 case SPAWN_CUSTOM_WAVE:
                     coordinate = getGame().getBattleFieldManager().pickCoordinate();
@@ -780,29 +748,29 @@ public class DebugMaster {
 
                     coordinate = getGame().getBattleFieldManager().pickCoordinate();
                     ObjType party = ListChooser.chooseType_(DC_TYPE.PARTY);
-                    game.getArenaManager().getSpawnManager().spawnParty(coordinate, null, party);
+                    game.getBattleMaster().getSpawner().spawnParty(coordinate, null, party);
 
                     break;
                 case SPAWN_WAVE:
                     if (!isAltMode()) {
                         coordinate = getGame().getBattleFieldManager().pickCoordinate();
                     } else {
-                        FACING_DIRECTION side = new EnumChooser<FACING_DIRECTION>()
-                                .choose(FACING_DIRECTION.class);
+//                        FACING_DIRECTION side = new EnumChooser<FACING_DIRECTION>()
+//                                .choose(FACING_DIRECTION.class);
                         // if (side== FACING_DIRECTION.NONE)
-                        game.getArenaManager().getSpawnManager().getPositioner().setForcedSide(side);
+//                        game.getBattleMaster().getSpawner().getPositioner().setForcedSide(side);
                     }
                     String typeName = ListChooser.chooseType(DC_TYPE.ENCOUNTERS);
                     if (typeName == null) {
                         return func;
                     }
                     try {
-                        game.getArenaManager().getSpawnManager().spawnWave(typeName,
+                        game.getBattleMaster().getSpawner().spawnWave(typeName,
                                 game.getPlayer(ALT_AI_PLAYER), coordinate);
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
-                        game.getArenaManager().getSpawnManager().getPositioner().setForcedSide(null);
+//                        game.getBattleMaster().getSpawner().getPositioner().setForcedSide(null);
                     }
                     game.getManager().refreshAll();
                     break;
@@ -850,14 +818,14 @@ public class DebugMaster {
                 }
                 case REMOVE_HACKS:
                     break;
-                case CLEAR_WAVES:
-                    game.getArenaManager().getSpawnManager().clear();
-                    game.getArenaManager().getBattleConstructor().setIndex(0);
-                    break;
-                case SCHEDULE_WAVES:
-                    game.getArenaManager().getBattleConstructor().setIndex(0);
-                    game.getArenaManager().getBattleConstructor().construct();
-                    break;
+//                case CLEAR_WAVES:
+//                    game.getBattleMaster().getSpawner().clear();
+//                    game.getBattleMaster().getBattleConstructor().setIndex(0);
+//                    break;
+//                case SCHEDULE_WAVES:
+//                    game.getBattleMaster().getBattleConstructor().setIndex(0);
+//                    game.getBattleMaster().getBattleConstructor().construct();
+//                    break;
                 case TOGGLE_LIGHTING:
                     break;
                 case TOGGLE_FOG:
@@ -1135,9 +1103,9 @@ public class DebugMaster {
                 break;
             }
             case RESTART_GAME:
-                executeDebugFunction(KILL_ALL_UNITS);
-                DC_ObjInitializer.processUnitDataString(game.getPlayer(true),
-                        game.getPlayerParty(), game);
+//            TODO     executeDebugFunction(KILL_ALL_UNITS);
+//                DC_ObjInitializer.processUnitDataString(game.getPlayer(true),
+//                        game.getPlayerParty(), game);
                 game.getManager().unitActionCompleted(null, false);
                 break;
             case BF_RESURRECT_ALL:
@@ -1355,8 +1323,6 @@ public class DebugMaster {
 
         SET_OPTION,
         EDIT_AI,
-        LOAD_DUNGEON,
-        ADD_DUNGEON,
 
         SET_WAVE_POWER,
         WAITER_INPUT,
@@ -1376,11 +1342,7 @@ public class DebugMaster {
         ADD_ALL_SPELLS(true),
         TOGGLE_LOG,
         REMOVE_HACKS,
-        DUNGEON_PLAN_INFO,
-        DUNGEON_BLOCK_INFO,
-        DUNGEON_ZONES_INFO,
         TOGGLE_DUNGEON_DEBUG,
-        DUNGEON_ADD_SUBLEVEL,
 
         AUTO_TEST_INPUT,
         RUN_AUTO_TESTS,

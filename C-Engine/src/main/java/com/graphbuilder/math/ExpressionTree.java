@@ -7,39 +7,39 @@ import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 /**
- * <p>
+ * <portrait>
  * Expression string parser. The parser returns an Expression object which can
  * be evaluated.
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>
  * The elements of an expression fall into two categories, operators and terms.
  * Terms include variables, functions and values. Although values do not
  * subclass TermNode, they are processed in a similar way during the parsing.
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>
  * The operators are exponent (^), times (*), divide (/), plus (+) and minus
  * (-). The exponent has the highest precedence, then times and divide (which
  * have an equal level of precedence) and then plus and minus (which have an
  * equal level of precedence). For those operators that have an equal level of
  * precedence, the operator that comes first (reading from left to right) gets
  * the higher level of precedence. For example, a-b+c becomes ((a-b)+c)
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>
  * During the parsing, the string is scanned from left to right. Either a term
  * or an operator will come next. If it is a term, then it may be preceded by an
  * optional + or - sign. For example, For example +a/-b/+c is valid, and becomes
  * ((a/(-b))/c). If a term is not explicitly signed, then by default it is
  * positive.
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>
  * If the first character of a term is a decimal (.) or a digit (0-9) then the
  * term marks the beginning of a value. The first character that is found that
  * is <b>not</b> a digit or a decimal marks the end of the value, except if the
  * character is an 'e' or an 'E'. In this case, the first digit immediately
  * following can be a plus sign, minus sign or digit. E.g. 1.23E+4. At this
  * point, the first character that is not a digit marks the end of the value.
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>
  * If the first character of a term is <b>not</b> a decimal, digit, open bracket
  * '(', a close bracket ')', a comma ',', a whitespace character ' ', '\t',
  * '\n', or an operator, then the character marks the beginning of a variable or
@@ -48,17 +48,17 @@ import main.system.math.MathMaster;
  * non-whitespace character after a name is an open bracket, then it marks the
  * beginning of the function parameters, otherwise the term is marked as a
  * variable.
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>
  * Functions that accept more than one parameter will have the parameters
  * separated by commas. E.g. f(x,y). Since the parameters of a function are also
  * expressions, when a comma is detected that has exactly one non-balanced open
  * bracket to the left, a recursive call is made passing in the substring. E.g.
  * f(g(x,y),z), a recursive call will occur passing in the substring "g(x,y)".
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>
  * Miscellaneous Notes
- * <p>
+ * <portrait>
  * <ul>
  * <li>Names cannot begin with a decimal or a digit since those characters mark
  * the beginning of a value.</li>

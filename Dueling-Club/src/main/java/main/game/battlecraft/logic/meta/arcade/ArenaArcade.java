@@ -6,7 +6,6 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.battle.BattleLevel;
 import main.game.battlecraft.logic.meta.faction.Faction;
 
 import java.util.List;

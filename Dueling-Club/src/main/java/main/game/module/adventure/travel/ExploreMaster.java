@@ -49,8 +49,8 @@ public class ExploreMaster {
         // TODO hour at a time approach... choosing direction...
 
         for (Place p : potentialFinds) {
-//            int hours = TravelMaster.getTravelTime(party, place, p, true);
-//            checkDiscovered(party, p, route);
+//            int hours = TravelMaster.getTravelTime(party, place, portrait, true);
+//            checkDiscovered(party, portrait, route);
 //            if (TimeMaster.hoursLeft() < hours)
 //                break;
 //            TimeMaster.hoursPassed(hours);
@@ -175,7 +175,7 @@ public class ExploreMaster {
 
         p.setVisibilityStatus(PLACE_VISIBILITY_STATUS.DISCOVERED);
 
-//        return promptToTravel(p);
+//        return promptToTravel(portrait);
         return null;
     }
 
@@ -185,7 +185,7 @@ public class ExploreMaster {
 
         p.setVisibilityStatus(PLACE_VISIBILITY_STATUS.DISCOVERED);
 
-//        return promptToStay(p);
+//        return promptToStay(portrait);
         return null;
     }
 

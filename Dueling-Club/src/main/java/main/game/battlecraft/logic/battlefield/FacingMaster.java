@@ -260,4 +260,8 @@ public class FacingMaster {
         }
         return pick;
     }
+
+    public static FACING_DIRECTION getFacing(String facing) {
+        return new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(FACING_DIRECTION.class, facing);
+    }
 }

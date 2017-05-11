@@ -60,13 +60,13 @@ public class HeroHeader extends G_Panel {
         String pos = "id pc, pos " + X_OFFSET + " 6+" + Y_OFFSET;
         add(primeClass, pos);
 
-        pos = "id p, pos pc.x2 0 ";
+        pos = "id portrait, pos pc.x2 0 ";
         add(portrait.getComp(), pos);
 
-        pos = "id sc, pos p.x2 pc.y";
+        pos = "id sc, pos portrait.x2 pc.y";
         add(secondClass, pos);
 
-        pos = "id tc, pos pc.x2 p.y2";
+        pos = "id tc, pos pc.x2 portrait.y2";
         add(textComp, pos);
 
         pos = "id dc, pos pc.x2 tc.y2+5";

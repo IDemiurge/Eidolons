@@ -111,7 +111,7 @@ public class RestMaster {
             String string = formatModeFormula(map.get(p));
             new ModifyValueEffect(p, MOD.MODIFY_BY_CONST, string)
                     .apply(ref);
-            // hero.modifyParameter(p, amount);
+            // hero.modifyParameter(portrait, amount);
         }
         // applyCustomEffect
         if (mode.isSpecEffect()) {

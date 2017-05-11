@@ -95,7 +95,7 @@ public class Mission {
         for (PROPERTY p : obj.getPropMap().keySet()) {
             String value = obj.getProperty(p);
             if (!StringMaster.compareByChar(value, obj.getType().getProperty(p))) {
-                // data += p.getName() + "=" + value + ",";
+                // data += portrait.getName() + "=" + value + ",";
                 data += XML_Converter.wrapLeaf(p.getName(), value);
             }
         }
@@ -104,7 +104,7 @@ public class Mission {
         for (PARAMETER p : obj.getParamMap().keySet()) {
             String value = obj.getParam(p);
             if (!StringMaster.compareByChar(value, obj.getType().getParam(p))) {
-                // data += p.getName() + "=" + value + ";";
+                // data += portrait.getName() + "=" + value + ";";
                 data += XML_Converter.wrapLeaf(p.getName(), value);
             }
         }

@@ -6,8 +6,9 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
+import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.bf.Coordinates;
+import main.game.core.game.DC_Game;
 import main.swing.components.obj.CellComp;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -33,6 +34,18 @@ public class LE_Simulation extends DC_Game {
     public LE_Simulation() {
         super(true);
 
+    }
+
+    @Override
+    public LocationMaster getDungeonMaster() {
+        if (super.getDungeonMaster()==null )
+            return createDungeonMaster();
+        return (LocationMaster) super.getDungeonMaster();
+    }
+
+    @Override
+    protected LocationMaster createDungeonMaster() {
+        return new LocationMaster(this);
     }
 
     @Override

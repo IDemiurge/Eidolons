@@ -245,14 +245,17 @@ public class ColorManager {
 
     public enum FLAG_COLOR {
         BLUE(new Color(25, 25, 255)),
-        CYAN(new Color(45, 225, 165)),
-        GREEN(new Color(55, 255, 65)),
-        PURPLE(new Color(175, 85, 255)),
+        CYAN(new Color(35, 215, 185)),
+        GREEN(new Color(25, 175, 65)),
+        DARK_GREEN(new Color(25, 85, 65)),
+        PURPLE(new Color(145, 85, 235)),
         RED(new Color(255, 25, 25)),
-        YELLOW(new Color(165, 185, 55)),
-        BROWN(new Color(165, 155, 45)),
+        CRIMSON(new Color(145, 25, 95)),
+        YELLOW(new Color(245, 200, 85)),
+        BROWN(new Color( 95,  45, 45)),
         ORANGE(new Color(225, 135, 55)),
         BLACK(new Color(25, 25, 35)),
+        GRAY(new Color(100, 100, 120)),
         WHITE(new Color(225, 235, 245)),;
 
         private Color color;

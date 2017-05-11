@@ -20,6 +20,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Deity;
 import main.entity.Ref;
+import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.ActiveObj;
@@ -30,16 +31,14 @@ import main.entity.tools.bf.unit.UnitInitializer;
 import main.entity.tools.bf.unit.UnitResetter;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.UnitAI;
+import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.dungeon.building.MapBlock;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.entity.active.DC_ActionManager;
 import main.libgdx.bf.Rotatable;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -49,7 +48,6 @@ import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
 import main.system.text.ToolTipMaster;
-import main.test.debug.DebugMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import javax.swing.*;
@@ -111,9 +109,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     @Override
     public String getImagePath() {
-        if (getGame().getDungeonMaster().getDungeon() != null) {
+        if (getGame().getDungeonMaster().getDungeonWrapper() != null) {
             return ImageManager.getThemedImagePath(super.getImagePath(), getGame()
-                    .getDungeonMaster().getDungeon().getColorTheme());
+                    .getDungeonMaster().getDungeonWrapper().getColorTheme());
         }
         return super.getImagePath();
     }
@@ -149,14 +147,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
                     return actionTargetingTooltip;
                 }
             }
-        }
-        if (DebugMaster.isMapDebugOn()) {
-            MapBlock block = getGame().getDungeonMaster().getDungeon().getPlan()
-                    .getBlockByCoordinate(getCoordinates());
-            if (block != null) {
-                return getCoordinates() + " (" + block.getShortName() + ") " + getName();
-            }
-            return getCoordinates() + " " + getName();
         }
 //        if (!VisionManager.checkKnown(this)) {
 //            return "?";

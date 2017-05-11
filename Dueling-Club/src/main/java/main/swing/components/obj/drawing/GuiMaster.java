@@ -28,7 +28,7 @@ public class GuiMaster {
 
     public void addButton(Point p, DYNAMIC_BUTTON type, Object arg) {
         Dimension d = getDimension(type);
-//		DynamicButton btn = new DynamicButton(new Rectangle(p, d), type, arg);
+//		DynamicButton btn = new DynamicButton(new Rectangle(portrait, d), type, arg);
 //		dynamicButtons.add(btn);
 
     }

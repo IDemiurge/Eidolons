@@ -6,13 +6,12 @@ import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.building.MapBlock;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -135,13 +134,13 @@ public class DC_Cell extends DC_Obj implements Cell {
         }
 
         if (DebugMaster.isMapDebugOn()) {
-            MapBlock block = getGame().getDungeonMaster().getDungeon().getPlan()
-                    .getBlockByCoordinate(getCoordinates());
-            if (block != null) {
-                return getCoordinates() + " (" + block.getShortName() + "); " + text;
-            }
-            return getCoordinates() + " " + super.getToolTip()
-                    + StringMaster.wrapInParenthesis(text);
+//            MapBlock block = getGame().getDungeonMaster().getDungeonWrapper().getPlan()
+//                    .getBlockByCoordinate(getCoordinates());
+//            if (block != null) {
+//                return getCoordinates() + " (" + block.getShortName() + "); " + text;
+//            }
+//            return getCoordinates() + " " + super.getToolTip()
+//                    + StringMaster.wrapInParenthesis(text);
         }
         if (!VisionManager.checkDetected(this)) {
             return "?";

@@ -25,13 +25,14 @@ import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.FilterMaster;
+import main.test.Refactor;
 
 import java.util.List;
 
@@ -266,15 +267,15 @@ public class ArcadeManager {
         // let choose whether to proceed or turn back - lose time, but possible
         // to resurrect/buy/repair
     }
-
+@Refactor
     public void dungeonComplete() {
         // award loot
 
         PartyManager.getParty().setProperty(PROPS.ARCADE_STATUS, "" + ARCADE_STATUS.IN_PROGRESS,
                 true);
-        dungeon = game.getDungeonMaster().getDungeon();
+        dungeon = game.getDungeonMaster().getDungeonWrapper().getDungeon();
         if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
-            game.getArenaArcadeMaster().levelWon();
+//            game.getArenaArcadeMaster().levelWon();
         } else {
             PartyManager.levelUp();
         }

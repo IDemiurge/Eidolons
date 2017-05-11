@@ -22,7 +22,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMaster;
-import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;

@@ -355,7 +355,7 @@ public class HT_MapBuilder {
     }
 
     private void addAltBaseLink(StaticTreeLink link, String s, ObjType type2, Point point) {
-        // map.getStaticLinkMap().put(link, p);
+        // map.getStaticLinkMap().put(link, portrait);
     }
 
     private Point getNodePointFromLink(int parentX, ObjType type, int i, int sublingCount,

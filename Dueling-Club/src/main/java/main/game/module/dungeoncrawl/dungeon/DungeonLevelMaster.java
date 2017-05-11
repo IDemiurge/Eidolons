@@ -1,13 +1,12 @@
 package main.game.module.dungeoncrawl.dungeon;
 
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.dungeon.DungeonMaster;
+import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.building.DungeonPlan;
 import main.system.auxiliary.EnumMaster;
 import main.system.launch.CoreEngine;
 import main.test.frontend.FAST_DC;
@@ -217,31 +216,31 @@ public class DungeonLevelMaster {
     // boolean trap, boolean door
     public static List<Dungeon> getAvailableDungeons(Unit unit) {
         List<Dungeon> list = new LinkedList<>();
-        for (Dungeon dungeon : DungeonMaster.getDungeons()) {
-            for (Entrance e : dungeon.getEntrances()) {
-                if (e.isOpen()) {
-                    if (e.getCoordinates().equals(unit.getCoordinates())) {
-                        list.add(dungeon);
-                        continue;
-                    }
-                }
-            }
-        }
+//        for (Dungeon dungeon : DungeonMaster.getDungeons()) {
+//            for (Entrance e : dungeon.getEntrances()) {
+//                if (e.isOpen()) {
+//                    if (e.getCoordinates().equals(unit.getCoordinates())) {
+//                        list.add(dungeon);
+//                        continue;
+//                    }
+//                }
+//            }
+//        }
         return list;
     }
 
     public static List<Entrance> getAvailableDungeonEntrances(Unit unit) {
         List<Entrance> list = new LinkedList<>();
-        for (Dungeon dungeon : DungeonMaster.getDungeons()) {
-            for (Entrance e : dungeon.getEntrances()) {
-                if (e.isOpen()) {
-                    if (e.getCoordinates().equals(unit.getCoordinates())) {
-                        list.add(e);
-                        continue;
-                    }
-                }
-            }
-        }
+//        for (Dungeon dungeon : DungeonMaster.getDungeons()) {
+//            for (Entrance e : dungeon.getEntrances()) {
+//                if (e.isOpen()) {
+//                    if (e.getCoordinates().equals(unit.getCoordinates())) {
+//                        list.add(e);
+//                        continue;
+//                    }
+//                }
+//            }
+//        }
         return list;
     }
 

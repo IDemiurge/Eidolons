@@ -16,12 +16,12 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.dungeon.DungeonBuilder;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.battlecraft.logic.battle.BattleOptions.DIFFICULTY;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.building.DungeonBuilder;
 import main.game.battlecraft.logic.meta.scenario.ObjectiveMaster.OBJECTIVE_TYPE;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.components.misc.GraphicComponent;
@@ -56,8 +56,8 @@ public class SkirmishMaster {
                     .getWellFormattedString(g.toString()))) {
                 Wave wave = new Wave(type, DC_Game.game, new Ref(), DC_Game.game.getPlayer(false));
                 map.put(wave, round);
-                round += DC_Game.game.getArenaManager().getBattleConstructor().getRoundsToFight(
-                        type);
+//                round += DC_Game.game.getBattleMaster().getBattleConstructor().getRoundsToFight(
+//                        type);
                 // this is just the basic construction - custom waves
                 // dungeon-encounters are the way to go then?
                 // getSkirmish().getProperty(MACRO_PROPS.CUSTOM_ENCOUNTERS)
@@ -72,7 +72,7 @@ public class SkirmishMaster {
             // skirmish.getSpeed();
             // skirmish.getDifficulty();
         }
-        DC_Game.game.getParty();
+//        DC_Game.game.getParty();
         // getOrCreate power level?
         return waves;
     }
@@ -137,9 +137,9 @@ public class SkirmishMaster {
                     if (!file.isFile()) {
                         return;
                     }
-                    Dungeon dungeon = DungeonBuilder.loadDungeon(FileManager.readFile(file));
-                    initSkirmish(type, dungeon);
-                    Launcher.resetView(VIEWS.MENU);
+//                    Dungeon dungeon = DungeonBuilder.buildDungeon(FileManager.readFile(file));
+//                    initSkirmish(type, dungeon);
+//                    Launcher.resetView(VIEWS.MENU);
                 } else {
                     Launcher.getMainManager().exitToMainMenu();
                 }
@@ -206,12 +206,12 @@ public class SkirmishMaster {
                 if (!file.isFile()) {
                     return;
                 }
-                Dungeon dungeon = DungeonBuilder.loadDungeon(FileManager.readFile(file));
+//                Dungeon dungeon = DungeonBuilder.buildDungeon(FileManager.readFile(file));
                 ObjType missionType = new ObjType(); // specified where? used
                 // for
                 // what?
                 OBJECTIVE_TYPE objective = objectiveChoiceView.getSelectedItem();
-                initSkirmish(missionType, dungeon);
+//                initSkirmish(missionType, dungeon);
                 Launcher.resetView(VIEWS.MENU);
             }
 

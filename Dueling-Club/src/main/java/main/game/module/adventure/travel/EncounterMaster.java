@@ -1,6 +1,5 @@
 package main.game.module.adventure.travel;
 
-import main.client.dc.Launcher;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
@@ -9,10 +8,10 @@ import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.core.game.DC_Game;
 import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.core.game.DC_Game;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.map.Area;
@@ -140,16 +139,16 @@ public class EncounterMaster {
         // DC_Game.game.getBattleManager().setEncounter(true);
         DC_Game game = DC_Game.game;
         // game.setPlayerParty(e.getDefendingParty().getMicroParty());
-        game.getDungeonMaster().initEncounterDungeon(e);
-        if (!game.isBattleInit()) {
-            game.battleInit();
-        }
-        game.getBattleManager().setEncounter(e);
-        game.getArenaManager().getBattleConstructor().setEncounterSequence(getWaveSequence(e));
-        Launcher.launchDC(e.getDefendingParty().getName(), false);
+//        game.getDungeonMaster().initEncounterDungeon(e);
+//        if (!game.isBattleInit()) {
+//            game.battleInit();
+//        }
+//        game.getBattleManager().setEncounter(e);
+//        game.getBattleMaster().getBattleConstructor().setEncounterSequence(getWaveSequence(e));
+//        Launcher.launchDC(e.getDefendingParty().getName(), false);
         boolean outcome = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.BATTLE_FINISHED);
-        encounterBeingResolved = false;
-        game.getBattleManager().setEncounter(null);
+//        encounterBeingResolved = false;
+//        game.getBattleManager().setEncounter(null);
         return outcome;
     }
 
@@ -160,9 +159,9 @@ public class EncounterMaster {
             ObjType waveType = DataManager.getType(typeName, DC_TYPE.ENCOUNTERS);
             Wave wave = new Wave(waveType, DC_Game.game, new Ref(), DC_Game.game.getPlayer(false));
             wave.initUnitMap(); // TODO is the field ready for coordinates?
-            int j = i
-                    + DC_Game.game.getArenaManager().getBattleConstructor().getRoundsToFight(
-                    waveType);
+            int j = i;
+//                    + DC_Game.game.getBattleMaster().getBattleConstructor().getRoundsToFight(
+//                    waveType);
             Integer round = RandomWizard.getRandomIntBetween(i, j);
             i += round;
             waves.put(wave, round);

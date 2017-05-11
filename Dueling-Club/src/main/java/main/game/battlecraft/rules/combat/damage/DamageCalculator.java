@@ -32,7 +32,7 @@ import java.util.List;
 
 /**
  * Created by JustMe on 3/14/2017.
- * <p>
+ * <portrait>
  * Calculates final Endurance/Toughness losses that unit receives from Damage
  * Also calculates damage for AI FutureBuilder, Unit's displayed value and PhaseAnimations
  */

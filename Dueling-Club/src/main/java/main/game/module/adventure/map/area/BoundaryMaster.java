@@ -49,7 +49,7 @@ public class BoundaryMaster {
     private static List<AreaLine> getCrossedLines(List<AreaLine> relevantLines,
                                                   float vectorSlope, int length) {
         // TODO or was there some better way to getOrCreate the first crossed line?
-        // perhaps just by distance from p to p1/p2
+        // perhaps just by distance from portrait to p1/p2
         return null;
     }
 
@@ -68,13 +68,13 @@ public class BoundaryMaster {
     public static void generateLines(Region region) {
         BoundaryPoint lastCoordinate;
         for (Area area : region.getAreas()) {
-//            for (BoundaryPoint p : area.getBoundaries()) { // WE should have
+//            for (BoundaryPoint portrait : area.getBoundaries()) { // WE should have
 //                // BoundaryViewMode
 //                // for Regions
-//                lastCoordinate = p;
+//                lastCoordinate = portrait;
 //                if (lastCoordinate == null)
 //                    continue;
-//                lines.add(new AreaLine(lastCoordinate, p, area));
+//                lines.add(new AreaLine(lastCoordinate, portrait, area));
 //            }
         }
         for (AreaLine line : lines) {

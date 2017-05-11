@@ -13,26 +13,26 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
-import main.game.battlecraft.logic.battlefield.map.DC_Map;
-import main.game.battlecraft.logic.battlefield.map.DungeonMapGenerator;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
-import main.game.module.dungeoncrawl.dungeon.Entrance;
-import main.game.battlecraft.logic.dungeon.building.BuildHelper.BuildParameters;
-import main.game.battlecraft.logic.dungeon.building.DungeonBuilder;
-import main.game.battlecraft.logic.dungeon.building.DungeonPlan;
-import main.game.battlecraft.logic.dungeon.building.MapBlock;
-import main.game.battlecraft.logic.dungeon.building.MapZone;
+import main.game.battlecraft.logic.dungeon.DungeonBuilder;
+import main.game.battlecraft.logic.dungeon.DungeonWrapper;
+import main.game.battlecraft.logic.dungeon.location.Location;
+import main.game.battlecraft.logic.dungeon.location.LocationMaster;
+import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
+import main.game.battlecraft.logic.dungeon.location.building.*;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.DIRECTION;
 import main.game.logic.dungeon.editor.gui.LE_MapViewComp;
 import main.game.logic.dungeon.editor.logic.AiGroupData;
+import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
+import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.game.module.dungeoncrawl.dungeon.minimap.MiniGrid;
-import main.system.auxiliary.log.Chronos;
+import main.game.module.dungeoncrawl.dungeon.minimap.Minimap;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.HashMap;
@@ -40,18 +40,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Level {
+public class Level extends DungeonWrapper<Location>{
+
+    private   Location location;
+    private Minimap minimap;
+
     boolean initialized;
-    // Dungeon!
-    // private DequeImpl<DC_Obj> mapObjects;
-    // private DequeImpl<DC_Obj> wallObjects;
-    // DequeImpl<Wave> encounters;
-    // map to Blocks/coordinates
-    private Dungeon dungeon;
+
     private Mission mission;
-    // private Set<Coordinates> coordinates;
-    // private DequeImpl<DC_Cell> cells;
-    // private Map<Coordinates, DC_Obj> topObjMap;
     private DC_Map map;
     private String name;
     private String path;
@@ -64,44 +60,54 @@ public class Level {
     }
 
     public Level(Dungeon dungeon, Mission mission) {
-        this.dungeon = dungeon;
+        super(dungeon, null );
+        setDungeonMaster( LevelEditor.getSimulation().getDungeonMaster());
         this.mission = mission;
-        LevelEditor.getSimulation().getDungeonMaster().setDungeon(dungeon);
     }
-
+    public void setDungeonMaster (LocationMaster master){
+        this. master = master;
+        this.location = this.master.getDungeonWrapper();
+        setDungeon(master.getInitializer().initDungeon().getDungeon());
+    }
+        public void setDungeon (Dungeon d){
+        this.dungeon=d;
+    this.minimap = new Minimap(true, dungeon);
+}
     public Level(String baseDungeonType, Mission mission, String data, boolean empty) {
+      super(null , null );
+      setDungeonMaster( LevelEditor.getSimulation().getDungeonMaster());
         this.mission = mission;
         LevelEditor.getMainPanel().setCurrentLevel(this);
         if (DataManager.getType(baseDungeonType, DC_TYPE.DUNGEONS) != null) {
             ObjType type = new ObjType(DataManager.getType(baseDungeonType, DC_TYPE.DUNGEONS));
             LevelEditor.getSimulation().addType(type);
-            this.dungeon = new Dungeon(type);
-            LevelEditor.getSimulation().getDungeonMaster().setDungeon(dungeon);
+//            new Dungeon(type);
+//            LevelEditor.getSimulation().getDungeonMaster().setDungeon(dungeon);
             int z = 0;
             if (LevelEditor.getCurrentLevel() != null) {
-                z = LevelEditor.getCurrentLevel().getDungeon().getZ() - 1;
+                z = LevelEditor.getCurrentLevel().getLocation().getZ() - 1;
             }
             // DungeonLevelMaster.is
-            dungeon.setZ(z);
+            location.setZ(z);
         }
         if (data == null) {
             // if (true) ??
-            BuildParameters params = LE_MapMaster.initBuildParams(empty, dungeon);
-            setName(dungeon.getName());
-            dungeon.generateSublevels(); // TODO ? ? ?
-            map = new DungeonMapGenerator(params).generateMap(dungeon);
+            BuildParameters params = LE_MapMaster.initBuildParams(empty, getLocation());
+            setName(location.getName());
+//            dungeon.generateSublevels(); // TODO ? ? ?
+            map = master.getMapGenerator().generateMap(master.getDungeonWrapper());
 
-            getDungeon().setProperty(G_PROPS.WORKSPACE_GROUP, getDefaultWorkspaceGroup(), true);
+            getLocation().setProperty(G_PROPS.WORKSPACE_GROUP, getDefaultWorkspaceGroup(), true);
         } else {
             DungeonPlan plan = null;
             try {
                 // TODO BUILD PARAMS!
-                plan = new DungeonBuilder().loadDungeonMap(data);
+                plan = new LocationBuilder().loadDungeonMap(data);
                 this.dungeon = plan.getDungeon();
-                LevelEditor.getSimulation().addType(dungeon.getType());
-                LevelEditor.getSimulation().getDungeonMaster().setDungeon(dungeon);
+                LevelEditor.getSimulation().addType(location.getType());
+//                LevelEditor.getSimulation().getDungeonMaster().setDungeon(dungeon);
                 map = plan.getMap();
-                dungeon.setPlan(plan);
+                master.getDungeonWrapper().setPlan(plan);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -126,7 +132,7 @@ public class Level {
                     // TODO of course - the issue was that I added an object to
                     // block too! ... init?
                     Unit unit = (Unit) obj;
-                    unit.setZ(dungeon.getZ());
+                    unit.setZ(location.getZ());
                     addObj(unit, true);
                 }
             }
@@ -146,12 +152,12 @@ public class Level {
             for (Obj obj : plan.getWallObjects()) {
                 Unit unit = (Unit) obj;
                 fullObjectList.add(unit);
-                unit.setZ(dungeon.getZ());
+                unit.setZ(location.getZ());
                 addObj(unit, true);
             }
             if (plan.getDirectionMap() != null) {
                 try {
-                    DC_ObjInitializer.initDirectionMap(dungeon.getZ(), plan.getDirectionMap());
+                    DC_ObjInitializer.initDirectionMap(location.getZ(), plan.getDirectionMap());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -195,19 +201,19 @@ public class Level {
         // as *dungeon template* more likely, and dungeon types have a pool of
         // templates available...
 
-        dungeon.setProperty(PROPS.DUNGEON_PLAN, getDungeon().getPlan().getStringData());
+        location.setProperty(PROPS.DUNGEON_PLAN, getLocation().getPlan().getStringData());
         // dungeon.setProperty(PROPS.MAP_OBJECTS, mapObjData); TODO custom type
         // values?
-        dungeon.setProperty(PROPS.MAP_OBJECTS, getDungeon().getPlan().getStringData());
+        location.setProperty(PROPS.MAP_OBJECTS, getLocation().getPlan().getStringData());
 
-        getDungeon().getType().cloneMaps(getDungeon());
+        getLocation().getType().cloneMaps(getDungeon());
 
     }
 
     public Level getCopy() {
         // TODO use xml? no, it must be fast...
-        Dungeon dungeon = new Dungeon(this.dungeon.getType());
-        dungeon.setPlan(this.dungeon.getPlan().getCopy());
+        Dungeon dungeon = new Dungeon(this.location.getType());
+        location.setPlan(this.location.getPlan().getCopy());
         Level copy = new Level(dungeon, mission);
         // copy.setMapObjects(mapObjects);
 
@@ -220,12 +226,12 @@ public class Level {
         // replace the game-Simulation!!! Grid will reflect changes...
         // overlaying may be trouble
         // prev.getMapObjects()
-        LE_Simulation c_game = (LE_Simulation) dungeon.getGame();
+        LE_Simulation c_game = (LE_Simulation) location.getGame();
         LogMaster.log(1, c_game.toString());
         LinkedList<Unit> unitsCache = c_game.getUnitsCache();
-        dungeon.setPlan(prev.getDungeon().getPlan().getCopy());
-        LE_Simulation game = (LE_Simulation) prev.getDungeon().getGame();
-        dungeon.setGame(game);
+        location.setPlan(prev.getLocation().getPlan().getCopy());
+        LE_Simulation game = (LE_Simulation) prev.getLocation().getGame();
+        location.setGame(game);
         LogMaster.log(1, game.toString());
         game.setUnits(unitsCache);
         LogMaster.log(1, game.getUnits().size() + " vs " + unitsCache.size());
@@ -235,11 +241,11 @@ public class Level {
         String xml = XML_Converter.openXmlFormatted("Level");
 
         xml += XML_Converter.openXmlFormatted("Custom Props");
-        for (PROPERTY prop : dungeon.getPropMap().keySet()) {
-            String value = dungeon.getProperty(prop);
+        for (PROPERTY prop : location.getPropMap().keySet()) {
+            String value = location.getProperty(prop);
             if (prop == G_PROPS.WORKSPACE_GROUP || prop == PROPS.ENEMY_SPAWN_COORDINATES
                     || prop == PROPS.PARTY_SPAWN_COORDINATES
-                    || !value.equals(dungeon.getType().getType().getProperty(prop)))
+                    || !value.equals(location.getType().getType().getProperty(prop)))
             // dungeon.getType().getType() - original type
             {
                 xml += XML_Converter.wrapLeaf(prop.getName(), value);
@@ -247,9 +253,9 @@ public class Level {
         }
         xml += XML_Converter.closeXmlFormatted("Custom Props");
         xml += XML_Converter.openXmlFormatted("Custom Params");
-        for (PARAMETER param : dungeon.getParamMap().keySet()) {
-            String value = dungeon.getParam(param);
-            if (!value.equals(dungeon.getType().getType().getParam(param))) {
+        for (PARAMETER param : location.getParamMap().keySet()) {
+            String value = location.getParam(param);
+            if (!value.equals(location.getType().getType().getParam(param))) {
                 xml += XML_Converter.wrapLeaf(param.getName(), value);
             }
         }
@@ -265,10 +271,10 @@ public class Level {
 
         String aiGroupData = getAiGroupData();
         if (!aiGroupData.isEmpty()) {
-            xml += XML_Converter.wrapLeaf(DungeonBuilder.AI_GROUPS_NODE, aiGroupData);
+            xml += XML_Converter.wrapLeaf(LocationBuilder.AI_GROUPS_NODE, aiGroupData);
         }
 
-        xml += dungeon.getPlan().getXml();
+        xml += location.getPlan().getXml();
         xml += XML_Converter.closeXmlFormatted("Level");
         return xml;
     }
@@ -386,14 +392,14 @@ public class Level {
             unit = (Unit) obj;
         }
         if (obj instanceof Entrance) {
-            if (dungeon.getMainEntrance() != null) {
-                dungeon.setMainEntrance(null);
-                dungeon.getPlan().setEntranceLayout(null);
-            } else if (dungeon.getMainExit() == null) {
-                dungeon.setMainExit(null);
-                dungeon.getPlan().setExitLayout(null);
+            if (location.getMainEntrance() != null) {
+                location.setMainEntrance(null);
+                location.getPlan().setEntranceLayout(null);
+            } else if (location.getMainExit() == null) {
+                location.setMainExit(null);
+                location.getPlan().setExitLayout(null);
             }
-            dungeon.getEntrances().remove(obj);
+            location.getEntrances().remove(obj);
         }
         // TODO getOrCreate Top object!
         // ++ ZOrder...
@@ -467,7 +473,7 @@ public class Level {
                 }
             }
         }
-        for (MapBlock bl : dungeon.getPlan().getBlocks()) {
+        for (MapBlock bl : location.getPlan().getBlocks()) {
             if (exceptions != null) {
                 if (exceptions.contains(bl)) {
                     continue;
@@ -500,7 +506,7 @@ public class Level {
 
     public void addObj(Unit obj, Coordinates c, boolean stack) {
         Chronos.mark("adding " + obj);
-        obj.setZ(dungeon.getZ());
+        obj.setZ(location.getZ());
         if (stack) {
             if (obj.isLandscape()) {
                 stack = false;
@@ -510,19 +516,19 @@ public class Level {
         // getTopObjMap().put(c, obj);
 
         if (obj instanceof Entrance) {
-            if (dungeon.getMainEntrance() == null) {
-                dungeon.setMainEntrance((Entrance) obj);
-                dungeon.getPlan().setEntranceLayout(
-                        DungeonLevelMaster.getLayout(dungeon.getPlan(), c));
+            if (location.getMainEntrance() == null) {
+                location.setMainEntrance((Entrance) obj);
+                location.getPlan().setEntranceLayout(
+                        DungeonLevelMaster.getLayout(location.getPlan(), c));
                 LogMaster.log(1, "Main Entrance: " + obj + "; initComps = "
-                        + dungeon.getPlan().getEntranceLayout());
-            } else if (dungeon.getMainExit() == null) {
-                dungeon.setMainExit((Entrance) obj);
-                dungeon.getPlan().setExitLayout(DungeonLevelMaster.getLayout(dungeon.getPlan(), c));
+                        + location.getPlan().getEntranceLayout());
+            } else if (location.getMainExit() == null) {
+                location.setMainExit((Entrance) obj);
+                location.getPlan().setExitLayout(DungeonLevelMaster.getLayout(location.getPlan(), c));
                 LogMaster.log(1, "Main Exit: " + obj + "; initComps = "
-                        + dungeon.getPlan().getExitLayout());
+                        + location.getPlan().getExitLayout());
             }
-            dungeon.getEntrances().add((Entrance) obj);
+            location.getEntrances().add((Entrance) obj);
 
         }
         cache();
@@ -567,9 +573,10 @@ public class Level {
 
     }
 
-    public Dungeon getDungeon() {
-        return dungeon;
+    public Location getLocation() {
+        return location;
     }
+
 
     public String toString() {
         return name;
@@ -584,7 +591,7 @@ public class Level {
     }
 
     public MiniGrid getGrid() {
-        return dungeon.getMinimap().getGrid();
+        return  getMinimap().getGrid();
     }
 
     public List<AiGroupData> getAiGroups() {
@@ -613,7 +620,16 @@ public class Level {
     }
 
     public List<MapBlock> getBlocks() {
-        return getDungeon().getPlan().getBlocks();
+        return location.getPlan().getBlocks();
     }
 
+
+
+    public Minimap getMinimap() {
+        return minimap;
+    }
+
+    public void setMinimap(Minimap minimap) {
+        this.minimap = minimap;
+    }
 }

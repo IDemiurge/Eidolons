@@ -93,7 +93,7 @@ public class DrawMasterStatic {
                 g.drawLine(p.x + offsetX, p.y + offsetY, p2.x, p2.y); // TODO
                 // punctir...
                 // visualize clear shot too?
-                // Painter.paintImagesInLine(g, new XLine(p, p2),
+                // Painter.paintImagesInLine(g, new XLine(portrait, p2),
                 // STD_IMAGES.EYE.getEmitterPath(),
                 // 40 * zoom / 100);
             } else {

@@ -139,12 +139,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
     }
 
     private boolean checkDynamicButtonClick(MouseEvent e) {
-        for (DynamicButton d : gridComp.getGame().getGuiMaster().getDynamicButtons()) {
-            if (d.getRect().contains(e.getPoint())) {
-                d.clicked(e);
-                return true;
-            }
-        }
+
         return false;
     }
 
@@ -445,7 +440,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
 
     public void mouseDragged(MouseEvent e) {
         Point p = e.getPoint();
-        // main.system.auxiliary.LogMaster.log(1, "DRAGGED to " + p);
+        // main.system.auxiliary.LogMaster.log(1, "DRAGGED to " + portrait);
         curX = p.x;
         curY = p.y;
         if (dragging) {

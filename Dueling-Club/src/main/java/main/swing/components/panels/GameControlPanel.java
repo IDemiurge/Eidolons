@@ -1,19 +1,9 @@
 package main.swing.components.panels;
 
 import main.client.dc.Launcher.VIEWS;
-import main.content.DC_TYPE;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.DungeonMaster;
 import main.swing.builders.DC_Builder;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
-import main.swing.generic.components.editors.lists.ListChooser;
-import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
-import main.system.auxiliary.StringMaster;
-import main.system.sound.SoundMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
-
-import java.util.List;
 
 public class GameControlPanel extends G_Panel {
     private VIEWS prevView;
@@ -59,17 +49,17 @@ public class GameControlPanel extends G_Panel {
 
     public void minimapButtonClicked(boolean viewMode) {
 
-            List<String> convertToNameIntList = StringMaster.toNameList(true,
-                    DungeonMaster.getDungeons());
-            String result = new ListChooser(SELECTION_MODE.SINGLE, convertToNameIntList,
-                    DC_TYPE.DUNGEONS).choose();
-            SoundMaster.playStandardSound(STD_SOUNDS.SLING);
-            for (Dungeon d : DungeonMaster.getDungeons()) {
-                if (d.getType().getName().equals(result)) {
-                    DungeonMaster.goToDungeon(d);
-                    return;
-                }
-            }// bfBuilder.toggleDungeonsPanel();
+//            List<String> convertToNameIntList = StringMaster.toNameList(true,
+//                    DungeonMaster.getDungeons());
+//            String result = new ListChooser(SELECTION_MODE.SINGLE, convertToNameIntList,
+//                    DC_TYPE.DUNGEONS).choose();
+//            SoundMaster.playStandardSound(STD_SOUNDS.SLING);
+//            for (Dungeon d : DungeonMaster.getDungeons()) {
+//                if (d.getType().getName().equals(result)) {
+//                    DungeonMaster.goToDungeon(d);
+//                    return;
+//                }
+//            }// bfBuilder.toggleDungeonsPanel();
 
             // if (Launcher.getView() != VIEWS.MINI_MAP) {
             // prevView = Launcher.getView();

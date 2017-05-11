@@ -320,17 +320,17 @@ public class A_StarAlgorithm {
 /**
  * foreach adjacent cell plotPath(agile, c1, c2) depth first: keep building to
  * c2 or blocked if (blocked(agile)) return -1;
- * <p>
+ * <portrait>
  * <?> how to know when to break from plotting - when all paths are tried or
  * blocked? use foreach instead
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>
  * newPath = plotPath(agile, c3, c2); path = min (path, newPath);
- * <p>
- * <p>
- * <p>
+ * <portrait>
+ * <portrait>
+ * <portrait>
  * recursion: foreach getCells(): plotpath
- * <p>
+ * <portrait>
  * use a field to keep track of the Path; reset it when the path is finished and
  * stored in Paths[]
  */

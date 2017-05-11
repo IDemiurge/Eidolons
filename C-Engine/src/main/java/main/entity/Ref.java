@@ -23,7 +23,7 @@ import java.util.Map;
 
 /**
  * Stores all the relevant ID's. Used to find proper Entities with getObj(KEYS key).
- * <p>
+ * <portrait>
  * Ref object is passed on activate(Ref ref) from the source entity to Active entity.
  * To activate on a given object, set ref’s {target} key, otherwise Active's Targeting will select()
  */

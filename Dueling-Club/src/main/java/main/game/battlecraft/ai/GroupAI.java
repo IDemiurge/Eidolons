@@ -12,7 +12,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.module.dungeoncrawl.ai.DungeonCrawler.ENGAGEMENT_LEVEL;
-import main.game.battlecraft.logic.dungeon.building.MapBlock;
+import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.*;

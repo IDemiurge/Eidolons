@@ -10,8 +10,8 @@ import main.system.auxiliary.StringMaster;
 
 /**
  * @author JustMe
- *         <p>
- *         <p>
+ *         <portrait>
+ *         <portrait>
  *         Event firing - where in code should the firing occur? How can it be
  *         made more generic? IDEA: events must be constructed on the fly
  *         whenever an entity's method (like "modifyValue", "destroy" or

@@ -5,53 +5,48 @@ import main.ability.InventoryTransactionManager;
 import main.ability.effects.DC_EffectManager;
 import main.client.cc.gui.lists.dc.DC_InventoryManager;
 import main.client.cc.logic.items.ItemGenerator;
-import main.client.cc.logic.party.PartyObj;
 import main.client.cc.logic.spells.SpellGenerator;
 import main.client.dc.Launcher;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.DC_TYPE;
 import main.content.DC_ValueManager;
 import main.content.OBJ_TYPE;
-import main.content.PROPS;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.PROPERTY;
-import main.data.XLinkedMap;
 import main.data.xml.XML_Reader;
+import main.entity.DC_IdManager;
+import main.entity.Entity;
 import main.entity.Ref;
+import main.entity.active.DC_ActionManager;
 import main.entity.obj.*;
-import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.tools.DC_Bf_Analyzer;
+import main.game.battlecraft.logic.battle.BattleMaster;
+import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.battlecraft.logic.battle.test.TestBattleMaster;
 import main.game.battlecraft.logic.battlefield.*;
-import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
-import main.game.bf.options.UIOptions;
-import main.game.bf.pathing.PathingManager;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.battlefield.vision.VisionMaster;
-import main.game.core.GameLoop;
-import main.game.core.state.DC_GameState;
-import main.game.core.state.DC_StateManager;
-import main.game.battlecraft.logic.meta.arcade.ArcadeManager;
-import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
-import main.game.battlecraft.logic.battle.arena.ArenaManager;
-import main.game.battlecraft.logic.battle.BattleManager;
-import main.game.battlecraft.logic.battle.BattleOptions;
-import main.game.battlecraft.logic.battle.player.DC_Player;
-import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.battle.player.PlayerMaster;
-import main.game.battlecraft.logic.battle.turn.DC_TurnManager;
-import main.game.battlecraft.rules.combat.attack.DC_AttackMaster;
-import main.game.battlecraft.rules.combat.damage.ArmorMaster;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.dungeon.DungeonMaster;
-import main.entity.active.DC_ActionManager;
+import main.game.battlecraft.logic.dungeon.test.TestDungeonMaster;
+import main.game.battlecraft.logic.meta.MetaGameMaster;
 import main.game.battlecraft.rules.DC_Rules;
+import main.game.battlecraft.rules.combat.attack.DC_AttackMaster;
+import main.game.battlecraft.rules.combat.damage.ArmorMaster;
 import main.game.battlecraft.rules.mechanics.WaitRule;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.DIRECTION;
+import main.game.core.DC_TurnManager;
+import main.game.core.GameLoop;
+import main.game.core.launch.LaunchDataKeeper;
+import main.game.core.launch.PresetLauncher;
+import main.game.core.state.DC_GameState;
+import main.game.core.state.DC_StateManager;
+import main.game.logic.battle.player.Player;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
-import main.swing.components.obj.drawing.GuiMaster;
 import main.system.DC_ConditionMaster;
 import main.system.DC_RequirementsManager;
 import main.system.auxiliary.log.Chronos;
@@ -62,14 +57,12 @@ import main.system.graphics.AnimationManager;
 import main.system.hotkey.DC_KeyManager;
 import main.system.launch.CoreEngine;
 import main.system.math.DC_MathManager;
-import main.system.net.DC_IdManager;
 import main.system.test.TestMasterContent;
 import main.system.text.DC_LogManager;
-import main.system.text.ToolTipMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.test.PresetLauncher;
 import main.test.PresetMaster;
+import main.test.Refactor;
 import main.test.debug.DebugMaster;
 
 import java.util.*;
@@ -77,53 +70,53 @@ import java.util.*;
 /**
  * contains references to everything that may be needed in scope of a single game
  * TODO refactor - put data into GameState!
- * <p>
+ * <portrait>
  * init() should be called to create all Masters
  * battleInit() is a reset method
  * start() creates units and starts GameLoop (DC_TurnManager)
  */
 public class DC_Game extends MicroGame {
     public static DC_Game game;
+
     protected DC_AttackMaster attackMaster;
     protected ArmorMaster armorMaster;
     protected ArmorMaster armorSimulator;
+    private DroppedItemManager droppedItemManager;
+    private InventoryTransactionManager inventoryTransactionManager;
+    private DC_InventoryManager inventoryManager;
+
     private DC_GameManager manager;
     private VisionMaster visionMaster;
     private DebugMaster debugMaster;
     private TestMasterContent testMaster;
-    private ArenaManager arenaManager;
-    private BattleManager battleManager;
 
-    private ToolTipMaster toolTipMaster;
-    private PlayerMaster playerMaster;
-    private GuiMaster guiMaster;
-    private ArenaArcadeMaster arenaArcadeMaster;
-    private BattleOptions arenaOptions;
-    private InventoryTransactionManager inventoryTransactionManager;
-    private DC_InventoryManager inventoryManager;
-    private ArcadeManager arcadeManager;
     private AI_Manager aiManager;
-    private AnimationManager animationManager;
-    private DroppedItemManager droppedItemManager;
-    private DungeonMaster dungeonMaster;
-    private DC_KeyManager keyManager;
-    private boolean AI_ON = true;
-    private Thread gameLoopThread;
+
+    private AnimationManager animationManager; //heavy, but still just a trash!
+    protected DungeonMaster dungeonMaster;
+    protected BattleMaster battleMaster;
+    protected MetaGameMaster metaMaster;
+
+    private DC_KeyManager keyManager; //where to move?
+
     private DC_Rules rules;
+
     private GAME_MODES gameMode;
     private GAME_TYPE gameType;
-    private String playerParty;
-    private Map<Unit, Map<String, DC_HeroAttachedObj>> simulationCache;
-    private PartyObj party;
-    private DC_GameData data;
-    private boolean battleInit;
-    private String enemyParty;
-    private boolean paused;
-    private Map<Coordinates, Map<Unit, DIRECTION>> directionMap;
+    private boolean battleInit; //to Battle!
+
+    private boolean paused; //to game loop!
+
+    private Map<Coordinates, Map<Unit, DIRECTION>> directionMap; // ?!
     private HashMap<Coordinates, Map<Unit, FLIP>> flipMap;
+
     private boolean testMode;
     private boolean dummyPlus;
+    private boolean AI_ON = true;
+
+    private Thread gameLoopThread;
     private GameLoop loop;
+    private LaunchDataKeeper dataKeeper;
 
     public DC_Game() {
         this(false);
@@ -134,22 +127,14 @@ public class DC_Game extends MicroGame {
         game = this;
         this.simulation = true;
         this.simulation = simulation;
+
         setGameMode((isSimulation()) ? GAME_MODES.SIMULATION : GAME_MODES.ARENA);
-        initState();
+
+        setState(new DC_GameState(this));
         initMasters();
     }
 
-    public static void setGame(DC_Game game2) {
-        game = game2;
-
-    }
-
-    public void initState() {
-
-        setState(new DC_GameState(this));
-    }
-
-    public void initMasters() {
+    private void initMasters() {
 
         master = new DC_GameMaster(this);
 //        if (!CoreEngine.isArcaneVault()) {
@@ -157,10 +142,8 @@ public class DC_Game extends MicroGame {
         manager.init();
 //        } //TODO FIX classdefnotfound!
         this.setIdManager(new DC_IdManager( this));
-        guiMaster = new GuiMaster(this);
         armorMaster = new ArmorMaster(false);
         armorSimulator = new ArmorMaster(true);
-        toolTipMaster = new ToolTipMaster(this);
         requirementsManager = new DC_RequirementsManager(this);
         valueManager = new DC_ValueManager(this);
         visionMaster = VisionManager.getMaster();
@@ -172,11 +155,8 @@ public class DC_Game extends MicroGame {
         effectManager = new DC_EffectManager(this);
         animationManager = new AnimationManager(this);
         droppedItemManager = new DroppedItemManager(this);
-        dungeonMaster = new DungeonMaster(this);
         valueHelper = new ValueHelper(this);
         setTestMaster(new TestMasterContent(this));
-        arenaArcadeMaster = new ArenaArcadeMaster(this);
-        arcadeManager = new ArcadeManager(this);
         conditionMaster = new DC_ConditionMaster();
         logManager = new DC_LogManager(this);
         rules = new DC_Rules(this);
@@ -192,10 +172,12 @@ public class DC_Game extends MicroGame {
         //TempEventManager.trigger("create-cell-object" + i + ":" + j, objects);
 
         initObjTypes();
+        //TODO just override and remove in SimGame
         if (!CoreEngine.isLevelEditor() && (!CoreEngine.isArcaneVault() || !XML_Reader.isMacro())) {
             ItemGenerator.init();
             SpellGenerator.init();
             ActionGenerator.init();
+            //to engine!
         }
 
         if (PresetMaster.getPreset() != null) {
@@ -209,30 +191,38 @@ public class DC_Game extends MicroGame {
         Chronos.logTimeElapsedForMark("GAME_INIT");
     }
 
-    @Override
-    public DC_BattleFieldManager getBattleFieldManager() {
 
-        if (battleFieldManager == null) {
-            battleFieldManager = new DC_BattleFieldManager(this );
-        }
-        return (DC_BattleFieldManager) super.getBattleFieldManager();
+    protected BattleMaster createBattleMaster() {
+        return new TestBattleMaster(this);
     }
-//call each time Battlefield is launched
-    public void battleInit() {
+    protected DungeonMaster createDungeonMaster() {
+        return new TestDungeonMaster(this);
+    }
+    protected MetaGameMaster createMetaMaster() {
+        return new MetaGameMaster(this);
+    }
+    // after meta
+    public void dungeonInit() {
+        dungeonMaster = createDungeonMaster();
+    }
+    // before all other masters?
+    public void metaGameInit() {
+        metaMaster= createMetaMaster();
+    }
+
+    public void dataInit() {
+        //if dataKeeper==null
+
+
+    }
+        public void battleInit() {
+battleMaster = createBattleMaster();
 
         inventoryTransactionManager = new InventoryTransactionManager(this);
         inventoryManager = new DC_InventoryManager(this);
-        arenaManager = new ArenaManager(this);
-        arenaManager.init();
-        battleManager = new BattleManager(this);
 
-        player1 = arenaManager.getPlayer();
-        player2 = arenaManager.getEnemyPlayer();
-        DC_Player.NEUTRAL.setGame(this);
-        player1.setGame(this);
-        player2.setGame(this);
-        unitData1 = "";
-        unitData2 = "";
+//        battleMaster.init();
+        dungeonMaster.init();
 
             setOffline(true);
             if (isAI_ON()) {
@@ -248,9 +238,7 @@ public class DC_Game extends MicroGame {
         battleFieldManager = new DC_BattleFieldManager(this );
         movementManager.setGrid(battlefield.getGrid());
         // }
-        if (getUiOptions() == null) {
-            setUiOptions(new UIOptions());
-        }
+
 
         if (AI_ON) {
             aiManager = new AI_Manager(this);
@@ -263,26 +251,21 @@ public class DC_Game extends MicroGame {
     public void start(boolean first) {
         Chronos.mark("GAME_START");
 
-        this.manager.setSbInitialized(true);
+        this.manager.setSbInitialized(true); //TODO legacy?
         turnManager.init();
 
         if (isDebugMode()) {
             debugMaster = new DebugMaster(getState() );
         }
 
-        arenaManager.startGame();
-        getGraveyardManager().init();
-
+        getGraveyardManager().init();//TODO in init?
+       battleMaster.startGame();
+        dungeonMaster.gameStarted();
         getState().gameStarted(first);
 
         // TODO: 30.10.2016 insert gui init here
 
         startGameLoop();
-
-        if (playerMaster == null) {
-            playerMaster = new PlayerMaster(game, getPlayer(true), getPlayer(false));
-        }
-        playerMaster.initPlayerFlags();
 
         Chronos.logTimeElapsedForMark("GAME_START");
     }
@@ -316,11 +299,14 @@ public class DC_Game extends MicroGame {
         setRunning(false);
         setStarted(false);
     }
+    @Override
+    public DC_BattleFieldManager getBattleFieldManager() {
 
-    public MicroObj createAndInitUnit(ObjType type, int x, int y, Player owner, Ref ref) {
-        return createUnit(type, x, y, owner, ref);
+        if (battleFieldManager == null) {
+            battleFieldManager = new DC_BattleFieldManager(this );
+        }
+        return (DC_BattleFieldManager) super.getBattleFieldManager();
     }
-
     @Override
     public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
         BattleFieldObject unit = ((BattleFieldObject) super.createUnit(type, x, y, owner, ref.getCopy()));
@@ -343,9 +329,9 @@ public class DC_Game extends MicroGame {
     }
 
     public void exit(boolean mainMenu) throws InterruptedException {
-        // idManager;
+        // TODO review this! only for arcade-game, btw!
         stop();
-        dungeonMaster.setDungeon(null);
+//        dungeonMaster.setDungeon(null);
         getManager().setSelectedInfoObj(null);
         WaitRule.reset();
         for (Obj obj : getObjects(DC_TYPE.BUFFS)) {
@@ -388,10 +374,6 @@ public class DC_Game extends MicroGame {
                 initTYPE(TYPE);
             }
         }
-    }
-
-    public boolean isSkirmishOrScenario() {
-        return getMaster().isSkirmishOrScenario();
     }
 
     public Obj getObjectVisibleByCoordinate(Coordinates c) {
@@ -448,21 +430,11 @@ public class DC_Game extends MicroGame {
         return getMaster().getUnitMap();
     }
 
-    public Map<Coordinates, List<Unit>> getUnitCache() {
-        return getMaster().getUnitCache();
-    }
 
     @Override
     public IdManager getIdManager() {
-        if (idManager != null) {
             return idManager;
-        }
-
-        return idManager = new DC_IdManager(  this);
-
     }
-
-
 
 
     public boolean isAI_ON() {
@@ -510,44 +482,17 @@ public class DC_Game extends MicroGame {
         this.rules = rules;
     }
 
-    public ArenaManager getArenaManager() {
-        return arenaManager;
-    }
-
+    @Deprecated
     public GAME_MODES getGameMode() {
         return gameMode;
     }
-
+@Deprecated
     public void setGameMode(GAME_MODES gameMode) {
         this.gameMode = gameMode;
     }
 
-    public PathingManager getPathingManager() {
-        return getMovementManager().getPathingManager();
-    }
 
-    public void setPlayerParty(String playerParty) {
-        if (getPlayer(true) != null) {
-            getPlayer(true).setPartyDataString(playerParty);
-        }
-        this.playerParty = playerParty;
-    }
 
-    public synchronized String getPlayerParty() {
-        if (getParty() != null) {
-            return getParty().getProperty(PROPS.MEMBERS);
-        }
-
-        return playerParty;
-    }
-
-    public void setPlayerParty(PartyObj party) {
-        this.setParty(party);
-    }
-
-    // public Obj getUnitByCoordinate(Coordinates c) {
-    // return getObjectByCoordinate(c, false);
-    // }
 
     public InventoryTransactionManager getInventoryTransactionManager() {
 
@@ -574,51 +519,7 @@ public class DC_Game extends MicroGame {
     }
 
     public DC_Player getPlayer(boolean me) {
-        if (playerMaster != null) {
-            return playerMaster.getPlayer(me);
-        }
-        return (DC_Player) super.getPlayer(me);
-    }
-
-    public DC_HeroAttachedObj getSimulationObj(Unit dc_HeroObj, ObjType type, PROPERTY prop) {
-        try {
-            return getSimulationCache().get(dc_HeroObj).get(type.getName() + prop.getShortName());
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public void addSimulationObj(Unit dc_HeroObj, ObjType type, DC_HeroAttachedObj item,
-                                 PROPERTY prop) {
-
-        Map<String, DC_HeroAttachedObj> cache = getSimulationCache().get(dc_HeroObj);
-        if (cache == null) {
-            cache = new XLinkedMap<>();
-            getSimulationCache().put(dc_HeroObj, cache);
-        }
-        cache.put(type.getName() + prop.getShortName(), item);
-
-    }
-
-    public Map<Unit, Map<String, DC_HeroAttachedObj>> getSimulationCache() {
-        if (simulationCache == null) {
-            simulationCache = new XLinkedMap<>();
-        }
-        return simulationCache;
-    }
-
-
-    public BattleManager getBattleManager() {
-        return battleManager;
-    }
-
-
-    public PartyObj getParty() {
-        return party;
-    }
-
-    public void setParty(PartyObj party) {
-        this.party = party;
+        return getBattleMaster().getPlayerManager().getPlayer(me);
     }
 
     public Thread getGameLoopThread() {
@@ -645,16 +546,6 @@ public class DC_Game extends MicroGame {
         return dungeonMaster;
     }
 
-    public DC_GameData getData() {
-        if (data == null) {
-            setData(new DC_GameData(""));
-        }
-        return data;
-    }
-
-    public void setData(DC_GameData data) {
-        this.data = data;
-    }
 
 
     public TestMasterContent getTestMaster() {
@@ -678,9 +569,6 @@ public class DC_Game extends MicroGame {
         return (DC_TurnManager) super.getTurnManager();
     }
 
-    public ArcadeManager getArcadeManager() {
-        return arcadeManager;
-    }
 
     public boolean isBattleInit() {
         return battleInit;
@@ -698,19 +586,9 @@ public class DC_Game extends MicroGame {
         this.paused = paused;
     }
 
-    public void checkAddUnit(Unit obj) {
-        if (!obj.isHidden()) {
-            if (!getUnits().contains(obj)) {
-                getUnits().add(obj);
-            }
-        }
-    }
 
     public Dungeon getDungeon() {
-        if (getDungeonMaster() == null) {
-            return null;
-        }
-        return getDungeonMaster().getDungeon();
+        return getDungeonMaster().getDungeonWrapper().getDungeon();
     }
 
 
@@ -723,9 +601,6 @@ public class DC_Game extends MicroGame {
     }
 
 
-    public Unit getMainHero() {
-        return (Unit) getPlayer(true).getHeroObj();
-    }
 
     public Map<Coordinates, Map<Unit, FLIP>> getFlipMap() {
         if (flipMap == null) {
@@ -749,33 +624,14 @@ public class DC_Game extends MicroGame {
         this.testMode = testMode;
     }
 
-    public String getEnemyParty() {
-        return enemyParty;
-    }
-
-    public void setEnemyParty(String property) {
-        this.enemyParty = property;
-        if (getPlayer(false) != null) {
-            getPlayer(false).setPartyDataString(property);
-        }
-    }
 
     @Override
     public DC_LogManager getLogManager() {
         return (DC_LogManager) super.getLogManager();
     }
 
-    public ToolTipMaster getToolTipMaster() {
-        return toolTipMaster;
-    }
 
-    public ArenaArcadeMaster getArenaArcadeMaster() {
-        return arenaArcadeMaster;
-    }
 
-    public GuiMaster getGuiMaster() {
-        return guiMaster;
-    }
 
     public boolean isDummyPlus() {
         return dummyPlus;
@@ -824,12 +680,37 @@ public class DC_Game extends MicroGame {
     }
 
 
+    public  BattleMaster getBattleMaster() {
+        return battleMaster;
+    }
+
+    public MetaGameMaster getMetaMaster() {
+        return metaMaster;
+    }
+
+    public void setDataKeeper(LaunchDataKeeper dataKeeper) {
+        this.dataKeeper = dataKeeper;
+    }
+
+    public LaunchDataKeeper getDataKeeper() {
+        return dataKeeper;
+    }
+@Refactor
+    public Obj getSimulationObj(Entity entity, ObjType type, PROPERTY prop) {
+    return null ;
+    }
+
+    @Refactor
+    public void addSimulationObj(Entity entity, ObjType type,
+                                 Entity item, PROPERTY prop) {
+    }
+
     public enum GAME_MODES {
         ARENA, SIMULATION, DUEL, ENCOUNTER, DUNGEON_CRAWL, ARENA_ARCADE
     }
 
     public enum GAME_TYPE {
-        SCENARIO, ARCADE, SKIRMISH,
+        SCENARIO, ARCADE, SKIRMISH, TEST,
 
     }
 

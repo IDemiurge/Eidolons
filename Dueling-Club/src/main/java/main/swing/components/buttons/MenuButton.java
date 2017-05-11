@@ -52,7 +52,7 @@ public class MenuButton extends CustomButton implements Runnable {
         Boolean result = DialogMaster
                 .askAndWait("Need a break?", true, "Yep", "Nope", "I give up.");
         if (result == null) {
-            game.getBattleManager().surrender();
+//            game.getBattleManager().surrender();
             return;
         }
         if (result) {

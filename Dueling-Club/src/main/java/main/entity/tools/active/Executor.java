@@ -39,7 +39,7 @@ import java.util.List;
 
 /**
  * Created by JustMe on 2/21/2017.
- * <p>
+ * <portrait>
  * :: Check can
  * :: Determine Target
  * :: Check interruptions

@@ -2,65 +2,48 @@ package main.game.logic.battle.player;
 
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
-import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
-import main.system.auxiliary.log.LogMaster;
-import main.system.entity.FilterMaster;
 import main.system.auxiliary.log.Chronos;
+import main.system.entity.FilterMaster;
 import main.system.graphics.ColorManager.FLAG_COLOR;
-import main.system.images.ImageManager;
-import main.system.net.data.PartyData;
-import main.system.net.data.PlayerData;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Set;
 
 public class Player {
-    public static Player NEUTRAL = new Player("Neutral", Color.GRAY, false, "");
+    public static Player NEUTRAL
 
-    public static Player I;
+     ;
 
-    public static Player ENEMY;
-    protected ImageIcon portrait;
-    protected String p;
-    protected boolean ai;
-    protected String allegiance;
+
     protected MicroObj heroObj;
-    protected ObjType hero_type;
-    protected PartyData partyData;
-    protected Image emblem;
     protected MicroGame game;
-    String name;
-    Color color;
+    protected String portrait;
+    protected boolean ai;
     FLAG_COLOR flagColor;
+    String name;
     boolean me;
-    private boolean defender;
+    private boolean neutral;
+    private String emblem;
     private Set<Obj> units;
 
-    public Player(String name, Color c, boolean me, String portrait) {
-        LogMaster.log(0, "new player - " + name);
+    public Player(String name, Color c,
+                  boolean neutral, boolean me,
+                  String portrait,
+                  String emblem) {
         this.name = name;
-
-        color = c;
         this.me = me;
+        this.neutral = neutral;
+        this.portrait = portrait;
+        this.emblem = emblem;
 
-        setPortrait(ImageManager.getEmptyUnitIcon());
-        this.p = portrait;
-        if (p != null) {
-            if (!p.equals("")) {
-                setPortrait(ImageManager.getIcon(p));
-            }
-        }
-
-        if (me) {
-            I = this;
-        }
-    }
-
-    public Player(PlayerData playerdata) {
 
     }
+
+    public Player(String name, Color color, boolean me, String emblem) {
+        this(name, color, false, me, emblem, null);
+    }
+
 
     @Override
     public String toString() {
@@ -75,20 +58,12 @@ public class Player {
         this.me = me;
     }
 
-    // protected void generatePortrait() {
-    // this.portrait = ImageManager.getImage(p);
-    //
-    // }
-
-    public ImageIcon getPortrait() {
+    public String getPortrait() {
         return portrait;
     }
 
-    public void setPortrait(ImageIcon portrait) {
-        this.portrait = new ImageIcon(portrait.getImage());
-
-        // ImageManager.applyBorder(
-        // portrait.getImage(), BORDER.GOLDEN));
+    public String getEmblem() {
+        return emblem;
     }
 
     public String getName() {
@@ -99,21 +74,6 @@ public class Player {
         this.name = name;
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public String getAllegiance() {
-        return allegiance;
-    }
-
-    public synchronized void setAllegiance(String allegiance) {
-        this.allegiance = allegiance;
-    }
 
     public MicroObj getHeroObj() {
         if (heroObj == null) {
@@ -131,33 +91,8 @@ public class Player {
         this.heroObj = heroObj;
     }
 
-    public ObjType getHeroObjType() {
-        return getHero_type();
-    }
 
-    protected ObjType getHero_type() {
-        return hero_type;
-    }
 
-    public void setHero_type(ObjType hero_type) {
-        this.hero_type = hero_type;
-    }
-
-    public PartyData getPartyData() {
-        return partyData;
-    }
-
-    public void setPartyData(PartyData partyData) {
-        this.partyData = partyData;
-    }
-
-    public Image getEmblem() {
-        return emblem;
-    }
-
-    public void setEmblem(Image emblem) {
-        this.emblem = emblem;
-    }
 
     public Set<Obj> getControlledUnits() {
         if (units == null) {
@@ -183,7 +118,7 @@ public class Player {
     }
 
     public boolean isNeutral() {
-        return this == NEUTRAL;
+        return neutral;
     }
 
     public void resetUnits() {
@@ -200,13 +135,7 @@ public class Player {
         this.ai = ai;
     }
 
-    public boolean isDefender() {
-        return defender;
-    }
 
-    public void setDefender(boolean defender) {
-        this.defender = defender;
-    }
 
     public FLAG_COLOR getFlagColor() {
         return flagColor;

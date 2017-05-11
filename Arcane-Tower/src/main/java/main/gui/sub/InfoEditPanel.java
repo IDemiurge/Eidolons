@@ -46,7 +46,7 @@ public class InfoEditPanel extends EditViewPanel {
         for (main.content.VALUE v : values) {
             if (v instanceof G_PROPS) {
                 // switch
-//				ContentManager.getInstance().checkAllApplies(p, type);
+//				ContentManager.getInstance().checkAllApplies(portrait, type);
             }
             filtered.add(v);
         }

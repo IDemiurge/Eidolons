@@ -219,7 +219,7 @@ public class ParamAnalyzer extends AiHandler {
 
 
     public int getParamPriority(PARAMETER p, Unit unit) {
-        // int percentage = DC_MathManager.getParamPercentage(unit, p);
+        // int percentage = DC_MathManager.getParamPercentage(unit, portrait);
         // if (percentage == 0) {
         // return -100;
         // }

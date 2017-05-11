@@ -293,8 +293,8 @@ public class DC_ContentManager extends ContentManager {
         return Arrays.asList(ATTRIBUTE.values());
     }
 
-    // public static boolean isResetExcludedParam(PARAMETER p) {
-    // return Arrays.asList(resetExcludedParam).contains(p);
+    // public static boolean isResetExcludedParam(PARAMETER portrait) {
+    // return Arrays.asList(resetExcludedParam).contains(portrait);
     // }
 
     public static PARAMETER getAlignmentForPrinciple(PRINCIPLES principle) {
@@ -587,10 +587,10 @@ public class DC_ContentManager extends ContentManager {
     // List<VALUE> list = defaultValues.getOrCreate(TYPE);
     // if (list == null && TYPE != null) {
     // list = new LinkedList<>();
-    // for (VALUE p : ContentManager.getValuesForType(TYPE.getName(), false)) {
-    // if (StringMaster.isEmpty(p.getDefaultValue()))
-    // if (!p.getDefaultValue().equals("0"))
-    // list.add(p);
+    // for (VALUE portrait : ContentManager.getValuesForType(TYPE.getName(), false)) {
+    // if (StringMaster.isEmpty(portrait.getDefaultValue()))
+    // if (!portrait.getDefaultValue().equals("0"))
+    // list.add(portrait);
     // }
     //
     // defaultValues.put(TYPE, list);

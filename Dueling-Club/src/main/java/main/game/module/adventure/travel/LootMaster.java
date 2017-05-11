@@ -36,27 +36,27 @@ public class LootMaster {
     private static final int DEFAULT_ITEM_MINIMUM = 3;
 
     public static void battleIsWon(DC_Game game) {
-        PartyObj party = game.getParty();
-        DequeImpl<Unit> enemiesSlain = game.getBattleManager()
-                .getSlainEnemies();
-        Dungeon dungeon = game.getDungeonMaster().getDungeon();
+//        PartyObj party = game.getParty();
+//        DequeImpl<Unit> enemiesSlain = game.getBattleManager()
+//                .getSlainEnemies();
+//        Dungeon dungeon = game.getDungeonMaster().getDungeonWrapper();
         // additional choice for leader - share more, share equal, claim all
-        int lootValue = calculateLootValue(dungeon, enemiesSlain);
-        List<Entity> loot = generateLoot(lootValue, dungeon);
-        for (Entity item : new LinkedList<>(loot)) {
-            for (Unit h : party.getMembers()) {
-//				if (checkAwardLootItem(h, item, loot))
-                break;
-            }
-        }
-
-        for (Unit h : party.getMembers()) {
-            int xpAwarded = awardXp(enemiesSlain, h, party);
-            for (Entity item : new LinkedList<>(loot)) {
-                checkAwardLootItem(h, item, loot);
-            }
-            int goldAwarded = awardGold(lootValue, h);
-        }
+//        int lootValue = calculateLootValue(dungeon, enemiesSlain);
+//        List<Entity> loot = generateLoot(lootValue, dungeon);
+//        for (Entity item : new LinkedList<>(loot)) {
+//            for (Unit h : party.getMembers()) {
+////				if (checkAwardLootItem(h, item, loot))
+//                break;
+//            }
+//        }
+//
+//        for (Unit h : party.getMembers()) {
+//            int xpAwarded = awardXp(enemiesSlain, h, party);
+//            for (Entity item : new LinkedList<>(loot)) {
+//                checkAwardLootItem(h, item, loot);
+//            }
+//            int goldAwarded = awardGold(lootValue, h);
+//        }
         // if encounter -> prompt gather dropped items
         // TimeMaster.hoursPassed(hours);
         game.getDroppedItemManager().getAllDroppedItems();

@@ -10,7 +10,7 @@ public class EndGameEffect extends DC_Effect {
 
     @Override
     public boolean applyThis() {
-        getGame().getBattleManager().victory();
+//        getGame().getBattleManager().victory();
         return false;
     }
 

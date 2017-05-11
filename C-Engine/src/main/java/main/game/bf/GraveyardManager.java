@@ -8,9 +8,9 @@ import java.util.List;
 /**
  * Death Logic Store the dead: automatically; accessibility (for selecting and
  * checks):
- * <p>
+ * <portrait>
  * Zone Targeting:
- * <p>
+ * <portrait>
  * Destroy corpse if toughness or endurance reach -100%
  *
  * @param unit

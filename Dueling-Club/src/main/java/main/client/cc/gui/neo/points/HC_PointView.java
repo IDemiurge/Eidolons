@@ -140,7 +140,7 @@ public class HC_PointView extends HeroView {
         List<PARAMETER> list = (attributes) ? ContentManager.getAttributes() : ContentManager.getMasteries();
 
         for (PARAMETER p : list) {
-            // if (checkValue(p))
+            // if (checkValue(portrait))
             params.add(p);
         }
 

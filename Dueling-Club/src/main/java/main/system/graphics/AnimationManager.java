@@ -406,8 +406,8 @@ public class AnimationManager {
 //        if (ref.getAmount() == null) {
 //            return;
 //        }
-//        PARAMS p = (PARAMS) ref.getValue();
-//        Color c = p.getColor();
+//        PARAMS portrait = (PARAMS) ref.getValue();
+//        Color c = portrait.getColor();
 //        String text = ref.getAmount() + "";
 //        if (ref.getAmount() > 0) {
 //            text = "+" + ref.getAmount();

@@ -3,7 +3,7 @@ package init;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.log.LogMaster;
-import main.test.PresetLauncher.LAUNCH;
+import main.game.core.launch.PresetLauncher.LAUNCH;
 import main.test.frontend.FAST_DC;
 
 /**

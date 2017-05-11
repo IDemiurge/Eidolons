@@ -6,6 +6,8 @@ import main.system.auxiliary.EnumMaster;
 import main.system.net.data.DataUnit;
 
 public class BattleOptions extends DataUnit<ARENA_GAME_OPTIONS> {
+    private int battleLevel;
+
     public FACING_DIRECTION getPlayerPartySide() {
         if (getValue(ARENA_GAME_OPTIONS.PLAYER_STARTING_SIDE) != null) {
             return new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(
@@ -21,6 +23,14 @@ public class BattleOptions extends DataUnit<ARENA_GAME_OPTIONS> {
                     DIFFICULTY.class, getValue(ARENA_GAME_OPTIONS.DIFFICULTY));
         }
         return DIFFICULTY.DISCIPLE;
+    }
+
+    public int getBattleLevel() {
+        return battleLevel;
+    }
+
+    public void setBattleLevel(int battleLevel) {
+        this.battleLevel = battleLevel;
     }
 
     public enum ARENA_GAME_OPTIONS {

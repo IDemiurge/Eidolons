@@ -1,10 +1,10 @@
 package main.client.cc.gui.neo.choice;
 
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.battlecraft.logic.meta.party.PartyManager;
-import main.game.battlecraft.logic.battle.arena.Positioner;
+import main.game.core.game.DC_Game;
 import main.swing.generic.components.list.G_List;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.system.auxiliary.data.ListMaster;
@@ -150,7 +150,7 @@ public class PositionChoiceView extends ChoiceView<Unit> implements MouseListene
         if (partyCoordinates == null) {
             partyCoordinates = PartyManager.getParty().getPartyCoordinates();
             if (partyCoordinates == null) {
-                partyCoordinates = new Positioner().getPartyCoordinates(PartyManager.getParty()
+                partyCoordinates = DC_Game.game.getDungeonMaster().getPositioner().getPartyCoordinates(PartyManager.getParty()
                         .getMembers());
                 PartyManager.getParty().setPartyCoordinates(partyCoordinates);
 
