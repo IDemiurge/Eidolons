@@ -21,6 +21,12 @@
             <version>1.1</version>
         </dependency>
 
+        <!-- key-value storage http://www.dizitart.org/nitrite-database.html-->
+        <dependency>
+            <groupId>org.dizitart</groupId>
+            <artifactId>nitrite</artifactId>
+            <version>1.0</version>
+        </dependency>
 
         <dependency>
             <groupId>eidolons</groupId>

@@ -18,7 +18,7 @@ public class DialogScenario extends Group {
     public DialogScenario(int time, boolean skippable, TextureRegion backTexture, String message, TextureRegion portraitTexture) {
         this.time = time;
         this.back = new Image(backTexture);
-
+        skippable = time <= 0 || skippable;
         if (skippable) {
             addCaptureListener(new InputListener() {
                 @Override
@@ -36,7 +36,6 @@ public class DialogScenario extends Group {
         final int screenH = Gdx.graphics.getHeight();
 
         float x, y;
-
 
         if (width > screenW) {
             x = (width - screenW) / 2;
@@ -75,10 +74,12 @@ public class DialogScenario extends Group {
     public void act(float delta) {
         super.act(delta);
         if (done) return;
-        currentTime += (int) (delta * 1000);
+        if (time > 0) {
+            currentTime += (int) (delta * 1000);
 
-        if (time <= currentTime) {
-            done = true;
+            if (time <= currentTime) {
+                done = true;
+            }
         }
     }
 }
