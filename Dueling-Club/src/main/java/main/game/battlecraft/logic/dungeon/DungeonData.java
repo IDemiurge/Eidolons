@@ -1,7 +1,7 @@
 package main.game.battlecraft.logic.dungeon;
 
 import main.game.battlecraft.logic.dungeon.DungeonData.DUNGEON_VALUE;
-import main.system.net.data.DataUnit;
+import main.system.data.DataUnit;
 
 /**
  * Created by JustMe on 5/10/2017.

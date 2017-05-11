@@ -74,7 +74,7 @@ public E buildDungeon(String path ) {
         } else {
             type = TypeBuilder.buildType(typeNode, type); // custom base type
         }
-        E dungeon = getInitializer().initDungeon();
+        E dungeon = getInitializer().createDungeon(type);
 
         dungeon.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
         // getDungeon().setName(name)
@@ -82,8 +82,8 @@ public E buildDungeon(String path ) {
         DungeonPlan plan = null;
         if (getDungeon() instanceof Location) {
             plan = new DungeonPlan(template, ((Location) getDungeon()));
+            plan.setLoaded(true);
         }
-        plan.setLoaded(true);
         for (Node n : XML_Converter.getNodeList(levelNode)) {
             processNode(n, dungeon, plan);
 
@@ -91,12 +91,12 @@ public E buildDungeon(String path ) {
 //TODO dungeon.setPlan(plan);
         if (getDungeon() instanceof Location) {
             plan.setMap(getMapGenerator().generateMap((Location) getDungeon()));
-        }
-        plan.setStringData(data);
+            plan.setStringData(data);
+            if (!CoreEngine.isLevelEditor()) {
+                initDynamicObjData(plan);
+            }  }
 
-        if (!CoreEngine.isLevelEditor()) {
-            initDynamicObjData(plan);
-        }
+
 
         return dungeon;
 

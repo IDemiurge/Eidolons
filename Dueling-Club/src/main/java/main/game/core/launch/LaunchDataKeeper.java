@@ -4,7 +4,7 @@ import main.game.battlecraft.logic.dungeon.DungeonData;
 import main.game.battlecraft.logic.dungeon.DungeonInitializer;
 import main.game.battlecraft.logic.dungeon.Spawner;
 import main.game.battlecraft.logic.dungeon.UnitData;
-import main.system.net.data.PlayerData;
+import main.system.data.PlayerData;
 import main.test.Preset;
 import main.test.Preset.PRESET_DATA;
 
@@ -27,8 +27,7 @@ public class LaunchDataKeeper {
     for ARENA
      */
     PlayerData[] playerData;
-
-    UnitData[] unitData;
+     UnitData[] unitData;
     DungeonData dungeonData;
 
     public LaunchDataKeeper(String hardcodedPlayerData,
@@ -42,12 +41,10 @@ public class LaunchDataKeeper {
     }
 
     public LaunchDataKeeper(Preset preset) {
-        unitData = new UnitData[2];
-        unitData[0] = Spawner.generateData(preset.getValue(PRESET_DATA.PLAYER_UNITS));
-        unitData[1] = Spawner.generateData(preset.getValue(PRESET_DATA.ENEMIES));
-        dungeonData = DungeonInitializer.generateDungeonData(
+        this(preset.getValue(PRESET_DATA.PLAYER_UNITS),
+        preset.getValue(PRESET_DATA.ENEMIES),
 
-                preset.getValue(PRESET_DATA.FIRST_DUNGEON));
+         preset.getValue(PRESET_DATA.FIRST_DUNGEON));
         PresetLauncher.initPresetData(dungeonData, preset);
     }
 

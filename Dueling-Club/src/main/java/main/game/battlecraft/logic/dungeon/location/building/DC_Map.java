@@ -6,7 +6,7 @@ import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
-import main.system.net.data.MapData;
+import main.system.data.MapData;
 
 import java.io.File;
 import java.util.HashMap;

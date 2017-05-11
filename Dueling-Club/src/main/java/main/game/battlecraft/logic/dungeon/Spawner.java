@@ -23,6 +23,7 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.data.DataUnitFactory;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.test.TestMasterContent;
@@ -37,6 +38,8 @@ import static main.system.GuiEventType.BF_CREATED;
 
 public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public static final Integer MAX_SPACE_PERC_CREEPS = 25; // 1 per cell only
+    public static final String SEPARATOR = DataUnitFactory.getSeparator(UnitData.FORMAT);
+    public static final String PAIR_SEPARATOR = DataUnitFactory.getPairSeparator(UnitData.FORMAT);
     private static final Integer MAX_SPACE_PERC_PARTY = 0;
     //    public Spawner(String unitData, DC_Player player, SPAWN_MODE mode) {
     boolean coordinatesSet;
@@ -63,11 +66,11 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         for (String substring : StringMaster.openContainer(dataString)) {
             if (dataString.contains("=")) {
-                coordinates += substring.split("=")[0];
-                units += substring.split("=")[1];
+                coordinates += substring.split("=")[0]+ StringMaster.SEPARATOR;
+                units += substring.split("=")[1] + StringMaster.SEPARATOR;
             } else if (dataString.contains("(") && dataString.contains(")")) {
-                units += VariableManager.removeVarPart(substring);
-                coordinates += VariableManager.getVar(substring);
+                units += VariableManager.removeVarPart(substring) + StringMaster.SEPARATOR;
+                coordinates += VariableManager.getVar(substring) + StringMaster.SEPARATOR;
             } else
                 units += substring;
         }
@@ -80,8 +83,8 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 //                 StringMaster.convertToStringList(coordinatesList), ",");
             }
         if (!coordinates.isEmpty())
-            data += PARTY_VALUE.COORDINATES + "=" + coordinates + ";";
-        data += PARTY_VALUE.MEMBERS + "=" + units + ";";
+            data += PARTY_VALUE.COORDINATES + PAIR_SEPARATOR + coordinates + SEPARATOR;
+        data += PARTY_VALUE.MEMBERS + PAIR_SEPARATOR + units + SEPARATOR;
         return new UnitData(data);
     }
 
@@ -140,16 +143,21 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     private void spawn(String typeName, String coordinates, DC_Player owner,
                        String facing, String level) {
-        FACING_DIRECTION facing_direction = FacingMaster.getFacing(facing);
+        FACING_DIRECTION facing_direction =facing==null ? FACING_DIRECTION.NORTH: FacingMaster.getFacing(facing);
         Coordinates c = new Coordinates(coordinates);
         ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.UNITS_CHARS);
         //TODO chars or units?!
+        if (level != null) {
         int levelUps = StringMaster.getInteger(level);
         if (levelUps > 0) {
-            new UnitLevelManager().getLeveledType(type, levelUps);
+            type = new UnitLevelManager().getLeveledType(type, levelUps);
+        }
         }
 
-        game.getManager().getObjCreator().createUnit(type, c.x, c.y, owner, new Ref(game));
+        Unit unit = (Unit) game.getManager().getObjCreator().createUnit(type, c.x, c.y, owner, new Ref(game));
+        unit.setFacing(facing_direction);
+
+
     }
 
     public void spawnParty(Coordinates origin, Boolean me, ObjType party) {

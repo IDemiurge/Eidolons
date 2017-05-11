@@ -13,6 +13,7 @@ import main.swing.generic.components.G_Panel;
 import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
+import main.test.Refactor;
 
 import javax.swing.*;
 import java.util.LinkedList;
@@ -152,7 +153,7 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
             LevelEditor.setMouseAddMode(false);
             ip.selectType(currentMission.getObj().getType());
             if (getCurrentLevel() != null) {
-                if (getCurrentLevel().getDungeon().getPlan() != null) {
+                if (getCurrentLevel().getLocation().getPlan() != null) {
                     getPlanPanel().refresh();
                 }
             }
@@ -274,10 +275,10 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
     public Level getCurrentLevel() {
         return currentLevel;
     }
-
+@Refactor
     public void setCurrentLevel(Level currentLevel) {
         this.currentLevel = currentLevel;
-        LevelEditor.getSimulation().getDungeonMaster().setDungeon(currentLevel.getDungeon());
+//        LevelEditor.getSimulation().getDungeonMaster().setDungeon(currentLevel.getDungeon());
     }
 
 }

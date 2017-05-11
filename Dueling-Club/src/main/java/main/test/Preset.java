@@ -2,7 +2,7 @@ package main.test;
 
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
-import main.system.net.data.DataUnit;
+import main.system.data.DataUnit;
 import main.test.Preset.PRESET_DATA;
 
 public class Preset extends DataUnit<PRESET_DATA> {

@@ -171,7 +171,7 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
         if (map == null && grid == null) {
 
             if (isMinimapMode()) {
-                map = currentLevel.getDungeon().getMinimap();
+                map = currentLevel .getMinimap();
                 map.setCustomMouseListener(LevelEditor.getMouseMaster());
                 map.setMouseWheelListener(LevelEditor.getMouseMaster());
                 map.init();

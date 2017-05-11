@@ -11,6 +11,7 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.dungeon.DungeonInitializer;
 import main.game.battlecraft.logic.dungeon.DungeonMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -58,6 +59,8 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
 
     @Override
     public TestDungeon initDungeon() {
+        setDungeonPath(getGame().getDataKeeper().getDungeonData().getValue(DUNGEON_VALUE.PATH));
+        setPresetDungeonType(getGame().getDataKeeper().getDungeonData().getValue(DUNGEON_VALUE.TYPE_NAME));
 
         if (FAST_DC.getTestLauncher().getSUPER_FAST_MODE()) {
 //        setDungeonPath(FAST_DC.DEFAULT_TEST_DUNGEON);

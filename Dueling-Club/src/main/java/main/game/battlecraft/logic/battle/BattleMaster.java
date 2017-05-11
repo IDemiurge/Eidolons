@@ -30,6 +30,10 @@ public abstract class BattleMaster<E extends Battle> {
         this.playerManager = createPlayerManager();
     }
 
+    public void init() {
+        playerManager.initializePlayers();
+//        optionManager.initialize();
+    }
     public void startGame() {
 //        getConstructor().init();
     }

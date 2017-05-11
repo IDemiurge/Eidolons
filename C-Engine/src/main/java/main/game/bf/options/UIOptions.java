@@ -1,7 +1,7 @@
 package main.game.bf.options;
 
 import main.game.bf.options.UIOptions.UI_OPTIONS;
-import main.system.net.data.DataUnit;
+import main.system.data.DataUnit;
 
 public class UIOptions extends DataUnit<UI_OPTIONS> {
 

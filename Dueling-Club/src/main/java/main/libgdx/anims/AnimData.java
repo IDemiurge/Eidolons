@@ -8,7 +8,7 @@ import main.content.VALUE;
 import main.data.filesys.PathFinder;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.system.auxiliary.StringMaster;
-import main.system.net.data.DataUnit;
+import main.system.data.DataUnit;
 
 import java.awt.*;
 
