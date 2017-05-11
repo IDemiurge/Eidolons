@@ -1,6 +1,7 @@
 package main.game.battlecraft.logic.battle.universal;
 
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
+import main.game.battlecraft.logic.dungeon.UnitData;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;

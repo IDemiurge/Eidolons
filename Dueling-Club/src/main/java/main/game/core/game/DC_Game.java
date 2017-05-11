@@ -22,6 +22,8 @@ import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.AI_Manager;
+import main.game.battlecraft.logic.battle.BattleMaster;
+import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.battlecraft.logic.battle.test.TestBattleMaster;
 import main.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
@@ -181,6 +183,10 @@ public class DC_Game extends MicroGame {
         if (PresetMaster.getPreset() != null) {
             PresetLauncher.launchPreset();
         }
+        dungeonInit();
+        if (!simulation) {
+            battleInit();
+        }
 
         setInitialized(true);
         Chronos.logTimeElapsedForMark("GAME_INIT");
@@ -211,7 +217,6 @@ public class DC_Game extends MicroGame {
         dungeonMaster.init();
 
         setOffline(true);
-
 
         // if (battlefield == null) {
 

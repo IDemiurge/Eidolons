@@ -55,6 +55,10 @@ public class DataUnitFactory<E extends DataUnit> {
     int i =0;
         for (Object o : valueNames) {
             builder.append(getKeyValueString(format, o, values[i]));
+            builder.append(o.toString());
+            builder.append(getPairSeparator(format));
+            builder.append(values[i]);
+            builder.append(getSeparator(format));
             i++;
         }
         return builder.toString();

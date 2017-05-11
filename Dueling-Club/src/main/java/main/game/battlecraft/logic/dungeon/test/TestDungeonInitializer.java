@@ -11,6 +11,7 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
+import main.game.battlecraft.logic.dungeon.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
