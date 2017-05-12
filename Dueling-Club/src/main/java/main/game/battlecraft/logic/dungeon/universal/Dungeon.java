@@ -12,6 +12,8 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
+import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
+import main.game.battlecraft.logic.dungeon.test.TestDungeonBuilder;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
@@ -104,7 +106,7 @@ public class Dungeon extends Entity {
 
 
     public Integer getZ() {
-        if (z==null )
+        if (z == null)
             return 0;
         return z;
     }

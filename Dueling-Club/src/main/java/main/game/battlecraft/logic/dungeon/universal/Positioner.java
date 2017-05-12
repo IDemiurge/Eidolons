@@ -5,8 +5,10 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
+import main.game.battlecraft.logic.dungeon.Spawner.SPAWN_MODE;
 import main.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
 import main.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
@@ -18,6 +20,7 @@ import main.game.bf.DirectionMaster;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.graphics.GuiManager;
@@ -145,13 +148,11 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public List<Coordinates> getPlayerPartyCoordinates(List<String> partyTypes) {
         return getPartyCoordinates(getDungeon().getPlayerSpawnCoordinates(), true, partyTypes);
     }
-    public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MODE mode) {
+public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MODE mode) {
         return
          StringMaster.convertToStringList(
           getPartyCoordinates(null, owner.isMe(), types));
     }
-
-
     public List<Coordinates> getPartyCoordinates(Coordinates origin, Boolean me,
                                                  List<String> partyTypes) {
 

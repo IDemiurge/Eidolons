@@ -125,6 +125,12 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         return SPAWN_MODE.UNIT_GROUP;
     }
 
+    private SPAWN_MODE getSpawnMode(DC_Player player, boolean first) {
+        if (player.isMe())
+            return SPAWN_MODE.PARTY;
+        return SPAWN_MODE.UNIT_GROUP;
+    }
+
     public UnitData generateData(String dataString, DC_Player player,
                                  Coordinates spawnAt) {
         return generateData(dataString,

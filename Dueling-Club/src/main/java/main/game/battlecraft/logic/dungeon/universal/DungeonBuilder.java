@@ -94,19 +94,17 @@ public E buildDungeon(String path ) {
         if (getDungeon() instanceof Location) {
             plan = new DungeonPlan(template, ((Location) getDungeon()));
             plan.setLoaded(true);
-        }
+
         for (Node n : XML_Converter.getNodeList(levelNode)) {
-            processNode(n, dungeon, plan);
+processNode(n, dungeon, plan);
 
         }
-//TODO dungeon.setPlan(plan);
-        if (getDungeon() instanceof Location) {
             plan.setMap(getMapGenerator().generateMap((Location) getDungeon()));
             plan.setStringData(data);
             if (!CoreEngine.isLevelEditor()) {
                 initDynamicObjData(plan);
-            }  }
-
+            }
+        }
 
 
         return dungeon;

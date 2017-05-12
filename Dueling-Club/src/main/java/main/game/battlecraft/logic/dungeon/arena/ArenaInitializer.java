@@ -1,8 +1,8 @@
 package main.game.battlecraft.logic.dungeon.arena;
 
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.dungeon.universal.Dungeon;
-import main.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
+import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.DungeonInitializer;
 
 /**
  * Created by JustMe on 5/12/2017.

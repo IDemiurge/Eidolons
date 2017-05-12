@@ -43,10 +43,9 @@ public class LaunchDataKeeper {
         //suppose it's just a list of units? coordinates will be figured out later then
         unitData[0] = Spawner.generateData(hardcodedPlayerData,
 //         game.getPlayer(true)
-         null, null, null);
-        unitData[1] = Spawner.generateData(hardcodedEnemyData,
+         null , null,null );        unitData[1] = Spawner.generateData(hardcodedEnemyData,
 //         game.getPlayer(false)
-         null, null, null);
+         null , null,null);
         dungeonData = DungeonInitializer.generateDungeonData(hardcodedDungeonData);
     }
 

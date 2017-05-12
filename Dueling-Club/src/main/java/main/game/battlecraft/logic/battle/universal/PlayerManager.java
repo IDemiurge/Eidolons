@@ -100,7 +100,6 @@ if (player.isEnemy())
             color = getRandomColorFlag();
         }
         DC_Player player = new DC_Player(dataUnit.getValue(PLAYER_VALUE.NAME), color,
-
                 dataUnit.getValue(PLAYER_VALUE.EMBLEM), dataUnit.getValue(PLAYER_VALUE.PORTRAIT), allegience);
 
 
