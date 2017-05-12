@@ -38,13 +38,11 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
     private static final String RANDOM_DUNGEON_WORKSPACE_FILTER =
      MetaEnums.WORKSPACE_GROUP.FOCUS
       + "" + MetaEnums.WORKSPACE_GROUP.COMPLETE;
-    public static boolean RANDOM_DUNGEON = false;
     public static boolean CHOOSE_LEVEL = false;
     private static String DEFAULT_DUNGEON_LEVEL = "Forest.xml"; // "Arena.xml";
     private static String DEFAULT_DUNGEON = "Hidden Camp";// "Hidden Camp";//
     private static String DEFAULT_DUNGEON_PATH;
     private WORKSPACE_GROUP workspaceFilter;
-    private String presetDungeonType;
     private boolean chooseLevel;
 
     public TestDungeonInitializer(DungeonMaster master) {
@@ -77,7 +75,7 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
             type = DataManager.getType(getPresetDungeonType(), DC_TYPE.DUNGEONS);
             return createDungeon(type);
         } else {
-            if (RANDOM_DUNGEON) {
+            if (RANDOM) {
                 type =
 
                         pickRandomDungeon();
@@ -99,7 +97,16 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
         return createDungeon(new ObjType("Test Dungeon", DC_TYPE.DUNGEONS));
     }
 
-    private ObjType pickRandomDungeon() {
+
+
+    public String getPresetDungeonType() {
+        if (presetDungeonType == null) {
+            return DEFAULT_DUNGEON;
+        }
+        return presetDungeonType;
+    }
+
+    protected ObjType pickRandomDungeon() {
         ObjType type;
         List<ObjType> list = DataManager.getTypes(DC_TYPE.DUNGEONS);
 
@@ -115,21 +122,9 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
         type = list.get(RandomWizard.getRandomListIndex(list));
         return type;
     }
-
-    public String getPresetDungeonType() {
-        if (presetDungeonType == null) {
-            return DEFAULT_DUNGEON;
-        }
-        return presetDungeonType;
-    }
-
-    public void setPresetDungeonType(String presetDungeonType) {
-        this.presetDungeonType = presetDungeonType;
-    }
-
     public TestDungeon initDungeonLevelChoice() {
 
-        if (RANDOM_DUNGEON) {
+        if (RANDOM) {
             return (TestDungeon) getBuilder().buildDungeon(getRandomDungeonPath());
         }
         List<ObjType> types = DataManager.getTypes(DC_TYPE.DUNGEONS);
@@ -149,7 +144,7 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
         return null;
     }
 
-    private String getRandomDungeonPath() {
+    protected String getRandomDungeonPath() {
         return FileManager.getRandomFile(
 
                 FileManager.getFilesFromDirectory(PathFinder.getDungeonLevelFolder()

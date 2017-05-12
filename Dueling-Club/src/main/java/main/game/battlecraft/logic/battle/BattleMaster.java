@@ -41,7 +41,9 @@ public abstract class BattleMaster<E extends Battle> {
 
     protected abstract E createBattle();
 
-    protected abstract PlayerManager<E> createPlayerManager();
+    protected PlayerManager<E> createPlayerManager() {
+        return new PlayerManager<E>(this);
+    }
 
     protected abstract BattleOutcomeManager<E> createOutcomeManager();
 

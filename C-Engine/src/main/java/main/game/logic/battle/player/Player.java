@@ -24,6 +24,7 @@ public class Player {
     private boolean neutral;
     private String emblem;
     private Set<Obj> units;
+    private String mainHeroName;
 
     public Player(String name, Color c,
                   boolean neutral, boolean me,
@@ -151,4 +152,11 @@ public class Player {
         this.game = game;
     }
 
+    public void setMainHeroName(String mainHeroName) {
+        this.mainHeroName = mainHeroName;
+    }
+
+    public String getMainHeroName() {
+        return mainHeroName;
+    }
 }

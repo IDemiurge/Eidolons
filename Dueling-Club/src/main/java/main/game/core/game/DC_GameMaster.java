@@ -75,19 +75,6 @@ public class DC_GameMaster extends GameMaster {
             }
             return null;
         }
-        // ObjComponent objComp = null;
-        // if (overlayingIncluded)
-        // objComp = battlefield.getGrid(z).getOverlayingObjMap().getOrCreate(c);
-        // if (objComp == null)
-        // objComp = battlefield.getGrid(z).getObjCompMap().getOrCreate(c);
-        // if (objComp == null)
-        // if (passableIncluded)
-        // objComp = battlefield.getGrid(z).getPassableObjMap().getOrCreate(c);
-        // if (objComp == null)
-        // if (cellsIncluded)
-        // objComp = battlefield.getGrid(z).getCellCompMap().getOrCreate(c);
-        // if (objComp != null)
-        // return objComp.getObj();
         return list.get(0);
     }
 
@@ -145,29 +132,6 @@ public class DC_GameMaster extends GameMaster {
                 list.add(unit);
             }
         }
-
-        // ObjComponent objComp = null;
-        // if (overlayingIncluded)
-        // objComp = battlefield.getGrid(z).getOverlayingObjMap().getOrCreate(c);
-        // {
-        // if (objComp != null)
-        // list.addAllCast(objComp.getObjects());
-        // }
-        // objComp = battlefield.getGrid(z).getObjCompMap().getOrCreate(c);
-        //
-        // if (objComp != null)
-        // list.addAllCast(objComp.getObjects());
-        // if (passableIncluded) {
-        // objComp = battlefield.getGrid(z).getPassableObjMap().getOrCreate(c);
-        // if (objComp != null)
-        // list.addAllCast(objComp.getObjects());
-        // }
-        // if (cellsIncluded)
-        // objComp = battlefield.getGrid(z).getCellCompMap().getOrCreate(c);
-        // {
-        // if (objComp != null)
-        // list.addAllCast(objComp.getObjects());
-        // }
 
         return list;
     }

@@ -5,8 +5,10 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
+import main.game.battlecraft.logic.dungeon.Spawner.SPAWN_MODE;
 import main.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
 import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.rules.action.StackingRule;
@@ -17,6 +19,7 @@ import main.game.bf.DirectionMaster;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -140,7 +143,11 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public List<Coordinates> getPlayerPartyCoordinates(List<String> partyTypes) {
         return getPartyCoordinates(null, true, partyTypes);
     }
-
+    public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MODE mode) {
+        return
+         StringMaster.convertToStringList(
+          getPartyCoordinates(null, owner.isMe(), types));
+    }
     public List<Coordinates> getPartyCoordinates(Coordinates origin, Boolean me,
                                                  List<String> partyTypes) {
 
@@ -214,11 +221,11 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     }
 
     public Coordinates getEnemySpawningCoordinates() {
-        return null;
+        return getEnemyTestPartyCoordinates();
     }
 
     public Coordinates getPlayerSpawnCoordinates() {
-        return null;
+        return Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
     }
 
     public Coordinates getEnemyTestPartyCoordinates() {
@@ -228,7 +235,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         Coordinates playerC =  getPlayerSpawnCoordinates();
         if (playerC == null) {
-            playerC = Coordinates.getMiddleCoordinate(ArenaPositioner.DEFAULT_PLAYER_SIDE);
+            playerC =getPlayerSpawnCoordinates();// Coordinates.getMiddleCoordinate(ArenaPositioner.DEFAULT_PLAYER_SIDE);
         }
         Loop.startLoop(100);
         while (Loop.loopContinues()) {
@@ -337,4 +344,6 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public void setMaxSpacePercentageTaken(Integer maxSpacePercentageTaken) {
         this.maxSpacePercentageTaken = maxSpacePercentageTaken;
     }
+
+
 }

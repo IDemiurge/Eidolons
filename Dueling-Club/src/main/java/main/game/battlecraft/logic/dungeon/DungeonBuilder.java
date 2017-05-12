@@ -42,6 +42,16 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
     public static final String WALL_OBJ_DATA_NODE = "Wall Objects";
     private static final String FLIP_MAP_NODE = "Flipping";
 
+    public static final int BASE_WIDTH = 21;
+    public static final int BASE_HEIGHT = 15;
+
+
+    public int getDefaultHeight() {
+        return BASE_HEIGHT;
+    }
+    public int getDefaultWidth() {
+        return BASE_WIDTH;
+    }
     public DungeonBuilder(DungeonMaster master) {
         super(master);
     }
@@ -51,8 +61,8 @@ public E buildDungeon(String path ) {
         String data = FileManager.readFile(path);
         if (data.isEmpty()) {
             data = FileManager.readFile(
-                    path.contains(PathFinder.getDungeonLevelFolder()) ? path
-                            : PathFinder.getDungeonLevelFolder() + path);
+             path.contains(PathFinder.getDungeonLevelFolder()) ? path
+              : PathFinder.getDungeonLevelFolder() + path);
         }
         if (data.isEmpty()) {
             data = path;
@@ -83,19 +93,17 @@ public E buildDungeon(String path ) {
         if (getDungeon() instanceof Location) {
             plan = new DungeonPlan(template, ((Location) getDungeon()));
             plan.setLoaded(true);
-        }
+
         for (Node n : XML_Converter.getNodeList(levelNode)) {
-            processNode(n, dungeon, plan);
+processNode(n, dungeon, plan);
 
         }
-//TODO dungeon.setPlan(plan);
-        if (getDungeon() instanceof Location) {
             plan.setMap(getMapGenerator().generateMap((Location) getDungeon()));
             plan.setStringData(data);
             if (!CoreEngine.isLevelEditor()) {
                 initDynamicObjData(plan);
-            }  }
-
+            }
+        }
 
 
         return dungeon;
@@ -185,6 +193,7 @@ public E buildDungeon(String path ) {
             }
         }
     }
+
 
 
 }

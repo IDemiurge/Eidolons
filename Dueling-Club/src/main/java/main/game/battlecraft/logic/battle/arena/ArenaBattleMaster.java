@@ -30,28 +30,24 @@ public class ArenaBattleMaster extends BattleMaster<ArenaBattle> {
         return waveAssembler;
     }
 
-    @Override
-    protected PlayerManager<ArenaBattle> createPlayerManager() {
-        return null;
-    }
 
     @Override
     protected ArenaBattle createBattle() {
-        return null;
+        return new ArenaBattle();
     }
 
     @Override
     protected BattleOutcomeManager createOutcomeManager() {
-        return null;
+        return new ArenaOutcomeManager(this);
     }
 
     @Override
     protected BattleConstructor createConstructor() {
-        return null;
+        return new ArenaBattleConstructor(this);
     }
 
     @Override
     protected BattleStatManager createStatManager() {
-        return null;
+        return new ArenaStatManager(this);
     }
 }
