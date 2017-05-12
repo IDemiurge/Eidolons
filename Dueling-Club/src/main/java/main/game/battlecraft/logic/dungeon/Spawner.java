@@ -8,7 +8,6 @@ import main.content.PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
-import main.entity.obj.MicroObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.DC_Player;
@@ -21,7 +20,6 @@ import main.game.core.game.DC_Game.GAME_MODES;
 import main.libgdx.bf.BFDataCreatedEvent;
 import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.data.DataUnitFactory;
 import main.system.sound.SoundMaster;
@@ -77,6 +75,9 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         if (positioner != null)
             if (coordinates.isEmpty()) {
+                StringMaster.joinStringList(
+                 StringMaster.convertToStringList(
+                  positioner.getPlayerPartyCoordinates(StringMaster.openContainer(units))), ",");
 //                List<Coordinates> coordinatesList =
 //                 positioner.getCoordinates(player, spawnAt, units);
 //                coordinates = StringMaster.joinStringList(
@@ -98,7 +99,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
             UnitData data = player.getUnitData();
             if (data == null)
                 data = generateData("", player, null);
-            spawn(data, player);
+            spawn(data, player, getSpawnMode(player, true));
         }
         final Integer cellsX = game.getDungeon().getCellsX();
         final Integer cellsY = game.getDungeon().getCellsY();
@@ -111,6 +112,12 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     }
 
+    private SPAWN_MODE getSpawnMode(DC_Player player, boolean first) {
+        if (player.isMe())
+            return SPAWN_MODE.PARTY;
+        return SPAWN_MODE.UNIT_GROUP;
+    }
+
     public UnitData generateData(String dataString, DC_Player player,
                                  Coordinates spawnAt) {
         return generateData(dataString,
@@ -118,20 +125,25 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
                 spawnAt, getPositioner());
     }
 
-    public void spawn(UnitData data, DC_Player owner) {
+    public void spawn(UnitData data, DC_Player owner, SPAWN_MODE mode) {
         int i = 0;
         if (owner == null)
             owner = getPlayerManager().getPlayer(data.getContainerValue(PARTY_VALUE.PLAYER_NAME, i));
         List<String> types = data.getContainerValues(PARTY_VALUE.MEMBERS);
+        List<String> coordinates = data.getContainerValues(PARTY_VALUE.COORDINATES);
+        if (coordinates.isEmpty()) {
+            coordinates = getPositioner().getCoordinates(types, owner, mode);
+        }
         while (true) {
             if (i == types.size())
                 return;
             String facing = data.getContainerValue(PARTY_VALUE.FACING, i);
-            String coordinates = data.getContainerValue(PARTY_VALUE.COORDINATES, i);
+            String c = coordinates.get(i);
+
             String level = data.getContainerValue(PARTY_VALUE.LEVEL, i);
             String type = data.getContainerValue(PARTY_VALUE.MEMBERS, i);
             i++;
-            spawn(type, coordinates, owner, facing, level);
+            spawn(type, c, owner, facing, level);
         }
 //     coordinate
 
@@ -142,6 +154,9 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     private void spawn(String typeName, String coordinates, DC_Player owner,
                        String facing, String level) {
         FACING_DIRECTION facing_direction =facing==null ? FACING_DIRECTION.NORTH: FacingMaster.getFacing(facing);
+       if (coordinates==null ){
+//           getPositioner().getcoo
+       }
         Coordinates c = new Coordinates(coordinates);
         ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.UNITS_CHARS);
         //TODO chars or units?!
@@ -158,30 +173,30 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     }
 
-    public void spawnParty(Coordinates origin, Boolean me, ObjType party) {
+    public void spawnCustomParty(Coordinates origin, Boolean me, ObjType party) {
         // from entrances, from sides, by default, by event, by test - useful!
         // positioner.getCoordinatesForUnitGroup(presetGroupTypes, wave);
         List<String> partyTypes = StringMaster.openContainer(party.getProperty(PROPS.MEMBERS));
         List<Coordinates> c = getPositioner().getPartyCoordinates(origin, me, partyTypes);
         String partyData = DC_ObjInitializer.getObj_CoordinateString(partyTypes, c);
-        spawnParty(me, partyData);
+        spawnCustomParty(me, partyData);
     }
 
     public void spawnParties() {
         try {
-            spawnParty(true);
+            spawnCustomParty(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-            spawnParty(false);
+            spawnCustomParty(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void spawnParty(boolean me) {
-        spawnParty(me, null);
+    public void spawnCustomParty(boolean me) {
+        spawnCustomParty(me, null);
     }
 
     public void spawnUnitsAt(List<Unit> units, Coordinates coordinates) {
@@ -199,8 +214,8 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         spawnUnitsAt(party.getMembers(), coordinates);
     }
 
-    @Deprecated
-    public void spawnParty(boolean me, String partyData) {
+
+    public void spawnCustomParty(boolean me, String partyData) {
 
         DC_Player player = game.getPlayer(me);
         if (BooleanMaster.isTrue(me)) {
@@ -215,10 +230,12 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         if (!partyData.contains(DC_ObjInitializer.COORDINATES_OBJ_SEPARATOR)) {
             partyData = DC_ObjInitializer.convertVarStringToObjCoordinates(partyData);
         }
-        List<MicroObj> list = DC_ObjInitializer.processUnitDataString(player, partyData, game);
-        if (!ListMaster.isNotEmpty(list)) {
-            return;
-        }
+        UnitData data = generateData(partyData, player, null );
+        spawn(data, player, SPAWN_MODE.PARTY);
+//        List<MicroObj> list = DC_ObjInitializer.processUnitDataString(player, partyData, game);
+//        if (!ListMaster.isNotEmpty(list)) {
+//            return;
+//        }
 
 
     }
@@ -261,7 +278,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         }
 //        game.getPlayer(true).setEmblem(party.getLeader().getEmblem().getImage());
     }
-
+//TODO
     public void spawnWave(String typeName, DC_Player player, Coordinates coordinate) {
     }
 

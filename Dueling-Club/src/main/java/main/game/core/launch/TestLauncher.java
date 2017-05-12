@@ -20,6 +20,8 @@ import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
+import main.game.core.game.GameFactory;
+import main.game.core.game.GameFactory.GAME_SUBCLASS;
 import main.game.core.launch.PresetLauncher.LAUNCH;
 import main.game.module.adventure.travel.EncounterMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -50,9 +52,10 @@ public class TestLauncher {
     // private boolean RANDOMIZE_PARTY = false;
     // private boolean RANDOMIZE_ENEMIES_PARTY = true;
     public boolean LEADER_MOVES_FIRST = false;
+    private String dungeon= "Cemetary.xml";
     public String ENEMY_PARTY = "Pirate";
     public String PLAYER_PARTY =
-            "Luwien Tulanir v3;Blauri Kinter v2"
+            "Luwien Tulanir v3,Blauri Kinter v2"
 //            "Nelia Valrith;"
             // +"Grufirant Grossklotz;Orthaelion Enloth;Belia Haevril"
 //      ";Anfina Ilarfis;Amaltha Soamdath;Belia Haevril"
@@ -70,8 +73,8 @@ public class TestLauncher {
     private String encounterName;
     private Integer unitGroupLevel;
     private boolean factionLeaderRequired;
-    private String dungeon;
     private WORKSPACE_GROUP workspaceFilter;
+    private GAME_SUBCLASS gameType=GAME_SUBCLASS.TEST;
 
     public TestLauncher(DC_Game game) {
         this(game, null, null );
@@ -132,16 +135,24 @@ public class TestLauncher {
     }
 
 
-    public LaunchDataKeeper initDataKeeper() {
+    public LaunchDataKeeper createDataKeeper() {
         if (PresetMaster.getPreset() != null)
-            return new LaunchDataKeeper(PresetMaster.getPreset());
-        return new LaunchDataKeeper(PLAYER_PARTY, ENEMY_PARTY, dungeon);
+            return new LaunchDataKeeper(game, PresetMaster.getPreset());
+        return new LaunchDataKeeper(game, PLAYER_PARTY, ENEMY_PARTY, dungeon);
     }
 
 
     public DC_Game initDC_Game() {
+            if (game == null) {
+                if (PresetLauncher.getLaunch()!=null )
+                    if (PresetLauncher.getLaunch().gameType!=null )
+                        gameType= PresetLauncher.getLaunch().gameType;
 
-        initData();
+                        game =  GameFactory.createGame(gameType);
+//                game = new DC_Game(false);
+            }
+            DC_Game.game=(game);
+            initFlags();
         if (DEBUG_MODE != null) {
             game.setDebugMode(DEBUG_MODE);
         }
@@ -151,14 +162,11 @@ public class TestLauncher {
                 game.setDebugMode(Launcher.isDEBUG_MODE_DEFAULT());
             }
             initPlayerParties();
-
-
-            game.init();
-        } else {
-            game.init();
-
         }
-
+            game.init();
+            game.dungeonInit();
+            initData();
+            game.battleInit();
         if (DUMMY_MODE) {
             game.setDummyMode(true);
             game.setDummyPlus(DUMMY_PP);
@@ -181,10 +189,8 @@ public class TestLauncher {
         return game;
     }
 
-    public void initData() {
-        if (game == null) {
-            game = new DC_Game(false);
-        }
+        public void initFlags() {
+
 
 
 
@@ -217,13 +223,14 @@ public class TestLauncher {
         }
 
 
-        LaunchDataKeeper dataKeeper = initDataKeeper();
-        if (workspaceFilter != null)
-            dataKeeper.getDungeonData().setValue(DUNGEON_VALUE.WORKSPACE_FILTER
-                    , workspaceFilter.toString());
-        game.setDataKeeper(dataKeeper);
     }
 
+    public void initData() {    LaunchDataKeeper dataKeeper = createDataKeeper();
+        if (workspaceFilter!=null )
+        dataKeeper.getDungeonData().setValue(DUNGEON_VALUE.WORKSPACE_FILTER
+         , workspaceFilter.toString());
+        game.setDataKeeper(dataKeeper);
+    }
     private void initLaunch(LAUNCH launch) {
 
 //            if (PresetLauncher.getLaunch().preset != null) {

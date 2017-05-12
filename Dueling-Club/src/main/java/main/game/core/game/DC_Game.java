@@ -178,10 +178,10 @@ public class DC_Game extends MicroGame {
         if (PresetMaster.getPreset() != null) {
             PresetLauncher.launchPreset();
         }
-        dungeonInit();
-        if (!simulation) {
-            battleInit();
-        }
+//        dungeonInit(); separate!
+//        if (!simulation) {
+//            battleInit();
+//        }
 
         setInitialized(true);
         Chronos.logTimeElapsedForMark("GAME_INIT");

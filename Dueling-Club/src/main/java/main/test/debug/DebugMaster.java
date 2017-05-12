@@ -561,8 +561,8 @@ public class DebugMaster {
 //                    }
 
                     game.getManager().getDeathMaster().killAllUnits(true, false, quiet);
-                    game.getBattleMaster().getSpawner().spawnParty(true);
-                    game.getBattleMaster().getSpawner().spawnParty(false);
+                    game.getBattleMaster().getSpawner().spawnCustomParty(true);
+                    game.getBattleMaster().getSpawner().spawnCustomParty(false);
                     game.getManager().refreshAll();
                     WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, true);
                     return func;
@@ -571,8 +571,8 @@ public class DebugMaster {
                     game.getManager().getDeathMaster().killAllUnits(!isAltMode());
                     if (respawn) {
                         // /respawn!
-                        game.getBattleMaster().getSpawner().spawnParty(true);
-                        game.getBattleMaster().getSpawner().spawnParty(false);
+                        game.getBattleMaster().getSpawner().spawnCustomParty(true);
+                        game.getBattleMaster().getSpawner().spawnCustomParty(false);
                     }
                     game.getManager().refreshAll();
 
@@ -748,7 +748,7 @@ public class DebugMaster {
 
                     coordinate = getGame().getBattleFieldManager().pickCoordinate();
                     ObjType party = ListChooser.chooseType_(DC_TYPE.PARTY);
-                    game.getBattleMaster().getSpawner().spawnParty(coordinate, null, party);
+                    game.getBattleMaster().getSpawner().spawnCustomParty(coordinate, null, party);
 
                     break;
                 case SPAWN_WAVE:

@@ -905,7 +905,7 @@ public class Unit extends DC_UnitModel {
     public boolean isAiControlled() {
         if (aiControlled) {
             return true;
-        }
+        } if (!owner.isAi())
         if (!getGame().isDebugMode()) {
             if (getGame().getGameMode() == GAME_MODES.ARENA) {
                 if (owner.getHeroObj() != null) {

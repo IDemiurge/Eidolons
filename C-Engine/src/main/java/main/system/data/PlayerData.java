@@ -17,7 +17,7 @@ public class PlayerData extends DataUnit<PLAYER_VALUE> {
     }
 
     public enum PLAYER_VALUE {
-        NAME, COLOR, EMBLEM, PORTRAIT, ALLEGIENCE,
+        NAME, COLOR, EMBLEM, PORTRAIT, ALLEGIENCE, MAIN_HERO,
     }
     public enum ALLEGIENCE {
         PLAYER, ALLY, ENEMY, NEUTRAL, PASSIVE;

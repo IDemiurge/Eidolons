@@ -43,8 +43,10 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
             DC_Player player = initPlayerFromString(substring);
             if (player.getAllegiance() == ALLEGIENCE.NEUTRAL)
                 Player.NEUTRAL = player;
-            else
+//            else
                 players.add(player);
+if (player.isEnemy())
+    player.setAi(true);
 
             UnitData[] unitData = getMaster().getGame().getDataKeeper().getUnitData();
             if (unitData != null)
@@ -56,6 +58,7 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
         if (Player.NEUTRAL == null) {
             Player.NEUTRAL = new DC_Player("Neutral", FLAG_COLOR.BROWN, "", "", ALLEGIENCE.NEUTRAL);
             DC_Player.NEUTRAL = (DC_Player) Player.NEUTRAL;
+            players.add(DC_Player.NEUTRAL);
         }
     }
 
@@ -89,9 +92,13 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
         if (color == null) {
             color = getRandomColorFlag();
         }
-        return new DC_Player(dataUnit.getValue(PLAYER_VALUE.NAME), color,
+        DC_Player player = new DC_Player(dataUnit.getValue(PLAYER_VALUE.NAME), color,
                 dataUnit.getValue(PLAYER_VALUE.EMBLEM), dataUnit.getValue(PLAYER_VALUE.PORTRAIT), allegience);
 
+
+        player.setMainHeroName(dataUnit.getValue(PLAYER_VALUE.MAIN_HERO) );
+
+        return player;
     }
 
 

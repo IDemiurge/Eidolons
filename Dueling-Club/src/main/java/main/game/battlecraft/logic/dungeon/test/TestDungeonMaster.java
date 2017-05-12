@@ -17,6 +17,11 @@ public class TestDungeonMaster extends DungeonMaster<TestDungeon> {
     }
 
     @Override
+    protected DungeonBuilder<TestDungeon> createBuilder() {
+        return new TestDungeonBuilder<>(this);
+    }
+
+    @Override
     protected FacingAdjuster<TestDungeon> createFacingAdjuster() {
         return new FacingAdjuster<>(this);
     }
