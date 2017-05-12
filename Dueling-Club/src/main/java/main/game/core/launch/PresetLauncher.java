@@ -10,6 +10,7 @@ import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
+import main.game.core.game.GameFactory.GAME_SUBCLASS;
 import main.game.core.launch.TestLauncher.CODE;
 import main.libgdx.anims.controls.EmitterController;
 import main.libgdx.anims.particles.ParticleManager;
@@ -61,13 +62,17 @@ public class PresetLauncher {
 
 
         LAUNCH.Standoff_Test.gameMode = GAME_MODES.ARENA;
+        LAUNCH.Standoff_Test.gameType =  GAME_SUBCLASS.ARENA;
         LAUNCH.Standoff_Test.dungeonPath = "Pit.xml";
 
         LAUNCH.Standoff_Preset.gameMode = GAME_MODES.ARENA;
+        LAUNCH.Standoff_Preset.gameType =  GAME_SUBCLASS.ARENA;
         LAUNCH.Standoff_Preset.dungeonPath = "Pit.xml";
         LAUNCH.Standoff_Preset.maxAnimTime = 2000;
 
         LAUNCH.Standoff.gameMode = GAME_MODES.ARENA;
+        LAUNCH.Standoff.gameType =  GAME_SUBCLASS.ARENA;
+
         LAUNCH.Standoff.workspaceFilter = WORKSPACE_GROUP.FOCUS;
         LAUNCH.Standoff.PARTY_CODE = CODE.CHOOSE;
         LAUNCH.Standoff.maxAnimTime = 2000;
@@ -429,6 +434,7 @@ public class PresetLauncher {
         public GAME_MODES gameMode;
         public WORKSPACE_GROUP workspaceFilter;
         public int maxAnimTime;
+        public GAME_SUBCLASS gameType;
 
         //test launches
         LAUNCH() {

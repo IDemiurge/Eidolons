@@ -326,21 +326,17 @@ public class DC_MovementManager implements MovementManager {
         // obj.modifyParameter(PARAMS.C_N_OF_MOVES, -_cost, 0);
         // obj.modifyParameter(PARAMS.C_N_OF_ACTIONS, -_cost, 0);
 
-        int x = cell.getX();
-        int y = cell.getY();
+        Coordinates c =cell.getCoordinates() ;
         if (mod != MOVE_MODIFIER.TELEPORT) { // TODO UPDATE!
-            Unit moveObj = (Unit) getGrid().getObj(cell.getCoordinates());
+            Unit moveObj =   (Unit) getGrid().getObj(cell.getCoordinates());
             if (moveObj != null) {
                 if (ref.getActive() instanceof DC_ActiveObj) {
                     DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
                     if (moveObj instanceof Unit) {
                         Unit heroObj = moveObj;
-                        Coordinates c = CollisionRule.collision(ref, activeObj, moveObj, heroObj,
+                      c= CollisionRule.collision(ref, activeObj, moveObj, heroObj,
                                 false, activeObj.getIntParam(PARAMS.FORCE));
-                        if (c != null) {// TODO UPDATE!
-                            x = c.x;
-                            y = c.y;
-                        } else {
+                        if (c == null) {// TODO UPDATE!
                             return true; // displaced by Collision rule?
                         }
                     }
@@ -350,9 +346,12 @@ public class DC_MovementManager implements MovementManager {
         if (obj.isDead()) {
             return false;
         }
+        int x = cell.getX();
+        int y = cell.getY();
         if (!game.getRules().getEngagedRule().unitMoved(obj, x, y)) {
             return false;
         }
+        obj.setCoordinates(c);
 
         event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
         return game.fireEvent(event);

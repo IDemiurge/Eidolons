@@ -7,6 +7,8 @@ import main.system.data.DataUnit;
  * Created by JustMe on 5/10/2017.
  */
 public class DungeonData extends DataUnit<DUNGEON_VALUE> {
+    private static final Boolean FORMAT =false ;
+
     public enum DUNGEON_VALUE{
         TYPE_NAME,
         PATH,
@@ -14,6 +16,11 @@ public class DungeonData extends DataUnit<DUNGEON_VALUE> {
         FILTER_VALUE_NAME,
         FILTER_VALUE,
         WORKSPACE_FILTER,
+    }
+
+    @Override
+    public Boolean getFormat() {
+        return FORMAT;
     }
 
     public DungeonData() {

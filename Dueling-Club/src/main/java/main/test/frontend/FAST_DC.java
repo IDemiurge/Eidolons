@@ -101,6 +101,7 @@ public class FAST_DC {
             testLauncher.ENEMY_CODE = CODE.PRESET;
             testLauncher.PARTY_CODE = CODE.PRESET;
         }
+        if (DEFAULT_DUNGEON!=null )
         testLauncher.setDungeon(DEFAULT_DUNGEON);
         if (!skipChoice) {
             if (BEHAVIOR_TEST_ON) {

@@ -11,9 +11,10 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
+import main.game.battlecraft.logic.dungeon.test.TestDungeonBuilder;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.module.dungeoncrawl.dungeon.minimap.Minimap;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
@@ -21,13 +22,12 @@ import main.system.auxiliary.StringMaster;
 
 public class Dungeon extends Entity {
     private static final Integer DEFAULT_GLOBAL_ILLUMINATION = 75;
+    Integer z;
     private COLOR_THEME colorTheme;
     private DUNGEON_TYPE dungeonType;
-
     private DUNGEON_TEMPLATES template;
     private Minimap minimap;
     private String levelFilePath;
-    Integer z;
 
     /*
      * Encounters Levels Rewards Loot
@@ -58,7 +58,7 @@ public class Dungeon extends Entity {
     public COLOR_THEME getColorTheme() {
         if (colorTheme == null) {
             setColorTheme(new EnumMaster<COLOR_THEME>().retrieveEnumConst(COLOR_THEME.class,
-                    getProperty(PROPS.COLOR_THEME)));
+             getProperty(PROPS.COLOR_THEME)));
         }
         return colorTheme;
     }
@@ -70,7 +70,7 @@ public class Dungeon extends Entity {
     public DUNGEON_TYPE getDungeonType() {
         if (dungeonType == null) {
             dungeonType = new EnumMaster<DUNGEON_TYPE>().retrieveEnumConst(DUNGEON_TYPE.class,
-                    getProperty(G_PROPS.DUNGEON_TYPE));
+             getProperty(G_PROPS.DUNGEON_TYPE));
         }
         return dungeonType;
     }
@@ -84,6 +84,9 @@ public class Dungeon extends Entity {
     }
 
     public Integer getWidth() {
+
+        if (getIntParam(PARAMS.BF_WIDTH) == 0)
+            setParam(PARAMS.BF_WIDTH,   getGame().getDungeonMaster().getBuilder().getDefaultWidth());
         return getIntParam(PARAMS.BF_WIDTH);
     }
 
@@ -92,14 +95,16 @@ public class Dungeon extends Entity {
     }
 
     public Integer getHeight() {
+        if (getIntParam(PARAMS.BF_HEIGHT) == 0)
+            setParam(PARAMS.BF_HEIGHT,   getGame().getDungeonMaster().getBuilder().
+             getDefaultHeight());
+
         return getIntParam(PARAMS.BF_HEIGHT);
     }
 
 
-
-
     public Integer getZ() {
-        if (z==null )
+        if (z == null)
             return 0;
         return z;
     }
@@ -125,7 +130,7 @@ public class Dungeon extends Entity {
 
     private void initTemplate() {
         template = new RandomWizard<DUNGEON_TEMPLATES>().getObjectByWeight(
-                getProperty(PROPS.DUNGEON_TEMPLATES), DUNGEON_TEMPLATES.class);
+         getProperty(PROPS.DUNGEON_TEMPLATES), DUNGEON_TEMPLATES.class);
         if (template == null)
         // if (getProperty(PROPS.DUNGEON_TEMPLATES).isEmpty())
         {
