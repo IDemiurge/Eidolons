@@ -1,12 +1,12 @@
 package main.ability.effects.oneshot.mechanic;
 
 import main.ability.effects.*;
-import main.ability.effects.continuous.SetCustomModeEffect;
 import main.ability.effects.attachment.AddBuffEffect;
-import main.ability.effects.oneshot.buff.RemoveBuffEffect;
-import main.ability.effects.oneshot.spell.DivinationEffect;
 import main.ability.effects.common.ModifyPropertyEffect;
 import main.ability.effects.common.ModifyValueEffect;
+import main.ability.effects.continuous.SetCustomModeEffect;
+import main.ability.effects.oneshot.buff.RemoveBuffEffect;
+import main.ability.effects.oneshot.spell.DivinationEffect;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.mode.MODE;
@@ -23,10 +23,10 @@ import main.elements.conditions.StringComparison;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.game.battlecraft.rules.mechanics.InterruptRule;
 import main.game.battlecraft.rules.perk.AlertRule;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;

@@ -214,8 +214,9 @@ public class PresetMaster {
         // }
         String enemyName = StringMaster.getFirstItem(enemies);
         return partyName + " vs " + enemyName + " on "
-                +   getRawDungeonName(levelFilePath);
+                + getRawDungeonName(levelFilePath);
     }
+
     private static String getRawDungeonName(String levelFilePath) {
         if (levelFilePath == null) {
             return "null dungeon";

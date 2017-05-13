@@ -8,13 +8,13 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.location.building.DC_Map;
+import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.bf.BattleFieldGrid;
 import main.game.bf.Coordinates;
-import main.game.battlecraft.logic.dungeon.location.building.DC_Map;
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.meta.PartyManager;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.CellComp;
 import main.swing.generic.components.G_Panel;
@@ -62,8 +62,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         this.game = dungeon.getGame();
         this.w = GuiManager.getBF_CompDisplayedCellsX();
         this.h = GuiManager.getBF_CompDisplayedCellsY();
-            this.w = game.getDungeonMaster().getDungeonWrapper(). getWidth();
-            this.h = game.getDungeonMaster().getDungeonWrapper(). getHeight();
+        this.w = game.getDungeonMaster().getDungeonWrapper().getWidth();
+        this.h = game.getDungeonMaster().getDungeonWrapper().getHeight();
         comp = new G_Panel();
         comp.setBackground(ColorManager.getTranslucent(ColorManager.OBSIDIAN, 10));
 

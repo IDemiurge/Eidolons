@@ -73,11 +73,11 @@ public class TestLauncher {
     private String dungeon;
     private WORKSPACE_GROUP workspaceFilter;
 
-    public TestLauncher(DC_Game game ) {
+    public TestLauncher(DC_Game game) {
         this(game, null, null );
     }
 
-    public TestLauncher(DC_Game game, Boolean FAST_MODE, Boolean SUPER_FAST_MODE ) {
+    public TestLauncher(DC_Game game, Boolean FAST_MODE, Boolean SUPER_FAST_MODE) {
         this.game = game;
         this.FAST_MODE = BooleanMaster.isTrue(FAST_MODE);
         this.SUPER_FAST_MODE = BooleanMaster.isTrue(SUPER_FAST_MODE);
@@ -132,16 +132,14 @@ public class TestLauncher {
     }
 
 
-
-
     public LaunchDataKeeper initDataKeeper() {
-        if (PresetMaster.getPreset()!=null )
-            return  new LaunchDataKeeper(PresetMaster.getPreset());
+        if (PresetMaster.getPreset() != null)
+            return new LaunchDataKeeper(PresetMaster.getPreset());
         return new LaunchDataKeeper(PLAYER_PARTY, ENEMY_PARTY, dungeon);
     }
 
 
-        public DC_Game initDC_Game() {
+    public DC_Game initDC_Game() {
 
         initData();
         if (DEBUG_MODE != null) {
@@ -195,7 +193,7 @@ public class TestLauncher {
             initLaunch(launch);
         }
 
-        DC_Game.game=(game);
+        DC_Game.game = (game);
         // select code?
 
 
@@ -205,7 +203,7 @@ public class TestLauncher {
         if (PresetMaster.getPreset() == null) {
             if (getFAST_MODE()) {
                 if (  dungeon == null) {
-                    dungeon = DungeonInitializer.RANDOM_DUNGEON ;
+                    dungeon = DungeonInitializer.RANDOM_DUNGEON;
                 }
                 TestMasterContent.test_on = false;
             }
@@ -220,9 +218,9 @@ public class TestLauncher {
 
 
         LaunchDataKeeper dataKeeper = initDataKeeper();
-        if (workspaceFilter!=null )
-        dataKeeper.getDungeonData().setValue(DUNGEON_VALUE.WORKSPACE_FILTER
-         , workspaceFilter.toString());
+        if (workspaceFilter != null)
+            dataKeeper.getDungeonData().setValue(DUNGEON_VALUE.WORKSPACE_FILTER
+                    , workspaceFilter.toString());
         game.setDataKeeper(dataKeeper);
     }
 

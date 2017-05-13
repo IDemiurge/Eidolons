@@ -22,9 +22,9 @@ import main.elements.conditions.Conditions;
 import main.elements.conditions.PrinciplesCondition;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
-import main.game.battlecraft.logic.battle.arena.Wave;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.StringMaster;
@@ -37,7 +37,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PartyManager<E extends MetaGame> extends  MetaGameHandler<E> {
+public class PartyManager<E extends MetaGame> extends MetaGameHandler<E> {
 
     private static final String DEFAULT_TYPE_NAME = "Inglorious Bastards";
     private static final String PARTY_FOLDER = "\\parties";

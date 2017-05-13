@@ -1,19 +1,19 @@
 package main.game.module.dungeoncrawl.ai;
 
 import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.GroupAI;
 import main.game.battlecraft.ai.UnitAI;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.battlecraft.ai.tools.Analyzer;
+import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.dungeon.Positioner;
+import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.BLOCK_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.BLOCK_TYPE;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;

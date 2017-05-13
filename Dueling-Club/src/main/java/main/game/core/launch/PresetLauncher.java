@@ -47,14 +47,10 @@ public class PresetLauncher {
 
     };
     public static int PRESET_OPTION = -1;
+    public static String PRESET_LAUNCH;
     static LAUNCH launch;
     private static boolean isInitLaunch = true;
-    public static String PRESET_LAUNCH;
     private static DataUnit<?> data;
-
-    public static DataUnit<?> getData() {
-        return data;
-    }
 
     static {
         LAUNCH.Profiling.gameMode = GAME_MODES.ARENA;
@@ -88,6 +84,10 @@ public class PresetLauncher {
 
         LAUNCH.JUnit.graphicsOff = true;
         LAUNCH.Profiling.dungeonPath = "Test\\Broken Ravenguard Fort.xml";
+    }
+
+    public static DataUnit<?> getData() {
+        return data;
     }
 
     public static Boolean chooseLaunchOption() {
@@ -251,14 +251,14 @@ public class PresetLauncher {
     }
 
     public static void initPresetData(DungeonData dungeonData, Preset preset) {
-        data=dungeonData;
+        data = dungeonData;
         launchPreset(preset);
     }
 
     public static void launchPreset(Preset profile) {
         PresetMaster.setPreset(profile);
-        if (data==null )
-        data = new DungeonData();
+        if (data == null)
+            data = new DungeonData();
         for (PRESET_DATA item : PRESET_DATA.values()) {
 
             String value = profile.getValue(item);
@@ -290,9 +290,9 @@ public class PresetLauncher {
                         break;
                     case FIRST_DUNGEON:
                         if (value.contains("."))
-                            valueName= DUNGEON_VALUE.PATH.toString();
+                            valueName = DUNGEON_VALUE.PATH.toString();
                         else
-                            valueName= DUNGEON_VALUE.TYPE_NAME.toString();
+                            valueName = DUNGEON_VALUE.TYPE_NAME.toString();
                         break;
                 }
             }
@@ -379,7 +379,6 @@ public class PresetLauncher {
         // TODO Auto-generated method stub
 
     }
-
 
 
     public enum LAUNCH_MODS {

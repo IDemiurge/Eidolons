@@ -12,10 +12,10 @@ import main.entity.type.ObjType;
 import main.logic.AT_OBJ_TYPE;
 import main.logic.AT_PROPS;
 import main.logic.ArcaneEntity;
-import main.system.auxiliary.data.FileManager;
-import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.MapMaster;
 
 import java.util.List;
 import java.util.Map;

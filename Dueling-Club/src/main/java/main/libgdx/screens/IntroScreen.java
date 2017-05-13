@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import main.libgdx.DialogScenario;
 import main.libgdx.stage.ChainedStage;
-import main.libgdx.stage.LoadingStage;
 
 import java.util.Arrays;
 
@@ -20,23 +19,22 @@ public class IntroScreen implements Screen {
     private static final String portratePath = "mini/unit/Darkness/dungeon/drone.jpg";
     private static final String notSkipableMessage = "This message you cant skip, 3 sec.";
     private static final String skipableMessage = "This message you may skip, press any key blablabla...";
-    private final LoadingStage loadingStage;
+    private Runnable onDone;
     private ChainedStage logoStage;
     private ChainedStage introStage;
 
-    public IntroScreen() {
-        DialogScenario javaScenario = new DialogScenario(2000, false, getOrCreateR(javaLogoPath), null, null);
-        DialogScenario libgdxScenario = new DialogScenario(2000, false, getOrCreateR(libgdxLogoPath), null, null);
-        DialogScenario introScenario = new DialogScenario(3000, false, getOrCreateR(backIntroPath), notSkipableMessage, getOrCreateR(portratePath));
-        DialogScenario introScenario2 = new DialogScenario(10000, true, getOrCreateR(backIntroPath), skipableMessage, null);
+    public IntroScreen(Runnable onDone) {
+        this.onDone = onDone;
+
+        DialogScenario javaScenario = new DialogScenario(500, false, getOrCreateR(javaLogoPath), null, null);
+        DialogScenario libgdxScenario = new DialogScenario(500, false, getOrCreateR(libgdxLogoPath), null, null);
+        DialogScenario introScenario = new DialogScenario(500, false, getOrCreateR(backIntroPath), notSkipableMessage, getOrCreateR(portratePath));
+        DialogScenario introScenario2 = new DialogScenario(500, true, getOrCreateR(backIntroPath), skipableMessage, null);
 
         logoStage = new ChainedStage(Arrays.asList(javaScenario, libgdxScenario));
         introStage = new ChainedStage(Arrays.asList(introScenario, introScenario2));
 
-        loadingStage = new LoadingStage();
-
         Gdx.input.setInputProcessor(new InputMultiplexer(logoStage, introStage));
-
     }
 
     @Override
@@ -55,8 +53,10 @@ public class IntroScreen implements Screen {
             introStage.act(delta);
             introStage.draw();
         } else {
-            loadingStage.act(delta);
-            loadingStage.draw();
+            if (onDone != null) {
+                onDone.run();
+                onDone = null;
+            }
         }
     }
 
@@ -82,6 +82,7 @@ public class IntroScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        logoStage.dispose();
+        introStage.dispose();
     }
 }

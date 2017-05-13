@@ -4,9 +4,9 @@ import main.client.cc.logic.party.PartyObj;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.meta.faction.Faction;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.meta.faction.Faction;
 
 import java.util.List;
 

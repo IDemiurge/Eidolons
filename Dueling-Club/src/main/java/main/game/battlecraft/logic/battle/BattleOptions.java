@@ -1,7 +1,7 @@
 package main.game.battlecraft.logic.battle;
 
-import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.battlecraft.logic.battle.BattleOptions.ARENA_GAME_OPTIONS;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.net.data.DataUnit;
 

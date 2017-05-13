@@ -11,10 +11,6 @@ import main.game.core.game.ScenarioGame;
 public class Entrance extends Unit { //ScenarioUnit
     Dungeon dungeon, sublevel;
 
-    @Override
-    public ScenarioGame getGame() {
-        return (ScenarioGame) super.getGame();
-    }
     public Entrance(int x, int y, ObjType type, Dungeon dungeon,
                     Dungeon sublevel) {
         super(type, x, y, DC_Player.NEUTRAL, dungeon.getGame(),
@@ -31,6 +27,11 @@ public class Entrance extends Unit { //ScenarioUnit
         // bfObjType.setImage(sublevel.getImagePath()); // default
     }
 
+    @Override
+    public ScenarioGame getGame() {
+        return (ScenarioGame) super.getGame();
+    }
+
     public void enter(Unit unit, Coordinates coordinates) {
         // each unit can really be independent; refresh will update... but
         // admittedly, with gameplay as it is now, it could be a hassle...
@@ -43,7 +44,7 @@ public class Entrance extends Unit { //ScenarioUnit
         unit.setCoordinates(getOffsetCoordinates(back));
         unit.setDungeon(targetDungeon);
         // if (sublevel.isInitialized())
-        getGame().getDungeonMaster().getInitializer(). initSublevel(targetDungeon);
+        getGame().getDungeonMaster().getInitializer().initSublevel(targetDungeon);
     }
 
 

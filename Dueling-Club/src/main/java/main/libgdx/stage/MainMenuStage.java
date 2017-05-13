@@ -2,51 +2,65 @@ package main.libgdx.stage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.TablePanel;
 
 public class MainMenuStage extends Stage {
     private TablePanel menu;
-    private TablePanel config;
+    private TablePanel options;
     private TablePanel load;
 
     public MainMenuStage() {
         menu = new TablePanel();
-        menu.add(new TextButton("New game", StyleHolder.getTextButtonStyle()));
+        menu.left().bottom();
+        menu.add(new TextButton("New game", StyleHolder.getCustomButtonStyle("UI/red_button.png")));
         menu.row();
-        menu.add(new TextButton("load game", StyleHolder.getTextButtonStyle()));
+        menu.add(new TextButton("load game", StyleHolder.getCustomButtonStyle("UI/red_button.png")));
         menu.row();
 
-        final TextButton options = new TextButton("options", StyleHolder.getTextButtonStyle());
-        options.addCaptureListener(new ClickListener() {
+        final TextButton optionsButton = new TextButton("options", StyleHolder.getCustomButtonStyle("UI/red_button.png"));
+        optionsButton.addListener(new InputListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
 
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                switchView(options);
             }
         });
-        menu.add(options);
+        menu.add(optionsButton);
         menu.row();
 
-        final TextButton exit = new TextButton("exit", StyleHolder.getTextButtonStyle());
-        exit.addCaptureListener(new ClickListener() {
+        final TextButton exit = new TextButton("exit", StyleHolder.getCustomButtonStyle("UI/red_button.png"));
+        exit.addListener(new InputListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                System.exit(0);  //0-normal exit status
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                System.exit(0);//0(zero) is a normal exit status
             }
         });
         menu.add(exit);
 
-        config = new TablePanel();
-        final TextButton button = new TextButton("toggle full screen", StyleHolder.getTextButtonStyle());
-        button.addCaptureListener(new ClickListener() {
+        options = new TablePanel();
+        options.left().bottom();
+        final TextButton button = new TextButton("toggle full screen", StyleHolder.getCustomButtonStyle("UI/red_button.png"));
+        button.addListener(new InputListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (Gdx.graphics.isFullscreen()) {
                     Gdx.graphics.setWindowedMode(1600, 900);
                 } else {
@@ -54,38 +68,56 @@ public class MainMenuStage extends Stage {
                 }
             }
         });
-        config.add(button);
-        config.row();
 
-        final TextButton back = new TextButton("back", StyleHolder.getTextButtonStyle());
-        back.addCaptureListener(new ClickListener() {
+
+        options.add(button);
+        options.row();
+
+        final TextButton back = new TextButton("back", StyleHolder.getCustomButtonStyle("UI/red_button.png"));
+        back.addListener(new InputListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 switchView(menu);
             }
         });
-        config.add(back);
+        this.options.add(back);
 
         load = new TablePanel();
 
 
         addActor(menu);
-        addActor(config);
+        addActor(options);
         addActor(load);
+
+        switchView(menu);
     }
 
     private void switchView(TablePanel next) {
         if (menu != next) {
             menu.setVisible(false);
+        } else {
+            menu.setPosition(
+                    Gdx.graphics.getWidth() / 2 - menu.getPrefWidth() / 2,
+                    Gdx.graphics.getHeight() / 2 - menu.getPrefHeight() / 2
+            );
         }
 
-        if (config != next) {
-            config.setVisible(false);
+        if (options != next) {
+            options.setVisible(false);
+        } else {
+            options.setPosition(
+                    Gdx.graphics.getWidth() / 2 - options.getPrefWidth() / 2,
+                    Gdx.graphics.getHeight() / 2 - options.getPrefHeight() / 2
+            );
         }
 
         if (load != next) {
-            config.setVisible(false);
+            options.setVisible(false);
         }
 
         next.setVisible(true);

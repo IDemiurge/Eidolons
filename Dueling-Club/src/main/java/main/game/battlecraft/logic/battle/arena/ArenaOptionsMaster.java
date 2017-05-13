@@ -8,7 +8,7 @@ import main.game.battlecraft.logic.battle.BattleOptions.DIFFICULTY;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle>{
+public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle> {
 
 
     private static final String DEFAULT_LIVES = "2";
@@ -25,8 +25,8 @@ public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle>{
         // TODO
         arenaOptions = new BattleOptions();
         arenaOptions.setValue(ARENA_GAME_OPTIONS.NUMBER_OF_HEROES, ""
-         +
-          getMaster().getMetaMaster().getPartyManager().getParty().getMembers() .size());
+                +
+                getMaster().getMetaMaster().getPartyManager().getParty().getMembers().size());
 
 //        arenaOptions.setValue(ARENA_GAME_OPTIONS.PLAYER_STARTING_SIDE,
 //         ArenaPositioner. DEFAULT_SIDE);
@@ -43,7 +43,6 @@ public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle>{
         arenaOptions.setValue(ARENA_GAME_OPTIONS.TURNS_BETWEEN_WAVES, DEFAULT_TURNS_BETWEEN_WAVES);
         arenaOptions.setValue(ARENA_GAME_OPTIONS.TURNS_TO_PREPARE, DEFAULT_TURNS_TO_PREPARE);
     }
-
 
 
 }

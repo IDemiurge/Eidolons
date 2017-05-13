@@ -268,7 +268,7 @@ public class HC_SequenceMaster implements SequenceManager {
     }
 
     @Refactor
-        public boolean prebattleChoiceSequence(Unit hero) {
+    public boolean prebattleChoiceSequence(Unit hero) {
 
         final ChoiceSequence cs = new ChoiceSequence();
         List<Entity> list = ListMaster.getEntityList(PartyManager.getParty().getMembers());

@@ -61,32 +61,15 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     private boolean flipX;
     private boolean flipY;
     private BuildParameters params;
+
     public LocationBuilder() {
         super(null);
     }
+
     public LocationBuilder(DungeonMaster master) {
         super(master);
     }
 
-
-    @Override
-    protected void processNode(Node n, Location dungeon, DungeonPlan plan) {
-        if (StringMaster.compareByChar(n.getNodeName(), ("Plan"))) {
-            try {
-                initZones(n, plan);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-        else
-        super.processNode(n, dungeon, plan);
-    }
-
-    public LocationBuilder setParam(BuildParameters params) {
-        this.params=params;
-        return this;
-    }
     public static List<ROOM_TYPE> getDefaultMainRooms(DUNGEON_TEMPLATES template) {
         List<ROOM_TYPE> list = new LinkedList<>();
         switch (template) {
@@ -147,6 +130,24 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         return b;
     }
 
+    @Override
+    protected void processNode(Node n, Location dungeon, DungeonPlan plan) {
+        if (StringMaster.compareByChar(n.getNodeName(), ("Plan"))) {
+            try {
+                initZones(n, plan);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else
+            super.processNode(n, dungeon, plan);
+    }
+
+    public LocationBuilder setParam(BuildParameters params) {
+        this.params = params;
+        return this;
+    }
+
     public DungeonPlan transformDungeonPlan(DungeonPlan plan) {
         Coordinates.setFlipX(plan.isFlippedX());
         Coordinates.setFlipY(plan.isFlippedY());
@@ -170,7 +171,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         // dungeon.getLocation();
 
         if (helper == null) {
-            helper = new BuildHelper(location , params);
+            helper = new BuildHelper(location, params);
         }
         if (StringMaster.isEmpty(helper.getParams().getValue(BUILD_PARAMS.FILLER_TYPE))) {
             {
@@ -467,7 +468,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     }
 
     public DungeonPlan loadDungeonMap(String data) {
-        return  buildDungeon(data ).getPlan();
+        return buildDungeon(data).getPlan();
     }
 
     private void initZones(Node planNode, DungeonPlan plan) {

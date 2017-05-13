@@ -1,7 +1,7 @@
 package main.game.logic.dungeon.editor;
 
-import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.VALUE;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -11,11 +11,11 @@ import main.data.xml.XML_Converter;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.module.dungeoncrawl.dungeon.Location;
 import main.game.logic.battle.player.Player;
-import main.system.auxiliary.data.ListMaster;
+import main.game.module.dungeoncrawl.dungeon.Location;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.Map;

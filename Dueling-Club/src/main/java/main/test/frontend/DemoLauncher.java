@@ -1,13 +1,14 @@
 package main.test.frontend;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import main.client.dc.Launcher;
 import main.game.core.game.DC_Game;
 import main.libgdx.screens.IntroScreen;
+import main.libgdx.screens.MainMenuScreen;
 import org.dizitart.no2.Nitrite;
-import org.dizitart.no2.objects.ObjectRepository;
 
 public class DemoLauncher extends Game {
     private static Nitrite db;
@@ -26,17 +27,17 @@ public class DemoLauncher extends Game {
     }
 
     public static void main(String[] args) {
-        db = Nitrite.builder()
+/*        db = Nitrite.builder()
                 .compressed()
-                .filePath("/tmp/test.db")
+                .filePath(PathFinder.getXML_PATH() + "test.db")
                 .openOrCreate("user", "password");
         final ObjectRepository<LwjglApplicationConfiguration> repository = db.getRepository(LwjglApplicationConfiguration.class);
         LwjglApplicationConfiguration configuration = repository.find().firstOrDefault();
         if (configuration == null) {
             configuration = getConf();
-            repository.update(configuration, true);
-        }
-        new LwjglApplication(new DemoLauncher(), configuration);
+            repository.insert(configuration);
+        }*/
+        new LwjglApplication(new DemoLauncher(), getConf());
     }
 
     private static LwjglApplicationConfiguration getConf() {
@@ -57,6 +58,18 @@ public class DemoLauncher extends Game {
 
     @Override
     public void create() {
-        setScreen(new IntroScreen());
+        final IntroScreen introScreen = new IntroScreen(() -> {
+            final Screen old = getScreen();
+            setScreen(new MainMenuScreen());
+            if (old != null) {
+                old.dispose();
+            }
+        });
+        setScreen(introScreen);
+    }
+
+    @Override
+    public void render() {
+        super.render();
     }
 }

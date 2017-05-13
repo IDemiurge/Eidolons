@@ -3,9 +3,9 @@ package main.swing.generic.components.list;
 import main.swing.generic.components.panels.G_InfoPanel;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.swing.generic.misc.BORDER_CHECKER;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
-import main.system.auxiliary.data.ListMaster;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

@@ -5,15 +5,18 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.gui.neo.tree.view.HT_View;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.Simulation;
-import main.content.*;
+import main.content.ContentManager;
+import main.content.DC_ContentManager;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
-import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.gui.builders.MainBuilder;
 import main.gui.builders.TabBuilder;
 import main.gui.components.controls.AV_ButtonPanel;
@@ -23,14 +26,15 @@ import main.simulation.SimulationManager;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
-import main.utilities.res.ResourceMaster;
 import main.utilities.hotkeys.AV_KeyListener;
+import main.utilities.res.ResourceMaster;
 import main.utilities.workspace.WorkspaceManager;
 import net.miginfocom.swing.MigLayout;
 
@@ -56,11 +60,11 @@ public class ArcaneVault {
     public static final int TABLE_WIDTH = (WIDTH - TREE_WIDTH) / 2;
     public static final int TABLE_HEIGHT = TREE_HEIGHT * 19 / 20;
     public final static boolean defaultTypesGenerateOn = false;
+    public final static String presetTypes = "abils;spells;skills;"
+            + "weapons;armor;actions;" + "";
     private static final boolean ENABLE_ITEM_GENERATION = true;
     private static final String[] LAUNCH_OPTIONS = {"Last", "Selective", "Selective Custom",
             "Full", "Battlecraft", "Arcane Tower",};
-    public final static String presetTypes = "abils;spells;skills;"
-     + "weapons;armor;actions;" + "";
     private static final String actions = "actions;spells;buffs;abils;";
     private static final String skills = "skills;classes;buffs;abils;";
     private static final String units = "chars;units;deities;dungeons;factions;";

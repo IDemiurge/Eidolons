@@ -2,17 +2,17 @@ package main.game.logic.dungeon.editor.gui;
 
 import main.entity.obj.Obj;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.BLOCK_TYPE;
 import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.ROOM_TYPE;
-import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.battlecraft.logic.dungeon.location.building.MapZone;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
+import main.system.auxiliary.TreeMaster;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.auxiliary.TreeMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 

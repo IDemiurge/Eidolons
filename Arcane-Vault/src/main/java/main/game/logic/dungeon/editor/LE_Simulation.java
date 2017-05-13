@@ -38,7 +38,7 @@ public class LE_Simulation extends DC_Game {
 
     @Override
     public LocationMaster getDungeonMaster() {
-        if (super.getDungeonMaster()==null )
+        if (super.getDungeonMaster() == null)
             return createDungeonMaster();
         return (LocationMaster) super.getDungeonMaster();
     }

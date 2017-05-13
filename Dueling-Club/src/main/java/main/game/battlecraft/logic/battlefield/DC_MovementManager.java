@@ -11,6 +11,7 @@ import main.data.ability.construct.VariableManager;
 import main.elements.Filter;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Cell;
@@ -22,6 +23,7 @@ import main.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import main.game.battlecraft.ai.tools.path.ActionPath;
 import main.game.battlecraft.ai.tools.path.PathBuilder;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
+import main.game.battlecraft.rules.mechanics.CollisionRule;
 import main.game.bf.*;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.bf.Coordinates.UNIT_DIRECTION;
@@ -30,8 +32,6 @@ import main.game.bf.pathing.PathingManager;
 import main.game.core.game.DC_Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.entity.active.DC_ActionManager;
-import main.game.battlecraft.rules.mechanics.CollisionRule;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.CustomValueManager;
 import main.system.auxiliary.EnumMaster;
@@ -281,6 +281,11 @@ public class DC_MovementManager implements MovementManager {
     }
 
     @Override
+    public void setGrid(BattleFieldGrid grid) {
+        getPathingManager().setGrid(grid);
+    }
+
+    @Override
     public boolean move(Obj obj, Coordinates c, boolean free, Path path) {
         return free;
         // return move((DC_HeroObj) obj,
@@ -392,11 +397,6 @@ public class DC_MovementManager implements MovementManager {
 
         return (int) Math.round(cost);
 
-    }
-
-    @Override
-    public void setGrid(BattleFieldGrid grid) {
-        getPathingManager().setGrid(grid);
     }
 
     @Override

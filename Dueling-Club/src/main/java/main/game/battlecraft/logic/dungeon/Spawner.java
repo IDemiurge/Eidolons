@@ -84,6 +84,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         data += PARTY_VALUE.MEMBERS + "=" + units + ";";
         return new UnitData(data);
     }
+
     @Refactor
     public void spawn() {
 //        List<MicroObj> units = DC_ObjInitializer.createUnits(player, unitData);
@@ -99,7 +100,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         final Integer cellsX = game.getDungeon().getCellsX();
         final Integer cellsY = game.getDungeon().getCellsY();
         GuiEventManager.trigger(BF_CREATED,
-         new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
+                new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
 
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
 
@@ -110,8 +111,8 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public UnitData generateData(String dataString, DC_Player player,
                                  Coordinates spawnAt) {
         return generateData(dataString,
-         player,
-         spawnAt, getPositioner());
+                player,
+                spawnAt, getPositioner());
     }
 
     public void spawn(UnitData data, DC_Player owner) {
@@ -178,7 +179,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public void spawnUnitsAt(List<Unit> units, Coordinates coordinates) {
         List<String> partyTypes = StringMaster.toNameList(units);
         List<Coordinates> coordinateList = getPositioner()
-         .initPartyCoordinates(partyTypes, null);
+                .initPartyCoordinates(partyTypes, null);
         int index = 0;
         for (Unit m : units) {
             m.setCoordinates(coordinateList.get(index));
@@ -225,8 +226,8 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
             if (party.getPartyCoordinates() == null) {
                 if (
-                 getGame().getGameMode() == GAME_MODES.ARENA ||
-                  getGame().getGameMode() == GAME_MODES.ARENA_ARCADE) {
+                        getGame().getGameMode() == GAME_MODES.ARENA ||
+                                getGame().getGameMode() == GAME_MODES.ARENA_ARCADE) {
                     hero.setFacing(FacingMaster.getPresetFacing(true));
                 }
 //                else

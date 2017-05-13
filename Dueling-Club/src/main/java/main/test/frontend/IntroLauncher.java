@@ -33,7 +33,9 @@ public class IntroLauncher implements ApplicationListener {
 
     @Override
     public void create() {
-        screen = new IntroScreen();
+        screen = new IntroScreen(() -> {
+            System.exit(0);
+        });
     }
 
     @Override

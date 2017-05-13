@@ -17,10 +17,10 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
 
 
     public static DungeonData generateDungeonData(String dataString) {
-        String formatted="";
-        if (dataString.contains(";")){
+        String formatted = "";
+        if (dataString.contains(";")) {
             DUNGEON_VALUE value;
-            if (dataString.contains(".xml")){
+            if (dataString.contains(".xml")) {
                 value = DUNGEON_VALUE.PATH;
             } else
                 value = DUNGEON_VALUE.TYPE_NAME;
@@ -28,14 +28,17 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         }
         return new DungeonData(formatted);
     }
-@Deprecated
+
+    @Deprecated
     public E initDungeon(String path) {
         setDungeonPath(path);
         return (E) getBuilder().buildDungeon(path);
     }
 
     public abstract E initDungeon();
+
     public abstract E createDungeon(ObjType type);
+
     //TODO different for each Type?
     protected String getDungeonLevelSubfolder() {
         return "battle\\";
@@ -49,7 +52,6 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
     public void setDungeonPath(String dungeonPath) {
         this.dungeonPath = dungeonPath;
     }
-
 
 
 }

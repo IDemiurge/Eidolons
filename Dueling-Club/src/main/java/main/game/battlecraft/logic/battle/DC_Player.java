@@ -23,7 +23,7 @@ import java.util.Set;
  */
 public class DC_Player extends Player {
 
-    public static   DC_Player NEUTRAL ;
+    public static DC_Player NEUTRAL;
 
     protected ALLEGIENCE allegiance;
     private Map<DC_Obj, Coordinates> detectionCache = new HashMap<>();
@@ -44,7 +44,7 @@ public class DC_Player extends Player {
     public DC_Player(String name, FLAG_COLOR color,
                      String emblem, String portrait, ALLEGIENCE allegience) {
         super(name, color.getColor(), allegience.isNeutral(), allegience.isMe()
-         , portrait, emblem);
+                , portrait, emblem);
     }
 
     @Override

@@ -15,12 +15,12 @@ import main.data.XLinkedMap;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.swing.XLine;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.CellComp;
@@ -64,10 +64,7 @@ public class DrawMaster {
     private int topObjY;
     private BufferedImage infoObjImage;
     private Map<Obj, Point> offsetMap;
-    public enum INTERACTIVE_ELEMENT {
-        AP, COUNTERS, ITEMS, TRAPS, LOCKS, CORPSES, STACK,
 
-    }
     public boolean isStackedPaintZoom() {
         return zoom >= 50;
     }
@@ -1662,6 +1659,11 @@ public class DrawMaster {
 
     public void setZoom(int zoom) {
         this.zoom = zoom;
+    }
+
+    public enum INTERACTIVE_ELEMENT {
+        AP, COUNTERS, ITEMS, TRAPS, LOCKS, CORPSES, STACK,
+
     }
 
 }

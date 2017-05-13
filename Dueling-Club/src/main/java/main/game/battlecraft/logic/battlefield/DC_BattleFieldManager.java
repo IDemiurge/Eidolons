@@ -6,10 +6,10 @@ import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.BattleFieldManager;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.DirectionMaster;
 import main.game.core.game.DC_Game;
 

@@ -2,11 +2,11 @@ package tests.launch;
 
 import main.content.PARAMS;
 import main.game.core.Eidolons;
+import main.game.core.launch.PresetLauncher.LAUNCH;
 import main.system.DC_Formulas;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.game.core.launch.PresetLauncher.LAUNCH;
 import main.test.frontend.FAST_DC;
 import org.junit.Test;
 

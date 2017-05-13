@@ -5,7 +5,6 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.swing.components.buttons.DynamicButton;
 import main.swing.components.obj.drawing.DrawMaster.INTERACTIVE_ELEMENT;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.log.LogMaster;

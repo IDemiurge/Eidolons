@@ -81,22 +81,18 @@ public class DC_Game extends MicroGame {
     protected DC_AttackMaster attackMaster;
     protected ArmorMaster armorMaster;
     protected ArmorMaster armorSimulator;
+    protected DungeonMaster dungeonMaster;
+    protected BattleMaster battleMaster;
+    protected MetaGameMaster metaMaster;
     private DroppedItemManager droppedItemManager;
     private InventoryTransactionManager inventoryTransactionManager;
     private DC_InventoryManager inventoryManager;
-
     private DC_GameManager manager;
     private VisionMaster visionMaster;
     private DebugMaster debugMaster;
     private TestMasterContent testMaster;
-
     private AI_Manager aiManager;
-
     private AnimationManager animationManager; //heavy, but still just a trash!
-    protected DungeonMaster dungeonMaster;
-    protected BattleMaster battleMaster;
-    protected MetaGameMaster metaMaster;
-
     private DC_KeyManager keyManager; //where to move?
 
     private DC_Rules rules;
@@ -195,19 +191,23 @@ public class DC_Game extends MicroGame {
     protected BattleMaster createBattleMaster() {
         return new TestBattleMaster(this);
     }
+
     protected DungeonMaster createDungeonMaster() {
         return new TestDungeonMaster(this);
     }
+
     protected MetaGameMaster createMetaMaster() {
         return new MetaGameMaster(this);
     }
+
     // after meta
     public void dungeonInit() {
         dungeonMaster = createDungeonMaster();
     }
+
     // before all other masters?
     public void metaGameInit() {
-        metaMaster= createMetaMaster();
+        metaMaster = createMetaMaster();
     }
 
     public void dataInit() {
@@ -215,8 +215,9 @@ public class DC_Game extends MicroGame {
 
 
     }
-        public void battleInit() {
-battleMaster = createBattleMaster();
+
+    public void battleInit() {
+        battleMaster = createBattleMaster();
 
         inventoryTransactionManager = new InventoryTransactionManager(this);
         inventoryManager = new DC_InventoryManager(this);
@@ -259,7 +260,7 @@ battleMaster = createBattleMaster();
         }
 
         getGraveyardManager().init();//TODO in init?
-       battleMaster.startGame();
+        battleMaster.startGame();
         dungeonMaster.gameStarted();
         getState().gameStarted(first);
 
@@ -299,11 +300,12 @@ battleMaster = createBattleMaster();
         setRunning(false);
         setStarted(false);
     }
+
     @Override
     public DC_BattleFieldManager getBattleFieldManager() {
 
         if (battleFieldManager == null) {
-            battleFieldManager = new DC_BattleFieldManager(this );
+            battleFieldManager = new DC_BattleFieldManager(this);
         }
         return (DC_BattleFieldManager) super.getBattleFieldManager();
     }
@@ -486,7 +488,8 @@ battleMaster = createBattleMaster();
     public GAME_MODES getGameMode() {
         return gameMode;
     }
-@Deprecated
+
+    @Deprecated
     public void setGameMode(GAME_MODES gameMode) {
         this.gameMode = gameMode;
     }
@@ -680,7 +683,7 @@ battleMaster = createBattleMaster();
     }
 
 
-    public  BattleMaster getBattleMaster() {
+    public BattleMaster getBattleMaster() {
         return battleMaster;
     }
 
@@ -688,16 +691,17 @@ battleMaster = createBattleMaster();
         return metaMaster;
     }
 
+    public LaunchDataKeeper getDataKeeper() {
+        return dataKeeper;
+    }
+
     public void setDataKeeper(LaunchDataKeeper dataKeeper) {
         this.dataKeeper = dataKeeper;
     }
 
-    public LaunchDataKeeper getDataKeeper() {
-        return dataKeeper;
-    }
-@Refactor
+    @Refactor
     public Obj getSimulationObj(Entity entity, ObjType type, PROPERTY prop) {
-    return null ;
+        return null;
     }
 
     @Refactor

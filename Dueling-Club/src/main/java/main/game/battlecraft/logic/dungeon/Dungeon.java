@@ -11,9 +11,9 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.module.dungeoncrawl.dungeon.minimap.Minimap;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
@@ -21,13 +21,12 @@ import main.system.auxiliary.StringMaster;
 
 public class Dungeon extends Entity {
     private static final Integer DEFAULT_GLOBAL_ILLUMINATION = 75;
+    Integer z;
     private COLOR_THEME colorTheme;
     private DUNGEON_TYPE dungeonType;
-
     private DUNGEON_TEMPLATES template;
     private Minimap minimap;
     private String levelFilePath;
-    Integer z;
 
     /*
      * Encounters Levels Rewards Loot
@@ -94,8 +93,6 @@ public class Dungeon extends Entity {
     public Integer getHeight() {
         return getIntParam(PARAMS.BF_HEIGHT);
     }
-
-
 
 
     public Integer getZ() {

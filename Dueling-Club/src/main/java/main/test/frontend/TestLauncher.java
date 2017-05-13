@@ -2,8 +2,8 @@ package main.test.frontend;
 
 import main.client.cc.logic.items.ItemGenerator;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
+import main.game.core.game.DC_Game;
 import main.test.debug.DebugMaster;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 

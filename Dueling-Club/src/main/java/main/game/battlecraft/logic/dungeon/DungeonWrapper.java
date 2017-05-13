@@ -11,10 +11,11 @@ import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUN
 public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dungeon> {
     protected DungeonMaster<E> master;
     protected Dungeon dungeon;
+
     public DungeonWrapper(Dungeon entity, DungeonMaster<E> master) {
-        super(  entity);
+        super(entity);
         dungeon = entity;
-        this.master= master;
+        this.master = master;
     }
 
     public DungeonMaster<E> getDungeonMaster() {

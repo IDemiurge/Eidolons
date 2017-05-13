@@ -1,14 +1,14 @@
 package main.game.battlecraft.logic.dungeon.location.building;
 
-import main.game.battlecraft.logic.dungeon.location.Location;
-import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.location.Location;
 import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.BLOCK_TYPE;
 import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.ROOM_TYPE;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.swing.XDimension;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;

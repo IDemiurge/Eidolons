@@ -53,6 +53,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
         }
         return direction;
     }
+
     @Unimplemented
     public List<Coordinates> getPartyCoordinates(Coordinates origin, Boolean me,
                                                  List<String> partyTypes) {
@@ -61,7 +62,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
         // TODO
         if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor()) {
             origin = new Coordinates(PositionMaster.getMiddleIndex(false), PositionMaster
-             .getMiddleIndex(true));
+                    .getMiddleIndex(true));
         } else {
             FACING_DIRECTION side = ArenaPositioner.DEFAULT_PLAYER_SIDE;
 //            if ( getSpawningSide() != null) {
@@ -125,7 +126,6 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
 
         return group;
     }
-
 
 
     public List<Coordinates> getCoordinatesForUnits(List<ObjType> presetGroupTypes, boolean custom,
@@ -252,7 +252,8 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
 
         return side;
     }
-//this is heresy
+
+    //this is heresy
     private FACING_DIRECTION getRandomSide() {
         while (true) {
             side = FacingMaster.getRandomFacing();
@@ -305,8 +306,8 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
         boolean invert = !facing.isCloserToZero();
         int index = PositionMaster.getMiddleIndex(vertical);
         int rowIndex = (invert) ? ((!vertical) ?
-         getGame().getDungeonMaster().getDungeonWrapper(). getHeight()
-                : getGame().getDungeonMaster().getDungeonWrapper(). getWidth())
+                getGame().getDungeonMaster().getDungeonWrapper().getHeight()
+                : getGame().getDungeonMaster().getDungeonWrapper().getWidth())
                 - row : row;
         Coordinates coordinate = (vertical) ? new Coordinates(rowIndex, index) : new Coordinates(
                 index, rowIndex);
@@ -329,8 +330,8 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
                 c += i;
             }
             if (invert) {
-                c = ((vertical) ? getGame().getDungeonMaster().getDungeonWrapper(). getHeight() : getGame()
-                        .getDungeonMaster().getDungeonWrapper(). getWidth())
+                c = ((vertical) ? getGame().getDungeonMaster().getDungeonWrapper().getHeight() : getGame()
+                        .getDungeonMaster().getDungeonWrapper().getWidth())
                         - c;
             }
             coordinate = (vertical) ? new Coordinates(rowIndex, c) : new Coordinates(c, rowIndex);

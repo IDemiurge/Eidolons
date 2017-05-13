@@ -9,10 +9,10 @@ import main.content.PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
+import main.game.battlecraft.logic.dungeon.Spawner;
 import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.logic.meta.PartyManager;
-import main.game.battlecraft.logic.dungeon.Spawner;
+import main.game.core.game.DC_Game;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 

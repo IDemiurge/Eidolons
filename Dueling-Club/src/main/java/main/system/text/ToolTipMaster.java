@@ -11,9 +11,9 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.tools.future.FutureBuilder;
 import main.game.battlecraft.ai.tools.target.AI_SpellMaster;
+import main.game.battlecraft.rules.combat.damage.DamageCalculator;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.rules.combat.damage.DamageCalculator;
 import main.swing.components.obj.CellComp;
 import main.swing.generic.components.G_Panel;
 

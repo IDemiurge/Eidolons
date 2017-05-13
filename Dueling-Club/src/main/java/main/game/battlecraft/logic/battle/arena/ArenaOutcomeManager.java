@@ -18,6 +18,7 @@ public class ArenaOutcomeManager<E extends Battle> extends BattleOutcomeManager<
     public ArenaOutcomeManager(BattleMaster<E> master) {
         super(master);
     }
+
     public void defeat(boolean surrender, boolean end) {
         // TODO last level doesn't support saving! Disconnects perhaps, for the
         // dishonorable ones :)
@@ -40,6 +41,7 @@ public class ArenaOutcomeManager<E extends Battle> extends BattleOutcomeManager<
             end();
         }
     }
+
     private int calculateGlory(boolean outcome) {
         int glory = 0;
 //        for (Unit unit : game.getBattleManager().getSlainEnemies()) {
@@ -112,6 +114,7 @@ public class ArenaOutcomeManager<E extends Battle> extends BattleOutcomeManager<
 //        game.getBattleMaster().getSpawner().waveCleared();
         return true;
     }
+
     private void saveParty() {
         PartyManager.saveParty();
     }

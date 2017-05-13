@@ -3,15 +3,14 @@ package main.libgdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.data.filesys.PathFinder;
 import main.system.graphics.ColorManager;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,11 +78,12 @@ public class StyleHolder {
         return defaultTextButtonStyle;
     }
 
-    public static Button.ButtonStyle getCustomButtonStyle(String baseImagePath) {
+    public static TextButton.TextButtonStyle getCustomButtonStyle(String baseImagePath) {
         final int jpgEnd = baseImagePath.indexOf(".jpg");
         final int pngEnd = baseImagePath.indexOf(".png");
         String endString = null;
         String baseString = null;
+
         if (jpgEnd > 0) {
             endString = ".jpg";
             baseString = baseImagePath.replace(endString, "");
@@ -99,18 +99,38 @@ public class StyleHolder {
         final String upPath = baseString + UP + endString;
         final String checkedPath = baseString + CHECKED + endString;
 
-        final TextureRegion disabledTexture = getOrCreateR(disabledPath);
-        final TextureRegion overTexture = getOrCreateR(overPath);
-        final TextureRegion downTexture = getOrCreateR(downPath);
-        final TextureRegion upTexture = getOrCreateR(upPath);
-        final TextureRegion checkedTexture = new TextureRegion(getOrCreateR(checkedPath));
+        TextButton.TextButtonStyle style = getTextButtonStyle();
 
-        Button.ButtonStyle style = new Button.ButtonStyle();
-        style.disabled = new TextureRegionDrawable(disabledTexture);
-        style.over = new TextureRegionDrawable(overTexture);
-        style.down = new TextureRegionDrawable(downTexture);
-        style.up = new TextureRegionDrawable(upTexture);
-        style.checked = new TextureRegionDrawable(checkedTexture);
+        File f = new File(disabledPath);
+        boolean isExists = false;
+        if (f.exists()) {
+            isExists = true;
+            style.disabled = new TextureRegionDrawable(getOrCreateR(disabledPath));
+        }
+        f = new File(overPath);
+        if (f.exists()) {
+            isExists = true;
+            style.over = new TextureRegionDrawable(getOrCreateR(overPath));
+        }
+        f = new File(downPath);
+        if (f.exists()) {
+            isExists = true;
+            style.down = new TextureRegionDrawable(getOrCreateR(downPath));
+        }
+        f = new File(upPath);
+        if (f.exists()) {
+            isExists = true;
+            style.up = new TextureRegionDrawable(getOrCreateR(upPath));
+        }
+        f = new File(checkedPath);
+        if (f.exists()) {
+            isExists = true;
+            style.checked = new TextureRegionDrawable(getOrCreateR(checkedPath));
+        }
+
+        if (!isExists) {
+            style.up = new TextureRegionDrawable(getOrCreateR(baseImagePath));
+        }
 
         return style;
     }

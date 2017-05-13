@@ -40,13 +40,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Level extends DungeonWrapper<Location>{
-
-    private   Location location;
-    private Minimap minimap;
+public class Level extends DungeonWrapper<Location> {
 
     boolean initialized;
-
+    private Location location;
+    private Minimap minimap;
     private Mission mission;
     private DC_Map map;
     private String name;
@@ -60,22 +58,13 @@ public class Level extends DungeonWrapper<Location>{
     }
 
     public Level(Dungeon dungeon, Mission mission) {
-        super(dungeon, null );
-        setDungeonMaster( LevelEditor.getSimulation().getDungeonMaster());
+        super(dungeon, null);
+        setDungeonMaster(LevelEditor.getSimulation().getDungeonMaster());
         this.mission = mission;
     }
-    public void setDungeonMaster (LocationMaster master){
-        this. master = master;
-        this.location = this.master.getDungeonWrapper();
-        setDungeon(master.getInitializer().initDungeon().getDungeon());
-    }
-        public void setDungeon (Dungeon d){
-        this.dungeon=d;
-    this.minimap = new Minimap(true, dungeon);
-}
     public Level(String baseDungeonType, Mission mission, String data, boolean empty) {
-      super(null , null );
-      setDungeonMaster( LevelEditor.getSimulation().getDungeonMaster());
+        super(null, null);
+        setDungeonMaster(LevelEditor.getSimulation().getDungeonMaster());
         this.mission = mission;
         LevelEditor.getMainPanel().setCurrentLevel(this);
         if (DataManager.getType(baseDungeonType, DC_TYPE.DUNGEONS) != null) {
@@ -168,6 +157,17 @@ public class Level extends DungeonWrapper<Location>{
             // }
 
         }
+    }
+
+    public void setDungeonMaster(LocationMaster master) {
+        this.master = master;
+        this.location = this.master.getDungeonWrapper();
+        setDungeon(master.getInitializer().initDungeon().getDungeon());
+    }
+
+    public void setDungeon(Dungeon d) {
+        this.dungeon = d;
+        this.minimap = new Minimap(true, dungeon);
     }
 
     private String getDefaultWorkspaceGroup() {
@@ -591,7 +591,7 @@ public class Level extends DungeonWrapper<Location>{
     }
 
     public MiniGrid getGrid() {
-        return  getMinimap().getGrid();
+        return getMinimap().getGrid();
     }
 
     public List<AiGroupData> getAiGroups() {
@@ -622,7 +622,6 @@ public class Level extends DungeonWrapper<Location>{
     public List<MapBlock> getBlocks() {
         return location.getPlan().getBlocks();
     }
-
 
 
     public Minimap getMinimap() {

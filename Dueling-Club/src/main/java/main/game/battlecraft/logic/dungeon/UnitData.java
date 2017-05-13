@@ -3,7 +3,12 @@ package main.game.battlecraft.logic.dungeon;
 import main.game.battlecraft.logic.dungeon.UnitData.PARTY_VALUE;
 import main.system.net.data.DataUnit;
 
-public class UnitData extends DataUnit<PARTY_VALUE>{
+public class UnitData extends DataUnit<PARTY_VALUE> {
+
+
+    public UnitData(String data) {
+        super(data);
+    }
 
 
     /*
@@ -36,22 +41,16 @@ public class UnitData extends DataUnit<PARTY_VALUE>{
     > don't respawn if exists?
 
      */
-    public enum PARTY_VALUE{
-     LEADER, MEMBERS,
-    PLAYER_NAME,
-    SPAWN_AT_COORDINATE,
-    SPAWN_SIDE,
-     COORDINATES,
-    FACING,
-    LEVEL,
-    FACING_TEMPLATE,
+    public enum PARTY_VALUE {
+        LEADER, MEMBERS,
+        PLAYER_NAME,
+        SPAWN_AT_COORDINATE,
+        SPAWN_SIDE,
+        COORDINATES,
+        FACING,
+        LEVEL,
+        FACING_TEMPLATE,
 
-}
-
-
-
-    public UnitData(String data) {
-        super(data);
     }
 
 

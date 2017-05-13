@@ -12,9 +12,9 @@ import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.entity.UnitEnums.STATUS;
-import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.*;
 import main.content.values.properties.G_PROPS;
@@ -25,17 +25,17 @@ import main.entity.obj.unit.Unit;
 import main.entity.tools.DC_ObjMaster;
 import main.entity.tools.EntityMaster;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.battlecraft.rules.action.PerceptionRule.PERCEPTION_STATUS;
+import main.game.battlecraft.rules.action.PerceptionRule.PERCEPTION_STATUS_PLAYER;
+import main.game.battlecraft.rules.combat.damage.Damage;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
-import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.rules.combat.damage.Damage;
-import main.game.battlecraft.rules.action.PerceptionRule.PERCEPTION_STATUS;
-import main.game.battlecraft.rules.action.PerceptionRule.PERCEPTION_STATUS_PLAYER;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
@@ -233,20 +233,21 @@ public abstract class DC_Obj extends MicroObj {
         }
         return specialEffects;
     }
-    public  void addBonusDamage(DAMAGE_CASE c, Damage d) {
-        MapMaster.addToListMap(getBonusDamage(), c, d);
-    }
-        public Map<DAMAGE_CASE, List<Damage>> getBonusDamage() {
-        if (bonusDamage == null) {
-            bonusDamage = new XLinkedMap<>();
-        }
-        return bonusDamage;
-    }
 
     public void setSpecialEffects(Map<SPECIAL_EFFECTS_CASE, Effect> specialEffects) {
         this.specialEffects = specialEffects;
     }
 
+    public  void addBonusDamage(DAMAGE_CASE c, Damage d) {
+        MapMaster.addToListMap(getBonusDamage(), c, d);
+    }
+
+    public Map<DAMAGE_CASE, List<Damage>> getBonusDamage() {
+        if (bonusDamage == null) {
+            bonusDamage = new XLinkedMap<>();
+        }
+        return bonusDamage;
+    }
 
     public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type,
                                     BattleFieldObject target, Ref REF) {

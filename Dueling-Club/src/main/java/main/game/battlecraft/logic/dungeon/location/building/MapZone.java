@@ -2,9 +2,9 @@ package main.game.battlecraft.logic.dungeon.location.building;
 
 import main.content.PROPS;
 import main.data.xml.XML_Converter;
-import main.game.bf.Coordinates;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.bf.Coordinates;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

@@ -7,12 +7,12 @@ import main.entity.obj.MicroObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import main.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
-import main.game.module.dungeoncrawl.ai.Patrol;
+import main.game.battlecraft.logic.battle.arena.Wave;
+import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
-import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.module.dungeoncrawl.ai.DungeonCrawler.ENGAGEMENT_LEVEL;
-import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
+import main.game.module.dungeoncrawl.ai.Patrol;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.*;

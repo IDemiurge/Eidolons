@@ -2,8 +2,8 @@ package main.game.core;
 
 import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlecraft.rules.mechanics.WaitRule;
+import main.game.core.game.DC_Game;
 import main.game.logic.battle.turn.TurnManager;
 import main.system.GuiEventManager;
 import main.system.auxiliary.RandomWizard;
