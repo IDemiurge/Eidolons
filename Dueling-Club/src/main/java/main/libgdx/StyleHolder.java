@@ -78,6 +78,12 @@ public class StyleHolder {
         return defaultTextButtonStyle;
     }
 
+    public static TextButton getMainMenuButton(String text) {
+        final TextButton.TextButtonStyle customButtonStyle = StyleHolder.getCustomButtonStyle("UI/red_button.png");
+        customButtonStyle.checkedFontColor = Color.WHITE;
+        return new TextButton(text, customButtonStyle);
+    }
+
     public static TextButton.TextButtonStyle getCustomButtonStyle(String baseImagePath) {
         final int jpgEnd = baseImagePath.indexOf(".jpg");
         final int pngEnd = baseImagePath.indexOf(".png");
