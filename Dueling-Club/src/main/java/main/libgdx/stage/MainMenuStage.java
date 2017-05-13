@@ -3,9 +3,10 @@ package main.libgdx.stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.TablePanel;
 
@@ -16,14 +17,21 @@ public class MainMenuStage extends Stage {
 
     public MainMenuStage() {
         menu = new TablePanel();
+        options = new TablePanel();
+        load = new TablePanel();
+
         menu.left().bottom();
+        options.left().bottom();
+        load.left().bottom();
+
+        addActor(menu);
+        addActor(options);
+        addActor(load);
+
         menu.add(getTextButton("new game"));
         menu.row();
-        menu.add(getTextButton("load game"));
-        menu.row();
-
-        final TextButton optionsButton = getTextButton("options");
-        optionsButton.addListener(new InputListener() {
+        final TextButton loadGameButton = getTextButton("load game");
+        loadGameButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -31,6 +39,16 @@ public class MainMenuStage extends Stage {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                switchView(load);
+            }
+        });
+        menu.add(loadGameButton);
+        menu.row();
+
+        final TextButton optionsButton = getTextButton("options");
+        optionsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
                 switchView(options);
             }
         });
@@ -38,31 +56,18 @@ public class MainMenuStage extends Stage {
         menu.row();
 
         final TextButton exit = getTextButton("exit");
-        exit.addListener(new InputListener() {
+        exit.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void clicked(InputEvent event, float x, float y) {
                 System.exit(0);//0(zero) is a normal exit status
             }
         });
         menu.add(exit);
 
-        options = new TablePanel();
-        options.left().bottom();
-
         final TextButton button = getTextButton("toggle full screen");
-        button.addListener(new InputListener() {
+        button.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void clicked(InputEvent event, float x, float y) {
                 if (Gdx.graphics.isFullscreen()) {
                     Gdx.graphics.setWindowedMode(1600, 900);
                 } else {
@@ -75,26 +80,28 @@ public class MainMenuStage extends Stage {
         options.add(button);
         options.row();
 
-        final TextButton back = getTextButton("back");
-        back.addListener(new InputListener() {
+        TextButton back = getTextButton("back");
+        back.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void clicked(InputEvent event, float x, float y) {
                 switchView(menu);
             }
         });
-        this.options.add(back);
+        options.add(back);
 
-        load = new TablePanel();
+        back = getTextButton("back");
+        back.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                switchView(menu);
+            }
+        });
 
-
-        addActor(menu);
-        addActor(options);
-        addActor(load);
+        final Label label = new Label("game loading under construction", StyleHolder.getDefaultLabelStyle());
+        label.setFontScale(2);
+        load.add(label);
+        load.row();
+        load.add(back);
 
         switchView(menu);
     }
@@ -115,7 +122,7 @@ public class MainMenuStage extends Stage {
         }
 
         if (load != next) {
-            options.setVisible(false);
+            load.setVisible(false);
         }
 
         next.setVisible(true);
@@ -130,6 +137,10 @@ public class MainMenuStage extends Stage {
         options.setPosition(
                 Gdx.graphics.getWidth() / 2 - options.getPrefWidth() / 2,
                 Gdx.graphics.getHeight() / 2 - options.getPrefHeight() / 2
+        );
+        load.setPosition(
+                Gdx.graphics.getWidth() / 2 - load.getPrefWidth() / 2,
+                Gdx.graphics.getHeight() / 2 - load.getPrefHeight() / 2
         );
     }
 
