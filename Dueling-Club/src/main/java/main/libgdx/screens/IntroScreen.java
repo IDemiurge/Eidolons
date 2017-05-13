@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import main.libgdx.DialogScenario;
 import main.libgdx.stage.ChainedStage;
 
@@ -24,6 +25,10 @@ public class IntroScreen implements Screen {
     private ChainedStage introStage;
 
     public IntroScreen(Runnable onDone) {
+        this(null, onDone);
+    }
+
+    public IntroScreen(Viewport viewport, Runnable onDone) {
         this.onDone = onDone;
 
         DialogScenario javaScenario = new DialogScenario(500, false, getOrCreateR(javaLogoPath), null, null);
@@ -33,6 +38,11 @@ public class IntroScreen implements Screen {
 
         logoStage = new ChainedStage(Arrays.asList(javaScenario, libgdxScenario));
         introStage = new ChainedStage(Arrays.asList(introScenario, introScenario2));
+        
+/*        if (viewport != null) {
+            logoStage.setViewport(viewport);
+            introStage.setViewport(viewport);
+        }*/
 
         Gdx.input.setInputProcessor(new InputMultiplexer(logoStage, introStage));
     }

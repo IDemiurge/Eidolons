@@ -1,6 +1,7 @@
 package main.libgdx.stage;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,12 +17,12 @@ public class MainMenuStage extends Stage {
     public MainMenuStage() {
         menu = new TablePanel();
         menu.left().bottom();
-        menu.add(new TextButton("New game", StyleHolder.getCustomButtonStyle("UI/red_button.png")));
+        menu.add(getTextButton("new game"));
         menu.row();
-        menu.add(new TextButton("load game", StyleHolder.getCustomButtonStyle("UI/red_button.png")));
+        menu.add(getTextButton("load game"));
         menu.row();
 
-        final TextButton optionsButton = new TextButton("options", StyleHolder.getCustomButtonStyle("UI/red_button.png"));
+        final TextButton optionsButton = getTextButton("options");
         optionsButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -36,7 +37,7 @@ public class MainMenuStage extends Stage {
         menu.add(optionsButton);
         menu.row();
 
-        final TextButton exit = new TextButton("exit", StyleHolder.getCustomButtonStyle("UI/red_button.png"));
+        final TextButton exit = getTextButton("exit");
         exit.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -52,7 +53,8 @@ public class MainMenuStage extends Stage {
 
         options = new TablePanel();
         options.left().bottom();
-        final TextButton button = new TextButton("toggle full screen", StyleHolder.getCustomButtonStyle("UI/red_button.png"));
+
+        final TextButton button = getTextButton("toggle full screen");
         button.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -73,7 +75,7 @@ public class MainMenuStage extends Stage {
         options.add(button);
         options.row();
 
-        final TextButton back = new TextButton("back", StyleHolder.getCustomButtonStyle("UI/red_button.png"));
+        final TextButton back = getTextButton("back");
         back.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -97,23 +99,19 @@ public class MainMenuStage extends Stage {
         switchView(menu);
     }
 
+    private TextButton getTextButton(String text) {
+        final TextButton.TextButtonStyle customButtonStyle = StyleHolder.getCustomButtonStyle("UI/red_button.png");
+        customButtonStyle.checkedFontColor = Color.WHITE;
+        return new TextButton(text, customButtonStyle);
+    }
+
     private void switchView(TablePanel next) {
         if (menu != next) {
             menu.setVisible(false);
-        } else {
-            menu.setPosition(
-                    Gdx.graphics.getWidth() / 2 - menu.getPrefWidth() / 2,
-                    Gdx.graphics.getHeight() / 2 - menu.getPrefHeight() / 2
-            );
         }
 
         if (options != next) {
             options.setVisible(false);
-        } else {
-            options.setPosition(
-                    Gdx.graphics.getWidth() / 2 - options.getPrefWidth() / 2,
-                    Gdx.graphics.getHeight() / 2 - options.getPrefHeight() / 2
-            );
         }
 
         if (load != next) {
@@ -121,5 +119,23 @@ public class MainMenuStage extends Stage {
         }
 
         next.setVisible(true);
+        recalcPos();
+    }
+
+    private void recalcPos() {
+        menu.setPosition(
+                Gdx.graphics.getWidth() / 2 - menu.getPrefWidth() / 2,
+                Gdx.graphics.getHeight() / 2 - menu.getPrefHeight() / 2
+        );
+        options.setPosition(
+                Gdx.graphics.getWidth() / 2 - options.getPrefWidth() / 2,
+                Gdx.graphics.getHeight() / 2 - options.getPrefHeight() / 2
+        );
+    }
+
+    public void updateViewPort(int width, int height) {
+        getViewport().update(width, height, true);
+        getCamera().update();
+        recalcPos();
     }
 }

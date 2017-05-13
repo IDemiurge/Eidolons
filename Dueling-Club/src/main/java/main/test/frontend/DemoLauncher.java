@@ -4,6 +4,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import main.client.dc.Launcher;
 import main.game.core.game.DC_Game;
 import main.libgdx.screens.IntroScreen;
@@ -58,9 +61,11 @@ public class DemoLauncher extends Game {
 
     @Override
     public void create() {
-        final IntroScreen introScreen = new IntroScreen(() -> {
+        OrthographicCamera camera = new OrthographicCamera();
+        Viewport viewport = new ScreenViewport(camera);
+        final IntroScreen introScreen = new IntroScreen(viewport, () -> {
             final Screen old = getScreen();
-            setScreen(new MainMenuScreen());
+            setScreen(new MainMenuScreen(viewport));
             if (old != null) {
                 old.dispose();
             }
