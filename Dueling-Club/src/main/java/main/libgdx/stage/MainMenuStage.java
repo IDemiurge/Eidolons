@@ -4,16 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.mainmenu.GameLoadingPanel;
-import main.libgdx.gui.panels.mainmenu.MainMenuPanel;
 import main.libgdx.gui.panels.mainmenu.OptionsPanel;
+import main.libgdx.gui.panels.mainmenu.StartMenuPanel;
 
 public class MainMenuStage extends Stage {
-    private MainMenuPanel menu;
+    private StartMenuPanel menu;
     private OptionsPanel options;
     private GameLoadingPanel load;
 
     public MainMenuStage() {
-        menu = new MainMenuPanel();
+        menu = new StartMenuPanel(true);
         options = new OptionsPanel();
         load = new GameLoadingPanel();
 
@@ -21,6 +21,7 @@ public class MainMenuStage extends Stage {
         addActor(options);
         addActor(load);
 
+        menu.setNewGameCallback(() -> {/*nothing for now*/});
         menu.setExitCallback(() -> System.exit(0));
         menu.setLoadGameCallback(() -> switchView(load));
         menu.setOptionsCallback(() -> switchView(options));

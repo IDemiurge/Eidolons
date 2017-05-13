@@ -7,19 +7,32 @@ import main.libgdx.gui.panels.dc.TablePanel;
 import static main.libgdx.StyleHolder.getMainMenuButton;
 
 
-public class MainMenuPanel extends TablePanel {
+public class StartMenuPanel extends TablePanel {
     private final TextButton loadGameButton;
     private final TextButton optionsButton;
     private final TextButton mainMenuButton;
     private final TextButton exit;
+    private TextButton continueButton = null;
 
-    public MainMenuPanel() {
+    public StartMenuPanel() {
+        this(false);
+    }
+
+    public StartMenuPanel(boolean canContinue) {
         left().bottom();
 
-        mainMenuButton = getMainMenuButton("new game");
+        if (canContinue) {
+            continueButton = getMainMenuButton("continue");
+            add(continueButton);
+            row();
+
+            addEmptyRow(0, (int) continueButton.getPrefHeight());
+        }
+
+        mainMenuButton = getMainMenuButton("new");
         add(mainMenuButton);
         row();
-        loadGameButton = getMainMenuButton("load game");
+        loadGameButton = getMainMenuButton("load");
         add(loadGameButton);
         row();
         optionsButton = getMainMenuButton("options");
@@ -44,5 +57,11 @@ public class MainMenuPanel extends TablePanel {
 
     public void setNewGameCallback(Runnable newGameCallback) {
         mainMenuButton.addListener(new SimpleClickListener(newGameCallback));
+    }
+
+    public void setContinueCallback(Runnable continueCallback) {
+        if (continueButton != null) {
+            continueButton.addListener(new SimpleClickListener(continueCallback));
+        }
     }
 }

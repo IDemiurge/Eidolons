@@ -21,6 +21,17 @@ public class TablePanel<T extends Actor> extends Table {
         return add(el).grow();
     }
 
+    public void addEmptyRow(int w, int h) {
+        addEmpty(w, h);
+        row();
+    }
+
+    public void addEmpty(int w, int h) {
+        Actor actor = new Actor();
+        actor.setSize(w, h);
+        add(actor);
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
