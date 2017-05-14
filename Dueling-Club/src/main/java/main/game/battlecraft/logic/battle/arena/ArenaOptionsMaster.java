@@ -1,5 +1,10 @@
 package main.game.battlecraft.logic.battle.arena;
 
+import main.game.battlecraft.logic.battle.BattleOptionManager;
+import main.game.battlecraft.logic.battle.BattleOptions;
+import main.game.battlecraft.logic.battle.BattleOptions.ARENA_GAME_OPTIONS;
+import main.game.battlecraft.logic.battle.BattleOptions.DIFFICULTY;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.logic.battle.universal.BattleOptionManager;
 import main.game.battlecraft.logic.battle.universal.BattleOptions;
 import main.game.battlecraft.logic.battle.universal.BattleOptions.ARENA_GAME_OPTIONS;

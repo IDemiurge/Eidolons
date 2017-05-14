@@ -24,7 +24,7 @@ import main.game.battlecraft.logic.dungeon.Positioner;
 import main.game.battlecraft.logic.dungeon.UnitData;
 import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.ZCoordinates;
