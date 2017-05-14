@@ -12,7 +12,30 @@ import java.util.Map;
 public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     // INSTEAD OF 'ACTIVES'!
     // AGE(null, "chars"),
-    LAST_ARCADE(null, "meta"), // "meta data" obj_type?
+
+
+    SCENARIO_TYPE(null,false, "scenarios"),
+    SCENARIO_MISSIONS(null,true, "scenarios"),
+    SCENARIO_STARTING_PLACE(null,false, "scenarios"),
+    SCENARIO_DIALOGUE_DATA(null,true, "scenarios"),
+    SCENARIO_INTRO_DATA(null,false, "scenarios"),
+    SCENARIO_PARTY(null,false, "scenarios"),
+    SCENARIO_MAIN_HERO(null,false, "scenarios"),
+
+
+    PLACE_SHOPS(null,true, "places"),
+    PLACE_DUNGEON(null,false, "places"),
+    PLACE_COORDINATES(null,false, "places"),
+
+MISSION_PLACE(null,false, "missions"),
+NEXT_MISSION(null,false, "missions"),
+    MISSION_BRIEFING_DATA(null,false, "missions"),
+    MISSION_LOADING_SCREEN(null,false, "missions"),
+    MISSION_FILE_PATH(null,false, "missions"),
+    MISSION_SCRIPTS(null,true, "missions"),
+
+
+    LAST_ARCADE(null,false, "meta"), // "meta data" obj_type?
     MEMBERS(null, true, "party"),
     LEADER(null, false, "party"),
 

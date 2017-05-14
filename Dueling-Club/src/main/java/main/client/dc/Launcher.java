@@ -11,6 +11,7 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
@@ -19,7 +20,6 @@ import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.core.game.Game;
 import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
-import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.module.adventure.MacroManager;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -177,7 +177,7 @@ public class Launcher {
 
     private static void initAutoLaunches() {
         if (fastMacroTest) {
-            PartyManager.loadParty(FAST_TEST_PARTY);
+            PartyHelper.loadParty(FAST_TEST_PARTY);
             MacroManager.newGame();
             setView(MacroManager.getMacroViewComponent(), VIEWS.MAP);
         } else if (preset != null || HC_TEST_MODE || CHOICE_TEST_MODE) {
@@ -248,7 +248,7 @@ public class Launcher {
         for (String typeName : StringMaster.openContainer(preset)) {
             ObjType presetHero = DataManager.getType(typeName, DC_TYPE.CHARS);
             if (getView() != VIEWS.CHOICE) {
-                getMainManager().getSequenceMaster().chooseNewMember(PartyManager.getParty());
+                getMainManager().getSequenceMaster().chooseNewMember(PartyHelper.getParty());
             }
             addHero(presetHero);
         }
@@ -423,7 +423,7 @@ public class Launcher {
 
         if (newView == VIEWS.HC) {
             try {
-                PartyManager.getParty().resetMembers();
+                PartyHelper.getParty().resetMembers();
                 for (MainPanel p : CharacterCreator.getTabPanel().getPanels().values()) {
                     p.refresh();
                     p.getMiddlePanel().resetBuffer();
@@ -501,7 +501,7 @@ public class Launcher {
     }
 
     public static void launchDC() {
-        launchDC(PartyManager.getParty().getName());
+        launchDC(PartyHelper.getParty().getName());
 
     }
 
@@ -540,10 +540,10 @@ public class Launcher {
             // game.getState().init();
 
             if (CharacterCreator.isArcadeMode()) {
-                PartyManager.initArcade();
+                PartyHelper.initArcade();
             }
 
-            PartyManager.getParty().setGame(game);
+            PartyHelper.getParty().setGame(game);
             if (forceBattleInit || !game.isBattleInit()) {
                 game.battleInit();
             }

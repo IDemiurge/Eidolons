@@ -42,39 +42,36 @@ import main.test.frontend.FAST_DC;
 
 import java.util.List;
 
-public class TestLauncher {
-    private static TestLauncher instance;
-    public final boolean NET_FAST_MODE = true;
-    private final boolean factionMode = true;
+public class TestLauncher //extends MetaGameMaster
+{
+    //    @Override
+//    protected DC_Game createGame() {
+//        return new TestGame();
+//    }
     public int ENEMY_CODE = CODE.CHOOSE;
-    public int PARTY_CODE = CODE.CHOOSE; // preset generic-code?
+    public int PARTY_CODE = CODE.CHOOSE;
     public boolean VISION_HACK = false;
-    // private boolean RANDOMIZE_PARTY = false;
-    // private boolean RANDOMIZE_ENEMIES_PARTY = true;
     public boolean LEADER_MOVES_FIRST = false;
-    private String dungeon= "Cemetary.xml";
     public String ENEMY_PARTY = "Pirate";
     public String PLAYER_PARTY =
-            "Luwien Tulanir v3,Blauri Kinter v2"
+     "Luwien Tulanir v3,Blauri Kinter v2"
 //            "Nelia Valrith;"
-            // +"Grufirant Grossklotz;Orthaelion Enloth;Belia Haevril"
+     // +"Grufirant Grossklotz;Orthaelion Enloth;Belia Haevril"
 //      ";Anfina Ilarfis;Amaltha Soamdath;Belia Haevril"
-            ;
-    //     "Demir;Brother Anthin;Ogsit Tholmir;";//"Guy Fox;Fiona Emrin;Donkel Nogvir;";// "Elberen v2;";//"Bandit Archer";//Zail Adelwyn v4
+     //     "Demir;Brother Anthin;Ogsit Tholmir;";//"Guy Fox;Fiona Emrin;Donkel Nogvir;";// "Elberen v2;";//"Bandit Archer";//Zail Adelwyn v4
+     ;
     public boolean DUMMY_MODE = false;
     public boolean DUMMY_PP = false;
     public Boolean FAST_MODE;
     public Boolean SUPER_FAST_MODE;
+    private String dungeon = "Cemetary.xml";
     private Boolean DEBUG_MODE;
     private Integer PLAYER_CHOICE_OPTION = null;
     private Integer ENEMY_CHOICE_OPTION = 0;
     private DC_Game game;
-    private String partyName;
     private String encounterName;
-    private Integer unitGroupLevel;
-    private boolean factionLeaderRequired;
     private WORKSPACE_GROUP workspaceFilter;
-    private GAME_SUBCLASS gameType=GAME_SUBCLASS.TEST;
+    private GAME_SUBCLASS gameType = GAME_SUBCLASS.TEST;
 
     public TestLauncher(DC_Game game) {
         this(game, null, null );
@@ -84,18 +81,12 @@ public class TestLauncher {
         this.game = game;
         this.FAST_MODE = BooleanMaster.isTrue(FAST_MODE);
         this.SUPER_FAST_MODE = BooleanMaster.isTrue(SUPER_FAST_MODE);
-        instance = this;
     }
 
-    public static TestLauncher getInstance() {
-        return instance;
-    }
 
     private String initFactionData() {
 //        unitGroupLevel = BooleanMaster.isFalse(host_client) ? UnitGroupMaster.getPowerLevel()
 //                : DialogMaster.inputInt(UnitGroupMaster.getPowerLevel());
-        UnitGroupMaster.setPowerLevel(unitGroupLevel);
-        UnitGroupMaster.setFactionLeaderRequired(factionLeaderRequired);
         // Faction faction = chooseFaction();
         // if (random)
         UnitTrainingMaster.setRandom(false);
@@ -107,9 +98,6 @@ public class TestLauncher {
     private void createPreset() {
         String enemy = ENEMY_PARTY;
         String party = PLAYER_PARTY;
-        if (partyName != null) {
-            party = partyName;
-        }
         if (encounterName != null) {
             enemy = encounterName;
         }
@@ -142,17 +130,17 @@ public class TestLauncher {
     }
 
 
-        public DC_Game initDC_Game() {
-            if (game == null) {
-                if (PresetLauncher.getLaunch()!=null )
-                    if (PresetLauncher.getLaunch().gameType!=null )
-                        gameType= PresetLauncher.getLaunch().gameType;
+    public DC_Game initDC_Game() {
+        if (game == null) {
+            if (PresetLauncher.getLaunch() != null)
+                if (PresetLauncher.getLaunch().gameType != null)
+                    gameType = PresetLauncher.getLaunch().gameType;
 
-                        game =  GameFactory.createGame(gameType);
+            game = GameFactory.createGame(gameType);
 //                game = new DC_Game(false);
-            }
-            DC_Game.game=(game);
-            initFlags();
+        }
+        DC_Game.game = (game);
+        initFlags();
         if (DEBUG_MODE != null) {
             game.setDebugMode(DEBUG_MODE);
         }
@@ -163,10 +151,10 @@ public class TestLauncher {
             }
             initPlayerParties();
         }
-            game.init();
-            game.dungeonInit();
-            initData();
-            game.battleInit();
+        game.init();
+        game.dungeonInit();
+        initData();
+        game.battleInit();
         if (DUMMY_MODE) {
             game.setDummyMode(true);
             game.setDummyPlus(DUMMY_PP);
@@ -177,8 +165,8 @@ public class TestLauncher {
         }
         try {
             if (PresetMaster.getPreset() == null // &&
-                    // !BooleanMaster.isTrue(FAST_MODE)
-                    && !SUPER_FAST_MODE) {
+             // !BooleanMaster.isTrue(FAST_MODE)
+             && !SUPER_FAST_MODE) {
                 createPreset();
                 autosavePreset();
             }
@@ -189,9 +177,7 @@ public class TestLauncher {
         return game;
     }
 
-        public void initFlags() {
-
-
+    public void initFlags() {
 
 
         LAUNCH launch = PresetLauncher.getLaunch();
@@ -207,7 +193,7 @@ public class TestLauncher {
 
         if (PresetMaster.getPreset() == null) {
             if (getFAST_MODE()) {
-                if (  dungeon == null) {
+                if (dungeon == null) {
                     dungeon= DungeonInitializer.RANDOM_DUNGEON;
                 }
                 TestMasterContent.test_on = false;
@@ -225,11 +211,12 @@ public class TestLauncher {
     }
 
     public void initData() {    LaunchDataKeeper dataKeeper = createDataKeeper();
-        if (workspaceFilter!=null )
+        if (workspaceFilter != null)
         dataKeeper.getDungeonData().setValue(DUNGEON_VALUE.WORKSPACE_FILTER
          , workspaceFilter.toString());
         game.setDataKeeper(dataKeeper);
     }
+
     private void initLaunch(LAUNCH launch) {
 
 //            if (PresetLauncher.getLaunch().preset != null) {
@@ -331,7 +318,7 @@ public class TestLauncher {
         game.setTestMode(true);
         if (OPTION == null) {
             OPTION = DialogMaster.optionChoice("Select party init option", "Group", "Default",
-                    "Heroes", "Units", "Party");
+             "Heroes", "Units", "Party");
         }
         switch (OPTION) {
             case 0:
@@ -362,7 +349,7 @@ public class TestLauncher {
 
     private String chooseParty() {
         ObjType party = ListChooser.chooseType_(DataManager
-                .getTypesGroup(DC_TYPE.PARTY, "Preset"), DC_TYPE.PARTY);
+         .getTypesGroup(DC_TYPE.PARTY, "Preset"), DC_TYPE.PARTY);
         return party.getProperty(PROPS.MEMBERS);
     }
 
@@ -416,7 +403,7 @@ public class TestLauncher {
     public String chooseEnemies(Integer ENEMY_OPTION) {
         if (ENEMY_OPTION == null) {
             ENEMY_OPTION = DialogMaster.optionChoice("Select Enemy init option", "Group",
-                    "Encounter", "Heroes", "Units", "Default");
+             "Encounter", "Heroes", "Units", "Default");
         }
         switch (ENEMY_OPTION) {
             case 0:
@@ -426,7 +413,7 @@ public class TestLauncher {
                 encounterName = ListChooser.chooseType(DC_TYPE.ENCOUNTERS);
                 if (encounterName != null) {
                     return getEnemiesFromWave(DataManager.getType(encounterName,
-                            DC_TYPE.ENCOUNTERS));
+                     DC_TYPE.ENCOUNTERS));
                 }
             case 2:
                 return chooseCharacters();
@@ -563,6 +550,7 @@ public class TestLauncher {
     public void setSUPER_FAST_MODE(boolean SUPER_FAST_MODE) {
         this.SUPER_FAST_MODE = SUPER_FAST_MODE;
     }
+
 
     public class CODE {
         public final static int PRESET = 0;

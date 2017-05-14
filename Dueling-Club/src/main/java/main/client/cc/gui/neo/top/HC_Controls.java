@@ -15,11 +15,11 @@ import main.data.xml.XML_Writer;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.demo.DemoManager;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.logic.meta.arcade.ArcadeManager.ARCADE_STATUS;
-import main.game.battlecraft.logic.meta.scenario.ScenarioMaster;
-import main.game.battlecraft.logic.meta.scenario.ScenarioMaster.SCENARIO_MODES;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.module.adventure.MacroManager;
@@ -103,7 +103,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
         if (Launcher.getMainManager().isMacroMode()) {
             mode = HC_MODE.MACRO;
         } else if (CharacterCreator.isArcadeMode()) {
-            mode = PartyManager.getParty().getArcadeStatus() != ARCADE_STATUS.PRESTART
+            mode = PartyHelper.getParty().getArcadeStatus() != ARCADE_STATUS.PRESTART
 
                     ? HC_MODE.ARCADE : HC_MODE.PRE_ARCADE;
         } else {
@@ -114,13 +114,13 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
 
         if (DC_Game.game.getGameType() == GAME_TYPE.SCENARIO) {
             controls.remove(SAVE);
-            if (ScenarioMaster.getScenario().getMode() != SCENARIO_MODES.FREE_MODE) {
-                controls.remove(ADD);
-                controls.remove(NEW_HERO);
-                if (ScenarioMaster.getScenario().getMode() == SCENARIO_MODES.RPG_MODE) {
-                    controls.add(3, TAVERNS);
-                }
-            }
+//            if (ScenarioPrecombatMaster.getScenario().getMode() != SCENARIO_MODES.FREE_MODE) {
+//                controls.remove(ADD);
+//                controls.remove(NEW_HERO);
+//                if (ScenarioPrecombatMaster.getScenario().getMode() == SCENARIO_MODES.RPG_MODE) {
+//                    controls.add(3, TAVERNS);
+//                }
+//            }
         }
 
         for (String command : controls) {
@@ -182,15 +182,15 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                 case ADD:
                     SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
 
-                    if (PartyManager.checkPartySize() || Launcher.DEV_MODE) {
+                    if (PartyHelper.checkPartySize() || Launcher.DEV_MODE) {
                         Launcher.getMainManager().getSequenceMaster().chooseNewMember(
-                                PartyManager.getParty());
+                                PartyHelper.getParty());
                     } else {
                         DialogMaster.error("Maximum party size reached!");
                     }
                     break;
                 case REMOVE:
-                    PartyManager.remove(hero);// ...
+                    PartyHelper.remove(hero);// ...
                     break;
                 case FIGHT:
                 case FIGHT_2:
@@ -225,7 +225,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                     new Thread(new Runnable() {
                         public void run() {
 
-                            PartyManager.savePartyAs(false);
+                            PartyHelper.savePartyAs(false);
                         }
                     }).start();
                     break;
@@ -234,7 +234,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                     new Thread(new Runnable() {
                         public void run() {
 
-                            PartyManager.savePartyAs(true);
+                            PartyHelper.savePartyAs(true);
                         }
                     }).start();
 
@@ -257,7 +257,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                 case SAVE:
                     SoundMaster.playStandardSound(STD_SOUNDS.DONE);
                     if (CharacterCreator.isPartyMode()) {
-                        PartyManager.saveParty();
+                        PartyHelper.saveParty();
                     } else {
                         CharacterCreator.save(CharacterCreator.getSelectedHeroType());
 
@@ -388,7 +388,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                     // "(must match your party leader's principles or deity)");
                     newHero.toBase();
                     // } else
-                    PartyManager.addMember(newHero);
+                    PartyHelper.addMember(newHero);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {

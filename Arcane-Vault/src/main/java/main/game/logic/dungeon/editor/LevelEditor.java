@@ -168,7 +168,7 @@ public class LevelEditor {
     }
 
     public static void newMission() {
-        String name = ListChooser.chooseType(MACRO_OBJ_TYPES.MISSIONS);
+        String name = ListChooser.chooseType(MACRO_OBJ_TYPES.MISSION);
         if (name == null) {
             return;
         }

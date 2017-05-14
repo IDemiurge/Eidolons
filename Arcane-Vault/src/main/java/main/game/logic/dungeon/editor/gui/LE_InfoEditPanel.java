@@ -91,7 +91,7 @@ public class LE_InfoEditPanel extends EditViewPanel {
             } else if (valName.equalsIgnoreCase(PROPS.COLOR_THEME.getName())) {
                 LevelEditor.getCurrentLevel().getDungeon().setColorTheme(null);
             }
-        } else if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.MISSIONS) {
+        } else if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.MISSION) {
             modify(
                     // overwriteType? :
                     LevelEditor.getCurrentMission().getObj().getType() // no custom
@@ -110,7 +110,7 @@ public class LE_InfoEditPanel extends EditViewPanel {
     }
 
     public void resetData(boolean quietly, Entity type) {
-        if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.MISSIONS) {
+        if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.MISSION) {
             super.resetData(quietly, LevelEditor.getCurrentMission().getObj());
         } else {
             super.resetData(quietly, type);
@@ -126,7 +126,7 @@ public class LE_InfoEditPanel extends EditViewPanel {
         if (selectedType != null) {
             LevelEditor.setMouseAddMode(false);
             if (selectedType.getOBJ_TYPE_ENUM() != DC_TYPE.DUNGEONS) {
-                if (selectedType.getOBJ_TYPE_ENUM() != MACRO_OBJ_TYPES.MISSIONS) {
+                if (selectedType.getOBJ_TYPE_ENUM() != MACRO_OBJ_TYPES.MISSION) {
                     LevelEditor.setMouseInfoMode(true);
                 }
             }

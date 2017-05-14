@@ -10,7 +10,7 @@ import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.dungeon.Spawner.SPAWN_MODE;
 import main.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.rules.action.StackingRule;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
@@ -41,6 +41,47 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public Positioner(DungeonMaster<E> master) {
         super(master);
+    }
+
+    public boolean isAutoOptimalFacing() {
+        return true;
+    }
+    public List<Coordinates> initPartyCoordinates(List<String> partyTypes,
+                                                  Boolean mine_enemy_third) {
+
+                String partyData = "";
+//        getPositioner().setMaxSpacePercentageTaken(MAX_SPACE_PERC_PARTY);
+        List<Coordinates> coordinates = null;
+
+        if (PartyHelper.getParty() != null) {
+            if (MapMaster.isNotEmpty(PartyHelper.getParty().getPartyCoordinates())) {
+                coordinates = new LinkedList<>(PartyHelper.getParty().getPartyCoordinates()
+                 .values());
+                partyTypes = ListMaster.toNameList(PartyHelper.getParty().getPartyCoordinates()
+                 .keySet());
+            }
+
+        }
+        if (coordinates == null) {
+            coordinates =  getPartyCoordinates(null, BooleanMaster
+             .isTrue(mine_enemy_third), partyTypes);
+        }
+
+        int i = 0;
+
+        for (String subString : partyTypes) {
+            Coordinates c = coordinates.get(i);
+            if (c == null) {
+                LogMaster.log(1, subString + " coordinate BLAST!!!");
+            }
+            i++;
+            subString = c + DC_ObjInitializer.COORDINATES_OBJ_SEPARATOR + subString;
+            partyData += subString + DC_ObjInitializer.OBJ_SEPARATOR;
+            //TODO string not needed?
+        }
+
+
+        return coordinates;
     }
 
     public static Coordinates adjustCoordinate(Coordinates c, FACING_DIRECTION facing) {
@@ -172,8 +213,8 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
             if (me != null) {
                 if (me) {
-                    if (PartyManager.getParty() != null) {
-                        Unit mh = PartyManager.getParty().getMiddleHero();
+                    if (PartyHelper.getParty() != null) {
+                        Unit mh = PartyHelper.getParty().getMiddleHero();
                         if (mh != null) {
                             int index = partyTypes.indexOf(mh.getName());
                             if (index > -1) {

@@ -11,7 +11,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.rules.DC_RuleImpl;
 import main.game.battlecraft.rules.counter.DC_CounterRule;
 import main.game.battlecraft.rules.counter.DamageCounterRule;
@@ -183,14 +183,14 @@ public class DC_StateManager extends StateManager {
                 }
             }
         }
-        if (PartyManager.getParty() != null) {
+        if (PartyHelper.getParty() != null) {
             try {
-                PartyManager.getParty().afterEffects();
+                PartyHelper.getParty().afterEffects();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        for (Obj obj : PartyManager.getParties()) {
+        for (Obj obj : PartyHelper.getParties()) {
             try {
                 obj.afterEffects();
             } catch (Exception e) {

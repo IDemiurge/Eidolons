@@ -8,13 +8,13 @@ import main.entity.obj.Attachment;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.rules.combat.damage.DamageCalculator;
 import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.battlecraft.logic.meta.PartyManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -157,8 +157,8 @@ public class DeathMaster extends Master {
         for (BattleFieldObject unit : list) {
 
             if (retainPlayerParty) {
-                if (PartyManager.getParty() != null) {
-                    if (PartyManager.getParty().getMembers().contains(unit)) {
+                if (PartyHelper.getParty() != null) {
+                    if (PartyHelper.getParty().getMembers().contains(unit)) {
                         continue;
                     }
                 }

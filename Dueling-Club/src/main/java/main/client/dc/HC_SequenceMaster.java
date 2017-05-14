@@ -16,7 +16,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.BattleOptions.DIFFICULTY;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;
@@ -209,7 +209,7 @@ public class HC_SequenceMaster implements SequenceManager {
         WaitMaster.receiveInput(WAIT_OPERATIONS.SELECTION, sequence.getValue());
         switch (selection) {
             case NEW_MEMBER_SELECTION:
-                PartyManager.addMember(sequence.getValue());
+                PartyHelper.addMember(sequence.getValue());
                 break;
         }
         Launcher.resetView(VIEWS.HC);
@@ -238,7 +238,7 @@ public class HC_SequenceMaster implements SequenceManager {
 
     public boolean mainHeroChoiceSequence(Unit hero) {
         final ChoiceSequence cs = new ChoiceSequence();
-       final  List<Entity> list = ListMaster.getEntityList(PartyManager.getParty().getMembers());
+       final  List<Entity> list = ListMaster.getEntityList(PartyHelper.getParty().getMembers());
         PresetEntityChoiceView view = new PresetEntityChoiceView(cs, hero, InfoMaster.MIDDLE_HERO, list) {
 
             protected int getColumnsCount() {
@@ -251,7 +251,7 @@ public class HC_SequenceMaster implements SequenceManager {
 
             protected void ok() {
                 hero.getOwner().setHeroObj((Unit) getSelectedItem());
-                PartyManager.getParty().setLeader((Unit) getSelectedItem());
+                PartyHelper.getParty().setLeader((Unit) getSelectedItem());
                 super.ok();
             }
 
@@ -269,15 +269,15 @@ public class HC_SequenceMaster implements SequenceManager {
     @Refactor    public boolean prebattleChoiceSequence(Unit hero) {
 
         final ChoiceSequence cs = new ChoiceSequence();
-        List<Entity> list = ListMaster.getEntityList(PartyManager.getParty().getMembers());
-        final int size = PartyManager.getParty().getMembers().size();
+        List<Entity> list = ListMaster.getEntityList(PartyHelper.getParty().getMembers());
+        final int size = PartyHelper.getParty().getMembers().size();
 
         ChoiceView positionChoiceView = null;
         if (ArenaArcadeMaster.isTestMode()) {
 //            hero.getGame().getArenaArcadeMaster().prebattle(cs);
         }
 
-        if (PartyManager.getParty().checkTactics()
+        if (PartyHelper.getParty().checkTactics()
             // || ArenaArcadeMaster.isTestMode()
                 ) {
             positionChoiceView = new PositionChoiceView(cs, hero);
@@ -304,7 +304,7 @@ public class HC_SequenceMaster implements SequenceManager {
                 }
 
                 protected void ok() {
-                    PartyManager.getParty().setMiddleHero((Unit) getSelectedItem());
+                    PartyHelper.getParty().setMiddleHero((Unit) getSelectedItem());
                     super.ok();
                 }
 
@@ -330,7 +330,7 @@ public class HC_SequenceMaster implements SequenceManager {
                 if (hero.getGame().getGameMode() == GAME_MODES.ARENA_ARCADE) {
 //                    hero.getGame().getArenaArcadeMaster().prebattle(cs);
                 } else {
-                    cs.addView(new DungeonChoiceView(cs, PartyManager.getParty()));
+                    cs.addView(new DungeonChoiceView(cs, PartyHelper.getParty()));
                 }
             }
         }

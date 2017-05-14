@@ -22,12 +22,12 @@ import main.elements.conditions.StringComparison;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.meta.PartyManager;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
@@ -116,7 +116,7 @@ public class ArcadeManager {
     }
 
     public static void checkPartyLevelUps() {
-        for (Unit hero : PartyManager.getParty().getMembers()) {
+        for (Unit hero : PartyHelper.getParty().getMembers()) {
             int xpForLevel = DC_Formulas.getXpForLevel(hero.getLevel());
             if (hero.getIntParam(PARAMS.XP) > xpForLevel) {
                 HeroLevelManager.levelUp(hero, null);
@@ -146,9 +146,9 @@ public class ArcadeManager {
                 || !party.checkProperty(G_PROPS.DUNGEONS_PENDING) || checkRegionComplete(party)) {
             nextRegion();
         }
-        PartyManager.savePartyAs(true);
-        PartyManager.getParty().setProperty(PROPS.ARCADE_STATUS, "" + ARCADE_STATUS.PRESTART, true);
-        PartyManager.writeLatestPartyType();
+        PartyHelper.savePartyAs(true);
+        PartyHelper.getParty().setProperty(PROPS.ARCADE_STATUS, "" + ARCADE_STATUS.PRESTART, true);
+        PartyHelper.writeLatestPartyType();
         // party.setProp(shop_level) => use in vendor if not empty!
         // generate quality/material ranges per shop level!
     }
@@ -226,7 +226,7 @@ public class ArcadeManager {
     }
 
     private void victory() {
-        PartyManager.getParty().setProperty(PROPS.ARCADE_STATUS, "" + ARCADE_STATUS.FINISHED, true);
+        PartyHelper.getParty().setProperty(PROPS.ARCADE_STATUS, "" + ARCADE_STATUS.FINISHED, true);
 
         int place = HallOfFame.getPlace(party);
         DialogMaster.inform("Congratulations, " + StringMaster.getPossessive(party.getName())
@@ -273,13 +273,13 @@ public class ArcadeManager {
     public void dungeonComplete() {
         // award loot
 
-        PartyManager.getParty().setProperty(PROPS.ARCADE_STATUS, "" + ARCADE_STATUS.IN_PROGRESS,
+        PartyHelper.getParty().setProperty(PROPS.ARCADE_STATUS, "" + ARCADE_STATUS.IN_PROGRESS,
                 true);
         dungeon = game.getDungeonMaster().getDungeonWrapper().getDungeon();
         if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
 //            game.getArenaArcadeMaster().levelWon();
         } else {
-            PartyManager.levelUp();
+            PartyHelper.levelUp();
         }
         party.addProperty(G_PROPS.DUNGEONS_COMPLETED, dungeon.getName(), true);
         party.setProperty(G_PROPS.GROUP, StringMaster.ARCADE, true);

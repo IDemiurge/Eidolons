@@ -8,6 +8,7 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.dungeon.location.building.DC_Map;
@@ -18,7 +19,6 @@ import main.game.battlecraft.logic.dungeon.location.building.DC_Map;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.meta.PartyManager;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.CellComp;
 import main.swing.generic.components.G_Panel;
@@ -669,8 +669,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     private Unit getActiveObj() {
         if (activeObj == null) {
-            if (PartyManager.getParty() != null) {
-                setActiveObj(PartyManager.getParty().getLeader());
+            if (PartyHelper.getParty() != null) {
+                setActiveObj(PartyHelper.getParty().getLeader());
             } else {
                 setActiveObj((Unit) game.getPlayer(true).getHeroObj());
             }

@@ -77,6 +77,7 @@ public class Anim extends Group implements Animation {
     private boolean emittersWaitingDone;
     private List<FloatingText> floatingText;
     private AnimMaster master;
+    private CompositeAnim composite;
 
     public Anim(Entity active, AnimData params) {
         data = params;
@@ -731,5 +732,13 @@ public class Anim extends Group implements Animation {
 
     public AnimMaster getMaster() {
         return master;
+    }
+
+    public CompositeAnim getComposite() {
+        return composite;
+    }
+
+    public void setComposite(CompositeAnim composite) {
+        this.composite = composite;
     }
 }

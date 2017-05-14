@@ -131,8 +131,8 @@ public class SkirmishMaster {
         // this will be on EDT, so choosing can be same thread, but waiting for
         // result on another
 
-        ChoiceMaster.chooseTypeNewThread(MACRO_OBJ_TYPES.MISSIONS, DataManager.getTypesGroup(
-                MACRO_OBJ_TYPES.MISSIONS, "Skirmish"), "Choose Skirmish to Fight in", null, null);
+        ChoiceMaster.chooseTypeNewThread(MACRO_OBJ_TYPES.MISSION, DataManager.getTypesGroup(
+                MACRO_OBJ_TYPES.MISSION, "Skirmish"), "Choose Skirmish to Fight in", null, null);
         new Thread(new Runnable() {
             public void run() {
                 ObjType type = (ObjType) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECTION);

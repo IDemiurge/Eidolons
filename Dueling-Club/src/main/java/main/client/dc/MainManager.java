@@ -10,13 +10,16 @@ import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NumericCondition;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.meta.PartyHelper;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
+import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.battlecraft.demo.DemoManager;
 import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
 import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
-import main.game.battlecraft.logic.meta.scenario.ScenarioMaster;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.scenario.ScenarioPrecombatMaster;
 import main.game.module.adventure.MacroManager;
 import main.game.battlecraft.logic.meta.skirmish.SkirmishMaster;
 import main.game.core.game.DC_Game;
@@ -124,8 +127,8 @@ public class MainManager implements SequenceManager {
                 break;
             }
             case NEW: {
-                ScenarioMaster.newScenario();
-                if (ScenarioMaster.isPresetHero()) {
+                ScenarioPrecombatMaster.newScenario();
+                if (ScenarioPrecombatMaster.isPresetHero()) {
                     List<Unit> heroes = null;
                     // init party
                     launchHC(heroes);
@@ -133,7 +136,7 @@ public class MainManager implements SequenceManager {
                 break;
             }
             case LOAD: {
-                ScenarioMaster.loadScenario();
+                ScenarioPrecombatMaster.loadScenario();
                 break;
             }
             case SCENARIO: {
@@ -143,7 +146,7 @@ public class MainManager implements SequenceManager {
 
             case NEW_DEMO:
 
-                launchHC(PartyManager.loadParty(DemoManager.PARTY_NAME, game, false));
+                launchHC(PartyHelper.loadParty(DemoManager.PARTY_NAME, game, false));
                 DemoManager.hqEntered();
                 break;
             case CONTINUE_DEMO:
@@ -151,7 +154,7 @@ public class MainManager implements SequenceManager {
                 if ( game.getGameType() == GAME_TYPE.SCENARIO) {
                     // TODO
                 } else {
-                    List<Unit> party = PartyManager.loadParty(PartyManager
+                    List<Unit> party = PartyHelper.loadParty(PartyHelper
                      .readLastPartyType());
                     if (DC_Game.game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
 //                        DC_Game.game.getArenaArcadeMaster().continueArcade(PartyManager.getParty());
@@ -287,8 +290,8 @@ public class MainManager implements SequenceManager {
                 c = new NumericCondition("1", "{match_hero_level}");
             } else {
                 if (DC_Game.game.getGameType() == GAME_TYPE.SCENARIO) {
-                    if (ScenarioMaster.getScenario() != null) {
-                        c = ScenarioMaster.getSelectHeroConditions();
+                    if (ScenarioPrecombatMaster.getScenario() != null) {
+                        c = ScenarioPrecombatMaster.getSelectHeroConditions();
                     }
                 }
             }
@@ -335,22 +338,22 @@ public class MainManager implements SequenceManager {
                 initNewHero();
                 break;
             case SELECT_PRESET_PARTY:
-                PartyManager.loadParty(sequence.getValue());
+                PartyHelper.loadParty(sequence.getValue());
                 launchDC(sequence.getValue()); // "arg"
                 break;
             case SELECT_ARCADE:
-                launchHC(PartyManager.loadParty(sequence.getValue()));
+                launchHC(PartyHelper.loadParty(sequence.getValue()));
                 break;
             case SELECT_MY_PARTY:
-                launchHC(PartyManager.loadParty(sequence.getValue()));
+                launchHC(PartyHelper.loadParty(sequence.getValue()));
                 break;
         }
 
     }
 
     private void newParty() {
-        PartyManager.newParty(hero);
-        PartyManager.saveParty();
+        PartyHelper.newParty(hero);
+        PartyHelper.saveParty();
         if (CharacterCreator.isArcadeMode()) {
 //            DC_Game.game.getArcadeManager().initializeArcade(PartyManager.getParty());
         } else {
@@ -386,9 +389,9 @@ public class MainManager implements SequenceManager {
         refresh();
         CharacterCreator.setInitialized(false);
         DataManager.reloadOverwrittenTypes();
-        if (PartyManager.getParty() != null) {
-            PartyManager.getParty().getMembers().clear();
-            PartyManager.setParty(null);
+        if (PartyHelper.getParty() != null) {
+            PartyHelper.getParty().getMembers().clear();
+            PartyHelper.setParty(null);
         }
     }
 

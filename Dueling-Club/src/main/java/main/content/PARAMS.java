@@ -133,7 +133,7 @@ public enum PARAMS implements PARAMETER {
     // LEVEL_REQ
 
     XP_COST("Xp cost", "Experience cost", false, 0, "skills", "spells", "classes", "actions"),
-    TOTAL_XP("Experience", "Experience points", false, 100, "chars", "units", "missions"),
+    TOTAL_XP("Experience", "Experience points", false, 100, "chars", "units", "mission"),
     POWER("Power", "Power points", false, 10, "chars", "units"),
     XP("Experience remaining", "Experience remaining", true, 100, "chars", "units"),
 
@@ -281,7 +281,7 @@ public enum PARAMS implements PARAMETER {
 
     GOLD_COST(null, "Cost in Gold", false, 50, C_OBJ_TYPE.ITEMS),
     GOLD(null, " Gold", true, 0, "chars", "shop"),
-    GOLD_TOTAL(null, " Gold", false, 0, "chars", "missions", "shop"),
+    GOLD_TOTAL(null, " Gold", false, 0, "chars", "mission", "shop"),
     GOLD_MOD(true, null, "Gold mod", false, 100, "chars", "units", "skills", "shop"),
     GOLD_PER_LEVEL(null, "Gold per level", false, 100, "chars", "units", "skills"),
     GOLD_COST_REDUCTION(null, "Gold cost REDUCTION", false, 0, "chars", "units", "skills"),
@@ -764,9 +764,9 @@ public enum PARAMS implements PARAMETER {
 
     ARCADE_LEVEL(null, "", false, 0, "party"),
     LEVEL("LEVEL", "", false, 1, "chars", "units", "party", "arcades"),
-    MIN_LEVEL(null, "", false, 0, "missions"),
-    MAX_LEVEL(null, "", false, 0, "missions"),
-    DIFFICULTY_MOD(true, null, "", false, 100, "missions"),
+    MIN_LEVEL(null, "", false, 0, "mission"),
+    MAX_LEVEL(null, "", false, 0, "mission"),
+    DIFFICULTY_MOD(true, null, "", false, 100, "mission"),
     UNIT_LEVEL("LEVEL", "", false, 0, "units"),
     HERO_LEVEL("HERO_LEVEL", "", false, 0, "chars"),
 

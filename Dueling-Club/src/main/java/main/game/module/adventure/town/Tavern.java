@@ -16,7 +16,7 @@ import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.global.TimeMaster;
@@ -268,7 +268,7 @@ public class Tavern extends TownPlace {
                 -hero.getIntParam(MACRO_PARAMS.HIRE_COST));
         // TODO shared gold?
         heroes.remove(hero);
-        PartyManager.addMember(hero);
+        PartyHelper.addMember(hero);
         hero.setOriginalOwner(party.getOwner());
         hero.setOwner(party.getOwner());
         hero.setHidden(false);

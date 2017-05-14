@@ -32,10 +32,10 @@ import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.core.game.DC_Game;
 import main.game.logic.event.MessageManager;
-import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.town.Shop;
 import main.system.DC_Formulas;
@@ -142,14 +142,14 @@ public class HeroManager {
 
     public void afterDefeatRewind() {
         game.setSimulation(true);
-        for (Unit hero : PartyManager.getParty().getMembers()) {
+        for (Unit hero : PartyHelper.getParty().getMembers()) {
             stepBack(hero);
         }
     }
 
     public void prebattleCleanSave() {
         clearStacks();
-        for (Unit hero : PartyManager.getParty().getMembers()) {
+        for (Unit hero : PartyHelper.getParty().getMembers()) {
             saveHero(hero);
         }
     }

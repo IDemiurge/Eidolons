@@ -1,7 +1,7 @@
 package main.client.cc.gui.neo.choice;
 
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
@@ -148,11 +148,11 @@ public class PositionChoiceView extends ChoiceView<Unit> implements MouseListene
         size = DEFAULT_SIZE;
         rowCount = size / columnsCount;
         if (partyCoordinates == null) {
-            partyCoordinates = PartyManager.getParty().getPartyCoordinates();
+            partyCoordinates = PartyHelper.getParty().getPartyCoordinates();
             if (partyCoordinates == null) {
-                partyCoordinates = DC_Game.game.getDungeonMaster().getPositioner().getPartyCoordinates(PartyManager.getParty()
+                partyCoordinates = DC_Game.game.getDungeonMaster().getPositioner().getPartyCoordinates(PartyHelper.getParty()
                         .getMembers());
-                PartyManager.getParty().setPartyCoordinates(partyCoordinates);
+                PartyHelper.getParty().setPartyCoordinates(partyCoordinates);
 
             }
             for (Unit hero : partyCoordinates.keySet()) {
@@ -225,8 +225,8 @@ public class PositionChoiceView extends ChoiceView<Unit> implements MouseListene
 
     @Override
     protected void applyChoice() {
-        if (PartyManager.getParty() != null) {
-            PartyManager.getParty().setPartyCoordinates(partyCoordinates);
+        if (PartyHelper.getParty() != null) {
+            PartyHelper.getParty().setPartyCoordinates(partyCoordinates);
         }
         for (Unit hero : data) {
             if (hero != null) {

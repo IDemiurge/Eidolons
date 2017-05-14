@@ -51,7 +51,7 @@ public class Mission {
     public Mission(String baseType, String data) {
         LevelEditor.getMainPanel().setCurrentMission(this);
         this.name = baseType;
-        type = DataManager.getType(name, MACRO_OBJ_TYPES.MISSIONS);
+        type = DataManager.getType(name, MACRO_OBJ_TYPES.MISSION);
         if (type == null) {
             throw new RuntimeException();
         }

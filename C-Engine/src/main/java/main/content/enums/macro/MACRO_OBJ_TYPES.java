@@ -29,7 +29,9 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
     AREA("area", MACRO_PROPS.REGION, 9),
     TOWN_PLACE("town place", MACRO_PROPS.REGION, 10),
 
-    MISSIONS("missions", G_PROPS.GROUP, 11, MACRO_PROPS.MISSION_TYPE),
+    MISSION("missions", G_PROPS.GROUP, 11, MACRO_PROPS.MISSION_TYPE),
+
+;
     // MACRO_CHAR(OBJ_TYPES.CHARS, "MACRO_CHAR", 7),
     // MACRO_UNIT(OBJ_TYPES.UNITS, "MACRO_UNIT", 8),
 
@@ -60,11 +62,6 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
     // 3),
     // INFLUENCE("DIALOGUE_ACTOR", PROPS.ASPECT, 11, true),
     // DIALOGUE_ACTOR("DIALOGUE_ACTOR", PROPS.ASPECT, 11, true)
-    /**
-     * DEITY_PANTHEON QUEST MISSION
-     *
-     */
-    ;
 
     private static Map<String, MACRO_OBJ_TYPES> searchMap;
 
