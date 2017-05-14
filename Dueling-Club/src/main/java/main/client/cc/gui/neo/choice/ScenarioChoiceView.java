@@ -28,7 +28,7 @@ public class ScenarioChoiceView extends EntityChoiceView {
 
     @Override
     protected void initData() {
-        data = DataManager.getTypesGroup(MACRO_OBJ_TYPES.MISSIONS, SCENARIO);
+        data = DataManager.getTypesGroup(MACRO_OBJ_TYPES.MISSION, SCENARIO);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ScenarioChoiceView extends EntityChoiceView {
 
     @Override
     protected OBJ_TYPE getTYPE() {
-        return MACRO_OBJ_TYPES.MISSIONS;
+        return MACRO_OBJ_TYPES.MISSION;
     }
 
     @Override

@@ -10,7 +10,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
-import main.game.battlecraft.logic.meta.scenario.ScenarioMaster;
+import main.game.battlecraft.logic.meta.scenario.ScenarioPrecombatMaster;
 
 import java.util.LinkedList;
 
@@ -30,7 +30,7 @@ public class HeroChoiceSequence extends ChoiceSequence {
     public void initDefaultHeroSequence() {
         views = new LinkedList<>();
         if (hero.getGame().getGameType() == GAME_TYPE.SCENARIO) {
-            if (ScenarioMaster.getScenario() != null) {
+            if (ScenarioPrecombatMaster.getScenario() != null) {
 
             }
             // reqs =

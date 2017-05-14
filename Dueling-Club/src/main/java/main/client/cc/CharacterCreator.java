@@ -19,10 +19,9 @@ import main.data.xml.XML_Writer;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_TYPE;
-import main.game.battlecraft.logic.meta.scenario.ScenarioMaster;
-import main.game.battlecraft.logic.meta.PartyManager;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
@@ -414,7 +413,7 @@ public class CharacterCreator {
     }
 
     public static void saveLastPartyData() {
-        FileManager.write(PartyManager.getParty().getMemberString(), Launcher.getLastPresetPath());
+        FileManager.write(PartyHelper.getParty().getMemberString(), Launcher.getLastPresetPath());
     }
 
     public static void partyMemberRemoved(Unit hero) {
@@ -558,9 +557,9 @@ public class CharacterCreator {
     public static boolean isLevelUpEnabled(Unit hero) {
         if (hero.getGame().getGameType() == GAME_TYPE.SKIRMISH
                 || hero.getGame().getGameType() == GAME_TYPE.SCENARIO) {
-            if (hero.getLevel() >= ScenarioMaster.getScenario().getMaxHeroLevel()) {
-                return false;
-            }
+//            if (hero.getLevel() >= ScenarioPrecombatMaster.getScenario().getMaxHeroLevel()) {
+//                return false;
+//            }
         }
         return true;
     }

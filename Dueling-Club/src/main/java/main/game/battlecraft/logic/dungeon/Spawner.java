@@ -14,6 +14,7 @@ import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.dungeon.UnitData.PARTY_VALUE;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game.GAME_MODES;
@@ -219,7 +220,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         DC_Player player = game.getPlayer(me);
         if (BooleanMaster.isTrue(me)) {
-            PartyObj party = getGame().getMetaMaster().getPartyManager().getParty();
+            PartyObj party = PartyHelper.getParty();
             if (party != null) {
                 SoundMaster.playEffectSound(SOUNDS.READY, party.getLeader());
                 spawnPlayerParty(party, partyData);

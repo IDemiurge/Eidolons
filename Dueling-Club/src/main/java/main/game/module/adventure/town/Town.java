@@ -3,8 +3,8 @@ package main.game.module.adventure.town;
 import main.client.cc.logic.party.PartyObj;
 import main.client.dc.HC_SequenceMaster;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.logic.meta.faction.FactionObj;
-import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.map.Place;
@@ -65,7 +65,7 @@ public class Town extends Place {
             return taverns.get(0);
         }
         HC_SequenceMaster sequenceMaster = new HC_SequenceMaster();
-        sequenceMaster.launchEntitySelection(taverns, PartyManager.getParty()
+        sequenceMaster.launchEntitySelection(taverns, PartyHelper.getParty()
                 .getLeader(), "Select Tavern");
         if (WaitMaster.waitForInput(WAIT_OPERATIONS.SELECTION) == null) {
             return null;

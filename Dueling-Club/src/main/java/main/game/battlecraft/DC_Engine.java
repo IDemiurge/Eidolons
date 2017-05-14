@@ -34,6 +34,7 @@ supposed to give access to Audio, Data, utilities, ...
     public static void dataInit(  ) {
         new DC_ContentManager().init();
         CoreEngine.dataInit(  false);
+        //read save game?
         DC_ContentManager.initTypeDynamicValues();
     }
 

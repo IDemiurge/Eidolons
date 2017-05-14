@@ -30,18 +30,15 @@ public class Location extends DungeonWrapper {
     private List<Dungeon> subLevels;
     private boolean sublevel;
     private Dungeon parent;
-    private List<Entrance> entrances;
+    private List<Entrance> entrances; //TODO
     private String entranceData;
     private DungeonPlan plan;
     private Entrance mainEntrance;
     private Entrance mainExit;
-    private int z;
-    private BuildParameters params;
     private BuildParameters buildParams;
 
     public Location(LocationMaster master,Dungeon dungeon) {
         super(dungeon, master);
-        z = getIntParam(G_PARAMS.Z_LEVEL);
         this.master = master;
         this.sublevel = sublevel;
         if (!sublevel) {

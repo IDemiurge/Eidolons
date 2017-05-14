@@ -3,7 +3,7 @@ package main.game.battlecraft.rules.round;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battle.arena.Wave;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.core.game.DC_Game;
 import main.game.module.adventure.travel.Encounter;
 import main.system.auxiliary.StringMaster;
@@ -62,13 +62,13 @@ public class ScoutingRule extends RoundRule {
 
     @Override
     public boolean check(Unit unit) {
-        if (PartyManager.getParty() == null) {
+        if (PartyHelper.getParty() == null) {
             if (unit.isHero()) {
                 if (unit.getOwner().isMe()) {
                     return true;
                 }
             }
-        } else if (PartyManager.getParty().getMembers().contains(unit)) {
+        } else if (PartyHelper.getParty().getMembers().contains(unit)) {
             return true;
         }
         return false;

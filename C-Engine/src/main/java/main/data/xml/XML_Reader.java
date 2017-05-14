@@ -125,6 +125,7 @@ public class XML_Reader {
                         loadMap(xmlFile.type == null ? xmlFile.name : xmlFile.type.getName(), doc);
                     } catch (Exception e) {
                         brokenXml = true;
+                        main.system.auxiliary.log.LogMaster.log(1,file+" is broken!" );
                         e.printStackTrace();
                     }
                 }

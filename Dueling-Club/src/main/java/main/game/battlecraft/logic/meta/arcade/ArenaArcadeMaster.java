@@ -9,9 +9,9 @@ import main.content.PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.core.game.DC_Game;
 import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
-import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.logic.dungeon.Spawner;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -91,7 +91,7 @@ public class ArenaArcadeMaster {
         if ((1 + arcade.getLevel()) % 2 == 0) {
             arcade.getParty().modifyParameter(PARAMS.MAX_HEROES, 1);
         } else {
-            PartyManager.levelUp();
+            PartyHelper.levelUp();
         }
         arcade.getParty().modifyParameter(PARAMS.ARCADE_LEVEL, 1, true);
         // arcade.nextLevel();

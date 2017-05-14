@@ -12,10 +12,10 @@ import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.battlecraft.logic.meta.arcade.Arcade;
-import main.game.battlecraft.logic.meta.PartyManager;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -49,7 +49,7 @@ public class DemoManager {
     }
 
     private static void initParty() {
-        PartyManager.createParty(DataManager.getType(demoParty, DC_TYPE.PARTY),
+        PartyHelper.createParty(DataManager.getType(demoParty, DC_TYPE.PARTY),
          leader);
     }
 
@@ -94,7 +94,7 @@ public class DemoManager {
                 Launcher.resetView(VIEWS.HC);
 //                setLeader()
 
-                PartyManager.loadParty(demoParty);
+                PartyHelper.loadParty(demoParty);
 //                initSelectedHero();
 //                newParty();
 //                launchHC();
@@ -114,7 +114,7 @@ public class DemoManager {
     }
 
     public static void battleEntered() {
-        String path = getDungeonPath(PartyManager.getParty().getLevel());
+        String path = getDungeonPath(PartyHelper.getParty().getLevel());
 //        Eidolons.game.getDungeonMaster().initDungeon(path);
         Eidolons.game.setGameMode(GAME_MODES.ARENA);
     }

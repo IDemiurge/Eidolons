@@ -3,7 +3,7 @@ package main.game.battlecraft.logic.battle.arena;
 import main.game.battlecraft.logic.battle.Battle;
 import main.game.battlecraft.logic.battle.BattleMaster;
 import main.game.battlecraft.logic.battle.BattleOutcomeManager;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.PartyHelper;
 
 /**
  * Created by JustMe on 5/8/2017.
@@ -113,7 +113,7 @@ public class ArenaOutcomeManager<E extends Battle> extends BattleOutcomeManager<
         return true;
     }
     private void saveParty() {
-        PartyManager.saveParty();
+        PartyHelper.saveParty();
     }
 
 
