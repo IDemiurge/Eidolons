@@ -14,7 +14,7 @@ public class C_MACRO_OBJ_TYPE implements OBJ_TYPE {
             // MACRO_OBJ_TYPES.TOWN_HALL,
             // MACRO_OBJ_TYPES.TAVERN
     );
-    public static final OBJ_TYPE MAP_OBJ = new C_MACRO_OBJ_TYPE(MACRO_OBJ_TYPES.PLACE,
+    public static final OBJ_TYPE MAP_OBJ = new C_MACRO_OBJ_TYPE(
             MACRO_OBJ_TYPES.TOWN, MACRO_OBJ_TYPES.ROUTE);
     private MACRO_OBJ_TYPES[] TYPES;
 

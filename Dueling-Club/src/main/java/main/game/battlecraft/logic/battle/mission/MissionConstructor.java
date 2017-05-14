@@ -11,4 +11,6 @@ public class MissionConstructor extends BattleConstructor {
     public MissionConstructor(BattleMaster<? extends Battle> master) {
         super(master);
     }
+
+
 }

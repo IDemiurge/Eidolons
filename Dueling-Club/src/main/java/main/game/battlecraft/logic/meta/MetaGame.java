@@ -3,5 +3,12 @@ package main.game.battlecraft.logic.meta;
 /**
  * Created by JustMe on 5/10/2017.
  */
-public class MetaGame {
+public abstract class MetaGame<E extends MetaGame > {
+
+    MetaGameMaster<E> master ;
+
+    public MetaGame(MetaGameMaster<E > master){
+        this.master = master;
+    }
+
 }

@@ -16,7 +16,7 @@ import main.elements.conditions.NumericCondition;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.logic.meta.skirmish.SkirmishMaster;
 import main.game.module.dungeoncrawl.dungeon.Location;
 import main.system.auxiliary.StringMaster;
@@ -25,7 +25,7 @@ import main.system.entity.ConditionMaster;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ScenarioMaster {
+public class ScenarioPrecombatMaster {
     /*
      * manage 'party's' data, much like with an Arcade
 	 * 
@@ -40,6 +40,8 @@ public class ScenarioMaster {
 
     private static Scenario scenario;
     private static Location location;
+
+
 
     public static void newScenario() {
         final ScenarioChoiceView scv = new ScenarioChoiceView();
@@ -69,11 +71,11 @@ public class ScenarioMaster {
                         // for (String s : StringMaster.openContainer(prop)) {
                         // }
                         heroes.add(leader);
-                        PartyManager.newParty(leader);
+                        PartyHelper.newParty(leader);
                         Launcher.getMainManager().launchHC();
                         return;
                     } else {
-                        heroes = PartyManager.loadParty(prop);
+                        heroes = PartyHelper.loadParty(prop);
                     }
                     Launcher.getMainManager().launchHC(heroes);
                     return;
@@ -143,11 +145,11 @@ public class ScenarioMaster {
     }
 
     public static void setScenario(Scenario scenario) {
-        ScenarioMaster.scenario = scenario;
+        ScenarioPrecombatMaster.scenario = scenario;
     }
 
     public static List<Unit> getHeroesForHire() {
-        return scenario.getHeroesForHire();
+        return     new LinkedList<>() ;
     }
 
     @Deprecated
@@ -155,7 +157,7 @@ public class ScenarioMaster {
     public void initScenarioResources() {
         Integer gold = scenario.getIntParam(PARAMS.GOLD);
         Integer xp = scenario.getIntParam(PARAMS.XP);
-        for (Unit member : PartyManager.getParty().getMembers()) {
+        for (Unit member : PartyHelper.getParty().getMembers()) {
             member.setParam(PARAMS.GOLD, gold);
         }
     }

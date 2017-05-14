@@ -54,7 +54,12 @@ public enum DC_TYPE implements OBJ_TYPE {
     TERRAIN("terrain", G_PROPS.GROUP, 18, false),
     FACTIONS("factions", G_PROPS.FACTION_GROUP, 19),
     ARCADES("arcades", G_PROPS.GROUP, 20),
-    TRAP("trap", G_PROPS.GROUP, 21),
+
+    SCENARIOS("scenarios", G_PROPS.GROUP, 21),
+    MISSIONS("missions", G_PROPS.GROUP, 22),
+    PLACES("places", G_PROPS.GROUP, 23),
+
+    TRAP("traps", G_PROPS.GROUP, 24),
     META("meta", G_PROPS.GROUP, -1, true),
     ALL("all"),;
 

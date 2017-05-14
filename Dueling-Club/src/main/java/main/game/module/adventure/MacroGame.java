@@ -9,11 +9,13 @@ import main.data.DataManager;
 import main.entity.DC_IdManager;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.logic.meta.faction.FactionObj;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
+import main.game.battlecraft.logic.meta.faction.FactionObj;
 import main.game.module.adventure.MacroRef.MACRO_KEYS;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
@@ -83,19 +85,19 @@ public class MacroGame extends Game {
                 partyName = Launcher.FAST_TEST_PARTY;
             }
             try {
-                PartyManager.loadParty(partyName);
+                PartyHelper.loadParty(partyName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        if (PartyManager.getParty() == null) {
+        if (PartyHelper.getParty() == null) {
             return;
         }
 
         playerParty = new MacroParty(
-                getMacroPartyType(PartyManager.getParty()), this, ref,
-                PartyManager.getParty());
+                getMacroPartyType(PartyHelper.getParty()), this, ref,
+                PartyHelper.getParty());
         if (!MacroManager.isLoad()) {
             Place location = region.getPlace(campaign
                     .getProperty(MACRO_PROPS.STARTING_LOCATION));

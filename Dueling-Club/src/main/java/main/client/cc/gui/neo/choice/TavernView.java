@@ -4,7 +4,7 @@ import main.content.PARAMS;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.meta.scenario.ScenarioMaster;
+import main.game.battlecraft.logic.meta.scenario.ScenarioPrecombatMaster;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.town.Tavern;
 import main.game.module.adventure.town.TavernMaster;
@@ -138,9 +138,9 @@ public class TavernView extends HeroChoiceView<Unit> {
 
     public List<Unit> getData() {
         if (tavern == null) {
-            if (ScenarioMaster.getScenario() != null) {
+            if (ScenarioPrecombatMaster.getScenario() != null) {
 
-                return ScenarioMaster.getHeroesForHire();
+                return ScenarioPrecombatMaster.getHeroesForHire();
             }
             return new LinkedList<>();
         }

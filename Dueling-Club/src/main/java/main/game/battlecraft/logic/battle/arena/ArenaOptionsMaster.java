@@ -4,6 +4,7 @@ import main.game.battlecraft.logic.battle.BattleOptionManager;
 import main.game.battlecraft.logic.battle.BattleOptions;
 import main.game.battlecraft.logic.battle.BattleOptions.ARENA_GAME_OPTIONS;
 import main.game.battlecraft.logic.battle.BattleOptions.DIFFICULTY;
+import main.game.battlecraft.logic.meta.PartyHelper;
 
 /**
  * Created by JustMe on 5/7/2017.
@@ -25,8 +26,8 @@ public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle> {
         // TODO
         arenaOptions = new BattleOptions();
         arenaOptions.setValue(ARENA_GAME_OPTIONS.NUMBER_OF_HEROES, ""
-                +
-                getMaster().getMetaMaster().getPartyManager().getParty().getMembers().size());
+         +
+          PartyHelper.getParty().getMembers() .size());
 
 //        arenaOptions.setValue(ARENA_GAME_OPTIONS.PLAYER_STARTING_SIDE,
 //         ArenaPositioner. DEFAULT_SIDE);

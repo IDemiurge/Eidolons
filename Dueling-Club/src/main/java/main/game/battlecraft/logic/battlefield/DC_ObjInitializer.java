@@ -19,7 +19,7 @@ import main.game.battlecraft.logic.dungeon.Positioner;
 import main.game.battlecraft.logic.dungeon.UnitData;
 import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.ZCoordinates;
@@ -308,9 +308,9 @@ public class DC_ObjInitializer {
                         try {
                             Unit hero = (Unit) unit;
                             if (first) {
-                                PartyManager.newParty(hero);
+                                PartyHelper.newParty(hero);
                             } else {
-                                PartyManager.addMember(hero);
+                                PartyHelper.addMember(hero);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

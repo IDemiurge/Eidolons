@@ -10,7 +10,7 @@ import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.dungeon.Spawner.SPAWN_MODE;
 import main.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.battlecraft.rules.action.StackingRule;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
@@ -171,8 +171,8 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
             if (me != null) {
                 if (me) {
-                    if (PartyManager.getParty() != null) {
-                        Unit mh = PartyManager.getParty().getMiddleHero();
+                    if (PartyHelper.getParty() != null) {
+                        Unit mh = PartyHelper.getParty().getMiddleHero();
                         if (mh != null) {
                             int index = partyTypes.indexOf(mh.getName());
                             if (index > -1) {

@@ -34,6 +34,7 @@ public class DC_Engine {
     public static void dataInit(  ) {
         new DC_ContentManager().init();
         CoreEngine.dataInit(  false);
+        //read save game?
         DC_ContentManager.initTypeDynamicValues();
     }
 

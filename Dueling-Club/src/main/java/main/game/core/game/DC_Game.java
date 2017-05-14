@@ -178,26 +178,18 @@ public class DC_Game extends MicroGame {
         if (PresetMaster.getPreset() != null) {
             PresetLauncher.launchPreset();
         }
-//        dungeonInit(); separate!
-//        if (!simulation) {
-//            battleInit();
-//        }
 
         setInitialized(true);
         Chronos.logTimeElapsedForMark("GAME_INIT");
     }
 
 
-    protected BattleMaster createBattleMaster() {
+        protected BattleMaster createBattleMaster() {
         return new TestBattleMaster(this);
     }
 
     protected DungeonMaster createDungeonMaster() {
         return new TestDungeonMaster(this);
-    }
-
-    protected MetaGameMaster createMetaMaster() {
-        return new MetaGameMaster(this);
     }
 
     // after meta
@@ -210,14 +202,9 @@ public class DC_Game extends MicroGame {
         metaMaster = createMetaMaster();
     }
 
-    public void dataInit() {
-        //if dataKeeper==null
 
-
-    }
-
-    public void battleInit() {
-        battleMaster = createBattleMaster();
+        public void battleInit() {
+battleMaster = createBattleMaster();
 
         inventoryTransactionManager = new InventoryTransactionManager(this);
         inventoryManager = new DC_InventoryManager(this);

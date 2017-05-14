@@ -136,7 +136,7 @@ public class PartyObj extends Obj {
 
     @Override
     public void init() {
-
+toBase();
     }
 
     public List<Unit> getMembers() {

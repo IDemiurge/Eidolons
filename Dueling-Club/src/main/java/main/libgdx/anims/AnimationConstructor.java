@@ -105,7 +105,7 @@ public class AnimationConstructor {
 //        active.getActionGroup()
 
         Arrays.stream(ANIM_PART.values()).forEach(part -> {
-            Anim animPart = getPartAnim(active, part);
+            Anim animPart = getPartAnim(active, part, anim );
             if (animPart != null) {
                 anim.add(part, animPart);
             }
@@ -116,7 +116,7 @@ public class AnimationConstructor {
     }
 
 
-    public Anim getPartAnim(DC_ActiveObj active, ANIM_PART part) {
+    public Anim getPartAnim(DC_ActiveObj active, ANIM_PART part, CompositeAnim anim) {
 //        active.getProperty(sfx);
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {
@@ -125,10 +125,11 @@ public class AnimationConstructor {
                 data.add(val, active.getValue(val));
             }
         }
-        return getPartAnim(data, active, part);
+        return getPartAnim(data, active, part, anim);
     }
 
-    private Anim getPartAnim(AnimData data, DC_ActiveObj active, ANIM_PART part) {
+    private Anim getPartAnim(AnimData data, DC_ActiveObj active,
+                             ANIM_PART part, CompositeAnim composite) {
 
         Anim anim = createAnim(active, data, part);
         if (anim == null) {
@@ -139,7 +140,8 @@ public class AnimationConstructor {
                 return null;
             }
 
-            data = getStandardData((DC_SpellObj) active, part);
+
+            data = getStandardData((DC_SpellObj) active, part , composite );
             if (!initAnim(data, active, part, anim)) {
                 return null;
             }
@@ -313,7 +315,7 @@ public class AnimationConstructor {
     }
 
 
-    AnimData getStandardData(DC_SpellObj spell, ANIM_PART part) {
+    AnimData getStandardData(DC_SpellObj spell, ANIM_PART part, CompositeAnim compositeAnim) {
         AnimData data = new AnimData();
 
         String partPath = part.toString();
@@ -351,11 +353,14 @@ public class AnimationConstructor {
         if (sprite == null)
             if (emitter == null) {
                 emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
+                if (isFindClosestResource(part,ANIM_VALUES.PARTICLE_EFFECTS, compositeAnim )){
                 if (emitter == null)
                     emitter = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
                 if (emitter == null)
                     emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
 
+                }
+                if (isFindClosestResource(part,ANIM_VALUES.SPRITES, compositeAnim ))
                 if (emitter == null) {
                     pathRoot = getPath(ANIM_VALUES.SPRITES);
                     sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
@@ -480,7 +485,12 @@ public class AnimationConstructor {
         return false;
     }
 
-    public boolean isFindClosestResource(ANIM_PART part, ANIM_VALUES val) {
+    public boolean isFindClosestResource(ANIM_PART part, ANIM_VALUES val, CompositeAnim compositeAnim) {
+
+        if (part !=ANIM_PART.PRECAST)
+            if (part !=ANIM_PART.AFTEREFFECT)
+        if (compositeAnim.getMap().size()<2)
+    return true;
 
         switch (part) {
             case MAIN:

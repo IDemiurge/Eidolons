@@ -14,7 +14,7 @@ import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.battlecraft.logic.dungeon.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.Positioner;
 import main.game.battlecraft.logic.dungeon.Spawner;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.meta.PartyHelper;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.logic.event.Event;
@@ -120,9 +120,9 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
             game.fireEvent(
                     new Event(STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING, Ref.getSelfTargetingRefCopy(unit)));
         }
-        if (!PartyManager.checkMergeParty(wave)) {
+        if (!PartyHelper.checkMergeParty(wave)) {
             try {
-                PartyManager.addCreepParty(wave);
+                PartyHelper.addCreepParty(wave);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -133,7 +133,7 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
         if (game.isStarted()) {
             game.getLogManager().log(
                     "*** Enemies cleared! Encounters left: " + getScheduledWaves().toString());
-            if (getBattleMaster().getMetaMaster().getPartyManager().getParty() != null) {
+            if (PartyHelper.getParty() != null) {
 //                SoundMaster.playEffectSound(SOUNDS.TAUNT, game.getParty().getLeader());
             }
         }
