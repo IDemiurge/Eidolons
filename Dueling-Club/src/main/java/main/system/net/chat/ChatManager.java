@@ -1,11 +1,9 @@
 package main.system.net.chat;
 
-import main.client.DuelingClub;
+//import main.client.DuelingClub;
 import main.system.auxiliary.log.Err;
 
-import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class ChatManager {
 
@@ -21,15 +19,15 @@ public class ChatManager {
             // return;
         }
         Socket socket = null;
-        try {
-            socket = new Socket(DuelingClub.SERVER_ADDRESS, chatPort);
-        } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        try {
+//            socket = new Socket(DuelingClub.SERVER_ADDRESS, chatPort);
+//        } catch (UnknownHostException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
         if (socket == null) {
             Err.error("Failed to init chat connection!");
         } else {

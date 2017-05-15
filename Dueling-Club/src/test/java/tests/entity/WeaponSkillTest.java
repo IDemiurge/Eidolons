@@ -1,6 +1,6 @@
 package tests.entity;
 
-import init.JUnitDcInitializer;
+import tests.init.JUnitDcInitializer;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.values.properties.G_PROPS;

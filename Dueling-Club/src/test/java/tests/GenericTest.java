@@ -1,6 +1,6 @@
 package tests;
 
-import init.JUnitDcInitializer;
+import tests.init.JUnitDcInitializer;
 import main.game.core.game.DC_Game;
 import org.junit.Before;
 
