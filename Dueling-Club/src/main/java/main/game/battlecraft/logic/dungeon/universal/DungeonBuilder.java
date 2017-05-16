@@ -89,22 +89,6 @@ public E buildDungeon(String path ) {
         E dungeon = getInitializer().createDungeon(type);
         dungeon.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
         // getDungeon().setName(name)
-        DUNGEON_TEMPLATES template = null;
-        DungeonPlan plan = null;
-        if (getDungeon() instanceof Location) {
-            plan = new DungeonPlan(template, ((Location) getDungeon()));
-            plan.setLoaded(true);
-
-        for (Node n : XML_Converter.getNodeList(levelNode)) {
-processNode(n, dungeon, plan);
-
-        }
-            plan.setMap(getMapGenerator().generateMap((Location) getDungeon()));
-            plan.setStringData(data);
-            if (!CoreEngine.isLevelEditor()) {
-                initDynamicObjData(plan);
-            }
-        }
 
 
         return dungeon;

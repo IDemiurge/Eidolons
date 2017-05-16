@@ -192,8 +192,7 @@ public class DC_Game extends MicroGame {
         Chronos.logTimeElapsedForMark("GAME_INIT");
     }
 
-
-        protected BattleMaster createBattleMaster() {
+    protected BattleMaster createBattleMaster() {
         return new TestBattleMaster(this);}
 
     protected DungeonMaster createDungeonMaster() {
@@ -205,6 +204,9 @@ public class DC_Game extends MicroGame {
     public void dungeonInit() {
         dungeonMaster = createDungeonMaster();
     }
+
+
+
 
         public void battleInit() {
 //            SpellGenerator.init();
