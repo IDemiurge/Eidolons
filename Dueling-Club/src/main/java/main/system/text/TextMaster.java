@@ -112,7 +112,7 @@ public class TextMaster {
     }
 
     private static void extractTypeText() {
-        DC_Engine.init( );
+        DC_Engine.fullInit( );
         int i = 0;
         for (OBJ_TYPE k : extractedTypes) {
             List<String> value = null;

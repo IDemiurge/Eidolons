@@ -4,6 +4,7 @@ import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.PROPERTY;
+import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
@@ -15,11 +16,13 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
+import main.test.Refactor;
 import main.test.debug.DebugMaster;
 
 public class DC_Cell extends DC_Obj implements Cell {
 
     private static ObjType EMPTY_CELL_TYPE;
+    @Refactor
     private Dungeon dungeon;
 
     // private DequeImpl<DC_HeroItemObj> droppedItems;
@@ -39,7 +42,7 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
     public DC_Cell(int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {
-        this(EMPTY_CELL_TYPE, i, j, game, ref, dungeon);
+        this(getEMPTY_CELL_TYPE(), i, j, game, ref, dungeon);
     }
 
     public DC_Cell(Coordinates c, DC_Game game) {
@@ -47,6 +50,9 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
     public static ObjType getEMPTY_CELL_TYPE() {
+        if (EMPTY_CELL_TYPE==null )
+            EMPTY_CELL_TYPE= DataManager.getType(StringMaster.STD_TYPE_NAMES.Cell.toString(),
+             "terrain");
         return EMPTY_CELL_TYPE;
     }
 

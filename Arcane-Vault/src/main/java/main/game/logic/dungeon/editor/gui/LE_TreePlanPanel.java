@@ -2,6 +2,9 @@ package main.game.logic.dungeon.editor.gui;
 
 import main.entity.obj.Obj;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder.BLOCK_TYPE;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.BLOCK_TYPE;
 import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.ROOM_TYPE;

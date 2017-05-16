@@ -4,17 +4,21 @@ import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.dungeon.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.Spawner;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.ROOM_TYPE;
+import main.game.battlecraft.logic.dungeon.UnitData;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.bf.Coordinates;
 import main.game.module.adventure.travel.EncounterMaster;
 import main.game.module.dungeoncrawl.ai.DungeonCrawler;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,6 +36,44 @@ public class LocationSpawner extends Spawner<Location> {
         super(master);
     }
 
+    @Override
+    public void spawn() {
+        super.spawn();
+    }
+
+    @Override
+    public void spawn(UnitData data, DC_Player player, SPAWN_MODE mode) {
+        if (player.isMe()) {
+            List<String> list = ListMaster.toNameList(
+             getGame().getMetaMaster().getPartyManager()
+              .getParty().getMembers());
+            List<Coordinates> coordinates = getPositioner().getPlayerPartyCoordinates(list);
+
+          for (Unit member:getGame().getMetaMaster().getPartyManager().getParty().getMembers()){
+              member.setCoordinates(coordinates.iterator().next());
+              //what else should be done to *spawn*?
+          }
+            spawnDone();
+
+        }
+//        if (respawn)
+//        if (player.isMe()) {
+//        List<String> list = ListMaster.toNameList(
+//         getGame().getMetaMaster().getPartyManager()
+//          .getParty().getMembers());
+//        List<String> coordinates =StringMaster.convertToStringList(
+//         getPositioner().getPlayerPartyCoordinates(list));
+//        data.setValue(PARTY_VALUE.MEMBERS, StringMaster.constructContainer(list));
+//        data.setValue(PARTY_VALUE.COORDINATES, StringMaster.constructContainer(coordinates));
+//        }
+//        super.spawn(data, player, mode);
+    }
+
+    //on entering room?
+    public void spawnDungeon() {
+//        getDungeon().getPlan().getObjMap()
+//        spawnUnit(type, c, enemy, facing, level);
+    }
     public void addDungeonEncounter(Dungeon c_dungeon, MapBlock block, Coordinates c, ObjType type) {
         Map<MapBlock, Map<Coordinates, ObjType>> map = specialEncounters.get(c_dungeon);
         if (map == null) {

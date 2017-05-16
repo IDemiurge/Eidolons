@@ -1,7 +1,6 @@
 package main.game.battlecraft.logic.dungeon;
 
 import main.game.battlecraft.logic.battle.*;
-import main.game.battlecraft.logic.dungeon.location.building.DungeonMapGenerator;
 import main.game.core.game.DC_Game;
 
 /**

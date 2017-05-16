@@ -138,7 +138,7 @@ public class FAST_DC {
             }
         }
 
-        DC_Engine.init();
+        DC_Engine.fullInit();
         Chronos.mark("GAME LAUNCHED");
 
         game = testLauncher.initDC_Game();

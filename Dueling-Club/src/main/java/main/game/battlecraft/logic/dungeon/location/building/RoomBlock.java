@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.dungeon.location.building;
 
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.BLOCK_TYPE;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder.BLOCK_TYPE;
 import main.game.bf.Coordinates;
 
 import java.util.List;

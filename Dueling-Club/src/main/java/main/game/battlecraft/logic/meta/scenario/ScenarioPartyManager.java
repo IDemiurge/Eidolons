@@ -1,14 +1,17 @@
 package main.game.battlecraft.logic.meta.scenario;
 
 import main.client.cc.logic.party.PartyObj;
+import main.content.PROPS;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.dungeon.UnitData;
 import main.game.battlecraft.logic.meta.PartyManager;
-import main.game.core.game.DC_Game;
+import main.system.auxiliary.StringMaster;
 
 /**
  * Created by JustMe on 5/14/2017.
  */
 public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
+
     public ScenarioPartyManager(ScenarioMetaMaster master) {
         super(master);
     }
@@ -19,12 +22,18 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         //choice
         //already as Unit?
         ObjType type = getMetaGame().getScenario().getPartyType();
-        if (type==null ){
+        if (type == null) {
             //new ? choice?
         }
-        PartyObj partyObj = new PartyObj(type);
-        DC_Game.game.getState().addObject(partyObj);
-        return partyObj;
+        party = new PartyObj(type);
+        if (party.getNextMission().isEmpty()) {
+            party.setProperty(PROPS.PARTY_MISSION_NEXT,
+             StringMaster.openContainer(getMetaGame().getScenario().
+              getProperty(PROPS.SCENARIO_MISSIONS)).get(0), true);
+        }
+        getGame().getState().addObject(party);
+        getGame().getDataKeeper().addUnitData(new UnitData(party));
+        return party;
 
     }
 

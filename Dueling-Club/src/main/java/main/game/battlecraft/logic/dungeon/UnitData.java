@@ -1,5 +1,6 @@
 package main.game.battlecraft.logic.dungeon;
 
+import main.client.cc.logic.party.PartyObj;
 import main.game.battlecraft.logic.dungeon.UnitData.PARTY_VALUE;
 import main.system.data.DataUnit;
 
@@ -12,6 +13,10 @@ public class UnitData extends DataUnit<PARTY_VALUE> {
 
 
     public static final Boolean FORMAT =false ;
+
+    public UnitData(PartyObj partyObj) {
+
+    }
 
     @Override
     public Boolean getFormat() {

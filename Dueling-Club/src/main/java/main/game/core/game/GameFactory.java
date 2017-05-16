@@ -17,8 +17,6 @@ public class GameFactory {
                 return new DC_Game();
             case ARENA:
                 return new ArenaGame();
-            case SCENARIO:
-                return new ScenarioGame();
             case ARCADE:
                 return new ArcadeGame();
             case SKIRMISH:
