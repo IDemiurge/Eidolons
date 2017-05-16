@@ -27,6 +27,7 @@ import main.data.ability.construct.AbilityConstructor;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_SpellObj;
@@ -36,21 +37,19 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.KeyResolver;
 import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_FeatObj;
+import main.entity.obj.hero.DC_Attributes;
+import main.entity.obj.hero.DC_Masteries;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.bf.unit.*;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.UnitAI;
+import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.action.context.Context.IdKey;
-import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.entity.active.DC_ActionManager;
-import main.entity.obj.hero.DC_Attributes;
-import main.entity.obj.hero.DC_Masteries;
 import main.game.module.adventure.entity.MacroActionManager.MACRO_MODES;
 import main.system.DC_Constants;
 import main.system.DC_Formulas;
@@ -89,24 +88,17 @@ public class Unit extends DC_UnitModel {
     private boolean aiControlled;
     private MACRO_MODES macroMode;
     private GENDER gender;
-    private Dungeon dungeon;
     private boolean mainHero;
-    private boolean leader;
     private FLIP flip;
     private ObjType backgroundType;
     private Map<DC_ActiveObj, String> actionModeMap;
-    private boolean animated;
     private Unit engagementTarget;
     private DC_WeaponObj rangedWeapon;
+    private boolean leader;
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
-        setDungeon(getGame().getDungeonMaster().getDungeon());
-        if (getGame().getDungeon().getZ() != null) {
-            setZ(getGame().getDungeon().getZ());
-        } else {
-            setZ(0);
-        }
+
 
         // getGame().getTestMaster().getTestSpells(); TODO add!
     }
@@ -969,19 +961,9 @@ public class Unit extends DC_UnitModel {
         return gender;
     }
 
-    public Dungeon getDungeon() {
-//        if (dungeon == null) {
-//            return getGame().getDungeonMaster().getRootDungeon();
-//        }
-        return dungeon;
-    }
+    
 
-    public void setDungeon(Dungeon dungeon) {
-        this.dungeon = dungeon;
-        if (dungeon != null) {
-            setZ(dungeon.getZ());
-        }
-    }
+   
 
     public FLIP getFlip() {
         return flip;

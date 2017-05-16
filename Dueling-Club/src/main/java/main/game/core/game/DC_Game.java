@@ -5,7 +5,6 @@ import main.ability.InventoryTransactionManager;
 import main.ability.effects.DC_EffectManager;
 import main.client.cc.gui.lists.dc.DC_InventoryManager;
 import main.client.cc.logic.items.ItemGenerator;
-import main.client.cc.logic.spells.SpellGenerator;
 import main.client.dc.Launcher;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.DC_TYPE;
@@ -13,12 +12,13 @@ import main.content.DC_ValueManager;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.PROPERTY;
+import main.data.XLinkedMap;
 import main.data.xml.XML_Reader;
 import main.entity.DC_IdManager;
-import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.active.DC_ActionManager;
 import main.entity.obj.*;
+import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.AI_Manager;
@@ -80,22 +80,18 @@ public class DC_Game extends MicroGame {
     protected DC_AttackMaster attackMaster;
     protected ArmorMaster armorMaster;
     protected ArmorMaster armorSimulator;
+    protected DungeonMaster dungeonMaster;
+    protected BattleMaster battleMaster;
+    protected MetaGameMaster metaMaster;
     private DroppedItemManager droppedItemManager;
     private InventoryTransactionManager inventoryTransactionManager;
     private DC_InventoryManager inventoryManager;
-
     private DC_GameManager manager;
     private VisionMaster visionMaster;
     private DebugMaster debugMaster;
     private TestMasterContent testMaster;
-
     private AI_Manager aiManager;
-
     private AnimationManager animationManager; //heavy, but still just a trash!
-    protected DungeonMaster dungeonMaster;
-    protected BattleMaster battleMaster;
-    protected MetaGameMaster metaMaster;
-
     private DC_KeyManager keyManager; //where to move?
 
     private DC_Rules rules;
@@ -116,6 +112,8 @@ public class DC_Game extends MicroGame {
     private Thread gameLoopThread;
     private GameLoop loop;
     private LaunchDataKeeper dataKeeper;
+    @Refactor
+    private Map<Unit, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
 
     public DC_Game() {
         this(false);
@@ -131,6 +129,7 @@ public class DC_Game extends MicroGame {
 
         setState(new DC_GameState(this));
         initMasters();
+        init();
     }
 
     private void initMasters() {
@@ -140,7 +139,7 @@ public class DC_Game extends MicroGame {
         manager = new DC_GameManager(getState(), this);
         manager.init();
 //        } //TODO FIX classdefnotfound!
-        this.setIdManager(new DC_IdManager( this));
+        this.setIdManager(new DC_IdManager(this));
         armorMaster = new ArmorMaster(false);
         armorSimulator = new ArmorMaster(true);
         requirementsManager = new DC_RequirementsManager(this);
@@ -159,10 +158,7 @@ public class DC_Game extends MicroGame {
         conditionMaster = new DC_ConditionMaster();
         logManager = new DC_LogManager(this);
         rules = new DC_Rules(this);
-        if (!isSimulation()){
-        keyManager = new DC_KeyManager( getManager());
-        keyManager.init();
-}
+
     }
 
     @Override
@@ -171,13 +167,13 @@ public class DC_Game extends MicroGame {
         //TempEventManager.trigger("create-cell-object" + i + ":" + j, objects);
 
         initObjTypes();
-        //TODO just override and remove in SimGame
-        if (!CoreEngine.isLevelEditor() && (!CoreEngine.isArcaneVault() || !XML_Reader.isMacro())) {
+        if (!CoreEngine.isLevelEditor() && (!CoreEngine.isArcaneVault() ||
+         !XML_Reader.isMacro()))
             ItemGenerator.init();
-            SpellGenerator.init();
-            ActionGenerator.init();
-            //to engine!
-        }
+//    TODO to battle init!
+//            SpellGenerator.init();
+//            ActionGenerator.init();
+        //to engine!
 
         if (PresetMaster.getPreset() != null) {
             PresetLauncher.launchPreset();
@@ -187,22 +183,25 @@ public class DC_Game extends MicroGame {
         Chronos.logTimeElapsedForMark("GAME_INIT");
     }
 
-
-        protected BattleMaster createBattleMaster() {
+    protected BattleMaster createBattleMaster() {
         return new TestBattleMaster(this);
     }
+
     protected DungeonMaster createDungeonMaster() {
         return new TestDungeonMaster(this);
     }
+    // before all other masters?
 
     // after meta
     public void dungeonInit() {
         dungeonMaster = createDungeonMaster();
     }
-    // before all other masters?
 
-        public void battleInit() {
-battleMaster = createBattleMaster();
+    public void battleInit() {
+//            SpellGenerator.init();
+        ActionGenerator.init();
+
+        battleMaster = createBattleMaster();
 
         inventoryTransactionManager = new InventoryTransactionManager(this);
         inventoryManager = new DC_InventoryManager(this);
@@ -210,14 +209,14 @@ battleMaster = createBattleMaster();
         battleMaster.init();
         dungeonMaster.init();
 
-            setOffline(true);
+        setOffline(true);
 
 
         // if (battlefield == null) {
 
         battlefield = new DC_BattleField(new DC_BattleFieldGrid(getDungeon()));
         setGraveyardManager(new DC_GraveyardManager(this));
-        battleFieldManager = new DC_BattleFieldManager(this );
+        battleFieldManager = new DC_BattleFieldManager(this);
         movementManager.setGrid(battlefield.getGrid());
         // }
 
@@ -229,7 +228,6 @@ battleMaster = createBattleMaster();
         setBattleInit(true);
     }
 
-
     public void start(boolean first) {
         Chronos.mark("GAME_START");
 
@@ -237,11 +235,12 @@ battleMaster = createBattleMaster();
         turnManager.init();
 
         if (isDebugMode()) {
-            debugMaster = new DebugMaster(getState() );
+            debugMaster = new DebugMaster(getState());
         }
-
+            keyManager = new DC_KeyManager(getManager());
+            keyManager.init();
         getGraveyardManager().init();//TODO in init?
-       battleMaster.startGame();
+        battleMaster.startGame();
         dungeonMaster.gameStarted();
         getState().gameStarted(first);
 
@@ -251,7 +250,6 @@ battleMaster = createBattleMaster();
 
         Chronos.logTimeElapsedForMark("GAME_START");
     }
-
 
     private void startGameLoop() {
         setRunning(true);
@@ -281,14 +279,16 @@ battleMaster = createBattleMaster();
         setRunning(false);
         setStarted(false);
     }
+
     @Override
     public DC_BattleFieldManager getBattleFieldManager() {
 
         if (battleFieldManager == null) {
-            battleFieldManager = new DC_BattleFieldManager(this );
+            battleFieldManager = new DC_BattleFieldManager(this);
         }
         return (DC_BattleFieldManager) super.getBattleFieldManager();
     }
+
     @Override
     public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
         BattleFieldObject unit = ((BattleFieldObject) super.createUnit(type, x, y, owner, ref.getCopy()));
@@ -366,11 +366,9 @@ battleMaster = createBattleMaster();
         return (DC_GameMaster) master;
     }
 
-
     public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded) {
         return getMaster().getObjectByCoordinate(c, cellsIncluded);
     }
-
 
     public Obj getObjectByCoordinate(Integer z, Coordinates c, boolean cellsIncluded, boolean passableIncluded, boolean overlayingIncluded) {
         return getMaster().getObjectByCoordinate(z, c, cellsIncluded, passableIncluded, overlayingIncluded);
@@ -412,17 +410,14 @@ battleMaster = createBattleMaster();
         return getMaster().getUnitMap();
     }
 
-
     @Override
     public IdManager getIdManager() {
-            return idManager;
+        return idManager;
     }
-
 
     public boolean isAI_ON() {
         return AI_ON;
     }
-
 
     public DC_GameManager getManager() {
         return manager;
@@ -431,7 +426,6 @@ battleMaster = createBattleMaster();
     public void setManager(DC_GameManager manager) {
         this.manager = manager;
     }
-
 
     public VisionMaster getVisionMaster() {
         return visionMaster;
@@ -450,7 +444,7 @@ battleMaster = createBattleMaster();
     public synchronized DebugMaster getDebugMaster() {
         if (debugMaster == null) {
             if (getBattleField() != null) {
-                debugMaster = new DebugMaster(getState()  );
+                debugMaster = new DebugMaster(getState());
             }
         }
         return debugMaster;
@@ -468,19 +462,16 @@ battleMaster = createBattleMaster();
     public GAME_MODES getGameMode() {
         return gameMode;
     }
-@Deprecated
+
+    @Deprecated
     public void setGameMode(GAME_MODES gameMode) {
         this.gameMode = gameMode;
     }
-
-
-
 
     public InventoryTransactionManager getInventoryTransactionManager() {
 
         return inventoryTransactionManager;
     }
-
 
     public Set<Coordinates> getCoordinates() {
         return getBattleField().getGrid().getCellCompMap().keySet();
@@ -528,8 +519,6 @@ battleMaster = createBattleMaster();
         return dungeonMaster;
     }
 
-
-
     public TestMasterContent getTestMaster() {
         return testMaster;
     }
@@ -551,7 +540,6 @@ battleMaster = createBattleMaster();
         return (DC_TurnManager) super.getTurnManager();
     }
 
-
     public boolean isBattleInit() {
         return battleInit;
     }
@@ -568,11 +556,9 @@ battleMaster = createBattleMaster();
         this.paused = paused;
     }
 
-
     public Dungeon getDungeon() {
         return getDungeonMaster().getDungeonWrapper().getDungeon();
     }
-
 
     public GAME_TYPE getGameType() {
         return gameType;
@@ -581,8 +567,6 @@ battleMaster = createBattleMaster();
     public void setGameType(GAME_TYPE game_mode) {
         this.gameType = game_mode;
     }
-
-
 
     public Map<Coordinates, Map<Unit, FLIP>> getFlipMap() {
         if (flipMap == null) {
@@ -606,14 +590,10 @@ battleMaster = createBattleMaster();
         this.testMode = testMode;
     }
 
-
     @Override
     public DC_LogManager getLogManager() {
         return (DC_LogManager) super.getLogManager();
     }
-
-
-
 
     public boolean isDummyPlus() {
         return dummyPlus;
@@ -661,8 +641,7 @@ battleMaster = createBattleMaster();
         return keyManager;
     }
 
-
-    public  BattleMaster getBattleMaster() {
+    public BattleMaster getBattleMaster() {
         return battleMaster;
     }
 
@@ -670,21 +649,44 @@ battleMaster = createBattleMaster();
         return metaMaster;
     }
 
+    public LaunchDataKeeper getDataKeeper() {
+        if (dataKeeper == null)
+            dataKeeper = new LaunchDataKeeper();
+        return dataKeeper;
+    }
+
     public void setDataKeeper(LaunchDataKeeper dataKeeper) {
         this.dataKeeper = dataKeeper;
     }
 
-    public LaunchDataKeeper getDataKeeper() {
-        return dataKeeper;
-    }
-@Refactor
-    public Obj getSimulationObj(Entity entity, ObjType type, PROPERTY prop) {
-    return null ;
+    //how should these be called properly?
+    @Refactor
+    public DC_HeroAttachedObj getSimulationObj(Unit dc_HeroObj, ObjType type, PROPERTY prop) {
+        try {
+            return getSimulationCache().get(dc_HeroObj).get(type.getName() + prop.getShortName());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Refactor
-    public void addSimulationObj(Entity entity, ObjType type,
-                                 Entity item, PROPERTY prop) {
+    public void addSimulationObj(Unit dc_HeroObj, ObjType type, DC_HeroAttachedObj item,
+                                 PROPERTY prop) {
+
+        Map<String, DC_HeroAttachedObj> cache = getSimulationCache().get(dc_HeroObj);
+        if (cache == null) {
+            cache = new XLinkedMap<>();
+            getSimulationCache().put(dc_HeroObj, cache);
+        }
+        cache.put(type.getName() + prop.getShortName(), item);
+
+    }
+
+    public Map<Unit, Map<String, DC_HeroAttachedObj>> getSimulationCache() {
+        if (simulationCache == null) {
+            simulationCache = new XLinkedMap<>();
+        }
+        return simulationCache;
     }
 
     public enum GAME_MODES {

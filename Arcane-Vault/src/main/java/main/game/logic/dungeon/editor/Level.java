@@ -19,6 +19,7 @@ import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.dungeon.DungeonBuilder;
 import main.game.battlecraft.logic.dungeon.DungeonWrapper;
 import main.game.battlecraft.logic.dungeon.location.Location;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
 import main.game.battlecraft.logic.dungeon.location.building.*;
@@ -48,7 +49,6 @@ public class Level extends DungeonWrapper<Location>{
     boolean initialized;
 
     private Mission mission;
-    private DC_Map map;
     private String name;
     private String path;
     private Map<ObjType, Unit> objCache = new HashMap<>();
@@ -95,7 +95,6 @@ public class Level extends DungeonWrapper<Location>{
             BuildParameters params = LE_MapMaster.initBuildParams(empty, getLocation());
             setName(location.getName());
 //            dungeon.generateSublevels(); // TODO ? ? ?
-            map = master.getMapGenerator().generateMap(master.getDungeonWrapper());
 
             getLocation().setProperty(G_PROPS.WORKSPACE_GROUP, getDefaultWorkspaceGroup(), true);
         } else {
@@ -106,7 +105,6 @@ public class Level extends DungeonWrapper<Location>{
                 this.dungeon = plan.getDungeon();
                 LevelEditor.getSimulation().addType(location.getType());
 //                LevelEditor.getSimulation().getDungeonMaster().setDungeon(dungeon);
-                map = plan.getMap();
                 master.getDungeonWrapper().setPlan(plan);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -181,19 +179,6 @@ public class Level extends DungeonWrapper<Location>{
         // getDungeon());
         // addCell(cell);
         // } IN SIMULATION.getObj...()
-        if (map != null) {
-            for (Coordinates c : map.getMapObjects().keySet()) {
-
-                if (map.getMapObjects().get(c) != null) {
-                    LevelEditor.getObjMaster().addObj(map.getMapObjects().get(c), true, c);
-                }
-                // DC_HeroObj obj = new DC_HeroObj(map.getMapObjects().getOrCreate(c),
-                // c.x, c.y,
-                // DC_Player.NEUTRAL, LevelEditor.getSimulation(), new Ref());
-                // getMapObjects().add(obj);
-                // getTopObjMap().put(obj.getCoordinates(), obj);
-            }
-        }
         // initialized = true;
     }
 
@@ -341,9 +326,6 @@ public class Level extends DungeonWrapper<Location>{
         return wallObjects;
     }
 
-    public void setMap(DC_Map map) {
-        this.map = map;
-    }
 
     public void removeObj(Coordinates... c) {
         removeObj(null, c);

@@ -3,7 +3,7 @@ package main.game.battlecraft.logic.dungeon;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.entity.EntityWrapper;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 
 /**
  * Created by JustMe on 5/10/2017.

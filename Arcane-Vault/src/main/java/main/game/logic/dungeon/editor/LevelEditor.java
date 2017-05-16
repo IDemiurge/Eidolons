@@ -112,7 +112,7 @@ public class LevelEditor {
         SwingMaster.DEBUG_ON = false;
         DC_Engine.systemInit();
         initFullData();
-        DC_Engine.microInitialization( );
+        DC_Engine.gameInit( );
         // WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.READING_DONE);
         // XML_Reader.readTypes(true);
         CoreEngine.setLevelEditor(true);

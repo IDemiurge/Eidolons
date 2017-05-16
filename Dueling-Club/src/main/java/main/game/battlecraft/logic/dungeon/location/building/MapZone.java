@@ -2,6 +2,7 @@ package main.game.battlecraft.logic.dungeon.location.building;
 
 import main.content.PROPS;
 import main.data.xml.XML_Converter;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import main.game.bf.Coordinates;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.dungeon.Dungeon;

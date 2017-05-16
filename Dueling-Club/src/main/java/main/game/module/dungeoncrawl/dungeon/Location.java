@@ -13,7 +13,7 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import main.game.battlecraft.logic.meta.scenario.Scenario;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;

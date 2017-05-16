@@ -19,7 +19,7 @@ public class DemoLauncher {
 
         DC_Engine.systemInit();
 
-        DC_Engine.init();
+        DC_Engine.fullInit();
 
         coreGame = new DC_Game(false);
         coreGame.init();

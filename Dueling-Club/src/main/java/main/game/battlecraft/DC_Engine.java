@@ -1,13 +1,10 @@
 package main.game.battlecraft;
 
 import main.content.DC_ContentManager;
-import main.data.DataManager;
-import main.entity.obj.DC_Cell;
 import main.entity.active.DC_ActionManager;
 import main.swing.DC_GuiManager;
 import main.swing.components.obj.drawing.DrawHelper;
 import main.system.DC_ConditionMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
@@ -17,14 +14,22 @@ public class DC_Engine {
 /*
 supposed to give access to Audio, Data, utilities, ...
  */
-    public static void init() {
+    public static void fullInit() {
         Chronos.mark("DC INIT");
         systemInit();
-        gameInitialization();
+        dataInit();
+        gameInit();
         Chronos.logTimeElapsedForMark("DC INIT");
     }
 
-    public static void systemInit() {
+    public static void mainMenuInit() {
+        systemInit();
+        dataInit();
+    }
+    public static void gameStartInit() {
+        gameInit();
+    }
+        public static void systemInit() {
         CoreEngine.systemInit();
         OptionsMaster.init();
         DC_GuiManager.init();
@@ -38,19 +43,11 @@ supposed to give access to Audio, Data, utilities, ...
         DC_ContentManager.initTypeDynamicValues();
     }
 
-    public static void gameInitialization() {
-        new DC_ContentManager().init();
-        ConditionMaster.setInstance(new DC_ConditionMaster());
-        CoreEngine.dataInit(false);
-        microInitialization();
 
-    }
-
-    public static void microInitialization() {
+    public static void gameInit() {
         // DC_CostsFactory.createCostsForTypes();
+        ConditionMaster.setInstance(new DC_ConditionMaster());
         DC_ActionManager.init();
-        DC_Cell.setEMPTY_CELL_TYPE(DataManager.getType(StringMaster.STD_TYPE_NAMES.Cell.toString(),
-                "terrain"));
         DrawHelper.init();
     }
 }

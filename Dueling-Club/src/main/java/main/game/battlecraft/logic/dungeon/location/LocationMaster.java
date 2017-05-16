@@ -1,7 +1,6 @@
 package main.game.battlecraft.logic.dungeon.location;
 
 import main.game.battlecraft.logic.dungeon.*;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder;
 import main.game.core.game.DC_Game;
 
 /**
@@ -10,6 +9,11 @@ import main.game.core.game.DC_Game;
 public class LocationMaster extends DungeonMaster<Location> {
     public LocationMaster(DC_Game game) {
         super(game);
+    }
+
+    @Override
+    public void init() {
+        super.init();
     }
 
     protected LocationBuilder createBuilder() {

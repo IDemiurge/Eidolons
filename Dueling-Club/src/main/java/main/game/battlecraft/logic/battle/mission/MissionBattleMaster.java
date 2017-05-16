@@ -20,7 +20,7 @@ public class MissionBattleMaster extends BattleMaster<Mission> {
 
     @Override
     protected PlayerManager<Mission> createPlayerManager() {
-        return null;
+        return new PlayerManager<>(this);
     }
 
     @Override

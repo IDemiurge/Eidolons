@@ -1,5 +1,8 @@
 package main.game.battlecraft.logic.meta.scenario;
 
+import main.content.DC_TYPE;
+import main.content.PROPS;
+import main.data.DataManager;
 import main.game.battlecraft.logic.dungeon.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.meta.*;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
@@ -22,28 +25,37 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
         > create party units (maybe  place them at once)
          */
 
+    @Override
+    public void gameStarted() {
+//        scenario.getScenario().
+       String missionName= getPartyManager().getParty().getNextMission();
 
+        String levelPath = DataManager.getType(missionName, DC_TYPE.MISSIONS).
+         getProperty(PROPS.MISSION_FILE_PATH);
+        getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,
+         levelPath);
+
+        super.gameStarted();
+    }
 
     public   void loadMission(String data){
-         getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH, data);
-        getGame().getDungeonMaster().init(); //create dungeon
+         getGame().getDungeonMaster().init(); //create dungeon
 
         getGame().getBattleMaster().init(); //create Mission
         //game.load()
         //precombat?
-        getGame().getDungeonMaster().gameStarted(); //spawn
+        getGame().start(true); //game loop??
         getMetaGame().getScenario().next();
 //        getPartyManager().getParty().getIntParam(mission_index);
 //        Mission mission= (Mission) getGame().getBattleMaster().getBattle();
 //        getMetaGame().getScenario().setMission(mission);
         //for Mission
         getDialogueManager().startDialogue(); //block game?
-        getGame().start(true); //game loop
 
     }
     @Override
     protected ScenarioGame createGame() {
-        return new ScenarioGame();
+        return new ScenarioGame(this);
     }
 
     @Override

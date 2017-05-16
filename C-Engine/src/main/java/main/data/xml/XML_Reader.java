@@ -120,6 +120,8 @@ public class XML_Reader {
                 if (checkFile(file)) {
                     try {
                         XML_File xmlFile = readFile(file);
+                        if (xmlFile==null )
+                            continue;
                         getFiles().add(xmlFile);
                         Document doc = XML_Converter.getDoc(xmlFile.contents);
                         loadMap(xmlFile.type == null ? xmlFile.name : xmlFile.type.getName(), doc);
@@ -155,6 +157,11 @@ public class XML_Reader {
 
     public static XML_File readFile(File file) {
         String text = FileManager.readFile(file);
+        if (FileManager.readFile(file).length()<15)
+        {
+            main.system.auxiliary.log.LogMaster.log(1,"empty xml file " +file.getName());
+            return null ;
+        }
         final String name = file.getName();
         String fileName = name.substring(0, name.length() - ".xml".length());
 

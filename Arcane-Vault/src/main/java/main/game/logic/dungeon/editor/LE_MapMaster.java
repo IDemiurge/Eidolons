@@ -13,12 +13,13 @@ import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.dungeon.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.location.Location;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import main.game.battlecraft.logic.dungeon.location.building.*;
 import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BUILD_PARAMS;
 import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.BLOCK_TYPE;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.ROOM_TYPE;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder.BLOCK_TYPE;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.DirectionMaster;
 import main.swing.generic.components.editors.FileChooser;
@@ -69,7 +70,6 @@ public class LE_MapMaster {
         DungeonMaster master = level.getDungeonMaster();
 
         LevelEditor.getSimulation().getUnits().clear();
-        level.setMap(master.getMapGenerator().generateMap(level.getLocation()));
         level.init();
         level.getMinimap().init();
         level.getMinimap().getGrid().refresh();
