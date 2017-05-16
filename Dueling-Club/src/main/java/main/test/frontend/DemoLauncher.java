@@ -27,7 +27,7 @@ public class DemoLauncher extends Game {
 
 
 /*        DC_Engine.systemInit();
-        DC_Engine.init();
+        DC_Engine.fullInit();
         coreGame = new DC_Game(false);
         coreGame.init();
         DC_Game.game=(coreGame);

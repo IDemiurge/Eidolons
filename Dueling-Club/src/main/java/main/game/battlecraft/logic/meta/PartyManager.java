@@ -31,9 +31,14 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public abstract class PartyManager<E extends MetaGame> extends  MetaGameHandler<E> {
 
+    protected PartyObj party;
     public PartyManager(MetaGameMaster master) {
         super(master);
     }
 
     public  abstract PartyObj initPlayerParty();
+
+    public PartyObj getParty() {
+        return party;
+    }
 }

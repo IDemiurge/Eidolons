@@ -11,7 +11,6 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.FileManager;
 import main.system.entity.FilterMaster;
-import main.test.frontend.FAST_DC;
 
 import java.util.List;
 
@@ -48,7 +47,7 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
     @Deprecated
     public E initDungeon(String path) {
         setDungeonPath(path);
-        return (E) getBuilder().buildDungeon(path);
+        return (E) getBuilder().buildDungeon(path );
     }
 
     public  E initDungeon(){
@@ -56,11 +55,12 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         setPresetDungeonType(getGame().getDataKeeper().getDungeonData().getValue(DUNGEON_VALUE.TYPE_NAME));
 
         if (getDungeonPath() != null) {
-            return (E) getBuilder().buildDungeon(getDungeonPath());
+            return (E) getBuilder().buildDungeon(getDungeonPath()
+             );
         }
 
         ObjType type = null;
-        if (!FAST_DC.isRunning()) {
+        if (getPresetDungeonType()!=null ) {
             type = DataManager.getType(getPresetDungeonType(), DC_TYPE.DUNGEONS);
             return createDungeon(type);
         } else {

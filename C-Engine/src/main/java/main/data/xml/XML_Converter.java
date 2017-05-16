@@ -7,6 +7,7 @@ import main.data.DataManager;
 import main.data.ability.AE_Item;
 import main.data.ability.Mapper;
 import main.entity.type.ObjType;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TreeMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.XMap;
@@ -404,11 +405,15 @@ public class XML_Converter {
     }
 
     public static Node getChildByName(Node parent, String name) {
-        for (Node node : getNodeList(parent)) {
-            if (node.getNodeName().equals(name)) {
+        return getNodeByName(getNodeList(parent), name);
+    }
+        public static Node getNodeByName(List<Node> list, String name) {
+        for (Node node : (list)) {
+            if (StringMaster.compare(node.getNodeName(), name)){ //node.getNodeName().equalsIgnoreCase(name))
                 return node;
             }
         }
+
 
         return null;
     }

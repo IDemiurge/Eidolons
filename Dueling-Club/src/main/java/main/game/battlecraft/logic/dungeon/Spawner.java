@@ -102,6 +102,13 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
                 data = generateData("", player, null);
             spawn(data, player, getSpawnMode(player, true));
         }
+       spawnDone();
+
+        //initEmblem
+
+    }
+
+    protected void spawnDone() {
         final Integer cellsX = game.getDungeon().getCellsX();
         final Integer cellsY = game.getDungeon().getCellsY();
         GuiEventManager.trigger(BF_CREATED,
@@ -109,9 +116,6 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
                 new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
 
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
-
-        //initEmblem
-
     }
 
     private SPAWN_MODE getSpawnMode(DC_Player player, boolean first) {
@@ -146,7 +150,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
             String level = data.getContainerValue(PARTY_VALUE.LEVEL, i);
             String type = data.getContainerValue(PARTY_VALUE.MEMBERS, i);
             i++;
-            spawn(type, c, owner, facing, level);
+            spawnUnit(type, c, owner, facing, level);
         }
 //     coordinate
 
@@ -154,8 +158,8 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     }
 
-    private void spawn(String typeName, String coordinates, DC_Player owner,
-                       String facing, String level) {
+    public void spawnUnit(String typeName, String coordinates, DC_Player owner,
+                          String facing, String level) {
         FACING_DIRECTION facing_direction =facing==null ? FACING_DIRECTION.NORTH: FacingMaster.getFacing(facing);
        if (coordinates==null ){
 //           getPositioner().getcoo

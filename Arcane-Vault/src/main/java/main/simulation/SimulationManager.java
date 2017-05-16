@@ -101,6 +101,6 @@ public class SimulationManager {
     }
 
     public static void init() {
-        DC_Engine.microInitialization( );
+        DC_Engine.gameInit( );
     }
 }

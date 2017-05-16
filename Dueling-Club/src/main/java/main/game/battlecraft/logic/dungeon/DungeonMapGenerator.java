@@ -1,17 +1,18 @@
-package main.game.battlecraft.logic.dungeon.location.building;
+package main.game.battlecraft.logic.dungeon;
 
 import main.content.DC_TYPE;
-import main.content.PROPS;
 import main.content.enums.DungeonEnums.DUNGEON_MAP_MODIFIER;
 import main.content.enums.DungeonEnums.DUNGEON_MAP_TEMPLATE;
 import main.content.enums.DungeonEnums.MAP_FILL_TEMPLATE;
 import main.data.DataManager;
-import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.dungeon.*;
-import main.game.battlecraft.logic.dungeon.location.Location;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.ROOM_TYPE;
+import main.game.battlecraft.logic.dungeon.location.building.DC_Map;
+import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
+import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
+import main.game.battlecraft.logic.dungeon.location.building.MapZone;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.dungeon.DungeonHandler;
 import main.game.battlecraft.logic.dungeon.DungeonMaster;
@@ -25,14 +26,16 @@ import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.graphics.GuiManager;
-import main.system.images.ImageManager;
 import main.system.math.MathMaster;
+import main.test.Refactor;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class DungeonMapGenerator <E extends DungeonWrapper> extends DungeonHandler<E>{
     private static final String ENTRANCE_TYPE = "Dungeon Entrance";
@@ -44,7 +47,6 @@ public class DungeonMapGenerator <E extends DungeonWrapper> extends DungeonHandl
     // some objects may require special placements?
     private Map<Coordinates, ObjType> objMap;
     private Map<MAP_ZONES, Integer> zones;
-    private DC_Map map;
     private LinkedList<FACING_DIRECTION> usedSides;
     private DungeonPlan plan;
     private BuildParameters params;
@@ -87,115 +89,114 @@ public class DungeonMapGenerator <E extends DungeonWrapper> extends DungeonHandl
         return (LocationBuilder) super.getBuilder();
     }
 
-    public DC_Map generateMap(Location dungeon) {
-        map = new DC_Map();
+//    public DC_Map generateMap(Location dungeon) {
+//        map = new DC_Map();
+//
+//
+//        if (dungeon.getPlan() == null) {
+//            try {
+//                if (dungeon.checkProperty(PROPS.DUNGEON_PLAN)) {
+//                    this.plan = getBuilder().setParam(params). loadDungeonMap(dungeon
+//                            .getProperty(PROPS.DUNGEON_PLAN));
+//                } else {
+//                    this.plan = getBuilder().setParam(params).buildDungeonPlan(dungeon);
+//                }
+//                dungeon.setPlan(plan);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            plan = dungeon.getPlan();
+//        }
+//        template = new EnumMaster<DUNGEON_MAP_TEMPLATE>().retrieveEnumConst(
+//                DUNGEON_MAP_TEMPLATE.class, dungeon.getProperty(PROPS.DUNGEON_MAP_TEMPLATE));
+//        mod = new EnumMaster<DUNGEON_MAP_MODIFIER>().retrieveEnumConst(DUNGEON_MAP_MODIFIER.class,
+//                dungeon.getProperty(PROPS.DUNGEON_MAP_MODIFIER));
+//
+		//		/*
+//         * mod should have a preset initComps option as well.
+//		 */
+//
+//        try {
+////            initBfObjMap(dungeon);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            map = new DC_Map();
+//        }
+//        String background = dungeon.getProperty(PROPS.MAP_BACKGROUND);
+//        if (!ImageManager.isImage(background)) {
+//            if (mod != null) {
+//                background = mod.getBackground();
+//            } else if (template != null) {
+//                background = template.getBackground();
+//            }
+//        }
+//        if (!ImageManager.isImage(background)) {
+//            background = ImageManager.DEFAULT_BACKGROUND;
+//        }
+//        map.setBackground(background);
+//        return map;
+//    }
 
-
-        if (dungeon.getPlan() == null) {
-            try {
-                if (dungeon.checkProperty(PROPS.DUNGEON_PLAN)) {
-                    this.plan = getBuilder().setParam(params). loadDungeonMap(dungeon
-                            .getProperty(PROPS.DUNGEON_PLAN));
-                } else {
-                    this.plan = getBuilder().setParam(params).buildDungeonPlan(dungeon);
-                }
-                dungeon.setPlan(plan);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            plan = dungeon.getPlan();
-        }
-        template = new EnumMaster<DUNGEON_MAP_TEMPLATE>().retrieveEnumConst(
-                DUNGEON_MAP_TEMPLATE.class, dungeon.getProperty(PROPS.DUNGEON_MAP_TEMPLATE));
-        mod = new EnumMaster<DUNGEON_MAP_MODIFIER>().retrieveEnumConst(DUNGEON_MAP_MODIFIER.class,
-                dungeon.getProperty(PROPS.DUNGEON_MAP_MODIFIER));
-
-		/*
-         * mod should have a preset initComps option as well.
-		 */
-
-        try {
-            initBfObjMap(dungeon);
-        } catch (Exception e) {
-            e.printStackTrace();
-            map = new DC_Map();
-        }
-        String background = dungeon.getProperty(PROPS.MAP_BACKGROUND);
-        if (!ImageManager.isImage(background)) {
-            if (mod != null) {
-                background = mod.getBackground();
-            } else if (template != null) {
-                background = template.getBackground();
-            }
-        }
-        if (!ImageManager.isImage(background)) {
-            background = ImageManager.DEFAULT_BACKGROUND;
-        }
-        map.setBackground(background);
-        return map;
-    }
-
-    private void initBfObjMap(Location dungeon) {
-        objMap = new HashMap<>();
-        map.setObjMap(objMap);
-        if (plan != null) {
-            // if (plan.isPreloaded()) addObjects();
-            if (!dungeon.isRandomized()) {
-                if (!plan.isLoaded()) {
-                    generateUndergroundObjects();
-                }
-                return;
-            }
-        }
-        for (String s : StringMaster.openContainer(dungeon.getProperty(PROPS.MAP_PRESET_OBJECTS))) {
-            try {
-                ObjType objType = DataManager.getType(VariableManager.removeVarPart(s),
-                        DC_TYPE.BF_OBJ);
-                Coordinates coordinates = new Coordinates(VariableManager.getVarPart(s));
-                if (objType != null) {
-                    objMap.put(coordinates, objType);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (template == null) {
-            return;
-        }
-        zones = new HashMap<>();
-        List<String> objects = StringMaster.openContainer(template.getObjects());
-        if (mod != null) {
-            objects.addAll(StringMaster.openContainer(mod.getObjects()));
-        }
-        // if (mod.getPresetObjects()!=null){ TODO
-        // StringMaster.openContainer(mod.getPresetObjects(),
-        // StringMaster.AND_SEPARATOR)
-        // .getOrCreate(index)
-        // for ( s s StringMaster.openContainer(mod.getPresetObjects) ){
-        // c = new Coordinates(s);TODO
-        //
-        // }
-        // objMap.put(c, obj);
-        // } TODO
-
-
-            sizeMod = getSizeMod(dungeon.getDungeon());
-
-        objects.addAll(StringMaster.openContainer(dungeon.getProperty(PROPS.MAP_OBJECTS)));
-        for (String s : objects) {
-            String objTypeName = VariableManager.removeVarPart(s);
-            Integer max = StringMaster.getInteger(StringMaster.cropParenthesises(VariableManager
-                    .getVarPart(s)));
-
-            if (sizeMod != null) {
-                max = max * sizeMod / 100;
-            }
-            int n = RandomWizard.getRandomIntBetween(max / 2, max, true);
-            placeObjects(objTypeName, n);
-        }
-    }
+//    private void initBfObjMap(Location dungeon) {
+//        objMap = new HashMap<>();
+//        map.setObjMap(objMap);
+//        if (plan != null) {
+            // //if (plan.isPreloaded()) addObjects();
+//            if (!dungeon.isRandomized()) {
+//                if (!plan.isLoaded()) {
+//                    generateUndergroundObjects();
+//                }
+//                return;
+//            }
+//        }
+//        for (String s : StringMaster.openContainer(dungeon.getProperty(PROPS.MAP_PRESET_OBJECTS))) {
+//            try {
+//                ObjType objType = DataManager.getType(VariableManager.removeVarPart(s),
+//                        DC_TYPE.BF_OBJ);
+//                Coordinates coordinates = new Coordinates(VariableManager.getVarPart(s));
+//                if (objType != null) {
+//                    objMap.put(coordinates, objType);
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        if (template == null) {
+//            return;
+//        }
+//        zones = new HashMap<>();
+//        List<String> objects = StringMaster.openContainer(template.getObjects());
+//        if (mod != null) {
+//            objects.addAll(StringMaster.openContainer(mod.getObjects()));
+//        }
+        // //if (mod.getPresetObjects()!=null){ TODO
+        // //StringMaster.openContainer(mod.getPresetObjects(),
+        // //StringMaster.AND_SEPARATOR)
+        // //.getOrCreate(index)
+        // //for ( s s StringMaster.openContainer(mod.getPresetObjects) ){
+        // //c = new Coordinates(s);TODO
+        ////
+        // //}
+        // //objMap.put(c, obj);
+        // //} TODO
+//
+//            sizeMod = getSizeMod(dungeon.getDungeon());
+//
+//        objects.addAll(StringMaster.openContainer(dungeon.getProperty(PROPS.MAP_OBJECTS)));
+//        for (String s : objects) {
+//            String objTypeName = VariableManager.removeVarPart(s);
+//            Integer max = StringMaster.getInteger(StringMaster.cropParenthesises(VariableManager
+//                    .getVarPart(s)));
+//
+//            if (sizeMod != null) {
+//                max = max * sizeMod / 100;
+//            }
+//            int n = RandomWizard.getRandomIntBetween(max / 2, max, true);
+//            placeObjects(objTypeName, n);
+//        }
+//    }
 
     private void generateUndergroundObjects() {
         // dungeonMap.getFillerType();
@@ -362,6 +363,11 @@ public class DungeonMapGenerator <E extends DungeonWrapper> extends DungeonHandl
 
     private int getWidth() {
         return getDungeon().getWidth();
+    }
+@Refactor
+    @Override
+    public E getDungeon() {
+        return (E) getBuilder().getDungeon();
     }
 
     public boolean checkCoordinate(Coordinates c) {

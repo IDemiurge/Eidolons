@@ -1,7 +1,6 @@
 package main.client.cc.logic;
 
 import main.client.cc.gui.misc.HeroItemChooser;
-import main.client.dc.Simulation;
 import main.content.CONTENT_CONSTS.RANK;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -16,10 +15,13 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.core.game.DC_Game;
 import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.core.Eidolons;
+import main.game.core.game.DC_Game;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Stack;
 
@@ -44,19 +46,25 @@ public class HeroCreator {
 
     public static Unit initHero(String typeName) {
         ObjType type = new ObjType(DataManager.getType(typeName, DC_TYPE.CHARS));
-        Simulation.getGame().initType(type);
+        Eidolons.getGame().initType(type);
 
         return createHeroObj(type);
     }
 
     public static Unit createHeroObj(ObjType type) {
-        Unit hero = new Unit(type, 0, 0, DC_Player.NEUTRAL, Simulation.getGame(),
-                new Ref(Simulation.getGame()));
+        Unit hero = new Unit(type, 0, 0, getDefaultPlayer(),  Eidolons.getGame(),
+                new Ref( Eidolons.getGame()));
         newId(type);
-        Simulation.getGame().getState().addObject(hero);
+         Eidolons.getGame().getState().addObject(hero);
         hero.toBase();
         hero.afterEffects();
         return hero;
+    }
+
+    private static DC_Player getDefaultPlayer() {
+        if (DC_Player.NEUTRAL==null )
+            DC_Player.NEUTRAL = new DC_Player("Simulation", Color.red, true);
+        return DC_Player.NEUTRAL ;
     }
 
     private static void newId(ObjType type) {

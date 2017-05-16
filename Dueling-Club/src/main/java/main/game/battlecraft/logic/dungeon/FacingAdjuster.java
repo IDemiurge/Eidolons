@@ -2,7 +2,7 @@ package main.game.battlecraft.logic.dungeon;
 
 import main.entity.obj.Obj;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
-import main.game.battlecraft.logic.dungeon.location.building.DungeonMapGenerator.MAP_ZONES;
+import main.game.battlecraft.logic.dungeon.DungeonMapGenerator.MAP_ZONES;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.StringMaster;

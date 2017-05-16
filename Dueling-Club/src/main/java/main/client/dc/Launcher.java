@@ -525,7 +525,7 @@ public class Launcher {
             boolean first = false;
             if (game == null) {
                 first = true;
-                DC_Engine.microInitialization();
+                DC_Engine.gameInit();
             }
             GdxLauncher.main(new String[]{});
             game = Simulation.getGame();

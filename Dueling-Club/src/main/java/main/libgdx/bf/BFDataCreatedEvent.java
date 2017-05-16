@@ -1,10 +1,10 @@
 package main.libgdx.bf;
 
 import main.entity.obj.BattleFieldObject;
-import main.system.OnDemandEventCallBack;
+import main.system.OnDemandEventCallbackParam;
 import main.system.datatypes.DequeImpl;
 
-public class BFDataCreatedEvent extends OnDemandEventCallBack {
+public class BFDataCreatedEvent extends OnDemandEventCallbackParam {
     private final int gridW;
     private final int gridH;
     private final DequeImpl<BattleFieldObject> objects;

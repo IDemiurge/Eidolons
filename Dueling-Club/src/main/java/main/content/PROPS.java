@@ -13,7 +13,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     // INSTEAD OF 'ACTIVES'!
     // AGE(null, "chars"),
 
-
+    PARTY_MISSION_NEXT(null  ,false ,"party" ) ,
     SCENARIO_TYPE(null,false, "scenarios"),
     SCENARIO_MISSIONS(null,true, "scenarios"),
     SCENARIO_STARTING_PLACE(null,false, "scenarios"),
@@ -423,7 +423,7 @@ NEXT_MISSION(null,false, "missions"),
             ("", true, "spells", "actions"), ANIM_SFX_IMPACT
             ("", true, "spells", "actions"), ANIM_SFX_AFTEREFFECT
             ("", true, "spells", "actions"), ANIM_MODS_SFX
-            ("", true, "spells", "actions"),;
+            ("", true, "spells", "actions");
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

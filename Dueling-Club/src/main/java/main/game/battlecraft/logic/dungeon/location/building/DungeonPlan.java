@@ -6,12 +6,13 @@ import main.entity.obj.MicroObj;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.DungeonBuilder;
 import main.game.battlecraft.logic.dungeon.location.Location;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import main.game.battlecraft.logic.dungeon.test.TestDungeonBuilder;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.battlecraft.logic.dungeon.DungeonBuilder;
 import main.game.battlecraft.logic.dungeon.location.Location;
 import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BUILD_PARAMS;
@@ -47,7 +48,6 @@ public class DungeonPlan {
     private int widthMod;
     private int heightMod;
     private int sizeMod;
-    private DC_Map map;
     private ENTRANCE_LAYOUT exitLayout;
     private ENTRANCE_LAYOUT entranceLayout;
     private String stringData;
@@ -368,14 +368,7 @@ public class DungeonPlan {
         entranceLayout = layout;
     }
 
-    public DC_Map getMap() {
-        return map;
-    }
 
-    public void setMap(DC_Map map) {
-        this.map = map;
-
-    }
 
     public int getDimension(boolean xOrY) {
         return xOrY ? getCellsX() : getCellsY();

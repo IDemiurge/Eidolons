@@ -109,7 +109,7 @@ public class GuiEventManager {
                 lock.unlock();
             }
         } else {
-            if (obj instanceof OnDemandCallback) {
+            if (obj instanceof OnDemandEventCallbackParam) {
                 onDemand.put(type, (callback) -> callback.call(obj));
             }
         }

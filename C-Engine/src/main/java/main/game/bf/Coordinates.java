@@ -26,11 +26,11 @@ public class Coordinates {
     }
 
     public Coordinates(int x, int y) {
-        this(false, x, y);
+        this(true, x, y);
     }
 
-    public Coordinates(boolean custom, int x, int y) {
-        if (!custom) {
+    public Coordinates(boolean allowinvalid, int x, int y) {
+        if (!allowinvalid) {
             if (x >= GuiManager.getCurrentLevelCellsX()) {
                 x = GuiManager.getCurrentLevelCellsX() - 1;
                 this.setInvalid(true);

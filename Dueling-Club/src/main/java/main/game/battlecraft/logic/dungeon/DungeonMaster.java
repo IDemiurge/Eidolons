@@ -1,10 +1,9 @@
 package main.game.battlecraft.logic.dungeon;
 
 import main.game.battlecraft.logic.battle.*;
-import main.game.battlecraft.logic.dungeon.location.building.DungeonMapGenerator;
 import main.game.core.game.DC_Game;
 import main.system.GuiEventManager;
-import main.system.OnDemandEventCallBack;
+import main.system.OnDemandEventCallbackParam;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -31,6 +30,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         positioner= createPositioner();
         facingAdjuster= createFacingAdjuster();
         builder =createBuilder();
+        mapGenerator = new DungeonMapGenerator<E>(this);
     }
 
     protected DungeonBuilder<E> createBuilder() {
@@ -50,8 +50,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
                     dungeonWrapper.getMapBackground() + " is not a valid image! >> " + dungeonWrapper);
             return;
         }
+
         GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND,
-                new OnDemandEventCallBack<>(dungeonWrapper.getMapBackground()));
+                new OnDemandEventCallbackParam<>(dungeonWrapper.getMapBackground()));
 
     }
 

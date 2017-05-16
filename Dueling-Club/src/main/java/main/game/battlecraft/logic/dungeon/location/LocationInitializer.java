@@ -5,6 +5,7 @@ import main.content.PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.dungeon.DungeonInitializer;
 import main.game.battlecraft.logic.dungeon.DungeonMaster;
 import main.game.module.adventure.map.Place;
@@ -21,7 +22,11 @@ public class LocationInitializer extends DungeonInitializer<Location> {
 
     @Override
     public Location initDungeon() {
-        return null;
+        setDungeonPath(game.getDataKeeper().getDungeonData()
+         .getContainerValue(DUNGEON_VALUE.PATH, 0));
+        //or take mission directly?
+
+        return (Location) getBuilder().buildDungeon(getDungeonPath());
     }
 
     @Override

@@ -40,12 +40,13 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     public void init(){
 //        shopManager.init();
 //        metaDataManager.init();
+        game=createGame();
         metaGame=  initializer.initMetaGame(data);
         partyManager.initPlayerParty();
-        game=createGame();
     }
 
     public void gameStarted(){
+//        getGame().getDataKeeper().setDungeonData(new DungeonData(getMetaGame()));
 
     }
 
