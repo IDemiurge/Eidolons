@@ -10,7 +10,7 @@ import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.tools.Analyzer;
 import main.game.battlecraft.logic.dungeon.universal.Positioner;
 import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.Positioner;
+import main.game.battlecraft.logic.dungeon.universal.Positioner;
 import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.BLOCK_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;

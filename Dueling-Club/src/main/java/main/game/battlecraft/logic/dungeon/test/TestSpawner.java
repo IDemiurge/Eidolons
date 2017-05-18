@@ -118,6 +118,20 @@ public class TestSpawner extends Spawner<TestDungeon>{
         }
     }
 
+    public void spawnPartyAt(PartyObj party, Coordinates coordinates) {
+        spawnUnitsAt(party.getMembers(), coordinates);
+    }
+    public void spawnUnitsAt(List<Unit> units, Coordinates coordinates) {
+        List<String> partyTypes = StringMaster.toNameList(units);
+        List<Coordinates> coordinateList =((TestPositioner) getPositioner())
+         .initPartyCoordinates(partyTypes, null);
+        int index = 0;
+        for (Unit m : units) {
+            m.setCoordinates(coordinateList.get(index));
+            index++;
+        }
+    }
+
     public boolean isUnitGroupMode(boolean me) {
         return me ? TestSpawner.isPlayerUnitGroupMode() : isEnemyUnitGroupMode();
     }

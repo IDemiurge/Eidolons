@@ -33,7 +33,7 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         String formatted="";
         DungeonData.
             DUNGEON_VALUE value;
-            if (dataString.contains(".xml")){
+            if (dataString.contains(".xml")) {
                 value = DUNGEON_VALUE.PATH;
             } else
                 value = DUNGEON_VALUE.TYPE_NAME;
@@ -42,7 +42,6 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
 
         return new DungeonData(formatted);
     }
-
 
     @Deprecated
     public E initDungeon(String path) {
@@ -79,7 +78,6 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         throw new RuntimeException();
     }
     public abstract E createDungeon(ObjType type);
-
     //TODO different for each Type?
     protected String getDungeonLevelSubfolder() {
         return "battle\\";
