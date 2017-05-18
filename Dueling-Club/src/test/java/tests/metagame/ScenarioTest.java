@@ -3,8 +3,6 @@ package tests.metagame;
 import main.game.battlecraft.DC_Engine;
 import main.game.core.Eidolons;
 import main.system.launch.CoreEngine;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.frontend.GdxLauncher;
 import org.junit.Test;
 
@@ -27,6 +25,6 @@ public class ScenarioTest  {
         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit( );
         Eidolons.mainGame.getMetaMaster().getGame().battleInit( );
         Eidolons.mainGame.getMetaMaster().getGame().start(true);
-        WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_COMPLETE);
+//        WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_COMPLETE);
     }
 }
