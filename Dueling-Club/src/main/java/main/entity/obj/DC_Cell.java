@@ -8,7 +8,7 @@ import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.game.DC_Game;

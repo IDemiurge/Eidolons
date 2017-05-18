@@ -12,7 +12,7 @@ import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.meta.PartyHelper;
+import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.logic.meta.arcade.Arcade;
 import main.game.core.Eidolons;

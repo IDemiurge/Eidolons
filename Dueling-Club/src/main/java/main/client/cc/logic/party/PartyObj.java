@@ -510,6 +510,10 @@ public class PartyObj extends Obj {
     }
 
     public String getNextMission() {
-       return  getProperty(PROPS.PARTY_MISSION_NEXT);
+       return  getProperty(PROPS.PARTY_MISSIONS_NEXT);
+    }
+
+    public String getMission() {
+        return getProperty(PROPS.PARTY_MISSION);
     }
 }

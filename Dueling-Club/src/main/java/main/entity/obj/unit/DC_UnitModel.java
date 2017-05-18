@@ -31,7 +31,7 @@ import main.entity.tools.bf.unit.UnitInitializer;
 import main.entity.tools.bf.unit.UnitResetter;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.UnitAI;
-import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;

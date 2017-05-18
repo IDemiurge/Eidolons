@@ -35,6 +35,7 @@ import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;

@@ -2,8 +2,8 @@ package main.game.module.dungeoncrawl.dungeon;
 
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.battle.DC_Player;
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
 import main.game.core.game.ScenarioGame;
 

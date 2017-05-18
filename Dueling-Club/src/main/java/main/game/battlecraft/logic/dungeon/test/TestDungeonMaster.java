@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.dungeon.test;
 
-import main.game.battlecraft.logic.dungeon.*;
+import main.game.battlecraft.logic.dungeon.universal.*;
 import main.game.core.game.DC_Game;
 
 /**

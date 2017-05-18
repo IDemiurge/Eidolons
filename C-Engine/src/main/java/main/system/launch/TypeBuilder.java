@@ -4,12 +4,12 @@ import main.content.ContentManager;
 import main.content.OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
-import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.XmlDocHolder;
 import main.data.xml.XML_Converter;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.entity.type.XmlHoldingType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import org.w3c.dom.Node;
@@ -88,10 +88,13 @@ public class TypeBuilder {
             if (child.getNodeName().equals(XML_Converter.TEXT_NODE)) {
                 continue;
             }
-            if ((type) instanceof XmlDocHolder) {
-                if (child.getNodeName().equals(G_PROPS.ABILITIES.getName())
-                        || StringMaster.getWellFormattedString(child.getNodeName()).equals(
-                        MACRO_PROPS.DIALOGUE_TREE.getName())) {
+            if ((type) instanceof XmlHoldingType) {
+
+
+                if ( StringMaster.getWellFormattedString ( child.getNodeName()).equals(
+                 ((XmlHoldingType) (type)).getXmlProperty()
+                 .getName())
+                        ) {
 
                     child = XML_Converter.getAbilitiesDoc(child);
 

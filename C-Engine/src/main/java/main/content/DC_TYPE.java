@@ -58,17 +58,24 @@ public enum DC_TYPE implements OBJ_TYPE {
     SCENARIOS("scenarios", G_PROPS.GROUP, 21),
     MISSIONS("missions", G_PROPS.GROUP, 22),
     PLACES("places", G_PROPS.GROUP, 23),
-
-    TRAP("traps", G_PROPS.GROUP, 24),
+    DIALOGUE("dialogue", G_PROPS.GROUP,24 ) {
+        public boolean isTreeEditType() {
+            return true;
+        }
+    },
+    ACTORS("actors", G_PROPS.GROUP, 25),
+//    TRAP("traps", G_PROPS.GROUP, 24),
     META("meta", G_PROPS.GROUP, -1, true),
     ALL("all"),;
 
     private static Map<String, DC_TYPE> searchMap;
 
     static {
+
+
         GARMENT.hidden = true;
         GARMENT.battlecraft = false;
-        TRAP.battlecraft = false;
+//        TRAP.battlecraft = false;
         ENCOUNTERS.battlecraft = false;
         ARCADES.battlecraft = false;
         FACTIONS.battlecraft = false;

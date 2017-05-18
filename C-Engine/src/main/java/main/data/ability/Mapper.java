@@ -9,12 +9,14 @@ import main.ability.effects.Effects;
 import main.content.CONTENT_CONSTS;
 import main.content.values.parameters.Param;
 import main.content.values.properties.Prop;
+import main.data.dialogue.SpeechData;
+import main.data.dialogue.Speeches;
 import main.data.xml.XML_Converter;
 import main.elements.conditions.Conditions;
 import main.system.auxiliary.ClassFinder;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import org.w3c.dom.Node;
 
 import java.io.IOException;
@@ -29,13 +31,20 @@ import java.util.*;
  */
 public class Mapper {
 
-    public static final Class<?>[] CONTAINER_CLASSES = {Abilities.class, Effects.class,
-            Conditions.class,};
+    public static final Class<?>[] CONTAINER_CLASSES = {
+     Abilities.class, Effects.class,
+            Conditions.class,
+Speeches.class, SpeechData.class,
+    };
     public static final String ABILITIES = "Abilities";
     private final static String[] ignoredPaths = {""};
     private final static Class<?>[] IGNORED_CLASSES = {EffectImpl.class, Effect.class};
-    private static final Class<?>[] SPECIAL_CLASSES = {Abilities.class, PassiveAbility.class,
-            ActiveAbility.class, Param.class, Prop.class};
+    private static final Class<?>[] SPECIAL_CLASSES =
+     {Abilities.class, PassiveAbility.class,
+            ActiveAbility.class, Param.class, Prop.class,
+//      Speeches.class, SpeechData.class, DataString.class,
+
+     };
     private static final String TEXT_NODE = "#text";
     private static final String ARG_LIST_SEPARATOR = ": ";
 

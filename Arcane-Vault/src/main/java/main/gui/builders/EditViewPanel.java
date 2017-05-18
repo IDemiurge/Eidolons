@@ -586,7 +586,7 @@ public class EditViewPanel implements TableModelListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (type.getOBJ_TYPE_ENUM().equals(DC_TYPE.ABILS)) {
+        if (type.getOBJ_TYPE_ENUM().isTreeEditType()) {
             setAE_View(type.getName());
         } else {
             setTableView();

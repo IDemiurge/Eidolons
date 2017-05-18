@@ -15,6 +15,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BfObj;
+import main.entity.type.XmlHoldingType;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.Err;
@@ -127,10 +128,9 @@ public class AbilityConstructor {
         return effects;
     }
 
-    public static void construct(AbilityType type) {
+    public static void constructXml(XmlHoldingType type) {
         if (type.getDoc() == null) {
-
-            String xml = type.getProperty(G_PROPS.ABILITIES);
+            String xml = type.getXml();
             Node doc = null;
             try {
                 doc = XML_Converter.getDoc(xml);
@@ -141,6 +141,9 @@ public class AbilityConstructor {
             type.setDoc(doc);
 
         }
+    }
+        public static void construct(AbilityType type) {
+        constructXml(type);
         Abilities abilities = constructAbilities(type.getDoc());
         type.setAbilities(abilities);
 

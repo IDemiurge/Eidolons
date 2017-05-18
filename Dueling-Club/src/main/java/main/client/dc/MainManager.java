@@ -10,7 +10,7 @@ import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NumericCondition;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.meta.PartyHelper;
+import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;

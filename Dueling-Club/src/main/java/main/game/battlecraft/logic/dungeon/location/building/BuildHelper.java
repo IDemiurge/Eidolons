@@ -6,7 +6,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.location.Location;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.BLOCK_TYPE;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;

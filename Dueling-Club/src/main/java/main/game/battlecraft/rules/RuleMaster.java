@@ -319,6 +319,7 @@ public class RuleMaster implements Controller {
         VISIBILITY(RULE_SCOPE.FULL),
         CLEAR_SHOT(RULE_SCOPE.BASIC),
         PARRYING(RULE_SCOPE.FULL),
+        STEALTH(RULE_SCOPE.TEST),
         // C
         DURABILITY,
         UNCONSCIOUS,

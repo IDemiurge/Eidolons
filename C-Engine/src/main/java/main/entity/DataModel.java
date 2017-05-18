@@ -946,7 +946,9 @@ public abstract class DataModel {
                 + " percentage reset: " + c_value + " out of " + base_value + " = " + percentage);
     }
 
-    abstract public Game getGame();
+      public Game getGame(){
+        return game;
+      }
 
     public boolean setParam(PARAMETER param, String value) {
         return setParam(param, value, false);

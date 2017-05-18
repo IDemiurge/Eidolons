@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.meta.scenario;
 
-import main.game.battlecraft.logic.meta.MetaDataManager;
+import main.game.battlecraft.logic.meta.universal.MetaDataManager;
 
 /**
  * Created by JustMe on 5/14/2017.

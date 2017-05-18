@@ -36,6 +36,10 @@ public class AbilityImpl extends ReferredElement implements Ability {
         }
     }
 
+    public AbilityImpl() {
+
+    }
+
     @Override
     public String toString() {
         return "Ability has effects: " + effects.toString();

@@ -2,8 +2,8 @@ package main.game.battlecraft.logic.battle.arena;
 
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.battle.BattleMaster;
-import main.game.battlecraft.logic.battle.BattleStatManager;
+import main.game.battlecraft.logic.battle.universal.BattleMaster;
+import main.game.battlecraft.logic.battle.universal.BattleStatManager;
 
 /**
  * Created by JustMe on 5/8/2017.

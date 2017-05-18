@@ -227,6 +227,11 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initItems() {
+        if (CoreEngine.isItemGenerationOff())
+        {
+            main.system.auxiliary.log.LogMaster.log(1,"NO ITEMS! - Item Generation Off!" );
+            return ;
+        }
         try {
             initInventory();
         } catch (ExpressionParseException e) {

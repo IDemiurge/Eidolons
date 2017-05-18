@@ -24,6 +24,7 @@ import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.EffectAnimation;
 import main.system.graphics.PhaseAnimation;
+import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -212,7 +213,7 @@ public class RollMaster {
                 result ? ENTRY_TYPE.ROLL_LOST : ENTRY_TYPE.ROLL_WON, args);
         ref.getGame().getLogManager().log(RollMaster.logString);
         ref.getGame().getLogManager().doneLogEntryNode();
-
+if (CoreEngine.isPhaseAnimsOn())
         if (ref.getActive() != null) {
             ANIM anim = new EffectAnimation((DC_ActiveObj) ref.getActive());
             anim.addPhase(new AnimPhase(PHASE_TYPE.ROLL, roll));

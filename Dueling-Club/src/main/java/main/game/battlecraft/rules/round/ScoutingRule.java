@@ -3,7 +3,7 @@ package main.game.battlecraft.rules.round;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battle.arena.Wave;
-import main.game.battlecraft.logic.meta.PartyHelper;
+import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.core.game.DC_Game;
 import main.game.module.adventure.travel.Encounter;
 import main.system.auxiliary.StringMaster;
