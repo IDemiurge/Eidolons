@@ -31,7 +31,7 @@ import main.game.bf.DirectionMaster;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
-import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.logic.battle.player.Player;
 import main.game.battlecraft.rules.combat.damage.Damage;
 import main.game.battlecraft.rules.action.PerceptionRule.PERCEPTION_STATUS;

@@ -18,6 +18,8 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability"};
@@ -41,6 +43,7 @@ public class CoreEngine {
     private static boolean actionTargetingFiltersOff;
     private static boolean phaseAnimsOn;
     private static boolean logicTest;
+    private static boolean itemGenerationOff;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -244,12 +247,18 @@ public class CoreEngine {
         Chronos.mark("TYPES INIT");
 
         XML_Reader.readTypes(macro);
+        List<String> classFolders=    new LinkedList<>(Arrays.asList(classFolderPaths)) ;
+         if (true){
+             classFolders.add( "main.data.dialogue" );
+             classFolders.add(  "main.game.battlecraft.logic.meta.scenario.dialogue.speech" );
+         }
 
         Chronos.logTimeElapsedForMark("TYPES INIT");
         // if (!macro)
         try {
             Chronos.mark("MAPPER INIT");
-            Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()), Arrays.asList(classFolderPaths));
+            Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
+            classFolders);
             Chronos.logTimeElapsedForMark("MAPPER INIT");
         } catch (ClassNotFoundException | SecurityException | IOException e) {
             e.printStackTrace();
@@ -257,4 +266,11 @@ public class CoreEngine {
 
     }
 
+    public static boolean isItemGenerationOff() {
+        return itemGenerationOff;
+    }
+
+    public static void setItemGenerationOff(boolean itemGenerationOff) {
+        CoreEngine.itemGenerationOff = itemGenerationOff;
+    }
 }

@@ -180,7 +180,7 @@ public class ModelManager {
         DefaultMutableTreeNode node = ArcaneVault.getMainBuilder().getSelectedNode();
         String selected = ArcaneVault.getMainBuilder().getSelectedTabName();
 
-        if (ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM() == DC_TYPE.ABILS) {
+        if (ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM().isTreeEditType() ) {
             AE_Manager.saveTreeIntoXML(ArcaneVault.getSelectedType());
         }
         String newName = DialogMaster

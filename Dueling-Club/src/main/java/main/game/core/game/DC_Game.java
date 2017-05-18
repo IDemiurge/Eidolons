@@ -22,16 +22,16 @@ import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.AI_Manager;
-import main.game.battlecraft.logic.battle.BattleMaster;
-import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.battlecraft.logic.battle.test.TestBattleMaster;
+import main.game.battlecraft.logic.battle.universal.BattleMaster;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.*;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.battlefield.vision.VisionMaster;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.test.TestDungeonMaster;
-import main.game.battlecraft.logic.meta.MetaGameMaster;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.game.battlecraft.rules.DC_Rules;
 import main.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import main.game.battlecraft.rules.combat.damage.ArmorMaster;
@@ -114,6 +114,7 @@ public class DC_Game extends MicroGame {
     private LaunchDataKeeper dataKeeper;
     @Refactor
     private Map<Unit, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
+    private GameLoop gameLoop;
 
     public DC_Game() {
         this(false);
@@ -168,7 +169,9 @@ public class DC_Game extends MicroGame {
 
         initObjTypes();
         if (!CoreEngine.isLevelEditor() && (!CoreEngine.isArcaneVault() ||
-         !XML_Reader.isMacro()))
+         !XML_Reader.isMacro())
+         && !CoreEngine.isItemGenerationOff()
+         )
             ItemGenerator.init();
 //    TODO to battle init!
 //            SpellGenerator.init();
@@ -687,6 +690,10 @@ public class DC_Game extends MicroGame {
             simulationCache = new XLinkedMap<>();
         }
         return simulationCache;
+    }
+
+    public GameLoop getGameLoop() {
+        return gameLoop;
     }
 
     public enum GAME_MODES {

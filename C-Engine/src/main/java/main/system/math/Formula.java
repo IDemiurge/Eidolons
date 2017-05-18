@@ -25,9 +25,11 @@ public class Formula {
     }
 
     public Number evaluate(Ref ref) {
-
-        if (StringMaster.isInteger(formula)) {
-            return StringMaster.getInteger(formula);
+        if (StringMaster.isEmpty(formula)) {
+            return 0;
+        }
+            if (StringMaster.isInteger(formula)) {
+                return StringMaster.getInteger(formula);
         }
 
         if (StringMaster.isNumber(formula, false)) {

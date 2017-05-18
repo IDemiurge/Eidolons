@@ -1,7 +1,7 @@
 package main.client.cc.gui.neo.choice;
 
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.meta.PartyHelper;
+import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;

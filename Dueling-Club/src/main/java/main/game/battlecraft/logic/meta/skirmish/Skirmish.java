@@ -3,7 +3,7 @@ package main.game.battlecraft.logic.meta.skirmish;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.meta.scenario.Objective;
 import main.game.battlecraft.logic.meta.scenario.Scenario;
 import main.game.battlecraft.logic.meta.skirmish.SkirmishMaster.NEMESIS_GROUP;

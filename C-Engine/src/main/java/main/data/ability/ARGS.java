@@ -3,10 +3,11 @@ package main.data.ability;
 import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.*;
-import main.content.CONTENT_CONSTS.*;
+import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.content.CONTENT_CONSTS2.INJURY;
 import main.content.DC_TYPE;
-import main.content.enums.*;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.UnitEnums;
@@ -19,6 +20,10 @@ import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
+import main.data.dialogue.DataString;
+import main.data.dialogue.Dialogue_Data;
+import main.data.dialogue.SpeechData;
+import main.data.dialogue.SpeechInterface;
 import main.elements.conditions.Condition;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
@@ -33,7 +38,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
-import main.content.enums.GenericEnums. DAMAGE_CASE;
+
 import java.util.Arrays;
 
 public enum ARGS implements Argument {
@@ -136,6 +141,13 @@ public enum ARGS implements Argument {
     COUNTER_INTERACTION_TYPE(COUNTER_INTERACTION.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     COUNTER_OPERATION(COUNTER_OPERATION.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     ORDER_PRIORITY_MODS(ORDER_PRIORITY_MODS.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
+
+    DATA_TYPE(DataString.DATA_TYPE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
+    DATA_STRING(DataString.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
+    SPEECH(SpeechInterface.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
+    SPEECHDATA(SpeechData.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
+    DIALOGUE_DATA(Dialogue_Data.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
+
     UNKNOWN(Object.class),;
 
     private AE_ELEMENT_TYPE ELEMENT_TYPE;

@@ -1,17 +1,22 @@
 package main.game.battlecraft.logic.dungeon.test;
 
+import main.client.cc.logic.party.PartyObj;
 import main.data.XList;
+import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.GroupAI;
 import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
-import main.game.battlecraft.logic.dungeon.DungeonMaster;
-import main.game.battlecraft.logic.dungeon.Spawner;
+import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import main.game.battlecraft.logic.dungeon.universal.Spawner;
 import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game.GAME_MODES;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.MathMaster;
+
+import java.util.List;
 
 /**
  * Created by JustMe on 5/8/2017.
@@ -96,6 +101,20 @@ public class TestSpawner extends Spawner<TestDungeon>{
         LogMaster.log(1, "spawnCoordinates=" + spawnCoordinates
          + " ;offset_coordinate=" + offset_coordinate + ";height=" + height + "; width="
          + width);
+    }
+
+    public void spawnPartyAt(PartyObj party, Coordinates coordinates) {
+        spawnUnitsAt(party.getMembers(), coordinates);
+    }
+    public void spawnUnitsAt(List<Unit> units, Coordinates coordinates) {
+        List<String> partyTypes = StringMaster.toNameList(units);
+        List<Coordinates> coordinateList =((TestPositioner) getPositioner())
+         .initPartyCoordinates(partyTypes, null);
+        int index = 0;
+        for (Unit m : units) {
+            m.setCoordinates(coordinateList.get(index));
+            index++;
+        }
     }
 
     public boolean isUnitGroupMode(boolean me) {

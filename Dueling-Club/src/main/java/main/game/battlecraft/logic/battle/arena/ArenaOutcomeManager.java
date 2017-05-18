@@ -1,9 +1,9 @@
 package main.game.battlecraft.logic.battle.arena;
 
-import main.game.battlecraft.logic.battle.Battle;
-import main.game.battlecraft.logic.battle.BattleMaster;
-import main.game.battlecraft.logic.battle.BattleOutcomeManager;
-import main.game.battlecraft.logic.meta.PartyHelper;
+import main.game.battlecraft.logic.battle.universal.Battle;
+import main.game.battlecraft.logic.battle.universal.BattleMaster;
+import main.game.battlecraft.logic.battle.universal.BattleOutcomeManager;
+import main.game.battlecraft.logic.meta.universal.PartyHelper;
 
 /**
  * Created by JustMe on 5/8/2017.

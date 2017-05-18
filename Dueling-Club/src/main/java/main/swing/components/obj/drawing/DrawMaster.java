@@ -20,7 +20,7 @@ import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.swing.XLine;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.CellComp;

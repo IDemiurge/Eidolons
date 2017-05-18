@@ -3,8 +3,8 @@ package main.game.battlecraft.logic.meta.scenario;
 import main.client.cc.logic.party.PartyObj;
 import main.content.PROPS;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.dungeon.UnitData;
-import main.game.battlecraft.logic.meta.PartyManager;
+import main.game.battlecraft.logic.dungeon.universal.UnitData;
+import main.game.battlecraft.logic.meta.universal.PartyManager;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -14,6 +14,14 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     public ScenarioPartyManager(ScenarioMetaMaster master) {
         super(master);
+    }
+
+    @Override
+    public void gameStarted() {
+//  TODO       getData()
+        party.setProperty(PROPS.PARTY_MISSION,
+     StringMaster.openContainer(getMetaGame().getScenario().
+      getProperty(PROPS.SCENARIO_MISSIONS)).get(0), true);
     }
 
     @Override
@@ -27,7 +35,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         }
         party = new PartyObj(type);
         if (party.getNextMission().isEmpty()) {
-            party.setProperty(PROPS.PARTY_MISSION_NEXT,
+            party.setProperty(PROPS.PARTY_MISSIONS_NEXT,
              StringMaster.openContainer(getMetaGame().getScenario().
               getProperty(PROPS.SCENARIO_MISSIONS)).get(0), true);
         }

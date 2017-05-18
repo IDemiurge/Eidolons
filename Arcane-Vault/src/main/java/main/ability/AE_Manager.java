@@ -3,8 +3,9 @@ package main.ability;
 import main.ability.gui.AE_EditPanel;
 import main.ability.gui.AE_Element;
 import main.ability.gui.AE_MainPanel;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
+import main.content.PROPS;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -13,6 +14,7 @@ import main.data.ability.AE_Item;
 import main.data.ability.ARGS;
 import main.data.ability.Mapper;
 import main.data.ability.construct.VariableManager;
+import main.data.ability.construct.XmlDocHolder;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
@@ -78,6 +80,13 @@ public class AE_Manager {
     }
 
     public static Node getDoc(String typeName) {
+        OBJ_TYPE TYPE = null;
+        if (!ArcaneVault.isDialogueMode()) {
+            TYPE = DC_TYPE.ABILS;
+        } else {
+            TYPE = DC_TYPE.DIALOGUE;
+        }
+
 
         ObjType type;
         if (ArcaneVault.isMacroMode()) {
@@ -85,8 +94,8 @@ public class AE_Manager {
 //			DialogueType diagType = (DialogueType) type;
 //			return diagType.getDoc();
         }
-        type = DataManager.getType(typeName, DC_TYPE.ABILS.getName());
-        AbilityType abilType = (AbilityType) type;
+        type = DataManager.getType(typeName, TYPE.getName());
+        XmlDocHolder abilType = (XmlDocHolder) type;
         // return XML_Converter.getDoc(abilType.getProperty(G_PROPS.ABILITIES));
         return abilType.getDoc();
 
@@ -95,12 +104,12 @@ public class AE_Manager {
     public static void saveTreesIntoXML() {
         OBJ_TYPE TYPE = null;
         PROPERTY XML_PROP = null;
-        if (!ArcaneVault.isMacroMode()) {
+        if (!ArcaneVault.isDialogueMode()) {
             TYPE = DC_TYPE.ABILS;
             XML_PROP = G_PROPS.ABILITIES;
         } else {
-            // TYPE = MACRO_OBJ_TYPES.DIALOGUE;
-            // XML_PROP = MACRO_PROPS.DIALOGUE_TREE;
+             TYPE = DC_TYPE.DIALOGUE;
+             XML_PROP = PROPS.DIALOGUE_DATA;
         }
         for (String typeName : cacheMap.keySet()) {
             ObjType type = DataManager.getType(typeName, TYPE);

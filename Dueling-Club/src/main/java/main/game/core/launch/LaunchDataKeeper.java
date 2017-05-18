@@ -1,9 +1,9 @@
 package main.game.core.launch;
 
-import main.game.battlecraft.logic.dungeon.DungeonData;
-import main.game.battlecraft.logic.dungeon.DungeonInitializer;
-import main.game.battlecraft.logic.dungeon.Spawner;
-import main.game.battlecraft.logic.dungeon.UnitData;
+import main.game.battlecraft.logic.dungeon.universal.DungeonData;
+import main.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
+import main.game.battlecraft.logic.dungeon.universal.Spawner;
+import main.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.core.game.DC_Game;
 import main.system.data.PlayerData;
 import main.test.Preset;

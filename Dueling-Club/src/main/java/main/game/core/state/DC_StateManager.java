@@ -11,7 +11,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.meta.PartyHelper;
+import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.battlecraft.rules.DC_RuleImpl;
 import main.game.battlecraft.rules.counter.DC_CounterRule;
 import main.game.battlecraft.rules.counter.DamageCounterRule;
@@ -311,7 +311,9 @@ public class DC_StateManager extends StateManager {
 
         game.getLogManager().log("            >>>Round #" + (state.getRound() + 1) + "<<<");
         newTurnTick();
-        getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.NEW_ROUND, game));
+        Ref ref = new Ref(getGame());
+        ref.setAmount(state.getRound());
+        getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.NEW_ROUND, ref));
 
 
 
@@ -335,6 +337,8 @@ public class DC_StateManager extends StateManager {
 //            getGameManager().refreshAll();
         }
 //        getGameManager().reset();
+
+        getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.GAME_STARTED, game));
         game.getLogManager().doneLogEntryNode();
         // if (!activePlayer.isMe())
     }

@@ -17,7 +17,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.bf.DirectionMaster;
-import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.logic.dungeon.editor.gui.LE_MapViewComp;

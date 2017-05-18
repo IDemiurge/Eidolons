@@ -1,7 +1,7 @@
 package main.game.battlecraft.logic.meta.scenario;
 
-import main.game.battlecraft.logic.meta.MetaGame;
-import main.game.battlecraft.logic.meta.MetaGameMaster;
+import main.game.battlecraft.logic.meta.universal.MetaGame;
+import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 
 /**
  * Created by JustMe on 5/12/2017.

@@ -104,6 +104,8 @@ public class ArcaneVault {
         WORKSPACE_TEMPLATE.items.setTypes(items);
     }
 
+    private static boolean dialogueMode=true;
+
     public static void main(String[] args) {
         CoreEngine.setArcaneVault(true);
 
@@ -451,6 +453,14 @@ public class ArcaneVault {
 
     public static JFrame getWindow() {
         return window;
+    }
+
+    public static boolean isDialogueMode() {
+        return dialogueMode;
+    }
+
+    public static void setDialogueMode(boolean dialogueMode) {
+        ArcaneVault.dialogueMode = dialogueMode;
     }
 
     public enum WORKSPACE_TEMPLATE {

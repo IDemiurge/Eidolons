@@ -1,12 +1,11 @@
 package main.system.entity;
 
-import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
-import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentManager;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -415,6 +414,9 @@ public class ConditionMaster {
         CONDITION_TEMPLATES template = new EnumMaster<CONDITION_TEMPLATES>().retrieveEnumConst(
                 CONDITION_TEMPLATES.class, templateName);
         if (template == null) {
+            template = findConditionTemplate(string);
+        }
+        if (template == null) {
             return null;
         }
         String str1 = args[0];
@@ -455,16 +457,15 @@ public class ConditionMaster {
         return prop;
     }
 
+    private static Condition findTargetingModifierCondition(String string) {
+        return null ;
+    }
     private static Condition parseCondition(String string) {
         Condition c = parseTemplateCondition(string);
         if (c != null) {
             return c;
         }
-
-        c = findConditionTemplate(string);
-        if (c != null) {
-            return c;
-        }
+        return findTargetingModifierCondition(string);
 
         // String vars = VariableManager.getVarPart(string);
         // String className = string.replace(vars, "");
@@ -480,7 +481,6 @@ public class ConditionMaster {
         //
         // Condition condition = (Condition) conditionConstruct.construct();
 
-        return c;
     }
 
     public static Condition getWorkspaceCondition(boolean negative,
@@ -528,13 +528,23 @@ public class ConditionMaster {
         return result;
     }
 
-    private static Condition findConditionTemplate(String string) {
-        TARGETING_MODE TARGETING_MODE = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(
-                TARGETING_MODE.class, string);
-        // in DC_ only...
+//    private static Condition findConditionTemplate(String string) {
+//        TARGETING_MODE TARGETING_MODE = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(
+//                TARGETING_MODE.class, string);
+//        // in DC_ only...
+//        return null;
+//    }
+    public static CONDITION_TEMPLATES findConditionTemplate(String string) {
+        for (CONDITION_TEMPLATES template : CONDITION_TEMPLATES.values()) {
+            if (template.matchString(string, true))
+                return template;
+        }
+        for (CONDITION_TEMPLATES template : CONDITION_TEMPLATES.values()) {
+            if (template.matchString(string, false))
+                return template;
+        }
         return null;
     }
-
     private static String getMappedClassName(String className) {
         // TODO or i could actually map to constructors directly! Annotate
 
@@ -611,6 +621,8 @@ CONDITION_SHORTCUTS(String s){
 }
 
     }
+
+
         public enum CONDITION_TEMPLATES {
         STRING("string", "fullString", "has"),
         STRING_STRICT("strStrict", "strEqual", "strict"),
@@ -618,7 +630,7 @@ CONDITION_SHORTCUTS(String s){
         CONTAINER_STRICT("containerStrict"),
         REF("ref", "refCheck"),
         NUMERIC("num", "numeric", "greater"),
-        NUMERIC_EQUAL("numEqual", "numeric equal", "equal"),
+        NUMERIC_EQUAL("numEqual", "numeric equal", "equal", "equals"),
         NUMERIC_LESS("numLess", "numeric less", "less"),
         ITEM("item", "slot"),
         INVALID_ABILITIES("item", "slot"),
@@ -631,17 +643,13 @@ CONDITION_SHORTCUTS(String s){
 
         }
 
-        public boolean matchString(String string) {
-            for (String name : names) {
-                if (string.equalsIgnoreCase(name)) {
-                    return true;
-                }
-            }
-            for (String name : names) {
-                if (StringMaster.compare(string, name)) {
-                    return true;
-                }
-            }
+
+                public boolean matchString(String string, boolean strict) {
+                    for (String name : names) {
+                        if (StringMaster.compare(string, name, strict)) {
+                            return true;
+                        }
+                    }
             // TODO
             return false;
         }

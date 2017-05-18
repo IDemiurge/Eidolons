@@ -1,20 +1,15 @@
 package main.ability;
 
 import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.AbilityConstructor;
-import main.data.ability.construct.XmlDocHolder;
 import main.data.xml.XML_Converter;
-import main.entity.type.ObjType;
-import org.w3c.dom.Node;
+import main.entity.type.XmlHoldingType;
 
-import javax.xml.parsers.DocumentBuilderFactory;
+public class AbilityType extends XmlHoldingType {
 
-public class AbilityType extends ObjType implements XmlDocHolder {
 
-    final static DocumentBuilderFactory builderFactory = DocumentBuilderFactory
-            .newInstance();
     protected Abilities abilities;
-    private Node doc;
 
     public AbilityType(AbilityType type) {
         super(type);
@@ -35,12 +30,9 @@ public class AbilityType extends ObjType implements XmlDocHolder {
 
     }
 
-    public Node getDoc() {
-        return doc;
-    }
-
-    public void setDoc(Node child) {
-        this.doc = child;
+    @Override
+    public PROPERTY getXmlProperty() {
+        return G_PROPS.ABILITIES;
     }
 
     public Abilities getAbilities() {

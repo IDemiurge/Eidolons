@@ -1,10 +1,10 @@
 package main.game.battlecraft.logic.meta.scenario.dialogue;
 
 import main.content.PROPS;
-import main.game.battlecraft.logic.battle.mission.Mission;
-import main.game.battlecraft.logic.meta.MetaGameHandler;
-import main.game.battlecraft.logic.meta.MetaGameMaster;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMeta;
+import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import main.game.battlecraft.logic.meta.universal.MetaGameHandler;
+import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -15,29 +15,38 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         super(master);
     }
 
+    public void startScenarioIntroDialogues() {
+        String data = getMetaGame().getScenario().getProperty(PROPS.
+         SCENARIO_INTRO_DIALOGUES);
+        startDialogues(data);
+    }
 
-    public void startDialogue() {
-        Mission mission = null;
-        String data = null;
-        if (mission==null )
-            data =
-        getMetaGame().getScenario().getProperty(PROPS.SCENARIO_DIALOGUE_DATA);
-//   entity!     Mission
+    public void startMissionIntroDialogues() {
+//        Mission mission = getMetaGame().getScenario().getMission();
+//        String data = mission.getProperty(PROPS.MISSION_INTRO_DIALOGUES);
+//        startDialogues(data);
 
-        for(String substring: StringMaster.openContainer( data )){
-            startDialogue(substring);
+    }
 
+    public void startDialogues(String data) {
+        for (String substring : StringMaster.openContainer(data)) {
+            GameDialogue dialogue=  DialogueFactory.getDialogue(substring, (ScenarioMetaMaster) master);
+            startDialogue(dialogue);
         }
     }
 
-    public void startDialogue(String data) {
-//        DataManager.getType(data, MACRO_OBJ_TYPES.DIALOGUE);
-        //freeze game if necessary - call gameLoop
-        //change stage
-        //run to end or
-//        nextScene();
+    public void startDialogue(GameDialogue dialogue) {
+        //if in game
 
-
-
+//     getGame().getGameLoop().freeze();
+//        try {
+//            new DialogueWizard(dialogue).start();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        finally {
+//            getGame().getGameLoop().unfreeze();
+//        }
     }
+
 }

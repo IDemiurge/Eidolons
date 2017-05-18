@@ -3,8 +3,8 @@ package main.game.battlecraft.logic.meta.scenario;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.meta.MetaGameMaster;
-import main.game.battlecraft.logic.meta.MetaInitializer;
+import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import main.game.battlecraft.logic.meta.universal.MetaInitializer;
 
 /**
  * Created by JustMe on 5/12/2017.

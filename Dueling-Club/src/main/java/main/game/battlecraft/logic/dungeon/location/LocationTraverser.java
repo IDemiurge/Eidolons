@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.dungeon.location;
 
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.bf.GenericVisionManager;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.logic.battle.player.Player;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.game.battlecraft.rules.action.StealthRule;

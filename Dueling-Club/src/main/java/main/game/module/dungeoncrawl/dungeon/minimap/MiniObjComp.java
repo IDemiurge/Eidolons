@@ -8,7 +8,7 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.rules.action.PerceptionRule.PERCEPTION_STATUS;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.Refreshable;

@@ -17,17 +17,18 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.bf.Coordinates.DIRECTION;
-import main.game.bf.DirectionMaster;
+import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.battlecraft.rules.combat.damage.Damage;
 import main.game.battlecraft.rules.combat.damage.DamageCalculator;
 import main.game.battlecraft.rules.combat.damage.DamageFactory;
-import main.game.battlecraft.rules.RuleMaster;
-import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.battlecraft.rules.combat.misc.KnockdownRule;
 import main.game.battlecraft.rules.mechanics.InterruptRule;
+import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.DirectionMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
@@ -105,8 +106,10 @@ public class ForceRule {
     }
 
     public static void applyForceEffects(int force, DC_ActiveObj action) {
+        if (!(action.getRef().getTargetObj() instanceof Unit))
+            return ;
         Unit target = (Unit) action.getRef().getTargetObj();
-        Unit source = (Unit) action.getRef().getSourceObj();
+        BattleFieldObject source = (BattleFieldObject) action.getRef().getSourceObj();
         Boolean result = null;
         //TODO DEXTERITY ROLL TO AVOID ALL?
         if (target.getIntParam(PARAMS.TOTAL_WEIGHT) < getMinWeightKnock(action)) {
@@ -159,8 +162,8 @@ public class ForceRule {
         if (!isForceEnabled(action)) {
             return;
         }
-        Unit source = action.getOwnerObj();
-        Unit target = (Unit) action.getRef().getTargetObj();
+        BattleFieldObject source = action.getOwnerObj();
+        BattleFieldObject target = (BattleFieldObject) action.getRef().getTargetObj();
         Damage dmg = getDamageObject(action, source, target);
 
         Effect effects = getForceEffects(action);
@@ -217,7 +220,7 @@ public class ForceRule {
 
     }
 
-    public static Damage getDamageObject(DC_ActiveObj action, Unit attacker, Unit attacked) {
+    public static Damage getDamageObject(DC_ActiveObj action, BattleFieldObject attacker, BattleFieldObject attacked) {
         int amount = getDamage(action, attacker, attacked);
         if (amount <= 0) {
             return null;
@@ -240,7 +243,7 @@ public class ForceRule {
     }
 
 
-    public static int getDamage(DC_ActiveObj action, Unit attacker, Unit attacked) {
+    public static int getDamage(DC_ActiveObj action, BattleFieldObject attacker, BattleFieldObject attacked) {
         if (!RuleMaster.isRuleOn(RULE.FORCE)) {
             return 0;
         }
@@ -248,7 +251,7 @@ public class ForceRule {
         return getDamage(force, action, attacker, attacked);
     }
 
-    private static int getDamage(int force, Entity attack, Entity source, Unit attacked) {
+    private static int getDamage(int force, Entity attack, Entity source, BattleFieldObject attacked) {
         int damage = Math.round(force / DAMAGE_FACTOR);
         damage = damage
 
@@ -262,8 +265,8 @@ public class ForceRule {
     }
 
     // TODO into PushEffect! With std knockdown on "landing" or damage!
-    public static void applyPush(int force, DC_ActiveObj attack, Unit source,
-                                 Unit target) {
+    public static void applyPush(int force, DC_ActiveObj attack, BattleFieldObject source,
+                                 BattleFieldObject target) {
         DIRECTION d = DirectionMaster.getRelativeDirection(source, target);
 
         if (attack.isSpell()) {
@@ -314,7 +317,7 @@ public class ForceRule {
 
     }
 
-    public static Formula getCollisionDamageFormula(Unit moveObj, Unit collideObj,
+    public static Formula getCollisionDamageFormula(BattleFieldObject moveObj, BattleFieldObject collideObj,
                                                     int force, boolean forCollide) {
         int weight = (forCollide ? moveObj : collideObj).getIntParam(PARAMS.TOTAL_WEIGHT);
         // Math.min(, b);
@@ -322,8 +325,8 @@ public class ForceRule {
         return null;
     }
 
-    public static void applyDamage(int force, DC_ActiveObj attack, Unit source,
-                                   Unit target) {
+    public static void applyDamage(int force, DC_ActiveObj attack, BattleFieldObject source,
+                                   BattleFieldObject target) {
         int damage = getDamage(force, target, target, target);
         // attack.modifyParameter(PARAMS.BASE_DAMAGE, damage);
         // if (target.getShield()!=null )
@@ -333,7 +336,7 @@ public class ForceRule {
     }
 
 
-    private static int getPushDistance(int force, Unit target) {
+    private static int getPushDistance(int force, BattleFieldObject target) {
         int distance = Math.round(force * PUSH_DISTANCE_COEFFICIENT /
                 (1 + target.getIntParam(PARAMS.TOTAL_WEIGHT)));
         LogMaster.log(1, "getPushDistance = " + force + "/10/"

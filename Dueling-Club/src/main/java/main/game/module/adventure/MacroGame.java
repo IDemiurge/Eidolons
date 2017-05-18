@@ -8,7 +8,7 @@ import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.meta.PartyHelper;
+import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;

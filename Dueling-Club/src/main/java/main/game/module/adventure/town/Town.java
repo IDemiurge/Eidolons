@@ -3,7 +3,7 @@ package main.game.module.adventure.town;
 import main.client.cc.logic.party.PartyObj;
 import main.client.dc.HC_SequenceMaster;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.meta.PartyHelper;
+import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.battlecraft.logic.meta.faction.FactionObj;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroRef;

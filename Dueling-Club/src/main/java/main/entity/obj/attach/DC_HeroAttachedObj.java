@@ -15,7 +15,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.core.game.MicroGame;
-import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
