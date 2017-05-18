@@ -6,7 +6,7 @@ import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.entity.MapObj;

@@ -16,6 +16,8 @@ import main.entity.obj.unit.DC_UnitModel;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.core.game.DC_Game;
 import main.game.core.master.BuffMaster;
 import main.system.math.PositionMaster;
@@ -123,6 +125,8 @@ public class StealthRule implements ActionRule {
     }
 
     public void actionComplete(ActiveObj active) {
+        if (!isOn())
+            return ;
         DC_ActiveObj action = (DC_ActiveObj) active; // perhaps only moves?
         Unit source = action.getOwnerObj();
         if (VisionManager.isVisionHacked()) {
@@ -146,6 +150,10 @@ public class StealthRule implements ActionRule {
             }
         }
 
+    }
+
+    private boolean isOn() {
+        return RuleMaster.isRuleOn(RULE.STEALTH);
     }
 
     // ++ SEARCH ACTION!

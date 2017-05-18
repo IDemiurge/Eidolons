@@ -42,7 +42,7 @@ public abstract class StateManager {
     }
 
     public void resetAllSynchronized() {
-        state.getTriggers().clear();
+        state.getTriggers().removeIf(trigger -> trigger.isRemoveOnReset());
         getManager().checkForChanges(false);
         allToBase();
         checkCounterRules();

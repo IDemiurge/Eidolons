@@ -53,7 +53,7 @@ public class DC_ConditionMaster extends ConditionMaster {
         return new NotCondition(new StatusCheckCondition(UnitEnums.STATUS.DEAD));
     }
 
-    private static Condition findConditionTemplate(String string) {
+    private static Condition findTargetingModifierCondition(String string) {
         TARGETING_MODIFIERS TARGETING_MODIFIERS = new EnumMaster<TARGETING_MODIFIERS>()
                 .retrieveEnumConst(TARGETING_MODIFIERS.class, string);
         if (TARGETING_MODIFIERS != null) {

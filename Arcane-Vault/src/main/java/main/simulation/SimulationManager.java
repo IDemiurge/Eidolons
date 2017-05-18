@@ -8,7 +8,7 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.launch.ArcaneVault;
 
 import java.util.Arrays;

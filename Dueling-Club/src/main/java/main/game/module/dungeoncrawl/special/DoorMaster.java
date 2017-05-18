@@ -3,7 +3,7 @@ package main.game.module.dungeoncrawl.special;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 
 import java.util.ArrayList;
 import java.util.List;

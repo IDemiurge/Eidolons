@@ -1,6 +1,6 @@
 package main.game.module.dungeoncrawl.dungeon.minimap;
 
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.graphics.GuiManager;

@@ -3,7 +3,7 @@ package main.game.module.dungeoncrawl.special;
 import main.content.PARAMS;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.ZCoordinates;
 
 import java.util.*;

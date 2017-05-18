@@ -1,7 +1,7 @@
 package main.game.module.dungeoncrawl.special;
 
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
 
 import java.util.Map;

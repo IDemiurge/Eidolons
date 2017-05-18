@@ -7,7 +7,7 @@ import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.system.math.PositionMaster;
 
 /**

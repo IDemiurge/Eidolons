@@ -43,7 +43,7 @@ import main.entity.tools.EntityMaster;
 import main.entity.tools.bf.unit.*;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.UnitAI;
-import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.bf.Coordinates;

@@ -8,6 +8,7 @@ import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
+import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
@@ -32,6 +33,10 @@ public class AbilityObj extends Obj implements ActiveObj, Interruptable {
             abilities.setRef(ref);
             game.getEffectManager().setEffectRefs(abilities);
         }
+    }
+
+    public AbilityObj(AbilityType type, Ref ref) {
+        this(type, ref, Player.NEUTRAL, ref.game);
     }
 
     @Override

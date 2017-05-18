@@ -19,7 +19,7 @@ import main.data.xml.XML_Writer;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.meta.PartyHelper;
+import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMaster;
 import main.game.core.game.DC_Game;

@@ -31,16 +31,19 @@ public class Trigger {
         this.eventType = eventType;
         this.abilities = abilities;
         game = abilities.getRef().getGame();
-        abilities.getEffects().setTrigger(this);
-basis =abilities.getRef().getTarget();
+        basis =abilities.getRef().getTarget();
+        init();
     }
-
+public void init(){
+    abilities.getEffects().setTrigger(this);
+}
     @Override
     public String toString() {
         return "Trigger: " + abilities.getEffects().toString() + " on " + eventType.toString();
     }
 
     public boolean trigger() {
+    if (LogMaster.TRIGGER_DEBUG_ON)
         LogMaster.log(LogMaster.TRIGGER_DEBUG, toString()
          + " has been triggered!");
         abilities.setForceTargeting(forceTargeting);
@@ -183,4 +186,7 @@ basis =abilities.getRef().getTarget();
 
     }
 
+    public boolean isRemoveOnReset() {
+    return true;
+    }
 }

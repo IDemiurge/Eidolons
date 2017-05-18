@@ -9,7 +9,7 @@ import main.data.DataManager;
 import main.entity.DC_IdManager;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.meta.PartyHelper;
+import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.logic.meta.faction.FactionObj;
 import main.game.bf.Coordinates;

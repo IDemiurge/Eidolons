@@ -1,12 +1,12 @@
 package main.game.battlecraft.logic.dungeon.test;
 
-import main.game.battlecraft.logic.dungeon.*;
+import main.game.battlecraft.logic.dungeon.universal.*;
 import main.game.core.game.DC_Game;
 
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class TestDungeonMaster extends DungeonMaster<TestDungeon>{
+public class TestDungeonMaster extends DungeonMaster<TestDungeon> {
 
     public TestDungeonMaster(DC_Game game) {
         super(game);

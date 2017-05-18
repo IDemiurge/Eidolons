@@ -1,11 +1,10 @@
 package main.game.battlecraft.logic.dungeon.test;
 
 import main.content.PROPS;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.DungeonMaster;
-import main.game.battlecraft.logic.dungeon.DungeonWrapper;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import main.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.graphics.GuiManager;
@@ -19,13 +18,7 @@ public class TestDungeon extends DungeonWrapper {
         super(dungeon, master);
     }
 
-    public Coordinates getPlayerSpawnCoordinates() {
-        String prop = getProperty(PROPS.PARTY_SPAWN_COORDINATES);
-        if (prop.isEmpty()) {
-            return Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
-        }
-        return new Coordinates(prop);
-    }
+
 
     public Coordinates getEnemySpawningCoordinates() {
         String prop = getProperty(PROPS.ENEMY_SPAWN_COORDINATES);

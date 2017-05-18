@@ -9,7 +9,7 @@ import main.data.XLinkedMap;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.arena.Wave;
-import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
 import main.game.module.adventure.MacroManager;

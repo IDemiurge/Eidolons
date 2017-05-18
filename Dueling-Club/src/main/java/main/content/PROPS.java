@@ -12,12 +12,13 @@ import java.util.Map;
 public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     // INSTEAD OF 'ACTIVES'!
     // AGE(null, "chars"),
-
-    PARTY_MISSION_NEXT(null  ,false ,"party" ) ,
+     DIALOGUE_DATA(null  ,false ,"dialogue" ),
+    PARTY_MISSIONS_NEXT(null  ,false ,"party" ) ,
+    PARTY_MISSION(null  ,false ,"party" ) ,
     SCENARIO_TYPE(null,false, "scenarios"),
     SCENARIO_MISSIONS(null,true, "scenarios"),
     SCENARIO_STARTING_PLACE(null,false, "scenarios"),
-    SCENARIO_DIALOGUE_DATA(null,true, "scenarios"),
+    SCENARIO_INTRO_DIALOGUES(null,true, "scenarios"),
     SCENARIO_INTRO_DATA(null,false, "scenarios"),
     SCENARIO_PARTY(null,false, "scenarios"),
     SCENARIO_MAIN_HERO(null,false, "scenarios"),

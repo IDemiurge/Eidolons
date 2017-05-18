@@ -11,11 +11,12 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 /**
  * Created by JustMe on 2/16/2017.
@@ -36,26 +37,31 @@ public class ObjCreator extends Master {
                 }
             }
         }
-        BattleFieldObject obj;
+        BattleFieldObject obj = null;
 
         if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.ENTRANCE.toString())) {
-            obj = new Entrance(x, y, type, getGame().getDungeon(), null);
+//       TODO      obj = new Entrance(x, y, type, getGame().getDungeon(), null);
+       return null ;
         } else if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
             obj = new Structure(type, x, y, owner, getGame(), ref);
         } else {
             obj = new Unit(type, x, y, owner, getGame(), ref);
         }
+        if (CoreEngine.isLevelEditor()) {
+            return obj;
+        }
+        if (WaitMaster.getCompleteOperations().contains(WAIT_OPERATIONS.GDX_READY))
         GuiEventManager.trigger(GuiEventType.UNIT_CREATED,
                 new EventCallbackParam(obj));
         game.getState().addObject(obj);
 
-        if (CoreEngine.isLevelEditor()) {
-            return obj;
+        if (obj instanceof  Unit)
+game.getState().getManager().reset((Unit) obj);
+        else {
+            obj.toBase();
+            obj.resetObjects();
+            obj.afterEffects();
         }
-
-        obj.toBase();
-        obj.resetObjects();
-        obj.afterEffects();
 
         return obj;
 

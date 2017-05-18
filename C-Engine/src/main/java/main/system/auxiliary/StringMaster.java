@@ -877,7 +877,10 @@ public class StringMaster {
         return (cropLastDivider) ? result.substring(0, result.lastIndexOf(divider)) : result;
     }
 
-    public static String joinStringList(List<String> list, String divider) {
+    public static String joinList(List<Object> list, String divider) {
+        return joinStringList(  convertToStringList(list), divider  );
+    }
+        public static String joinStringList(List<String> list, String divider) {
         return joinStringList(list, divider, true);
     }
 
@@ -1115,11 +1118,11 @@ public class StringMaster {
 
     public static String getLastPart(String string, String separator) {
         if (!string.contains(separator)) {
-            return "";
+            return string;
         }
         LinkedList<String> segments = new LinkedList<>(Arrays.asList(string.split(separator)));
         if (segments.isEmpty()) {
-            return "";
+            return string;
         }
         return segments.getLast();
     }
@@ -1532,10 +1535,13 @@ public class StringMaster {
     }
 
     public static String getFirstItem(String string) {
+        return getFirstItem(string , SEPARATOR);
+    }
+        public static String getFirstItem(String string, String separator) {
         if (isEmpty(string)) {
             return "";
         }
-        return openContainer(string).get(0);
+        return openContainer(string, separator).get(0);
     }
 
     public static String formatComparedProperty(String property) {

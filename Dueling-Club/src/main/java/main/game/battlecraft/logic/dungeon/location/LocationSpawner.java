@@ -6,12 +6,12 @@ import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.battle.DC_Player;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battle.arena.Wave;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.DungeonMaster;
-import main.game.battlecraft.logic.dungeon.Spawner;
-import main.game.battlecraft.logic.dungeon.UnitData;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import main.game.battlecraft.logic.dungeon.universal.Spawner;
+import main.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.bf.Coordinates;
@@ -20,10 +20,7 @@ import main.game.module.dungeoncrawl.ai.DungeonCrawler;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by JustMe on 5/8/2017.
@@ -47,13 +44,31 @@ public class LocationSpawner extends Spawner<Location> {
             List<String> list = ListMaster.toNameList(
              getGame().getMetaMaster().getPartyManager()
               .getParty().getMembers());
-            List<Coordinates> coordinates = getPositioner().getPlayerPartyCoordinates(list);
+            getPositioner().setMaxSpacePercentageTaken(50);
+            Iterator<Coordinates> iterator = getPositioner().getPlayerPartyCoordinates(list).iterator();
 
           for (Unit member:getGame().getMetaMaster().getPartyManager().getParty().getMembers()){
-              member.setCoordinates(coordinates.iterator().next());
+              member.setCoordinates( iterator.next());
               //what else should be done to *spawn*?
           }
-            spawnDone();
+        } else {
+            super.spawn(data, player, mode);
+        }
+
+
+             //so dungeon-units are spawned 'automatically' by DungeonBuilder...
+            // what about future waves?
+            // how to add them to a mission?
+            // via encounters most likely... or unitGroups
+            //TODO
+            //TODO
+            //TODO
+            //TODO
+            //TODO
+            //TODO
+            //TODO
+            //TODO
+
 
         }
 //        if (respawn)
@@ -66,14 +81,12 @@ public class LocationSpawner extends Spawner<Location> {
 //        data.setValue(PARTY_VALUE.MEMBERS, StringMaster.constructContainer(list));
 //        data.setValue(PARTY_VALUE.COORDINATES, StringMaster.constructContainer(coordinates));
 //        }
-//        super.spawn(data, player, mode);
-    }
-
     //on entering room?
     public void spawnDungeon() {
 //        getDungeon().getPlan().getObjMap()
 //        spawnUnit(type, c, enemy, facing, level);
     }
+
     public void addDungeonEncounter(Dungeon c_dungeon, MapBlock block, Coordinates c, ObjType type) {
         Map<MapBlock, Map<Coordinates, ObjType>> map = specialEncounters.get(c_dungeon);
         if (map == null) {

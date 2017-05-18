@@ -4,6 +4,7 @@ import main.ability.AbilityType;
 import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
+import main.data.dialogue.DialogueType;
 import main.entity.type.*;
 
 public class TypeInitializer {
@@ -16,6 +17,10 @@ public class TypeInitializer {
         if (obj_type instanceof DC_TYPE) {
             OBJ_TYPE = (DC_TYPE) obj_type;
             switch (OBJ_TYPE) {
+                case DIALOGUE:
+                    type = new DialogueType();
+                    setXmlTreeValue(true);
+                    break;
                 case ABILS:
                     type = new AbilityType();
                     setXmlTreeValue(true);

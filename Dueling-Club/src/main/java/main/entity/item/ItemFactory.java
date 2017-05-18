@@ -16,8 +16,8 @@ public class ItemFactory {
         }
         OBJ_TYPE TYPE = type.getOBJ_TYPE_ENUM();
         switch ((DC_TYPE) TYPE) {
-            case TRAP:
-                return new DC_QuickItemObj(type, originalOwner, game, ref, true);
+//            case TRAP:
+//                return new DC_QuickItemObj(type, originalOwner, game, ref, true);
             case ARMOR:
                 return new DC_ArmorObj(type, originalOwner, game, ref);
             case ITEMS:

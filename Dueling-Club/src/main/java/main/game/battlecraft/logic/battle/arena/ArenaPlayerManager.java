@@ -1,7 +1,7 @@
 package main.game.battlecraft.logic.battle.arena;
 
-import main.game.battlecraft.logic.battle.BattleMaster;
-import main.game.battlecraft.logic.battle.PlayerManager;
+import main.game.battlecraft.logic.battle.universal.BattleMaster;
+import main.game.battlecraft.logic.battle.universal.PlayerManager;
 
 /**
  * Created by JustMe on 5/7/2017.
