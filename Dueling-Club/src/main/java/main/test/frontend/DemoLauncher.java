@@ -14,6 +14,8 @@ import main.libgdx.EngineEmulator;
 import main.libgdx.ScreenData;
 import main.libgdx.screens.*;
 import org.dizitart.no2.Nitrite;
+import org.jdeferred.Deferred;
+import org.jdeferred.impl.DeferredObject;
 
 public class DemoLauncher extends Game {
     private static Nitrite db;
@@ -63,23 +65,21 @@ public class DemoLauncher extends Game {
         return conf;
     }
 
-    private void initDoneCallback() {
-
-    }
-
     @Override
     public void create() {
+        Deferred<Boolean, Boolean, Boolean> deferred = new DeferredObject<>();
         OrthographicCamera camera = new OrthographicCamera();
         Viewport viewport = new ScreenViewport(camera);
         final IntroScreen introScreen = new IntroScreen(viewport, () -> {
             final Screen old = getScreen();
-            final MainMenuScreen screen = new MainMenuScreen(viewport, s -> newMeta = engine.getMeta(s));
-            setScreen(screen);
+            final MainMenuScreen mainScreen = new MainMenuScreen(viewport, s -> newMeta = engine.getMeta(s));
+            deferred.done(aBoolean -> mainScreen.hideLoader());
+            setScreen(mainScreen);
             if (old != null) {
                 old.dispose();
             }
         });
-        engine.init(this::initDoneCallback);
+        engine.init(() -> deferred.resolve(true));
         setScreen(introScreen);
     }
 

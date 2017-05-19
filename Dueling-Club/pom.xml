@@ -14,6 +14,12 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>org.jdeferred</groupId>
+            <artifactId>jdeferred-core</artifactId>
+            <version>1.2.5</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.melloware/jintellitype -->
         <dependency>
             <groupId>com.melloware</groupId>
