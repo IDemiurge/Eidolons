@@ -6,6 +6,7 @@ import main.system.data.DataUnit;
 
 public class UnitData extends DataUnit<PARTY_VALUE> {
 
+
     public static final Boolean FORMAT =false ;
 
     public UnitData(PartyObj partyObj) {
@@ -50,6 +51,7 @@ public class UnitData extends DataUnit<PARTY_VALUE> {
 
              'spawn()' for an HQ party is in fact more like 'place()' ...
             > don't respawn if exists?
+
 
      */
     public enum PARTY_VALUE{

@@ -15,7 +15,6 @@ import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Reader;
 import main.entity.DC_IdManager;
-import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.active.DC_ActionManager;
 import main.entity.obj.*;
@@ -182,10 +181,6 @@ public class DC_Game extends MicroGame {
         if (PresetMaster.getPreset() != null) {
             PresetLauncher.launchPreset();
         }
-//        dungeonInit(); separate!
-//        if (!simulation) {
-//            battleInit();
-//        }
 
         setInitialized(true);
         Chronos.logTimeElapsedForMark("GAME_INIT");
@@ -204,12 +199,11 @@ public class DC_Game extends MicroGame {
         dungeonMaster = createDungeonMaster();
     }
 
-
-
-
-        public void battleInit() {
+    public void battleInit() {
 //            SpellGenerator.init();
-        ActionGenerator.init();battleMaster = createBattleMaster();
+        ActionGenerator.init();
+
+        battleMaster = createBattleMaster();
 
         inventoryTransactionManager = new InventoryTransactionManager(this);
         inventoryManager = new DC_InventoryManager(this);
@@ -217,7 +211,8 @@ public class DC_Game extends MicroGame {
         battleMaster.init();
         dungeonMaster.init();
 
-        setOffline(true);
+            setOffline(true);
+
 
         // if (battlefield == null) {
 
@@ -664,9 +659,14 @@ keyManager = new DC_KeyManager(getManager());
         this.dataKeeper = dataKeeper;
     }
 
+    //how should these be called properly?
     @Refactor
-    public Obj getSimulationObj(Entity entity, ObjType type, PROPERTY prop) {
-        return null;
+    public DC_HeroAttachedObj getSimulationObj(Unit dc_HeroObj, ObjType type, PROPERTY prop) {
+        try {
+            return getSimulationCache().get(dc_HeroObj).get(type.getName() + prop.getShortName());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     //how should these be called properly?

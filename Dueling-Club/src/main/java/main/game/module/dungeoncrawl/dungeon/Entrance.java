@@ -42,7 +42,7 @@ public class Entrance extends Unit { //ScenarioUnit
 //        boolean back = (unit.getDungeon() == sublevel);
 //        Dungeon targetDungeon = back ? dungeon : sublevel;
 //        unit.setCoordinates(getOffsetCoordinates(back));
-//        getGame().getDungeonMaster().getInitializer().initSublevel(targetDungeon);
+//        getGame().getDungeonMaster().getInitializer(). initSublevel(targetDungeon);
     }
 
 

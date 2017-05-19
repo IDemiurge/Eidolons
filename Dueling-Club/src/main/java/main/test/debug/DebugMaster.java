@@ -40,6 +40,7 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.GroupAI;
 import main.game.battlecraft.ai.UnitAI;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battle.arena.ArenaBattleMaster;
 import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.battlecraft.logic.battle.universal.DC_Player;

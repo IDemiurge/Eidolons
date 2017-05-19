@@ -8,6 +8,7 @@ import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
+import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;

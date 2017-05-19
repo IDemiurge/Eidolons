@@ -168,6 +168,28 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     }
 
     @Override
+    public Location buildDungeon(String data, List<Node> nodeList) {
+        this.nodeList=nodeList;
+          location = (super.buildDungeon(data, nodeList));
+        DUNGEON_TEMPLATES template = null;
+        DungeonPlan plan = new DungeonPlan(template, (location));
+        plan.setLoaded(true);
+        for (Node n : nodeList) {
+            processNode(n, getDungeon(), plan);
+
+        }
+        plan.setStringData(data);
+        initDynamicObjData(location, plan);
+
+        return location;
+    }
+@Refactor
+    @Override
+    public Location getDungeon() {
+            return location;
+    }
+
+    @Override
     protected void processNode(Node n, Location dungeon, DungeonPlan plan) {
         if (StringMaster.compareByChar(n.getNodeName(), (ZONES_NODE))) {
             try {
@@ -501,7 +523,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     }
 
     public DungeonPlan loadDungeonMap(String data) {
-        return  buildDungeon(data , nodeList).getPlan();
+        return buildDungeon(data, nodeList).getPlan();
     }
 
     private void initZones(Node zonesNode, DungeonPlan plan) {

@@ -216,7 +216,8 @@ public class PresetMaster {
         return partyName + " vs " + enemyName + " on "
                 + getRawDungeonName(levelFilePath);
     }
-private static String getRawDungeonName(String levelFilePath) {
+
+    private static String getRawDungeonName(String levelFilePath) {
         if (levelFilePath == null) {
             return "null dungeon";
         }

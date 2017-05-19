@@ -80,7 +80,6 @@ public abstract class BattleMaster<E extends Battle> {
     public DungeonMaster getDungeonMaster() {
         return game.getDungeonMaster();
     }
-
     public MetaGameMaster getMetaMaster() {
         return game.getMetaMaster();
     }
