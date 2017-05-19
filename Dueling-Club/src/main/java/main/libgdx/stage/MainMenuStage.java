@@ -56,6 +56,10 @@ public class MainMenuStage extends Stage {
             load.setVisible(false);
         }
 
+        if (newGame != next) {
+            newGame.setVisible(false);
+        }
+
         next.setVisible(true);
         recalcPos();
     }
@@ -72,6 +76,11 @@ public class MainMenuStage extends Stage {
         load.setPosition(
                 Gdx.graphics.getWidth() / 2 - load.getPrefWidth() / 2,
                 Gdx.graphics.getHeight() / 2 - load.getPrefHeight() / 2
+        );
+
+        newGame.setPosition(
+                Gdx.graphics.getWidth() / 2 - newGame.getPrefWidth() / 2,
+                Gdx.graphics.getHeight() / 2 - newGame.getPrefHeight() / 2
         );
     }
 
