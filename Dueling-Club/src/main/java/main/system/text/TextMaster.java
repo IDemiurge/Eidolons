@@ -406,4 +406,11 @@ public class TextMaster {
         return PathFinder.getEnginePath() + PathFinder.getTextPath() + locale + "\\";
     }
 
+    public static String getLocale() {
+        return locale;
+    }
+
+    public static void setLocale(String locale) {
+        TextMaster.locale = locale;
+    }
 }

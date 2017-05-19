@@ -1,15 +1,12 @@
 package main.game.battlecraft.logic.meta.scenario.dialogue;
 
-import main.content.values.properties.G_PROPS;
 import main.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
-
-import java.util.List;
+import main.system.datatypes.DequeImpl;
 
 public class GameDialogue {
 /*
 actors
 entity ?
-
 "line"
 
 tree structure
@@ -24,19 +21,20 @@ each replica has children
         speech = root;
     }
 
-    public String getText(){
-        return speech.getFormattedText();
+    public Speech getSpeech() {
+        return speech;
     }
 
-    public List<String> getReplyOptions(){
-//         replica.getChildren().stream()
-//         .collect(Collectors.mapping(( r) -> replica.getFormattedText()), Collectors.toList());
-        return null;
+    public void skipped(){
+
     }
-    public String getActorImage(){
-        return speech.getActor().getProperty(G_PROPS.IMAGE);
+    public DequeImpl<Speech> getOptions(){
+        return speech.getChildren();
     }
-    public List<String> getActorImages(){
-//        return replica.getActor().getProperty(G_PROPS.IMAGE);
-        return null; }
+
+
+
+
+
+
 }
