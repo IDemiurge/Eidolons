@@ -72,7 +72,7 @@ public class DemoLauncher extends Game {
         viewport = new ScreenViewport(camera);
         final IntroScreen introScreen = new IntroScreen(viewport, () -> {
             final Screen old = getScreen();
-            final MainMenuScreen mainScreen = new MainMenuScreen(viewport, this::setNewMeta);
+            final ScreenWithLoader mainScreen = screenDI(new MainMenuScreen(this::setNewMeta), null);
             deferred.done(aBoolean -> mainScreen.hideLoader());
             setScreen(mainScreen);
             if (old != null) {
@@ -96,19 +96,25 @@ public class DemoLauncher extends Game {
             newMeta = null;
             switch (meta.getType()) {
                 case HEADQUARTERS:
-                    switchScreen(new HeadquarterScreen(meta), meta);
+                    switchScreen(screenDI(new HeadquarterScreen(), meta), meta);
                     break;
                 case BATTLE:
-                    switchScreen(new DungeonScreen(meta), meta);
+                    switchScreen(screenDI(new DungeonScreen(), meta), meta);
                     break;
                 case PRE_BATTLE:
                     break;
                 case MAIN_MENU:
-                    switchScreen(new MainMenuScreen(viewport, this::setNewMeta), meta);
+                    switchScreen(screenDI(new MainMenuScreen(this::setNewMeta), meta), meta);
                     break;
             }
         }
         super.render();
+    }
+
+    private ScreenWithLoader screenDI(ScreenWithLoader screen, ScreenData data) {
+        screen.setData(data);
+        screen.setViewPort(viewport);
+        return screen;
     }
 
     private void switchScreen(ScreenWithLoader screen, ScreenData meta) {

@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.core.game.DC_Game;
-import main.libgdx.ScreenData;
 import main.libgdx.bf.BFDataCreatedEvent;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.mouse.InputController;
@@ -41,9 +40,9 @@ public class DungeonScreen extends ScreenWithLoader {
     private boolean showLoading = true;
     private AnimationEffectStage animationEffectStage;
 
-    public DungeonScreen(ScreenData meta) {
-
+    public DungeonScreen() {
     }
+
 
     public static DungeonScreen getInstance() {
         return instance;

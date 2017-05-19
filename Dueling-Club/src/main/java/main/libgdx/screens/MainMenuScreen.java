@@ -2,29 +2,26 @@ package main.libgdx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import main.libgdx.stage.MainMenuStage;
 
 import java.util.function.Consumer;
 
 public class MainMenuScreen extends ScreenWithLoader {
 
-    private final Viewport viewport;
     private MainMenuStage menuStage;
     private Consumer<String> onScreenDone;
 
-    public MainMenuScreen(Viewport viewport, Consumer<String> onScreenDone) {
+    public MainMenuScreen(Consumer<String> onScreenDone) {
         super();
-        this.viewport = viewport;
         this.onScreenDone = onScreenDone;
     }
 
     @Override
     public void show() {
-        loadingStage.setViewport(viewport);
+        loadingStage.setViewport(viewPort);
 
         menuStage = new MainMenuStage(onScreenDone);
-        menuStage.setViewport(viewport);
+        menuStage.setViewport(viewPort);
         Gdx.input.setInputProcessor(new InputMultiplexer(menuStage));
     }
 
