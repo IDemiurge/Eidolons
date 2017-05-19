@@ -74,61 +74,19 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         // blocked
         while (!loop.continues() &&
 
-                !DC_Game.game.getBattleFieldManager().canMoveOnto(entity, c)
+         !DC_Game.game.getBattleFieldManager().canMoveOnto(entity, c)
 
-                // (DC_Game.game.getBattleField().getGrid().isCoordinateObstructed(coordinate)
-                || coordinate == null) {
+         // (DC_Game.game.getBattleField().getGrid().isCoordinateObstructed(coordinate)
+         || coordinate == null) {
 
             Coordinates adjacentCoordinate = c
-                    .getAdjacentCoordinate(ArenaPositioner.getRandomSpawnAdjustDirection());
+             .getAdjacentCoordinate(ArenaPositioner.getRandomSpawnAdjustDirection());
             coordinate = adjustCoordinate(adjacentCoordinate, facing);
         }
         if (coordinate.isInvalid()) {
             return null;
         }
         return coordinate;
-    }
-
-    public boolean isAutoOptimalFacing() {
-        return true;
-    }
-
-    public List<Coordinates> initPartyCoordinates(List<String> partyTypes,
-                                                  Boolean mine_enemy_third) {
-
-        String partyData = "";
-//        getPositioner().setMaxSpacePercentageTaken(MAX_SPACE_PERC_PARTY);
-        List<Coordinates> coordinates = null;
-
-        if (PartyManager.getParty() != null) {
-            if (MapMaster.isNotEmpty(PartyManager.getParty().getPartyCoordinates())) {
-                coordinates = new LinkedList<>(PartyManager.getParty().getPartyCoordinates()
-                        .values());
-                partyTypes = ListMaster.toNameList(PartyManager.getParty().getPartyCoordinates()
-                        .keySet());
-            }
-
-        }
-        if (coordinates == null) {
-            coordinates = getPartyCoordinates(null, BooleanMaster
-                    .isTrue(mine_enemy_third), partyTypes);
-        }
-
-        int i = 0;
-
-        for (String subString : partyTypes) {
-            Coordinates c = coordinates.get(i);
-            if (c == null) {
-                LogMaster.log(1, subString + " coordinate BLAST!!!");
-            }
-            i++;
-            subString = c + DC_ObjInitializer.COORDINATES_OBJ_SEPARATOR + subString;
-            partyData += subString + DC_ObjInitializer.OBJ_SEPARATOR;
-            //TODO string not needed?
-        }
-
-
-        return coordinates;
     }
 
     public Map<Unit, Coordinates> getPartyCoordinates(List<Unit> members) {
@@ -172,11 +130,11 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
                             }
                         }
                     }
-                    //TODO formation!
+//TODO formation!
 
                 } else {
-
-                    origin = getEnemySpawningCoordinates();
+ 
+                    origin =  getEnemySpawningCoordinates();
                     if (origin == null) {
                         // getGame().getDungeon().getDefaultEnemyCoordinates();
                         // for
@@ -208,7 +166,6 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public Coordinates getEnemySpawningCoordinates() {
         return getEnemyTestPartyCoordinates();
     }
-
     public Coordinates getPlayerSpawnCoordinates() {
         return Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
     }
@@ -218,7 +175,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         // default - getOrCreate a random point in some range from player start
 
-        Coordinates playerC = getPlayerSpawnCoordinates();
+        Coordinates playerC =  getPlayerSpawnCoordinates();
         if (playerC == null) {
             playerC =getPlayerSpawnCoordinates();// Coordinates.getMiddleCoordinate(ArenaPositioner.DEFAULT_PLAYER_SIDE);
         }
@@ -260,9 +217,9 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         }
         Coordinates adjacentCoordinate = c.getAdjacentCoordinate(spawnSide);
         if (checkCanPlaceUnitOnCoordinate(adjacentCoordinate, objType)) {
-            getFacingAdjuster().unitPlaced(adjacentCoordinate,
-                    FacingMaster.getFacingFromDirection(
-                            ArenaPositioner.DEFAULT_CENTER_SPAWN_SIDE, false, false));
+           getFacingAdjuster().unitPlaced(adjacentCoordinate, 
+            FacingMaster.getFacingFromDirection(
+                    ArenaPositioner.DEFAULT_CENTER_SPAWN_SIDE, false, false));
             return adjacentCoordinate;
         }
         DIRECTION direction = spawnSide;
@@ -273,7 +230,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
             direction = DirectionMaster.rotate90(direction, false);
             nextCoordinate = c.getAdjacentCoordinate(direction);
             if (checkCanPlaceUnitOnCoordinate(nextCoordinate, objType)) {
-                getFacingAdjuster().unitPlaced(nextCoordinate, FacingMaster.getFacingFromDirection(direction, true,
+                 getFacingAdjuster().unitPlaced(nextCoordinate, FacingMaster.getFacingFromDirection(direction, true,
                         true));
                 return nextCoordinate;
             }

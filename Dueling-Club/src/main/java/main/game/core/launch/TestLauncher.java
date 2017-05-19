@@ -73,9 +73,6 @@ public class TestLauncher //extends MetaGameMaster
     private WORKSPACE_GROUP workspaceFilter;
     private GAME_SUBCLASS gameType = GAME_SUBCLASS.TEST;
 
-    public TestLauncher(DC_Game game) {
-        this(game, null, null );
-    }
 
     public TestLauncher(DC_Game game, Boolean FAST_MODE, Boolean SUPER_FAST_MODE) {
         this.game = game;
@@ -185,7 +182,6 @@ public class TestLauncher //extends MetaGameMaster
             initLaunch(launch);
         }
 
-        DC_Game.game = (game);
         // select code?
 
 
@@ -211,10 +207,13 @@ public class TestLauncher //extends MetaGameMaster
 
     }
 
-    public void initData() {    LaunchDataKeeper dataKeeper = createDataKeeper();
+    public void initData() {
+
+        LaunchDataKeeper dataKeeper = createDataKeeper();
         if (workspaceFilter != null)
-        dataKeeper.getDungeonData().setValue(DUNGEON_VALUE.WORKSPACE_FILTER
-         , workspaceFilter.toString());
+            dataKeeper.getDungeonData().setValue(DUNGEON_VALUE.WORKSPACE_FILTER
+             , workspaceFilter.toString());
+
         game.setDataKeeper(dataKeeper);
     }
 

@@ -13,8 +13,6 @@ import main.data.DataManager;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
-import main.game.battlecraft.logic.meta.PartyManager;
-import main.game.battlecraft.logic.meta.arcade.Arcade;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.battlecraft.logic.meta.arcade.Arcade;
@@ -121,25 +119,6 @@ public class DemoManager {
         Eidolons.game.setGameMode(GAME_MODES.ARENA);
     }
 
-    private static String getDungeonPath(int level) {
-        return DEMO_DUNGEONS.values()[0].getPath();
-    }
-
-    private static void initArcade() {
-        Arcade arcade = new Arcade();
-//        arcade.setLevel(level);
-
-    }
-
-    public static void init() {
-        initDungeon();
-    }
-
-    private static void initDungeon() {
-//        Eidolons.game.getDungeonMaster().
-
-    }
-
     public enum DEMO_DUNGEONS {
         NIGHT_ROAD,
         CEMETARY,
@@ -156,5 +135,23 @@ public class DemoManager {
         public String getPath() {
             return path;
         }
+    }
+    private static String getDungeonPath(int level) {
+    return DEMO_DUNGEONS.values()[0].getPath();
+    }
+
+    private static void initArcade() {
+        Arcade arcade = new Arcade();
+//        arcade.setLevel(level);
+        
+    }
+
+    public static void init() {
+            initDungeon();
+    }
+
+    private static void initDungeon() {
+//        Eidolons.game.getDungeonMaster().
+        
     }
 }

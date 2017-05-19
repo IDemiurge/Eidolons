@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> {
+public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E>{
     protected Map<Coordinates, FACING_DIRECTION> facingMap = new HashMap<>();
 
     public FacingAdjuster(DungeonMaster<E> master) {
@@ -84,7 +84,7 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
                     return FACING_DIRECTION.EAST;
             }
         }
-        return FACING_DIRECTION.NORTH;
+        return  FACING_DIRECTION.NORTH; 
     }
 
     public void unitPlaced(Coordinates adjacentCoordinate, FACING_DIRECTION facingFromDirection) {

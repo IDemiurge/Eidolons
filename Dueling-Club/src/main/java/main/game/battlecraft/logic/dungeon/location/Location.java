@@ -37,7 +37,7 @@ public class Location extends DungeonWrapper {
     private Entrance mainExit;
     private BuildParameters buildParams;
 
-    public Location(LocationMaster master, Dungeon dungeon) {
+    public Location(LocationMaster master,Dungeon dungeon) {
         super(dungeon, master);
         this.master = master;
         this.sublevel = sublevel;
@@ -221,11 +221,11 @@ public class Location extends DungeonWrapper {
         this.parent = parent;
     }
 
-    public BuildParameters getBuildParams() {
-        return buildParams;
-    }
-
     public void setBuildParams(BuildParameters buildParams) {
         this.buildParams = buildParams;
+    }
+
+    public BuildParameters getBuildParams() {
+        return buildParams;
     }
 }

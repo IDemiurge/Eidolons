@@ -1,7 +1,7 @@
 package main.system.graphics;
 
-import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ASPECT;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;
 import main.content.enums.entity.SkillEnums.SKILL_GROUP;
 import main.content.values.properties.G_PROPS;
@@ -252,7 +252,7 @@ public class ColorManager {
         RED(new Color(255, 25, 25)),
         CRIMSON(new Color(145, 25, 95)),
         YELLOW(new Color(245, 200, 85)),
-        BROWN(new Color(95, 45, 45)),
+        BROWN(new Color( 95,  45, 45)),
         ORANGE(new Color(225, 135, 55)),
         BLACK(new Color(25, 25, 35)),
         GRAY(new Color(100, 100, 120)),

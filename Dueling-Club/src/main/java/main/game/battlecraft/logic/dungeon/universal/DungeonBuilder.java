@@ -55,7 +55,9 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
 
-    public E buildDungeon(String path) {
+
+
+    public E buildDungeon(String path ) {
         String data = FileManager.readFile(path);
 
         if (data.isEmpty()) {
@@ -89,7 +91,7 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         E dungeon = getInitializer().createDungeon(type);
         dungeon.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
         // getDungeon().setName(name)
-
+        
 
         return dungeon;
 
@@ -102,18 +104,18 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
 
             if (!StringMaster.isEmpty(wallObjData)) {
                 plan.setWallObjects(DC_ObjInitializer.createUnits(DC_Player.NEUTRAL,
-                        wallObjData));
+                 wallObjData));
             }
 
         }
 
         if (StringMaster.compareByChar(n.getNodeName(), (FLIP_MAP_NODE))) {
             plan.setFlipMap(new RandomWizard<FLIP>().constructStringWeightMapInversed(n
-                    .getTextContent(), FLIP.class));
+             .getTextContent(), FLIP.class));
 
         } else if (StringMaster.compareByChar(n.getNodeName(), (DIRECTION_MAP_NODE))) {
             plan.setDirectionMap(new RandomWizard<DIRECTION>()
-                    .constructStringWeightMapInversed(n.getTextContent(), DIRECTION.class));
+             .constructStringWeightMapInversed(n.getTextContent(), DIRECTION.class));
 
         } else if (StringMaster.compareByChar(n.getNodeName(), (CUSTOM_PARAMS_NODE))) {
             TypeBuilder.setParams(dungeon.getDungeon(), n);

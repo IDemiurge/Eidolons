@@ -200,12 +200,6 @@ public class DC_Game extends MicroGame {
         dungeonMaster = createDungeonMaster();
     }
 
-    // before all other masters?
-    public void metaGameInit() {
-        metaMaster = createMetaMaster();
-    }
-
-
     public void battleInit() {
 //            SpellGenerator.init();
         ActionGenerator.init();
@@ -663,14 +657,6 @@ public class DC_Game extends MicroGame {
             dataKeeper = new LaunchDataKeeper();
         return dataKeeper;
     }
-
-    public void setDataKeeper(LaunchDataKeeper dataKeeper) {
-        this.dataKeeper = dataKeeper;
-    }
-
-    @Refactor
-    public Obj getSimulationObj(Entity entity, ObjType type, PROPERTY prop) {
-        return null;
 
     public void setDataKeeper(LaunchDataKeeper dataKeeper) {
         this.dataKeeper = dataKeeper;

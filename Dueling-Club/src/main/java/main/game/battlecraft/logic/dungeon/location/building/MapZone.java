@@ -6,7 +6,6 @@ import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import main.game.bf.Coordinates;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
-import main.game.bf.Coordinates;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

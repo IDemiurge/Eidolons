@@ -8,11 +8,6 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.battle.DC_Player;
-import main.game.battlecraft.logic.meta.scenario.ScenarioMaster.SCENARIO_MODES;
-import main.game.core.game.DC_Game;
-
-import java.util.List;
 
 public class Scenario extends Entity {
 

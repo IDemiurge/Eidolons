@@ -62,7 +62,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
         // TODO
         if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor()) {
             origin = new Coordinates(PositionMaster.getMiddleIndex(false), PositionMaster
-                    .getMiddleIndex(true));
+             .getMiddleIndex(true));
         } else {
             FACING_DIRECTION side = ArenaPositioner.DEFAULT_PLAYER_SIDE;
 //            if ( getSpawningSide() != null) {
@@ -252,8 +252,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
 
         return side;
     }
-
-    //this is heresy
+//this is heresy
     private FACING_DIRECTION getRandomSide() {
         while (true) {
             side = FacingMaster.getRandomFacing();
@@ -305,8 +304,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
         boolean vertical = !facing.isVertical();
         boolean invert = !facing.isCloserToZero();
         int index = PositionMaster.getMiddleIndex(vertical);
-        int rowIndex = (invert) ? ((!vertical) ?
-                getGame().getDungeonMaster().getDungeonWrapper().getHeight()
+        int rowIndex = (invert) ? ((!vertical) ? getGame().getDungeonMaster().getDungeonWrapper().getHeight()
                 : getGame().getDungeonMaster().getDungeonWrapper().getWidth())
                 - row : row;
         Coordinates coordinate = (vertical) ? new Coordinates(rowIndex, index) : new Coordinates(

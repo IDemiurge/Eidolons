@@ -29,6 +29,7 @@ import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
@@ -270,8 +271,7 @@ public class ArcadeManager {
         // let choose whether to proceed or turn back - lose time, but possible
         // to resurrect/buy/repair
     }
-
-    @Refactor
+@Refactor
     public void dungeonComplete() {
         // award loot
 

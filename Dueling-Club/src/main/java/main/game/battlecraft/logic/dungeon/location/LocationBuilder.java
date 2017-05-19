@@ -501,7 +501,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     }
 
     public DungeonPlan loadDungeonMap(String data) {
-        return  buildDungeon(data , nodeList).getPlan();
+        return buildDungeon(data, nodeList).getPlan();
     }
 
     private void initZones(Node zonesNode, DungeonPlan plan) {

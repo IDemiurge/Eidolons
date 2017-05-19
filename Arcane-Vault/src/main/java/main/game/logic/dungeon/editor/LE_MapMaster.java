@@ -104,7 +104,7 @@ public class LE_MapMaster {
     }
 
     public static BuildParameters initBuildParams(boolean empty, Location location) {
-        BuildParameters params = new BuildHelper(location).new BuildParameters(empty);
+        BuildParameters params = new BuildHelper(location ).new BuildParameters(empty);
         params.setValue(BUILD_PARAMS.WIDTH, "" + location.getCellsX());
         params.setValue(BUILD_PARAMS.HEIGHT, "" + location.getCellsY());
         if (location.getPlan() != null) {
@@ -117,7 +117,7 @@ public class LE_MapMaster {
         data = TextEditor.inputTextLargeField("Alter build parameters...", data);
         if (data != null) {
 
-            params = new BuildHelper(location).new BuildParameters(data);
+            params = new BuildHelper(location ).new BuildParameters(data);
             location.setParam(PARAMS.BF_WIDTH, params.getIntValue(BUILD_PARAMS.WIDTH));
             location.setParam(PARAMS.BF_HEIGHT, params.getIntValue(BUILD_PARAMS.HEIGHT));
             location.setProperty(PROPS.FILLER_TYPE, params.getValue(BUILD_PARAMS.FILLER_TYPE));

@@ -52,8 +52,9 @@ public class LaunchDataKeeper {
 
     public LaunchDataKeeper(DC_Game game, Preset preset) {
         this(game, preset.getValue(PRESET_DATA.PLAYER_UNITS),
-        preset.getValue(PRESET_DATA.ENEMIES),
+         preset.getValue(PRESET_DATA.ENEMIES),
          preset.getValue(PRESET_DATA.FIRST_DUNGEON));
+
         PresetLauncher.initPresetData(dungeonData, preset);
     }
 

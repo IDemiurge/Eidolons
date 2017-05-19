@@ -5,8 +5,8 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
@@ -34,10 +34,9 @@ public class DataUnit<T extends Enum<T>> {
     }
         public List<String> getContainerValues(T t) {
       return
-            StringMaster.openContainer(getValue(t) );
+            StringMaster.openContainer(getValue(t));
     }
-
-    public boolean getBooleanValue(T t) {
+        public boolean getBooleanValue(T t) {
         return StringMaster.getBoolean(getValue(t));
     }
 

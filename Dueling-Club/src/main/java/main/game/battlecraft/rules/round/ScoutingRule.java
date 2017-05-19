@@ -10,7 +10,6 @@ import main.system.auxiliary.StringMaster;
 import main.test.Refactor;
 
 import java.util.List;
-
 @Refactor
 public class ScoutingRule extends RoundRule {
     private Entity scout;

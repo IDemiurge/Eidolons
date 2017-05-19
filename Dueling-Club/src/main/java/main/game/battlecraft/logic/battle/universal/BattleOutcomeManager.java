@@ -5,7 +5,7 @@ import main.game.logic.battle.player.Player;
 import main.system.audio.MusicMaster;
 import main.system.audio.MusicMaster.MUSIC_MOMENT;
 
-public abstract class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
+public abstract class BattleOutcomeManager<E extends Battle> extends BattleHandler<E>{
     Boolean outcome;
 
     public BattleOutcomeManager(BattleMaster<E> master) {
@@ -55,7 +55,8 @@ public abstract class BattleOutcomeManager<E extends Battle> extends BattleHandl
     }
 
 
-    public void checkOutcomeClear() {
+
+    public    void checkOutcomeClear(){
         if (checkVictory())
             victory();
         else if (checkDefeat())
@@ -90,6 +91,8 @@ public abstract class BattleOutcomeManager<E extends Battle> extends BattleHandl
         }
         return true;
     }
+
+
 
 
 }

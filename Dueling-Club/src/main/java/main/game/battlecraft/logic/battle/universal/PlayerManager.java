@@ -18,7 +18,7 @@ import java.util.List;
 public class PlayerManager<E extends Battle> extends BattleHandler<E> {
 
     public final FLAG_COLOR[] playerColors = {FLAG_COLOR.BLUE, FLAG_COLOR.RED,
-            FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};
+     FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};
     public List<FLAG_COLOR> unusedPlayerColorsList;
     List<DC_Player> players = new LinkedList<>();
     private String data;
@@ -37,7 +37,7 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
             data = generateDefaultPlayerData();
         }
         unusedPlayerColorsList = new ListMaster<FLAG_COLOR>()
-                .getList(playerColors);
+         .getList(playerColors);
         int i = 0;
         for (String substring : StringMaster.openContainer(data)) {
             DC_Player player = initPlayerFromString(substring);
@@ -66,34 +66,36 @@ if (player.isEnemy())
     private String generateDefaultPlayerData() {
         String data = "";
 //        emblem = ImageManager.getEmptyEmblem()
-            DataUnitFactory<PlayerData> factory = new DataUnitFactory<>(PlayerData.FORMAT);
+        DataUnitFactory<PlayerData> factory = new DataUnitFactory<>(PlayerData.FORMAT);
         PLAYER_VALUE[] default_values = {
          PLAYER_VALUE.NAME, PLAYER_VALUE.COLOR, PLAYER_VALUE.EMBLEM, PLAYER_VALUE.PORTRAIT, PLAYER_VALUE.ALLEGIENCE
         };
         factory.setValueNames(default_values);
-        factory.setValues( "You","Blue", " ", " ","Player");
-            data += factory.constructDataString() + StringMaster.SEPARATOR;
+        factory.setValues("You", "Blue", " ", " ", "Player");
+        data += factory.constructDataString() + StringMaster.SEPARATOR;
 
         factory.setValueNames(default_values);
-        factory.setValues("Enemy","Red", " ", " ","Enemy");data += factory.constructDataString();
+        factory.setValues("Enemy", "Red", " ", " ", "Enemy");
+        data += factory.constructDataString();
+
         return data;
     }
 
     public DC_Player initPlayerFromString(String data) {
         PlayerData dataUnit = new PlayerData(data);
         ALLEGIENCE allegience =
-                new EnumMaster<ALLEGIENCE>().retrieveEnumConst(ALLEGIENCE.class,
-                        dataUnit.getValue(PLAYER_VALUE.ALLEGIENCE));
+         new EnumMaster<ALLEGIENCE>().retrieveEnumConst(ALLEGIENCE.class,
+          dataUnit.getValue(PLAYER_VALUE.ALLEGIENCE));
         if (allegience == null) {
             allegience = ALLEGIENCE.NEUTRAL;
         }
         FLAG_COLOR color = new EnumMaster<FLAG_COLOR>().retrieveEnumConst(FLAG_COLOR.class,
-                dataUnit.getValue(PLAYER_VALUE.COLOR));
+         dataUnit.getValue(PLAYER_VALUE.COLOR));
         if (color == null) {
             color = getRandomColorFlag();
         }
         DC_Player player = new DC_Player(dataUnit.getValue(PLAYER_VALUE.NAME), color,
-                dataUnit.getValue(PLAYER_VALUE.EMBLEM), dataUnit.getValue(PLAYER_VALUE.PORTRAIT), allegience);
+         dataUnit.getValue(PLAYER_VALUE.EMBLEM), dataUnit.getValue(PLAYER_VALUE.PORTRAIT), allegience);
 
 
         player.setMainHeroName(dataUnit.getValue(PLAYER_VALUE.MAIN_HERO) );

@@ -5,8 +5,16 @@ package main.game.core.game;
  */
 public class GameFactory {
 
+    public enum GAME_SUBCLASS{
+        TEST,
+        ARENA,
+        SCENARIO,
+        ARCADE,
+        SKIRMISH
+    }
+    
     public static DC_Game createAndInitGame(GAME_SUBCLASS subclass) {
-        DC_Game game = createGame(subclass);
+        DC_Game game = createGame(subclass );
         game.init();
         return game;
     }
@@ -23,13 +31,5 @@ public class GameFactory {
 //                return new DC_Game();
         }
         return new DC_Game();
-    }
-
-    public enum GAME_SUBCLASS {
-        TEST,
-        ARENA,
-        SCENARIO,
-        ARCADE,
-        SKIRMISH
     }
 }

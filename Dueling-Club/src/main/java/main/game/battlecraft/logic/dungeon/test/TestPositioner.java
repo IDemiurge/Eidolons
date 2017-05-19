@@ -17,8 +17,8 @@ import java.util.List;
 /**
  * Created by JustMe on 5/10/2017.
  */
-public class TestPositioner<E extends DungeonWrapper> extends Positioner<E> {
-    public TestPositioner(DungeonMaster master) {
+public class TestPositioner<E extends DungeonWrapper> extends Positioner<E>{
+    public TestPositioner(DungeonMaster  master) {
         super(master);
     }
 

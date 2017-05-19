@@ -8,11 +8,6 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.DungeonHandler;
-import main.game.battlecraft.logic.dungeon.DungeonMaster;
-import main.game.battlecraft.logic.dungeon.DungeonWrapper;
-import main.game.battlecraft.logic.dungeon.location.Location;
 import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
 import main.game.battlecraft.logic.dungeon.location.building.DC_Map;
 import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
@@ -35,7 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandler<E> {
+public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandler<E>{
     private static final String ENTRANCE_TYPE = "Dungeon Entrance";
     private static final boolean subLevelTest = false;
     DUNGEON_MAP_TEMPLATE template;
@@ -52,8 +47,8 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
     public DungeonMapGenerator(DungeonMaster<E> master) {
         this(master, null);
     }
-
-    public DungeonMapGenerator(DungeonMaster<E> master, BuildParameters params) {
+    public DungeonMapGenerator(DungeonMaster<E> master,BuildParameters params)
+    {
         super(master);
         this.params = params;
     }
@@ -111,7 +106,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 //        mod = new EnumMaster<DUNGEON_MAP_MODIFIER>().retrieveEnumConst(DUNGEON_MAP_MODIFIER.class,
 //                dungeon.getProperty(PROPS.DUNGEON_MAP_MODIFIER));
 //
-		//		/*
+//		/*
 //         * mod should have a preset initComps option as well.
 //		 */
 //
@@ -135,12 +130,11 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 //        map.setBackground(background);
 //        return map;
 //    }
-
 //    private void initBfObjMap(Location dungeon) {
 //        objMap = new HashMap<>();
 //        map.setObjMap(objMap);
 //        if (plan != null) {
-            // //if (plan.isPreloaded()) addObjects();
+//            // if (plan.isPreloaded()) addObjects();
 //            if (!dungeon.isRandomized()) {
 //                if (!plan.isLoaded()) {
 //                    generateUndergroundObjects();
@@ -169,18 +163,18 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 //        if (mod != null) {
 //            objects.addAll(StringMaster.openContainer(mod.getObjects()));
 //        }
-        // //if (mod.getPresetObjects()!=null){ TODO
-        // //StringMaster.openContainer(mod.getPresetObjects(),
-        // //StringMaster.AND_SEPARATOR)
-        // //.getOrCreate(index)
-        // //for ( s s StringMaster.openContainer(mod.getPresetObjects) ){
-        // //c = new Coordinates(s);TODO
-        ////
-        // //}
-        // //objMap.put(c, obj);
-        // //} TODO
+//        // if (mod.getPresetObjects()!=null){ TODO
+//        // StringMaster.openContainer(mod.getPresetObjects(),
+//        // StringMaster.AND_SEPARATOR)
+//        // .getOrCreate(index)
+//        // for ( s s StringMaster.openContainer(mod.getPresetObjects) ){
+//        // c = new Coordinates(s);TODO
+//        //
+//        // }
+//        // objMap.put(c, obj);
+//        // } TODO
 //
-    //        sizeMod = getSizeMod(dungeon.getDungeon());
+//            sizeMod = getSizeMod(dungeon.getDungeon());
 //
 //        objects.addAll(StringMaster.openContainer(dungeon.getProperty(PROPS.MAP_OBJECTS)));
 //        for (String s : objects) {
@@ -378,7 +372,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 
     private boolean isBlockingCorner(Coordinates c) {
         Boolean west_east = null;
-        if (c.x + 1 - getWidth() >= -1) {
+        if (c.x + 1 -  getWidth() >= -1) {
             west_east = false;
         }
         if (c.x == 0 || c.x == 1) {

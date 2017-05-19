@@ -11,7 +11,9 @@ import java.awt.*;
 import java.util.Set;
 
 public class Player {
-    public static Player NEUTRAL;
+    public static Player NEUTRAL
+
+     ;
 
 
     protected MicroObj heroObj;

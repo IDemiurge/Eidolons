@@ -33,7 +33,6 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
-import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.core.game.DC_Game;
 import main.game.logic.event.MessageManager;
 import main.game.module.adventure.MacroGame;

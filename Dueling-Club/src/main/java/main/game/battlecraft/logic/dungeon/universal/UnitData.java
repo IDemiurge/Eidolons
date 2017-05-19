@@ -4,12 +4,7 @@ import main.client.cc.logic.party.PartyObj;
 import main.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import main.system.data.DataUnit;
 
-public class UnitData extends DataUnit<PARTY_VALUE> {
-
-
-    public UnitData(String data) {
-        super(data);
-    }
+public class UnitData extends DataUnit<PARTY_VALUE>{
 
 
     public static final Boolean FORMAT =false ;
@@ -52,17 +47,22 @@ public class UnitData extends DataUnit<PARTY_VALUE> {
              'spawn()' for an HQ party is in fact more like 'place()' ...
             > don't respawn if exists?
 
-     */
+             */
     public enum PARTY_VALUE{
      LEADER, MEMBERS,
     PLAYER_NAME,
-
     SPAWN_SIDE,
      COORDINATES,
     FACING,
     LEVEL,
     FACING_TEMPLATE,
 
+}
+
+
+
+    public UnitData(String data) {
+        super(data);
     }
 
 

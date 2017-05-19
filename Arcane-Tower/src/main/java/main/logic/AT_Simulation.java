@@ -10,6 +10,7 @@ import main.game.core.game.DC_GameMaster;
 import main.game.core.game.Game;
 import main.game.core.state.GameState;
 import main.session.Session;
+import main.entity.DC_IdManager;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -7,10 +7,10 @@ import main.game.core.game.DC_Game;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public class BattleHandler<E extends Battle> {
+public class BattleHandler<E extends  Battle> {
 
-    protected DC_Game game;
-    protected BattleMaster<E> master;
+    protected   DC_Game game;
+    protected   BattleMaster<E> master;
 
     public BattleHandler(BattleMaster<E> master) {
         this.master = master;
