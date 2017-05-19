@@ -11,7 +11,7 @@ public class SpeechData extends DataString{
         super(type, data);
     }
 
-    public SpeechData(DataString[] strings) {
+    public SpeechData(DataString... strings) {
         this.strings = strings;
     }
     public SpeechData(DataString  string , DataString  string2)
