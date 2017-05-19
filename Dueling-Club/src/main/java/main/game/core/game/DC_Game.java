@@ -15,6 +15,7 @@ import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Reader;
 import main.entity.DC_IdManager;
+import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.active.DC_ActionManager;
 import main.entity.obj.*;
@@ -666,9 +667,6 @@ keyManager = new DC_KeyManager(getManager());
     @Refactor
     public Obj getSimulationObj(Entity entity, ObjType type, PROPERTY prop) {
         return null;
-
-    public void setDataKeeper(LaunchDataKeeper dataKeeper) {
-        this.dataKeeper = dataKeeper;
     }
 
     //how should these be called properly?

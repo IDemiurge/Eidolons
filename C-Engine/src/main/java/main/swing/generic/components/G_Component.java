@@ -1,7 +1,7 @@
 package main.swing.generic.components;
 
-import main.swing.PointX;
 import main.swing.Painted;
+import main.swing.PointX;
 
 import javax.swing.*;
 import java.awt.*;

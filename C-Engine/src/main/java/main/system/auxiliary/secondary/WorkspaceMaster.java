@@ -1,10 +1,10 @@
 package main.system.auxiliary.secondary;
 
-import main.content.enums.entity.SkillEnums.MASTERY;
-import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.DC_TYPE;
-import main.content.enums.system.MetaEnums;
 import main.content.enums.entity.SkillEnums;
+import main.content.enums.entity.SkillEnums.MASTERY;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;

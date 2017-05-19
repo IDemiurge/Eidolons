@@ -1,10 +1,10 @@
 package main.system.text;
 
+import main.content.ContentManager;
+import main.content.DC_TYPE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.content.enums.entity.UnitEnums.COUNTER;
-import main.content.ContentManager;
-import main.content.DC_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.entity.DataModel;
@@ -15,11 +15,11 @@ import main.entity.obj.Obj;
 import main.game.core.game.Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
-import main.system.auxiliary.data.MapMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.graphics.ANIM;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 

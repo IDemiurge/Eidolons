@@ -2,8 +2,8 @@ package main.data.ability.construct;
 
 import main.ability.AbilityType;
 import main.content.ContentManager;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;

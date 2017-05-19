@@ -4,8 +4,8 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 

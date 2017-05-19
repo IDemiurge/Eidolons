@@ -1,8 +1,8 @@
 package main.game.bf.pathing;
 
 import main.entity.obj.Obj;
-import main.game.core.game.MicroGame;
 import main.game.bf.Coordinates;
+import main.game.core.game.MicroGame;
 
 import java.util.List;
 

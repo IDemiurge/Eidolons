@@ -4,7 +4,6 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.game.core.game.Game;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
 
 public abstract class ConditionImpl  implements Condition {
     public static final int MAX_TOOLTIP_LENGTH = 50;

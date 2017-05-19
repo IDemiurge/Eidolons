@@ -2,9 +2,9 @@ package main.swing.generic.components.panels;
 
 import main.content.OBJ_TYPE;
 import main.entity.obj.Obj;
+import main.game.bf.SwingBattleField;
 import main.game.core.game.Game;
 import main.game.core.state.GameState;
-import main.game.bf.SwingBattleField;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.CustomList;
 import main.swing.generic.components.list.G_List;

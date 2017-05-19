@@ -1,9 +1,9 @@
 package main.entity.type;
 
+import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import main.content.enums.entity.SpellEnums.SPELL_POOL;
 import main.content.enums.entity.SpellEnums.SPELL_TYPE;
-import main.content.enums.entity.SpellEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.system.auxiliary.EnumMaster;

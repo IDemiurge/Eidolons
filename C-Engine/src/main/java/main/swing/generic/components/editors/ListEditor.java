@@ -1,9 +1,9 @@
 package main.swing.generic.components.editors;
 
 import main.content.ContentManager;
-import main.content.enums.macro.MACRO_CONTENT_CONSTS;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
+import main.content.enums.macro.MACRO_CONTENT_CONSTS;
 import main.data.DataManager;
 import main.data.filesys.ResourceManager;
 import main.data.xml.XML_Reader;
@@ -16,9 +16,9 @@ import main.game.core.game.Game;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.log.Err;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.Err;
 
 import javax.swing.*;
 import java.util.Collections;

@@ -13,10 +13,10 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.system.entity.ConditionMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.ConditionMaster;
 import main.system.text.TextParser;
 
 import java.util.*;

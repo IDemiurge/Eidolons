@@ -7,9 +7,9 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Attachment;
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
+import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.logic.battle.player.Player;
 
 public class PassiveAbilityObj extends AbilityObj implements Attachment {
 

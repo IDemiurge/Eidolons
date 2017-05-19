@@ -1,8 +1,8 @@
 package main.ability.effects.oneshot;
 
+import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.ability.effects.ResistibleEffect;
-import main.ability.effects.MicroEffect;
 
 public class InstantDeathEffect extends MicroEffect implements ResistibleEffect, OneshotEffect {
 

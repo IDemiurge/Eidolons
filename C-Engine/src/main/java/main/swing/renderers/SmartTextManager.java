@@ -7,9 +7,9 @@ import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
-import main.system.graphics.ColorManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.ColorManager;
 
 import java.awt.*;
 

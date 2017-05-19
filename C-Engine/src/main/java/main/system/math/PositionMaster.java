@@ -6,8 +6,8 @@ import main.game.bf.BattleFieldGrid;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.swing.XLine;
-import main.system.graphics.GuiManager;
 import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.graphics.GuiManager;
 
 import java.util.List;
 

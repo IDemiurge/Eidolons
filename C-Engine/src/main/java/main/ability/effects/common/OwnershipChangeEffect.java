@@ -1,12 +1,12 @@
 package main.ability.effects.common;
 
-import main.ability.effects.ResistibleEffect;
 import main.ability.effects.MicroEffect;
+import main.ability.effects.ResistibleEffect;
 import main.entity.obj.Obj;
 import main.game.core.game.MicroGame;
+import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.logic.battle.player.Player;
 import main.system.auxiliary.log.LogMaster;
 
 public class OwnershipChangeEffect extends MicroEffect implements

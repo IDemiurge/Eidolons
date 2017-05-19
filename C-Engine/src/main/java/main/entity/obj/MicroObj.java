@@ -6,9 +6,9 @@ import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.game.core.game.Game;
 import main.game.core.game.MicroGame;
-import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
 
 public class MicroObj extends Obj {

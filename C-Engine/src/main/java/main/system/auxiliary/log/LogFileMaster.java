@@ -2,12 +2,12 @@ package main.system.auxiliary.log;
 
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
-import main.system.auxiliary.log.LogMaster.LOG;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster.LOG;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.launch.CoreEngine;
 import main.system.threading.TimerTaskMaster;
 

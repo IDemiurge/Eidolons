@@ -1,8 +1,8 @@
 package main.system.launch;
 
 import main.ability.AbilityType;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.dialogue.DialogueType;
 import main.entity.type.*;

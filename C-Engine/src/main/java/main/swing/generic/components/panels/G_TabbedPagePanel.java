@@ -3,10 +3,10 @@ package main.swing.generic.components.panels;
 import main.swing.components.TextComp;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.listener.MouseClickListener;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster;
-import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.StringMaster;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

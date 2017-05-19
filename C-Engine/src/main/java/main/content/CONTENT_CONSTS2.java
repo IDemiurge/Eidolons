@@ -1,10 +1,10 @@
 package main.content;
 
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.CONTENT_CONSTS.DEITY;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
-import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.StringMaster;

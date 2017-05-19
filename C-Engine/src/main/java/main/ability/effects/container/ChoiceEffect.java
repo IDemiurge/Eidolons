@@ -1,8 +1,8 @@
 package main.ability.effects.container;
 
 import main.ability.effects.MicroEffect;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.data.DataManager;
 import main.data.ability.OmittedConstructor;
 import main.entity.obj.Obj;

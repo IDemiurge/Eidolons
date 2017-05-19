@@ -1,7 +1,7 @@
 package main.swing.generic.components.editors.lists;
 
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.swing.components.TextComp;
 import main.swing.generic.Decorator;
 import main.swing.generic.components.G_Panel;

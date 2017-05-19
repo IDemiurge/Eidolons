@@ -3,7 +3,6 @@ package main.elements.conditions;
 import main.data.ability.OmittedConstructor;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.Referred;
 import main.system.entity.ConditionMaster;
 
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package main.swing.generic.components.editors.lists;
 
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -15,7 +15,8 @@ import main.swing.listeners.ListChooserFilterOptionListener;
 import main.swing.listeners.ListChooserSortOptionListener;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
 import main.system.SortMaster;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.GuiManager;

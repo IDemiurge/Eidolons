@@ -1,9 +1,9 @@
 package main.swing.generic.components;
 
 import main.swing.SwingMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
-import main.system.auxiliary.StringMaster;
 import main.system.graphics.MigMaster;
 import main.system.images.ImageManager;
 import net.miginfocom.swing.MigLayout;

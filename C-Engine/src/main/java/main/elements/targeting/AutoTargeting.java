@@ -1,9 +1,9 @@
 package main.elements.targeting;
 
-import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.AbilityEnums;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.data.ability.OmittedConstructor;
 import main.elements.Filter;
 import main.elements.conditions.Condition;

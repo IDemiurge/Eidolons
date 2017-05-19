@@ -139,18 +139,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         return b;
     }
 
-    @Override
-    protected void processNode(Node n, Location dungeon, DungeonPlan plan) {
-        if (StringMaster.compareByChar(n.getNodeName(), ("Plan"))) {
-            try {
-                initZones(n, plan);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        } else
-            super.processNode(n, dungeon, plan);
-    }
 
     public LocationBuilder setParam(BuildParameters params) {
         this.params = params;
@@ -190,11 +178,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
         } else
             super.processNode(n, dungeon, plan);
-    }
-
-    public LocationBuilder setParam(BuildParameters params) {
-        this.params = params;
-        return this;
     }
 
     public DungeonPlan transformDungeonPlan(DungeonPlan plan) {

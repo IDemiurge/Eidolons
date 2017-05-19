@@ -1,7 +1,7 @@
 package main.system.sound;
 
-import main.content.enums.entity.HeroEnums.HERO_SOUNDSET;
 import main.content.CONTENT_CONSTS.SOUNDSET;
+import main.content.enums.entity.HeroEnums.HERO_SOUNDSET;
 import main.content.values.parameters.PARAMETER;
 import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;

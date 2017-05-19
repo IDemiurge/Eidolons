@@ -1,7 +1,7 @@
 package main.game.core.state;
 
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.data.ConcurrentMap;
 import main.entity.obj.Obj;
 import main.game.core.game.MicroGame;
