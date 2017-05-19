@@ -12,7 +12,6 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 
 public class LootManager {
 

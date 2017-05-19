@@ -8,7 +8,6 @@ import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.Refreshable;
 import main.system.auxiliary.log.Chronos;

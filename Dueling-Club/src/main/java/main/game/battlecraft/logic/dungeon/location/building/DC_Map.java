@@ -7,7 +7,6 @@ import main.game.core.game.DC_Game;
 import main.system.auxiliary.log.LogMaster;
 import main.system.data.MapData;
 import main.system.images.ImageManager;
-import main.system.data.MapData;
 
 import java.io.File;
 import java.util.HashMap;

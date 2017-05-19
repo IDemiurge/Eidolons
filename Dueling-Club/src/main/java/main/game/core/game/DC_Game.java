@@ -211,7 +211,7 @@ public class DC_Game extends MicroGame {
         battleMaster.init();
         dungeonMaster.init();
 
-            setOffline(true);
+        setOffline(true);
 
 
         // if (battlefield == null) {
@@ -657,16 +657,6 @@ keyManager = new DC_KeyManager(getManager());
 
     public void setDataKeeper(LaunchDataKeeper dataKeeper) {
         this.dataKeeper = dataKeeper;
-    }
-
-    //how should these be called properly?
-    @Refactor
-    public DC_HeroAttachedObj getSimulationObj(Unit dc_HeroObj, ObjType type, PROPERTY prop) {
-        try {
-            return getSimulationCache().get(dc_HeroObj).get(type.getName() + prop.getShortName());
-        } catch (Exception e) {
-            return null;
-        }
     }
 
     //how should these be called properly?

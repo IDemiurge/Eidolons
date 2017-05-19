@@ -5,7 +5,6 @@ import main.entity.type.ObjAtCoordinate;
 import main.game.battlecraft.ai.GroupAI;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
-import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 
 import java.util.LinkedList;
 import java.util.List;
