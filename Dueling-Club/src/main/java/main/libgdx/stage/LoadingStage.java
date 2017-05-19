@@ -30,7 +30,7 @@ public class LoadingStage extends Stage {
 
         counter += delta;
 
-        if (counter >= 0.1) {
+        if (counter >= 0.05) {
             loadingImage.setRotation(loadingImage.getRotation() + 30);
             counter = 0;
         }

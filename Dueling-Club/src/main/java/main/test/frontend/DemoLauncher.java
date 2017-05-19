@@ -9,13 +9,17 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import main.client.dc.Launcher;
 import main.game.core.game.DC_Game;
-import main.libgdx.screens.IntroScreen;
-import main.libgdx.screens.MainMenuScreen;
+import main.libgdx.Engine;
+import main.libgdx.EngineEmulator;
+import main.libgdx.ScreenData;
+import main.libgdx.screens.*;
 import org.dizitart.no2.Nitrite;
 
 public class DemoLauncher extends Game {
     private static Nitrite db;
     private DC_Game coreGame;
+    private Engine engine;
+    private ScreenData newMeta;
 
     public DemoLauncher() {
 
@@ -26,6 +30,8 @@ public class DemoLauncher extends Game {
         coreGame.init();
         DC_Game.game=(coreGame);
         coreGame.start(true);*/
+
+        engine = new EngineEmulator();
 
     }
 
@@ -40,6 +46,7 @@ public class DemoLauncher extends Game {
             configuration = getConf();
             repository.insert(configuration);
         }*/
+
         new LwjglApplication(new DemoLauncher(), getConf());
     }
 
@@ -53,10 +60,11 @@ public class DemoLauncher extends Game {
         conf.fullscreen = false;
         conf.resizable = false;
 
-//        conf.width = GuiManager.getScreenWidthInt();
-//        conf.height = GuiManager.getScreenHeightInt();
-//        conf.fullscreen = true;
         return conf;
+    }
+
+    private void initDoneCallback() {
+
     }
 
     @Override
@@ -65,16 +73,41 @@ public class DemoLauncher extends Game {
         Viewport viewport = new ScreenViewport(camera);
         final IntroScreen introScreen = new IntroScreen(viewport, () -> {
             final Screen old = getScreen();
-            setScreen(new MainMenuScreen(viewport));
+            final MainMenuScreen screen = new MainMenuScreen(viewport, s -> newMeta = engine.getMeta(s));
+            setScreen(screen);
             if (old != null) {
                 old.dispose();
             }
         });
+        engine.init(this::initDoneCallback);
         setScreen(introScreen);
     }
 
     @Override
     public void render() {
+
+
+        if (newMeta != null) {
+            final ScreenData meta = newMeta;
+            newMeta = null;
+            switch (meta.getType()) {
+                case HEADQUARTERS:
+                    switchScreen(new HeadquarterScreen(meta), meta);
+                    break;
+                case BATTLE:
+                    switchScreen(new DungeonScreen(meta), meta);
+                    break;
+                case PRE_BATTLE:
+                    break;
+            }
+        }
         super.render();
+    }
+
+    private void switchScreen(ScreenWithLoader screen, ScreenData meta) {
+        engine.load(meta, screen::hideLoader);
+        final Screen oldScreen = getScreen();
+        setScreen(screen);
+        oldScreen.dispose();
     }
 }

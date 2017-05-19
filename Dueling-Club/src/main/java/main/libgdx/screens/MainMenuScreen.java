@@ -2,29 +2,29 @@ package main.libgdx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import main.libgdx.stage.LoadingStage;
 import main.libgdx.stage.MainMenuStage;
 
-public class MainMenuScreen implements Screen {
+import java.util.function.Consumer;
+
+public class MainMenuScreen extends ScreenWithLoader {
 
     private final Viewport viewport;
-    private LoadingStage loadingStage;
     private MainMenuStage menuStage;
+    private Consumer<String> onScreenDone;
 
-    public MainMenuScreen(Viewport viewport) {
+    public MainMenuScreen(Viewport viewport, Consumer<String> onScreenDone) {
+        super();
         this.viewport = viewport;
+        this.onScreenDone = onScreenDone;
     }
-
 
     @Override
     public void show() {
-        loadingStage = new LoadingStage();
         loadingStage.setViewport(viewport);
 
-        menuStage = new MainMenuStage();
+        menuStage = new MainMenuStage(onScreenDone);
         menuStage.setViewport(viewport);
         Gdx.input.setInputProcessor(new InputMultiplexer(menuStage));
     }
@@ -34,10 +34,12 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
-        //camera.update();
+        super.render(delta);
 
-        menuStage.act(delta);
-        menuStage.draw();
+        if (hideLoader) {
+            menuStage.act(delta);
+            menuStage.draw();
+        }
     }
 
     @Override

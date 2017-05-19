@@ -3,18 +3,17 @@ package main.libgdx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.core.game.DC_Game;
+import main.libgdx.ScreenData;
 import main.libgdx.bf.BFDataCreatedEvent;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.stage.AnimationEffectStage;
 import main.libgdx.stage.BattleGuiStage;
-import main.libgdx.stage.LoadingStage;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -28,9 +27,10 @@ import static main.system.GuiEventType.*;
  * Time: 23:55
  * To change this template use File | Settings | File Templates.
  */
-public class DungeonScreen implements Screen {
+public class DungeonScreen extends ScreenWithLoader {
     public static OrthographicCamera camera;
     private static DungeonScreen instance;
+
     private Stage gridStage;
     private BattleGuiStage guiStage;
     private GridPanel gridPanel;
@@ -39,8 +39,11 @@ public class DungeonScreen implements Screen {
 
     private TextureRegion backTexture;
     private boolean showLoading = true;
-    private LoadingStage loadingStage;
     private AnimationEffectStage animationEffectStage;
+
+    public DungeonScreen(ScreenData meta) {
+
+    }
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -55,8 +58,6 @@ public class DungeonScreen implements Screen {
             gridPanel = new GridPanel(data.getGridW(), data.getGridH()).init(data.getObjects());
             gridStage.addActor(gridPanel);
         });
-
-        loadingStage = new LoadingStage();
 
         guiStage = new BattleGuiStage();
 
