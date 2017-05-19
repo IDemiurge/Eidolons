@@ -15,21 +15,21 @@ import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
  */
 public abstract class DungeonMaster<E extends DungeonWrapper> {
 
-    protected    DC_Game game;
+    protected DC_Game game;
     protected E dungeonWrapper;
     protected DungeonInitializer<E> initializer;
     protected DungeonBuilder<E> builder;
-    protected  Positioner<E> positioner;
+    protected Positioner<E> positioner;
     protected Spawner<E> spawner;
     protected FacingAdjuster<E> facingAdjuster;
     protected DungeonMapGenerator<E> mapGenerator;
     public DungeonMaster(DC_Game game) {
         this.game = game;
-        initializer= createInitializer();
-        spawner= createSpawner();
-        positioner= createPositioner();
-        facingAdjuster= createFacingAdjuster();
-        builder =createBuilder();
+        initializer = createInitializer();
+        spawner = createSpawner();
+        positioner = createPositioner();
+        facingAdjuster = createFacingAdjuster();
+        builder = createBuilder();
         mapGenerator = new DungeonMapGenerator<E>(this);
     }
 
@@ -40,19 +40,20 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     public void gameStarted() {
         spawner.spawn();
     }
-    public void init(){
+
+    public void init() {
         dungeonWrapper = initializer.initDungeon();
         //TODO remove this!
         GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
         GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
         if (!ImageManager.isImage(dungeonWrapper.getMapBackground())) {
             LogMaster.log(1,
-             dungeonWrapper.getMapBackground() + " is not a valid image! >> " + dungeonWrapper);
+                    dungeonWrapper.getMapBackground() + " is not a valid image! >> " + dungeonWrapper);
             return;
         }
 
         GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND,
-         new OnDemandEventCallbackParam<>(dungeonWrapper.getMapBackground()));
+                new OnDemandEventCallbackParam<>(dungeonWrapper.getMapBackground()));
 
     }
 
@@ -84,7 +85,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return builder;
     }
 
-    public  Positioner<E> getPositioner() {
+    public Positioner<E> getPositioner() {
         return positioner;
     }
 
@@ -97,8 +98,8 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
 
-    public BattleMaster getBattleMaster(){
-        return  game.getBattleMaster();
+    public BattleMaster getBattleMaster() {
+        return game.getBattleMaster();
     }
 
     public PlayerManager getPlayerManager() {

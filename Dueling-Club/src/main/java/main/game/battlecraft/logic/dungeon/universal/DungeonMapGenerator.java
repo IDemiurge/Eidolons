@@ -30,7 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandler<E>{
+public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandler<E> {
     private static final String ENTRANCE_TYPE = "Dungeon Entrance";
     private static final boolean subLevelTest = false;
     DUNGEON_MAP_TEMPLATE template;
@@ -47,8 +47,8 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
     public DungeonMapGenerator(DungeonMaster<E> master) {
         this(master, null);
     }
-    public DungeonMapGenerator(DungeonMaster<E> master,BuildParameters params)
-    {
+
+    public DungeonMapGenerator(DungeonMaster<E> master, BuildParameters params) {
         super(master);
         this.params = params;
     }
@@ -372,7 +372,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 
     private boolean isBlockingCorner(Coordinates c) {
         Boolean west_east = null;
-        if (c.x + 1 -  getWidth() >= -1) {
+        if (c.x + 1 - getWidth() >= -1) {
             west_east = false;
         }
         if (c.x == 0 || c.x == 1) {

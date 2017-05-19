@@ -17,7 +17,6 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
-import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.gui.builders.MainBuilder;
 import main.gui.builders.TabBuilder;
 import main.gui.components.controls.AV_ButtonPanel;
@@ -98,6 +97,7 @@ public class ArcaneVault {
     private static boolean artGen = false;
     private static boolean workspaceLaunch = false;
     private static boolean imgPathUpdate= false;
+    private static boolean dialogueMode = true;
 
     static {
         WORKSPACE_TEMPLATE.presetTypes.setTypes(presetTypes);
@@ -108,8 +108,6 @@ public class ArcaneVault {
         WORKSPACE_TEMPLATE.units.setTypes(units);
         WORKSPACE_TEMPLATE.items.setTypes(items);
     }
-
-    private static boolean dialogueMode=true;
 
     public static void main(String[] args) {
         CoreEngine.setArcaneVault(true);

@@ -6,13 +6,14 @@ import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
+import main.entity.DC_IdManager;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.meta.faction.FactionObj;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
-import main.game.battlecraft.logic.meta.faction.FactionObj;
 import main.game.module.adventure.MacroRef.MACRO_KEYS;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
@@ -22,7 +23,6 @@ import main.game.module.adventure.town.Town;
 import main.game.module.adventure.travel.HungerRule;
 import main.game.module.adventure.travel.MacroParty;
 import main.system.datatypes.DequeImpl;
-import main.entity.DC_IdManager;
 
 /*
  * restored from save file? 

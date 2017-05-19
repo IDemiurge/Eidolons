@@ -10,16 +10,19 @@ import main.data.xml.XML_Converter;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import main.game.battlecraft.logic.dungeon.universal.Dungeon;
-import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.location.Location;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
-import main.game.battlecraft.logic.dungeon.location.building.*;
-import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BUILD_PARAMS;
-import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.BLOCK_TYPE;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import main.game.battlecraft.logic.dungeon.location.building.BuildHelper;
+import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BUILD_PARAMS;
+import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
+import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
+import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
+import main.game.battlecraft.logic.dungeon.location.building.MapZone;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.DirectionMaster;
 import main.swing.generic.components.editors.FileChooser;
@@ -104,7 +107,7 @@ public class LE_MapMaster {
     }
 
     public static BuildParameters initBuildParams(boolean empty, Location location) {
-        BuildParameters params = new BuildHelper(location ).new BuildParameters(empty);
+        BuildParameters params = new BuildHelper(location).new BuildParameters(empty);
         params.setValue(BUILD_PARAMS.WIDTH, "" + location.getCellsX());
         params.setValue(BUILD_PARAMS.HEIGHT, "" + location.getCellsY());
         if (location.getPlan() != null) {
@@ -117,7 +120,7 @@ public class LE_MapMaster {
         data = TextEditor.inputTextLargeField("Alter build parameters...", data);
         if (data != null) {
 
-            params = new BuildHelper(location ).new BuildParameters(data);
+            params = new BuildHelper(location).new BuildParameters(data);
             location.setParam(PARAMS.BF_WIDTH, params.getIntValue(BUILD_PARAMS.WIDTH));
             location.setParam(PARAMS.BF_HEIGHT, params.getIntValue(BUILD_PARAMS.HEIGHT));
             location.setProperty(PROPS.FILLER_TYPE, params.getValue(BUILD_PARAMS.FILLER_TYPE));

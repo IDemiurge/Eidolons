@@ -81,7 +81,7 @@ public class FAST_DC {
             }
         }
 
-        testLauncher = new TestLauncher(game, FAST_MODE, SUPER_FAST_MODE );
+        testLauncher = new TestLauncher(game, FAST_MODE, SUPER_FAST_MODE);
         if (skipChoice) {
             if (args[0] == PRESET_OPTION_ARG) {
                 PresetLauncher.PRESET_OPTION = StringMaster.getInteger(args[1]);
@@ -158,7 +158,7 @@ public class FAST_DC {
 
     public static TestLauncher getTestLauncher() {
         if (testLauncher == null) {
-            testLauncher = new TestLauncher(game, FAST_MODE, SUPER_FAST_MODE );
+            testLauncher = new TestLauncher(game, FAST_MODE, SUPER_FAST_MODE);
         }
 
         return testLauncher;

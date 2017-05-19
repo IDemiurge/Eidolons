@@ -5,10 +5,10 @@ import main.content.enums.DungeonEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
-import main.game.battlecraft.logic.dungeon.universal.Dungeon;
-import main.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
 import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import main.game.bf.Coordinates;
 import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_POINT_TEMPLATE;
@@ -37,7 +37,7 @@ public class Location extends DungeonWrapper {
     private Entrance mainExit;
     private BuildParameters buildParams;
 
-    public Location(LocationMaster master,Dungeon dungeon) {
+    public Location(LocationMaster master, Dungeon dungeon) {
         super(dungeon, master);
         this.master = master;
         this.sublevel = sublevel;
@@ -221,11 +221,11 @@ public class Location extends DungeonWrapper {
         this.parent = parent;
     }
 
-    public void setBuildParams(BuildParameters buildParams) {
-        this.buildParams = buildParams;
-    }
-
     public BuildParameters getBuildParams() {
         return buildParams;
+    }
+
+    public void setBuildParams(BuildParameters buildParams) {
+        this.buildParams = buildParams;
     }
 }

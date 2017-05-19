@@ -9,7 +9,7 @@ import main.game.battlecraft.logic.meta.universal.PartyHelper;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle>{
+public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle> {
 
 
     private static final String DEFAULT_LIVES = "2";
@@ -44,7 +44,6 @@ public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle>{
         arenaOptions.setValue(ARENA_GAME_OPTIONS.TURNS_BETWEEN_WAVES, DEFAULT_TURNS_BETWEEN_WAVES);
         arenaOptions.setValue(ARENA_GAME_OPTIONS.TURNS_TO_PREPARE, DEFAULT_TURNS_TO_PREPARE);
     }
-
 
 
 }

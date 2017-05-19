@@ -6,9 +6,9 @@ import main.game.core.game.DC_Game;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class DungeonHandler <E extends DungeonWrapper> {
+public class DungeonHandler<E extends DungeonWrapper> {
 
-    protected   DC_Game game;
+    protected DC_Game game;
     protected DungeonMaster<E> master;
 
     public DungeonHandler(DungeonMaster<E> master) {
@@ -36,7 +36,7 @@ public class DungeonHandler <E extends DungeonWrapper> {
         return master.getBuilder();
     }
 
-    public  Positioner<E> getPositioner() {
+    public Positioner<E> getPositioner() {
         return master.getPositioner();
     }
 
@@ -51,7 +51,6 @@ public class DungeonHandler <E extends DungeonWrapper> {
     public BattleMaster getBattleMaster() {
         return master.getBattleMaster();
     }
-
 
 
     public BattleOptionManager getOptionManager() {

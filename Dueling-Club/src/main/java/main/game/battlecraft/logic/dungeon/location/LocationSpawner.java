@@ -6,14 +6,14 @@ import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battle.arena.Wave;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.universal.Spawner;
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
-import main.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
-import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.bf.Coordinates;
 import main.game.module.adventure.travel.EncounterMaster;
 import main.game.module.dungeoncrawl.ai.DungeonCrawler;
@@ -100,7 +100,6 @@ public class LocationSpawner extends Spawner<Location> {
         }
         encounterMap.put(c, type);
     }
-
 
 
     public void spawnDungeonCreeps(Location dungeon) {

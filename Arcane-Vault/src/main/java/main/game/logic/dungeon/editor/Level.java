@@ -15,14 +15,16 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
-import main.game.battlecraft.logic.dungeon.universal.Dungeon;
-import main.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
-import main.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import main.game.battlecraft.logic.dungeon.location.Location;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
-import main.game.battlecraft.logic.dungeon.location.building.*;
+import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
+import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
+import main.game.battlecraft.logic.dungeon.location.building.MapZone;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
+import main.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.logic.dungeon.editor.gui.LE_MapViewComp;
@@ -41,13 +43,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Level extends DungeonWrapper<Location>{
-
-    private   Location location;
-    private Minimap minimap;
+public class Level extends DungeonWrapper<Location> {
 
     boolean initialized;
-
+    private Location location;
+    private Minimap minimap;
     private Mission mission;
     private String name;
     private String path;
@@ -60,22 +60,13 @@ public class Level extends DungeonWrapper<Location>{
     }
 
     public Level(Dungeon dungeon, Mission mission) {
-        super(dungeon, null );
-        setDungeonMaster( LevelEditor.getSimulation().getDungeonMaster());
+        super(dungeon, null);
+        setDungeonMaster(LevelEditor.getSimulation().getDungeonMaster());
         this.mission = mission;
     }
-    public void setDungeonMaster (LocationMaster master){
-        this. master = master;
-        this.location = this.master.getDungeonWrapper();
-        setDungeon(master.getInitializer().initDungeon().getDungeon());
-    }
-        public void setDungeon (Dungeon d){
-        this.dungeon=d;
-    this.minimap = new Minimap(true, dungeon);
-}
     public Level(String baseDungeonType, Mission mission, String data, boolean empty) {
-      super(null , null );
-      setDungeonMaster( LevelEditor.getSimulation().getDungeonMaster());
+        super(null, null);
+        setDungeonMaster(LevelEditor.getSimulation().getDungeonMaster());
         this.mission = mission;
         LevelEditor.getMainPanel().setCurrentLevel(this);
         if (DataManager.getType(baseDungeonType, DC_TYPE.DUNGEONS) != null) {
@@ -166,6 +157,17 @@ public class Level extends DungeonWrapper<Location>{
             // }
 
         }
+    }
+
+    public void setDungeonMaster(LocationMaster master) {
+        this.master = master;
+        this.location = this.master.getDungeonWrapper();
+        setDungeon(master.getInitializer().initDungeon().getDungeon());
+    }
+
+    public void setDungeon(Dungeon d) {
+        this.dungeon = d;
+        this.minimap = new Minimap(true, dungeon);
     }
 
     private String getDefaultWorkspaceGroup() {
@@ -573,7 +575,7 @@ public class Level extends DungeonWrapper<Location>{
     }
 
     public MiniGrid getGrid() {
-        return  getMinimap().getGrid();
+        return getMinimap().getGrid();
     }
 
     public List<AiGroupData> getAiGroups() {
@@ -604,7 +606,6 @@ public class Level extends DungeonWrapper<Location>{
     public List<MapBlock> getBlocks() {
         return location.getPlan().getBlocks();
     }
-
 
 
     public Minimap getMinimap() {

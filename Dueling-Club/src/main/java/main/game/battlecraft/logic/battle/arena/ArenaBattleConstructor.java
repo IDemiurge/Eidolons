@@ -37,7 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle>{
+public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
     public static final ENCOUNTER_TYPE[] default_encounter_sequence_1 = {EncounterEnums.ENCOUNTER_TYPE.REGULAR,
             EncounterEnums.ENCOUNTER_TYPE.ELITE,
             // ENCOUNTER_TYPE.REGULAR,

@@ -27,7 +27,6 @@ public class DemoLauncher {
         coreGame.start(true);
 
 
-
     }
 
     public static void main(String[] args) {

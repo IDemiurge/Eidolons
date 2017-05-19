@@ -38,26 +38,24 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
     public static final String CUSTOM_PROPS_NODE = "Custom Props";
     public static final String DIRECTION_MAP_NODE = "Direction Map";
     public static final String WALL_OBJ_DATA_NODE = "Wall Objects";
-    protected static final String FLIP_MAP_NODE = "Flipping";
-
     public static final int BASE_WIDTH = 21;
     public static final int BASE_HEIGHT = 15;
+    protected static final String FLIP_MAP_NODE = "Flipping";
 
 
-    public int getDefaultHeight() {
-        return BASE_HEIGHT;
-    }
-    public int getDefaultWidth() {
-        return BASE_WIDTH;
-    }
     public DungeonBuilder(DungeonMaster master) {
         super(master);
     }
 
+    public int getDefaultHeight() {
+        return BASE_HEIGHT;
+    }
 
+    public int getDefaultWidth() {
+        return BASE_WIDTH;
+    }
 
-
-    public E buildDungeon(String path ) {
+    public E buildDungeon(String path) {
         String data = FileManager.readFile(path);
 
         if (data.isEmpty()) {
@@ -91,9 +89,9 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         E dungeon = getInitializer().createDungeon(type);
         dungeon.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
         // getDungeon().setName(name)
-        
 
-        return dungeon;
+
+            return dungeon;
 
     }
 
@@ -104,18 +102,18 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
 
             if (!StringMaster.isEmpty(wallObjData)) {
                 plan.setWallObjects(DC_ObjInitializer.createUnits(DC_Player.NEUTRAL,
-                 wallObjData));
+                        wallObjData));
             }
 
         }
 
         if (StringMaster.compareByChar(n.getNodeName(), (FLIP_MAP_NODE))) {
             plan.setFlipMap(new RandomWizard<FLIP>().constructStringWeightMapInversed(n
-             .getTextContent(), FLIP.class));
+                    .getTextContent(), FLIP.class));
 
         } else if (StringMaster.compareByChar(n.getNodeName(), (DIRECTION_MAP_NODE))) {
             plan.setDirectionMap(new RandomWizard<DIRECTION>()
-             .constructStringWeightMapInversed(n.getTextContent(), DIRECTION.class));
+                    .constructStringWeightMapInversed(n.getTextContent(), DIRECTION.class));
 
         } else if (StringMaster.compareByChar(n.getNodeName(), (CUSTOM_PARAMS_NODE))) {
             TypeBuilder.setParams(dungeon.getDungeon(), n);

@@ -7,9 +7,9 @@ import main.game.battlecraft.ai.GroupAI;
 import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
+import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.universal.Spawner;
-import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.system.auxiliary.StringMaster;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class TestSpawner extends Spawner<TestDungeon>{
+public class TestSpawner extends Spawner<TestDungeon> {
 
 
     private static boolean playerUnitGroupMode;
@@ -92,15 +92,15 @@ public class TestSpawner extends Spawner<TestDungeon>{
 
         }
         spawnCoordinates = (me) ? getPositioner().getPlayerSpawnCoordinates() : getPositioner()
-         .getEnemySpawningCoordinates();
+                .getEnemySpawningCoordinates();
         offset_coordinate = spawnCoordinates.getOffsetByX(offsetX).getOffsetByY(offsetY);
         DC_ObjInitializer.createUnits(game.getPlayer(me), data, offset_coordinate);
 
         LogMaster.logToFile("spawnCoordinates=" + spawnCoordinates + " ;offset_coordinate="
-         + offset_coordinate + ";height=" + height + "; width=" + width);
+                + offset_coordinate + ";height=" + height + "; width=" + width);
         LogMaster.log(1, "spawnCoordinates=" + spawnCoordinates
-         + " ;offset_coordinate=" + offset_coordinate + ";height=" + height + "; width="
-         + width);
+                + " ;offset_coordinate=" + offset_coordinate + ";height=" + height + "; width="
+                + width);
     }
 
     public void spawnPartyAt(PartyObj party, Coordinates coordinates) {

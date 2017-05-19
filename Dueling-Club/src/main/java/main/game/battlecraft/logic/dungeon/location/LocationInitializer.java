@@ -15,7 +15,7 @@ import main.system.images.ImageManager;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class LocationInitializer extends DungeonInitializer<Location>{
+public class LocationInitializer extends DungeonInitializer<Location> {
     public LocationInitializer(DungeonMaster master) {
         super(master);
     }
@@ -57,7 +57,8 @@ public class LocationInitializer extends DungeonInitializer<Location>{
 //            getDungeons().add(subLevel);
 //        }
     }
-//TODO this is macro!
+
+    //TODO this is macro!
     public void initEncounterDungeon(Encounter e) {
         ObjType type = new ObjType(e.getRoute().getName(), DC_TYPE.DUNGEONS);
         type.initType();
@@ -85,8 +86,6 @@ public class LocationInitializer extends DungeonInitializer<Location>{
         }
         return type;
     }
-
-
 
 
 }

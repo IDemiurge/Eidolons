@@ -16,8 +16,8 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.BattleOptions.DIFFICULTY;
-import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
+import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.system.SortMaster;
@@ -268,7 +268,7 @@ public class HC_SequenceMaster implements SequenceManager {
     }
 
     @Refactor
-        public boolean prebattleChoiceSequence(Unit hero) {
+    public boolean prebattleChoiceSequence(Unit hero) {
 
         final ChoiceSequence cs = new ChoiceSequence();
         List<Entity> list = ListMaster.getEntityList(PartyHelper.getParty().getMembers());

@@ -15,9 +15,9 @@ import main.game.battlecraft.logic.battle.universal.BattleHandler;
 import main.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.battlecraft.logic.battle.universal.BattleOptions;
 import main.game.battlecraft.logic.battle.universal.BattleOptions.DIFFICULTY;
+import main.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.Spawner;
-import main.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
@@ -150,7 +150,7 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
 
     public void applyGrowth(GROWTH_PRIORITIES priority) {
         LogMaster.log(LOG_CHANNELS.WAVE_ASSEMBLING, priority + " is being applied" + "; Power = "
-         + power);
+                + power);
         switch (priority) {
             case EXTEND:
                 applyExtend();
@@ -181,10 +181,10 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
         String presetGroupTypes = wave.getPresetGroupTypes();
         if (shrunk_or_extended != null) {
             presetGroupTypes = (shrunk_or_extended) ? wave.getShrunkenGroupTypes() : wave
-             .getExtendedGroupTypes();
+                    .getExtendedGroupTypes();
         }
         List<ObjType> types = DataManager.toTypeList(presetGroupTypes,
-         C_OBJ_TYPE.UNITS_CHARS);
+                C_OBJ_TYPE.UNITS_CHARS);
         if (groups >= MAX_GROUPS) {
             return false;
         }
@@ -211,7 +211,7 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
         List<ObjType> types = wave.getUnitMap().stream().map(t -> t.getType()).collect(Collectors.toList());
         positioner.setMaxSpacePercentageTaken(Spawner.MAX_SPACE_PERC_CREEPS);
         List<ObjAtCoordinate> group =
-         positioner.getCoordinatesForUnitGroup(types, wave, wave.getUnitLevel());
+                positioner.getCoordinatesForUnitGroup(types, wave, wave.getUnitLevel());
         wave.setUnitMap(group);
     }
 
@@ -284,7 +284,7 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
 
         if (objType == null) {
             List<ObjType> fillingTypes = DataManager
-             .toTypeList(list, C_OBJ_TYPE.UNITS_CHARS);
+                    .toTypeList(list, C_OBJ_TYPE.UNITS_CHARS);
             if (fillingTypes.isEmpty()) {
                 return null;
             }
@@ -340,7 +340,7 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
         }
         int diff = (getTargetPower() - power) * 100 / getTargetPower();
         LogMaster.log(LOG_CHANNELS.WAVE_ASSEMBLING, wave.getName() + "' Power = " + power
-         + " vs target of " + getTargetPower() + ", diff = " + diff);
+                + " vs target of " + getTargetPower() + ", diff = " + diff);
         return diff > POWER_GAP;
 
     }
@@ -358,13 +358,13 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
         }
         int diff = (i - getTargetPower()) * 100 / i;
         LogMaster.log(LOG_CHANNELS.WAVE_ASSEMBLING, i + " vs target of " + getTargetPower()
-         + ", diff = " + diff);
+                + ", diff = " + diff);
         return diff > POWER_GAP;
     }
 
     private List<GROWTH_PRIORITIES> getPriorities(Wave wave) {
         return new EnumMaster<GROWTH_PRIORITIES>().getEnumList(GROWTH_PRIORITIES.class, wave
-         .getProperty(PROPS.GROWTH_PRIORITIES));
+                .getProperty(PROPS.GROWTH_PRIORITIES));
     }
 
     public int getPowerPercentage(Wave wave) {

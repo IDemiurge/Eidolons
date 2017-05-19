@@ -4,7 +4,7 @@ import main.client.cc.logic.party.PartyObj;
 import main.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import main.system.data.DataUnit;
 
-public class UnitData extends DataUnit<PARTY_VALUE>{
+public class UnitData extends DataUnit<PARTY_VALUE> {
 
 
     public static final Boolean FORMAT =false ;
@@ -13,10 +13,15 @@ public class UnitData extends DataUnit<PARTY_VALUE>{
 
     }
 
+    public UnitData(String data) {
+        super(data);
+    }
+
     @Override
     public Boolean getFormat() {
         return FORMAT;
     }
+
 
     /*
             coordinates?
@@ -57,12 +62,6 @@ public class UnitData extends DataUnit<PARTY_VALUE>{
     LEVEL,
     FACING_TEMPLATE,
 
-}
-
-
-
-    public UnitData(String data) {
-        super(data);
     }
 
 

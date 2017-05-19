@@ -11,9 +11,7 @@ import java.awt.*;
 import java.util.Set;
 
 public class Player {
-    public static Player NEUTRAL
-
-     ;
+    public static Player NEUTRAL;
 
 
     protected MicroObj heroObj;
@@ -154,11 +152,11 @@ public class Player {
         this.game = game;
     }
 
-    public void setMainHeroName(String mainHeroName) {
-        this.mainHeroName = mainHeroName;
-    }
-
     public String getMainHeroName() {
         return mainHeroName;
+    }
+
+    public void setMainHeroName(String mainHeroName) {
+        this.mainHeroName = mainHeroName;
     }
 }

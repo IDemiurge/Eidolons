@@ -11,11 +11,11 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.battlecraft.logic.dungeon.test.TestSpawner;
+import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import main.game.battlecraft.logic.dungeon.universal.Spawner;
-import main.game.battlecraft.logic.dungeon.test.TestSpawner;
-import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.game.core.GameLoop;
@@ -212,7 +212,7 @@ public class TestLauncher //extends MetaGameMaster
         LaunchDataKeeper dataKeeper = createDataKeeper();
         if (workspaceFilter != null)
             dataKeeper.getDungeonData().setValue(DUNGEON_VALUE.WORKSPACE_FILTER
-             , workspaceFilter.toString());
+                    , workspaceFilter.toString());
 
         game.setDataKeeper(dataKeeper);
     }

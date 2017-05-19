@@ -166,7 +166,6 @@ public class EntityWrapper<E extends Entity> {
     }
 
 
-
     public void invokeClicked() {
         entity.invokeClicked();
     }
@@ -191,12 +190,12 @@ public class EntityWrapper<E extends Entity> {
         return entity.getGame();
     }
 
-    public String getDoubleParam(PARAMETER param, boolean base) {
-        return entity.getDoubleParam(param, base);
-    }
-
     public void setGame(Game game) {
         entity.setGame(game);
+    }
+
+    public String getDoubleParam(PARAMETER param, boolean base) {
+        return entity.getDoubleParam(param, base);
     }
 
     public Game getGenericGame() {
@@ -239,12 +238,12 @@ public class EntityWrapper<E extends Entity> {
         return entity.getPassives();
     }
 
-    public Integer getIntParam(PARAMETER param, boolean base) {
-        return entity.getIntParam(param, base);
-    }
-
     public void setPassives(List<AbilityObj> passives) {
         entity.setPassives(passives);
+    }
+
+    public Integer getIntParam(PARAMETER param, boolean base) {
+        return entity.getIntParam(param, base);
     }
 
     public List<AbilityObj> getPassivesFiltered() {
@@ -307,12 +306,12 @@ public class EntityWrapper<E extends Entity> {
         return entity.getImage();
     }
 
-    public Boolean getBoolean(String prop) {
-        return entity.getBoolean(prop);
-    }
-
     public void setImage(String image) {
         entity.setImage(image);
+    }
+
+    public Boolean getBoolean(String prop) {
+        return entity.getBoolean(prop);
     }
 
     public String getProperty(String prop) {

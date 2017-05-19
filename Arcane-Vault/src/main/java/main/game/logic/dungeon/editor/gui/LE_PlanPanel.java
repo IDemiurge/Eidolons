@@ -1,7 +1,7 @@
 package main.game.logic.dungeon.editor.gui;
 
-import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.PROPS;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.filesys.PathFinder;
@@ -9,13 +9,13 @@ import main.data.xml.XML_Writer;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
-import main.game.bf.Coordinates;
-import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.battlecraft.logic.dungeon.location.building.MapZone;
+import main.game.bf.Coordinates;
 import main.game.logic.dungeon.editor.*;
 import main.game.logic.dungeon.editor.LE_MouseMaster.CONTROL_MODE;
+import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;

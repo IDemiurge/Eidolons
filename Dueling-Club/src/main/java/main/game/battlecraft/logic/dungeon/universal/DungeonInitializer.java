@@ -20,10 +20,9 @@ import java.util.List;
 public abstract class DungeonInitializer<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public static final String RANDOM_DUNGEON = "random";
+    public static boolean RANDOM = false;
     protected String presetDungeonType;
     private String dungeonPath;
-
-    public static boolean RANDOM = false;
     public DungeonInitializer(DungeonMaster<E> master) {
         super(master);
     }
@@ -33,7 +32,7 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         String formatted="";
         DungeonData.
             DUNGEON_VALUE value;
-            if (dataString.contains(".xml")){
+        if (dataString.contains(".xml")) {
                 value = DUNGEON_VALUE.PATH;
             } else
                 value = DUNGEON_VALUE.TYPE_NAME;
@@ -42,7 +41,8 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
 
         return new DungeonData(formatted);
     }
-@Deprecated
+
+    @Deprecated
     public E initDungeon(String path) {
         setDungeonPath(path);
         return (E) getBuilder().buildDungeon(path );
@@ -86,11 +86,12 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         if (list.isEmpty()) {
             list = DataManager.getTypes(DC_TYPE.DUNGEONS);
             FilterMaster.filterByProp(list, G_PROPS.WORKSPACE_GROUP.getName(),
-             MetaEnums.WORKSPACE_GROUP.FOCUS + "");
+                    MetaEnums.WORKSPACE_GROUP.FOCUS + "");
         }
         type = list.get(RandomWizard.getRandomListIndex(list));
         return type;
     }
+
     public E initDungeonLevelChoice() {
 
         if (RANDOM) {
@@ -99,7 +100,7 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         List<ObjType> types = DataManager.getTypes(DC_TYPE.DUNGEONS);
         ObjType type = ListChooser.chooseType(types);
         if (type != null) {
-            return createDungeon(type) ;
+            return createDungeon(type);
         }
 
         return null;
@@ -107,8 +108,8 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
 
     protected String getRandomDungeonPath() {
         return FileManager.getRandomFile(
-         FileManager.getFilesFromDirectory(PathFinder.getDungeonLevelFolder()
-          + getDungeonLevelSubfolder(), false)).getPath();
+                FileManager.getFilesFromDirectory(PathFinder.getDungeonLevelFolder()
+                        + getDungeonLevelSubfolder(), false)).getPath();
     }
 
     //TODO different for each Type?
