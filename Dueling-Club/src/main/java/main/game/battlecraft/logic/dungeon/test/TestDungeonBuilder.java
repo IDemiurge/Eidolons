@@ -7,7 +7,7 @@ import main.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class TestDungeonBuilder<E extends DungeonWrapper> extends DungeonBuilder<E>{
+public class TestDungeonBuilder<E extends DungeonWrapper> extends DungeonBuilder<E> {
     public static final int BASE_WIDTH = 15;
     public static final int BASE_HEIGHT = 11;
 

@@ -5,10 +5,8 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.battle.DC_Player;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
-import main.game.battlecraft.logic.dungeon.Spawner.SPAWN_MODE;
 import main.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
 import main.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
@@ -20,7 +18,6 @@ import main.game.bf.DirectionMaster;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.graphics.GuiManager;
@@ -42,11 +39,6 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public Positioner(DungeonMaster<E> master) {
         super(master);
     }
-
-    public boolean isAutoOptimalFacing() {
-        return true;
-    }
-
 
     public static Coordinates adjustCoordinate(Coordinates c, FACING_DIRECTION facing) {
         return adjustCoordinate(null, c, facing);
@@ -77,14 +69,13 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         // blocked
         while (!loop.continues() &&
 
-
                 !DC_Game.game.getBattleFieldManager().canMoveOnto(entity, c)
 
-         // (DC_Game.game.getBattleField().getGrid().isCoordinateObstructed(coordinate)
-         || coordinate == null) {
+                // (DC_Game.game.getBattleField().getGrid().isCoordinateObstructed(coordinate)
+                || coordinate == null) {
 
             Coordinates adjacentCoordinate = c
-             .getAdjacentCoordinate(ArenaPositioner.getRandomSpawnAdjustDirection());
+                    .getAdjacentCoordinate(ArenaPositioner.getRandomSpawnAdjustDirection());
             coordinate = adjustCoordinate(adjacentCoordinate, facing);
         }
         if (coordinate.isInvalid()) {
@@ -95,44 +86,6 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public boolean isAutoOptimalFacing() {
         return true;
-    }
-
-    public List<Coordinates> initPartyCoordinates(List<String> partyTypes,
-                                                  Boolean mine_enemy_third) {
-
-        String partyData = "";
-//        getPositioner().setMaxSpacePercentageTaken(MAX_SPACE_PERC_PARTY);
-        List<Coordinates> coordinates = null;
-
-        if (PartyManager.getParty() != null) {
-            if (MapMaster.isNotEmpty(PartyManager.getParty().getPartyCoordinates())) {
-                coordinates = new LinkedList<>(PartyManager.getParty().getPartyCoordinates()
-                        .values());
-                partyTypes = ListMaster.toNameList(PartyManager.getParty().getPartyCoordinates()
-                        .keySet());
-            }
-
-        }
-        if (coordinates == null) {
-            coordinates = getPartyCoordinates(null, BooleanMaster
-                    .isTrue(mine_enemy_third), partyTypes);
-        }
-
-        int i = 0;
-
-        for (String subString : partyTypes) {
-            Coordinates c = coordinates.get(i);
-            if (c == null) {
-                LogMaster.log(1, subString + " coordinate BLAST!!!");
-            }
-            i++;
-            subString = c + DC_ObjInitializer.COORDINATES_OBJ_SEPARATOR + subString;
-            partyData += subString + DC_ObjInitializer.OBJ_SEPARATOR;
-            //TODO string not needed?
-        }
-
-
-        return coordinates;
     }
 
     public Map<Unit, Coordinates> getPartyCoordinates(List<Unit> members) {
@@ -148,11 +101,13 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public List<Coordinates> getPlayerPartyCoordinates(List<String> partyTypes) {
         return getPartyCoordinates(getDungeon().getPlayerSpawnCoordinates(), true, partyTypes);
     }
-public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MODE mode) {
+    public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MODE mode) {
         return
          StringMaster.convertToStringList(
           getPartyCoordinates(null, owner.isMe(), types));
     }
+
+
     public List<Coordinates> getPartyCoordinates(Coordinates origin, Boolean me,
                                                  List<String> partyTypes) {
 
@@ -178,7 +133,7 @@ public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MO
 
                 } else {
 
-                    origin =  getEnemySpawningCoordinates();
+                    origin = getEnemySpawningCoordinates();
                     if (origin == null) {
                         // getGame().getDungeon().getDefaultEnemyCoordinates();
                         // for
@@ -210,7 +165,6 @@ public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MO
     public Coordinates getEnemySpawningCoordinates() {
         return getEnemyTestPartyCoordinates();
     }
-
     public Coordinates getPlayerSpawnCoordinates() {
         return Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
     }
@@ -220,7 +174,7 @@ public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MO
 
         // default - getOrCreate a random point in some range from player start
 
-        Coordinates playerC =  getPlayerSpawnCoordinates();
+        Coordinates playerC = getPlayerSpawnCoordinates();
         if (playerC == null) {
             playerC =getPlayerSpawnCoordinates();// Coordinates.getMiddleCoordinate(ArenaPositioner.DEFAULT_PLAYER_SIDE);
         }
@@ -262,7 +216,6 @@ public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MO
         }
         Coordinates adjacentCoordinate = c.getAdjacentCoordinate(spawnSide);
         if (checkCanPlaceUnitOnCoordinate(adjacentCoordinate, objType)) {
-
             getFacingAdjuster().unitPlaced(adjacentCoordinate,
                     FacingMaster.getFacingFromDirection(
                             ArenaPositioner.DEFAULT_CENTER_SPAWN_SIDE, false, false));
@@ -276,7 +229,6 @@ public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MO
             direction = DirectionMaster.rotate90(direction, false);
             nextCoordinate = c.getAdjacentCoordinate(direction);
             if (checkCanPlaceUnitOnCoordinate(nextCoordinate, objType)) {
-
                 getFacingAdjuster().unitPlaced(nextCoordinate, FacingMaster.getFacingFromDirection(direction, true,
                         true));
                 return nextCoordinate;

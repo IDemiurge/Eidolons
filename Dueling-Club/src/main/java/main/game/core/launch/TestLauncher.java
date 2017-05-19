@@ -11,11 +11,11 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.battlecraft.logic.dungeon.test.TestSpawner;
+import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import main.game.battlecraft.logic.dungeon.universal.Spawner;
-import main.game.battlecraft.logic.dungeon.test.TestSpawner;
-import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.game.core.GameLoop;
@@ -52,7 +52,6 @@ public class TestLauncher //extends MetaGameMaster
     public int PARTY_CODE = CODE.CHOOSE;
     public boolean VISION_HACK = false;
     public boolean LEADER_MOVES_FIRST = false;
-    private String dungeon= "Cemetary.xml";
     public String ENEMY_PARTY = "Pirate";
     public String PLAYER_PARTY =
      "Luwien Tulanir v3,Blauri Kinter v2"
@@ -71,14 +70,9 @@ public class TestLauncher //extends MetaGameMaster
     private Integer ENEMY_CHOICE_OPTION = 0;
     private DC_Game game;
     private String encounterName;
-    private Integer unitGroupLevel;
-    private boolean factionLeaderRequired;
     private WORKSPACE_GROUP workspaceFilter;
-    private GAME_SUBCLASS gameType=GAME_SUBCLASS.TEST;
+    private GAME_SUBCLASS gameType = GAME_SUBCLASS.TEST;
 
-    public TestLauncher(DC_Game game) {
-        this(game, null, null );
-    }
 
     public TestLauncher(DC_Game game, Boolean FAST_MODE, Boolean SUPER_FAST_MODE) {
         this.game = game;
@@ -139,11 +133,11 @@ public class TestLauncher //extends MetaGameMaster
                 if (PresetLauncher.getLaunch().gameType != null)
                     gameType = PresetLauncher.getLaunch().gameType;
 
-        game =  GameFactory.createGame(gameType);
+            game = GameFactory.createGame(gameType);
 //                game = new DC_Game(false);
-            }
-            DC_Game.game=(game);
-            initFlags();
+        }
+        DC_Game.game = (game);
+        initFlags();
         if (DEBUG_MODE != null) {
             game.setDebugMode(DEBUG_MODE);
         }
@@ -153,12 +147,10 @@ public class TestLauncher //extends MetaGameMaster
                 game.setDebugMode(Launcher.isDEBUG_MODE_DEFAULT());
             }
             initPlayerParties();
-
-}
-            game.init();
-
-            game.dungeonInit();
-initData();
+        }
+        game.init();
+        game.dungeonInit();
+        initData();
         game.battleInit();
         if (DUMMY_MODE) {
             game.setDummyMode(true);
@@ -199,7 +191,7 @@ initData();
         if (PresetMaster.getPreset() == null) {
             if (getFAST_MODE()) {
                 if (dungeon == null) {
-                    dungeon= DungeonInitializer.RANDOM_DUNGEON;
+                    dungeon = DungeonInitializer.RANDOM_DUNGEON;
                 }
                 TestMasterContent.test_on = false;
             }
@@ -215,12 +207,16 @@ initData();
 
     }
 
-    public void initData() {    LaunchDataKeeper dataKeeper = createDataKeeper();
-        if (workspaceFilter!=null )
-        dataKeeper.getDungeonData().setValue(DUNGEON_VALUE.WORKSPACE_FILTER
-         , workspaceFilter.toString());
+    public void initData() {
+
+        LaunchDataKeeper dataKeeper = createDataKeeper();
+        if (workspaceFilter != null)
+            dataKeeper.getDungeonData().setValue(DUNGEON_VALUE.WORKSPACE_FILTER
+                    , workspaceFilter.toString());
+
         game.setDataKeeper(dataKeeper);
     }
+
     private void initLaunch(LAUNCH launch) {
 
 //            if (PresetLauncher.getLaunch().preset != null) {

@@ -9,7 +9,6 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
-import main.game.battlecraft.logic.meta.PartyManager;
 import main.game.battlecraft.rules.combat.damage.DamageCalculator;
 import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context;
@@ -99,7 +98,7 @@ public class DeathMaster extends Master {
             REF.setTarget(killed.getId());
             REF.setSource(killer.getId());
             if (killed instanceof Unit) {
-                getGame().getBattleMaster().getStatManager(). unitDies((Unit) killed);
+                getGame().getBattleMaster().getStatManager().unitDies((Unit) killed);
                 getGame().getRules().getMoraleKillingRule().unitDied((Unit) killed,
                         killer.getRef().getAnimationActive());
             }

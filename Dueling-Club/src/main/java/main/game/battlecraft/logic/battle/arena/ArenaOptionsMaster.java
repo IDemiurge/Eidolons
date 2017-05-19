@@ -14,7 +14,7 @@ import main.game.battlecraft.logic.meta.universal.PartyHelper;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle>{
+public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle> {
 
 
     private static final String DEFAULT_LIVES = "2";

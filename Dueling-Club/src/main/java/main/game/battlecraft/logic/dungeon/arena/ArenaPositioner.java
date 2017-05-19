@@ -7,10 +7,10 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
+import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.universal.Positioner;
 import main.game.battlecraft.logic.dungeon.universal.Spawner;
-import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
@@ -62,7 +62,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
         // TODO
         if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor()) {
             origin = new Coordinates(PositionMaster.getMiddleIndex(false), PositionMaster
-             .getMiddleIndex(true));
+                    .getMiddleIndex(true));
         } else {
             FACING_DIRECTION side = ArenaPositioner.DEFAULT_PLAYER_SIDE;
 //            if ( getSpawningSide() != null) {
@@ -252,7 +252,8 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
 
         return side;
     }
-//this is heresy
+
+    //this is heresy
     private FACING_DIRECTION getRandomSide() {
         while (true) {
             side = FacingMaster.getRandomFacing();

@@ -50,7 +50,6 @@ public class LocationInitializer extends DungeonInitializer<Location> {
         return true;
 
     }
-
     public void initSublevel(Dungeon subLevel) {
 //        setDungeon(subLevel);
 ////        game.getBattleField().getBuilder().newDungeon(subLevel);
@@ -58,7 +57,6 @@ public class LocationInitializer extends DungeonInitializer<Location> {
 //            getDungeons().add(subLevel);
 //        }
     }
-
 
     //TODO this is macro!
     public void initEncounterDungeon(Encounter e) {

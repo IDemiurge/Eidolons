@@ -29,7 +29,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
-public abstract class PartyManager<E extends MetaGame> extends  MetaGameHandler<E> {
+public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E> {
 
     protected PartyObj party;
     public PartyManager(MetaGameMaster master) {

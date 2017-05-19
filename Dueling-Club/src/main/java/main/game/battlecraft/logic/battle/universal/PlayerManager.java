@@ -1,7 +1,6 @@
 package main.game.battlecraft.logic.battle.universal;
 
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
-import main.game.battlecraft.logic.dungeon.UnitData;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
@@ -19,7 +18,6 @@ import java.util.List;
 public class PlayerManager<E extends Battle> extends BattleHandler<E> {
 
     public final FLAG_COLOR[] playerColors = {FLAG_COLOR.BLUE, FLAG_COLOR.RED,
-
             FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};
     public List<FLAG_COLOR> unusedPlayerColorsList;
     List<DC_Player> players = new LinkedList<>();
@@ -39,7 +37,6 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
             data = generateDefaultPlayerData();
         }
         unusedPlayerColorsList = new ListMaster<FLAG_COLOR>()
-
                 .getList(playerColors);
         int i = 0;
         for (String substring : StringMaster.openContainer(data)) {
@@ -66,7 +63,7 @@ if (player.isEnemy())
     }
 
 
-        private String generateDefaultPlayerData() {
+    private String generateDefaultPlayerData() {
         String data = "";
 //        emblem = ImageManager.getEmptyEmblem()
         DataUnitFactory<PlayerData> factory = new DataUnitFactory<>(PlayerData.FORMAT);
@@ -87,14 +84,12 @@ if (player.isEnemy())
     public DC_Player initPlayerFromString(String data) {
         PlayerData dataUnit = new PlayerData(data);
         ALLEGIENCE allegience =
-
                 new EnumMaster<ALLEGIENCE>().retrieveEnumConst(ALLEGIENCE.class,
                         dataUnit.getValue(PLAYER_VALUE.ALLEGIENCE));
         if (allegience == null) {
             allegience = ALLEGIENCE.NEUTRAL;
         }
         FLAG_COLOR color = new EnumMaster<FLAG_COLOR>().retrieveEnumConst(FLAG_COLOR.class,
-
                 dataUnit.getValue(PLAYER_VALUE.COLOR));
         if (color == null) {
             color = getRandomColorFlag();
@@ -127,8 +122,9 @@ if (player.isEnemy())
         }
         return null;
     }
-        public DC_Player getPlayer(boolean me) {
-        for (DC_Player player: players){
+
+    public DC_Player getPlayer(boolean me) {
+        for (DC_Player player : players) {
             if (player.isMe())
                 if (me)
                     return player;

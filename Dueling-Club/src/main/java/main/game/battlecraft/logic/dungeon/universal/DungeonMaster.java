@@ -19,17 +19,17 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     protected E dungeonWrapper;
     protected DungeonInitializer<E> initializer;
     protected DungeonBuilder<E> builder;
-    protected  Positioner<E> positioner;
+    protected Positioner<E> positioner;
     protected Spawner<E> spawner;
     protected FacingAdjuster<E> facingAdjuster;
     protected DungeonMapGenerator<E> mapGenerator;
     public DungeonMaster(DC_Game game) {
         this.game = game;
-        initializer= createInitializer();
-        spawner= createSpawner();
-        positioner= createPositioner();
-        facingAdjuster= createFacingAdjuster();
-        builder =createBuilder();
+        initializer = createInitializer();
+        spawner = createSpawner();
+        positioner = createPositioner();
+        facingAdjuster = createFacingAdjuster();
+        builder = createBuilder();
         mapGenerator = new DungeonMapGenerator<E>(this);
     }
 
@@ -40,7 +40,8 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     public void gameStarted() {
         spawner.spawn();
     }
-    public void init(){
+
+    public void init() {
         dungeonWrapper = initializer.initDungeon();
         //TODO remove this!
         GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
@@ -96,8 +97,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return dungeonWrapper;
     }
 
+
     public BattleMaster getBattleMaster() {
-        return  game.getBattleMaster();
+        return game.getBattleMaster();
     }
 
     public PlayerManager getPlayerManager() {

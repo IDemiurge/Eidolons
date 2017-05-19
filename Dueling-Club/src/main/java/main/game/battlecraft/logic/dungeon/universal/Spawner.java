@@ -113,7 +113,6 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         final Integer cellsX = game.getDungeon().getCellsX();
         final Integer cellsY = game.getDungeon().getCellsY();
         GuiEventManager.trigger(BF_CREATED,
-
                 new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
 
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
@@ -125,16 +124,9 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         return SPAWN_MODE.UNIT_GROUP;
     }
 
-    private SPAWN_MODE getSpawnMode(DC_Player player, boolean first) {
-        if (player.isMe())
-            return SPAWN_MODE.PARTY;
-        return SPAWN_MODE.UNIT_GROUP;
-    }
-
     public UnitData generateData(String dataString, DC_Player player,
                                  Coordinates spawnAt) {
         return generateData(dataString,
-
                 player,
                 spawnAt, getPositioner());
     }
@@ -202,17 +194,6 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         spawnCustomParty(me, null);
     }
 
-    public void spawnUnitsAt(List<Unit> units, Coordinates coordinates) {
-        List<String> partyTypes = StringMaster.toNameList(units);
-        List<Coordinates> coordinateList = getPositioner()
-
-                .initPartyCoordinates(partyTypes, null);
-        int index = 0;
-        for (Unit m : units) {
-            m.setCoordinates(coordinateList.get(index));
-            index++;
-        }
-    }
 
 
 
@@ -252,7 +233,6 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
             if (party.getPartyCoordinates() == null) {
                 if (
-
                         getGame().getGameMode() == GAME_MODES.ARENA ||
                                 getGame().getGameMode() == GAME_MODES.ARENA_ARCADE) {
                     hero.setFacing(FacingMaster.getPresetFacing(true));

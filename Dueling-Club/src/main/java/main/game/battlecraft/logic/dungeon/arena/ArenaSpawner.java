@@ -8,13 +8,9 @@ import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battle.arena.ArenaBattleMaster;
 import main.game.battlecraft.logic.battle.arena.Wave;
-import main.game.battlecraft.logic.dungeon.DungeonMaster;
-import main.game.battlecraft.logic.dungeon.Positioner;
-import main.game.battlecraft.logic.dungeon.Spawner;
-import main.game.battlecraft.logic.meta.PartyHelper;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.universal.Positioner;
 import main.game.battlecraft.logic.dungeon.universal.Spawner;
@@ -97,7 +93,7 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
             unitMap = wave.getUnitMap();
         }
         try {
-            getBattleMaster(). getWaveAssembler().resetPositions(wave);
+            getBattleMaster().getWaveAssembler().resetPositions(wave);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,7 +118,6 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
             unit.setFacing(facing);
             wave.addUnit(unit);
             game.fireEvent(
-
                     new Event(STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING, Ref.getSelfTargetingRefCopy(unit)));
         }
         if (!PartyHelper.checkMergeParty(wave)) {
@@ -137,7 +132,6 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
     public void waveCleared() {
         if (game.isStarted()) {
             game.getLogManager().log(
-
                     "*** Enemies cleared! Encounters left: " + getScheduledWaves().toString());
             if (PartyHelper.getParty() != null) {
 //                SoundMaster.playEffectSound(SOUNDS.TAUNT, game.getParty().getLeader());
@@ -147,6 +141,7 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
 //         ARENA_GAME_OPTIONS.TURNS_BETWEEN_WAVES);
         roundsToWait++;
     }
+
 
 
     public void newWave(Wave wave) {
@@ -163,7 +158,6 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
             return;
         }
         newWave(new Wave(DataManager.getType(type, DC_TYPE.ENCOUNTERS), game, new Ref(game),
-
                 player));
     }
 

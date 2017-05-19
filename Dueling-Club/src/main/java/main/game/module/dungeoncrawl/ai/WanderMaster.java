@@ -8,6 +8,8 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.GroupAI;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.tools.Analyzer;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder.BLOCK_TYPE;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.Positioner;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.Positioner;
@@ -15,8 +17,6 @@ import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.BLO
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
-import main.game.battlecraft.logic.dungeon.universal.Dungeon;
-import main.game.battlecraft.logic.dungeon.location.LocationBuilder.BLOCK_TYPE;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;

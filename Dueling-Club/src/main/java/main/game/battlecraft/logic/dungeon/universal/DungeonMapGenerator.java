@@ -13,13 +13,6 @@ import main.game.battlecraft.logic.dungeon.location.building.DC_Map;
 import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.battlecraft.logic.dungeon.location.building.MapZone;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.DungeonHandler;
-import main.game.battlecraft.logic.dungeon.DungeonMaster;
-import main.game.battlecraft.logic.dungeon.DungeonWrapper;
-import main.game.battlecraft.logic.dungeon.location.Location;
-import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.ROOM_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
@@ -37,7 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class DungeonMapGenerator <E extends DungeonWrapper> extends DungeonHandler<E>{
+public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandler<E> {
     private static final String ENTRANCE_TYPE = "Dungeon Entrance";
     private static final boolean subLevelTest = false;
     DUNGEON_MAP_TEMPLATE template;
@@ -113,7 +106,7 @@ public class DungeonMapGenerator <E extends DungeonWrapper> extends DungeonHandl
 //        mod = new EnumMaster<DUNGEON_MAP_MODIFIER>().retrieveEnumConst(DUNGEON_MAP_MODIFIER.class,
 //                dungeon.getProperty(PROPS.DUNGEON_MAP_MODIFIER));
 //
-		//		/*
+//		/*
 //         * mod should have a preset initComps option as well.
 //		 */
 //
@@ -137,12 +130,11 @@ public class DungeonMapGenerator <E extends DungeonWrapper> extends DungeonHandl
 //        map.setBackground(background);
 //        return map;
 //    }
-
 //    private void initBfObjMap(Location dungeon) {
 //        objMap = new HashMap<>();
 //        map.setObjMap(objMap);
 //        if (plan != null) {
-            // //if (plan.isPreloaded()) addObjects();
+//            // if (plan.isPreloaded()) addObjects();
 //            if (!dungeon.isRandomized()) {
 //                if (!plan.isLoaded()) {
 //                    generateUndergroundObjects();
@@ -171,16 +163,16 @@ public class DungeonMapGenerator <E extends DungeonWrapper> extends DungeonHandl
 //        if (mod != null) {
 //            objects.addAll(StringMaster.openContainer(mod.getObjects()));
 //        }
-        // //if (mod.getPresetObjects()!=null){ TODO
-        // //StringMaster.openContainer(mod.getPresetObjects(),
-        // //StringMaster.AND_SEPARATOR)
-        // //.getOrCreate(index)
-        // //for ( s s StringMaster.openContainer(mod.getPresetObjects) ){
-        // //c = new Coordinates(s);TODO
-        ////
-        // //}
-        // //objMap.put(c, obj);
-        // //} TODO
+//        // if (mod.getPresetObjects()!=null){ TODO
+//        // StringMaster.openContainer(mod.getPresetObjects(),
+//        // StringMaster.AND_SEPARATOR)
+//        // .getOrCreate(index)
+//        // for ( s s StringMaster.openContainer(mod.getPresetObjects) ){
+//        // c = new Coordinates(s);TODO
+//        //
+//        // }
+//        // objMap.put(c, obj);
+//        // } TODO
 //
 //            sizeMod = getSizeMod(dungeon.getDungeon());
 //

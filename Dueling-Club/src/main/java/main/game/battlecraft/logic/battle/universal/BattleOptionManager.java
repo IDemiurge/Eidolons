@@ -3,7 +3,7 @@ package main.game.battlecraft.logic.battle.universal;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public class BattleOptionManager<E extends Battle> extends  BattleHandler<E>  {
+public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
 
     BattleOptions options;
 

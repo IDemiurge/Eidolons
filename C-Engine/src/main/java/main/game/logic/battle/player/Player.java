@@ -152,11 +152,11 @@ public class Player {
         this.game = game;
     }
 
-    public void setMainHeroName(String mainHeroName) {
-        this.mainHeroName = mainHeroName;
-    }
-
     public String getMainHeroName() {
         return mainHeroName;
+    }
+
+    public void setMainHeroName(String mainHeroName) {
+        this.mainHeroName = mainHeroName;
     }
 }

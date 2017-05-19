@@ -4,37 +4,24 @@ import main.content.CONTENT_CONSTS.FLIP;
 import main.data.xml.XML_Converter;
 import main.entity.obj.MicroObj;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
-import main.game.battlecraft.logic.dungeon.location.Location;
-import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
-import main.game.battlecraft.logic.dungeon.test.TestDungeonBuilder;
-import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import main.game.battlecraft.logic.dungeon.universal.Dungeon;
-import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
-import main.game.battlecraft.logic.dungeon.DungeonBuilder;
 import main.game.battlecraft.logic.dungeon.location.Location;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BUILD_PARAMS;
 import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
-import main.game.battlecraft.logic.dungeon.location.building.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.battlecraft.logic.dungeon.test.TestDungeonBuilder;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
+import main.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
-import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_LAYOUT;
-import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BUILD_PARAMS;
-import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
 
 public class DungeonPlan {
-    private   Location location;
     DUNGEON_TEMPLATES template;
     // Map<MAP_ZONE, DUNGEON_TEMPLATES> subtemplates
     List<MapBlock> blocks;

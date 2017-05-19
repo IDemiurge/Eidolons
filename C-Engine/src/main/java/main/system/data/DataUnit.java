@@ -34,8 +34,10 @@ public class DataUnit<T extends Enum<T>> {
     }
         public List<String> getContainerValues(T t) {
       return
-            StringMaster.openContainer(getValue(t));
-    }public boolean getBooleanValue(T t) {
+              StringMaster.openContainer(getValue(t));
+    }
+
+    public boolean getBooleanValue(T t) {
         return StringMaster.getBoolean(getValue(t));
     }
 

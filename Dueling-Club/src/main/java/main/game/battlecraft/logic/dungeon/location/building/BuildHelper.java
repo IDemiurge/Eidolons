@@ -1,12 +1,9 @@
 package main.game.battlecraft.logic.dungeon.location.building;
 
-import main.game.battlecraft.logic.dungeon.location.Location;
-import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
-import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
-import main.game.battlecraft.logic.dungeon.universal.Dungeon;
+import main.game.battlecraft.logic.dungeon.location.Location;
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.BLOCK_TYPE;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
@@ -14,6 +11,9 @@ import main.game.battlecraft.logic.dungeon.location.Location;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.BLOCK_TYPE;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.swing.XDimension;
@@ -21,9 +21,9 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.data.DataUnit;
 import main.system.math.DC_PositionMaster;
 import main.system.math.MathMaster;
-import main.system.data.DataUnit;
 
 import java.util.LinkedList;
 import java.util.List;
