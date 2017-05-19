@@ -76,14 +76,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     public LocationBuilder(DungeonMaster master) {
         super(master);
     }
-
-    public LocationBuilder() {
-        super(null);
-    }
-
-    public LocationBuilder(DungeonMaster master) {
-        super(master);
-    }
     public static List<ROOM_TYPE> getDefaultMainRooms(DUNGEON_TEMPLATES template) {
         List<ROOM_TYPE> list = new LinkedList<>();
         switch (template) {

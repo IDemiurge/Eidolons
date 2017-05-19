@@ -1,8 +1,8 @@
 package main.game.battlecraft.ai.elements.actions;
 
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.battlecraft.ai.tools.target.AI_SpellMaster;
 
 import java.util.Collection;

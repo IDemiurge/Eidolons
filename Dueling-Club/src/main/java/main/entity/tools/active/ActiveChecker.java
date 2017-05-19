@@ -14,12 +14,12 @@ import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
+import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
 import main.entity.tools.EntityChecker;
 import main.entity.tools.EntityMaster;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
-import main.entity.active.DC_ActionManager;
 
 /**
  * Created by JustMe on 2/23/2017.

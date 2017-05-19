@@ -2,8 +2,8 @@ package main.game.module.adventure.gui.map;
 
 import main.content.values.parameters.MACRO_PARAMS;
 import main.entity.obj.Obj;
-import main.game.bf.Coordinates;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import main.game.bf.Coordinates;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.gui.MacroGuiManager;

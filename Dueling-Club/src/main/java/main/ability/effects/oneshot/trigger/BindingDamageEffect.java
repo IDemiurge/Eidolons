@@ -1,11 +1,11 @@
 package main.ability.effects.oneshot.trigger;
 
-import main.ability.effects.oneshot.DealDamageEffect;
 import main.ability.effects.Effects;
+import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.ability.effects.attachment.AddTriggerEffect;
 import main.ability.effects.continuous.CustomTargetEffect;
-import main.ability.effects.MicroEffect;
+import main.ability.effects.oneshot.DealDamageEffect;
 import main.ability.effects.oneshot.misc.AlteringEffect;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;

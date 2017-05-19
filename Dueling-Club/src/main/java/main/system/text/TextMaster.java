@@ -1,6 +1,5 @@
 package main.system.text;
 
-import main.game.battlecraft.DC_Engine;
 import main.content.DC_ContentManager.ATTRIBUTE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -15,6 +14,7 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
+import main.game.battlecraft.DC_Engine;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;

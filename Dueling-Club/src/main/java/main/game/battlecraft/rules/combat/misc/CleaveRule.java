@@ -9,9 +9,9 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.rules.combat.attack.Attack;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
-import main.game.battlecraft.rules.combat.attack.Attack;
 import main.game.core.game.DC_Game;
 
 public class CleaveRule {

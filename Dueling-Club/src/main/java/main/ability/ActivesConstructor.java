@@ -1,12 +1,15 @@
 package main.ability;
 
 import main.ability.conditions.special.GraveCondition;
-import main.ability.effects.*;
+import main.ability.effects.DC_Effect;
+import main.ability.effects.Effect;
+import main.ability.effects.EffectImpl;
+import main.ability.effects.Effects;
 import main.ability.effects.attachment.AddBuffEffect;
-import main.ability.effects.oneshot.mechanic.RollEffect;
 import main.ability.effects.containers.customtarget.RayEffect;
 import main.ability.effects.containers.customtarget.WaveEffect;
 import main.ability.effects.containers.customtarget.ZoneEffect;
+import main.ability.effects.oneshot.mechanic.RollEffect;
 import main.ability.targeting.TemplateAutoTargeting;
 import main.ability.targeting.TemplateSelectiveTargeting;
 import main.content.C_OBJ_TYPE;

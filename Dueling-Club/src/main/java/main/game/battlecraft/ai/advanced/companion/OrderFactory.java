@@ -2,10 +2,10 @@ package main.game.battlecraft.ai.advanced.companion;
 
 import main.content.ContentManager;
 import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
+import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.content.values.parameters.PARAMETER;
 import main.entity.obj.ActiveObj;
-import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.Arrays;

@@ -1,7 +1,9 @@
 package main.game.battlecraft.ai.advanced.behavior;
 
 import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.entity.Ref;
+import main.entity.active.DC_ActionManager.STD_ACTIONS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.GroupAI;
@@ -9,10 +11,8 @@ import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.battlecraft.ai.tools.path.ActionPath;
 import main.game.bf.Coordinates;
-import main.entity.active.DC_ActionManager.STD_ACTIONS;
 import main.game.module.dungeoncrawl.ai.PatrolMaster;
 import main.game.module.dungeoncrawl.ai.WanderMaster;
 import main.system.auxiliary.data.ListMaster;

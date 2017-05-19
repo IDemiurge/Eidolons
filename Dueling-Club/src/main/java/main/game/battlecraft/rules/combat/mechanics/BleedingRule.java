@@ -10,10 +10,10 @@ import main.elements.conditions.NumericCondition;
 import main.elements.conditions.ObjTypeComparison;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.game.battlecraft.rules.DC_RuleImpl;
 import main.game.core.game.MicroGame;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.battlecraft.rules.DC_RuleImpl;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 

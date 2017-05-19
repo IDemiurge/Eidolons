@@ -7,8 +7,8 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.rules.combat.damage.Damage;
 import main.game.battlecraft.rules.combat.attack.extra_attack.InstantAttackRule.INSTANT_ATTACK_TYPE;
+import main.game.battlecraft.rules.combat.damage.Damage;
 import main.system.graphics.AttackAnimation;
 
 import java.util.List;
@@ -362,18 +362,16 @@ public class Attack {
         return doubleStrike;
     }
 
+    public void setDoubleStrike(boolean doubleStrike) {
+        this.doubleStrike = doubleStrike;
+    }
+
     public void reset() {
         critical = false;
         dodged = false;
         countered = false;
 
     }
-
-    public void setDoubleStrike(boolean doubleStrike) {
-        this.doubleStrike = doubleStrike;
-    }
-
-
 
     public boolean isParried() {
         return parried;

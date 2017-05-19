@@ -1,8 +1,8 @@
 package main.client.cc.logic.spells;
 
-import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.common.ModifyValueEffect;
 import main.content.DC_TYPE;
 import main.content.PARAMS;

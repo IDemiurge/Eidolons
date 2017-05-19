@@ -13,11 +13,11 @@ import main.entity.Ref;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.active.spell.SpellActiveMaster;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
-import main.game.logic.battle.player.Player;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.battlecraft.rules.magic.ChannelingRule;
+import main.game.core.game.DC_Game;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.graphics.Sprite;
 import main.system.sound.SoundMaster;
@@ -26,12 +26,12 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 public class DC_SpellObj extends DC_ActiveObj {
 
     private static final SPELL_TYPE DEFAULT_SPELL_TYPE = SpellEnums.SPELL_TYPE.SORCERY;
+    protected Costs channelingActivateCosts;
+    protected Costs channelingResolveCosts;
     private SPELL_TYPE spellType;
     private SPELL_POOL spellPool;
     private SPELL_GROUP spellGroup;
     private ObjType rawType;
-    protected Costs channelingActivateCosts;
-    protected Costs channelingResolveCosts;
     public DC_SpellObj(ObjType type, Player owner, DC_Game game, Ref ref) {
         super(type, owner, game, ref);
 

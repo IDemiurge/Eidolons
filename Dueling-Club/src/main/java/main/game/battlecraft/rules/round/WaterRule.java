@@ -10,8 +10,8 @@ import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlecraft.rules.action.ActionRule;
+import main.game.core.game.DC_Game;
 import main.system.math.Formula;
 
 import java.util.List;

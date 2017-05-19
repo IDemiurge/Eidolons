@@ -2,9 +2,9 @@ package main.ability.effects.attachment;
 
 import main.ability.Ability;
 import main.ability.ActiveAbility;
-import main.ability.effects.Effect;
-import main.ability.effects.ContainerEffect;
 import main.ability.effects.AttachmentEffect;
+import main.ability.effects.ContainerEffect;
+import main.ability.effects.Effect;
 import main.elements.conditions.Condition;
 import main.elements.targeting.FixedTargeting;
 import main.elements.triggers.Trigger;

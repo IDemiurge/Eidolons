@@ -6,8 +6,8 @@ import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlecraft.rules.counter.DC_CounterRule;
+import main.game.core.game.DC_Game;
 
 /**
  * Created by JustMe on 12/27/2016.

@@ -1,8 +1,8 @@
 package main.game.battlecraft.ai.elements.actions.sequence;
 
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.actions.Action;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.battlecraft.ai.elements.task.Task;
 import main.system.auxiliary.data.ListMaster;
 

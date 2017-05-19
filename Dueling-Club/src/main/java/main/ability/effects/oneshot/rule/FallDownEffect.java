@@ -1,8 +1,8 @@
 package main.ability.effects.oneshot.rule;
 
 import main.ability.effects.DC_Effect;
-import main.ability.effects.oneshot.DealDamageEffect;
 import main.ability.effects.OneshotEffect;
+import main.ability.effects.oneshot.DealDamageEffect;
 import main.content.enums.GenericEnums;
 import main.system.math.Formula;
 

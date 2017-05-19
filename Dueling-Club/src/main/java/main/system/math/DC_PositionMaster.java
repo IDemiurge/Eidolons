@@ -1,10 +1,10 @@
 package main.system.math;
 
 import main.data.XList;
+import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.system.math.PositionMaster.SHAPES;
 
 import java.util.HashSet;

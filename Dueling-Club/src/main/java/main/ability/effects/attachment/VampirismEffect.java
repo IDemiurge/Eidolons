@@ -2,9 +2,9 @@ package main.ability.effects.attachment;
 
 import main.ability.ActiveAbility;
 import main.ability.conditions.DamageTypeCondition;
+import main.ability.effects.AttachmentEffect;
 import main.ability.effects.Effects;
 import main.ability.effects.MicroEffect;
-import main.ability.effects.AttachmentEffect;
 import main.ability.effects.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.elements.conditions.Condition;

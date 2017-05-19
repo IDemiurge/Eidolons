@@ -6,8 +6,8 @@ import main.entity.obj.Structure;
 import main.entity.obj.unit.DC_UnitModel;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.EntityResetter;
-import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 
 /**

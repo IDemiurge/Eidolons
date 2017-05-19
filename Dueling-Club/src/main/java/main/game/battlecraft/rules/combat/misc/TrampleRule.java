@@ -4,16 +4,16 @@ import main.ability.conditions.shortcut.StdPassiveCondition;
 import main.ability.conditions.special.AttackCondition;
 import main.ability.conditions.special.RollCondition;
 import main.ability.effects.Effects;
-import main.ability.effects.oneshot.move.SelfMoveEffect;
 import main.ability.effects.oneshot.InstantDeathEffect;
+import main.ability.effects.oneshot.move.SelfMoveEffect;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NumericCondition;
 import main.entity.Ref.KEYS;
+import main.game.battlecraft.rules.DC_RuleImpl;
 import main.game.core.game.MicroGame;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.battlecraft.rules.DC_RuleImpl;
 
 public class TrampleRule extends DC_RuleImpl {
 

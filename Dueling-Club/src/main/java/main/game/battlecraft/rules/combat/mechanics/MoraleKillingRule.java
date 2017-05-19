@@ -12,10 +12,10 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.unit.DC_UnitModel;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.tools.ParamAnalyzer;
+import main.game.battlecraft.rules.DC_RuleImpl;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.battlecraft.rules.DC_RuleImpl;
 import main.system.math.PositionMaster;
 
 public class MoraleKillingRule extends DC_RuleImpl {

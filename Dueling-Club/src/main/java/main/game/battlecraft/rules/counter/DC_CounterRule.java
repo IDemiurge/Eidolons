@@ -16,8 +16,8 @@ import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlecraft.rules.magic.ImmunityRule;
+import main.game.core.game.DC_Game;
 import main.system.auxiliary.log.LogMaster.LOG;
 
 import java.util.HashMap;

@@ -1,9 +1,7 @@
 package main.game.battlecraft;
 
 import main.content.DC_ContentManager;
-import main.data.DataManager;
 import main.entity.active.DC_ActionManager;
-import main.entity.obj.DC_Cell;
 import main.swing.DC_GuiManager;
 import main.swing.components.obj.drawing.DrawHelper;
 import main.system.DC_ConditionMaster;

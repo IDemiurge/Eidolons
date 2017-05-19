@@ -5,8 +5,8 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.tools.EntityAnimator;
 import main.entity.tools.EntityMaster;
-import main.game.bf.Coordinates;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import main.game.bf.Coordinates;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
@@ -23,12 +23,11 @@ public class ActiveAnimator extends EntityAnimator<DC_ActiveObj> {
     private static final String[] ANIMATION_EXCEPTIONS = {"Turn Clockwise", "Move",
             "Turn Anticlockwise",};
     PhaseAnimation anim;
+    Ref animRef;
+    Set<Coordinates> zoneAnimCoordinates;
     private boolean costAnimAdded;
     private String animationKey;
     private ANIM animation;
-
-    Ref animRef;
-    Set<Coordinates> zoneAnimCoordinates;
 
 
     public ActiveAnimator(DC_ActiveObj entity, EntityMaster<DC_ActiveObj> entityMaster) {

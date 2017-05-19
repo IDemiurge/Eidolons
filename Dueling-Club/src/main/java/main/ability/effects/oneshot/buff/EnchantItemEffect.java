@@ -1,14 +1,14 @@
 package main.ability.effects.oneshot.buff;
 
 import main.ability.AddSpecialEffects;
+import main.ability.effects.Effects;
+import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.ability.effects.attachment.AddBuffEffect;
-import main.ability.effects.Effects;
 import main.ability.effects.common.ModifyValueEffect;
 import main.ability.effects.containers.EnergyCostEffect;
 import main.ability.effects.special.media.AnimationEffect;
 import main.ability.effects.special.media.SoundEffect;
-import main.ability.effects.MicroEffect;
 import main.ability.targeting.TemplateSelectiveTargeting;
 import main.client.cc.logic.items.Enchanter;
 import main.content.PARAMS;

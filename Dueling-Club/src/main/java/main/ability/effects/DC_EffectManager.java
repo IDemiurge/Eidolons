@@ -7,8 +7,8 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
-import main.game.core.game.DC_Game;
 import main.game.battlecraft.rules.magic.ResistanceRule;
+import main.game.core.game.DC_Game;
 
 public class DC_EffectManager implements EffectManager {
 

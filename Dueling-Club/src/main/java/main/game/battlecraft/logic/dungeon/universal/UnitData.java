@@ -6,12 +6,6 @@ import main.system.data.DataUnit;
 
 public class UnitData extends DataUnit<PARTY_VALUE> {
 
-
-    public UnitData(String data) {
-        super(data);
-    }
-
-
     public static final Boolean FORMAT =false ;
 
     public UnitData(PartyObj partyObj) {

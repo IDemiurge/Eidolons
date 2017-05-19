@@ -1,7 +1,6 @@
 package main.entity.tools.bf.structure;
 
 import main.entity.obj.Structure;
-import main.entity.obj.Structure;
 import main.entity.tools.*;
 
 /**

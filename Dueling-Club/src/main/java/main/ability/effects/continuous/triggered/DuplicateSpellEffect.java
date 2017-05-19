@@ -1,7 +1,7 @@
 package main.ability.effects.continuous.triggered;
 
-import main.ability.effects.TriggeredEffect;
 import main.ability.effects.MicroEffect;
+import main.ability.effects.TriggeredEffect;
 import main.ability.effects.oneshot.activation.CastNewSpellEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;

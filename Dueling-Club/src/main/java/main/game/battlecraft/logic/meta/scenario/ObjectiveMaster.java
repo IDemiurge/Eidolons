@@ -12,13 +12,13 @@ import main.elements.triggers.Trigger;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
-import main.game.bf.Coordinates;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
-import main.game.core.game.DC_Game;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
-import main.game.module.dungeoncrawl.dungeon.Location;
+import main.game.bf.Coordinates;
+import main.game.core.game.DC_Game;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.module.dungeoncrawl.dungeon.Location;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 

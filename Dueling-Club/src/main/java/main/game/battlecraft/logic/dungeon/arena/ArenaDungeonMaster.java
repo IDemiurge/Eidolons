@@ -3,9 +3,6 @@ package main.game.battlecraft.logic.dungeon.arena;
 import main.game.battlecraft.logic.dungeon.universal.*;
 import main.game.core.game.DC_Game;
 
-import main.game.battlecraft.logic.dungeon.*;
-import main.game.core.game.DC_Game;
-
 /**
  * Created by JustMe on 5/8/2017.
  */

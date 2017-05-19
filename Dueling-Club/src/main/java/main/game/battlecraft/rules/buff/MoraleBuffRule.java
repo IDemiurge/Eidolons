@@ -4,8 +4,8 @@ import main.ability.conditions.shortcut.StdPassiveCondition;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
-import main.ability.effects.container.ConditionalEffect;
 import main.ability.effects.common.ModifyValueEffect;
+import main.ability.effects.container.ConditionalEffect;
 import main.ability.effects.continuous.BehaviorModeEffect;
 import main.content.PARAMS;
 import main.content.VALUE;
@@ -15,8 +15,8 @@ import main.content.enums.system.MetaEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
 import main.entity.Ref.KEYS;
-import main.game.core.game.MicroGame;
 import main.game.battlecraft.rules.RuleMaster.COMBAT_RULES;
+import main.game.core.game.MicroGame;
 import main.system.auxiliary.StringMaster;
 
 public class MoraleBuffRule extends DC_BuffRule {

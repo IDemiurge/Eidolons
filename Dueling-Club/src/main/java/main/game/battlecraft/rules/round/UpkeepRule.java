@@ -1,13 +1,13 @@
 package main.game.battlecraft.rules.round;
 
 import main.ability.PassiveAbilityObj;
-import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.UPKEEP_FAIL_ACTION;
-import main.ability.effects.oneshot.buff.RemoveBuffEffect;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.common.OwnershipChangeEffect;
-import main.ability.effects.oneshot.InstantDeathEffect;
 import main.ability.effects.continuous.BehaviorModeEffect;
+import main.ability.effects.oneshot.InstantDeathEffect;
+import main.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.ability.effects.oneshot.status.ImmobilizeEffect;
 import main.content.*;
 import main.content.enums.system.AiEnums;

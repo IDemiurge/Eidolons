@@ -2,8 +2,8 @@ package main.game.module.dungeoncrawl.dungeon;
 
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;

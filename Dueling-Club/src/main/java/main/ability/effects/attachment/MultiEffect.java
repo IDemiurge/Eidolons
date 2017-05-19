@@ -1,9 +1,9 @@
 package main.ability.effects.attachment;
 
+import main.ability.effects.AttachmentEffect;
 import main.ability.effects.DC_Effect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
-import main.ability.effects.AttachmentEffect;
 import main.data.ability.construct.ConstructionManager;
 import main.entity.Ref;
 

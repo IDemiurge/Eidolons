@@ -1,11 +1,11 @@
 package main.game.battlecraft.ai.logic.types.brute;
 
+import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_UnitModel;
 import main.game.battlecraft.ai.logic.DC_AI;
 import main.game.battlecraft.ai.logic.DC_AI_Logic;
-import main.entity.active.DC_ActionManager;
 
 public class BruteAI extends DC_AI_Logic {
 

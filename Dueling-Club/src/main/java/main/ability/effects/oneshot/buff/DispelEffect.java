@@ -1,7 +1,7 @@
 package main.ability.effects.oneshot.buff;
 
-import main.ability.effects.OneshotEffect;
 import main.ability.effects.MicroEffect;
+import main.ability.effects.OneshotEffect;
 import main.entity.obj.Attachment;
 import main.entity.obj.BuffObj;
 import main.system.math.Formula;

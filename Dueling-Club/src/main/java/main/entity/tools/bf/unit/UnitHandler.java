@@ -4,9 +4,9 @@ import main.entity.active.DC_SpellObj;
 import main.entity.obj.unit.Unit;
 import main.entity.tools.EntityHandler;
 import main.entity.tools.EntityMaster;
+import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.game.core.ActionInput;
 import main.game.logic.action.context.Context;
-import main.game.battlecraft.rules.magic.ChannelingRule;
 
 /**
  * Created by JustMe on 3/8/2017.

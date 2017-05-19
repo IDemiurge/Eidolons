@@ -10,8 +10,8 @@ import main.content.enums.rules.ArcadeEnums.LOOT_GROUP;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
+import main.game.core.game.DC_Game;
 
 public class LootManager {
 

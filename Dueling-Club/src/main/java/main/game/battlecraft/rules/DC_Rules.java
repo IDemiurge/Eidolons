@@ -1,12 +1,10 @@
 package main.game.battlecraft.rules;
 
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
-import main.game.core.game.GameRules;
-import main.game.battlecraft.rules.combat.mechanics.BleedingRule;
-import main.game.battlecraft.rules.combat.mechanics.MoraleKillingRule;
 import main.game.battlecraft.rules.action.*;
 import main.game.battlecraft.rules.buff.*;
+import main.game.battlecraft.rules.combat.mechanics.BleedingRule;
+import main.game.battlecraft.rules.combat.mechanics.MoraleKillingRule;
 import main.game.battlecraft.rules.combat.misc.CleaveRule;
 import main.game.battlecraft.rules.combat.misc.KnockdownRule;
 import main.game.battlecraft.rules.combat.misc.TrampleRule;
@@ -15,13 +13,15 @@ import main.game.battlecraft.rules.mechanics.AshAnnihilationRule;
 import main.game.battlecraft.rules.mechanics.DurabilityRule;
 import main.game.battlecraft.rules.mechanics.WaitRule;
 import main.game.battlecraft.rules.round.*;
+import main.game.core.game.DC_Game;
+import main.game.core.game.GameRules;
 import main.system.datatypes.DequeImpl;
 
 public class DC_Rules implements GameRules {
 
-    private DC_Game game;
     protected DequeImpl<DC_BuffRule> buffRules = new DequeImpl<>();
     protected DequeImpl<DamageCounterRule> damageRules = new DequeImpl<>();
+    private DC_Game game;
     private DequeImpl<DC_CounterRule> counterRules = new DequeImpl<>();
     private DequeImpl<RoundRule> roundRules = new DequeImpl<>();
     private DequeImpl<ActionRule> actionRules = new DequeImpl<>();

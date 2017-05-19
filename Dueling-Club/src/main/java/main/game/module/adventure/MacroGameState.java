@@ -1,9 +1,9 @@
 package main.game.module.adventure;
 
 import main.entity.obj.Obj;
+import main.game.battlecraft.logic.meta.faction.FactionObj;
 import main.game.core.game.Game;
 import main.game.core.state.GameState;
-import main.game.battlecraft.logic.meta.faction.FactionObj;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
 import main.game.module.adventure.map.Route;

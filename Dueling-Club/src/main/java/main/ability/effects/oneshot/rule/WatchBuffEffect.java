@@ -1,8 +1,8 @@
 package main.ability.effects.oneshot.rule;
 
-import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.content.mode.STD_MODES;

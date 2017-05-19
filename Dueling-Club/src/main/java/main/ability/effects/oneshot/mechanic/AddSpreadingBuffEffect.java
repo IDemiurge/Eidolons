@@ -1,7 +1,7 @@
 package main.ability.effects.oneshot.mechanic;
 
-import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.elements.conditions.Condition;
 import main.system.math.Formula;
 

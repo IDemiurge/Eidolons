@@ -1,9 +1,9 @@
 package main.game.battlecraft.ai.advanced.companion;
 
 import main.content.CONTENT_CONSTS2.ORDER_TYPE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
 
 import java.util.Map;
 
@@ -64,11 +64,11 @@ public class Order {
         this.priorityModsMap = priorityModsMap;
     }
 
-    public void setStrictPriority(ORDER_PRIORITY_MODS strictPriority) {
-        this.strictPriority = strictPriority;
-    }
-
     public ORDER_PRIORITY_MODS getStrictPriority() {
         return strictPriority;
+    }
+
+    public void setStrictPriority(ORDER_PRIORITY_MODS strictPriority) {
+        this.strictPriority = strictPriority;
     }
 }

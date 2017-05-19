@@ -4,10 +4,10 @@ import main.content.enums.entity.UnitEnums;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
-import main.game.battlecraft.rules.combat.attack.Attack;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE;
+import main.game.battlecraft.rules.combat.attack.Attack;
+import main.game.core.game.DC_Game;
 
 /**
  * Created by JustMe on 3/16/2017.

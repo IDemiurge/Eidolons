@@ -1,9 +1,9 @@
 package main.game.battlecraft.rules.combat.misc;
 
-import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
 import main.ability.effects.Effects;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.common.ModifyPropertyEffect;
 import main.ability.effects.common.ModifyValueEffect;
 import main.content.PARAMS;

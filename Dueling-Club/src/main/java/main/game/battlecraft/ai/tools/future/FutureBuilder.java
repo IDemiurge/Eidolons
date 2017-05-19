@@ -1,8 +1,8 @@
 package main.game.battlecraft.ai.tools.future;
 
-import main.ability.effects.oneshot.attack.AttackEffect;
-import main.ability.effects.oneshot.DealDamageEffect;
 import main.ability.effects.Effect;
+import main.ability.effects.oneshot.DealDamageEffect;
+import main.ability.effects.oneshot.attack.AttackEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;

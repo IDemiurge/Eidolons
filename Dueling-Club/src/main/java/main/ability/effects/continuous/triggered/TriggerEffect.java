@@ -3,9 +3,9 @@ package main.ability.effects.continuous.triggered;
 import main.ability.ActiveAbility;
 import main.ability.effects.AttachmentEffect;
 import main.ability.effects.Effects;
+import main.ability.effects.MicroEffect;
 import main.ability.effects.TriggeredEffect;
 import main.ability.effects.attachment.AddTriggerEffect;
-import main.ability.effects.MicroEffect;
 import main.elements.conditions.Condition;
 import main.elements.targeting.Targeting;
 

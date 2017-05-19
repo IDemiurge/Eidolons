@@ -2,16 +2,16 @@ package main.game.module.dungeoncrawl.ai;
 
 import main.content.enums.system.AiEnums;
 import main.entity.Ref;
+import main.entity.active.DC_ActionManager.STD_ACTIONS;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.GroupAI;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.actions.Action;
+import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
-import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.bf.DirectionMaster;
-import main.entity.active.DC_ActionManager.STD_ACTIONS;
 
 import java.util.Collection;
 import java.util.LinkedList;

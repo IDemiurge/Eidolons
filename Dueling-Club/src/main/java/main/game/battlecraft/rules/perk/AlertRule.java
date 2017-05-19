@@ -1,9 +1,9 @@
 package main.game.battlecraft.rules.perk;
 
 import main.ability.effects.DC_Effect;
-import main.ability.effects.oneshot.mechanic.DelayedEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.buff.RemoveBuffEffect;
+import main.ability.effects.oneshot.mechanic.DelayedEffect;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.*;
 import main.elements.conditions.standard.GroupCondition;
@@ -11,8 +11,8 @@ import main.elements.conditions.standard.ListSizeCondition;
 import main.elements.conditions.standard.OwnershipCondition;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.battlecraft.rules.action.WatchRule;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.entity.ConditionMaster;
 
 public class AlertRule {

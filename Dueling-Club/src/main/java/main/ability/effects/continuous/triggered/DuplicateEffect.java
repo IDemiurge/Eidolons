@@ -1,8 +1,8 @@
 package main.ability.effects.continuous.triggered;
 
 import main.ability.effects.Effect;
-import main.ability.effects.TriggeredEffect;
 import main.ability.effects.MicroEffect;
+import main.ability.effects.TriggeredEffect;
 
 public class DuplicateEffect extends MicroEffect implements TriggeredEffect {
     boolean event;

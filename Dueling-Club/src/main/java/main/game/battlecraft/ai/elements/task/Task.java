@@ -1,8 +1,8 @@
 package main.game.battlecraft.ai.elements.task;
 
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
 
 public class Task {
     private GOAL_TYPE type;

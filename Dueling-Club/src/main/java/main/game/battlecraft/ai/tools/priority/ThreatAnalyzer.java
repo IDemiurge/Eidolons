@@ -2,6 +2,7 @@ package main.game.battlecraft.ai.tools.priority;
 
 import main.content.PARAMS;
 import main.content.enums.system.AiEnums.AI_TYPE;
+import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.active.DC_UnitAction;
@@ -9,10 +10,9 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.tools.future.FutureBuilder;
-import main.game.logic.action.context.Context;
 import main.game.battlecraft.rules.combat.attack.AttackCalculator;
 import main.game.battlecraft.rules.combat.attack.DC_AttackMaster;
-import main.entity.active.DC_ActionManager;
+import main.game.logic.action.context.Context;
 import main.system.math.FuncMaster;
 import main.system.math.PositionMaster;
 

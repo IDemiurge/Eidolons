@@ -1,7 +1,7 @@
 package main.game.core.master;
 
-import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.Effect;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;
@@ -18,9 +18,9 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
+import main.game.battlecraft.rules.round.UpkeepRule;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.rules.round.UpkeepRule;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;

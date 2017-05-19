@@ -13,10 +13,10 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroSlotItem;
 import main.entity.item.DC_WeaponObj;
+import main.game.battlecraft.rules.DC_RuleImpl;
 import main.game.core.game.MicroGame;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.battlecraft.rules.DC_RuleImpl;
 import main.system.math.MathMaster;
 
 public class DurabilityRule extends DC_RuleImpl {

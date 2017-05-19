@@ -1,9 +1,9 @@
 package main.ability.effects.containers.group;
 
-import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.DC_Effect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
+import main.ability.effects.attachment.AddBuffEffect;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;

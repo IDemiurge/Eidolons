@@ -14,8 +14,8 @@ import main.content.enums.system.MetaEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
 import main.entity.Ref.KEYS;
-import main.game.core.game.MicroGame;
 import main.game.battlecraft.rules.RuleMaster.COMBAT_RULES;
+import main.game.core.game.MicroGame;
 import main.system.auxiliary.StringMaster;
 
 public class FocusBuffRule extends DC_BuffRule {

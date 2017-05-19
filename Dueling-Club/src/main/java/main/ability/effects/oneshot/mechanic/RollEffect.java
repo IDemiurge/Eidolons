@@ -1,10 +1,6 @@
 package main.ability.effects.oneshot.mechanic;
 
-import main.ability.effects.Effect;
-import main.ability.effects.Effects;
-import main.ability.effects.OneshotEffect;
-import main.ability.effects.ContainerEffect;
-import main.ability.effects.MicroEffect;
+import main.ability.effects.*;
 import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.data.ability.construct.VariableManager;
 import main.game.battlecraft.ai.tools.target.EffectFinder;

@@ -12,8 +12,8 @@ import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlecraft.rules.action.ActionRule;
+import main.game.core.game.DC_Game;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
@@ -152,6 +152,11 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return true;
     }
 
+    public static int getDeathBarrier(Unit attacked) {
+        return MathMaster.applyModIfNotZero(DEFAULT_DEATH_BARRIER,
+                attacked.getIntParam(PARAMS.TOUGHNESS_DEATH_BARRIER_MOD));
+    }
+
     //returns true if unit Recovers
     public boolean checkStatusUpdate(Unit unit) {
         if (unit.isDead()) {
@@ -194,10 +199,5 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     @Override
     public void apply(Unit unit) {
         unitRecovers(unit);
-    }
-
-    public static int getDeathBarrier(Unit attacked) {
-        return MathMaster.applyModIfNotZero(DEFAULT_DEATH_BARRIER,
-         attacked.getIntParam(PARAMS.TOUGHNESS_DEATH_BARRIER_MOD));
     }
 }
