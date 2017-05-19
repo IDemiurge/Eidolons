@@ -29,7 +29,7 @@ public class TestBattleMaster extends BattleMaster<TestBattle> {
 
     @Override
     protected BattleConstructor createConstructor() {
-        return null;
+        return new TestBattleConstructor(this);
     }
 
     @Override

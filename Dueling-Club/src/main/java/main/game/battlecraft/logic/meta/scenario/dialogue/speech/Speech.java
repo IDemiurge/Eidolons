@@ -22,6 +22,7 @@ public class Speech implements SpeechInterface {
     String unformattedText; // [main hero name], [gender], [race] etc (maybe {val_ref} sytanx?)
     Condition conditions; //check before addChild()
     Abilities abilities; //activate on start
+String script;
 
     DialogueActor actor;
     List<DialogueActor> actors;
@@ -29,6 +30,14 @@ public class Speech implements SpeechInterface {
     Speech parent;
     DequeImpl<Speech> children;
     REPLICA_STATUS status;
+    private int id;
+    //last speech
+    public Speech(Integer id) {
+        this.id = id;
+    }
+    public Speech(Integer id, Speeches children) {
+        this.id = id;
+    }
 
     public Speech(String actor, String text) {
         this(actor, null, text, null);
@@ -94,6 +103,50 @@ public class Speech implements SpeechInterface {
 
     public DialogueActor getActor() {
         return actor;
+    }
+
+    public void setData(SpeechData data) {
+        this.data = data;
+    }
+
+    public void setActorName(String actorName) {
+        this.actorName = actorName;
+    }
+
+    public void setActorNames(String actorNames) {
+        this.actorNames = actorNames;
+    }
+
+    public void setUnformattedText(String unformattedText) {
+        this.unformattedText = unformattedText;
+    }
+
+    public void setConditions(Condition conditions) {
+        this.conditions = conditions;
+    }
+
+    public void setAbilities(Abilities abilities) {
+        this.abilities = abilities;
+    }
+
+    public void setScript(String script) {
+        this.script = script;
+    }
+
+    public void setFormattedText(String formattedText) {
+        this.formattedText = formattedText;
+    }
+
+    public void setStatus(REPLICA_STATUS status) {
+        this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public enum REPLICA_STATUS {
