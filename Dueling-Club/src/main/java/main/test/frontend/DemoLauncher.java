@@ -6,7 +6,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import main.client.dc.Launcher;
 import main.game.core.game.DC_Game;
 import main.libgdx.Engine;
@@ -22,6 +21,7 @@ public class DemoLauncher extends Game {
     private DC_Game coreGame;
     private Engine engine;
     private ScreenData newMeta;
+    private ScreenViewport viewport;
 
     public DemoLauncher() {
 
@@ -69,10 +69,10 @@ public class DemoLauncher extends Game {
     public void create() {
         Deferred<Boolean, Boolean, Boolean> deferred = new DeferredObject<>();
         OrthographicCamera camera = new OrthographicCamera();
-        Viewport viewport = new ScreenViewport(camera);
+        viewport = new ScreenViewport(camera);
         final IntroScreen introScreen = new IntroScreen(viewport, () -> {
             final Screen old = getScreen();
-            final MainMenuScreen mainScreen = new MainMenuScreen(viewport, s -> newMeta = engine.getMeta(s));
+            final MainMenuScreen mainScreen = new MainMenuScreen(viewport, this::setNewMeta);
             deferred.done(aBoolean -> mainScreen.hideLoader());
             setScreen(mainScreen);
             if (old != null) {
@@ -81,6 +81,10 @@ public class DemoLauncher extends Game {
         });
         engine.init(() -> deferred.resolve(true));
         setScreen(introScreen);
+    }
+
+    private void setNewMeta(String s) {
+        newMeta = engine.getMeta(s);
     }
 
     @Override
@@ -98,6 +102,9 @@ public class DemoLauncher extends Game {
                     switchScreen(new DungeonScreen(meta), meta);
                     break;
                 case PRE_BATTLE:
+                    break;
+                case MAIN_MENU:
+                    switchScreen(new MainMenuScreen(viewport, this::setNewMeta), meta);
                     break;
             }
         }

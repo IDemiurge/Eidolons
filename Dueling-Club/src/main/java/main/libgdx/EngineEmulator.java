@@ -11,7 +11,7 @@ public class EngineEmulator implements Engine {
     public void init(Runnable onDone) {
         executorService.submit(() -> {
             try {
-                Thread.sleep(100);
+                Thread.sleep(5000);
             } catch (InterruptedException ignored) {
             } finally {
                 onDone.run();
@@ -36,7 +36,7 @@ public class EngineEmulator implements Engine {
     public void load(ScreenData meta, Runnable onDone) {
         executorService.submit(() -> {
             try {
-                Thread.sleep(100);
+                Thread.sleep(1000);
             } catch (InterruptedException ignored) {
             } finally {
                 onDone.run();

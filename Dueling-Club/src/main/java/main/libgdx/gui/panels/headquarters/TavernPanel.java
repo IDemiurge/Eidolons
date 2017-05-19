@@ -1,4 +1,7 @@
 package main.libgdx.gui.panels.headquarters;
 
-public class TavernPanel {
+import main.libgdx.gui.panels.dc.TablePanel;
+
+public class TavernPanel extends TablePanel {
+        
 }

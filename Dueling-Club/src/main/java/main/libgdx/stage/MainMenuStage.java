@@ -77,7 +77,6 @@ public class MainMenuStage extends Stage {
                 Gdx.graphics.getWidth() / 2 - load.getPrefWidth() / 2,
                 Gdx.graphics.getHeight() / 2 - load.getPrefHeight() / 2
         );
-
         newGame.setPosition(
                 Gdx.graphics.getWidth() / 2 - newGame.getPrefWidth() / 2,
                 Gdx.graphics.getHeight() / 2 - newGame.getPrefHeight() / 2

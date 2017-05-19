@@ -108,8 +108,6 @@ public class DungeonScreen extends ScreenWithLoader {
         animationEffectStage.act(delta);
         gridStage.act(delta);
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         cam.update();
 
         if (showLoading) {
@@ -136,44 +134,10 @@ public class DungeonScreen extends ScreenWithLoader {
         float camWidth = width;
         float camHeight = height;
 
-/*        camera = cam = new OrthographicCamera(width, height);
-        cam.update();*/
         cam.setToOrtho(false, width, height);
         animationEffectStage.getViewport().update(width, height);
         gridStage.getViewport().update(width, height);
         guiStage.getViewport().update(width, height);
-/*        to disable pixelperfect
-        float camWidth = MapView.TILE_WIDTH * 10.0f;
-        float camHeight = camWidth * ((float)height / (float)width);
-*/
-
-/*        engine.camera = new Camera(camWidth, camHeight);
-        engine.camera.update();*/
-    }
-
-    @Override
-    public void show() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void dispose() {
-
     }
 
     public GridPanel getGridPanel() {
