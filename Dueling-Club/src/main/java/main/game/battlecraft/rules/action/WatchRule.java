@@ -14,10 +14,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
-import main.entity.obj.ActiveObj;
-import main.entity.obj.BfObj;
-import main.entity.obj.BuffObj;
-import main.entity.obj.DC_Obj;
+import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
@@ -167,7 +164,7 @@ public class WatchRule implements ActionRule {
         return false;
     }
 
-    public static boolean checkWatched(Unit watcher, DC_Obj watched) {
+    public static boolean checkWatched(Unit watcher, BattleFieldObject watched) {
         if (isTestMode()) {
             return true;
         }

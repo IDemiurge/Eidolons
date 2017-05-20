@@ -21,6 +21,7 @@ import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.data.dialogue.DataString;
+import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.Dialogue_Data;
 import main.data.dialogue.SpeechData;
 import main.data.dialogue.SpeechInterface;
@@ -142,7 +143,7 @@ public enum ARGS implements Argument {
     COUNTER_OPERATION(COUNTER_OPERATION.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     ORDER_PRIORITY_MODS(ORDER_PRIORITY_MODS.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
 
-    DATA_TYPE(DataString.DATA_TYPE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
+    DATA_TYPE(SPEECH_VALUE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     DATA_STRING(DataString.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
     SPEECH(SpeechInterface.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
     SPEECHDATA(SpeechData.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),

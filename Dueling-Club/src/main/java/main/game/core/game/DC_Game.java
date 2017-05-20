@@ -61,7 +61,7 @@ import main.system.text.DC_LogManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.PresetMaster;
-import main.test.Refactor;
+import main.system.util.Refactor;
 import main.test.debug.DebugMaster;
 
 import java.util.*;

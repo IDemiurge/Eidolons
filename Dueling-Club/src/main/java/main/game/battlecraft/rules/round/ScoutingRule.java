@@ -7,7 +7,7 @@ import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.core.game.DC_Game;
 import main.game.module.adventure.travel.Encounter;
 import main.system.auxiliary.StringMaster;
-import main.test.Refactor;
+import main.system.util.Refactor;
 
 import java.util.List;
 @Refactor

@@ -38,8 +38,8 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
     public static final String CUSTOM_PROPS_NODE = "Custom Props";
     public static final String DIRECTION_MAP_NODE = "Direction Map";
     public static final String WALL_OBJ_DATA_NODE = "Wall Objects";
-    public static final int BASE_WIDTH = 21;
-    public static final int BASE_HEIGHT = 15;
+    public static final int BASE_WIDTH = 15;
+    public static final int BASE_HEIGHT = 11;
     protected static final String FLIP_MAP_NODE = "Flipping";
 
 

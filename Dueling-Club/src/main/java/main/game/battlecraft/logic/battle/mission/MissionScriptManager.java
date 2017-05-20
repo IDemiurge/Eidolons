@@ -59,6 +59,8 @@ public class MissionScriptManager extends BattleHandler<MissionBattle> implement
 
 
     private void addTrigger(Trigger trigger) {
+        if (trigger==null )
+            return ;
         getMaster().getGame().getManager().addTrigger(trigger);
 //        scriptTriggers.add(trigger);
     }

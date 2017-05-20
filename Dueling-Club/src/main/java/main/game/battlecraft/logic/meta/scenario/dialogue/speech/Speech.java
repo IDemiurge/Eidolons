@@ -69,7 +69,7 @@ String script;
        this.children = new DequeImpl<Speech>().getAddAllCast(children.getList());
     }
     public void addChild(Speech child) {
-        children.add(child);
+        getChildren().add(child);
     }
 
     public void init(ScenarioMetaMaster master, Speech parent) {
@@ -98,6 +98,7 @@ String script;
     }
 
     public DequeImpl<Speech> getChildren() {
+        if (children==null ) children = new DequeImpl<>();
         return children;
     }
 

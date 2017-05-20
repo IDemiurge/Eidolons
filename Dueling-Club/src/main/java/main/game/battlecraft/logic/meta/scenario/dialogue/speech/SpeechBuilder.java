@@ -1,7 +1,7 @@
 package main.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
-import main.data.dialogue.DataString;
 import main.data.dialogue.SpeechData;
+import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
 import main.system.auxiliary.StringMaster;
@@ -24,7 +24,7 @@ public class SpeechBuilder {
         this.linesPath = linesPath;
     }
     public SpeechBuilder() {
-        this(DialogueLineFormatter.getLinesFilePath());
+        this(PathFinder.getEnginePath()+ DialogueLineFormatter.getLinesFilePath());
     }
 
     public Speech buildSpeech(Speech speech) {
@@ -36,7 +36,7 @@ public class SpeechBuilder {
     }
 
     public Map<Integer, String> getIdToXmlMap() {
-        if (getIdToXmlMap()==null )
+        if (idToXmlMap==null )
             construct();
         return idToXmlMap;
     }
@@ -46,15 +46,15 @@ public class SpeechBuilder {
         idToDataMap = new HashMap<>();
         String xml = FileManager.readFile(linesPath);
         Document doc = XML_Converter.getDoc(xml);
-        for (Node node : XML_Converter.getNodeList(doc)) {
+        for (Node node : XML_Converter.getNodeList(doc.getFirstChild())) {
             String idString = node.getNodeName();
             int id = StringMaster.getInteger(idString.replace(DialogueLineFormatter. ID, ""));
             idToXmlMap.put(id, node.getTextContent());
             if (node.hasChildNodes()){
                 SpeechData data = new SpeechData();
                 for (Node subNode : XML_Converter.getNodeList(node)) {
-                    data.addString(
-                     new DataString(subNode.getNodeName(), subNode.getTextContent()));
+                    data.setValue(
+                       subNode.getNodeName(), subNode.getTextContent() );
                 }
                 idToDataMap.put(id, data);
             }

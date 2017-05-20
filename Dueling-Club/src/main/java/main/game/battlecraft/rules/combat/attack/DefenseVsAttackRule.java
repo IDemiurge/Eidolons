@@ -5,6 +5,7 @@ import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.action.WatchRule;
 import main.game.battlecraft.rules.perk.FlyingRule;
@@ -21,21 +22,22 @@ import main.system.math.roll.RollMaster;
  */
 public class DefenseVsAttackRule {
     public static int getAttackValue(Attack attack) {
-        return getAttackValue(attack.isOffhand(), attack.getAttacker(), attack.getAttacked(),
+        return getAttackValue(attack.isOffhand(), attack.getAttacker(), attack.getAttackedUnit(),
          attack.getAction());
     }
 
     public static int getDefenseValue(Attack attack) {
-        return getDefenseValue(attack.getAttacker(), attack.getAttacked(), attack.getAction());
+        return getDefenseValue(attack.getAttacker(), attack.getAttackedUnit(), attack.getAction());
     }
 
     //
-    public static int getDefenseValue(Unit attacker, Unit attacked, DC_ActiveObj action) {
+    public static int getDefenseValue(Unit attacker, BattleFieldObject attacked, DC_ActiveObj action) {
         int defense = attacked.getIntParam(PARAMS.DEFENSE)
          - attacker.getIntParam(PARAMS.DEFENSE_PENETRATION);
         defense = defense * (action.getIntParam(PARAMS.DEFENSE_MOD)) / 100;
         defense += action.getIntParam(PARAMS.DEFENSE_BONUS);
-        if (WatchRule.checkWatched(attacked, attacker)) {
+        if (attacked instanceof Unit)
+        if (WatchRule.checkWatched((Unit) attacked, attacker)) {
             //increase defense if attacked watches attacker
             //TODO add reverse mods - 'defense when watched on attack' for trickster
             int bonus = MathMaster.applyMod(WatchRule.DEFENSE_MOD, attacked
@@ -45,7 +47,7 @@ public class DefenseVsAttackRule {
         return defense;
     }
 
-    public static int getAttackValue(boolean offhand, Unit attacker, Unit attacked,
+    public static int getAttackValue(boolean offhand, Unit attacker, BattleFieldObject attacked,
                                      DC_ActiveObj action) {
         int attack = attacker.getIntParam((offhand) ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK);
         Boolean flying_mod = null;
@@ -90,11 +92,11 @@ public class DefenseVsAttackRule {
 
     // returns true if dodged, false if critical, otherwise null
     public static Boolean checkDodgedOrCrit(Attack attack) {
-        return checkDodgedOrCrit(attack.getAttacker(), attack.getAttacked(), attack.getAction(),
+        return checkDodgedOrCrit(attack.getAttacker(), attack.getAttackedUnit(), attack.getAction(),
          attack.getRef(), attack.isOffhand(), attack.getAnimation());
     }
 
-    public static Boolean checkDodgedOrCrit(Unit attacker, Unit attacked,
+    public static Boolean checkDodgedOrCrit(Unit attacker, BattleFieldObject attacked,
                                             DC_ActiveObj action, Ref ref,
                                             boolean offhand
      , PhaseAnimation animation
@@ -104,7 +106,7 @@ public class DefenseVsAttackRule {
          offhand, animation, true);
     }
 
-    public static Boolean checkDodgedOrCrit(Unit attacker, Unit attacked,
+    public static Boolean checkDodgedOrCrit(Unit attacker, BattleFieldObject attacked,
                                             DC_ActiveObj action, Ref ref,
                                             boolean offhand
      , PhaseAnimation animation
@@ -161,7 +163,7 @@ public class DefenseVsAttackRule {
     }
 
     private static int getChance(DC_ActiveObj action, Unit attacker,
-                                 Unit attacked, int attack, int defense, boolean critOrDodge) {
+                                 BattleFieldObject attacked, int attack, int defense, boolean critOrDodge) {
         int diff = defense - attack;
         // first preCheck ARITHMETIC difference...
         diff = Math.abs(diff)

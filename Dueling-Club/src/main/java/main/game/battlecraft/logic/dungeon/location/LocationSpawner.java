@@ -49,6 +49,8 @@ public class LocationSpawner extends Spawner<Location> {
 
           for (Unit member:getGame().getMetaMaster().getPartyManager().getParty().getMembers()){
               member.setCoordinates( iterator.next());
+              member.setConstructed(false);
+              getGame().getState().addObject(member);
               //what else should be done to *spawn*?
           }
         } else {

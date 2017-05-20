@@ -19,7 +19,7 @@ import main.entity.Ref.KEYS;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
-import main.test.Untested;
+import main.system.util.Untested;
 
 @Untested
 public class AuraEffect extends MicroEffect implements AttachmentEffect {

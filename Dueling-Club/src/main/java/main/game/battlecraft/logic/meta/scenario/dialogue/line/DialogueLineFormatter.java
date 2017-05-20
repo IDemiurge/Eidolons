@@ -1,8 +1,9 @@
 package main.game.battlecraft.logic.meta.scenario.dialogue.line;
 
-import main.data.dialogue.DataString.DATA_TYPE;
+import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.data.xml.XML_Formatter;
 import main.data.xml.XML_Writer;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import main.system.auxiliary.StringMaster;
@@ -25,7 +26,7 @@ public class DialogueLineFormatter {
     private static final String linearDialoguePath = "\\dialogue\\linear dialogues.xml";
     private static final String linesFilePath = "\\dialogue\\lines.xml";
     private static final String linesBackupFilePath = "\\dialogue\\backup\\lines.xml";
-    private static final String ACTOR_NODE = DATA_TYPE.ACTOR.name();
+    private static final String ACTOR_NODE = SPEECH_VALUE.ACTOR.name();
 
     private static String oldLinesFileContents="";
     private static String newLinesFileContents="";
@@ -56,6 +57,7 @@ public class DialogueLineFormatter {
         writeLinesFile();
         writeLinearDialoguesFile();
         updateXml();
+        DialogueFactory.constructScenarioLinearDialogues(linearDialogueFileContents, null );
     }
 
     public static void parseDialogueFile(String contents) {
@@ -75,7 +77,8 @@ public class DialogueLineFormatter {
                 if (!actorData.isEmpty())
                     actorData = XML_Converter.wrap(ACTOR_NODE, actorData.trim());
                 String textData = StringMaster.tryGetSplit(lineText, ACTOR_SEPARATOR, 1);
-                textData = XML_Writer.formatXmlTextContent(textData, null);
+                textData =
+                 XML_Formatter.formatXmlTextContent(textData, null );
 
                 String miscData = "";
                 String text = actorData;
@@ -108,7 +111,8 @@ public class DialogueLineFormatter {
     }
 
     private static void writeLinesFile() {
-        XML_Writer.write(newLinesFileContents, getLinesFilePath());
+        XML_Writer.write(
+         XML_Converter.wrap("Lines", newLinesFileContents), getLinesFilePath());
     }
     private static void writeLinearDialoguesFile() {
         XML_Writer.write(linearDialogueFileContents, getLinearDialoguesFilePath());

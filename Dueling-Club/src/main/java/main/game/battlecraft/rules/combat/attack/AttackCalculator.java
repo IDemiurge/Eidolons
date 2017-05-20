@@ -12,6 +12,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -67,7 +68,7 @@ public class AttackCalculator {
     DC_AttackMaster master;
     private DC_ActiveObj action;
     private Unit attacker;
-    private Unit attacked;
+    private BattleFieldObject attacked;
     private DC_WeaponObj weapon;
     private boolean counter;
     private boolean offhand;
@@ -84,7 +85,7 @@ public class AttackCalculator {
         this.attack = attack;
         this.action = attack.getAction();
         this.attacker = attack.getAttacker();
-        this.attacked = attack.getAttacked();
+        this.attacked = attack.getAttackedUnit();
         this.weapon = attack.getWeapon();
         this.disengage = attack.isDisengagement();
         this.counter = attack.isCounter();
@@ -169,7 +170,7 @@ public AttackCalculator initTarget(Unit target){
 
 
     private Integer getAttackDefenseDamageBonus(Attack attack, Integer amount, Unit attacker,
-                                                Unit attacked, DC_ActiveObj action, boolean offhand) {
+                                                BattleFieldObject attacked, DC_ActiveObj action, boolean offhand) {
         int attackValue = DefenseVsAttackRule.getAttackValue(offhand, attacker, attacked, action);
         // TODO
         int defense = DefenseVsAttackRule.getDefenseValue(attacker, attacked, action);
@@ -202,7 +203,7 @@ public AttackCalculator initTarget(Unit target){
     }
 
     private Integer getCriticalDamageBonus(Attack attack, Integer amount, Unit attacker,
-                                           Unit attacked, DC_ActiveObj action, boolean offhand) {
+                                           BattleFieldObject attacked, DC_ActiveObj action, boolean offhand) {
         if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.CRITICAL_IMMUNE)) {
             return 0;
         }
@@ -449,8 +450,8 @@ public AttackCalculator initTarget(Unit target){
             atk_mod += atkMod;
         }
         if (ref.getTargetObj() == null) {
-            if (attack.getAttacked() != null) {
-                ref.setTarget(attack.getAttacked().getId());
+            if (attack.getAttackedUnit() != null) {
+                ref.setTarget(attack.getAttackedUnit().getId());
             } else {
                 return;
             }
@@ -527,13 +528,13 @@ public AttackCalculator initTarget(Unit target){
     }
 
     private void initializeAttackModifiers() {
-        // TODO
         Integer integer = weapon.getIntParam(PARAMS.ATTACK_MOD);
         addModifier(atkModMap, MOD_IDENTIFIER.WEAPON, PARAMS.ATTACK, integer);
-        if (attacked.isEngagedWith(attacker)) {
-            integer = weapon.getIntParam(PARAMS.ATTACK_MOD);
-            addModifier(atkModMap, MOD_IDENTIFIER.WEAPON, PARAMS.ATTACK, integer);
-        }
+
+//      TODO   if (attacked.isEngagedWith(attacker)) {
+//            integer = weapon.getIntParam(PARAMS.ATTACK_MOD);
+//            addModifier(atkModMap, MOD_IDENTIFIER.WEAPON, PARAMS.ATTACK, integer);
+//        }
         if (AoO) {
             integer = attacker.getIntParam(PARAMS.AOO_ATTACK_MOD);
             addModifier(atkModMap, MOD_IDENTIFIER.AOO, PARAMS.ATTACK, integer);

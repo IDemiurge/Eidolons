@@ -306,7 +306,7 @@ public class XML_Reader {
                 "" + Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
     }
 
-    private static void loadMap(String name, String text) {
+    public static void loadMap(String name, String text) {
         final Document doc = XML_Converter.getDoc(text);
         loadMap(name, doc);
     }

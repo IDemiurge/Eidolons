@@ -53,7 +53,8 @@ import java.util.List;
 
 public class ActivesConstructor {
 
-    public static final SELECTIVE_TARGETING_TEMPLATES DEFAULT_TARGETING_TEMPLATE = SELECTIVE_TARGETING_TEMPLATES.SHOT;
+    public static final SELECTIVE_TARGETING_TEMPLATES
+     DEFAULT_TARGETING_TEMPLATE = SELECTIVE_TARGETING_TEMPLATES.SHOT;
 
     public static void wrapInSaveRollEffect(Effects effects, String saveRoll) {
         // TODO

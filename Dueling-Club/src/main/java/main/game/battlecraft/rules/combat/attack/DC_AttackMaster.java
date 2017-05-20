@@ -34,7 +34,6 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.AttackAnimation;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -110,33 +109,13 @@ public class DC_AttackMaster {
             extraAttack = false;
         }
         LogEntryNode entry = game.getLogManager().newLogEntryNode(type,
-         attack.getAttacker().getName(), attack.getAttacked().getName(), attack.getAction());
-        Boolean result;
+         attack.getAttacker().getName(), attack.getAttackedUnit().getName(), attack.getAction());
+        Boolean result = null;
+        attack.setSneak(SneakRule.checkSneak(ref));
         try {
-            attack.setSneak(SneakRule.checkSneak(ref));
-
-            AttackAnimation animation = null;
-            if (attack.getAction().getAnimation() instanceof AttackAnimation) {
-                animation = (AttackAnimation) attack.getAction().getAnimation();
-            }
-            if (animation == null) {
-                animation = new AttackAnimation(attack);
-            }
-            if (ref.getGroup() != null) {
-                // animation = new MultiAttackAnimation(attack, ref.getGroup());
-            }
-            attack.setAnimation(animation);
-            game.getAnimationManager().newAnimation(animation);
-            if (entry != null) {
-                entry.setLinkedAnimation(animation);
-            }
-            if (entry.getType() == ENTRY_TYPE.INSTANT_ATTACK) {
-                // TODO add triggering action!
-            }
-
             main.system.auxiliary.log.LogMaster.log(1,
              attack.getAttacker()+ " attacks " +
-              attack.getAttacked()+
+              attack.getAttackedUnit()+
               " with " + attack.getAction());
             result = attackNow(attack, ref, free, canCounter, onHit, onKill, offhand, counter);
             boolean countered = false;
@@ -151,12 +130,9 @@ public class DC_AttackMaster {
                 countered = true;
                 result = true;
             }
-
-            animation.start();
             if ((!countered) || attack.getAttacker().hasDoubleCounter()) {
                 if (canCounter) {
                     if (!counter) {
-                        waitForAttackAnimation(attack);
                         counterRule.tryCounter(attack);
                     }
                 }

@@ -82,7 +82,7 @@ public class DamageCalculator {
      * @return
      */
     public static int precalculateDamage(Attack attack) {
-        Unit attacked = attack.getAttacked();
+        BattleFieldObject attacked = attack.getAttackedUnit();
         Unit attacker = attack.getAttacker();
         if (!attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.SNEAK_IMMUNE)) {
             attack.setSneak(SneakRule.checkSneak(attack.getRef()));
@@ -90,15 +90,18 @@ public class DamageCalculator {
         // TODO ref.setFuture(true) -> average dice, auto-reset action etc
         int amount = attack.getPrecalculatedDamageAmount();
         DAMAGE_TYPE dmg_type = attack.getDamageType();
-        if (dmg_type == DAMAGE_TYPE.PURE || dmg_type == DAMAGE_TYPE.POISON) {
+        if ( dmg_type == DAMAGE_TYPE.PURE || dmg_type == DAMAGE_TYPE.POISON) {
+            return amount;
+        }
+        if (!(attacked instanceof Unit)){
             return amount;
         }
         amount -= // applyAverageShieldReduction
          attacked.getGame().getArmorSimulator().getShieldDamageBlocked(amount,
-          attacked, attacker, attack.getAction(), attack.getWeapon(), attack.getDamageType());
+          (Unit) attacked, attacker, attack.getAction(), attack.getWeapon(), attack.getDamageType());
 
         amount -= attacked.getGame()
-         .getArmorSimulator().getArmorBlockDamage(amount, attacked, attacker, attack.getAction());
+         .getArmorSimulator().getArmorBlockDamage(amount, (Unit) attacked, attacker, attack.getAction());
 
         if (attack.getAction().isAttackGeneric()) {
             return amount;

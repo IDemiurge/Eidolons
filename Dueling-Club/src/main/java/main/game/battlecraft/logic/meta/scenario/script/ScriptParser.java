@@ -4,8 +4,6 @@ import main.ability.Ability;
 import main.ability.AbilityImpl;
 import main.ability.AbilityObj;
 import main.ability.AbilityType;
-import main.content.DC_TYPE;
-import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
@@ -16,7 +14,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.DC_ConditionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.test.Refactor;
+import main.system.util.Refactor;
 
 import java.util.List;
 
@@ -72,12 +70,15 @@ public class ScriptParser {
                 }
             };
         } else {
-            AbilityType type = (AbilityType) DataManager.getType(funcPart, DC_TYPE.ABILS);
-            if (func == null) {
+            AbilityType type =
+             VariableManager.getVarType(script, false, ref);
+//             (AbilityType) DataManager.getType(funcPart, DC_TYPE.ABILS);
+            if (type == null) {
                 main.system.auxiliary.log.LogMaster.log(1, "SCRIPT NOT FOUND: " + funcPart);
                 return null;
             }
             AbilityObj abilObj = new AbilityObj(type, ref);
+
             abilities = abilObj.getAbilities();
         }
         abilities.setRef(ref);

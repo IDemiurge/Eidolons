@@ -275,8 +275,9 @@ if ( list.isEmpty())
         }
         List<ActiveObj> list = new LinkedList<>();
 
-        for (String abilTypeName : entity.getProperty(prop).split(StringMaster.getSeparator())) {
-            ActiveObj ability;
+        for (String abilTypeName :  StringMaster.openContainer(entity.getProperty(prop))) {
+           if (abilTypeName.isEmpty())continue;
+           ActiveObj ability;
             ability = newAbility(abilTypeName, entity, passive);
             if (ability != null) {
                 list.add(ability);

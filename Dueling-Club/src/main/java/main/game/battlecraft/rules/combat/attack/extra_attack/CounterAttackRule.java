@@ -50,10 +50,10 @@ public class CounterAttackRule {
         if (!attack.isCounter() &&
          (RuleMaster.isRuleTestOn(RULE.COUNTER_ATTACK) ||
           (attack.isCanCounter() &&
-//           attack.getAttacked().
-            canCounter(attack.getAttacked(), attack.getAction())))
+//           attack.getAttackedUnit().
+            canCounter((Unit) attack.getAttackedUnit(), attack.getAction())))
          ) {
-            counter = counter(attack.getAction(), attack.getAttacked());
+            counter = counter(attack.getAction(), (Unit) attack.getAttackedUnit());
         }
 
         return counter;

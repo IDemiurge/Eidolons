@@ -107,7 +107,8 @@ public class Targeter extends ActiveHandler {
     }
 
     protected void initTargetingMode() {
-        if (targetingInitialized) {
+       if (!getGame().isDebugMode())
+           if (targetingInitialized) {
             return;
         }
         if (targetingMode == null) {

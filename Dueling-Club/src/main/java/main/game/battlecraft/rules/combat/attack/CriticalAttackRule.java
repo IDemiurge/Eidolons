@@ -2,7 +2,7 @@ package main.game.battlecraft.rules.combat.attack;
 
 import main.content.PARAMS;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.unit.Unit;
+import main.entity.obj.BattleFieldObject;
 import main.system.DC_Formulas;
 import main.system.math.MathMaster;
 
@@ -18,7 +18,7 @@ public class CriticalAttackRule {
         return getCriticalDamagePercentage(action, null );
     }
 
-    public static int getCriticalDamagePercentage(DC_ActiveObj action, Unit attacked) {
+    public static int getCriticalDamagePercentage(DC_ActiveObj action, BattleFieldObject attacked) {
         int mod =
          action.getFinalModParam(PARAMS.CRITICAL_MOD);
 //        int factor =
