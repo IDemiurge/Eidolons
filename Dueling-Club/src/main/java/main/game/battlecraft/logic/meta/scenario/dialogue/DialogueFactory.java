@@ -25,9 +25,10 @@ import java.util.Map;
  * Created by JustMe on 5/17/2017.
  */
 public class DialogueFactory {
-    private static final String DIALOGUE_SEPARATOR ="SAD" ;
-    private static final String ID_SEPARATOR ="SAD" ;
-    Map<String, GameDialogue> map = new HashMap<>();
+    //***Tavern Chat>3>4***Another Chat>5>10 ...
+    public static final String DIALOGUE_SEPARATOR ="***" ;
+    public static final String ID_SEPARATOR =">";
+    public static Map<String, GameDialogue> map = new HashMap<>();
 
     public static void constructScenarioLinearDialogues
      (String scenarioPath, ScenarioMetaMaster master) {
@@ -42,12 +43,17 @@ public class DialogueFactory {
                 int firstId=StringMaster.getInteger(array[1] );
                 int lastId=StringMaster.getInteger(array[2] );
                List<Integer> ids = MathMaster.getIntsInRange(firstId, lastId);
-                StringMaster.convertToStringList(ids);
+                GameDialogue dialogue = getLinearDialogue(StringMaster.joinList(ids), master);
+                map.put(name, dialogue);
 
             }
 
 
 
+    }
+    public static GameDialogue getLinearDialogue
+     (String name) {
+        return map.get(name);
     }
 
     public static GameDialogue getLinearDialogue

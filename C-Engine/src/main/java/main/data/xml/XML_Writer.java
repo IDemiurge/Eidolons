@@ -413,7 +413,7 @@ public class XML_Writer {
                 .replace(StringMaster.CODE_SLASH, "/").replace(StringMaster.CODE_BACK_SLASH, "\\");
     }
 
-    private static String formatXmlTextContent(String string, VALUE value) {
+    public static String formatXmlTextContent(String string, VALUE value) {
         String result = string.replace(replacedTextContent, StringMaster
                 .getCodeFromChar(replacedTextContent));
         result = XML_Parser.encodeNonASCII(result);

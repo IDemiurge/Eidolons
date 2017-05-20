@@ -67,4 +67,10 @@ public class ArrayMaster<T> {
         }
         return false;
     }
+
+    public T[] addToArray(T[] strings, T dataString) {
+        List<T> list =    new LinkedList<>( Arrays.asList(strings));
+        list.add(dataString);
+        return (T[]) list.toArray();
+    }
 }

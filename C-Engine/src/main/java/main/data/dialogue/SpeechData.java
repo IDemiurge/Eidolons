@@ -1,5 +1,7 @@
 package main.data.dialogue;
 
+import main.system.auxiliary.data.ArrayMaster;
+
 /**
  * Created by JustMe on 5/17/2017.
  */
@@ -20,5 +22,9 @@ public class SpeechData extends DataString{
          string, string2
         };
 
+    }
+
+    public void addString(DataString dataString) {
+     strings=   new ArrayMaster<DataString>().addToArray(strings, dataString);
     }
 }

@@ -877,7 +877,10 @@ public class StringMaster {
         return (cropLastDivider) ? result.substring(0, result.lastIndexOf(divider)) : result;
     }
 
-    public static String joinList(List<Object> list, String divider) {
+    public static String joinList(List  list ) {
+        return joinList(list, SEPARATOR);
+    }
+        public static String joinList(List  list, String divider) {
         return joinStringList(  convertToStringList(list), divider  );
     }
         public static String joinStringList(List<String> list, String divider) {
@@ -1624,6 +1627,16 @@ public class StringMaster {
 
     public static String wrap(String wrap, String string) {
         return wrap + string + wrap;
+    }
+
+    public static String tryGetSplit(String text, String separator, int i) {
+        if (!text.contains(separator))
+            return text;
+        String[] array = text.split(separator);
+        if (array.length<=i){
+            return "";
+        }
+        return array[i];
     }
 
     public enum STD_DEITY_TYPE_NAMES {
