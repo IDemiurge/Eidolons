@@ -126,6 +126,10 @@ public class SortMaster {
 
     }
 
+    public static void sortByExpression
+     (List<? extends Entity> list, Function<Entity, Integer> function) {
+        Collections.sort(list, getSorterByExpression(function));
+    }
     public static Comparator<? super Obj> getSorterByExpressionObj
             (Function<Obj, Integer> function) {
         return Comparator.comparingInt(o -> function.apply(o));

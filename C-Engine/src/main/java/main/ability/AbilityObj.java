@@ -1,5 +1,7 @@
 package main.ability;
 
+import main.ability.effects.Effect;
+import main.ability.effects.Effects;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.AbilityConstructor;
 import main.elements.targeting.Targeting;
@@ -16,7 +18,7 @@ import main.system.text.TextParser;
 
 //obsolete version - too specific 
 
-public class AbilityObj extends Obj implements ActiveObj, Interruptable {
+public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable {
 
     protected Abilities abilities;
     protected boolean interrupted;
@@ -66,9 +68,19 @@ public class AbilityObj extends Obj implements ActiveObj, Interruptable {
     }
 
     @Override
+    public boolean isForcePresetTargeting() {
+        return abilities.isForcePresetTargeting();
+    }
+
+    @Override
     public void setInterrupted(boolean b) {
         this.interrupted = b;
 
+    }
+
+    @Override
+    public void setForcePresetTargeting(boolean forcePresetTargeting) {
+        abilities.setForcePresetTargeting(forcePresetTargeting);
     }
 
     @Override
@@ -124,6 +136,10 @@ public class AbilityObj extends Obj implements ActiveObj, Interruptable {
 
     }
 
+    @Override
+    public void addEffect(Effect effect) {
+        abilities.addEffect(effect);
+    }
 
     @Override
     public boolean activate() {
@@ -207,8 +223,38 @@ public class AbilityObj extends Obj implements ActiveObj, Interruptable {
     }
 
     @Override
+    public boolean resolve() {
+        return abilities.resolve();
+    }
+
+    @Override
+    public Effects getEffects() {
+        return abilities.getEffects();
+    }
+
+    @Override
+    public void setForceTargeting(boolean forceTargeting) {
+        abilities.setForceTargeting(forceTargeting);
+    }
+
+    @Override
+    public void setEffects(Effects effects) {
+        abilities.setEffects(effects);
+    }
+
+    @Override
+    public void setTargeting(Targeting targeting) {
+        abilities.setTargeting(targeting);
+    }
+
+    @Override
     public Targeting getTargeting() {
         return null;
+    }
+
+    @Override
+    public Ref getRef() {
+        return abilities.getRef();
     }
 
     @Override

@@ -85,6 +85,14 @@ String script;
         return conditions;
     }
 
+    public Abilities getAbilities() {
+        return abilities;
+    }
+
+    public String getScript() {
+        return script;
+    }
+
     public List<DialogueActor> getActors() {
         return actors;
     }

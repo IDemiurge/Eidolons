@@ -305,5 +305,16 @@ public class EffectFinder {
 
         }
     }
+    public static Effects getEffectsFromAbilityString(String abilName, Ref ref) {
+        Effects effects = (new Effects());
+        String separator = StringMaster.AND_PROPERTY_SEPARATOR;
+        if (!abilName.contains(separator)) {
+            separator = StringMaster.AND_SEPARATOR;
+        }
+        for (String s : StringMaster.openContainer(abilName, separator)) {
+            effects.addAll(EffectFinder.getEffectsFromAbilityType(s, ref));
+        }
+        return effects;
 
+    }
 }

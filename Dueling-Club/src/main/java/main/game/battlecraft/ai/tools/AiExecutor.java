@@ -11,9 +11,15 @@ public class AiExecutor {
         // TODO Auto-generated constructor stub
     }
 
-    public boolean execute(Action action) {
+    public boolean execute (Action action) {
+        return execute(action, false);
+    }
+        public boolean execute(Action action, boolean free) {
         boolean result = false;
         Ref ref = action.getRef();
+        if (free){
+            action.getActive().setFree(true);
+        }
         try {
 
             if (!action.getActive().isChanneling()) {
@@ -35,6 +41,8 @@ public class AiExecutor {
             return result;
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            action.getActive().setFree(false);
         }
 
         return result;

@@ -2,8 +2,7 @@ package main.game.battlecraft.logic.meta.scenario.script;
 
 import main.ability.Ability;
 import main.ability.AbilityImpl;
-import main.ability.AbilityObj;
-import main.ability.AbilityType;
+import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
@@ -37,7 +36,9 @@ public class ScriptParser {
     }
 
     public static ScriptTrigger parseScript(String script, DC_Game game,
-                                            ScriptExecutor executor) {
+                                            ScriptExecutor executor
+
+    ) {
 //non-trigger scripts?
         String originalText = script;
         String eventPart = StringMaster.getFirstItem(script, ScriptSyntax.PART_SEPARATOR);
@@ -58,9 +59,12 @@ public class ScriptParser {
         MISSION_SCRIPT_FUNCTION func = new EnumMaster<MISSION_SCRIPT_FUNCTION>().retrieveEnumConst
          (MISSION_SCRIPT_FUNCTION.class, funcPart);
         if (func != null) {
-            List<String> strings = StringMaster.openContainer(VariableManager.getVars(script), ScriptSyntax.SCRIPT_ARGS_SEPARATOR);
-            String[] args = strings.toArray(new String[strings.size()]);
-//DataUnit?
+            //TODO for multiple scripts, need another SEPARATOR!
+            String separator=  executor.getSeparator(func);
+            List<String> strings =
+             StringMaster.openContainer(VariableManager.getVars(script),
+              separator);
+            String[] args = strings.toArray(new String[strings.size()]); 
             abilities = new AbilityImpl() {
                 @Override
                 public boolean activatedOn(Ref ref) {
@@ -70,16 +74,11 @@ public class ScriptParser {
                 }
             };
         } else {
-            AbilityType type =
-             VariableManager.getVarType(script, false, ref);
-//             (AbilityType) DataManager.getType(funcPart, DC_TYPE.ABILS);
-            if (type == null) {
+            abilities= AbilityConstructor.getAbilities(script, ref);
+            if (abilities.getEffects().getEffects().isEmpty()) {
                 main.system.auxiliary.log.LogMaster.log(1, "SCRIPT NOT FOUND: " + funcPart);
                 return null;
             }
-            AbilityObj abilObj = new AbilityObj(type, ref);
-
-            abilities = abilObj.getAbilities();
         }
         abilities.setRef(ref);
         ScriptTrigger trigger = new ScriptTrigger(originalText, event_type, condition, abilities);

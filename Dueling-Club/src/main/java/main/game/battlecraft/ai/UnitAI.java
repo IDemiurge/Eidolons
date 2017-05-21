@@ -57,6 +57,8 @@ public class UnitAI {
     private int logLevel = LOG_LEVEL_RESULTS;
     private Order currentOrder;
     private Map<GOAL_TYPE, Object> argMap;
+    private boolean immediate;
+    private boolean free;
 
     public UnitAI(Unit unit) {
         this.unit =   unit;
@@ -445,6 +447,22 @@ public class UnitAI {
 
     public void setArg(GOAL_TYPE goalType, Object arg) {
         getArgMap().put(goalType, arg);
+    }
+
+    public void setImmediate(boolean immediate) {
+        this.immediate = immediate;
+    }
+
+    public boolean isImmediate() {
+        return immediate;
+    }
+
+    public void setFree(boolean free) {
+        this.free = free;
+    }
+
+    public boolean isFree() {
+        return free;
     }
 
     public enum AI_BEHAVIOR_MODE {

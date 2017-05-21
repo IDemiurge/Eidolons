@@ -22,6 +22,7 @@ public class GameLoop {
     private Unit activeUnit;
     private DC_Game game;
     private DC_ActiveObj activatingAction;
+    private boolean paused;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -71,6 +72,11 @@ public class GameLoop {
         return game;
     }
 
+    /**
+     *
+     * @return
+     * true if round must end, null if active unit is to be retained
+     */
     private Boolean makeAction() {
 
         Boolean result;
@@ -86,8 +92,16 @@ public class GameLoop {
             result = activateAction(waitForPlayerInput());
         }
 //        if ()
+        waitForPause();
         waitForAnimations();
         return result;
+    }
+
+    private void waitForPause() {
+        if (paused){
+            WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE );
+            paused=false;
+        }
     }
 
     private void waitForAnimations() {
@@ -150,5 +164,13 @@ public class GameLoop {
 
     public DC_ActiveObj getActivatingAction() {
         return activatingAction;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    public boolean isPaused() {
+        return paused;
     }
 }

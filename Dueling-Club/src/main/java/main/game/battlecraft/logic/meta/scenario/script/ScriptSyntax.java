@@ -9,6 +9,7 @@ public class ScriptSyntax {
     Standard_Event_type>condition(args) AND/OR condition2(args)>function(args) | ...
      */
     public static final String SCRIPTS_SEPARATOR = " | ";
+    public static final String SCRIPTS_SEPARATOR_ALT = " & ";
     public static final String SCRIPT_ARGS_SEPARATOR = ",";
     public static final String PART_SEPARATOR = ">";
 }
