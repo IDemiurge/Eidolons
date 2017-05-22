@@ -7,6 +7,7 @@ import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
+import main.entity.DataModel;
 import main.entity.Entity;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -148,7 +149,7 @@ public class InfoMaster {
         return "Total of " + string + " required: " + amount;
     }
 
-    public static String getWorkspaceTip(Entity entity) {
+    public static String getWorkspaceTip(DataModel entity) {
         WORKSPACE_GROUP ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumConst(
                 WORKSPACE_GROUP.class, entity.getProperty(G_PROPS.WORKSPACE_GROUP));
         return getWorkspaceTip(ws);

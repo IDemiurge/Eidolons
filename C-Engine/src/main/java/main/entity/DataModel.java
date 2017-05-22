@@ -1219,7 +1219,7 @@ public abstract class DataModel {
         return getName() + " - " + id;
     }
 
-    public void cloneMaps(Entity type) {
+    public void cloneMaps(DataModel type) {
         cloneMapsWithExceptions(type);
     }
 
@@ -1255,7 +1255,7 @@ public abstract class DataModel {
         }
     }
 
-    public void cloneMapsWithExceptions(Entity type, VALUE... exceptions) {
+    public void cloneMapsWithExceptions(DataModel type, VALUE... exceptions) {
         Map<VALUE, String> map = new HashMap<>();
         for (VALUE exception : exceptions) {
             map.put(exception, getValue(exception));
@@ -1585,5 +1585,13 @@ public abstract class DataModel {
             sum += getIntParam(param);
         }
         return sum;
+    }
+
+    public String getImagePath() {
+        return getProperty(G_PROPS.IMAGE);
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

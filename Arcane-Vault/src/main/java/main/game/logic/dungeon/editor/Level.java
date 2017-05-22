@@ -218,7 +218,7 @@ public class Level extends DungeonWrapper<Location> {
         LinkedList<Unit> unitsCache = c_game.getUnitsCache();
         location.setPlan(prev.getLocation().getPlan().getCopy());
         LE_Simulation game = (LE_Simulation) prev.getLocation().getGame();
-        location.setGame(game);
+        location.getDungeon(). setGame(game);
         LogMaster.log(1, game.toString());
         game.setUnits(unitsCache);
         LogMaster.log(1, game.getUnits().size() + " vs " + unitsCache.size());
