@@ -59,7 +59,7 @@ public class UnitViewTooltipFactory {
                     values.add(activationTooltip);
                 }
             }
-
+            if (!hero.isMine())
             if (!hero.getGame().isDebugMode())
                 if (hero.getVisibilityLevel()!= VISIBILITY_LEVEL.CLEAR_SIGHT){
                     final ValueContainer nameContainer =  new ValueContainer(hero.getNameIfKnown(), "");
@@ -80,8 +80,6 @@ public class UnitViewTooltipFactory {
 
 //                    hero.getUnitVisionStatus();
 //                    hero.getOutlineTypeForPlayer;
-
-
 //                    hero.getGame().getVisionMaster().getOutlineMaster().get
 //                    final ValueContainer outlineContainer =
 //                     new ValueContainer(StringMaster.getWellFormattedString(hero.getOutlineTypeForPlayer().name()), "");
