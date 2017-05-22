@@ -128,7 +128,7 @@ public abstract class StateManager {
     public void addObject(Obj obj) {
 
         state.objMap.put(obj.getId(), obj);
-        if (!state.game.isSimulation()) {
+
             OBJ_TYPE TYPE = obj.getOBJ_TYPE_ENUM();
             if (TYPE == null) {
                 LogMaster.log(1, obj.toString() + " has no TYPE!");
@@ -140,7 +140,7 @@ public abstract class StateManager {
             }
             // if (!map.containsValue(obj))
             map.put(obj.getId(), obj);
-        }
+
     }
 
     public ObjType getTypeById(Integer id) {
