@@ -10,7 +10,6 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
 import main.entity.item.DC_QuickItemObj;
-import main.entity.item.DC_WeaponObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
@@ -116,7 +115,7 @@ public class RadialManager {
         List<RadialValueContainer> moves = new ArrayList<>();
         List<RadialValueContainer> turns = new ArrayList<>();
         List<RadialValueContainer> attacks = new ArrayList<>();
-        List<RadialValueContainer> specialActions = new ArrayList<>();
+        List<RadialValueContainer> offhandAttacks = new ArrayList<>();  List<RadialValueContainer> specialActions = new ArrayList<>();
         List<RadialValueContainer> modes = new ArrayList<>();
         List<RadialValueContainer> orders = new ArrayList<>();
         List<RadialValueContainer> quickItems = new ArrayList<>();
@@ -145,8 +144,11 @@ public class RadialManager {
                         turns.add(valueContainer);
                     } else if (el.getChecker().isDualAttack()) {
                         dualAttacks.add(getAttackActionNode(el, target));
-                    } else if (el.isAttackGeneric()) {
-                        attacks.add(configureAttackParentNode(target, el));
+                    } else if (el.isStandardAttack()) {
+                      if (el.isOffhand())
+                          offhandAttacks.add(getAttackActionNode(el, target));
+                      else
+                          attacks.add(getAttackActionNode(el, target));
                     } else {
                         final RadialValueContainer valueContainer = configureActionNode(target, el);
 //                 if (el.isSpell()) { DONE VIA SpellRadialManager
@@ -172,12 +174,15 @@ public class RadialManager {
 
 
         if (!attacks.isEmpty()) {
-            list.add(getAttackParentNode(RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, attacks.get(0)));
+            list.add(configureAttackParentNode(attacks,
+             RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, target, sourceUnit.getAttackAction(false)));
         }
         list.add(getParentNode(RADIAL_PARENT_NODE.TURN_ACTIONS, turns));
         list.add(getParentNode(RADIAL_PARENT_NODE.MOVES, moves));
-        if (attacks.size() > 1) {
-            list.add(getAttackParentNode(RADIAL_PARENT_NODE.OFFHAND_ATTACKS, attacks.get(1)));
+
+        if (!offhandAttacks.isEmpty()) {
+            list.add(configureAttackParentNode(offhandAttacks,
+             RADIAL_PARENT_NODE.OFFHAND_ATTACKS, target, sourceUnit.getAttackAction(true)));
         }
 
         list.add(getParentNode(RADIAL_PARENT_NODE.QUICK_ITEMS, quickItems));
@@ -288,15 +293,10 @@ public class RadialManager {
         return new RadialValueContainer(textureRegion, runnable);
     }
 
-    private static RadialValueContainer configureAttackParentNode(DC_Obj target, DC_ActiveObj parent) {
-        List<RadialValueContainer> list = new ArrayList<>();
+    private static RadialValueContainer configureAttackParentNode(
 
-        for (DC_ActiveObj child : parent.getSubActions()) {
-            list.add(getAttackActionNode(child, target));
-        }
-
-        DC_WeaponObj activeWeapon = parent.getActiveWeapon();
-        if (activeWeapon != null && activeWeapon.isRanged()) {
+     List<RadialValueContainer> list, RADIAL_PARENT_NODE parentNode, DC_Obj target, DC_ActiveObj parent) {
+        if ( parent.getActiveWeapon().isRanged()) {
             if (parent.getRef().getObj(Ref.KEYS.AMMO) == null) {
                 for (DC_QuickItemObj ammo : parent.getOwnerObj().getQuickItems()) {
                     final RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR(ammo.getImagePath()), getRunnable(target, ammo));
@@ -308,7 +308,7 @@ public class RadialManager {
 
         RadialValueContainer valueContainer =
                 new RadialValueContainer(new TextureRegion(getTextureForActive(parent, target)), null);
-        addSimpleTooltip(valueContainer, parent.getName());
+        addSimpleTooltip(valueContainer, parentNode.getName());
         valueContainer.setChilds(list);
 
         return valueContainer;

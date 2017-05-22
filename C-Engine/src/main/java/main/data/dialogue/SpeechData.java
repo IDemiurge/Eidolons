@@ -23,8 +23,12 @@ public class SpeechData extends DataUnit<SPEECH_VALUE> {
     }
 
     private void initValues() {
-
+        for (DataString string : strings) {
+            addValue(string.getType(), string.getData());
+        }
     }
 
-
+    public DataString[] getStrings() {
+        return strings;
+    }
 }

@@ -5,10 +5,12 @@ import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.ai.advanced.companion.Order;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.task.Task;
 import main.game.battlecraft.ai.tools.AiScriptExecutor.AI_SCRIPT_FUNCTION;
+import main.game.battlecraft.ai.tools.path.ActionPath;
 import main.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
@@ -35,6 +37,8 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<AI_SCR
             String name = args[i];
             if (DataManager.isTypeName(name))
                 i++;
+            else name = null ;
+
             AI_ARG arg =
              new EnumMaster<AI_ARG>().retrieveEnumConst(AI_ARG.class, args[i]);
             unit = getUnit(arg);
@@ -67,20 +71,26 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<AI_SCR
 
     private void executeCommand(Unit unit, AI_SCRIPT_FUNCTION function, Object arg, boolean free, boolean immediate) {
         ActionSequence sequence = null;
+        Task task = new Task(true, unit.getAI(), GOAL_TYPE.MOVE, arg);
         switch (function) {
             case MOVE_TO:
                 //via a path!
+                ActionPath path = getPathSequenceConstructor().getOptimalPathSequence(unit.getAI(),
+                 new Coordinates(arg.toString()));
+                sequence = new ActionSequence(path.getActions(),task,unit.getAI());
                 break;
             case TURN_TO:
-                Task task = new Task(true, unit.getAI(), GOAL_TYPE.MOVE, arg);
                 //cell id
                 sequence = new ActionSequence(
                  getTurnSequenceConstructor().
                   getTurnSequence(FACING_SINGLE.IN_FRONT, unit,
-                   (Coordinates) arg), task, unit.getAI());
+                  new Coordinates(arg.toString())), task, unit.getAI());
                 break;
             case ORDER:
-                break;
+                Order a = //OrderFactory.getOrder();
+                 new Order(arg.toString());
+                unit.getAI().setCurrentOrder(a);
+                return ;
         }
         if (immediate) {
             unit.getAI().setStandingOrders(sequence);

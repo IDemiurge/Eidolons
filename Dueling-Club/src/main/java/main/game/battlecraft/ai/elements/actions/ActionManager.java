@@ -21,7 +21,7 @@ import main.game.battlecraft.ai.elements.goal.Goal;
 import main.game.battlecraft.ai.tools.Analyzer;
 import main.game.battlecraft.ai.tools.ParamAnalyzer;
 import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
-import main.game.battlecraft.rules.action.StealthRule;
+import main.game.battlecraft.logic.battlefield.vision.StealthRule;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.module.dungeoncrawl.ai.DungeonCrawler;

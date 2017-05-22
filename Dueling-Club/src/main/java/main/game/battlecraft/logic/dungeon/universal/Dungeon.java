@@ -8,18 +8,16 @@ import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
-import main.entity.Entity;
-import main.entity.Ref;
+import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.core.game.DC_Game;
-import main.game.logic.battle.player.Player;
 import main.game.module.dungeoncrawl.dungeon.minimap.Minimap;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
-public class Dungeon extends Entity {
+public class Dungeon extends LightweightEntity {
     private static final Integer DEFAULT_GLOBAL_ILLUMINATION = 75;
     Integer z;
     private COLOR_THEME colorTheme;
@@ -37,7 +35,7 @@ public class Dungeon extends Entity {
     }
 
     public Dungeon(ObjType type, boolean sublevel) {
-        super(type, Player.NEUTRAL, DC_Game.game, new Ref());
+        super(type );
 
     }
 
@@ -45,9 +43,9 @@ public class Dungeon extends Entity {
         this(DataManager.getType(typeName, DC_TYPE.DUNGEONS), sublevel);
     }
 
-    public void init() {
-        toBase();
-    }
+//    public void init() {
+//        toBase();
+//    }
 
 
     public String getMapBackground() {

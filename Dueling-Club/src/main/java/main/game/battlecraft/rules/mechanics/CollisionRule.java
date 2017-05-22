@@ -6,7 +6,7 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
-import main.game.battlecraft.rules.action.StealthRule;
+import main.game.battlecraft.logic.battlefield.vision.StealthRule;
 import main.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import main.game.battlecraft.rules.combat.attack.extra_attack.InstantAttackRule;
 import main.game.battlecraft.rules.combat.mechanics.ForceRule;

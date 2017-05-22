@@ -4,6 +4,7 @@ import main.elements.targeting.Targeting;
 import main.entity.active.DC_ActiveObj;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.actions.Action;
+import main.game.battlecraft.ai.elements.actions.AiActionFactory;
 import main.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.tools.path.ActionPath;
@@ -18,10 +19,7 @@ import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.datatypes.XMap;
 import main.system.math.PositionMaster;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by JustMe on 3/3/2017.
@@ -45,6 +43,18 @@ public class PathSequenceConstructor extends AiHandler {
                 // *flee* action?
                 , new ListMaster<Coordinates>().getList(game.getObjectById((Integer) arg)
                         .getCoordinates()));
+    }
+    public ActionPath getOptimalPathSequence(UnitAI ai, Coordinates  targetCell ) {
+        List<DC_ActiveObj> moves =
+         AiUnitActionMaster.getMoveActions(ai.getUnit());
+        Action action= AiActionFactory.newAction( "Move", ai );
+        List<Coordinates> coordinates=     new LinkedList<>() ;
+        coordinates.add(targetCell);
+        List<ActionPath> paths = getPathSequences(moves, action, coordinates);
+//      paths.forEach(path->{
+//          path.getPriority()
+//      });
+        return paths.get(0);
     }
 
     private List<ActionPath> getPathSequences(List<DC_ActiveObj> moveActions, Action action,
@@ -75,7 +85,7 @@ public class PathSequenceConstructor extends AiHandler {
         return paths;
     }
 
-    List<ActionPath> getPathSequences(List<DC_ActiveObj> moveActions, Action action) {
+  public  List<ActionPath> getPathSequences(List<DC_ActiveObj> moveActions, Action action) {
         Chronos.mark("getTargetCells");
 
         List<Coordinates> targetCells = null;
