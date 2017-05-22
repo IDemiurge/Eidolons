@@ -1,11 +1,9 @@
 package main.entity;
 
-import main.ability.AbilityObj;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
-import main.content.enums.GenericEnums.ASPECT;
 import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
@@ -14,15 +12,11 @@ import main.content.values.parameters.ParamMap;
 import main.content.values.properties.PROPERTY;
 import main.content.values.properties.PropMap;
 import main.data.XLinkedMap;
-import main.entity.obj.ActiveObj;
-import main.entity.tools.*;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.game.logic.battle.player.Player;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,16 +24,13 @@ import java.util.Map;
 /**
  * Created by JustMe on 5/10/2017.
  */
-public class EntityWrapper<E extends Entity> {
+public class EntityWrapper<E extends DataModel> {
     E entity;
 
     public EntityWrapper(E entity) {
         this.entity = entity;
     }
 
-    public void init() {
-        entity.init();
-    }
 
     public String getToolTip() {
         return entity.getToolTip();
@@ -53,9 +44,6 @@ public class EntityWrapper<E extends Entity> {
         return entity.getCustomValue(value_ref);
     }
 
-    public EntityMaster initMaster() {
-        return entity.initMaster();
-    }
 
     public String getCustomProperty(String value_ref) {
         return entity.getCustomProperty(value_ref);
@@ -65,25 +53,11 @@ public class EntityWrapper<E extends Entity> {
         return entity.getCounter(value_ref);
     }
 
-    public void addToState() {
-        entity.addToState();
-    }
-
-    public boolean isMicroGameObj() {
-        return entity.isMicroGameObj();
-    }
 
     public void setGroup(String group, boolean base) {
         entity.setGroup(group, base);
     }
 
-    public EntityMaster getMaster() {
-        return entity.getMaster();
-    }
-
-    public void toBase() {
-        entity.toBase();
-    }
 
     public boolean setCounter(String name, int newValue) {
         return entity.setCounter(name, newValue);
@@ -113,9 +87,6 @@ public class EntityWrapper<E extends Entity> {
         return entity.find(p);
     }
 
-    public void constructConcurrently() {
-        entity.constructConcurrently();
-    }
 
     public String getParam(String p) {
         return entity.getParam(p);
@@ -125,62 +96,22 @@ public class EntityWrapper<E extends Entity> {
         return entity.getParam(param);
     }
 
-    public void construct() {
-        entity.construct();
-    }
 
     public String getParamRounded(PARAMETER param, boolean base) {
         return entity.getParamRounded(param, base);
     }
 
-    public boolean isConstructAlways() {
-        return entity.isConstructAlways();
-    }
-
-    public void resetRef() {
-        entity.resetRef();
-    }
-
-    public void addStatus(String value) {
-        entity.addStatus(value);
-    }
-
-    public void removeStatus(String value) {
-        entity.removeStatus(value);
-    }
-
-    public void newRound() {
-        entity.newRound();
-    }
-
-    public void clicked() {
-        entity.clicked();
-    }
 
     public Double getParamDouble(PARAMETER param) {
         return entity.getParamDouble(param);
     }
 
-    public void invokeRightClicked() {
-        entity.invokeRightClicked();
-    }
-
-
-    public void invokeClicked() {
-        entity.invokeClicked();
-    }
-
-    public boolean kill() {
-        return entity.kill();
-    }
 
     public Double getParamDouble(PARAMETER param, boolean base) {
         return entity.getParamDouble(param, base);
     }
 
-    public boolean kill(Entity killer, boolean leaveCorpse, Boolean quietly) {
-        return entity.kill(killer, leaveCorpse, quietly);
-    }
+
 
     public String getDoubleParam(PARAMETER param) {
         return entity.getDoubleParam(param);
@@ -190,29 +121,11 @@ public class EntityWrapper<E extends Entity> {
         return entity.getGame();
     }
 
-    public void setGame(Game game) {
-        entity.setGame(game);
-    }
 
     public String getDoubleParam(PARAMETER param, boolean base) {
         return entity.getDoubleParam(param, base);
     }
 
-    public Game getGenericGame() {
-        return entity.getGenericGame();
-    }
-
-    public String getOBJ_TYPE() {
-        return entity.getOBJ_TYPE();
-    }
-
-    public OBJ_TYPE getOBJ_TYPE_ENUM() {
-        return entity.getOBJ_TYPE_ENUM();
-    }
-
-    public void setOBJ_TYPE_ENUM(OBJ_TYPE TYPE_ENUM) {
-        entity.setOBJ_TYPE_ENUM(TYPE_ENUM);
-    }
 
     public Integer getIntParam(String param) {
         return entity.getIntParam(param);
@@ -222,69 +135,21 @@ public class EntityWrapper<E extends Entity> {
         return entity.getStrParam(param);
     }
 
-    public Player getOwner() {
-        return entity.getOwner();
-    }
-
-    public void setOwner(Player owner) {
-        entity.setOwner(owner);
-    }
 
     public Integer getIntParam(PARAMETER param) {
         return entity.getIntParam(param);
     }
 
-    public List<AbilityObj> getPassives() {
-        return entity.getPassives();
-    }
-
-    public void setPassives(List<AbilityObj> passives) {
-        entity.setPassives(passives);
-    }
 
     public Integer getIntParam(PARAMETER param, boolean base) {
         return entity.getIntParam(param, base);
     }
 
-    public List<AbilityObj> getPassivesFiltered() {
-        return entity.getPassivesFiltered();
-    }
-
-    public List<ActiveObj> getActives() {
-        return entity.getActives();
-    }
-
-    public void setActives(List<ActiveObj> list) {
-        entity.setActives(list);
-    }
-
-    public boolean isUpgrade() {
-        return entity.isUpgrade();
-    }
-
-    public Player getOriginalOwner() {
-        return entity.getOriginalOwner();
-    }
-
-    public void setOriginalOwner(Player originalOwner) {
-        entity.setOriginalOwner(originalOwner);
-    }
-
-    public boolean isNeutral() {
-        return entity.isNeutral();
-    }
 
     public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
         return entity.getIntegerMap(base);
     }
 
-    public boolean isOwnedBy(Player player) {
-        return entity.isOwnedBy(player);
-    }
-
-    public ASPECT getAspect() {
-        return entity.getAspect();
-    }
 
     public ParamMap getParamMap() {
         return entity.getParamMap();
@@ -294,21 +159,11 @@ public class EntityWrapper<E extends Entity> {
         entity.setParamMap(paramMap);
     }
 
-    public ImageIcon getDefaultIcon() {
-        return entity.getDefaultIcon();
-    }
 
     public void getBoolean(VALUE prop, Boolean b) {
         entity.getBoolean(prop, b);
     }
 
-    public Image getImage() {
-        return entity.getImage();
-    }
-
-    public void setImage(String image) {
-        entity.setImage(image);
-    }
 
     public Boolean getBoolean(String prop) {
         return entity.getBoolean(prop);
@@ -318,9 +173,6 @@ public class EntityWrapper<E extends Entity> {
         return entity.getProperty(prop);
     }
 
-    public ImageIcon getIcon() {
-        return entity.getIcon();
-    }
 
     public String getProp(String prop) {
         return entity.getProp(prop);
@@ -338,81 +190,31 @@ public class EntityWrapper<E extends Entity> {
         return entity.checkValue(v);
     }
 
-    public boolean isDead() {
-        return entity.isDead();
-    }
-
-    public void setDead(boolean dead) {
-        entity.setDead(dead);
-    }
-
-    public boolean isMine() {
-        return entity.isMine();
-    }
 
     public boolean checkValue(VALUE v, String value) {
         return entity.checkValue(v, value);
     }
 
-    public String getImagePath() {
-        return entity.getImagePath();
-    }
-
-    public void resetRawValues() {
-        entity.resetRawValues();
-    }
 
     public boolean checkParam(PARAMETER param) {
         return entity.checkParam(param);
     }
 
-    public String getGroupingKey() {
-        return entity.getGroupingKey();
-    }
 
     public boolean checkParameter(PARAMETER param, int value) {
         return entity.checkParameter(param, value);
     }
 
-    public EntityAnimator getAnimator() {
-        return entity.getAnimator();
-    }
 
     public boolean checkParam(PARAMETER param, String value) {
         return entity.checkParam(param, value);
     }
 
-    public EntityLogger getLogger() {
-        return entity.getLogger();
-    }
-
-    public EntityInitializer getInitializer() {
-        return entity.getInitializer();
-    }
-
-    public EntityCalculator getCalculator() {
-        return entity.getCalculator();
-    }
-
-    public EntityChecker getChecker() {
-        return entity.getChecker();
-    }
-
-    public EntityHandler getHandler() {
-        return entity.getHandler();
-    }
-
-    public EntityResetter getResetter() {
-        return entity.getResetter();
-    }
 
     public boolean checkProperty(PROPERTY p, String value) {
         return entity.checkProperty(p, value);
     }
 
-    public void reset() {
-        entity.reset();
-    }
 
     public Map<PROPERTY, Map<String, Boolean>> getPropCache(boolean base) {
         return entity.getPropCache(base);

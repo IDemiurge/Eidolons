@@ -3,6 +3,7 @@ package main.game.battlecraft.logic.battlefield.vision;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_HINT;
 import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
@@ -22,7 +23,7 @@ public class HintMaster {
         master = visionMaster;
     }
 
-    private List<OUTLINE_HINT> getHints(Unit unit, OUTLINE_IMAGE image) {
+    private List<OUTLINE_HINT> getHints(BattleFieldObject unit, OUTLINE_IMAGE image) {
         List<OUTLINE_HINT> list = new LinkedList<>();
         if (unit.isSmall()) {
             list.add(OUTLINE_HINT.SMALL);
@@ -120,8 +121,9 @@ public class HintMaster {
 
     }
 
-    public String getHintsString(Unit unit) {
-        List<OUTLINE_HINT> hints = getHints(unit, master.getOutlineMaster().getImageDark(unit));
+    public String getHintsString(BattleFieldObject unit) {
+        List<OUTLINE_HINT> hints =
+         getHints(unit, master.getOutlineMaster().getImageDark(unit));
         String hintString = "";
         for (OUTLINE_HINT hint : hints) {
             hintString += StringMaster.getWellFormattedString(hint.toString()) + " ";

@@ -7,7 +7,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.XmlDocHolder;
 import main.data.xml.XML_Converter;
-import main.entity.Entity;
+import main.entity.DataModel;
 import main.entity.type.ObjType;
 import main.entity.type.XmlHoldingType;
 import main.system.auxiliary.StringMaster;
@@ -78,11 +78,11 @@ public class TypeBuilder {
         return type.getOBJ_TYPE() + " " + type.getName() + new SecureRandom().nextLong();
     }
 
-    public static void setProps(Entity type, Node node) {
+    public static void setProps(DataModel type, Node node) {
         setProps(type, node.getChildNodes());
     }
 
-    private static void setProps(Entity type, NodeList childNodes) {
+    private static void setProps(DataModel type, NodeList childNodes) {
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node child = childNodes.item(i);
             if (child.getNodeName().equals(XML_Converter.TEXT_NODE)) {
@@ -120,11 +120,11 @@ public class TypeBuilder {
         return XML_Converter.getTextStringFromXML(child);
     }
 
-    public static void setParams(Entity type, Node node) {
+    public static void setParams(DataModel type, Node node) {
         setParams(type, node.getChildNodes());
     }
 
-    private static void setParams(Entity type, NodeList childNodes) {
+    private static void setParams(DataModel type, NodeList childNodes) {
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node child = childNodes.item(i);
 

@@ -946,7 +946,7 @@ public abstract class DataModel {
                 + " percentage reset: " + c_value + " out of " + base_value + " = " + percentage);
     }
 
-      public Game getGame(){
+      public Game getGame(){ if (game==null) return Game.game;
         return game;
       }
 

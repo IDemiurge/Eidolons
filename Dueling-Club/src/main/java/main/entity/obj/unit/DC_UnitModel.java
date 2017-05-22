@@ -151,7 +151,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 //        if (!VisionManager.checkKnown(this)) {
 //            return "?";
 //        }
-        return getName();
+        return getNameIfKnown();
     }
 
 

@@ -7,6 +7,7 @@ import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.entity.Ref;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
@@ -146,11 +147,13 @@ public class OutlineMaster {
         return OUTLINE_IMAGE.UNKNOWN;
     }
 
-    protected OUTLINE_IMAGE getImageDark(Unit unit) {
+    protected OUTLINE_IMAGE getImageDark(BattleFieldObject obj) {
         // TODO identify!
-        if (unit.isWall()) {
+
+        if (!(obj instanceof Unit)) { //.isWall()
             return OUTLINE_IMAGE.WALL;
         }
+        Unit unit = (Unit) obj;
         if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.ANIMAL)) {
             return OUTLINE_IMAGE.BEAST;
         }

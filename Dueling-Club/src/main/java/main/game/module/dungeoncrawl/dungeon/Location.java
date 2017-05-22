@@ -8,7 +8,7 @@ import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
-import main.entity.Entity;
+import main.entity.DataModel;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
@@ -470,7 +470,7 @@ public class Location {
         return null;
     }
 
-    public Entity getPlaceOrScenario() {
+    public DataModel getPlaceOrScenario() {
         if (scenario != null) {
             return scenario;
         }
