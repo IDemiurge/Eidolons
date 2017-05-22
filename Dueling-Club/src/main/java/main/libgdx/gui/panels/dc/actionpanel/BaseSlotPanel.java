@@ -1,7 +1,6 @@
 package main.libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 
@@ -35,7 +34,9 @@ public class BaseSlotPanel extends TablePanel {
 
         PagesMod mod = PagesMod.NONE;
 
-        for (PagesMod pagesMod : PagesMod.values()) {
+        PagesMod[] pagesMods = PagesMod.getValues();
+        for (int i = 0, pagesModsLength = pagesMods.length; i < pagesModsLength; i++) {
+            PagesMod pagesMod = pagesMods[i];
             if (Gdx.input.isKeyPressed(pagesMod.getKeyCode())) {
                 mod = pagesMod;
             }
@@ -104,21 +105,5 @@ public class BaseSlotPanel extends TablePanel {
 
     protected int getPageSize() {
         return 6;
-    }
-
-    private enum PagesMod {
-        NONE(0),
-        ALT(Input.Keys.ALT_LEFT),
-        SHIFT(Input.Keys.SHIFT_LEFT),
-        CTRL(Input.Keys.CONTROL_LEFT);
-        private int keyCode;
-
-        PagesMod(int keyCode) {
-            this.keyCode = keyCode;
-        }
-
-        public int getKeyCode() {
-            return keyCode;
-        }
     }
 }

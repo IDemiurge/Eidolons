@@ -90,6 +90,22 @@
         </dependency>
 
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <prj.build.type>dev</prj.build.type>
+            </properties>
+        </profile>
+        <profile>
+            <id>travis</id>
+            <properties>
+                <prj.build.type>travis</prj.build.type>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>

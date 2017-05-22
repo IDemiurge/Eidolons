@@ -16,7 +16,6 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class GuiEventManager {
     private static GuiEventManager instance;
-    private static boolean isInitialized;
     private static Lock initLock = new ReentrantLock();
     private Map<GuiEventType, EventCallback> eventMap = new HashMap<>();
     private List<Runnable> eventQueue = new ArrayList<>();
@@ -28,7 +27,7 @@ public class GuiEventManager {
     }
 
     public static void trigger(final GuiEventType type) {
-        trigger(type, new EventCallbackParam(null));
+        trigger(type, new EventCallbackParam<>(null));
     }
 
     public static void trigger(final GuiEventType type, Object obj) {
@@ -37,7 +36,7 @@ public class GuiEventManager {
         if (obj instanceof EventCallbackParam) {
             eventCallback = (EventCallbackParam) obj;
         } else {
-            eventCallback = new EventCallbackParam(obj);
+            eventCallback = new EventCallbackParam<>(obj);
         }
 
         getInstance().trigger_(type, eventCallback);
@@ -49,23 +48,20 @@ public class GuiEventManager {
 
     private static GuiEventManager getInstance() {
         if (instance == null) {
-            if (!isInitialized) {
-                try {
-                    initLock.lock();
-                    if (!isInitialized) {
-                        init();
-                        isInitialized = true;
-                    }
-                } finally {
-                    initLock.unlock();
+            try {
+                initLock.lock();
+                if (instance == null) {
+                    instance = new GuiEventManager();
                 }
+            } finally {
+                initLock.unlock();
             }
         }
         return instance;
     }
 
-    private static void init() {
-        instance = new GuiEventManager();
+    public static void clear() {
+        instance = null;
     }
 
     public void bind_(GuiEventType type, final EventCallback event) {
