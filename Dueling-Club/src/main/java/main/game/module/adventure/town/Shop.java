@@ -15,6 +15,7 @@ import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
+import main.data.xml.XML_Formatter;
 import main.data.xml.XML_Writer;
 import main.elements.conditions.PropCondition;
 import main.entity.Ref;
@@ -55,7 +56,7 @@ public class Shop extends TownPlace {
         for (PROPERTY p : propMap.keySet()) {
             if (SaveMaster.isPropSaved(p, getOBJ_TYPE_ENUM())) {
                 s += XML_Writer.openXML(p.getName())
-                        + XML_Writer.formatStringForXmlNodeName(getProperty(p))
+                        + XML_Formatter.formatStringForXmlNodeName(getProperty(p))
                         + XML_Writer.closeXML(p.getName());
             }
         }

@@ -1260,6 +1260,11 @@ public class Unit extends DC_UnitModel {
         return null;
     }
 
+    @Override
+    public void setConstructed(boolean b) {
+        super.setConstructed(b); //TODO set for all?
+    }
+
     public DC_Obj getLinkedObj(IdKey key) {
         return  new KeyResolver().getObj(key, this);
     }

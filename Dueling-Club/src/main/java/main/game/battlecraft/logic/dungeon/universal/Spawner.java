@@ -28,7 +28,7 @@ import main.system.sound.SoundMaster.SOUNDS;
 import main.system.test.TestMasterContent;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.test.Refactor;
+import main.system.util.Refactor;
 
 import java.util.List;
 

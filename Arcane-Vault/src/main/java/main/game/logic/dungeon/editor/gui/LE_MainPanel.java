@@ -13,7 +13,7 @@ import main.swing.generic.components.G_Panel;
 import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
-import main.test.Refactor;
+import main.system.util.Refactor;
 
 import javax.swing.*;
 import java.util.LinkedList;

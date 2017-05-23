@@ -1,13 +1,18 @@
 package main.game.core.game;
 
+import main.content.PARAMS;
 import main.data.XList;
+import main.entity.Ref;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game.GAME_TYPE;
+import main.system.SortMaster;
+import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.DequeImpl;
+import main.system.math.PositionMaster;
 
 import java.util.*;
 
@@ -240,5 +245,41 @@ public class DC_GameMaster extends GameMaster {
                 getStructures().add((Structure) obj);
             }
         }
+    }
+
+    public Unit getUnitByName(String arg, Ref ref
+     , Boolean ally_or_enemy_only, Boolean distanceSort, Boolean powerSort
+    ) {
+        List<Unit> matched = new LinkedList<>();
+        for (Unit unit : getUnits()) {
+            if (ally_or_enemy_only != null)
+                if (unit.getOwner() == ref.getSourceObj().getOwner())
+                    if (ally_or_enemy_only)
+                        continue;
+            if (unit.getOwner() != ref.getSourceObj().getOwner())
+                if (!ally_or_enemy_only)
+                    continue;
+            if (arg==null || unit.getName().equalsIgnoreCase(arg)) {
+                matched.add(unit);
+            }
+            //TODO
+        }
+
+        if (matched.size() == 1)
+            return matched.get(0);
+
+        if (distanceSort) {
+            SortMaster.sortByExpression(matched,
+             unit1 -> -PositionMaster.getDistance((Obj) unit1, ref.getSourceObj()));
+            return matched.get(0);
+        }
+        if (powerSort) {
+            SortMaster.sortByExpression(matched,
+             unit1 -> unit1.getIntParam(PARAMS.POWER));
+            return matched.get(0);
+        }
+
+        return new RandomWizard<Unit>().getRandomListItem(matched);
+
     }
 }

@@ -133,7 +133,7 @@ public class TextureCache {
                 );
                 cache.put(path, t);
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                  if (cache.get(getEmptyPath()) == null){
                     Texture emptyTexture = new Texture(getEmptyPath());
                     cache.put(getEmptyPath(), emptyTexture );

@@ -3,7 +3,6 @@ package main.game.battlecraft.logic.battle.mission;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
-import main.data.ability.AE_ConstrArgs;
 import main.elements.triggers.Trigger;
 import main.entity.Ref;
 import main.entity.type.ObjType;
@@ -59,6 +58,8 @@ public class MissionScriptManager extends BattleHandler<MissionBattle> implement
 
 
     private void addTrigger(Trigger trigger) {
+        if (trigger==null )
+            return ;
         getMaster().getGame().getManager().addTrigger(trigger);
 //        scriptTriggers.add(trigger);
     }
@@ -72,9 +73,24 @@ public class MissionScriptManager extends BattleHandler<MissionBattle> implement
                 break;
             case KILL:
                 break;
+            case SCRIPT:
+                return doScript(ref, args);
         }
 
         return false;
+    }
+
+    @Override
+    public String getSeparator(MISSION_SCRIPT_FUNCTION func) {
+        if(func==MISSION_SCRIPT_FUNCTION.SCRIPT){
+            return ScriptSyntax.SCRIPTS_SEPARATOR_ALT;
+        }
+        return ScriptSyntax.SCRIPT_ARGS_SEPARATOR;
+    }
+
+    private boolean doScript(Ref ref, String[] args) {
+        parseScripts(args[0]);
+        return true;
     }
 
     //CREATE TRIGGERS
@@ -136,9 +152,8 @@ public class MissionScriptManager extends BattleHandler<MissionBattle> implement
 
         return true;
     }
-
-    public enum MISSION_SCRIPT_FUNCTION {
-        @AE_ConstrArgs(argNames = {"", "", ""})
+        public enum MISSION_SCRIPT_FUNCTION {
+        AI,
         SPAWN,
         REMOVE,
         KILL,

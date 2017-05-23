@@ -17,7 +17,7 @@ import main.content.values.properties.PropMap;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
-import main.data.xml.XML_Writer;
+import main.data.xml.XML_Formatter;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
@@ -972,7 +972,7 @@ public abstract class DataModel {
 
     public void setProperty(PROPERTY prop, String value) {
         if (prop == G_PROPS.NAME) {
-            this.name = XML_Writer.restoreXmlNodeName(value);
+            this.name = XML_Formatter.restoreXmlNodeName(value);
         }
         putProperty(prop, value);
         getPropCache().remove(prop);

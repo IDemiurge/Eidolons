@@ -352,7 +352,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public Targeting getTargeting() {
-        if (!constructed) {
+        if (!constructed || targeting==null ) {
             construct();
         }
         return targeting;

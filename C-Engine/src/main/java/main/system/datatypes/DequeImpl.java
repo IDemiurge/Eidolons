@@ -68,7 +68,7 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
         return result;
     }
 
-    public void addAllCast(Collection<?> list) {
+    public DequeImpl<E> addAllCast(Collection<?> list) {
         for (Object item : list) {
             try {
                 add((E) item);
@@ -76,6 +76,7 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
 
             }
         }
+        return this;
     }
 
     public boolean addCast(Object o) {

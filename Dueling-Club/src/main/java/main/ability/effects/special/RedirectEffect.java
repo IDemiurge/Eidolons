@@ -2,7 +2,7 @@ package main.ability.effects.special;
 
 import main.ability.effects.MicroEffect;
 import main.ability.effects.TriggeredEffect;
-import main.test.Unimplemented;
+import main.system.util.Unimplemented;
 
 @Unimplemented
 public class RedirectEffect extends MicroEffect implements TriggeredEffect{

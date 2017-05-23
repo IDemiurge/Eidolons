@@ -23,7 +23,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
-import main.test.Refactor;
+import main.system.util.Refactor;
 
 import java.util.HashSet;
 import java.util.LinkedList;

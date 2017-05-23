@@ -4,7 +4,7 @@ import main.content.PARAMS;
 import main.content.PROPS;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
-import main.data.xml.XML_Writer;
+import main.data.xml.XML_Formatter;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
@@ -31,7 +31,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.MathMaster;
-import main.test.Refactor;
+import main.system.util.Refactor;
 import org.w3c.dom.Node;
 
 import java.io.File;
@@ -545,9 +545,9 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
     private MapZone createZone(DungeonPlan plan, int zoneId, Node zoneNode) {
         String name = zoneNode.getNodeName();
-        String nodeName = XML_Writer.restoreXmlNodeName(name);
+        String nodeName = XML_Formatter.restoreXmlNodeName(name);
         if (!nodeName.contains(",")) {
-            nodeName = XML_Writer.restoreXmlNodeNameOld(name);
+            nodeName = XML_Formatter.restoreXmlNodeNameOld(name);
         }
         int[] c = CoordinatesMaster.getMinMaxCoordinates(nodeName.split(",")[1]);
         MapZone zone = new MapZone(plan.getDungeon(), zoneId, c[0], c[1], c[2], c[3]);

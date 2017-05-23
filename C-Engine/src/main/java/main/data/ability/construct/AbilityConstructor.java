@@ -50,7 +50,7 @@ public class AbilityConstructor {
         Abilities abilities = new Abilities();
         List<Node> nodeList = XML_Converter.getNodeList(node);
         while (nodeList.size() < 2 //
-                && nodeList.get(0).getNodeName().equals(Mapper.ABILITIES)) {
+         && nodeList.get(0).getNodeName().equals(Mapper.ABILITIES)) {
             nodeList = XML_Converter.getNodeList(nodeList.get(0));
         }
         for (Node NODE : nodeList) {
@@ -92,13 +92,13 @@ public class AbilityConstructor {
         }
         if (effects == null) {
             LogMaster.log(1,
-                    "null abil effects!");
+             "null abil effects!");
             effects = new Effects();
         }
 
         if (targeting == null) {
             LogMaster.log(1,
-                    "null abil targeting!");
+             "null abil targeting!");
             targeting = new FixedTargeting();
         }
         if (node.getNodeName().equals(ACTIVE_ABILITY)) {
@@ -142,7 +142,8 @@ public class AbilityConstructor {
 
         }
     }
-        public static void construct(AbilityType type) {
+
+    public static void construct(AbilityType type) {
         constructXml(type);
         Abilities abilities = constructAbilities(type.getDoc());
         type.setAbilities(abilities);
@@ -181,11 +182,11 @@ public class AbilityConstructor {
                     continue;
                 }
                 String mergedAbility = abilName
-                        + StringMaster.wrapInParenthesis(StringMaster
-                        .wrapInParenthesis(StringMaster.cropParenthesises(varPart))
-                        + "+"
-                        + StringMaster.wrapInParenthesis(StringMaster
-                        .cropParenthesises(varPart)));
+                 + StringMaster.wrapInParenthesis(StringMaster
+                 .wrapInParenthesis(StringMaster.cropParenthesises(varPart))
+                 + "+"
+                 + StringMaster.wrapInParenthesis(StringMaster
+                 .cropParenthesises(varPart)));
 
                 removeList.add(s1);
                 removeList.add(s);
@@ -199,9 +200,9 @@ public class AbilityConstructor {
         for (String s : addList) {
             list.add(s);
         }
-if ( list.isEmpty())
-    entity.removeProperty(property);
-    else entity.setProperty(property, StringMaster.constructContainer(list));
+        if (list.isEmpty())
+            entity.removeProperty(property);
+        else entity.setProperty(property, StringMaster.constructContainer(list));
 
     }
 
@@ -233,7 +234,7 @@ if ( list.isEmpty())
         }
         entity.setPassives(passives);
         Chronos.logTimeElapsedForMark(Chronos.CONSTRUCT, "construct passives for "
-                + entity.getName());
+         + entity.getName());
         // so the passives cannot be removed via OBJ-REMOVAL...
         // they can be removed if some item is removed
     }
@@ -275,7 +276,8 @@ if ( list.isEmpty())
         }
         List<ActiveObj> list = new LinkedList<>();
 
-        for (String abilTypeName : entity.getProperty(prop).split(StringMaster.getSeparator())) {
+        for (String abilTypeName : StringMaster.openContainer(entity.getProperty(prop))) {
+            if (abilTypeName.isEmpty()) continue;
             ActiveObj ability;
             ability = newAbility(abilTypeName, entity, passive);
             if (ability != null) {
@@ -286,10 +288,20 @@ if ( list.isEmpty())
         return list;
     }
 
+    public static Abilities getAbilities (String data, Ref ref) {
+        Abilities a = new Abilities();
+        for (String abilTypeName : StringMaster.openContainer(
+         data)) {
+            a.add(new AbilityObj(VariableManager.getVarType(abilTypeName), ref));
+        }
+        return a;
+    }
+
+
     private static TARGETING_MODE getTargetingMode(Entity entity) {
         try {
             return (new EnumMaster<TARGETING_MODE>().retrieveEnumConst(TARGETING_MODE.class, entity
-                    .getProperty(G_PROPS.TARGETING_MODE)));
+             .getProperty(G_PROPS.TARGETING_MODE)));
         } catch (Exception e) {
             return null;
         }
@@ -306,10 +318,10 @@ if ( list.isEmpty())
         try {
             if (passive) {
                 abilTypeName = TextParser.parse(abilTypeName, ref, TextParser.ABILITY_PARSING_CODE,
-                        TextParser.VARIABLE_PARSING_CODE);
+                 TextParser.VARIABLE_PARSING_CODE);
             } else {
                 abilTypeName = TextParser.parse(abilTypeName, ref, TextParser.ACTIVE_PARSING_CODE,
-                        TextParser.VARIABLE_PARSING_CODE, TextParser.ABILITY_PARSING_CODE);
+                 TextParser.VARIABLE_PARSING_CODE, TextParser.ABILITY_PARSING_CODE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -340,10 +352,10 @@ if ( list.isEmpty())
         if (ability == null) {
             if (passive) {
                 ability = new PassiveAbilityObj(type, entity.getRef(), entity.getOwner(), entity
-                        .getGame());
+                 .getGame());
             } else {
                 ability = new ActiveAbilityObj(type, entity.getRef(), entity.getOwner(), entity
-                        .getGame());
+                 .getGame());
             }
 
             entity.getGame().getState().addObject(ability);

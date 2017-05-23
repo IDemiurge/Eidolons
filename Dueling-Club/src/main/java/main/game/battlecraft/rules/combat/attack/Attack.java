@@ -6,6 +6,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.combat.attack.extra_attack.InstantAttackRule.INSTANT_ATTACK_TYPE;
 import main.game.battlecraft.rules.combat.damage.Damage;
@@ -35,7 +36,7 @@ public class Attack {
     private Ref ref;
     private DC_ActiveObj action;
     private Unit attacker;
-    private Unit attacked;
+    private BattleFieldObject attacked;
     private boolean countered;
     private Integer damage = DAMAGE_NOT_SET;
     private Integer remainingDamage;
@@ -59,7 +60,7 @@ public class Attack {
         this.ref = ref;
         try {
             attacker = (Unit) ref.getSourceObj();
-            attacked = (Unit) ref.getTargetObj();
+            attacked = (BattleFieldObject) ref.getTargetObj();
             action = (DC_ActiveObj) ref.getActive();
             // sneak = DC_AttackMaster.checkSneak(ref); elsewhere
         } catch (Exception e) {
@@ -255,7 +256,12 @@ public class Attack {
         this.attacker = attacker;
     }
 
-    public Unit getAttacked() {
+    public BattleFieldObject getAttackedUnit() {
+        if (attacked instanceof Unit)
+        return (Unit) attacked;
+        return null;
+    }
+    public BattleFieldObject getAttacked() {
         return attacked;
     }
 
@@ -303,11 +309,13 @@ public class Attack {
     }
 
     public DC_WeaponObj getShield() {
-        DC_WeaponObj weapon = attacked.getWeapon(true);
+        if (attacked instanceof Unit) {
+            DC_WeaponObj weapon =  ((Unit) attacked).getWeapon(true);
         if (weapon != null) {
             if (weapon.isShield()) {
                 return weapon;
             }
+        }
         }
         return null;
     }

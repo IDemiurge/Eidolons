@@ -28,15 +28,19 @@ String script;
     List<DialogueActor> actors;
     String formattedText;
     Speech parent;
-    DequeImpl<Speech> children;
+    DequeImpl<Speech > children;
     REPLICA_STATUS status;
     private int id;
     //last speech
     public Speech(Integer id) {
-        this.id = id;
+        this(id, null);
     }
     public Speech(Integer id, Speeches children) {
         this.id = id;
+        if (children!=null ){
+            this.children= new DequeImpl<Speech>().addAllCast(children.getList());
+        }
+        new SpeechBuilder().buildSpeech(this);
     }
 
     public Speech(String actor, String text) {
@@ -65,7 +69,7 @@ String script;
        this.children = new DequeImpl<Speech>().getAddAllCast(children.getList());
     }
     public void addChild(Speech child) {
-        children.add(child);
+        getChildren().add(child);
     }
 
     public void init(ScenarioMetaMaster master, Speech parent) {
@@ -81,6 +85,14 @@ String script;
         return conditions;
     }
 
+    public Abilities getAbilities() {
+        return abilities;
+    }
+
+    public String getScript() {
+        return script;
+    }
+
     public List<DialogueActor> getActors() {
         return actors;
     }
@@ -94,6 +106,7 @@ String script;
     }
 
     public DequeImpl<Speech> getChildren() {
+        if (children==null ) children = new DequeImpl<>();
         return children;
     }
 

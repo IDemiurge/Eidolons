@@ -9,6 +9,7 @@ import main.data.DataManager;
 import main.data.TableDataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
+import main.data.xml.XML_File;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
@@ -544,7 +545,11 @@ public class TabBuilder extends Builder implements ChangeListener {
         if (!file.isFile()) {
             return;
         }
-        XML_Reader.readFile(file);
+        XML_File xmlFile = XML_Reader.readFile(file);
+        XML_Reader.loadMap(xmlFile.getType().getName(),
+         xmlFile.   getContents());
+
+
         TabBuilder tabBuilder = new TabBuilder(name);
         JComponent tabs = tabBuilder.build();
         builders.put(tabBuilder, null);

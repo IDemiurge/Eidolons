@@ -16,7 +16,7 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
-import main.test.Refactor;
+import main.system.util.Refactor;
 import main.test.debug.DebugMaster;
 
 public class DC_Cell extends DC_Obj implements Cell {

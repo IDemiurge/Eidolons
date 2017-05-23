@@ -39,15 +39,15 @@ public class ParryRule {
         int defenseValue = DefenseVsAttackRule.getDefenseValue(attack);
 
         float chance = DefenseVsAttackRule.getProportionBasedChance(attackValue, defenseValue, false);
-        chance += attack.getAttacked().getIntParam(PARAMS.PARRY_CHANCE);
+        chance += attack.getAttackedUnit().getIntParam(PARAMS.PARRY_CHANCE);
         chance += -attack.getAttacker().getIntParam(PARAMS.PARRY_PENETRATION);
         Integer chanceRounded = Math.round(chance);
 
-        game.getLogManager().newLogEntryNode(ENTRY_TYPE.PARRY, attack.getAttacked().getName(),
+        game.getLogManager().newLogEntryNode(ENTRY_TYPE.PARRY, attack.getAttackedUnit().getName(),
          attack.getAction().getName(), attack.getAttacker().getName(),
          chanceRounded.toString());
         if (!RandomWizard.chance(chanceRounded)) {
-            game.getLogManager().log(attack.getAttacked().getName() + " fails to parry " + attack.getAction().getName()
+            game.getLogManager().log(attack.getAttackedUnit().getName() + " fails to parry " + attack.getAction().getName()
              + " from " + attack.getAttacker().getNameIfKnown()
              + StringMaster.wrapInParenthesis(chanceRounded + "%"));
             game.getLogManager().doneLogEntryNode();
@@ -55,7 +55,7 @@ public class ParryRule {
                 return false;
             }
         }
-        Unit attacked = attack.getAttacked();
+        Unit attacked = (Unit) attack.getAttackedUnit();
         Unit attacker = attack.getAttacker();
         boolean dual = false;
         if (attacked.checkDualWielding()) {
@@ -64,7 +64,7 @@ public class ParryRule {
         int damage =
          attack.getPrecalculatedDamageAmount(); //raw damage
 //         attack.getDamage();
-        game.getLogManager().log(attack.getAttacked().getName() + " parries " + attack.getAction().getName() + " from "
+        game.getLogManager().log(attack.getAttackedUnit().getName() + " parries " + attack.getAction().getName() + " from "
          + attack.getAttacker().getNameIfKnown()
          + StringMaster.wrapInParenthesis(chanceRounded + "%") + ", deflecting " + damage
          + " " + attack.getDamageType() + " damage");
@@ -98,7 +98,8 @@ public class ParryRule {
     // precalculateRawDamageForDisplay
     private boolean canParry(Attack attack) {
         // if (!RuleMaster.isParryOn())return false;
-        if (attack.getAttacked().getIntParam(PARAMS.PARRY_CHANCE) <= 0) {
+        Unit attackedUnit = (Unit) attack.getAttackedUnit();
+        if (attackedUnit.getIntParam(PARAMS.PARRY_CHANCE) <= 0) {
             return false;
         }
         if (attack.isSneak()) {
@@ -119,10 +120,10 @@ public class ParryRule {
         // if (attack.getWeapon().getWeaponSize() == WEAPON_SIZE.TINY)
         // {
         // TODO
-        DC_WeaponObj parryWeapon = attack.getAttacked().getActiveWeapon(false);
+        DC_WeaponObj parryWeapon = attackedUnit.getActiveWeapon(false);
         if (Math.abs(DC_ContentManager.compareSize(parryWeapon.getWeaponSize(), attack.getWeapon()
          .getWeaponSize())) > 2) {
-            if (attack.getAttacked().checkDualWielding()) {
+            if (attackedUnit.checkDualWielding()) {
 
             } else {
                 return false;

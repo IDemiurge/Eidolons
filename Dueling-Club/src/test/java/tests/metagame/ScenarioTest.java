@@ -2,7 +2,6 @@ package tests.metagame;
 
 import main.game.battlecraft.DC_Engine;
 import main.game.core.Eidolons;
-import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.frontend.GdxLauncher;
@@ -17,7 +16,7 @@ public class ScenarioTest  {
 
     @Test
     public void test(){
-        CoreEngine.setItemGenerationOff(true);
+//        CoreEngine.setItemGenerationOff(true);
         DC_Engine.mainMenuInit();
         Eidolons.initScenario(typeName);
         DC_Engine.gameStartInit();

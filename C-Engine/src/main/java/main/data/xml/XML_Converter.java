@@ -69,6 +69,9 @@ public class XML_Converter {
     }*/
 
     public static List<Node> getNodeList(Node node) {
+        return getNodeList(node, true);
+    }
+        public static List<Node> getNodeList(Node node  , boolean ignoreTextNodes) {
         List<Node> list = new LinkedList<>();
         if (node == null) {
             return list;
@@ -77,6 +80,7 @@ public class XML_Converter {
         for (int i = 0; i < nl.getLength(); i++) {
 
             Node item = nl.item(i);
+            if (ignoreTextNodes)
             if (checkTextNode(item)) {
                 continue;
             }
@@ -91,15 +95,8 @@ public class XML_Converter {
         return item.getNodeName().equals(TEXT_NODE);
     }
 
-    public static List<Node> getNodeListFromFirstChild(Node node) {
-        List<Node> list = new LinkedList<>();
-        NodeList nl = node.getFirstChild().getChildNodes();
-        for (int i = 0; i < nl.getLength(); i++) {
-            list.add(nl.item(i));
-
-        }
-        return list;
-
+    public static List<Node> getNodeListFromFirstChild(Node node, boolean ignoreTextNodes) {
+        return getNodeList(node.getFirstChild(), ignoreTextNodes);
     }
 
     public static List getConvertedDoc(Node node) {
@@ -260,7 +257,7 @@ public class XML_Converter {
     }
 
     public static String getTextStringFromXML(Node child) {
-        return XML_Writer.restoreXmlNodeText(child.getTextContent());
+        return XML_Formatter.restoreXmlNodeText(child.getTextContent());
     }
 
     public static String getStringFromXML(Node child) {
@@ -293,16 +290,16 @@ public class XML_Converter {
     }
 
     public static String openXmlFormatted(String s) {
-        return "<" + XML_Writer.formatStringForXmlNodeName(s) + ">";
+        return "<" + XML_Formatter.formatStringForXmlNodeName(s) + ">";
     }
 
     public static String closeXmlFormatted(String s) {
-        return "</" + XML_Writer.formatStringForXmlNodeName(s) + ">";
+        return "</" + XML_Formatter.formatStringForXmlNodeName(s) + ">";
     }
 
     public static String wrapLeaf(String valName, String value) {
-        return ("<" + XML_Writer.formatStringForXmlNodeName(valName) + ">" + value + "</"
-                + XML_Writer.formatStringForXmlNodeName(valName) + ">\n");
+        return ("<" + XML_Formatter.formatStringForXmlNodeName(valName) + ">" + value + "</"
+                + XML_Formatter.formatStringForXmlNodeName(valName) + ">\n");
     }
 
     public static String getXmlNodeName(VALUE val) {
@@ -388,7 +385,7 @@ public class XML_Converter {
             if (typeString == null) {
                 typeString = "";
             }
-            typeString += wrap(XML_Writer.formatStringForXmlNodeName(type.getName()), "");
+            typeString += wrap(XML_Formatter.formatStringForXmlNodeName(type.getName()), "");
             subStringMap.put(type.getOBJ_TYPE_ENUM(), typeString);
         }
 
@@ -403,6 +400,7 @@ public class XML_Converter {
     public static String wrap(String enclosing, String node) {
         return openXmlFormatted(enclosing) + node + closeXmlFormatted(enclosing);
     }
+
 
     public static Node getChildByName(Node parent, String name) {
         return getNodeByName(getNodeList(parent), name);

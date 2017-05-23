@@ -4,18 +4,14 @@ import main.content.PROPS;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.data.ability.construct.ConstructionManager;
-import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.math.MathMaster;
-import main.system.text.TextMaster;
 import org.w3c.dom.Document;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,29 +21,41 @@ import java.util.Map;
  * Created by JustMe on 5/17/2017.
  */
 public class DialogueFactory {
-    private static final String DIALOGUE_SEPARATOR ="SAD" ;
-    private static final String ID_SEPARATOR ="SAD" ;
-    Map<String, GameDialogue> map = new HashMap<>();
+    //***Tavern Chat>3>4***Another Chat>5>10 ...
+    public static final String DIALOGUE_SEPARATOR = "***";
+    public static final String ID_SEPARATOR = ">";
+    public static Map<String, GameDialogue> map = new HashMap<>();
 
-    public static void constructScenarioLinearDialogues
-     (String scenarioPath, ScenarioMetaMaster master) {
 
-        for (File file : FileManager.getFilesFromDirectory(PathFinder.getTextPath() +
-          TextMaster.getLocale() +
-          "\\dialogues\\" + scenarioPath, false))
-            for (String contents : StringMaster.openContainer(
-             FileManager.readFile(file), DIALOGUE_SEPARATOR)) {
-                String[] array = contents.split(ID_SEPARATOR);
+        public static void constructScenarioLinearDialogues
+        (String data, ScenarioMetaMaster master) {
+//        File file = new File(
+//         PathFinder.getEnginePath() +
+//         PathFinder.getTextPath() +
+//         TextMaster.getLocale() +
+//         "\\dialogues\\" + scenarioPath);
+//        for (File file : FileManager.getFilesFromDirectory(PathFinder.getTextPath() +
+//          TextMaster.getLocale() +
+//          "\\dialogues\\" + scenarioPath, false))
+//            data =   FileManager.readFile(file);
+        for (String contents : StringMaster.openContainer(
+       data, DIALOGUE_SEPARATOR)) {
+            String[] array = contents.split(ID_SEPARATOR);
             String name = array[0];
-                int firstId=StringMaster.getInteger(array[1] );
-                int lastId=StringMaster.getInteger(array[2] );
-               List<Integer> ids = MathMaster.getIntsInRange(firstId, lastId);
-                StringMaster.convertToStringList(ids);
+            int firstId = StringMaster.getInteger(array[1]);
+            int lastId = StringMaster.getInteger(array[2]);
+            List<Integer> ids = MathMaster.getIntsInRange(firstId, lastId);
+            GameDialogue dialogue = getLinearDialogue(StringMaster.joinList(ids), master);
+            map.put(name, dialogue);
 
-            }
+        }
 
 
+    }
 
+    public static GameDialogue getLinearDialogue
+     (String name) {
+        return map.get(name);
     }
 
     public static GameDialogue getLinearDialogue

@@ -9,7 +9,7 @@ import main.game.battlecraft.ai.advanced.companion.OrderFactory;
 import main.game.battlecraft.ai.advanced.companion.OrderMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
-import main.test.Untested;
+import main.system.util.Untested;
 
 @Untested
 public class OrderEffect extends DC_Effect implements OneshotEffect {

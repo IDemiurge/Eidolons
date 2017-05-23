@@ -1,8 +1,11 @@
 package main.game.battlecraft.logic.meta.scenario.dialogue.line;
 
+import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.data.xml.XML_Formatter;
 import main.data.xml.XML_Writer;
+import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.text.TextMaster;
@@ -16,57 +19,91 @@ import java.util.Map;
  */
 public class DialogueLineFormatter {
     public static final String ID = "Id";
-    public static final String actorSeparator = "::";
-    public static final  String dialogueSeparator = "***";
-    public static final  String lineSeparator = ">>";
-    private static final String dialogueTextPath="\\dialogue\\raw\\";
-    private static final String linesFilePath="\\dialogue\\lines.xml";
-    private static final String linesBackupFilePath="\\dialogue\\backup\\lines.xml";
+    public static final String ACTOR_SEPARATOR = "::";
+    public static final String DIALOGUE_SEPARATOR = "***";
+    public static final String LINE_SEPARATOR = ">>";
+    private static final String dialogueTextPath = "\\dialogue\\raw\\";
+    private static final String linearDialoguePath = "\\dialogue\\linear dialogues.xml";
+    private static final String linesFilePath = "\\dialogue\\lines.xml";
+    private static final String linesBackupFilePath = "\\dialogue\\backup\\lines.xml";
+    private static final String ACTOR_NODE = SPEECH_VALUE.ACTOR.name();
 
-    private static String oldLinesFileContents;
-    private static String newLinesFileContents;
-    private static  Map<Integer, Integer> updateIdMap;
+    private static String oldLinesFileContents="";
+    private static String newLinesFileContents="";
+    private static  String linearDialogueFileContents="";
+    private static Map<Integer, Integer> updateIdMap;
     private static int id;
 
-
-
-    public static String getDialogueTextPath() {
-        return PathFinder.getTextPath()+ TextMaster.getLocale() + dialogueTextPath;
+    public static void main(String[] args) {
+        fullUpdate();
     }
 
-    public static String getLinesFilePath() {
-        return PathFinder.getTextPath()+ TextMaster.getLocale() + linesFilePath;
-    }
-
-    public static String getLinesBackupFilePath() {
-        return PathFinder.getTextPath()+ TextMaster.getLocale() + linesBackupFilePath;
-    }
-    public static void parseDialogue(){
+    public static void parseDialogue() {
 
     }
-        public static void fullUpdate(){
+
+    public static void updateXml() {
+
+    }
+
+    public static void fullUpdate() {
         id = 0;
         readLinesFile();
         createUpdateMap();
-        for (File file : FileManager.getFilesFromDirectory(dialogueTextPath, false, true)) {
+        for (File file : FileManager.getFilesFromDirectory(getDialogueTextPath(), false, true)) {
             parseDialogueFile(FileManager.readFile(file));
         }
         createBackup();
         writeLinesFile();
+        writeLinearDialoguesFile();
         updateXml();
+        DialogueFactory.constructScenarioLinearDialogues(linearDialogueFileContents, null );
     }
 
-    public static void parseDialogueFile(String contents){
+    public static void parseDialogueFile(String contents) {
         //odt from textMaster!
 
-        for(String lineText: StringMaster.openContainer( contents)){
-//            lineCreated(id, lineText);
-            //IDEA: keep a copy of previous raw\\ folder and match?
-            id++;
+        for (String dialogueContents : StringMaster.openContainer(contents, DIALOGUE_SEPARATOR)) {
+            boolean dialogue = true;
+            for (String lineText : StringMaster.openContainer(dialogueContents, LINE_SEPARATOR)) {
+                if (dialogue) {
+                    linearDialogueFileContents += DialogueFactory.DIALOGUE_SEPARATOR + lineText.trim() + DialogueFactory.ID_SEPARATOR;
+                    linearDialogueFileContents += id + DialogueFactory.ID_SEPARATOR;
+                    dialogue = false;
+                    continue;
+                }
+                String actorData =
+                 StringMaster.tryGetSplit(lineText, ACTOR_SEPARATOR, 0);
+                if (!actorData.isEmpty())
+                    actorData = XML_Converter.wrap(ACTOR_NODE, actorData.trim());
+                String textData = StringMaster.tryGetSplit(lineText, ACTOR_SEPARATOR, 1);
+                textData =
+                 XML_Formatter.formatXmlTextContent(textData, null );
 
+                String miscData = "";
+                String text = actorData;
+                text += miscData;
+                text += textData;
+
+                String xml = getLineFromTextPart(text);
+                newLinesFileContents += xml;
+                id++;
+//            lineCreated(id, lineText);
+                //IDEA: keep a copy of previous raw\\ folder and match?
+            }
+
+            if (id != 0) {
+                linearDialogueFileContents += id  +StringMaster.NEW_LINE;
+            }
         }
 
     }
+
+    public static String getLineFromTextPart(String text) {
+        String lineContents = XML_Converter.wrap(ID + id, text) + StringMaster.NEW_LINE;
+        return lineContents;
+    }
+
     private static void createUpdateMap() {
         updateIdMap = new HashMap<>(); // uuid??
         // on newLine() ->
@@ -74,8 +111,14 @@ public class DialogueLineFormatter {
     }
 
     private static void writeLinesFile() {
-        XML_Writer.write(newLinesFileContents, getLinesFilePath());
+        XML_Writer.write(
+         XML_Converter.wrap("Lines", newLinesFileContents), getLinesFilePath());
     }
+    private static void writeLinearDialoguesFile() {
+        XML_Writer.write(linearDialogueFileContents, getLinearDialoguesFilePath());
+    }
+
+
 
     private static void createBackup() {
         XML_Writer.write(oldLinesFileContents, getLinesBackupFilePath());
@@ -86,15 +129,19 @@ public class DialogueLineFormatter {
         //how to update?
     }
 
-    public static void updateXml(){
-
+    private static String getLinearDialoguesFilePath() {
+        return PathFinder.getEnginePath() + PathFinder.getTextPath()
+         + TextMaster.getLocale() + linearDialoguePath;
     }
-    public static String getLineFromTextPart( String text){
-        String lineContents= text;
-        //actor etc, format, replace names, ...
-        XML_Converter.wrap(ID + id, lineContents);
-
-        return lineContents;
+    public static String getDialogueTextPath() {
+        return PathFinder.getEnginePath() + PathFinder.getTextPath() + TextMaster.getLocale() + dialogueTextPath;
     }
 
+    public static String getLinesFilePath() {
+        return PathFinder.getTextPath() + TextMaster.getLocale() + linesFilePath;
+    }
+
+    public static String getLinesBackupFilePath() {
+        return PathFinder.getTextPath() + TextMaster.getLocale() + linesBackupFilePath;
+    }
 }

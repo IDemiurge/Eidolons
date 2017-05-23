@@ -6,6 +6,8 @@ import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 /**
  * Created by JustMe on 5/14/2017.
@@ -38,15 +40,15 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     public void startDialogue(GameDialogue dialogue) {
         //if in game
 
-//     getGame().getGameLoop().freeze();
-//        try {
-//            new DialogueWizard(dialogue).start();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            getGame().getGameLoop().unfreeze();
-//        }
+     getGame().getGameLoop().setPaused(true);
+        try {
+            new DialogueWizard(dialogue).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE, true);
+        }
     }
 
 }

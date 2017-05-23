@@ -71,7 +71,7 @@ public class AttackAnimation extends ActionAnimation {
     public void setAttack(Attack attack) {
         this.attack = attack;
 
-        setTarget(attack.getAttacked());
+        setTarget(attack.getAttackedUnit());
         source = attack.getAttacker();
         game = attack.getAction().getGame();
         direction = DirectionMaster.flip(DirectionMaster.getRelativeDirection(source, getTarget()));
@@ -438,18 +438,18 @@ public class AttackAnimation extends ActionAnimation {
             nonDual = false;
         }
         int y = MigMaster.getCenteredPosition(h, 64);
-        Image image = attack.getAttacked().getActiveWeapon(false).getIcon().getImage();
-        Image image2 = attack.getWeapon().getIcon().getImage();
-        if (nonDual) {
-            drawOnTarget(image, (w - 64 * 2) / 2, y);
-            drawOnTarget(image2, w - 64 - (w - 64 * 2) / 2, y);
-            // GeometryMaster.getFarthestPointInRectangleForImage(y, chance,
-            // img, direction)
-        } else {
-            //
-            drawOnTarget(image, 0, y);
-            drawOnTarget(image2, w - image2.getWidth(null), y);
-        }
+//        Image image = attack.getAttackedUnit().getActiveWeapon(false).getIcon().getImage();
+//        Image image2 = attack.getWeapon().getIcon().getImage();
+//        if (nonDual) {
+//            drawOnTarget(image, (w - 64 * 2) / 2, y);
+//            drawOnTarget(image2, w - 64 - (w - 64 * 2) / 2, y);
+//            // GeometryMaster.getFarthestPointInRectangleForImage(y, chance,
+//            // img, direction)
+//        } else {
+//            //
+//            drawOnTarget(image, 0, y);
+//            drawOnTarget(image2, w - image2.getWidth(null), y);
+//        }
         String string = Math.min(100, chance) + "% chance";
         int width = FontMaster.getStringWidth(font, string);
         int x = MigMaster.getCenteredTextPosition(string, font, w);

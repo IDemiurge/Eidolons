@@ -4,6 +4,7 @@ import main.content.PARAMS;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
@@ -19,7 +20,7 @@ public class RangeRule {
 	 */
 
     public static int getMod(boolean dmg_atk, boolean close_long, Unit source,
-                             Unit target, DC_WeaponObj weapon, DC_ActiveObj action) {
+                             BattleFieldObject target, DC_WeaponObj weapon, DC_ActiveObj action) {
         PARAMS param;
         if (close_long) {
             param = dmg_atk ? PARAMS.CLOSE_QUARTERS_DAMAGE_MOD : PARAMS.CLOSE_QUARTERS_ATTACK_MOD;
@@ -35,8 +36,8 @@ public class RangeRule {
 
     }
 
-    public static Boolean isCloseQuartersOrLongReach(Unit target, Unit source,
-                                                     DC_WeaponObj weapon, DC_ActiveObj action) {
+    public static Boolean isCloseQuartersOrLongReach( Unit source,
+                                                     BattleFieldObject target,   DC_WeaponObj weapon, DC_ActiveObj action) {
         int distance = PositionMaster.getDistance(source, target);
 
         if (action.isThrow()) {

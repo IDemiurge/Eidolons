@@ -27,7 +27,7 @@ import main.system.auxiliary.secondary.InfoMaster;
 import main.system.entity.ConditionMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.test.Refactor;
+import main.system.util.Refactor;
 
 import java.util.Collection;
 import java.util.Comparator;

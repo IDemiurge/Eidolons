@@ -27,6 +27,7 @@ import main.system.entity.ConditionMaster;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.EffectAnimation;
+import main.system.launch.CoreEngine;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.HashMap;
@@ -203,6 +204,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         }
         // TODO only animate after Buff Level changes!!!
         super.apply(ref);
+        if (CoreEngine.isPhaseAnimsOn())
         if (animationQueued) {
             playAnimation(ref);
         }

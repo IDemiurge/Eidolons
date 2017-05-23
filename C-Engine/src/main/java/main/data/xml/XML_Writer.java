@@ -5,7 +5,6 @@ import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
-import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -23,7 +22,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class XML_Writer {
 
@@ -31,17 +29,7 @@ public class XML_Writer {
     private static final String XML = "XML";
     private static final String BACK_UP = "\\backup";
     private static final String RESERVE = "\\reserve";
-    private static final CharSequence COMMA_CODE = "765";
-    private static final CharSequence QUOTE_CODE = "986";
-    private static final CharSequence COLON_CODE = "846";
-    private static final CharSequence SEMICOLON_CODE = "845";
-    private static final CharSequence OPEN_PARANTHESIS_CODE = "91";
-    private static final CharSequence CLOSE_PARANTHESIS_CODE = "92";
     private static final String EMPTY_XML = "<XML></XML>";
-    private static final String FIRST_CHAR = "FIRST_CHAR";
-    static Map<String, String> xmlFormatReplacements = new HashMap<>();
-    static String replacedTextContent = "&";
-    static String replaced = "~?[]><!@#$%^&*()-=\\/;+',\"`";
     static Map<String, ObjType> map;
     static String subgroup = "";
     static Map<String, StringBuilder> subStrings;
@@ -57,13 +45,7 @@ public class XML_Writer {
     private static Boolean writingBlocked;
     private static List<OBJ_TYPE> blocked = new LinkedList<>();
 
-    static {
-        int i = 0;
-        for (char key : (replaced).toCharArray()) {
-            String value = StringMaster.getCodeFromChar("" + key);
-            xmlFormatReplacements.put(("" + key), value);
-        }
-    }
+
 
     public static void createXmlFileForTypeGroup(OBJ_TYPE TYPE) {
         // content = openXML(XML) + "" + closeXML(XML);
@@ -302,7 +284,7 @@ public class XML_Writer {
                 continue;
             }
 
-            String value = formatXmlTextContent(type.getParamMap().get(param), param);
+            String value = XML_Formatter.formatXmlTextContent(type.getParamMap().get(param), param);
             if (parent != null) {
                 if (parent.getParam(param).equals(value)) {
                     continue;
@@ -321,7 +303,7 @@ public class XML_Writer {
 
         for (PROPERTY prop : type.getPropMap().keySet()) {
 
-            String value = formatXmlTextContent(type.getPropMap().get(prop), prop);
+            String value = XML_Formatter.formatXmlTextContent(type.getPropMap().get(prop), prop);
             if (parent != null) { // don't duplicate
                 if (parent.getProperty(prop).equals(value)) {
                     continue;
@@ -339,11 +321,6 @@ public class XML_Writer {
         builder.append("</props>");
 
         return builder.append(closeXML(type.getName()));
-    }
-
-    private static String restoreXmlTextContent(String string) {
-        return string.replace(StringMaster.getCodeFromChar(replacedTextContent),
-                replacedTextContent);
     }
 
     private static boolean checkWriteValue(VALUE val, String value, OBJ_TYPE TYPE) {
@@ -371,106 +348,11 @@ public class XML_Writer {
     }
 
     public static String openXML(String s) {
-        return "<" + formatStringForXmlNodeName(s) + ">";
+        return "<" + XML_Formatter.formatStringForXmlNodeName(s) + ">";
     }
 
     public static String closeXML(String s) {
-        return "</" + formatStringForXmlNodeName(s) + ">";
-    }
-
-    public static String restoreXmlNodeText(String s) {
-        while (true) {
-            if (!s.contains(XML_Parser.ASCII_OPEN)) {
-                break;
-            }
-            String code = StringMaster.getSubStringBetween(s, XML_Parser.ASCII_OPEN,
-                    XML_Parser.ASCII_CLOSE);
-            try {
-                s = s.replace(XML_Parser.ASCII_OPEN + code + XML_Parser.ASCII_CLOSE, StringMaster
-                        .getStringFromCode(code));
-            } catch (Exception e) {
-                e.printStackTrace();
-                return s;
-            }
-        }
-        return s;
-    }
-
-    public static String restoreXmlNodeName(String s) {
-        for (String x : xmlFormatReplacements.keySet()) {
-            String code = xmlFormatReplacements.get(x);
-            s = s.replace(code, StringMaster.getStringFromCode(code));
-        }
-        if (s.startsWith(FIRST_CHAR)) {
-            s = s.substring(FIRST_CHAR.length());
-        }
-        return s.replace("_", " ");
-
-    }
-
-    public static String restoreXmlNodeNameOld(String s) {
-        return s.replace(COMMA_CODE, ",").replace(COLON_CODE, ":").replace(SEMICOLON_CODE, ";")
-                .replace(StringMaster.CODE_SLASH, "/").replace(StringMaster.CODE_BACK_SLASH, "\\");
-    }
-
-    private static String formatXmlTextContent(String string, VALUE value) {
-        String result = string.replace(replacedTextContent, StringMaster
-                .getCodeFromChar(replacedTextContent));
-        result = XML_Parser.encodeNonASCII(result);
-        if (isRepairMode())
-            result = repair(result);
-        if (isValueWrappedInCDATA(value))
-        result = checkWrapInCDATA(result);
-        return result;
-    }
-
-    private static boolean isValueWrappedInCDATA(VALUE value) {
-        if (value instanceof PARAMETER)
-            return false;
-        if (value == G_PROPS.ABILITIES)
-            return false;
-
-        return true;
-    }
-
-    private static String checkWrapInCDATA(String result) {
-        if (result.length() < 80) return result;
-        return "<![CDATA[" + result + "]]>";
-    }
-
-    private static String repair(String result) {
-        return result.replaceAll("\\s+", " ");//.replace("\n", "").replace("  ", " ");
-    }
-
-    private static boolean isRepairMode() {
-        return true;
-    }
-
-    public static String formatStringForXmlNodeName(String s) {
-        if (s == null) {
-            return "";
-        }
-        if (!Character.isAlphabetic(s.charAt(0))) {
-            s = FIRST_CHAR + s;
-        }
-        s = s.replace("\uFFFD", "-");
-        for (String x : xmlFormatReplacements.keySet()) {
-            s = s.replace(x, xmlFormatReplacements.get(x));
-            s = s.replace(Pattern.quote(x), xmlFormatReplacements.get(x));
-        }
-        return XML_Parser.encodeNonASCII(s.replace(" ", "_"));
-        // if (s.contains("'"))
-        // main.system.auxiliary.LogMaster.log(1, s);
-        // return s.replace(",", COMMA_CODE).replace("'", "_").replace(":",
-        // COLON_CODE).replace(";",
-        // SEMICOLON_CODE).replace("#", "_").replace("!", "_").replace("(",
-        // "_").replace(")",
-        // "_").replace(" ", "_");
-
-        // return s.replace(",", COMMA_CODE).replace("'",
-        // QUOTE_CODE).replace(":", COLON_CODE)
-        // .replace("(", OPEN_PARANTHESIS_CODE)
-        // .replace(")", CLOSE_PARANTHESIS_CODE).replace(" ", "_");
+        return "</" + XML_Formatter.formatStringForXmlNodeName(s) + ">";
     }
 
     private static void appendLeafNode(StringBuilder sub, String valName, String value) {

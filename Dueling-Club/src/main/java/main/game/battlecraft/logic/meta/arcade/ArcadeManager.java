@@ -32,7 +32,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.FilterMaster;
-import main.test.Refactor;
+import main.system.util.Refactor;
 
 import java.util.List;
 

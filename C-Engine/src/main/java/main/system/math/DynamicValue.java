@@ -2,8 +2,10 @@ package main.system.math;
 
 import main.entity.Entity;
 import main.entity.Ref;
+import main.entity.Ref.KEYS;
 import main.entity.Referred;
 import main.game.core.game.Game;
+import main.system.util.Optimize;
 
 public abstract class DynamicValue implements Referred {
 
@@ -14,23 +16,30 @@ public abstract class DynamicValue implements Referred {
     protected Entity entity;
     protected Game game;
     protected boolean base;
-
+@Optimize
     public DynamicValue(String fullString) {
         if (fullString.contains("@")) {
             fullString = fullString.replace("@", "");
             base = true;
         }
 
-        if (fullString.contains("_") && (base || fullString.contains("{"))) {
+        if (base || fullString.contains("{"))  {
             fullString = fullString.replace("{", "").replace("}", "");
             if (Ref.isKey(fullString)) {
                 this.value_string = fullString;
             } else {
-                String s[] = fullString.split("_");
 
-                obj_string = s[0];
-                this.value_string = fullString.substring(fullString.indexOf("_") + 1);
-            }
+                if ( fullString.contains("_") ){
+                    String s[] = fullString.split("_");
+                    obj_string = s[0];
+                    this.value_string = fullString.substring(fullString.indexOf("_") + 1);
+                }
+                else {
+                    obj_string = KEYS.SOURCE.toString();
+                    obj_string = fullString;
+                }
+
+                 }
         } else {
             this.fullString = fullString;
         }

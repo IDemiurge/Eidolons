@@ -379,6 +379,7 @@ public class Obj extends Entity {
     @Override
     public void toBase() {
         super.toBase();
+        if (!game.isSimulation())
         construct();
     }
 
