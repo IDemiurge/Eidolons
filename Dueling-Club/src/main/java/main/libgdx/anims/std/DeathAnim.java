@@ -61,7 +61,7 @@ public class DeathAnim extends ActionAnim {
 
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnFinish() {
-        return Arrays.asList(new Pair<>(DESTROY_UNIT_MODEL, new EventCallbackParam<>(unit)));
+        return Arrays.asList(new Pair<>(DESTROY_UNIT_MODEL, new EventCallbackParam(unit)));
     }
 
     @Override

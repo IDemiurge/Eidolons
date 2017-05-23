@@ -3,7 +3,6 @@ package main.game.battlecraft.logic.dungeon.universal;
 import main.game.battlecraft.logic.battle.universal.*;
 import main.game.core.game.DC_Game;
 import main.system.GuiEventManager;
-import main.system.OnDemandEventCallbackParam;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -52,8 +51,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
             return;
         }
 
-        GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND,
-                new OnDemandEventCallbackParam<>(dungeonWrapper.getMapBackground()));
+        GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, dungeonWrapper.getMapBackground());
 
     }
 

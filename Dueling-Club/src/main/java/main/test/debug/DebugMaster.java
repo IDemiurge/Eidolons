@@ -58,7 +58,6 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.DC_Formulas;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
@@ -851,7 +850,7 @@ public class DebugMaster {
                     break;
                 case SFX_ADD_RANDOM:
                     EmitterController.getInstance().getInstance();
-                    GuiEventManager.trigger(GuiEventType.CREATE_EMITTER, new EventCallbackParam(true));
+                    GuiEventManager.trigger(GuiEventType.CREATE_EMITTER, true);
                     break;
                 case SFX_MODIFY:
                     EmitterController.getInstance().modify();

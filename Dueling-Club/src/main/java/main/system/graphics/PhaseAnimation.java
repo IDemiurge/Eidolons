@@ -13,7 +13,6 @@ import main.game.core.game.DC_Game;
 import main.libgdx.anims.phased.PhaseAnim;
 import main.swing.PointX;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
@@ -358,8 +357,7 @@ public abstract class PhaseAnimation implements ANIM {
         //      repaint();
 
         if (getPhaseAnim() != null) {
-            GuiEventManager.trigger(GuiEventType.UPDATE_PHASE_ANIM,
-                    new EventCallbackParam(getPhaseAnim()));
+            GuiEventManager.trigger(GuiEventType.UPDATE_PHASE_ANIM, getPhaseAnim());
         }
 
     }

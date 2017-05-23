@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import main.libgdx.gui.panels.dc.TablePanel;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -35,14 +34,14 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
     }
 
     protected void onMouseMoved(InputEvent event, float x, float y) {
-        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new EventCallbackParam<>(this));
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, this);
     }
 
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new EventCallbackParam<>(this));
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, this);
     }
 
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new EventCallbackParam<>(null));
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
     }
 }

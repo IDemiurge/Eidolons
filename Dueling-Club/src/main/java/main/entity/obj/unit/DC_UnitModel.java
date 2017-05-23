@@ -40,7 +40,6 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.bf.Rotatable;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -230,7 +229,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         if (before - after != 0) {
             GuiEventManager.trigger(
                     INITIATIVE_CHANGED,
-                    new EventCallbackParam(new ImmutablePair<>(this, after))
+                    new ImmutablePair<>(this, after)
             );
         }
     }
