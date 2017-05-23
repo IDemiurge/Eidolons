@@ -10,7 +10,6 @@ import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
@@ -116,8 +115,7 @@ public class AbilityImpl extends ReferredElement implements Ability {
         Event event = new Event(STANDARD_EVENT_TYPE.ABILITY_BEING_RESOLVED, ref);
         if (game.fireEvent(event)) {
 
-            GuiEventManager.trigger(GuiEventType.ABILITY_RESOLVES,
-             new EventCallbackParam( this));
+            GuiEventManager.trigger(GuiEventType.ABILITY_RESOLVES, this);
 
             return effects.apply(ref);
         } else {

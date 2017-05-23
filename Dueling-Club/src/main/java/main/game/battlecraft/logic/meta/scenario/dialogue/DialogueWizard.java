@@ -2,7 +2,6 @@ package main.game.battlecraft.logic.meta.scenario.dialogue;
 
 import main.entity.Ref;
 import main.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -32,9 +31,9 @@ public class DialogueWizard {
             });
         }
         GuiEventManager.trigger(GuiEventType.DIALOGUE_UPDATED,
-         new EventCallbackParam<>(new DialogueDataSource(
-          displayedSpeech,
-          displayedOptions)));
+                new DialogueDataSource(
+                        displayedSpeech,
+                        displayedOptions));
     }
 
     public void start() {

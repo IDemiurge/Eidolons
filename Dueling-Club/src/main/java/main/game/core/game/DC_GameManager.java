@@ -28,7 +28,6 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.bf.TargetRunnable;
 import main.swing.components.obj.drawing.DrawMasterStatic;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.Manager;
@@ -352,7 +351,7 @@ public class DC_GameManager extends GameManager {
                 t.invokeClicked();
             }
         });
-        GuiEventManager.trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
+        GuiEventManager.trigger(SELECT_MULTI_OBJECTS, p);
 
         for (Obj obj : new LinkedList<>(selectingSet)) {
             if (obj instanceof DC_Obj) {

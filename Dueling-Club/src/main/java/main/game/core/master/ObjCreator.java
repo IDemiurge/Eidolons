@@ -11,7 +11,6 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
@@ -51,8 +50,7 @@ public class ObjCreator extends Master {
             return obj;
         }
         if (WaitMaster.getCompleteOperations().contains(WAIT_OPERATIONS.GDX_READY))
-        GuiEventManager.trigger(GuiEventType.UNIT_CREATED,
-                new EventCallbackParam(obj));
+            GuiEventManager.trigger(GuiEventType.UNIT_CREATED, obj);
         game.getState().addObject(obj);
 
         if (obj instanceof  Unit)

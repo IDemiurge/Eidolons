@@ -22,7 +22,6 @@ import main.game.core.state.StateManager;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 
@@ -157,7 +156,7 @@ public abstract class GameManager implements GenericGameManager {
         attachmentRemoved(buff, buff.getBasis());
         getState().getAttachmentsMap().get(buff.getBasis()).remove(buff);
         getState().getAttachments().remove(buff);
-        GuiEventManager.trigger(UPDATE_BUFFS, new EventCallbackParam(buff));
+        GuiEventManager.trigger(UPDATE_BUFFS, buff);
     }
 
     public abstract void refreshAll();
@@ -232,7 +231,7 @@ public abstract class GameManager implements GenericGameManager {
             }
         }
 
-        GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, new EventCallbackParam(event));
+        GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
         if (!game.isStarted()) {
             return true;
         }

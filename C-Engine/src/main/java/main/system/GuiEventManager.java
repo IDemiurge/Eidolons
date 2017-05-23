@@ -1,9 +1,13 @@
 package main.system;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.eventbus.DeliveryOptions;
+import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.MessageCodec;
+import io.vertx.core.eventbus.MessageConsumer;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -14,53 +18,49 @@ import java.util.concurrent.locks.ReentrantLock;
  * To change this template use File | Settings | File Templates.
  */
 public class GuiEventManager {
-    private static GuiEventManager instance;
+    private static EventBus instance;
     private static Lock initLock = new ReentrantLock();
-    private Map<GuiEventType, EventCallback> eventMap = new HashMap<>();
-    private List<Runnable> eventQueue = new ArrayList<>();
-    private Lock lock = new ReentrantLock();
-    private Map<GuiEventType, List<EventCallback>> onceBinds = new HashMap<>();
+    private static List<Runnable> callbacks = new LinkedList<>();
 
     public static void bind(GuiEventType type, final EventCallback event) {
-        getInstance().bind_(type, event);
-    }
-
-    public static void once(GuiEventType type, final EventCallback event) {
-        getInstance().once_(type, event);
-    }
-
-    private void once_(GuiEventType type, EventCallback event) {
-        onceBinds
-                .getOrDefault(type, new LinkedList<>())
-                .add(event);
+        final MessageConsumer<EventCallbackParam> consumer = getInstance().localConsumer(type.name());
+        consumer.handler(objectMessage ->
+                callbacks.add(() ->
+                        event.call(objectMessage.body())));
     }
 
     public static void trigger(final GuiEventType type) {
-        trigger(type, new EventCallbackParam(null));
+        trigger(type, null);
     }
 
     public static void trigger(final GuiEventType type, Object obj) {
-        EventCallbackParam eventCallback;
-
-        if (obj instanceof EventCallbackParam) {
-            eventCallback = (EventCallbackParam) obj;
+        DeliveryOptions options = new DeliveryOptions();
+        options.setSendTimeout(10000);
+        options.setCodecName("default-codec");
+        EventCallbackParam callbackParam;
+        if (!(obj instanceof EventCallbackParam)) {
+            callbackParam = new EventCallbackParam(obj);
         } else {
-            eventCallback = new EventCallbackParam(obj);
+            callbackParam = (EventCallbackParam) obj;
         }
-
-        getInstance().trigger_(type, eventCallback);
+        getInstance().publish(type.name(), callbackParam, options);
     }
 
     public static void processEvents() {
-        getInstance().processEvents_();
+        if (callbacks.size() > 0) {
+            List<Runnable> list = callbacks;
+            callbacks = new LinkedList<>();
+            list.forEach(Runnable::run);
+        }
     }
 
-    private static GuiEventManager getInstance() {
+    private static EventBus getInstance() {
         if (instance == null) {
             try {
                 initLock.lock();
                 if (instance == null) {
-                    instance = new GuiEventManager();
+                    instance = VetrxHolder.getInstance().eventBus();
+                    instance.registerDefaultCodec(EventCallbackParam.class, new EventCodec());
                 }
             } finally {
                 initLock.unlock();
@@ -70,55 +70,34 @@ public class GuiEventManager {
     }
 
     public static void clear() {
-        instance = null;
+        getInstance().close(null);
     }
 
-    public void bind_(GuiEventType type, final EventCallback event) {
-        if (event != null) {
-            if (eventMap.containsKey(type)) {
-                final EventCallback old = eventMap.remove(type);
-                eventMap.put(type, (obj) -> {
-                    old.call(obj);
-                    event.call(obj);
-                });
-            } else {
-                eventMap.put(type, event);
-            }
-        } else {
-            if (eventMap.containsKey(type)) {
-                eventMap.remove(type);
-            }
-        }
-    }
 
-    List<Pair<GuiEventType, EventCallbackParam>> triggerList = new LinkedList<>();
+    private static class EventCodec implements MessageCodec<EventCallbackParam, EventCallbackParam> {
+        @Override
+        public void encodeToWire(Buffer buffer, EventCallbackParam o) {
 
-    public void trigger_(final GuiEventType type, final EventCallbackParam obj) {
-        triggerList.add(new ImmutablePair<>(type, obj));
-    }
-
-    public void processEvents_() {
-        if (onceBinds.size() > 0) {
-            lock.lock();
-            final Map<GuiEventType, List<EventCallback>> map = onceBinds;
-            triggerList.forEach(pair -> {
-                final List<EventCallback> callbacks = map.get(pair.getKey());
-                if (callbacks != null) {
-                    callbacks.forEach(
-                            eventCallback -> eventCallback.call(pair.getValue())
-                    );
-                    map.remove(pair.getKey());
-                }
-            });
         }
 
-        if (triggerList.size() > 0) {
-            lock.lock();
-            List<Runnable> list = eventQueue;
-            eventQueue = new ArrayList<>();
-            lock.unlock();
+        @Override
+        public EventCallbackParam decodeFromWire(int i, Buffer buffer) {
+            return null;
+        }
 
-            list.forEach(Runnable::run);
+        @Override
+        public EventCallbackParam transform(EventCallbackParam o) {
+            return o;
+        }
+
+        @Override
+        public String name() {
+            return "default-codec";
+        }
+
+        @Override
+        public byte systemCodecID() {
+            return -1;
         }
     }
 }
