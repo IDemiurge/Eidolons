@@ -1,4 +1,4 @@
-package main.game.battlecraft.rules.action;
+package main.game.battlecraft.logic.battlefield.vision;
 
 import main.ability.effects.common.AddStatusEffect;
 import main.content.PARAMS;
@@ -15,9 +15,9 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_UnitModel;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE;
+import main.game.battlecraft.rules.action.ActionRule;
 import main.game.core.game.DC_Game;
 import main.game.core.master.BuffMaster;
 import main.system.math.PositionMaster;

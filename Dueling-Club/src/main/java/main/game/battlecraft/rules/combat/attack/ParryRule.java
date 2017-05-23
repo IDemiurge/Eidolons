@@ -99,6 +99,8 @@ public class ParryRule {
     private boolean canParry(Attack attack) {
         // if (!RuleMaster.isParryOn())return false;
         Unit attackedUnit = (Unit) attack.getAttackedUnit();
+        if (attackedUnit==null )
+            return false;
         if (attackedUnit.getIntParam(PARAMS.PARRY_CHANCE) <= 0) {
             return false;
         }

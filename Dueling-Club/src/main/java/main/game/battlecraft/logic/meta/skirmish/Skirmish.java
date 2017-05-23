@@ -19,7 +19,6 @@ public class Skirmish extends Scenario {
     public Skirmish(ObjType missionType, Dungeon level) {
         super(missionType);
         dungeon = level;
-        toBase();
     }
 
     public Skirmish(ObjType missionType, String levelPath) {
@@ -32,7 +31,6 @@ public class Skirmish extends Scenario {
 //            dungeon = new LocationBuilder().buildDungeon(levelPath);
         }
 
-        toBase();
     }
 
     public List<NEMESIS_GROUP> getNemesisGroups() {

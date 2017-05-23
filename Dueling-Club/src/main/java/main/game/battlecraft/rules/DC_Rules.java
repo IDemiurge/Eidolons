@@ -1,6 +1,7 @@
 package main.game.battlecraft.rules;
 
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.battlefield.vision.StealthRule;
 import main.game.battlecraft.rules.action.*;
 import main.game.battlecraft.rules.buff.*;
 import main.game.battlecraft.rules.combat.mechanics.BleedingRule;

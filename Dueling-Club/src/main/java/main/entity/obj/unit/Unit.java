@@ -32,10 +32,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_SpellObj;
 import main.entity.item.*;
-import main.entity.obj.ActiveObj;
-import main.entity.obj.DC_Obj;
-import main.entity.obj.KeyResolver;
-import main.entity.obj.Obj;
+import main.entity.obj.*;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.hero.DC_Attributes;
 import main.entity.obj.hero.DC_Masteries;
@@ -760,7 +757,7 @@ public class Unit extends DC_UnitModel {
         item.unequip();
     }
 
-    public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, DC_UnitModel target, Ref REF,
+    public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, BattleFieldObject target, Ref REF,
                                     boolean offhand) {
         DC_Obj weapon = (DC_Obj) ref.getObj(offhand ? KEYS.OFFHAND : KEYS.WEAPON);
         if (weapon == null) {

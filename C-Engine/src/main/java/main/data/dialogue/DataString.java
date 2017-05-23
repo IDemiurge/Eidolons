@@ -13,7 +13,8 @@ public class DataString {
         MUSIC,
         ACTOR,
         ACTORS,
-
+        BACKGROUND,
+        MESSAGE,
     }
     SPEECH_VALUE type;
     //idea - use it in generic way, Object type and any n of constructors

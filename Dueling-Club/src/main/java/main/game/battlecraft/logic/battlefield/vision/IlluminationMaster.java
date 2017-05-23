@@ -15,7 +15,7 @@ import main.system.math.PositionMaster;
  */
 public class IlluminationMaster {
 
-    private static final Integer DEFAULT_GLOBAL_ILLUMINATION = 50;
+    private static final Integer DEFAULT_GLOBAL_ILLUMINATION = 10;
     private Integer globalIllumination = DEFAULT_GLOBAL_ILLUMINATION;
     private Integer globalConcealment = 0;
 

@@ -4,6 +4,6 @@ env:
   - JDK=openjdk8
   
 dist: trusty
-
+script: mvn clean test -P travis
 before_script:
   - jdk_switcher use $JDK

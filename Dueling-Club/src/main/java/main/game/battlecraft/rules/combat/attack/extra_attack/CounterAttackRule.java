@@ -46,7 +46,7 @@ public class CounterAttackRule {
         }
 
         ActiveObj counter = null;
-
+        if (attack.getAttackedUnit()!=null )
         if (!attack.isCounter() &&
          (RuleMaster.isRuleTestOn(RULE.COUNTER_ATTACK) ||
           (attack.isCanCounter() &&

@@ -44,6 +44,7 @@ public class CoreEngine {
     private static boolean phaseAnimsOn;
     private static boolean logicTest;
     private static boolean itemGenerationOff;
+    private static boolean targetingResultCachingOn;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -248,10 +249,10 @@ public class CoreEngine {
 
         XML_Reader.readTypes(macro);
         List<String> classFolders=    new LinkedList<>(Arrays.asList(classFolderPaths)) ;
-         if (true){
-             classFolders.add( "main.data.dialogue" );
-             classFolders.add(  "main.game.battlecraft.logic.meta.scenario.dialogue.speech" );
-         }
+//         if (dialogueDataRequired){
+//             classFolders.add( "main.data.dialogue" );
+//             classFolders.add(  "main.game.battlecraft.logic.meta.scenario.dialogue.speech" );
+//         }
 
         Chronos.logTimeElapsedForMark("TYPES INIT");
         // if (!macro)
@@ -272,5 +273,13 @@ public class CoreEngine {
 
     public static void setItemGenerationOff(boolean itemGenerationOff) {
         CoreEngine.itemGenerationOff = itemGenerationOff;
+    }
+
+    public static boolean isTargetingResultCachingOn() {
+        return targetingResultCachingOn;
+    }
+
+    public static void setTargetingResultCachingOn(boolean targetingResultCachingOn) {
+        CoreEngine.targetingResultCachingOn = targetingResultCachingOn;
     }
 }

@@ -18,6 +18,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -157,8 +158,9 @@ public class Targeter extends ActiveHandler {
     public boolean canBeTargeted(Integer id) {
 
         Targeting targeting = getTargeting();
-        Map<FACING_DIRECTION, Map<Integer, Boolean>> map = getTargetingCache().get(
-                getOwnerObj().getCoordinates());
+            Map<FACING_DIRECTION, Map<Integer, Boolean>> map = getTargetingCache().get(
+             getOwnerObj().getCoordinates());
+
         if (map == null) {
             map = new HashMap<>();
             getTargetingCache().put(getOwnerObj().getCoordinates(), map);
@@ -167,11 +169,11 @@ public class Targeter extends ActiveHandler {
         if (map2 == null) {
             map2 = new HashMap<>();
             map.put(getOwnerObj().getFacing(), map2);
+        } Boolean result = map2.get(id);
+        if (CoreEngine.isTargetingResultCachingOn()) {
+         if (result != null)
+         return result;
         }
-        Boolean result = map2.get(id);
-        // if (result != null)
-        // return result;
-
         if (targeting == null) {
             // TODO ??
             if (getEntity().getActives().size() > 1) {

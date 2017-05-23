@@ -12,6 +12,7 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.active.DC_ActiveObj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
@@ -344,4 +345,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         this.facing = facing;
     }
 
+    public boolean canCounter(DC_ActiveObj action, boolean sneak) {
+        return false;
+    }
 }

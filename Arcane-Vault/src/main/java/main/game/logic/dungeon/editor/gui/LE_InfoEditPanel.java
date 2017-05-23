@@ -1,9 +1,10 @@
 package main.game.logic.dungeon.editor.gui;
 
-import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.entity.DataModel;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.game.logic.dungeon.editor.Level;
@@ -104,7 +105,7 @@ public class LE_InfoEditPanel extends EditViewPanel {
         return false;
     }
 
-    private void modify(Entity entity, String valName, String newValue) {
+    private void modify(DataModel entity, String valName, String newValue) {
         entity.setValue(valName, newValue);
 
     }

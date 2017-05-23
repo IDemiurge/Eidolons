@@ -8,6 +8,7 @@ import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.AbilityConstructor;
+import main.entity.DataModel;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.tools.EntityMaster;
@@ -126,7 +127,7 @@ public class Obj extends Entity {
     }
 
     @Override
-    public void cloneMaps(Entity type) {
+    public void cloneMaps(DataModel type) {
         this.propMap = clonePropMap(type.getPropMap().getMap());
         // so the problem is that it doesn't seem to carry over c_ and perc_
         // values?

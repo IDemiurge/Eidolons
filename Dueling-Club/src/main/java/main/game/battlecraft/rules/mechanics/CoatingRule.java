@@ -5,6 +5,7 @@ import main.content.enums.entity.UnitEnums.COUNTER;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -69,7 +70,7 @@ public class CoatingRule {
         return 1;
     }
 
-    public static void unitIsHit(Unit target, Unit source,
+    public static void unitIsHit(BattleFieldObject target, Unit source,
                                  boolean offhand, DC_ActiveObj action, Attack attack, DC_Obj weapon) {
         boolean throwing = false;
 
@@ -94,7 +95,7 @@ public class CoatingRule {
             throwing = true;
         }
 
-        DC_Obj armor = target.getArmor();
+        DC_Obj armor = (DC_Obj) target.getRef().getObj(KEYS.ARMOR);
         // if (armor == null) //interesting....
         // armor = source;
 
@@ -115,8 +116,8 @@ public class CoatingRule {
 
     }
 
-    private static void applyCounters(Unit target, DC_Obj item,
-                                      Unit source, COUNTER c, DC_ActiveObj action,
+    private static void applyCounters(BattleFieldObject target, DC_Obj item,
+                                      BattleFieldObject source, COUNTER c, DC_ActiveObj action,
                                       boolean throwing) {
         if (item.getCounter(c) <= 0) {
             return;

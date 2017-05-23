@@ -3,22 +3,19 @@ package main.game.battlecraft.logic.meta.scenario;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
-import main.entity.Entity;
-import main.entity.Ref;
+import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.battle.universal.DC_Player;
-import main.game.core.game.DC_Game;
 
-public class Scenario extends Entity {
+public class Scenario extends LightweightEntity {
 
     public Scenario(ObjType type) {
-        super(type, DC_Player.NEUTRAL, DC_Game.game, new Ref());
+        super(type);
 
     }
 
-    public void init() {
-        toBase();
-    }
+//    public void init() {
+//        toBase();
+//    }
 
 
     public ObjType getPartyType() {
