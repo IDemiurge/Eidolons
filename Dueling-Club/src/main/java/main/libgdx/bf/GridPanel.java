@@ -22,10 +22,8 @@ import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import main.libgdx.texture.TextureCache;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.OnDemandEventCallbackParam;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.threading.WaitMaster;
@@ -154,7 +152,7 @@ public class GridPanel extends Group {
 
                 map.put(b, () -> p.getRight().run(obj1));
             }
-            GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
+            GuiEventManager.trigger(SHOW_BLUE_BORDERS, map);
         });
 
         GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
@@ -169,8 +167,7 @@ public class GridPanel extends Group {
 
             boolean caught = false;
             if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED) {
-                GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED,
-                        new EventCallbackParam<>(event.getRef().getEffect()));
+                GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED, event.getRef().getEffect());
                 caught = true;
             }
 
@@ -190,7 +187,7 @@ public class GridPanel extends Group {
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
 
                 if (!DeathAnim.isOn() || ref.isDebug()) {
-                    GuiEventManager.trigger(DESTROY_UNIT_MODEL, new EventCallbackParam(ref.getTargetObj()));
+                    GuiEventManager.trigger(DESTROY_UNIT_MODEL, ref.getTargetObj());
                 }
 //                else //TODO make it work instead of onFinishEvents!
 //                AnimMaster.getInstance(). onDone(event,portrait ->
@@ -340,7 +337,7 @@ public class GridPanel extends Group {
             gridCellContainer.setOverlays(overlays);
         }
 
-        GuiEventManager.trigger(DUNGEON_LOADED, new OnDemandEventCallbackParam<>(null));
+        GuiEventManager.trigger(DUNGEON_LOADED, null);
 
         GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
             Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();

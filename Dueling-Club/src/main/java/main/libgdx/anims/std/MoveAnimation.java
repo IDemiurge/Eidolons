@@ -152,12 +152,12 @@ public class MoveAnimation extends ActionAnim {
 
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnStart() {
-        return Arrays.asList(new Pair<>(DESTROY_UNIT_MODEL, new EventCallbackParam<>(unit)));
+        return Arrays.asList(new Pair<>(DESTROY_UNIT_MODEL, new EventCallbackParam(unit)));
     }
 
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnFinish() {
-        return Arrays.asList(new Pair<>(UNIT_MOVED, new EventCallbackParam<>(unit)));
+        return Arrays.asList(new Pair<>(UNIT_MOVED, new EventCallbackParam(unit)));
     }
 
     @Override

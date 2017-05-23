@@ -26,7 +26,6 @@ import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import main.libgdx.gui.tooltips.ValueTooltip;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
@@ -237,7 +236,7 @@ public class RadialManager {
         Runnable runnable = () -> {
             GuiEventManager.trigger(
                     GuiEventType.SHOW_UNIT_INFO_PANEL,
-                    new EventCallbackParam<>(new UnitDataSource(((Unit) target))));
+                    new UnitDataSource(((Unit) target)));
 
         };
         final RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR("UI/components\\2017\\radial/examine.png"), runnable);

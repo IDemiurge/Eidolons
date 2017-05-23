@@ -7,7 +7,6 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.advanced.companion.Order;
 import main.game.bf.Coordinates;
 import main.game.core.game.Game;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
@@ -59,7 +58,7 @@ public class DC_LogManager extends LogManager {
     @Override
     protected void addTextToDisplayed(String entry) {
         super.addTextToDisplayed(entry);
-        GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, new EventCallbackParam(entry));
+        GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, entry);
     }
 
     @Override

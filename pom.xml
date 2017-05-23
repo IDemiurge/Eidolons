@@ -89,6 +89,13 @@
             <version>4.2</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.vertx/vertx-core -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>

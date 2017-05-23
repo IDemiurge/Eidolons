@@ -1,13 +1,13 @@
 package main.system;
 
-public class EventCallbackParam<T> {
-    private T object;
+public class EventCallbackParam {
+    private Object object;
 
-    public EventCallbackParam(T param) {
+    public EventCallbackParam(Object param) {
         object = param;
     }
 
-    public T get() {
+    public Object get() {
         return object;
     }
 }

@@ -53,7 +53,7 @@ public class DungeonScreen extends ScreenWithLoader {
 
         gridStage = new Stage();
         GuiEventManager.bind(BF_CREATED, param -> {
-            final BFDataCreatedEvent data = (BFDataCreatedEvent) param;
+            final BFDataCreatedEvent data = (BFDataCreatedEvent) param.get();
             gridPanel = new GridPanel(data.getGridW(), data.getGridH()).init(data.getObjects());
             gridStage.addActor(gridPanel);
         });

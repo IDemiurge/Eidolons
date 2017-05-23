@@ -22,7 +22,6 @@ import main.game.core.ActionInput;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
@@ -107,7 +106,7 @@ public class Executor extends ActiveHandler {
 
 
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-         new ActionInput(getAction(), new Context(ref)));
+                new ActionInput(getAction(), new Context(ref)));
     }
 
     public void activateOn(DC_Obj t) {
@@ -118,12 +117,12 @@ public class Executor extends ActiveHandler {
             return;
         }
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-         new ActionInput(getAction(), t));
+                new ActionInput(getAction(), t));
     }
 
     public void activateOnGameLoopThread() {
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-         new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
+                new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }
 
     public boolean activate() {
@@ -146,7 +145,7 @@ public class Executor extends ActiveHandler {
             targets = getAction().getTargetGroup().toString();
         }
         log(getAction().getOwnerObj().getNameIfKnown() + " activates "
-         + getAction().getNameIfKnown() + targets, gameLog);
+                + getAction().getNameIfKnown() + targets, gameLog);
         beingActivated();
         if (isInterrupted()) {
             return interrupted();
@@ -164,7 +163,7 @@ public class Executor extends ActiveHandler {
 //                cancelled();
 //        }
         //TODO BEFORE RESOLVE???
-        GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new EventCallbackParam(getAction()));
+        GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, getAction());
 
         actionComplete();
         return isResult();
@@ -261,15 +260,14 @@ public class Executor extends ActiveHandler {
         getAction().activatePassives();
 //        setResistanceChecked(false); ??
 
-        GuiEventManager.trigger(GuiEventType.ACTION_BEING_RESOLVED,
-         new EventCallbackParam(getAction()));
+        GuiEventManager.trigger(GuiEventType.ACTION_BEING_RESOLVED, getAction());
         getMaster().getAnimator().addResolvesPhase();
 
         if (getAction().getAbilities() != null) {
             try {
                 setResult(getAction().getAbilities().activatedOn(
 //                 getTargeter(). TODO would this be ok?
-                 getRef()));
+                        getRef()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -318,7 +316,7 @@ public class Executor extends ActiveHandler {
         }
         if (!StringMaster.isEmpty(getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES))) {
             ownerObj.addProperty(G_PROPS.STANDARD_PASSIVES,
-             getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
+                    getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
         }
     }
 
@@ -356,8 +354,8 @@ public class Executor extends ActiveHandler {
 
     public void actionComplete() {
         getAnimator().initAnimData();
-        getAction().setTargetGroup(null );
-        getAction().setTargetObj(null );
+        getAction().setTargetGroup(null);
+        getAction().setTargetObj(null);
         getGame().getManager().setActivatingAction(null);
         if (isResult()) {
             log(getAction() + " done", false);

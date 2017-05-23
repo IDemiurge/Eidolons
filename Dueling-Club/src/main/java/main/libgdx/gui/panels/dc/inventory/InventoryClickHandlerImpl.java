@@ -9,7 +9,6 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.Eidolons;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
@@ -147,7 +146,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     }
 
     public void refreshPanel() {
-        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, new InventoryDataSource(unit));
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, unit);
     }
 
     @Override
@@ -158,7 +157,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 //        InventoryTransactionManager.updateType(unit); ???
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
         CharacterCreator.getHeroManager().removeHero(unit);
-        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, new EventCallbackParam(null));
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, null);
     }
 
     @Override
@@ -170,7 +169,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 //        cell.setProperty(PROPS.DROPPED_ITEMS, cachedValue);TODO
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, false);
         CharacterCreator.getHeroManager().removeHero(unit);
-        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, new EventCallbackParam(null));
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, null);
 
     }
 

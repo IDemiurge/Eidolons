@@ -1,10 +1,13 @@
 package main.system;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.eventbus.DeliveryOptions;
+import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.MessageCodec;
+import io.vertx.core.eventbus.MessageConsumer;
+
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -15,43 +18,49 @@ import java.util.concurrent.locks.ReentrantLock;
  * To change this template use File | Settings | File Templates.
  */
 public class GuiEventManager {
-    private static GuiEventManager instance;
+    private static EventBus instance;
     private static Lock initLock = new ReentrantLock();
-    private Map<GuiEventType, EventCallback> eventMap = new HashMap<>();
-    private List<Runnable> eventQueue = new ArrayList<>();
-    private Lock lock = new ReentrantLock();
-    private Map<GuiEventType, OnDemandCallback> onDemand = new ConcurrentHashMap<>();
+    private static List<Runnable> callbacks = new LinkedList<>();
 
     public static void bind(GuiEventType type, final EventCallback event) {
-        getInstance().bind_(type, event);
+        final MessageConsumer<EventCallbackParam> consumer = getInstance().localConsumer(type.name());
+        consumer.handler(objectMessage ->
+                callbacks.add(() ->
+                        event.call(objectMessage.body())));
     }
 
     public static void trigger(final GuiEventType type) {
-        trigger(type, new EventCallbackParam<>(null));
+        trigger(type, null);
     }
 
     public static void trigger(final GuiEventType type, Object obj) {
-        EventCallbackParam eventCallback;
-
-        if (obj instanceof EventCallbackParam) {
-            eventCallback = (EventCallbackParam) obj;
+        DeliveryOptions options = new DeliveryOptions();
+        options.setSendTimeout(10000);
+        options.setCodecName("default-codec");
+        EventCallbackParam callbackParam;
+        if (!(obj instanceof EventCallbackParam)) {
+            callbackParam = new EventCallbackParam(obj);
         } else {
-            eventCallback = new EventCallbackParam<>(obj);
+            callbackParam = (EventCallbackParam) obj;
         }
-
-        getInstance().trigger_(type, eventCallback);
+        getInstance().publish(type.name(), callbackParam, options);
     }
 
     public static void processEvents() {
-        getInstance().processEvents_();
+        if (callbacks.size() > 0) {
+            List<Runnable> list = callbacks;
+            callbacks = new LinkedList<>();
+            list.forEach(Runnable::run);
+        }
     }
 
-    private static GuiEventManager getInstance() {
+    private static EventBus getInstance() {
         if (instance == null) {
             try {
                 initLock.lock();
                 if (instance == null) {
-                    instance = new GuiEventManager();
+                    instance = VetrxHolder.getInstance().eventBus();
+                    instance.registerDefaultCodec(EventCallbackParam.class, new EventCodec());
                 }
             } finally {
                 initLock.unlock();
@@ -61,65 +70,34 @@ public class GuiEventManager {
     }
 
     public static void clear() {
-        instance = null;
+        getInstance().close(null);
     }
 
-    public void bind_(GuiEventType type, final EventCallback event) {
-        if (event != null) {
-            if (onDemand.containsKey(type)) {
-                lock.lock();
-                OnDemandCallback r = onDemand.remove(type);
-                try {
-                    eventQueue.add(() -> r.call(event));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    lock.unlock();
-                }
-            }
-            if (eventMap.containsKey(type)) {
-                final EventCallback old = eventMap.remove(type);
-                eventMap.put(type, (obj) -> {
-                    old.call(obj);
-                    event.call(obj);
-                });
-            } else {
-                eventMap.put(type, event);
-            }
-        } else {
-            if (eventMap.containsKey(type)) {
-                eventMap.remove(type);
-            }
+
+    private static class EventCodec implements MessageCodec<EventCallbackParam, EventCallbackParam> {
+        @Override
+        public void encodeToWire(Buffer buffer, EventCallbackParam o) {
+
+        }
+
+        @Override
+        public EventCallbackParam decodeFromWire(int i, Buffer buffer) {
+            return null;
+        }
+
+        @Override
+        public EventCallbackParam transform(EventCallbackParam o) {
+            return o;
+        }
+
+        @Override
+        public String name() {
+            return "default-codec";
+        }
+
+        @Override
+        public byte systemCodecID() {
+            return -1;
         }
     }
-
-    public void trigger_(final GuiEventType type, final EventCallbackParam obj) {
-
-        if (eventMap.containsKey(type)) {
-            lock.lock();
-            try {
-                eventQueue.add(() -> eventMap.get(type).call(obj));
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                lock.unlock();
-            }
-        } else {
-            if (obj instanceof OnDemandEventCallbackParam) {
-                onDemand.put(type, (callback) -> callback.call(obj));
-            }
-        }
-    }
-
-    public void processEvents_() {
-        if (eventQueue.size() > 0) {
-            lock.lock();
-            List<Runnable> list = eventQueue;
-            eventQueue = new ArrayList<>();
-            lock.unlock();
-
-            list.forEach(Runnable::run);
-        }
-    }
-
 }

@@ -14,7 +14,6 @@ import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
@@ -119,8 +118,7 @@ public class DeathMaster extends Master {
             getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF));
             game.getLogManager().doneLogEntryNode();
         } else {
-            GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL,
-                    new EventCallbackParam<>(killed));
+            GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, killed);
         }
         // refreshAll();
     }

@@ -21,7 +21,6 @@ import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.battlecraft.rules.round.UpkeepRule;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 
@@ -179,7 +178,7 @@ public class BuffMaster extends Master {
         game.getState().addObject(buff);
         addAttachment(buff, basis);
         UpkeepRule.addUpkeep(buff);
-        GuiEventManager.trigger(UPDATE_BUFFS, new EventCallbackParam(buff));
+        GuiEventManager.trigger(UPDATE_BUFFS, buff);
     }
 
     public void copyBuff(BuffObj buff, Obj obj, Condition retainCondition) {
