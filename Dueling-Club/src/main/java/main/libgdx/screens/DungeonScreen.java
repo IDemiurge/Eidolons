@@ -8,14 +8,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.core.game.DC_Game;
+import main.libgdx.DialogScenario;
 import main.libgdx.bf.BFDataCreatedEvent;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.stage.AnimationEffectStage;
 import main.libgdx.stage.BattleGuiStage;
+import main.libgdx.stage.ChainedStage;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+
+import java.util.List;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.*;
@@ -33,6 +37,7 @@ public class DungeonScreen extends ScreenWithLoader {
     private Stage gridStage;
     private BattleGuiStage guiStage;
     private GridPanel gridPanel;
+    private ChainedStage dialogsStage = null;
     private OrthographicCamera cam;
     private InputController controller;
 
@@ -82,6 +87,11 @@ public class DungeonScreen extends ScreenWithLoader {
             Gdx.input.setInputProcessor(multiplexer);
         });
 
+        GuiEventManager.bind(DIALOG_SHOW, obj -> {
+            final List<DialogScenario> list = (List<DialogScenario>) obj.get();
+            dialogsStage = new ChainedStage(list);
+        });
+
         WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
 
@@ -102,6 +112,8 @@ public class DungeonScreen extends ScreenWithLoader {
         }
 
         GuiEventManager.processEvents();
+
+        super.render(delta);
 
         guiStage.act(delta);
         animationEffectStage.act(delta);
@@ -124,6 +136,17 @@ public class DungeonScreen extends ScreenWithLoader {
             animationEffectStage.draw();
 
             guiStage.draw();
+
+            if (dialogsStage != null) {
+                dialogsStage.act(delta);
+                if (dialogsStage.isDone()) {
+                    final ChainedStage dialogsStage = this.dialogsStage;
+                    this.dialogsStage = null;
+                    dialogsStage.dispose();
+                } else {
+                    dialogsStage.draw();
+                }
+            }
         }
 
     }
