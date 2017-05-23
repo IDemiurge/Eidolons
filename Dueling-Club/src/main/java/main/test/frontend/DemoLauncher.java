@@ -89,8 +89,6 @@ public class DemoLauncher extends Game {
 
     @Override
     public void render() {
-
-
         if (newMeta != null) {
             final ScreenData meta = newMeta;
             newMeta = null;
