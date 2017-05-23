@@ -7,7 +7,15 @@ import main.game.core.Eidolons;
  * Created by JustMe on 5/22/2017.
  */
 public class ScenarioLauncher {
-    public static void lauch(String typeName) {
+    private static final String DEFAULT = "Pride and Treachery";
+
+    public static void main(String[] args) {
+        String t= DEFAULT;
+        if (t==null )
+        t= args[0];
+        lauch(t);
+    }
+        public static void lauch(String typeName) {
         DC_Engine.mainMenuInit();
         Eidolons.initScenario(typeName);
         DC_Engine.gameStartInit();

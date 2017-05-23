@@ -4,14 +4,14 @@ import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
 import org.junit.Before;
 import org.junit.Test;
-import tests.GenericTest;
+import tests.FastDcTest;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by JustMe on 3/6/2017.
  */
-public class CreateUnitTest extends GenericTest {
+public class CreateUnitTest extends FastDcTest {
 
 
     protected Unit entity;

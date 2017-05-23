@@ -162,6 +162,10 @@ String script;
         this.id = id;
     }
 
+    public SpeechData getData() {
+        return data;
+    }
+
     public enum REPLICA_STATUS {
         NEW,
         REPEATED,

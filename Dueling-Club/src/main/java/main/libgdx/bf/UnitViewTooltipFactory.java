@@ -5,8 +5,11 @@ import com.badlogic.gdx.utils.Align;
 import main.content.PARAMS;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BattleFieldObject;
+import main.entity.obj.unit.Unit;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
@@ -39,7 +42,6 @@ public class UnitViewTooltipFactory {
     public static Supplier<List<ValueContainer>> create(BattleFieldObject hero) {
         return () -> {
             List<ValueContainer> values = new ArrayList<>();
-
             if (hero.checkSelectHighlighted()) {
                 String actionTargetingTooltip = "";
                 DC_ActiveObj action = (DC_ActiveObj) hero.getGame().getManager().getActivatingAction();
@@ -106,23 +108,25 @@ public class UnitViewTooltipFactory {
             }
             if (hero.getGame().isDebugMode())
             {
-                final ValueContainer valueContainer =
+                  ValueContainer valueContainer =
                  new ValueContainer("coord:", hero.getCoordinates().toString());
                 valueContainer.setNameAlignment(Align.left);
                 valueContainer.setValueAlignment(Align.right);
                 values.add(valueContainer);
-            }
-
             if (hero.getFacing() != null || hero.getDirection() != null) {
                 final String name = "direction: " + (hero.getFacing() != null ?
                  hero.getFacing().getDirection() :
                  hero.getDirection());
-                final ValueContainer valueContainer = new ValueContainer(name, hero.getCoordinates().toString());
+                valueContainer = new ValueContainer(name, hero.getCoordinates().toString());
                 valueContainer.setNameAlignment(Align.left);
                 valueContainer.setValueAlignment(Align.right);
                 values.add(valueContainer);
             }
-
+            }
+            if (hero instanceof Unit){
+                addPropStringToValues(hero, values, G_PROPS.MODE);
+                addPropStringToValues(hero, values, G_PROPS.STATUS);
+            }
             addParamStringToValues(hero, values, PARAMS.LIGHT_EMISSION);
             addParamStringToValues(hero, values, PARAMS.ILLUMINATION);
             addParamStringToValues(hero, values, PARAMS.CONCEALMENT);
@@ -145,8 +149,20 @@ public class UnitViewTooltipFactory {
         };
     }
 
-    private static void addParamStringToValues(BattleFieldObject hero, List<ValueContainer> values,
-                                               PARAMETER param) {
+    private static void addPropStringToValues(BattleFieldObject hero,
+                                               List<ValueContainer> values,
+                                               PROPERTY v) {
+        String value=hero.getValue(v);
+        value = StringMaster.getWellFormattedString(value);
+        value =  value.replace(";", ", ");
+        final ValueContainer valueContainer =
+         new ValueContainer(v.getName(), value);
+        valueContainer.setNameAlignment(Align.left);
+        valueContainer.setValueAlignment(Align.right);
+        values.add(valueContainer);
+    }
+        private static void addParamStringToValues(BattleFieldObject hero, List<ValueContainer> values,
+         PARAMETER param) {
         if (hero.getIntParam(param) > 0) {
             final ValueContainer valueContainer =
              new ValueContainer(param.getName(), hero.getStrParam(param));

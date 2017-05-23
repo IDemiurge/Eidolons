@@ -50,6 +50,7 @@ public class CoreEngine {
         Chronos.mark("SYSTEM INIT");
         ImageManager.init();
         FontMaster.init();
+        if (!graphicsOff)
         GuiManager.init();
         SoundMaster.initialize();
         ResourceManager.init();
