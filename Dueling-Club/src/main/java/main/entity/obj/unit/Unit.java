@@ -39,6 +39,7 @@ import main.entity.obj.hero.DC_Masteries;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.bf.unit.*;
 import main.entity.type.ObjType;
+import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
@@ -892,8 +893,8 @@ public class Unit extends DC_UnitModel {
     }
 
     public boolean isAiControlled() {
-//        if (AI_Manager.isOff())
-//            return false;
+        if (AI_Manager.isOff())
+            return false;
         if (aiControlled) {
             return true;
         } if (!owner.isAi())

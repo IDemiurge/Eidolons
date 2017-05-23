@@ -21,6 +21,7 @@ public class AI_Manager extends AiMaster {
     private static boolean running;
     private static GroupAI allyGroup;
     private static GroupAI enemyGroup;
+    private static boolean off;
     private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
 
     public AI_Manager(DC_Game game) {
@@ -76,6 +77,14 @@ public class AI_Manager extends AiMaster {
 
     public static boolean isRunning() {
         return running;
+    }
+
+    public static boolean isOff() {
+        return off;
+    }
+
+    public static void setOff(boolean off) {
+        AI_Manager.off = off;
     }
 
     public void init() {
