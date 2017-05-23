@@ -786,11 +786,11 @@ public abstract class DataModel {
 
         Ref REF = Ref.getCopy(ref);
         REF.setTarget(id);
-        return game.fireEvent(new Event(EVENT_TYPE, "" + val, REF));
+        return getGame().fireEvent(new Event(EVENT_TYPE, "" + val, REF));
     }
 
     private boolean isValueEventsOn() {
-        if (game.isSimulation() || this instanceof ObjType) {
+        if (getGame().isSimulation() || this instanceof ObjType) {
             return false;
         }
         return false;
@@ -804,13 +804,13 @@ public abstract class DataModel {
             return true; // TODO [PERFORMANCE] DEMANDS...
         }
 
-        if (ref == null || !game.isStarted() || game.isSimulation() || this instanceof ObjType) {
+        if (ref == null || !getGame().isStarted() || getGame().isSimulation() || this instanceof ObjType) {
             return true;
         }
         Ref REF = Ref.getCopy(ref);
         REF.setAmount(amount);
         REF.setTarget(id);
-        return game.fireEvent(new Event(event_type, "" + param, REF));
+        return getGame().fireEvent(new Event(event_type, "" + param, REF));
     }
 
     public void resetParam(PARAMETER param) {
@@ -1294,7 +1294,7 @@ public abstract class DataModel {
     public Integer getId() {
         if (id == null) {
             if (game != null) {
-                id = game.getIdManager().getNewId();
+                id = getGame().getIdManager().getNewId();
             }
         }
         return id;
@@ -1456,7 +1456,7 @@ public abstract class DataModel {
     }
 
     public String getNameOrId() {
-        if (game.isSimulation()) {
+        if (getGame().isSimulation()) {
             if (this instanceof ObjType) {
                 return getName();
             }
@@ -1512,7 +1512,7 @@ public abstract class DataModel {
     public ImageIcon getCustomIcon() {
         if (customIcon == null) {
             if (game != null) {
-                if (game.isSimulation()) {
+                if (getGame().isSimulation()) {
                     if (ref != null) {
                         Map<String, ImageIcon> cache = ImageManager.getCustomIconCache().get(
                                 ref.getSourceObj());
@@ -1533,7 +1533,7 @@ public abstract class DataModel {
     }
 
     public void setCustomIcon(ImageIcon customIcon) {
-        if (game.isSimulation()) {
+        if (getGame().isSimulation()) {
             Map<String, ImageIcon> cache = ImageManager.getCustomIconCache()
                     .get(ref.getSourceObj());
             if (cache == null) {

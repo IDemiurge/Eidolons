@@ -48,6 +48,7 @@ public abstract class LogManager {
         this.game = game;
         setEntryMap(new HashMap<>());
         topDisplayedEntries = new LinkedList<>();
+        if (!LogMaster.isOff())
         initDefaultEntries();
         for (LOG log : LOG.values()) {
             entryMap.put(log, new LinkedList<>());
@@ -87,6 +88,8 @@ public abstract class LogManager {
     }
 
     public LogEntryNode newLogEntryNode(boolean logLater, ENTRY_TYPE type, Object... args) {
+       if (LogMaster.isOff())
+           return null;
         Object[] argArray = args;
         if (argArray == null) {
             args = new Boolean[]{false}; // TODO quickfix logLater
@@ -182,7 +185,7 @@ public abstract class LogManager {
     }
 
     public boolean log(LOG log, String entry, ENTRY_TYPE enclosingEntryType) {
-        if (entry == null || log == null) {
+        if (entry == null || log == null || LogMaster.isOff()) {
             return false;
         }
         if (addPeriod) {
