@@ -1,7 +1,7 @@
 package tests.logic.combat;
 
 
-import init.JUnitDcInitializer;
+import tests.init.JUnitDcInitializer;
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.DealDamageEffect;
 import main.content.DC_TYPE;

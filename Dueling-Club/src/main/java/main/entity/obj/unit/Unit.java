@@ -892,6 +892,8 @@ public class Unit extends DC_UnitModel {
     }
 
     public boolean isAiControlled() {
+//        if (AI_Manager.isOff())
+//            return false;
         if (aiControlled) {
             return true;
         } if (!owner.isAi())

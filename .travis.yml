@@ -1,7 +1,6 @@
 language: java
 env:
   - JDK=oraclejdk8
-  - JDK=openjdk8
   
 dist: trusty
 script: mvn clean test -P travis

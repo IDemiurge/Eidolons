@@ -49,8 +49,11 @@ public class CoreEngine {
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
         ImageManager.init();
-        FontMaster.init();
-        GuiManager.init();
+        if (!graphicsOff) {
+            FontMaster.init();
+            GuiManager.init();
+
+        }
         SoundMaster.initialize();
         ResourceManager.init();
         DataManager.init();

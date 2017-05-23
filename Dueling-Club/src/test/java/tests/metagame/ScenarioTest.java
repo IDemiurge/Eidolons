@@ -4,11 +4,12 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.frontend.ScenarioLauncher;
 import org.junit.Test;
+import tests.GenericJUnitTest;
 
 /**
  * Created by JustMe on 5/16/2017.
  */
-public class ScenarioTest  {
+public class ScenarioTest  extends GenericJUnitTest {
 
     public static String typeName="Pride and Treachery";
 

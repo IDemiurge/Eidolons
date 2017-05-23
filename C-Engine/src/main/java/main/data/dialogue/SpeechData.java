@@ -15,6 +15,9 @@ public class SpeechData extends DataUnit<SPEECH_VALUE> {
         initValues();
     }
 
+    public SpeechData(String string ) {
+        super(string);
+    }
     public SpeechData(DataString string, DataString string2) {
         this(new DataString[]{
          string, string2
