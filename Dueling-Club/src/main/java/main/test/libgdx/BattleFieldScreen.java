@@ -21,6 +21,7 @@ import java.util.ArrayList;
 /**
  * Created by PC on 22.10.2016.
  */
+@Deprecated
 public class BattleFieldScreen implements Screen {
     public static Sprite sprite1; //simple sprite
     public static Sprite portraitFrame; //simple sprite

@@ -10,12 +10,12 @@ import com.badlogic.gdx.utils.Align;
 import main.libgdx.gui.panels.dc.ValueContainer;
 
 public class DialogScenario extends Group {
-    private Integer time;
+    private int time;
     private Image back;
     private boolean done;
     private long currentTime = 0;
 
-    public DialogScenario(Integer time, boolean skippable, TextureRegion backTexture, String message, TextureRegion portraitTexture) {
+    public DialogScenario(int time, boolean skippable, TextureRegion backTexture, String message, TextureRegion portraitTexture) {
         this.time = time;
         this.back = new Image(backTexture);
         skippable = time <= 0 || skippable;
