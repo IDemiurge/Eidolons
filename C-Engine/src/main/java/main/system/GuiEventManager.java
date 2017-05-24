@@ -6,7 +6,7 @@ import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.MessageCodec;
 import io.vertx.core.eventbus.MessageConsumer;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -20,7 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class GuiEventManager {
     private static EventBus instance;
     private static Lock initLock = new ReentrantLock();
-    private static List<Runnable> callbacks = new LinkedList<>();
+    private static List<Runnable> callbacks = new ArrayList<>(10);
 
     public static void bind(GuiEventType type, final EventCallback event) {
         final MessageConsumer<EventCallbackParam> consumer = getInstance().localConsumer(type.name());
@@ -49,11 +49,14 @@ public class GuiEventManager {
     public static void processEvents() {
         if (callbacks.size() > 0) {
             List<Runnable> list = callbacks;
-            callbacks = new LinkedList<>();
-            try { //TODO had an exception here in iterator.next() (e.next == null)
-                list.forEach(Runnable::run);
-            } catch (Exception e) {
-                e.printStackTrace();
+            callbacks = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                final Runnable runnable = list.get(i);
+                if (runnable != null) {
+                    runnable.run();
+                } else {
+
+                }
             }
         }
     }
