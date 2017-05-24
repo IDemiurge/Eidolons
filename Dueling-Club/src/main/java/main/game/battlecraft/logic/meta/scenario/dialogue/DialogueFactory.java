@@ -9,6 +9,7 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.math.MathMaster;
 import org.w3c.dom.Document;
 
@@ -28,7 +29,7 @@ public class DialogueFactory {
 
 
         public static void constructScenarioLinearDialogues
-        (String data, ScenarioMetaMaster master) {
+        (String path, ScenarioMetaMaster master) {
 //        File file = new File(
 //         PathFinder.getEnginePath() +
 //         PathFinder.getTextPath() +
@@ -38,6 +39,7 @@ public class DialogueFactory {
 //          TextMaster.getLocale() +
 //          "\\dialogues\\" + scenarioPath, false))
 //            data =   FileManager.readFile(file);
+          String  data = FileManager.readFile(path);
         for (String contents : StringMaster.openContainer(
        data, DIALOGUE_SEPARATOR)) {
             String[] array = contents.split(ID_SEPARATOR);
@@ -53,12 +55,12 @@ public class DialogueFactory {
 
     }
 
-    public static GameDialogue getLinearDialogue
+    public static LinearDialogue getLinearDialogue
      (String name) {
-        return map.get(name);
+        return (LinearDialogue) map.get(name);
     }
 
-    public static GameDialogue getLinearDialogue
+    public static LinearDialogue getLinearDialogue
      (String idSequence, ScenarioMetaMaster master) {
         //ids also are supposed to be built linearly, right?
 

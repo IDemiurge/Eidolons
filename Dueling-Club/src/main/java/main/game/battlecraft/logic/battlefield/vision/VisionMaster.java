@@ -15,8 +15,6 @@ import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.debug.DebugMaster;
 
 import java.util.Set;
@@ -64,7 +62,7 @@ public class VisionMaster implements GenericVisionManager {
 
     public void resetVisibilityStatuses() {
         getGammaMaster().clearCache();
-        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
+//        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
         activeUnit = game.getTurnManager().getActiveUnit(true);
 
         if (activeUnit == null) {

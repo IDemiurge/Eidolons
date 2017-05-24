@@ -19,16 +19,16 @@ public class DialogueActorMaster extends MetaGameHandler<ScenarioMeta>{
         super(master);
     }
 
-    Map<String, DialogueActor> map = new HashMap<>();
+    static Map<String, DialogueActor> map = new HashMap<>();
 
-    private DialogueActor createActor(String name) {
+    private static DialogueActor createActor(String name) {
 //        getMetaGame().getScenario().getProperty(PROPS.ACTORS);
         //lightweight entities?
         ObjType type = DataManager.getType(name, DC_TYPE.ACTORS);
 
         return new DialogueActor(type);
     }
-    public DialogueActor getActor(String name){
+    public static DialogueActor getActor(String name){
         DialogueActor actor = map.get(name);
         if (actor==null ){
             actor = createActor(name);

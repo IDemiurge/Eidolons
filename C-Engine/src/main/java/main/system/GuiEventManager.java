@@ -25,8 +25,8 @@ public class GuiEventManager {
     public static void bind(GuiEventType type, final EventCallback event) {
         final MessageConsumer<EventCallbackParam> consumer = getInstance().localConsumer(type.name());
         consumer.handler(objectMessage ->
-                callbacks.add(() ->
-                        event.call(objectMessage.body())));
+         callbacks.add(() ->
+          event.call(objectMessage.body())));
     }
 
     public static void trigger(final GuiEventType type) {
@@ -50,7 +50,11 @@ public class GuiEventManager {
         if (callbacks.size() > 0) {
             List<Runnable> list = callbacks;
             callbacks = new LinkedList<>();
-            list.forEach(Runnable::run);
+            try { //TODO had an exception here in iterator.next() (e.next == null)
+                list.forEach(Runnable::run);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

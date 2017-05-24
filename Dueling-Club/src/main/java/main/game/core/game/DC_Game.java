@@ -28,7 +28,7 @@ import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.*;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.battlefield.vision.VisionMaster;
-import main.game.battlecraft.logic.dungeon.test.TestDungeonMaster;
+import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
@@ -58,10 +58,8 @@ import main.system.launch.CoreEngine;
 import main.system.math.DC_MathManager;
 import main.system.test.TestMasterContent;
 import main.system.text.DC_LogManager;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.test.PresetMaster;
 import main.system.util.Refactor;
+import main.test.PresetMaster;
 import main.test.debug.DebugMaster;
 
 import java.util.*;
@@ -190,7 +188,8 @@ public class DC_Game extends MicroGame {
         return new TestBattleMaster(this);}
 
     protected DungeonMaster createDungeonMaster() {
-        return new TestDungeonMaster(this);
+        return new LocationMaster(this);
+//        return new TestDungeonMaster(this);
     }
     // before all other masters?
 
@@ -259,7 +258,7 @@ keyManager = new DC_KeyManager(getManager());
         if (getGameLoopThread() == null) {
             setGameLoopThread(new Thread(() -> {
                 if (!CoreEngine.isGraphicsOff()) {
-                    WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
+//                    WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
                 }
                 loop = new GameLoop(this);
                 loop.start();

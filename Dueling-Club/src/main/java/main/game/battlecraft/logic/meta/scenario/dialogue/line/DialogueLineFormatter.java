@@ -5,6 +5,7 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.data.xml.XML_Writer;
+import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -27,7 +28,7 @@ public class DialogueLineFormatter {
     private static final String linesFilePath = "\\dialogue\\lines.xml";
     private static final String linesBackupFilePath = "\\dialogue\\backup\\lines.xml";
     private static final String ACTOR_NODE = SPEECH_VALUE.ACTOR.name();
-
+    private static final String TEXT_NODE = SPEECH_VALUE.MESSAGE.name();
     private static String oldLinesFileContents="";
     private static String newLinesFileContents="";
     private static  String linearDialogueFileContents="";
@@ -57,9 +58,12 @@ public class DialogueLineFormatter {
         writeLinesFile();
         writeLinearDialoguesFile();
         updateXml();
-        DialogueFactory.constructScenarioLinearDialogues(linearDialogueFileContents, null );
+        DialogueFactory.constructScenarioLinearDialogues(getLinearDialoguesFilePath(), new ScenarioMetaMaster(""));
+      }
+    public static String formatDialogueText(String result) {
+        return result.replaceAll("…", "...")
+         .replaceAll("’", "'");
     }
-
     public static void parseDialogueFile(String contents) {
         //odt from textMaster!
 
@@ -77,8 +81,10 @@ public class DialogueLineFormatter {
                 if (!actorData.isEmpty())
                     actorData = XML_Converter.wrap(ACTOR_NODE, actorData.trim());
                 String textData = StringMaster.tryGetSplit(lineText, ACTOR_SEPARATOR, 1);
-                textData =
-                 XML_Formatter.formatXmlTextContent(textData, null );
+
+                textData = formatDialogueText(textData);
+                 textData =XML_Converter.wrap(TEXT_NODE,
+                 XML_Formatter.formatXmlTextContent(textData, null ));
 
                 String miscData = "";
                 String text = actorData;
@@ -124,12 +130,13 @@ public class DialogueLineFormatter {
         XML_Writer.write(oldLinesFileContents, getLinesBackupFilePath());
     }
 
-    private static void readLinesFile() {
+    public static String readLinesFile() {
         oldLinesFileContents = FileManager.readFile(getLinesFilePath());
+        return oldLinesFileContents;
         //how to update?
     }
 
-    private static String getLinearDialoguesFilePath() {
+    public static String getLinearDialoguesFilePath() {
         return PathFinder.getEnginePath() + PathFinder.getTextPath()
          + TextMaster.getLocale() + linearDialoguePath;
     }

@@ -287,13 +287,14 @@ public class AtomicAi extends AiHandler {
     }
 
     private int getDistanceForAtomicApproach(UnitAI ai) {
-
-        if (ai.getType().isRanged()) {
-            if (ai.getType() == AI_TYPE.ARCHER)
-                return new FuncMaster().getGreatestValue(ai.getUnit().getRangedWeapon()
-                 .getAttackActions(), PARAMS.RANGE).getIntParam(PARAMS.RANGE);
+        if (ai.getType().isCaster())
             return new FuncMaster().getGreatestValue(ai.getUnit().getSpells(),
              PARAMS.RANGE).getIntParam(PARAMS.RANGE);
+        if (ai.getType().isRanged()) {
+            if (ai.getType() == AI_TYPE.ARCHER)
+                if (ai.getUnit().getRangedWeapon() != null )
+                return new FuncMaster().getGreatestValue(ai.getUnit().getRangedWeapon()
+                 .getAttackActions(), PARAMS.RANGE).getIntParam(PARAMS.RANGE);
         }
         int maxDistance = 3;
 

@@ -124,6 +124,8 @@ public class GridPanel extends Group {
 
         animMaster = new AnimMaster();
         addActor(animMaster);
+
+
         return this;
     }
 

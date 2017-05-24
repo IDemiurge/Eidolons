@@ -19,6 +19,7 @@ import main.game.module.adventure.travel.EncounterMaster;
 import main.game.module.dungeoncrawl.ai.DungeonCrawler;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
+import main.test.PresetMaster;
 
 import java.util.*;
 
@@ -40,7 +41,7 @@ public class LocationSpawner extends Spawner<Location> {
 
     @Override
     public void spawn(UnitData data, DC_Player player, SPAWN_MODE mode) {
-        if (player.isMe()) {
+        if (player.isMe() && PresetMaster.getPreset()==null ) {
             List<String> list = ListMaster.toNameList(
              getGame().getMetaMaster().getPartyManager()
               .getParty().getMembers());

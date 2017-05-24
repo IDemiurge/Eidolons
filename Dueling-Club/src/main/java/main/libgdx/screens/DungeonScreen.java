@@ -58,6 +58,7 @@ public class DungeonScreen extends ScreenWithLoader {
 
         gridStage = new Stage();
         GuiEventManager.bind(BF_CREATED, param -> {
+            main.system.auxiliary.log.LogMaster.log(1,"asddfsd " );
             final BFDataCreatedEvent data = (BFDataCreatedEvent) param.get();
             gridPanel = new GridPanel(data.getGridW(), data.getGridH()).init(data.getObjects());
             gridStage.addActor(gridPanel);
@@ -91,6 +92,7 @@ public class DungeonScreen extends ScreenWithLoader {
             final List<DialogScenario> list = (List<DialogScenario>) obj.get();
             dialogsStage = new ChainedStage(list);
         });
+
 
         WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);

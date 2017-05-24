@@ -42,16 +42,17 @@ public class ThreatAnalyzer extends AiHandler {
         return threat;
     }
 
-    public int getRangedThreat(Unit target,Unit unit) {
+    public int getRangedThreat(Unit target, Unit unit) {
         if (unit.getAI().getType() != AI_TYPE.ARCHER)
-        return     new FuncMaster().total(unit.getSpells(), s-> {
-            DC_SpellObj spell = (DC_SpellObj) s;
+            return new FuncMaster().total(unit.getSpells(), s -> {
+                DC_SpellObj spell = (DC_SpellObj) s;
 //            if (spell.isDamageSpell())
 //            return FutureBuilder.precalculateDamage(spell, source, false);
-            return getPriorityManager().getSpellPriority(spell, new Context( unit,target))
-             /getRangedThreatFactorSpell(unit, target);
-        });
-
+                return getPriorityManager().getSpellPriority(spell, new Context(unit, target))
+                 / getRangedThreatFactorSpell(unit, target);
+            });
+        if (unit.getRangedWeapon() == null)
+            return 0;
         return new FuncMaster().getGreatestValue(unit.getRangedWeapon().getAttackActions(),
          t -> {
              DC_ActiveObj action = (DC_ActiveObj) t;
@@ -59,7 +60,7 @@ public class ThreatAnalyzer extends AiHandler {
                  return new AttackCalculator(
                   DC_AttackMaster.getAttackFromAction(action), true)
                   .initTarget(unit).calculateFinalDamage()
-                  /getRangedThreatFactorAttack(unit, target);
+                  / getRangedThreatFactorAttack(unit, target);
              return 0;
          });
     }

@@ -106,6 +106,7 @@ public class XML_Formatter {
         return "<![CDATA[" + result + "]]>";
     }
 
+
     private static String repair(String result) {
         return result.replaceAll("\\s+", " ");//.replace("\n", "").replace("  ", " ");
     }

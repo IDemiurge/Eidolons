@@ -1,6 +1,7 @@
 package main.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
 import main.ability.Abilities;
+import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.SpeechData;
 import main.data.dialogue.SpeechInterface;
 import main.data.dialogue.Speeches;
@@ -16,29 +17,30 @@ import java.util.List;
  */
 public class Speech implements SpeechInterface {
 
-    private   SpeechData data;
     String actorName;
     String actorNames;
     String unformattedText; // [main hero name], [gender], [race] etc (maybe {val_ref} sytanx?)
     Condition conditions; //check before addChild()
     Abilities abilities; //activate on start
-String script;
-
+    String script;
     DialogueActor actor;
     List<DialogueActor> actors;
     String formattedText;
     Speech parent;
-    DequeImpl<Speech > children;
+    DequeImpl<Speech> children;
     REPLICA_STATUS status;
+    private SpeechData data;
     private int id;
+
     //last speech
     public Speech(Integer id) {
         this(id, null);
     }
+
     public Speech(Integer id, Speeches children) {
         this.id = id;
-        if (children!=null ){
-            this.children= new DequeImpl<Speech>().addAllCast(children.getList());
+        if (children != null) {
+            this.children = new DequeImpl<Speech>().addAllCast(children.getList());
         }
         new SpeechBuilder().buildSpeech(this);
     }
@@ -57,40 +59,60 @@ String script;
         this.unformattedText = text;
         this.conditions = condition;
     }
+
     public Speech(String text, SpeechData data) {
-        this.unformattedText=text;
-        this.data=data;
+        this.unformattedText = text;
+        this.data = data;
 //        unpackData(data);
     }
 
     public Speech(String actor, String actors, String text, Condition condition
-    , Speeches children
+     , Speeches children
     ) {
-       this.children = new DequeImpl<Speech>().getAddAllCast(children.getList());
+        this.children = new DequeImpl<Speech>().getAddAllCast(children.getList());
     }
+
     public void addChild(Speech child) {
         getChildren().add(child);
     }
 
     public void init(ScenarioMetaMaster master, Speech parent) {
         this.parent = parent;
-        actor = master.getDialogueActorMaster().getActor(actorName);
+        if (actorName == null)
+            actorName = data.getValue(SPEECH_VALUE.ACTOR);
+        try {
+            actor = master.getDialogueActorMaster().getActor(actorName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (actorNames == null)
             actors = parent.getActors();
-        actors =master.getDialogueActorMaster().getActors(actorNames);
-        formattedText =unformattedText;// getDialogueFormatter().format(unformattedText, this);
+        actors = master.getDialogueActorMaster().getActors(actorNames);
+        formattedText = unformattedText;// getDialogueFormatter().format(unformattedText, this);
     }
 
     public Condition getConditions() {
         return conditions;
     }
 
+    public void setConditions(Condition conditions) {
+        this.conditions = conditions;
+    }
+
     public Abilities getAbilities() {
         return abilities;
     }
 
+    public void setAbilities(Abilities abilities) {
+        this.abilities = abilities;
+    }
+
     public String getScript() {
         return script;
+    }
+
+    public void setScript(String script) {
+        this.script = script;
     }
 
     public List<DialogueActor> getActors() {
@@ -101,12 +123,16 @@ String script;
         return formattedText;
     }
 
+    public void setFormattedText(String formattedText) {
+        this.formattedText = formattedText;
+    }
+
     public Speech getParent() {
         return parent;
     }
 
     public DequeImpl<Speech> getChildren() {
-        if (children==null ) children = new DequeImpl<>();
+        if (children == null) children = new DequeImpl<>();
         return children;
     }
 
@@ -114,12 +140,12 @@ String script;
         return status;
     }
 
-    public DialogueActor getActor() {
-        return actor;
+    public void setStatus(REPLICA_STATUS status) {
+        this.status = status;
     }
 
-    public void setData(SpeechData data) {
-        this.data = data;
+    public DialogueActor getActor() {
+        return actor;
     }
 
     public void setActorName(String actorName) {
@@ -134,26 +160,6 @@ String script;
         this.unformattedText = unformattedText;
     }
 
-    public void setConditions(Condition conditions) {
-        this.conditions = conditions;
-    }
-
-    public void setAbilities(Abilities abilities) {
-        this.abilities = abilities;
-    }
-
-    public void setScript(String script) {
-        this.script = script;
-    }
-
-    public void setFormattedText(String formattedText) {
-        this.formattedText = formattedText;
-    }
-
-    public void setStatus(REPLICA_STATUS status) {
-        this.status = status;
-    }
-
     public int getId() {
         return id;
     }
@@ -164,6 +170,10 @@ String script;
 
     public SpeechData getData() {
         return data;
+    }
+
+    public void setData(SpeechData data) {
+        this.data = data;
     }
 
     public enum REPLICA_STATUS {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import main.libgdx.gui.panels.dc.ValueContainer;
 
@@ -19,11 +20,22 @@ public class DialogScenario extends Group {
         this.time = time;
         skippable = time <= 0 || skippable;
         if (skippable) {
+            addListener(new ClickListener(){
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    done = true;
+                    super.touchUp(event, x, y, pointer, button);
+                }
+            });
             addCaptureListener(new InputListener() {
                 @Override
                 public boolean keyDown(InputEvent event, int keycode) {
                     done = true;
                     return false;
+                }
+                @Override
+                public boolean keyUp(InputEvent event, int keycode) {
+                    return   keyDown(event, keycode);
                 }
             });
         }

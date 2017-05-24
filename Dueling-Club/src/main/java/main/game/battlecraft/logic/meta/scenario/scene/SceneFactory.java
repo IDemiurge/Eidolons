@@ -1,7 +1,7 @@
 package main.game.battlecraft.logic.meta.scenario.scene;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import main.data.dialogue.DataString;
+import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.SpeechData;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.LinearDialogue;
@@ -21,26 +21,27 @@ public class SceneFactory {
     DialogueActorMaster actorMaster;
 
     //TODO Speech?
-    public List<DialogScenario> getScenes(LinearDialogue dialogue) {
+    public static List<DialogScenario> getScenes(LinearDialogue dialogue) {
         Speech speech = dialogue.getSpeech();
+        List<SpeechData> fullData = new LinkedList<>();
         while (true) {
-            List<SpeechData> fullData = new LinkedList<>();
             fullData.add(speech.getData());
             if (speech.getChildren().isEmpty()) break;
             speech = speech.getChildren().get(0);
 
         }
-        return null;
+
+        return getScenes(fullData);
     }
 
-    public List<DialogScenario> getScenes(String data) {
+    public static List<DialogScenario> getScenes(String data) {
         List<SpeechData> list =
          StringMaster.openContainer(data).stream().map(s ->
           new SpeechData(s)).collect(Collectors.toList());
         return getScenes(list);
     }
 
-    public List<DialogScenario> getScenes(List<SpeechData> fullData) {
+    public static List<DialogScenario> getScenes(List<SpeechData> fullData) {
         Speech speech;
 //        speech.getFormattedText()
         List<DialogScenario> list = new LinkedList<>();
@@ -49,20 +50,17 @@ public class SceneFactory {
             TextureRegion portraitTexture = null;
             String message = null;
             TextureRegion backTexture = null;
-            boolean skippable = false;
-            Integer time = null;
-            for (DataString dataString : data.getStrings()) {
-                switch (dataString.getType()) {
-                    case ACTOR:
-                        portraitTexture =
-                         TextureCache.getOrCreateR(actorMaster.
-                          getActor(dataString.getData()).getLinkedUnit().getImagePath());
-                        break;
-                    case BACKGROUND:
-                        TextureCache.getOrCreateR(dataString.getData());
-                        break;
-                }
-            }
+            boolean skippable = true;
+            Integer time = -1;
+
+            portraitTexture =
+             TextureCache.getOrCreateR(DialogueActorMaster.
+              getActor(data.getValue(SPEECH_VALUE.ACTOR))
+//              .getLinkedUnit()
+              .getImagePath());
+            message = data.getValue(SPEECH_VALUE.MESSAGE);
+            if (!StringMaster.isEmpty(data.getValue(SPEECH_VALUE.BACKGROUND)))
+            backTexture = TextureCache.getOrCreateR(data.getValue(SPEECH_VALUE.BACKGROUND));
 
             list.add(new DialogScenario(time, skippable, backTexture, message,
              portraitTexture));
