@@ -17,7 +17,6 @@ public class DialogScenario extends Group {
 
     public DialogScenario(int time, boolean skippable, TextureRegion backTexture, String message, TextureRegion portraitTexture) {
         this.time = time;
-        this.back = new Image(backTexture);
         skippable = time <= 0 || skippable;
         if (skippable) {
             addCaptureListener(new InputListener() {
@@ -29,28 +28,31 @@ public class DialogScenario extends Group {
             });
         }
 
-        final float width = back.getWidth();
-        final float height = back.getHeight();
+        if (backTexture != null) {
+            this.back = new Image(backTexture);
+            final float width = back.getWidth();
+            final float height = back.getHeight();
 
-        final int screenW = Gdx.graphics.getWidth();
-        final int screenH = Gdx.graphics.getHeight();
+            final int screenW = Gdx.graphics.getWidth();
+            final int screenH = Gdx.graphics.getHeight();
 
-        float x, y;
+            float x, y;
 
-        if (width > screenW) {
-            x = (width - screenW) / 2;
-        } else {
-            x = screenW / 2 - width / 2;
+            if (width > screenW) {
+                x = (width - screenW) / 2;
+            } else {
+                x = screenW / 2 - width / 2;
+            }
+
+            if (height > screenH) {
+                y = (height - screenH) / 2;
+            } else {
+                y = screenH / 2 - height / 2;
+            }
+
+            back.setPosition(x, y);
+            addActor(back);
         }
-
-        if (height > screenH) {
-            y = (height - screenH) / 2;
-        } else {
-            y = screenH / 2 - height / 2;
-        }
-
-        back.setPosition(x, y);
-        addActor(back);
 
 
         if (portraitTexture != null || message != null) {
