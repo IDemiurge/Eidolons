@@ -11,6 +11,7 @@ public class ChainedStage extends Stage {
     private boolean done;
     private Container<DialogScenario> current;
     private Iterator<DialogScenario> iterator;
+    private List<DialogScenario> newList = null;
 
     public ChainedStage(List<DialogScenario> list) {
         current = new Container<>();
@@ -20,6 +21,10 @@ public class ChainedStage extends Stage {
         }
         setKeyboardFocus(current.getActor());
         addActor(current);
+    }
+
+    public void play(List<DialogScenario> list) {
+        newList = list;
     }
 
     @Override
@@ -34,6 +39,10 @@ public class ChainedStage extends Stage {
             if (iterator.hasNext()) {
                 current.setActor(iterator.next());
                 setKeyboardFocus(current.getActor());
+            } else if (newList != null) {
+                final List<DialogScenario> list = this.newList;
+                newList = null;
+                iterator = list.iterator();
             } else {
                 done = true;
             }

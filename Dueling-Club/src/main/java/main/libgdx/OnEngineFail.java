@@ -1,5 +1,7 @@
 package main.libgdx;
 
+import main.libgdx.screens.ScreenData;
+
 public class OnEngineFail {
     private boolean isCritical; //if true rollback not required
     private ScreenData rollbackTo;

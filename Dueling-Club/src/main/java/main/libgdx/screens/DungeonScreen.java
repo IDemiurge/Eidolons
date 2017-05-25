@@ -16,8 +16,6 @@ import main.libgdx.stage.AnimationEffectStage;
 import main.libgdx.stage.BattleGuiStage;
 import main.libgdx.stage.ChainedStage;
 import main.system.GuiEventManager;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.List;
 
@@ -45,37 +43,36 @@ public class DungeonScreen extends ScreenWithLoader {
     private boolean showLoading = true;
     private AnimationEffectStage animationEffectStage;
 
-    public DungeonScreen() {
-    }
-
-
     public static DungeonScreen getInstance() {
         return instance;
     }
 
-    public DungeonScreen PostConstruct() {
+    @Override
+    protected void preLoad() {
         instance = this;
+        if (data.getDialogScenarios().size() > 0) {
+            dialogsStage = new ChainedStage(data.getDialogScenarios());
+        }
 
         gridStage = new Stage();
         GuiEventManager.bind(BF_CREATED, param -> {
-            main.system.auxiliary.log.LogMaster.log(1,"asddfsd " );
             final BFDataCreatedEvent data = (BFDataCreatedEvent) param.get();
             gridPanel = new GridPanel(data.getGridW(), data.getGridH()).init(data.getObjects());
             gridStage.addActor(gridPanel);
         });
+        gridStage.setViewport(viewPort);
 
         guiStage = new BattleGuiStage();
 
         animationEffectStage = new AnimationEffectStage();
 
-        initCamera();
-
-        controller = new InputController(cam);
-
         GL30 gl = Gdx.graphics.getGL30();
         gl.glEnable(GL30.GL_BLEND);
         gl.glEnable(GL30.GL_TEXTURE_2D);
         gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
+
+        cam = camera = (OrthographicCamera) viewPort.getCamera();
+        controller = new InputController(cam);
 
         GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
             final String path = (String) param.get();
@@ -90,21 +87,18 @@ public class DungeonScreen extends ScreenWithLoader {
 
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
             final List<DialogScenario> list = (List<DialogScenario>) obj.get();
-            dialogsStage = new ChainedStage(list);
+            if (dialogsStage == null) {
+                dialogsStage = new ChainedStage(list);
+                Gdx.input.setInputProcessor(new InputMultiplexer(guiStage, controller, gridStage, dialogsStage));
+            } else {
+                dialogsStage.play(list);
+            }
         });
-
-
-        WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
-        WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
-
-        return this;
     }
 
-    private void initCamera() {
-        camera = cam = new OrthographicCamera();
-        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        gridStage.getViewport().setCamera(cam);
-        animationEffectStage.getViewport().setCamera(cam);
+    @Override
+    protected void afterLoad() {
+
     }
 
     @Override

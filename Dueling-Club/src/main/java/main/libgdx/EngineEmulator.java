@@ -1,11 +1,56 @@
 package main.libgdx;
 
-import java.util.concurrent.ExecutorService;
+import main.libgdx.screens.MainMenuScreenData;
+import main.libgdx.screens.ScreenData;
+import main.libgdx.screens.ScreenType;
+import main.system.EngineEventManager;
+import main.system.EngineEventType;
+import main.system.GuiEventManager;
+
+import java.util.Arrays;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
+import static main.system.GuiEventType.SCREEN_LOADED;
+
 public class EngineEmulator {
-    ExecutorService executorService = Executors.newSingleThreadExecutor();
+    ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    private boolean isFirstRun = true;
+
+    public EngineEmulator() {
+        EngineEventManager.bind(EngineEventType.SWITCH_SCREEN, obj -> {
+            executorService.schedule(() ->
+
+                            GuiEventManager.trigger(SCREEN_LOADED, null)
+                    , 1000, TimeUnit.MILLISECONDS);
+        });
+
+        EngineEventManager.bind(EngineEventType.LOAD_MAIN_SCREEN, obj -> {
+            MainMenuScreenData data = isFirstRun ?
+                    new MainMenuScreenData("", IntroSceneFactory.getIntroStage())
+                    : new MainMenuScreenData("");
+
+            data.setNewGames(Arrays.asList(new ScreenData(ScreenType.HEADQUARTERS, "demo")));
+
+            executorService.schedule(() -> {
+                GuiEventManager.trigger(SCREEN_LOADED, data);
+            }, 1000, TimeUnit.MILLISECONDS);
+        });
+
+        executorService.submit(this::loop);
+    }
+
+    private void loop() {
+        EngineEventManager.processEvents();
+        try {
+            Thread.sleep(0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        executorService.submit(this::loop);
+    }
 
     public void init(Runnable onDone) {
         executorService.submit(() -> {
@@ -18,25 +63,13 @@ public class EngineEmulator {
         });
     }
 
-    public ScreenData getMeta(String name) {
-        ScreenData meta = null;
-        switch (name) {
-            case "demo":
-                meta = new ScreenData(ScreenType.HEADQUARTERS, name);
-                break;
-            default:
-                break;
-        }
-        return meta;
-    }
-
-    public void load(ScreenData meta, Runnable onDone) {
+    public void load(ScreenData meta) {
         executorService.submit(() -> {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ignored) {
             } finally {
-                onDone.run();
+                GuiEventManager.trigger(SCREEN_LOADED, null);
             }
         });
     }

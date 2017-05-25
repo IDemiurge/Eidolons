@@ -8,18 +8,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.client.dc.Launcher;
 import main.game.core.game.DC_Game;
-import main.libgdx.Engine;
 import main.libgdx.EngineEmulator;
-import main.libgdx.ScreenData;
-import main.libgdx.screens.DungeonScreen;
-import main.libgdx.screens.HeadquarterScreen;
-import main.libgdx.screens.MainMenuScreen;
-import main.libgdx.screens.ScreenWithLoader;
-import main.libgdx.stage.MainMenuStage;
+import main.libgdx.screens.*;
+import main.system.EngineEventManager;
+import main.system.EngineEventType;
+import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import org.dizitart.no2.Nitrite;
-import org.jdeferred.Deferred;
-import org.jdeferred.impl.DeferredObject;
 
 import java.util.function.Supplier;
 
@@ -28,8 +23,7 @@ import static main.system.GuiEventType.SWITCH_SCREEN;
 public class DemoLauncher extends Game {
     private static Nitrite db;
     private DC_Game coreGame;
-    private Engine engine;
-    private ScreenData newMeta;
+    private EngineEmulator engine;
     private ScreenViewport viewport;
 
     public DemoLauncher() {
@@ -74,37 +68,36 @@ public class DemoLauncher extends Game {
     @Override
     public void create() {
         engine = new EngineEmulator();
-        Deferred<Boolean, Boolean, Boolean> deferred = new DeferredObject<>();
+        EngineEventManager.trigger(EngineEventType.LOAD_MAIN_SCREEN, ScreenType.MAIN_MENU);
         OrthographicCamera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
-        final MainMenuStage introScreen = new MainMenuStage();
-        engine.init(() -> deferred.resolve(true));
 
-
-        GuiEventManager.bind(SWITCH_SCREEN, obj -> {
-            newMeta = (ScreenData) obj.get();
-        });
+        GuiEventManager.bind(SWITCH_SCREEN, this::screenSwitcher);
     }
 
-    @Override
-    public void render() {
+    private void screenSwitcher(EventCallbackParam param) {
+        ScreenData newMeta = (ScreenData) param.get();
         if (newMeta != null) {
-            final ScreenData meta = newMeta;
-            newMeta = null;
-            switch (meta.getType()) {
+            switch (newMeta.getType()) {
                 case HEADQUARTERS:
-                    switchScreen(HeadquarterScreen::new, meta);
+                    switchScreen(HeadquarterScreen::new, newMeta);
                     break;
                 case BATTLE:
-                    switchScreen(DungeonScreen::new, meta);
+                    switchScreen(DungeonScreen::new, newMeta);
                     break;
                 case PRE_BATTLE:
                     break;
                 case MAIN_MENU:
-                    switchScreen(MainMenuScreen::new, meta);
+                    switchScreen(MainMenuScreen::new, newMeta);
                     break;
             }
         }
+    }
+
+    @Override
+    public void render() {
+        GuiEventManager.processEvents();
+
         super.render();
     }
 

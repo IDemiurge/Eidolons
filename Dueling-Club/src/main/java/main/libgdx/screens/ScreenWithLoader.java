@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import main.libgdx.ScreenData;
 import main.libgdx.stage.LoadingStage;
 import main.system.GuiEventManager;
 
@@ -25,6 +24,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         });
     }
 
+    protected abstract void preLoad();
     protected abstract void afterLoad();
 
     public void hideLoader() {
@@ -44,6 +44,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public void setData(ScreenData data) {
         this.data = data;
+        preLoad();
     }
 
     public void setViewPort(ScreenViewport viewPort) {

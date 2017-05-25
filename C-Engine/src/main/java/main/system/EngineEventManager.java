@@ -17,23 +17,23 @@ import java.util.concurrent.locks.ReentrantLock;
  * Time: 17:18
  * To change this template use File | Settings | File Templates.
  */
-public class GuiEventManager {
+public class EngineEventManager {
     private static EventBus instance;
     private static Lock initLock = new ReentrantLock();
     private static List<Runnable> callbacks = new ArrayList<>(10);
 
-    public static void bind(GuiEventType type, final EventCallback event) {
+    public static void bind(EngineEventType type, final EventCallback event) {
         final MessageConsumer<EventCallbackParam> consumer = getInstance().localConsumer(type.name());
         consumer.handler(objectMessage ->
                 callbacks.add(() ->
                         event.call(objectMessage.body())));
     }
 
-    public static void trigger(final GuiEventType type) {
+    public static void trigger(final EngineEventType type) {
         trigger(type, null);
     }
 
-    public static void trigger(final GuiEventType type, Object obj) {
+    public static void trigger(final EngineEventType type, Object obj) {
         DeliveryOptions options = new DeliveryOptions();
         options.setSendTimeout(10000);
         options.setCodecName("default-codec");
