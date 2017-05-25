@@ -16,7 +16,7 @@ public class MainMenuStage extends Stage {
     private GameLoadingPanel load;
     private NewGamePanel newGame;
 
-    public MainMenuStage(Consumer<String> menuCallback) {
+    public MainMenuStage() {
         menu = new StartMenuPanel(true);
         options = new OptionsPanel();
         load = new GameLoadingPanel();
@@ -38,9 +38,11 @@ public class MainMenuStage extends Stage {
 
         newGame.setBackCallback(() -> switchView(menu));
 
-        newGame.setStartDemoScenarioCallback(menuCallback);
-
         switchView(menu);
+    }
+
+    public void setLoadGameCallback(Consumer<String> menuCallback) {
+        newGame.setStartDemoScenarioCallback(menuCallback);
     }
 
     private void switchView(TablePanel next) {

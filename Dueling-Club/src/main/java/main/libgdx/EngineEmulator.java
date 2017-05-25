@@ -4,10 +4,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-public class EngineEmulator implements Engine {
+public class EngineEmulator {
     ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    @Override
     public void init(Runnable onDone) {
         executorService.submit(() -> {
             try {
@@ -19,7 +18,6 @@ public class EngineEmulator implements Engine {
         });
     }
 
-    @Override
     public ScreenData getMeta(String name) {
         ScreenData meta = null;
         switch (name) {
@@ -32,7 +30,6 @@ public class EngineEmulator implements Engine {
         return meta;
     }
 
-    @Override
     public void load(ScreenData meta, Runnable onDone) {
         executorService.submit(() -> {
             try {
@@ -44,12 +41,10 @@ public class EngineEmulator implements Engine {
         });
     }
 
-    @Override
     public void exit() {
 
     }
 
-    @Override
     public void onFail(Consumer<OnEngineFail> onFail) {
 
     }

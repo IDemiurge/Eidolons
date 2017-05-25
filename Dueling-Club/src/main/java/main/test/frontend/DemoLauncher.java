@@ -11,10 +11,19 @@ import main.game.core.game.DC_Game;
 import main.libgdx.Engine;
 import main.libgdx.EngineEmulator;
 import main.libgdx.ScreenData;
-import main.libgdx.screens.*;
+import main.libgdx.screens.DungeonScreen;
+import main.libgdx.screens.HeadquarterScreen;
+import main.libgdx.screens.MainMenuScreen;
+import main.libgdx.screens.ScreenWithLoader;
+import main.libgdx.stage.MainMenuStage;
+import main.system.GuiEventManager;
 import org.dizitart.no2.Nitrite;
 import org.jdeferred.Deferred;
 import org.jdeferred.impl.DeferredObject;
+
+import java.util.function.Supplier;
+
+import static main.system.GuiEventType.SWITCH_SCREEN;
 
 public class DemoLauncher extends Game {
     private static Nitrite db;
@@ -32,9 +41,6 @@ public class DemoLauncher extends Game {
         coreGame.init();
         DC_Game.game=(coreGame);
         coreGame.start(true);*/
-
-        engine = new EngineEmulator();
-
     }
 
     public static void main(String[] args) {
@@ -67,24 +73,17 @@ public class DemoLauncher extends Game {
 
     @Override
     public void create() {
+        engine = new EngineEmulator();
         Deferred<Boolean, Boolean, Boolean> deferred = new DeferredObject<>();
         OrthographicCamera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
-        final IntroScreen introScreen = new IntroScreen(viewport, () -> {
-            final Screen old = getScreen();
-            final ScreenWithLoader mainScreen = screenDI(new MainMenuScreen(this::setNewMeta), null);
-            deferred.done(aBoolean -> mainScreen.hideLoader());
-            setScreen(mainScreen);
-            if (old != null) {
-                old.dispose();
-            }
-        });
+        final MainMenuStage introScreen = new MainMenuStage();
         engine.init(() -> deferred.resolve(true));
-        setScreen(introScreen);
-    }
 
-    private void setNewMeta(String s) {
-        newMeta = engine.getMeta(s);
+
+        GuiEventManager.bind(SWITCH_SCREEN, obj -> {
+            newMeta = (ScreenData) obj.get();
+        });
     }
 
     @Override
@@ -94,31 +93,30 @@ public class DemoLauncher extends Game {
             newMeta = null;
             switch (meta.getType()) {
                 case HEADQUARTERS:
-                    switchScreen(screenDI(new HeadquarterScreen(), meta), meta);
+                    switchScreen(HeadquarterScreen::new, meta);
                     break;
                 case BATTLE:
-                    switchScreen(screenDI(new DungeonScreen(), meta), meta);
+                    switchScreen(DungeonScreen::new, meta);
                     break;
                 case PRE_BATTLE:
                     break;
                 case MAIN_MENU:
-                    switchScreen(screenDI(new MainMenuScreen(this::setNewMeta), meta), meta);
+                    switchScreen(MainMenuScreen::new, meta);
                     break;
             }
         }
         super.render();
     }
 
-    private ScreenWithLoader screenDI(ScreenWithLoader screen, ScreenData data) {
-        screen.setData(data);
-        screen.setViewPort(viewport);
-        return screen;
-    }
-
-    private void switchScreen(ScreenWithLoader screen, ScreenData meta) {
-        engine.load(meta, screen::hideLoader);
+    private void switchScreen(Supplier<ScreenWithLoader> factory, ScreenData meta) {
+        final ScreenWithLoader newScreen = factory.get();
+        newScreen.setViewPort(viewport);
+        newScreen.setData(meta);
         final Screen oldScreen = getScreen();
-        setScreen(screen);
-        oldScreen.dispose();
+        setScreen(newScreen);
+
+        if (oldScreen != null) {
+            oldScreen.dispose();
+        }
     }
 }

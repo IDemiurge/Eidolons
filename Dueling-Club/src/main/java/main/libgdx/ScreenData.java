@@ -1,9 +1,12 @@
 package main.libgdx;
 
+import main.system.EventCallbackParam;
+
 public class ScreenData {
     private ScreenType type;
     private String name; //
     private String introScenarioName;
+    private EventCallbackParam param;
 
     public ScreenData(ScreenType type, String name) {
         this.type = type;
@@ -26,5 +29,9 @@ public class ScreenData {
 
     public String getName() {
         return name;
+    }
+
+    public void setParam(EventCallbackParam param) {
+        this.param = param;
     }
 }

@@ -2,27 +2,38 @@ package main.libgdx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import main.libgdx.IntroSceneFactory;
+import main.libgdx.stage.ChainedStage;
 import main.libgdx.stage.MainMenuStage;
+import main.system.GuiEventManager;
 
-import java.util.function.Consumer;
+import static main.system.GuiEventType.LOAD_SCREEN;
 
 public class MainMenuScreen extends ScreenWithLoader {
 
     private MainMenuStage menuStage;
-    private Consumer<String> onScreenDone;
+    private ChainedStage introStage;
 
-    public MainMenuScreen(Consumer<String> onScreenDone) {
+    public MainMenuScreen() {
         super();
-        this.onScreenDone = onScreenDone;
     }
 
     @Override
     public void show() {
         loadingStage.setViewport(viewPort);
 
-        menuStage = new MainMenuStage(onScreenDone);
+        menuStage = new MainMenuStage();
         menuStage.setViewport(viewPort);
-        Gdx.input.setInputProcessor(new InputMultiplexer(menuStage));
+
+        introStage = IntroSceneFactory.getIntroStage();
+        introStage.setViewport(viewPort);
+
+        Gdx.input.setInputProcessor(new InputMultiplexer(menuStage, introStage));
+    }
+
+    @Override
+    protected void afterLoad() {
+        menuStage.setLoadGameCallback(s -> GuiEventManager.trigger(LOAD_SCREEN, s));
     }
 
     @Override
@@ -41,21 +52,6 @@ public class MainMenuScreen extends ScreenWithLoader {
         menuStage.updateViewPort(width, height);
       /*  menuStage.getCamera().viewportWidth = width;
         menuStage.getCamera().viewportHeight = height;*/
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
     }
 
     @Override
