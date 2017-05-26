@@ -44,6 +44,8 @@ public class TextureCache {
             if (textureCache == null) {
                 textureCache = new TextureCache();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             creationLock.unlock();
         }
@@ -134,10 +136,10 @@ public class TextureCache {
                 cache.put(path, t);
             } catch (Exception e) {
 //                e.printStackTrace();
-                 if (cache.get(getEmptyPath()) == null){
+                if (!cache.containsKey(getEmptyPath())) {
                     Texture emptyTexture = new Texture(getEmptyPath());
-                    cache.put(getEmptyPath(), emptyTexture );
-                     return emptyTexture;
+                    cache.put(getEmptyPath(), emptyTexture);
+                    return emptyTexture;
                 }
                 return cache.get(getEmptyPath());
 

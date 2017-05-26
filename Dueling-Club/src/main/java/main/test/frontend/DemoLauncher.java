@@ -68,7 +68,7 @@ public class DemoLauncher extends Game {
     @Override
     public void create() {
         engine = new EngineEmulator();
-        EngineEventManager.trigger(EngineEventType.LOAD_MAIN_SCREEN, ScreenType.MAIN_MENU);
+        EngineEventManager.trigger(EngineEventType.LOAD_MAIN_SCREEN);
         OrthographicCamera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
 

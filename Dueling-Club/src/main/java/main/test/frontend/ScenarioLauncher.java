@@ -2,7 +2,6 @@ package main.test.frontend;
 
 import main.game.battlecraft.DC_Engine;
 import main.game.core.Eidolons;
-import main.libgdx.screens.DungeonScreen;
 
 /**
  * Created by JustMe on 5/22/2017.
@@ -27,6 +26,6 @@ public class ScenarioLauncher {
         Eidolons.mainGame.getMetaMaster().getGame().battleInit( );
         Eidolons.mainGame.getMetaMaster().getGame().start(true);
 
-            DungeonScreen.getInstance().hideLoader();
+            //DungeonScreen.getInstance().hideLoader();
     }
 }

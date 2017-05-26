@@ -40,7 +40,6 @@ public class DungeonScreen extends ScreenWithLoader {
     private InputController controller;
 
     private TextureRegion backTexture;
-    private boolean showLoading = true;
     private AnimationEffectStage animationEffectStage;
 
     public static DungeonScreen getInstance() {
@@ -79,17 +78,11 @@ public class DungeonScreen extends ScreenWithLoader {
             backTexture = getOrCreateR(path);
         });
 
-        GuiEventManager.bind(DUNGEON_LOADED, param -> {
-            showLoading = false;
-            InputMultiplexer multiplexer = new InputMultiplexer(guiStage, controller, gridStage);
-            Gdx.input.setInputProcessor(multiplexer);
-        });
-
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
             final List<DialogScenario> list = (List<DialogScenario>) obj.get();
             if (dialogsStage == null) {
                 dialogsStage = new ChainedStage(list);
-                Gdx.input.setInputProcessor(new InputMultiplexer(guiStage, controller, gridStage, dialogsStage));
+                updateInputController();
             } else {
                 dialogsStage.play(list);
             }
@@ -98,7 +91,21 @@ public class DungeonScreen extends ScreenWithLoader {
 
     @Override
     protected void afterLoad() {
+    }
 
+    @Override
+    protected InputMultiplexer getInputController() {
+        InputMultiplexer current;
+        if (canShowScreen()) {
+            current = new InputMultiplexer(guiStage, controller, gridStage);
+            if (dialogsStage != null) {
+                current.addProcessor(dialogsStage);
+            }
+        } else {
+            current = super.getInputController();
+        }
+
+        return current;
     }
 
     @Override
@@ -106,8 +113,6 @@ public class DungeonScreen extends ScreenWithLoader {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
             DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
         }
-
-        GuiEventManager.processEvents();
 
         super.render(delta);
 
@@ -117,10 +122,7 @@ public class DungeonScreen extends ScreenWithLoader {
 
         cam.update();
 
-        if (showLoading) {
-            loadingStage.act(delta);
-            loadingStage.draw();
-        } else {
+        if (canShowScreen()) {
             if (backTexture != null) {
                 guiStage.getBatch().begin();
                 guiStage.getBatch().draw(backTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -139,12 +141,12 @@ public class DungeonScreen extends ScreenWithLoader {
                     final ChainedStage dialogsStage = this.dialogsStage;
                     this.dialogsStage = null;
                     dialogsStage.dispose();
+                    updateInputController();
                 } else {
                     dialogsStage.draw();
                 }
             }
         }
-
     }
 
     @Override

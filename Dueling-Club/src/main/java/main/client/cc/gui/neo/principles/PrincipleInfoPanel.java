@@ -79,7 +79,7 @@ public class PrincipleInfoPanel extends HC_InfoTextPanel {
 
     private String getIdentityStatus(PRINCIPLES principle) {
 
-        // StringMaster.wrapInParenthesis(hero.getParam(param))
+        // StringMaster.wrapInParenthesis(hero.getParams(param))
         String s = IntegrityRule.getNoun(principle, hero);
         if (StringMaster.isEmpty(s)) {
             return null;

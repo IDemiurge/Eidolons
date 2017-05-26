@@ -640,7 +640,7 @@ public class ContentGenerator {
     // }
 
     // TODO use mods from size? or multiply later...
-    // private static String getParam(OBJECT_ARMOR_TYPE armorType, PARAMS portrait) {
+    // private static String getParams(OBJECT_ARMOR_TYPE armorType, PARAMS portrait) {
     // switch (armorType) {
     // case AETHER:
     // return getAETHERParam(portrait);
@@ -727,7 +727,7 @@ public class ContentGenerator {
     // private static List<String> getParamsFor(OBJECT_ARMOR_TYPE armorType) {
     // List<String> list = new LinkedList<>();
     // for (PARAMS portrait : params) {
-    // list.add(getParam(armorType, portrait));
+    // list.add(getParams(armorType, portrait));
     // }
     //
     // return list;

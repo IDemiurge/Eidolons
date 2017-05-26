@@ -61,7 +61,7 @@ public class ParamElement extends ValueTextComp {
                 }
             }
         }
-        // now here we could use some color or so... getParam(base)
+        // now here we could use some color or so... getParams(base)
         g.drawString(paramValue + "", getDefaultX2(), getDefaultY());
     }
 
@@ -90,7 +90,7 @@ public class ParamElement extends ValueTextComp {
 
     // if (entity != null && param != null)
     // if ((DC_ContentManager.isParamFloatDisplayed(param)))
-    // text = entity.getParam(param);
+    // text = entity.getParams(param);
     // else
     @Override
     protected int getDefaultFontSize() {

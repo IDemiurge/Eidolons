@@ -1,8 +1,6 @@
 package main.libgdx.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import main.libgdx.stage.ChainedStage;
 import main.libgdx.stage.MainMenuStage;
 import main.system.GuiEventManager;
 
@@ -11,18 +9,10 @@ import static main.system.GuiEventType.LOAD_SCREEN;
 public class MainMenuScreen extends ScreenWithLoader {
 
     private MainMenuStage menuStage;
-    private ChainedStage introStage;
-
-    public MainMenuScreen() {
-        super();
-    }
 
     @Override
     protected void preLoad() {
-        if (data.getDialogScenarios().size() > 0) {
-            introStage = new ChainedStage(data.getDialogScenarios());
-            introStage.setViewport(viewPort);
-        }
+        menuStage.setData(data);
     }
 
     @Override
@@ -31,9 +21,6 @@ public class MainMenuScreen extends ScreenWithLoader {
 
         menuStage = new MainMenuStage();
         menuStage.setViewport(viewPort);
-
-
-        Gdx.input.setInputProcessor(new InputMultiplexer(menuStage, introStage));
     }
 
     @Override
@@ -42,10 +29,17 @@ public class MainMenuScreen extends ScreenWithLoader {
     }
 
     @Override
+    protected InputMultiplexer getInputController() {
+        return canShowScreen() ?
+                new InputMultiplexer(menuStage) :
+                super.getInputController();
+    }
+
+    @Override
     public void render(float delta) {
         super.render(delta);
 
-        if (hideLoader) {
+        if (canShowScreen()) {
             menuStage.act(delta);
             menuStage.draw();
         }

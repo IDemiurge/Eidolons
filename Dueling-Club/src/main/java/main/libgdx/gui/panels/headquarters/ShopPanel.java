@@ -1,4 +1,6 @@
 package main.libgdx.gui.panels.headquarters;
 
-public class ShopPanel {
+import main.libgdx.gui.panels.UpdatableGroup;
+
+public class ShopPanel extends UpdatableGroup {
 }

@@ -74,7 +74,7 @@ public class HC_Master {
         // for (ATTRIBUTE attr : ATTRIBUTE.values()) {
         // if (attr.getParameter() == getHeroPanel(getHeroPanel().getHero()
         // // getHero()
-        // ).getMiddlePanel().getScc().getAttrPanel().getParam())
+        // ).getMiddlePanel().getScc().getAttrPanel().getParams())
         // return attr;
         // }
         return null;

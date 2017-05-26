@@ -1,7 +1,6 @@
 package main.libgdx.stage;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.mainmenu.GameLoadingPanel;
 import main.libgdx.gui.panels.mainmenu.NewGamePanel;
@@ -10,7 +9,7 @@ import main.libgdx.gui.panels.mainmenu.StartMenuPanel;
 
 import java.util.function.Consumer;
 
-public class MainMenuStage extends Stage {
+public class MainMenuStage extends DataStage {
     private StartMenuPanel menu;
     private OptionsPanel options;
     private GameLoadingPanel load;
@@ -90,4 +89,5 @@ public class MainMenuStage extends Stage {
         getCamera().update();
         recalcPos();
     }
+
 }

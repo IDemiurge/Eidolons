@@ -79,10 +79,10 @@ public class HintMaster {
         // String text = "";
         // if (unit.getIntParam(PARAMS.ILLUMINATION) != 0)
         // text += StringMaster.getWellFormattedString("ILLUMINATION - ")
-        // + unit.getParam(PARAMS.ILLUMINATION);
+        // + unit.getParams(PARAMS.ILLUMINATION);
         // if (unit.getIntParam(PARAMS.CONCEALMENT) != 0)
         // text += StringMaster.getWellFormattedString(", CONCEALMENT - ")
-        // + unit.getParam(PARAMS.CONCEALMENT);
+        // + unit.getParams(PARAMS.CONCEALMENT);
         // hintText += " \nRelative visibility for "
         // + unit.getGame().getManager().getActiveObj().getName() + " :" +
         // unit.getGamma()

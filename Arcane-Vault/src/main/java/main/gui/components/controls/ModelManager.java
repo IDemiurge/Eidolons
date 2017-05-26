@@ -491,7 +491,7 @@ public class ModelManager {
         // String attrString = "";
         // String paramString = "";
         // for (PARAMETER portrait : type.getParamMap().keySet()) {
-        // String value = type.getParam(portrait);
+        // String value = type.getParams(portrait);
         // if (value.isEmpty())
         // continue;
         // if (value.equals("0"))

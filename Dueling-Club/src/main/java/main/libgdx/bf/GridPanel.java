@@ -339,7 +339,7 @@ public class GridPanel extends Group {
             gridCellContainer.setOverlays(overlays);
         }
 
-        GuiEventManager.trigger(DUNGEON_LOADED, null);
+        GuiEventManager.trigger(SCREEN_LOADED, null);
 
         GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
             Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();

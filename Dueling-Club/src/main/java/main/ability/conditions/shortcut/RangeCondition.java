@@ -16,7 +16,7 @@ super (StringMaster.getValueRef(KEYS.ACTIVE, PARAMS.RANGE));
     // }
 //    @Override
 //    public boolean check(Ref ref) {
-//        return new DistanceCondition(ref.getObj(KEYS.ACTIVE).getParam(
+//        return new DistanceCondition(ref.getObj(KEYS.ACTIVE).getParams(
 //                PARAMS.RANGE)).preCheck(ref);
 //    }
 

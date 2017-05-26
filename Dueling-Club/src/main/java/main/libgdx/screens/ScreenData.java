@@ -5,10 +5,12 @@ import main.system.EventCallbackParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class ScreenData {
     private ScreenType type;
     private String name; //
+    private Supplier<List<DialogScenario>> dialogScenariosFactory;
     private List<DialogScenario> dialogScenarios;
     private EventCallbackParam param;
 
@@ -18,13 +20,16 @@ public class ScreenData {
         this.dialogScenarios = new ArrayList<>();
     }
 
-    public ScreenData(ScreenType type, String name, List<DialogScenario> dialogScenarios) {
+    public ScreenData(ScreenType type, String name, Supplier<List<DialogScenario>> factory) {
         this.type = type;
         this.name = name;
-        this.dialogScenarios = dialogScenarios;
+        this.dialogScenariosFactory = factory;
     }
 
     public List<DialogScenario> getDialogScenarios() {
+        if (dialogScenarios == null) {
+            dialogScenarios = dialogScenariosFactory.get();
+        }
         return dialogScenarios;
     }
 
@@ -38,5 +43,9 @@ public class ScreenData {
 
     public void setParam(EventCallbackParam param) {
         this.param = param;
+    }
+
+    public EventCallbackParam getParams() {
+        return param;
     }
 }

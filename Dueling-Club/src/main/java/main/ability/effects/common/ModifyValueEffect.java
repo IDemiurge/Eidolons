@@ -316,7 +316,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
             case MODIFY_BY_PERCENT: {
                 double mod =
-                 // = obj.getParam(param, ref.isBase()) + "*(" + amount
+                        // = obj.getParams(param, ref.isBase()) + "*(" + amount
                  // + "/100)";
                  MathMaster.getFractionValueCentimalDouble(obj.getParamDouble(param, base), amount);
                 ref.setAmount(mod + "");
@@ -330,12 +330,12 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                     amount_modified = (int) mod;
                 }
                 final_amount = obj.getParamDouble(param) + mod;
-                // new Formula(obj.getParam(param) + "+" + mod)
+                // new Formula(obj.getParams(param) + "+" + mod)
                 // .getInt();
 
 //                LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, getLayer() + " layer - " + obj.getName()
 //                 + "'s " + param.getName() + " is modified by " + amount + "% ("
-//                 + obj.getParam(param) + " + " + mod + " = " + final_amount + ")");
+//                 + obj.getParams(param) + " + " + mod + " = " + final_amount + ")");
                 break;
             }
             case MODIFY_BY_CONST: {

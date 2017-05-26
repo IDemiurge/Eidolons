@@ -11,8 +11,8 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
 import main.simulation.SimulationManager;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 
 import javax.swing.table.DefaultTableModel;
@@ -107,7 +107,7 @@ public class TableDataManager {
 
                         e.printStackTrace();
                         value = "(error)"
-                        // + entity.getParam((PARAMETER) val)
+                        // + entity.getParams((PARAMETER) val)
                         ;
                     }
                 }

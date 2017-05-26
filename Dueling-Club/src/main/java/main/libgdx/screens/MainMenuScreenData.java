@@ -3,6 +3,7 @@ package main.libgdx.screens;
 import main.libgdx.DialogScenario;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class MainMenuScreenData extends ScreenData {
     private List<ScreenData> savedGames;
@@ -12,8 +13,8 @@ public class MainMenuScreenData extends ScreenData {
         super(ScreenType.MAIN_MENU, name);
     }
 
-    public MainMenuScreenData(String name, List<DialogScenario> dialogScenarios) {
-        super(ScreenType.MAIN_MENU, name, dialogScenarios);
+    public MainMenuScreenData(String name, Supplier<List<DialogScenario>> factory) {
+        super(ScreenType.MAIN_MENU, name, factory);
     }
 
     public List<ScreenData> getSavedGames() {

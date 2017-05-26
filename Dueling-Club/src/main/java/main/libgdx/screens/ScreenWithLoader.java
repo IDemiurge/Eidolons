@@ -1,9 +1,11 @@
 package main.libgdx.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import main.libgdx.stage.ChainedStage;
 import main.libgdx.stage.LoadingStage;
 import main.system.GuiEventManager;
 
@@ -14,6 +16,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected boolean hideLoader = false;
     protected ScreenData data;
     protected ScreenViewport viewPort;
+    protected ChainedStage introStage;
 
     public ScreenWithLoader() {
         this.loadingStage = new LoadingStage();
@@ -21,13 +24,20 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             data.setParam(param);
             this.hideLoader();
             afterLoad();
+            updateInputController();
         });
     }
 
-    protected abstract void preLoad();
+    protected void preLoad() {
+        if (data.getDialogScenarios().size() > 0) {
+            introStage = new ChainedStage(data.getDialogScenarios());
+            introStage.setViewport(viewPort);
+        }
+    }
+
     protected abstract void afterLoad();
 
-    public void hideLoader() {
+    protected void hideLoader() {
         this.hideLoader = true;
     }
 
@@ -40,15 +50,35 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             loadingStage.act(delta);
             loadingStage.draw();
         }
+
+        if (introStage != null && !introStage.isDone()) {
+            introStage.act(delta);
+            introStage.draw();
+        }
+    }
+
+    protected boolean canShowScreen() {
+        return hideLoader && (introStage != null && introStage.isDone());
     }
 
     public void setData(ScreenData data) {
         this.data = data;
         preLoad();
+        updateInputController();
     }
 
     public void setViewPort(ScreenViewport viewPort) {
         this.viewPort = viewPort;
         loadingStage.setViewport(viewPort);
+    }
+
+    protected InputMultiplexer getInputController() {
+        return introStage != null ?
+                new InputMultiplexer(loadingStage, introStage) :
+                new InputMultiplexer(loadingStage);
+    }
+
+    protected void updateInputController() {
+        Gdx.input.setInputProcessor(getInputController());
     }
 }

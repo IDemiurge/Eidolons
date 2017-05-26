@@ -159,7 +159,7 @@ public class HC_PointView extends HeroView {
     @Override
     public void refresh() {
         for (HC_PointComp comp : compMap.values()) {
-            // if (comp.getParam().isMastery())
+            // if (comp.getParams().isMastery())
             // comp.setEntity(new ObjType(hero.getType()));
             // else //not so easy! I'll probably need another set of comps for
             // *final mastery* scores

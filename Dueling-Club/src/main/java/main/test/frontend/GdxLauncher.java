@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import main.client.dc.Launcher;
-import main.libgdx.screens.DungeonScreen;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,7 +38,7 @@ public class GdxLauncher implements ApplicationListener {
 
     @Override
     public void create() {
-        screen = new DungeonScreen().PostConstruct();
+        //screen = new DungeonScreen().PostConstruct();
     }
 
     @Override
