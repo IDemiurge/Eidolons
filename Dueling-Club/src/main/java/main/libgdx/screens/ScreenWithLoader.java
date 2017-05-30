@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.libgdx.stage.ChainedStage;
 import main.libgdx.stage.LoadingStage;
-import main.system.GuiEventManager;
-
-import static main.system.GuiEventType.SCREEN_LOADED;
+import main.system.EventCallbackParam;
 
 public abstract class ScreenWithLoader extends ScreenAdapter {
     protected final LoadingStage loadingStage;
@@ -20,12 +18,6 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public ScreenWithLoader() {
         this.loadingStage = new LoadingStage();
-        GuiEventManager.bind(SCREEN_LOADED, (param) -> {
-            data.setParam(param);
-            this.hideLoader();
-            afterLoad();
-            updateInputController();
-        });
     }
 
     protected void preLoad() {
@@ -33,6 +25,13 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             introStage = new ChainedStage(data.getDialogScenarios());
             introStage.setViewport(viewPort);
         }
+    }
+
+    public void loadDone(EventCallbackParam param) {
+        data.setParam(param);
+        this.hideLoader();
+        afterLoad();
+        updateInputController();
     }
 
     protected abstract void afterLoad();
@@ -58,7 +57,12 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected boolean canShowScreen() {
-        return hideLoader && (introStage != null && introStage.isDone());
+        boolean isIntroFinished = true;
+        if (introStage != null && !introStage.isDone()) {
+            isIntroFinished = false;
+        }
+
+        return hideLoader && isIntroFinished;
     }
 
     public void setData(ScreenData data) {

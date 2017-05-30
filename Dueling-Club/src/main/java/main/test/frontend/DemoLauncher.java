@@ -10,14 +10,13 @@ import main.client.dc.Launcher;
 import main.game.core.game.DC_Game;
 import main.libgdx.EngineEmulator;
 import main.libgdx.screens.*;
-import main.system.EngineEventManager;
-import main.system.EngineEventType;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import org.dizitart.no2.Nitrite;
 
 import java.util.function.Supplier;
 
+import static main.system.GuiEventType.SCREEN_LOADED;
 import static main.system.GuiEventType.SWITCH_SCREEN;
 
 public class DemoLauncher extends Game {
@@ -67,12 +66,17 @@ public class DemoLauncher extends Game {
 
     @Override
     public void create() {
+        GuiEventManager.bind(SWITCH_SCREEN, this::screenSwitcher);
+        GuiEventManager.bind(SCREEN_LOADED, this::onScreenLoadDone);
+
         engine = new EngineEmulator();
-        EngineEventManager.trigger(EngineEventType.LOAD_MAIN_SCREEN);
         OrthographicCamera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
 
-        GuiEventManager.bind(SWITCH_SCREEN, this::screenSwitcher);
+    }
+
+    public void onScreenLoadDone(EventCallbackParam param) {
+        ((ScreenWithLoader) getScreen()).loadDone(param);
     }
 
     private void screenSwitcher(EventCallbackParam param) {
