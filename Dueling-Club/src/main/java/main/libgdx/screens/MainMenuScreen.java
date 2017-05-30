@@ -2,9 +2,6 @@ package main.libgdx.screens;
 
 import com.badlogic.gdx.InputMultiplexer;
 import main.libgdx.stage.MainMenuStage;
-import main.system.GuiEventManager;
-
-import static main.system.GuiEventType.LOAD_SCREEN;
 
 public class MainMenuScreen extends ScreenWithLoader {
 
@@ -12,20 +9,21 @@ public class MainMenuScreen extends ScreenWithLoader {
 
     @Override
     protected void preLoad() {
+        menuStage = new MainMenuStage();
         menuStage.setData(data);
     }
 
     @Override
     public void show() {
         loadingStage.setViewport(viewPort);
-
-        menuStage = new MainMenuStage();
         menuStage.setViewport(viewPort);
     }
 
     @Override
     protected void afterLoad() {
-        menuStage.setLoadGameCallback(s -> GuiEventManager.trigger(LOAD_SCREEN, s));
+/*        menuStage.setLoadGameCallback(s ->
+                GuiEventManager.trigger(LOAD_SCREEN, s)
+        );*/
     }
 
     @Override

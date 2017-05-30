@@ -20,7 +20,8 @@ import main.system.GuiEventManager;
 import java.util.List;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
-import static main.system.GuiEventType.*;
+import static main.system.GuiEventType.DIALOG_SHOW;
+import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
 
 /**
  * Created with IntelliJ IDEA.
@@ -54,11 +55,6 @@ public class DungeonScreen extends ScreenWithLoader {
         }
 
         gridStage = new Stage();
-        GuiEventManager.bind(BF_CREATED, param -> {
-            final BFDataCreatedEvent data = (BFDataCreatedEvent) param.get();
-            gridPanel = new GridPanel(data.getGridW(), data.getGridH()).init(data.getObjects());
-            gridStage.addActor(gridPanel);
-        });
         gridStage.setViewport(viewPort);
 
         guiStage = new BattleGuiStage();
@@ -91,6 +87,9 @@ public class DungeonScreen extends ScreenWithLoader {
 
     @Override
     protected void afterLoad() {
+        final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
+        gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
+        gridStage.addActor(gridPanel);
     }
 
     @Override

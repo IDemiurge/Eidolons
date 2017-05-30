@@ -4,8 +4,8 @@ import main.libgdx.screens.MainMenuScreenData;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
 import main.system.EngineEventManager;
-import main.system.EngineEventType;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import java.util.Arrays;
 import java.util.concurrent.Executors;
@@ -26,15 +26,13 @@ public class EngineEmulator {
                     , 1000, TimeUnit.MILLISECONDS);
         });*/
 
-        EngineEventManager.bind(EngineEventType.LOAD_MAIN_SCREEN, obj -> {
-            MainMenuScreenData data = isFirstRun ?
-                    new MainMenuScreenData("", IntroSceneFactory::getIntroStage)
-                    : new MainMenuScreenData("");
+        MainMenuScreenData data = isFirstRun ?
+                new MainMenuScreenData("", IntroSceneFactory::getIntroStage)
+                : new MainMenuScreenData("");
 
-            data.setNewGames(Arrays.asList(new ScreenData(ScreenType.HEADQUARTERS, "demo")));
+        data.setNewGames(Arrays.asList(new ScreenData(ScreenType.HEADQUARTERS, "demo")));
 
-            scheduleLoad(data);
-        });
+        scheduleLoad(data);
 
         executorService.submit(this::loop);
     }
@@ -52,6 +50,7 @@ public class EngineEmulator {
     private void scheduleLoad(ScreenData meta) {
         executorService.submit(() -> {
             try {
+                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, meta);
                 Thread.sleep(1000);
             } catch (InterruptedException ignored) {
             } finally {
