@@ -68,11 +68,11 @@ public class DemoLauncher extends Game {
     public void create() {
         GuiEventManager.bind(SWITCH_SCREEN, this::screenSwitcher);
         GuiEventManager.bind(SCREEN_LOADED, this::onScreenLoadDone);
+        OrthographicCamera camera = new OrthographicCamera();
+        viewport = new ScreenViewport(camera);
 
         initEngine();
 
-        OrthographicCamera camera = new OrthographicCamera();
-        viewport = new ScreenViewport(camera);
 
     }
 
@@ -101,6 +101,11 @@ public class DemoLauncher extends Game {
                     break;
             }
         }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height);
     }
 
     @Override

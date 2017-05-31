@@ -119,7 +119,7 @@ public class DungeonScreen extends ScreenWithLoader {
         animationEffectStage.act(delta);
         gridStage.act(delta);
 
-        cam.update();
+        //cam.update();
 
         if (canShowScreen()) {
             if (backTexture != null) {
@@ -150,13 +150,9 @@ public class DungeonScreen extends ScreenWithLoader {
 
     @Override
     public void resize(int width, int height) {
-        float camWidth = width;
-        float camHeight = height;
-
-        cam.setToOrtho(false, width, height);
-        animationEffectStage.getViewport().update(width, height);
+/*        animationEffectStage.getViewport().update(width, height);
         gridStage.getViewport().update(width, height);
-        guiStage.getViewport().update(width, height);
+        guiStage.getViewport().update(width, height);*/
     }
 
     public GridPanel getGridPanel() {
