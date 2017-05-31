@@ -59,7 +59,7 @@ public class DungeonScreen extends ScreenWithLoader {
         gridStage.setViewport(viewPort);
 
         guiStage = new BattleGuiStage();
-        guiStage.setViewport(viewPort);
+        //guiStage.setViewport(viewPort);
 
         animationEffectStage = new AnimationEffectStage();
         animationEffectStage.setViewport(viewPort);

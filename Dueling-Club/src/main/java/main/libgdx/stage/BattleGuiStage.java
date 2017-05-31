@@ -1,9 +1,6 @@
 package main.libgdx.stage;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.core.game.DC_Game;
 import main.libgdx.gui.controls.radial.RadialMenu;
@@ -51,7 +48,7 @@ public class BattleGuiStage extends Stage {
         return super.keyTyped(character);
     }
 
-    @Override
+/*    @Override
     public void draw() {
         final Matrix4 combined = getCamera().combined.cpy();
         getCamera().update();
@@ -67,5 +64,5 @@ public class BattleGuiStage extends Stage {
         batch.begin();
         root.draw(batch, 1);
         batch.end();
-    }
+    }*/
 }
