@@ -180,6 +180,7 @@ public class Shop extends TownPlace {
         // some should be infinite though... perhaps based on shop level?
         modifyParameter(PARAMS.GOLD, price);
         refreshGui();
+
     }
 
     private void refreshGui() {

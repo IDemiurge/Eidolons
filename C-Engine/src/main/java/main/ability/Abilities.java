@@ -2,6 +2,7 @@ package main.ability;
 
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
+import main.data.ability.OmittedConstructor;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 
@@ -21,6 +22,13 @@ public class Abilities implements Ability, Iterable<Ability> {
         add(ability);
         add(ability1);
     }
+    @OmittedConstructor
+    public Abilities(Ability ability ) {
+        this();
+        add(ability);
+    }
+
+
 
     public boolean add(Ability e) {
         return abils.add(e);

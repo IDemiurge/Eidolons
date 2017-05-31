@@ -73,6 +73,6 @@ public enum GuiEventType {
     DIALOGUE_UPDATED, DIALOGUE_OPTION_CHOSEN, DIALOG_SHOW,
 
     SCREEN_LOADED,
-    LOAD_SCREEN,
-    SWITCH_SCREEN
+    LOAD_SCREEN, // pass BFDataCreatedEvent as param
+    SWITCH_SCREEN, //pass ScreenData as param
 }

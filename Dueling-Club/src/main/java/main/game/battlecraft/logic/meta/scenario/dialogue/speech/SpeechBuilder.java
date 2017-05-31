@@ -1,10 +1,13 @@
 package main.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
+import main.ability.Abilities;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.SpeechData;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
+import main.elements.conditions.Condition;
+import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueSyntax;
 import main.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -32,7 +35,16 @@ public class SpeechBuilder {
         int id = speech.getId();
         SpeechData data = getIdToDataMap() .get(id);
         speech.setData(data);
-        speech.setUnformattedText( data.getValue(SPEECH_VALUE.MESSAGE ));
+        String text=data.getValue(SPEECH_VALUE.MESSAGE );
+        speech.setUnformattedText( text);
+        Condition reqs = DialogueSyntax.getConditions(text);
+        Abilities abils = DialogueSyntax.getAbilities(text);
+        String script = DialogueSyntax.getScript(text);
+        speech.setAbilities(abils);
+        speech.setConditions(reqs);
+        speech.setScript(script);
+        text = DialogueSyntax.getRawText(text);
+        speech.setFormattedText( text);
         return speech;
     }
 

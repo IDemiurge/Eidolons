@@ -56,14 +56,19 @@ public class Parameter extends DynamicValue {
         Integer id = ref.getId(obj_string);
 
         LogMaster.log(0, "Queried Obj: " + obj_string);
-        entity = game.getObjectById(id);
-        if (entity == null) {
-            entity = game.getTypeById(id);
+        if (id==null )
+            entity = ref.getType(obj_string);
+        else {
+            entity = game.getObjectById(id);
             if (entity == null) {
-                LogMaster.log(0, obj_string + "'s " + value_string
-                        + " - Queried Obj not found; ref: " + ref);
-                return 0;
+                entity = game.getTypeById(id);
+
             }
+        }
+        if (entity == null) {
+            LogMaster.log(0, obj_string + "'s " + value_string
+             + " - Queried Obj not found; ref: " + ref);
+            return 0;
         }
         if (value_string.equalsIgnoreCase(StringMaster.MASTERY)) {
             return (int) AUTOVAR.MASTERY.evaluate(entity, null);
