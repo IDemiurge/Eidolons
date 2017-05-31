@@ -19,7 +19,7 @@ public class ScenarioLauncher {
         DC_Engine.mainMenuInit();
         Eidolons.initScenario(typeName);
         DC_Engine.gameStartInit();
-        GdxLauncher.main(new String[]{} );
+        BattleSceneLauncher.main(new String[]{} );
         Eidolons.mainGame.getMetaMaster().gameStarted();
 //        Eidolons.mainGame.getMetaMaster().getGame().init( );
         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit( );

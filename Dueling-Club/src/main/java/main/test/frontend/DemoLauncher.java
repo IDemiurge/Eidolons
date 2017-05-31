@@ -51,7 +51,7 @@ public class DemoLauncher extends Game {
         new LwjglApplication(new DemoLauncher(), getConf());
     }
 
-    private static LwjglApplicationConfiguration getConf() {
+    protected static LwjglApplicationConfiguration getConf() {
         LwjglApplicationConfiguration conf = new LwjglApplicationConfiguration();
         conf.title = "Eidolons: Battlecraft v" + Launcher.VERSION;
         conf.useGL30 = true;
@@ -68,18 +68,21 @@ public class DemoLauncher extends Game {
     public void create() {
         GuiEventManager.bind(SWITCH_SCREEN, this::screenSwitcher);
         GuiEventManager.bind(SCREEN_LOADED, this::onScreenLoadDone);
-
-        engine = new EngineEmulator();
         OrthographicCamera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
 
+        initEngine();
+    }
+
+    protected void initEngine() {
+        engine = new EngineEmulator();
     }
 
     public void onScreenLoadDone(EventCallbackParam param) {
         ((ScreenWithLoader) getScreen()).loadDone(param);
     }
 
-    private void screenSwitcher(EventCallbackParam param) {
+    protected void screenSwitcher(EventCallbackParam param) {
         ScreenData newMeta = (ScreenData) param.get();
         if (newMeta != null) {
             switch (newMeta.getType()) {
@@ -96,6 +99,11 @@ public class DemoLauncher extends Game {
                     break;
             }
         }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height);
     }
 
     @Override

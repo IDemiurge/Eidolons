@@ -12,4 +12,5 @@ public interface ShopInterface {
     public String getName();
     public String getGold();
     public String getIcon();
+
 }

@@ -1,7 +1,9 @@
 package main.game.battlecraft.logic.meta.scenario.hq;
 
+import main.content.values.properties.MACRO_PROPS;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
+import main.system.auxiliary.StringMaster;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ public class HqShop extends LightweightEntity implements ShopInterface{
 
     @Override
     public List<String> getTabs() {
-        return null;
+        return  StringMaster.openContainer(getProperty(MACRO_PROPS.SHOP_ITEM_GROUPS) );
     }
 
     @Override

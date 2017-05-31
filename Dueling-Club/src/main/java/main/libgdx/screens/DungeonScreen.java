@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.core.game.DC_Game;
 import main.libgdx.DialogScenario;
@@ -58,16 +59,15 @@ public class DungeonScreen extends ScreenWithLoader {
         gridStage.setViewport(viewPort);
 
         guiStage = new BattleGuiStage();
+        //guiStage.setViewport(viewPort);
 
         animationEffectStage = new AnimationEffectStage();
+        animationEffectStage.setViewport(viewPort);
 
         GL30 gl = Gdx.graphics.getGL30();
         gl.glEnable(GL30.GL_BLEND);
         gl.glEnable(GL30.GL_TEXTURE_2D);
         gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
-
-        cam = camera = (OrthographicCamera) viewPort.getCamera();
-        controller = new InputController(cam);
 
         GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
             final String path = (String) param.get();
@@ -87,6 +87,9 @@ public class DungeonScreen extends ScreenWithLoader {
 
     @Override
     protected void afterLoad() {
+        cam = camera = (OrthographicCamera) viewPort.getCamera();
+        controller = new InputController(cam);
+
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
         gridStage.addActor(gridPanel);
@@ -119,10 +122,13 @@ public class DungeonScreen extends ScreenWithLoader {
         animationEffectStage.act(delta);
         gridStage.act(delta);
 
-        cam.update();
+        //cam.update();
 
         if (canShowScreen()) {
             if (backTexture != null) {
+                final Matrix4 combined = viewPort.getCamera().combined.cpy();
+                combined.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                guiStage.getBatch().setProjectionMatrix(combined);
                 guiStage.getBatch().begin();
                 guiStage.getBatch().draw(backTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 guiStage.getBatch().end();
@@ -133,6 +139,7 @@ public class DungeonScreen extends ScreenWithLoader {
             animationEffectStage.draw();
 
             guiStage.draw();
+
 
             if (dialogsStage != null) {
                 dialogsStage.act(delta);
@@ -150,13 +157,9 @@ public class DungeonScreen extends ScreenWithLoader {
 
     @Override
     public void resize(int width, int height) {
-        float camWidth = width;
-        float camHeight = height;
-
-        cam.setToOrtho(false, width, height);
-        animationEffectStage.getViewport().update(width, height);
+/*        animationEffectStage.getViewport().update(width, height);
         gridStage.getViewport().update(width, height);
-        guiStage.getViewport().update(width, height);
+        guiStage.getViewport().update(width, height);*/
     }
 
     public GridPanel getGridPanel() {

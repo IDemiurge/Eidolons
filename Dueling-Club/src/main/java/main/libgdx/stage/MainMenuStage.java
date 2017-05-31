@@ -85,8 +85,6 @@ public class MainMenuStage extends DataStage {
     }
 
     public void updateViewPort(int width, int height) {
-        getViewport().update(width, height, true);
-        getCamera().update();
         recalcPos();
     }
 

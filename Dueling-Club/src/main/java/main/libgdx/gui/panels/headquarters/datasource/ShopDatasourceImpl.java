@@ -1,49 +1,61 @@
 package main.libgdx.gui.panels.headquarters.datasource;
 
-import main.game.module.adventure.town.Shop;
-import main.libgdx.gui.panels.dc.TablePanel;
+import main.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.headquarters.ShopListPanel;
+import main.libgdx.gui.panels.headquarters.ShopTabbedPanel;
+import main.libgdx.texture.TextureCache;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 5/21/2017.
  */
 public class ShopDatasourceImpl implements ShotDatasource{
-    Shop shop;
+    ShopInterface shop;
 
-    public ShopDatasourceImpl(Shop shop) {
+    public ShopDatasourceImpl(ShopInterface shop) {
         this.shop = shop;
     }
 
 
     @Override
-    public List<TablePanel> getTabs() {
-        return null;
+    public ShopTabbedPanel getTabs() {
+        ShopTabbedPanel tabs =  new ShopTabbedPanel();
+        for (String tab : shop.getTabs()) {
+            tabs.addTab(new ShopPage(getGroupLists(tab)), tab);
+        }
+        return tabs;
     }
 
     @Override
-    public List<TablePanel> getGroupLists(String tabName) {
-        return null;
+    public List<ShopListPanel> getGroupLists(String tabName) {
+        return shop.getGroupLists(tabName).stream().map(
+         s-> new ShopListPanel(getTextures(s))).
+         collect(Collectors.toList());
     }
 
     @Override
-    public List<ValueContainer> getTextures(String groupList) {
-        return null;
+    public List<ValueContainer> getTextures(String groupList)
+    {
+        return shop.getTextures(groupList).stream().map(
+         s-> new ValueContainer(TextureCache.getOrCreateR(s))).
+         collect(Collectors.toList());
     }
 
     @Override
     public ValueContainer getName() {
-        return null;
+        return new ValueContainer(shop.getName(),"");
     }
 
     @Override
     public ValueContainer getGold() {
-        return null;
+        return new ValueContainer("Gold: ",shop.getGold());
     }
 
     @Override
     public ValueContainer getIcon() {
-        return null;
+        return new ValueContainer(TextureCache.getOrCreateR(shop.getIcon()), "");
     }
 }

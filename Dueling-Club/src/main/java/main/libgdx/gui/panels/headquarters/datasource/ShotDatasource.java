@@ -1,7 +1,8 @@
 package main.libgdx.gui.panels.headquarters.datasource;
 
-import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.headquarters.ShopListPanel;
+import main.libgdx.gui.panels.headquarters.ShopTabbedPanel;
 
 import java.util.List;
 
@@ -10,8 +11,8 @@ import java.util.List;
  */
 public interface ShotDatasource {
 
-    public List<TablePanel> getTabs();
-    public List<TablePanel> getGroupLists(String tabName);
+    public ShopTabbedPanel getTabs();
+    public List<ShopListPanel> getGroupLists(String tabName);
     public List<ValueContainer> getTextures(String groupList);
     public ValueContainer getName();
     public ValueContainer getGold();

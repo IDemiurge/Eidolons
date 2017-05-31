@@ -64,10 +64,9 @@ public class OrbElement extends ValueContainer {
         try {
             ScissorStack.popScissors();
         } catch (Exception e) {
-            if (!logged)
-            {
+            if (!logged) {
                 e.printStackTrace(); //TODO spams into console!
-                logged=true;
+                logged = true;
             }
         }
 

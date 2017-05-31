@@ -26,13 +26,11 @@ import main.system.data.DataUnitFactory;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.test.TestMasterContent;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.system.util.Refactor;
 
 import java.util.List;
 
-import static main.system.GuiEventType.LOAD_SCREEN;
+import static main.system.GuiEventType.SCREEN_LOADED;
 
 
 public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
@@ -112,10 +110,10 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         final Integer cellsX = game.getDungeon().getCellsX();
         final Integer cellsY = game.getDungeon().getCellsY();
-        GuiEventManager.trigger(LOAD_SCREEN ,// BF_CREATED,
+        GuiEventManager.trigger(SCREEN_LOADED,
                 new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
 
-        WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
+        //WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
     }
 
     private SPAWN_MODE getSpawnMode(DC_Player player, boolean first) {

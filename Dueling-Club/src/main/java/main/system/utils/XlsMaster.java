@@ -3,19 +3,20 @@ package main.system.utils;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
+import main.content.VALUE;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.battlecraft.DC_Engine;
 import main.game.core.game.DC_Game;
 import main.system.launch.CoreEngine;
-import main.system.math.Formula;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Map;
 
 import static main.content.PARAMS.*;
 
@@ -87,7 +88,7 @@ public class XlsMaster {
             column++;
         }
         for (PARAMS param : params) {
-            rowhead.createCell(column).setCellValue((param).getName());
+            rowhead.createCell(column).setCellValue((param).getShortName());
             column++;
         }
         row++;
@@ -112,9 +113,16 @@ public class XlsMaster {
                         return simUnit;
                     }
                 };
-                for (String formula : formulas) {
+
+                 Map<VALUE, Integer> valueMap = null;
+                int simUnitRow = 0;
+//                Map<VALUE, Integer> entityMap;
+                for (String raw_formula : formulas) {
+                    String formula= getFormula(raw_formula, row, column, valueMap, simUnitRow );
                     rowhead.createCell(column).setCellFormula(
-                     String.valueOf(new Formula(formula.split(formula_sep)[1]).getInt(ref)));
+                     formula
+//                     String.valueOf(new Formula(formula.split(formula_sep)[1]).getInt(ref))
+                    );
                     column++;
                 }
                 for (PARAMS param : params) {
@@ -127,6 +135,17 @@ public class XlsMaster {
 
         }
 
+    }
+
+    private static String getFormula(String raw_formula, int row, int column, Map<VALUE, Integer> valueMap, int simUnitRow) {
+//
+        return getLetter(raw_formula) + ":" +getNumber(raw_formula); }
+
+    private static String getNumber(String raw_formula) {
+        return raw_formula;
+    }
+    private static String getLetter(String raw_formula) {
+        return raw_formula;
     }
 
     public static void main(String[] args) {

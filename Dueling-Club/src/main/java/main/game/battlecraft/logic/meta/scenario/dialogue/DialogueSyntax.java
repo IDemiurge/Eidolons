@@ -34,7 +34,7 @@ public class DialogueSyntax {
         Targeting t = new FixedTargeting();
         Effects paramModEffects = getParamModEffects(parsedPart);
 
-        if (!paramModEffects.getEffects().isEmpty()){
+        if (!paramModEffects.getEffects().isEmpty()) {
             return new Abilities(new ActiveAbility(t, paramModEffects));
         }
         return new Abilities(new ActiveAbility(t, new AbilityEffect(parsedPart)));
@@ -42,11 +42,11 @@ public class DialogueSyntax {
 
     private static Effects getParamModEffects(String text) {
         Effects e = new Effects();
-        for(String substring: StringMaster.openContainer( text, item_separator)){
-           //TODO permanent for non-dynamic? base?
-            MOD mod=MOD.MODIFY_BY_CONST;
-            String param= text.split(pair_separator)[0];
-            String formula= text.split(pair_separator)[1];
+        for (String substring : StringMaster.openContainer(text, item_separator)) {
+            //TODO permanent for non-dynamic? base?
+            MOD mod = MOD.MODIFY_BY_CONST;
+            String param = text.split(pair_separator)[0];
+            String formula = text.split(pair_separator)[1];
             ModifyValueEffect ef = new ModifyValueEffect(param, mod, formula);
 //            ef.setBase()
             e.add(ef);
@@ -56,7 +56,15 @@ public class DialogueSyntax {
     }
 
     public static String getRawText(String text) {
-        return text.substring(0, text.indexOf(PARAM_MOD));
+        if (text.contains(PARAM_MOD)) {
+            try {
+                return text.substring(0, text.indexOf(PARAM_MOD));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return text;
     }
 
     public static Condition getConditions(String text) {
@@ -66,18 +74,6 @@ public class DialogueSyntax {
     public static String getScript(String text) {
         return null;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

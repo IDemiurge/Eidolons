@@ -27,29 +27,45 @@ public class SpeechBuilder {
     public SpeechBuilder(String linesPath) {
         this.linesPath = linesPath;
     }
+
     public SpeechBuilder() {
-        this(PathFinder.getEnginePath()+ DialogueLineFormatter.getLinesFilePath());
+        this(PathFinder.getEnginePath() + DialogueLineFormatter.getLinesFilePath());
     }
 
     public Speech buildSpeech(Speech speech) {
         int id = speech.getId();
-        SpeechData data = getIdToDataMap() .get(id);
+        SpeechData data = getIdToDataMap().get(id);
         speech.setData(data);
-        String text=data.getValue(SPEECH_VALUE.MESSAGE );
-        speech.setUnformattedText( text);
-        Condition reqs = DialogueSyntax.getConditions(text);
-        Abilities abils = DialogueSyntax.getAbilities(text);
-        String script = DialogueSyntax.getScript(text);
-        speech.setAbilities(abils);
-        speech.setConditions(reqs);
-        speech.setScript(script);
+        String text = data.getValue(SPEECH_VALUE.MESSAGE);
+        speech.setUnformattedText(text);
+
+        try {
+            Condition reqs = DialogueSyntax.getConditions(text);
+            speech.setConditions(reqs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            Abilities abils = DialogueSyntax.getAbilities(text);
+            speech.setAbilities(abils);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            String script = DialogueSyntax.getScript(text);
+
+            speech.setScript(script);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         text = DialogueSyntax.getRawText(text);
-        speech.setFormattedText( text);
+        speech.setFormattedText(text);
         return speech;
     }
 
     public Map<Integer, SpeechData> getIdToDataMap() {
-        if (idToDataMap==null )
+        if (idToDataMap == null)
             construct();
         return idToDataMap;
     }
@@ -61,15 +77,15 @@ public class SpeechBuilder {
         Document doc = XML_Converter.getDoc(xml);
         for (Node node : XML_Converter.getNodeList(doc.getFirstChild())) {
             String idString = node.getNodeName();
-            int id = StringMaster.getInteger(idString.replace(DialogueLineFormatter. ID, ""));
+            int id = StringMaster.getInteger(idString.replace(DialogueLineFormatter.ID, ""));
 
-            if (node.hasChildNodes()){
+            if (node.hasChildNodes()) {
                 SpeechData data = new SpeechData();
                 for (Node subNode : XML_Converter.getNodeList(node)) {
-                    String value=subNode.getTextContent();
-                   value= XML_Formatter.restoreXmlNodeText(value);
+                    String value = subNode.getTextContent();
+                    value = XML_Formatter.restoreXmlNodeText(value);
                     data.setValue(
-                       subNode.getNodeName(), value );
+                     subNode.getNodeName(), value);
 //                    if ()
 //                        idToXmlMap.put(id, node.getTextContent());
                 }

@@ -44,7 +44,25 @@ public class BattleGuiStage extends Stage {
 
     @Override
     public boolean keyTyped(char character) {
-        DC_Game.game. getKeyManager().handleKeyTyped(0, character);
+        DC_Game.game.getKeyManager().handleKeyTyped(0, character);
         return super.keyTyped(character);
     }
+
+/*    @Override
+    public void draw() {
+        final Matrix4 combined = getCamera().combined.cpy();
+        getCamera().update();
+
+        final Group root = getRoot();
+
+        if (!root.isVisible()) return;
+
+        combined.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        Batch batch = this.getBatch();
+        batch.setProjectionMatrix(combined);
+        batch.begin();
+        root.draw(batch, 1);
+        batch.end();
+    }*/
 }

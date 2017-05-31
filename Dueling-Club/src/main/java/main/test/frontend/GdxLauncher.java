@@ -13,6 +13,7 @@ import main.client.dc.Launcher;
  * Time: 23:48
  * To change this template use File | Settings | File Templates.
  */
+@Deprecated
 public class GdxLauncher implements ApplicationListener {
 
     Screen screen;

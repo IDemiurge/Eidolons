@@ -35,7 +35,7 @@ public class GuiEventManager {
 
     public static void trigger(final GuiEventType type, Object obj) {
         DeliveryOptions options = new DeliveryOptions();
-        options.setSendTimeout(10000);
+        options.setSendTimeout(50000);
         options.setCodecName("default-codec");
         EventCallbackParam callbackParam;
         if (!(obj instanceof EventCallbackParam)) {
