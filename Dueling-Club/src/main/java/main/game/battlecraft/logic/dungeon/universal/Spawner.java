@@ -32,7 +32,7 @@ import main.system.util.Refactor;
 
 import java.util.List;
 
-import static main.system.GuiEventType.BF_CREATED;
+import static main.system.GuiEventType.SCREEN_LOADED;
 
 
 public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
@@ -112,7 +112,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         final Integer cellsX = game.getDungeon().getCellsX();
         final Integer cellsY = game.getDungeon().getCellsY();
-        GuiEventManager.trigger(BF_CREATED,
+        GuiEventManager.trigger(SCREEN_LOADED,
                 new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
 
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);

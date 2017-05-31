@@ -66,9 +66,6 @@ public class DungeonScreen extends ScreenWithLoader {
         gl.glEnable(GL30.GL_TEXTURE_2D);
         gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
 
-        cam = camera = (OrthographicCamera) viewPort.getCamera();
-        controller = new InputController(cam);
-
         GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
             final String path = (String) param.get();
             backTexture = getOrCreateR(path);
@@ -87,6 +84,9 @@ public class DungeonScreen extends ScreenWithLoader {
 
     @Override
     protected void afterLoad() {
+        cam = camera = (OrthographicCamera) viewPort.getCamera();
+        controller = new InputController(cam);
+
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
         gridStage.addActor(gridPanel);

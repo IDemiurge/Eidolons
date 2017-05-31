@@ -134,7 +134,7 @@ public class FAST_DC {
         }
         if (!CoreEngine.isGraphicsOff()) {
             if (!CoreEngine.isSwingOn()) {
-                GdxLauncher.main(new String[]{});
+                BattleSceneLauncher.main(null);
             }
         }
 
