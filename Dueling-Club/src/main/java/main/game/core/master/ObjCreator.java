@@ -14,8 +14,6 @@ import main.game.logic.battle.player.Player;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 /**
  * Created by JustMe on 2/16/2017.
@@ -49,7 +47,7 @@ public class ObjCreator extends Master {
         if (CoreEngine.isLevelEditor()) {
             return obj;
         }
-        if (WaitMaster.getCompleteOperations().contains(WAIT_OPERATIONS.GDX_READY))
+        //if (WaitMaster.getCompleteOperations().contains(WAIT_OPERATIONS.GDX_READY))
             GuiEventManager.trigger(GuiEventType.UNIT_CREATED, obj);
         game.getState().addObject(obj);
 

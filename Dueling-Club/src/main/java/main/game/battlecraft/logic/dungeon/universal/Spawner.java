@@ -26,8 +26,6 @@ import main.system.data.DataUnitFactory;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.test.TestMasterContent;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.system.util.Refactor;
 
 import java.util.List;
@@ -115,7 +113,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         GuiEventManager.trigger(SCREEN_LOADED,
                 new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
 
-        WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
+        //WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
     }
 
     private SPAWN_MODE getSpawnMode(DC_Player player, boolean first) {
