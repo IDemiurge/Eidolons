@@ -72,8 +72,6 @@ public class DemoLauncher extends Game {
         viewport = new ScreenViewport(camera);
 
         initEngine();
-
-
     }
 
     protected void initEngine() {

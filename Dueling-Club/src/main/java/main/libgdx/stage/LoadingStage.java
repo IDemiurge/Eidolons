@@ -1,7 +1,10 @@
 package main.libgdx.stage;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
@@ -34,6 +37,23 @@ public class LoadingStage extends Stage {
             loadingImage.setRotation(loadingImage.getRotation() + 30);
             counter = 0;
         }
+    }
 
+    @Override
+    public void draw() {
+        final Matrix4 combined = getCamera().combined.cpy();
+        getCamera().update();
+
+        final Group root = getRoot();
+
+        if (!root.isVisible()) return;
+
+        combined.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        Batch batch = this.getBatch();
+        batch.setProjectionMatrix(combined);
+        batch.begin();
+        root.draw(batch, 1);
+        batch.end();
     }
 }

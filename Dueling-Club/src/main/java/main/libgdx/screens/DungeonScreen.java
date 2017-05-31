@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.core.game.DC_Game;
 import main.libgdx.DialogScenario;
@@ -58,8 +59,10 @@ public class DungeonScreen extends ScreenWithLoader {
         gridStage.setViewport(viewPort);
 
         guiStage = new BattleGuiStage();
+        guiStage.setViewport(viewPort);
 
         animationEffectStage = new AnimationEffectStage();
+        animationEffectStage.setViewport(viewPort);
 
         GL30 gl = Gdx.graphics.getGL30();
         gl.glEnable(GL30.GL_BLEND);
@@ -123,6 +126,9 @@ public class DungeonScreen extends ScreenWithLoader {
 
         if (canShowScreen()) {
             if (backTexture != null) {
+                final Matrix4 combined = viewPort.getCamera().combined.cpy();
+                combined.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                guiStage.getBatch().setProjectionMatrix(combined);
                 guiStage.getBatch().begin();
                 guiStage.getBatch().draw(backTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 guiStage.getBatch().end();
@@ -133,6 +139,7 @@ public class DungeonScreen extends ScreenWithLoader {
             animationEffectStage.draw();
 
             guiStage.draw();
+
 
             if (dialogsStage != null) {
                 dialogsStage.act(delta);

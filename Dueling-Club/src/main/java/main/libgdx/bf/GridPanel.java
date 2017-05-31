@@ -22,6 +22,7 @@ import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import main.libgdx.texture.TextureCache;
+import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
@@ -53,7 +54,6 @@ public class GridPanel extends Group {
     protected TextureRegion unknownImage;
     protected TextureRegion cellBorderTexture;
     protected GridCellContainer[][] cells;
-    private CellBorderManager cellBorderManager;
     private Map<BattleFieldObject, BaseView> unitMap;
     private int cols;
     private int rows;
@@ -90,7 +90,6 @@ public class GridPanel extends Group {
 
         cells = new GridCellContainer[cols][rows];
 
-        this.cellBorderManager = new CellBorderManager();
 
         int rows1 = rows - 1;
         int cols1 = cols - 1;
@@ -102,6 +101,9 @@ public class GridPanel extends Group {
                 addActor(cells[x][y].init());
             }
         }
+
+        addActor(new CellBorderManager());
+
         bindEvents();
 
         createUnitsViews(units);
@@ -163,8 +165,58 @@ public class GridPanel extends Group {
             removeUnitView(unit);
         });
 
-        GuiEventManager.bind(INGAME_EVENT_TRIGGERED, param -> {
-            Event event = (main.game.logic.event.Event) param.get();
+        GuiEventManager.bind(INGAME_EVENT_TRIGGERED, onIngameEvent());
+
+        GuiEventManager.bind(UPDATE_GRAVEYARD, obj -> {
+            final Coordinates coordinates = (Coordinates) obj.get();
+            cells[coordinates.getX()][rows - 1 - coordinates.getY()].updateGraveyard();
+        });
+
+
+        GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
+            BattleFieldObject hero = (BattleFieldObject) obj.get();
+            BaseView view = unitMap.get(hero);
+            if (view == null) {
+                System.out.println("unitMap not initiatilized at ACTIVE_UNIT_SELECTED!");
+                return;
+            }
+
+            if (view.getParent() instanceof GridCellContainer) {
+                ((GridCellContainer) view.getParent()).popupUnitView(view);
+            }
+
+            if (hero.isMine()) {
+                GuiEventManager.trigger(SHOW_GREEN_BORDER, view);
+
+                GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL, new PanelActionsDataSource((Unit) hero));
+            } else {
+                GuiEventManager.trigger(SHOW_RED_BORDER, view);
+                GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL, null);
+            }
+        });
+
+        GuiEventManager.bind(UPDATE_UNIT_VISIBLE, obj -> {
+            final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
+            final BaseView baseView = unitMap.get(pair.getLeft());
+            if (baseView instanceof GridUnitView) {
+                final Boolean isVisible = pair.getRight();
+                ((GridUnitView) baseView).setVisibleVal(isVisible ? 100 : 50);
+            }
+        });
+
+        GuiEventManager.bind(UPDATE_UNIT_ACT_STATE, obj -> {
+            final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
+            final BaseView baseView = unitMap.get(pair.getLeft());
+            if (baseView instanceof GridUnitView) {
+                final boolean mobilityState = pair.getRight();
+                ((GridUnitView) baseView).setMobilityState(mobilityState);
+            }
+        });
+    }
+
+    private EventCallback onIngameEvent() {
+        return param -> {
+            Event event = (Event) param.get();
             Ref ref = event.getRef();
 
             boolean caught = false;
@@ -253,53 +305,7 @@ public class GridPanel extends Group {
 /*            if (!caught) {
                 System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
             }*/
-        });
-
-        GuiEventManager.bind(UPDATE_GRAVEYARD, obj -> {
-            final Coordinates coordinates = (Coordinates) obj.get();
-            cells[coordinates.getX()][rows - 1 - coordinates.getY()].updateGraveyard();
-        });
-
-
-        GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
-            BattleFieldObject hero = (BattleFieldObject) obj.get();
-            BaseView view = unitMap.get(hero);
-            if (view == null) {
-                System.out.println("unitMap not initiatilized at ACTIVE_UNIT_SELECTED!");
-                return;
-            }
-
-            if (view.getParent() instanceof GridCellContainer) {
-                ((GridCellContainer) view.getParent()).popupUnitView(view);
-            }
-
-            if (hero.isMine()) {
-                GuiEventManager.trigger(SHOW_GREEN_BORDER, view);
-
-                GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL, new PanelActionsDataSource((Unit) hero));
-            } else {
-                GuiEventManager.trigger(SHOW_RED_BORDER, view);
-                GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL, null);
-            }
-        });
-
-        GuiEventManager.bind(UPDATE_UNIT_VISIBLE, obj -> {
-            final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
-            final BaseView baseView = unitMap.get(pair.getLeft());
-            if (baseView instanceof GridUnitView) {
-                final Boolean isVisible = pair.getRight();
-                ((GridUnitView) baseView).setVisibleVal(isVisible ? 100 : 50);
-            }
-        });
-
-        GuiEventManager.bind(UPDATE_UNIT_ACT_STATE, obj -> {
-            final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
-            final BaseView baseView = unitMap.get(pair.getLeft());
-            if (baseView instanceof GridUnitView) {
-                final boolean mobilityState = pair.getRight();
-                ((GridUnitView) baseView).setMobilityState(mobilityState);
-            }
-        });
+        };
     }
 
     private void createUnitsViews(DequeImpl<BattleFieldObject> units) {
@@ -389,9 +395,6 @@ public class GridPanel extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-
-        cellBorderManager.draw(batch, parentAlpha);
-
         if (lightingManager != null) {
             lightingManager.updateLight();
         }
