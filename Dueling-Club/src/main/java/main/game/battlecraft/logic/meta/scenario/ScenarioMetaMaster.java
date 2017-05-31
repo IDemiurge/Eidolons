@@ -3,6 +3,8 @@ package main.game.battlecraft.logic.meta.scenario;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
+import main.game.battlecraft.logic.battle.mission.MissionBattleMaster;
+import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
@@ -20,6 +22,8 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
         super(data);
         dialogueManager = new DialogueManager(this);
         dialogueActorMaster = new DialogueActorMaster(this);
+        getDialogueFactory().init(this);
+        getIntroFactory().init(this);
     }
     /*
         on clicking a mission...
@@ -87,5 +91,16 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
     }
     public DialogueManager getDialogueManager() {
         return dialogueManager;
+    }
+
+
+    @Override
+    public MissionBattleMaster getBattleMaster() {
+        return (MissionBattleMaster) super.getBattleMaster();
+    }
+
+    @Override
+    public LocationMaster getDungeonMaster() {
+        return (LocationMaster) super.getDungeonMaster();
     }
 }

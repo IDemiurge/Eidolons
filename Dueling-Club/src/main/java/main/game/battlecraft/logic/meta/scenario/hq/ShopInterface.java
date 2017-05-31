@@ -7,8 +7,8 @@ import java.util.List;
  */
 public interface ShopInterface {
     public List<String> getTabs();
-    public List<String> getGroupLists(String tabName);
-    public List<String> getTextures(String groupList);
+    public List<String> getItemSubgroups(String tabName);
+    public List<String> getItems(String groupList);
     public String getName();
     public String getGold();
     public String getIcon();

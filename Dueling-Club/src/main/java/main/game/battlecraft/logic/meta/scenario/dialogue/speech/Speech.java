@@ -8,6 +8,7 @@ import main.data.dialogue.Speeches;
 import main.elements.conditions.Condition;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
+import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class Speech implements SpeechInterface {
         if (children != null) {
             this.children = new DequeImpl<Speech>().addAllCast(children.getList());
         }
-        new SpeechBuilder().buildSpeech(this);
+        getSpeechBuilder().buildSpeech(this);
     }
 
     public Speech(String actor, String text) {
@@ -72,6 +73,10 @@ public class Speech implements SpeechInterface {
         this.children = new DequeImpl<Speech>().getAddAllCast(children.getList());
     }
 
+    protected SpeechBuilder getSpeechBuilder() {
+        return new SpeechBuilder();
+    }
+
     public void addChild(Speech child) {
         getChildren().add(child);
     }
@@ -80,6 +85,7 @@ public class Speech implements SpeechInterface {
         this.parent = parent;
         if (actorName == null)
             actorName = data.getValue(SPEECH_VALUE.ACTOR);
+        if (!StringMaster.isEmpty(actorName))
         try {
             actor = master.getDialogueActorMaster().getActor(actorName);
         } catch (Exception e) {

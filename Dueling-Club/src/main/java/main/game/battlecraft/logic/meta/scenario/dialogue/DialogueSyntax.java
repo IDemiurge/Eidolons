@@ -28,6 +28,8 @@ public class DialogueSyntax {
     public static final String pair_separator = ":";
 
     public static Abilities getAbilities(String text) {
+        if (!text.contains(PARAM_MOD))
+            return null;
         String parsedPart = text.substring(text.indexOf(PARAM_MOD),
          text.indexOf(PARAM_MOD_CLOSE));
         //specify KEY
@@ -68,10 +70,14 @@ public class DialogueSyntax {
     }
 
     public static Condition getConditions(String text) {
+        if (!text.contains(PARAM_MOD))
+            return null;
         return null;
     }
 
     public static String getScript(String text) {
+        if (!text.contains(PARAM_MOD))
+            return null;
         return null;
     }
 

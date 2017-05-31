@@ -6,20 +6,20 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
-import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
-import main.game.battlecraft.logic.meta.scenario.dialogue.LinearDialogue;
-import main.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
+import main.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import main.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.libgdx.DialogScenario;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.test.frontend.IntroTestLauncher;
 
 import java.util.List;
 import java.util.Map;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
+import static main.system.GuiEventType.CREATE_RADIAL_MENU;
 
 public class UnitViewFactory {
     public static BaseView create(BattleFieldObject bfObj) {
@@ -50,22 +50,23 @@ public class UnitViewFactory {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-//                if (event.getButton() == Input.Buttons.RIGHT) {
-//                    GuiEventManager.trigger(CREATE_RADIAL_MENU, bfObj);
-//                    event.handle();
-//                    event.stop();
-//                }
-                ScenarioMetaMaster m = new ScenarioMetaMaster("Pride and Treachery");
-                LinearDialogue dialogue = null ;//new LinearDialogue();
-                DialogueFactory.constructScenarioLinearDialogues
-                 (DialogueLineFormatter. getLinearDialoguesFilePath(), m );
-                dialogue = DialogueFactory.getLinearDialogue("Interrogation");
-                List<DialogScenario> list = SceneFactory.getScenes(dialogue);
-                GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, list);
+                if (IntroTestLauncher.running) {
+                    ScenarioMetaMaster m = new ScenarioMetaMaster("Pride and Treachery");
+                    GameDialogue dialogue = null;//new LinearDialogue();
+                    dialogue =  bfObj.getGame().getMetaMaster().getDialogueFactory().getDialogue("Interrogation");
+                    List<DialogScenario> list = SceneFactory.getScenes(dialogue);
+                    GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, list);
+                }
+                if (event.getButton() == Input.Buttons.RIGHT)
+
+                {
+                    GuiEventManager.trigger(CREATE_RADIAL_MENU, bfObj);
+                    event.handle();
+                    event.stop();
+                }
             }
         };
     }
-
 
     public static OverlayView createOverlay(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);

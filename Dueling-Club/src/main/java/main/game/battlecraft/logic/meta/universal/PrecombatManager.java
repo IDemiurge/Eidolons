@@ -2,6 +2,14 @@ package main.game.battlecraft.logic.meta.universal;
 
 /**
  * Created by JustMe on 5/8/2017.
+ *
+ * formation
+ * party-picking in campaign
+ *
+ *
  */
-public class PrecombatManager {
+public class PrecombatManager<E extends MetaGame> extends  MetaGameHandler<E>{
+    public PrecombatManager(MetaGameMaster master) {
+        super(master);
+    }
 }

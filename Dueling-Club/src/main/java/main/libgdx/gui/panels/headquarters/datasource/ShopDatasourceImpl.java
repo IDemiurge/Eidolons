@@ -31,7 +31,7 @@ public class ShopDatasourceImpl implements ShotDatasource{
 
     @Override
     public List<ShopListPanel> getGroupLists(String tabName) {
-        return shop.getGroupLists(tabName).stream().map(
+        return shop.getItemSubgroups(tabName).stream().map(
          s-> new ShopListPanel(getTextures(s))).
          collect(Collectors.toList());
     }
@@ -39,7 +39,7 @@ public class ShopDatasourceImpl implements ShotDatasource{
     @Override
     public List<ValueContainer> getTextures(String groupList)
     {
-        return shop.getTextures(groupList).stream().map(
+        return shop.getItems(groupList).stream().map(
          s-> new ValueContainer(TextureCache.getOrCreateR(s))).
          collect(Collectors.toList());
     }

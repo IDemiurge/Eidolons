@@ -11,4 +11,7 @@ public abstract class MetaGame<E extends MetaGame > {
         this.master = master;
     }
 
+    public MetaGameMaster<E> getMaster() {
+        return master;
+    }
 }

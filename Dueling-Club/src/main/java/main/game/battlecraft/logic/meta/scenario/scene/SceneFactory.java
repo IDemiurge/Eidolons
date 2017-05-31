@@ -4,24 +4,36 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.SpeechData;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
-import main.game.battlecraft.logic.meta.scenario.dialogue.LinearDialogue;
+import main.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import main.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
+import main.game.core.Eidolons;
 import main.libgdx.DialogScenario;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
+import main.system.util.Refactor;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 5/22/2017.
  */
-public class SceneFactory {
-    DialogueActorMaster actorMaster;
+public class SceneFactory  implements Supplier<List<DialogScenario>> {
+    private   String data;
 
+    public SceneFactory(String testData) {
+        this.data = testData;
+    }
+
+    @Refactor
+    @Override
+    public List<DialogScenario> get() {
+        return getScenes(Eidolons.game.getMetaMaster().getIntroFactory().getDialogue(data));
+    }
     //TODO Speech?
-    public static List<DialogScenario> getScenes(LinearDialogue dialogue) {
+    public static List<DialogScenario> getScenes(GameDialogue dialogue) {
         Speech speech = dialogue.getSpeech();
         List<SpeechData> fullData = new LinkedList<>();
         while (true) {
@@ -53,12 +65,14 @@ public class SceneFactory {
             boolean skippable = true;
             Integer time = -1;
 
+            message = data.getValue(SPEECH_VALUE.MESSAGE);
+
+            if (!StringMaster.isEmpty(data.getValue(SPEECH_VALUE.ACTOR)))
             portraitTexture =
              TextureCache.getOrCreateR(DialogueActorMaster.
               getActor(data.getValue(SPEECH_VALUE.ACTOR))
-//              .getLinkedUnit()
               .getImagePath());
-            message = data.getValue(SPEECH_VALUE.MESSAGE);
+
             if (!StringMaster.isEmpty(data.getValue(SPEECH_VALUE.BACKGROUND)))
             backTexture = TextureCache.getOrCreateR(data.getValue(SPEECH_VALUE.BACKGROUND));
 
@@ -68,4 +82,5 @@ public class SceneFactory {
         }
         return list;
     }
+
 }

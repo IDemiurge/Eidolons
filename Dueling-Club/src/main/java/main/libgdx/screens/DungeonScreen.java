@@ -123,7 +123,6 @@ public class DungeonScreen extends ScreenWithLoader {
         gridStage.act(delta);
 
         //cam.update();
-
         if (canShowScreen()) {
             if (backTexture != null) {
                 final Matrix4 combined = viewPort.getCamera().combined.cpy();
@@ -141,16 +140,17 @@ public class DungeonScreen extends ScreenWithLoader {
             guiStage.draw();
 
 
-            if (dialogsStage != null) {
-                dialogsStage.act(delta);
-                if (dialogsStage.isDone()) {
-                    final ChainedStage dialogsStage = this.dialogsStage;
-                    this.dialogsStage = null;
-                    dialogsStage.dispose();
-                    updateInputController();
-                } else {
-                    dialogsStage.draw();
-                }
+
+        }
+        if (dialogsStage != null) {
+            dialogsStage.act(delta);
+            if (dialogsStage.isDone()) {
+                final ChainedStage dialogsStage = this.dialogsStage;
+                this.dialogsStage = null;
+                dialogsStage.dispose();
+                updateInputController();
+            } else {
+                dialogsStage.draw();
             }
         }
     }

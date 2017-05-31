@@ -5,7 +5,6 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.data.xml.XML_Writer;
-import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -25,7 +24,9 @@ public class DialogueLineFormatter {
     public static final String LINE_SEPARATOR = ">>";
     private static final String dialogueTextPath = "\\dialogue\\raw\\";
     private static final String linearDialoguePath = "\\dialogue\\linear dialogues.xml";
+    private static final String introsPath = "\\dialogue\\intros.xml";
     private static final String linesFilePath = "\\dialogue\\lines.xml";
+    private static final String linesFilePathIntros = "\\dialogue\\lines - intros.xml";
     private static final String linesBackupFilePath = "\\dialogue\\backup\\lines.xml";
     private static final String ACTOR_NODE = SPEECH_VALUE.ACTOR.name();
     private static final String TEXT_NODE = SPEECH_VALUE.MESSAGE.name();
@@ -58,7 +59,7 @@ public class DialogueLineFormatter {
         writeLinesFile();
         writeLinearDialoguesFile();
         updateXml();
-        DialogueFactory.constructScenarioLinearDialogues(getLinearDialoguesFilePath(), new ScenarioMetaMaster(""));
+//        new DialogueFactory().constructScenarioLinearDialogues(getLinearDialoguesFilePath(), new ScenarioMetaMaster(""));
       }
     public static String formatDialogueText(String result) {
         return result.replaceAll("…", "...")
@@ -140,6 +141,10 @@ public class DialogueLineFormatter {
         return PathFinder.getEnginePath() + PathFinder.getTextPath()
          + TextMaster.getLocale() + linearDialoguePath;
     }
+    public static String getIntrosFilePath() {
+        return PathFinder.getEnginePath() + PathFinder.getTextPath()
+         + TextMaster.getLocale() + introsPath;
+    }
     public static String getDialogueTextPath() {
         return PathFinder.getEnginePath() + PathFinder.getTextPath() + TextMaster.getLocale() + dialogueTextPath;
     }
@@ -150,5 +155,9 @@ public class DialogueLineFormatter {
 
     public static String getLinesBackupFilePath() {
         return PathFinder.getTextPath() + TextMaster.getLocale() + linesBackupFilePath;
+    }
+
+    public static String getLinesFilePathIntro() {
+        return PathFinder.getTextPath() + TextMaster.getLocale() + linesFilePathIntros;
     }
 }

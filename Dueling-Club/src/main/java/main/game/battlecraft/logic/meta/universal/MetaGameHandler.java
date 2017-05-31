@@ -1,5 +1,7 @@
 package main.game.battlecraft.logic.meta.universal;
 
+import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
+import main.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory;
 import main.game.core.game.DC_Game;
 
 /**
@@ -10,6 +12,10 @@ public class MetaGameHandler<E extends MetaGame> {
 
     public MetaGameHandler(MetaGameMaster master) {
         this.master = master;
+    }
+
+    public MetaGameMaster<E> getMaster() {
+        return master;
     }
 
     public PartyManager<E> getPartyManager() {
@@ -38,5 +44,13 @@ public class MetaGameHandler<E extends MetaGame> {
 
     public MetaDataManager getMetaDataManager() {
         return master.getMetaDataManager();
+    }
+
+    public IntroFactory getIntroFactory() {
+        return master.getIntroFactory();
+    }
+
+    public DialogueFactory getDialogueFactory() {
+        return master.getDialogueFactory();
     }
 }

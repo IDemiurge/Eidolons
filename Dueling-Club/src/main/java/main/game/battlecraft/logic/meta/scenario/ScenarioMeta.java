@@ -1,5 +1,6 @@
 package main.game.battlecraft.logic.meta.scenario;
 
+import main.game.battlecraft.logic.battle.mission.Mission;
 import main.game.battlecraft.logic.meta.universal.MetaGame;
 import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 
@@ -22,10 +23,19 @@ public class ScenarioMeta extends MetaGame {
 
      */
 
+    @Override
+    public ScenarioMetaMaster getMaster() {
+
+        return (ScenarioMetaMaster) super.getMaster();
+    }
+
     public Scenario getScenario() {
         return scenario;
     }
 
 
+    public Mission getMission() {
+        return getMaster().getBattleMaster().getBattle().getMission();
+    }
 
 }

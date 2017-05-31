@@ -1,20 +1,13 @@
 package main.game.battlecraft.logic.meta.scenario.dialogue;
 
-import main.content.PROPS;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
-import main.data.DataManager;
-import main.data.ability.construct.ConstructionManager;
-import main.data.xml.XML_Converter;
-import main.entity.type.ObjType;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import main.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
 import main.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.math.MathMaster;
-import org.w3c.dom.Document;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,20 +18,12 @@ public class DialogueFactory {
     //***Tavern Chat>3>4***Another Chat>5>10 ...
     public static final String DIALOGUE_SEPARATOR = "***";
     public static final String ID_SEPARATOR = ">";
-    public static Map<String, GameDialogue> map = new HashMap<>();
+    public  Map<String, GameDialogue> map = new HashMap<>();
 
 
-        public static void constructScenarioLinearDialogues
-        (String path, ScenarioMetaMaster master) {
-//        File file = new File(
-//         PathFinder.getEnginePath() +
-//         PathFinder.getTextPath() +
-//         TextMaster.getLocale() +
-//         "\\dialogues\\" + scenarioPath);
-//        for (File file : FileManager.getFilesFromDirectory(PathFinder.getTextPath() +
-//          TextMaster.getLocale() +
-//          "\\dialogues\\" + scenarioPath, false))
-//            data =   FileManager.readFile(file);
+
+        public  void constructDialogues
+         (String path, ScenarioMetaMaster master ) {
           String  data = FileManager.readFile(path);
         for (String contents : StringMaster.openContainer(
        data, DIALOGUE_SEPARATOR)) {
@@ -47,29 +32,44 @@ public class DialogueFactory {
             int firstId = StringMaster.getInteger(array[1]);
             int lastId = StringMaster.getInteger(array[2]);
             List<Integer> ids = MathMaster.getIntsInRange(firstId, lastId);
-            GameDialogue dialogue = getLinearDialogue(StringMaster.joinList(ids), master);
+            GameDialogue dialogue = createDialogue(StringMaster.joinList(ids), master);
             map.put(name, dialogue);
 
         }
 
 
     }
+    //scenario path?
+public void init(ScenarioMetaMaster master){
+        //shouldn't do all at once, be lazy or on target
+     constructDialogues(getFilePath(), master);
+//IDEA - just different files, that's it.
+    // lines? perhaps id space will be unique for each mission!
+    // pathing will be synced with scenario-mission
 
-    public static LinearDialogue getLinearDialogue
-     (String name) {
-        return (LinearDialogue) map.get(name);
+}
+
+    protected String getFilePath() {
+       return  DialogueLineFormatter.getLinearDialoguesFilePath();
     }
 
-    public static LinearDialogue getLinearDialogue
+    public GameDialogue getDialogue
+     (String name) {
+        return    map.get(name);
+    }
+
+
+    public  LinearDialogue createDialogue
      (String idSequence, ScenarioMetaMaster master) {
         //ids also are supposed to be built linearly, right?
 
         //build Speech objects!
-        List<Speech> speechSequence = new LinkedList<>();
+//        List<Speech> speechSequence = new LinkedList<>();
         Speech parent = null;
         Speech root = null;
         for (String ID : StringMaster.openContainer(idSequence)) {
-            Speech speech = new Speech(StringMaster.getInteger(ID));
+            Speech speech = getSpeech(StringMaster.getInteger(ID));
+
             if (root == null)
                 root = speech;
             if (parent != null) {
@@ -77,18 +77,21 @@ public class DialogueFactory {
                 speech.init(master, parent);
             }
             parent = speech;
-
         }
 
         return new LinearDialogue(root);
     }
 
-    public static GameDialogue getDialogue(String data, ScenarioMetaMaster master) {
-        ObjType type = DataManager.getType(data, MACRO_OBJ_TYPES.DIALOGUE);
-        Document node = XML_Converter.getDoc(type.getProperty(PROPS.DIALOGUE_DATA));
-        Speech root = (Speech) ConstructionManager.construct(node);
-        //options - skippable,
-        root.init(master, null);
+    protected Speech getSpeech(Integer integer) {
+      return   new Speech(integer);
+    }
+
+//    public  GameDialogue getDialogue(String data, ScenarioMetaMaster master) {
+//        ObjType type = DataManager.getType(data, MACRO_OBJ_TYPES.DIALOGUE);
+//        Document node = XML_Converter.getDoc(type.getProperty(PROPS.DIALOGUE_DATA));
+//        Speech root = (Speech) ConstructionManager.construct(node);
+//        //options - skippable,
+//        root.init(master, null);
         /*
         in xml:
         > constructors will be messed up if I add <Replica> there
@@ -96,6 +99,6 @@ public class DialogueFactory {
          */
 
 
-        return new GameDialogue(root);
-    }
+//        return new GameDialogue(root);
+//    }
 }

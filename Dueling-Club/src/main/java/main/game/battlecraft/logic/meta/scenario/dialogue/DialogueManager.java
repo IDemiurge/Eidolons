@@ -2,7 +2,6 @@ package main.game.battlecraft.logic.meta.scenario.dialogue;
 
 import main.content.PROPS;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMeta;
-import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.system.auxiliary.StringMaster;
@@ -32,8 +31,8 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
 
     public void startDialogues(String data) {
         for (String substring : StringMaster.openContainer(data)) {
-            GameDialogue dialogue=  DialogueFactory.getDialogue(substring, (ScenarioMetaMaster) master);
-            startDialogue(dialogue);
+//            GameDialogue dialogue=  getDialogueFactory().getDialogue(substring, (ScenarioMetaMaster) master);
+//            startDialogue(dialogue);
         }
     }
 

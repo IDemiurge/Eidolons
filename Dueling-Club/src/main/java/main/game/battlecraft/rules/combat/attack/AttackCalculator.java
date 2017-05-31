@@ -32,6 +32,7 @@ import main.system.graphics.AttackAnimation;
 import main.system.graphics.DC_ImageMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
@@ -117,7 +118,7 @@ public AttackCalculator initTarget(Unit target){
         initAllModifiers();
         amount = applyDamageBonuses();
         // TODO
-
+        if (CoreEngine.isPhaseAnimsOn())
         if (!precalc || anim != null) {
             addMainPhase();
             addSubPhase();

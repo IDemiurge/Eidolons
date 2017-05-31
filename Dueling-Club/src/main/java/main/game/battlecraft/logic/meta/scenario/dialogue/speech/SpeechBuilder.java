@@ -39,6 +39,13 @@ public class SpeechBuilder {
         String text = data.getValue(SPEECH_VALUE.MESSAGE);
         speech.setUnformattedText(text);
 
+        text= processText(text, speech);
+
+        speech.setFormattedText(text);
+        return speech;
+    }
+
+    protected String processText(String text, Speech speech) {
         try {
             Condition reqs = DialogueSyntax.getConditions(text);
             speech.setConditions(reqs);
@@ -59,9 +66,7 @@ public class SpeechBuilder {
             e.printStackTrace();
         }
 
-        text = DialogueSyntax.getRawText(text);
-        speech.setFormattedText(text);
-        return speech;
+       return  DialogueSyntax.getRawText(text);
     }
 
     public Map<Integer, SpeechData> getIdToDataMap() {
