@@ -2,6 +2,7 @@ package main.libgdx.gui.panels.headquarters.datasource;
 
 import main.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.libgdx.gui.panels.headquarters.ShopListPanel;
 import main.libgdx.gui.panels.headquarters.ShopTabbedPanel;
 import main.libgdx.texture.TextureCache;
@@ -12,9 +13,10 @@ import java.util.stream.Collectors;
 /**
  * Created by JustMe on 5/21/2017.
  */
-public class ShopDatasourceImpl implements ShotDatasource{
+public class ShopDatasourceImpl implements ShotDatasource
+{
     ShopInterface shop;
-
+    InventoryDataSource dataSource;
     public ShopDatasourceImpl(ShopInterface shop) {
         this.shop = shop;
     }
