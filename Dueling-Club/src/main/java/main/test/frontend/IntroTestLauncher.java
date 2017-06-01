@@ -15,19 +15,16 @@ import java.util.function.Supplier;
  */
 public class IntroTestLauncher extends DemoLauncher {
     public static boolean running;
-    private Supplier<List<DialogScenario>> factory;
     static String testData = "Test";
-    public IntroTestLauncher(Supplier<List<DialogScenario>> factory) {
+    private Supplier<List<DialogScenario>> factory;
+
+    private IntroTestLauncher(Supplier<List<DialogScenario>> factory) {
         this.factory = factory;
     }
 
     public static void main(String[] args) {
         running = true;
-        new LwjglApplication(new IntroTestLauncher(createFactory()), getConf());
-    }
-
-    private static Supplier<List<DialogScenario>> createFactory() {
-        return new SceneFactory(testData);
+        new LwjglApplication(new IntroTestLauncher(new SceneFactory(testData)), getConf());
     }
 
     @Override
