@@ -56,6 +56,6 @@ public class ShopDatasourceImpl implements ShotDatasource{
 
     @Override
     public ValueContainer getIcon() {
-        return new ValueContainer(TextureCache.getOrCreateR(shop.getIcon()), "");
+        return new ValueContainer(TextureCache.getOrCreateR(shop.getImagePath()), "");
     }
 }

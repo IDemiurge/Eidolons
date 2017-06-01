@@ -165,7 +165,7 @@ public class TestLauncher //extends MetaGameMaster
              // !BooleanMaster.isTrue(FAST_MODE)
              && !SUPER_FAST_MODE) {
                 createPreset();
-                autosavePreset();
+//                autosavePreset();
             }
             savePresetAsLast();
         } catch (Exception e) {

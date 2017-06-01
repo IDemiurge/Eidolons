@@ -5,6 +5,7 @@ import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
+import main.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;
@@ -13,20 +14,20 @@ import java.util.List;
 
 public class ShopMaster {
 
-    public static int getMaxItemsPerGroup(Shop shop) {
+    public static int getMaxItemsPerGroup(ShopInterface shop) {
         // special shops less
         return 25;
     }
 
-    public static Integer getBaseGoldIncome(Shop shop) {
+    public static Integer getBaseGoldIncome(ShopInterface shop) {
         return 50;
     }
 
-    public static Integer getBaseGoldCostMod(Shop shop) {
+    public static Integer getBaseGoldCostMod(ShopInterface shop) {
         return 50;
     }
 
-    public static Integer getBaseGold(Shop shop) {
+    public static Integer getBaseGold(ShopInterface shop) {
         Integer gold = 750; // ++ from town?! from time?
         switch (shop.getShopType()) {
             case HEAVY_WEAPONS:
@@ -62,7 +63,7 @@ public class ShopMaster {
         return gold;
     }
 
-    public static List<QUALITY_LEVEL> getQualityLevels(Shop shop) {
+    public static List<QUALITY_LEVEL> getQualityLevels(ShopInterface shop) {
         List<QUALITY_LEVEL> list = new LinkedList<>();
         switch (shop.getShopLevel()) {
             case COMMON:
@@ -94,7 +95,7 @@ public class ShopMaster {
         return list;
     }
 
-    public static boolean checkMaterialAllowed(Shop shop, MATERIAL material) {
+    public static boolean checkMaterialAllowed(ShopInterface shop, MATERIAL material) {
         if (!ShopMaster.getMaterialsForShopLevel(shop.getShopLevel()).contains(
                 material)) {
             if (!ShopMaster.getMaterialsForShopModifier(shop.getShopModifier())
@@ -108,7 +109,7 @@ public class ShopMaster {
         return true;
     }
 
-    private static List<MATERIAL> getSpecialMaterials(Shop shop) {
+    private static List<MATERIAL> getSpecialMaterials(ShopInterface shop) {
         List<MATERIAL> list = new LinkedList<>();
         return list;
     }

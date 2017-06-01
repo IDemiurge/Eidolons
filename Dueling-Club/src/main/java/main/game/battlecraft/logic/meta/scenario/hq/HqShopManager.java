@@ -1,9 +1,12 @@
 package main.game.battlecraft.logic.meta.scenario.hq;
 
+import main.content.DC_TYPE;
 import main.content.PROPS;
+import main.data.DataManager;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.game.battlecraft.logic.meta.universal.ShopManager;
+import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;
 
@@ -20,9 +23,9 @@ public class HqShopManager extends ShopManager<ScenarioMeta> {
     @Override
     public void init() {
         shops = new LinkedList<>();
-      getMetaGame().getMission().getPlace(). getProperty(PROPS.PLACE_SHOPS);
-//        getMetaGame().getScenario().get
+for(String substring: StringMaster.openContainer( getMetaGame().getMission().getPlace(). getProperty(PROPS.PLACE_SHOPS))){
+    HqShop shop = new HqShop(DataManager.getType(substring, DC_TYPE.SHOPS));
 
-
+}
     }
 }

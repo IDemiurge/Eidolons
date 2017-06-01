@@ -28,7 +28,7 @@ import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.*;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.battlefield.vision.VisionMaster;
-import main.game.battlecraft.logic.dungeon.location.LocationMaster;
+import main.game.battlecraft.logic.dungeon.test.TestDungeonMaster;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
@@ -188,8 +188,8 @@ public class DC_Game extends MicroGame {
         return new TestBattleMaster(this);}
 
     protected DungeonMaster createDungeonMaster() {
-        return new LocationMaster(this);
-//        return new TestDungeonMaster(this);
+//        return new LocationMaster(this);
+        return new TestDungeonMaster(this);
     }
     // before all other masters?
 

@@ -64,6 +64,7 @@ public enum DC_TYPE implements OBJ_TYPE {
         }
     },
     ACTORS("actors", G_PROPS.GROUP, 25),
+    SHOPS("shops", G_PROPS.GROUP, 26),
 //    TRAP("traps", G_PROPS.GROUP, 24),
     META("meta", G_PROPS.GROUP, -1, true),
     ALL("all"),;

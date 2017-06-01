@@ -128,12 +128,10 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
     protected void initDynamicObjData(Location location, DungeonPlan plan) {
-        List<BattleFieldObject> fullObjectList = new LinkedList<>();
         int z = location.getIntParam(G_PARAMS.Z_LEVEL);
         for (MapBlock b : plan.getBlocks()) {
             LinkedList<Obj> objects = new LinkedList<>(b.getObjects());
             for (Obj obj : objects) {
-                fullObjectList.add((BattleFieldObject) obj);
                 // TODO of course - the issue was that I added an object to
                 // block too! ... init?
                 BattleFieldObject unit = (BattleFieldObject) obj;
@@ -155,7 +153,6 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
 
         for (Obj obj : plan.getWallObjects()) {
             Unit unit = (Unit) obj;
-            fullObjectList.add(unit);
 
             if (z != 0) {
                 unit.setZ(z);

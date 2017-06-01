@@ -7,6 +7,7 @@ import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;
 import main.content.C_OBJ_TYPE;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.MATERIAL;
@@ -20,6 +21,7 @@ import main.data.xml.XML_Writer;
 import main.elements.conditions.PropCondition;
 import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.utils.SaveMaster;
 import main.system.auxiliary.EnumMaster;
@@ -36,7 +38,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Shop extends TownPlace {
+public class Shop extends TownPlace implements ShopInterface{
+    private ShopListsPanel shopListsPanel;
     private static final int MAX_ITEM_GROUPS = 4;
     List<ObjType> items;
     private SHOP_TYPE shopType;
@@ -44,7 +47,6 @@ public class Shop extends TownPlace {
     private SHOP_MODIFIER shopModifier;
     private int goldToSpend = 100;
     private int spareGold = 20;
-    private ShopListsPanel shopListsPanel;
 
     public Shop(MacroGame game, ObjType type, Ref ref) {
         super(game, type, ref);
@@ -183,14 +185,6 @@ public class Shop extends TownPlace {
 
     }
 
-    private void refreshGui() {
-        if (shopListsPanel == null) {
-            return;
-        }
-        shopListsPanel.resetTab(getName());
-        CharacterCreator.refreshGUI();
-    }
-
     public boolean buyItem(ObjType t) {
         Integer cost = t.getIntParam(PARAMS.GOLD_COST);
 
@@ -209,6 +203,53 @@ public class Shop extends TownPlace {
         items.add(type);
         refreshGui();
     }
+    private void refreshGui() {
+        if (shopListsPanel == null) {
+            return;
+        }
+        shopListsPanel.resetTab(getName());
+        CharacterCreator.refreshGUI();
+    }
+
+
+    @Override
+    public List<String> getTabs() {
+        return  StringMaster.openContainer(getProperty(MACRO_PROPS.SHOP_ITEM_GROUPS) );
+    }
+
+    @Override
+    public List<String> getItemSubgroups(String tabName) {
+        return null;
+    }
+    @Override
+    public List<String> getItems(String groupList) {
+        if (isFullRepertoire()){
+            //filters!
+        }
+        List<String> list = new LinkedList<>();
+        for (DC_TYPE TYPE : C_OBJ_TYPE.ITEMS.getTypes()) {
+            List<ObjType> items = getItems(TYPE);
+            items.removeIf(item -> item == null);
+            FilterMaster.filterByPropJ8(items, TYPE.getGroupingKey().getName(), groupList);
+            items.forEach(item -> list.add(item.getName()));
+        }
+        //sort
+        return list;
+    }
+
+    public List<ObjType> getItems(DC_TYPE TYPE) {
+        return DataManager.toTypeList(StringMaster.openContainer(getProperty(MACRO_PROPS.SHOP_ITEMS)),
+         TYPE) ;
+    }
+    private boolean isFullRepertoire() {
+        return false;
+    }
+
+    @Override
+    public String getGold() {
+        return getParam(PARAMS.GOLD);
+    }
+
 
     public SHOP_TYPE getShopType() {
         if (shopType == null) {

@@ -9,7 +9,6 @@ import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
 import main.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
-import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.battlecraft.rules.action.StackingRule;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
@@ -113,24 +112,25 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         List<Coordinates> list = new LinkedList<>();
         // TODO
-        if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor()) {
+        if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor() ) {
             origin = new Coordinates(PositionMaster.getMiddleIndex(false), PositionMaster
                     .getMiddleIndex(true));
         } else {
             if (me != null) {
                 if (me) {
-                    if (PartyHelper.getParty() != null) {
-                        Unit mh = PartyHelper.getParty().getMiddleHero();
-                        if (mh != null) {
-                            int index = partyTypes.indexOf(mh.getName());
-                            if (index > -1) {
-                                String s = partyTypes.remove(index);
-                                partyTypes.add(0, s);
-                            }
-                        }
-                    }
+//                    if (PartyHelper.getParty() != null) {
+//                        Unit mh = PartyHelper.getParty().getMiddleHero();
+//                        if (mh != null) {
+//                            int index = partyTypes.indexOf(mh.getName());
+//                            if (index > -1) {
+//                                String s = partyTypes.remove(index);
+//                                partyTypes.add(0, s);
+//                            }
+//                        }
+//                    }
 //TODO formation!
-
+                    if (origin==null )
+                        origin = getPlayerSpawnCoordinates();
                 } else {
 
                     origin = getEnemySpawningCoordinates();
@@ -143,6 +143,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
                 }
             }
         }
+
         unitCache = new HashMap<>(partyTypes.size(), 1f);
         for (String type : partyTypes) {
             ObjType objType = DataManager.getType(type, C_OBJ_TYPE.UNITS_CHARS);
