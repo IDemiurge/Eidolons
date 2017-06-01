@@ -16,10 +16,10 @@ public class ScenarioLauncher {
         lauch(t);
     }
         public static void lauch(String typeName) {
+            BattleSceneLauncher.main(new String[]{});
         DC_Engine.mainMenuInit();
         Eidolons.initScenario(typeName);
         DC_Engine.gameStartInit();
-        BattleSceneLauncher.main(new String[]{} );
         Eidolons.mainGame.getMetaMaster().gameStarted();
 //        Eidolons.mainGame.getMetaMaster().getGame().init( );
         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit( );
