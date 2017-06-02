@@ -16,6 +16,7 @@ public class ChainedStage extends Stage {
     private Container<DialogScenario> current;
     private Iterator<DialogScenario> iterator;
     private List<DialogScenario> newList = null;
+    private Runnable onDoneCallback;
 
     public ChainedStage(List<DialogScenario> list) {
         current = new Container<>();
@@ -49,8 +50,15 @@ public class ChainedStage extends Stage {
                 iterator = list.iterator();
             } else {
                 done = true;
+                if (onDoneCallback != null) {
+                    onDoneCallback.run();
+                }
             }
         }
+    }
+
+    public void setOnDoneCallback(Runnable onDoneCallback) {
+        this.onDoneCallback = onDoneCallback;
     }
 
     @Override

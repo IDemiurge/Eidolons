@@ -5,37 +5,53 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.libgdx.gui.SimpleClickListener;
 import main.libgdx.gui.panels.dc.TablePanel;
+import main.libgdx.screens.ScreenData;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import static main.libgdx.StyleHolder.getMainMenuButton;
 
 public class NewGamePanel extends TablePanel {
-    private final TextButton back;
-    private final TextButton startDemoScenario;
+    private TextButton back;
+    private Consumer<ScreenData> choiceCallback;
+    private SimpleClickListener backListener;
 
     public NewGamePanel() {
         left().bottom();
+    }
 
-        startDemoScenario = getMainMenuButton("start demo scenario");
+    @Override
+    public void updateAct(float delta) {
+        final List<ScreenData> dataList = (List<ScreenData>) getUserObject();
+        dataList.forEach(data -> {
+            TextButton button = getMainMenuButton(data.getName());
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    if (choiceCallback != null) {
+                        choiceCallback.accept(data);
+                    }
+                }
+            });
 
-        add(startDemoScenario);
-        row();
+            add(button);
+            row();
+        });
 
+        addEmptyRow(0, 30);
         back = getMainMenuButton("back");
+        if (backListener != null) {
+            back.addListener(backListener);
+        }
         add(back);
     }
 
     public void setBackCallback(Runnable callback) {
-        back.addListener(new SimpleClickListener(callback));
+        backListener = new SimpleClickListener(callback);
     }
 
-    public void setStartDemoScenarioCallback(Consumer<String> callback) {
-        startDemoScenario.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                callback.accept("demo");
-            }
-        });
+    public void setStartDemoScenarioCallback(Consumer<ScreenData> callback) {
+        choiceCallback = callback;
     }
 }

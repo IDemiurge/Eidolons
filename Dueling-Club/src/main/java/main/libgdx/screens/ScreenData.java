@@ -26,6 +26,10 @@ public class ScreenData {
         this.dialogScenariosFactory = factory;
     }
 
+    public ScreenData(ScreenData screenData, Supplier<List<DialogScenario>> factory) {
+        this(screenData.type, screenData.name, factory);
+    }
+
     public List<DialogScenario> getDialogScenarios() {
         if (dialogScenarios == null) {
             dialogScenarios = dialogScenariosFactory.get();

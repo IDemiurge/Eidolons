@@ -1,9 +1,6 @@
 package main.test.frontend;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import main.libgdx.screens.ScreenData;
-import main.libgdx.screens.ScreenType;
-import main.system.EventCallbackParam;
 
 public class BattleSceneLauncher extends DemoLauncher {
 
@@ -13,7 +10,7 @@ public class BattleSceneLauncher extends DemoLauncher {
 
     @Override
     protected void initEngine() {
-        ScreenData data = new ScreenData(ScreenType.BATTLE, "name");
-        screenSwitcher(new EventCallbackParam(data));
+/*        ScreenData data = new ScreenData(ScreenType.BATTLE, "name");
+        screenSwitcher(new EventCallbackParam(data));*/
     }
 }

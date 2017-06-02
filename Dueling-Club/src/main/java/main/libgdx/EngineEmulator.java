@@ -4,33 +4,35 @@ import main.libgdx.screens.MainMenuScreenData;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
 import main.system.EngineEventManager;
+import main.system.EngineEventType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import static main.system.GuiEventType.SCREEN_LOADED;
+import static main.system.GuiEventType.SWITCH_SCREEN;
 
 public class EngineEmulator {
     ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     private boolean isFirstRun = true;
 
     public EngineEmulator() {
-/*        EngineEventManager.bind(EngineEventType.SWITCH_SCREEN, obj -> {
+        EngineEventManager.bind(EngineEventType.LOAD_GAME, obj -> {
+            ScreenData screenData = new ScreenData(((ScreenData) obj.get()), IntroSceneFactory::getDemoIntro);
+            GuiEventManager.trigger(SWITCH_SCREEN, screenData);
             executorService.schedule(() ->
-
-                            GuiEventManager.trigger(SCREEN_LOADED, null)
-                    , 1000, TimeUnit.MILLISECONDS);
-        });*/
+                            GuiEventManager.trigger(SCREEN_LOADED, screenData)
+                    , 5000, TimeUnit.MILLISECONDS);
+        });
 
         MainMenuScreenData data = isFirstRun ?
                 new MainMenuScreenData("", IntroSceneFactory::getIntroStage)
                 : new MainMenuScreenData("");
-
-        data.setNewGames(Arrays.asList(new ScreenData(ScreenType.HEADQUARTERS, "demo")));
 
         scheduleLoad(data);
 
@@ -47,14 +49,18 @@ public class EngineEmulator {
         executorService.submit(this::loop);
     }
 
-    private void scheduleLoad(ScreenData meta) {
+    private void scheduleLoad(ScreenData data) {
         executorService.submit(() -> {
             try {
-                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, meta);
-                Thread.sleep(1000);
+                if (data.getType() == ScreenType.MAIN_MENU) {
+                    ((MainMenuScreenData) data).setNewGames(Arrays.asList(new ScreenData(ScreenType.HEADQUARTERS, "demo")));
+                }
+
+                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
+                Thread.sleep(5000);
             } catch (InterruptedException ignored) {
             } finally {
-                GuiEventManager.trigger(SCREEN_LOADED, meta);
+                GuiEventManager.trigger(SCREEN_LOADED, data);
             }
         });
     }
