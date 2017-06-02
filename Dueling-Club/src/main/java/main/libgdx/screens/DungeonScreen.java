@@ -42,7 +42,6 @@ public class DungeonScreen extends ScreenWithLoader {
 
     private TextureRegion backTexture;
     private AnimationEffectStage animationEffectStage;
-    private boolean isIS = false;
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -122,11 +121,6 @@ public class DungeonScreen extends ScreenWithLoader {
 
         //cam.update();
         if (canShowScreen()) {
-            if (!isIS) {
-                updateInputController();
-                isIS = true;
-            }
-
             if (backTexture != null) {
                 guiStage.getBatch().begin();
                 guiStage.getBatch().draw(backTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

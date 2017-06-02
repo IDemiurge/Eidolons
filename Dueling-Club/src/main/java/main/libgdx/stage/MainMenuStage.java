@@ -1,11 +1,11 @@
 package main.libgdx.stage;
 
-import com.badlogic.gdx.Gdx;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.mainmenu.GameLoadingPanel;
 import main.libgdx.gui.panels.mainmenu.NewGamePanel;
 import main.libgdx.gui.panels.mainmenu.OptionsPanel;
 import main.libgdx.gui.panels.mainmenu.StartMenuPanel;
+import main.libgdx.screens.ScreenData;
 
 import java.util.function.Consumer;
 
@@ -40,7 +40,7 @@ public class MainMenuStage extends DataStage {
         switchView(menu);
     }
 
-    public void setLoadGameCallback(Consumer<String> menuCallback) {
+    public void setLoadGameCallback(Consumer<ScreenData> menuCallback) {
         newGame.setStartDemoScenarioCallback(menuCallback);
     }
 
@@ -67,20 +67,20 @@ public class MainMenuStage extends DataStage {
 
     private void recalcPos() {
         menu.setPosition(
-                Gdx.graphics.getWidth() / 2 - menu.getPrefWidth() / 2,
-                Gdx.graphics.getHeight() / 2 - menu.getPrefHeight() / 2
+                -menu.getPrefWidth() / 2,
+                -menu.getPrefHeight() / 2
         );
         options.setPosition(
-                Gdx.graphics.getWidth() / 2 - options.getPrefWidth() / 2,
-                Gdx.graphics.getHeight() / 2 - options.getPrefHeight() / 2
+                -options.getPrefWidth() / 2,
+                -options.getPrefHeight() / 2
         );
         load.setPosition(
-                Gdx.graphics.getWidth() / 2 - load.getPrefWidth() / 2,
-                Gdx.graphics.getHeight() / 2 - load.getPrefHeight() / 2
+                -load.getPrefWidth() / 2,
+                -load.getPrefHeight() / 2
         );
         newGame.setPosition(
-                Gdx.graphics.getWidth() / 2 - newGame.getPrefWidth() / 2,
-                Gdx.graphics.getHeight() / 2 - newGame.getPrefHeight() / 2
+                -newGame.getPrefWidth() / 2,
+                -newGame.getPrefHeight() / 2
         );
     }
 

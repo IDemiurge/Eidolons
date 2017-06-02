@@ -24,6 +24,11 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         if (data.getDialogScenarios().size() > 0) {
             introStage = new ChainedStage(data.getDialogScenarios());
             introStage.setViewport(viewPort);
+            introStage.setOnDoneCallback(() -> {
+                if (hideLoader) {
+                    updateInputController();
+                }
+            });
         }
     }
 
@@ -38,6 +43,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     protected void hideLoader() {
         this.hideLoader = true;
+        if (introStage.isDone()) {
+            updateInputController();
+        }
     }
 
     @Override
@@ -45,14 +53,12 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
-        if (!hideLoader) {
-            loadingStage.act(delta);
-            loadingStage.draw();
-        }
-
         if (introStage != null && !introStage.isDone()) {
             introStage.act(delta);
             introStage.draw();
+        } else if (!hideLoader) {
+            loadingStage.act(delta);
+            loadingStage.draw();
         }
     }
 

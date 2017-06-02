@@ -17,10 +17,10 @@ public class IntroSceneFactory {
     private static final String loremIpsum = "[#FF0000FF]Lorem ipsum[] dolor sit amet, [#00FF00FF]consectetur adipiscing elit[]. [#0000FFFF]Vestibulum faucibus[], augue sit amet porttitor rutrum, nulla eros finibus mauris, nec sagittis mauris nulla et urna. Sed ac orci nec urna ornare aliquam a sit amet neque. Nulla condimentum iaculis dolor, et porttitor dui sollicitudin vel. Fusce convallis fringilla dolor eu mollis. Nam porta augue nec ullamcorper ultricies. Morbi bibendum libero efficitur metus accumsan viverra at ut metus. Duis congue pulvinar ligula, sed maximus tellus lacinia eu.";
 
     public static List<DialogScenario> getIntroStage() {
-        DialogScenario javaScenario = new DialogScenario(500, false, getOrCreateR(javaLogoPath), null, null);
-        DialogScenario libgdxScenario = new DialogScenario(500, false, getOrCreateR(libgdxLogoPath), null, null);
-        DialogScenario introScenario = new DialogScenario(500, false, getOrCreateR(backIntroPath), notSkipableMessage, getOrCreateR(portratePath));
-        DialogScenario introScenario2 = new DialogScenario(500, true, getOrCreateR(backIntroPath), skipableMessage, null);
+        DialogScenario javaScenario = new DialogScenario(1500, false, getOrCreateR(javaLogoPath), null, null);
+        DialogScenario libgdxScenario = new DialogScenario(1500, false, getOrCreateR(libgdxLogoPath), null, null);
+        DialogScenario introScenario = new DialogScenario(1500, false, getOrCreateR(backIntroPath), notSkipableMessage, getOrCreateR(portratePath));
+        DialogScenario introScenario2 = new DialogScenario(1500, true, getOrCreateR(backIntroPath), skipableMessage, null);
 
         return Arrays.asList(javaScenario, libgdxScenario, introScenario, introScenario2);
     }
