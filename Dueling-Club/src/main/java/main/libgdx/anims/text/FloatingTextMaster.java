@@ -61,7 +61,8 @@ public class FloatingTextMaster {
             case COSTS:
                 Cost cost = (Cost) arg;
                 return GdxColorMaster.getParamColor(cost.getPayment().getParamToPay());
-
+            case BATTLE_COMMENT:
+                return GdxColorMaster.GOLDEN_WHITE;
         }
         return Color.RED;
     }
@@ -187,14 +188,27 @@ public class FloatingTextMaster {
     }
 
     private float getDisplacementY(TEXT_CASES aCase) {
+
+        switch (aCase) {
+            case BATTLE_COMMENT:
+                return  0;
+        }
         return DEFAULT_DISPLACEMENT_Y;
     }
 
     private float getDisplacementX(TEXT_CASES aCase) {
+        switch (aCase) {
+            case BATTLE_COMMENT:
+                return  0;
+        }
         return DEFAULT_DISPLACEMENT_X;
     }
 
     private float getDefaultDuration(TEXT_CASES aCase) {
+        switch (aCase) {
+            case BATTLE_COMMENT:
+                return 10;
+        }
         return DEFAULT_DURATION * ConfigMaster.getInstance().getInt(ConfigKeys.FLOATING_TEXT_DURATION);
     }
 
@@ -273,9 +287,10 @@ public class FloatingTextMaster {
             return new Object[]{
              ef.getMode()
             };
-        });
+        }), BATTLE_COMMENT;
         public boolean atOrigin;
         private Producer<Event, Object[]> argProducer;
+
 
         TEXT_CASES() {
 

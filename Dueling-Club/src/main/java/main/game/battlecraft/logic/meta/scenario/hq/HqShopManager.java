@@ -25,7 +25,7 @@ public class HqShopManager extends ShopManager<ScenarioMeta> {
         shops = new LinkedList<>();
 for(String substring: StringMaster.openContainer( getMetaGame().getMission().getPlace(). getProperty(PROPS.PLACE_SHOPS))){
     HqShop shop = new HqShop(DataManager.getType(substring, DC_TYPE.SHOPS));
-
+    shops.add(shop);
 }
     }
 }

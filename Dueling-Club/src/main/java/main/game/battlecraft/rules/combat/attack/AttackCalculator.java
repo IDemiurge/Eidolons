@@ -191,6 +191,7 @@ public AttackCalculator initTarget(Unit target){
             diff = -diff;
         }
         int bonus = Math.round(amount * (mod * diff) / 100);
+        if (CoreEngine.isPhaseAnimsOn())
         if (!precalc) {
             if (bonus != 0) {
                 attack.getAnimation().addPhase(

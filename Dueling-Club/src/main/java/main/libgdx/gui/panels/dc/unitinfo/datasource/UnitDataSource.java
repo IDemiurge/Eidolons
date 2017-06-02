@@ -35,7 +35,7 @@ import static main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster.ge
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class UnitDataSource implements
-        MainParamDataSource, ResourceSource,
+ AttributesDataSource, ResourceSource,
         AvatarDataSource, CounterAndActionPointsSource,
         EffectsAndAbilitiesSource, MainWeaponDataSource<ValueContainer>, OffWeaponDataSource,
         MainAttributesSource, ResistSource, StatsDataSource,

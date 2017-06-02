@@ -84,6 +84,10 @@ public class PathFinder {
         return RES_PATH + "\\text\\";
     }
 
+    public static String getScenariosPath() {
+        init();
+        return RES_PATH + "\\text\\scenario\\";
+    }
     public static String getLogPath() {
         init();
         return getTextPath() + "\\log\\";

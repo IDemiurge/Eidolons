@@ -11,7 +11,7 @@ import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
-import main.content.enums.system.MetaEnums;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -856,16 +856,19 @@ public class ModelManager {
     }
 
     public static void addToWorkspace(boolean alt) {
-        ObjType selectedType = ArcaneVault.getSelectedType();
-        if (alt) {
-            selectedType.setWorkspaceGroup(MetaEnums.WORKSPACE_GROUP.FOCUS);
+        for (ObjType objType : ArcaneVault.getSelectedTypes()) {
+            if (alt) {
+                objType.setWorkspaceGroup(WORKSPACE_GROUP.DEMO);
+            }
+            boolean result = ArcaneVault.getWorkspaceManager().addTypeToActiveWorkspace(
+             objType);
+            if (!result) {
+                ChangeEvent sc = new ChangeEvent(ArcaneVault.getMainBuilder().getTabBuilder()
+                 .getWorkspaceTab().getTabs());
+                ArcaneVault.getMainBuilder().getTabBuilder().stateChanged(sc);
+            }
         }
-        boolean result = ArcaneVault.getWorkspaceManager().addTypeToActiveWorkspace(selectedType);
-        if (!result) {
-            ChangeEvent sc = new ChangeEvent(ArcaneVault.getMainBuilder().getTabBuilder()
-                    .getWorkspaceTab().getTabs());
-            ArcaneVault.getMainBuilder().getTabBuilder().stateChanged(sc);
-        }
+
     }
 
     public static void undo() {

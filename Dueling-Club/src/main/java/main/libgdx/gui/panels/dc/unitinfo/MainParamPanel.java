@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.panels.dc.unitinfo.datasource.MainParamDataSource;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.AttributesDataSource;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
@@ -71,7 +71,7 @@ public class MainParamPanel extends TablePanel {
 
     @Override
     public void updateAct(float delta) {
-        MainParamDataSource source = (MainParamDataSource) getUserObject();
+        AttributesDataSource source = (AttributesDataSource) getUserObject();
 
         strength.updateValue(source.getStrength());
         vitality.updateValue(source.getVitality());

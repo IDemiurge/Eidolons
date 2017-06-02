@@ -92,7 +92,7 @@ public class DefenseVsAttackRule {
 
     // returns true if dodged, false if critical, otherwise null
     public static Boolean checkDodgedOrCrit(Attack attack) {
-        return checkDodgedOrCrit(attack.getAttacker(), attack.getAttackedUnit(), attack.getAction(),
+        return checkDodgedOrCrit(attack.getAttacker(), attack.getAttacked(), attack.getAction(),
          attack.getRef(), attack.isOffhand(), attack.getAnimation());
     }
 

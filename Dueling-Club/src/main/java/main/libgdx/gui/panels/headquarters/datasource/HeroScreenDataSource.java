@@ -7,7 +7,10 @@ import java.util.List;
 /**
  * Created by JustMe on 5/21/2017.
  */
-public interface HeroScreenDataSource {
+public interface HeroScreenDataSource
+// extends ResourceSource
+{
 
-    List<ValueContainer> getMasteryIcons();
+    List<ValueContainer> getUnlockedMasteries();
+    List<ValueContainer> getLockedMasteries();
 }

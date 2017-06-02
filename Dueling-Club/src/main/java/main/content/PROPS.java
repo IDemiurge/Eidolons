@@ -29,6 +29,10 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     SHOP_ITEM_GROUPS("shops", null),
     SHOP_MODIFIER("shops", null),
 
+
+    SHOP_ITEM_MATERIALS("shops", null),
+    SHOP_ITEM_TEMPLATES("shops", null),
+
     PLACE_SHOPS(null,true, "places"),
     PLACE_DUNGEON(null,false, "places"),
     PLACE_COORDINATES(null,false, "places"),

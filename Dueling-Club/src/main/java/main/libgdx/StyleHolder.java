@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.data.filesys.PathFinder;
 import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster.FONT;
 
 import java.io.File;
 import java.util.HashMap;
@@ -22,28 +23,36 @@ public class StyleHolder {
     private static final String DOWN = "_down";
     private static final String UP = "_up";
     private static final String CHECKED = "_down";
+    private static final FONT DEFAULT_FONT = FONT.MAIN;
+    private static final int DEFAULT_SIZE = 14;
     private static Label.LabelStyle defaultLabelStyle;
     private static Label.LabelStyle avqLabelStyle;
-    private static Color defaultColor = new Color(ColorManager.GOLDEN_WHITE.getRGB());
+    private static final Color DEFAULT_COLOR = new Color(ColorManager.GOLDEN_WHITE.getRGB());
     private static TextButton.TextButtonStyle defaultTextButtonStyle;
     private static Map<Color, Label.LabelStyle> colorLabelStyleMap = new HashMap<>();
 
 
     public static Label.LabelStyle getDefaultLabelStyle(Color color) {
         if (!colorLabelStyleMap.containsKey(color)) {
-            Label.LabelStyle style = new Label.LabelStyle(new BitmapFont(), color);
+            Label.LabelStyle style = new Label.LabelStyle
+             (getFont(DEFAULT_FONT, DEFAULT_COLOR, DEFAULT_SIZE ), color);
             style.font.getData().markupEnabled = true;
             colorLabelStyleMap.put(color, style);
         }
         return colorLabelStyleMap.get(color);
     }
+    private static BitmapFont getFont(FONT  font, Color color, int size) {
+        return getFont(font.path, color, size);
+    }
 
-    private static BitmapFont getDiablo2Font(Color color) {
-        final String path = PathFinder.getFontPath() + "/DIABLO_H.ttf";
+        private static BitmapFont getFont(String fontpath, Color color, int size) {
+        final String path = PathFinder.getFontPath() +fontpath;
 
         final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(new FileHandle(path));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter =
+         new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.color = color;
+        parameter.size = size;
 
         final BitmapFont bitmapFont = generator.generateFont(parameter);
         generator.dispose();
@@ -51,7 +60,7 @@ public class StyleHolder {
     }
 
     public static Label.LabelStyle getDefaultLabelStyle() {
-        return getDefaultLabelStyle(defaultColor);
+        return getDefaultLabelStyle(DEFAULT_COLOR);
     }
 
     public static Label.LabelStyle getAVQLabelStyle() {
@@ -61,7 +70,7 @@ public class StyleHolder {
 //              PathFinder.getFontPath()+ FONT.AVQ.path
 //             )
             ),
-                    defaultColor);
+             DEFAULT_COLOR);
         }
         return avqLabelStyle;
     }
@@ -70,8 +79,8 @@ public class StyleHolder {
         if (defaultTextButtonStyle == null) {
             defaultTextButtonStyle = new TextButton.TextButtonStyle();
             defaultTextButtonStyle.font = new BitmapFont();
-            defaultTextButtonStyle.fontColor = defaultColor;
-            defaultTextButtonStyle.overFontColor = new Color(defaultColor).add(50, 50, 50, 0);
+            defaultTextButtonStyle.fontColor = DEFAULT_COLOR;
+            defaultTextButtonStyle.overFontColor = new Color(DEFAULT_COLOR).add(50, 50, 50, 0);
             defaultTextButtonStyle.checkedFontColor = new Color(0xFF_00_00_FF);
         }
 

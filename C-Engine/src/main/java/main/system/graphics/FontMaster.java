@@ -238,7 +238,8 @@ public class FontMaster {
         SC( "/Starcraft.ttf"),
         DARK( "/Dark.ttf"),
         NYALA( "/nyala.ttf"),
-        MAIN( "/main.otf");
+        MAIN( "/main.otf"),
+        ;
         public Font font;
         public   String path;
         FONT(  String path) {

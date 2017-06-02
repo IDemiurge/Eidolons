@@ -17,6 +17,10 @@ public class BattleHandler<E extends Battle> {
         this.game = master.getGame();
     }
 
+    public DC_Game getGame() {
+        return game;
+    }
+
     public BattleMaster<E> getMaster() {
         return master;
     }

@@ -12,4 +12,7 @@ public class ScriptSyntax {
     public static final String SCRIPTS_SEPARATOR_ALT = " & ";
     public static final String SCRIPT_ARGS_SEPARATOR = ",";
     public static final String PART_SEPARATOR = ">";
+    public static final String COMMENT_OPEN = "***";
+    public static final String COMMENT_CLOSE = "###";
+    public static final String SPAWN_POINT ="point" ;
 }

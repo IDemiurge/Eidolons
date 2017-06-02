@@ -41,6 +41,9 @@ public class FileManager {
 
     public static String readFile(File file, String lineSeparator) {
         if (!isFile(file)) {
+            if (!file.getPath().contains(PathFinder.getEnginePath()))
+                return readFile(new File(PathFinder.getEnginePath() + file.getPath()),
+                 lineSeparator);
             return "";
         }
 
@@ -258,7 +261,7 @@ public class FileManager {
         String name = StringMaster.cropFormat(fileName);
         if (name.lastIndexOf(getFileVersionSeparator()) > 0) {
             if (StringMaster.isInteger(name.substring(
-                    name.lastIndexOf(getFileVersionSeparator()), name.length() - 1
+             name.lastIndexOf(getFileVersionSeparator()), name.length() - 1
             ))) {
                 name = name.substring(0, name.lastIndexOf(getFileVersionSeparator()));
             }
@@ -370,13 +373,14 @@ public class FileManager {
         return true;
     }
 
-//    public static List<String> listFiles(File file, boolean allowDirs) {
+    //    public static List<String> listFiles(File file, boolean allowDirs) {
 //        return getFileNames(getFilesFromDirectory(file.getPath(), allowDirs));
 //    }
     public static List<String> listFiles(File file) {
         return getFileNames(getFilesFromDirectory(file.getPath(), true));
     }
-        public static List<File> getFilesFromDirectory(String path, boolean allowDirectories) {
+
+    public static List<File> getFilesFromDirectory(String path, boolean allowDirectories) {
         return getFilesFromDirectory(path, allowDirectories, false);
     }
 

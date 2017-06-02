@@ -28,10 +28,19 @@ public class ScriptParser {
         return null;
     }
 
-    public static EVENT_TYPE parseEvent(String eventPart) {
+    public static STANDARD_EVENT_TYPE getEventByShortcut(String text) {
+        SCRIPT_EVENT_SHORTCUT shortcut =
+         new EnumMaster<SCRIPT_EVENT_SHORTCUT>().
+          retrieveEnumConst(SCRIPT_EVENT_SHORTCUT.class, text);
+        return shortcut.event_type;
+    }
 
-        EVENT_TYPE eventType = new EnumMaster<STANDARD_EVENT_TYPE>().retrieveEnumConst(STANDARD_EVENT_TYPE.class, eventPart);
+    public static EVENT_TYPE parseEvent(String eventPart) {
+        EVENT_TYPE eventType = getEventByShortcut(eventPart);
         if (eventType != null) return eventType;
+         eventType = new EnumMaster<STANDARD_EVENT_TYPE>().retrieveEnumConst(STANDARD_EVENT_TYPE.class, eventPart);
+        if (eventType != null) return eventType;
+
         return STANDARD_EVENT_TYPE.GAME_STARTED;
     }
 
@@ -54,17 +63,17 @@ public class ScriptParser {
         Ref ref = new Ref(game); // TODO Global
         script = StringMaster.getLastPart(script, ScriptSyntax.PART_SEPARATOR);
         String funcPart = VariableManager.removeVarPart(script);
-       @Refactor
+        @Refactor
         //TODO this won't work in generic way!!!!
-        MISSION_SCRIPT_FUNCTION func = new EnumMaster<MISSION_SCRIPT_FUNCTION>().retrieveEnumConst
+         MISSION_SCRIPT_FUNCTION func = new EnumMaster<MISSION_SCRIPT_FUNCTION>().retrieveEnumConst
          (MISSION_SCRIPT_FUNCTION.class, funcPart);
         if (func != null) {
             //TODO for multiple scripts, need another SEPARATOR!
-            String separator=  executor.getSeparator(func);
+            String separator = executor.getSeparator(func);
             List<String> strings =
              StringMaster.openContainer(VariableManager.getVars(script),
               separator);
-            String[] args = strings.toArray(new String[strings.size()]); 
+            String[] args = strings.toArray(new String[strings.size()]);
             abilities = new AbilityImpl() {
                 @Override
                 public boolean activatedOn(Ref ref) {
@@ -74,7 +83,7 @@ public class ScriptParser {
                 }
             };
         } else {
-            abilities= AbilityConstructor.getAbilities(script, ref);
+            abilities = AbilityConstructor.getAbilities(script, ref);
             if (abilities.getEffects().getEffects().isEmpty()) {
                 main.system.auxiliary.log.LogMaster.log(1, "SCRIPT NOT FOUND: " + funcPart);
                 return null;
@@ -84,5 +93,15 @@ public class ScriptParser {
         ScriptTrigger trigger = new ScriptTrigger(originalText, event_type, condition, abilities);
         trigger.setRemoveAfterTriggers(isRemove);
         return trigger;
+    }
+
+    public enum SCRIPT_EVENT_SHORTCUT {
+        ROUND(STANDARD_EVENT_TYPE.NEW_ROUND), DIES(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED),
+        ENTERS(STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED), ENGAGED(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ENGAGED),;
+        STANDARD_EVENT_TYPE event_type;
+
+        SCRIPT_EVENT_SHORTCUT(STANDARD_EVENT_TYPE event_type) {
+            this.event_type = event_type;
+        }
     }
 }

@@ -1276,4 +1276,19 @@ public class Unit extends DC_UnitModel {
     public void setRangedWeapon(DC_WeaponObj rangedWeapon) {
         this.rangedWeapon = rangedWeapon;
     }
+
+    @Override
+    public String toString() {
+        String prefix = "";
+        if (getOwner() != DC_Player.NEUTRAL) {
+            if (isAiControlled())
+                prefix = isMine() ? "Allied " : "Enemy ";
+        }
+        if (isDead()) {
+            prefix += "(Dead) ";
+        }
+        return prefix + getName() + (game.isDebugMode()  ? " at " + getCoordinates()
+         : "") ;
+    }
+
 }

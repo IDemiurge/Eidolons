@@ -56,6 +56,13 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     }
 
     @Override
+    public String toString() {
+        if (getGame().isDebugMode())
+        return super.toString();
+        return getName();
+    }
+
+    @Override
     public boolean kill(Entity killer, boolean leaveCorpse, Boolean quietly) {
         if (isDead()) {
             return false;

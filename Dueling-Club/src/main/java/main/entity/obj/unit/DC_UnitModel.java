@@ -115,17 +115,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return super.getImagePath();
     }
 
-    @Override
-    public String toString() {
-        String prefix = "";
-        if (getOwner() != DC_Player.NEUTRAL) {
-            prefix = isMine() ? "My " : "Enemy ";
-        }
-        if (isDead()) {
-            prefix += "(Dead)";
-        }
-        return prefix + super.toString() + " at " + getCoordinates();
-    }
+
 
     @Override
     public String getToolTip() {

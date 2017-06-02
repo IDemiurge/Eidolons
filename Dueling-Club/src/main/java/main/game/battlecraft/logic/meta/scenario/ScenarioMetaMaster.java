@@ -8,6 +8,7 @@ import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
+import main.game.battlecraft.logic.meta.scenario.hq.HqShopManager;
 import main.game.battlecraft.logic.meta.universal.*;
 import main.game.core.game.ScenarioGame;
 
@@ -31,7 +32,6 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
         > create dungeon(s)
         > create party units (maybe  place them at once)
          */
-
     @Override
     public void gameStarted() {
 //        scenario.getScenario().
@@ -77,8 +77,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
 
     @Override
     protected ShopManager<ScenarioMeta> createShopManager() {
-//        return new Scenariosh;
-        return null;
+        return new HqShopManager(this);
     }
 
     public DialogueActorMaster getDialogueActorMaster() {

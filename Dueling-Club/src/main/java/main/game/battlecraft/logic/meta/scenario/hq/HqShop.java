@@ -7,11 +7,10 @@ import main.content.CONTENT_CONSTS2.SHOP_TYPE;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
+import main.content.PROPS;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
-import main.content.values.parameters.MACRO_PARAMS;
-import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.elements.conditions.PropCondition;
@@ -25,17 +24,17 @@ import main.system.auxiliary.StringMaster;
 import main.system.entity.FilterMaster;
 import main.system.math.MathMaster;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+
 /**
  * Created by JustMe on 5/22/2017.
  */
-public class HqShop extends LightweightEntity implements ShopInterface{
+public class HqShop extends LightweightEntity implements ShopInterface {
 
-    private static final int MAX_ITEM_GROUPS =6 ;
+    private static final int MAX_ITEM_GROUPS = 6;
     List<ObjType> items;
     private SHOP_TYPE shopType;
     private SHOP_LEVEL shopLevel;
@@ -46,11 +45,12 @@ public class HqShop extends LightweightEntity implements ShopInterface{
 
     public HqShop(ObjType type) {
         super(type);
+        initItems();
     }
 
     @Override
     public List<String> getTabs() {
-        return  StringMaster.openContainer(getProperty(MACRO_PROPS.SHOP_ITEM_GROUPS) );
+        return StringMaster.openContainer(getProperty(PROPS.SHOP_ITEM_GROUPS));
     }
 
     @Override
@@ -62,10 +62,10 @@ public class HqShop extends LightweightEntity implements ShopInterface{
     // why not OBJECTS? is it hard? is it better?
     @Override
     public List<String> getItems(String groupList) {
-        if (isFullRepertoire()){
+        if (isFullRepertoire()) {
             //filters!
         }
-         List<String> list = new LinkedList<>();
+        List<String> list = new LinkedList<>();
         for (DC_TYPE TYPE : C_OBJ_TYPE.ITEMS.getTypes()) {
             List<ObjType> items = getItems(TYPE);
             items.removeIf(item -> item == null);
@@ -77,9 +77,10 @@ public class HqShop extends LightweightEntity implements ShopInterface{
     }
 
     public List<ObjType> getItems(DC_TYPE TYPE) {
-        return DataManager.toTypeList(StringMaster.openContainer(getProperty(MACRO_PROPS.SHOP_ITEMS)),
-         TYPE) ;
+        return DataManager.toTypeList(StringMaster.openContainer(getProperty(PROPS.SHOP_ITEMS)),
+         TYPE);
     }
+
     private boolean isFullRepertoire() {
         return false;
     }
@@ -90,10 +91,7 @@ public class HqShop extends LightweightEntity implements ShopInterface{
     }
 
 
-
-
     //                                  <><><><><>
-
 
 
     public void sellItem(ObjType t, int price) {
@@ -135,46 +133,41 @@ public class HqShop extends LightweightEntity implements ShopInterface{
 //    @Override
 //    public void toBase() {
 //        super.toBase();
-//        setProperty(MACRO_PROPS.SHOP_ITEMS,
+//        setProperty(PROPS.SHOP_ITEMS,
 //         StringMaster.constructContainer(DataManager
 //          .toStringList(getItems())));
 //
 //    }
 
+    private boolean isRandomized() {
+        return false;
+    }
+
+    private boolean isPreset() {
+        return false;
+    }
+
     private void initItems() {
-        if (!getProperty(MACRO_PROPS.SHOP_ITEMS).isEmpty()) {
-            DataManager.toTypeList(StringMaster
-              .openContainer(getProperty(MACRO_PROPS.SHOP_ITEMS)),
-             C_OBJ_TYPE.ITEMS);
-        }
-        if (getIntParam(PARAMS.GOLD) == 0) {
-            setParam(PARAMS.GOLD, ShopMaster.getBaseGold(this));
-        }
-        if (getIntParam(PARAMS.GOLD_MOD) == 0) {
-            setParam(PARAMS.GOLD_MOD, ShopMaster.getBaseGoldCostMod(this), true);
-        }
-        if (getIntParam(MACRO_PARAMS.SHOP_INCOME) == 0) {
-            setParam(MACRO_PARAMS.SHOP_INCOME,
-             ShopMaster.getBaseGoldIncome(this), true);
-        }
+
         items = new LinkedList<>();
+        if (isPreset()) {
+            items = DataManager.toTypeList(StringMaster
+              .openContainer(getProperty(PROPS.SHOP_ITEMS)),
+             C_OBJ_TYPE.ITEMS);
+                return;
+        }
+        List<ObjType> templates = DataManager.toTypeList(StringMaster
+          .openContainer(getProperty(PROPS.SHOP_ITEM_TEMPLATES)),
+         C_OBJ_TYPE.ITEMS);
+        items = getItemsFromTemplates(templates);
+
+        if (getShopType()==null )
+            return;
         // addStandardItems(); then randomize
         PROPERTY prop = getShopType().getFilterProp();
         int i = 0;
-
         String[] item_groups = getShopType().getItem_groups();
-        // Up to 4 item groups!
-        if (item_groups.length > MAX_ITEM_GROUPS) {
-            List<String> list = new LinkedList<>(Arrays.asList(item_groups));
-            item_groups = new String[MAX_ITEM_GROUPS];
-            int j = 0;
-            while (j < MAX_ITEM_GROUPS) {
-                String e = list.get(RandomWizard.getRandomListIndex(list));
-                list.remove(e);
-                item_groups[j] = e;
-                j++;
-            }
-        }
+
         for (String group : item_groups) {
             List<ObjType> pool;
             if (prop == null) {
@@ -190,6 +183,13 @@ public class HqShop extends LightweightEntity implements ShopInterface{
             pool.addAll(getSpecialItems(group));
 
             i++;
+            if (!isRandomized()) {
+                for (ObjType item : pool) {
+                    buyItem(item, 0);
+                }
+//buyAll();
+                continue;
+            }
             goldToSpend = (100 - spareGold - i * 5) / item_groups.length; //
             // some params from Shop ObjType?
             Loop.startLoop(ShopMaster.getMaxItemsPerGroup(this));
@@ -206,13 +206,30 @@ public class HqShop extends LightweightEntity implements ShopInterface{
         }
     }
 
+
     // generateCustomItems(); randomly based on the repertoire spectrum
 
     private Collection<? extends ObjType> getSpecialItems(String group) {
         List<ObjType> list = new LinkedList<>();
-        // getProperty(MACRO_PROPS.shop_special_items);
+        // getProperty(PROPS.shop_special_items);
         // if (t.getp).equals(group) list.add(t);
         return list;
+    }
+
+    private List<ObjType> getItemsFromTemplates(List<ObjType> templates) {
+        List<ObjType> generated = new LinkedList<>();
+        for (ObjType t : templates) {
+            for (MATERIAL material : ItemEnums.MATERIAL.values()) {
+                for (QUALITY_LEVEL q : ShopMaster.getQualityLevels(this)) {
+                    if (!ShopMaster.checkMaterialAllowed(this, material)) {
+                        continue;
+                    }
+                    generated.add(ItemGenerator.getGeneratedItem(t,
+                     material, q));
+                }
+            }
+        }
+        return generated;
     }
 
     private List<ObjType> constructPool(List<ObjType> pool) {
@@ -238,28 +255,31 @@ public class HqShop extends LightweightEntity implements ShopInterface{
 
         return filtered;
     }
-@Override
+
+    @Override
     public SHOP_TYPE getShopType() {
         if (shopType == null) {
             shopType = new EnumMaster<SHOP_TYPE>().retrieveEnumConst(
-             SHOP_TYPE.class, getProperty(MACRO_PROPS.SHOP_TYPE));
+             SHOP_TYPE.class, getProperty(PROPS.SHOP_TYPE));
         }
         return shopType;
     }
+
     @Override
     public SHOP_LEVEL getShopLevel() {
         if (shopLevel == null) {
             shopLevel = new EnumMaster<SHOP_LEVEL>().retrieveEnumConst(
-             SHOP_LEVEL.class, getProperty(MACRO_PROPS.SHOP_LEVEL));
+             SHOP_LEVEL.class, getProperty(PROPS.SHOP_LEVEL));
         }
         return shopLevel;
     }
+
     @Override
     public SHOP_MODIFIER getShopModifier() {
         if (shopModifier == null) {
             shopModifier = new EnumMaster<SHOP_MODIFIER>()
              .retrieveEnumConst(SHOP_MODIFIER.class,
-              getProperty(MACRO_PROPS.SHOP_MODIFIER));
+              getProperty(PROPS.SHOP_MODIFIER));
         }
         return shopModifier;
     }

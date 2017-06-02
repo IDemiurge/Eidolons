@@ -1,6 +1,6 @@
 package main.libgdx.gui.panels.dc.unitinfo.datasource;
 
-public interface MainParamDataSource {
+public interface AttributesDataSource {
     String getStrength();
 
     String getVitality();
