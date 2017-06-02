@@ -6,8 +6,6 @@ import main.data.DataManager;
 import main.game.battlecraft.logic.battle.mission.MissionBattleMaster;
 import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
-import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
-import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import main.game.battlecraft.logic.meta.scenario.hq.HqShopManager;
 import main.game.battlecraft.logic.meta.universal.*;
 import main.game.core.game.ScenarioGame;
@@ -17,14 +15,8 @@ import main.game.core.game.ScenarioGame;
  */
 public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
 
-    DialogueManager dialogueManager;
-    DialogueActorMaster dialogueActorMaster;
     public ScenarioMetaMaster(String data) {
         super(data);
-        dialogueManager = new DialogueManager(this);
-        dialogueActorMaster = new DialogueActorMaster(this);
-        getDialogueFactory().init(this);
-        getIntroFactory().init(this);
     }
     /*
         on clicking a mission...
@@ -33,7 +25,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
         > create party units (maybe  place them at once)
          */
     @Override
-    public void gameStarted() {
+    public void preStart() {
 //        scenario.getScenario().
        String missionName= getPartyManager().getParty().getNextMission();
 
@@ -42,7 +34,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
         getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,
          levelPath);
 
-        super.gameStarted();
+        super.preStart();
     }
 
     public   void loadMission(String data){
@@ -80,16 +72,9 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
         return new HqShopManager(this);
     }
 
-    public DialogueActorMaster getDialogueActorMaster() {
-        return dialogueActorMaster;
-    }
-
     @Override
     protected MetaInitializer<ScenarioMeta> createMetaInitializer() {
         return new ScenarioInitializer(this);
-    }
-    public DialogueManager getDialogueManager() {
-        return dialogueManager;
     }
 
 
@@ -101,5 +86,9 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
     @Override
     public LocationMaster getDungeonMaster() {
         return (LocationMaster) super.getDungeonMaster();
+    }
+
+    public String getMissionName() {
+        return getPartyManager().getParty().getMission();
     }
 }

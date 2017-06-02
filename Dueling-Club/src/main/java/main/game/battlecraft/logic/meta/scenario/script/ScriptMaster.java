@@ -2,11 +2,7 @@ package main.game.battlecraft.logic.meta.scenario.script;
 
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.FileManager;
-import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;
 
 /**
  * Created by JustMe on 5/31/2017.
@@ -26,24 +22,15 @@ public class ScriptMaster {
     }
 
     public static  String getScriptByName(String name, boolean variables, String... vars) {
-        // use some official data format already!!!
-        String text = null;
-        FileManager.readFile(generated_scripts_path);
-        VariableManager.getVarText(text, true, true, vars);
+        //TODO  use some official data format already!!!
+//        String text = null;
+//        FileManager.readFile(generated_scripts_path);
+//        VariableManager.getVarText(text, true, true, vars);
         return name;
     }
 
     public void generateScripts() {
         //from missions? use ^VARs?
-    }
-
-    public CONDITION_TEMPLATES getDefaultConditionForEvent(STANDARD_EVENT_TYPE event_type) {
-        switch (event_type) {
-            case ROUND_ENDS:
-            case NEW_ROUND:
-                return CONDITION_TEMPLATES.NUMERIC_EQUAL;
-        }
-        return null;
     }
 
 

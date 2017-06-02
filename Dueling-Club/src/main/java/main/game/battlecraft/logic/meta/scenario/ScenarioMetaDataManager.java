@@ -9,4 +9,13 @@ public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
     public ScenarioMetaDataManager(ScenarioMetaMaster scenarioMetaMaster) {
         super(scenarioMetaMaster);
     }
+
+    public String getDataPath() {
+        return getMaster().  getBattleMaster().getMissionResourceFolderPath() ;
+    }
+
+    @Override
+    public  ScenarioMetaMaster  getMaster() {
+        return (ScenarioMetaMaster) super.getMaster();
+    }
 }

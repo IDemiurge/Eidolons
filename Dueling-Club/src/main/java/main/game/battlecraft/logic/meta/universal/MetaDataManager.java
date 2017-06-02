@@ -7,4 +7,8 @@ public class MetaDataManager <E extends MetaGame> extends MetaGameHandler<E> {
     public MetaDataManager(MetaGameMaster master) {
         super(master);
     }
+
+    public String getDataPath() {
+        return null ;
+    }
 }

@@ -86,7 +86,6 @@ public abstract class GameManager implements GenericGameManager {
 
     public void infoSelect(Obj obj) {
         setSelectedInfoObj(obj);
-        dataChanged();
 
     }
 
@@ -218,11 +217,7 @@ public abstract class GameManager implements GenericGameManager {
         }
     }
 
-    public void dataChanged() {
-        if (getGame().getGui() != null) {
-            getGame().getGui().dataChanged();
-        }
-    }
+
 
     public boolean handleEvent(Event event) {
         if (event.getRef().getEffect() != null) {

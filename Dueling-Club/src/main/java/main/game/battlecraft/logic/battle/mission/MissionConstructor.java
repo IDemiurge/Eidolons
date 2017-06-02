@@ -17,14 +17,15 @@ public class MissionConstructor extends BattleConstructor<MissionBattle> {
     @Override
     public void init() {
 //        ScenarioMeta meta = (ScenarioMeta) getMaster().getMetaMaster().getMetaGame();
-        String name = getMaster().getMetaMaster().getPartyManager().getParty().getMission();
+        String name = getMaster().getMetaMaster().getMissionName();
 //         StringMaster.openContainer(
 //         meta.getScenario().getProperty(PROPS.SCENARIO_MISSIONS)).get(index);
         ObjType type= DataManager.getType(name, DC_TYPE.MISSIONS);
-        Mission mission = new Mission(type, getMaster());
+        Mission mission = new Mission(type, getMaster().getMetaMaster().getMetaGame().getScenario() );
+
         getBattle().setMission(mission);
 
-        getMaster().getScriptManager().createMissionTriggers();
+        getMaster().getScriptManager().init();
 
     }
 

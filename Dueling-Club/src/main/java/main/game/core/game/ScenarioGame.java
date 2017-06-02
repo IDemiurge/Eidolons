@@ -17,6 +17,16 @@ public class ScenarioGame extends DC_Game {
     }
 
     @Override
+    public MissionBattleMaster getBattleMaster() {
+        return (MissionBattleMaster) super.getBattleMaster();
+    }
+
+    @Override
+    public ScenarioMetaMaster getMetaMaster() {
+        return (ScenarioMetaMaster) super.getMetaMaster();
+    }
+
+    @Override
     public void start(boolean first) {
         simulation=false;
         super.start(first);

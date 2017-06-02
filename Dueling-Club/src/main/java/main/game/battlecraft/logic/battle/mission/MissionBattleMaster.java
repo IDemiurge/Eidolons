@@ -1,17 +1,15 @@
 package main.game.battlecraft.logic.battle.mission;
 
-import main.data.filesys.PathFinder;
 import main.game.battlecraft.logic.battle.universal.*;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.core.game.DC_Game;
-import main.system.auxiliary.StringMaster;
 
 /**
  * Created by JustMe on 5/8/2017.
  */
 public class MissionBattleMaster extends BattleMaster<MissionBattle> {
 
-    MissionScriptManager scriptManager;
+    MissionScriptExecutor scriptManager;
 
     public MissionBattleMaster(DC_Game game) {
         super(game);
@@ -20,9 +18,7 @@ public class MissionBattleMaster extends BattleMaster<MissionBattle> {
     }
 
     public String getMissionResourceFolderPath() {
-        return StringMaster.buildPath(PathFinder.getScenariosPath()  ,
-         getMetaMaster().getMetaGame().getScenario().getName(),
-         getBattle().getMission().getName());
+        return getBattle().getMission().getMissionResourceFolderPath() ;
 
     }
 
@@ -31,11 +27,11 @@ public class MissionBattleMaster extends BattleMaster<MissionBattle> {
         return (ScenarioMetaMaster) super.getMetaMaster();
     }
 
-    private MissionScriptManager createScriptManager() {
-        return new MissionScriptManager(this);
+    protected MissionScriptExecutor createScriptManager() {
+        return new MissionScriptExecutor(this);
     }
 
-    public MissionScriptManager getScriptManager() {
+    public MissionScriptExecutor getScriptManager() {
         return scriptManager;
     }
 
@@ -68,4 +64,6 @@ public class MissionBattleMaster extends BattleMaster<MissionBattle> {
     protected BattleOptionManager createOptionManager() {
         return new MissionOptionManager(this);
     }
+
+
 }

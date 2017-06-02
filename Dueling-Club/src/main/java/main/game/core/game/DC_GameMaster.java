@@ -246,7 +246,9 @@ public class DC_GameMaster extends GameMaster {
             }
         }
     }
-
+    public Unit getUnitByName(String arg, Ref ref){
+        return getUnitByName(arg, ref, null, null, null);
+    }
     public Unit getUnitByName(String arg, Ref ref
      , Boolean ally_or_enemy_only, Boolean distanceSort, Boolean powerSort
     ) {

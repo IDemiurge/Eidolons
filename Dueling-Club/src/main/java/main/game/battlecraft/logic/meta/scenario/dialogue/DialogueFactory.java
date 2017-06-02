@@ -1,11 +1,13 @@
 package main.game.battlecraft.logic.meta.scenario.dialogue;
 
-import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
-import main.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
 import main.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
+import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import main.game.core.Eidolons;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.math.MathMaster;
+import main.system.text.TextMaster;
+import main.system.util.Refactor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,53 +20,55 @@ public class DialogueFactory {
     //***Tavern Chat>3>4***Another Chat>5>10 ...
     public static final String DIALOGUE_SEPARATOR = "***";
     public static final String ID_SEPARATOR = ">";
-    public  Map<String, GameDialogue> map = new HashMap<>();
+    private static final String FILE_NAME = "linear dialogues.txt";
+    public Map<String, GameDialogue> map = new HashMap<>();
+    protected MetaGameMaster master;
 
 
-
-        public  void constructDialogues
-         (String path, ScenarioMetaMaster master ) {
-          String  data = FileManager.readFile(path);
+    public void constructDialogues
+     (String path) {
+        String data = FileManager.readFile(path);
         for (String contents : StringMaster.openContainer(
-       data, DIALOGUE_SEPARATOR)) {
+         data, DIALOGUE_SEPARATOR)) {
             String[] array = contents.split(ID_SEPARATOR);
             String name = array[0];
             int firstId = StringMaster.getInteger(array[1]);
             int lastId = StringMaster.getInteger(array[2]);
             List<Integer> ids = MathMaster.getIntsInRange(firstId, lastId);
-            GameDialogue dialogue = createDialogue(StringMaster.joinList(ids), master);
+            GameDialogue dialogue = createDialogue(StringMaster.joinList(ids));
             map.put(name, dialogue);
 
         }
 
 
     }
-    //scenario path?
-public void init(ScenarioMetaMaster master){
-        //shouldn't do all at once, be lazy or on target
-     constructDialogues(getFilePath(), master);
-//IDEA - just different files, that's it.
-    // lines? perhaps id space will be unique for each mission!
-    // pathing will be synced with scenario-mission
 
-}
+    public void init(MetaGameMaster master) {
+        this.master = master;
+        constructDialogues(getFilePath());
+    }
 
     protected String getFilePath() {
-       return  DialogueLineFormatter.getLinearDialoguesFilePath();
+        return
+         StringMaster.buildPath(
+         master.getMetaDataManager().getDataPath()
+         , TextMaster.getLocale(),
+         StringMaster.getPathSeparator()+ getFileName());
+    }
+    protected String getFileName() {
+        return FILE_NAME;
     }
 
-    public GameDialogue getDialogue
-     (String name) {
-        return    map.get(name);
+    @Refactor
+    public GameDialogue getDialogue(String name) {
+        if (map.isEmpty())
+            init(Eidolons.game.getMetaMaster());
+        return map.get(name);
     }
 
 
-    public  LinearDialogue createDialogue
-     (String idSequence, ScenarioMetaMaster master) {
-        //ids also are supposed to be built linearly, right?
-
-        //build Speech objects!
-//        List<Speech> speechSequence = new LinkedList<>();
+    public LinearDialogue createDialogue
+     (String idSequence) {
         Speech parent = null;
         Speech root = null;
         for (String ID : StringMaster.openContainer(idSequence)) {
@@ -83,7 +87,7 @@ public void init(ScenarioMetaMaster master){
     }
 
     protected Speech getSpeech(Integer integer) {
-      return   new Speech(integer);
+        return new Speech(integer);
     }
 
 //    public  GameDialogue getDialogue(String data, ScenarioMetaMaster master) {

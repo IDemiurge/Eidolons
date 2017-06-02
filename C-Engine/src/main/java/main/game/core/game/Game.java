@@ -19,14 +19,12 @@ import main.game.core.state.GameState;
 import main.game.logic.battle.turn.TurnManager;
 import main.game.logic.event.Event;
 import main.game.logic.generic.ActionManager;
-import main.swing.generic.components.GameGUI;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Log;
 import main.system.entity.ConditionMaster;
 import main.system.entity.IdManager;
 import main.system.entity.ValueHelper;
 import main.system.math.MathMaster;
-import main.system.net.Communicator;
 import main.system.text.LogManager;
 
 import javax.swing.*;
@@ -36,34 +34,29 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public abstract class Game  implements Serializable { // extends Entity? ;) Props
-    // and params
+public abstract class Game  implements Serializable {
     public static Game game;
     protected GameMaster master;
-    protected boolean offline = true;
-    protected boolean initialized = false;
-    protected boolean started = false;
     protected GameState state;
     protected IdManager idManager;
-    protected boolean debugMode;
     protected GameManager manager;
-    protected Communicator communicator;
-    protected MovementManager movementManager;
-    protected Log log;
+
     protected MathMaster mathManager;
-    protected BfAnalyzer analyzer;
-    protected ActionManager actionManager;
-    protected TurnManager turnManager;
     protected EffectManager effectManager;
-    protected GraveyardManager graveyardManager;
+
+    protected ConditionMaster conditionMaster;
     protected RequirementsManager requirementsManager;
     protected ValueManager valueManager;
     protected ValueHelper valueHelper;
-    protected boolean simulation;
     // private Obj hero;
     protected LogManager logManager;
-    protected ConditionMaster conditionMaster;
-    private GameGUI Gui;
+    protected Log log;
+
+    protected boolean simulation;
+    protected boolean debugMode;
+    protected boolean offline = true;
+    protected boolean initialized = false;
+    protected boolean started = false;
     private boolean running;
     private boolean dummyMode;
     private boolean cloningMode;
@@ -140,13 +133,11 @@ public abstract class Game  implements Serializable { // extends Entity? ;) Prop
     public abstract void start(boolean host);
 
     public ActionManager getActionManager() {
-        return actionManager;
+        return null ;
     }
 
 
-    public MovementManager getMovementManager() {
-        return movementManager;
-    }
+
 
 
     public Log getLog() {
@@ -163,12 +154,9 @@ public abstract class Game  implements Serializable { // extends Entity? ;) Prop
     }
 
     public BfAnalyzer getAnalyzer() {
-        return analyzer;
+        return null ;
     }
 
-    public void setAnalyzer(BfAnalyzer analyzer) {
-        this.analyzer = analyzer;
-    }
 
     public GameManager getManager() {
         return manager;
@@ -178,13 +166,6 @@ public abstract class Game  implements Serializable { // extends Entity? ;) Prop
         this.manager = gameManager;
     }
 
-    public GameGUI getGui() {
-        return Gui;
-    }
-
-    public void setGui(GameGUI gui) {
-        Gui = gui;
-    }
 
     public ObjType getTypeById(Integer id) {
         return getMaster().getTypeById(id);
@@ -238,38 +219,25 @@ public abstract class Game  implements Serializable { // extends Entity? ;) Prop
         }
         type.setId(idManager.getNewTypeId());
         getState().getTypeMap().put(type.getId(), type);
-        // LogMaster.log(1, type + " with id: " + type.getId());
-        // LogMaster.logToFile(type + " with id: " + type.getId(), null, true);
-        // if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.CHARS
-        // || type.getOBJ_TYPE_ENUM() == OBJ_TYPES.PARTY
-        // || C_OBJ_TYPE.ITEMS.equals(type.getOBJ_TYPE_ENUM()))
-        // LogMaster.log(0, type + " initialized for " + this + " with id: "
-        // + type.getId());
         type.setGame(this);
         type.setRef(new Ref(this, type.getId()));
         state.getTypeMap().put(type.getId(), type);
         type.setInitialized(true);
     }
-
+    public MovementManager getMovementManager() {
+        return null ;
+    }
     public TurnManager getTurnManager() {
-        return turnManager;
+        return null ;
     }
-
-    public void setTurnManager(TurnManager turnManager) {
-        this.turnManager = turnManager;
+    public GraveyardManager getGraveyardManager() {
+        return null ;
     }
-
     public EffectManager getEffectManager() {
         return effectManager;
     }
 
-    public void setEffectManager(EffectManager effectManager) {
-        this.effectManager = effectManager;
-    }
 
-    public GraveyardManager getGraveyardManager() {
-        return graveyardManager;
-    }
 
     public boolean isSimulation() {
         return simulation;

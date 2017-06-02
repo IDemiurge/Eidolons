@@ -8,19 +8,17 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.battle.mission.MissionScriptManager.MISSION_SCRIPT_FUNCTION;
-import main.game.battlecraft.logic.battle.universal.BattleHandler;
+import main.game.battlecraft.logic.battle.mission.MissionScriptExecutor.MISSION_SCRIPT_FUNCTION;
 import main.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
+import main.game.battlecraft.logic.battle.universal.ScriptManager;
 import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import main.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import main.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
-import main.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import main.game.battlecraft.logic.meta.scenario.script.ScriptGenerator;
-import main.game.battlecraft.logic.meta.scenario.script.ScriptParser;
 import main.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
@@ -36,16 +34,17 @@ import main.system.data.DataUnitFactory;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class MissionScriptManager extends BattleHandler<MissionBattle> implements ScriptExecutor<MISSION_SCRIPT_FUNCTION> {
+public class MissionScriptExecutor extends ScriptManager<MissionBattle, MISSION_SCRIPT_FUNCTION>   {
 
 
     List<Trigger> scriptTriggers = new LinkedList<>();
 
-    public MissionScriptManager(BattleMaster<MissionBattle> master) {
+    public MissionScriptExecutor(BattleMaster master) {
         super(master);
     }
 
@@ -56,7 +55,10 @@ public class MissionScriptManager extends BattleHandler<MissionBattle> implement
         //GlobalRef - {party}, {main_hero}, {party_group}, ...
     }
 
-    public void createMissionTriggers() {
+    public void init() {
+        createMissionTriggers();
+    }
+        public void createMissionTriggers() {
         String scripts = getBattle().getMission().getProperty(PROPS.MISSION_SCRIPTS);
         try {
             scripts +=
@@ -67,8 +69,8 @@ public class MissionScriptManager extends BattleHandler<MissionBattle> implement
 
         parseScripts((scripts));
     }
-
-    private String readScriptsFile() {
+@Override
+public String readScriptsFile() {
         String text = FileManager.readFile(
          StringMaster.buildPath(
          getMaster().getMissionResourceFolderPath()
@@ -82,21 +84,14 @@ public class MissionScriptManager extends BattleHandler<MissionBattle> implement
         return (MissionBattleMaster) super.getMaster();
     }
 
-    public void parseScripts(String scripts) {
 
-        //syntax: new_round->equals({amount}, 2)->spawn(Vampires,5-5);
-        for (String script : StringMaster.openContainer(scripts, ScriptSyntax.SCRIPTS_SEPARATOR)) {
-            addTrigger(ScriptParser.parseScript(script, getMaster().getGame(), this));
-        }
+
+    protected Class<MISSION_SCRIPT_FUNCTION> getFunctionClass() {
+        return MISSION_SCRIPT_FUNCTION.class;
     }
 
 
-    private void addTrigger(Trigger trigger) {
-        if (trigger == null)
-            return;
-        getMaster().getGame().getManager().addTrigger(trigger);
-//        scriptTriggers.add(trigger);
-    }
+
 
     @Override
     public boolean execute(MISSION_SCRIPT_FUNCTION function, Ref ref, String... args) {
@@ -108,9 +103,34 @@ public class MissionScriptManager extends BattleHandler<MissionBattle> implement
 
             case SCRIPT:
                 return doScript(ref, args);
+
+            case REPOSITION:
+                return doReposition(ref, args);
         }
 
         return doUnitOperation(function, ref, args);
+    }
+//moves all party members to new positions around given origin
+    private boolean doReposition(Ref ref, String[] args) {
+//        GuiEventManager.trigger(GuiEventType.SHADOW_MAP_FADE_IN, 100);
+        int i =0;
+//        String group = args[i];
+//        i++;
+        List<Unit> members = getMaster().getMetaMaster().getPartyManager().getParty().
+         getMembers();
+        List<Coordinates> coordinates =
+         getCoordinatesListForUnits(args[i], getPlayerManager().getPlayer(true),
+          members.stream().map(m -> m.toString()).collect(Collectors.toList()), ref);
+        i =0;
+        for (Unit unit : members) {
+            unit.setCoordinates(coordinates.get(i));
+            i++;
+        }
+        for (Unit unit : members) {
+            GuiEventManager.trigger(GuiEventType.UNIT_MOVED, unit);
+        }
+//        GuiEventManager.trigger(GuiEventType.SHADOW_MAP_FADE_OUT,  0);
+        return true;
     }
 
     private boolean doComment(Unit unit, String text) {
@@ -226,7 +246,7 @@ public class MissionScriptManager extends BattleHandler<MissionBattle> implement
 //            origin = ref.getObj(args[i]).getCoordinates();
 
         List<Coordinates> coordinates =
-         getCoordinates(args[i], player, units);
+         getCoordinatesListForUnits(args[i], player, units, ref);
         String data = "";
         data +=
          DataUnitFactory.getKeyValueString(UnitData.FORMAT,
@@ -244,13 +264,21 @@ public class MissionScriptManager extends BattleHandler<MissionBattle> implement
         return true;
     }
 
-    private List<Coordinates> getCoordinates(String arg, DC_Player player, List<String> units) {
+    private List<Coordinates> getCoordinatesListForUnits(String arg, DC_Player player, List<String> units, Ref ref) {
         List<Coordinates> list = new LinkedList<>();
-        Coordinates origin = null;
+        Coordinates origin = getCoordinates(arg, ref);
+        // formation as arg? ;)
+        list = getPositioner().getPartyCoordinates(origin, player.isMe(), units);
+
+        return list;
+    }
+
+    private Coordinates getCoordinates(String arg, Ref ref) {
 //TODO have an arg for N of Units
+        Coordinates origin =null ;
         if (arg.contains(ScriptSyntax.SPAWN_POINT) || StringMaster.isInteger(arg)) {
             arg = arg.replace(ScriptSyntax.SPAWN_POINT, "");
-            Integer i = Integer.valueOf(arg);
+            Integer i =StringMaster.getInteger(arg);
             List<String> spawnPoints = StringMaster.openContainer(
              getBattle().getMission().getProperty(PROPS.ENEMY_SPAWN_COORDINATES));
             origin = new Coordinates(spawnPoints.get(i));
@@ -264,15 +292,14 @@ public class MissionScriptManager extends BattleHandler<MissionBattle> implement
                 e.printStackTrace();
             }
         }
-        // formation as arg? ;)
-        list = getPositioner().getPartyCoordinates(origin, player.isMe(), units);
-
-        return list;
+        return origin;
     }
 
     public enum MISSION_SCRIPT_FUNCTION {
         AI,
         SPAWN,
+        MOVE,
+        REPOSITION,
         REMOVE,
         KILL,
         ABILITY,

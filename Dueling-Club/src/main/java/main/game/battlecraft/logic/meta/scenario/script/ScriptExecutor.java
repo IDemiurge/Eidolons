@@ -9,4 +9,5 @@ public interface ScriptExecutor<T> {
     boolean execute(T function, Ref ref, String... args);
 
     String getSeparator(T func);
+
 }

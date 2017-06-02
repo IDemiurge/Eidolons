@@ -32,10 +32,10 @@ public abstract class BattleMaster<E extends Battle> {
 
     public void init() {
         playerManager.initializePlayers();
+        getConstructor().init();
 //        optionManager.initialize();
     }
     public void startGame() {
-        getConstructor().init();
     }
 
 

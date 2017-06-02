@@ -21,11 +21,14 @@ import main.entity.obj.*;
 import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.ai.BfAnalyzer;
 import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.logic.battle.test.TestBattleMaster;
 import main.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
-import main.game.battlecraft.logic.battlefield.*;
+import main.game.battlecraft.logic.battlefield.DC_BattleField;
+import main.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
+import main.game.battlecraft.logic.battlefield.DroppedItemManager;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import main.game.battlecraft.logic.dungeon.test.TestDungeonMaster;
@@ -38,10 +41,13 @@ import main.game.battlecraft.rules.combat.damage.ArmorMaster;
 import main.game.battlecraft.rules.mechanics.WaitRule;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.GraveyardManager;
+import main.game.bf.MovementManager;
 import main.game.core.DC_TurnManager;
 import main.game.core.GameLoop;
 import main.game.core.launch.LaunchDataKeeper;
 import main.game.core.launch.PresetLauncher;
+import main.game.core.master.combat.CombatMaster;
 import main.game.core.state.DC_GameState;
 import main.game.core.state.DC_StateManager;
 import main.game.logic.battle.player.Player;
@@ -75,16 +81,16 @@ import java.util.*;
 public class DC_Game extends MicroGame {
     public static DC_Game game;
 
-    protected DC_AttackMaster attackMaster;
-    protected ArmorMaster armorMaster;
-    protected ArmorMaster armorSimulator;
+    protected MetaGameMaster metaMaster;
     protected DungeonMaster dungeonMaster;
     protected BattleMaster battleMaster;
-    protected MetaGameMaster metaMaster;
+    protected CombatMaster combatMaster;
+
     private DroppedItemManager droppedItemManager;
     private InventoryTransactionManager inventoryTransactionManager;
     private DC_InventoryManager inventoryManager;
     private DC_GameManager manager;
+
     private VisionMaster visionMaster;
     private DebugMaster debugMaster;
     private TestMasterContent testMaster;
@@ -139,15 +145,11 @@ public class DC_Game extends MicroGame {
         manager.init();
 //        } //TODO FIX classdefnotfound!
         this.setIdManager(new DC_IdManager(this));
-        armorMaster = new ArmorMaster(false);
-        armorSimulator = new ArmorMaster(true);
+        combatMaster = createCombatMaster();
+
         requirementsManager = new DC_RequirementsManager(this);
         valueManager = new DC_ValueManager(this);
         visionMaster = VisionManager.getMaster();
-        actionManager = new DC_ActionManager(this);
-        turnManager = new DC_TurnManager(this);
-        movementManager = new DC_MovementManager(this);
-        attackMaster = new DC_AttackMaster(this);
         mathManager = new DC_MathManager(this);
         effectManager = new DC_EffectManager(this);
         animationManager = new AnimationManager(this);
@@ -158,6 +160,12 @@ public class DC_Game extends MicroGame {
         logManager = new DC_LogManager(this);
         rules = new DC_Rules(this);
 
+        dungeonMaster = createDungeonMaster();
+        battleMaster = createBattleMaster();
+    }
+
+    protected CombatMaster createCombatMaster() {
+        return new CombatMaster(this);
     }
 
     @Override
@@ -185,7 +193,8 @@ public class DC_Game extends MicroGame {
     }
 
     protected BattleMaster createBattleMaster() {
-        return new TestBattleMaster(this);}
+        return new TestBattleMaster(this);
+    }
 
     protected DungeonMaster createDungeonMaster() {
 //        return new LocationMaster(this);
@@ -195,14 +204,12 @@ public class DC_Game extends MicroGame {
 
     // after meta
     public void dungeonInit() {
-        dungeonMaster = createDungeonMaster();
     }
 
     public void battleInit() {
 //            SpellGenerator.init();
         ActionGenerator.init();
 
-        battleMaster = createBattleMaster();
 
         inventoryTransactionManager = new InventoryTransactionManager(this);
         inventoryManager = new DC_InventoryManager(this);
@@ -216,9 +223,8 @@ public class DC_Game extends MicroGame {
         // if (battlefield == null) {
 
         battlefield = new DC_BattleField(new DC_BattleFieldGrid(getDungeon()));
-        setGraveyardManager(new DC_GraveyardManager(this));
-        battleFieldManager = new DC_BattleFieldManager(this);
-        movementManager.setGrid(battlefield.getGrid());
+         battleFieldManager = new DC_BattleFieldManager(this);
+        getMovementManager().setGrid(battlefield.getGrid());
         // }
 
 
@@ -233,15 +239,15 @@ public class DC_Game extends MicroGame {
         Chronos.mark("GAME_START");
 
         this.manager.setSbInitialized(true); //TODO legacy?
-        turnManager.init();
+        getTurnManager().init();
 
         if (isDebugMode()) {
             debugMaster = new DebugMaster(getState());
         }
-keyManager = new DC_KeyManager(getManager());
-            keyManager.init();
+        keyManager = new DC_KeyManager(getManager());
+        keyManager.init();
         getGraveyardManager().init();//TODO in init?
-       battleMaster.startGame();
+        battleMaster.startGame();
         dungeonMaster.gameStarted();
         getState().gameStarted(first);
 
@@ -280,14 +286,16 @@ keyManager = new DC_KeyManager(getManager());
         setRunning(false);
         setStarted(false);
     }
+
     @Override
     public DC_BattleFieldManager getBattleFieldManager() {
 
-    if (battleFieldManager == null) {
+        if (battleFieldManager == null) {
             battleFieldManager = new DC_BattleFieldManager(this);
         }
         return (DC_BattleFieldManager) super.getBattleFieldManager();
-}
+    }
+
     @Override
     public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
         BattleFieldObject unit = ((BattleFieldObject) super.createUnit(type, x, y, owner, ref.getCopy()));
@@ -472,6 +480,14 @@ keyManager = new DC_KeyManager(getManager());
         return inventoryTransactionManager;
     }
 
+    public BfAnalyzer getAnalyzer() {
+        return getCombatMaster().getBfAnalyzer();
+    }
+
+    public CombatMaster getCombatMaster() {
+        return combatMaster;
+    }
+
     public Set<Coordinates> getCoordinates() {
         return getBattleField().getGrid().getCellCompMap().keySet();
     }
@@ -510,9 +526,6 @@ keyManager = new DC_KeyManager(getManager());
         return droppedItemManager;
     }
 
-    public DC_AttackMaster getAttackMaster() {
-        return attackMaster;
-    }
 
     public DungeonMaster getDungeonMaster() {
         return dungeonMaster;
@@ -526,17 +539,23 @@ keyManager = new DC_KeyManager(getManager());
         this.testMaster = testMaster;
     }
 
-    public ArmorMaster getArmorMaster() {
-        return armorMaster;
-    }
-
-    public ArmorMaster getArmorSimulator() {
-        return armorSimulator;
+    @Override
+    public DC_TurnManager getTurnManager() {
+        return combatMaster.getTurnManager();
     }
 
     @Override
-    public DC_TurnManager getTurnManager() {
-        return (DC_TurnManager) super.getTurnManager();
+    public MovementManager getMovementManager() {
+        return combatMaster.getMovementManager();
+    }
+
+    @Override
+    public GraveyardManager getGraveyardManager() {
+        return combatMaster.getGraveyardManager();
+    }
+
+    public BfAnalyzer getBfAnalyzer() {
+        return combatMaster.getBfAnalyzer();
     }
 
     public boolean isBattleInit() {
@@ -686,6 +705,23 @@ keyManager = new DC_KeyManager(getManager());
             simulationCache = new XLinkedMap<>();
         }
         return simulationCache;
+    }
+
+    @Override
+    public DC_ActionManager getActionManager() {
+        return combatMaster.getActionManager();
+    }
+
+    public DC_AttackMaster getAttackMaster() {
+        return combatMaster.getAttackMaster();
+    }
+
+    public ArmorMaster getArmorMaster() {
+        return combatMaster.getArmorMaster();
+    }
+
+    public ArmorMaster getArmorSimulator() {
+        return combatMaster.getArmorSimulator();
     }
 
     public GameLoop getGameLoop() {

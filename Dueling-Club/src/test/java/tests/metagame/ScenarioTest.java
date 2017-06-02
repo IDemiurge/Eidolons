@@ -16,7 +16,7 @@ public class ScenarioTest  extends GenericJUnitTest {
     @Test
     public void test(){
 //        CoreEngine.setItemGenerationOff(true);
-        ScenarioLauncher.lauch(typeName);
+        ScenarioLauncher.launch(typeName);
 
         WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_COMPLETE);
     }

@@ -9,22 +9,13 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 /**
- * Created by JustMe on 5/22/2017.
+ * Created by JustMe on 6/2/2017.
  */
-public class ScenarioLauncher {
-    public static final String DEFAULT = "Pride and Treachery";
-
+public class TutorialLauncher {
     public static void main(String[] args) {
-        String t = DEFAULT;
-        if (t == null)
-            t = args[0];
-        launch(t);
-    }
-
-    public static void launch(String typeName) {
         BattleSceneLauncher.main(null);
         DC_Engine.mainMenuInit();
-        Eidolons.initScenario(typeName);
+//        Eidolons.initScenario(typeName);
 
         ScreenData data = new ScreenData(ScreenType.BATTLE, "name", new SceneFactory("Test"));
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
@@ -33,8 +24,6 @@ public class ScenarioLauncher {
 //        Eidolons.mainGame.getMetaMaster().getGame().init( );
         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
-        Eidolons.mainGame.getMetaMaster().gameStarted();
-
         Eidolons.mainGame.getMetaMaster().getGame().start(true);
 
         //DungeonScreen.getInstance().hideLoader();

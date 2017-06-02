@@ -41,6 +41,8 @@ public class AbilityImpl extends ReferredElement implements Ability {
 
     @Override
     public String toString() {
+        if (effects==null )
+        return "Ability has null effects!";
         return "Ability has effects: " + effects.toString();
     }
 

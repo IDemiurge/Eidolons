@@ -8,6 +8,8 @@ import main.data.dialogue.Speeches;
 import main.elements.conditions.Condition;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
+import main.game.battlecraft.logic.meta.universal.MetaGameHandler;
+import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -81,7 +83,7 @@ public class Speech implements SpeechInterface {
         getChildren().add(child);
     }
 
-    public void init(ScenarioMetaMaster master, Speech parent) {
+    public void init(MetaGameMaster master, Speech parent) {
         this.parent = parent;
         if (actorName == null)
             actorName = data.getValue(SPEECH_VALUE.ACTOR);

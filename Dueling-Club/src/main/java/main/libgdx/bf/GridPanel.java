@@ -133,7 +133,10 @@ public class GridPanel extends Group {
 
     private void bindEvents() {
 
-        GuiEventManager.bind(UPDATE_GUI, obj -> {
+        GuiEventManager.bind(UNIT_MOVED, obj -> {
+moveUnitView((BattleFieldObject) obj.get());
+        });
+            GuiEventManager.bind(UPDATE_GUI, obj -> {
             if (Eidolons.game.getVisionMaster().getVisibilityMaster().isOutlinesOn()) {
                 updateOutlines();
             }

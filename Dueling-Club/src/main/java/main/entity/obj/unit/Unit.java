@@ -52,6 +52,7 @@ import main.game.module.adventure.entity.MacroActionManager.MACRO_MODES;
 import main.system.DC_Constants;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
@@ -500,7 +501,15 @@ public class Unit extends DC_UnitModel {
 
     public Entity getItem(String name) {
         // for (String generic: getInventory())
-        return null;
+         List<Entity> list = new LinkedList<>();
+        list.add(getWeapon(true));
+        list.add(getWeapon(false));
+        list.add(getNaturalWeapon(true));
+        list.add(getNaturalWeapon(false));
+        getInventory().forEach(item->list.add(item));
+        getQuickItems().forEach(item->list.add(item));
+        getJewelry().forEach(item->list.add(item));
+        return new SearchMaster<Entity>().find(name, list);
     }
 
     public DequeImpl<DC_HeroItemObj> getInventory() {

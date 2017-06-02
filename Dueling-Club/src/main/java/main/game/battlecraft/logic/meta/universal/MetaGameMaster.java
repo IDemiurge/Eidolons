@@ -2,7 +2,9 @@ package main.game.battlecraft.logic.meta.universal;
 
 import main.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
+import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import main.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory;
 import main.game.core.game.DC_Game;
 
@@ -21,6 +23,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     protected  E metaGame;
     protected   DC_Game game; //<? extends DC_Game>
+    DialogueManager dialogueManager;
+    DialogueActorMaster dialogueActorMaster;
     //    PrecombatManager<E> precombatManager;
 //    AfterCombatManager<E> afterCombatManager;
 
@@ -32,6 +36,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
           metaDataManager=createMetaDataManager();
         dialogueFactory= createDialogueFactory();
        introFactory= createIntroFactory();
+        dialogueManager = new DialogueManager(this);
+        dialogueActorMaster = new DialogueActorMaster(this);
     }
 
     protected IntroFactory createIntroFactory() {
@@ -51,6 +57,10 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     protected abstract ShopManager<E> createShopManager();
 
+    public DialogueActorMaster getDialogueActorMaster() {
+        return dialogueActorMaster;
+    }
+
     protected abstract MetaInitializer<E> createMetaInitializer();
 
 
@@ -62,14 +72,23 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         partyManager.initPlayerParty();
     }
 
-    public void gameStarted(){
+    public void preStart(){
         partyManager.gameStarted();
 //        getGame().getDataKeeper().setDungeonData(new DungeonData(getMetaGame()));
 
     }
+    public void gameStarted(){
+//   TODO remove lazy init hack?
+//     getDialogueFactory().init(this);
+//        getIntroFactory().init(this);
+    }
 
     public DungeonMaster getDungeonMaster() {
         return game.getDungeonMaster();
+    }
+
+    public DialogueManager getDialogueManager() {
+        return dialogueManager;
     }
 
     public BattleMaster getBattleMaster() {

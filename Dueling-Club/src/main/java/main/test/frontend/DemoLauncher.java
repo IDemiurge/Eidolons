@@ -1,5 +1,6 @@
 package main.test.frontend;
 
+import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.client.dc.Launcher;
+import main.data.filesys.PathFinder;
 import main.game.core.game.DC_Game;
 import main.libgdx.EngineEmulator;
 import main.libgdx.screens.*;
@@ -60,6 +62,8 @@ public class DemoLauncher extends Game {
         conf.height = 900;
         conf.fullscreen = false;
         conf.resizable = false;
+        conf.addIcon(PathFinder.getImagePath()+"mini/new/logo32.png", FileType.Absolute);
+        conf.addIcon(PathFinder.getImagePath()+"mini/new/logo64.png", FileType.Absolute);
 
         return conf;
     }

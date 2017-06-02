@@ -15,7 +15,7 @@ public abstract class ScriptTest {
 
     @Before
     public void init(){
-        ScenarioLauncher.lauch( dummyScenario);
+        ScenarioLauncher.launch( dummyScenario);
 //        ScenarioMetaMaster master= Eidolons.mainGame.getMetaMaster();
         MissionBattleMaster master= (MissionBattleMaster) Eidolons.game.getBattleMaster();
        master.getScriptManager().parseScripts(getScriptText());

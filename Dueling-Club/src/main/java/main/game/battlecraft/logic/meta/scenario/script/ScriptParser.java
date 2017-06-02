@@ -6,13 +6,12 @@ import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
-import main.game.battlecraft.logic.battle.mission.MissionScriptManager.MISSION_SCRIPT_FUNCTION;
 import main.game.core.game.DC_Game;
-import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.DC_ConditionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;
 import main.system.util.Refactor;
 
 import java.util.List;
@@ -35,27 +34,67 @@ public class ScriptParser {
         return shortcut.event_type;
     }
 
-    public static EVENT_TYPE parseEvent(String eventPart) {
-        EVENT_TYPE eventType = getEventByShortcut(eventPart);
+    public static STANDARD_EVENT_TYPE parseEvent(String eventPart) {
+        STANDARD_EVENT_TYPE eventType = getEventByShortcut(eventPart);
         if (eventType != null) return eventType;
-         eventType = new EnumMaster<STANDARD_EVENT_TYPE>().retrieveEnumConst(STANDARD_EVENT_TYPE.class, eventPart);
+        eventType = new EnumMaster<STANDARD_EVENT_TYPE>().retrieveEnumConst(STANDARD_EVENT_TYPE.class, eventPart);
         if (eventType != null) return eventType;
 
         return STANDARD_EVENT_TYPE.GAME_STARTED;
     }
 
-    public static ScriptTrigger parseScript(String script, DC_Game game,
-                                            ScriptExecutor executor
+    public static CONDITION_TEMPLATES getDefaultConditionForEvent(STANDARD_EVENT_TYPE event_type) {
+        switch (event_type) {
+            case ROUND_ENDS:
+            case NEW_ROUND:
+                return CONDITION_TEMPLATES.NUMERIC_EQUAL;
+        }
+        return null;
+    }
+
+    private static Condition getDefaultCondition(STANDARD_EVENT_TYPE event_type, String vars) {
+        String var1 = getVarOne(event_type, vars);
+        String var2 = getVarTwo(event_type, vars);
+        return DC_ConditionMaster.getInstance().getConditionFromTemplate(
+         getDefaultConditionForEvent(event_type), var1, var2);
+    }
+
+    private static String getVarTwo(STANDARD_EVENT_TYPE event_type, String vars) {
+        try {
+            return vars.split(",")[1];
+        } catch (Exception ignored) {
+        }
+        switch (event_type) {
+            case NEW_ROUND:
+                return "{event_amount}";
+        }
+        return vars;
+    }
+
+    private static String getVarOne(STANDARD_EVENT_TYPE event_type, String vars) {
+        try {
+            return vars.split(",")[0];
+        } catch (Exception ignored) {
+        }
+        return vars;
+    }
+
+    public static <T>ScriptTrigger parseScript(String script, DC_Game game,
+                                            ScriptExecutor<T> executor, Class<T> funcClass
 
     ) {
+        script = ScriptMaster.getScriptByName(script); //TODO
 //non-trigger scripts?
         String originalText = script;
         String eventPart = StringMaster.getFirstItem(script, ScriptSyntax.PART_SEPARATOR);
-        EVENT_TYPE event_type = parseEvent(eventPart);
+        STANDARD_EVENT_TYPE event_type = parseEvent(eventPart);
         script = StringMaster.cropFirstSegment(script, ScriptSyntax.PART_SEPARATOR);
-
-        String conditionPart = StringMaster.getFirstItem(script, ScriptSyntax.PART_SEPARATOR);
-        Condition condition = parseConditions(conditionPart);
+        Condition condition = null;
+        condition = getDefaultCondition(event_type, VariableManager.getVars(eventPart));
+        if (condition == null) {
+            String conditionPart = StringMaster.getFirstItem(script, ScriptSyntax.PART_SEPARATOR);
+            condition = parseConditions(conditionPart);
+        }
 
         boolean isRemove = true;
 //        if (contains("cyclic"))remove = false;
@@ -65,8 +104,9 @@ public class ScriptParser {
         String funcPart = VariableManager.removeVarPart(script);
         @Refactor
         //TODO this won't work in generic way!!!!
-         MISSION_SCRIPT_FUNCTION func = new EnumMaster<MISSION_SCRIPT_FUNCTION>().retrieveEnumConst
-         (MISSION_SCRIPT_FUNCTION.class, funcPart);
+         T func =
+         new EnumMaster<T>().retrieveEnumConst
+         (funcClass , funcPart);
         if (func != null) {
             //TODO for multiple scripts, need another SEPARATOR!
             String separator = executor.getSeparator(func);
@@ -95,7 +135,9 @@ public class ScriptParser {
         return trigger;
     }
 
+
     public enum SCRIPT_EVENT_SHORTCUT {
+        CLEARED(STANDARD_EVENT_TYPE.ENEMIES_CLEARED),
         ROUND(STANDARD_EVENT_TYPE.NEW_ROUND), DIES(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED),
         ENTERS(STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED), ENGAGED(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ENGAGED),;
         STANDARD_EVENT_TYPE event_type;

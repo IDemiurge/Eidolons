@@ -131,12 +131,9 @@ public abstract class MicroGame extends Game {
     }
 
     public GraveyardManager getGraveyardManager() {
-        return graveyardManager;
+        return null ;
     }
 
-    public void setGraveyardManager(GraveyardManager graveyardManager) {
-        this.graveyardManager = graveyardManager;
-    }
 
     public boolean isInitialized() {
         return initialized;
