@@ -5,6 +5,7 @@ import main.libgdx.gui.panels.mainmenu.GameLoadingPanel;
 import main.libgdx.gui.panels.mainmenu.NewGamePanel;
 import main.libgdx.gui.panels.mainmenu.OptionsPanel;
 import main.libgdx.gui.panels.mainmenu.StartMenuPanel;
+import main.libgdx.screens.MainMenuScreenData;
 import main.libgdx.screens.ScreenData;
 
 import java.util.function.Consumer;
@@ -82,6 +83,13 @@ public class MainMenuStage extends DataStage {
                 -newGame.getPrefWidth() / 2,
                 -newGame.getPrefHeight() / 2
         );
+    }
+
+    @Override
+    public void setData(ScreenData data) {
+        super.setData(data);
+        final MainMenuScreenData menuScreenData = (MainMenuScreenData) data;
+        newGame.setUserObject(menuScreenData.getNewGames());
     }
 
     public void updateViewPort(int width, int height) {

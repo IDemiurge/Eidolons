@@ -13,20 +13,12 @@ import java.util.function.Consumer;
 import static main.libgdx.StyleHolder.getMainMenuButton;
 
 public class NewGamePanel extends TablePanel {
-    private final TextButton back;
-    private final TextButton startDemoScenario;
+    private TextButton back;
     private Consumer<ScreenData> choiceCallback;
+    private SimpleClickListener backListener;
 
     public NewGamePanel() {
         left().bottom();
-
-        startDemoScenario = getMainMenuButton("start demo scenario");
-
-        add(startDemoScenario);
-        row();
-
-        back = getMainMenuButton("back");
-        add(back);
     }
 
     @Override
@@ -42,11 +34,21 @@ public class NewGamePanel extends TablePanel {
                     }
                 }
             });
+
+            add(button);
+            row();
         });
+
+        addEmptyRow(0, 30);
+        back = getMainMenuButton("back");
+        if (backListener != null) {
+            back.addListener(backListener);
+        }
+        add(back);
     }
 
     public void setBackCallback(Runnable callback) {
-        back.addListener(new SimpleClickListener(callback));
+        backListener = new SimpleClickListener(callback);
     }
 
     public void setStartDemoScenarioCallback(Consumer<ScreenData> callback) {
