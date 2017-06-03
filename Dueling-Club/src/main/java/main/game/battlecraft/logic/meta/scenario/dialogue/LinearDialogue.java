@@ -9,8 +9,8 @@ import main.system.datatypes.DequeImpl;
 public class LinearDialogue extends GameDialogue {
 
 
-    public LinearDialogue(Speech root) {
-        super(root);
+    public LinearDialogue(Speech root, String name) {
+        super(root, name);
     }
 
     @Override

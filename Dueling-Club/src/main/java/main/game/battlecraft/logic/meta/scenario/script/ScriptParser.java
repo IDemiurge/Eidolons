@@ -45,6 +45,9 @@ public class ScriptParser {
 
     public static CONDITION_TEMPLATES getDefaultConditionForEvent(STANDARD_EVENT_TYPE event_type) {
         switch (event_type) {
+            case DIALOGUE_FINISHED:
+                return CONDITION_TEMPLATES.STRING_STRICT;
+            case DIALOGUE_LINE_SPOKEN:
             case ROUND_ENDS:
             case NEW_ROUND:
                 return CONDITION_TEMPLATES.NUMERIC_EQUAL;
@@ -65,6 +68,9 @@ public class ScriptParser {
         } catch (Exception ignored) {
         }
         switch (event_type) {
+            case DIALOGUE_FINISHED:
+                return "{event_string}";
+            case DIALOGUE_LINE_SPOKEN:
             case NEW_ROUND:
                 return "{event_amount}";
         }
@@ -137,6 +143,8 @@ public class ScriptParser {
 
 
     public enum SCRIPT_EVENT_SHORTCUT {
+        LINE(STANDARD_EVENT_TYPE.DIALOGUE_LINE_SPOKEN),
+        DIALOGUE(STANDARD_EVENT_TYPE.DIALOGUE_FINISHED),
         CLEARED(STANDARD_EVENT_TYPE.ENEMIES_CLEARED),
         ROUND(STANDARD_EVENT_TYPE.NEW_ROUND), DIES(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED),
         ENTERS(STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED), ENGAGED(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ENGAGED),;

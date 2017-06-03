@@ -23,9 +23,9 @@ public class DialogueWizard {
         if (dialogue instanceof LinearDialogue) {
             displayedOptions.add("Continue");
         } else {
-            dialogue.getSpeech().getChildren().forEach(speech -> {
-                Ref ref = new Ref(dialogue.getSpeech().getActor().getLinkedUnit());
-                if (dialogue.getSpeech().getConditions().check(ref)) {
+            dialogue.getRoot().getChildren().forEach(speech -> {
+                Ref ref = new Ref(dialogue.getRoot().getActor().getLinkedUnit());
+                if (dialogue.getRoot().getConditions().check(ref)) {
                     displayedOptions.add(speech.getFormattedText());
                 }
             });

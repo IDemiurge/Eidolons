@@ -2,6 +2,7 @@ package main.test.frontend;
 
 import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
+import main.game.battlecraft.logic.meta.tutorial.TutorialMetaMaster;
 import main.game.core.Eidolons;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
@@ -15,9 +16,9 @@ public class TutorialLauncher {
     public static void main(String[] args) {
         BattleSceneLauncher.main(null);
         DC_Engine.mainMenuInit();
-//        Eidolons.initScenario(typeName);
+        initTutorialMeta();
 
-        ScreenData data = new ScreenData(ScreenType.BATTLE, "name", new SceneFactory("Test"));
+        ScreenData data = new ScreenData(ScreenType.BATTLE, "name", new SceneFactory("Tutorial Intro"));
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         DC_Engine.gameStartInit();
         Eidolons.mainGame.getMetaMaster().preStart();
@@ -27,5 +28,9 @@ public class TutorialLauncher {
         Eidolons.mainGame.getMetaMaster().getGame().start(true);
 
         //DungeonScreen.getInstance().hideLoader();
+    }
+
+    private static void initTutorialMeta() {
+        new TutorialMetaMaster("").init();
     }
 }

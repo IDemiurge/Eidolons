@@ -9,7 +9,7 @@ import main.game.core.game.DC_Game;
  */
 public class MissionBattleMaster extends BattleMaster<MissionBattle> {
 
-    MissionScriptExecutor scriptManager;
+    CombatScriptExecutor scriptManager;
 
     public MissionBattleMaster(DC_Game game) {
         super(game);
@@ -27,11 +27,11 @@ public class MissionBattleMaster extends BattleMaster<MissionBattle> {
         return (ScenarioMetaMaster) super.getMetaMaster();
     }
 
-    protected MissionScriptExecutor createScriptManager() {
-        return new MissionScriptExecutor(this);
+    protected CombatScriptExecutor createScriptManager() {
+        return new CombatScriptExecutor(this);
     }
 
-    public MissionScriptExecutor getScriptManager() {
+    public CombatScriptExecutor getScriptManager() {
         return scriptManager;
     }
 

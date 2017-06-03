@@ -330,7 +330,12 @@ public class RuleMaster implements Controller {
         WOUNDS,
         BLEEDING,
         WEIGHT,
-        INJURY(RULE_SCOPE.FULL);
+        INJURY(RULE_SCOPE.FULL),
+        CRITICAL_ATTACK(),
+        DODGE(),
+
+
+        ;
 
         String tooltip;
         RULE_SCOPE scope;

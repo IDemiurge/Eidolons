@@ -18,7 +18,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     @Override
     public void gameStarted() {
-//  TODO       getData()
+//  TODO       is this the right time to set it?
         party.setProperty(PROPS.PARTY_MISSION,
      StringMaster.openContainer(getMetaGame().getScenario().
       getProperty(PROPS.SCENARIO_MISSIONS)).get(0), true);
@@ -34,11 +34,16 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
             //new ? choice?
         }
         party = new PartyObj(type);
-        if (party.getNextMission().isEmpty()) {
-            party.setProperty(PROPS.PARTY_MISSIONS_NEXT,
-             StringMaster.openContainer(getMetaGame().getScenario().
-              getProperty(PROPS.SCENARIO_MISSIONS)).get(0), true);
-        }
+
+//        if (party.getNextMission().isEmpty()) {
+//            String missions = StringMaster.joinList(getMetaGame().getScenario().getAvailableMissions());
+//            party.setProperty(PROPS.PARTY_MISSIONS_NEXT,
+//             missions
+//             StringMaster.openContainer(getMetaGame().getScenario().
+//              getProperty(PROPS.SCENARIO_MISSIONS)).get(0)
+//             , true);
+//        }
+
         getGame().getState().addObject(party);
         getGame().getDataKeeper().addUnitData(new UnitData(party));
         return party;

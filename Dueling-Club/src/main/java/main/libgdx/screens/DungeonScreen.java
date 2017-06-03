@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import main.game.core.game.DC_Game;
 import main.libgdx.DialogScenario;
 import main.libgdx.bf.BFDataCreatedEvent;
@@ -72,13 +73,15 @@ public class DungeonScreen extends ScreenWithLoader {
         });
 
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
-            final List<DialogScenario> list = (List<DialogScenario>) obj.get();
+              DialogueHandler handler= (DialogueHandler) obj.get();
+            final List<DialogScenario> list = handler.getList();
             if (dialogsStage == null) {
                 dialogsStage = new ChainedStage(list);
                 updateInputController();
             } else {
                 dialogsStage.play(list);
             }
+            dialogsStage.setDialogueHandler(handler);
         });
     }
 

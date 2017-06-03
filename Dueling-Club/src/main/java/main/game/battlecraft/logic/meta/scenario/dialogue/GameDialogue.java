@@ -4,32 +4,31 @@ import main.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import main.system.datatypes.DequeImpl;
 
 public class GameDialogue {
-/*
-actors
-entity ?
-"line"
 
-tree structure
 
-xml parsed
+    protected Speech root;
+    protected String name;
 
-each replica has children
- */
-    Speech speech;
-
-    public GameDialogue(Speech root) {
-        speech = root;
+    public GameDialogue(Speech root, String name) {
+        this.root = root;
+        this.name = name;
     }
 
-    public Speech getSpeech() {
-        return speech;
+
+    public Speech getRoot() {
+        return root;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void skipped(){
 
     }
+    @Deprecated
     public DequeImpl<Speech> getOptions(){
-        return speech.getChildren();
+        return root.getChildren();
     }
 
 

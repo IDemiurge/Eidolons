@@ -26,6 +26,8 @@ public class ScriptMaster {
 //        String text = null;
 //        FileManager.readFile(generated_scripts_path);
 //        VariableManager.getVarText(text, true, true, vars);
+
+
         return name;
     }
 

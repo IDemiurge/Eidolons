@@ -7,6 +7,8 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.battlecraft.rules.action.WatchRule;
 import main.game.battlecraft.rules.perk.FlyingRule;
 import main.system.DC_Formulas;
@@ -194,6 +196,13 @@ public class DefenseVsAttackRule {
         }
 
         chance = Math.min(100, chance);
+        if (action. getGame().getCombatMaster().isChancesOff()) {
+            RULE rule = (critOrDodge) ? RULE.CRITICAL_ATTACK : RULE.DODGE;
+            if (RuleMaster.isRuleTestOn(rule)|| chance > 50)
+                chance= 100;
+            else chance= 0 ;
+
+        }
         return chance;
     }
 

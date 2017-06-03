@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import main.libgdx.DialogScenario;
 
 import java.util.Iterator;
@@ -17,6 +18,7 @@ public class ChainedStage extends Stage {
     private Iterator<DialogScenario> iterator;
     private List<DialogScenario> newList = null;
     private Runnable onDoneCallback;
+    private DialogueHandler dialogueHandler;
 
     public ChainedStage(List<DialogScenario> list) {
         current = new Container<>();
@@ -42,6 +44,9 @@ public class ChainedStage extends Stage {
         super.act(delta);
         if (current.getActor() != null && current.getActor().isDone()) {
             if (iterator.hasNext()) {
+                if (dialogueHandler != null) {
+                dialogueHandler.lineSpoken(current.getActor());
+                }
                 current.setActor(iterator.next());
                 setKeyboardFocus(current.getActor());
             } else if (newList != null) {
@@ -52,6 +57,9 @@ public class ChainedStage extends Stage {
                 done = true;
                 if (onDoneCallback != null) {
                     onDoneCallback.run();
+                }
+                if (dialogueHandler!=null ){
+                    dialogueHandler.dialogueDone();
                 }
             }
         }
@@ -81,5 +89,9 @@ public class ChainedStage extends Stage {
 
     public boolean isDone() {
         return done;
+    }
+
+    public void setDialogueHandler(DialogueHandler dialogueHandler) {
+        this.dialogueHandler = dialogueHandler;
     }
 }

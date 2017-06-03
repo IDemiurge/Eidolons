@@ -3,21 +3,24 @@ package main.game.battlecraft.logic.meta.scenario;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
+import main.entity.DataModel;
 import main.game.battlecraft.logic.battle.mission.MissionBattleMaster;
 import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.meta.scenario.hq.HqShopManager;
 import main.game.battlecraft.logic.meta.universal.*;
 import main.game.core.game.ScenarioGame;
+import main.system.auxiliary.StringMaster;
 
 /**
  * Created by JustMe on 5/13/2017.
  */
-public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
+public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
     public ScenarioMetaMaster(String data) {
         super(data);
     }
+
     /*
         on clicking a mission...
         full loading 
@@ -26,9 +29,15 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
          */
     @Override
     public void preStart() {
-//        scenario.getScenario().
-       String missionName= getPartyManager().getParty().getNextMission();
 
+        String missionName =
+         getMetaDataManager().getMissionName();
+
+        if (StringMaster.isEmpty(missionName)) {
+            chosenMission(StringMaster.openContainer(getMetaGame().getScenario().
+             getProperty(PROPS.SCENARIO_MISSIONS)).get(0));
+            missionName =getMetaDataManager().getMissionName();
+        }
         String levelPath = DataManager.getType(missionName, DC_TYPE.MISSIONS).
          getProperty(PROPS.MISSION_FILE_PATH);
         getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,
@@ -37,8 +46,17 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
         super.preStart();
     }
 
-    public   void loadMission(String data){
-         getGame().getDungeonMaster().init(); //create dungeon
+    @Override
+    public DataModel getEntity() {
+        return getMetaGame().getScenario();
+    }
+
+    public void chosenMission(String data) {
+        getMetaDataManager().setMissionName(data);
+    }
+
+    public void loadMission(String data) {
+        getGame().getDungeonMaster().init(); //create dungeon
 
         getGame().getBattleMaster().init(); //create Mission
         //game.load()
@@ -52,6 +70,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
 //        getDialogueManager().startDialogue(); //block game?
 
     }
+
     @Override
     protected ScenarioGame createGame() {
         return new ScenarioGame(this);
@@ -77,6 +96,10 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta > {
         return new ScenarioInitializer(this);
     }
 
+    @Override
+    public ScenarioMetaDataManager getMetaDataManager() {
+        return (ScenarioMetaDataManager) super.getMetaDataManager();
+    }
 
     @Override
     public MissionBattleMaster getBattleMaster() {

@@ -11,7 +11,7 @@ import main.game.battlecraft.logic.meta.universal.PartyManager;
  * Created by JustMe on 6/2/2017.
  */
 public class TutorialPartyManager extends PartyManager<TutorialMeta> {
-    private static final java.lang.String TUTORIAL_PARTY = "Tutorial Party";
+    private static final java.lang.String TUTORIAL_PARTY = "Demo Party";//"Tutorial Party";
 
     public TutorialPartyManager(TutorialMetaMaster tutorialMetaMaster) {
         super(tutorialMetaMaster);

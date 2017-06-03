@@ -6,8 +6,8 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.battle.mission.MissionScriptExecutor;
-import main.game.battlecraft.logic.battle.mission.MissionScriptExecutor.MISSION_SCRIPT_FUNCTION;
+import main.game.battlecraft.logic.battle.mission.CombatScriptExecutor;
+import main.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
 import main.game.battlecraft.logic.battle.test.TestScriptExecutor.TEST_SCRIPT;
 import main.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.battlecraft.logic.battle.universal.ScriptManager;
@@ -15,6 +15,9 @@ import main.game.battlecraft.logic.meta.scenario.script.ScriptGenerator;
 import main.game.battlecraft.logic.meta.scenario.script.ScriptParser;
 import main.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import main.game.core.game.TestGame;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
@@ -31,24 +34,45 @@ public class TestScriptExecutor extends ScriptManager<TestBattle, TEST_SCRIPT> {
     public boolean execute(TEST_SCRIPT function, Ref ref, String... args) {
         switch (function) {
             case GUI_EVENT:
-                break;
+               doGuiEvent(ref, args);break;
             case ENABLE_ACTION:
                 doEnableAction(ref, args);
                 break;
             case HIGHLIGHT:
                 doHighlight(ref, args);
                 break;
+            case setMainHero:
+                doSetMainHero(ref, args);
+                break;
         }
+
 
         return true;
     }
+
+    private void doGuiEvent(Ref ref, String[] args) {
+        String name = args[0];
+        GuiEventType type = new EnumMaster<GuiEventType>().retrieveEnumConst(GuiEventType.class, name);
+        Object arg = getGuiEventArg(ref, type, args);
+        GuiEventManager.trigger(type, arg);
+    }
+
+    private Object getGuiEventArg(Ref ref, GuiEventType type, String[] args) {
+        return null;
+    }
+
+    private void doSetMainHero(Ref ref, String[] args) {
+        Unit hero =getGame().getMaster().getUnitByName(args[0], ref, true, null, null);
+        hero.getOwner().setHeroObj(hero);
+    }
+
     @Override
     public void init() {
         String text=readScriptsFile();
         parseScripts(text);
 
-        MissionScriptExecutor genericScriptsExecutor =
-         new MissionScriptExecutor(getMaster()){
+        CombatScriptExecutor genericScriptsExecutor =
+         new CombatScriptExecutor(getMaster()){
              @Override
              public String readScriptsFile() {
                  String text = FileManager.readFile(
@@ -66,7 +90,7 @@ public class TestScriptExecutor extends ScriptManager<TestBattle, TEST_SCRIPT> {
              script,
              getMaster().getGame(),
              genericScriptsExecutor,
-             MISSION_SCRIPT_FUNCTION.class));
+             COMBAT_SCRIPT_FUNCTION.class));
         }
     }
 
@@ -140,6 +164,6 @@ public class TestScriptExecutor extends ScriptManager<TestBattle, TEST_SCRIPT> {
 ENABLE_ACTION,
         HIGHLIGHT,
         setMainHero,
-
+endRound,
     }
 }

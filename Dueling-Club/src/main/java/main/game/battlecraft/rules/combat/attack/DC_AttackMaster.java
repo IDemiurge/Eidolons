@@ -35,6 +35,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
+import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -310,6 +311,7 @@ public class DC_AttackMaster {
             final_amount = calculator.calculateFinalDamage();
         }
         // TODO different for multiDamageType
+        if (CoreEngine.isPhaseAnimsOn())
         PhaseAnimator.getInstance().initAttackAnimRawDamage(attack);
 
         ref.setAmount(final_amount);

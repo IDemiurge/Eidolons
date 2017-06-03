@@ -11,6 +11,7 @@ import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 
@@ -246,10 +247,10 @@ public class DC_GameMaster extends GameMaster {
             }
         }
     }
-    public Unit getUnitByName(String arg, Ref ref){
-        return getUnitByName(arg, ref, null, null, null);
+    public Unit getUnitByName(String name, Ref ref){
+        return getUnitByName(name, ref, null, null, null);
     }
-    public Unit getUnitByName(String arg, Ref ref
+    public Unit getUnitByName(String name, Ref ref
      , Boolean ally_or_enemy_only, Boolean distanceSort, Boolean powerSort
     ) {
         List<Unit> matched = new LinkedList<>();
@@ -261,7 +262,7 @@ public class DC_GameMaster extends GameMaster {
             if (unit.getOwner() != ref.getSourceObj().getOwner())
                 if (!ally_or_enemy_only)
                     continue;
-            if (arg==null || unit.getName().equalsIgnoreCase(arg)) {
+            if (StringMaster.isEmpty(name) || unit.getName().equalsIgnoreCase(name)) {
                 matched.add(unit);
             }
             //TODO

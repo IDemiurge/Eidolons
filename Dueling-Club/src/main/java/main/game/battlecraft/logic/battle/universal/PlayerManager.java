@@ -28,7 +28,11 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
 
 
     }
-
+    public void gameStarted() {
+//        DC_Player player = getPlayer(true);
+//        player.getControlledUnits()
+//        player..setHeroObj(hero);
+    }
     public void initializePlayers() {
         if (getMaster().getGame().getDataKeeper().getPlayerData() != null) {
             // TODO init data from preset

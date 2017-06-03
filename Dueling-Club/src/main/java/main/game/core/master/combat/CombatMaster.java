@@ -28,6 +28,7 @@ public class CombatMaster {
     private boolean chancesOff;
     private boolean diceAverage;
     private boolean rollsAverage;
+    private boolean fullManualControl;
 
     public CombatMaster(DC_Game  game) {
         armorMaster = new ArmorMaster(false);
@@ -103,4 +104,12 @@ public class CombatMaster {
     public boolean isActionBlocked(DC_ActiveObj activeObj) {
             return false;
         }
+
+    public boolean isFullManualControl() {
+        return fullManualControl;
+    }
+
+    public void setFullManualControl(boolean fullManualControl) {
+        this.fullManualControl = fullManualControl;
+    }
 }

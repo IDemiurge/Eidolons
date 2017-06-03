@@ -42,7 +42,6 @@ public class PartyObj extends Obj {
     // back
 
     public List<Unit> members = new LinkedList<>();
-    public List<Unit> mercs = new LinkedList<>();
     public Unit leader;
     private Unit middleHero;
     private Map<Unit, Coordinates> partyCoordinates;
@@ -436,13 +435,7 @@ public class PartyObj extends Obj {
                 min = hero.getIntParam(p);
             }
         }
-        if (units) {
-            for (Unit unit : getMercs()) {
-                if (unit.getIntParam(p) < min) {
-                    min = unit.getIntParam(p);
-                }
-            }
-        }
+
         return min;
     }
 
@@ -453,13 +446,7 @@ public class PartyObj extends Obj {
                 max = hero.getIntParam(p);
             }
         }
-        if (units) {
-            for (Unit unit : getMercs()) {
-                if (unit.getIntParam(p) < max) {
-                    max = unit.getIntParam(p);
-                }
-            }
-        }
+
         return max;
     }
 
@@ -468,11 +455,7 @@ public class PartyObj extends Obj {
         for (Unit hero : members) {
             sum += hero.getIntParam(p);
         }
-        if (units) {
-            for (Unit unit : getMercs()) {
-                sum += unit.getIntParam(p);
-            }
-        }
+
         return sum;
     }
 
@@ -485,13 +468,8 @@ public class PartyObj extends Obj {
         return false;
     }
 
-    public List<Unit> getMercs() {
-        return mercs;
-    }
 
-    public void setMercs(List<Unit> mercs) {
-        this.mercs = mercs;
-    }
+
 
     public Map<Unit, Coordinates> getPartyCoordinates() {
         return partyCoordinates;
@@ -501,17 +479,12 @@ public class PartyObj extends Obj {
         this.partyCoordinates = partyCoordinates;
     }
 
-    public MacroParty getMacroParty() {
-        return macroParty;
-    }
 
     public void setMacroParty(MacroParty macroParty) {
         this.macroParty = macroParty;
     }
 
-    public String getNextMission() {
-       return  getProperty(PROPS.PARTY_MISSIONS_NEXT);
-    }
+
 
     public String getMission() {
         return getProperty(PROPS.PARTY_MISSION);

@@ -35,7 +35,7 @@ public class DialogueFactory {
             int firstId = StringMaster.getInteger(array[1]);
             int lastId = StringMaster.getInteger(array[2]);
             List<Integer> ids = MathMaster.getIntsInRange(firstId, lastId);
-            GameDialogue dialogue = createDialogue(StringMaster.joinList(ids));
+            GameDialogue dialogue = createDialogue(name, StringMaster.joinList(ids));
             map.put(name, dialogue);
 
         }
@@ -68,7 +68,7 @@ public class DialogueFactory {
 
 
     public LinearDialogue createDialogue
-     (String idSequence) {
+     (String name, String idSequence) {
         Speech parent = null;
         Speech root = null;
         for (String ID : StringMaster.openContainer(idSequence)) {
@@ -83,7 +83,7 @@ public class DialogueFactory {
             parent = speech;
         }
 
-        return new LinearDialogue(root);
+        return new LinearDialogue(root, name);
     }
 
     protected Speech getSpeech(Integer integer) {

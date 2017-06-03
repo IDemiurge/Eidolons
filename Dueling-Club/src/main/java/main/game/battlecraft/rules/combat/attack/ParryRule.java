@@ -43,6 +43,13 @@ public class ParryRule {
         chance += -attack.getAttacker().getIntParam(PARAMS.PARRY_PENETRATION);
         Integer chanceRounded = Math.round(chance);
 
+//        if (!simulation)
+            if (attack.getAction().getGame().getCombatMaster().isChancesOff()) {
+                if (chanceRounded < 50)
+                    chanceRounded= 0;
+               else chanceRounded= 100 ;
+            }
+
         game.getLogManager().newLogEntryNode(ENTRY_TYPE.PARRY, attack.getAttackedUnit().getName(),
          attack.getAction().getName(), attack.getAttacker().getName(),
          chanceRounded.toString());

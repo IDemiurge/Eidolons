@@ -10,10 +10,7 @@ import main.game.battlecraft.ai.elements.actions.sequence.TurnSequenceConstructo
 import main.game.battlecraft.ai.elements.goal.GoalManager;
 import main.game.battlecraft.ai.elements.task.TaskManager;
 import main.game.battlecraft.ai.logic.types.atomic.AtomicAi;
-import main.game.battlecraft.ai.tools.AiExecutor;
-import main.game.battlecraft.ai.tools.Analyzer;
-import main.game.battlecraft.ai.tools.ParamAnalyzer;
-import main.game.battlecraft.ai.tools.SituationAnalyzer;
+import main.game.battlecraft.ai.tools.*;
 import main.game.battlecraft.ai.tools.path.CellPrioritizer;
 import main.game.battlecraft.ai.tools.path.PathBuilder;
 import main.game.battlecraft.ai.tools.priority.PriorityManager;
@@ -50,6 +47,7 @@ public class AiMaster extends AiHandler {
     private BehaviorMaster behaviorMaster;
     private AtomicAi atomicAi;
     private List<AiHandler> handlers = new LinkedList<>();
+    private AiScriptExecutor scriptExecutor;
 
     public AiMaster(DC_Game game) {
         this.game = game;
@@ -66,10 +64,11 @@ public class AiMaster extends AiHandler {
         this.situationAnalyzer = new SituationAnalyzer(this);
         this.threatAnalyzer = new ThreatAnalyzer(this);
         this.cellPrioritizer = new CellPrioritizer(this);
-        this.pathSequenceConstructor = new PathSequenceConstructor(master);
-        this. turnSequenceConstructor = new TurnSequenceConstructor(master);
-        this.behaviorMaster = new BehaviorMaster(master);
-        this. atomicAi = new AtomicAi(master);
+        this.pathSequenceConstructor = new PathSequenceConstructor(this);
+        this. turnSequenceConstructor = new TurnSequenceConstructor(this);
+        this.behaviorMaster = new BehaviorMaster(this);
+        this. atomicAi = new AtomicAi(this);
+        this. scriptExecutor = new AiScriptExecutor(this);
 
         executor = new AiExecutor(game);
 
@@ -195,4 +194,10 @@ getHandlers().forEach(handler -> handler.setUnit(unit));
     public List<AiHandler> getHandlers() {
         return handlers;
     }
+
+    public AiScriptExecutor getScriptExecutor() {
+        return scriptExecutor;
+    }
+
+
 }

@@ -49,12 +49,12 @@ public class ArmorMaster {
     }
 
     public static int getShieldReducedAmountForDealDamageEffect(
-            DealDamageEffect effect,
-            Unit targetObj, int amount, DC_ActiveObj active) {
+     DealDamageEffect effect,
+     Unit targetObj, int amount, DC_ActiveObj active) {
 
         if (effect.getGame().getArmorMaster().checkCanShieldBlock(active, targetObj)) {
             int shieldBlock = effect.getGame().getArmorMaster().getShieldDamageBlocked(amount, targetObj,
-                    (Unit) effect.getRef().getSourceObj(), active, null, effect.getDamageType());
+             (Unit) effect.getRef().getSourceObj(), active, null, effect.getDamageType());
             // event?
             amount -= shieldBlock;
         }
@@ -88,7 +88,7 @@ public class ArmorMaster {
         int blocked = getArmorBlockDamage(false, action instanceof DC_SpellObj, !action.isZone(), action
          .isZone(), damage, attacked, attacker, offhand, getDamageType(action, attacker
          .getActiveWeapon(offhand)), action);
-       return  Math.min(damage, blocked);
+        return Math.min(damage, blocked);
     }
 
     // for spells/special actions
@@ -103,8 +103,8 @@ public class ArmorMaster {
             }
         }
         return getArmorBlockDamage(false, action instanceof DC_SpellObj, canCritOrBlock, average,
-                amount, targetObj, action.getOwnerObj(), action.isOffhand(),
-                action.getEnergyType(), action);
+         amount, targetObj, action.getOwnerObj(), action.isOffhand(),
+         action.getEnergyType(), action);
     }
 
     private int getArmorBlockDamage(boolean shield, boolean spell, boolean canCritOrBlock,
@@ -166,14 +166,14 @@ public class ArmorMaster {
                 int durabilityLost = reduceDurability(blocked, armorObj, spell, dmg_type, attacker
                  .getActiveWeapon(offhand), damage);
                 if (CoreEngine.isPhaseAnimsOn())
-                if (!simulation) {
-                    if (!shield) {
-                        PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
-                                Attack.getAnimationKey(action));
-                        animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_ARMOR, blockedPercentage,
-                                blocked, durabilityLost, damage, dmg_type, armorObj));
+                    if (!simulation) {
+                        if (!shield) {
+                            PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
+                             Attack.getAnimationKey(action));
+                            animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_ARMOR, blockedPercentage,
+                             blocked, durabilityLost, damage, dmg_type, armorObj));
+                        }
                     }
-                }
 
             }
             if (!simulation) {
@@ -222,12 +222,15 @@ public class ArmorMaster {
                                         boolean spell) {
 
         Integer chance = getBlockPercentage(true, spell, true, true, shield, offhand, attacker,
-                attacked, action);
+         attacked, action);
         chance += attacked.getIntParam(PARAMS.BLOCK_CHANCE);
         chance += -attacker.getIntParam(PARAMS.PARRY_PENETRATION);
-        if (!simulation) {
-
-        }
+        if (!simulation)
+            if (action.getGame().getCombatMaster().isChancesOff()) {
+                if (chance < 50)
+                    return 0;
+                return 100;
+            }
         return chance;
     }
 
@@ -242,27 +245,27 @@ public class ArmorMaster {
         boolean zone = action.isZone();
         boolean offhand = action.isOffhand();
         Integer chance = getShieldBlockChance(shield, attacked, attacker, weapon, action, offhand,
-                spell);
+         spell);
         if (!zone) {
             if (!simulation)// will be average instead
             {
                 if (!RandomWizard.chance(chance)) {
                     message = StringMaster.getMessagePrefix(true, attacked.getOwner().isMe())
-                            + attacked.getName() + " fails to use " + shield.getName()
-                            + " to block " + action.getName()
-                            + StringMaster.wrapInParenthesis(chance + "%");
+                     + attacked.getName() + " fails to use " + shield.getName()
+                     + " to block " + action.getName()
+                     + StringMaster.wrapInParenthesis(chance + "%");
                     action.getGame().getLogManager().log(LOG.GAME_INFO, message, ENTRY_TYPE.DAMAGE);
                     return 0;
                 }
             }
         }
         Integer blockValue = getShieldBlockValue(damage, shield, attacked, attacker, weapon,
-                action, zone);
+         action, zone);
 
         blockValue = Math.min(blockValue, damage);
         if (!simulation) {
             int durabilityLost = reduceDurability(blockValue, shield, spell, damage_type, attacker
-                    .getActiveWeapon(offhand), damage);
+             .getActiveWeapon(offhand), damage);
             // shield.getIntParam(PARAMS.DAMAGE_BONUS); TODO so strength may
             // increase it? ...
             // RandomWizard.getRandomIntBetween(attacked.getIntParam(PARAMS.OFF_HAND_MIN_DAMAGE),
@@ -272,8 +275,8 @@ public class ArmorMaster {
             // attacked.getIntParam(PARAMS.SHIELD_MASTERY)) / 100;
             if (blockValue <= 0) {
                 action.getGame().getLogManager().log(LOG.GAME_INFO,
-                        shield.getName() + " is ineffective against " + action.getName() + "!",
-                        ENTRY_TYPE.DAMAGE);
+                 shield.getName() + " is ineffective against " + action.getName() + "!",
+                 ENTRY_TYPE.DAMAGE);
                 return 0;
             }
 
@@ -287,9 +290,9 @@ public class ArmorMaster {
                  durabilityLost, damage, damage_type, shield));
             }
             message = attacked.getName() + " uses " + shield.getName() + " to block" + "" + " "
-                    + blockValue + " out of " + damage + " " + damage_type + " damage from " +
-                    // StringMaster.wrapInParenthesis
-                    (action.getName());
+             + blockValue + " out of " + damage + " " + damage_type + " damage from " +
+             // StringMaster.wrapInParenthesis
+             (action.getName());
 
             action.getGame().getLogManager().log(LOG.GAME_INFO, message, ENTRY_TYPE.DAMAGE);
         }
@@ -302,6 +305,11 @@ public class ArmorMaster {
     private int getBlockPercentage(boolean shield, boolean spell, boolean canCritOrBlock,
                                    boolean average, DC_Obj armorObj, boolean offhand, Unit attacker,
                                    Unit attacked, DC_ActiveObj action) {
+        if (!average)
+            average = action.getGame().getCombatMaster().isDiceAverage();
+        if (canCritOrBlock)
+            canCritOrBlock = !action.getGame().getCombatMaster().isChancesOff();
+
         int covered = armorObj.getIntParam(PARAMS.COVER_PERCENTAGE);
         int uncovered = 100 - covered;
         DC_WeaponObj weapon = attacker.getActiveWeapon(offhand);

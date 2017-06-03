@@ -1,6 +1,5 @@
 package main.game.battlecraft.logic.meta.tutorial;
 
-import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import main.game.battlecraft.logic.meta.universal.*;
 import main.game.core.game.DC_Game;
 import main.game.core.game.TestGame;
@@ -17,10 +16,6 @@ import main.game.core.game.TestGame;
 public class TutorialMetaMaster extends MetaGameMaster<TutorialMeta> {
     public TutorialMetaMaster(String data) {
         super(data);
-        getGame().getCombatMaster().setChancesOff(true);
-        getGame().getCombatMaster().setDiceAverage(true);
-        getGame().getCombatMaster().setRollsAverage(true);
-        getGame().getCombatMaster().setActionsBlocked(true);
     }
 
     @Override
@@ -29,20 +24,18 @@ public class TutorialMetaMaster extends MetaGameMaster<TutorialMeta> {
     }
 
     @Override
-    protected DialogueFactory createDialogueFactory() {
-        return new DialogueFactory(){
-            //TODO special dialogues with controls
-        };
+    public void gameStarted() {
+        super.gameStarted();
+//set dialogue non-exclusive
+        getGame().getCombatMaster().setChancesOff(true);
+        getGame().getCombatMaster().setDiceAverage(true);
+        getGame().getCombatMaster().setRollsAverage(true);
+        getGame().getCombatMaster().setActionsBlocked(true);
     }
-
-//    @Override
-//    protected IntroFactory createIntroFactory() {
-//        return new TutorialInitializer(this);
-//    }
 
     @Override
     protected DC_Game createGame() {
-        return new TestGame();
+        return new TestGame(this);
     }
 
     @Override
@@ -53,7 +46,7 @@ public class TutorialMetaMaster extends MetaGameMaster<TutorialMeta> {
 
     @Override
     protected MetaDataManager<TutorialMeta> createMetaDataManager() {
-        return null;
+        return new TutorialMetaDataManager(this);
     }
 
     @Override

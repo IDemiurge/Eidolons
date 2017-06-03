@@ -188,6 +188,10 @@ public class Event implements Referred {
         UNIT_WAITS,
 //EXTRA ATTACKS
 
+        //DIALOGUE
+        DIALOGUE_FINISHED,
+        DIALOGUE_LINE_SPOKEN,
+//        DIALOGUE_OPTION_CHOSEN, SAME AS LINE!
 
         // SPELLS
         SPELL_ACTIVATED,

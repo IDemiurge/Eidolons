@@ -26,6 +26,8 @@ public class Scenario extends LightweightEntity {
 //    }
 
 
+
+
     private List<Mission> initAvailableMissions() {
         List<String> missions =
          StringMaster.openContainer(getProperty(PROPS.SCENARIO_MISSIONS));
@@ -33,6 +35,7 @@ public class Scenario extends LightweightEntity {
          getMissionName();
         int index = missions.indexOf(currentMission);
         //show future missions?
+//        getGame().getBattleMaster().getConstructor().getOrCreate(mission)
         List<String> available = StringMaster.openContainer(missions.get(index));
         return available.stream().map(mission ->
          new Mission(DataManager.getType(
@@ -48,8 +51,12 @@ public class Scenario extends LightweightEntity {
          DC_TYPE.PARTY);
     }
 
-    public void next() {
+    public void missionChosen() {
 
+    }
+        public void next() {
+        initAvailableMissions();
+        //set mission? init choice?
     }
 
     public List<Mission> getAvailableMissions() {

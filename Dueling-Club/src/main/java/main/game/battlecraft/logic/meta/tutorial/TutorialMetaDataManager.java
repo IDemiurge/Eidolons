@@ -18,4 +18,5 @@ public class TutorialMetaDataManager extends MetaDataManager<TutorialMeta> {
     public String getDataPath() {
         return PathFinder.getTextPath()+ TUTORIAL_DATA_PATH;
     }
+
 }

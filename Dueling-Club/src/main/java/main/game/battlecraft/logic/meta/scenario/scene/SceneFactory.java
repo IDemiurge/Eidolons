@@ -22,19 +22,22 @@ import java.util.stream.Collectors;
  */
 public class SceneFactory  implements Supplier<List<DialogScenario>> {
     private   String data;
+    private boolean dialogue;
 
-    public SceneFactory(String testData) {
+    public SceneFactory(String testData ) {
         this.data = testData;
     }
 
     @Refactor
     @Override
     public List<DialogScenario> get() {
-        return getScenes(Eidolons.game.getMetaMaster().getIntroFactory().getDialogue(data));
+        if (dialogue)
+            return getScenes(Eidolons.game.getMetaMaster().getDialogueFactory().getDialogue(data)  );
+        return getScenes(Eidolons.game.getMetaMaster().getIntroFactory().getDialogue(data)  );
     }
     //TODO Speech?
-    public static List<DialogScenario> getScenes(GameDialogue dialogue) {
-        Speech speech = dialogue.getSpeech();
+    public static List<DialogScenario> getScenes(GameDialogue dialogue ) {
+        Speech speech = dialogue.getRoot();
         List<SpeechData> fullData = new LinkedList<>();
         while (true) {
             fullData.add(speech.getData());
@@ -42,7 +45,6 @@ public class SceneFactory  implements Supplier<List<DialogScenario>> {
             speech = speech.getChildren().get(0);
 
         }
-
         return getScenes(fullData);
     }
 
@@ -58,10 +60,10 @@ public class SceneFactory  implements Supplier<List<DialogScenario>> {
 //        speech.getFormattedText()
         List<DialogScenario> list = new LinkedList<>();
 //        for (String substring : StringMaster.openContainer(data)) {
+        TextureRegion backTexture = null;
         for (SpeechData data : fullData) {
             TextureRegion portraitTexture = null;
             String message = null;
-            TextureRegion backTexture = null;
             boolean skippable = true;
             Integer time = -1;
 
@@ -77,7 +79,7 @@ public class SceneFactory  implements Supplier<List<DialogScenario>> {
             backTexture = TextureCache.getOrCreateR(data.getValue(SPEECH_VALUE.BACKGROUND));
 
             list.add(new DialogScenario(time, skippable, backTexture, message,
-             portraitTexture));
+             portraitTexture ));
 
         }
         return list;

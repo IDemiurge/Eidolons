@@ -15,6 +15,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
      DIALOGUE_DATA(null  ,false ,"dialogue" ),
     PARTY_MISSIONS_NEXT(null  ,false ,"party" ) ,
     PARTY_MISSION(null  ,false ,"party" ) ,
+    PARTY_MAIN_HERO(null  ,false ,"party" ) ,
     SCENARIO_TYPE(null,false, "scenarios"),
     SCENARIO_MISSIONS(null,true, "scenarios"),
     SCENARIO_STARTING_PLACE(null,false, "scenarios"),

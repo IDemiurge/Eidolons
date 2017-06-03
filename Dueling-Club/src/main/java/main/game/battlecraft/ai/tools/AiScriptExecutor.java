@@ -11,9 +11,10 @@ import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.AiActionFactory;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.elements.task.Task;
-import main.game.battlecraft.ai.tools.AiScriptExecutor.AI_SCRIPT_FUNCTION;
 import main.game.battlecraft.ai.tools.path.ActionPath;
+import main.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
 import main.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
@@ -21,16 +22,20 @@ import main.system.auxiliary.EnumMaster;
 /**
  * Created by JustMe on 5/21/2017.
  */
-public class AiScriptExecutor extends AiHandler implements ScriptExecutor<AI_SCRIPT_FUNCTION> {
+public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT_SCRIPT_FUNCTION> {
 
+
+    public AiScriptExecutor(AiMaster aiMaster) {
+        super(aiMaster);
+    }
 
     @Override
-    public String getSeparator(AI_SCRIPT_FUNCTION func) {
+    public String getSeparator(COMBAT_SCRIPT_FUNCTION func) {
         return null;
     }
 
     @Override
-    public boolean execute(AI_SCRIPT_FUNCTION function, Ref ref, String... args) {
+    public boolean execute(COMBAT_SCRIPT_FUNCTION function, Ref ref, String... args) {
         if (args[0].equalsIgnoreCase("group")) {
 
         }
@@ -80,7 +85,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<AI_SCR
         return true;
     }
 
-    private void executeCommand(Unit unit, AI_SCRIPT_FUNCTION function, String arg,
+    private void executeCommand(Unit unit, COMBAT_SCRIPT_FUNCTION function, String arg,
                                 boolean free, boolean immediate, String... args) {
         ActionSequence sequence = null;
         GOAL_TYPE goal = getGoalType(function);
@@ -129,7 +134,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<AI_SCR
 
     }
 
-    private GOAL_TYPE getGoalType(AI_SCRIPT_FUNCTION function) {
+    private GOAL_TYPE getGoalType(COMBAT_SCRIPT_FUNCTION function) {
         switch (function) {
             case ACTION:
                 break;
@@ -180,14 +185,5 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<AI_SCR
         RANDOM_ALLY,
     }
 
-    public enum AI_SCRIPT_FUNCTION {
-        MOVE_TO,
-        TURN_TO,
-        ACTION,
-        ATTACK,
-        FREEZE,
-        UNFREEZE,
-        ORDER,
-        ATOMIC,
-    }
+
 }

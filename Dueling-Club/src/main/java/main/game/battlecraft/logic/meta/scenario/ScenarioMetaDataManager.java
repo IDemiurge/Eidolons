@@ -6,6 +6,8 @@ import main.game.battlecraft.logic.meta.universal.MetaDataManager;
  * Created by JustMe on 5/14/2017.
  */
 public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
+    private String missionName;
+
     public ScenarioMetaDataManager(ScenarioMetaMaster scenarioMetaMaster) {
         super(scenarioMetaMaster);
     }
@@ -17,5 +19,13 @@ public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
     @Override
     public  ScenarioMetaMaster  getMaster() {
         return (ScenarioMetaMaster) super.getMaster();
+    }
+
+    public String getMissionName() {
+        return missionName;
+    }
+
+    public void setMissionName(String missionName) {
+        this.missionName = missionName;
     }
 }

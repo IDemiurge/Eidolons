@@ -1,5 +1,6 @@
 package main.game.battlecraft.logic.meta.universal;
 
+import main.entity.DataModel;
 import main.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
@@ -25,6 +26,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected   DC_Game game; //<? extends DC_Game>
     DialogueManager dialogueManager;
     DialogueActorMaster dialogueActorMaster;
+    private DataModel entity;
     //    PrecombatManager<E> precombatManager;
 //    AfterCombatManager<E> afterCombatManager;
 
@@ -130,4 +132,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     public MetaDataManager<E> getMetaDataManager() {
         return metaDataManager;
     }
+
+    public DataModel getEntity() {
+        return entity;
+    }
+
 }

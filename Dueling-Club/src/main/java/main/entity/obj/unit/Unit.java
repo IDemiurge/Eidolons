@@ -45,7 +45,6 @@ import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
-import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
 import main.game.module.adventure.entity.MacroActionManager.MACRO_MODES;
@@ -908,7 +907,7 @@ public class Unit extends DC_UnitModel {
             return true;
         } if (!owner.isAi())
         if (!getGame().isDebugMode()) {
-            if (getGame().getGameMode() == GAME_MODES.ARENA) {
+            if (!getGame().getCombatMaster().isFullManualControl()) {
                 if (owner.getHeroObj() != null) {
                     if (owner.getHeroObj() != this) {
                         return true;

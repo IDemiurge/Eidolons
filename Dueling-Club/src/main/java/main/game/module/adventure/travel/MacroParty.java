@@ -202,9 +202,7 @@ public class MacroParty extends MacroObj {
         return party.getLeader();
     }
 
-    public List<Unit> getMercs() {
-        return party.getMercs();
-    }
+
 
     public Route getCurrentRoute() {
         return currentRoute;
