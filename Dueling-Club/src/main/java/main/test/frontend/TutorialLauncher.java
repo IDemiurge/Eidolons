@@ -1,9 +1,7 @@
 package main.test.frontend;
 
 import main.game.battlecraft.DC_Engine;
-import main.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import main.game.battlecraft.logic.meta.tutorial.TutorialMetaMaster;
-import main.game.core.Eidolons;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
 import main.system.GuiEventManager;
@@ -16,21 +14,20 @@ public class TutorialLauncher {
     public static void main(String[] args) {
         BattleSceneLauncher.main(null);
         DC_Engine.mainMenuInit();
-        initTutorialMeta();
+        TutorialMetaMaster master = new TutorialMetaMaster("");
+        master.init();
 
-        ScreenData data = new ScreenData(ScreenType.BATTLE, "name", new SceneFactory("Tutorial Intro"));
+        ScreenData data = new ScreenData(ScreenType.BATTLE, "name"
+//         , new SceneFactory("Tutorial Intro")
+        );
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         DC_Engine.gameStartInit();
-        Eidolons.mainGame.getMetaMaster().preStart();
-//        Eidolons.mainGame.getMetaMaster().getGame().init( );
-        Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
-        Eidolons.mainGame.getMetaMaster().getGame().battleInit();
-        Eidolons.mainGame.getMetaMaster().getGame().start(true);
+        master.preStart();
+//       master.getGame().init( );
+        master.getGame().dungeonInit();
+        master.getGame().battleInit();
+        master.getGame().start(true);
 
         //DungeonScreen.getInstance().hideLoader();
-    }
-
-    private static void initTutorialMeta() {
-        new TutorialMetaMaster("").init();
     }
 }

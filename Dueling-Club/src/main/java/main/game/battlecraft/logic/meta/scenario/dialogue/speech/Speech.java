@@ -6,9 +6,7 @@ import main.data.dialogue.SpeechData;
 import main.data.dialogue.SpeechInterface;
 import main.data.dialogue.Speeches;
 import main.elements.conditions.Condition;
-import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
-import main.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
@@ -24,7 +22,7 @@ public class Speech implements SpeechInterface {
     String actorNames;
     String unformattedText; // [main hero name], [gender], [race] etc (maybe {val_ref} sytanx?)
     Condition conditions; //check before addChild()
-    Abilities abilities; //activate on start
+    Abilities abilities; //TODO NOW VIA SCRIPTS? OR WILL AE BE EASIER?
     String script;
     DialogueActor actor;
     List<DialogueActor> actors;
@@ -45,7 +43,6 @@ public class Speech implements SpeechInterface {
         if (children != null) {
             this.children = new DequeImpl<Speech>().addAllCast(children.getList());
         }
-        getSpeechBuilder().buildSpeech(this);
     }
 
     public Speech(String actor, String text) {
@@ -75,9 +72,8 @@ public class Speech implements SpeechInterface {
         this.children = new DequeImpl<Speech>().getAddAllCast(children.getList());
     }
 
-    protected SpeechBuilder getSpeechBuilder() {
-        return new SpeechBuilder();
-    }
+    public SpeechBuilder getSpeechBuilder(String path) {
+        return new SpeechBuilder(path );  }
 
     public void addChild(Speech child) {
         getChildren().add(child);

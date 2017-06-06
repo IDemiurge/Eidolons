@@ -3,7 +3,6 @@ package main.game.battlecraft.logic.meta.scenario.dialogue.speech;
 import main.ability.Abilities;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.SpeechData;
-import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.elements.conditions.Condition;
@@ -28,9 +27,6 @@ public class SpeechBuilder {
         this.linesPath = linesPath;
     }
 
-    public SpeechBuilder() {
-        this(PathFinder.getEnginePath() + DialogueLineFormatter.getLinesFilePath());
-    }
 
     public Speech buildSpeech(Speech speech) {
         int id = speech.getId();

@@ -12,7 +12,7 @@ public class IntroSpeech extends Speech {
     }
 
     @Override
-    protected SpeechBuilder getSpeechBuilder() {
-        return new IntroSpeechBuilder();
+    public SpeechBuilder getSpeechBuilder(String path) {
+        return new IntroSpeechBuilder(path);
     }
 }

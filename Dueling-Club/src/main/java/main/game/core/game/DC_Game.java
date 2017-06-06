@@ -237,7 +237,6 @@ public class DC_Game extends MicroGame {
 
     public void start(boolean first) {
         Chronos.mark("GAME_START");
-
         this.manager.setSbInitialized(true); //TODO legacy?
         getTurnManager().init();
 
@@ -250,6 +249,7 @@ public class DC_Game extends MicroGame {
         battleMaster.startGame();
         dungeonMaster.gameStarted();
         getState().gameStarted(first);
+        getMetaMaster().gameStarted();
 
         // TODO: 30.10.2016 insert gui init here
 

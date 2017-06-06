@@ -14,7 +14,8 @@ import java.util.List;
 /**
  * Created by JustMe on 6/1/2017.
  */
-public class HeroScreenDataSourceImpl implements HeroScreenDataSource {
+public class HeroScreenDataSourceImpl implements HeroScreenDataSource
+{
     Unit hero;
 
     public HeroScreenDataSourceImpl(Unit hero) {
@@ -39,5 +40,20 @@ public class HeroScreenDataSourceImpl implements HeroScreenDataSource {
     public List<ValueContainer> getLockedMasteries() {
         //unlockable?
         return new LinkedList<>();
+    }
+
+    @Override
+    public List<ValueContainer> getAvailableSkills() {
+        return null;
+    }
+
+    @Override
+    public List<ValueContainer> getLearnedSkills() {
+        return null;
+    }
+
+    @Override
+    public List<ValueContainer> getSkillsBlockedByXp() {
+        return null;
     }
 }

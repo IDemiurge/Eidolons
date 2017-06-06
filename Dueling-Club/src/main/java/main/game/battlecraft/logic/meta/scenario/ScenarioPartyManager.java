@@ -17,7 +17,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     }
 
     @Override
-    public void gameStarted() {
+    public void preStart() {
 //  TODO       is this the right time to set it?
         party.setProperty(PROPS.PARTY_MISSION,
      StringMaster.openContainer(getMetaGame().getScenario().

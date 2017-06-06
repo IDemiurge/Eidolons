@@ -43,6 +43,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     protected void hideLoader() {
         this.hideLoader = true;
+        if (introStage!=null )
         if (introStage.isDone()) {
             updateInputController();
         }

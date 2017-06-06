@@ -33,6 +33,20 @@ public class TutorialMetaMaster extends MetaGameMaster<TutorialMeta> {
         getGame().getCombatMaster().setActionsBlocked(true);
     }
 
+//    @Override
+//    protected DialogueFactory createDialogueFactory() {
+//        return new DialogueFactory() {
+//            @Override
+//            protected String getFilePath() {
+//            return     StringMaster.buildPath(
+//             master.getMetaDataManager().getDataPath()
+//             , TextMaster.getLocale(),
+//             StringMaster.getPathSeparator()+ getFileName());
+//            }
+//
+//        };
+//    }
+
     @Override
     protected DC_Game createGame() {
         return new TestGame(this);

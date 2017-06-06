@@ -11,8 +11,6 @@ import main.system.auxiliary.data.FileManager;
 import main.system.text.TextMaster;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by JustMe on 5/18/2017.
@@ -22,58 +20,96 @@ public class DialogueLineFormatter {
     public static final String ACTOR_SEPARATOR = "::";
     public static final String DIALOGUE_SEPARATOR = "***";
     public static final String LINE_SEPARATOR = ">>";
-    private static final String dialogueTextPath = "\\dialogue\\raw\\";
-    private static final String linearDialoguePath = "\\dialogue\\linear dialogues.xml";
-    private static final String introsPath = "\\dialogue\\intros.xml";
-    private static final String linesFilePath = "\\dialogue\\lines.xml";
-    private static final String linesFilePathIntros = "\\dialogue\\lines - intros.xml";
-    private static final String linesBackupFilePath = "\\dialogue\\backup\\lines.xml";
+    private static final String dialogueTextPath = "\\raw\\";
+    private static final String linearDialoguePath = "\\linear dialogues.xml";
+    private static final String introsPath = "\\intros.xml";
+    private static final String linesFilePath = "\\lines.xml";
+    //    private static final String linesFilePathIntros = "\\lines - intros.xml";
     private static final String ACTOR_NODE = SPEECH_VALUE.ACTOR.name();
     private static final String TEXT_NODE = SPEECH_VALUE.MESSAGE.name();
-    private static String oldLinesFileContents="";
-    private static String newLinesFileContents="";
-    private static  String linearDialogueFileContents="";
-    private static Map<Integer, Integer> updateIdMap;
+    private static final String INTRO_IDENTIFIER = "Intro:";
+    private static String newLinesFileContents = "";
+    private static String linearDialogueFileContents = "";
+    private static String introsFileContents = "";
     private static int id;
 
     public static void main(String[] args) {
         fullUpdate();
     }
 
-    public static void parseDialogue() {
+
+    public static void generate() {
 
     }
+        public static void fullUpdate() {
+        //TODO TUTORIAL?
+        for (File scenarioFolder : FileManager.getFilesFromDirectory(
+         PathFinder.getEnginePath() + PathFinder.getScenariosPath()
+         , false, true)) {
+            //TODO scenario intro?
+            for (File missionFolder : FileManager.getFilesFromDirectory(scenarioFolder.getPath()
+             , false, true)) {
+                if (missionFolder.isDirectory()){
+                    String path = getDialogueTextPath(missionFolder.getName()+ dialogueTextPath);
+                    parseDocs(path);
+                }
 
-    public static void updateXml() {
-
+            }
+        }
+        String path =  PathFinder.getEnginePath()
+         + "tutorial"+StringMaster.getPathSeparator()
+         + TextMaster.getLocale()
+         + dialogueTextPath;
+        parseDocs(path);
     }
 
-    public static void fullUpdate() {
+    public static String getDialogueTextPath(String fileName) {
+        return PathFinder.getEnginePath() + PathFinder.getScenariosPath()
+         + fileName+StringMaster.getPathSeparator()
+         + TextMaster.getLocale()
+         ;
+    }
+
+    public static void parseDocs(String path) {
         id = 0;
-        readLinesFile();
-        createUpdateMap();
-        for (File file : FileManager.getFilesFromDirectory(getDialogueTextPath(), false, true)) {
+        for (File file : FileManager.getFilesFromDirectory(path, false, true)) {
             parseDialogueFile(FileManager.readFile(file));
         }
-        createBackup();
-        writeLinesFile();
-        writeLinearDialoguesFile();
-        updateXml();
+        XML_Writer.write(XML_Converter.wrap("Lines", newLinesFileContents), getLinesFilePath(path));
+        XML_Writer.write(linearDialogueFileContents, getLinearDialoguesFilePath());
+        XML_Writer.write(introsFileContents, getIntrosFilePath());
 //        new DialogueFactory().constructScenarioLinearDialogues(getLinearDialoguesFilePath(), new ScenarioMetaMaster(""));
-      }
+    }
+
     public static String formatDialogueText(String result) {
         return result.replaceAll("…", "...")
          .replaceAll("’", "'");
     }
-    public static void parseDialogueFile(String contents) {
-        //odt from textMaster!
 
+    //odt from textMaster!
+/* FORMAT EXAMPLE:
+***Interrogation
+>> Billy:: Please, mercy, my lords… I didn’t want to fight anyone, I’m just a thief…
+>> Gwyn:: He could have run.
+***Interrogation2
+>> Gwyn::  Either he is too desperate to think clearly, or he is not a coward.
+...
+ */
+    public static void parseDialogueFile(String contents) {
         for (String dialogueContents : StringMaster.openContainer(contents, DIALOGUE_SEPARATOR)) {
             boolean dialogue = true;
             for (String lineText : StringMaster.openContainer(dialogueContents, LINE_SEPARATOR)) {
+                boolean intro = lineText.contains(INTRO_IDENTIFIER);
                 if (dialogue) {
-                    linearDialogueFileContents += DialogueFactory.DIALOGUE_SEPARATOR + lineText.trim() + DialogueFactory.ID_SEPARATOR;
-                    linearDialogueFileContents += id + DialogueFactory.ID_SEPARATOR;
+                    //TODO check intro!
+                    if (intro) {
+                        lineText = lineText.replace(INTRO_IDENTIFIER, "");
+                        introsFileContents += DialogueFactory.DIALOGUE_SEPARATOR + lineText.trim() + DialogueFactory.ID_SEPARATOR;
+                        introsFileContents += id + DialogueFactory.ID_SEPARATOR;
+                    } else {
+                        linearDialogueFileContents += DialogueFactory.DIALOGUE_SEPARATOR + lineText.trim() + DialogueFactory.ID_SEPARATOR;
+                        linearDialogueFileContents += id + DialogueFactory.ID_SEPARATOR;
+                    }
                     dialogue = false;
                     continue;
                 }
@@ -84,8 +120,8 @@ public class DialogueLineFormatter {
                 String textData = StringMaster.tryGetSplit(lineText, ACTOR_SEPARATOR, 1);
 
                 textData = formatDialogueText(textData);
-                 textData =XML_Converter.wrap(TEXT_NODE,
-                 XML_Formatter.formatXmlTextContent(textData, null ));
+                textData = XML_Converter.wrap(TEXT_NODE,
+                 XML_Formatter.formatXmlTextContent(textData, null));
 
                 String miscData = "";
                 String text = actorData;
@@ -100,7 +136,7 @@ public class DialogueLineFormatter {
             }
 
             if (id != 0) {
-                linearDialogueFileContents += id  +StringMaster.NEW_LINE;
+                linearDialogueFileContents += id + StringMaster.NEW_LINE;
             }
         }
 
@@ -111,53 +147,21 @@ public class DialogueLineFormatter {
         return lineContents;
     }
 
-    private static void createUpdateMap() {
-        updateIdMap = new HashMap<>(); // uuid??
-        // on newLine() ->
-
-    }
-
-    private static void writeLinesFile() {
-        XML_Writer.write(
-         XML_Converter.wrap("Lines", newLinesFileContents), getLinesFilePath());
-    }
-    private static void writeLinearDialoguesFile() {
-        XML_Writer.write(linearDialogueFileContents, getLinearDialoguesFilePath());
-    }
-
-
-
-    private static void createBackup() {
-        XML_Writer.write(oldLinesFileContents, getLinesBackupFilePath());
-    }
-
-    public static String readLinesFile() {
-        oldLinesFileContents = FileManager.readFile(getLinesFilePath());
-        return oldLinesFileContents;
-        //how to update?
-    }
 
     public static String getLinearDialoguesFilePath() {
         return PathFinder.getEnginePath() + PathFinder.getTextPath()
          + TextMaster.getLocale() + linearDialoguePath;
     }
+
     public static String getIntrosFilePath() {
         return PathFinder.getEnginePath() + PathFinder.getTextPath()
          + TextMaster.getLocale() + introsPath;
     }
-    public static String getDialogueTextPath() {
-        return PathFinder.getEnginePath() + PathFinder.getTextPath() + TextMaster.getLocale() + dialogueTextPath;
+
+
+    public static String getLinesFilePath(String root) {
+        return root + linesFilePath;
     }
 
-    public static String getLinesFilePath() {
-        return PathFinder.getTextPath() + TextMaster.getLocale() + linesFilePath;
-    }
 
-    public static String getLinesBackupFilePath() {
-        return PathFinder.getTextPath() + TextMaster.getLocale() + linesBackupFilePath;
-    }
-
-    public static String getLinesFilePathIntro() {
-        return PathFinder.getTextPath() + TextMaster.getLocale() + linesFilePathIntros;
-    }
 }

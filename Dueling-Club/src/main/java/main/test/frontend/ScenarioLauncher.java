@@ -33,7 +33,6 @@ public class ScenarioLauncher {
 //        Eidolons.mainGame.getMetaMaster().getGame().init( );
         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
-        Eidolons.mainGame.getMetaMaster().gameStarted();
 
         Eidolons.mainGame.getMetaMaster().getGame().start(true);
 

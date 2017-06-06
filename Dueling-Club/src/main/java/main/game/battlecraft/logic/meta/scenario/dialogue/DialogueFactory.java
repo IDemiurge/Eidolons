@@ -1,5 +1,7 @@
 package main.game.battlecraft.logic.meta.scenario.dialogue;
 
+import main.data.filesys.PathFinder;
+import main.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
 import main.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.game.core.Eidolons;
@@ -73,6 +75,13 @@ public class DialogueFactory {
         Speech root = null;
         for (String ID : StringMaster.openContainer(idSequence)) {
             Speech speech = getSpeech(StringMaster.getInteger(ID));
+
+            String pathRoot = getFilePath();
+//                PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+
+//                 TextMaster.getLocale();
+            String path = PathFinder.getEnginePath() + DialogueLineFormatter.getLinesFilePath(pathRoot);
+
+            speech.getSpeechBuilder(path).buildSpeech(speech);
 
             if (root == null)
                 root = speech;

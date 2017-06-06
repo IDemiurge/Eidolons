@@ -75,11 +75,12 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public void preStart(){
-        partyManager.gameStarted();
+        partyManager.preStart();
 //        getGame().getDataKeeper().setDungeonData(new DungeonData(getMetaGame()));
 
     }
     public void gameStarted(){
+        partyManager.gameStarted();
 //   TODO remove lazy init hack?
 //     getDialogueFactory().init(this);
 //        getIntroFactory().init(this);
