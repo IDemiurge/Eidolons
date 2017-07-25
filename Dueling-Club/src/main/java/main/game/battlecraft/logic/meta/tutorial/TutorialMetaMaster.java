@@ -37,7 +37,7 @@ public class TutorialMetaMaster extends MetaGameMaster<TutorialMeta> {
 //    protected DialogueFactory createDialogueFactory() {
 //        return new DialogueFactory() {
 //            @Override
-//            protected String getFilePath() {
+//            protected String getFileRootPath() {
 //            return     StringMaster.buildPath(
 //             master.getMetaDataManager().getDataPath()
 //             , TextMaster.getLocale(),

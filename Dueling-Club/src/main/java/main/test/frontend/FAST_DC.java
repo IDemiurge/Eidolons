@@ -135,6 +135,8 @@ public class FAST_DC {
         if (!CoreEngine.isGraphicsOff()) {
             if (!CoreEngine.isSwingOn()) {
                 BattleSceneLauncher.main(null);
+//                ScreenData data = new ScreenData(ScreenType.BATTLE, "DC", null );
+//                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
             }
         }
 

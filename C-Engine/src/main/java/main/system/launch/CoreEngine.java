@@ -22,6 +22,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CoreEngine {
+    private static CoreEngine engineObject;
+
     public final static String[] classFolderPaths = {"main.elements", "main.ability"};
     public static final String VERSION = "0.106";
     public static boolean swingOn = false;
@@ -45,6 +47,7 @@ public class CoreEngine {
     private static boolean logicTest;
     private static boolean itemGenerationOff;
     private static boolean targetingResultCachingOn;
+    private static boolean jar;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -284,5 +287,21 @@ public class CoreEngine {
 
     public static void setTargetingResultCachingOn(boolean targetingResultCachingOn) {
         CoreEngine.targetingResultCachingOn = targetingResultCachingOn;
+    }
+
+    public static void setEngineObject(CoreEngine engineObject) {
+        CoreEngine.engineObject = engineObject;
+    }
+
+    public static CoreEngine getEngineObject(){
+        return engineObject;
+    }
+
+    public static boolean isJar() {
+        return jar;
+    }
+
+    public static void setJar(boolean jar) {
+        CoreEngine.jar = jar;
     }
 }

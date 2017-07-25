@@ -47,15 +47,15 @@ public class DialogueFactory {
 
     public void init(MetaGameMaster master) {
         this.master = master;
-        constructDialogues(getFilePath());
+        constructDialogues(getFileRootPath()+getFileName());
     }
 
-    protected String getFilePath() {
+    protected String getFileRootPath() {
         return
          StringMaster.buildPath(
          master.getMetaDataManager().getDataPath()
          , TextMaster.getLocale(),
-         StringMaster.getPathSeparator()+ getFileName());
+         StringMaster.getPathSeparator() );
     }
     protected String getFileName() {
         return FILE_NAME;
@@ -76,7 +76,7 @@ public class DialogueFactory {
         for (String ID : StringMaster.openContainer(idSequence)) {
             Speech speech = getSpeech(StringMaster.getInteger(ID));
 
-            String pathRoot = getFilePath();
+            String pathRoot = getFileRootPath();
 //                PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+
 //                 TextMaster.getLocale();
             String path = PathFinder.getEnginePath() + DialogueLineFormatter.getLinesFilePath(pathRoot);

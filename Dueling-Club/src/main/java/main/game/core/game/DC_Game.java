@@ -249,6 +249,7 @@ public class DC_Game extends MicroGame {
         battleMaster.startGame();
         dungeonMaster.gameStarted();
         getState().gameStarted(first);
+        if (getMetaMaster()!=null )
         getMetaMaster().gameStarted();
 
         // TODO: 30.10.2016 insert gui init here
@@ -736,5 +737,7 @@ public class DC_Game extends MicroGame {
         SCENARIO, ARCADE, SKIRMISH, TEST,
 
     }
+
+
 
 }

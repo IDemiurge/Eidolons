@@ -10,10 +10,13 @@ import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
 import main.system.options.OptionsMaster;
 
-public class DC_Engine {
+public class DC_Engine extends  CoreEngine{
     /*
     supposed to give access to Audio, Data, utilities, ...
      */
+    static{
+        jarInit();
+    }
     public static void fullInit() {
         Chronos.mark("DC INIT");
         systemInit();
@@ -26,11 +29,15 @@ public class DC_Engine {
         systemInit();
         dataInit();
     }
+    public static void jarInit() {
+        CoreEngine.setEngineObject(new DC_Engine());
+    }
     public static void gameStartInit() {
         gameInit();
     }
         public static void systemInit() {
-        CoreEngine.systemInit();
+
+             CoreEngine.systemInit();
         OptionsMaster.init();
         DC_GuiManager.init();
 //        TextMaster.init(locale);

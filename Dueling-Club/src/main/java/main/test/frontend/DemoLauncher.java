@@ -83,7 +83,11 @@ public class DemoLauncher extends Game {
     }
 
     public void onScreenLoadDone(EventCallbackParam param) {
-        ((ScreenWithLoader) getScreen()).loadDone(param);
+        if(getScreen()==null)
+        return ;
+            else {
+            ((ScreenWithLoader) getScreen()).loadDone(param);
+        }
     }
 
     protected void screenSwitcher(EventCallbackParam param) {

@@ -7,6 +7,7 @@ import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import org.w3c.dom.Node;
 
@@ -41,6 +42,15 @@ public class FileManager {
 
     public static String readFile(File file, String lineSeparator) {
         if (!isFile(file)) {
+            if (CoreEngine.isJar()) {
+                System.out.println("Failed to read " + file.getPath());
+                try {
+                    throw new RuntimeException();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return "";
+            }
             if (!file.getPath().contains(PathFinder.getEnginePath()))
                 return readFile(new File(PathFinder.getEnginePath() + file.getPath()),
                  lineSeparator);

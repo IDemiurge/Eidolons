@@ -1,6 +1,11 @@
 package main.data.filesys;
 
+import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
+
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -22,16 +27,39 @@ public class PathFinder {
     private static String RES_PATH;
     private static Lock initLock = new ReentrantLock();
     private static volatile boolean isInitialized = false;
+    private static String jarName;
 
     private static void _init() {
         ClassLoader classLoader = PathFinder.class.getClassLoader();
-        File temp = new File(classLoader.getResource("").getFile());
-        ENGINE_PATH = new File(temp.getParentFile().toURI()) + File.separator;
+        if (classLoader.getResource("") != null) {
+            File temp = new File(classLoader.getResource("").getFile());
+            ENGINE_PATH = new File(temp.getParentFile().toURI()) + File.separator;
+            XML_PATH = new File(temp.getParentFile() + File.separator + "XML") + File.separator;
+        } else {
+            //FOR JARS
+            CoreEngine.setJar(true);
+            URI uri = null;
+            try {
+                uri =
+                 CoreEngine.getEngineObject().getClass().getProtectionDomain().getCodeSource().getLocation().toURI();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            if (jarName==null )
+                jarName = StringMaster.getLastPathSegment((uri.toString()));
+
+            System.out.println("jarName: " + jarName);
+            String path =
+             new File(uri.toString().replace(jarName+StringMaster.getPathSeparator(), "")).getAbsolutePath();
+            path = path.split("file:")[0];
+            System.out.println("Engine path for Jar: " + path);
+
+            ENGINE_PATH = path + File.separator;
+            XML_PATH = path + File.separator + "XML" + File.separator;
+
+        }
 
         RES_PATH = "resource" + File.separator;
-
-        XML_PATH = new File(temp.getParentFile() + File.separator + "XML") + File.separator;
-
         IMG_PATH = ENGINE_PATH + RES_PATH + "img\\";
 
         SND_PATH = ENGINE_PATH + RES_PATH + "sound\\";
@@ -41,7 +69,7 @@ public class PathFinder {
         MACRO_TYPES_PATH = XML_PATH + MACRO_MODULE_NAME + "\\types\\";
 
         TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + "\\types\\"
-                + ((PRESENTATION_MODE) ? PRESENTATION : "");
+         + ((PRESENTATION_MODE) ? PRESENTATION : "");
 
     }
 
@@ -88,6 +116,7 @@ public class PathFinder {
         init();
         return RES_PATH + "\\text\\scenario\\";
     }
+
     public static String getLogPath() {
         init();
         return getTextPath() + "\\log\\";
@@ -210,5 +239,9 @@ public class PathFinder {
     public static String removeSpecificPcPrefix(String imagePath) {
         init();
         return imagePath.replace(getEnginePath(), "");
+    }
+
+    public static String getJarPath() {
+        return getEnginePath()+jarName;
     }
 }

@@ -37,6 +37,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public void gameStarted() {
+        GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, dungeonWrapper.getMapBackground());
         spawner.spawn();
     }
 
@@ -51,7 +52,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
             return;
         }
 
-        GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, dungeonWrapper.getMapBackground());
+
 
     }
 

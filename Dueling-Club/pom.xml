@@ -84,10 +84,6 @@
             <artifactId>battlecraft-core</artifactId>
             <version>1.1-SNAPSHOT</version>
             <exclusions>
-                <exclusion>
-                    <groupId>com.badlogicgames.gdx</groupId>
-                    <artifactId>gdx-box2d-gwt</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
 
@@ -167,7 +163,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>main.test.frontend.FAST_DC</mainClass>
+                            <mainClass>main.test.frontend.ScenarioLauncher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -180,7 +176,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>main.test.frontend.FAST_DC</mainClass>
+                            <mainClass>main.test.frontend.ScenarioLauncher</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -188,7 +184,26 @@
                     </descriptorRefs>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>main.test.frontend.ScenarioLauncher</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

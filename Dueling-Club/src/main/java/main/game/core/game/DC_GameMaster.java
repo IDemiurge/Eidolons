@@ -255,13 +255,14 @@ public class DC_GameMaster extends GameMaster {
     ) {
         List<Unit> matched = new LinkedList<>();
         for (Unit unit : getUnits()) {
-            if (ally_or_enemy_only != null)
+            if (ally_or_enemy_only != null) {
                 if (unit.getOwner() == ref.getSourceObj().getOwner())
+                    if (!ally_or_enemy_only)
+                        continue;
+                if (unit.getOwner() != ref.getSourceObj().getOwner())
                     if (ally_or_enemy_only)
                         continue;
-            if (unit.getOwner() != ref.getSourceObj().getOwner())
-                if (!ally_or_enemy_only)
-                    continue;
+            }
             if (StringMaster.isEmpty(name) || unit.getName().equalsIgnoreCase(name)) {
                 matched.add(unit);
             }

@@ -5,6 +5,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
+import main.game.battlecraft.DC_Engine;
 import main.logic.AT_OBJ_TYPE;
 import main.logic.AT_PROPS;
 import main.music.MusicCore;
@@ -57,6 +58,7 @@ public class AHK_Master {
 
         CoreEngine.setSelectivelyReadTypes("Track;Music List;Script;");
         XML_Writer.getBlocked().add(AT_OBJ_TYPE.TRACK);
+        DC_Engine.jarInit();
         ArcaneTower.genericInit(false);
         // PathFinder.init();
         // GuiManager.init();

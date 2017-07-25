@@ -32,6 +32,10 @@ public class InputController implements InputProcessor {
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;
+        xCamPos = 500;
+        yCamPos = 500;
+        this.camera.position.x = xCamPos;
+        this.camera.position.y = yCamPos;
     }
 
     // сюда передаются все обьекты, что есть в мире, и потом отсюда они управляются
@@ -100,8 +104,6 @@ public class InputController implements InputProcessor {
          , screenX, screenY));*/
         // Условно у меня на ширину приложения пикселей приходится ширина камеры абстрактрых едениц
 
-        int x = screenX;
-        int y = screenY;
         if (button == LEFT) {
             xCamPos = screenX;
             yCamPos = screenY;

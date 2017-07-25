@@ -28,6 +28,7 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
                 //TODO set main hero if created
                 name = getMaster().getEntity().getProperty(PROPS.PARTY_MAIN_HERO);
             }
+        name = "Harlen Rolwain";
         Ref ref = new Ref(getParty().getLeader());
         Unit hero = getGame().getMaster().getUnitByName(name, ref, true, null, null);
         //will find 1st if name==null

@@ -36,10 +36,10 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class UnitDataSource implements
  AttributesDataSource, ResourceSource,
-        AvatarDataSource, CounterAndActionPointsSource,
-        EffectsAndAbilitiesSource, MainWeaponDataSource<ValueContainer>, OffWeaponDataSource,
-        MainAttributesSource, ResistSource, StatsDataSource,
-        ArmorDataSource {
+ AvatarDataSource, CounterAndActionPointsSource,
+ EffectsAndAbilitiesSource, MainWeaponDataSource<ValueContainer>, OffWeaponDataSource,
+ MainAttributesSource, ResistSource, StatsDataSource,
+ ArmorDataSource {
     private Unit unit;
 
     public UnitDataSource(Unit unit) {
@@ -47,7 +47,7 @@ public class UnitDataSource implements
     }
 
     private static List<MultiValueContainer> extractActionValues(DC_UnitAction el
-            , VALUE[] baseKeys) {
+     , VALUE[] baseKeys) {
         List<MultiValueContainer> list = new ArrayList<>();
         Pair<PARAMS, PARAMS> pair;
         for (VALUE key : baseKeys) {
@@ -210,10 +210,10 @@ public class UnitDataSource implements
     public String getParam2() {
         if (unit.checkProperty(G_PROPS.RACE)) {
             return
-                    unit.getValue(G_PROPS.RACE);
+             unit.getValue(G_PROPS.RACE);
         }
         return
-                unit.getValue(G_PROPS.GROUP);
+         unit.getValue(G_PROPS.GROUP);
     }
 
     @Override
@@ -223,7 +223,7 @@ public class UnitDataSource implements
         final String value = c + "/" + m;
 
         VerticalValueContainer container = new VerticalValueContainer(
-                getOrCreateR("UI/value icons/n_of_counters_s.png"), value);
+         getOrCreateR("UI/value icons/n_of_counters_s.png"), value);
 
         ValueTooltip toolTip = new ValueTooltip();
         toolTip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.INITIATIVE.getName(), value)));
@@ -250,26 +250,26 @@ public class UnitDataSource implements
     @Override
     public List<ValueContainer> getEffects() {
         return unit.getBuffs().stream()
-                .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-                .map(getObjValueContainerMapper())
-                .collect(Collectors.toList());
+         .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
+         .map(getObjValueContainerMapper())
+         .collect(Collectors.toList());
     }
 
     @Override
     public List<ValueContainer> getAbilities() {
         return unit.getPassives().stream()
-                .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-                .map(getObjValueContainerMapper())
-                .collect(Collectors.toList());
+         .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
+         .map(getObjValueContainerMapper())
+         .collect(Collectors.toList());
     }
 
     @Override
     public VerticalValueContainer getResistance() {
         final String param = unit.getStrParam(PARAMS.RESISTANCE);
         final VerticalValueContainer container =
-                new VerticalValueContainer(
-                        getOrCreateR("UI/value icons/resistance.jpg"),
-                        param);
+         new VerticalValueContainer(
+          getOrCreateR("UI/value icons/resistance.jpg"),
+          param);
 
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.RESISTANCE.getName(), param)));
@@ -282,9 +282,9 @@ public class UnitDataSource implements
     public VerticalValueContainer getDefense() {
         final String param = unit.getStrParam(PARAMS.DEFENSE);
         final VerticalValueContainer container =
-                new VerticalValueContainer(
-                        getOrCreateR("UI/value icons/Defense.jpg"),
-                        param);
+         new VerticalValueContainer(
+          getOrCreateR("UI/value icons/Defense.jpg"),
+          param);
 
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.DEFENSE.getName(), param)));
@@ -297,9 +297,9 @@ public class UnitDataSource implements
     public VerticalValueContainer getFortitude() {
         final String param = unit.getStrParam(PARAMS.FORTITUDE);
         final VerticalValueContainer container =
-                new VerticalValueContainer(
-                        getOrCreateR("UI/value icons/Fortitude.jpg"),
-                        param);
+         new VerticalValueContainer(
+          getOrCreateR("UI/value icons/Fortitude.jpg"),
+          param);
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.FORTITUDE.getName(), param)));
         container.addListener(tooltip.getController());
@@ -311,9 +311,9 @@ public class UnitDataSource implements
     public VerticalValueContainer getSpirit() {
         final String param = unit.getStrParam(PARAMS.SPIRIT);
         final VerticalValueContainer container =
-                new VerticalValueContainer(
-                        getOrCreateR("UI/value icons/spirit.jpg"),
-                        param);
+         new VerticalValueContainer(
+          getOrCreateR("UI/value icons/spirit.jpg"),
+          param);
 
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.SPIRIT.getName(), param)));
@@ -325,9 +325,9 @@ public class UnitDataSource implements
     public VerticalValueContainer getArmor() {
         final String param = unit.getStrParam(PARAMS.ARMOR);
         final VerticalValueContainer container =
-                new VerticalValueContainer(
-                        getOrCreateR("UI/value icons/armor.jpg"),
-                        param);
+         new VerticalValueContainer(
+          getOrCreateR("UI/value icons/armor.jpg"),
+          param);
 
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.ARMOR.getName(), param)));
@@ -353,16 +353,16 @@ public class UnitDataSource implements
                 @Override
                 public List<ValueContainer> getMainParams() {
                     return Arrays.stream(ARMOR_TOOLTIP)
-                            .map(el -> new ValueContainer(el.getName(), armor.getStrParam(el)).pad(10))
-                            .collect(Collectors.toList());
+                     .map(el -> new ValueContainer(el.getName(), armor.getStrParam(el)).pad(10))
+                     .collect(Collectors.toList());
                 }
 
                 @Override
                 public List<ValueContainer> getBuffs() {
                     return armor.getBuffs().stream()
-                            .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-                            .map(getObjValueContainerMapper())
-                            .collect(Collectors.toList());
+                     .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
+                     .map(getObjValueContainerMapper())
+                     .collect(Collectors.toList());
                 }
             });
 
@@ -455,8 +455,12 @@ public class UnitDataSource implements
     @Override
     public List<ValueContainer> getMainWeaponDetailInfo() {
         DC_WeaponObj mainWeapon = unit.getMainWeapon();
-
-        return getWeaponDetail(mainWeapon);
+        try {
+            return getWeaponDetail(mainWeapon);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return     new LinkedList<>() ;
     }
 
     @Override
@@ -478,65 +482,65 @@ public class UnitDataSource implements
 
         if (weapon != null) {
             weapon.getAttackActions()
-                    .forEach(el -> {
-                        final ValueContainer valueContainer = new ValueContainer(getOrCreateR(el.getImagePath()));
+             .forEach(el -> {
+                 final ValueContainer valueContainer = new ValueContainer(getOrCreateR(el.getImagePath()));
 
-                        Pair<PARAMS, PARAMS> pair = ACTION_TOOLTIPS_PARAMS_MAP.get(ACTION_TOOLTIP_HEADER_KEY);
-                        String name = getStringForTableValue(ACTION_TOOLTIP_HEADER_KEY, el);
-                        final String leftImage = ActionTooltipMaster.getIconPathForTableRow(pair.getLeft());
-                        final String rightImage = ActionTooltipMaster.getIconPathForTableRow(pair.getRight());
-                        MultiValueContainer head = new MultiValueContainer(name, leftImage, rightImage);
+                 Pair<PARAMS, PARAMS> pair = ACTION_TOOLTIPS_PARAMS_MAP.get(ACTION_TOOLTIP_HEADER_KEY);
+                 String name = getStringForTableValue(ACTION_TOOLTIP_HEADER_KEY, el);
+                 final String leftImage = ActionTooltipMaster.getIconPathForTableRow(pair.getLeft());
+                 final String rightImage = ActionTooltipMaster.getIconPathForTableRow(pair.getRight());
+                 MultiValueContainer head = new MultiValueContainer(name, leftImage, rightImage);
 
-                        VALUE[] baseKeys = ACTION_TOOLTIP_BASE_KEYS;
-                        final List<MultiValueContainer> base = extractActionValues(el, baseKeys);
+                 VALUE[] baseKeys = ACTION_TOOLTIP_BASE_KEYS;
+                 final List<MultiValueContainer> base = extractActionValues(el, baseKeys);
 
-                        baseKeys = ACTION_TOOLTIP_RANGE_KEYS;
-                        final List<MultiValueContainer> range = extractActionValues(el, baseKeys);
+                 baseKeys = ACTION_TOOLTIP_RANGE_KEYS;
+                 final List<MultiValueContainer> range = extractActionValues(el, baseKeys);
 
-                        List/*<List<MultiValueContainer>>*/ textsList = new ArrayList<>();
-                        for (PARAMS[] params : ACTION_TOOLTIP_PARAMS_TEXT) {
-                            textsList.add(Arrays.stream(params).map(p -> {
-                                        final String textForTableValue = ActionTooltipMaster.
-                                                getTextForTableValue(p, el);
-                                        if (StringUtils.isEmpty(textForTableValue)) {
-                                            return null;
-                                        } else {
-                                            return new ValueContainer(textForTableValue, "");
-                                        }
-                                    }
-                            ).filter(Objects::nonNull).collect(Collectors.toList()));
-                        }
+                 List/*<List<MultiValueContainer>>*/ textsList = new ArrayList<>();
+                 for (PARAMS[] params : ACTION_TOOLTIP_PARAMS_TEXT) {
+                     textsList.add(Arrays.stream(params).map(p -> {
+                          final String textForTableValue = ActionTooltipMaster.
+                           getTextForTableValue(p, el);
+                          if (StringUtils.isEmpty(textForTableValue)) {
+                              return null;
+                          } else {
+                              return new ValueContainer(textForTableValue, "");
+                          }
+                      }
+                     ).filter(Objects::nonNull).collect(Collectors.toList()));
+                 }
 
-                        ToolTip toolTip = new ActionToolTip();
-                        toolTip.setUserObject(new ActionTooltipSource() {
-                            @Override
-                            public MultiValueContainer getHead() {
-                                return head;
-                            }
+                 ToolTip toolTip = new ActionToolTip();
+                 toolTip.setUserObject(new ActionTooltipSource() {
+                     @Override
+                     public MultiValueContainer getHead() {
+                         return head;
+                     }
 
-                            @Override
-                            public List<MultiValueContainer> getBase() {
-                                return base;
-                            }
+                     @Override
+                     public List<MultiValueContainer> getBase() {
+                         return base;
+                     }
 
-                            @Override
-                            public List<MultiValueContainer> getRange() {
-                                return range;
-                            }
+                     @Override
+                     public List<MultiValueContainer> getRange() {
+                         return range;
+                     }
 
-                            @Override
-                            public List<List<ValueContainer>> getText() {
-                                return textsList;
-                            }
+                     @Override
+                     public List<List<ValueContainer>> getText() {
+                         return textsList;
+                     }
 
-                            @Override
-                            public CostTableSource getCostsSource() {
-                                return () -> getActionCostList(el);
-                            }
-                        });
-                        valueContainer.addListener(toolTip.getController());
-                        result.add(valueContainer);
-                    });
+                     @Override
+                     public CostTableSource getCostsSource() {
+                         return () -> getActionCostList(el);
+                     }
+                 });
+                 valueContainer.addListener(toolTip.getController());
+                 result.add(valueContainer);
+             });
         }
 
         return result;
@@ -595,9 +599,9 @@ public class UnitDataSource implements
                 @Override
                 public List<ValueContainer> getBuffs() {
                     return weapon.getBuffs().stream()
-                            .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-                            .map(getObjValueContainerMapper())
-                            .collect(Collectors.toList());
+                     .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
+                     .map(getObjValueContainerMapper())
+                     .collect(Collectors.toList());
                 }
             });
             valueContainer.addListener(toolTip.getController());
@@ -608,18 +612,18 @@ public class UnitDataSource implements
     private List<List<ValueContainer>> getStatsValueContainers(PARAMS[][] unitInfoParamsGeneral) {
         List<List<ValueContainer>> values = new ArrayList<>();
         Arrays.stream(unitInfoParamsGeneral)
-                .forEach(ps -> values.add(
-                        Arrays.stream(ps)
-                                .map(p -> {
-                                    String value = unit.getStrParam(p);
-                                    String name = p.getName();
-                                    ValueContainer valueContainer = new ValueContainer(name, value);
-                                    ValueTooltip valueTooltip = new ValueTooltip();
-                                    valueTooltip.setUserObject(Arrays.asList(new ValueContainer(name, value)));
-                                    valueContainer.addListener(valueTooltip.getController());
-                                    return valueContainer;
-                                }).collect(Collectors.toList())
-                ));
+         .forEach(ps -> values.add(
+          Arrays.stream(ps)
+           .map(p -> {
+               String value = unit.getStrParam(p);
+               String name = p.getName();
+               ValueContainer valueContainer = new ValueContainer(name, value);
+               ValueTooltip valueTooltip = new ValueTooltip();
+               valueTooltip.setUserObject(Arrays.asList(new ValueContainer(name, value)));
+               valueContainer.addListener(valueTooltip.getController());
+               return valueContainer;
+           }).collect(Collectors.toList())
+         ));
         return values;
     }
 }

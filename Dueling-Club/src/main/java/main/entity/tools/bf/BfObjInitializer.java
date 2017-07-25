@@ -33,6 +33,7 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
     }
 
     protected void addDefaultFacing() {
+        if (getEntity().getOwner()!=null )
         getEntity().setFacing(
          DC_MovementManager.getDefaultFacingDirection(getEntity().getOwner().isMe()));
     }

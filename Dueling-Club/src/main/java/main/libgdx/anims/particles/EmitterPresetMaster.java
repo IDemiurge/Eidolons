@@ -105,6 +105,9 @@ public class EmitterPresetMaster {
 
     public String findImagePath(String path) {
         String imagePath = getImagePath(path);
+        if (imagePath.isEmpty()){
+            //TODO how to handle this?
+        }
         FileHandle file = Gdx.files.internal(imagePath);
         if (file.exists()) {
             return imagePath;

@@ -30,4 +30,11 @@ public class PointMaster {
         return 1 + mod;
     }
 
+    public static int getCost(int initial,int points, Entity hero, PARAMETER param) {
+        int cost=0;
+        for (int i = 0; i<points; i++) {
+            cost += getPointCost(initial + i, hero, param);
+        }
+        return cost;
+    }
 }

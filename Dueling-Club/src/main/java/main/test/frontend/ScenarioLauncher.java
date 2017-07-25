@@ -22,6 +22,7 @@ public class ScenarioLauncher {
     }
 
     public static void launch(String typeName) {
+        DC_Engine.jarInit();
         BattleSceneLauncher.main(null);
         DC_Engine.mainMenuInit();
         Eidolons.initScenario(typeName);

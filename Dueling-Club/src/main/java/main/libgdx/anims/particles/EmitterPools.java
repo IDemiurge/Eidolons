@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Pool;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -25,8 +26,11 @@ public class EmitterPools {
     }
 
     public static EmitterActor getEmitterActor(String path) {
+      if (CoreEngine.isJar())
+          System.out.println("getEmitterActor "+path);
         if (!actorPoolingOn) {
             return new EmitterActor(path);
+
         }
         final String finalPath = path.toLowerCase();
         Pool<EmitterActor> pool = actorPoolMap.get(finalPath);
@@ -48,6 +52,8 @@ public class EmitterPools {
     }
 
     public static ParticleEffect getEffect(String path) {
+        if (CoreEngine.isJar())
+            System.out.println("getEffect "+path);
         if (!effectPoolingOn) {
             return new ParticleEffect(path);
         }

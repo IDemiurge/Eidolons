@@ -52,6 +52,8 @@ public class LocationSpawner extends Spawner<Location> {
               member.setCoordinates( iterator.next());
               member.setConstructed(false);
               getGame().getState().addObject(member);
+              member.setOriginalOwner(player);
+              member.setOwner(player);
               //what else should be done to *spawn*?
           }
         } else {

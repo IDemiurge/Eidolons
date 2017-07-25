@@ -5,16 +5,43 @@ import main.ability.effects.common.ModifyValueEffect;
 import main.content.ContentManager;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
+import main.content.enums.entity.SkillEnums.MASTERY;
+import main.content.values.parameters.PARAMETER;
+import main.data.XLinkedMap;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.system.DC_Formulas;
+import main.system.SortMaster;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class DC_Masteries {
 
+    Map<MASTERY, Integer> map;
     private Unit hero;
 
     public DC_Masteries(Unit hero) {
         this.hero = hero;
+    }
+
+    public List<PARAMETER> getHighest(int i) {
+        List<PARAMETER> list = new LinkedList<>(
+         DC_ContentManager.getMasteryParams());
+//        SortMaster.sortByParameter(hero, list, true);
+        return list.subList(0, i);
+    }
+
+    public Map<MASTERY, Integer> getMap() {
+        if (map == null)
+            initMap();
+        return map;
+    }
+
+    private void initMap() {
+        map = new XLinkedMap<>();
+
     }
 
     private void initMastery(PARAMS mastery) {
@@ -37,32 +64,32 @@ public class DC_Masteries {
             case ARMORER_MASTERY: {
 
                 boostParameter(-(amount), PARAMS.DURABILITY_SELF_DAMAGE_MOD,
-                        MOD.MODIFY_BY_CONST);
+                 MOD.MODIFY_BY_CONST);
                 break;
             }
             case DEFENSE_MASTERY:
                 boostParameter(
-                        DC_Formulas.getDefenseFromDefenseMastery(amount),
-                        PARAMS.DEFENSE, MOD.MODIFY_BY_CONST);
+                 DC_Formulas.getDefenseFromDefenseMastery(amount),
+                 PARAMS.DEFENSE, MOD.MODIFY_BY_CONST);
                 // boostParameter(DC_Formulas.getDefenseModFromDefenseMastery(amount),
                 // PARAMS.DEFENSE, MODVAL_TYPE.MODIFY_BY_CONST);
                 break;
             case DUAL_WIELDING_MASTERY:
                 boostParameter(amount, PARAMS.OFFHAND_ATTACK_MOD,
-                        MOD.MODIFY_BY_CONST);
+                 MOD.MODIFY_BY_CONST);
                 boostParameter(amount, PARAMS.OFFHAND_DAMAGE_MOD,
-                        MOD.MODIFY_BY_CONST);
+                 MOD.MODIFY_BY_CONST);
                 if (hero.checkDualWielding()) {
                     boostParameter(-amount / 2, PARAMS.ATTACK_AP_PENALTY,
-                            MOD.MODIFY_BY_CONST);
+                     MOD.MODIFY_BY_CONST);
                     boostParameter(-amount / 2,
-                            PARAMS.OFFHAND_ATTACK_AP_PENALTY,
-                            MOD.MODIFY_BY_CONST);
+                     PARAMS.OFFHAND_ATTACK_AP_PENALTY,
+                     MOD.MODIFY_BY_CONST);
                 }
                 break;
             case STEALTH_MASTERY:
                 boostParameter(amount, PARAMS.STEALTH,
-                        MOD.MODIFY_BY_CONST);
+                 MOD.MODIFY_BY_CONST);
                 break;
 
             case ATHLETICS_MASTERY:
@@ -111,6 +138,7 @@ public class DC_Masteries {
         }
 
     }
+
 } // for (DC_SpellObj spell : hero.getSpells()) {
 // String mod = DC_Formulas
 // .getEssCostReductionFromSpellcraft(amount);

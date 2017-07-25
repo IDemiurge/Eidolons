@@ -112,16 +112,17 @@ public class SortMaster {
 
     }
 
-    public static Comparator<? super String> getSorterString(final VALUE p,final OBJ_TYPE TYPE, final Boolean descending) {
+    public static Comparator<? super String> getSorterString(final VALUE p, final OBJ_TYPE TYPE, final Boolean descending) {
         return (Comparator<String>) (o1, o2) -> compareValue(p, descending, DataManager.getType(o1, TYPE), DataManager.getType(o2, TYPE));
 
     }
+
     //        public static Comparator<? super Entity> getSorterByNaturalOrder
 //        (Function<Entity, Integer> function) {
 //        return Comparator.naturalOrder(portrait -> function.apply(portrait));
 //    }
     public static Comparator<? super Entity> getSorterByExpression
-            (Function<Entity, Integer> function) {
+    (Function<Entity, Integer> function) {
         return Comparator.comparingInt(o -> function.apply((Entity) o)).reversed();
 
     }
@@ -130,9 +131,35 @@ public class SortMaster {
      (List<? extends Entity> list, Function<Entity, Integer> function) {
         Collections.sort(list, getSorterByExpression(function));
     }
+
     public static Comparator<? super Obj> getSorterByExpressionObj
-            (Function<Obj, Integer> function) {
+     (Function<Obj, Integer> function) {
         return Comparator.comparingInt(o -> function.apply(o));
+
+    }
+
+    public static void sortByParameter
+     (Entity entity, List<? extends PARAMETER> list, boolean descending
+     ) {
+        Collections.sort(list, getParameterSorter(entity, descending));
+    }
+
+    public static Comparator<? super PARAMETER> getParameterSorter
+     (Entity entity, boolean descending) {
+        return (Comparator<PARAMETER>) (o1, o2) -> {
+            if (entity.getIntParam(o1) == entity.getIntParam(o2))
+                return 0;
+            if (entity.getIntParam(o1) > entity.getIntParam(o2))
+            {
+                if (descending)
+                    return 1;
+                return -1;
+            }else {
+                if (descending)
+                    return -1;
+                return 1;
+            }
+        };
 
     }
 
