@@ -35,6 +35,7 @@ public class PathFinder {
             File temp = new File(classLoader.getResource("").getFile());
             ENGINE_PATH = new File(temp.getParentFile().toURI()) + File.separator;
             XML_PATH = new File(temp.getParentFile() + File.separator + "XML") + File.separator;
+            System.out.println("Engine path: " + ENGINE_PATH);
         } else {
             //FOR JARS
             CoreEngine.setJar(true);

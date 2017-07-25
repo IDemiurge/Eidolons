@@ -28,6 +28,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 
@@ -105,7 +106,7 @@ public class AnimationConstructor {
 //        active.getActionGroup()
 
         Arrays.stream(ANIM_PART.values()).forEach(part -> {
-            Anim animPart = getPartAnim(active, part, anim );
+            Anim animPart = getPartAnim(active, part, anim);
             if (animPart != null) {
                 anim.add(part, animPart);
             }
@@ -141,7 +142,7 @@ public class AnimationConstructor {
             }
 
 
-            data = getStandardData((DC_SpellObj) active, part , composite );
+            data = getStandardData((DC_SpellObj) active, part, composite);
             if (!initAnim(data, active, part, anim)) {
                 return null;
             }
@@ -216,7 +217,18 @@ public class AnimationConstructor {
             sprites.add(SpriteAnimationFactory.getSpriteAnimation(path));
             exists = true;
         }
-        List<EmitterActor> list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+        List<EmitterActor> list =     new LinkedList<>()  ;
+       try{
+           list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+       }catch(Exception e){
+           e.printStackTrace();
+           if (CoreEngine.isJar())
+               System.out.println("getEffect failed"+data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+
+           list = EmitterPools.getEmitters(
+            getPath(ANIM_VALUES.PARTICLE_EFFECTS)+
+            data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+       }
         if (!list.isEmpty()) {
             exists = true;
         }
@@ -353,24 +365,24 @@ public class AnimationConstructor {
         if (sprite == null)
             if (emitter == null) {
                 emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
-                if (isFindClosestResource(part,ANIM_VALUES.PARTICLE_EFFECTS, compositeAnim )){
-                if (emitter == null)
-                    emitter = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
-                if (emitter == null)
-                    emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+                if (isFindClosestResource(part, ANIM_VALUES.PARTICLE_EFFECTS, compositeAnim)) {
+                    if (emitter == null)
+                        emitter = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
+                    if (emitter == null)
+                        emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
 
                 }
-                if (isFindClosestResource(part,ANIM_VALUES.SPRITES, compositeAnim ))
-                if (emitter == null) {
-                    pathRoot = getPath(ANIM_VALUES.SPRITES);
-                    sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
-                    if (sprite == null)
-                        sprite = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
-                    if (sprite == null)
-                        sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+                if (isFindClosestResource(part, ANIM_VALUES.SPRITES, compositeAnim))
+                    if (emitter == null) {
+                        pathRoot = getPath(ANIM_VALUES.SPRITES);
+                        sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
+                        if (sprite == null)
+                            sprite = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
+                        if (sprite == null)
+                            sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
 
 
-                }
+                    }
             }
         if (sprite != null) {
             String val = StringMaster.buildPath(
@@ -419,6 +431,9 @@ public class AnimationConstructor {
             }
         }
 //        if (file != null || closest || isPartIgnored(partPath))
+
+        if (CoreEngine.isJar())
+            System.out.println(pathRoot+ " root; file found "+file);
         return file;
 //        return findResourceForSpell(spell, partPath, size, props, pathRoot, true);
     }
@@ -436,14 +451,18 @@ public class AnimationConstructor {
 
 
     private String getPath(ANIM_VALUES s) {
+        String path = null;
         switch (s) {
             case PARTICLE_EFFECTS:
-                return PathFinder.getSfxPath();
+                path = PathFinder.getSfxPath();
+                break;
             case SPRITES:
-                return PathFinder.getSpritesPath();
-
+                path = PathFinder.getSpritesPath();
+                break;
         }
-        return null;
+        if (CoreEngine.isJar())
+            System.out.println(s + " path= " + path);
+        return path;
     }
 
 
@@ -487,10 +506,10 @@ public class AnimationConstructor {
 
     public boolean isFindClosestResource(ANIM_PART part, ANIM_VALUES val, CompositeAnim compositeAnim) {
 
-        if (part !=ANIM_PART.PRECAST)
-            if (part !=ANIM_PART.AFTEREFFECT)
-        if (compositeAnim.getMap().size()<2)
-    return true;
+        if (part != ANIM_PART.PRECAST)
+            if (part != ANIM_PART.AFTEREFFECT)
+                if (compositeAnim.getMap().size() < 2)
+                    return true;
 
         switch (part) {
             case MAIN:

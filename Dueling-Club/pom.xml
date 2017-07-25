@@ -163,7 +163,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>main.test.frontend.ScenarioLauncher</mainClass>
+                            <mainClass>main.test.frontend.FAST_DC</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -176,7 +176,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>main.test.frontend.ScenarioLauncher</mainClass>
+                            <mainClass>main.test.frontend.FAST_DC</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -197,7 +197,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>main.test.frontend.ScenarioLauncher</mainClass>
+                                    <mainClass>main.test.frontend.FAST_DC</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
