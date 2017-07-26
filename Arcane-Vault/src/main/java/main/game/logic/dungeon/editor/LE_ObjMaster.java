@@ -25,7 +25,6 @@ import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.data.MapMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -91,7 +90,10 @@ public class LE_ObjMaster {
     public static void removeObj(Coordinates coordinates) {
         // LevelEditor.getCurrentLevel().removeObj(coordinates);
         cache();
-        LevelEditor.getSimulation().getUnitMap().remove(coordinates);
+//        LevelEditor.getSimulation().getUnitMap().remove(coordinates);
+        LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates).forEach(obj->{
+            LevelEditor.getSimulation().getMaster().remove(obj);
+        });
     }
 
     public static boolean fillArea(boolean diagonal) {
@@ -168,7 +170,7 @@ public class LE_ObjMaster {
     public static void replace(ObjType type, ObjType type2, List<Coordinates> coordinates) {
         cache();
         for (Coordinates coordinate : coordinates) {
-            List<BattleFieldObject> objects = LevelEditor.getSimulation().getUnitMap().get(coordinate);
+            List<BattleFieldObject> objects = LevelEditor.getSimulation().getBfObjectsOnCoordinate(  coordinate);
             // LevelEditor.getGrid().getCells()[coordinate.x][coordinate.y]
             // .getObjects();
             if (objects != null) {
@@ -226,16 +228,17 @@ public class LE_ObjMaster {
         }
         LevelEditor.getMainPanel().getMapViewComp().getGrid().refresh();
     }
-
+// for undo? I can do better...
     private static void cache() {
         if (cachingOff) {
             return;
         }
-        List<List<BattleFieldObject>> list = new LinkedList<>(LevelEditor.getSimulation().getUnitMap()
-                .values());
-        Stack<Map<Coordinates, List<BattleFieldObject>>> cache = getCache();
-        cache.push(new MapMaster<Coordinates, List<BattleFieldObject>>().constructMap(LevelEditor
-                .getSimulation().getUnitMap().keySet(), list));
+//        List<List<BattleFieldObject>> list = new LinkedList<>(
+//         LevelEditor.getSimulation().getUnitMap()
+//                .values());
+//        Stack<Map<Coordinates, List<BattleFieldObject>>> cache = getCache();
+//        cache.push(new MapMaster<Coordinates, List<BattleFieldObject>>().constructMap(LevelEditor
+//                .getSimulation().getUnitMap().keySet(), list));
     }
 
     private static Stack<Map<Coordinates, List<BattleFieldObject>>> getCache() {
