@@ -13,8 +13,10 @@ import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
 import main.system.options.OptionsMaster;
 
-public class DC_Engine {
-
+public class DC_Engine extends  CoreEngine{
+    public static void jarInit() {
+        CoreEngine.setEngineObject(new DC_Engine());
+    }
     public static void init() {
         Chronos.mark("DC INIT");
         systemInit();

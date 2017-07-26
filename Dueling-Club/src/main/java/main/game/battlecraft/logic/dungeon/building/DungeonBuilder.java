@@ -125,6 +125,8 @@ public class DungeonBuilder {
         for (Node subNode : XML_Converter.getNodeList(node)) {
             if (StringMaster.compareByChar(subNode.getNodeName(), COORDINATES_NODE)) {
                 coordinates = CoordinatesMaster.getCoordinatesFromString(subNode.getTextContent());
+
+
             } else if (StringMaster.compareByChar(subNode.getNodeName(), OBJ_NODE)) {
                 objectMap = // TODO BETTER IN TYPES?
                         DC_ObjInitializer.initMapBlockObjects(dungeon, b, subNode.getTextContent());

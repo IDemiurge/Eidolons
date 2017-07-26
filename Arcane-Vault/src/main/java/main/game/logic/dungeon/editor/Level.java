@@ -9,6 +9,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -55,7 +56,7 @@ public class Level {
     private DC_Map map;
     private String name;
     private String path;
-    private Map<ObjType, Unit> objCache = new HashMap<>();
+    private Map<ObjType, BattleFieldObject> objCache = new HashMap<>();
     private List<AiGroupData> aiGroups;
     private List<DC_Obj> wallObjects = new LinkedList<>();
 
@@ -118,14 +119,14 @@ public class Level {
             // obj.setZ(dungeon.getZ());
             // }
 
-            List<Unit> fullObjectList = new LinkedList<>();
+            List<BattleFieldObject> fullObjectList = new LinkedList<>();
             for (MapBlock b : plan.getBlocks()) {
                 LinkedList<Obj> objects = new LinkedList<>(b.getObjects());
                 for (Obj obj : objects) {
-                    fullObjectList.add((Unit) obj);
+                    fullObjectList.add((BattleFieldObject) obj);
                     // TODO of course - the issue was that I added an object to
                     // block too! ... init?
-                    Unit unit = (Unit) obj;
+                    BattleFieldObject unit = (BattleFieldObject) obj;
                     unit.setZ(dungeon.getZ());
                     addObj(unit, true);
                 }
@@ -144,7 +145,7 @@ public class Level {
             }
 
             for (Obj obj : plan.getWallObjects()) {
-                Unit unit = (Unit) obj;
+                BattleFieldObject unit = (BattleFieldObject) obj;
                 fullObjectList.add(unit);
                 unit.setZ(dungeon.getZ());
                 addObj(unit, true);
@@ -226,9 +227,9 @@ public class Level {
         dungeon.setPlan(prev.getDungeon().getPlan().getCopy());
         LE_Simulation game = (LE_Simulation) prev.getDungeon().getGame();
         dungeon.setGame(game);
-        LogMaster.log(1, game.toString());
-        game.setUnits(unitsCache);
-        LogMaster.log(1, game.getUnits().size() + " vs " + unitsCache.size());
+//        LogMaster.log(1, game.toString());
+//        game.getUnitsCache(unitsCache);
+        LogMaster.log(1, game.getUnitsCache().size() + " vs " + unitsCache.size());
     }
 
     public String getXml() {
@@ -283,21 +284,21 @@ public class Level {
 
     private String getFacingMapData() {
         String facingMapData = "";
-        Map<Coordinates, List<Unit>> multiMap = new HashMap<>();
+        Map<Coordinates, List<BattleFieldObject>> multiMap = new HashMap<>();
 
         for (Coordinates c : getDirectionMap().keySet())
 
         {
             Map<Unit, DIRECTION> map = getDirectionMap().get(c);
             for (DC_Obj obj : map.keySet()) {
-                if (obj instanceof Unit) {
-                    Unit u = (Unit) obj;
+                if (obj instanceof BattleFieldObject) {
+                    BattleFieldObject u = (BattleFieldObject) obj;
                     DIRECTION facing = map.get(u);
                     if (facing != null) {
                         u.setCoordinates(c);
                         String string = DC_ObjInitializer.getObjString(u);
 
-                        List<Unit> list = multiMap.get(c);
+                        List<BattleFieldObject> list = multiMap.get(c);
                         if (list == null) {
                             list = new LinkedList<>();
                             multiMap.put(c, list);
@@ -375,15 +376,15 @@ public class Level {
         return list;
     }
 
-    private List<Unit> getObjects(Coordinates coordinates) {
-        return LevelEditor.getSimulation().getObjectsOnCoordinate(coordinates);
+    private List<BattleFieldObject> getObjects(Coordinates coordinates) {
+        return LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates);
     }
 
     public void removeObj(DC_Obj obj) {
         Chronos.mark("removing " + obj);
-        Unit unit = null;
-        if (obj instanceof Unit) {
-            unit = (Unit) obj;
+        BattleFieldObject unit = null;
+        if (obj instanceof BattleFieldObject) {
+            unit = (BattleFieldObject) obj;
         }
         if (obj instanceof Entrance) {
             if (dungeon.getMainEntrance() != null) {
@@ -484,21 +485,15 @@ public class Level {
         return null;
     }
 
-    public void stackObj(Unit obj) {
-        addObj(obj, true);
-    }
 
-    public void addObj(Unit obj) {
-        addObj(obj, false);
-    }
 
     // TODO *added*
-    public void addObj(Unit obj, boolean stack) {
+    public void addObj(BattleFieldObject obj, boolean stack) {
         Coordinates c = obj.getCoordinates();
         addObj(obj, c, stack);
     }
 
-    public void addObj(Unit obj, Coordinates c, boolean stack) {
+    public void addObj(BattleFieldObject obj, Coordinates c, boolean stack) {
         Chronos.mark("adding " + obj);
         obj.setZ(dungeon.getZ());
         if (stack) {
@@ -608,7 +603,7 @@ public class Level {
         this.path = path;
     }
 
-    public Map<ObjType, Unit> getObjCache() {
+    public Map<ObjType, BattleFieldObject> getObjCache() {
         return objCache;
     }
 

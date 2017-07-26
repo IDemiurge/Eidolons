@@ -19,7 +19,6 @@ public class DC_GameMaster extends GameMaster {
 
     protected DequeImpl<Unit> units;
     protected DequeImpl<Structure> structures;
-    private Map<Coordinates, List<Unit>> unitMap;
     private Map<Coordinates, List<Unit>> unitCache = new HashMap<>();
 
 
@@ -103,10 +102,7 @@ public class DC_GameMaster extends GameMaster {
         return units;
     }
 
-    public List<Unit> getOverlayingObjects(Coordinates c) {
-        return getObjectsOnCoordinate(null, c, true, true, false);
 
-    }
 
     public List<Unit> getObjectsOnCoordinate(Integer z, Coordinates c,
                                              Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
@@ -254,12 +250,7 @@ public class DC_GameMaster extends GameMaster {
         return structures;
     }
 
-    public Map<Coordinates, List<Unit>> getUnitMap() {
-        if (unitMap == null) {
-            unitMap = new HashMap<>();
-        }
-        return unitMap;
-    }
+
 
     public Map<Coordinates, List<Unit>> getUnitCache() {
         return unitCache;

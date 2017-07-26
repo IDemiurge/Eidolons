@@ -219,7 +219,7 @@ public class LE_DataMaster {
     }
 
     public static void loadLevel(String path) {
-        File file = FileManager.getFile(path);
+        File file = FileManager.getFile(StringMaster.addMissingPathSegments(path, PathFinder.getEnginePath()));
         if (!file.isFile()) {
             return;
         }

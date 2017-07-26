@@ -12,7 +12,58 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <prj.build.type>dev</prj.build.type>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <executions>
+                            <execution>
+                                <id>symlink for res</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${basedir}/ln.cmd</executable>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>clean symlink for res</id>
+                                <phase>pre-clean</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${basedir}/rm_symlinks.cmd</executable>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>travis</id>
+            <properties>
+                <prj.build.type>travis</prj.build.type>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
+
+        <dependency>
+            <groupId>org.jdeferred</groupId>
+            <artifactId>jdeferred-core</artifactId>
+            <version>1.2.5</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.melloware/jintellitype -->
         <dependency>
@@ -21,16 +72,18 @@
             <version>1.1</version>
         </dependency>
 
+        <!-- key-value storage http://www.dizitart.org/nitrite-database.html-->
+        <dependency>
+            <groupId>org.dizitart</groupId>
+            <artifactId>nitrite</artifactId>
+            <version>1.0</version>
+        </dependency>
 
         <dependency>
             <groupId>eidolons</groupId>
             <artifactId>battlecraft-core</artifactId>
             <version>1.1-SNAPSHOT</version>
             <exclusions>
-                <exclusion>
-                    <groupId>com.badlogicgames.gdx</groupId>
-                    <artifactId>gdx-box2d-gwt</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
 
@@ -110,7 +163,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>main.test.frontend.FAST_DC</mainClass>
+                            <mainClass>main.client.dc.Launcher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -118,38 +171,12 @@
             </plugin>
 
             <plugin>
-                <artifactId>exec-maven-plugin</artifactId>
-                <groupId>org.codehaus.mojo</groupId>
-                <executions>
-                    <execution>
-                        <id>symlink for res</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${basedir}/ln.cmd</executable>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>clean symlink for res</id>
-                        <phase>pre-clean</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${basedir}/rm_symlinks.cmd</executable>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>main.test.frontend.FAST_DC</mainClass>
+                            <mainClass>main.client.dc.Launcher</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -157,7 +184,26 @@
                     </descriptorRefs>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>main.client.dc.Launcher</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

@@ -106,6 +106,7 @@ public class Launcher {
     }
 
     public static void main(String[] args) {
+        DC_Engine.jarInit();
         GuiManager.init();
         if (args != null) {
             LAUNCH_OPTION = LAUNCH_OPTIONS[0];
@@ -516,7 +517,6 @@ public class Launcher {
         /*
          * initObjectString buffs and dynamic params non-bf objects - items,
 		 */
-
         try {
             initFullData();
 

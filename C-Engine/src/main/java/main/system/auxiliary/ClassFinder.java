@@ -1,12 +1,15 @@
 package main.system.auxiliary;
 
+import main.data.filesys.PathFinder;
+import main.system.launch.CoreEngine;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
+import java.net.URLClassLoader;
+import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class ClassFinder {
 
@@ -118,9 +121,12 @@ public class ClassFinder {
      * @throws IOException
      */
     public static Class[] getClasses(String packageName)
-            throws ClassNotFoundException, IOException {
+     throws ClassNotFoundException, IOException {
+        if (CoreEngine.isJar()) {
+            return getClassesFromJar(packageName);
+        }
         ClassLoader classLoader = Thread.currentThread()
-                .getContextClassLoader();
+         .getContextClassLoader();
         assert classLoader != null;
         String path = packageName.replace('.', '/');
         Enumeration<URL> resources = classLoader.getResources(path);
@@ -136,6 +142,48 @@ public class ClassFinder {
         return classes.toArray(new Class[classes.size()]);
     }
 
+    private static Class[] getClassesFromJar(String packageName) {
+        String pathToJar = PathFinder.getJarPath();
+        List<Class> classes = new LinkedList<>();
+        try {
+            JarFile jarFile = new JarFile(pathToJar);
+            Enumeration<JarEntry> e = jarFile.entries();
+
+            URL[] urls = {new URL("jar:file:" + pathToJar + "!/")};
+            URLClassLoader cl = URLClassLoader.newInstance(urls);
+
+            while (e.hasMoreElements()) {
+                JarEntry je = e.nextElement();
+                if (je.isDirectory() || !je.getName().endsWith(".class")) {
+//                    System.out.println("Jar entry passed: " +je.getName());
+                    continue;
+                }
+
+                if (!je.getName().startsWith("main")) {
+                    continue;
+                }
+                String  className = je.getName().replace('/', '.');
+                if (!className.contains(packageName))
+                {
+                    continue;
+                }
+                // -6 because of .class
+                className = className.substring(0, je.getName().length() - 6);
+
+                Class c = cl.loadClass(className);
+//                System.out.println(packageName+ "- Class found: " +c.getName());
+                classes.add(c);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+//        System.out.println(classes.size()+ " classes found: " +classes);
+        return classes.toArray(new Class[classes.size()]);
+    }
+
     /**
      * Recursive method used to find all classes in a given directory and
      * subdirs.
@@ -146,7 +194,7 @@ public class ClassFinder {
      * @throws ClassNotFoundException
      */
     private static List<Class> findClasses(File directory, String packageName)
-            throws ClassNotFoundException {
+     throws ClassNotFoundException {
         List<Class> classes = new ArrayList<>();
         if (!directory.exists()) {
             return classes;
@@ -159,12 +207,12 @@ public class ClassFinder {
             if (file.isDirectory()) {
                 assert !file.getName().contains(".");
                 classes.addAll(findClasses(file, packageName + "."
-                        + file.getName()));
+                 + file.getName()));
             } else if (file.getName().endsWith(".class")) {
                 classes.add(Class.forName(packageName
-                        + '.'
-                        + file.getName()
-                        .substring(0, file.getName().length() - 6)));
+                 + '.'
+                 + file.getName()
+                 .substring(0, file.getName().length() - 6)));
             }
         }
         return classes;

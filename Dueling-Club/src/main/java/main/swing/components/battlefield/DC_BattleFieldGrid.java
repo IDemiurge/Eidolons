@@ -6,15 +6,16 @@ import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.bf.BattleFieldGrid;
-import main.game.bf.Coordinates;
 import main.game.battlecraft.logic.battlefield.map.DC_Map;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
-import main.game.core.game.DC_Game;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.meta.party.PartyManager;
+import main.game.bf.BattleFieldGrid;
+import main.game.bf.Coordinates;
+import main.game.core.game.DC_Game;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.CellComp;
 import main.swing.generic.components.G_Panel;
@@ -79,7 +80,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     public boolean isOccupied(Coordinates c) {
         // TODO cellCondition also takes into account visiblity, flyers etc...
         // this here is just about obj being present...
-        for (Unit obj : gridComp.getMap().get(c).getObjects()) {
+        for (BattleFieldObject obj : gridComp.getMap().get(c).getObjects()) {
             if (obj.isPassable()) {
                 continue;
             }
@@ -143,17 +144,16 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 int x = i + getOffsetX();
                 int y = j + getOffsetY();
                 Coordinates c = new Coordinates(x, y);
-                List<Unit> objects = game.getObjectsOnCoordinate(getZ(), c, false, true,
-                        false);
-                List<Unit> overlayingObjects = new LinkedList<>(new DequeImpl(game
+                List<BattleFieldObject> objects = game.getBfObjectsOnCoordinate(c);
+                List<BattleFieldObject> overlayingObjects = new LinkedList<>(new DequeImpl(game
                         .getObjectsOnCoordinate(getZ(), c, true, true, false))
                         .getRemoveAll(objects));
 
                 // visibility preCheck!
 
                 CellComp comp = gridComp.getCells()[x][y];
-                List<Unit> list = new LinkedList<>();
-                for (Unit obj : objects) {
+                List<BattleFieldObject> list = new LinkedList<>();
+                for (BattleFieldObject obj : objects) {
                     if (VisionManager.checkVisible(obj)) {
                         list.add(obj);
                     }

@@ -109,6 +109,7 @@ public class LevelEditor {
     }
 
     public static void main(String[] args) {
+        DC_Engine.jarInit();
         SwingMaster.DEBUG_ON = false;
         DC_Engine.systemInit();
         initFullData();

@@ -18,8 +18,12 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class CoreEngine {
+    private static CoreEngine engineObject;
+
     public final static String[] classFolderPaths = {"main.elements", "main.ability"};
     public static final String VERSION = "0.106";
     public static boolean swingOn = false;
@@ -41,12 +45,18 @@ public class CoreEngine {
     private static boolean actionTargetingFiltersOff;
     private static boolean phaseAnimsOn;
     private static boolean logicTest;
+    private static boolean itemGenerationOff;
+    private static boolean targetingResultCachingOn;
+    private static boolean jar;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
         ImageManager.init();
-        FontMaster.init();
-        GuiManager.init();
+        if (!graphicsOff) {
+            FontMaster.init();
+            GuiManager.init();
+
+        }
         SoundMaster.initialize();
         ResourceManager.init();
         DataManager.init();
@@ -99,16 +109,16 @@ public class CoreEngine {
 
         if (selectivelyReadTypes != null) {
             return StringMaster.checkContainer(
-                    selectivelyReadTypes,
-                    StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
-                    false);
+             selectivelyReadTypes,
+             StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
+             false);
         }
 
         if (exceptionTypes != null) {
             if (StringMaster.checkContainer(
-                    exceptionTypes,
-                    StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
-                    false
+             exceptionTypes,
+             StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
+             false
             )) {
                 return false;
             }
@@ -244,12 +254,18 @@ public class CoreEngine {
         Chronos.mark("TYPES INIT");
 
         XML_Reader.readTypes(macro);
+        List<String> classFolders=    new LinkedList<>(Arrays.asList(classFolderPaths)) ;
+//         if (dialogueDataRequired){
+//             classFolders.add( "main.data.dialogue" );
+//             classFolders.add(  "main.game.battlecraft.logic.meta.scenario.dialogue.speech" );
+//         }
 
         Chronos.logTimeElapsedForMark("TYPES INIT");
         // if (!macro)
         try {
             Chronos.mark("MAPPER INIT");
-            Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()), Arrays.asList(classFolderPaths));
+            Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
+             classFolders);
             Chronos.logTimeElapsedForMark("MAPPER INIT");
         } catch (ClassNotFoundException | SecurityException | IOException e) {
             e.printStackTrace();
@@ -257,4 +273,35 @@ public class CoreEngine {
 
     }
 
+    public static boolean isItemGenerationOff() {
+        return itemGenerationOff;
+    }
+
+    public static void setItemGenerationOff(boolean itemGenerationOff) {
+        CoreEngine.itemGenerationOff = itemGenerationOff;
+    }
+
+    public static boolean isTargetingResultCachingOn() {
+        return targetingResultCachingOn;
+    }
+
+    public static void setTargetingResultCachingOn(boolean targetingResultCachingOn) {
+        CoreEngine.targetingResultCachingOn = targetingResultCachingOn;
+    }
+
+    public static void setEngineObject(CoreEngine engineObject) {
+        CoreEngine.engineObject = engineObject;
+    }
+
+    public static CoreEngine getEngineObject(){
+        return engineObject;
+    }
+
+    public static boolean isJar() {
+        return jar;
+    }
+
+    public static void setJar(boolean jar) {
+        CoreEngine.jar = jar;
+    }
 }

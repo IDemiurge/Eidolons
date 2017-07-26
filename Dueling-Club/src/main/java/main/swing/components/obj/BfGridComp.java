@@ -5,8 +5,8 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.bf.Coordinates;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.swing.XLine;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
@@ -331,11 +331,11 @@ public class BfGridComp {
             getOverlayMap().clear();
             Map<Coordinates, BattleFieldObject> wallMap = new HashMap<>();
 
-            for (Coordinates c : game.getUnitMap().keySet()) {
+            for (Obj c : game.getCells()) {
                 for (BattleFieldObject obj : game.getStructures()) {
-                    if (obj.getCoordinates().equals(c)) {
+                    if (obj.getCoordinates().equals(c.getCoordinates())) {
                         if (obj.isWall()) {
-                            wallMap.put(c, obj);
+                            wallMap.put(c.getCoordinates(), obj);
                         }
                     }
                 }
@@ -375,7 +375,7 @@ public class BfGridComp {
                 CellComp cellComp = cells[i + getOffsetX()][j + getOffsetY()];
                 if (editMode) {
                     Coordinates c = new Coordinates(i + getOffsetX(), j + getOffsetY());
-                    cellComp.setObjects(getGame().getObjectsOnCoordinate(c));
+                    cellComp.setObjects(getGame().getBfObjectsOnCoordinate(c));
                     cellComp.setOverlayingObjects(getGame().getOverlayingObjects(c));
                     cellComp.setSizeFactor(zoom);
                     cellComp.setWidth(getCellWidth());

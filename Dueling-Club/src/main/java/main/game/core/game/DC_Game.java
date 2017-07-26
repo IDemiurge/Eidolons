@@ -412,8 +412,10 @@ public class DC_Game extends MicroGame {
         return getMaster().getObjectByCoordinate(z, c, cellsIncluded, passableIncluded, overlayingIncluded);
     }
 
-    public List<Unit> getOverlayingObjects(Coordinates c) {
-        return getMaster().getOverlayingObjects(c);
+    public List<BattleFieldObject> getOverlayingObjects(Coordinates c) {
+        List<BattleFieldObject> list = getBfObjectsOnCoordinate(c);
+        list.removeIf(obj -> !obj.isOverlaying());
+        return list;
     }
 
     public List<Unit> getObjectsOnCoordinate(Integer z, Coordinates c, Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
@@ -444,9 +446,7 @@ public class DC_Game extends MicroGame {
         return getMaster().getUnits();
     }
 
-    public Map<Coordinates, List<Unit>> getUnitMap() {
-        return getMaster().getUnitMap();
-    }
+
 
     public Map<Coordinates, List<Unit>> getUnitCache() {
         return getMaster().getUnitCache();
@@ -806,6 +806,22 @@ public class DC_Game extends MicroGame {
         return getMaster().getObjectsOnCoordinate(c);
     }
 
+
+    public List<BattleFieldObject> getBfObjectsOnCoordinate(Coordinates c) {
+
+        DequeImpl<BattleFieldObject> list =  getBfObjects();
+        if (list == null) {
+            return new LinkedList<>();
+        }
+        List<BattleFieldObject> objects = new LinkedList<>();
+        for (BattleFieldObject obj : list) {
+            if (obj.getCoordinates().equals(c))
+                if (!obj.isOverlaying()) {
+                    objects.add((  obj) );
+                }
+        }
+        return objects;
+    }
     public Obj getObjectByCoordinate(Coordinates
                                       c) {
         return getObjectByCoordinate(c, false);

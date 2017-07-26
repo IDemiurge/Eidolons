@@ -1,6 +1,7 @@
 package main.swing.components.obj;
 
 import main.entity.Ref;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class CellComp {
     private G_Panel panel;
-    private List<Unit> objects;// visible!
+    private List<BattleFieldObject> objects;// visible!
     private BufferedImage bufferImage;
     private BufferedImage paintImage;
     private DC_Cell terrainObj;
@@ -35,7 +36,7 @@ public class CellComp {
     private Map<SmartText, Point> animOverlayingStrings;
     private Map<Image, Point> animOverlayingImages;
     private Map<Rectangle, Object> mouseMap;
-    private List<Unit> overlayingObjects;
+    private List<BattleFieldObject> overlayingObjects;
     private BfGridComp grid;
 
     public CellComp(DC_Game game, Coordinates coordinates, BfGridComp bfGridComp) {
@@ -141,7 +142,7 @@ public class CellComp {
         return getObjects().get(getObjects().size() - 1);
     }
 
-    public Unit getTopObj() {
+    public BattleFieldObject getTopObj() {
         if (getObjects().isEmpty()) {
             return null;
         }
@@ -149,8 +150,8 @@ public class CellComp {
         return getObjects().get(getObjects().size() - 1); // changed?
     }
 
-    public Unit getLandscapeObj() {
-        for (Unit o : getObjects()) {
+    public BattleFieldObject getLandscapeObj() {
+        for (BattleFieldObject o : getObjects()) {
             if (o.isLandscape()) {
                 return o;
             }
@@ -158,8 +159,8 @@ public class CellComp {
         return null;
     }
 
-    public Unit getWallObj() {
-        for (Unit o : getObjects()) {
+    public BattleFieldObject getWallObj() {
+        for (BattleFieldObject o : getObjects()) {
             if (o.isWall()) {
                 return o;
             }
@@ -219,8 +220,8 @@ public class CellComp {
     }
 
     public boolean isBfObj(Obj obj) {
-        if (obj instanceof Unit) {
-            Unit her0 = (Unit) obj;
+        if (obj instanceof BattleFieldObject) {
+            BattleFieldObject her0 = (BattleFieldObject) obj;
             return (her0.isBfObj());
         }
         return false;
@@ -237,23 +238,23 @@ public class CellComp {
         return panel;
     }
 
-    public List<Unit> getObjects() {
+    public List<BattleFieldObject> getObjects() {
         if (objects == null) {
             objects = new LinkedList<>();
         }
         return objects;
     }
 
-    public void setObjects(List<Unit> objects) {
+    public void setObjects(List<BattleFieldObject> objects) {
         if (objects != null) {
             if (objects.size() > 1) {
 
                 // main.system.auxiliary.LogMaster.log(1, objects +
                 // " before sort ");
 
-                Collections.sort(objects, new Comparator<Unit>() {
+                Collections.sort(objects, new Comparator<BattleFieldObject>() {
                     @Override
-                    public int compare(Unit o1, Unit o2) {
+                    public int compare(BattleFieldObject o1, BattleFieldObject o2) {
                         if (o1.isInfoSelected()) {
                             if (!o2.isInfoSelected()) {
                                 return 1;
@@ -308,11 +309,11 @@ public class CellComp {
         this.paintImage = paintImage;
     }
 
-    public List<Unit> getOverlayingObjects() {
+    public List<BattleFieldObject> getOverlayingObjects() {
         return overlayingObjects;
     }
 
-    public void setOverlayingObjects(List<Unit> objects) {
+    public void setOverlayingObjects(List<BattleFieldObject> objects) {
         this.overlayingObjects = objects;
 
     }
@@ -345,7 +346,7 @@ public class CellComp {
             }
             return game.getManager().getInfoUnit().getCoordinates().equals(getCoordinates());
         }
-        for (Unit o : getObjects()) {
+        for (BattleFieldObject o : getObjects()) {
             if (o.isInfoSelected()) {
                 return true;
             }
@@ -354,9 +355,9 @@ public class CellComp {
     }
 
     public boolean isAnimated() {
-        for (Unit o : getObjects()) {
-            if (o.isAnimated()) {
-                return true;
+        for (BattleFieldObject o : getObjects()) {
+            if (o instanceof Unit) {
+               return  ((Unit) o).isAnimated();
             }
         }
 

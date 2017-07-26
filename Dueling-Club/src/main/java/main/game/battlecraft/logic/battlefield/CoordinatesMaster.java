@@ -456,11 +456,13 @@ if (!ListMaster.isNotEmpty(coordinates))
     }
 
     public static List<Coordinates> getCoordinatesFromString(String textContent) {
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> coordinates = new LinkedList<>();
         for (String s : StringMaster.openContainer(textContent)) {
-            list.add(new Coordinates(true, s));
+//            if (list.contains())
+            coordinates.add(new Coordinates(true, s));
         }
-        return list;
+        coordinates.removeIf(c-> coordinates.lastIndexOf(c)!= coordinates.indexOf(c));
+        return coordinates;
     }
 
     public static String getStringFromCoordinates(List<Coordinates> list) {

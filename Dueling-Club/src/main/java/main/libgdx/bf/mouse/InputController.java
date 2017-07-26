@@ -3,9 +3,14 @@ package main.libgdx.bf.mouse;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import main.game.core.game.DC_Game;
 import main.libgdx.anims.particles.lighting.FireLightProt;
 import main.libgdx.anims.particles.lighting.LightMap;
 import main.libgdx.anims.particles.lighting.LightingManager;
+import main.libgdx.bf.GridMaster;
+import main.libgdx.screens.DungeonScreen;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,6 +42,7 @@ public class InputController implements InputProcessor {
     // сюда передаются все обьекты, что есть в мире, и потом отсюда они управляются
     @Override
     public boolean keyDown(int i) {
+
         if (i == ALT_LEFT) {
             alt = true;
         }

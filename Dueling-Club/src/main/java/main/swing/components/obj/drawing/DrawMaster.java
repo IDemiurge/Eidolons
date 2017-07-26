@@ -1,6 +1,5 @@
 package main.swing.components.obj.drawing;
 
-import main.content.CONTENT_CONSTS.FLIP;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.PROPS;
@@ -12,15 +11,16 @@ import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.swing.XLine;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.CellComp;
@@ -121,7 +121,7 @@ public class DrawMaster {
         initSizes();
         Map<Rectangle, Object> mouseMap = new XLinkedMap<>();
         cellComp.setMouseMap(mouseMap);
-        Unit topObj = cellComp.getTopObj();
+        BattleFieldObject topObj = cellComp.getTopObj();
         if (isSingleObj()) {
             Image image = cellComp.getGame().getVisionMaster().getVisibilityMaster().getDisplayImageForUnit(topObj);
             if (image != null) {
@@ -222,20 +222,20 @@ public class DrawMaster {
             }
         }
         if (isSightVisualsOn()) {
-            Unit obj = cellComp.getGame().getManager().getActiveObj();
+//            BattleFieldObject obj = cellComp.getGame().getManager().getActiveObj();
             // if (!obj.isMine()) return ;
-            boolean extended = !obj.getSightSpectrumCoordinates(false).contains(
-                    cellComp.getCoordinates());
-            if (!extended) {
-                extended = obj.getSightSpectrumCoordinates(true)
-                        .contains(cellComp.getCoordinates());
-                if (!extended) {
-                    return;
-                }
-            }
+//            boolean extended = !obj.getSightSpectrumCoordinates(false).contains(
+//                    cellComp.getCoordinates());
+//            if (!extended) {
+//                extended = obj.getSightSpectrumCoordinates(true)
+//                        .contains(cellComp.getCoordinates());
+//                if (!extended) {
+//                    return;
+//                }
+//            }
 
-            drawSightVisualsOnCell((Graphics2D) compGraphics, extended, cellComp.getObjects().size() > 0);
-            drawSightBlockInfo(cellComp, compGraphics, zoom);
+//            drawSightVisualsOnCell((Graphics2D) compGraphics, extended, cellComp.getObjects().size() > 0);
+//            drawSightBlockInfo(cellComp, compGraphics, zoom);
         }
 
         drawSpecialOverlays(cellComp, compGraphics, zoom);
@@ -357,7 +357,7 @@ public class DrawMaster {
         // drawOverlayingObj(g, cellComp, obj, x, y, overlayingSize);
         // } else {
 
-        for (Unit obj : cellComp.getOverlayingObjects()) {
+        for (BattleFieldObject obj : cellComp.getOverlayingObjects()) {
             if (!isEditorMode()) {
                 if (cellComp.getGame().getVisionMaster().getVisibilityMaster().isZeroVisibility(obj)) {
                     continue;
@@ -402,7 +402,7 @@ public class DrawMaster {
 
     }
 
-    private void drawOverlayingObj(Graphics g, CellComp cellComp, Unit obj, int x, int y,
+    private void drawOverlayingObj(Graphics g, CellComp cellComp, BattleFieldObject obj, int x, int y,
                                    int size) {
         Image img = cellComp.getGame().getVisionMaster().getVisibilityMaster().getDisplayImageForUnit(obj);
         if (img != null) {
@@ -494,7 +494,7 @@ public class DrawMaster {
     }
 
     private int getStackOffsetX() {
-        Unit obj = cellComp.getTopObj();
+        BattleFieldObject obj = cellComp.getTopObj();
         Integer stackOffsetX;
         if (!obj.getFacing().isVertical() && obj.getFacing().isCloserToZero()) {
             stackOffsetX = getObjCount() * getXOffsetPerObj(getObjCount());
@@ -505,7 +505,7 @@ public class DrawMaster {
     }
 
     private int getStackOffsetY() {
-        Unit obj = cellComp.getTopObj();
+        BattleFieldObject obj = cellComp.getTopObj();
         Integer stackOffsetY;
         if (obj.getFacing().isVertical() && !obj.getFacing().isCloserToZero()) {
             stackOffsetY = getYOffsetPerObj(getObjCount());
@@ -745,13 +745,13 @@ public class DrawMaster {
                     cellComp.getCoordinates())) {
                 return;
             }
-            List<Unit> objects = new LinkedList<>(cellComp.getObjects());
+            List<BattleFieldObject>  objects = new LinkedList<>(cellComp.getObjects());
             int stackOffsetX = 0;
             int stackOffsetY = 0;
             if (!(cellComp.isWall() || cellComp.isLandscape())) {
                 drawCellImage(g);
             } else {
-                Unit obj = cellComp.getWallObj();
+                BattleFieldObject obj = cellComp.getWallObj();
                 if (obj == null) {
                     obj = cellComp.getLandscapeObj();
                 }
@@ -771,7 +771,7 @@ public class DrawMaster {
             }
 
             // sort cellComp.getObjects() by Z-Order
-            for (Unit obj : objects) {
+            for (BattleFieldObject obj : objects) {
                 Image image = getObjDrawImage(obj, true); // TODO selective! Not
                 // all of them...
                 image = ImageManager.getSizedVersion(image, new Dimension(objSize, objSize));
@@ -825,7 +825,7 @@ public class DrawMaster {
 
             }
         }
-        Unit obj = cellComp.getWallObj();
+        BattleFieldObject obj = cellComp.getWallObj();
         if (obj == null) {
             obj = cellComp.getLandscapeObj();
         }
@@ -844,7 +844,7 @@ public class DrawMaster {
         return offsetMap;
     }
 
-    private void drawWallOverlays(Unit obj, Graphics g, Coordinates coordinates) {
+    private void drawWallOverlays(BattleFieldObject obj, Graphics g, Coordinates coordinates) {
         if (cellComp.getGame().getVisionMaster().getVisibilityMaster().isZeroVisibility(obj)) {
             if (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN) {
                 return;
@@ -1125,20 +1125,20 @@ public class DrawMaster {
         if (cellComp.isAnimated()) {
             return;
         }
-        Unit obj = cellComp.getTopObj();
+        BattleFieldObject obj = cellComp.getTopObj();
         if (obj.isActiveSelected()) {
             drawUnitEmblem(g, obj);
             if (!isEditorMode()) {
-                if (!obj.isUnconscious()) {
-                    drawActiveIcons(g, obj);
-                }
+//                if (!obj.isUnconscious()) {
+//                    drawActiveIcons(g, obj);
+//                }
             }
         } else if (obj.isInfoSelected()) {
             drawUnitEmblem(g, obj);
             if (!isEditorMode()) {
-                if (!obj.isUnconscious()) {
-                    drawInfoIcons(g, obj);
-                }
+//                if (!obj.isUnconscious()) {
+//                    drawInfoIcons(g, obj);
+//                }
             }
         }
 
@@ -1162,12 +1162,12 @@ public class DrawMaster {
         if (cellComp.getTopObj() == obj) {
             drawUnitEmblem(g, obj);
             // TODO stacked positioning adjusted to put facing comp outside
-            if (!obj.isUnconscious()) {
-                if (DrawHelper.isFacingDrawn(cellComp, obj)
-                        || (!obj.isBfObj() && DC_Game.game.isDebugMode())) {
-                    drawFacing(g, obj);
-                }
-            }
+//            if (!obj.isUnconscious()) {
+//                if (DrawHelper.isFacingDrawn(cellComp, obj)
+//                        || (!obj.isBfObj() && DC_Game.game.isDebugMode())) {
+//                    drawFacing(g, obj);
+//                }
+//            }
         }
         // if (!isEditorMode())
         // drawSpecialIcons(g, obj); // ?
@@ -1176,7 +1176,7 @@ public class DrawMaster {
 
     }
 
-    private void drawObjectOverlays(Graphics g, Unit obj) {
+    private void drawObjectOverlays(Graphics g, BattleFieldObject obj) {
         // if (!isEditorMode())
         // drawSpecialIcons(obj);
 
@@ -1206,56 +1206,56 @@ public class DrawMaster {
         // }
     }
 
-    private void drawSpecialIcons(Unit obj) {
+    private void drawSpecialIcons(BattleFieldObject obj) {
         // obj.getEngagementTarget();
         /*
 		 * when drawing stacked objects, draw a red arrow/sword towards the ET
 		 */
 
-        Unit engageShowUnit = obj.getGame().getManager().getInfoUnit();
-        if (engageShowUnit == null) {
-            engageShowUnit = obj.getGame().getManager().getActiveObj();
-        } else if (engageShowUnit.isBfObj()) {
-            engageShowUnit = obj.getGame().getManager().getActiveObj();
-        }
-
-        Image overlay = null;
-        if (engageShowUnit.getEngagementTarget() == obj) {
-            overlay = STD_IMAGES.ENGAGEMENT_TARGET.getImage();
-        }
-        if (obj.getGame().getRules().getEngagedRule().getEngagers(engageShowUnit).contains(obj)) {
-            {
-                overlay = STD_IMAGES.ENGAGER.getImage();
-            }
-        }
-        if (overlay != null) {
-            BufferedImage image = ImageManager.getNewBufferedImage(getObjCompWidth(),
-                    getObjCompHeight());
-            Graphics g = image.getGraphics();
-            drawImage(g, overlay, 24, 24);
-            BfGridComp.getOverlayMap().put(
-                    new XLine(obj.getCoordinates(), new Coordinates(getOffsetX(obj),
-                            getOffsetY(obj))), image);
-
-        }
-        if (obj.isUnconscious()) {
-            // drawImage(g,
-            // ImageManager.getRandomBloodOverlay(GuiManager.getObjSize()), 0,
-            // 0);
-
-            // darkening/bloody overlay! perhaps on the cell frame as well,
-            // blood stains/dripping
-            // drawImage(g, image, x, y);
-            // black'n'white?
-        }
+//        BattleFieldObject engageShowBattleFieldObject = obj.getGame().getManager().getInfoUnit();
+//        if (engageShowBattleFieldObject == null) {
+//            engageShowBattleFieldObject = obj.getGame().getManager().getActiveObj();
+//        } else if (engageShowUnit.isBfObj()) {
+//            engageShowBattleFieldObject = obj.getGame().getManager().getActiveObj();
+//        }
+//
+//        Image overlay = null;
+//        if (engageShowUnit.getEngagementTarget() == obj) {
+//            overlay = STD_IMAGES.ENGAGEMENT_TARGET.getImage();
+//        }
+//        if (obj.getGame().getRules().getEngagedRule().getEngagers(engageShowUnit).contains(obj)) {
+//            {
+//                overlay = STD_IMAGES.ENGAGER.getImage();
+//            }
+//        }
+//        if (overlay != null) {
+//            BufferedImage image = ImageManager.getNewBufferedImage(getObjCompWidth(),
+//                    getObjCompHeight());
+//            Graphics g = image.getGraphics();
+//            drawImage(g, overlay, 24, 24);
+//            BfGridComp.getOverlayMap().put(
+//                    new XLine(obj.getCoordinates(), new Coordinates(getOffsetX(obj),
+//                            getOffsetY(obj))), image);
+//
+//        }
+//        if (obj.isUnconscious()) {
+//            // drawImage(g,
+//            // ImageManager.getRandomBloodOverlay(GuiManager.getObjSize()), 0,
+//            // 0);
+//
+//            // darkening/bloody overlay! perhaps on the cell frame as well,
+//            // blood stains/dripping
+//            // drawImage(g, image, x, y);
+//            // black'n'white?
+//        }
 
     }
 
-    private int getOffsetY(Unit obj) {
+    private int getOffsetY(BattleFieldObject obj) {
         return (int) getOffsetMap().get(obj).getY();
     }
 
-    private int getOffsetX(Unit obj) {
+    private int getOffsetX(BattleFieldObject obj) {
         return (int) getOffsetMap().get(obj).getX();
     }
 
@@ -1267,14 +1267,15 @@ public class DrawMaster {
         return isSingleObj() ? getCompHeight() : objSize;
     }
 
-    private void drawFacing(Graphics g, Unit obj) {
+    private void drawFacing(Graphics g, BattleFieldObject obj) {
         FACING_DIRECTION facing = obj.getFacing();
         Image img = ImageManager.getFacingImage(facing);
         int x = 0;
         int y = 0;
         int h = img.getHeight(null) * zoom / 100;
         int w = img.getWidth(null) * zoom / 100;
-        int offset = obj.isSelected() ? 6 : 2;
+        int offset = //obj.isSelected() ? 6 :
+         2;
         switch (facing) {
             case WEST:
                 x = offset;
@@ -1318,7 +1319,7 @@ public class DrawMaster {
         drawImage(g, img, x, y);
     }
 
-    private BufferedImage getObjDrawImage(Unit obj, boolean drawOverlays) {
+    private BufferedImage getObjDrawImage(BattleFieldObject obj, boolean drawOverlays) {
         BufferedImage image;
         //image = objImageCache.getOrCreate(obj);
         // if (image != null)
@@ -1340,20 +1341,20 @@ public class DrawMaster {
             Image objImage = obj.getIcon().getImage();
             g.drawImage(objImage, 0, 0, null);
         }
-        if (obj.isUnconscious()) {
-            image = ImageTransformer.getGrayScale(image);
-        }
+//        if (obj.isUnconscious()) {
+//            image = ImageTransformer.getGrayScale(image);
+//        }
 
-        FLIP flip = obj.getFlip();
-        if (flip == null) {
-            Map<Unit, FLIP> map = obj.getGame().getFlipMap().get(cellComp.getCoordinates());
-            if (map != null) {
-                flip = map.get(obj);
-            }
-        }
-        if (flip != null) {
-            image = ImageTransformer.flip(flip, image);
-        }
+//     TODO    FLIP flip = obj.getFlip();
+//        if (flip == null) {
+//            Map<Unit, FLIP> map = obj.getGame().getFlipMap().get(cellComp.getCoordinates());
+//            if (map != null) {
+//                flip = map.get(obj);
+//            }
+//        }
+//        if (flip != null) {
+//            image = ImageTransformer.flip(flip, image);
+//        }
 
         applyVisibility(image, obj);
 
@@ -1392,7 +1393,7 @@ public class DrawMaster {
         return image;
     }
 
-    private void drawHeight(Unit obj, Graphics g) {
+    private void drawHeight(BattleFieldObject obj, Graphics g) {
         if (isEditorMode()) {
             return;
         }
@@ -1414,7 +1415,7 @@ public class DrawMaster {
         drawText(g, new SmartText(str, ColorManager.GOLDEN_WHITE), new Point(fontSize, fontSize));
     }
 
-    private void applyVisibility(BufferedImage image, Unit obj) {
+    private void applyVisibility(BufferedImage image, BattleFieldObject obj) {
         // if (GRAPHICS_TEST_MODE)
         // main.system.auxiliary.LogMaster.log(1, obj.getVisibilityLevel() +
         // " and "
@@ -1422,7 +1423,7 @@ public class DrawMaster {
         // + obj.getNameAndCoordinate());
 
 		/*
-		 * if an ally has unit in clear_sight, it is DETECTED then instead of an
+		 * if an ally has BattleFieldObject in clear_sight, it is DETECTED then instead of an
 		 * outline, darken it according to active unit's vision here...
 		 *
 		 */
@@ -1449,7 +1450,7 @@ public class DrawMaster {
 
     }
 
-    private void applyBeyondSight(BufferedImage image, Unit obj) {
+    private void applyBeyondSight(BufferedImage image, BattleFieldObject obj) {
         if (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED) {
             image.getGraphics().drawImage(BORDER.CONCEALED.getImage(), 0, 0, null);
         } else {
@@ -1525,7 +1526,7 @@ public class DrawMaster {
         g.drawString(text.getText(), c.x, c.y);
     }
 
-    private void drawInfoIcons(Graphics g, Unit obj) {
+    private void drawInfoIcons(Graphics g, BattleFieldObject obj) {
         if (obj.isBfObj()) {
             return;
         }
@@ -1588,7 +1589,7 @@ public class DrawMaster {
         return cellComp.getObjects().size();
     }
 
-    private void drawUnitEmblem(Graphics g, Unit obj) {
+    private void drawUnitEmblem(Graphics g, BattleFieldObject obj) {
         if (isEditorMode()) {
             return;
         }
@@ -1603,7 +1604,7 @@ public class DrawMaster {
         if (!obj.isDetected() && !obj.isMine()) {
             return;
         }
-        Image unitEmblem = DC_ImageMaster.getUnitEmblem(obj, size, false);
+        Image unitEmblem =null ;// DC_ImageMaster.getUnitEmblem(obj, size, false);
 
         if (unitEmblem == null) {
             return;

@@ -2,6 +2,7 @@ package main.game.logic.dungeon.editor;
 
 import main.entity.Entity;
 import main.entity.Ref;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -186,37 +187,29 @@ public class LE_Simulation extends DC_Game {
     public Collection<Obj> getUnitsForCoordinates(Set<Coordinates> coordinates) {
         Collection<Obj> list = new LinkedList<>();
         for (Coordinates c : coordinates) {
-            list.addAll(getObjectsOnCoordinate(c));
+            list.addAll(getBfObjectsOnCoordinate(c));
         }
         return list; // TODO z-coordinate?
     }
 
-    @Override
-    public List<Unit> getObjectsOnCoordinate(Coordinates c) {
-        List<Unit> list = getUnitMap().get(c);
-        if (list == null) {
-            return new LinkedList<>();
-        }
-        List<Unit> objects = new LinkedList<>();
-        for (Unit obj : list) {
-            if (!obj.isOverlaying()) {
-                objects.add(obj);
-            }
-        }
-        return objects;
-        // return super.getObjectsOnCoordinate(getLevel().getDungeon().getZ(),
-        // c, false, true, false);
-    }
 
+
+    private Map<Coordinates, List<BattleFieldObject>> unitMap;
+    public Map<Coordinates, List<BattleFieldObject>> getUnitMap() {
+        if (unitMap == null) {
+            unitMap = new HashMap<>();
+        }
+        return unitMap;
+    }
     @Override
     public List<Unit> getObjectsOnCoordinate(Integer z, Coordinates c,
                                              Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
-        List<Unit> list = getUnitMap().get(c);
+        List<BattleFieldObject> list = getUnitMap().get(c);
         if (list == null) {
             return new LinkedList<>();
         }
         List<Unit> objects = new LinkedList<>();
-        for (Unit obj : list) {
+        for (BattleFieldObject obj : list) {
             if (overlayingIncluded != null) {
                 if (overlayingIncluded) {
                     if (!obj.isOverlaying()) {
@@ -227,33 +220,33 @@ public class LE_Simulation extends DC_Game {
                     continue;
                 }
             }
-            objects.add(obj);
+            objects.add((Unit) obj);
         }
         return objects;
 
     }
 
-    public List<Unit> getOverlayingObjects(Coordinates c) {
-        // return getObjectsOnCoordinate(getLevel().getDungeon().getZ(), c,
-        // true, true, false);
-        List<Unit> list = getUnitMap().get(c);
-        if (list == null) {
-            return new LinkedList<>();
-        }
-
-        List<Unit> objects = new LinkedList<>();
-        for (Unit obj : list) {
-            if (obj.isOverlaying()) {
-                objects.add(obj);
-            }
-        }
-        return objects;
-    }
+//    public List<Unit> getOverlayingObjects(Coordinates c) {
+//        // return getObjectsOnCoordinate(getLevel().getDungeon().getZ(), c,
+//        // true, true, false);
+//        List<Unit> list = getUnitMap().get(c);
+//        if (list == null) {
+//            return new LinkedList<>();
+//        }
+//
+//        List<Unit> objects = new LinkedList<>();
+//        for (Unit obj : list) {
+//            if (obj.isOverlaying()) {
+//                objects.add(obj);
+//            }
+//        }
+//        return objects;
+//    }
 
     public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded) {
-        List<Unit> unitObjects = getUnitMap().get(c);
+        List<BattleFieldObject> unitObjects = getUnitMap().get(c);
         if (ListMaster.isNotEmpty(unitObjects)) {
-            for (Unit o : unitObjects) {
+            for (BattleFieldObject o : unitObjects) {
                 if (!o.isOverlaying()) {
                     return o;
                 }
