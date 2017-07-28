@@ -97,6 +97,7 @@ public class AnimMaster extends Group {
             if (!floatingText.isInitialized())
                 floatingText.init();
             addActor(floatingText);
+
         });
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
             if (!isOn()) {

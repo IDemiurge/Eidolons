@@ -99,11 +99,7 @@
             <version>4.12</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx</artifactId>
-            <version>${libgdx.version}</version>
-        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-box2d -->
         <dependency>

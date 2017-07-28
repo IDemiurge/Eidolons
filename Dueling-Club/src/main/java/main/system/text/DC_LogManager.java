@@ -1,10 +1,7 @@
 package main.system.text;
 
-import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.rules.VisionEnums;
 import main.entity.Ref;
-import main.entity.active.DC_ActiveObj;
-import main.entity.group.GroupImpl;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.advanced.companion.Order;
@@ -69,11 +66,4 @@ public class DC_LogManager extends LogManager {
         return super.log(log, entry, enclosingEntryType);
     }
 
-    public static boolean isGroupLogged(DC_ActiveObj entity, GroupImpl targetGroup) {
-        if (entity.getActionGroup()== ACTION_TYPE_GROUPS.MODE)
-            return false;
-        if (entity.getActionGroup()== ACTION_TYPE_GROUPS.TURN)
-            return false;
-        return true;
-    }
 }

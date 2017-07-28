@@ -140,13 +140,14 @@ public class Executor extends ActiveHandler {
 
         boolean gameLog = getAction().getLogger().isActivationLogged();
         String targets = " ";
+        if (getAction().getLogger().isTargetLogged())
         if (getAction().getTargetObj() != null) {
-            if (game.isDebugMode())
+     if (game.isDebugMode())
                 targets = getAction().getTargetObj().getNameAndCoordinate();
             else
                 targets = getAction().getTargetObj().getNameIfKnown();
         } else if (getAction().getTargetGroup() != null)
-            if (DC_LogManager.isGroupLogged(entity, getAction().getTargetGroup())) {
+            {
                 targets = getAction().getTargetGroup().toString();
             }
         log(getAction().getOwnerObj().getNameIfKnown() + " activates "

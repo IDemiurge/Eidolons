@@ -91,6 +91,9 @@ public class FloatingTextMaster {
 
     private String getText(Entity active, TEXT_CASES aCase, Object arg) {
         switch (aCase) {
+            case CANNOT_ACTIVATE:
+                DC_ActiveObj activeObj= (DC_ActiveObj) active;
+                return activeObj.getCosts().getReasonsString();
             case BONUS_DAMAGE:
                 return String.valueOf(((Damage) arg).getAmount());
             case ATTACK_CRITICAL:
@@ -248,7 +251,7 @@ public class FloatingTextMaster {
     public enum TEXT_CASES {
         DEFAULT,
         REQUIREMENT,
-        ERROR,
+        CANNOT_ACTIVATE,
 
         BONUS_DAMAGE,
         ATTACK_CRITICAL,

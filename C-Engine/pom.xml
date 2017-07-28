@@ -13,13 +13,17 @@
     </parent>
 
     <dependencies>
-
         <dependency>
             <groupId>javazoom</groupId>
             <artifactId>jlayer</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2-gdx</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx</artifactId>
+            <version>${libgdx.version}</version>
+        </dependency>
 
 
     </dependencies>

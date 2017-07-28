@@ -59,6 +59,8 @@ public class Action {
 
     @Override
     public String toString() {
+        if (!active.getLogger().isTargetLogged())
+            return active.getName();
         if (ref.getTargetObj() != null) {
             String name = ref.getTargetObj().getName();
             if (ref.getTargetObj() instanceof DC_Cell) {

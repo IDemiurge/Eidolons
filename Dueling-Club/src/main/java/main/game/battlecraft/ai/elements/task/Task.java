@@ -25,9 +25,18 @@ public class Task {
         this.setForced(forced);
     }
 
+    public String toShortString() {
+        return type + " on "
+         +
+         (arg instanceof Integer ?
+          getUnit().getGame().getObjectById((Integer) arg) :
+          arg == null ? "" : arg);
+    }
     @Override
     public String toString() {
-        return ai.getUnit().getName() + "'s " + type + " Task - "
+        return
+         ai.getUnit().getName() + "'s " +
+         type + " on "
                 +
                 (arg instanceof Integer ?
                         getUnit().getGame().getObjectById((Integer) arg) :

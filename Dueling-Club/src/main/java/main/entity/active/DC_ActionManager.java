@@ -620,7 +620,8 @@ public class DC_ActionManager implements ActionManager {
         if (UnitAnalyzer.checkOffhand(unit)) {
             actives.add(getOrCreateAction(OFFHAND_ATTACK, unit));
             ActionGenerator.generateOffhandActions();
-            addOffhandActions(actives, unit);
+            addOffhandActions(unit.getActionMap().get(ACTION_TYPE.STANDARD_ATTACK), unit);
+            addOffhandActions(unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK), unit);
         }
 
         actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
@@ -780,8 +781,8 @@ if (RuleMaster.checkFeature(FEATURE.DUAL_ATTACKS))
         return false;
     }
 
-    private void addOffhandActions(DequeImpl<ActiveObj> actives, Unit unit) {
-
+    private void addOffhandActions(DequeImpl<DC_UnitAction> actives, Unit unit) {
+if (actives!=null )
         for (ActiveObj attack : actives) {
             ObjType offhand = (DataManager.getType(ActionGenerator.getOffhandActionName(attack
              .getName()), DC_TYPE.ACTIONS));

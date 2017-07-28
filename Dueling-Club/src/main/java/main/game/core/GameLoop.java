@@ -166,8 +166,10 @@ public class GameLoop {
         return activatingAction;
     }
 
-    public void setPaused(boolean paused) {
+    public void setPaused(boolean paused) { main.system.auxiliary.log.LogMaster.log(1,"Pause game: " +paused);
         this.paused = paused;
+        if (!paused)
+            WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE, true);
     }
 
     public boolean isPaused() {

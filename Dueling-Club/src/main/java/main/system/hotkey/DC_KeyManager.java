@@ -38,7 +38,7 @@ public class DC_KeyManager
     private static final int SPELL_MASK = KeyEvent.CTRL_DOWN_MASK;
     private static final int ACTION_MASK = KeyEvent.ALT_DOWN_MASK;
     private static final int ITEM_MASK = KeyEvent.ALT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK;
-    public static CONTROLLER DEFAULT_CONTROLLER;
+    public static CONTROLLER DEFAULT_CONTROLLER=CONTROLLER.DEBUG;
     G_PagePanel<?> p;
     GlobalController globalController = new GlobalController();
     private Map<String, Integer> stdActionKeyMap;
@@ -216,23 +216,23 @@ public class DC_KeyManager
         return null;
     }
 
-    public void handleKeyTyped(int keyMod, char CHAR) {
+    public boolean handleKeyTyped(int keyMod, char CHAR) {
         if (checkControllerHotkey(keyMod, CHAR)) {
-            return;
+            return true;
         }
         if (globalController != null) {
             if (globalController.charTyped(CHAR)) {
-                return;
+                return true;
             }
         }
         if (controller != null) {
             try {
                 if (controller.charTyped(CHAR)) {
-                    return;
+                    return true;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                return;
+                return false;
             }
 
         }
@@ -244,15 +244,15 @@ public class DC_KeyManager
         if (index == -1) {
             if (stdActionKeyMap.containsKey(CHAR + "")) {
                 actionHotkey(stdActionKeyMap.get(CHAR + ""), ActionEnums.ACTION_TYPE.STANDARD);
-                return;
+                return true;
             }
             if (addMoveActionKeyMap.containsKey(CHAR + "")) {
                 actionHotkey(addMoveActionKeyMap.get(CHAR + ""), ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE);
-                return;
+                return true;
             }
             if (stdModeKeyMap.containsKey(CHAR + "")) {
                 actionHotkey(stdModeKeyMap.get(CHAR + ""), ActionEnums.ACTION_TYPE.MODE);
-                return;
+                return true;
             }
 
 
@@ -265,16 +265,18 @@ public class DC_KeyManager
             switch (keyMod) {
                 case ITEM_MASK:
                     itemHotkey((index - 1));
+                    return true;
                 case SPELL_MASK:
                     spellHotkey((index - 1));
-                    break;
+                    return true;
 
                 case ACTION_MASK:
                     // if > 5 => next group
                     actionHotkey((index - 1), action_group);
-                    break;
+                    return true;
             }
         }
+        return false;
     }
 
 

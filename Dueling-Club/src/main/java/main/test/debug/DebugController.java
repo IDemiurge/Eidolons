@@ -2,6 +2,7 @@ package main.test.debug;
 
 import main.game.core.Eidolons;
 import main.system.controls.Controller;
+import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
 /**
  * Created by JustMe on 2/16/2017.
@@ -28,10 +29,20 @@ public class DebugController implements Controller {
     @Override
     public boolean charTyped(char c) {
         switch (c) {
-            case 'd':
+            case 'D':
                 getDebugMaster().showDebugWindow();
                 return true;
+            case ' ':
+                getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.PAUSE);
+                return true;
+            case 'A':
+                getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.TOGGLE_ALT_AI);
+                return true;
         }
+//        TOGGLE_DUMMY(true),
+//         TOGGLE_DUMMY_PLUS(true),
+//         TOGGLE_OMNIVISION(true),
+//         TOGGLE_DEBUG,
 //        FUNC_STANDARD(DebugMaster.group_basic),
 //         FUNC_ADD_BF(DebugMaster.group_add_bf_obj),
 //         FUNC_ADD_NON_BF(DebugMaster.group_add),

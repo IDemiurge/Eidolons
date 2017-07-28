@@ -289,7 +289,7 @@ public class RadialManager {
             if (valid) {
                 WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(active, new Context(active.getOwnerObj().getRef())));
             } else {
-                FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.ERROR, "", active);
+                FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.CANNOT_ACTIVATE, "", active);
             }
 
         };

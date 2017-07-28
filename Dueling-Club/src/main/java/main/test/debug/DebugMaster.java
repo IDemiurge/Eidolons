@@ -518,7 +518,7 @@ public class DebugMaster {
                     break;
 
                 case PAUSE:
-                    DC_Game.game.setPaused(!DC_Game.game.isPaused());
+                    DC_Game.game.getLoop().setPaused(!DC_Game.game.getLoop().isPaused());
                     break;
                 case TOGGLE_OMNIVISION:
                     omnivision = !omnivision;
@@ -803,6 +803,7 @@ public class DebugMaster {
                     break;
 
                 case TOGGLE_ALT_AI: {
+                    game.getPlayer(true).setAi(!game.getPlayer(true).isAi());
                     ALT_AI_PLAYER = !ALT_AI_PLAYER;
                     break;
                 }

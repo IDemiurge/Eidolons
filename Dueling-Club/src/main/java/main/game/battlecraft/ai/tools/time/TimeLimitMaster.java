@@ -24,7 +24,7 @@ public class TimeLimitMaster {
 
     }
 
-    public static boolean isFastPickMeleeCell() {
+    public static boolean isFastPickCell() {
         return true;
     }
 

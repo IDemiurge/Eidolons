@@ -1,5 +1,6 @@
 package main.game.battlecraft.ai;
 
+import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.entity.obj.unit.Unit;
@@ -120,6 +121,8 @@ public class AI_Manager extends AiMaster {
         if (!bufferedCoordinates.equals(unit.getCoordinates())) {
             unit.setCoordinates(bufferedCoordinates);
         }
+        if (action.getActive().getActionGroup()== ACTION_TYPE_GROUPS.MODE)
+            return action;
         return action;
     }
 

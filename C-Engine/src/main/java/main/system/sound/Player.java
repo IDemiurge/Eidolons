@@ -1,6 +1,8 @@
 package main.system.sound;
 
-import javazoom.jl.player.jlp;
+import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
@@ -218,10 +220,13 @@ public class Player {
         // }
 
         try {
-            jlp player = jlp.createInstance(new String[]{sound});
-            if (player != null) {
-                player.play();
-            }
+            Sound soundFile = Gdx.audio.newSound(Gdx.files.getFileHandle(sound, FileType.Absolute));
+soundFile.play();
+            //            Gdx.audio.
+//            jlp player = jlp.createInstance(new String[]{sound});
+//            if (player != null) {
+//                player.play();
+//            }
 
         } catch (Exception ex) {
             System.err.println(ex);

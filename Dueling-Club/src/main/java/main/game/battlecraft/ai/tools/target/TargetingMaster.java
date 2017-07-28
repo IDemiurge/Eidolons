@@ -35,10 +35,11 @@ public class TargetingMaster extends AiHandler {
 
     public static Targeting getZoneEffect(DC_ActiveObj active) {
         List<Effect> zoneEffects = EffectFinder.getEffectsOfClass(active,
-                SpecialTargetingEffect.class);
+         SpecialTargetingEffect.class);
         if (!zoneEffects.isEmpty()) {
             SpecialTargetingEffect zoneEffect = (SpecialTargetingEffect) zoneEffects
-                    .get(0);
+             .get(0);
+            zoneEffect.setRef(active.getRef());
             zoneEffect.initTargeting();
             return zoneEffect.getTargeting();
         }
@@ -103,7 +104,7 @@ public class TargetingMaster extends AiHandler {
     public static boolean isValidTargetingCell(Action targetAction, Coordinates c, Unit unit) {
 
         return unit.getGame().getBattleFieldManager()
-                .canMoveOnto(targetAction.getSource(), c);
+         .canMoveOnto(targetAction.getSource(), c);
     }
 
     public static boolean canBeTargeted(Action action) {
@@ -133,15 +134,15 @@ public class TargetingMaster extends AiHandler {
         // }
         // }
 //        if (action.getActive().isMelee()) {
-            if (reasons.size() == 1) // what about DISTANCE?
-            {
-                if (reasons.get(0) == (FILTER_REASON.FACING)) {
-                    // if (!visionRemoved)
-                    // main.system.auxiliary.LogMaster.log(1, "!!!");
-                    // else
-                    return true;
-                }
+        if (reasons.size() == 1) // what about DISTANCE?
+        {
+            if (reasons.get(0) == (FILTER_REASON.FACING)) {
+                // if (!visionRemoved)
+                // main.system.auxiliary.LogMaster.log(1, "!!!");
+                // else
+                return true;
             }
+        }
 //        }
 
         return false;

@@ -2,6 +2,9 @@ package main.game.battlecraft.ai.tools;
 
 import main.content.enums.system.AiEnums;
 import main.entity.Entity;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.ActiveObj;
+import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
@@ -93,4 +96,17 @@ public class SituationAnalyzer extends AiHandler {
         return 100;
     }
 
+    public boolean canAttackNow(UnitAI ai) {
+        for (ActiveObj a : ai.getUnit().getActives()) {
+            DC_ActiveObj action = (DC_ActiveObj) a;
+            if (action.isAttackAny())
+                for (DC_Obj enemy : getAnalyzer().getEnemies(ai.getUnit(), false, false,
+                 action.isMelee())) {
+                    if (action.canBeActivated())
+                        if (action.canBeTargeted(enemy.getId()))
+                            return true;
+                }
+        }
+        return false;
+    }
 }

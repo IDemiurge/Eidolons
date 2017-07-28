@@ -1094,9 +1094,6 @@ public abstract class DataModel {
     }
 
     protected void putParameter(PARAMETER param, String value) {
-        if (value.equals("100"))
-            if (param.name().equals("C_FOCUS"))
-                main.system.auxiliary.log.LogMaster.log(1, this + " got 100 focus somehow");
         if (isTypeLinked()) {
             type.getParamMap().put(param, value);
         }

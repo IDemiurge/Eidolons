@@ -1,5 +1,6 @@
 package main.game.battlecraft.ai.elements.actions;
 
+import main.client.dc.Launcher;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.DC_ContentManager;
 import main.content.enums.entity.ActionEnums;
@@ -28,6 +29,7 @@ import main.game.module.dungeoncrawl.ai.DungeonCrawler;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
@@ -105,7 +107,7 @@ public class ActionManager extends AiHandler {
         ActionSequence chosenSequence = null;
         boolean atomic = false;
         try {
-            atomic = getAtomicAi().checkAtomicActionCaseAny(ai);
+            atomic = getAtomicAi().checkAtomicActionRequired(ai);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -144,6 +146,9 @@ public class ActionManager extends AiHandler {
 
         }
         if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE) {
+            if (Launcher.DEV_MODE)
+                game.getLogManager().log(LOG.GAME_INFO, ai.getUnit().getName()
+                + " chooses task: " + chosenSequence.getTask().toShortString());
             LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Action chosenSequence chosen: "
              + chosenSequence + StringMaster.wrapInParenthesis(chosenSequence.getPriority() + ""));
         }

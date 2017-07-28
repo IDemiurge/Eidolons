@@ -1,6 +1,7 @@
 package main.entity.tools.active;
 
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
@@ -101,5 +102,17 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
             return false;
         }
         return true;
+    }
+
+    public boolean isTargetLogged() {
+        if (entity.getActionGroup()== ACTION_TYPE_GROUPS.MODE)
+            return false;
+        if (entity.getActionGroup()== ACTION_TYPE_GROUPS.TURN)
+            return false;
+        if (entity.getActionGroup()== ACTION_TYPE_GROUPS.MOVE)
+            return false;
+
+            return true;
+
     }
 }

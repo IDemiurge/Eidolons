@@ -44,7 +44,9 @@ public class BattleGuiStage extends Stage {
 
     @Override
     public boolean keyTyped(char character) {
-        DC_Game.game.getKeyManager().handleKeyTyped(0, character);
+       boolean result = DC_Game.game.getKeyManager().handleKeyTyped(0, character);
+       if (result)
+           return true;
         return super.keyTyped(character);
     }
 
