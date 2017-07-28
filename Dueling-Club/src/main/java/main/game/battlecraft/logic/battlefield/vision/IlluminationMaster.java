@@ -16,7 +16,7 @@ import main.system.math.PositionMaster;
 public class IlluminationMaster {
 
     private static final Integer DEFAULT_GLOBAL_ILLUMINATION = 10;
-    private Integer globalIllumination = DEFAULT_GLOBAL_ILLUMINATION;
+    private Integer globalIllumination = 0;
     private Integer globalConcealment = 0;
 
     public IlluminationMaster(VisionMaster visionManager) {
@@ -43,12 +43,13 @@ public class IlluminationMaster {
         Dungeon dungeon = source.getGame().getDungeon();
 
         Integer illumination =
-                target.getIntParam(PARAMS.ILLUMINATION);
+         target.getIntParam(PARAMS.ILLUMINATION);
         illumination += target.getIntParam(PARAMS.LIGHT_EMISSION) / 2;
         if (dungeon != null) {
-            illumination += dungeon.getGlobalIllumination();
+            illumination = Math.max(illumination, dungeon.getGlobalIllumination());
+            globalIllumination = dungeon.getGlobalIllumination() / 5;
         }
-
+//universal
         illumination += globalIllumination;
 
         Integer ilMod = 100;

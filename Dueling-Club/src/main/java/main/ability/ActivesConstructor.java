@@ -159,6 +159,7 @@ public class ActivesConstructor {
                 // targeting = getDefaultSingleTargeting(entity);TODO necessary?
             }
         }
+        if (targeting != null)
         entity.setTargeting(targeting);
         Abilities abilities = new Abilities();
         abilities.add(new ActiveAbility(null, wrappedEffect));

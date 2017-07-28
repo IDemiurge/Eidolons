@@ -62,9 +62,12 @@ public class DemoLauncher extends Game {
         conf.height = 900;
         conf.fullscreen = false;
         conf.resizable = false;
-        conf.addIcon(PathFinder.getImagePath()+"mini/new/logo32.png", FileType.Absolute);
-        conf.addIcon(PathFinder.getImagePath()+"mini/new/logo64.png", FileType.Absolute);
-
+        try {
+            conf.addIcon(PathFinder.getImagePath() + "mini/new/logo32.png", FileType.Absolute);
+            conf.addIcon(PathFinder.getImagePath() + "mini/new/logo64.png", FileType.Absolute);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return conf;
     }
 
@@ -83,9 +86,9 @@ public class DemoLauncher extends Game {
     }
 
     public void onScreenLoadDone(EventCallbackParam param) {
-        if(getScreen()==null)
-        return ;
-            else {
+        if (getScreen() == null)
+            return;
+        else {
             ((ScreenWithLoader) getScreen()).loadDone(param);
         }
     }

@@ -21,6 +21,7 @@ public class ActionEnums {
     public enum ACTION_TAGS {
         FLYING,
         DUAL,
+        UNARMED,
         OFF_HAND,
         MAIN_HAND,
         TWO_HANDED,

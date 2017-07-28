@@ -1,5 +1,6 @@
 package main.game.battlecraft.logic.dungeon.universal;
 
+import main.ability.UnitTrainingMaster;
 import main.client.cc.logic.UnitLevelManager;
 import main.client.cc.logic.party.PartyObj;
 import main.client.dc.Launcher;
@@ -173,7 +174,8 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         Unit unit = (Unit) game.getManager().getObjCreator().createUnit(type, c.x, c.y, owner, new Ref(game));
         unit.setFacing(facing_direction);
-
+        if (!unit.isHero())
+         UnitTrainingMaster.train(unit);
 
     }
 

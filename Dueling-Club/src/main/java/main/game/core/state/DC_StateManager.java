@@ -313,12 +313,14 @@ public class DC_StateManager extends StateManager {
         newTurnTick();
         Ref ref = new Ref(getGame());
         ref.setAmount(state.getRound());
+        boolean started = game.isStarted();
+        game.setStarted(true);
         getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.NEW_ROUND, ref));
 
 
 
 
-        if (game.isStarted()) {
+        if (started) {
             getGameManager().reset();
             getGameManager().resetValues();
             IlluminationRule.initLightEmission(getGame());
@@ -326,7 +328,6 @@ public class DC_StateManager extends StateManager {
         } else {
 
             resetAllSynchronized();
-            game.setStarted(true);
             try {
                 IlluminationRule.initLightEmission(getGame());
             } catch (Exception e) {

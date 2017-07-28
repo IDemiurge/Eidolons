@@ -53,7 +53,7 @@ public class ThreatAnalyzer extends AiHandler {
             });
         if (unit.getRangedWeapon() == null)
             return 0;
-        return new FuncMaster().getGreatestValue(unit.getRangedWeapon().getAttackActions(),
+        return new FuncMaster().getGreatestValue(unit.getRangedWeapon().getOrCreateAttackActions(),
          t -> {
              DC_ActiveObj action = (DC_ActiveObj) t;
              if (action.isRanged())

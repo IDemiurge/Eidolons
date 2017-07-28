@@ -327,7 +327,7 @@ public class DC_ObjInitializer {
                     map.put(c, unit);
                 }
 
-                if (!CoreEngine.isLevelEditor() && unit.getOBJ_TYPE_ENUM() != null) {
+                if (!CoreEngine.isLevelEditor()  ) {
                     if (unit.getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
                         // if (!owner.isMe() || game.isDebugMode()) TODO why
                         // not?

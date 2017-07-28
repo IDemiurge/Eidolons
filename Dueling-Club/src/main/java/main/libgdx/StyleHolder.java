@@ -30,9 +30,18 @@ public class StyleHolder {
     private static final Color DEFAULT_COLOR = new Color(ColorManager.GOLDEN_WHITE.getRGB());
     private static TextButton.TextButtonStyle defaultTextButtonStyle;
     private static Map<Color, Label.LabelStyle> colorLabelStyleMap = new HashMap<>();
+    private static Map<Integer, Label.LabelStyle> sizeLabelStyleMap = new HashMap<>();
 
-
-    public static Label.LabelStyle getDefaultLabelStyle(Color color) {
+    public static Label.LabelStyle getDefaultLabelStyleSized(Integer size) {
+        if (!sizeLabelStyleMap.containsKey(size)) {
+            Label.LabelStyle style = new Label.LabelStyle
+             (getFont(DEFAULT_FONT, DEFAULT_COLOR, size ), DEFAULT_COLOR);
+            style.font.getData().markupEnabled = true;
+            sizeLabelStyleMap.put(size, style);
+        }
+        return sizeLabelStyleMap.get(size);
+    }
+        public static Label.LabelStyle getDefaultLabelStyle(Color color) {
         if (!colorLabelStyleMap.containsKey(color)) {
             Label.LabelStyle style = new Label.LabelStyle
              (getFont(DEFAULT_FONT, DEFAULT_COLOR, DEFAULT_SIZE ), color);
@@ -53,7 +62,6 @@ public class StyleHolder {
          new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.color = color;
         parameter.size = size;
-
         final BitmapFont bitmapFont = generator.generateFont(parameter);
         generator.dispose();
         return bitmapFont;

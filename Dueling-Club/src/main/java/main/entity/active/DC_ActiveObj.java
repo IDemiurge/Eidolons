@@ -50,7 +50,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interruptable,
-        SpriteAnimated, AttachedObj {
+ SpriteAnimated, AttachedObj {
 
     protected Unit ownerObj;
     protected Targeting targeting;
@@ -108,12 +108,12 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
      * default self-activation with manual target choosing
      */
     public boolean activate() {
-         getMaster().getHandler().activateOnGameLoopThread();
+        getMaster().getHandler().activateOnGameLoopThread();
         return true;
     }
 
 
-// for ai and inside-engine usage NOT FOR GUI CONTROLS - RUNS IN SAME THREAD!
+    // for ai and inside-engine usage NOT FOR GUI CONTROLS - RUNS IN SAME THREAD!
     @Override
     public boolean activatedOn(Ref ref) {
         return getHandler().activateOn(new Context(ref));
@@ -125,7 +125,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public DAMAGE_TYPE getDamageType() {
-        if (super.getDamageType()==null ){
+        if (super.getDamageType() == null) {
             if (getActiveWeapon() == null) {
                 if (isAttackAny())
                     return DAMAGE_TYPE.PHYSICAL;
@@ -135,13 +135,13 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             }
             getActiveWeapon().getDamageType();
         }
-            return super.getDamageType();
+        return super.getDamageType();
     }
 
     public DAMAGE_TYPE getEnergyType() {
         if (energyType == null) {
             energyType = (new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class,
-                    getProperty(PROPS.DAMAGE_TYPE)));
+             getProperty(PROPS.DAMAGE_TYPE)));
         }
         if (energyType == null) {
             energyType = DC_ContentManager.getDamageForAspect(getAspect());
@@ -156,10 +156,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return EffectFinder.getFirstEffectOfClass(this,
          DealDamageEffect.class) != null;
     }
+
     public RESISTANCE_TYPE getResistanceType() {
         if (resistType == null) {
             resistType = (new EnumMaster<RESISTANCE_TYPE>().retrieveEnumConst(
-                    RESISTANCE_TYPE.class, getProperty(PROPS.RESISTANCE_TYPE)));
+             RESISTANCE_TYPE.class, getProperty(PROPS.RESISTANCE_TYPE)));
         }
 
         if (resistType == null) {
@@ -352,7 +353,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public Targeting getTargeting() {
-        if (!constructed || targeting==null ) {
+        if (!constructed || targeting == null) {
             construct();
         }
         return targeting;
@@ -435,7 +436,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
 
-
     public TARGETING_MODE getTargetingMode() {
         return getTargeter().getTargetingMode();
     }
@@ -475,17 +475,17 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public AI_LOGIC getAiLogic() {
         if (aiLogic == null) {
             aiLogic = new EnumMaster<AI_LOGIC>().retrieveEnumConst(AI_LOGIC.class,
-                    getProperty(PROPS.AI_LOGIC));
+             getProperty(PROPS.AI_LOGIC));
         }
         return aiLogic;
     }
 
     public ACTION_TYPE getActionType() {
-        if (actionType == null )
-            actionType  =
-         new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
-                getProperty(G_PROPS.ACTION_TYPE));
-        return actionType ;
+        if (actionType == null)
+            actionType =
+             new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
+              getProperty(G_PROPS.ACTION_TYPE));
+        return actionType;
     }
 
     public String getActionMode() {
@@ -500,6 +500,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return
          ModMaster.getFinalModForAction(this, mod);
     }
+
     public int getFinalBonusParam(PARAMS bonus) {
         return
          ModMaster.getFinalBonusForAction(this, bonus);
@@ -522,17 +523,15 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public DC_WeaponObj getActiveWeapon() {
-        if (isThrow()){
-            if (this instanceof DC_QuickItemAction){
+        if (isThrow()) {
+            if (this instanceof DC_QuickItemAction) {
                 return ((DC_QuickItemAction) this).getItem().getWrappedWeapon();
             }
-        }
-        else
-        if (isRanged()) {
+        } else if (isRanged()) {
             return (DC_WeaponObj) getOwnerObj().getLinkedObj(IdKey.RANGED);
         }
         IdKey key = (isOffhand() ? IdKey.OFFHAND : IdKey.WEAPON);
-     return (DC_WeaponObj) getOwnerObj().getLinkedObj(key);
+        return (DC_WeaponObj) getOwnerObj().getLinkedObj(key);
     }
 
 
@@ -639,6 +638,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean isRangedTouch() {
         return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.RANGED_TOUCH.toString());
     }
+
     @Override
     public boolean isMissile() {
         return getChecker().isMissile();
@@ -711,7 +711,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         getActivator().setBroken(broken);
     }
 
-    private boolean canBeManuallyActivated() {
+    public boolean canBeManuallyActivated() {
         return getActivator().canBeManuallyActivated();
     }
 
@@ -802,7 +802,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
 
-
     public boolean isContinuous() {
         return continuous;
     }
@@ -852,7 +851,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         this.damageDealt = damageDealt;
     }
 
-@Override
+    @Override
     public Obj getTargetObj() {
         return targetObj;
     }

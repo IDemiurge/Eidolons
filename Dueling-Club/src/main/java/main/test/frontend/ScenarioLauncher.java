@@ -1,7 +1,6 @@
 package main.test.frontend;
 
 import main.game.battlecraft.DC_Engine;
-import main.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import main.game.core.Eidolons;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
@@ -27,7 +26,8 @@ public class ScenarioLauncher {
         DC_Engine.mainMenuInit();
         Eidolons.initScenario(typeName);
 
-        ScreenData data = new ScreenData(ScreenType.BATTLE, "name", new SceneFactory("Test"));
+        ScreenData data = new ScreenData(ScreenType.BATTLE, "name");
+         //new SceneFactory("Test")
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         DC_Engine.gameStartInit();
         Eidolons.mainGame.getMetaMaster().preStart();

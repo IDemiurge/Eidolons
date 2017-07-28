@@ -39,10 +39,11 @@ public class PathFinder {
         } else {
             //FOR JARS
             CoreEngine.setJar(true);
+
             URI uri = null;
             try {
                 uri =
-                 CoreEngine.getEngineObject().getClass().getProtectionDomain().getCodeSource().getLocation().toURI();
+                new CoreEngine().getClass().getProtectionDomain().getCodeSource().getLocation().toURI();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }

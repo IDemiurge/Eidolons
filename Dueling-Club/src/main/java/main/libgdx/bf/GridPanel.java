@@ -351,7 +351,13 @@ moveUnitView((BattleFieldObject) obj.get());
         GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
             Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
             GridUnitView uv = (GridUnitView) unitMap.get(p.getLeft());
-            uv.updateInitiative(p.getRight());
+            if (uv==null )
+            {
+                addUnitView(  p.getLeft());
+                uv = (GridUnitView) unitMap.get(p.getLeft());
+            }
+            if (uv!=null )
+                uv.updateInitiative(p.getRight());
         });
         GuiEventManager.bind(UNIT_CREATED, p -> {
             addUnitView((BattleFieldObject) p.get());

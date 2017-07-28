@@ -208,7 +208,7 @@ public class DC_Game extends MicroGame {
 
     public void battleInit() {
 //            SpellGenerator.init();
-        ActionGenerator.init();
+        setSimulation(false);    ActionGenerator.init();
 
 
         inventoryTransactionManager = new InventoryTransactionManager(this);

@@ -121,7 +121,7 @@ public class UnitTrainer {
                 ObjType.class, DC_TYPE.SKILLS);
 
         for (ObjType type : map.keySet()) {
-
+if(type==null ) continue;
             if (trainee.checkProperty(PROPS.SKILLS, type.getName())) {
                 continue; // TODO ++ exceptions
             }

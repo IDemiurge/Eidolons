@@ -135,7 +135,11 @@ public class RuleMaster implements Controller {
         //
         // if (blockedFeatures.contains(feature))
         // return false;
-
+        switch (feature) {
+            case DUAL_ATTACKS:
+            case VISIBILITY:
+                return false;
+        }
         return true;
     }
 
@@ -301,7 +305,7 @@ public class RuleMaster implements Controller {
     }
 
     public enum FEATURE {
-        USE_INVENTORY, WATCH, FLEE, DIVINATION, TOSS_ITEM, PICK_UP, ENTER;
+        USE_INVENTORY, WATCH, FLEE, DIVINATION, TOSS_ITEM, PICK_UP, ENTER, DUAL_ATTACKS, VISIBILITY;
         int featureLevel;
     }
 
@@ -332,10 +336,7 @@ public class RuleMaster implements Controller {
         WEIGHT,
         INJURY(RULE_SCOPE.FULL),
         CRITICAL_ATTACK(),
-        DODGE(),
-
-
-        ;
+        DODGE(),;
 
         String tooltip;
         RULE_SCOPE scope;

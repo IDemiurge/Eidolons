@@ -340,7 +340,8 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     public boolean isRanged() {
         return checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.RANGED.toString(), true);
     }
-    public   boolean isMelee() {
+
+    public boolean isMelee() {
         if (isRanged()) {
             return false;
         }
@@ -352,6 +353,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         }
         return true;
     }
+
     public WEAPON_TYPE getWeaponType() {
         return new EnumMaster<WEAPON_TYPE>().retrieveEnumConst(WEAPON_TYPE.class,
          getProperty(G_PROPS.WEAPON_TYPE));
@@ -386,6 +388,12 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         modifyParameter(PARAMS.SPELL_FOC_PENALTY, penalty_reduction, 0, true);
         modifyParameter(PARAMS.SPELL_AP_PENALTY, penalty_reduction, 0, true);
 
+    }
+
+    public List<DC_UnitAction> getOrCreateAttackActions() {
+        if (attackActions == null)
+            setAttackActions(getGame().getActionManager().getOrCreateWeaponActions(this));
+        return attackActions;
     }
 
     public List<DC_UnitAction> getAttackActions() {

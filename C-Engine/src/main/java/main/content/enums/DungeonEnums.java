@@ -109,7 +109,7 @@ public class DungeonEnums {
     }
 
     public enum DUNGEON_TAGS {
-        INTERIOR, UNDERGROUND, SURFACE,
+        INTERIOR, UNDERGROUND, SURFACE, NIGHT, PERMA_DUSK,
     }
 
     public enum DUNGEON_TYPE {

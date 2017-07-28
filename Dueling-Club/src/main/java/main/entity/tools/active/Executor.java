@@ -26,6 +26,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.text.DC_LogManager;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -106,7 +107,7 @@ public class Executor extends ActiveHandler {
 
 
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-                new ActionInput(getAction(), new Context(ref)));
+         new ActionInput(getAction(), new Context(ref)));
     }
 
     public void activateOn(DC_Obj t) {
@@ -117,12 +118,12 @@ public class Executor extends ActiveHandler {
             return;
         }
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-                new ActionInput(getAction(), t));
+         new ActionInput(getAction(), t));
     }
 
     public void activateOnGameLoopThread() {
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-                new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
+         new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }
 
     public boolean activate() {
@@ -140,12 +141,16 @@ public class Executor extends ActiveHandler {
         boolean gameLog = getAction().getLogger().isActivationLogged();
         String targets = " ";
         if (getAction().getTargetObj() != null) {
-            targets = getAction().getTargetObj().getNameAndCoordinate();
-        } else if (getAction().getTargetGroup() != null) {
-            targets = getAction().getTargetGroup().toString();
-        }
+            if (game.isDebugMode())
+                targets = getAction().getTargetObj().getNameAndCoordinate();
+            else
+                targets = getAction().getTargetObj().getNameIfKnown();
+        } else if (getAction().getTargetGroup() != null)
+            if (DC_LogManager.isGroupLogged(entity, getAction().getTargetGroup())) {
+                targets = getAction().getTargetGroup().toString();
+            }
         log(getAction().getOwnerObj().getNameIfKnown() + " activates "
-                + getAction().getNameIfKnown() + targets, gameLog);
+         + getAction().getNameIfKnown() +" "+ targets, gameLog);
         beingActivated();
         if (isInterrupted()) {
             return interrupted();
@@ -267,7 +272,7 @@ public class Executor extends ActiveHandler {
             try {
                 setResult(getAction().getAbilities().activatedOn(
 //                 getTargeter(). TODO would this be ok?
-                        getRef()));
+                 getRef()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -316,7 +321,7 @@ public class Executor extends ActiveHandler {
         }
         if (!StringMaster.isEmpty(getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES))) {
             ownerObj.addProperty(G_PROPS.STANDARD_PASSIVES,
-                    getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
+             getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
         }
     }
 

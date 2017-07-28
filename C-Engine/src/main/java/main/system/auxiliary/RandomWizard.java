@@ -301,7 +301,7 @@ public class RandomWizard<E> {
                     object = (E) DataManager.findType(string, TYPE);
                 }
             }
-            // if (object != null) //EMPTY!
+            // if (object != null) //EMPTY option allowed!
             map.put(object, value);
             if (inverse) {
                 invertedMap.put(value, object);

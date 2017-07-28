@@ -20,7 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class GuiEventManager {
     private static EventBus instance;
     private static Lock initLock = new ReentrantLock();
-    private static List<Runnable> callbacks = new ArrayList<>(10);
+    private static List<Runnable> callbacks = new ArrayList<>(20);
 
     public static void bind(GuiEventType type, final EventCallback event) {
         final MessageConsumer<EventCallbackParam> consumer = getInstance().localConsumer(type.name());

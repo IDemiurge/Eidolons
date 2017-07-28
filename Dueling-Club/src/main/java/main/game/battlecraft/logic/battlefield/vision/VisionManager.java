@@ -1,6 +1,8 @@
 package main.game.battlecraft.logic.battlefield.vision;
 
 import main.entity.obj.DC_Obj;
+import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.FEATURE;
 import main.game.core.Eidolons;
 
 public class VisionManager {
@@ -10,6 +12,9 @@ public class VisionManager {
 
 
     public static boolean isVisionHacked() {
+
+        if (!RuleMaster.checkFeature(FEATURE.VISIBILITY))
+            return true;
         return visionHacked;
     }
 

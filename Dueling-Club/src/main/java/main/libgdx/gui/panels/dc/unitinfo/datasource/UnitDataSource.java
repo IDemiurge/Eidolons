@@ -481,7 +481,7 @@ public class UnitDataSource implements
         List<ValueContainer> result = new ArrayList<>();
 
         if (weapon != null) {
-            weapon.getAttackActions()
+            weapon.getOrCreateAttackActions()
              .forEach(el -> {
                  final ValueContainer valueContainer = new ValueContainer(getOrCreateR(el.getImagePath()));
 

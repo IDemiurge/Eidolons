@@ -41,6 +41,7 @@ public class UnitView extends BaseView {
         if (clockTexture != null) {
             this.clockTexture = clockTexture;
             initiativeLabel = new Label("[#00FF00FF]" + String.valueOf(clockVal) + "[]", StyleHolder.getDefaultLabelStyle());
+            initiativeLabel.setFontScale(1.3f);
             clockImage = new Image(clockTexture);
             addActor(clockImage);
             addActor(initiativeLabel);

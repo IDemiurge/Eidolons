@@ -113,7 +113,7 @@ public abstract class DataModel {
             return "";
         }
         LogMaster.log(LogMaster.CORE_DEBUG, value_ref + " - custom prop: "
-                + getCustomParamMap().get(value_ref));
+         + getCustomParamMap().get(value_ref));
         return getCustomPropMap().get(value_ref);
 
     }
@@ -128,7 +128,7 @@ public abstract class DataModel {
             return 0;
         }
         LogMaster.log(LogMaster.CORE_DEBUG, value_ref + " - custom param: "
-                + string);
+         + string);
         return new Formula(string).getInt(ref);
     }
 
@@ -142,7 +142,7 @@ public abstract class DataModel {
 
     public boolean setCounter(String name, int newValue, boolean strict) {
         String realName = new MapMaster<String, String>().getKeyForValue(getCustomParamMap(),
-                getCustomParamMap().get(name));
+         getCustomParamMap().get(name));
         if (realName == null) {
             if (!name.contains(StringMaster.COUNTER)) {
                 return setCounter(name + StringMaster.COUNTER, newValue);
@@ -176,13 +176,14 @@ public abstract class DataModel {
     public boolean modifyCounter(String name, int modValue) {
         return modifyCounter(name, modValue, true);
     }
-    public boolean modifyCounter(COUNTER counter   , int modValue) {
+
+    public boolean modifyCounter(COUNTER counter, int modValue) {
         return modifyCounter(counter.getName(), modValue, true);
     }
 
     public boolean modifyCounter(String name, int modValue, boolean strict) {
         String realName = new MapMaster<String, String>().getKeyForValue(getCustomParamMap(),
-                getCustomParamMap().get(name));
+         getCustomParamMap().get(name));
         if (realName == null) {
             realName = CounterMaster.findCounter(name, strict);
         }
@@ -573,7 +574,7 @@ public abstract class DataModel {
         }
         if (value == null) {
             LogMaster.log(LogMaster.VALUE_DEBUG, "Value not found: "
-                    + val.getName());
+             + val.getName());
         }
         return value;
     }
@@ -610,10 +611,10 @@ public abstract class DataModel {
         Number amount = new Formula(amountString).evaluate(ref);
 
         LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
-                + param.getName() + " by " + amount);
+         + param.getName() + " by " + amount);
 
         if (!fireParamEvent(param, String.valueOf(amount),
-                CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
+         CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
             return true; // false?
         }
 
@@ -628,10 +629,10 @@ public abstract class DataModel {
                 try {
 
                     newValue = FormulaFactory.getFormulaByAppend(prevValue,
-                            amount).evaluate(ref);
+                     amount).evaluate(ref);
                 } catch (Exception e) {
                     setParam(param, FormulaFactory.getFormulaByAppend(prevValue, amount).toString(),
-                            quietly);
+                     quietly);
                     return true;
                 }
             } else {
@@ -760,8 +761,8 @@ public abstract class DataModel {
         return modifyParamByPercent(param, perc, false);
     }
 
-        public boolean modifyParamByPercent(PARAMETER param,
-        int perc, boolean base) {
+    public boolean modifyParamByPercent(PARAMETER param,
+                                        int perc, boolean base) {
         if (perc == 0 || getIntParam(param, base) == 0) {
             return false;
         }
@@ -918,7 +919,7 @@ public abstract class DataModel {
 
     protected void resetCurrentValue(PARAMETER base_p) {
 
-          base_p = ContentManager.getBaseParameterFromCurrent(base_p);
+        base_p = ContentManager.getBaseParameterFromCurrent(base_p);
         PARAMETER c_p = ContentManager.getCurrentParam(base_p);
         PARAMETER c_perc = ContentManager.getPercentageParam(base_p);
         int percentage = getIntParam(c_perc);
@@ -926,13 +927,13 @@ public abstract class DataModel {
         int c_value = MathMaster.getFractionValue(base_value, percentage);
         setParam(c_p, c_value, true);
         LogMaster.log(LogMaster.VALUE_DEBUG, getName() + "'s "
-                + base_p.getName() + " current value reset: " + percentage + "% out of "
-                + base_value + " = " + c_value);
+         + base_p.getName() + " current value reset: " + percentage + "% out of "
+         + base_value + " = " + c_value);
 
     }
 
     protected void resetPercentage(PARAMETER p) {
-        p  = ContentManager.getBaseParameterFromCurrent(p);
+        p = ContentManager.getBaseParameterFromCurrent(p);
         PARAMETER c_p = ContentManager.getCurrentParam(p);
         PARAMETER c_perc = ContentManager.getPercentageParam(p);
         if (c_perc == null || c_perc == p) {
@@ -943,12 +944,17 @@ public abstract class DataModel {
         int percentage = MathMaster.getPercentage(c_value, base_value);
         setParam(c_perc, percentage, true);
         LogMaster.log(LogMaster.VALUE_DEBUG, getName() + "'s " + p.getName()
-                + " percentage reset: " + c_value + " out of " + base_value + " = " + percentage);
+         + " percentage reset: " + c_value + " out of " + base_value + " = " + percentage);
     }
 
-      public Game getGame(){ if (game==null) return Game.game;
+    public Game getGame() {
+        if (game == null) return Game.game;
         return game;
-      }
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
 
     public boolean setParam(PARAMETER param, String value) {
         return setParam(param, value, false);
@@ -1034,7 +1040,7 @@ public abstract class DataModel {
     public boolean addProperty(PROPERTY prop, String value, boolean noDuplicates, boolean addInFront) {
 
         LogMaster.log(LogMaster.VALUE_DEBUG, "adding  " + value + " to "
-                + getName() + "'s " + prop.getName());
+         + getName() + "'s " + prop.getName());
 
         if (value.contains(StringMaster.AND_PROPERTY_SEPARATOR)) {
             for (String s : StringMaster.openContainer(value, StringMaster.AND_PROPERTY_SEPARATOR)) {
@@ -1088,6 +1094,9 @@ public abstract class DataModel {
     }
 
     protected void putParameter(PARAMETER param, String value) {
+        if (value.equals("100"))
+            if (param.name().equals("C_FOCUS"))
+                main.system.auxiliary.log.LogMaster.log(1, this + " got 100 focus somehow");
         if (isTypeLinked()) {
             type.getParamMap().put(param, value);
         }
@@ -1121,7 +1130,7 @@ public abstract class DataModel {
     public boolean removeProperty(PROPERTY prop, String value, boolean all) {
 
         LogMaster.log(LogMaster.VALUE_DEBUG, "Removing  " + value + " from "
-                + getName() + "'s " + prop.getName());
+         + getName() + "'s " + prop.getName());
         // if (!firePropEvent(CONSTRUCTED_EVENT_TYPE.PROP_BEING_REMOVED,
         // prop.getName()))
         // return false;
@@ -1161,7 +1170,6 @@ public abstract class DataModel {
         return result;
 
     }
-
 
     public String getSubGroupingKey() {
         return getProperty(TYPE_ENUM.getSubGroupingKey());
@@ -1409,7 +1417,6 @@ public abstract class DataModel {
         this.customParamMap = customParamMap;
     }
 
-
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Entity)) {
@@ -1464,7 +1471,6 @@ public abstract class DataModel {
         return getId() + "";
     }
 
-
     public String getRawValue(VALUE value) {
         String string = getRawValues().get(value);
         if (string == null) {
@@ -1496,7 +1502,6 @@ public abstract class DataModel {
 
     }
 
-
     public int getLevel() {
         return getIntParam("level");
     }
@@ -1515,7 +1520,7 @@ public abstract class DataModel {
                 if (getGame().isSimulation()) {
                     if (ref != null) {
                         Map<String, ImageIcon> cache = ImageManager.getCustomIconCache().get(
-                                ref.getSourceObj());
+                         ref.getSourceObj());
                         if (cache == null) {
                             return null;
                         }
@@ -1535,7 +1540,7 @@ public abstract class DataModel {
     public void setCustomIcon(ImageIcon customIcon) {
         if (getGame().isSimulation()) {
             Map<String, ImageIcon> cache = ImageManager.getCustomIconCache()
-                    .get(ref.getSourceObj());
+             .get(ref.getSourceObj());
             if (cache == null) {
                 cache = new HashMap<>();
                 ImageManager.getCustomIconCache().put(ref.getSourceObj(), cache);
@@ -1547,7 +1552,7 @@ public abstract class DataModel {
 
     public WORKSPACE_GROUP getWorkspaceGroup() {
         return new EnumMaster<WORKSPACE_GROUP>().retrieveEnumConst(WORKSPACE_GROUP.class,
-                getProperty(G_PROPS.WORKSPACE_GROUP));
+         getProperty(G_PROPS.WORKSPACE_GROUP));
     }
 
     public void setWorkspaceGroup(WORKSPACE_GROUP value) {
@@ -1565,7 +1570,7 @@ public abstract class DataModel {
     public void resetPropertyFromList(PROPERTY prop, List<? extends Entity> list) {
         if (ListMaster.isNotEmpty(list)) {
             setProperty(prop, StringMaster.constructContainer(ListMaster.toNameList(list)),
-                    isTypeLinked());
+             isTypeLinked());
         } else {
             removeProperty(prop);
             getType().removeProperty(prop);
@@ -1589,9 +1594,5 @@ public abstract class DataModel {
 
     public String getImagePath() {
         return getProperty(G_PROPS.IMAGE);
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
     }
 }

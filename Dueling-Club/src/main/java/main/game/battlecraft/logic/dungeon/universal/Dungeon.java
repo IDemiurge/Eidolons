@@ -5,6 +5,7 @@ import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.enums.DungeonEnums;
+import main.content.enums.DungeonEnums.DUNGEON_TAGS;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -18,7 +19,8 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
 public class Dungeon extends LightweightEntity {
-    private static final Integer DEFAULT_GLOBAL_ILLUMINATION = 75;
+    private static final Integer DEFAULT_GLOBAL_ILLUMINATION_NIGHT = 15;
+    private static final Integer DEFAULT_GLOBAL_ILLUMINATION_DAY = 75;
     Integer z;
     private COLOR_THEME colorTheme;
     private DUNGEON_TYPE dungeonType;
@@ -145,8 +147,13 @@ public class Dungeon extends LightweightEntity {
     }
 
     public boolean isSurface() {
-        // return true;
         return checkProperty(PROPS.DUNGEON_TAGS, DungeonEnums.DUNGEON_TAGS.SURFACE + "");
+    }
+    public boolean isNight() {
+        return checkProperty(PROPS.DUNGEON_TAGS, DUNGEON_TAGS.NIGHT + "");
+    }
+    public boolean isPermanentDusk() {
+        return checkProperty(PROPS.DUNGEON_TAGS, DUNGEON_TAGS.PERMA_DUSK + "");
     }
 
     public int getSquare() {
@@ -168,12 +175,22 @@ public class Dungeon extends LightweightEntity {
                 return getIntParam(PARAMS.GLOBAL_ILLUMINATION);
             }// day/night
             else {
-                return DEFAULT_GLOBAL_ILLUMINATION;
+                if ( isPermanentDusk())
+                    return (DEFAULT_GLOBAL_ILLUMINATION_DAY+DEFAULT_GLOBAL_ILLUMINATION_NIGHT)/2;
+                    if ( isDaytime())
+                    return DEFAULT_GLOBAL_ILLUMINATION_DAY;
+                return DEFAULT_GLOBAL_ILLUMINATION_NIGHT;
             }
         }
 
         return 0;
 
+    }
+
+    private boolean isDaytime() {
+        if (isNight()) return false;
+        return true;
+//        return getGame().getState().getRound()/roundsPerCycle%2==0;
     }
 
     public boolean isRandomized() {

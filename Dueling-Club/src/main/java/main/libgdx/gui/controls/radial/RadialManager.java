@@ -44,8 +44,8 @@ public class RadialManager {
     public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
         Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
         return !obj.canBeActivated(ref) ?
-                getOrCreateGrayscaleR(obj.getImagePath())
-                : getOrCreateR(obj.getImagePath());
+         getOrCreateGrayscaleR(obj.getImagePath())
+         : getOrCreateR(obj.getImagePath());
     }
 
     private static boolean isActionShown(ActiveObj el, DC_Obj target) {
@@ -114,7 +114,8 @@ public class RadialManager {
         List<RadialValueContainer> moves = new ArrayList<>();
         List<RadialValueContainer> turns = new ArrayList<>();
         List<RadialValueContainer> attacks = new ArrayList<>();
-        List<RadialValueContainer> offhandAttacks = new ArrayList<>();  List<RadialValueContainer> specialActions = new ArrayList<>();
+        List<RadialValueContainer> offhandAttacks = new ArrayList<>();
+        List<RadialValueContainer> specialActions = new ArrayList<>();
         List<RadialValueContainer> modes = new ArrayList<>();
         List<RadialValueContainer> orders = new ArrayList<>();
         List<RadialValueContainer> quickItems = new ArrayList<>();
@@ -127,49 +128,49 @@ public class RadialManager {
             }
         });
         actives.parallelStream()
-                .filter(el -> isActionShown(el, target))
-                .map(el -> (DC_ActiveObj) el)
-                .distinct()
-                .sequential()
-                .forEach(el -> {
+         .filter(el -> isActionShown(el, target))
+         .map(el -> (DC_ActiveObj) el)
+         .distinct()
+         .sequential()
+         .forEach(el -> {
 
-                    if (el.isMove()) {
-                        final RadialValueContainer valueContainer = configureMoveNode(target, el);
-                        addCostTooltip(el, valueContainer);
-                        moves.add(valueContainer);
-                    } else if (el.isTurn()) {
-                        final RadialValueContainer valueContainer = configureActionNode(target, el);
-                        addCostTooltip(el, valueContainer);
-                        turns.add(valueContainer);
-                    } else if (el.getChecker().isDualAttack()) {
-                        dualAttacks.add(getAttackActionNode(el, target));
-                    } else if (el.isStandardAttack()) {
-                      if (el.isOffhand())
-                          offhandAttacks.add(getAttackActionNode(el, target));
-                      else
-                          attacks.add(getAttackActionNode(el, target));
-                    } else {
-                        final RadialValueContainer valueContainer = configureActionNode(target, el);
+             if (el.isMove()) {
+                 final RadialValueContainer valueContainer = configureMoveNode(target, el);
+                 addCostTooltip(el, valueContainer);
+                 moves.add(valueContainer);
+             } else if (el.isTurn()) {
+                 final RadialValueContainer valueContainer = configureActionNode(target, el);
+                 addCostTooltip(el, valueContainer);
+                 turns.add(valueContainer);
+             } else if (el.getChecker().isDualAttack()) {
+                 dualAttacks.add(getAttackActionNode(el, target));
+             } else if (el.isStandardAttack()) {
+                 if (el.isOffhand())
+                     offhandAttacks.add(getAttackActionNode(el, target));
+                 else
+                     attacks.add(getAttackActionNode(el, target));
+             } else {
+                 final RadialValueContainer valueContainer = configureActionNode(target, el);
 //                 if (el.isSpell()) { DONE VIA SpellRadialManager
 //                     spells.add(valueContainer);
 //                 } else
-                        addCostTooltip(el, valueContainer);
-                        if (el instanceof DC_QuickItemAction) {
-                            quickItems.add(valueContainer);
-                        } else if (el.getActionGroup() == ACTION_TYPE_GROUPS.ORDER) {
-                            orders.add(valueContainer);
-                        } else if (el.getActionType() == ACTION_TYPE.MODE) {
-                            modes.add(valueContainer);
-                        } else {
-                            if (!el.isAttackAny()) {
-                                if (el.getActionType() != ACTION_TYPE.HIDDEN) {
-                                    specialActions.add(valueContainer);
-                                }
-                            }
-                        }
+                 addCostTooltip(el, valueContainer);
+                 if (el instanceof DC_QuickItemAction) {
+                     quickItems.add(valueContainer);
+                 } else if (el.getActionGroup() == ACTION_TYPE_GROUPS.ORDER) {
+                     orders.add(valueContainer);
+                 } else if (el.getActionType() == ACTION_TYPE.MODE) {
+                     modes.add(valueContainer);
+                 } else {
+                     if (!el.isAttackAny()) {
+                         if (el.getActionType() != ACTION_TYPE.HIDDEN) {
+                             specialActions.add(valueContainer);
+                         }
+                     }
+                 }
 
-                    }
-                });
+             }
+         });
 
 
         if (!attacks.isEmpty()) {
@@ -194,7 +195,7 @@ public class RadialManager {
 
         if (!sourceUnit.getSpells().isEmpty()) {
             final List<RadialValueContainer> spellNodes =
-                    SpellRadialManager.getSpellNodes(sourceUnit, target);
+             SpellRadialManager.getSpellNodes(sourceUnit, target);
             list.add(getParentNode(RADIAL_PARENT_NODE.SPELLS, spellNodes));
         }
         list.removeIf(i -> i == null); // REMOVE IF NO NODES IN PARENT!
@@ -235,8 +236,8 @@ public class RadialManager {
 
         Runnable runnable = () -> {
             GuiEventManager.trigger(
-                    GuiEventType.SHOW_UNIT_INFO_PANEL,
-                    new UnitDataSource(((Unit) target)));
+             GuiEventType.SHOW_UNIT_INFO_PANEL,
+             new UnitDataSource(((Unit) target)));
 
         };
         final RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR("UI/components\\2017\\radial/examine.png"), runnable);
@@ -252,7 +253,10 @@ public class RadialManager {
 
     private static Filter<Obj> getFilter(DC_ActiveObj active) {
         active.getRef().setMatch(active.getOwnerObj().getId()); // for filter
+        if (active.getTargeting() == null)
+            active.setTargeting(active.getTargeter().getTargeting()); //initTargetingMode();
         Filter<Obj> filter = active.getTargeting().getFilter();
+
         filter.setRef(active.getRef());
 
         return filter;
@@ -273,14 +277,14 @@ public class RadialManager {
     private static RadialValueContainer configureSelectiveTargetedNode(DC_ActiveObj active) {
 
         Set<Obj> objSet = CoreEngine.isActionTargetingFiltersOff() ?
-                DC_Game.game.getUnits().parallelStream().distinct().collect(Collectors.toSet())
-                : getFilter(active).getObjects();
+         DC_Game.game.getUnits().parallelStream().distinct().collect(Collectors.toSet())
+         : getFilter(active).getObjects();
 
         final boolean valid = objSet.size() > 0 &&
-                active.canBeActivated();
+         active.canBeManuallyActivated();
         TextureRegion textureRegion = valid ?
-                getOrCreateR(active.getImagePath()) :
-                getOrCreateGrayscaleR(active.getImagePath());
+         getOrCreateR(active.getImagePath()) :
+         getOrCreateGrayscaleR(active.getImagePath());
         Runnable runnable = () -> {
             if (valid) {
                 WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(active, new Context(active.getOwnerObj().getRef())));
@@ -295,7 +299,7 @@ public class RadialManager {
     private static RadialValueContainer configureAttackParentNode(
 
      List<RadialValueContainer> list, RADIAL_PARENT_NODE parentNode, DC_Obj target, DC_ActiveObj parent) {
-        if ( parent.getActiveWeapon().isRanged()) {
+        if (parent.getActiveWeapon().isRanged()) {
             if (parent.getRef().getObj(Ref.KEYS.AMMO) == null) {
                 for (DC_QuickItemObj ammo : parent.getOwnerObj().getQuickItems()) {
                     final RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR(ammo.getImagePath()), getRunnable(target, ammo));
@@ -306,7 +310,7 @@ public class RadialManager {
         }
 
         RadialValueContainer valueContainer =
-                new RadialValueContainer(new TextureRegion(getTextureForActive(parent, target)), null);
+         new RadialValueContainer(new TextureRegion(getTextureForActive(parent, target)), null);
         addSimpleTooltip(valueContainer, parentNode.getName());
         valueContainer.setChilds(list);
 
@@ -316,7 +320,7 @@ public class RadialManager {
     private static RadialValueContainer getAttackActionNode(DC_ActiveObj activeObj, DC_Obj target) {
         if (activeObj.getOwnerObj() == target) {
             final RadialValueContainer valueContainer =
-                    configureSelectiveTargetedNode(activeObj);
+             configureSelectiveTargetedNode(activeObj);
             addSimpleTooltip(valueContainer, activeObj.getName());
             return (valueContainer);
         } else if (activeObj.getTargeting() instanceof SelectiveTargeting) {

@@ -72,6 +72,8 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+//        Color color = getColor(); //keep reference to avoid multiple method calls
+//        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
         super.draw(batch, parentAlpha);
     }
 
@@ -87,7 +89,18 @@ public class GridCell extends Group implements Borderable {
                 cordsText.setVisible(false);
             }
         }
+//        if (DC_Game.game!=null )
+//            if (DC_Game.game.isStarted())
+//        if (!VisionManager.isVisionHacked()){
+//            gamma = DC_Game.game.getVisionMaster().getGammaMaster().getGammaForCell(getGridX(), getGridX());
+//        if (gamma !=0)
+//            setColor(gamma, gamma, gamma, 1);
+//        else
+//            setColor(0.1f, 0.1f, 0.1f, 1);
+//        }
     }
+
+
 
     @Override
     public TextureRegion getBorder() {

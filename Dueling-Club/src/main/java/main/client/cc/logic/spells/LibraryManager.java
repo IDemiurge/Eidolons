@@ -96,7 +96,11 @@ public class LibraryManager {
         for (String spell : StringMaster.openContainer(hero.getProperty(PROPS.LEARNED_SPELLS))) {
             boolean result = false;
             ObjType type = DataManager.getType(spell, DC_TYPE.SPELLS);
-            if (checkStandardSpell(type)) {
+if (type==null ) {
+    main.system.auxiliary.log.LogMaster.log(1,"LibraryManager::checkNewAutoVerbatim - No such spell "+spell );
+    continue;
+}
+if (checkStandardSpell(type)) {
                 if (checkDoubleKnowledge(hero, type)) {
                     result = true;
                 }

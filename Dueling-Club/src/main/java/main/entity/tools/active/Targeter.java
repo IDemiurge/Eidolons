@@ -103,7 +103,7 @@ public class Targeter extends ActiveHandler {
 
     }
 
-    protected Targeting getTargeting() {
+    public Targeting getTargeting() {
         return getAction().getTargeting();
     }
 

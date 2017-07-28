@@ -624,7 +624,7 @@ public class DC_ActionManager implements ActionManager {
         }
 
         actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
-
+if (RuleMaster.checkFeature(FEATURE.DUAL_ATTACKS))
         if (UnitAnalyzer.checkDualWielding(unit)) {
             actives.addAll(   DualAttackMaster.getDualAttacks(unit)) ;
             // good idea! :) dual thrust, dual

@@ -57,7 +57,7 @@ public class AnimMaster extends Group {
         instance = this;
         floatingTextMaster = new FloatingTextMaster();
         continuousAnimsOn =
-                false;
+         false;
 //         FAST_DC.getGameLauncher().FAST_MODE ||
 //          FAST_DC.getGameLauncher().SUPER_FAST_MODE;
         on = true;
@@ -92,29 +92,27 @@ public class AnimMaster extends Group {
 
     private void bindEvents() {
 
-
         GuiEventManager.bind(GuiEventType.ADD_FLOATING_TEXT, p -> {
             FloatingText floatingText = (FloatingText) p.get();
             if (!floatingText.isInitialized())
-            floatingText .init( );
-       addActor(floatingText);
+                floatingText.init();
+            addActor(floatingText);
         });
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
+            if (!isOn()) {
+                return;
+            }
             if (!(p.get() instanceof Unit)) {
                 return;
             }
             if (showBuffAnimsOnHoverLength == null) {
                 return;
             }
-            Unit unit = (Unit) p.get();
-            unit.getBuffs().forEach(buff -> {
-                BuffAnim anim = continuousAnims.get(buff);
-                if (anim != null) {
-                    anim.reset();
-                    anim.start();
-                    anim.setDuration(showBuffAnimsOnHoverLength);
-                }
-            });
+            try {
+                mouseHover((Unit) p.get());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
         GuiEventManager.bind(GuiEventType.ACTION_INTERRUPTED, p -> {
@@ -133,23 +131,12 @@ public class AnimMaster extends Group {
             if (!isOn()) {
                 return;
             }
+            try {
+                initActionAnimation((DC_ActiveObj) p.get());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-            CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) p.get());
-            if (animation == null) {
-                LogMaster.log(LogMaster.ANIM_DEBUG, "NULL ANIM FOR " + p.get());
-                return;
-            }
-            animation.reset();
-            if (leadAnimation == null) {
-                leadAnimation = animation;
-                leadAnimation.start();
-            } else {
-                leadQueue.add(animation);
-                if (parallelDrawing) {
-                    animation.start();
-                }
-                controller.store(animation);
-            }
         });
         GuiEventManager.bind(GuiEventType.UPDATE_BUFFS, p -> {
             updateContinuousAnims();
@@ -166,60 +153,106 @@ public class AnimMaster extends Group {
             if (!isOn()) {
                 return;
             }
-            Event event = (Event) p.get();
-            if (event.getRef().isDebug()) {
-                return;
+            try {
+                initEventAnimation((Event) p.get());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (event.getType() == STANDARD_EVENT_TYPE.NEW_ROUND) {
-                if (showBuffAnimsOnNewRoundLength != null) {
-                    continuousAnims.values().forEach(anim -> {
-                        if (anim.getBuff().isVisible()) {
-                            anim.reset();
-                            anim.start();
-                            anim.setDuration(showBuffAnimsOnNewRoundLength);
-                        }
-                    });
-                }
-            }
-            CompositeAnim parentAnim = null;
-            if (floatingTextMaster.isEventDisplayable(event)) {
-                parentAnim = getParentAnim(event.getRef());
-                if (parentAnim != null) {
-                    parentAnim.addTextEvent(event);
-                }
-            }
-            Anim anim = EventAnimCreator.getAnim(event);
-            if (anim == null) {
-                return;
-            }
-            parentAnim = getParentAnim(event.getRef());
-            if (parentAnim != null) {
-                LogMaster.log(LogMaster.ANIM_DEBUG, anim +
-                        " event anim created for: " + parentAnim);
-                parentAnim.addEventAnim(anim, event); //TODO}
-            }
-            if (!parentAnim.isRunning()) {// preCheck new TODO
-                add(parentAnim);
-            }
+
         });
         GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p -> {
-                    if (!isOn()) {
-                        return;
-                    }
-                    Effect effect = (Effect) p.get();
-                    Animation anim = constructor.getEffectAnim(effect);
-                    if (anim == null) {
-                        return;
-                    }
-                    CompositeAnim parentAnim = getParentAnim(effect.getRef());
-                    if (parentAnim != null) {
-                        LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
-                        parentAnim.addEffectAnim(anim, effect); //TODO}
-                    } else {
-//                        add(anim);// when to start()?
-                    }
-                }
+             if (!isOn()) {
+                 return;
+             }
+             try {
+                 initEffectAnimation((Effect) p.get());
+             } catch (Exception e) {
+                 e.printStackTrace();
+             }
+
+         }
         );
+    }
+
+    private void mouseHover(Unit unit) {
+        unit.getBuffs().forEach(buff -> {
+            BuffAnim anim = continuousAnims.get(buff);
+            if (anim != null) {
+                anim.reset();
+                anim.start();
+                anim.setDuration(showBuffAnimsOnHoverLength);
+            }
+        });
+    }
+
+    private void initActionAnimation(DC_ActiveObj activeObj) {
+        CompositeAnim animation = constructor.getOrCreate(activeObj);
+        if (animation == null) {
+            LogMaster.log(LogMaster.ANIM_DEBUG, "NULL ANIM FOR " + activeObj);
+            return;
+        }
+        animation.reset();
+        if (leadAnimation == null) {
+            leadAnimation = animation;
+            leadAnimation.start();
+        } else {
+            leadQueue.add(animation);
+            if (parallelDrawing) {
+                animation.start();
+            }
+            controller.store(animation);
+        }
+    }
+
+    private void initEventAnimation(Event event) {
+        if (event.getRef().isDebug()) {
+            return;
+        }
+        if (event.getType() == STANDARD_EVENT_TYPE.NEW_ROUND) {
+            if (showBuffAnimsOnNewRoundLength != null) {
+                continuousAnims.values().forEach(anim -> {
+                    if (anim.getBuff().isVisible()) {
+                        anim.reset();
+                        anim.start();
+                        anim.setDuration(showBuffAnimsOnNewRoundLength);
+                    }
+                });
+            }
+        }
+        CompositeAnim parentAnim = null;
+        if (floatingTextMaster.isEventDisplayable(event)) {
+            parentAnim = getParentAnim(event.getRef());
+            if (parentAnim != null) {
+                parentAnim.addTextEvent(event);
+            }
+        }
+        Anim anim = EventAnimCreator.getAnim(event);
+        if (anim == null) {
+            return;
+        }
+        parentAnim = getParentAnim(event.getRef());
+        if (parentAnim != null) {
+            LogMaster.log(LogMaster.ANIM_DEBUG, anim +
+             " event anim created for: " + parentAnim);
+            parentAnim.addEventAnim(anim, event); //TODO}
+        }
+        if (!parentAnim.isRunning()) {// preCheck new TODO
+            add(parentAnim);
+        }
+    }
+
+    private void initEffectAnimation(Effect effect) {
+        Animation anim = constructor.getEffectAnim(effect);
+        if (anim == null) {
+            return;
+        }
+        CompositeAnim parentAnim = getParentAnim(effect.getRef());
+        if (parentAnim != null) {
+            LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
+            parentAnim.addEffectAnim(anim, effect); //TODO}
+        } else {
+//                        add(anim);// when to start()?
+        }
     }
 
     private void updateContinuousAnims() {
@@ -303,8 +336,8 @@ public class AnimMaster extends Group {
             }
             CompositeAnim a = new CompositeAnim();
             a.add(
-                    part
-                    , (Anim) e);
+             part
+             , (Anim) e);
             if (e.getDelay() == 0) {
                 root.getAttached().get(part).set(i, a);
             } else {
