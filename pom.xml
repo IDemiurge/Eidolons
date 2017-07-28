@@ -51,6 +51,13 @@
     </modules>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.badlogicgames.jlayer/jlayer -->
+        <dependency>
+            <groupId>com.badlogicgames.jlayer</groupId>
+            <artifactId>jlayer</artifactId>
+            <version>1.0.2-gdx</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
