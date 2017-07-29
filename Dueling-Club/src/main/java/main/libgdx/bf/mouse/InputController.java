@@ -45,7 +45,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     // сюда передаются все обьекты, что есть в мире, и потом отсюда они управляются
     @Override
     public boolean keyDown(int i) {
-        Gdx.app.log("InputController::keyDown(" + i + ");", "-- Start!");
+//        Gdx.app.log("InputController::keyDown(" + i + ");", "-- Start!");
         if (i == ALT_LEFT) {
             alt = true;
         }
@@ -60,7 +60,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
             LightMap.resizeFBOb();
         }
 
-        Gdx.app.log("InputController::keyDown(" + i + ");", "-- End!");
+//        Gdx.app.log("InputController::keyDown(" + i + ");", "-- End!");
         return false;
         // alt = 57, crtl = 129
     }
@@ -105,7 +105,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Gdx.app.log("InputController::touchDown(" + screenX + ", " + screenY + ", " + pointer + ", " + button + ")", "-- Start!");
+//        Gdx.app.log("InputController::touchDown(" + screenX + ", " + screenY + ", " + pointer + ", " + button + ")", "-- Start!");
 /*        bf.addActor(new ParticleInterface(PARTICLE_EFFECTS.SMOKE_TEST.getPath(),
          GameScreen.getInstance().getWorld()
          , screenX, screenY));*/
@@ -117,7 +117,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
             isLeftClick = true;
         }
 
-        Gdx.app.log("InputController::touchDown(" + screenX + ", " + screenY + ", " + pointer + ", " + button + ")", "-- End!");
+//        Gdx.app.log("InputController::touchDown(" + screenX + ", " + screenY + ", " + pointer + ", " + button + ")", "-- End!");
         return false;
     }
 

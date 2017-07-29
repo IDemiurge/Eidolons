@@ -21,10 +21,10 @@ public class AudioMaster {
         Gdx.app.log("AudioMaster::AudioMaster()", "-- START!");
         instance = this;
 
-        Gdx.app.log("AudioMaster::AudioMaster()", "-- sounds.size" + sounds.size);
+        Gdx.app.log("AudioMaster::AudioMaster()", "-- sounds.size:" + sounds.size);
         FileHandle resSoundDir = Gdx.files.internal(PathFinder.getSoundPath());
         foundSoundInDir(resSoundDir);
-        Gdx.app.log("AudioMaster::AudioMaster()", "-- sounds.size" + sounds.size);
+        Gdx.app.log("AudioMaster::AudioMaster()", "-- sounds.size:" + sounds.size);
 //        Sound sound = audio.newSound(new FileHandle(new File("")));
 //        sound.setVolume(id, volume);
 //        String soundPath = sounds.keys().toArray().get(1);
@@ -72,6 +72,8 @@ public class AudioMaster {
 
     public long playSound(int index) {
         if(index < sounds.size) {
+            String soundPath = sounds.keys().toArray().get(index);
+            Gdx.app.log("AudioMaster::playSound()", "-- Play sound:" + soundPath);
             return sounds.values().toArray().get(index).play();
         }
         return -1;
