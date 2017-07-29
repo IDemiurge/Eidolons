@@ -13,15 +13,14 @@ import java.io.File;
  * Created by JustMe on 1/30/2017.
  */
 public class AudioMaster {
-    private static AudioMaster instance;
+    private static AudioMaster instance; // мне не нравится синглтон
     Audio audio = Gdx.audio;
     ObjectMap<String, Sound> sounds = new ObjectMap<String, Sound>();
 
     private AudioMaster() {
         Gdx.app.log("AudioMaster::AudioMaster()", "-- START!");
         instance = this;
-//        Sound sound = Gdx.audio.newSound(Gdx.files.internal(PathFinder.getSoundPath()+"/effects/attack/ATTACK_ANGEL_1.mp3"));
-//        sound.play();
+
         Gdx.app.log("AudioMaster::AudioMaster()", "-- sounds.size" + sounds.size);
         FileHandle resSoundDir = Gdx.files.internal(PathFinder.getSoundPath());
         foundSoundInDir(resSoundDir);
@@ -34,11 +33,11 @@ public class AudioMaster {
 //        long soundid = firstSound.play(1f);
 //        firstSound.setLooping;
 //        firstSound.setLooping(firstSound.play(), true);
-        for (String soundPath: sounds.keys()) {
-            Sound sound = sounds.get(soundPath);
-            sound.play();
-            Gdx.app.log("AudioMaster::AudioMaster()", "-- Play sound:" + soundPath);
-        }
+//        for (String soundPath: sounds.keys()) {
+//            Sound sound = sounds.get(soundPath);
+//            sound.play();
+//            Gdx.app.log("AudioMaster::AudioMaster()", "-- Play sound:" + soundPath);
+//        }
         Gdx.app.log("AudioMaster::AudioMaster()", "-- END!");
     }
 
@@ -69,5 +68,12 @@ public class AudioMaster {
                 }
             }
         }
+    }
+
+    public long playSound(int index) {
+        if(index < sounds.size) {
+            return sounds.values().toArray().get(index).play();
+        }
+        return -1;
     }
 }
