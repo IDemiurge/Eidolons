@@ -3,20 +3,26 @@ package main.libgdx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.libgdx.DialogScenario;
 import main.libgdx.bf.BFDataCreatedEvent;
+import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.stage.AnimationEffectStage;
 import main.libgdx.stage.BattleGuiStage;
 import main.libgdx.stage.ChainedStage;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import java.util.List;
 
@@ -43,6 +49,8 @@ public class DungeonScreen extends ScreenWithLoader {
 
     private TextureRegion backTexture;
     private AnimationEffectStage animationEffectStage;
+
+    private ShapeRenderer shapeRenderer = new ShapeRenderer(); // TEST || DELETE in FUTURE!
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -87,12 +95,19 @@ public class DungeonScreen extends ScreenWithLoader {
 
     @Override
     protected void afterLoad() {
+        Gdx.app.log("DungeonScreen::afterLoad()", "-- Start!");
         cam = camera = (OrthographicCamera) viewPort.getCamera();
         controller = new InputController(cam);
 
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
         gridStage.addActor(gridPanel);
+        GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, p-> {
+            Coordinates coordinatesActiveObj = DC_Game.game.getManager().getActiveObj().getCoordinates();
+            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- coordinatesActiveObj:" + coordinatesActiveObj);
+            cam.position.set(coordinatesActiveObj.x*GridConst.CELL_W + GridConst.CELL_W/2, (gridPanel.getRows()-coordinatesActiveObj.y)*GridConst.CELL_H - GridConst.CELL_H/2, 0f);
+        });
+        Gdx.app.log("DungeonScreen::afterLoad()", "-- End!");
     }
 
     @Override
@@ -103,6 +118,7 @@ public class DungeonScreen extends ScreenWithLoader {
             if (dialogsStage != null) {
                 current.addProcessor(dialogsStage);
             }
+            current.addProcessor(new GestureDetector(controller)); // TODO коряво:D пересикается с обычным контролером
         } else {
             current = super.getInputController();
         }
@@ -147,9 +163,16 @@ public class DungeonScreen extends ScreenWithLoader {
                     dialogsStage.draw();
                 }
             }
-
         }
-
+        if(cam != null) {
+            shapeRenderer.setProjectionMatrix(cam.combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.RED);
+            shapeRenderer.line(0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); // TODO not WORK!=(
+            shapeRenderer.line(0f, Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), 0f); // TODO как задумывалось
+            shapeRenderer.end();
+            cam.update();
+        }
     }
 
     @Override
