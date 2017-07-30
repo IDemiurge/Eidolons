@@ -59,8 +59,11 @@ public class FileManager {
 
         String result = "";
 
+//        Charset charset= Charset.availableCharsets().get("Windows-1251");
+//        if (charset==null )
+//            charset= Charset.defaultCharset();
         try {
-            result = new String(Files.readAllBytes(file.toPath()));
+            result = new String(Files.readAllBytes(file.toPath()) );
         } catch (IOException e) {
             e.printStackTrace();
         }

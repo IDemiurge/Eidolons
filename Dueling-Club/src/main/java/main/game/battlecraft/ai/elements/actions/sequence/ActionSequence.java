@@ -16,6 +16,7 @@ public class ActionSequence {
     private List<Action> actions;
     private Integer priority;
     private int i = -1;
+    private Integer priorityMultiplier;
 
     public ActionSequence(GOAL_TYPE type, Action... actions) {
         this(actions);
@@ -124,4 +125,11 @@ public class ActionSequence {
         getActions().add(action);
     }
 
+    public Integer getPriorityMultiplier() {
+        return priorityMultiplier;
+    }
+
+    public void setPriorityMultiplier(Integer priorityMultiplier) {
+        this.priorityMultiplier = priorityMultiplier;
+    }
 }

@@ -6,6 +6,7 @@ import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.ItemEnums;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
+import main.entity.active.DC_SpellObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -17,6 +18,7 @@ import main.system.ContentGenerator;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.sound.SoundMaster;
 
@@ -185,6 +187,18 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     private static void playAnimStartSound(DC_ActiveObj activeObj, ANIM_PART part) {
+        if (activeObj instanceof DC_SpellObj)
+            switch (part) {
+                case PRECAST:
+                case CAST:
+                case RESOLVE:
+                case MAIN:
+                case AFTEREFFECT:
+                    playNow(getActionEffectSoundPath((DC_SpellObj) activeObj, part));
+                    break;
+                case IMPACT:
+                    break;
+            }
         switch (part) {
             case PRECAST:
                 ChannelingRule.playChannelingSound(activeObj, activeObj.getOwnerObj().getGender() == GENDER.FEMALE);
@@ -205,6 +219,22 @@ public class DC_SoundMaster extends SoundMaster {
             case AFTEREFFECT:
                 break;
         }
+    }
+
+    private static String getActionEffectSoundPath(DC_SpellObj spell, ANIM_PART part) {
+        String path = getPath() + "soundset\\spells\\";
+        path += spell.getAspect().toString();
+        path += spell.getSpellGroup();
+        String file = FileManager.findFirstFile(path, part.toString(), true);
+        String corePath = StringMaster.cropFormat(file);
+        try {
+            return FileManager.getRandomFilePathVariant(corePath, "mp3", true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return file;
+
     }
 
     private static void playImpact(DC_ActiveObj activeObj) {

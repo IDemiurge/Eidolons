@@ -142,8 +142,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 case PROTECT:
                 case ATTACK:
                     setBasePriority(getAttackPriority(as));
-                    if (goal== GOAL_TYPE.PROTECT){
-                        Unit  unitToProtect = (Unit) as.getAi().getArgMap().get(GOAL_TYPE.PROTECT);
+                    if (goal == GOAL_TYPE.PROTECT) {
+                        Unit unitToProtect = (Unit) as.getAi().getArgMap().get(GOAL_TYPE.PROTECT);
                         applyCustomPriorityMethod(PRIORITY_FUNCS.DANGER_TO_ALLY, unitToProtect, as.getTask().getArg());
                     }
                     // preview results?
@@ -206,7 +206,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             }
         }
         if (priority <= 0) {
-            LogMaster.log(1, "AI: " + priority + " priority for " + as);
+            LogMaster.log(1, priority+ " priority for " + as);
             return priority;
         }
         Integer bonus = unit_ai.getActionPriorityBonuses().get(action.getActive().getName());
@@ -224,16 +224,15 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         factor = ParamPriorityAnalyzer.getAI_TypeFactor(goal, unit_ai.getType());
         addMultiplier(factor, "AI type factor");
 
-        Integer mod = unit_ai.getActionPriorityMods().get(action.getActive().getName());
-        if (mod != null) {
-            priority = MathMaster.applyMod(priority, mod);
-        }
+        Integer mod = as.getPriorityMultiplier();
+//        Integer factor = as.getPriorityFactor();
+//        Integer bonus = as.getPriorityBonus();
 
         // if (behaviorMode != BEHAVIOR_MODE.PANIC)
         applyCostPenalty(as);
         applySequenceLengthPenalty(as);
+        as.setPriority(priority);
 
-        mod = unit_ai.getGoalPriorityMod(as.getTask().getType());
         if (mod != null) {
             priority = MathMaster.applyMod(priority, mod);
         }
@@ -1258,6 +1257,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             targetObj = attachedObj.getOwnerObj();
         }
         Integer basePriority = targetObj.getIntParam(PARAMS.POWER);
+        if (unit_ai!=null ){
         if (unit_ai.getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
             basePriority = 100;
         } else if (targetObj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
@@ -1265,6 +1265,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 return 0;
             }
             basePriority = 20;
+        }
         }
         Integer healthMod = 100;
         if (less_or_more_for_health != null) {
@@ -1515,13 +1516,27 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     @Override
     public void setPriorities(List<ActionSequence> actions) {
         Chronos.mark("Priority calc");
-        for (ActionSequence action : actions) { // into separate method to
+        unit = actions.get(0).getAi().getUnit();
+        unit_ai = actions.get(0).getAi();
+       getUnitAi().setMetaGoals( getMetaGoalMaster().initMetaGoalsForUnit(getUnitAi()));
+        for (ActionSequence as : actions) {
+            Integer mod =  unit_ai.getGoalPriorityMod(as.getTask().getType());
+//            unit_ai.getActionPriorityMods().
+//             get(as.getNextAction(). getActive().getName());
+            if (mod == null) {
+                mod = 0;
+            }
+            mod+=getMetaGoalMaster().getPriorityMultiplier(as);
+            mod+=100;
+            as.setPriorityMultiplier(mod);
+
+        }
+            for (ActionSequence action : actions) { // into separate method to
             // debug!
             if (action == null) {
                 continue;
             }
-            unit = action.getAi().getUnit();
-            unit_ai = action.getAi();
+
 
             // Chronos.mark("Calculating priority for " + action);
             int priority = -1;
@@ -1610,7 +1625,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         this.unit = unit;
     }
 
-    public UnitAI getUnit_ai() {
+    public UnitAI getUnitAi() {
         return unit_ai;
     }
 

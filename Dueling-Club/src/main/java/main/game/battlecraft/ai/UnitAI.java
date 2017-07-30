@@ -16,6 +16,7 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.advanced.companion.CompanionMaster;
+import main.game.battlecraft.ai.advanced.companion.MetaGoal;
 import main.game.battlecraft.ai.advanced.companion.Order;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
@@ -57,6 +58,7 @@ public class UnitAI {
     private int logLevel = LOG_LEVEL_RESULTS;
     private Order currentOrder;
     private Map<GOAL_TYPE, Object> argMap;
+    private List<MetaGoal> metaGoals;
     private boolean immediate;
     private boolean free;
 
@@ -428,7 +430,8 @@ public class UnitAI {
         if (currentOrder==null ) return null ;
 
         if (currentOrder.getStrictPriority()!=null ){
-           return  Arrays.stream(currentOrder.getStrictPriority().getGoalTypes()).collect(Collectors.toList()).contains(goalType)
+           return  Arrays.stream(currentOrder.getStrictPriority().getGoalTypes()).
+            collect(Collectors.toList()).contains(goalType)
              ? 1000 : 0;
         }
 
@@ -443,6 +446,14 @@ public class UnitAI {
         if (argMap==null )
             argMap = new HashMap<>();
         return argMap;
+    }
+
+    public List<MetaGoal> getMetaGoals() {
+        return metaGoals;
+    }
+
+    public void setMetaGoals(List<MetaGoal> metaGoals) {
+        this.metaGoals = metaGoals;
     }
 
     public void setArg(GOAL_TYPE goalType, Object arg) {

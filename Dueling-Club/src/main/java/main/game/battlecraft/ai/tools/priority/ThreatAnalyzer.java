@@ -30,13 +30,16 @@ public class ThreatAnalyzer extends AiHandler {
         super(master);
     }
 
-    public int getThreat(UnitAI ai, Unit enemy) {
-        int threat = enemy.getIntParam(PARAMS.POWER);
+    public float getRelativeThreat(UnitAI ai, Unit enemy) {
+        int threat = getThreat(ai, enemy);
+        int selfPriority = getPriorityManager().getUnitPriority(null , ai.getUnit(), false);
+        return new Float(threat) / selfPriority;
+    }
+        public int getThreat(UnitAI ai, Unit enemy) {
         double distance = PositionMaster.getExactDistance(ai.getUnit().getCoordinates(), enemy.getCoordinates());
+        int threat = (int) Math.round(enemy.getIntParam(PARAMS.POWER) / distance);
         if (enemy.getAI().getType().isRanged()) {
             threat += getRangedThreat(ai.getUnit(), enemy);
-        } else {
-            threat = (int) Math.round(threat / distance);
         }
 
         return threat;

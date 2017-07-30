@@ -3,6 +3,7 @@ package main.game.battlecraft.ai.elements.generic;
 import main.entity.obj.unit.Unit;
 import main.game.ai.AI_Logic;
 import main.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
+import main.game.battlecraft.ai.advanced.companion.MetaGoalMaster;
 import main.game.battlecraft.ai.elements.actions.ActionManager;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequenceConstructor;
 import main.game.battlecraft.ai.elements.actions.sequence.PathSequenceConstructor;
@@ -10,10 +11,7 @@ import main.game.battlecraft.ai.elements.actions.sequence.TurnSequenceConstructo
 import main.game.battlecraft.ai.elements.goal.GoalManager;
 import main.game.battlecraft.ai.elements.task.TaskManager;
 import main.game.battlecraft.ai.logic.types.atomic.AtomicAi;
-import main.game.battlecraft.ai.tools.AiExecutor;
-import main.game.battlecraft.ai.tools.Analyzer;
-import main.game.battlecraft.ai.tools.ParamAnalyzer;
-import main.game.battlecraft.ai.tools.SituationAnalyzer;
+import main.game.battlecraft.ai.tools.*;
 import main.game.battlecraft.ai.tools.path.CellPrioritizer;
 import main.game.battlecraft.ai.tools.path.PathBuilder;
 import main.game.battlecraft.ai.tools.priority.PriorityManager;
@@ -70,6 +68,17 @@ public abstract class AiHandler {
         return master.getActionManager();
     }
 
+    public AiMaster getMaster() {
+        return master;
+    }
+
+    public MetaGoalMaster getMetaGoalMaster() {
+        return master.getMetaGoalMaster();
+    }
+
+    public AiScriptExecutor getScriptExecutor() {
+        return master.getScriptExecutor();
+    }
 
     public PriorityManager getPriorityManager() {
         return master.getPriorityManager();

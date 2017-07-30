@@ -3,6 +3,7 @@ package main.game.battlecraft.ai.elements.generic;
 import main.entity.obj.unit.Unit;
 import main.game.ai.AI_Logic;
 import main.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
+import main.game.battlecraft.ai.advanced.companion.MetaGoalMaster;
 import main.game.battlecraft.ai.elements.actions.ActionManager;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequenceConstructor;
 import main.game.battlecraft.ai.elements.actions.sequence.PathSequenceConstructor;
@@ -48,6 +49,7 @@ public class AiMaster extends AiHandler {
     private AtomicAi atomicAi;
     private List<AiHandler> handlers = new LinkedList<>();
     private AiScriptExecutor scriptExecutor;
+    private MetaGoalMaster metaGoalMaster;
 
     public AiMaster(DC_Game game) {
         this.game = game;
@@ -69,6 +71,7 @@ public class AiMaster extends AiHandler {
         this.behaviorMaster = new BehaviorMaster(this);
         this. atomicAi = new AtomicAi(this);
         this. scriptExecutor = new AiScriptExecutor(this);
+        this. metaGoalMaster = new MetaGoalMaster(this);
 
         executor = new AiExecutor(game);
 
@@ -93,11 +96,16 @@ public class AiMaster extends AiHandler {
         this.atomicAi.initialize();
         this.threatAnalyzer.initialize();
         this.situationAnalyzer.initialize();
+        this.metaGoalMaster.initialize();
     }
 
     public void setUnit(Unit unit) {
         this.unit=unit;
 getHandlers().forEach(handler -> handler.setUnit(unit));
+    }
+
+    public MetaGoalMaster getMetaGoalMaster() {
+        return metaGoalMaster;
     }
 
     public BehaviorMaster getBehaviorMaster() {
