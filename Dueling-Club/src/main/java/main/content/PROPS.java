@@ -57,7 +57,7 @@ NEXT_MISSION(null,false, "missions"),
     ARCADE_STATUS(null, false, "party"),
     DUNGEON_TAGS(null, true, "dungeons"),
     MAP_BACKGROUND(null, false, "dungeons", "area", "route", "place"),
-
+    COORDINATE_POINTS("", true, "dungeons"),
     ENCOUNTER_SETS(null, true, "dungeons", "encounters"),
     ENCOUNTERS(null, true, "dungeons"),
     ALT_ENCOUNTERS(null, true, "dungeons"),
@@ -434,7 +434,8 @@ NEXT_MISSION(null,false, "missions"),
             ("", true, "spells", "actions"), ANIM_SFX_IMPACT
             ("", true, "spells", "actions"), ANIM_SFX_AFTEREFFECT
             ("", true, "spells", "actions"), ANIM_MODS_SFX
-            ("", true, "spells", "actions");
+            ("", true, "spells", "actions"),
+    ;
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

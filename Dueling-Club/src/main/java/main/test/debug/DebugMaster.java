@@ -868,6 +868,7 @@ public class DebugMaster {
         } finally {
             debugFunctionRunning = false;
         }
+        if (isResetRequired(func))
         reset();
 
         if (transmitted) {
@@ -878,6 +879,14 @@ public class DebugMaster {
         }
         return func;
 
+    }
+
+    private boolean isResetRequired(DEBUG_FUNCTIONS func) {
+        switch (func){
+            case PAUSE:
+                return false;
+        }
+        return true;
     }
 
     private boolean selectWeaponType() {

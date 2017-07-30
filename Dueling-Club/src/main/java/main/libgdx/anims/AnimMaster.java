@@ -22,6 +22,7 @@ import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.threading.WaitMaster;
@@ -41,7 +42,7 @@ public class AnimMaster extends Group {
     private static AnimMaster instance;
     Stack<CompositeAnim> leadQueue = new Stack<>(); //if more Action Stacks have been created before leadAnimation is finished
     CompositeAnim leadAnimation; // wait for it to finish before popping more from the queue
-    boolean parallelDrawing = false;
+    boolean parallelDrawing = true;
     ConcurrentMap<BuffObj, BuffAnim> continuousAnims = new ConcurrentMap<>();
     DequeImpl<Animation> attachedAnims = new DequeImpl<>();
     private AnimController controller;
@@ -91,7 +92,7 @@ public class AnimMaster extends Group {
     }
 
     private void bindEvents() {
-
+        DC_SoundMaster.bindEvents();
         GuiEventManager.bind(GuiEventType.ADD_FLOATING_TEXT, p -> {
             FloatingText floatingText = (FloatingText) p.get();
             if (!floatingText.isInitialized())

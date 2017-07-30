@@ -160,6 +160,7 @@ public class PresetLauncher {
             case Anims:
                 CoreEngine.animationTestMode = true;
                 EmitterController.overrideKeys = true;
+                TestMasterContent.setAddAllSpells(true);
                 TestMasterContent.setImmortal(false);
                 CoreEngine.setActionTargetingFiltersOff(true);
                 return true;

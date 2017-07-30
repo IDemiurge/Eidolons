@@ -142,7 +142,7 @@ public class Player {
         if (lastplayed.size() > 1) {
             if (neverRepeat) {
                 if (lastplayed.peek().equals(sound)
-                        && !lastplayed.get(lastplayed.size() - 2).equals(sound)) {
+                 && !lastplayed.get(lastplayed.size() - 2).equals(sound)) {
                     LogMaster.log(0, "NOT playing twice! - " + sound);
 
                     return;
@@ -221,7 +221,7 @@ public class Player {
 
         try {
             Sound soundFile = Gdx.audio.newSound(Gdx.files.getFileHandle(sound, FileType.Absolute));
-soundFile.play();
+            soundFile.play();
             //            Gdx.audio.
 //            jlp player = jlp.createInstance(new String[]{sound});
 //            if (player != null) {
@@ -239,7 +239,7 @@ soundFile.play();
     }
 
     private Clip createSoundClip(String sound) throws UnsupportedAudioFileException, IOException,
-            LineUnavailableException {
+     LineUnavailableException {
         /*
          * Once you have a handle to the inputStream, get the audioInputStream and do the rest.
 
@@ -257,7 +257,7 @@ soundFile.play();
             // your audio hardware,
             // i.e. 44.1kHz sampling rate and 16 bit samples.
             AudioInputStream pcmIn = AudioSystem.getAudioInputStream(new AudioFormat(
-                    AudioFormat.Encoding.PCM_SIGNED, 44100f, 16, 1, 2, 44100f, true), ulawIn);
+             AudioFormat.Encoding.PCM_SIGNED, 44100f, 16, 1, 2, 44100f, true), ulawIn);
 
             clip.open(pcmIn);
             // clip.start();
@@ -331,7 +331,7 @@ soundFile.play();
         }
         prop = obj.getProperty(G_PROPS.SOUNDSET);
         SOUNDSET soundSet = new EnumMaster<SOUNDSET>().retrieveEnumConst(SOUNDSET.class, obj
-                .getProperty(G_PROPS.SOUNDSET));
+         .getProperty(G_PROPS.SOUNDSET));
         boolean result;
         if (soundSet == null) {
             result = playCustomSoundsetSound(prop, sound_type);
@@ -342,7 +342,7 @@ soundFile.play();
         if (!result) {
 
             if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
-				/*
+                /*
 				 * by aspect -- deity? unit soundset folders...
 				 *
 				 * but it doesn't seem plausible that I can just auto-find by
@@ -351,8 +351,8 @@ soundFile.play();
             }
             if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS) {
                 String autopath = SOUNDSET_FOLDER_PATH + "\\spells\\"
-                        + obj.getAspect().toString().toLowerCase() + "\\"
-                        + obj.getProperty(G_PROPS.SPELL_GROUP) + "\\" + obj.getName();
+                 + obj.getAspect().toString().toLowerCase() + "\\"
+                 + obj.getProperty(G_PROPS.SPELL_GROUP) + "\\" + obj.getName();
 
                 result = playCustomSoundsetSound(autopath, sound_type);
                 if (result) {
@@ -361,13 +361,13 @@ soundFile.play();
                 // spell group level
                 autopath = StringMaster.cropLastPathSegment(autopath);
                 result = playCustomSoundsetSound(autopath + obj.getProperty(G_PROPS.SPELL_GROUP),
-                        sound_type);
+                 sound_type);
                 if (result) {
                     return;
                 }
                 // aspect level
                 autopath = StringMaster.cropLastPathSegment(autopath)
-                        + obj.getAspect().toString().toLowerCase();
+                 + obj.getAspect().toString().toLowerCase();
 
                 result = playCustomSoundsetSound(autopath, sound_type);
 
@@ -389,8 +389,8 @@ soundFile.play();
             prop = "soundsets\\" + prop;
         }
         String path = PathFinder.getSoundPath()
-                // SOUNDSET_FOLDER_PATH + "//"
-                + prop.replace(PathFinder.getSoundPath(), "");
+         // SOUNDSET_FOLDER_PATH + "//"
+         + prop.replace(PathFinder.getSoundPath(), "");
         File folder = new File(path);
         String fileName = "";
         if (!folder.isDirectory()) {
@@ -467,7 +467,7 @@ soundFile.play();
         boolean add_name = sound_type != SOUNDS.READY;
 
         String string = SoundMaster.getPath()
-                + getBasePath(obj.getProperty(G_PROPS.CUSTOM_SOUNDSET), false);
+         + getBasePath(obj.getProperty(G_PROPS.CUSTOM_SOUNDSET), false);
         if (add_name) {
             string += StringMaster.FORMULA_REF_SEPARATOR + sound_type.toString();
         }
@@ -476,7 +476,7 @@ soundFile.play();
 
     private String getBasePath(String property, boolean b) {
         return StringMaster.clipEnding(property, (b) ? StringMaster.FORMULA_REF_SEPARATOR
-                : StringMaster.FORMAT_CHAR);
+         : StringMaster.FORMAT_CHAR);
     }
 
     public void playHitSound(Obj obj) {
@@ -488,7 +488,7 @@ soundFile.play();
         masteryGroup = ContentManager.getMasteryGroup(mastery, masteryGroup);
 
         String soundPath = SoundMaster.getPath() + "std\\skills\\" + "NEW_SKILL_" + masteryGroup
-                + FORMAT;
+         + FORMAT;
         if (!FileManager.getFile(soundPath).isFile()) {
             soundPath = SoundMaster.getPath() + "std\\skills\\" + "NEW_SKILL_GENERIC" + FORMAT;
         }

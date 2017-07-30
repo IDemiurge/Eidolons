@@ -1,6 +1,7 @@
 package main.game.battlecraft.logic.meta.party;
 
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 
 /**
  * Created by JustMe on 2/14/2017.
@@ -20,6 +21,10 @@ import main.entity.obj.unit.Unit;
  *
  */
 public class ShareMaster extends MetaPartyHandler {
+
+    public ShareMaster(MetaGameMaster master) {
+        super(master);
+    }
 
     public void withdraw(Unit hero, int amount){
 //        getRelationsMaster().impact();

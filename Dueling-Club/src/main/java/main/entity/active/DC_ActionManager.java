@@ -48,7 +48,6 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.threading.Weaver;
 
 import java.util.*;
 
@@ -907,7 +906,7 @@ if (actives!=null )
 
     @Override
     public void resetCostsInNewThread() {
-        Weaver.inNewThread(() -> {
+//        Weaver.inNewThread(() -> {
             DC_Game game = (DC_Game) this.game;
             if (game.getManager().getActiveObj() == null) {
                 return;
@@ -929,7 +928,7 @@ if (actives!=null )
                     item.getActive().initCosts();
                 }
             }
-        });
+//        });
     }
 
     public enum ADDITIONAL_MOVE_ACTIONS {

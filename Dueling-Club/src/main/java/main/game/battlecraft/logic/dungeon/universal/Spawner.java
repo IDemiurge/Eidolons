@@ -176,7 +176,8 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         unit.setFacing(facing_direction);
         if (!unit.isHero())
          UnitTrainingMaster.train(unit);
-
+        if (unit.isMine())
+        TestMasterContent.addTestItems(unit.getType(), false);
     }
 
     public void spawnCustomParty(Coordinates origin, Boolean me, ObjType party) {

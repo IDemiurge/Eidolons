@@ -181,7 +181,10 @@ public class TestLauncher //extends MetaGameMaster
         if (launch != null) {
             initLaunch(launch);
         }
-
+else
+        {
+            TestMasterContent.test_on = false;
+        }
         // select code?
 
 
@@ -193,7 +196,6 @@ public class TestLauncher //extends MetaGameMaster
                 if (dungeon == null) {
                     dungeon = DungeonInitializer.RANDOM_DUNGEON;
                 }
-                TestMasterContent.test_on = false;
             }
             if (getSUPER_FAST_MODE()) {
                 PLAYER_PARTY = (FAST_DC.PLAYER_PARTY);
@@ -236,6 +238,9 @@ public class TestLauncher //extends MetaGameMaster
         DUMMY_PP = launch.dummy_pp;
         DEBUG_MODE = launch.debugMode;
         FAST_MODE = launch.fast;
+
+        TestMasterContent.test_on = FAST_MODE;
+
         if (launch.ruleScope != null) {
             RuleMaster.setScope(launch.ruleScope);
         }

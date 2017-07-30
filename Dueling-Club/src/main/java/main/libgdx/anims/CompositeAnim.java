@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import javafx.util.Pair;
 import main.ability.effects.Effect;
 import main.data.XLinkedMap;
+import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
@@ -167,6 +168,7 @@ public class CompositeAnim implements Animation {
         running = false;
 
         resetMaps();
+        GuiEventManager.trigger(GuiEventType.COMPOSITE_ANIMATION_DONE, this);
     }
 
     private void resetMaps() {
@@ -239,6 +241,8 @@ public class CompositeAnim implements Animation {
         running = true;
         LogMaster.log(LogMaster.ANIM_DEBUG, this + " started: "
         );
+
+        GuiEventManager.trigger(GuiEventType.COMPOSITE_ANIMATION_STARTED, this);
 
     }
 
@@ -424,5 +428,9 @@ public class CompositeAnim implements Animation {
                 }
             }
         });
+    }
+
+    public Entity getActive() {
+        return getCurrentAnim().getActive();
     }
 }

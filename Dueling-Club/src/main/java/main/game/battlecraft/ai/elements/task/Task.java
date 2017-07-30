@@ -32,15 +32,16 @@ public class Task {
           getUnit().getGame().getObjectById((Integer) arg) :
           arg == null ? "" : arg);
     }
+
     @Override
     public String toString() {
         return
          ai.getUnit().getName() + "'s " +
-         type + " on "
-                +
-                (arg instanceof Integer ?
-                        getUnit().getGame().getObjectById((Integer) arg) :
-                        arg == null ? "" : arg);
+          type + " on "
+          +
+          (arg instanceof Integer ?
+           getUnit().getGame().getObjectById((Integer) arg) :
+           arg == null ? "" : arg);
 
     }
 
@@ -50,6 +51,11 @@ public class Task {
 
     public Unit getUnit() {
         return unit;
+    }
+
+    public Unit getUnitArg() {
+        return (Unit) getUnit().getGame().getObjectById(
+         (Integer) getArg());
     }
 
     /**

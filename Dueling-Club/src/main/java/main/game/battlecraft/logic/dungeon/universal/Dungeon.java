@@ -12,11 +12,17 @@ import main.data.DataManager;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
+import main.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
+import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.dungeon.minimap.Minimap;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.data.DataUnitFactory;
+
+import java.util.List;
+import java.util.Map;
 
 public class Dungeon extends LightweightEntity {
     private static final Integer DEFAULT_GLOBAL_ILLUMINATION_NIGHT = 15;
@@ -187,6 +193,30 @@ public class Dungeon extends LightweightEntity {
 
     }
 
+    public Coordinates getPoint(String arg) {
+        Coordinates c=null ;
+        if (arg.contains(ScriptSyntax.SPAWN_POINT) || StringMaster.isInteger(arg)) {
+            arg = arg.replace(ScriptSyntax.SPAWN_POINT, "");
+            Integer i = StringMaster.getInteger(arg) - 1;
+            List<String> spawnPoints = StringMaster.openContainer(
+             getProperty(PROPS.ENEMY_SPAWN_COORDINATES));
+            c = new Coordinates(spawnPoints.get(i));
+        }
+        else {
+            Map<String,String >  map = new DataUnitFactory(true).
+             deconstructDataString(getProperty(PROPS.COORDINATE_POINTS));
+            String string = map.get(arg);
+        }
+        return c;
+//        getProperty(PROPS.ENCOUNTER_SPAWN_POINTS)
+    }
+
+    public enum POINTS{
+        CENTER_SPAWN,
+        REAR_SPAWN,
+        SCOUTS_SPAWN,
+
+    }
     private boolean isDaytime() {
         if (isNight()) return false;
         return true;

@@ -122,6 +122,7 @@ public class Anim extends Group implements Animation {
 
 
         running = true;
+        GuiEventManager.trigger(GuiEventType.ANIMATION_STARTED, this);
     }
 
 
@@ -352,6 +353,7 @@ public class Anim extends Group implements Animation {
         if (onDone != null) {
             onDone.call(callbackParam);
         }
+        GuiEventManager.trigger(GuiEventType.ANIMATION_DONE, this);
     }
 
 

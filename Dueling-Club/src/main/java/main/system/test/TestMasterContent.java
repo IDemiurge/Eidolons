@@ -22,7 +22,7 @@ import java.util.List;
 
 public class TestMasterContent {
     private static final String DEFAULT_SKILLS = "Turn About;Leap;Side Step;Quick Turn;";
-    private static final String testGroups ="Fire;Water;Air;Earth;";
+    private static final String testGroups = "Fire;Water;Air;Earth;";
     private static final String TEST_SKILLS = "Warcry: To Arms!;Druidic Visions;Roots of Wisdom;Coating Expert;Coating Mastery III;Toss Item;Feint Throw;Cleave (Axe);"
      + "Slam;Knockdown (Polearm);Power Strike;"
      + ""
@@ -54,6 +54,7 @@ public class TestMasterContent {
      + "Masterpiece Dark Steel Dagger;" + "Ancient Dark Steel Bolts;"
      + "Ancient Dark Steel Bolts;";
     public static boolean addSpells;
+    public static boolean addAllSpells;
     public static boolean test_on = true;
     static boolean auto_test_list = false;
     static boolean full_test = false;
@@ -83,12 +84,12 @@ public class TestMasterContent {
 //     "Raise Skeleton;" +
 //     "Light;Haze;" +
 //      "Leap into Darkness;Blink;Summon Vampire Bat;"+
-      // + "Enchant Weapon;"
-      // + "Enchant Armor;"
+     // + "Enchant Weapon;"
+     // + "Enchant Armor;"
 //      + "Arcane Bolt;Ray of Arcanum;Time Warp;"
-      // + "Sorcerous Flames;"
-       "Force Field;"
-      // "Arms of Faith;Armor of Faith;Resurrection;"+
+     // + "Sorcerous Flames;"
+     "Force Field;"
+     // "Arms of Faith;Armor of Faith;Resurrection;"+
 //      "Mass Terror;Mass Confusion;Mass Madness;" + "Conjure Weapon;Conjure Armor;" + ""
      // + "Awaken Treant;"
      // + "Sacrifice;"
@@ -321,6 +322,7 @@ public class TestMasterContent {
             }
         }
     }
+
     private static void addTestSpells(ObjType type, boolean last) {
         type.addProperty(PROPS.VERBATIM_SPELLS, "Blink;"
          + getTEST_LIST(), true);
@@ -330,6 +332,10 @@ public class TestMasterContent {
         }
         if (!addSpells) {
             return;
+        }
+        if (addAllSpells) {
+            addAllSpells(type);
+            return ;
         }
 
         for (String s : StringMaster.openContainer(getFOCUS_LIST())) {
@@ -352,6 +358,24 @@ public class TestMasterContent {
                 type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
             }
         }
+    }
+
+    private static void addAllSpells(ObjType type) {
+        StringBuilder builder = new StringBuilder(DataManager.getTypes(DC_TYPE.SPELLS).size() * 10);
+        for (ObjType s : DataManager.getTypes(DC_TYPE.SPELLS)) {
+            builder.append(s.getName() + ";");
+        }
+        type.addProperty(PROPS.VERBATIM_SPELLS, builder.toString(), true);
+    }
+
+    public static void setAddAllSpells(boolean addAllSpells) {
+        if (addAllSpells)
+        TestMasterContent.addSpells = true;
+        TestMasterContent.addAllSpells = addAllSpells;
+    }
+
+    public static void setAddSpells(boolean addSpells) {
+        TestMasterContent.addSpells = addSpells;
     }
 
     public static void addTestActives(ObjType type, boolean last) {

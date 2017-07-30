@@ -2,6 +2,8 @@ package main.system.data;
 
 import main.system.auxiliary.StringMaster;
 
+import java.util.Map;
+
 /**
  * Created by JustMe on 5/11/2017.
  */
@@ -50,7 +52,11 @@ public class DataUnitFactory<E extends DataUnit> {
         this.format = format;
     }
 
-    public String constructDataString() {
+    public Map<String,String > deconstructDataString(String dataString) {
+
+        return null;
+    }
+        public String constructDataString() {
         StringBuilder builder = new StringBuilder();
     int i =0;
         for (Object o : valueNames) {
