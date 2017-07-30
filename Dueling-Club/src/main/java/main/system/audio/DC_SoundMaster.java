@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class DC_SoundMaster extends SoundMaster{
+public class DC_SoundMaster extends SoundMaster {
 
     public static void playRangedAttack(DC_WeaponObj weapon) {
         // TODO double weapon sound
@@ -163,12 +163,20 @@ public class DC_SoundMaster extends SoundMaster{
         GuiEventManager.bind(GuiEventType.ANIMATION_STARTED, p -> {
             Anim anim = (Anim) p.get();
             DC_ActiveObj activeObj = (DC_ActiveObj) anim.getActive();
-            playAnimStartSound(activeObj, anim.getPart());
+            try {
+                playAnimStartSound(activeObj, anim.getPart());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
         GuiEventManager.bind(GuiEventType.COMPOSITE_ANIMATION_STARTED, p -> {
             CompositeAnim anim = (CompositeAnim) p.get();
             DC_ActiveObj activeObj = (DC_ActiveObj) anim.getActive();
-            playActionStartSound(activeObj);
+            try {
+                playActionStartSound(activeObj);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -179,7 +187,7 @@ public class DC_SoundMaster extends SoundMaster{
     private static void playAnimStartSound(DC_ActiveObj activeObj, ANIM_PART part) {
         switch (part) {
             case PRECAST:
-                ChannelingRule.playChannelingSound(activeObj, activeObj.getOwnerObj().getGender()== GENDER.FEMALE);
+                ChannelingRule.playChannelingSound(activeObj, activeObj.getOwnerObj().getGender() == GENDER.FEMALE);
                 playEffectSound(SOUNDS.PRECAST, activeObj);
                 break;
             case CAST:
@@ -205,8 +213,7 @@ public class DC_SoundMaster extends SoundMaster{
              activeObj.getIntParam(PARAMS.DAMAGE_LAST_DEALT),
              activeObj.getIntParam(PARAMS.DAMAGE_LAST_AMOUNT) - activeObj.getIntParam(PARAMS.DAMAGE_LAST_DEALT)
             );
-        }
-        else {
+        } else {
             playEffectSound(SOUNDS.IMPACT, activeObj);
         }
     }
