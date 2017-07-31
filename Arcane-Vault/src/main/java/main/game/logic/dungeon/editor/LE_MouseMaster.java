@@ -169,7 +169,7 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
                 return false;
             }
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
-            return true;
+            return false;// why would i need to return true?
         }
         selectedObj = obj;
         SoundMaster.playStandardSound(STD_SOUNDS.CHECK);
@@ -252,6 +252,9 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
                 // if (lastClicked instanceof DC_HeroObj)
                 // LE_ObjMaster.setFlip((DC_HeroObj) lastClicked,
                 // lastClicked.getCoordinates());
+            }
+            else {
+             LE_DataMaster.setMetaInfo(coordinates);
             }
         } // could use same right click, just try() - if empty=>add, else remove
         // ++ DIRECTION CHANGE

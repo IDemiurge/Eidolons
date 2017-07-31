@@ -5,6 +5,7 @@ import main.client.cc.logic.UnitLevelManager;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.obj.BattleFieldObject;
@@ -203,7 +204,7 @@ public class DC_ObjInitializer {
                             UnitGroupMaster.TYPE_LEVEL_SEPARATOR));
 
                 }
-                ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.BF_OBJ);
+                ObjType type = DataManager.getType(typeName, getTYPE());
                 if (level != 0) {
                     type = new UnitLevelManager().getLeveledType(type, level);
                 }
@@ -263,7 +264,7 @@ public class DC_ObjInitializer {
                             game.getArenaManager().getSpawnManager().addDungeonEncounter(c_dungeon,
                                     block, c, type);
                         }
-                        continue;
+//                        continue;
                     }
 
                     if (!CoreEngine.isLevelEditor()
@@ -342,6 +343,12 @@ public class DC_ObjInitializer {
         // if (creeps)
         // PartyManager.addCreepParty(DataManager.convertToTypeList(list));
         return map;
+    }
+
+    private static OBJ_TYPE getTYPE() {
+        if (CoreEngine.isLevelEditor())
+            return C_OBJ_TYPE.LEVEL_EDITOR_OBJ;
+        return C_OBJ_TYPE.BF_OBJ;
     }
 
     public static List<MicroObj> processObjData(Player player, String data) {

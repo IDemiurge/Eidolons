@@ -334,6 +334,13 @@ public class LE_PlanPanel extends G_Panel {
                 }
                 Coordinates c;
                 switch (i) {
+                    case 3:
+
+                        c = LE_MapMaster.pickCoordinate();
+                        if (c != null)
+                            LevelEditor.getCurrentLevel().getDungeon().addProperty(
+                             PROPS.COORDINATE_POINTS, c.toString());
+                        break;
                     case 4:
 
                         break;

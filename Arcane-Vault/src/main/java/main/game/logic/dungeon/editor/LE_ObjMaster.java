@@ -406,7 +406,8 @@ public class LE_ObjMaster {
             }
 
             obj = getObject(type, c);
-            List<BattleFieldObject> objects = LevelEditor.getSimulation().getUnitMap().get(c);
+            LevelEditor.getSimulation().getMaster(). checkAddUnit(obj);
+         List<BattleFieldObject> objects = LevelEditor.getSimulation().getUnitMap().get(c);
             if (objects == null) {
                 objects = new LinkedList<>();
                 LevelEditor.getSimulation().getUnitMap().put(c, objects);

@@ -75,6 +75,15 @@ public class MapMaster<E, T> {
         values.put(name, val);
     }
 
+    public static void removeValue(Map map, Object obj) {
+        Object key1 = null;
+        for (Object key : map.keySet()) {
+            if (map.get(key).equals(obj))
+                key1 = key;
+        }
+        map.remove(key1);
+    }
+
     public E getKeyForValue(Map<E, T> itemMap, T value) {
         for (Entry<E, T> e : itemMap.entrySet()) {
             if (itemMap.get(e.getKey()).equals(value)) {
@@ -178,5 +187,4 @@ public class MapMaster<E, T> {
         return map;
 
     }
-
 }

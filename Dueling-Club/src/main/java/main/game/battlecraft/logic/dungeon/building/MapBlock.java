@@ -14,6 +14,7 @@ import main.game.bf.ZCoordinates;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -25,7 +26,7 @@ public class MapBlock {
     BLOCK_TYPE type;
     DequeImpl<Obj> objects;
     List<Coordinates> coordinates;
-    Map<Coordinates, Obj> map = new HashMap<>();
+    Map<Coordinates, Obj> map = new HashMap<>(); //dirty hack with ZCoordinates - beyond redemption
     Map<MapBlock, List<Coordinates>> connectedBlocks = new HashMap<>();
     int spawningPriority;
     int treasureValue;
@@ -236,7 +237,7 @@ public class MapBlock {
     }
 
     public boolean removeObject(DC_Obj obj, Coordinates c) {
-        getMap().remove(c);
+        MapMaster.removeValue(getMap(), obj);
         return !getObjects().remove(obj);
     }
 

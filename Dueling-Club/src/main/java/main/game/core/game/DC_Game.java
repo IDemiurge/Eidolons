@@ -698,14 +698,6 @@ public class DC_Game extends MicroGame {
         this.paused = paused;
     }
 
-    public void checkAddUnit(Unit obj) {
-        if (!obj.isHidden()) {
-            if (!getUnits().contains(obj)) {
-                getUnits().add(obj);
-            }
-        }
-    }
-
     public Dungeon getDungeon() {
         if (getDungeonMaster() == null) {
             return null;

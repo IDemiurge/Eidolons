@@ -45,6 +45,10 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     // THEMED BACKGROUND?
     PARTY_SPAWN_COORDINATES(null, false//, "dungeons"
     ),
+    COORDINATE_POINTS(null, true, "dungeons"
+    ),
+    NAMED_COORDINATE_POINTS(null, true, "dungeons"
+    ),
     ENEMY_SPAWN_COORDINATES(null, false//, "dungeons"
     ),
     DUNGEON_PLAN(null, false//, "dungeons"
@@ -74,7 +78,9 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ),
     ENCOUNTER_GROUPS(null, true//, "dungeons", "route", "place", "area"
     ),
-    
+
+    ENCOUNTER_INFO(null, true//, "dungeons"
+    ),
     ENCOUNTER_SPAWN_POINTS(null, true//, "dungeons"
     ),
     ENCOUNTER_BOSS_SPAWN_POINTS(null, true//, "dungeons"

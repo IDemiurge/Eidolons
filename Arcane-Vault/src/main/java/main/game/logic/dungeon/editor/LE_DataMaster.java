@@ -1,11 +1,11 @@
 package main.game.logic.dungeon.editor;
 
-import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
-import main.content.enums.system.MetaEnums;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.content.enums.DungeonEnums.DUNGEON_SUBFOLDER;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.ability.construct.VariableManager;
@@ -15,12 +15,13 @@ import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.bf.Coordinates;
 import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.text.NameMaster;
@@ -38,6 +39,13 @@ public class LE_DataMaster {
     private static final FileChooser MISSION_CHOOSER = new FileChooser(getDungeonMissionFolder());
     private static Workspace missionsWorkspace;
     private static WorkspaceManager workspaceManager;
+    public static final   PROPS[] metaProps = new PROPS[]{
+     PROPS.PARTY_SPAWN_COORDINATES,
+     PROPS.ENCOUNTER_SPAWN_POINTS,
+     PROPS.COORDINATE_POINTS,
+     PROPS.NAMED_COORDINATE_POINTS,
+     PROPS.ENEMY_SPAWN_COORDINATES,
+    };
 
     public static WorkspaceManager getWorkspaceManager() {
         return workspaceManager;
@@ -185,7 +193,7 @@ public class LE_DataMaster {
 
     private static void removeSelectedObj() {
         LE_ObjMaster.removeObj(
-                LevelEditor.getMouseMaster().getSelectedObj().getCoordinates());
+         LevelEditor.getMouseMaster().getSelectedObj().getCoordinates());
     }
 
     private static void removeLevel(Level level) {
@@ -237,7 +245,7 @@ public class LE_DataMaster {
 
         path = StringMaster.cropFormat(path.replace(fileName, ""));
         level.getDungeon().setProperty(G_PROPS.DUNGEON_SUBFOLDER,
-                StringMaster.getLastPathSegment(path));
+         StringMaster.getLastPathSegment(path));
 
     }
 
@@ -287,7 +295,7 @@ public class LE_DataMaster {
         Dungeon dungeon = level.getDungeon();
         if (dungeon.getMainEntrance() != null) {
             dungeon_main_entrances += dungeon.getMainEntrance().getNameAndCoordinate()
-                    + DungeonLevelMaster.ENTRANCE_SEPARATOR;
+             + DungeonLevelMaster.ENTRANCE_SEPARATOR;
         }
         if (dungeon.getMainExit() != null) {
             dungeon_main_entrances += dungeon.getMainExit().getNameAndCoordinate();
@@ -319,7 +327,7 @@ public class LE_DataMaster {
         }
         fileName += InfoMaster.getWorkspaceTip(dungeon);
         if (dungeon.getWorkspaceGroup() == null
-                || dungeon.getWorkspaceGroup() == MetaEnums.WORKSPACE_GROUP.COMPLETE) {
+         || dungeon.getWorkspaceGroup() == MetaEnums.WORKSPACE_GROUP.COMPLETE) {
             deleteIncompleteVersions(fileName);
         }
         // if (level.getDungeon().isSurface()) {
@@ -341,7 +349,7 @@ public class LE_DataMaster {
                     int version = 2;
                     while (true) {
                         String newPath = getDungeonLevelFolder() + fileName + NameMaster.VERSION
-                                + version + ".xml";
+                         + version + ".xml";
                         file = FileManager.getFile(newPath);
                         if (!file.isFile()) {
                             break;
@@ -349,7 +357,7 @@ public class LE_DataMaster {
                         version++;
                     }
                     path = StringMaster.replaceLast(path, fileName, fileName + NameMaster.VERSION
-                            + version);
+                     + version);
                     fileName += NameMaster.VERSION + version;
                 }
             }
@@ -371,7 +379,7 @@ public class LE_DataMaster {
                 continue;
             }
             File file = FileManager.getFile(getDungeonLevelFolder() + "\\" + fileName
-                    + InfoMaster.getWorkspaceTip(ws) + ".xml"); // level.getVersion()
+             + InfoMaster.getWorkspaceTip(ws) + ".xml"); // level.getVersion()
             try {
                 file.delete();
             } catch (Exception e) {
@@ -409,4 +417,63 @@ public class LE_DataMaster {
         return levels;
     }
 
+    public static void clearMetaInfo(Coordinates c) {
+        for (PROPS props : metaProps) {
+            String part = main.system.auxiliary.SearchMaster.
+             getPropPart(c.toString()+"=", props,
+              LevelEditor.getCurrentLevel().getDungeon());
+             LevelEditor.getCurrentLevel().getDungeon().removeProperty(props,part);
+        }
+    }
+
+    public static boolean setMetaInfo(Coordinates c) {
+        String[] options = new String[]{
+         "Index Coordinate Points", "Named Coordinate Points", "Encounter Info",
+         "Clear all meta-info", "Player Spawn Coordinates", "Enemy Spawn Coordinates", "Encounter Spawn Coordinates",
+         "Script"
+        };
+        int i = DialogMaster.optionChoice(options, "Choose meta info to set on " + c);
+        if (i == -1) {
+            return false;
+        }
+        String option = options[i];
+        switch (option) {
+            case "Clear all meta-info":
+                clearMetaInfo(c);
+                break;
+            case "Script":
+                break;
+            case "Encounter Info":
+              String part=  main.system.auxiliary.SearchMaster.getPropPart(c.toString(),PROPS.ENCOUNTER_INFO,
+                 LevelEditor.getCurrentLevel().getDungeon(), "=");
+                String info = DialogMaster.inputText("Modify for Encounter Info"+c,
+                 part);
+                if (info.equals(part))
+                    break;
+                LevelEditor.getCurrentLevel().getDungeon().removeProperty(
+                 PROPS.ENCOUNTER_INFO, part);
+                LevelEditor.getCurrentLevel().getDungeon().addProperty(
+                 PROPS.ENCOUNTER_INFO, info);
+                break;
+            case "Player Spawn Coordinates":
+                return addCoordinateProp(PROPS.PARTY_SPAWN_COORDINATES, c.toString());
+            case "Enemy Spawn Coordinates":
+                return addCoordinateProp(PROPS.ENEMY_SPAWN_COORDINATES, c.toString());
+            case "Encounter Spawn Coordinates":
+                return addCoordinateProp(PROPS.ENCOUNTER_SPAWN_POINTS, c.toString());
+            case "Named Coordinate Points":
+                String name = DialogMaster.inputText("Name for the coordinate");
+                if (name==null )break;
+                return addCoordinateProp(PROPS.NAMED_COORDINATE_POINTS, c+"="+name);
+            case "Index Coordinate Points":
+                return addCoordinateProp(PROPS.COORDINATE_POINTS, c.toString());
+        }
+        return false;
+    }
+
+    private static boolean addCoordinateProp(PROPS props, String c) {
+        LevelEditor.getCurrentLevel().getDungeon().addProperty(
+         props, c, true);
+        return true;
+    }
 }

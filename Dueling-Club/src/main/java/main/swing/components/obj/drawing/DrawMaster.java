@@ -27,6 +27,7 @@ import main.swing.components.obj.CellComp;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.renderers.SmartTextManager;
 import main.swing.renderers.SmartTextManager.VALUE_CASES;
+import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.*;
 import main.system.graphics.FontMaster.FONT;
@@ -64,10 +65,7 @@ public class DrawMaster {
     private int topObjY;
     private BufferedImage infoObjImage;
     private Map<Obj, Point> offsetMap;
-    public enum INTERACTIVE_ELEMENT {
-        AP, COUNTERS, ITEMS, TRAPS, LOCKS, CORPSES, STACK,
 
-    }
     public boolean isStackedPaintZoom() {
         return zoom >= 50;
     }
@@ -178,11 +176,11 @@ public class DrawMaster {
         if (!cellComp.isTerrain()) {
             if (topObj.isInfoSelected() || topObj.isActiveSelected()) {
                 BufferedImage compOverlayImage = ImageManager.getNewBufferedImage(getCompWidth(),
-                        getCompHeight());
+                 getCompHeight());
                 drawComponentOverlays(compOverlayImage.getGraphics());
                 BfGridComp.getOverlayMap().put(
-                        new XLine(new Point(topObj.getX(), topObj.getY()), new Point(
-                                5 - getObjCount() * 2, 0)), compOverlayImage);
+                 new XLine(new Point(topObj.getX(), topObj.getY()), new Point(
+                  5 - getObjCount() * 2, 0)), compOverlayImage);
             } else {
                 drawComponentOverlays(compGraphics);
             }
@@ -245,42 +243,69 @@ public class DrawMaster {
         zoom2 = MathMaster.getMinMax(zoom * 2, 50, 100);
         if (isEditorMode() || cellComp.getGame().isDebugMode()) {
             Dungeon dungeon = cellComp.getGame().getDungeon();
+            Image img = null;
             if (dungeon.checkProperty(PROPS.PARTY_SPAWN_COORDINATES)) {
-                if (cellComp.getCoordinates().equals(
-                        new Coordinates(dungeon.getProperty(PROPS.PARTY_SPAWN_COORDINATES)))) {
-                    Image img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGER.getImage(), zoom2);
-                    drawImageCentered(g, img);
-                }
+                img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGER.getImage(), zoom2);
+                checkDrawCenteredImageOnCoordinate(dungeon.getProperty(PROPS.PARTY_SPAWN_COORDINATES), cellComp, g, img);
+
             }
+            img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGER.getImage(), zoom2);
+            img = ImageTransformer.flipVertically(ImageManager.getBufferedImage(img));
+
             if (dungeon.checkProperty(PROPS.ENEMY_SPAWN_COORDINATES)) {
-                if (cellComp.getCoordinates().equals(
-                        new Coordinates(dungeon.getProperty(PROPS.ENEMY_SPAWN_COORDINATES)))) {
-                    Image img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGER.getImage(), zoom2);
-                    img = ImageTransformer.flipVertically(ImageManager.getBufferedImage(img));
-                    drawImageCentered(g, img);
-                }
+                checkDrawCenteredImageOnCoordinate(dungeon.getProperty(PROPS.ENEMY_SPAWN_COORDINATES), cellComp, g, img);
+
             }
+
+            img = ImageManager.getSizedVersion(STD_IMAGES.FLAG.getImage(), zoom2);
             for (String substring : StringMaster.openContainer(dungeon
-                    .getProperty(PROPS.ENCOUNTER_SPAWN_POINTS))) {
-                if (!cellComp.getCoordinates().equals(new Coordinates(substring))) {
-                    continue;
-                }
-                Image img = ImageManager.getSizedVersion(STD_IMAGES.FLAG.getImage(), zoom2);
-                drawImageCentered(g, img);
+             .getProperty(PROPS.ENCOUNTER_SPAWN_POINTS))) {
+                checkDrawCenteredImageOnCoordinate(substring, cellComp, g, img);
                 // TODO OR STRING/CHAR
             }
+            img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGEMENT_TARGET.getImage(),
+             zoom2);
             for (String substring : StringMaster.openContainer(dungeon
-                    .getProperty(PROPS.ENCOUNTER_BOSS_SPAWN_POINTS))) {
-                if (!cellComp.getCoordinates().equals(new Coordinates(substring))) {
-                    continue;
-                }
-                Image img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGEMENT_TARGET.getImage(),
-                        zoom2);
-                drawImageCentered(g, img);
+             .getProperty(PROPS.ENCOUNTER_BOSS_SPAWN_POINTS))) {
+                checkDrawCenteredImageOnCoordinate(substring, cellComp, g, img);
+
                 // TODO OR STRING/CHAR
+            }
+            int i = 0;
+            for (String substring : StringMaster.openContainer(dungeon
+             .getProperty(PROPS.COORDINATE_POINTS))) {
+                checkDrawTextOnCoordinate(substring, cellComp, g, new SmartText("Point" + i, ColorManager.PURPLE),
+                 new Point(6 * zoom2 / 100, 12 * zoom2 / 100));
+                i++;
+            }
+            for (String substring : StringMaster.openContainer(dungeon
+             .getProperty(PROPS.NAMED_COORDINATE_POINTS))) {
+                checkDrawTextOnCoordinate(substring.split("=")[0], cellComp, g,
+                 new SmartText(substring, ColorManager.PURPLE),
+                 new Point(6 * zoom2 / 100, 12 * zoom2 / 100));
+            }
+            if (dungeon.checkProperty(PROPS.ENCOUNTER_INFO)) {
+                checkDrawTextOnCoordinate(
+                 dungeon.getProperty(PROPS.ENCOUNTER_INFO), cellComp, g,
+                 new SmartText("At round " + SearchMaster.getPropPart(cellComp.getCoordinates().toString(),
+                  PROPS.ENCOUNTER_INFO, dungeon), ColorManager.DARK_ORANGE),
+                 new Point(6 * zoom2 / 100, 12 * zoom2 / 100));
+
             }
         }
+    }
 
+    private void checkDrawTextOnCoordinate(String substring, CellComp cellComp,
+                                           Graphics g, SmartText text, Point point) {
+        if (cellComp.getCoordinates().equals(new Coordinates(substring)))
+            drawText(g, text,
+             point);
+    }
+
+    private void checkDrawCenteredImageOnCoordinate(String substring, CellComp cellComp,
+                                                    Graphics g, Image img) {
+        if (cellComp.getCoordinates().equals(new Coordinates(substring)))
+            drawImageCentered(g, img);
     }
 
     private void drawSightBlockInfo(CellComp cellComp, Graphics g, int zoom) {
@@ -291,7 +316,7 @@ public class DrawMaster {
                 int percentage = zoom;
                 try {
                     int distance = PositionMaster.getDistance(cellComp.getGame().getManager()
-                            .getActiveObj().getCoordinates(), cellComp.getCoordinates());
+                     .getActiveObj().getCoordinates(), cellComp.getCoordinates());
                     percentage = (int) Math.round(percentage / Math.sqrt(distance));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -309,7 +334,7 @@ public class DrawMaster {
             g.setColor(isEditorMode() ? ColorManager.GOLDEN_WHITE : ColorManager.FOCUS);
 
             g.drawString("" + cellComp.getTopObjOrCell().getBlockingCoordinate(),
-                    getCompWidth() / 2, getCompHeight() / 2);
+             getCompWidth() / 2, getCompHeight() / 2);
 
             drawCoordinateMarkings(cellComp.getCoordinates().x, g, true);
             drawCoordinateMarkings(cellComp.getCoordinates().y, g, false);
@@ -321,11 +346,11 @@ public class DrawMaster {
             // if (isDrawFullBlockingInfo()){
             if (cellComp.getTopObjOrCell().getBlockingWallCoordinate() != null) {
                 g.drawString("" + cellComp.getTopObjOrCell().getBlockingWallCoordinate(),
-                        getCompWidth() * 4 / 5, getCompHeight() * 4 / 5);
+                 getCompWidth() * 4 / 5, getCompHeight() * 4 / 5);
             }
             if (cellComp.getTopObjOrCell().getBlockingWallDirection() != null) {
                 g.drawString("" + cellComp.getTopObjOrCell().getBlockingWallDirection(),
-                        getCompWidth() * 2 / 5, getCompHeight() * 3 / 5);
+                 getCompWidth() * 2 / 5, getCompHeight() * 3 / 5);
             }
             if (cellComp.getTopObjOrCell().isBlockingDiagonalSide()) {
                 g.drawString("left", getCompWidth() * 4 / 5, getCompHeight() * 2 / 5);
@@ -368,7 +393,7 @@ public class DrawMaster {
             // if (CoreEngine.isLevelEditor()) {
             if (d == null) {
                 Map<Unit, DIRECTION> map = obj.getGame().getDirectionMap().get(
-                        cellComp.getCoordinates());
+                 cellComp.getCoordinates());
                 if (map != null) {
                     d = map.get(obj);
                 }
@@ -472,7 +497,7 @@ public class DrawMaster {
         if (!cellComp.isTerrain()) {
             if ((cellComp.getTerrainObj().isTargetHighlighted())) {
                 Rectangle rect = new Rectangle(getStackOffsetX(), getStackOffsetY(), objSize,
-                        objSize);
+                 objSize);
                 cellComp.getMouseMap().put(rect, cellComp.getTopObj());
             }
             if (isSingleObj()) {
@@ -484,10 +509,10 @@ public class DrawMaster {
             }
 
             cellImage = ImageManager.getCellBorderForBfObj(cellComp.isMiniCellFrame(),
-                    cellComp.getObjects().get(0).getActivePlayerVisionStatus(),
-                    cellComp.getObjects().get(0).getUnitVisionStatus()
-                    // cellComp.getObjects().getOrCreate(0).getVisibilityLevel()
-                    // getVisibility(cellComp.getObjects().getOrCreate(0))
+             cellComp.getObjects().get(0).getActivePlayerVisionStatus(),
+             cellComp.getObjects().get(0).getUnitVisionStatus()
+             // cellComp.getObjects().getOrCreate(0).getVisibilityLevel()
+             // getVisibility(cellComp.getObjects().getOrCreate(0))
             ).getImage();
         }
         g.drawImage(cellImage, 0, 0, null);
@@ -533,7 +558,7 @@ public class DrawMaster {
             return;
         }
         SmartText text = new SmartText(obj.getIntParam(PARAMS.LIGHT_EMISSION) + "",
-                ColorManager.GOLDEN_WHITE);
+         ColorManager.GOLDEN_WHITE);
         int w = text.getWidth();
         int h = text.getHeight();
         // text.setFont(font)
@@ -570,7 +595,7 @@ public class DrawMaster {
             return;
         }
         Collection<? extends Obj> droppedItems = cellComp.getGame().getDroppedItemManager()
-                .getDroppedItems(cellComp.getTerrainObj());
+         .getDroppedItems(cellComp.getTerrainObj());
         if (!droppedItems.isEmpty()) {
             Image img = STD_IMAGES.BAG.getImage();
             int x = getCompWidth() - img.getWidth(null) - 10;
@@ -674,7 +699,7 @@ public class DrawMaster {
                 }
                 if (zoom != 100 || !isFramePaintZoom()) {
                     img = ImageManager.getSizedVersion(img, new Dimension(getObjCompWidth(),
-                            getObjCompHeight()), true);
+                     getObjCompHeight()), true);
                 }
 
                 // float factor = new Float(gammaMod) / 100;
@@ -742,10 +767,10 @@ public class DrawMaster {
         } else {
             // offset !
             if (cellComp.getGame().getAnimationManager().isStackAnimOverride(
-                    cellComp.getCoordinates())) {
+             cellComp.getCoordinates())) {
                 return;
             }
-            List<BattleFieldObject>  objects = new LinkedList<>(cellComp.getObjects());
+            List<BattleFieldObject> objects = new LinkedList<>(cellComp.getObjects());
             int stackOffsetX = 0;
             int stackOffsetY = 0;
             if (!(cellComp.isWall() || cellComp.isLandscape())) {
@@ -1209,7 +1234,7 @@ public class DrawMaster {
     private void drawSpecialIcons(BattleFieldObject obj) {
         // obj.getEngagementTarget();
         /*
-		 * when drawing stacked objects, draw a red arrow/sword towards the ET
+         * when drawing stacked objects, draw a red arrow/sword towards the ET
 		 */
 
 //        BattleFieldObject engageShowBattleFieldObject = obj.getGame().getManager().getInfoUnit();
@@ -1325,7 +1350,7 @@ public class DrawMaster {
         // if (image != null)
         // return image;
         image = new BufferedImage(GuiManager.getFullObjSize(), GuiManager.getFullObjSize(),
-                BufferedImage.TYPE_INT_ARGB);
+         BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
         // Image img = ImageManager.getSizedVersion(obj.getIcon().getEmitterPath(),
         // new Dimension(objSize,
@@ -1365,13 +1390,13 @@ public class DrawMaster {
             try {
                 if (obj.isInfoSelected()) {
                     infoObjImage = new BufferedImage(GuiManager.getFullObjSize(), GuiManager
-                            .getFullObjSize(), BufferedImage.TYPE_INT_ARGB);
+                     .getFullObjSize(), BufferedImage.TYPE_INT_ARGB);
                     g = infoObjImage.getGraphics();
                     drawObjectOverlays(g, obj);
 
                 } else if (obj.isActiveSelected()) {
                     BufferedImage activeObjImage = new BufferedImage(GuiManager.getFullObjSize(), GuiManager
-                            .getFullObjSize(), BufferedImage.TYPE_INT_ARGB);
+                     .getFullObjSize(), BufferedImage.TYPE_INT_ARGB);
                     g = activeObjImage.getGraphics();
                     drawObjectOverlays(g, obj);
 
@@ -1423,7 +1448,7 @@ public class DrawMaster {
         // + obj.getNameAndCoordinate());
 
 		/*
-		 * if an ally has BattleFieldObject in clear_sight, it is DETECTED then instead of an
+         * if an ally has BattleFieldObject in clear_sight, it is DETECTED then instead of an
 		 * outline, darken it according to active unit's vision here...
 		 *
 		 */
@@ -1476,14 +1501,14 @@ public class DrawMaster {
     private void applyHighlights(BufferedImage image, Obj obj) {
         Graphics g = image.getGraphics();
         if (isSingleObj() && cellComp.getTerrainObj().isTargetHighlighted()
-                || (obj.isTargetHighlighted())) {
+         || (obj.isTargetHighlighted())) {
             BORDER border = obj.isMine() ? ImageManager.BORDER_ALLY_HIGHLIGHT
-                    : ImageManager.BORDER_ENEMY_HIGHLIGHT;
+             : ImageManager.BORDER_ENEMY_HIGHLIGHT;
             g.drawImage(
-                    // ImageManager.getSizedVersion(border.getEmitterPath(), new
-                    // Dimension(objSize,
-                    // objSize))
-                    border.getImage(), 0, 0, null);
+             // ImageManager.getSizedVersion(border.getEmitterPath(), new
+             // Dimension(objSize,
+             // objSize))
+             border.getImage(), 0, 0, null);
         } else
         // if (obj.isInfoSelected()) {
         // if (obj.getGame().getManager().getInfoObj() == obj) {
@@ -1520,7 +1545,7 @@ public class DrawMaster {
 
     private void drawText(Graphics g, SmartText text, Point c) {
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setColor(text.getColor());
         g.setFont(text.getFont());
         g.drawString(text.getText(), c.x, c.y);
@@ -1541,10 +1566,10 @@ public class DrawMaster {
         String string = obj.getParam(PARAMS.C_N_OF_COUNTERS);
         SmartText text = new SmartText(string, CASE.getColor());
         Point c =
-                // DrawHelper.getPointForCounters(size, text, getWidth(),
-                // getHeight());
-                new Point(getCompWidth() - FontMaster.getStringWidth(text.getFont(), text.getText()), size
-                        + FontMaster.getFontHeight(text.getFont()));
+         // DrawHelper.getPointForCounters(size, text, getWidth(),
+         // getHeight());
+         new Point(getCompWidth() - FontMaster.getStringWidth(text.getFont(), text.getText()), size
+          + FontMaster.getFontHeight(text.getFont()));
         drawText(g, text, c);
     }
 
@@ -1570,7 +1595,7 @@ public class DrawMaster {
         int width = getCompWidth();
         int height = getCompHeight();
         Point c = new Point(width - FontMaster.getStringWidth(text.getFont(), text.getText()),
-                height - FontMaster.getFontHeight(text.getFont()) / 2);
+         height - FontMaster.getFontHeight(text.getFont()) / 2);
         drawText(g, text, c);
         // TODO after sizing down stacked objects, this becomes invalid!!!
         Rectangle rect = new Rectangle(x, y, size, size);
@@ -1604,7 +1629,7 @@ public class DrawMaster {
         if (!obj.isDetected() && !obj.isMine()) {
             return;
         }
-        Image unitEmblem =null ;// DC_ImageMaster.getUnitEmblem(obj, size, false);
+        Image unitEmblem = null;// DC_ImageMaster.getUnitEmblem(obj, size, false);
 
         if (unitEmblem == null) {
             return;
@@ -1663,6 +1688,11 @@ public class DrawMaster {
 
     public void setZoom(int zoom) {
         this.zoom = zoom;
+    }
+
+    public enum INTERACTIVE_ELEMENT {
+        AP, COUNTERS, ITEMS, TRAPS, LOCKS, CORPSES, STACK,
+
     }
 
 }
