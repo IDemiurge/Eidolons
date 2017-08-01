@@ -283,6 +283,7 @@ public class Unit extends DC_UnitModel {
 
     @Override
     public void removed() {
+        if (getSkills()!=null )
         for (Obj obj : getSkills()) {
             getGame().remove(obj);
         }

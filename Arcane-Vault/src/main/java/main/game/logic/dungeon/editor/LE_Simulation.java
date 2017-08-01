@@ -4,13 +4,15 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Cell;
+import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.bf.Coordinates;
+import main.game.core.game.DC_Game;
 import main.swing.components.obj.CellComp;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -124,7 +126,10 @@ public class LE_Simulation extends DC_Game {
 
     public void setSelectedEntity(Entity selectedEntity) {
         this.selectedEntity = selectedEntity;
-
+        if (selectedEntity instanceof DC_Obj)
+            getManager().infoSelect((DC_Obj)selectedEntity);
+        LevelEditor.getMainPanel().getInfoPanel().selectType(selectedEntity.getType());
+        LevelEditor.getMainPanel().getPlanPanel().refresh();
     }
 
     public DC_Cell getCellByCoordinate(Coordinates c) {
@@ -193,11 +198,10 @@ public class LE_Simulation extends DC_Game {
     }
 
 
-
-    private Map<Coordinates, List<BattleFieldObject>> unitMap;
     public Map<Coordinates, List<BattleFieldObject>> getUnitMap() {
-        if (unitMap == null) {
-            unitMap = new HashMap<>();
+        Map<Coordinates, List<BattleFieldObject>> unitMap=new HashMap<>();
+    for (BattleFieldObject sub:     getBfObjects() ){
+        MapMaster.addToListMap(unitMap, sub.getCoordinates(), sub);
         }
         return unitMap;
     }

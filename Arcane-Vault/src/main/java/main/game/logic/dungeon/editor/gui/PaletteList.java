@@ -47,7 +47,7 @@ public class PaletteList extends G_ListPanel<ObjType> implements ListSelectionLi
         }
         LevelEditor.getMainPanel().getPalette().setSelectedType(list.getSelectedValue());
 
-        LevelEditor.getMainPanel().getInfoPanel().selectType(list.getSelectedValue());
+
         LevelEditor.getSimulation().setSelectedEntity(list.getSelectedValue());
 
         LevelEditor.setMouseAddMode(true);

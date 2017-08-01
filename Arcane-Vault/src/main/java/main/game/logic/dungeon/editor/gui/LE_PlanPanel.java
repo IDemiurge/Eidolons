@@ -623,17 +623,6 @@ public class LE_PlanPanel extends G_Panel {
         return controlGroup;
     }
 
-    public void setControlGroup(DYNAMIC_CONTROL_GROUPS controlGroup) {
-        this.controlGroup = controlGroup;
-    }
-
-    public DYNAMIC_CONTROL_GROUPS getPreviontrolGroup() {
-        return previontrolGroup;
-    }
-
-    public void setPreviontrolGroup(DYNAMIC_CONTROL_GROUPS previontrolGroup) {
-        this.previontrolGroup = previontrolGroup;
-    }
 
     public enum DYNAMIC_CONTROL_GROUPS {
         BLOCK, OBJ, MISSION, LEVEL,

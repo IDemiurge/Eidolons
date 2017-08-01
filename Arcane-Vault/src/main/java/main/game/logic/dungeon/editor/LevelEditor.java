@@ -339,7 +339,8 @@ public class LevelEditor {
 
     public static void highlight(Coordinates... list) {
         if (getGrid() != null) {
-
+getGrid(). setStackedInfoHighlightRelativeCoordinates(list[0]);
+            getGrid(). setSelectedObjSize(true,128* getGrid().getZoom()/100);
         } else {
             getCurrentLevel().getDungeon().getMinimap().getGrid().highlight(Arrays.asList(list));
         }

@@ -298,8 +298,9 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
         if (selectedObj != null) {
             try {
                 selectedObj.setInfoSelected(true);
-                // LevelEditor.highlightsOff();
-                // LevelEditor.highlight(selectedObj.getCoordinates());
+                LevelEditor.getSimulation().setSelectedEntity(selectedObj);
+                 LevelEditor.highlightsOff();
+                 LevelEditor.highlight(selectedObj.getCoordinates());
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
