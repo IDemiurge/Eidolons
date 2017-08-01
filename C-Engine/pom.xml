@@ -21,10 +21,11 @@
         </dependency>
 
         <dependency>
-            <groupId>javazoom</groupId>
+            <groupId>com.badlogicgames.jlayer</groupId>
             <artifactId>jlayer</artifactId>
             <version>1.0.2-gdx</version>
         </dependency>
+
 
     </dependencies>
 
