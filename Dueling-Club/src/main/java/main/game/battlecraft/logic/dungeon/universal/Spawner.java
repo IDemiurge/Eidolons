@@ -14,6 +14,7 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
+import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.bf.Coordinates;
@@ -263,6 +264,9 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     }
 //TODO
     public void spawnWave(String typeName, DC_Player player, Coordinates coordinate) {
+    }
+
+    public void addDungeonEncounter(Dungeon c_dungeon, MapBlock block, Coordinates c, ObjType type) {
     }
 
 

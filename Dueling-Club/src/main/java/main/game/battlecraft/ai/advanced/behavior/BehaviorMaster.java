@@ -11,6 +11,7 @@ import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.path.ActionPath;
 import main.game.bf.Coordinates;
 import main.game.module.dungeoncrawl.ai.PatrolMaster;
@@ -28,7 +29,7 @@ public class BehaviorMaster extends AiHandler {
 
     private boolean recursion;
 
-    public BehaviorMaster(AiHandler master) {
+    public BehaviorMaster(AiMaster master) {
         super(master);
     }
 

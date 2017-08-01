@@ -9,12 +9,13 @@ import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
+import main.game.battlecraft.ai.advanced.machine.AiConst;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.elements.goal.GoalManager;
 import main.game.battlecraft.ai.tools.ParamAnalyzer;
 import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
-import main.game.battlecraft.ai.tools.target.TargetingMaster;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
@@ -29,23 +30,13 @@ import java.util.TreeMap;
  * Created by JustMe on 3/3/2017.
  */
 public class PruneMaster extends AiHandler {
-    private static final Integer DEFAULT_PRUNE_SIZE = 5;
     // include non-targeted actions as well, zone and so on
-    private static Integer forcedPruneSize;
 
-    public PruneMaster(AiHandler master) {
+    public PruneMaster(AiMaster master) {
         super(master);
     }
 
-    public static Integer getForcedPruneSize() {
-        return forcedPruneSize;
-    }
-
-    public static void setForcedPruneSize(Integer forcedPruneSize) {
-        PruneMaster.forcedPruneSize = forcedPruneSize;
-    }
-
-    public static List<Coordinates> pruneTargetCells(Action targetAction, List<Coordinates> list) {
+    public   List<Coordinates> pruneTargetCells(Action targetAction, List<Coordinates> list) {
         TreeMap<Integer, Coordinates> map = new TreeMap<>(SortMaster
                 .getNaturalIntegerComparator(false));
 
@@ -76,7 +67,7 @@ public class PruneMaster extends AiHandler {
         // minDistance=distance;
         // }
 
-        for (int i = map.size() - TargetingMaster.pruneLimit; i > 0; i--) {
+        for (int i = map.size() - getConstInt(AiConst.DEFAULT_PRUNE_SIZE); i > 0; i--) {
             map.remove(map.lastKey());
         }
 
@@ -245,11 +236,5 @@ public class PruneMaster extends AiHandler {
         return 6 - limit;
     }
 
-    private Integer getPruneSize(GOAL_TYPE goal) {
-        if (forcedPruneSize != null) {
-            return forcedPruneSize;
-        }
-        return DEFAULT_PRUNE_SIZE;
-    }
 
 }

@@ -10,7 +10,7 @@ import java.util.TimerTask;
 /**
  * Created by JustMe on 7/30/2017.
  */
-public class NewsManager {
+public class NewsWatcher {
     private static final String KEYWORDS_PATH = "keywords.txt";
     private static final String EMAILS_PATH = "emails.txt";
     private static final String WEBSITES_PATH = "websites.txt";

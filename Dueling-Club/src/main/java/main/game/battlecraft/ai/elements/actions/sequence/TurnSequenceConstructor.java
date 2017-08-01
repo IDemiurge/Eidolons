@@ -12,6 +12,7 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
@@ -27,7 +28,7 @@ import java.util.List;
  * Created by JustMe on 3/3/2017.
  */
 public class TurnSequenceConstructor extends AiHandler {
-    public TurnSequenceConstructor(AiHandler master) {
+    public TurnSequenceConstructor(AiMaster master) {
         super(master);
     }
 

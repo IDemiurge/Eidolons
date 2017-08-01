@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class MetaGoalMaster extends AiHandler {
 
-    public MetaGoalMaster(AiMaster aiMaster) {
-        this.master = aiMaster;
+    public MetaGoalMaster(AiMaster master) {
+        super(master);
     }
 
     public List<MetaGoal> initMetaGoalsForUnit(UnitAI ai) {

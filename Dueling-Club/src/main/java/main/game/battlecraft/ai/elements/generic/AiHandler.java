@@ -1,9 +1,14 @@
 package main.game.battlecraft.ai.elements.generic;
 
+import main.content.values.parameters.PARAMETER;
 import main.entity.obj.unit.Unit;
 import main.game.ai.AI_Logic;
 import main.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
 import main.game.battlecraft.ai.advanced.companion.MetaGoalMaster;
+import main.game.battlecraft.ai.advanced.machine.AiConst;
+import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster;
+import main.game.battlecraft.ai.advanced.machine.PriorityProfile;
+import main.game.battlecraft.ai.advanced.machine.PriorityProfileManager;
 import main.game.battlecraft.ai.elements.actions.ActionManager;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequenceConstructor;
 import main.game.battlecraft.ai.elements.actions.sequence.PathSequenceConstructor;
@@ -31,12 +36,24 @@ public abstract class AiHandler {
     protected   Unit unit;
 
 
-    public AiHandler() {
 
-    }
-    public AiHandler(AiHandler master) {
-        this.master = (AiMaster) master;
+    public AiHandler(AiMaster master) {
+        this.master =   master;
         this.game= master.getGame();
+    }
+
+    public float getParamPriority(PARAMETER p) {
+        return getMaster().getParamPriority(p);
+    }
+
+    public float getConstValue(AiConst p) {
+        return getMaster().getConstValue(p);
+    }
+    public int getConstInt(AiConst p) {
+        return getMaster().getConstInt(p);
+    }
+    public Unit getUnit() {
+        return getMaster().getUnit();
     }
 
     public void initialize() {
@@ -134,6 +151,17 @@ public abstract class AiHandler {
         return master.getTurnSequenceConstructor();
     }
 
+    public PriorityProfile getProfile() {
+        return getMaster().getProfile();
+    }
+
+    public AiPriorityConstantMaster getPriorityConstantMaster() {
+        return getMaster().getPriorityConstantMaster();
+    }
+
+    public PriorityProfileManager getPriorityProfileManager() {
+        return getMaster().getPriorityProfileManager();
+    }
 
     public List<AiHandler> getHandlers() {
         return master.getHandlers();

@@ -6,6 +6,7 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.elements.task.Task;
 import main.system.math.MathMaster;
 
@@ -13,7 +14,7 @@ public class OrderMaster extends AiHandler {
     private static final int DEFAULT_CHANCE = 75;
 
     // used in scripting enemies?
-    public OrderMaster(AiHandler master) {
+    public OrderMaster(AiMaster master) {
         super(master);
     }
 

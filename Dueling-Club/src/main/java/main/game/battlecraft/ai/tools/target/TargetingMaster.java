@@ -13,6 +13,7 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.elements.goal.GoalManager;
 import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import main.game.battlecraft.ai.tools.target.ReasonMaster.FILTER_REASON;
@@ -23,9 +24,8 @@ import java.util.List;
 import java.util.Set;
 
 public class TargetingMaster extends AiHandler {
-    public static int pruneLimit = 5;
 
-    public TargetingMaster(AiHandler master) {
+    public TargetingMaster(AiMaster master) {
         super(master);
     }
 

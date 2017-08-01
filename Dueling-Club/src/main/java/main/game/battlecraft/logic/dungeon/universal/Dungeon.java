@@ -18,6 +18,7 @@ import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.dungeon.minimap.Minimap;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnitFactory;
 
@@ -193,19 +194,28 @@ public class Dungeon extends LightweightEntity {
 
     }
 
-    public Coordinates getPoint(String arg) {
+    public Coordinates getPoint(Integer index) {
+        return getPoint(""+(index + 1));
+    }
+        public Coordinates getPoint(String arg) {
         Coordinates c=null ;
         if (arg.contains(ScriptSyntax.SPAWN_POINT) || StringMaster.isInteger(arg)) {
             arg = arg.replace(ScriptSyntax.SPAWN_POINT, "");
             Integer i = StringMaster.getInteger(arg) - 1;
             List<String> spawnPoints = StringMaster.openContainer(
-             getProperty(PROPS.ENEMY_SPAWN_COORDINATES));
+             getProperty(PROPS.COORDINATE_POINTS));
             c = new Coordinates(spawnPoints.get(i));
         }
         else {
             Map<String,String >  map = new DataUnitFactory(true).
-             deconstructDataString(getProperty(PROPS.COORDINATE_POINTS));
+             deconstructDataString(getProperty(PROPS.NAMED_COORDINATE_POINTS));
             String string = map.get(arg);
+            if (string==null ){
+                //find
+                Object key = new SearchMaster<>().findClosest(arg, map.keySet());
+                string = map.get(key);
+            }
+            return new Coordinates(string);
         }
         return c;
 //        getProperty(PROPS.ENCOUNTER_SPAWN_POINTS)

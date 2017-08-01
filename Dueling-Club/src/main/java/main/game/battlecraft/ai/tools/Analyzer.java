@@ -17,6 +17,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.Coordinates;
@@ -36,7 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Analyzer extends AiHandler {
-    public Analyzer(AiHandler master) {
+    public Analyzer(AiMaster master) {
         super(master);
     }
 

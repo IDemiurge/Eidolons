@@ -1,5 +1,8 @@
 package main.system.auxiliary;
 
+import main.content.values.properties.PROPERTY;
+import main.entity.Entity;
+
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -78,6 +81,22 @@ public class SearchMaster<T> {
             }
         }
         return null;
+    }
+    public static String getPropPart(String s, PROPERTY property, Entity entity) {
+        return getPropPart(s, property, entity, StringMaster.SEPARATOR);
+    }
+    public static String getPropPart(String s, PROPERTY property,
+                                     Entity entity, String separator) {
+        for(String substring: StringMaster.openContainer( entity.getProperty(property), separator )){
+            if (StringMaster.contains(substring, s)){
+                return substring;
+            }
+        }
+//        List list = StringMaster.openContainer(entity.getProperty(property), separator);
+//        Object closest = findClosest(s, list.toArray());
+//        if (closest!=null )
+//            return closest.toString();
+        return s ;
     }
 
 }

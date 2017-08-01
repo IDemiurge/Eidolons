@@ -11,6 +11,7 @@ import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.Analyzer;
 import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import main.game.bf.Coordinates;
@@ -25,7 +26,6 @@ public class CellPrioritizer extends AiHandler {
          *
          * alternatively, I could prioritize path's cells
          */
-    public final int prune_threshold = 2; // increase if there aren't too
     protected Map<Obj, Integer> cellPriorityMap;
     // many actions?
     protected Map<Obj, Integer> enemyPriorityMap;
@@ -33,7 +33,7 @@ public class CellPrioritizer extends AiHandler {
     private List<DC_ActiveObj> moves;
     private Map<Coordinates, List<ActionPath>> pathMap;
 
-    public CellPrioritizer(AiHandler master) {
+    public CellPrioritizer(AiMaster master) {
         super(master);
     }
 

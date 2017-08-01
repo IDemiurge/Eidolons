@@ -6,7 +6,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
-import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 
 import java.util.List;
 
@@ -28,10 +28,10 @@ public class DC_PriorityManager {
 
 
     private static PriorityManager impl;
-    private static AiHandler aiHandler;
+    private static AiMaster aiHandler;
 
     public static PriorityManager
-    init(AiHandler handler) {
+    init(AiMaster handler) {
         impl = new PriorityManagerImpl(handler);
         aiHandler = handler;
         return impl;

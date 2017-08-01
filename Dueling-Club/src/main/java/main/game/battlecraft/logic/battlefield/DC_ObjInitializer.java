@@ -204,6 +204,14 @@ public class DC_ObjInitializer {
 
                 }
                 ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.BF_OBJ);
+               if (type == null ){
+                   type = DataManager.getType(typeName, DC_TYPE.ENCOUNTERS);
+               }
+               if (type==null )
+               {
+                   main.system.auxiliary.log.LogMaster.log(1,"ERROR: Type not found - " +typeName);
+                   continue;
+               }
                 if (level != 0) {
                     type = new UnitLevelManager().getLeveledType(type, level);
                 }
@@ -260,8 +268,9 @@ public class DC_ObjInitializer {
                     }
                     if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
                         if (!game.isSimulation()) {
-//                            game.getBattleMaster().getSpawner().addDungeonEncounter(c_dungeon,
-//                                    block, c, type);
+                            game.getBattleMaster().getSpawner().
+                             addDungeonEncounter(c_dungeon,
+                                    block, c, type);
                         }
                         continue;
                     }

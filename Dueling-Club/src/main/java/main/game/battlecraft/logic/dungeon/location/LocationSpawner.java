@@ -18,6 +18,7 @@ import main.game.bf.Coordinates;
 import main.game.module.adventure.travel.EncounterMaster;
 import main.game.module.dungeoncrawl.ai.DungeonCrawler;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.test.PresetMaster;
 
@@ -104,10 +105,19 @@ public class LocationSpawner extends Spawner<Location> {
             map.put(block, encounterMap);
         }
         encounterMap.put(c, type);
+
     }
 
 
     public void spawnDungeonCreeps(Location dungeon) {
+        String info = dungeon.getProperty(PROPS.ENCOUNTER_INFO);
+        Map<Coordinates, Integer> delayMap = new HashMap<>();
+        for (String substring : StringMaster.openContainer(info)) {
+            Coordinates c = new Coordinates(substring.split("")[0]);
+            int round = StringMaster.getInteger(substring.split("=")[1]);
+            delayMap.put(c, round);
+        }
+
 
         // special units (preset)
         // groups - in rooms/spec places; behavior - per preference
@@ -160,6 +170,8 @@ public class LocationSpawner extends Spawner<Location> {
 
                     group = new Wave(waveType, game, new Ref(), game.getPlayer(false));
                     group.setCoordinates(c);
+                    Integer delay = delayMap.get(c);
+//                 TODO    getBattleMaster().getConstructor().scheduleEncounter(group, delay);
 
 //                    spawnWave(group, true);
 //                    initGroup(group);

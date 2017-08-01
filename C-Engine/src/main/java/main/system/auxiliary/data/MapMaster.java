@@ -18,6 +18,16 @@ public class MapMaster<E, T> {
         }
     }
 
+    public HashMap<E, T> cloneHashMap(Map<E, T> map) {
+        HashMap<E, T> clone = new HashMap<E, T>();
+        clone.putAll(map);
+        return clone;
+    }
+    public LinkedHashMap<E, T> cloneLinkedHashMap(Map<E, T> map) {
+        LinkedHashMap<E, T> clone = new LinkedHashMap<E, T>();
+        clone.putAll(map);
+        return clone;
+    }
 
     public static void addToListMap(Map map, Object key, Object value) {
         if (value == null) {

@@ -1,9 +1,14 @@
 package main.game.battlecraft.ai.elements.generic;
 
+import main.content.values.parameters.PARAMETER;
 import main.entity.obj.unit.Unit;
 import main.game.ai.AI_Logic;
 import main.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
 import main.game.battlecraft.ai.advanced.companion.MetaGoalMaster;
+import main.game.battlecraft.ai.advanced.machine.AiConst;
+import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster;
+import main.game.battlecraft.ai.advanced.machine.PriorityProfile;
+import main.game.battlecraft.ai.advanced.machine.PriorityProfileManager;
 import main.game.battlecraft.ai.elements.actions.ActionManager;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequenceConstructor;
 import main.game.battlecraft.ai.elements.actions.sequence.PathSequenceConstructor;
@@ -26,9 +31,11 @@ import java.util.List;
 /**
  * Created by JustMe on 3/3/2017.
  */
-public class AiMaster extends AiHandler {
+public class AiMaster {
     protected AI_Logic logic;
 
+    protected DC_Game game;
+    protected Unit unit;
     protected TaskManager taskManager;
     protected GoalManager goalManager;
     protected ActionManager actionManager;
@@ -50,10 +57,11 @@ public class AiMaster extends AiHandler {
     private List<AiHandler> handlers = new LinkedList<>();
     private AiScriptExecutor scriptExecutor;
     private MetaGoalMaster metaGoalMaster;
+    private AiPriorityConstantMaster priorityConstantMaster;
+    private PriorityProfileManager priorityProfileManager;
 
     public AiMaster(DC_Game game) {
         this.game = game;
-        this.master = this;
         this.actionSequenceConstructor = new ActionSequenceConstructor(this);
         this.taskManager = new TaskManager(this);
         this.goalManager = new GoalManager(this);
@@ -67,18 +75,20 @@ public class AiMaster extends AiHandler {
         this.threatAnalyzer = new ThreatAnalyzer(this);
         this.cellPrioritizer = new CellPrioritizer(this);
         this.pathSequenceConstructor = new PathSequenceConstructor(this);
-        this. turnSequenceConstructor = new TurnSequenceConstructor(this);
+        this.turnSequenceConstructor = new TurnSequenceConstructor(this);
         this.behaviorMaster = new BehaviorMaster(this);
-        this. atomicAi = new AtomicAi(this);
-        this. scriptExecutor = new AiScriptExecutor(this);
-        this. metaGoalMaster = new MetaGoalMaster(this);
+        this.atomicAi = new AtomicAi(this);
+        this.scriptExecutor = new AiScriptExecutor(this);
+        this.metaGoalMaster = new MetaGoalMaster(this);
+        this.priorityConstantMaster = new AiPriorityConstantMaster(this);
+        this.priorityProfileManager = new PriorityProfileManager(this);
 
         executor = new AiExecutor(game);
 
 
     }
 
-    @Override
+
     public void initialize() {
         this.actionSequenceConstructor.initialize();
         this.taskManager.initialize();
@@ -97,11 +107,25 @@ public class AiMaster extends AiHandler {
         this.threatAnalyzer.initialize();
         this.situationAnalyzer.initialize();
         this.metaGoalMaster.initialize();
+        this.priorityConstantMaster.initialize();
+        this.priorityProfileManager.initialize();
     }
 
     public void setUnit(Unit unit) {
-        this.unit=unit;
-getHandlers().forEach(handler -> handler.setUnit(unit));
+        this.unit = unit;
+        getHandlers().forEach(handler -> handler.setUnit(unit));
+    }
+
+    public PriorityProfile getProfile() {
+        return getPriorityProfileManager().getProfile();
+    }
+
+    public AiPriorityConstantMaster getPriorityConstantMaster() {
+        return priorityConstantMaster;
+    }
+
+    public PriorityProfileManager getPriorityProfileManager() {
+        return priorityProfileManager;
     }
 
     public MetaGoalMaster getMetaGoalMaster() {
@@ -120,72 +144,72 @@ getHandlers().forEach(handler -> handler.setUnit(unit));
         return logic;
     }
 
-    @Override
+
     public TaskManager getTaskManager() {
         return taskManager;
     }
 
-    @Override
+
     public GoalManager getGoalManager() {
         return goalManager;
     }
 
-    @Override
+
     public ActionManager getActionManager() {
         return actionManager;
     }
 
-    @Override
+
     public PriorityManager getPriorityManager() {
         return priorityManager;
     }
 
-    @Override
+
     public PruneMaster getPruneMaster() {
         return pruneMaster;
     }
 
-    @Override
+
     public PathBuilder getPathBuilder() {
         return pathBuilder;
     }
 
-    @Override
+
     public TargetingMaster getTargetingMaster() {
         return targetingMaster;
     }
 
-    @Override
+
     public Analyzer getAnalyzer() {
         return analyzer;
     }
 
-    @Override
+
     public ParamAnalyzer getParamAnalyzer() {
         return paramAnalyzer;
     }
 
-    @Override
+
     public ActionSequenceConstructor getActionSequenceConstructor() {
         return actionSequenceConstructor;
     }
 
-    @Override
+
     public AiExecutor getExecutor() {
         return executor;
     }
 
-    @Override
+
     public CellPrioritizer getCellPrioritizer() {
         return cellPrioritizer;
     }
 
-    @Override
+
     public PathSequenceConstructor getPathSequenceConstructor() {
         return pathSequenceConstructor;
     }
 
-    @Override
+
     public TurnSequenceConstructor getTurnSequenceConstructor() {
         return turnSequenceConstructor;
     }
@@ -198,7 +222,16 @@ getHandlers().forEach(handler -> handler.setUnit(unit));
         return situationAnalyzer;
     }
 
-    @Override
+    public float getParamPriority(PARAMETER p) {
+        return getPriorityConstantMaster().getParamPriority(p);
+    }
+    public float getConstValue(AiConst p) {
+        return getPriorityConstantMaster().getConstValue(p);
+    }
+    public int getConstInt(AiConst p) {
+        return getPriorityConstantMaster().getConstInt(p);
+    }
+
     public List<AiHandler> getHandlers() {
         return handlers;
     }
@@ -208,4 +241,11 @@ getHandlers().forEach(handler -> handler.setUnit(unit));
     }
 
 
+    public DC_Game getGame() {
+        return game;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
 }

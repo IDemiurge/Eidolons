@@ -8,7 +8,9 @@ import main.elements.costs.Cost;
 import main.elements.costs.Costs;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.ai.advanced.machine.AiConst;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.rules.UnitAnalyzer;
 import main.game.battlecraft.rules.buff.DC_BuffRule;
 import main.system.math.DC_MathManager;
@@ -31,7 +33,14 @@ public class ParamAnalyzer extends AiHandler {
     // separate formula for each cost param!
 
 
-    public ParamAnalyzer(AiHandler master) {
+
+    private String getCOST_PENALTY_FORMULA() {
+        return "100-sqrt({AMOUNT}*" +
+         getConstInt(AiConst.COST_SQUARE) +
+         ")-{AMOUNT}/" +
+         getConstInt(AiConst.COST_DIVIDER)  ;
+    }
+    public ParamAnalyzer(AiMaster master) {
         super(master);
     }
 
@@ -215,7 +224,7 @@ public class ParamAnalyzer extends AiHandler {
             int amount = MathMaster.getFractionValueCentimal(base_value, perc);
             penalty += (amount);
         }
-        return MathMaster.calculateFormula(COST_PENALTY_FORMULA, penalty);
+        return MathMaster.calculateFormula(getCOST_PENALTY_FORMULA(), penalty);
     }
 
     public int getParamPriority(PARAMETER p, Unit unit) {

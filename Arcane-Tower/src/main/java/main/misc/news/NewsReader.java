@@ -21,6 +21,8 @@ public class NewsReader {
                 e.printStackTrace();
             }
         }
+
+        NewsAlerter.sendAlerts();
     }
 
     public static void watch(String website) {
@@ -46,7 +48,7 @@ public class NewsReader {
            String keywords= NewsFilterer.
              getKeywordsPresent(article.getContents());
             if (!keywords.isEmpty() ) {
-                NewsAlerter.alert(article, keywords, website);
+                NewsAlerter.spotted(article, keywords, website);
             }
         }
     }

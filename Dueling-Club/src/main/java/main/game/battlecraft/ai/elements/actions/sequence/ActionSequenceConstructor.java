@@ -19,6 +19,7 @@ import main.game.battlecraft.ai.elements.actions.AiActionFactory;
 import main.game.battlecraft.ai.elements.actions.AiQuickItemAction;
 import main.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.elements.goal.Goal;
 import main.game.battlecraft.ai.elements.goal.GoalManager;
 import main.game.battlecraft.ai.elements.task.Task;
@@ -47,7 +48,7 @@ public class ActionSequenceConstructor extends AiHandler {
     private Unit unit;
     private List<Coordinates> prioritizedCells;
 
-    public ActionSequenceConstructor(AiHandler master) {
+    public ActionSequenceConstructor(AiMaster master) {
         super(master);
     }
 

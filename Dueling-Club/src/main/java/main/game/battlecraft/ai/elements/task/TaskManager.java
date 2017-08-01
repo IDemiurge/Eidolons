@@ -12,6 +12,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.Analyzer;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
@@ -23,7 +24,7 @@ import java.util.Set;
 
 public class TaskManager extends AiHandler {
 
-    public TaskManager(AiHandler master) {
+    public TaskManager(AiMaster master) {
         super(master);
     }
 

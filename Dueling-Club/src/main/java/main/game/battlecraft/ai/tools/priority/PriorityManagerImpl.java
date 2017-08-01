@@ -50,12 +50,14 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.PlayerAI.SITUATION;
 import main.game.battlecraft.ai.UnitAI;
+import main.game.battlecraft.ai.advanced.machine.AiConst;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.ActionManager;
 import main.game.battlecraft.ai.elements.actions.AiActionFactory;
 import main.game.battlecraft.ai.elements.actions.AiQuickItemAction;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.Analyzer;
 import main.game.battlecraft.ai.tools.ParamAnalyzer;
 import main.game.battlecraft.ai.tools.future.FutureBuilder;
@@ -89,15 +91,7 @@ import java.util.*;
  * Created by JustMe on 2/15/2017.
  */
 public class PriorityManagerImpl extends AiHandler implements PriorityManager {
-    private static final int DEFAULT_RESTORATION_PRIORITY_MOD = 40;
-    public final int DEFAULT_PRIORITY = 100;
-    public final int DEFAULT_ATTACK_PRIORITY = 100;
-    public final int WAIT_PRIORITY_FACTOR = 10;
 
-    public final int COUNTER_FACTOR = 4;
-    public final float CONVERGING_FACTOR = 0.5f;
-    public final Integer SUMMON_PRIORITY_MOD = 1000;
-    private float RETREAT_PRIORITY_FACTOR = 0.33f;
     private Unit unit;
     private UnitAI unit_ai;
     private int priority;
@@ -105,7 +99,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     private LOG_CHANNELS logChannel = LOG_CHANNELS.AI_DEBUG;
     private Map<Effect, RollEffect> rollMap;
 
-    public PriorityManagerImpl(AiHandler master) {
+    public PriorityManagerImpl(AiMaster master) {
         super(master);
     }
 
@@ -582,7 +576,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             }
         }
         // create unit quietly? precalc its best moves?
-        applyMultiplier(SUMMON_PRIORITY_MOD, "SUMMON_PRIORITY_MOD");
+        applyMultiplier(getConstInt(AiConst.SUMMON_PRIORITY_MOD), "SUMMON_PRIORITY_MOD");
         // priority = MathManager.applyMod(priority, SUMMON_PRIORITY_MOD);//
         // into a
         // AI_SUMMON_PRIORITY_MOD!
@@ -652,7 +646,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         if (unit_ai.getBehaviorMode() == AiEnums.BEHAVIOR_MODE.PANIC) {
             addConstant(250, "Panic");
         }
-        priority = MathMaster.round(priority * cowardice_factor * RETREAT_PRIORITY_FACTOR);
+        priority = MathMaster.round(priority * cowardice_factor * getConstInt(AiConst.RETREAT_PRIORITY_FACTOR));
 
         // if (meleeDangerFactor != 0)
         // priority = priority / meleeDangerFactor;
@@ -1033,7 +1027,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         int enemy_priority = getUnitPriority(targetObj);
         priority = enemy_priority;
         if (!unit.checkAiMod(AI_MODIFIERS.TRUE_BRUTE)) {
-            priority += DEFAULT_ATTACK_PRIORITY;
+            priority += getConstInt(AiConst.DEFAULT_ATTACK_PRIORITY);
         }
         if (active.getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
             if (active.isRanged()) {
@@ -1173,7 +1167,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     public int getCounterPenalty(Unit targetObj) {
         // TODO free?
         return -getDamagePriority(targetObj.getAction(DC_ActionManager.COUNTER_ATTACK), unit)
-         / COUNTER_FACTOR;
+         / getConstInt(AiConst.COUNTER_FACTOR);
     }
 
     @Override
@@ -1236,7 +1230,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public int getLethalDamagePriority() {
-        return DEFAULT_PRIORITY * 2;
+        return getConstInt(AiConst.DEFAULT_PRIORITY )* 2;
     }
 
     @Override
@@ -1360,7 +1354,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
         int ap = action.getSource().getIntParam(PARAMS.C_N_OF_ACTIONS) - 1;
         // differentiate between waiting on enemy and ally?
-        int base_priority = WAIT_PRIORITY_FACTOR * ap;
+        int base_priority = getConstInt(AiConst.WAIT_PRIORITY_FACTOR )* ap;
 
         int factor = (ally) ? 100 : 50;
 
@@ -1423,7 +1417,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     private int getRestorationPriorityMod(Unit unit) {
-        int mod = DEFAULT_RESTORATION_PRIORITY_MOD;
+        int mod = getConstInt(AiConst.DEFAULT_RESTORATION_PRIORITY_MOD);
         if (unit.getAI().getType() == AI_TYPE.BRUTE) {
             mod -= 15;
         }
@@ -1589,7 +1583,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                         }
                     }
                     int bonus = MathMaster.round(as2.getPriority()
-                     / asGroups.get(firstAction).size() * (CONVERGING_FACTOR));
+                     / asGroups.get(firstAction).size() * (getConstInt(AiConst.CONVERGING_FACTOR)));
                     LogMaster.log(getLogChannel(), bonus
                      + " Converging Paths bonus added to " + as.getPriority()
                      + as.getActions() + " from " + as2.getPriority() + as2.getActions());

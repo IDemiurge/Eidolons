@@ -18,6 +18,7 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.elements.goal.Goal;
 import main.game.battlecraft.ai.tools.Analyzer;
 import main.game.battlecraft.ai.tools.ParamAnalyzer;
@@ -40,7 +41,7 @@ import java.util.List;
 public class ActionManager extends AiHandler {
 
 
-    public ActionManager(AiHandler master) {
+    public ActionManager(AiMaster master) {
         super(master);
 
     }

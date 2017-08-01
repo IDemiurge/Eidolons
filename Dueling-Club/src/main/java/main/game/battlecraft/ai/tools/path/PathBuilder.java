@@ -8,6 +8,7 @@ import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.ActionManager;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import main.game.battlecraft.ai.tools.target.ReasonMaster;
 import main.game.battlecraft.ai.tools.target.ReasonMaster.FILTER_REASON;
@@ -49,11 +50,11 @@ public class PathBuilder extends AiHandler {
 
     private PathChoiceMaster pathChoiceMaster;
 
-    private PathBuilder(AiHandler master) {
+    private PathBuilder(AiMaster master) {
         super(master);
     }
 
-    public static PathBuilder getInstance(AiHandler master) {
+    public static PathBuilder getInstance(AiMaster master) {
         instance = new PathBuilder(master);
         return instance;
     }

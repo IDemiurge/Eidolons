@@ -15,6 +15,7 @@ import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.AiActionFactory;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.Analyzer;
 import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import main.game.battlecraft.logic.battlefield.DC_MovementManager;
@@ -33,7 +34,7 @@ public class AtomicAi extends AiHandler {
 
     private boolean hotzoneMode;
 
-    public AtomicAi(AiHandler master) {
+    public AtomicAi(AiMaster master) {
         super(master);
     }
 

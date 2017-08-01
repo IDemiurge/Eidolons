@@ -9,6 +9,7 @@ import main.game.battlecraft.logic.meta.party.warband.Warband;
 import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.system.auxiliary.EnumMaster;
 
 /**
  * Created by JustMe on 5/30/2017.
@@ -87,7 +88,11 @@ public class FormationMaster extends MetaPartyHandler  {
                 arg = POINTS.SCOUTS_SPAWN.toString();
                 break;
         }
-      return   dungeon.getPoint(arg);
+        Coordinates p = dungeon.getPoint(arg);
+        if (p==null )
+            p=dungeon.getPoint(EnumMaster.getEnumConstIndex(POINTS.class, formation));
+
+      return   p;
     }
 
 

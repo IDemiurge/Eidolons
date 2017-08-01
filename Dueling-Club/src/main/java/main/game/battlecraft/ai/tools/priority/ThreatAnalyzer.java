@@ -9,6 +9,7 @@ import main.entity.active.DC_UnitAction;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.future.FutureBuilder;
 import main.game.battlecraft.rules.combat.attack.AttackCalculator;
 import main.game.battlecraft.rules.combat.attack.DC_AttackMaster;
@@ -26,7 +27,7 @@ public class ThreatAnalyzer extends AiHandler {
     Map<UnitAI, Map<Unit, Integer>> threatMemoryMap;
     Map<UnitAI, Map<Unit, Integer>> grudgeMemoryMap;
 
-    public ThreatAnalyzer(AiHandler master) {
+    public ThreatAnalyzer(AiMaster master) {
         super(master);
     }
 

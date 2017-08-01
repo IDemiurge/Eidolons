@@ -8,8 +8,8 @@ import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.AiActionFactory;
 import main.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.path.ActionPath;
-import main.game.battlecraft.ai.tools.prune.PruneMaster;
 import main.game.battlecraft.ai.tools.target.TargetingMaster;
 import main.game.battlecraft.ai.tools.time.TimeLimitMaster;
 import main.game.bf.Coordinates;
@@ -29,7 +29,7 @@ public class PathSequenceConstructor extends AiHandler {
     Map<List<Coordinates>, List<ActionPath>> pathCache = new HashMap<>();
     Map<Targeting, List<Coordinates>> cellsCache = new XMap<>();
 
-    public PathSequenceConstructor(AiHandler master) {
+    public PathSequenceConstructor(AiMaster master) {
         super(master);
     }
 
@@ -169,7 +169,7 @@ public class PathSequenceConstructor extends AiHandler {
             unit.setCoordinates(originalCoordinate);
         }
         if (list.size() > 1) {
-            list = PruneMaster.pruneTargetCells(targetAction, list);
+            list = getPruneMaster().pruneTargetCells(targetAction, list);
         }
         if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
             LogMaster.log(LOG_CHANNELS.AI_DEBUG, "***" + targetAction

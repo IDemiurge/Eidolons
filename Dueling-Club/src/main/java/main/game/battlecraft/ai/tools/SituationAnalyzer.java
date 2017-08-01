@@ -8,6 +8,7 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.priority.ParamPriorityAnalyzer;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 public class SituationAnalyzer extends AiHandler {
 
-    public SituationAnalyzer(AiHandler master) {
+    public SituationAnalyzer(AiMaster master) {
         super(master);
     }
 
