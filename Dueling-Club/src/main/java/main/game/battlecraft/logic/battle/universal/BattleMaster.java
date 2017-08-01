@@ -25,6 +25,7 @@ public abstract class BattleMaster<E extends Battle> {
         this.battle = createBattle();
         this.optionManager = createOptionManager();
         this.statManager = createStatManager();
+        game.getManager().setStatMaster(statManager);
         this.constructor = createConstructor();
         this.outcomeManager = createOutcomeManager();
         this.playerManager = createPlayerManager();

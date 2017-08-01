@@ -1,11 +1,12 @@
 package main.libgdx.gui.controls.radial;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.entity.obj.DC_Obj;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
+import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.editors.lists.ListChooser;
+import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
 import main.system.auxiliary.EnumMaster;
 import main.test.debug.DebugMaster;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
@@ -28,9 +29,7 @@ public class DebugRadialManager {
     static {
         DEBUG_CONTROL.FUNC_OTHER.objects = getUnlistedFunctions().toArray();
         defaultTexture =
-                new TextureRegion(
-                        new Texture(RadialMenu.class.getResource("/data/marble_green.png").getPath())
-                );
+         TextureCache.getOrCreateR(STD_COMP_IMAGES.QUESTION.getPath());
     }
 
 

@@ -223,9 +223,12 @@ public class DC_SoundMaster extends SoundMaster {
 
     private static String getActionEffectSoundPath(DC_SpellObj spell, ANIM_PART part) {
         String path = getPath() + "soundset\\spells\\";
-        path += spell.getAspect().toString();
-        path += spell.getSpellGroup();
-        String file = FileManager.findFirstFile(path, part.toString(), true);
+        path = StringMaster.buildPath(path,spell.getAspect().toString(),
+         spell.getSpellGroup().toString(), part.toString() );
+
+        String file =
+         FileManager.findFirstFile(path, spell.getName(), true);
+//        FileManager.findFirstFile(path, part.toString(), true);
         String corePath = StringMaster.cropFormat(file);
         try {
             return FileManager.getRandomFilePathVariant(corePath, "mp3", true);

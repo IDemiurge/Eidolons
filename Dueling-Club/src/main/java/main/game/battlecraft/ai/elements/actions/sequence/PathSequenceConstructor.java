@@ -99,7 +99,7 @@ public class PathSequenceConstructor extends AiHandler {
             LogMaster.log(1, "***Action failed to getOrCreate target cells: "
              + action);
         }
-        LogMaster.log(1, Chronos.getTimeElapsedForMark("getTargetCells")
+        LogMaster.log(0, Chronos.getTimeElapsedForMark("getTargetCells")
          + " time to getOrCreate valid cells for  " + action + targetCells);
         return getPathSequences(moveActions, action, targetCells);
     }

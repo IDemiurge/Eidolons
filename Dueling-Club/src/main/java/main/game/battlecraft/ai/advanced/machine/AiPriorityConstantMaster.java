@@ -10,7 +10,9 @@ import java.util.Map;
  * Created by JustMe on 7/31/2017.
  */
 public class AiPriorityConstantMaster extends AiHandler {
+AiConst[] techConsts={
 
+};
     private static final String PARAM_PREFIX = "PARAM_";
 
     public AiPriorityConstantMaster(AiMaster master) {

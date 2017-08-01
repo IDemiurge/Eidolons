@@ -39,6 +39,7 @@ import static main.system.GuiEventType.UPDATE_BUFFS;
 public abstract class GameManager implements GenericGameManager {
     protected boolean spellBookInitialized = false;
     protected GameState state;
+    protected StatMaster statMaster;
     protected Game game;
     protected StateManager stateManager;
     protected GameMaster gameMaster;
@@ -225,7 +226,6 @@ public abstract class GameManager implements GenericGameManager {
                 return true;
             }
         }
-
         GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
         if (!game.isStarted()) {
             return true;
@@ -234,6 +234,7 @@ public abstract class GameManager implements GenericGameManager {
             return true;
         }
         LogMaster.log(LogMaster.EVENT_DEBUG, "*** Event being handled: " + event);
+        statMaster.eventBeingHandled(event);
         getState().checkTriggers(event);
         getState().checkRules(event);
         if (getState().isDirty()) {
@@ -247,6 +248,10 @@ public abstract class GameManager implements GenericGameManager {
         game.getLogManager().logEvent(event, result);
         return result;
 
+    }
+
+    public void setStatMaster(StatMaster statMaster) {
+        this.statMaster = statMaster;
     }
 
     public GameState getState() {

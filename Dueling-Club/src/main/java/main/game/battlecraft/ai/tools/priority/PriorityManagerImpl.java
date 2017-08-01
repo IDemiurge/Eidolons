@@ -200,7 +200,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             }
         }
         if (priority <= 0) {
-            LogMaster.log(1, priority+ " priority for " + as);
+            LogMaster.log(1, priority + " priority for " + as);
             return priority;
         }
         Integer bonus = unit_ai.getActionPriorityBonuses().get(action.getActive().getName());
@@ -1230,7 +1230,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public int getLethalDamagePriority() {
-        return getConstInt(AiConst.DEFAULT_PRIORITY )* 2;
+        return getConstInt(AiConst.DEFAULT_PRIORITY) * 2;
     }
 
     @Override
@@ -1251,15 +1251,15 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             targetObj = attachedObj.getOwnerObj();
         }
         Integer basePriority = targetObj.getIntParam(PARAMS.POWER);
-        if (unit_ai!=null ){
-        if (unit_ai.getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
-            basePriority = 100;
-        } else if (targetObj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
-            if (!Analyzer.isBlockingMovement(unit_ai.getUnit(), (Unit) targetObj)) {
-                return 0;
+        if (unit_ai != null) {
+            if (unit_ai.getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
+                basePriority = 100;
+            } else if (targetObj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
+                if (!Analyzer.isBlockingMovement(unit_ai.getUnit(), (Unit) targetObj)) {
+                    return 0;
+                }
+                basePriority = 20;
             }
-            basePriority = 20;
-        }
         }
         Integer healthMod = 100;
         if (less_or_more_for_health != null) {
@@ -1354,7 +1354,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
         int ap = action.getSource().getIntParam(PARAMS.C_N_OF_ACTIONS) - 1;
         // differentiate between waiting on enemy and ally?
-        int base_priority = getConstInt(AiConst.WAIT_PRIORITY_FACTOR )* ap;
+        int base_priority = getConstInt(AiConst.WAIT_PRIORITY_FACTOR) * ap;
 
         int factor = (ally) ? 100 : 50;
 
@@ -1512,20 +1512,25 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         Chronos.mark("Priority calc");
         unit = actions.get(0).getAi().getUnit();
         unit_ai = actions.get(0).getAi();
-       getUnitAi().setMetaGoals( getMetaGoalMaster().initMetaGoalsForUnit(getUnitAi()));
-        for (ActionSequence as : actions) {
-            Integer mod =  unit_ai.getGoalPriorityMod(as.getTask().getType());
+        if (getMetaGoalMaster().isOn())
+        try {
+            getUnitAi().setMetaGoals(getMetaGoalMaster().initMetaGoalsForUnit(getUnitAi()));
+            for (ActionSequence as : actions) {
+                Integer mod = unit_ai.getGoalPriorityMod(as.getTask().getType());
 //            unit_ai.getActionPriorityMods().
 //             get(as.getNextAction(). getActive().getName());
-            if (mod == null) {
-                mod = 0;
-            }
-            mod+=getMetaGoalMaster().getPriorityMultiplier(as);
-            mod+=100;
-            as.setPriorityMultiplier(mod);
+                if (mod == null) {
+                    mod = 0;
+                }
+                mod += getMetaGoalMaster().getPriorityMultiplier(as);
+                mod += 100;
+                as.setPriorityMultiplier(mod);
 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-            for (ActionSequence action : actions) { // into separate method to
+        for (ActionSequence action : actions) { // into separate method to
             // debug!
             if (action == null) {
                 continue;

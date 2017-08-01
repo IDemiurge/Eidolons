@@ -1,12 +1,11 @@
 package main.game.battlecraft.ai.advanced.machine;
 
 import main.data.XLinkedMap;
+import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
-import main.system.auxiliary.data.MapMaster;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -14,12 +13,26 @@ import java.util.Map;
  */
 public class PriorityProfileManager extends AiHandler {
     PriorityProfile priorityProfile;
+    Map<UnitAI, PriorityProfile> preferredProfilesMap;
+    ProfileMutator mutator;
 
     public PriorityProfileManager(AiMaster master) {
         super(master);
         priorityProfile = getPriorityProfile(null);
 
     }
+
+    public PriorityProfile getPreferredPriorityProfile(UnitAI ai) {
+        PriorityProfile profile = preferredProfilesMap.get(ai);
+        if (profile == null) {
+            profile = getPriorityProfile(null);
+            mutator.mutate(profile, ai);
+
+            preferredProfilesMap.put(ai, profile);
+        }
+        return profile;
+    }
+
 
     public PriorityProfile getPriorityProfile(float[] array) {
         Map<AiConst, Float> map = new XLinkedMap<>();
@@ -56,14 +69,6 @@ public class PriorityProfileManager extends AiHandler {
         this.priorityProfile = priorityProfile;
     }
 
-
-    public PriorityProfile mutate(PriorityProfile originalProfile) {
-        Map<AiConst, Float> map = originalProfile.getMap();
-        LinkedHashMap<AiConst, Float> clone = new MapMaster<AiConst, Float>().cloneLinkedHashMap(map);
-//   TODO      mutateMap(clone);
-        PriorityProfile newProfile = new PriorityProfile(clone);
-        return newProfile;
-    }
 
     public PriorityProfile createProfile(Map<AiConst, Float> map) {
 

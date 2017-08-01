@@ -17,6 +17,8 @@ import java.util.List;
  */
 public class MetaGoalMaster extends AiHandler {
 
+    private boolean on;
+
     public MetaGoalMaster(AiMaster master) {
         super(master);
     }
@@ -145,4 +147,11 @@ public class MetaGoalMaster extends AiHandler {
         return null;
     }
 
+    public boolean isOn() {
+        return on;
+    }
+
+    public void setOn(boolean on) {
+        this.on = on;
+    }
 }
