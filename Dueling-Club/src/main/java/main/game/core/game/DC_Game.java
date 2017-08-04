@@ -118,7 +118,6 @@ public class DC_Game extends MicroGame {
     private LaunchDataKeeper dataKeeper;
     @Refactor
     private Map<Unit, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
-    private GameLoop gameLoop;
 
     public DC_Game() {
         this(false);
@@ -726,7 +725,7 @@ public class DC_Game extends MicroGame {
     }
 
     public GameLoop getGameLoop() {
-        return gameLoop;
+        return loop;
     }
 
     public enum GAME_MODES {

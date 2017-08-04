@@ -97,7 +97,6 @@ public class DeathMaster extends Master {
             REF.setTarget(killed.getId());
             REF.setSource(killer.getId());
             if (killed instanceof Unit) {
-                getGame().getBattleMaster().getStatManager().unitDies((Unit) killed);
                 getGame().getRules().getMoraleKillingRule().unitDied((Unit) killed,
                         killer.getRef().getAnimationActive());
             }

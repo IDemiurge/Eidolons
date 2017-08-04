@@ -14,6 +14,7 @@ AiConst[] techConsts={
 
 };
     private static final String PARAM_PREFIX = "PARAM_";
+    private static final String PARAM_MOD_PREFIX = "PARAM_MOD_";
 
     public AiPriorityConstantMaster(AiMaster master) {
         super(master);
@@ -21,8 +22,10 @@ AiConst[] techConsts={
 
 
     public float getParamPriority(PARAMETER p) {
-        AiConst aiConst = getConst(PARAM_PREFIX + p.name());
-        return getConstValue(aiConst);
+        return getConstValue(getConstForParam(p));
+    }
+    public float getParamModPriority(PARAMETER p) {
+        return getConstValue(getConst(PARAM_MOD_PREFIX + p .name()));
     }
 
     public int getConstInt(AiConst aiConst) {
@@ -33,9 +36,12 @@ AiConst[] techConsts={
         return getProfile().getMap().get(aiConst);
     }
 
+    public AiConst getConstForParam(PARAMETER param) {
+        return getConst(PARAM_PREFIX + param.name());
+    }
     public AiConst getConst(String s) {
         //TODO improve!
-        return AiConst.valueOf(s);
+        return AiConst.valueOf(s.toUpperCase());
     }
 
 
@@ -44,4 +50,5 @@ AiConst[] techConsts={
 
         return new float[0];
     }
+
 }

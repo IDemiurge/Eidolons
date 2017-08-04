@@ -7,7 +7,7 @@ import main.system.data.DataUnit;
  * Created by JustMe on 5/10/2017.
  */
 public class DungeonData extends DataUnit<DUNGEON_VALUE> {
-    private static final Boolean FORMAT = false;
+    public static final Boolean FORMAT = false;
 
     public DungeonData() {
 

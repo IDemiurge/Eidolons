@@ -25,6 +25,9 @@ public class Eidolons {
         mainGame.init();
 }
 
+//    public static void init(){
+//
+//    }
     public static DC_Game getGame() {
         return game;
     }

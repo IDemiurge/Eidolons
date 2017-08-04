@@ -1,34 +1,37 @@
 package main.game.battlecraft.ai.advanced.machine;
 
 import main.data.XLinkedMap;
+import main.entity.type.ObjType;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by JustMe on 8/1/2017.
  */
 public class PriorityProfileManager extends AiHandler {
-    PriorityProfile priorityProfile;
-    Map<UnitAI, PriorityProfile> preferredProfilesMap;
+    //    PriorityProfile priorityProfile;
+    Map<ObjType, PriorityProfile> preferredProfilesMap = new HashMap<>();
+    Map<UnitAI, PriorityProfile> profilesMap= new HashMap<>();
     ProfileMutator mutator;
 
     public PriorityProfileManager(AiMaster master) {
         super(master);
-        priorityProfile = getPriorityProfile(null);
 
     }
 
-    public PriorityProfile getPreferredPriorityProfile(UnitAI ai) {
-        PriorityProfile profile = preferredProfilesMap.get(ai);
+    public PriorityProfile getPriorityProfile(UnitAI ai) {
+        PriorityProfile profile = profilesMap.get(ai.getUnit().getType());
         if (profile == null) {
-            profile = getPriorityProfile(null);
-            mutator.mutate(profile, ai);
-
-            preferredProfilesMap.put(ai, profile);
+            profile =
+             preferredProfilesMap.get(ai.getUnit().getType());
+//             getPriorityProfile(null);
+            mutator.mutate(profile, ai); // ???
+            profilesMap.put(ai, profile);
         }
         return profile;
     }
@@ -53,8 +56,11 @@ public class PriorityProfileManager extends AiHandler {
         return createProfile(map);
     }
 
-    public void setPriorityProfile(float[] array) {
-        setPriorityProfile(getPriorityProfile(array));
+    public PriorityProfile createProfile(Map<AiConst, Float> map) {
+        return new PriorityProfile(map);
+    }
+    public void setPriorityProfile(ObjType trainee, PriorityProfile profile) {
+        preferredProfilesMap.put(trainee, profile);
     }
 
     public PriorityProfile getProfile() {
@@ -62,16 +68,9 @@ public class PriorityProfileManager extends AiHandler {
     }
 
     public PriorityProfile getPriorityProfile() {
-        return priorityProfile;
-    }
-
-    public void setPriorityProfile(PriorityProfile priorityProfile) {
-        this.priorityProfile = priorityProfile;
+        return getPriorityProfile(getUnit().getAI());
     }
 
 
-    public PriorityProfile createProfile(Map<AiConst, Float> map) {
 
-        return new PriorityProfile(map);
-    }
 }

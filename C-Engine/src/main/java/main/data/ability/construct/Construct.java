@@ -28,8 +28,9 @@ public class Construct {
     private Class CLASS;
     private Argument arg;
     private boolean genericPrimitive;
+    private   String xml;
 
-    public Construct(String className, List<Construct> constructs) {
+    public Construct(String className, List<Construct> constructs, String xml) {
 
         LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "constructed: "
                 + className + " : " + constructs);
@@ -37,6 +38,7 @@ public class Construct {
         this.constructs = constructs;
         this.CLASS = Mapper.getMappedClass(className);
         this.setArg(Mapper.translateToArg(CLASS));
+        this.xml=xml;
     }
 
     /**
@@ -69,6 +71,9 @@ public class Construct {
         this.content = text;
     }
 
+    public String toXml() {
+        return xml;
+    }
     private ARGS getPrimitiveArg(String className) {
         switch (className) {
             case "FORMULA": {

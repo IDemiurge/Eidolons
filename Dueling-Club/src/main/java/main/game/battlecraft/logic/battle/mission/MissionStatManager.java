@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.battle.mission;
 
-import main.game.battlecraft.logic.battle.universal.BattleStatManager;
+import main.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 
 /**
  * Created by JustMe on 5/10/2017.

@@ -42,7 +42,8 @@ public class ConstructionManager {
             return new Construct(node.getNodeName(), node.getTextContent(),
                     true);
         }
-        return new Construct(node.getNodeName(), getConstructs(node));
+        String xml=XML_Converter.getStringFromXML(node, false);
+        return new Construct(node.getNodeName(), getConstructs(node), xml);
     }
 
     private static List<Construct> getConstructs(Node node) {

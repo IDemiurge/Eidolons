@@ -216,4 +216,18 @@ public class Conditions extends Vector<Condition> implements  Condition {
         return false;
     }
 
+    @Override
+    public void setXml(String xml) {
+
+    }
+
+    @Override
+    public String toXml() {
+        StringBuilder builder=new StringBuilder();
+        for (Condition sub :this) {
+            builder.append(sub.toXml());
+        }
+        return builder.toString();
+    }
+
 }

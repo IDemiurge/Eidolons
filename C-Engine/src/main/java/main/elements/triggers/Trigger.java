@@ -1,6 +1,7 @@
 package main.elements.triggers;
 
 import main.ability.Ability;
+import main.data.xml.XML_Converter;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.game.core.game.Game;
@@ -8,12 +9,9 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.system.auxiliary.log.LogMaster;
 
-import java.util.List;
-
 public class Trigger {
     protected Condition conditions;
     protected Integer basis;
-    protected List<EVENT_TYPE> eventTypes;
     protected EVENT_TYPE eventType;
     protected Ability abilities;
     protected boolean replacing = false;
@@ -105,9 +103,7 @@ public void init(){
         }
     }
 
-    public List<EVENT_TYPE> getEventTypes() {
-        return eventTypes;
-    }
+
 
     // public void addCondition(Condition condition) {
     // conditions.add(condition);
@@ -188,5 +184,15 @@ public void init(){
 
     public boolean isRemoveOnReset() {
     return true;
+    }
+
+    public String toXml() {
+        StringBuilder builder = new StringBuilder(120);
+      return   builder.append(  XML_Converter.openXml("Trigger")).
+         append(  XML_Converter.wrap("STANDARD_EVENT_TYPE",
+         getEventType().toString())).
+         append(  XML_Converter.wrap("Conditions", getConditions().toXml())).
+         append(  XML_Converter.wrap("Abilities", getAbilities().toXml())).
+         append(XML_Converter.closeXml("Trigger")).toString();
     }
 }

@@ -7,6 +7,7 @@ import main.game.core.game.DC_Game;
 import main.game.core.launch.PresetLauncher;
 import main.game.core.launch.TestLauncher;
 import main.game.core.launch.TestLauncher.CODE;
+import main.game.core.state.Saver;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.secondary.BooleanMaster;
@@ -147,7 +148,43 @@ public class FAST_DC {
         game.start(true);
         initKeyManager();
 
+//        Chronos.mark("xStream save");
+//        XStream xStream = new XStream(new DomDriver());
+//        String x = xStream.toXML( game);
+//        System.out.println(x);
+//        Chronos.logTimeElapsedForMark("xStream save");
+//
+//        Chronos.mark("xStream load");
+//       game = (DC_Game) xStream.fromXML(x);
+//        Chronos.logTimeElapsedForMark("xStream load");
+//
+//        Chronos.mark("xStream save2");
+//          x = xStream.toXML(DC_Game.game);
+//        System.out.println(x);
+//        Chronos.logTimeElapsedForMark("xStream save2");
+//
+//        if (DC_Game.game.equals(game)){
+//            Chronos.logTimeElapsedForMark("xStream save2");
+//        }
 
+        Chronos.mark("custom save");
+
+        String x = Saver.save("test");
+        System.out.println(x);
+        Chronos.logTimeElapsedForMark("custom save");
+
+        Chronos.mark("custom load");
+//        game = (DC_Game) Loader.loadGame(x);
+//        Chronos.logTimeElapsedForMark("custom load");
+//
+//        Chronos.mark("custom save2");
+//        x = custom.toXML(DC_Game.game);
+//        System.out.println(x);
+//        Chronos.logTimeElapsedForMark("custom save2");
+//
+//        if (DC_Game.game.equals(game)){
+//            Chronos.logTimeElapsedForMark("custom save2");
+//        }
     }
 
 

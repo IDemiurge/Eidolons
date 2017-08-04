@@ -4,13 +4,14 @@ import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 
+//all orders should check this
 public class OrderCondition extends MicroCondition {
 
     @Override
     public boolean check(Ref ref) {
         Unit targetUnit = (Unit) ref.getTargetObj();
 
-        if (targetUnit.isOwnedBy(ref.getSourceObj().getOwner())) {
+        if (!targetUnit.isOwnedBy(ref.getSourceObj().getOwner())) {
             return false;
         }
 
@@ -26,7 +27,7 @@ public class OrderCondition extends MicroCondition {
             return false;
         }
 
-        return false;
+        return true;
     }
 
 }

@@ -54,7 +54,9 @@ public class AbilityConstructor {
             nodeList = XML_Converter.getNodeList(nodeList.get(0));
         }
         for (Node NODE : nodeList) {
-            abilities.add(constructAbility(NODE)); // return Abilities
+            Ability abil = constructAbility(NODE);
+            abilities.add(abil); // return Abilities
+            abil.setXml(XML_Converter.getStringFromXML(node));
         }
 
         // for (Node ABILITIES : XML_Converter.getNodeList(node)) {
@@ -101,17 +103,19 @@ public class AbilityConstructor {
              "null abil targeting!");
             targeting = new FixedTargeting();
         }
-        if (node.getNodeName().equals(ACTIVE_ABILITY)) {
-            return new ActiveAbility(targeting, effects);
-        }
-        if (node.getNodeName().equals(ONESHOT_ABILITY)) {
-            return new OneshotAbility(targeting, effects);
-        }
-        if (node.getNodeName().equals(PASSIVE_ABILITY)) {
-            return new PassiveAbility(targeting, effects);
-        }
 
-        return null;
+        Ability abil=null ;
+        if (node.getNodeName().equals(ACTIVE_ABILITY)) {
+            abil= new ActiveAbility(targeting, effects);
+        } else
+        if (node.getNodeName().equals(ONESHOT_ABILITY)) {
+            abil= new OneshotAbility(targeting, effects);
+        } else
+        if (node.getNodeName().equals(PASSIVE_ABILITY)) {
+            abil= new PassiveAbility(targeting, effects);
+        }
+        abil.setXml(XML_Converter.getStringFromXML(node));
+        return abil;
     }
 
     private static Targeting constructTargeting(Node node) {

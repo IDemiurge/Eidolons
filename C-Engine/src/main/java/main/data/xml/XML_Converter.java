@@ -260,7 +260,10 @@ public class XML_Converter {
         return XML_Formatter.restoreXmlNodeText(child.getTextContent());
     }
 
-    public static String getStringFromXML(Node child) {
+    public static String toString(Node child) {
+        return getStringFromXML(child);
+    }
+        public static String getStringFromXML(Node child) {
         return getStringFromXML(child, true);
     }
 
@@ -361,10 +364,40 @@ public class XML_Converter {
         return list;
     }
 
-    public static Node findNode(String string) {
-        // TODO Auto-generated method stub
+    public static Node findNode(String xml, String nodeName) {
+        //TODO recursive
+        Document node = getDoc(xml);
+
+        for (Node sub : getNodeList( node )) {
+            if (sub.getNodeName().equalsIgnoreCase(nodeName)) {
+                return sub;
+            }
+        }
+        for (Node sub : getNodeListFromFirstChild( node, true ))
+        {
+            Node found = findNode(getStringFromXML(sub, false), nodeName);
+            if (found!=null )
+                return found;
+        }
+
         return null;
     }
+
+    private static Node findNode(List<Node> nodes, String nodeName) {
+        for (Node sub : nodes) {
+            if (sub.getNodeName().equalsIgnoreCase(nodeName)) {
+                return sub;
+            }
+        }
+
+        for (Node node : nodes) {
+            Node found = findNode(getNodeListFromFirstChild( node, true ), nodeName);
+            if (found!=null )
+                return found;
+        }
+        return null ;
+    }
+
 
     public static Document findAndBuildNode(String xmlString, String string) {
         int firstIndexOf = xmlString.indexOf(openXml(string));

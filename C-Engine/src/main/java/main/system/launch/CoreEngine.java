@@ -304,4 +304,8 @@ public class CoreEngine {
     public static void setJar(boolean jar) {
         CoreEngine.jar = jar;
     }
+
+    public static boolean isCombatGame() {
+        return !isArcaneTower() && !isArcaneVault() && !isLevelEditor();
+    }
 }

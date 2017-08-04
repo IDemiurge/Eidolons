@@ -5,7 +5,7 @@ import main.entity.Ref;
 
 import java.io.Serializable;
 
-public interface Condition extends   Serializable {
+public interface Condition extends   Serializable  {
 
     boolean preCheck(Ref ref);
 
@@ -19,6 +19,7 @@ public interface Condition extends   Serializable {
 
     boolean isTrue();
 
+    void setXml(String xml);
 
-
+    String toXml();
 }

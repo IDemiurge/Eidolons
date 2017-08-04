@@ -1,9 +1,6 @@
 package main.ability.effects.oneshot.mechanic;
 
-import main.ability.effects.MicroEffect;
-import main.ability.effects.OneshotEffect;
-import main.ability.effects.ReducedEffect;
-import main.ability.effects.ResistibleEffect;
+import main.ability.effects.*;
 import main.content.DC_ContentManager;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.data.ability.AE_ConstrArgs;
@@ -29,6 +26,7 @@ public class ModifyCounterEffect extends MicroEffect  implements OneshotEffect, 
         this.modtype = modtype;
         this.formula = formula;
         this.counterName = name;
+        mapThisToConstrParams(name, modtype, formula);
     }
 
     public ModifyCounterEffect(COUNTER counter, MOD modtype, String amount) {

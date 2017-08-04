@@ -11,6 +11,7 @@ public abstract class ConditionImpl  implements Condition {
     protected Game game;
     private boolean isTrue;
     private Entity match;
+    private  String xml;
 
     @Override
     public String toString() {
@@ -20,6 +21,18 @@ public abstract class ConditionImpl  implements Condition {
     @Override
     public Condition join(Condition condition) {
         return new Conditions(this, condition);
+    }
+
+    @Override
+    public void setXml(String xml) {
+      this.xml=xml;
+
+    }
+
+    @Override
+    public String toXml() {
+//        probably same as effects then?
+        return xml;
     }
 
     @Override

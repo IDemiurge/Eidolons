@@ -1,5 +1,6 @@
 package main.game.battlecraft.logic.battle.universal;
 
+import main.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.universal.Positioner;

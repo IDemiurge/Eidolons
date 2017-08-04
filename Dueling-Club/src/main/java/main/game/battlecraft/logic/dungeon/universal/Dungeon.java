@@ -9,6 +9,7 @@ import main.content.enums.DungeonEnums.DUNGEON_TAGS;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
+import main.data.xml.XML_Converter;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
@@ -21,6 +22,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnitFactory;
+import main.system.launch.TypeBuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -48,6 +50,24 @@ public class Dungeon extends LightweightEntity {
 
     }
 
+    public String toXml() {
+        String xml=XML_Converter.wrap("Name",getType().getName());;
+//        xml += XML_Converter.wrap(PARAMS.BF_WIDTH.getName(), getCellsX() + "");
+//        xml += XML_Converter.wrap(PARAMS.BF_HEIGHT.getName(), getCellsY() + "");
+        xml +=
+       TypeBuilder.getAlteredValuesXml(this, getType());
+
+if (levelFilePath!=null )
+        xml += XML_Converter.wrap("LevelFilePath", levelFilePath);
+        return XML_Converter.wrap("Dungeon", xml);
+    }
+    /*
+        dimensions
+        dungeon type (non-changeable)
+        custom params
+        or
+        level xml path
+         */
     public Dungeon(String typeName, boolean sublevel) {
         this(DataManager.getType(typeName, DC_TYPE.DUNGEONS), sublevel);
     }

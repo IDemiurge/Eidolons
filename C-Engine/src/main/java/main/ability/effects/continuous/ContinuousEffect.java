@@ -24,6 +24,11 @@ public class ContinuousEffect extends MicroEffect {
         }
     }
 
+    @Override
+    public String toXml() {
+        return getEffect().toXml();
+    }
+
     public static Effect transformEffectToContinuous(Effect effect) {
         if (effect instanceof OneshotEffect) {
             throw new RuntimeException("OneshotEffect cannot be made Continuous!" + effect);

@@ -1,5 +1,7 @@
 package main.game.battlecraft.ai.advanced.machine.train;
 
+import main.entity.type.ObjType;
+import main.game.battlecraft.ai.advanced.machine.PriorityProfile;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
 
 /**
@@ -13,26 +15,29 @@ public class AiTrainer {
         this.master = master;
     }
 
-    public AiTrainingResult train(float[] profile,
-                                  AiTrainingCriteria criteria,
-                                  AiTrainingParameters parameters) {
-        setProfile(profile);
+    public AiTrainingResult train(
+     //type at coordinates? or for all of same type?
+     PriorityProfile profile,
+     AiTrainingCriteria criteria,
+     AiTrainingParameters parameters) {
+        ObjType trainee = parameters.getTraineeType();
+        master.getPriorityProfileManager().setPriorityProfile(trainee, profile);
         initTrainingParameters(parameters);
         runAiScenario();
         return evaluateResult(criteria);
     }
 
-    private AiTrainingResult evaluateResult(AiTrainingCriteria criteria) {
-        return null;
+    private void initTrainingParameters(AiTrainingParameters parameters) {
+//        loadGame(parameters.get)
     }
 
     private void runAiScenario() {
+
     }
 
-    private void initTrainingParameters(AiTrainingParameters parameters) {
+    private AiTrainingResult evaluateResult(AiTrainingCriteria criteria) {
+
+        return null;
     }
 
-    private void setProfile(float[] profile) {
-        master.getPriorityProfileManager().setPriorityProfile(profile);
-    }
 }

@@ -11,6 +11,7 @@ import main.game.battlecraft.logic.meta.scenario.hq.HqShopManager;
 import main.game.battlecraft.logic.meta.universal.*;
 import main.game.core.game.ScenarioGame;
 import main.system.auxiliary.StringMaster;
+import main.test.frontend.ScenarioLauncher;
 
 /**
  * Created by JustMe on 5/13/2017.
@@ -34,8 +35,10 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
          getMetaDataManager().getMissionName();
 
         if (StringMaster.isEmpty(missionName)) {
+            int missionIndex=StringMaster.getInteger(ScenarioLauncher.missionIndex);
+
             chosenMission(StringMaster.openContainer(getMetaGame().getScenario().
-             getProperty(PROPS.SCENARIO_MISSIONS)).get(0));
+             getProperty(PROPS.SCENARIO_MISSIONS)).get(missionIndex));
             missionName =getMetaDataManager().getMissionName();
         }
         String levelPath = DataManager.getType(missionName, DC_TYPE.MISSIONS).

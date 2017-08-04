@@ -389,7 +389,10 @@ public class FileManager {
     //    public static List<String> listFiles(File file, boolean allowDirs) {
 //        return getFileNames(getFilesFromDirectory(file.getPath(), allowDirs));
 //    }
-    public static List<String> listFiles(File file) {
+    public static List<String> listFiles(String path) {
+        return getFileNames((getFilesFromDirectory(path, true)));
+    }
+        public static List<String> listFiles(File file) {
         return getFileNames(getFilesFromDirectory(file.getPath(), true));
     }
 

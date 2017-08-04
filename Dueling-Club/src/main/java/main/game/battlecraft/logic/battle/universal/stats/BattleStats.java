@@ -1,9 +1,12 @@
-package main.game.battlecraft.logic.battle.universal;
+package main.game.battlecraft.logic.battle.universal.stats;
 
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.battle.universal.BattleStats.BATTLE_STATS;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
+import main.game.battlecraft.logic.battle.universal.stats.BattleStats.BATTLE_STATS;
 import main.system.data.DataUnit;
 import main.system.datatypes.DequeImpl;
+
+import java.util.Map;
 
 /**
  * Created by JustMe on 5/7/2017.
@@ -19,6 +22,9 @@ public class BattleStats extends DataUnit<BATTLE_STATS> {
     private DequeImpl<Unit> slainEnemyUnits = new DequeImpl<>();
     private DequeImpl<Unit> slainPlayerUnits = new DequeImpl<>();
     private DequeImpl<Unit> destroyedObjects = new DequeImpl<>();
+
+    private Map<Unit, UnitStats>  unitStatMap;
+    private Map<DC_Player, PlayerStats>  playerStatMap;
 
     public int getLevel() {
         return getIntValue(BATTLE_STATS.LEVEL);
@@ -63,6 +69,27 @@ public class BattleStats extends DataUnit<BATTLE_STATS> {
 
     public DequeImpl<Unit> getDestroyedObjects() {
         return destroyedObjects;
+    }
+
+    public Map<Unit, UnitStats> getUnitStatMap() {
+        return unitStatMap;
+    }
+
+    public Map<DC_Player, PlayerStats> getPlayerStatMap() {
+        return playerStatMap;
+    }
+
+    public  PlayerStats getPlayerStats(DC_Player player) {
+        if (!getPlayerStatMap().containsKey(player)){
+            getPlayerStatMap().put(player, new PlayerStats(player));
+        }
+        return getPlayerStatMap().get(player);
+    }
+    public UnitStats getUnitStats(Unit unit) {
+        if (!getUnitStatMap().containsKey(unit)){
+            getUnitStatMap().put(unit, new UnitStats(unit));
+        }
+        return getUnitStatMap().get(unit);
     }
 
     public enum BATTLE_STATS {

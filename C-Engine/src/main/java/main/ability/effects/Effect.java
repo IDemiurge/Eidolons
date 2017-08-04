@@ -2,6 +2,7 @@ package main.ability.effects;
 
 import main.ability.Interruptable;
 import main.data.ability.construct.Reconstructable;
+import main.data.xml.XmlConvertable;
 import main.elements.triggers.Trigger;
 import main.entity.Ref;
 import main.entity.Referred;
@@ -11,7 +12,7 @@ import main.entity.obj.Obj;
 import main.system.graphics.ANIM;
 import main.system.math.Formula;
 
-public interface Effect extends Interruptable, Referred,
+public interface Effect extends Interruptable, Referred, XmlConvertable,
   Reconstructable<Effect> {
     int BASE_LAYER = 0;
     int SECOND_LAYER = 1;
@@ -98,6 +99,8 @@ public interface Effect extends Interruptable, Referred,
     void addToFormula(Object mod);
 
     void remove();
+
+
 
     enum UPKEEP_FAIL_ACTION {
         TREASON(" turns on its summoner as he is no longer able to pay the due!"),

@@ -13,7 +13,7 @@ public class PathFinder {
 
     private static final String BG_PATH = "big\\";
     private static final String PRESENTATION = "presentation\\";
-    private static String MICRO_MODULE_NAME = "duel-club";
+    public static String MICRO_MODULE_NAME = "duel-club";
     private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + "//templates";
     private static String MACRO_MODULE_NAME = "macro";
     private static String XML_PATH;

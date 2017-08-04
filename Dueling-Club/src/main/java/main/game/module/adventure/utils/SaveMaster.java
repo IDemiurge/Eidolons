@@ -38,6 +38,7 @@ public class SaveMaster {
                     .getGame(), true, true);
         }
 
+
     }
 
     public static void saveInNewThread() {

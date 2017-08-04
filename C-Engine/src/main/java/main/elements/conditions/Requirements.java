@@ -166,6 +166,16 @@ public class Requirements implements Condition {
         return false;
     }
 
+    @Override
+    public void setXml(String xml) {
+
+    }
+
+    @Override
+    public String toXml() {
+        return null;
+    }
+
     public List<String> getReasons() {
         return reasons;
     }

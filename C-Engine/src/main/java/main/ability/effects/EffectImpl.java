@@ -20,11 +20,15 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.graphics.ANIM;
 import main.system.graphics.SpriteAnimated;
+import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * An effect is contained in an {@link Ability} and can either be passive
@@ -67,10 +71,50 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     private boolean applied;
     private ActiveObj animationActive;
     private ANIM animation;
-
+    private String xml;
+    boolean mapped;
     public EffectImpl() {
         super();
+    }
 
+    public void mapThisToConstrParams(Object... args){
+//        if (ConstructionManager.isConstructing())
+//            return ;
+        if (isMappingOn())
+            return ;
+        if (mapped)
+            return ;
+        Class[] paramType = (Class[]) Arrays.stream(args).map(obj -> obj.getClass()).toArray();
+         UUID id = UUID.randomUUID();
+        getConstructorMap().put(id, paramType);
+    }
+
+    private static boolean isMappingOn() {
+        if (CoreEngine.isLevelEditor())
+            return false;
+        if (CoreEngine.isArcaneVault())
+            return false;
+        return true;
+    }
+
+    private static Map<UUID, Class[]> constructorMap;
+
+    public static Map<UUID, Class[]> getConstructorMap() {
+        return constructorMap;
+    }
+
+    @Override
+    public String toXml() {
+        if (xml != null)
+            return xml;
+        if (construct != null)
+            return construct.toXml();
+        //custom - just gonna have to serialize all fields using reflection?!
+        return null;
+    }
+
+    public void setXml(String xml) {
+        this.xml = xml;
     }
 
     @Override
@@ -137,7 +181,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     @Override
     public String toString() {
         return getClass().getSimpleName()
-                + ("" + this.hashCode()).substring(("" + this.hashCode()).length() - 2);
+         + ("" + this.hashCode()).substring(("" + this.hashCode()).length() - 2);
     }
 
     @Override
@@ -162,14 +206,14 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
         // for logging
         boolean active = getLayer() != BUFF_RULE && ref.getObj(KEYS.ACTIVE) != null
-                && (!(ref.getObj(KEYS.ABILITY) instanceof PassiveAbilityObj));
+         && (!(ref.getObj(KEYS.ABILITY) instanceof PassiveAbilityObj));
 
         if ((ref.getGroup() == null && targetGroup == null) || isIgnoreGroupTargeting()) {
             // single-target effect
             if (ref.getTargetObj() != null) {
                 LogMaster.log(!active ? LOG_CHANNELS.EFFECT_PASSIVE_DEBUG
-                        : LOG_CHANNELS.EFFECT_ACTIVE_DEBUG, toString() + " is being applied to a "
-                        + ref.getTargetObj());
+                 : LOG_CHANNELS.EFFECT_ACTIVE_DEBUG, toString() + " is being applied to a "
+                 + ref.getTargetObj());
             }
             return apply();
         } else {
@@ -185,12 +229,11 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
                 return apply();
             }
             LogMaster.log(!active ? LOG_CHANNELS.EFFECT_PASSIVE_DEBUG
-                    : LOG_CHANNELS.EFFECT_ACTIVE_DEBUG, toString()
-                    + " is being applied to a group " + group);
+             : LOG_CHANNELS.EFFECT_ACTIVE_DEBUG, toString()
+             + " is being applied to a group " + group);
             List<Integer> groupIds = group.getObjectIds();
             boolean result = true;
             for (Integer id : groupIds) {
-
 
 
                 if (isInterrupted()) {
@@ -203,7 +246,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
                 REF.setTarget(id);
                 LogMaster.log(0, "GROUP EFFECT (" + toString()
-                        + ") applied to " + game.getObjectById(id));
+                 + ") applied to " + game.getObjectById(id));
 
                 if (construct != null) {
                     result &= getCopy().apply(REF);
@@ -282,6 +325,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         setFormula(new Formula(getFormula().getAppendedByModifier(mod) + ""));
 
     }
+
     @Override
     public void multiplyFormula(Object mod) {
         setFormula(new Formula(getFormula().getAppendedByMultiplier(mod) + ""));
@@ -292,7 +336,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     public void addToFormula(Object mod) {
         setFormula(
 
-                new Formula(StringMaster.wrapInParenthesis(getFormulaString()) + "+" + mod));
+         new Formula(StringMaster.wrapInParenthesis(getFormulaString()) + "+" + mod));
 
     }
 
@@ -310,7 +354,8 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             formula = new Formula(originalFormula.toString());
         }
     }
-@Deprecated
+
+    @Deprecated
     protected void animateSprite() {
         if (!hasSprite()) {
             return;
@@ -450,7 +495,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     }
 
 
-
     public boolean isContinuousWrapped() {
         if (this instanceof ContinuousEffect) {
             return true;
@@ -492,6 +536,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     public STANDARD_EVENT_TYPE getEventTypeDone() {
         return null;
     }
+
     @Override
     public Boolean isForceStaticParse() {
         return forceStaticParse;

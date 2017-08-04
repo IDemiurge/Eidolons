@@ -295,7 +295,8 @@ public class XML_Writer {
                 continue;
             }
 
-            appendLeafNode(builder, StringMaster.capitalizeFirstLetter(param.getName()), value);
+            appendLeafNode(builder,
+             StringMaster.capitalizeFirstLetter(param.getName()), value);
         }
 
         builder.append("</params>");

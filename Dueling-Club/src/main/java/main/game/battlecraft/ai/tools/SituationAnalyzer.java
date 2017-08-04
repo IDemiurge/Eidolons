@@ -7,6 +7,7 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
+import main.game.battlecraft.ai.advanced.machine.AiConst;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.priority.ParamPriorityAnalyzer;
@@ -38,7 +39,7 @@ public class SituationAnalyzer extends AiHandler {
             LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Ranged threat " + rangedThreat + " from " + enemy.getName());
         }
 
-        int mod = 125 - ParamPriorityAnalyzer.getUnitLifeFactor(unit);
+        int mod = getConstInt(AiConst.DANGER_RANGED_BASE) - ParamPriorityAnalyzer.getUnitLifeFactor(unit);
         LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Ranged threat mod " + mod + " for " + unit.getName());
 
         if (mod != 0) {
@@ -60,7 +61,7 @@ public class SituationAnalyzer extends AiHandler {
             LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Melee threat " + meleeThreat + " from " + enemy.getName());
         }
 
-        int mod = 125 - ParamPriorityAnalyzer.getUnitLifeFactor(unit);
+        int mod = getConstInt(AiConst.DANGER_RANGED_BASE) - ParamPriorityAnalyzer.getUnitLifeFactor(unit);
         LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Melee threat mod " + mod + " for " + unit.getName());
 
         if (mod != 0) {

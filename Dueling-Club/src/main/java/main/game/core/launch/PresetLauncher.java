@@ -12,6 +12,8 @@ import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.GameFactory.GAME_SUBCLASS;
 import main.game.core.launch.TestLauncher.CODE;
+import main.game.core.state.Loader;
+import main.game.core.state.Saver;
 import main.libgdx.anims.controls.EmitterController;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.anims.particles.lighting.LightingManager;
@@ -42,9 +44,9 @@ import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
 
 public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
-     "AI", "Gui", "Last", "Recent", "New", "Anims", "Usability",
-//            "Emitters","Light",
-     "Standoff Test", "Standoff Preset", "Standoff", "Profiling"
+     "AI", "Gui", "Last", "Recent", "New", "Anims", "Load",
+//           "Usability", "Emitters","Light",     "Standoff Test", "Standoff Preset", "Standoff",
+     "Profiling"
 
     };
     public static int PRESET_OPTION = -1;
@@ -120,6 +122,7 @@ public class PresetLauncher {
             return customInit(launch);
         } else {
             switch (launchOption) {
+
                 case "Last":
                     Preset lastPreset = PresetMaster.loadLastPreset();
                     UnitGroupMaster.setFactionMode(false);
@@ -140,8 +143,12 @@ public class PresetLauncher {
                     FAST_DC.getTestLauncher().setSUPER_FAST_MODE(true);
                     return false;
                 case "Load":
-                    // if (choosePreset()==null)
-                    choosePreset();
+//                    File save = ListChooser.chooseFile(Saver.getSavePath());
+//                   if (save!=null ){
+//                       Loader.setPendingLoadPath(save.getPath());
+//                   }
+
+                    Loader.setPendingLoadPath(Saver.getSavePath()+"test.xml");
                     break;
 
             }
@@ -410,7 +417,7 @@ public class PresetLauncher {
         Standoff(null, RULE_SCOPE.FULL, null),
         Standoff_Test(null, RULE_SCOPE.TEST, true),
         Standoff_Preset(null, RULE_SCOPE.FULL, null),
-        Usability("Usability.xml", RULE_SCOPE.FULL, null);
+        Usability("Usability.xml", RULE_SCOPE.FULL, null) ;
         public Boolean immortal;
         public CONTROLLER controller;
         public String preset;

@@ -3,37 +3,29 @@ package main.game.battlecraft.ai.tools.priority;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.content.values.parameters.PARAMETER;
-import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.PlayerAI.SITUATION;
 import main.game.battlecraft.ai.elements.actions.Action;
+import main.game.battlecraft.ai.elements.generic.AiHandler;
+import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.ParamAnalyzer;
 import main.game.battlecraft.rules.UnitAnalyzer;
 import main.system.math.MathMaster;
 
-public class ParamPriorityAnalyzer {
+public class ParamPriorityAnalyzer extends AiHandler{
 
 
-    public static int getParamPriority(PARAMETER param, Obj target) {
-        int factor = 100;
-        if (target instanceof Unit) {
-            if (param == PARAMS.C_STAMINA || param == PARAMS.C_FOCUS
-                    || param == PARAMS.C_MORALE || param == PARAMS.C_ESSENCE) {
-                factor = getUnitParamRelevance(param, (Unit) target);
-            }
-        }
-        return MathMaster.getFractionValueCentimal(
-                getParamPercentPriority((PARAMS) param), factor);
+    public ParamPriorityAnalyzer(AiMaster master) {
+        super(master);
     }
+
 
     private static int getParamPercentPriority(PARAMS param) {
         if (param.isAttribute()) {
@@ -72,219 +64,131 @@ public class ParamPriorityAnalyzer {
         return 100;
 
     }
-
-    public static float getParamNumericPriority(PARAMETER param, DC_Obj target) {
-        // instead of adding the 'fraction of total' factor...
-        if (param.isAttribute()) {
-            return 15;
-        }
-//        if (param.isDynamic()) C_ is less important than total!
-//            param = (PARAMS) ContentManager.getCurrentParam(param);
-        if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
-            if (param instanceof PARAMS) {
-                switch ((PARAMS) param) {
-                    case C_ENDURANCE:
-                    case ENDURANCE:
-                    case C_TOUGHNESS:
-                    case TOUGHNESS:
-                        return 0;
-                }
-            }
-        }
-
-
+        public static boolean isParamIgnored(PARAMETER param, DC_Obj target) {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
-                case C_ENDURANCE:
-                    return 2;
-                case ENDURANCE:
-                    return 3;
-                case C_TOUGHNESS:
-                    return 3;
-                case TOUGHNESS:
-                    return 5;
                 case C_STAMINA:
                     if (target instanceof Unit) {
                         if (ParamAnalyzer.isStaminaIgnore((Unit) target)) {
-                            return 0;
+                            return true   ;
                         }
                     }
-                    return 8;
+                    return false;
                 case C_FOCUS:
                     if (target instanceof Unit) {
                         if (ParamAnalyzer.isFocusIgnore((Unit) target)) {
-                            return 0;
+                            return true;
                         }
                     }
-                    return 6;
+                    return false;
                 case C_MORALE:
                     if (target instanceof Unit) {
                         if (ParamAnalyzer.isMoraleIgnore((Unit) target)) {
-                            return 0;
+                            return true;
                         }
                     }
-                    return 3;
+                    return false;
                 case C_ESSENCE:
                     if (target instanceof Unit) {
                         if (!UnitAnalyzer.checkIsCaster((Unit) target)) {
-                            return 0;
+                            return true;
                         }
                     }
-                    return 4;
+                    return false;
 
                 case C_N_OF_ACTIONS:
                     if (target instanceof Unit) {
                         Unit heroObj = (Unit) target;
                         if (heroObj.isImmobilized()) {
-                            return 10;
+                            return true;
                         }
                     }
-                    return 50;
+                    return false;
                 case C_N_OF_COUNTERS:
                     if (target instanceof Unit) {
                         Unit heroObj = (Unit) target;
                         if (!heroObj.canCounter()) {
-                            return 0;
+                            return true;
                         }
                     }
-                    return 30;
+                    return false;
                 case SPIRIT:
                     if (target instanceof Unit) {
                         Unit heroObj = (Unit) target;
                         if (!heroObj.isLiving()) {
-                            return 0;
+                            return true;
                         }
                     }
-                    return 30;
+                    return false;
                 case CONCEALMENT:
                     if (target instanceof Unit) {
                         // TODO ownership!
                         Unit heroObj = (Unit) target;
                         if (!heroObj.checkPassive(UnitEnums.STANDARD_PASSIVES.DARKVISION)) {
                             if (target.getOwner().isMe()) {
-                                return 3;
+                                return false;
                             } else {
-                                return 0; // if sneak/tank/brute...
+                                return true; // if sneak/tank/brute...
                             }
                         } else {
                             if (target.getOwner().isMe()) {
-                                return 0;
+                                return true;
                             } else {
-                                return 2;
+                                return false;
                             }
                         }
                     }
-                    return 0;
-                case C_INITIATIVE_BONUS:
-                    if (!((Unit) target).canActNow()) {
-                        return 0;
-                    }
-                    if (target.getGame().getTurnManager().getUnitQueue().size() <= 2) {
-                        return 0;
-                    }
-                    if (target.getOwner().equals(
-                            target.getGame().getTurnManager().getActiveUnit()
-                                    .getOwner())) {
-                        if (target.getGame().getTurnManager().getUnitQueue()
-                                .indexOf((Unit) target) > 1) {
-                            return 1;
-                        }
-                        return 0;
-                    } else if (target.getIntParam(PARAMS.C_INITIATIVE) > target
-                            .getGame().getRules().getTimeRule()
-                            .getTimeRemaining())
-                    // target.getGame().getTurnManager().getUnitQueue().
-                    // }
-                    {
-                        return 2;
-                    }
-                case ARMOR:
-                    return 5;
-                case RESISTANCE:
-                    return 4;
-                case BASE_DAMAGE:
-                    return 2.5f;
-                case DAMAGE_BONUS:
-                    return 2.5f;
-                case DEFENSE:
-                    return 3;
-                case ATTACK:
-                    return 3;
+                    return true;
+                case C_ENDURANCE:
+                case ENDURANCE:
+                case C_TOUGHNESS:
+                case TOUGHNESS:
+                    if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE))
+                        return true;
+//                case C_INITIATIVE_BONUS:
+//                    if (!((Unit) target).canActNow()) {
+//                        return 0;
+//                    }
+//                    if (target.getGame().getTurnManager().getUnitQueue().size() <= 2) {
+//                        return 0;
+//                    }
+//                    if (target.getOwner().equals(
+//                            target.getGame().getTurnManager().getActiveUnit()
+//                                    .getOwner())) {
+//                        if (target.getGame().getTurnManager().getUnitQueue()
+//                                .indexOf((Unit) target) > 1) {
+//                            return 1;
+//                        }
+//                        return 0;
+//                    } else if (target.getIntParam(PARAMS.C_INITIATIVE) > target
+//                            .getGame().getRules().getTimeRule()
+//                            .getTimeRemaining())
+//                    // target.getGame().getTurnManager().getUnitQueue().
+//                    // }
+//                    {
+//                        return 2;
+//                    }
+                 
 
-                case ATTACK_MOD:
-                    return new Float(Math.sqrt(target
-                            .getIntParam(PARAMS.ATTACK))
-                            * target.getIntParam(PARAMS.DAMAGE)
-                            / 100
-                            + Math.sqrt(target
-                            .getIntParam(PARAMS.OFF_HAND_ATTACK))
-                            * target.getIntParam(PARAMS.OFF_HAND_DAMAGE) / 100)
+//                case ATTACK_MOD:
+//                    return new Float(Math.sqrt(target
+//                            .getIntParam(PARAMS.ATTACK))
+//                            * target.getIntParam(PARAMS.DAMAGE)
+//                            / 100
+//                            + Math.sqrt(target
+//                            .getIntParam(PARAMS.OFF_HAND_ATTACK))
+//                            * target.getIntParam(PARAMS.OFF_HAND_DAMAGE) / 100)
 
                             ;
-                case DEFENSE_MOD:
-                    return target.getIntParam(PARAMS.DEFENSE) * 4 / 100;
-                case DAMAGE_MOD:
-                    return target.getIntParam(PARAMS.DAMAGE) * 3 / 100;
-
-                case STAMINA:
-                    if (target instanceof Unit) {
-                        if (ParamAnalyzer.isStaminaIgnore((Unit) target)) {
-                            return 0;
-                        }
-                    }
-                    return 12;
-                case FOCUS:
-                    if (target instanceof Unit) {
-                        if (ParamAnalyzer.isFocusIgnore((Unit) target)) {
-                            return 0;
-                        }
-                    }
-                    return 9;
-                case MORALE:
-                    if (target instanceof Unit) {
-                        if (ParamAnalyzer.isMoraleIgnore((Unit) target)) {
-                            return 0;
-                        }
-                    }
-                    return 5;
-                case ESSENCE:
-                    if (target instanceof Unit) {
-                        if (!UnitAnalyzer.checkIsCaster((Unit) target)) {
-                            return 0;
-                        }
-                    }
-                    return 6;
-
-                case N_OF_ACTIONS:
-                    if (target instanceof Unit) {
-                        Unit heroObj = (Unit) target;
-                        if (heroObj.isImmobilized()) {
-                            return 10;
-                        }
-                    }
-                    return 80;
-                case N_OF_COUNTERS:
-                    if (target instanceof Unit) {
-                        Unit heroObj = (Unit) target;
-                        if (!heroObj.canCounter()) {
-                            return 0;
-                        }
-                    }
-                    return 40;
+                
 
             }
         }
 
-        // TODO Auto-generated method stub
-
-        return 0;
+        return false;
 
     }
-
-    public static int getPriorityForCounters(COUNTER c) {
-        return 0;
-
-    }
+ 
 
     public static int getUnitLifeFactor(Unit unit) {
         int e = unit.getIntParam(PARAMS.ENDURANCE_PERCENTAGE)
@@ -306,7 +210,7 @@ public class ParamPriorityAnalyzer {
         }
         return 0;
     }
-
+//TODO generate combinatorical AiConsts per GOAL_SITUATION !
     public static int getSituationFactor(GOAL_TYPE type, SITUATION situation) {
         if (situation == null) {
             return 0;
@@ -387,9 +291,6 @@ public class ParamPriorityAnalyzer {
         }
         return Math.min(0, -resistance);
     }
-
-    public int getPercentagePriority(boolean negative, PARAMETER p, Entity unit) {
-        return 0;
-    }
+ 
 
 }

@@ -48,9 +48,7 @@ import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.game.DC_Game;
-import main.game.core.state.DC_GameState;
-import main.game.core.state.StateCloner;
-import main.game.core.state.StatesKeeper;
+import main.game.core.state.*;
 import main.game.logic.battle.player.Player;
 import main.libgdx.anims.controls.EmitterController;
 import main.swing.components.obj.drawing.DrawMasterStatic;
@@ -116,6 +114,8 @@ public class DebugMaster {
     public static final DEBUG_FUNCTIONS[] group_basic = {
      DEBUG_FUNCTIONS.END_TURN,
      DEBUG_FUNCTIONS.PAUSE,
+     DEBUG_FUNCTIONS.SAVE,
+     DEBUG_FUNCTIONS.LOAD,
     };
     public static final DEBUG_FUNCTIONS[] group_toggle = {
      TOGGLE_DUMMY,
@@ -516,7 +516,12 @@ public class DebugMaster {
 
                 case EDIT_AI:
                     break;
-
+                case SAVE:
+                    Saver.save("test");
+                    break;
+                case LOAD:
+                    Loader.loadGame("test.xml");
+                    break;
                 case PAUSE:
                     DC_Game.game.getLoop().setPaused(!DC_Game.game.getLoop().isPaused());
                     break;
@@ -1305,7 +1310,8 @@ public class DebugMaster {
 
     public enum DEBUG_FUNCTIONS {
         // GAME
-
+SAVE,
+        LOAD,
         //
         SET_GLOBAL_ILLUMINATION,
         SET_GLOBAL_CONCEALMENT,

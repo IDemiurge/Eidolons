@@ -20,6 +20,10 @@ public class DC_BuffObj extends BuffObj {
         super(type, owner, game, ref, effect, duration, retainCondition);
 
     }
+
+    public DC_BuffObj(ObjType type, Player owner, MicroGame game, Ref ref) {
+        this(type, owner, game, ref, null, 0, null);
+    }
     public DC_BuffObj(DC_BuffObj buff) {
         this(buff.type, buff.owner,
          buff.getGame(), buff.ref, buff.effect,

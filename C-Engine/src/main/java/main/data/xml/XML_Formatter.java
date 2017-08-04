@@ -3,6 +3,7 @@ package main.data.xml;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
+import main.entity.DataModel;
 import main.system.auxiliary.StringMaster;
 
 import java.nio.charset.Charset;
@@ -180,5 +181,15 @@ public class XML_Formatter {
     private static String restoreXmlTextContent(String string) {
         return string.replace(StringMaster.getCodeFromChar(replacedTextContent),
          replacedTextContent);
+    }
+
+    public static String getValueNode(DataModel obj, VALUE value) {
+//        if (value instanceof  PROPERTY) {
+//            PROPERTY property = ((PROPERTY) value);
+//        }
+//        else {
+//        }
+        return XML_Converter.wrap(value.getName(),
+         formatXmlTextContent(obj.getValue(value), value));
     }
 }

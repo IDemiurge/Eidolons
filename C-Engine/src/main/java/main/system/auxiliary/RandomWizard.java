@@ -319,4 +319,7 @@ public class RandomWizard<E> {
         return CLASS.getEnumConstants()[getRandomInt(CLASS.getEnumConstants().length)];
     }
 
+    public static Object getRandomListObject(List list) {
+        return list.get(getRandomListIndex(list));
+    }
 }

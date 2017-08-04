@@ -15,6 +15,7 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ANIM;
 import main.system.text.TextParser;
+import org.w3c.dom.Node;
 
 //obsolete version - too specific 
 
@@ -40,6 +41,28 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
         this(type, ref, Player.NEUTRAL, ref.game);
     }
 
+
+    @Override
+    public AbilityType getType() {
+        return (AbilityType) super.getType();
+    }
+
+    @Override
+    public void setXml(String stringFromXML) {
+    }
+
+    public String getXml() {
+        return getType().getXml();
+    }
+
+    public Node getDoc() {
+        return getType().getDoc();
+    }
+
+    @Override
+    public String toXml() {
+        return getXml();
+    }
     @Override
     public boolean isSetThis() {
         return false;

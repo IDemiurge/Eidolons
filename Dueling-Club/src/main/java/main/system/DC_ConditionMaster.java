@@ -512,45 +512,5 @@ public class DC_ConditionMaster extends ConditionMaster {
         return result;
     }
 
-    public enum STD_DC_CONDITIONS implements Condition {
-        WAIT {
-            public Condition getCondition() {
-                return new WaitingFilterCondition();
-            }
 
-            @Override
-            public String getTooltip() {
-                return null;
-            }
-
-            @Override
-            public Condition join(Condition condition) {
-                return null;
-            }
-
-            @Override
-            public boolean isTrue() {
-                // TODO Auto-generated method stub
-                return false;
-            }
-        },;
-
-        public Condition getCondition() {
-            return null;
-        }
-
-
-        public boolean preCheck(Ref ref) {
-            return getCondition().preCheck(ref);
-        }
-
-        public boolean check(Ref ref) {
-            return getCondition().check(ref);
-        }
-
-        public boolean check(Entity match) {
-            return getCondition().check(match);
-        }
-
-    }
 }

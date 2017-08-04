@@ -23,6 +23,7 @@ import main.game.core.game.DC_Game;
 import main.game.core.game.GameFactory;
 import main.game.core.game.GameFactory.GAME_SUBCLASS;
 import main.game.core.launch.PresetLauncher.LAUNCH;
+import main.game.core.state.Loader;
 import main.game.module.adventure.travel.EncounterMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
@@ -129,10 +130,16 @@ public class TestLauncher //extends MetaGameMaster
 
     public DC_Game initDC_Game() {
         if (game == null) {
-            if (PresetLauncher.getLaunch() != null)
+            if (PresetLauncher.getLaunch() != null) {
                 if (PresetLauncher.getLaunch().gameType != null)
                     gameType = PresetLauncher.getLaunch().gameType;
+            }
+            else {
+                if (Loader.getPendingLoadPath()!=null ){
+                    return Loader.loadPendingSave();
+                }
 
+                }
             game = GameFactory.createGame(gameType);
 //                game = new DC_Game(false);
         }

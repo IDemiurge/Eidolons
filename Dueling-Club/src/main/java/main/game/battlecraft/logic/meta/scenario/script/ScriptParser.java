@@ -4,6 +4,7 @@ import main.ability.Ability;
 import main.ability.AbilityImpl;
 import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.VariableManager;
+import main.data.xml.XML_Converter;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.game.core.game.DC_Game;
@@ -55,7 +56,7 @@ public class ScriptParser {
         return null;
     }
 
-    private static Condition getDefaultCondition(STANDARD_EVENT_TYPE event_type, String vars) {
+    public static Condition getDefaultCondition(STANDARD_EVENT_TYPE event_type, String vars) {
         String var1 = getVarOne(event_type, vars);
         String var2 = getVarTwo(event_type, vars);
         return DC_ConditionMaster.getInstance().getConditionFromTemplate(
@@ -92,15 +93,23 @@ public class ScriptParser {
         script = ScriptMaster.getScriptByName(script); //TODO
 //non-trigger scripts?
         String originalText = script;
-        String eventPart = StringMaster.getFirstItem(script, ScriptSyntax.PART_SEPARATOR);
-        STANDARD_EVENT_TYPE event_type = parseEvent(eventPart);
+        String processedPart = StringMaster.getFirstItem(script, ScriptSyntax.PART_SEPARATOR);
+        STANDARD_EVENT_TYPE event_type = parseEvent(processedPart);
         script = StringMaster.cropFirstSegment(script, ScriptSyntax.PART_SEPARATOR);
         Condition condition = null;
-        condition = getDefaultCondition(event_type, VariableManager.getVars(eventPart));
-        if (condition == null) {
-            String conditionPart = StringMaster.getFirstItem(script, ScriptSyntax.PART_SEPARATOR);
-            condition = parseConditions(conditionPart);
+        condition = getDefaultCondition(event_type, VariableManager.getVars(processedPart));
+        if (condition != null) {
+            condition.setXml(XML_Converter.wrap("ScriptedCondition",
+             XML_Converter.wrap("STANDARD_EVENT_TYPE", event_type.toString())
+              +XML_Converter.wrap("STRING",VariableManager.getVars(processedPart))
+             ));
         }
+            else {
+                String conditionPart = StringMaster.getFirstItem(script,
+                 ScriptSyntax.PART_SEPARATOR);
+                condition = parseConditions(conditionPart);
+                condition.setXml(conditionPart);
+            }
 
         boolean isRemove = true;
 //        if (contains("cyclic"))remove = false;

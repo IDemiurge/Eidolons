@@ -5,6 +5,7 @@ import main.ability.ActiveAbility;
 import main.ability.effects.AttachmentEffect;
 import main.ability.effects.ContainerEffect;
 import main.ability.effects.Effect;
+import main.data.xml.XML_Converter;
 import main.elements.conditions.Condition;
 import main.elements.targeting.FixedTargeting;
 import main.elements.triggers.Trigger;
@@ -14,6 +15,8 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
+import main.system.launch.CoreEngine;
+import org.w3c.dom.Node;
 
 public class AddTriggerEffect extends MultiEffect implements
  AttachmentEffect, ContainerEffect {
@@ -48,11 +51,13 @@ public class AddTriggerEffect extends MultiEffect implements
     // continuous
     @Override
     public boolean applyThis() {
-        if (game.isSimulation()) {
+        if (!CoreEngine.isCombatGame()){
             return true;
         }
         if (trigger == null) {
             trigger = new Trigger(event_type, conditions, ability);
+            Node xml = XML_Converter.findNode(toXml(), "Conditions");
+            conditions.setXml(XML_Converter.getStringFromXML(xml));
         }
         trigger.setRetainCondition(retainCondition);
         ref.getGame().getManager().addTrigger(trigger);

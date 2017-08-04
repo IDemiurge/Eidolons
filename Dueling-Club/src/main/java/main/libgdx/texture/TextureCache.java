@@ -24,6 +24,7 @@ public class TextureCache {
     private static TextureCache textureCache;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);
+    private static boolean altTexturesOn=true;
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
     private String imagePath;
@@ -89,6 +90,16 @@ public class TextureCache {
         return new TextureRegion(textureCache._getOrCreate(path));
     }
 
+    private static boolean checkAltTexture(String path) {
+        if (altTexturesOn) {
+            return path.contains("//gen//");
+        }
+        return false;
+    }
+
+    private String getAltTexturePath(String filePath) {
+        return filePath.replace("//gen//", "//erdem//");
+    }
     public static TextureRegion getOrCreateGrayscaleR(String path) {
         return new TextureRegion(getOrCreateGrayscale(path));
     }
@@ -128,31 +139,43 @@ public class TextureCache {
         }
 
         if (!this.cache.containsKey(path)) {
-            try {
-                Path p = Paths.get(imagePath, path);
-                Texture t = new Texture(
-                        new FileHandle(p.toString()), Pixmap.Format.RGBA8888, false
-                );
-                cache.put(path, t);
-            } catch (Exception e) {
-//                e.printStackTrace();
-                if (!cache.containsKey(getEmptyPath())) {
-                    Texture emptyTexture = new Texture(getEmptyPath());
-                    cache.put(getEmptyPath(), emptyTexture);
-                    return emptyTexture;
-                }
-                return cache.get(getEmptyPath());
+            Path p = Paths.get(imagePath, path);
+            String filePath = p.toString();
+            Texture t = null;
+            if (checkAltTexture(filePath))
+                try {
+                    t = new Texture(new FileHandle(getAltTexturePath(filePath)),
+                     Pixmap.Format.RGBA8888, false);
+                } catch (Exception e) {
 
-            }
+                }
+            if (t == null)
+                try {
+                    t = new Texture(new FileHandle(filePath), Pixmap.Format.RGBA8888, false);
+                    cache.put(path, t);
+                } catch (Exception e) {
+//                e.printStackTrace();
+                    if (!cache.containsKey(getEmptyPath())) {
+                        Texture emptyTexture = new Texture(getEmptyPath());
+                        cache.put(getEmptyPath(), emptyTexture);
+                        return emptyTexture;
+                    }
+                    return cache.get(getEmptyPath());
+
+                }
         }
 
         return this.cache.get(path);
     }
 
+    public static void setAltTexturesOn(boolean altTexturesOn) {
+        TextureCache.altTexturesOn = altTexturesOn;
+    }
+
     private String getEmptyPath() {
         return
-                ImageManager.getImageFolderPath() +
-                        ImageManager.getDefaultEmptyListIcon();
+         ImageManager.getImageFolderPath() +
+          ImageManager.getDefaultEmptyListIcon();
     }
 }
 

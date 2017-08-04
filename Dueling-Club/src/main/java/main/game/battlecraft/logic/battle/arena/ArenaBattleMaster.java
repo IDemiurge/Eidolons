@@ -3,7 +3,7 @@ package main.game.battlecraft.logic.battle.arena;
 import main.game.battlecraft.logic.battle.universal.BattleConstructor;
 import main.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.battlecraft.logic.battle.universal.BattleOutcomeManager;
-import main.game.battlecraft.logic.battle.universal.BattleStatManager;
+import main.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import main.game.core.game.DC_Game;
 
 /**

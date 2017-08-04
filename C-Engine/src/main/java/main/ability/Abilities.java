@@ -28,7 +28,19 @@ public class Abilities implements Ability, Iterable<Ability> {
         add(ability);
     }
 
+    @Override
+    public void setXml(String stringFromXML) {
 
+    }
+
+    @Override
+    public String toXml() {
+        StringBuilder builder=new StringBuilder();
+        for (Ability sub : getAbils()) {
+            builder.append(sub.toXml());
+        }
+        return builder.toString();
+    }
 
     public boolean add(Ability e) {
         return abils.add(e);

@@ -863,7 +863,9 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
          .getRef());
         duration = MathMaster
          .addFactor(duration, ParamPriorityAnalyzer.getResistanceFactor(action));
-        multiplier = (int) Math.sqrt(duration * 1000) + 50;
+        multiplier = (int) Math.sqrt(duration *
+         getConstInt(AiConst.GEN_SPELL_DURATION_SQRT_MULTIPLIER))
+         +getConstInt(AiConst.GEN_SPELL_DURATION_MULTIPLIER) ;
         return multiplier;
     }
 
@@ -875,7 +877,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         if (roll != null) {
             roll.getRef().setTarget(target.getId());
         }
-        float numericPriority = ParamPriorityAnalyzer.getParamNumericPriority(param, target);
+        float numericPriority = 0;
+        if (!ParamPriorityAnalyzer.isParamIgnored(param, target))
+            numericPriority = getParamPriority(param);
+//         ParamPriorityAnalyzer.getParamNumericPriority(param, target);
         int mod = 100;
         if (roll != null) {
             mod = getRollPriorityMod(roll);
@@ -887,8 +892,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         addConstant(multiplier, param.getShortName() + " const");
 
         amount = MathMaster.getCentimalPercentage(amount, target.getIntParam(param));
-        int p = ParamPriorityAnalyzer.getParamPriority(param, // LIMIT?
-         target);
+        int p = 0;
+        if (!ParamAnalyzer.isParamIgnored(unit, param))
+            p = (int) getPriorityConstantMaster().getParamModPriority(param);
+
 
         multiplier = MathMaster.getFractionValueCentimal(p, amount) * mod / 100;
 
@@ -1513,23 +1520,23 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         unit = actions.get(0).getAi().getUnit();
         unit_ai = actions.get(0).getAi();
         if (getMetaGoalMaster().isOn())
-        try {
-            getUnitAi().setMetaGoals(getMetaGoalMaster().initMetaGoalsForUnit(getUnitAi()));
-            for (ActionSequence as : actions) {
-                Integer mod = unit_ai.getGoalPriorityMod(as.getTask().getType());
+            try {
+                getUnitAi().setMetaGoals(getMetaGoalMaster().initMetaGoalsForUnit(getUnitAi()));
+                for (ActionSequence as : actions) {
+                    Integer mod = unit_ai.getGoalPriorityMod(as.getTask().getType());
 //            unit_ai.getActionPriorityMods().
 //             get(as.getNextAction(). getActive().getName());
-                if (mod == null) {
-                    mod = 0;
-                }
-                mod += getMetaGoalMaster().getPriorityMultiplier(as);
-                mod += 100;
-                as.setPriorityMultiplier(mod);
+                    if (mod == null) {
+                        mod = 0;
+                    }
+                    mod += getMetaGoalMaster().getPriorityMultiplier(as);
+                    mod += 100;
+                    as.setPriorityMultiplier(mod);
 
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         for (ActionSequence action : actions) { // into separate method to
             // debug!
             if (action == null) {

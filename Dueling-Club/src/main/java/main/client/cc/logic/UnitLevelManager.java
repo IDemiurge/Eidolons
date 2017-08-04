@@ -40,11 +40,15 @@ public class UnitLevelManager {
         }
         newType.setName(
                 // .setProperty(G_PROPS.NAME,
-                name + LEVEL + newType.getIntParam(PARAMS.UNIT_LEVEL));
+         getLeveledTypeName(newType.getIntParam(PARAMS.UNIT_LEVEL), name));
         if (generateType) {
             baseType.getGame().initType(newType);
         }
         return newType;
+    }
+
+    public static String getLeveledTypeName(Integer level, String name) {
+        return name + LEVEL + level;
     }
 
     public ObjType getLeveledType(ObjType baseType, int levelUps) {

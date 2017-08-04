@@ -22,6 +22,7 @@ public class AbilityImpl extends ReferredElement implements Ability {
     private boolean interrupted;
     private boolean forceTargeting = true;
     private boolean forcePresetTargeting;
+    private String xml;
 
     public AbilityImpl(Targeting t, Effect e) {
         targeting = t;
@@ -37,6 +38,16 @@ public class AbilityImpl extends ReferredElement implements Ability {
 
     public AbilityImpl() {
 
+    }
+
+    @Override
+    public void setXml(String xml) {
+        this.xml=xml;
+    }
+
+    @Override
+    public String toXml() {
+        return xml;
     }
 
     @Override

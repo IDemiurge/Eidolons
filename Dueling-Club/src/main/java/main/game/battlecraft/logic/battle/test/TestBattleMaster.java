@@ -1,6 +1,7 @@
 package main.game.battlecraft.logic.battle.test;
 
 import main.game.battlecraft.logic.battle.universal.*;
+import main.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import main.game.core.game.DC_Game;
 
 /**

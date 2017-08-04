@@ -1,8 +1,10 @@
 package main.game.battlecraft.logic.battle.mission;
 
+import main.client.cc.logic.UnitLevelManager;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
+import main.data.ability.construct.VariableManager;
 import main.elements.triggers.Trigger;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -12,6 +14,7 @@ import main.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SC
 import main.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battle.universal.ScriptManager;
+import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
@@ -160,7 +163,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
          args[0]);
         List<DialogScenario> list = SceneFactory.getScenes(dialogue);
 
-        GuiEventManager.trigger(GuiEventType.DIALOG_SHOW,  new DialogueHandler(dialogue, getGame(), list) );
+        GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, new DialogueHandler(dialogue, getGame(), list));
         return true;
     }
 
@@ -242,28 +245,46 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
             i++;
         List<String> units = new LinkedList<>();
 //        if (args[i].contains(ScriptSyntax.SPAWN_ARG_UNITS_WAVE))
-        {
-            ObjType wave = DataManager.getType(args[i], DC_TYPE.ENCOUNTERS);
-            if (wave != null)
-                units.addAll(StringMaster.openContainer(wave.getProperty(PROPS.PRESET_GROUP)));
-            //TODO adjust wave? difficulty => level
+        String unitString = args[i];
+        int level = StringMaster.getInteger(VariableManager.getVars(unitString));
+        unitString = VariableManager.removeVarPart(unitString);
+        ObjType wave = DataManager.getType(unitString, DC_TYPE.ENCOUNTERS);
+        if (wave != null) {
+            for (String sub : StringMaster.openContainer(
+             wave.getProperty(PROPS.PRESET_GROUP))) {
+                if (level > 0)
+                    units.add(UnitLevelManager.getLeveledTypeName(level, sub));
+                else
+                    units.add(sub);
+            }
         }
+
+        //TODO adjust wave? difficulty => level
+
+        boolean group = false;
         if (units.isEmpty()) {
-            units.addAll(StringMaster.openContainer(UnitGroupMaster.getUnitGroupData(args[i], 0)));
+            units.addAll(StringMaster.openContainer(UnitGroupMaster.
+             getUnitGroupData(unitString, level)));
         }
         if (units.isEmpty()) { //DataManager.gettypes
-            units.addAll(StringMaster.openContainer(args[i]));
-        }
+            units.addAll(StringMaster.openContainer(unitString));
+        } else group = true;
         if (units.isEmpty())
             return false;
         i++;
 
-//        CoordinatesFactory.createCoordinates(args[i]);
+//        CoordinatesFactory.createCoordinates(unitString);
 //        if (origin==null )
-//            origin = ref.getObj(args[i]).getCoordinates();
+//            origin = ref.getObj(unitString).getCoordinates();
 
-        List<Coordinates> coordinates =
-         getCoordinatesListForUnits(args[i], player, units, ref);
+        List<Coordinates> coordinates = null;
+        if (group) {
+            for (String sub : units) {
+                coordinates.add(DC_ObjInitializer.getCoordinatesFromObjString(sub));
+
+            }
+        } else coordinates =
+         getCoordinatesListForUnits(unitString, player, units, ref);
         String data = "";
         data +=
          DataUnitFactory.getKeyValueString(UnitData.FORMAT,
@@ -299,7 +320,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
             List<String> spawnPoints = StringMaster.openContainer(
              getMaster().getDungeon().getProperty(PROPS.ENEMY_SPAWN_COORDINATES));
             origin = new Coordinates(spawnPoints.get(i));
-             origin= getMaster().getDungeon().getPoint(arg);
+            origin = getMaster().getDungeon().getPoint(arg);
 //            getUnit(arg).getCoordinates()
             //another units' coordinates
             //closest point

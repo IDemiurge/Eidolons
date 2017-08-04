@@ -7,6 +7,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.XmlDocHolder;
 import main.data.xml.XML_Converter;
+import main.data.xml.XML_Formatter;
 import main.entity.DataModel;
 import main.entity.type.ObjType;
 import main.entity.type.XmlHoldingType;
@@ -19,6 +20,8 @@ import java.security.SecureRandom;
 
 public class TypeBuilder {
 
+    public static final String PROPS_NODE = "props";
+    public static final String PARAMS_NODE = "params";
     private static TypeInitializer typeInitializer;
 
     public static ObjType buildType(Node node, String typeType) {
@@ -41,16 +44,16 @@ public class TypeBuilder {
 
         NodeList nl = node.getChildNodes();
         LogMaster.log(0, "building type: " + node.getNodeName());
-        
+
         for (int i = 0; i < nl.getLength(); i++) {
             Node child = nl.item(i);
 
-            if (child.getNodeName().equals("params")) {
+            if (child.getNodeName().equals(PARAMS_NODE)) {
 
                 setParams(type, child.getChildNodes());
 
             }
-            if (child.getNodeName().equals("props")) {
+            if (child.getNodeName().equals(PROPS_NODE)) {
 
                 setProps(type, child.getChildNodes());
 
@@ -91,15 +94,15 @@ public class TypeBuilder {
             if ((type) instanceof XmlHoldingType) {
 
 
-                if ( StringMaster.getWellFormattedString ( child.getNodeName()).equals(
+                if (StringMaster.getWellFormattedString(child.getNodeName()).equals(
                  ((XmlHoldingType) (type)).getXmlProperty()
-                 .getName())
-                        ) {
+                  .getName())
+                 ) {
 
                     child = XML_Converter.getAbilitiesDoc(child);
 
                     type.setProperty(ContentManager.getPROP(child.getNodeName()), XML_Converter
-                            .getStringFromXML(child, false));
+                     .getStringFromXML(child, false));
 
                     ((XmlDocHolder) type).setDoc(child);
                     continue;
@@ -150,4 +153,22 @@ public class TypeBuilder {
         TypeBuilder.typeInitializer = typeInitializer;
     }
 
+    public static String getAlteredValuesXml(DataModel entity, ObjType type) {
+        StringBuilder xmlBuilder = new StringBuilder();
+        xmlBuilder.append(XML_Converter.openXml(PROPS_NODE));
+        for (PROPERTY sub : entity.getPropMap().keySet()) {
+            if (sub.isDynamic() || !entity.getProperty(sub).equalsIgnoreCase(type.getProperty(sub)))
+                xmlBuilder.append(XML_Formatter.getValueNode(entity, (sub)));
+        }
+        xmlBuilder.append(XML_Converter.closeXml(PROPS_NODE));
+
+        xmlBuilder.append(XML_Converter.openXml(PARAMS_NODE));
+        for (PARAMETER sub : entity.getParamMap().keySet()) {
+            if (sub.isDynamic() || !entity.getParam(sub).equals(type.getParam(sub)))
+                xmlBuilder.append(XML_Formatter.getValueNode(entity, (sub)));
+        }
+        xmlBuilder.append(XML_Converter.closeXml(PARAMS_NODE));
+
+        return xmlBuilder.toString();
+    }
 }

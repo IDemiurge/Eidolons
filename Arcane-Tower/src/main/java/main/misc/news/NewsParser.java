@@ -25,11 +25,10 @@ public class NewsParser {
             String name = linkObject.text();
             String link = linkObject.attr("href");
             String contents = NewsReader.getHtmlFromLink(link);
-            if (content == null) {
-                link = website + link;
-            }
+            if (contents == null) {
+                link = (website + link).replace(" /", "");
             contents = NewsReader.getHtmlFromLink(link);
-            articles.add( new NewsArticle(name, link, contents));
+        } articles.add( new NewsArticle(name, link, contents));
         });
 
         return articles;

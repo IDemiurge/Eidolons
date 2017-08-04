@@ -1,6 +1,7 @@
 package main.game.battlecraft.logic.battle.mission;
 
 import main.game.battlecraft.logic.battle.universal.*;
+import main.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.core.game.DC_Game;
 
