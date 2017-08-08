@@ -4,6 +4,7 @@ import main.data.ability.AE_Item;
 import main.data.ability.Mapper;
 import main.data.xml.XML_Converter;
 import main.system.auxiliary.log.LogMaster;
+import org.apache.commons.lang3.tuple.Pair;
 import org.w3c.dom.Node;
 
 import java.util.LinkedList;
@@ -45,6 +46,27 @@ public class ConstructionManager {
         String xml=XML_Converter.getStringFromXML(node, false);
         return new Construct(node.getNodeName(), getConstructs(node), xml);
     }
+    public static String getXmlFromObject(Object obj) { //for restoring constructor xml
+        String xml=""+obj;
+        if (obj.getClass().isEnum()){
+// StringMaster.getWellFormattedString(string
+        }else {
+            //primitive
+
+        }
+        // what else? effects, other constructible/convertable...
+        return xml;
+    }
+
+    public static String getXmlFromConstructorData(String name, Pair<Class, String>[] pairs) {
+        String xml="";
+        for (Pair<Class, String> sub : pairs) {
+            //TODO find arg for that class?
+            // do  xml node and classname match?
+            xml+= XML_Converter.wrap(Mapper.getArgName( sub.getKey() ), sub.getValue());
+        }
+        return XML_Converter.wrap(name, xml);
+    }
 
     private static List<Construct> getConstructs(Node node) {
         List<Construct> list = new LinkedList<>();
@@ -54,4 +76,5 @@ public class ConstructionManager {
         }
         return list;
     }
+
 }

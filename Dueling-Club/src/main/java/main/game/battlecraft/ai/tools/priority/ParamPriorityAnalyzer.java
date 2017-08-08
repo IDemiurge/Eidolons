@@ -6,7 +6,6 @@ import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
-import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
@@ -200,16 +199,6 @@ public class ParamPriorityAnalyzer extends AiHandler{
 
     }
 
-    public static int getAI_TypeFactor(GOAL_TYPE goal, PLAYER_AI_TYPE type) {
-        switch (type) {
-            case BRUTE:
-                if (goal == AiEnums.GOAL_TYPE.ATTACK) {
-                    return 65;
-                }
-                break;
-        }
-        return 0;
-    }
 //TODO generate combinatorical AiConsts per GOAL_SITUATION !
     public static int getSituationFactor(GOAL_TYPE type, SITUATION situation) {
         if (situation == null) {

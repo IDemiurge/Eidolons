@@ -33,12 +33,10 @@ public class GameLoop {
     }
 
     public void start() {
-        while (true) {
-            roundLoop();
-        }
+        while (roundLoop());
     }
 
-    private void roundLoop() {
+    private boolean roundLoop() {
         game.getStateManager().newRound();
         boolean retainActiveUnit = false;
         while (true) {
@@ -56,6 +54,9 @@ public class GameLoop {
                 break;
             }
             result = makeAction();
+            if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()){
+                return false;
+            }
             if (result == null) {
                 retainActiveUnit = true;
                 continue;
@@ -65,7 +66,9 @@ public class GameLoop {
                 break;
             }
         }
-        game.getManager().endRound();
+        if (!game.getManager().endRound())
+            return false;
+        return true;
     }
 
     public DC_Game getGame() {

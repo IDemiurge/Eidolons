@@ -273,13 +273,13 @@ public class DC_GameMaster extends GameMaster {
             return matched.get(0);
 if (distanceSort!=null )
         if (distanceSort) {
-            SortMaster.sortByExpression(matched,
+            SortMaster.sortEntitiesByExpression(matched,
              unit1 -> -PositionMaster.getDistance((Obj) unit1, ref.getSourceObj()));
             return matched.get(0);
         }
         if (powerSort!=null )
         if (powerSort) {
-            SortMaster.sortByExpression(matched,
+            SortMaster.sortEntitiesByExpression(matched,
              unit1 -> unit1.getIntParam(PARAMS.POWER));
             return matched.get(0);
         }

@@ -8,7 +8,7 @@ import java.util.List;
  * Created by JustMe on 7/30/2017.
  */
 public class NewsFilterer {
-    static List<String> keywords;
+    public static List<String> keywords;
 
     public static boolean checkAnyKeywordPresent(String content) {
         for (String sub : keywords) {

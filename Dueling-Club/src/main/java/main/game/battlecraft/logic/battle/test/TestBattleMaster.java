@@ -9,13 +9,14 @@ import main.game.core.game.DC_Game;
  */
 public class TestBattleMaster extends BattleMaster<TestBattle> {
 
+
     public TestBattleMaster(DC_Game game) {
         super(game);
     }
 
     @Override
     protected TestBattle createBattle() {
-        return null;
+        return new TestBattle();
     }
 
     @Override
@@ -25,7 +26,7 @@ public class TestBattleMaster extends BattleMaster<TestBattle> {
 
     @Override
     protected BattleOutcomeManager createOutcomeManager() {
-        return null;
+        return new BattleOutcomeManager(this);
     }
 
     @Override
@@ -35,11 +36,11 @@ public class TestBattleMaster extends BattleMaster<TestBattle> {
 
     @Override
     protected BattleStatManager createStatManager() {
-        return null;
+        return new BattleStatManager(this);
     }
 
     @Override
     protected BattleOptionManager createOptionManager() {
-        return null;
+        return new BattleOptionManager(this);
     }
 }

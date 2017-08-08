@@ -1246,9 +1246,14 @@ public class StringMaster {
     }
 
     public static String build(String... strings) {
+        return build(false, strings);
+    }
+        public static String build(boolean whitespaces, String... strings) {
         String result = "";
         for (String s : strings) {
             result += s;
+            if (whitespaces)
+                result += " ";
         }
         return result;
     }

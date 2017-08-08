@@ -20,6 +20,7 @@ import main.game.battlecraft.ai.tools.*;
 import main.game.battlecraft.ai.tools.path.CellPrioritizer;
 import main.game.battlecraft.ai.tools.path.PathBuilder;
 import main.game.battlecraft.ai.tools.priority.PriorityManager;
+import main.game.battlecraft.ai.tools.priority.PriorityModifier;
 import main.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
 import main.game.battlecraft.ai.tools.prune.PruneMaster;
 import main.game.battlecraft.ai.tools.target.TargetingMaster;
@@ -59,6 +60,7 @@ public class AiMaster {
     private MetaGoalMaster metaGoalMaster;
     private AiPriorityConstantMaster priorityConstantMaster;
     private PriorityProfileManager priorityProfileManager;
+    private PriorityModifier priorityModifier;
 
     public AiMaster(DC_Game game) {
         this.game = game;
@@ -82,6 +84,7 @@ public class AiMaster {
         this.metaGoalMaster = new MetaGoalMaster(this);
         this.priorityConstantMaster = new AiPriorityConstantMaster(this);
         this.priorityProfileManager = new PriorityProfileManager(this);
+        this.priorityModifier = new PriorityModifier(this);
 
         executor = new AiExecutor(game);
 
@@ -109,6 +112,7 @@ public class AiMaster {
         this.metaGoalMaster.initialize();
         this.priorityConstantMaster.initialize();
         this.priorityProfileManager.initialize();
+        this.priorityModifier.initialize();
     }
 
     public void setUnit(Unit unit) {
@@ -126,6 +130,10 @@ public class AiMaster {
 
     public PriorityProfileManager getPriorityProfileManager() {
         return priorityProfileManager;
+    }
+
+    public PriorityModifier getPriorityModifier() {
+        return priorityModifier;
     }
 
     public MetaGoalMaster getMetaGoalMaster() {

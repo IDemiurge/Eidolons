@@ -191,7 +191,7 @@ public void init(){
       return   builder.append(  XML_Converter.openXml("Trigger")).
          append(  XML_Converter.wrap("STANDARD_EVENT_TYPE",
          getEventType().toString())).
-         append(  XML_Converter.wrap("Conditions", getConditions().toXml())).
+         append(  XML_Converter.wrap("Conditions",getConditions()==null ?"": getConditions().toXml())).
          append(  XML_Converter.wrap("Abilities", getAbilities().toXml())).
          append(XML_Converter.closeXml("Trigger")).toString();
     }

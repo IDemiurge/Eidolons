@@ -1,5 +1,7 @@
 package main.game.battlecraft.ai.advanced.companion;
 
+import main.content.enums.system.AiEnums.META_GOAL_TYPE;
+
 /**
  * Created by JustMe on 7/30/2017.
  * Can influence Priorities
@@ -21,30 +23,5 @@ public class MetaGoal {
         return arg;
     }
 
-    public enum IMPULSE_TYPE {
-        IMPULSES, VENGEANCE, HATRED, FEAR, GREED, CURIOSITY, PROTECTIVENESS
-    }
-    public enum INCLINATION_TYPE {
-        DEFENSE,
-        ASSASSINATION,
-        BRAWL,
-        SUPPORT,
-        CAUTION,
-    }
-        public enum CHARACTER_TYPE {
-        PROTECTOR,
-        ASSASSIN,
-        LEADER,
-        ARCHER,
-        SUPPORT,
-    }
 
-    public enum META_GOAL_TYPE {
-        PROTECT,
-        AVENGE,
-        AVOID,
-        AID,
-        BRAWL,
-        ASSASSINATE,
-    }
 }

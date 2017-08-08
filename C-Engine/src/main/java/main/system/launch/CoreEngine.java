@@ -241,6 +241,9 @@ public class CoreEngine {
         CoreEngine.actionTargetingFiltersOff = actionTargetingFiltersOff;
     }
 
+    public static boolean isExceptionTraceLogged() {
+        return true;
+    }
     public static boolean isPhaseAnimsOn() {
         return phaseAnimsOn;
     }
@@ -308,4 +311,5 @@ public class CoreEngine {
     public static boolean isCombatGame() {
         return !isArcaneTower() && !isArcaneVault() && !isLevelEditor();
     }
+
 }

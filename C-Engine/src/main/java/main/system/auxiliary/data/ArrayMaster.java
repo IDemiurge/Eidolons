@@ -1,9 +1,6 @@
 package main.system.auxiliary.data;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class ArrayMaster<T> {
 
@@ -66,6 +63,16 @@ public class ArrayMaster<T> {
             }
         }
         return false;
+    }
+
+    public static String[] getFilledStringArray(int instances, String defaultData) {
+        String[] array = new String[instances];
+         List<String> list = new LinkedList<>();
+        while (instances>0){
+            list.add(defaultData);
+            instances--;
+        }
+        return list.toArray(array);
     }
 //java generics are broken shit
 //    public T[] addToArray(T[] strings, T dataString) {

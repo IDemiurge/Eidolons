@@ -2,9 +2,9 @@ package main.game.battlecraft.ai.advanced.companion;
 
 import main.content.CONTENT_CONSTS2.ORDER_TYPE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
+import main.content.enums.system.AiEnums.META_GOAL_TYPE;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
-import main.game.battlecraft.ai.advanced.companion.MetaGoal.META_GOAL_TYPE;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;

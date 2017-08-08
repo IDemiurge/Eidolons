@@ -5,6 +5,7 @@ import main.ability.effects.oneshot.unit.RaiseEffect;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.rules.VisionEnums;
+import main.content.enums.system.AiEnums.AI_TYPE;
 import main.data.XList;
 import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_ActionManager.STD_SPEC_ACTIONS;
@@ -526,10 +527,18 @@ public class Analyzer extends AiHandler {
             return null;
         }
         list.sort(
-                SortMaster.getSorterByExpressionObj(
+                SortMaster.getObjSorterByExpression(
                         (t) -> PositionMaster.getDistance(t.getCoordinates(), unit.getCoordinates())));
         return (Unit) list.get(0);
     }
 
 
+    public boolean isRanged(UnitAI ai) {
+        if (ai.getType()== AI_TYPE.ARCHER){
+            if (ai.getUnit().getRangedWeapon()!=null )
+                if (ai.getUnit().getRangedWeapon().getAmmo()!=null)
+                    return true;
+        }
+        return false;
+    }
 }

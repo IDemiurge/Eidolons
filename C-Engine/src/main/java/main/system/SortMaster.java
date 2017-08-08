@@ -121,20 +121,30 @@ public class SortMaster {
 //        (Function<Entity, Integer> function) {
 //        return Comparator.naturalOrder(portrait -> function.apply(portrait));
 //    }
-    public static Comparator<? super Entity> getSorterByExpression
+    public static Comparator<? super Entity> getEntitySorterByExpression
     (Function<Entity, Integer> function) {
         return Comparator.comparingInt(o -> function.apply((Entity) o)).reversed();
 
     }
 
-    public static void sortByExpression
+    public static void sortEntitiesByExpression
      (List<? extends Entity> list, Function<Entity, Integer> function) {
+        Collections.sort(list, getEntitySorterByExpression(function));
+    }
+
+    public static Comparator<? super Obj> getObjSorterByExpression
+     (Function<Obj, Integer> function) {
+        return Comparator.comparingInt(o -> function.apply(o));
+
+    }
+    public static void sortByExpression
+     (List<? extends Object> list, Function<Object, Integer> function) {
         Collections.sort(list, getSorterByExpression(function));
     }
 
-    public static Comparator<? super Obj> getSorterByExpressionObj
-     (Function<Obj, Integer> function) {
-        return Comparator.comparingInt(o -> function.apply(o));
+    public static Comparator<? super Object> getSorterByExpression
+     (Function<Object, Integer> function) {
+        return Comparator.comparingInt(o -> function.apply(  o)).reversed();
 
     }
 

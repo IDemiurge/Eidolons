@@ -28,6 +28,7 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
 
     public BattleStatManager(BattleMaster master) {
         super(master);
+        initializeBattle();
     }
 
     private void attachStatWatcher() {
@@ -49,27 +50,51 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
 
     @Override
     public void eventBeingHandled(Event event) {
+        if (!(event.getRef().getSourceObj() instanceof Unit))
+            return;
         Unit source = (Unit) event.getRef().getSourceObj();
-        Unit target = (Unit) event.getRef().getSourceObj();
+
+        Unit target = null;
+        if ((event.getRef().getTargetObj() instanceof Unit))
+            target = (Unit) event.getRef().getTargetObj();
         if (event.getType() instanceof STANDARD_EVENT_TYPE) {
-            event.getRef().getAmount();
 
             switch ((STANDARD_EVENT_TYPE) event.getType()) {
-
-                case UNIT_HAS_BEEN_KILLED:
+                case UNIT_FALLS_UNCONSCIOUS:
+                    modifyUnitStat(COMBAT_STATS.DIED, source, 1);
+                    break;
+                case UNIT_HAS_BEEN_DEALT_PURE_DAMAGE: {
+                    unitDealtDamage(source, target, event.getRef().getAmount());
+                    break;
+                }
+                case UNIT_HAS_BEEN_KILLED: {
                     unitKilled(source, target);
-                    modifyPlayerStat(COMBAT_STATS.UNITS_SLAIN,
-                     source.getOwner(), 1);
-                    modifyUnitStat(COMBAT_STATS.UNITS_SLAIN, source, 1);
+                    break;
+                }
             }
-
         } else {
             if (event.getType() instanceof EventType) {
-                modifyUnitModStat(target.isHostileTo(source.getOwner()), (event.getType()).getArg()
+                modifyUnitModStat(target.isEnemyTo(source.getOwner()), (event.getType()).getArg()
                  , source, event.getRef().getAmount());
 
             }
         }
+
+    }
+
+    private void unitDealtDamage(Unit source, Unit target, Integer amount) {
+        if (source.isEnemyTo(target.getOwner())) {
+            modifyUnitStat(COMBAT_STATS.DAMAGE_DEALT_ENEMIES, source, amount);
+        } else {
+            if (source.isAlliedTo(target.getOwner()))
+                modifyUnitStat(COMBAT_STATS.DAMAGE_DEALT_ALLIES, source, amount);
+        }
+        modifyUnitStat(COMBAT_STATS.DAMAGE_TAKEN, target, amount);
+
+        modifyPlayerStat(PLAYER_STATS.ALLIES_DAMAGE_DEALT,
+         source.getOwner(), amount);
+        modifyPlayerStat(PLAYER_STATS.ALLIES_DAMAGE_TAKEN,
+         target.getOwner(), amount);
     }
 
     private void modifyUnitModStat(boolean hostile, String stat, Unit sourceObj, int mod) {
@@ -81,13 +106,26 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
 
     }
 
-    private void modifyPlayerStat(COMBAT_STATS stat, DC_Player owner, int i) {
-        MapMaster.addToIntegerMap(
-         stats.getPlayerStats(owner).getStatsMap(), stat, i);
-    }
-
-    public void unitKilled(Unit killer, Unit killed) {
+    public void unitKilled(Unit killed, Unit killer) {
         stats.getUnitStats(killer).getKillsMap().put(killed, getGame().getState().getRound());
+        modifyUnitStat(COMBAT_STATS.UNITS_SLAIN, killer, 1);
+        modifyUnitStat(COMBAT_STATS.DIED, killed, 1);
+        if (killed.isEnemyTo(killer.getOwner())) {
+            modifyPlayerStat(PLAYER_STATS.ALLY_ENEMIES_KILLED,
+             killer.getOwner(), 1);
+            modifyPlayerStat(PLAYER_STATS.ALLY_ENEMIES_KILLED_POWER,
+             killer.getOwner(), killed.calculatePower());
+            modifyUnitStat(COMBAT_STATS.ENEMIES_KILLED, killer, 1);
+            modifyUnitStat(COMBAT_STATS.ENEMIES_KILLED_POWER, killer, killed.calculatePower());
+        }
+
+        modifyPlayerStat(PLAYER_STATS.ALLIES_DIED,
+         killed.getOwner(), 1);
+        modifyPlayerStat(PLAYER_STATS.ALLIES_DIED_POWER,
+         killed.getOwner(), killed.calculatePower());
+        if (killed.isHero())
+            modifyPlayerStat(PLAYER_STATS.ALLY_HEROES_DIED,
+             killed.getOwner(), 1);
     }
 
     private void modifyUnitStat(STAT stat, Unit sourceObj, int mod) {
@@ -95,21 +133,37 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
          stats.getUnitStats(sourceObj).getStatMap(), stat, mod);
     }
 
+    private void modifyPlayerStat(PLAYER_STATS stat, DC_Player owner, int i) {
+        MapMaster.addToIntegerMap(
+         stats.getPlayerStats(owner).getStatsMap(), stat, i);
+    }
+
     private void stat(STAT stat, Obj sourceObj, Obj targetObj) {
 
     }
 
-    public enum PLAYER_STATS implements STAT {
-        UNITS_DIED,
-        UNITS_KILLED,
-
-    }
-        public enum COMBAT_STATS implements STAT {
+    public enum COMBAT_STATS implements STAT {
         ACTION_USED,
-        ALLY_ENDURANCE_MODIFIED,
         DAMAGE_CREATED,
-        DAMAGE_DEALT,
         UNITS_SLAIN,
+
+        DAMAGE_DEALT_ALLIES,
+        DAMAGE_DEALT_ENEMIES,
+        ENEMIES_KILLED,
+        ENEMIES_KILLED_POWER,
+        DAMAGE_TAKEN,
+        FALLEN_UNCONSCIOUS,
+        DIED
+    }
+
+    public enum PLAYER_STATS implements STAT {
+        ALLIES_DIED,
+        ALLIES_DIED_POWER,
+        ALLIES_DAMAGE_TAKEN,
+        ALLIES_DAMAGE_DEALT,
+        ALLY_HEROES_DIED,
+        ALLY_ENEMIES_KILLED,
+        ALLY_ENEMIES_KILLED_POWER,;
     }
 
     public enum STAT_WATCHER {

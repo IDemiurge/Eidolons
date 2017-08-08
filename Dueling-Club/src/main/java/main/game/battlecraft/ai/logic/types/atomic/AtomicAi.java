@@ -17,6 +17,7 @@ import main.game.battlecraft.ai.elements.actions.AiActionFactory;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.Analyzer;
+import main.game.battlecraft.ai.tools.ParamAnalyzer;
 import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import main.game.battlecraft.logic.battlefield.DC_MovementManager;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
@@ -50,11 +51,19 @@ public class AtomicAi extends AiHandler {
         return action;
     }
 
-    private Action getAtomicActionPrepare(UnitAI ai) {
+    public Action getAtomicActionPrepare(UnitAI ai) {
         //ammo
         //meditate
         if (!checkAtomicActionCase(ATOMIC_LOGIC_CASE.PREPARE, ai)) {
             return null;
+        }
+        if (ParamAnalyzer.isFatigued(unit)) {
+           return AiActionFactory.newAction(STD_MODE_ACTIONS.Rest.name(),
+            unit.getAI());
+        }
+        if (ParamAnalyzer.isHazed(unit)) {
+            return AiActionFactory.newAction(STD_MODE_ACTIONS.Concentrate.name(),
+             unit.getAI());
         }
         if (ai.getType() == AI_TYPE.ARCHER) {
             return getReloadAction(ai);
@@ -298,12 +307,12 @@ public class AtomicAi extends AiHandler {
 
     private int getDistanceForAtomicApproach(UnitAI ai) {
         if (ai.getType().isCaster())
-            return new FuncMaster().getGreatestValue(ai.getUnit().getSpells(),
+            return new FuncMaster().getGreatestValueEntity(ai.getUnit().getSpells(),
              PARAMS.RANGE).getIntParam(PARAMS.RANGE);
         if (ai.getType().isRanged()) {
             if (ai.getType() == AI_TYPE.ARCHER)
                 if (ai.getUnit().getRangedWeapon() != null)
-                    return new FuncMaster().getGreatestValue(ai.getUnit().getRangedWeapon()
+                    return new FuncMaster().getGreatestValueEntity(ai.getUnit().getRangedWeapon()
                      .getOrCreateAttackActions(), PARAMS.RANGE).getIntParam(PARAMS.RANGE);
         }
         int maxDistance = 3;

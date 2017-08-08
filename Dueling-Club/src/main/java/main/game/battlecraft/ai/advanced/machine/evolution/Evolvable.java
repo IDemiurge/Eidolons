@@ -8,5 +8,7 @@ import java.util.Set;
  */
 public interface Evolvable extends Mutatable,
  Comparator<Evolvable>, Comparable<Evolvable> {
-    Evolvable schuffleParents(Set<Evolvable> parents, boolean b);
+    Evolvable shuffleParents(Set<Evolvable> parents, boolean b);
+
+    Integer getFitness();
 }

@@ -65,15 +65,18 @@ public class TestLauncher //extends MetaGameMaster
     public boolean DUMMY_PP = false;
     public Boolean FAST_MODE;
     public Boolean SUPER_FAST_MODE;
-    private String dungeon = "Cemetary.xml";
-    private Boolean DEBUG_MODE;
-    private Integer PLAYER_CHOICE_OPTION = null;
-    private Integer ENEMY_CHOICE_OPTION = 0;
-    private DC_Game game;
-    private String encounterName;
-    private WORKSPACE_GROUP workspaceFilter;
-    private GAME_SUBCLASS gameType = GAME_SUBCLASS.TEST;
+    protected String dungeon = "Cemetary.xml";
+    protected Boolean DEBUG_MODE;
+    protected Integer PLAYER_CHOICE_OPTION = null;
+    protected Integer ENEMY_CHOICE_OPTION = 0;
+    protected DC_Game game;
+    protected String encounterName;
+    protected WORKSPACE_GROUP workspaceFilter;
+    protected GAME_SUBCLASS gameType = GAME_SUBCLASS.TEST;
 
+    public TestLauncher(GAME_SUBCLASS gameType) {
+        this.gameType = gameType;
+    }
 
     public TestLauncher(DC_Game game, Boolean FAST_MODE, Boolean SUPER_FAST_MODE) {
         this.game = game;
@@ -82,7 +85,7 @@ public class TestLauncher //extends MetaGameMaster
     }
 
 
-    private String initFactionData() {
+    protected String initFactionData() {
 //        unitGroupLevel = BooleanMaster.isFalse(host_client) ? UnitGroupMaster.getPowerLevel()
 //                : DialogMaster.inputInt(UnitGroupMaster.getPowerLevel());
         // Faction faction = chooseFaction();
@@ -93,7 +96,7 @@ public class TestLauncher //extends MetaGameMaster
 
     }
 
-    private void createPreset() {
+    protected void createPreset() {
         String enemy = ENEMY_PARTY;
         String party = PLAYER_PARTY;
         if (encounterName != null) {
@@ -108,7 +111,7 @@ public class TestLauncher //extends MetaGameMaster
         PresetMaster.updatePreset();
     }
 
-    private void savePresetAsLast() {
+    protected void savePresetAsLast() {
         if (!FAST_MODE) {
             if (!SUPER_FAST_MODE) {
                 PresetMaster.savePreset(PresetMaster.getPreset(), null);
@@ -116,7 +119,7 @@ public class TestLauncher //extends MetaGameMaster
         }
     }
 
-    private void autosavePreset() {
+    protected void autosavePreset() {
         PresetMaster.savePreset(PresetMaster.getPreset(), true);
     }
 
@@ -133,17 +136,17 @@ public class TestLauncher //extends MetaGameMaster
             if (PresetLauncher.getLaunch() != null) {
                 if (PresetLauncher.getLaunch().gameType != null)
                     gameType = PresetLauncher.getLaunch().gameType;
-            }
-            else {
-                if (Loader.getPendingLoadPath()!=null ){
+            } else {
+                if (Loader.getPendingLoadPath() != null) {
                     return Loader.loadPendingSave();
                 }
 
-                }
+            }
             game = GameFactory.createGame(gameType);
 //                game = new DC_Game(false);
         }
         DC_Game.game = (game);
+        initLaunch();
         initFlags();
         if (DEBUG_MODE != null) {
             game.setDebugMode(DEBUG_MODE);
@@ -183,15 +186,6 @@ public class TestLauncher //extends MetaGameMaster
 
     public void initFlags() {
 
-
-        LAUNCH launch = PresetLauncher.getLaunch();
-        if (launch != null) {
-            initLaunch(launch);
-        }
-else
-        {
-            TestMasterContent.test_on = false;
-        }
         // select code?
 
 
@@ -221,13 +215,17 @@ else
         LaunchDataKeeper dataKeeper = createDataKeeper();
         if (workspaceFilter != null)
             dataKeeper.getDungeonData().setValue(DUNGEON_VALUE.WORKSPACE_FILTER
-                    , workspaceFilter.toString());
+             , workspaceFilter.toString());
 
         game.setDataKeeper(dataKeeper);
     }
 
-    private void initLaunch(LAUNCH launch) {
-
+    public void initLaunch() {
+        LAUNCH launch = PresetLauncher.getLaunch();
+        if (launch == null) {
+            TestMasterContent.test_on = false;
+            return ;
+        }
 //            if (PresetLauncher.getLaunch().preset != null) {
 //                Preset portrait = PresetMaster.loadPreset(PresetLauncher.getLaunch().preset);
 //         PresetMaster.setPreset(portrait);
@@ -274,11 +272,11 @@ else
         GameLoop.setMaxAnimTime(launch.maxAnimTime);
     }
 
-    private void initLogicTest() {
+    protected void initLogicTest() {
 //        ChannelingRule.setTestMode(true);
     }
 
-    private void initPlayerParties() {
+    protected void initPlayerParties() {
         switch (PARTY_CODE) {
             case CODE.CHOOSE:
                 PLAYER_PARTY = choosePlayerUnits(PLAYER_CHOICE_OPTION);
@@ -359,7 +357,7 @@ else
         return chooseCharacters();
     }
 
-    private String chooseParty() {
+    protected String chooseParty() {
         ObjType party = ListChooser.chooseType_(DataManager
          .getTypesGroup(DC_TYPE.PARTY, "Preset"), DC_TYPE.PARTY);
         return party.getProperty(PROPS.MEMBERS);
@@ -396,7 +394,7 @@ else
     }
 
     // TODO DIFFERENT PER MODE!
-    private String getFilterGroup(DC_TYPE type) {
+    protected String getFilterGroup(DC_TYPE type) {
         if (type == DC_TYPE.CHARS) {
             return StringMaster.BATTLE_READY;
         }
@@ -445,12 +443,12 @@ else
 
     }
 
-    private String randomizeEnemies() {
+    protected String randomizeEnemies() {
         ObjType type = DataManager.getRandomType(DC_TYPE.ENCOUNTERS, null);
         return getEnemiesFromWave(type);
     }
 
-    private String getEnemiesFromWave(ObjType type) {
+    protected String getEnemiesFromWave(ObjType type) {
         Integer power = EncounterMaster.getPower(type, null);
         if (power < EncounterMaster.getPower(StringMaster.openContainer(PLAYER_PARTY))) {
             return (type.getProperty(PROPS.EXTENDED_PRESET_GROUP));
@@ -461,7 +459,7 @@ else
         }
     }
 
-    private String getRandomizedParty(int heroesCount, int unitCount, Integer maxLevel,
+    protected String getRandomizedParty(int heroesCount, int unitCount, Integer maxLevel,
                                       Integer minLevel) {
         ObjType mainHero = null;
         Loop.startLoop(100);
@@ -505,7 +503,7 @@ else
         return party;
     }
 
-    private boolean addRandomUnit(OBJ_TYPE TYPE, String property, boolean subgroup, String party,
+    protected boolean addRandomUnit(OBJ_TYPE TYPE, String property, boolean subgroup, String party,
                                   Integer maxLevel, Integer minLevel) {
 
         ObjType objType = RandomWizard.getRandomType(TYPE, property, subgroup);
@@ -535,7 +533,7 @@ else
 
     }
 
-    // private String getRandomDungeon() {
+    // protected String getRandomDungeon() {
     // List<String> list = new ArrayList<>();
     // for (ObjType d : DataManager.getTypes(OBJ_TYPES.DUNGEONS)) {
     // if

@@ -23,6 +23,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.ColorManager;
 import main.system.graphics.GuiManager;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
@@ -64,13 +65,14 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         this.h = GuiManager.getBF_CompDisplayedCellsY();
             this.w = game.getDungeonMaster().getDungeonWrapper(). getWidth();
             this.h = game.getDungeonMaster().getDungeonWrapper(). getHeight();
-        comp = new G_Panel();
-        comp.setBackground(ColorManager.getTranslucent(ColorManager.OBSIDIAN, 10));
 
         gridComp = new BfGridComp(this);
-
-        comp.add(gridComp.getPanel());
-        comp.setIgnoreRepaint(true);
+        if (CoreEngine.isLevelEditor()) {
+            comp = new G_Panel();
+            comp.setBackground(ColorManager.getTranslucent(ColorManager.OBSIDIAN, 10));
+            comp.add(gridComp.getPanel());
+            comp.setIgnoreRepaint(true);
+        }
     }
 
     @Override

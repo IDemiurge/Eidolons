@@ -23,28 +23,16 @@ public class NewsReader {
         }
 
         NewsAlerter.sendAlerts();
+        NewsLogger.writeLog();
     }
 
     public static void watch(String website) {
         String content = getHtmlFromLink(website);
 
-//        try {
-//            Parser parser = new Parser(content);
-//            NodeList list = parser.parse(null);
-//            System.out.println(list.toHtml());
-//            NodeList articles = parser.extractAllNodesThatMatch(
-//             new AndFilter(new TagNameFilter("div"),
-//              new HasAttributeFilter("class", "movie")));
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-
-//        Map<String, String> linkToContentArticleMap =
         List<NewsArticle> articles =
          NewsParser.parse(content, website);
         for (NewsArticle article : articles) {
+            NewsLogger.articleChecked(article);
            String keywords= NewsFilterer.
              getKeywordsPresent(article.getContents());
             if (!keywords.isEmpty() ) {

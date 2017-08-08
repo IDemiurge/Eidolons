@@ -1,5 +1,6 @@
 package main.game.battlecraft.logic.battle.universal.stats;
 
+import main.data.XLinkedMap;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battle.universal.stats.BattleStats.BATTLE_STATS;
@@ -23,8 +24,8 @@ public class BattleStats extends DataUnit<BATTLE_STATS> {
     private DequeImpl<Unit> slainPlayerUnits = new DequeImpl<>();
     private DequeImpl<Unit> destroyedObjects = new DequeImpl<>();
 
-    private Map<Unit, UnitStats>  unitStatMap;
-    private Map<DC_Player, PlayerStats>  playerStatMap;
+    private Map<Unit, UnitStats> unitStatMap = new XLinkedMap<>();
+    private Map<DC_Player, PlayerStats>  playerStatMap= new XLinkedMap<>();
 
     public int getLevel() {
         return getIntValue(BATTLE_STATS.LEVEL);

@@ -38,8 +38,8 @@ public interface PriorityManager {
     float calculateCapacity(Unit unit);
 
 
-
     int getSpellPriority(GOAL_TYPE type, Action action);
+
     int getSpellPriority(DC_SpellObj spell, Context context);
 
     int getSelfSpellPriority(Action action);
@@ -102,10 +102,6 @@ public interface PriorityManager {
     int getSpecialEffectPriority(Effect e);
 
     int getAttackOfOpportunityPenalty(DC_ActiveObj action, Unit targetObj);
-
-    void applySequenceLengthPenalty(ActionSequence as);
-
-    void applyCostPenalty(ActionSequence as);
 
     int getCounterPenalty(Unit targetObj);
 

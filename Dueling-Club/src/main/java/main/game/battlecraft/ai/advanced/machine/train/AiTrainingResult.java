@@ -1,10 +1,13 @@
 package main.game.battlecraft.ai.advanced.machine.train;
 
+import main.entity.Ref;
+import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.advanced.machine.PriorityProfile;
 import main.game.battlecraft.ai.advanced.machine.train.AiTrainingCriteria.CRITERIA_TYPE_NUMERIC;
 import main.game.battlecraft.logic.battle.universal.stats.BattleStatManager.STAT;
 import main.game.battlecraft.logic.battle.universal.stats.PlayerStats;
 import main.game.battlecraft.logic.battle.universal.stats.UnitStats;
+import main.game.core.game.DC_Game;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Comparator;
@@ -23,6 +26,22 @@ public class AiTrainingResult implements Comparator<AiTrainingResult>, Comparabl
 
     Float value;
 
+    public AiTrainingResult(PriorityProfile profile, AiTrainingParameters parameters, AiTrainingCriteria criteria) {
+        this.profile = profile;
+        this.parameters = parameters;
+        this.criteria = criteria;
+    }
+
+    public void construct() {
+        DC_Game game = DC_Game.game;
+        Unit unit = game.getMaster().getUnitByName(parameters.getTraineeType().getName(), new Ref());
+        unitStats = game.getBattleMaster().getStatManager().getStats().getUnitStatMap().get(unit);
+        allyStats = game.getBattleMaster().getStatManager().getStats().
+         getPlayerStats(unit.getOwner());
+        allyStats = game.getBattleMaster().getStatManager().getStats().
+         getPlayerStats(game.getPlayer(!unit.getOwner().isMe()));
+    }
+
     public float evaluate() {
         float result = 0;
         for (Pair<CRITERIA_TYPE_NUMERIC, Float> sub : criteria.numericCriteria) {
@@ -35,17 +54,23 @@ public class AiTrainingResult implements Comparator<AiTrainingResult>, Comparabl
         STAT stat = null;
         switch (key) {
             default:
-                stat = AiTrainingCriteria.getStatForCriteria(key);
+                try {
+                    stat = AiTrainingCriteria.getStatForCriteria(key);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         }
-        return unitStats.getStatMap().get(stat) * value;
+        try {
+            return unitStats.getStatMap().get(stat) * value;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 
-
-
-
     public Float getValue() {
-        if (value==null ){
+        if (value == null) {
             value = evaluate();
         }
         return value;
@@ -64,7 +89,7 @@ public class AiTrainingResult implements Comparator<AiTrainingResult>, Comparabl
     }
 
     @Override
-    public int compare(AiTrainingResult o1, AiTrainingResult o ) {
+    public int compare(AiTrainingResult o1, AiTrainingResult o) {
         if (o1.getValue() > o.getValue()) {
             return 1;
         } else if (o1.getValue() < o.getValue()) {
@@ -72,6 +97,7 @@ public class AiTrainingResult implements Comparator<AiTrainingResult>, Comparabl
         }
         return 0;
     }
+
     public PriorityProfile getProfile() {
         return profile;
     }

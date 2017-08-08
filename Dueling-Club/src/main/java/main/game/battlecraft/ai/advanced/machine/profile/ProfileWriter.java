@@ -1,8 +1,10 @@
 package main.game.battlecraft.ai.advanced.machine.profile;
 
+import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.advanced.machine.PriorityProfile;
+import main.game.battlecraft.ai.advanced.machine.train.AiTrainingCriteria.CRITERIA_TYPE_NUMERIC;
 import main.game.battlecraft.ai.advanced.machine.train.AiTrainingResult;
 import main.system.auxiliary.StringMaster;
 
@@ -11,10 +13,32 @@ import main.system.auxiliary.StringMaster;
  */
 public class ProfileWriter {
 
-    public static String root=",";
+    public static String root="duel-club\\ai-data\\training\\profiles";
+    public static String dataRoot="duel-club\\ai-data\\training\\init-data";
     public static String separator=",";
+    public static String DEFAULT_CRITERIA="default criteria.txt";
+    public static String DEFAULT_PARAMETERS="default parameters.txt";
 
-    public static void save(PriorityProfile profile) {
+    public static String getRoot() {
+        return PathFinder.getXML_PATH()+ root;
+    }
+
+    public static void generateDefaultDataFiles() {
+        StringBuilder builder=new StringBuilder();
+//        for (AI_TRAIN_PARAM param: AI_TRAIN_PARAM.values()){
+//            param.g
+//        }
+        for (CRITERIA_TYPE_NUMERIC numeric: CRITERIA_TYPE_NUMERIC.values()){
+            builder.append(numeric.getDefaultValue() + separator );
+        }
+//        builder.append(numeric.getDefaultValue() + AiTrainingRunner.getDataInstanceSeparator());
+//        for (CRITERIA_TYPE_BOOLEAN typeBoolean: CRITERIA_TYPE_BOOLEAN.values()){
+//            builder.append(typeBoolean.getDefaultValue() + AiTrainingRunner.getSegmentSeparator());
+//        }
+        String path = StringMaster.buildPath(PathFinder.getXML_PATH() ,dataRoot   , DEFAULT_CRITERIA);
+        XML_Writer.write(builder.toString(), path);
+    }
+        public static void save(PriorityProfile profile) {
         AiTrainingResult result = profile.getResult();
 
         Unit unit = result.getUnitStats().getUnit();
@@ -22,11 +46,11 @@ public class ProfileWriter {
         String preset = result.getParameters().getPresetPath();
         String name = result.getParameters().getTraineeType() + ".profile";
 
-        StringBuilder content=new StringBuilder();
+        StringBuilder builder=new StringBuilder();
         profile.getConstants().stream().forEach(f->{
-            content.append(f+separator);
+            builder.append(f+separator);
         });
         String path = StringMaster.buildPath(root, type, preset, name);
-        XML_Writer.write(content.toString(), path);
+        XML_Writer.write(builder.toString(), path);
     }
 }

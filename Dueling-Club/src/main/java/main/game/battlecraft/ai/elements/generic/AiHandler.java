@@ -20,6 +20,7 @@ import main.game.battlecraft.ai.tools.*;
 import main.game.battlecraft.ai.tools.path.CellPrioritizer;
 import main.game.battlecraft.ai.tools.path.PathBuilder;
 import main.game.battlecraft.ai.tools.priority.PriorityManager;
+import main.game.battlecraft.ai.tools.priority.PriorityModifier;
 import main.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
 import main.game.battlecraft.ai.tools.prune.PruneMaster;
 import main.game.battlecraft.ai.tools.target.TargetingMaster;
@@ -32,14 +33,14 @@ import java.util.List;
  */
 public abstract class AiHandler {
     protected AiMaster master;
-    protected   DC_Game game;
-    protected   Unit unit;
-
+    protected DC_Game game;
+    protected Unit unit;
 
 
     public AiHandler(AiMaster master) {
-        this.master =   master;
-        this.game= master.getGame();
+        this.master = master;
+        if (master != null)
+            this.game = master.getGame();
     }
 
     public float getParamPriority(PARAMETER p) {
@@ -49,11 +50,17 @@ public abstract class AiHandler {
     public float getConstValue(AiConst p) {
         return getMaster().getConstValue(p);
     }
+
     public int getConstInt(AiConst p) {
         return getMaster().getConstInt(p);
     }
+
     public Unit getUnit() {
         return getMaster().getUnit();
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 
     public void initialize() {
@@ -80,7 +87,6 @@ public abstract class AiHandler {
         return master.getGoalManager();
     }
 
-
     public ActionManager getActionManager() {
         return master.getActionManager();
     }
@@ -101,51 +107,41 @@ public abstract class AiHandler {
         return master.getPriorityManager();
     }
 
-
     public PruneMaster getPruneMaster() {
         return master.getPruneMaster();
     }
-
 
     public PathBuilder getPathBuilder() {
         return master.getPathBuilder();
     }
 
-
     public TargetingMaster getTargetingMaster() {
         return master.getTargetingMaster();
     }
-
 
     public Analyzer getAnalyzer() {
         return master.getAnalyzer();
     }
 
-
     public ParamAnalyzer getParamAnalyzer() {
         return master.getParamAnalyzer();
     }
-
 
     public ActionSequenceConstructor getActionSequenceConstructor() {
         return master.getActionSequenceConstructor();
     }
 
-
     public AiExecutor getExecutor() {
         return master.getExecutor();
     }
-
 
     public CellPrioritizer getCellPrioritizer() {
         return master.getCellPrioritizer();
     }
 
-    
     public PathSequenceConstructor getPathSequenceConstructor() {
         return master.getPathSequenceConstructor();
     }
-
 
     public TurnSequenceConstructor getTurnSequenceConstructor() {
         return master.getTurnSequenceConstructor();
@@ -171,14 +167,13 @@ public abstract class AiHandler {
         return master.getBehaviorMaster();
     }
 
+    public PriorityModifier getPriorityModifier() {
+        return getMaster().getPriorityModifier();
+    }
+
     public AtomicAi getAtomicAi() {
         return master.getAtomicAi();
     }
-
-    public void setUnit(Unit unit) {
-        this.unit = unit;
-    }
-
 
     public DC_Game getGame() {
         return game;

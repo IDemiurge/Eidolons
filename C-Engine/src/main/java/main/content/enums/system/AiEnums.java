@@ -149,7 +149,32 @@ public class AiEnums {
         }
 
     }
+    public enum IMPULSE_TYPE {
+        IMPULSES, VENGEANCE, HATRED, FEAR, GREED, CURIOSITY, PROTECTIVENESS
+    }
+    public enum INCLINATION_TYPE {
+        DEFENSE,
+        ASSASSINATION,
+        BRAWL,
+        SUPPORT,
+        CAUTION,
+    }
+    public enum CHARACTER_TYPE {
+        PROTECTOR,
+        ASSASSIN,
+        LEADER,
+        ARCHER,
+        SUPPORT,
+    }
 
+    public enum META_GOAL_TYPE {
+        PROTECT,
+        AVENGE,
+        AVOID,
+        AID,
+        BRAWL,
+        ASSASSINATE,
+    }
     public enum ORDER_PRIORITY_MODS {
         ATTACK(GOAL_TYPE.ATTACK),
         RETREAT(GOAL_TYPE.RETREAT),

@@ -14,6 +14,8 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.action.ActionRule;
 import main.game.core.game.DC_Game;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
@@ -98,6 +100,9 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         SoundMaster.playEffectSound(SOUNDS.DEATH, unit);
         SoundMaster.playEffectSound(SOUNDS.FALL, unit);
         getUnconsciousEffect(unit).apply();
+        unit.getGame().fireEvent(
+         new Event(STANDARD_EVENT_TYPE.UNIT_FALLS_UNCONSCIOUS,
+         unit.getRef()));
         unit.getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.UNCONSCIOUS, unit);
         // double regen? what's with focus, stamina, essence, morale? ... some
         // may be reset, others reduced, others regen

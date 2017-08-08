@@ -16,6 +16,7 @@ import main.swing.generic.components.G_Panel;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
+import main.system.launch.CoreEngine;
 
 import java.awt.*;
 import java.awt.event.MouseListener;
@@ -57,8 +58,9 @@ public class BfGridComp {
         this.width = width;
         this.height = height;
         this.zoom = zoom;
-
-        initPanel();
+        initCellsAndMap();
+        if (CoreEngine.isLevelEditor())
+            initPanel();
 
     }
 
@@ -66,8 +68,9 @@ public class BfGridComp {
         game = holder.getDungeon().getGame();
         this.holder = holder;
         zoom = 100;
-
-        initPanel();
+        initCellsAndMap();
+        if (CoreEngine.isLevelEditor())
+            initPanel();
     }
 
     private static Map<XLine, Image> getMap(boolean overOrUnder) {
@@ -120,7 +123,7 @@ public class BfGridComp {
         return underlayMap;
     }
 
-    private void initPanel() {
+    private void initCellsAndMap() {
         cells = new CellComp[getCellsX()][getCellsY()];
         for (int i = 0; i < getCellsX(); i++) {
             for (int j = 0; j < getCellsY(); j++) {
@@ -130,6 +133,10 @@ public class BfGridComp {
                 cells[i][j] = cell;
             }
         }
+    }
+
+    private void initPanel() {
+
 
 //        GuiEventManager.trigger(GRID_CREATED, new OnDemandEventCallBack<>(
 //         new ImmutablePair<>(getCellsX(), getCellsY())));

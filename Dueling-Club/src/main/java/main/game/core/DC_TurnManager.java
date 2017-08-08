@@ -13,7 +13,6 @@ import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
-import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.ArrayList;
@@ -205,17 +204,17 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         } else {
             SoundMaster.playStandardSound(STD_SOUNDS.FIGHT);
         }
-        if (isStarted()) {
-            if (!playerHasActiveUnits()) {
-                LogMaster.log(1,
-                        "************** GAME PAUSED WHILE NO UNITS UNDER PLAYER CONTROL **************");
-            }
-
-            while (!playerHasActiveUnits()) {
-                WaitMaster.WAIT(1000);
-                resetQueue();
-            }
-        }
+//        if (isStarted()) {
+//            if (!playerHasActiveUnits()) {
+//                LogMaster.log(1,
+//                        "************** GAME PAUSED WHILE NO UNITS UNDER PLAYER CONTROL **************");
+//            }
+//
+//            while (!playerHasActiveUnits()) {
+//                WaitMaster.WAIT(1000);
+//                resetQueue();
+//            }
+//        }
     }
 
 

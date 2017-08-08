@@ -4,6 +4,7 @@ import main.content.C_OBJ_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
+import main.system.auxiliary.StringMaster;
 
 /**
  * Created by JustMe on 7/31/2017.
@@ -17,32 +18,32 @@ public class AiTrainingParameters {
     RULE_SCOPE ruleScope;
     boolean deterministic;
     private ObjType traineeType;
-public enum AI_TRAIN_PARAM{
-    PRESET_PATH,
-    TRAINEE_TYPE,
-    ROUND_LIMIT,
-    RULE_SCOPE;
-}
+
     public AiTrainingParameters(String[] arg) {
-    int i =0;
+        int i = 0;
         for (AI_TRAIN_PARAM sub : AI_TRAIN_PARAM.values()) {
-            if (arg.length<=i) break;
-            switch(sub){
-                case PRESET_PATH:
-                    presetPath= arg[i];
-                    break;
-                case TRAINEE_TYPE:
-                    traineeType= DataManager.
-                     getType(arg[i], C_OBJ_TYPE.UNITS_CHARS);
-                    break;
-                case ROUND_LIMIT:
-                   Integer.valueOf(arg[i]);
-                    break;
-                case RULE_SCOPE:
-                    ruleScope=RULE_SCOPE.valueOf(  arg[i]);
-                    break;
+            if (arg.length <= i) break;
+            try {
+                switch (sub) {
+                    case PRESET_PATH:
+                        presetPath = arg[i];
+                        break;
+                    case TRAINEE_TYPE:
+                        traineeType = DataManager.
+                         getType(arg[i], C_OBJ_TYPE.UNITS_CHARS);
+                        break;
+                    case ROUND_LIMIT:
+                        roundsMax = StringMaster.getInteger(arg[i]);
+                        break;
+                    case RULE_SCOPE:
+                        ruleScope = RULE_SCOPE.valueOf(arg[i]);
+                        break;
+                }
+                i++;
             }
-            i++;
+            catch(Exception e){
+                e.printStackTrace();
+            }
         }
 
 
@@ -53,14 +54,14 @@ public enum AI_TRAIN_PARAM{
     }
 
     public String getPresetPath() {
-        if (presetPath==null ){
-            presetPath= initPresetPath();
+        if (presetPath == null) {
+            presetPath = initPresetPath();
         }
         return presetPath;
     }
 
     private String initPresetPath() {
-    return "ai.xml";
+        return "ai.xml";
     }
 
     public RULE_SCOPE getRuleScope() {
@@ -72,21 +73,28 @@ public enum AI_TRAIN_PARAM{
     }
 
     public ObjType getTraineeType() {
-        if (traineeType==null ){
-            traineeType= initDefaultType();
+        if (traineeType == null) {
+            traineeType = initDefaultType();
         }
         return traineeType;
+    }
+
+    public void setTraineeType(ObjType traineeType) {
+        this.traineeType = traineeType;
     }
 
     private ObjType initDefaultType() {
 //    getPresetPath()
 //        return DC_Game.game.getPlayer(true).getHeroObj().getType();
-        return  DataManager.
+        return DataManager.
          getType("Pirate", C_OBJ_TYPE.UNITS_CHARS);
-}
+    }
 
-    public void setTraineeType(ObjType traineeType) {
-        this.traineeType = traineeType;
+    public enum AI_TRAIN_PARAM {
+        PRESET_PATH,
+        TRAINEE_TYPE,
+        ROUND_LIMIT,
+        RULE_SCOPE;
     }
 
     public enum STANDARD_TRAINING_PARAMETERS {

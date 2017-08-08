@@ -1035,7 +1035,17 @@ public class Unit extends DC_UnitModel {
         if (getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
             return true;
         }
-        return getOwner().isHostileTo(player);
+        return isEnemyTo(player);
+    }
+    public boolean isEnemyTo(DC_Player player) {
+        return  getOwner().isHostileTo(player);
+    }
+    public boolean isAlliedTo(DC_Player player) {
+        return !getOwner().isHostileTo(player);
+//if (getOwner().equals(player))
+//    return true;
+//if (player.getGame().getBattleMaster().getPlayerManager().)
+//        return false;
     }
 
     public void spellUpgradeToggled(Entity spell, SPELL_UPGRADE ug) {

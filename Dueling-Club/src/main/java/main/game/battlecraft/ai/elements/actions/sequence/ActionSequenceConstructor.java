@@ -226,11 +226,11 @@ public class ActionSequenceConstructor extends AiHandler {
 
             if (task.getAI().getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
                 return null;
-            }
-            if ((!action.getActive().isRanged() && task.getAI().getType() == AiEnums.AI_TYPE.ARCHER)
-             || (task.getAI().getType() == AiEnums.AI_TYPE.CASTER && !unit.getSpells().isEmpty())) {
-                return null;
-            }
+            } //if (getAnalyzer().isRanged(task.getAI())) return null ;
+//          TODO   if ((!action.getActive().isRanged() && task.getAI().getType() == AiEnums.AI_TYPE.ARCHER)
+//             || (task.getAI().getType() == AiEnums.AI_TYPE.CASTER && !unit.getSpells().isEmpty())) {
+//                return null;
+//            }
         }
 
         Unit unit = (Unit) action.getRef().getSourceObj();

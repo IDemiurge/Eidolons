@@ -1,34 +1,39 @@
 package main.game.battlecraft.ai.advanced.machine.evolution;
 
+import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 
 import java.util.*;
 
 /**
  * Created by JustMe on 8/2/2017.
  */
-public class EvolutionMaster<T extends  Evolvable> {
-    private List<T> population =    new LinkedList<>() ;
-    private List<T> control =     new LinkedList<>() ;
+public class EvolutionMaster<T extends Evolvable> {
     public int nChildren;
     public int nMutations;
     public int nParents;
     public int generation;
     public int avgFitness;
     public int maxFitness;
+    private List<T> population = new LinkedList<>();
+    private List<T> control = new LinkedList<>();
     private T fittest;
+    private int controlSince;
 
     public EvolutionMaster(List<T> population) {
         this.population = population;
     }
 
-    private   T compete(T a, T b) {
+    private T compete(T a, T b) {
         int result = a.compareTo(b);
         if (result > 0)
             return a;
         else
             return b;
     }
+
     private T getChild(T parent) {
 
         T child = getChildFromParents(parent);
@@ -50,7 +55,7 @@ public class EvolutionMaster<T extends  Evolvable> {
              (T) RandomWizard.getRandomListObject(population));
         }
 
-        T child = (T) parent.schuffleParents((Set<Evolvable>) parents, true);
+        T child = (T) parent.shuffleParents((Set<Evolvable>) parents, true);
 
         return child;
 
@@ -92,8 +97,9 @@ public class EvolutionMaster<T extends  Evolvable> {
         return null;
 
     }
+
     public void run() {
-        List<T> children =     new LinkedList<>() ;
+        List<T> children = new LinkedList<>();
         for (int i = 0; i < nChildren; i++) {
             children.add(getChild(chooseParent()));
         }
@@ -105,17 +111,27 @@ public class EvolutionMaster<T extends  Evolvable> {
         }
 
         population.forEach(child -> evolve(child));
+        updateMaxAvgFitness();
+        SortMaster.sortByExpression(population, sub -> ((T) sub).getFitness());
+        setFittest(population.get(0));
 
         generation++;
-
+        main.system.auxiliary.log.LogMaster.log(
+         LOG_CHANNELS.AI_TRAINING, generation + " generation: " + StringMaster.build("population=", ""
+           + population, "maxFitness=", "" + maxFitness, "fittest=",
+          "nChildren" + nChildren, "nParents" + nParents, "nMutations" + nMutations,
+          "fittest" + fittest));
+        if (generation > 9000)
+            return;
         if (!control.containsAll(population)) {
-//            setControl();
+            setControl();
         }
 
     }
 
+    // overriden  !
     public void evolve(T t) {
-         t.mutate();
+        t.mutate();
 
     }
 
@@ -127,7 +143,30 @@ public class EvolutionMaster<T extends  Evolvable> {
         this.fittest = fittest;
     }
 
-    public boolean isStagnant(int stgLimit) {
-        return false;
+    public boolean isStagnant(int thresholdStagnant) {
+        return (control.containsAll(population) && (generation - controlSince) > thresholdStagnant);
+    }
+
+    private void setControl() {
+        control.clear();
+        control.addAll(population);
+        controlSince = generation;
+    }
+
+    public void updateMaxAvgFitness() {
+
+        avgFitness = 0;
+        maxFitness = Integer.MIN_VALUE;
+        for (Evolvable e : population) {
+            int fitness = e.getFitness();
+            if (fitness > maxFitness) {
+
+                maxFitness = fitness;
+
+            }
+            avgFitness += fitness;
+        }
+        avgFitness /= population.size();
+
     }
 }

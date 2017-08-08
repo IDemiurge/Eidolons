@@ -24,11 +24,11 @@ import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * An effect is contained in an {@link Ability} and can either be passive
@@ -73,6 +73,8 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     private ANIM animation;
     private String xml;
     boolean mapped;
+    private UUID id;
+
     public EffectImpl() {
         super();
     }
@@ -80,13 +82,17 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     public void mapThisToConstrParams(Object... args){
 //        if (ConstructionManager.isConstructing())
 //            return ;
-        if (isMappingOn())
+        if (!isMappingOn())
             return ;
         if (mapped)
             return ;
-        Class[] paramType = (Class[]) Arrays.stream(args).map(obj -> obj.getClass()).toArray();
-         UUID id = UUID.randomUUID();
+        Pair<Class, String>[] paramType = Arrays.stream(args).map(obj ->
+         new ImmutablePair(obj.getClass(), ConstructionManager.getXmlFromObject(obj))
+        ).collect(Collectors.toList()).toArray(new Pair[args.length]);
+           id = UUID.randomUUID();
         getConstructorMap().put(id, paramType);
+        xml = ConstructionManager.getXmlFromConstructorData(getClass().getSimpleName(), getConstructorMap().get(id));
+
     }
 
     private static boolean isMappingOn() {
@@ -97,9 +103,11 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         return true;
     }
 
-    private static Map<UUID, Class[]> constructorMap;
+    private static Map<UUID, Pair<Class, String>[]> constructorMap;
 
-    public static Map<UUID, Class[]> getConstructorMap() {
+    public static Map<UUID, Pair<Class, String>[]> getConstructorMap() {
+        if (constructorMap==null )
+            constructorMap = new HashMap<>();
         return constructorMap;
     }
 
@@ -109,8 +117,11 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             return xml;
         if (construct != null)
             return construct.toXml();
+        if (id!=null ){
+            xml = ConstructionManager.getXmlFromConstructorData(getClass().getSimpleName(), getConstructorMap().get(id));
+        }
         //custom - just gonna have to serialize all fields using reflection?!
-        return null;
+        return xml;
     }
 
     public void setXml(String xml) {

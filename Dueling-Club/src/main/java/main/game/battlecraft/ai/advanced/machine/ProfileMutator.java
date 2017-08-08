@@ -1,41 +1,52 @@
 package main.game.battlecraft.ai.advanced.machine;
 
 import main.game.battlecraft.ai.UnitAI;
-import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.RandomWizard;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by JustMe on 8/1/2017.
  */
 public class ProfileMutator {
 
-    private void mutate(PriorityProfile profile, PROFILE_MUTATION mutation) {
+    private static PROFILE_MUTATION mutationType=PROFILE_MUTATION.DEFAULT;
 
+    private static void mutate(PriorityProfile profile, PROFILE_MUTATION mutation) {
+        final float mutationModifierMax = 1.1f;
+        final float mutationModifierMin = 0.9f;
+        profile.getMap().keySet().forEach(key -> {
+            float value = profile.getMap().get(key);
+            float mutationModifier = new Float(RandomWizard.getRandomIntBetween(
+             (int) mutationModifierMin * 100,
+             (int) mutationModifierMax * 100)) / 100;
+            value = value * mutationModifier;
+
+            profile.getMap().put(key, value);
+        });
     }
 
-    public void mutate(PriorityProfile profile, UnitAI ai) {
+    public static void mutate(PriorityProfile profile, UnitAI ai) {
         for (PROFILE_MUTATION mutation : getMutations(ai)) {
             mutate(profile, mutation);
         }
     }
 
-    private List<PROFILE_MUTATION> getMutations(UnitAI ai) {
+    private static List<PROFILE_MUTATION> getMutations(UnitAI ai) {
 
         return null;
     }
 
-    public PriorityProfile getMutated(PriorityProfile originalProfile) {
-        Map<AiConst, Float> map = originalProfile.getMap();
-        LinkedHashMap<AiConst, Float> clone = new MapMaster<AiConst, Float>().cloneLinkedHashMap(map);
-//   TODO      mutateMap(clone);
-        PriorityProfile newProfile = new PriorityProfile(clone);
+    public static PriorityProfile getMutated(PriorityProfile originalProfile) {
+        PriorityProfile newProfile = new PriorityProfile(originalProfile);
+        mutate(newProfile, mutationType);
         return newProfile;
     }
 
     public enum PROFILE_MUTATION {
+        WEAK,
+        DEFAULT,
+        EXTREME,
 
     }
 }

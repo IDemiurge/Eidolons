@@ -150,7 +150,7 @@ public enum AiConst {
      */
     GEN_SPELL_DURATION_MULTIPLIER(50),
     GEN_SPELL_DURATION_SQRT_MULTIPLIER(1000),
-    ;
+    LETHAL_DAMAGE_MOD(200);
 
     private float defValue;
 

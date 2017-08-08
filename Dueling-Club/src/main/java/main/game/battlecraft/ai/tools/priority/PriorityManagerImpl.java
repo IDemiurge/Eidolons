@@ -32,7 +32,6 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.Param;
 import main.content.values.properties.G_PROPS;
 import main.data.ConcurrentMap;
-import main.elements.costs.Costs;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.Targeting;
@@ -48,11 +47,9 @@ import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlecraft.ai.PlayerAI.SITUATION;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.advanced.machine.AiConst;
 import main.game.battlecraft.ai.elements.actions.Action;
-import main.game.battlecraft.ai.elements.actions.ActionManager;
 import main.game.battlecraft.ai.elements.actions.AiActionFactory;
 import main.game.battlecraft.ai.elements.actions.AiQuickItemAction;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
@@ -203,30 +200,14 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             LogMaster.log(1, priority + " priority for " + as);
             return priority;
         }
-        Integer bonus = unit_ai.getActionPriorityBonuses().get(action.getActive().getName());
-        if (bonus != null) {
-            priority += bonus;
-        }
-        int factor = ParamPriorityAnalyzer
-         .getAI_TypeFactor(goal, unit.getOwner().getAI().getType());
-        addMultiplier(factor, "Global AI factor");
-        SITUATION situation = unit.getOwner().getAI().getSituation();
-        factor = ParamPriorityAnalyzer.getSituationFactor(goal, situation);
-        addConstant(factor, situation.toString() + " situation const");
-        addMultiplier(factor, situation.toString() + " situation factor");
+//        Integer bonus = unit_ai.getActionPriorityBonuses().get(action.getActive().getName());
+//        if (bonus != null) {
+//            priority += bonus;
+//        }
 
-        factor = ParamPriorityAnalyzer.getAI_TypeFactor(goal, unit_ai.getType());
-        addMultiplier(factor, "AI type factor");
-
-        Integer mod = as.getPriorityMultiplier();
-//        Integer factor = as.getPriorityFactor();
-//        Integer bonus = as.getPriorityBonus();
-
-        // if (behaviorMode != BEHAVIOR_MODE.PANIC)
-        applyCostPenalty(as);
-        applySequenceLengthPenalty(as);
         as.setPriority(priority);
 
+        Integer mod = as.getPriorityMultiplier();
         if (mod != null) {
             priority = MathMaster.applyMod(priority, mod);
         }
@@ -865,7 +846,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
          .addFactor(duration, ParamPriorityAnalyzer.getResistanceFactor(action));
         multiplier = (int) Math.sqrt(duration *
          getConstInt(AiConst.GEN_SPELL_DURATION_SQRT_MULTIPLIER))
-         +getConstInt(AiConst.GEN_SPELL_DURATION_MULTIPLIER) ;
+         + getConstInt(AiConst.GEN_SPELL_DURATION_MULTIPLIER);
         return multiplier;
     }
 
@@ -1138,37 +1119,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         return penalty;
     }
 
-    @Override
-    public void applySequenceLengthPenalty(ActionSequence as) {
-        int length = as.getActions().size() - 1;
-        int penalty = (int)
-         -Math.round(length * Math.sqrt(length) * 2)
-         - length * 10;
-        if (penalty < -95) {
-            penalty = -95;
-        }
-        String string = "length";
-        addMultiplier(penalty, string);
-    }
-
-    @Override
-    public void applyCostPenalty(ActionSequence as) {
-        Costs cost = ActionManager.getTotalCost(as.getActions());
-        int cost_penalty = getParamAnalyzer().getCostPriorityFactor(cost, unit);
-        String string = "cost";
-        try {
-            if (as.getLastAction().getActive().isChanneling()) {
-                cost_penalty += cost_penalty
-                 * cost.getCost(PARAMS.C_N_OF_ACTIONS).getPayment().getAmountFormula()
-                 .getInt(as.getLastAction().getRef()) / 5;
-                string = "channeling cost";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        applyMultiplier(cost_penalty, string);
-
-    }
 
     @Override
     public int getCounterPenalty(Unit targetObj) {
@@ -1237,7 +1187,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public int getLethalDamagePriority() {
-        return getConstInt(AiConst.DEFAULT_PRIORITY) * 2;
+        return getConstInt(AiConst.LETHAL_DAMAGE_MOD);
     }
 
     @Override
@@ -1519,24 +1469,23 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         Chronos.mark("Priority calc");
         unit = actions.get(0).getAi().getUnit();
         unit_ai = actions.get(0).getAi();
-        if (getMetaGoalMaster().isOn())
-            try {
+        for (ActionSequence as : actions) {
+            Integer mod = unit_ai.getGoalPriorityMod(as.getTask().getType());
+            if (mod == null) {
+                mod = 0;
+            }
+            mod += getPriorityModifier().getPriorityModifier(as);
+            if (getMetaGoalMaster().isOn())
+                try {
                 getUnitAi().setMetaGoals(getMetaGoalMaster().initMetaGoalsForUnit(getUnitAi()));
-                for (ActionSequence as : actions) {
-                    Integer mod = unit_ai.getGoalPriorityMod(as.getTask().getType());
-//            unit_ai.getActionPriorityMods().
-//             get(as.getNextAction(). getActive().getName());
-                    if (mod == null) {
-                        mod = 0;
-                    }
-                    mod += getMetaGoalMaster().getPriorityMultiplier(as);
-                    mod += 100;
-                    as.setPriorityMultiplier(mod);
-
-                }
+                mod += getMetaGoalMaster().getPriorityMultiplier(as);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            as.setPriorityMultiplier(mod);
+
+
+        }
         for (ActionSequence action : actions) { // into separate method to
             // debug!
             if (action == null) {

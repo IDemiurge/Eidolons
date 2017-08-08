@@ -16,7 +16,7 @@ import java.util.Properties;
  */
 public class NewsAlerter {
     private static List<String> emails;
-    private static String alertMessage="";
+    private static String alertMessage="test message";
 
     public static List<String> getEmails() {
         return emails;
@@ -77,7 +77,7 @@ public class NewsAlerter {
     public static void spotted(NewsArticle article, String keywords, String website) {
         System.out.println(website + "'s '" + article.getLink() + "' contains " + keywords);
         alertMessage += website + "'s article (link - " + article.getLink() + ") contains " + keywords + "\n";
-
+        NewsLogger.articleSpotted(keywords, website, article);
     }
 
     public static void sendAlerts() {

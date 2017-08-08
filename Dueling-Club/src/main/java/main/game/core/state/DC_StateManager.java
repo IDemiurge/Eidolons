@@ -287,8 +287,6 @@ public class DC_StateManager extends StateManager {
     }
 
     public void endTurn() {
-        getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.ROUND_ENDS, state.getRound());
-        state.setRound(state.getRound() + 1); // TODO why not on start?
         try {
             if (game.isStarted()) {
                 applyEndOfTurnRules();
@@ -302,14 +300,16 @@ public class DC_StateManager extends StateManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        getGame().getLogManager().doneLogEntryNode();
 
     }
 
     public void newRound() {
         getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, state.getRound());
 
-        game.getLogManager().log("            >>>Round #" + (state.getRound() + 1) + "<<<");
+        game.getLogManager().log("            >>>Round #" + (state.getRound() + 1) + "<<<"
+        );
+        main.system.auxiliary.log.LogMaster.log(1,"Units= " +
+         getGame().getUnits() );
         newTurnTick();
         Ref ref = new Ref(getGame());
         ref.setAmount(state.getRound());

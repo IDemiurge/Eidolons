@@ -51,6 +51,8 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         }
         this.formula = new Formula(formula);
         this.mod_type = code;
+
+        mapThisToConstrParams(param,   code,  formula);
     }
 
     public ModifyValueEffect(PARAMETER param, MOD code, String formula, PARAMETER max) {

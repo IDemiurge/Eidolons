@@ -7,9 +7,7 @@ import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.content.enums.system.AiEnums;
-import main.content.enums.system.AiEnums.AI_TYPE;
-import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
+import main.content.enums.system.AiEnums.*;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.obj.DC_Cell;
@@ -61,6 +59,10 @@ public class UnitAI {
     private List<MetaGoal> metaGoals;
     private boolean immediate;
     private boolean free;
+//    private CHARACTER_TYPE characterType;
+//    private INCLINATION_TYPE characterType;
+//    private IMPULSE_TYPE impulseType;
+//    Map<IMPULSE_TYPE, Integer> impulseMap;
 
     public UnitAI(Unit unit) {
         this.unit =   unit;
@@ -475,6 +477,7 @@ public class UnitAI {
     public boolean isFree() {
         return free;
     }
+
 
     public enum AI_BEHAVIOR_MODE {
         WANDER, AMBUSH, AGGRO, STALK, PATROL, GUARD,

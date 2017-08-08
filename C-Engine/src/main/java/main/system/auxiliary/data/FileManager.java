@@ -63,7 +63,7 @@ public class FileManager {
 //        if (charset==null )
 //            charset= Charset.defaultCharset();
         try {
-            result = new String(Files.readAllBytes(file.toPath()) );
+            result = new String(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -373,11 +373,17 @@ public class FileManager {
                     }
                 }
             }
-            FileWriter fw = new FileWriter(file);
+            Writer writer = null;
+            try {
+                writer = new FileWriter(file);
+            } catch (Exception e) {
+                writer = new PrintWriter(filepath, "UTF-8");
+            }
 
-            fw.write(content);
-            fw.flush();
-            fw.close();
+
+            writer.write(content);
+            writer.flush();
+            writer.close();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -392,7 +398,8 @@ public class FileManager {
     public static List<String> listFiles(String path) {
         return getFileNames((getFilesFromDirectory(path, true)));
     }
-        public static List<String> listFiles(File file) {
+
+    public static List<String> listFiles(File file) {
         return getFileNames(getFilesFromDirectory(file.getPath(), true));
     }
 

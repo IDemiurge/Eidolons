@@ -82,6 +82,8 @@ public class LogMaster {
     public static final String MACRO_DYNAMICS_PREFIX = "MACRO_DYNAMICS: ";
     public static final String GENERATION_PREFIX = "GENERATION: ";
     public static final int GENERATION = -33;
+    public static final String AI_TRAINING_PREFIX = "AI_TRAINING: ";
+    public static final int AI_TRAINING = -34;
     public static final LOG_CHANNELS[] specialLogChannels = {
 
     };
@@ -122,6 +124,7 @@ public class LogMaster {
     public static boolean EFFECT_PASSIVE_DEBUG_ON = !true;
     public static boolean MACRO_DYNAMICS_ON = true;
     public static boolean GENERATION_ON = false;
+    public static boolean AI_TRAINING_ON=true;
     static String shout = "\n******************\n";
     private static boolean off = false;
     private static int PRIORITY = 1;
@@ -440,6 +443,8 @@ public class LogMaster {
         CONSTRUCTION_DEBUG(LogMaster.CORE_DEBUG_PREFIX, LogMaster.CORE_DEBUG_ON, LogMaster.CORE_DEBUG),
         AI_DEBUG2(LogMaster.AI_DEBUG_PREFIX, LogMaster.AI_DEBUG_ON2, LogMaster.AI_DEBUG2),
         AI_DEBUG(LogMaster.AI_DEBUG_PREFIX, LogMaster.AI_DEBUG_ON, LogMaster.AI_DEBUG),
+        AI_TRAINING(LogMaster.AI_TRAINING_PREFIX, LogMaster.AI_TRAINING_ON,
+         LogMaster.AI_TRAINING),
         MOVEMENT_DEBUG(LogMaster.CORE_DEBUG_PREFIX, LogMaster.CORE_DEBUG_ON, LogMaster.CORE_DEBUG),
         GUI_DEBUG(LogMaster.CORE_DEBUG_PREFIX, LogMaster.CORE_DEBUG_ON, LogMaster.CORE_DEBUG),
         ANIM_DEBUG(LogMaster.CORE_DEBUG_PREFIX, LogMaster.CORE_DEBUG_ON, LogMaster.CORE_DEBUG),

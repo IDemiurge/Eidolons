@@ -128,7 +128,7 @@ public abstract class GameManager implements GenericGameManager {
         setActiveObjSelected(selectedActiveObj != null);
     }
 
-    public abstract void endRound();
+    public abstract boolean endRound();
 
     public abstract void resetValues(Player owner);
 
@@ -219,7 +219,6 @@ public abstract class GameManager implements GenericGameManager {
     }
 
 
-
     public boolean handleEvent(Event event) {
         if (event.getRef().getEffect() != null) {
             if (event.getRef().getEffect().isQuietMode()) {
@@ -234,8 +233,12 @@ public abstract class GameManager implements GenericGameManager {
             return true;
         }
         LogMaster.log(LogMaster.EVENT_DEBUG, "*** Event being handled: " + event);
-if (statMaster!=null )
-    statMaster.eventBeingHandled(event);
+        if (statMaster != null)
+            try {
+                statMaster.eventBeingHandled(event);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         getState().checkTriggers(event);
         getState().checkRules(event);
         if (getState().isDirty()) {
@@ -347,7 +350,6 @@ if (statMaster!=null )
     public GameMaster getGameMaster() {
         return gameMaster;
     }
-
 
 
     public abstract Integer select(Set<Obj> selectingSet, Ref ref);

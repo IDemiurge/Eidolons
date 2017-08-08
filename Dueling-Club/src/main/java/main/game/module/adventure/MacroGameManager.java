@@ -175,9 +175,10 @@ public class MacroGameManager extends GameManager {
     }
 
     @Override
-    public void endRound() {
+    public boolean endRound() {
         // TODO Auto-generated method stub
 
+        return false;
     }
 
     public void win(Player winningPlayer) {

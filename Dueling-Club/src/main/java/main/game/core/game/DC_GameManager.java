@@ -36,6 +36,7 @@ import main.system.graphics.ColorManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -499,9 +500,18 @@ public class DC_GameManager extends GameManager {
     }
 
     @Override
-    public void endRound() {
+    public boolean endRound() {
         getGame().getRules().getTimeRule().reset();
+
+        getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.ROUND_ENDS, state.getRound());
+        state.setRound(state.getRound() + 1); // TODO why not on start?
+        if (getGame().getBattleMaster().getOutcomeManager().checkTimedOutcome()!=null ){
+            getGame().getLogManager().doneLogEntryNode();
+            return false;
+        }
         getStateManager().endTurn();
+        getGame().getLogManager().doneLogEntryNode();
+        return true;
     }
 
 

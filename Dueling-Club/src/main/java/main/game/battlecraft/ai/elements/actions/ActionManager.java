@@ -174,6 +174,10 @@ public class ActionManager extends AiHandler {
         if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK) {
             return new Action(ai.getUnit().getAction("Rage"));
         }
+        Action action = getAtomicAi().getAtomicActionPrepare(unit.getAI());
+        if (action != null) {
+            return action;
+        }
 
         actions = getActionSequenceConstructor().createActionSequences(new Goal(goal, ai, true), ai);
         if (ai.checkMod(AI_MODIFIERS.TRUE_BRUTE)) {
@@ -204,9 +208,12 @@ public class ActionManager extends AiHandler {
         if (actions.isEmpty()) {
             return getAction(unit, STD_MODE_ACTIONS.Defend.name(), null);
         }
-        ActionSequence sequence = DC_PriorityManager.chooseByPriority(actions);
-
-        return sequence.getNextAction();
+        ActionSequence sequence = getPriorityManager().chooseByPriority(actions);
+        action =sequence.getNextAction();
+       if (action == null) {
+           return getAction(unit, STD_MODE_ACTIONS.Defend.name(), null);
+        }
+        return action;
     }
 
     private Integer checkWaitForBlockingAlly() {

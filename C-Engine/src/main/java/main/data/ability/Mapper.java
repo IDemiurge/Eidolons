@@ -33,15 +33,15 @@ public class Mapper {
 
     public static final Class<?>[] CONTAINER_CLASSES = {
      Abilities.class, Effects.class,
-            Conditions.class,
-Speeches.class, SpeechData.class,
+     Conditions.class,
+     Speeches.class, SpeechData.class,
     };
     public static final String ABILITIES = "Abilities";
     private final static String[] ignoredPaths = {""};
     private final static Class<?>[] IGNORED_CLASSES = {EffectImpl.class, Effect.class};
     private static final Class<?>[] SPECIAL_CLASSES =
      {Abilities.class, PassiveAbility.class,
-            ActiveAbility.class, Param.class, Prop.class,
+      ActiveAbility.class, Param.class, Prop.class,
 //      Speeches.class, SpeechData.class, DataString.class,
 
      };
@@ -187,7 +187,7 @@ Speeches.class, SpeechData.class,
     }
 
     public static void compileArgMap(List<Argument> args1, List<String> classFolders1)
-            throws ClassNotFoundException, SecurityException, IOException {
+     throws ClassNotFoundException, SecurityException, IOException {
         args = args1;
         classFolders = classFolders1;
         for (Argument arg : args) {
@@ -207,7 +207,7 @@ Speeches.class, SpeechData.class,
                 }
                 if (!constructAE_Item(CLASS)) {
                     LogMaster.log(1, CLASS + " in " + "" + packageName
-                            + " failed to construct!");
+                     + " failed to construct!");
                 }
             }
         }
@@ -250,7 +250,7 @@ Speeches.class, SpeechData.class,
                 Argument mappedArg = translateToArg(CLASS);
 
                 boolean container = Arrays.asList(CONTAINER_CLASSES).contains(CLASS)
-                        || mappedArg.isContainer();
+                 || mappedArg.isContainer();
                 if (container) {
                     if (itemMap.containsKey(name)) {
                         continue;
@@ -271,7 +271,7 @@ Speeches.class, SpeechData.class,
                 }
 
                 mappedArg = translateToArg(CLASS
-                        // .getSuperclass()
+                 // .getSuperclass()
                 );
                 if (!(map.get(mappedArg).contains(name))) {
                     map.get(mappedArg).add(item);
@@ -280,11 +280,30 @@ Speeches.class, SpeechData.class,
             }
         } catch (Exception e) {
             LogMaster.log(1, CLASS.toString()
-                    + " failed to construct into item map");
+             + " failed to construct into item map");
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+
+    public static String getArgName(Class key) {
+        for (Argument sub : args) {
+            if (sub.getCoreClass().equals(key)) {
+                return sub.name();
+            }
+        }
+        Argument arg = translateToArg(key);
+        if (arg!=null )
+            return arg.toString();
+//        Class<?> core = translateToCoreClass(key.getSimpleName());
+//        for (Argument sub : args) {
+//            if (sub.getCoreClass().equals(core)) {
+//                return sub.name();
+//            }
+//        }
+        return key.getSimpleName();
     }
 
     public static Class<?> translateToCoreClass(String className) {
@@ -315,7 +334,7 @@ Speeches.class, SpeechData.class,
                     break;
                 }
                 if (sc.equals(arg.getCoreClass())
-                        || Arrays.asList(sc.getInterfaces()).contains(arg.getCoreClass())) {
+                 || Arrays.asList(sc.getInterfaces()).contains(arg.getCoreClass())) {
                     return arg;
                 } else {
                     sc = sc.getSuperclass();

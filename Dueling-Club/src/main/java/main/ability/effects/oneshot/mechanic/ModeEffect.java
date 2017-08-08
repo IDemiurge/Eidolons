@@ -41,7 +41,7 @@ import java.util.Map;
  *
  * @author JustMe
  */
-public class ModeEffect extends MicroEffect  implements OneshotEffect {
+public class ModeEffect extends MicroEffect implements OneshotEffect {
 
     private static final String PARAM_MOD = "param mod";
     private static final String PARAM_BONUS = "param bonus";
@@ -68,13 +68,15 @@ public class ModeEffect extends MicroEffect  implements OneshotEffect {
             mode.setBuffName(name);
         }
         modPropEffect = new ModifyPropertyEffect(G_PROPS.MODE, MOD_PROP_TYPE.SET, template
-                .toString());
+         .toString());
 
+        mapThisToConstrParams(template, name, defenseMod, disableCounter,
+         dispelOnHit);
     }
 
     public ModeEffect(STD_MODES template) {
         modPropEffect = new ModifyPropertyEffect(G_PROPS.MODE, MOD_PROP_TYPE.SET, template
-                .toString());
+         .toString());
 
         this.mode = template;
     }
@@ -85,7 +87,7 @@ public class ModeEffect extends MicroEffect  implements OneshotEffect {
             initBuffEffect();
         }
         timeModifier = getGame().getTurnManager().getTimeModifier();
-        LogMaster.log( LogMaster.COMBAT_DEBUG,
+        LogMaster.log(LogMaster.COMBAT_DEBUG,
          getActiveObj() + "'s timeModifier= " + timeModifier);
         if (mode.isDispelOnHit()) {
             addDispelOnHitTrigger();
@@ -100,8 +102,8 @@ public class ModeEffect extends MicroEffect  implements OneshotEffect {
         addParamBonuses();
         addPropMods();
 
-         if (mode.equals(STD_MODES.ALERT))
-         addBuffEffect.addEffect(AlertRule.getWakeUpTriggerEffect());
+        if (mode.equals(STD_MODES.ALERT))
+            addBuffEffect.addEffect(AlertRule.getWakeUpTriggerEffect());
         if (addBuffEffect.getDuration() == null) {
             if (mode.isContinuous()) {
                 addBuffEffect.setDuration(ContentManager.INFINITE_VALUE);
@@ -138,7 +140,7 @@ public class ModeEffect extends MicroEffect  implements OneshotEffect {
 
     private void addPropMods() {
         Map<PROPERTY, String> map = new RandomWizard<PROPERTY>().constructStringWeightMap(mode
-                .getPropsAdded(), PROPERTY.class);
+         .getPropsAdded(), PROPERTY.class);
         for (PROPERTY param : map.keySet()) {
             // addBuffEffect.addEffect(new ModifyValueEffect(param,
             // MODVAL_TYPE.MODIFY_BY_PERCENT, ""+map.getOrCreate(param)));
@@ -161,7 +163,7 @@ public class ModeEffect extends MicroEffect  implements OneshotEffect {
         }
         // "Custom Parameters" of old...
         for (String s : StringMaster.openContainer(ref.getSourceObj().getProperty(
-                G_PROPS.CUSTOM_PROPS))) {
+         G_PROPS.CUSTOM_PROPS))) {
             if (StringMaster.contains(s, mode.getBuffName(), true, false)) {
                 if (StringMaster.contains(s, mod ? PARAM_MOD : PARAM_BONUS, true, false)) {
                     string += VariableManager.removeVarPart(s) + ";";
@@ -169,11 +171,11 @@ public class ModeEffect extends MicroEffect  implements OneshotEffect {
             }
         }
         Map<PARAMETER, Integer> map = new RandomWizard<PARAMETER>().constructWeightMap(string,
-                PARAMETER.class);
+         PARAMETER.class);
         for (PARAMETER param : map.keySet()) {
             if (param != null) {
                 addBuffEffect.addEffect(new ModifyValueEffect(param, mod ? MOD.MODIFY_BY_PERCENT
-                        : MOD.MODIFY_BY_CONST, "" + map.get(param)));
+                 : MOD.MODIFY_BY_CONST, "" + map.get(param)));
             }
         }
     }
@@ -189,14 +191,14 @@ public class ModeEffect extends MicroEffect  implements OneshotEffect {
             // ++ remove disable actions?!
         }
         addBuffEffect.addEffect(new DelayedEffect(REMOVE_EVENT, new RemoveBuffEffect(addBuffEffect
-                .getBuffTypeName()), c));
+         .getBuffTypeName()), c));
         // .apply(ref);
     }
 
     private void addDefModEffect() {
         addBuffEffect.addEffect(new ModifyValueEffect(PARAMS.DEFENSE, MOD.MODIFY_BY_PERCENT, mode
-                .getDefenseMod()
-                + ""));
+         .getDefenseMod()
+         + ""));
     }
 
     private void addDispelOnHitTrigger() {
@@ -206,7 +208,7 @@ public class ModeEffect extends MicroEffect  implements OneshotEffect {
         } else {
             effects.add(AlertRule.getInterruptEffect());
         }
-        if (mode.equals(STD_MODES.CHANNELING)){
+        if (mode.equals(STD_MODES.CHANNELING)) {
             effects.add(new EffectImpl() {
                 @Override
                 public boolean applyThis() {
@@ -218,7 +220,7 @@ public class ModeEffect extends MicroEffect  implements OneshotEffect {
 
         STANDARD_EVENT_TYPE event_type = STANDARD_EVENT_TYPE.UNIT_IS_DEALT_TOUGHNESS_DAMAGE; // TODO
         Condition conditions = (mode.equals(STD_MODES.ALERT)) ? InterruptRule.getConditionsAlert()
-                : InterruptRule.getConditions();
+         : InterruptRule.getConditions();
 
         addBuffEffect.addEffect(new DelayedEffect(event_type, effects, conditions));
     }
@@ -235,13 +237,13 @@ public class ModeEffect extends MicroEffect  implements OneshotEffect {
             DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
             if (activeObj.getParam(PARAMS.FORMULA).contains(StringMaster.MOD)) {
                 formula = StringMaster.wrapInParenthesis(formula) + "*"
-                        + activeObj.getParam(PARAMS.FORMULA) + "/100";
+                 + activeObj.getParam(PARAMS.FORMULA) + "/100";
             } else if (activeObj.getIntParam(PARAMS.FORMULA) != 0) {
                 formula += "+" + activeObj.getIntParam(PARAMS.FORMULA);
             }
         }
         ModifyValueEffect effect = new ModifyValueEffect(mode.getParameter(), MOD.MODIFY_BY_CONST,
-                new Formula("min(0, " + formula + ")"));
+         new Formula("min(0, " + formula + ")"));
         PARAMETER param = ContentManager.getPARAM(mode.getParameter());
         effect.setParam(param);
         effect.setMaxParam(ContentManager.getBaseParameterFromCurrent(param));

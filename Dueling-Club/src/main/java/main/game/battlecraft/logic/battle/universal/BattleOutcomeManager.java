@@ -4,9 +4,13 @@ import main.entity.obj.Obj;
 import main.game.logic.battle.player.Player;
 import main.system.audio.MusicMaster;
 import main.system.audio.MusicMaster.MUSIC_MOMENT;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-public abstract class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
+public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     Boolean outcome;
+    private Integer roundLimit = null;
+    private Boolean timedOutcome = true;
 
     public BattleOutcomeManager(BattleMaster<E> master) {
         super(master);
@@ -20,6 +24,7 @@ public abstract class BattleOutcomeManager<E extends Battle> extends BattleHandl
     public void end() {
         // battle.setOutcome(outcome);
         game.stop();
+        WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, outcome);
     }
 
     public void exited() {
@@ -55,11 +60,39 @@ public abstract class BattleOutcomeManager<E extends Battle> extends BattleHandl
     }
 
 
-    public void checkOutcomeClear() {
-        if (checkVictory())
+    public void setRoundLimit(Integer roundLimit) {
+        this.roundLimit = roundLimit;
+    }
+
+    public void setTimedOutcome(Boolean timedOutcome) {
+        this.timedOutcome = timedOutcome;
+    }
+
+    public Boolean checkTimedOutcome() {
+        if (roundLimit != null)
+            if (game.getState().getRound() >= roundLimit) {
+                if (timedOutcome) {
+                    victory();
+                } else defeat();
+
+                return timedOutcome;
+            }
+
+        return null;
+    }
+
+    public boolean checkOutcomeClear() {
+        if (checkVictory()) {
             victory();
-        else if (checkDefeat())
-            defeat();
+            return true;
+        } else {
+            if (checkDefeat()) {
+                defeat();
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected boolean checkDefeat() {

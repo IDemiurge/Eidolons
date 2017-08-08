@@ -12,17 +12,23 @@ import java.util.function.ToIntFunction;
  * Created by JustMe on 4/16/2017.
  */
 public class FuncMaster<T> {
-    public  Entity getGreatestValue
+    public  static Entity getGreatestValueEntity
      (List<? extends Entity> list, PARAMETER p) {
-        return getGreatest(list, entity -> entity.getIntParam(p)); // TODO reverse w/o minus
+        return getGreatestEntity(list, entity -> entity.getIntParam(p)); // TODO reverse w/o minus
     }
 
-    public  Entity getGreatest
+    public  static Entity getGreatestEntity
      (List<? extends Entity> list, Function<Entity, Integer> function) {
-        list.sort(SortMaster.getSorterByExpression(function));
+        list.sort(SortMaster.getEntitySorterByExpression(function));
         return list.get(0);
     }
 
+
+    public static Object getGreatest
+     (List<? extends Object> list, Function<Object, Integer> function) {
+        list.sort(SortMaster.getSorterByExpression(function));
+        return list.get(0);
+    }
     public  Integer total
      (List<? extends T> list, ToIntFunction<T> function) {
         return list.stream().mapToInt(wrapFunction(function)).sum();
@@ -39,8 +45,8 @@ public class FuncMaster<T> {
         };
     }
 
-    public  Integer getGreatestValue
+    public  static Integer getGreatestValueEntity
      (List<? extends Entity> list, Function<Entity, Integer> function) {
-        return function.apply(getGreatest(list, function));
+        return function.apply(getGreatestEntity(list, function));
     }
 }

@@ -92,7 +92,7 @@ public class ArenaOutcomeManager<E extends Battle> extends BattleOutcomeManager<
 
     }
 
-    public void checkOutcomeClear() {
+    public boolean checkOutcomeClear() {
 //        if (!DC_Game.game.isDebugMode()) {
 //            if (checkNoEnemiesLeft()) {
 //                if (game.getGameMode() != GAME_MODES.ARENA) {
@@ -104,6 +104,7 @@ public class ArenaOutcomeManager<E extends Battle> extends BattleOutcomeManager<
 //                }
 //            }
 //        }
+        return false;
     }
 
     private boolean nextWaveGroup() {

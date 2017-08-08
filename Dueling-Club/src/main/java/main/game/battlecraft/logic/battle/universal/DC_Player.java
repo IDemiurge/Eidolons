@@ -5,6 +5,7 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.PlayerAI;
+import main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
@@ -49,7 +50,8 @@ public class DC_Player extends Player {
 
     @Override
     public boolean isAi() {
-        // preCheck connection?
+        if (AiTrainingRunner.running)
+            return true;
         return super.isAi();
     }
 

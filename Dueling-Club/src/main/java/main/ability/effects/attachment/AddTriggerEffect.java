@@ -11,6 +11,7 @@ import main.elements.targeting.FixedTargeting;
 import main.elements.triggers.Trigger;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -45,19 +46,28 @@ public class AddTriggerEffect extends MultiEffect implements
 
     public AddTriggerEffect(String event_type, Condition conditions, String target, Effect effect) {
         this(Event.getEventType(event_type), conditions, new EnumMaster<KEYS>().retrieveEnumConst(
-                KEYS.class, target), effect);
+         KEYS.class, target), effect);
     }
 
     // continuous
     @Override
     public boolean applyThis() {
-        if (!CoreEngine.isCombatGame()){
+        if (!CoreEngine.isCombatGame()) {
             return true;
         }
         if (trigger == null) {
             trigger = new Trigger(event_type, conditions, ability);
-            Node xml = XML_Converter.findNode(toXml(), "Conditions");
-            conditions.setXml(XML_Converter.getStringFromXML(xml));
+            if (!AiTrainingRunner.running)
+            if (conditions!=null )
+                if (conditions.toXml()==null )
+            try {
+                Node xml = XML_Converter.findNode(toXml(), "Conditions");
+                if (xml != null)
+                    conditions.setXml(XML_Converter.getStringFromXML(xml));
+            } catch (Exception e) {
+                if (!AiTrainingRunner.running)
+                e.printStackTrace();
+            }
         }
         trigger.setRetainCondition(retainCondition);
         ref.getGame().getManager().addTrigger(trigger);
