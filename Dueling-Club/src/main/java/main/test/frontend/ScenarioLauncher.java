@@ -12,16 +12,23 @@ import main.system.GuiEventType;
  */
 public class ScenarioLauncher {
     public static final String DEFAULT = "Pride and Treachery";
-    public static String missionIndex;
+    public static String missionIndex="0";
 
     public static void main(String[] args) {
-        String t = args[0];
-        if (t == null)
-            t = DEFAULT;
+
         if (args.length>1)
         missionIndex = args[1];
-        launch(t);
+        if (args.length>0){
+            if (args[0]!=null )
+            launch(args[0]);
+            else
+                launch(DEFAULT);
+        }
+        else{
+            launch(DEFAULT);
+        }
     }
+
 
     public static void launch(String typeName) {
         DC_Engine.jarInit();

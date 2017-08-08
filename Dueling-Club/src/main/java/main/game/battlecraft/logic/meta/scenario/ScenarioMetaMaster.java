@@ -35,11 +35,17 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
          getMetaDataManager().getMissionName();
 
         if (StringMaster.isEmpty(missionName)) {
-            int missionIndex=StringMaster.getInteger(ScenarioLauncher.missionIndex);
+            int missionIndex = StringMaster.getInteger(ScenarioLauncher.missionIndex);
+
+            getMetaGame().setMissionIndex(missionIndex);
 
             chosenMission(StringMaster.openContainer(getMetaGame().getScenario().
              getProperty(PROPS.SCENARIO_MISSIONS)).get(missionIndex));
-            missionName =getMetaDataManager().getMissionName();
+            missionName = getMetaDataManager().getMissionName();
+        } else {
+            getMetaGame().setMissionIndex(StringMaster.openContainer(getMetaGame().getScenario().
+             getProperty(PROPS.SCENARIO_MISSIONS)).indexOf(missionName));
+
         }
         String levelPath = DataManager.getType(missionName, DC_TYPE.MISSIONS).
          getProperty(PROPS.MISSION_FILE_PATH);

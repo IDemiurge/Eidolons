@@ -9,6 +9,7 @@ import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
  */
 public class ScenarioMeta extends MetaGame {
     private   Scenario scenario;
+    private int missionIndex;
 
     public ScenarioMeta(Scenario scenario, MetaGameMaster<ScenarioMeta> master ) {
         super(master );
@@ -38,4 +39,11 @@ public class ScenarioMeta extends MetaGame {
         return getMaster().getBattleMaster().getBattle().getMission();
     }
 
+    public int getMissionIndex() {
+        return missionIndex;
+    }
+
+    public void setMissionIndex(int missionIndex) {
+        this.missionIndex = missionIndex;
+    }
 }

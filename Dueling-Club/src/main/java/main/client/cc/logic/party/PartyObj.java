@@ -19,6 +19,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.meta.arcade.ArcadeManager.ARCADE_STATUS;
 import main.game.bf.Coordinates;
+import main.game.core.Eidolons;
 import main.game.logic.battle.player.Player;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.travel.MacroParty;
@@ -71,12 +72,22 @@ public class PartyObj extends Obj {
     public PartyObj(ObjType type) {
         super(type, Player.NEUTRAL, type.getGame(), new Ref(type.getGame()));
         initMembers();
+
+        // HeroCreator.initHero(type.getProperty(PROPS.LEADER));
+    }
+    public void initMembers() {
+        members.clear();
+        for (String heroName : StringMaster.openContainer
+         (type.getProperty(PROPS.MEMBERS))) {
+            //TODO refactor
+            heroName = Eidolons.getGame().getMetaMaster().getPartyManager().
+             checkLeveledHeroVersionNeeded(heroName);
+            addMember(HeroCreator.initHero(heroName));
+        }
         if (!getMembers().isEmpty()) {
             this.leader = getMembers().get(0); // how safe is that?
         }
-        // HeroCreator.initHero(type.getProperty(PROPS.LEADER));
     }
-
     public String getMemberString() {
         return StringMaster.constructContainer(ListMaster.toNameList(getMembers()));
     }
@@ -91,13 +102,7 @@ public class PartyObj extends Obj {
 
     }
 
-    public void initMembers() {
-        members.clear();
-        for (String heroName : StringMaster.openContainer
-         (type.getProperty(PROPS.MEMBERS))) {
-            addMember(HeroCreator.initHero(heroName));
-        }
-    }
+
 
     public void resetMembers() {
         for (Unit hero : members) {

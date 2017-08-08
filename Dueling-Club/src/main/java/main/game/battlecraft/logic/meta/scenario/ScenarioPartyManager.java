@@ -6,6 +6,7 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.battlecraft.logic.meta.universal.PartyManager;
 import main.system.auxiliary.StringMaster;
+import main.system.text.NameMaster;
 
 /**
  * Created by JustMe on 5/14/2017.
@@ -22,6 +23,22 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         party.setProperty(PROPS.PARTY_MISSION,
      StringMaster.openContainer(getMetaGame().getScenario().
       getProperty(PROPS.SCENARIO_MISSIONS)).get(0), true);
+    }
+
+    @Override
+    public String checkLeveledHeroVersionNeeded(String heroName) {
+
+       int i = getMetaGame().getMissionIndex();
+//        getMetaDataManager().getMissionName()
+        if (i>0){
+            heroName = heroName + NameMaster.appendVersionToName(heroName, i+1);
+        }
+        return super.checkLeveledHeroVersionNeeded(heroName);
+    }
+
+    @Override
+    public ScenarioMetaDataManager getMetaDataManager() {
+        return (ScenarioMetaDataManager) super.getMetaDataManager();
     }
 
     @Override

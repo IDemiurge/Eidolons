@@ -407,13 +407,17 @@ public class NameMaster {
     }
 
     public static String appendVersionToName(String name) {
+        return appendVersionToName(name, null );
+    }
+        public static String appendVersionToName(String name, Integer i) {
         if (name.contains(VERSION)) {
             if (StringMaster.isInteger("" + name.charAt(name.length() - 1))) {
                 name = name.substring(0, name.lastIndexOf(" "));
             }
         }
         Loop.startLoop(1000);
-        int i = 2;
+            if (i == null) {
+                i = 2;
         while (!Loop.loopEnded()) {
             String newName = name + VERSION + i;
             if (!DataManager.isTypeName(newName)) {
@@ -421,6 +425,7 @@ public class NameMaster {
             }
             i++;
         }
+            }
         return name + VERSION + i;
     }
 

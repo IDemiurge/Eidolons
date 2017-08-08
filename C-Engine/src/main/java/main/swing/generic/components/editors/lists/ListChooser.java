@@ -90,7 +90,7 @@ public class ListChooser extends GenericListChooser<String> {
     public static String chooseObj(List list, SELECTION_MODE MODE) {
         OBJ_TYPE T = ((Entity) list.get(0)).getOBJ_TYPE_ENUM();
         sortingDisabled = true;
-        return new ListChooser(MODE, ListMaster.toStringList(list.toArray()), T).getString();
+        return new ListChooser(MODE, ListMaster.toNameList(list), T).getString();
     }
 
     public static String chooseEnum(Class<?> ENUM_CLASS, SELECTION_MODE MODE) {

@@ -7,11 +7,20 @@ import main.swing.generic.services.dialog.DialogMaster;
  */
 public class Showcase {
 
+    public static final String[] missions = {
+     "Road Ambush",
+     "A Walk among Tombstones",
+     "The Ravenguard",
+     "In Spider's Den",
+     "The Tunnel",
+         "Bone Temple",
+    };
+
+    public static final String[] launch_options = {
+     "Road Ambush",
+    };
 
     public static void main(String[] args) {
-        String[] missions = {
-         "1",
-        };
       int index=  DialogMaster.optionChoice(missions, "Choose mission to launch" );
         String[] args1 = {
          null, index + ""

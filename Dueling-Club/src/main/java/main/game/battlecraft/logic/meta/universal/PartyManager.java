@@ -5,6 +5,8 @@ import main.content.PROPS;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
+import main.swing.generic.components.editors.lists.ListChooser;
+import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 
 public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E> {
 
@@ -28,7 +30,11 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
                 //TODO set main hero if created
                 name = getMaster().getEntity().getProperty(PROPS.PARTY_MAIN_HERO);
             }
+//            if (true){
+        name = ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
+        if (name==null )
         name = "Harlen Rolwain";
+
         Ref ref = new Ref(getParty().getLeader());
         Unit hero = getGame().getMaster().getUnitByName(name, ref, true, null, null);
         //will find 1st if name==null
@@ -38,5 +44,9 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
 
     public void preStart() {
 
+    }
+
+    public String checkLeveledHeroVersionNeeded(String heroName) {
+        return heroName;
     }
 }

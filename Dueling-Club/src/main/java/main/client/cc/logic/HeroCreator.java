@@ -43,6 +43,7 @@ public class HeroCreator {
     }
 
     public static Unit initHero(String typeName) {
+
         ObjType type = new ObjType(DataManager.getType(typeName, DC_TYPE.CHARS));
         Eidolons.getGame().initType(type);
 
