@@ -106,6 +106,7 @@ public class Launcher {
     }
 
     public static void main(String[] args) {
+        DEV_MODE = true;
         DC_Engine.jarInit();
         GuiManager.init();
         if (args != null) {

@@ -55,8 +55,10 @@ public class PathFinder {
             path = path.split("file:")[0];
             System.out.println("Engine path for Jar: " + path);
 
-            ENGINE_PATH = path + File.separator;
-            XML_PATH = path + File.separator + "XML" + File.separator;
+            ENGINE_PATH = path ;
+            if (!path.endsWith(  File.separator))
+                path+=  File.separator;
+            XML_PATH = path  + "XML" + File.separator;
 
         }
 

@@ -40,6 +40,7 @@ public class DC_RequirementsManager implements RequirementsManager {
     private static final String OR = " or ";
     private static final String NOT = "!=";
     private static final int VERBATIM_MODE = RequirementsManager.VERBATIM_MODE;
+    public static boolean overrideMode;
 
     private Map<Entity, Requirements> reqMap;
 
@@ -85,11 +86,15 @@ public class DC_RequirementsManager implements RequirementsManager {
 
     @Override
     public String check(Entity hero, Entity type) {
+        if (overrideMode)
+            return null ;
         return check(hero, type, NORMAL_MODE);
     }
 
     @Override
     public String check(Entity hero, Entity type, int mode) {
+        if (overrideMode)
+            return null ;
         if (CoreEngine.isArcaneVault()) {
             return null;
         }
@@ -114,6 +119,8 @@ public class DC_RequirementsManager implements RequirementsManager {
     @Override
     public Requirements getRequirements(Entity type, int mode) {
 
+        if (overrideMode)
+            return null ;
         Map<Entity, Requirements> map = getReqMap(mode);
        if (map != null) {
             if (map.get(type) != null) // TODO
@@ -701,5 +708,9 @@ public class DC_RequirementsManager implements RequirementsManager {
     @Override
     public void setHero(Entity hero) {
         this.hero = hero;
+    }
+
+    public static void toggleOverrideMode() {
+        overrideMode=!overrideMode;
     }
 }

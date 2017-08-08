@@ -198,6 +198,7 @@ public class Unit extends DC_UnitModel {
     }
 
     public DC_FeatObj getFeat(boolean skill, ObjType type) {
+        if (getSkills().stream().map(skill1->skill1.getType()).collect(Collectors.toList()).contains(type))
         if (game.isSimulation()) {
             return (DC_FeatObj) getGame().getSimulationObj(this, type,
              skill ? PROPS.SKILLS : PROPS.CLASSES);

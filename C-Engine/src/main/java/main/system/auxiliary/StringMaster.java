@@ -1167,7 +1167,6 @@ public class StringMaster {
     public static String replaceFirst(String string, String regex, String replacement) {
         return replace(string, regex, replacement, false);
     }
-
     public static String replace(String string, String regex, String replacement, boolean last) {
         int index = (last) ? string.lastIndexOf(regex) : string.indexOf(regex);
         if (index == -1) {

@@ -1,9 +1,10 @@
 package main.game.logic.dungeon.editor.gui;
 
-import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.game.logic.dungeon.editor.Level;
@@ -13,7 +14,10 @@ import main.game.module.adventure.gui.MacroGuiManager;
 import main.gui.builders.EditViewPanel;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.GuiManager;
+import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 
 public class LE_InfoEditPanel extends EditViewPanel {
     private ObjType selectedType;
@@ -30,7 +34,7 @@ public class LE_InfoEditPanel extends EditViewPanel {
     @Override
     public void setPanel(G_Panel panel) {
         this.panel = new G_Panel(
-                // VISUALS.FRAME_MENU
+         // VISUALS.FRAME_MENU
         );
     }
 
@@ -83,7 +87,21 @@ public class LE_InfoEditPanel extends EditViewPanel {
             modify(LevelEditor.getCurrentLevel().getDungeon(), valName, newValue);
 
             if (valName.equalsIgnoreCase(PROPS.MAP_BACKGROUND.getName())) {
-                LevelEditor.getMainPanel().setBackgroundImage(newValue);
+                if (CoreEngine.isJar()) {
+                    newValue = newValue.replace(PathFinder.getImagePath(), "");
+                    main.system.auxiliary.log.LogMaster.log(1, newValue + " - tried to remove image path: " + PathFinder.getImagePath());
+                    newValue = StringMaster.replaceFirst(newValue, PathFinder.getImagePath(), "");
+                    main.system.auxiliary.log.LogMaster.log(1, newValue + " StringMaster tried to remove image path: " + PathFinder.getImagePath());
+                newValue = StringMaster.removePreviousPathSegments(
+                 newValue, PathFinder.getImagePath());
+                main.system.auxiliary.log.LogMaster.log(1, newValue + " StringMaster tried to remove image path: " + PathFinder.getImagePath());
+ }
+                if (!ImageManager.isImage(newValue)) {
+                    main.system.auxiliary.log.LogMaster.log(1, newValue +
+                     " is not an image ");
+                    return false;
+                } else
+                    LevelEditor.getMainPanel().setBackgroundImage(newValue);
             } else if (valName.equalsIgnoreCase(PARAMS.BF_HEIGHT.getName())) {
                 LevelEditor.getMapMaster().alterSize(false, newValue);
             } else if (valName.equalsIgnoreCase(PARAMS.BF_HEIGHT.getName())) {
@@ -93,11 +111,11 @@ public class LE_InfoEditPanel extends EditViewPanel {
             }
         } else if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.MISSIONS) {
             modify(
-                    // overwriteType? :
-                    LevelEditor.getCurrentMission().getObj().getType() // no custom
-                    // props
-                    // LevelEditor.getCurrentMission().getObj()
-                    , valName, newValue);
+             // overwriteType? :
+             LevelEditor.getCurrentMission().getObj().getType() // no custom
+             // props
+             // LevelEditor.getCurrentMission().getObj()
+             , valName, newValue);
 
         }
         // what about dynamic types and values?

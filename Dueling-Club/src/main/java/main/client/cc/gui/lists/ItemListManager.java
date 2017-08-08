@@ -4,6 +4,7 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.gui.pages.HC_PagedListPanel;
 import main.client.cc.gui.views.HeroItemView;
 import main.client.cc.logic.HeroCreator;
+import main.client.dc.Launcher;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -13,6 +14,7 @@ import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
+import main.system.DC_RequirementsManager;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -232,6 +234,8 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         boolean alt = e.isAltDown();
+        checkToggleOverrideMode(e, false);
+
         boolean right = SwingUtilities.isRightMouseButton(e);
         JList<ObjType> list = (JList<ObjType>) e.getSource();
         HeroListPanel hlp = (HeroListPanel) list.getParent();
@@ -242,6 +246,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
                 removeType(type, hlp, isAltProp(hlp) ? prop2 : PROP);
                 SoundMaster.playStandardSound(getRemoveSound(type.getOBJ_TYPE_ENUM()));
                 // coins clink! failed to parse xml
+                checkToggleOverrideMode(e, true);
                 return;
             }
         }
@@ -261,6 +266,18 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
             typeSelected(type, hlp);
             SoundMaster.playStandardSound(STD_SOUNDS.MODE);
         }
+        checkToggleOverrideMode(e, true);
+    }
+
+    private void checkToggleOverrideMode(MouseEvent e, boolean off) {
+        if (off)
+            if (!DC_RequirementsManager.overrideMode)
+                 return ;
+        if (e.isAltDown())
+            if (Launcher.DEV_MODE)
+                if (e.isShiftDown())
+                    if (e.isControlDown())
+                        DC_RequirementsManager.toggleOverrideMode();
     }
 
     private void failedAddType(ObjType type) {
