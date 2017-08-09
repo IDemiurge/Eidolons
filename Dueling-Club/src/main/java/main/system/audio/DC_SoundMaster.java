@@ -14,6 +14,7 @@ import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.CompositeAnim;
+import main.libgdx.audio.AudioMaster;
 import main.system.ContentGenerator;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -249,6 +250,7 @@ public class DC_SoundMaster extends SoundMaster {
         } else {
             playEffectSound(SOUNDS.IMPACT, activeObj);
         }
+        AudioMaster.getInstance().playRandomSound();
     }
 
 }

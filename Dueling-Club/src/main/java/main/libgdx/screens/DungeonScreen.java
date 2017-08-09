@@ -3,12 +3,13 @@ package main.libgdx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import main.game.bf.Coordinates;
@@ -50,7 +51,7 @@ public class DungeonScreen extends ScreenWithLoader {
     private TextureRegion backTexture;
     private AnimationEffectStage animationEffectStage;
 
-    private ShapeRenderer shapeRenderer = new ShapeRenderer(); // TEST || DELETE in FUTURE!
+    private Vector2 velocity;
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -104,8 +105,12 @@ public class DungeonScreen extends ScreenWithLoader {
         gridStage.addActor(gridPanel);
         GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, p-> {
             Coordinates coordinatesActiveObj = DC_Game.game.getManager().getActiveObj().getCoordinates();
+            Vector2 unitPosition = new Vector2(coordinatesActiveObj.x*GridConst.CELL_W + GridConst.CELL_W/2, (gridPanel.getRows()-coordinatesActiveObj.y)*GridConst.CELL_H - GridConst.CELL_H/2);
+//            Vector2 unitPosition = new Vector2(coordinatesActiveObj.x*GridConst.CELL_W, coordinatesActiveObj.y*GridConst.CELL_H);
+            velocity = new Vector2(unitPosition.x - cam.position.x, unitPosition.y - cam.position.y).nor().scl(Math.min(cam.position.dst(unitPosition.x, unitPosition.y, 0f), 200f));
             Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- coordinatesActiveObj:" + coordinatesActiveObj);
-            cam.position.set(coordinatesActiveObj.x*GridConst.CELL_W + GridConst.CELL_W/2, (gridPanel.getRows()-coordinatesActiveObj.y)*GridConst.CELL_H - GridConst.CELL_H/2, 0f);
+            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- unitPosition:" + unitPosition);
+            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- velocity:" + velocity);
         });
         Gdx.app.log("DungeonScreen::afterLoad()", "-- End!");
     }
@@ -138,6 +143,7 @@ public class DungeonScreen extends ScreenWithLoader {
         animationEffectStage.act(delta);
         gridStage.act(delta);
 
+        cameraShift();
         //cam.update();
         if (canShowScreen()) {
             if (backTexture != null) {
@@ -164,15 +170,25 @@ public class DungeonScreen extends ScreenWithLoader {
                 }
             }
         }
+    }
+
+    private void cameraShift() {
+//        Gdx.app.log("DungeonScreen::cameraShift()", "-- Start! cam:" + cam + " velocity:" + velocity);
         if(cam != null) {
-            shapeRenderer.setProjectionMatrix(cam.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.setColor(Color.RED);
-            shapeRenderer.line(0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); // TODO not WORK!=(
-            shapeRenderer.line(0f, Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), 0f); // TODO как задумывалось
-            shapeRenderer.end();
+            try {
+                cam.position.add(velocity.x*Gdx.graphics.getDeltaTime(), velocity.y*Gdx.graphics.getDeltaTime(), 0f);
+                Coordinates coordinatesActiveObj = DC_Game.game.getManager().getActiveObj().getCoordinates();
+                Vector2 unitPosition = new Vector2(coordinatesActiveObj.x*GridConst.CELL_W + GridConst.CELL_W/2, (gridPanel.getRows()-coordinatesActiveObj.y)*GridConst.CELL_H - GridConst.CELL_H/2);
+//                Vector2 unitPosition2 = new Vector2(coordinatesActiveObj.x*GridConst.CELL_W, coordinatesActiveObj.y*GridConst.CELL_H);
+                if(Intersector.overlaps(new Circle(new Vector2(cam.position.x, cam.position.y), 1f), new Circle(unitPosition, 1f))) {
+                    velocity.setZero();
+                }
+            } catch (Exception exp) {
+                Gdx.app.log("DungeonScreen::cameraShift()", "-- exp:" + exp);
+            }
             cam.update();
         }
+//        Gdx.app.log("DungeonScreen::cameraShift()", "-- End!");
     }
 
     @Override
