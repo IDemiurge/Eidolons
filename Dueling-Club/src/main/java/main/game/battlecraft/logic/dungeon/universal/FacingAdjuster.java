@@ -1,6 +1,7 @@
 package main.game.battlecraft.logic.dungeon.universal;
 
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMapGenerator.MAP_ZONES;
 import main.game.bf.Coordinates;
@@ -9,6 +10,7 @@ import main.system.auxiliary.StringMaster;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,8 +38,16 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
 
-    public FACING_DIRECTION getFacingOptimal(Coordinates c) {
-        Collection<Obj> units = getGame().getPlayer(true).getControlledUnits();
+    public void adjustFacing(Unit unit) {
+        unit.setFacing(unit.isMine()? getPartyMemberFacing(unit.getCoordinates())
+        :getFacingForEnemy(unit.getCoordinates()));
+    }
+        public void adjustFacing(List<Unit> unitsList) {
+            unitsList.forEach(unit -> adjustFacing(unit));
+    }
+
+    public FACING_DIRECTION getFacingOptimal(Coordinates c, boolean mine) {
+        Collection<Obj> units = getGame().getPlayer(!mine ).getControlledUnits();
         return FacingMaster.getOptimalFacingTowardsUnits(c, units);
 
 
@@ -55,12 +65,12 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
     public FACING_DIRECTION getFacingForEnemy(Coordinates c) {
-        return getFacingOptimal(c);
+        return getFacingOptimal(c, false);
     }
 
     public FACING_DIRECTION getPartyMemberFacing(Coordinates c) {
         if (isAutoOptimalFacing())
-        return getFacingOptimal(c);
+        return getFacingOptimal(c, true);
         if (facingMap.containsKey(c)) {
             return facingMap.get(c);
         }
@@ -90,4 +100,5 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
 
     public void unitPlaced(Coordinates adjacentCoordinate, FACING_DIRECTION facingFromDirection) {
     }
+
 }

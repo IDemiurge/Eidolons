@@ -297,8 +297,8 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
 
         SPAWN_MODE mode = SPAWN_MODE.SCRIPT;
 
-        getSpawner().spawn(unitData, player, mode);
-
+        List<Unit> unitsList = getSpawner().spawn(unitData, player, mode);
+getSpawner().getFacingAdjuster().adjustFacing(unitsList);
         return true;
     }
 

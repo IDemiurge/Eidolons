@@ -25,6 +25,23 @@ public class AiTrainer {
     private AiTrainingCriteria criteria;
     private PriorityProfile profile;
 
+    public static String getDefaultDungeonData() {
+        ObjType type = DataManager.getType(ScenarioLauncher.DEFAULT, DC_TYPE.SCENARIOS);
+        ObjType mission = DataManager.getType(StringMaster.openContainer(type.getProperty(
+         PROPS.SCENARIO_MISSIONS)).get(0),
+         DC_TYPE.MISSIONS);
+        return mission.getProperty(PROPS.MISSION_FILE_PATH);
+    }
+
+    public static String getDefaultPartyData() {
+        ObjType type = DataManager.getType(ScenarioLauncher.DEFAULT, DC_TYPE.SCENARIOS);
+        return
+         DataManager.getType(
+          type.getProperty(PROPS.SCENARIO_PARTY), DC_TYPE.PARTY).getProperty(PROPS.MEMBERS)
+//         .replace(";", ",")
+         ;
+    }
+
     public AiTrainingResult train(
      //type at coordinates? or for all of same type?
      PriorityProfile profile,
@@ -56,17 +73,17 @@ public class AiTrainer {
             new GameLauncher(GAME_SUBCLASS.TEST).launchPreset(presetPath);
         } else if (parameters.getEnvironmentType() == TRAINING_ENVIRONMENT.SAVE) {
             Loader.setPendingLoadPath(presetPath);
-            DC_Game game =  new GameLauncher(GAME_SUBCLASS.TEST).initDC_Game();
+            DC_Game game = new GameLauncher(GAME_SUBCLASS.TEST).initDC_Game();
             game.start(true);
         } else if (parameters.getEnvironmentType() == TRAINING_ENVIRONMENT.DUNGEON_LEVEL) {
 
             GameLauncher a = new GameLauncher(GAME_SUBCLASS.TEST);
-            if (StringMaster.isEmpty(parameters.getPartyData()) ){
+            if (StringMaster.isEmpty(parameters.getPartyData())) {
                 parameters.setPartyData(getDefaultPartyData());
             }
-            a.PLAYER_PARTY =parameters.getPartyData();
+            a.PLAYER_PARTY = parameters.getPartyData();
 
-            if (StringMaster.isEmpty(parameters.getDungeonData())  ){
+            if (StringMaster.isEmpty(parameters.getDungeonData())) {
                 parameters.setDungeonData(getDefaultDungeonData());
             }
             a.setDungeon(parameters.getDungeonData());
@@ -75,21 +92,7 @@ public class AiTrainer {
         }
 
     }
-    public static String getDefaultDungeonData(){
-        ObjType type = DataManager.getType(ScenarioLauncher.DEFAULT, DC_TYPE.SCENARIOS);
-        ObjType mission = DataManager.getType(StringMaster.openContainer(type.getProperty(
-         PROPS.SCENARIO_MISSIONS)).get(0),
-         DC_TYPE.MISSIONS);
-        return mission.getProperty(PROPS.MISSION_FILE_PATH);
-    }
-    public static String getDefaultPartyData(){
-        ObjType type = DataManager.getType(ScenarioLauncher.DEFAULT, DC_TYPE.SCENARIOS);
-        return
-         DataManager.getType(
-         type.getProperty(PROPS.SCENARIO_PARTY), DC_TYPE.PARTY).getProperty(PROPS.MEMBERS)
-//         .replace(";", ",")
-         ;
-    }
+
     private AiTrainingResult evaluateResult(PriorityProfile profile, AiTrainingParameters parameters, AiTrainingCriteria criteria) {
         AiTrainingResult result = new AiTrainingResult(profile, parameters, criteria);
         try {
@@ -97,6 +100,10 @@ public class AiTrainer {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        main.system.auxiliary.log.LogMaster.log(1,
+         "unit Stats= " + result.getUnitStats()
+         +"ally Stats= " + result.getAllyStats()
+         + "enemy Stats= " + result.getEnemyStats());
         return result;
     }
 

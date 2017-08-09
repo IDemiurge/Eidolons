@@ -41,7 +41,7 @@ public class LocationSpawner extends Spawner<Location> {
     }
 
     @Override
-    public void spawn(UnitData data, DC_Player player, SPAWN_MODE mode) {
+    public List<Unit> spawn(UnitData data, DC_Player player, SPAWN_MODE mode) {
         if (player.isMe() && PresetMaster.getPreset()==null ) {
             List<String> list = ListMaster.toNameList(
              getGame().getMetaMaster().getPartyManager()
@@ -70,7 +70,8 @@ public class LocationSpawner extends Spawner<Location> {
             // via encounters most likely... or unitGroups
             //TODO
 
-        }
+        return null;
+    }
 //        if (respawn)
 //        if (player.isMe()) {
 //        List<String> list = ListMaster.toNameList(

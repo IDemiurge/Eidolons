@@ -1,14 +1,20 @@
 package main.game.core.launch;
 
+import main.data.ability.construct.VariableManager;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData;
 import main.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
-import main.game.battlecraft.logic.dungeon.universal.Spawner;
+import main.game.battlecraft.logic.dungeon.universal.Positioner;
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
+import main.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
+import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
+import main.system.auxiliary.StringMaster;
+import main.system.data.DataUnitFactory;
 import main.system.data.PlayerData;
+import main.system.util.Refactor;
 import main.test.Preset;
 import main.test.Preset.PRESET_DATA;
-import main.system.util.Refactor;
 
 /**
  * Created by JustMe on 5/10/2017.
@@ -28,6 +34,9 @@ public class LaunchDataKeeper {
 
     for ARENA
      */
+    public static final String SEPARATOR = DataUnitFactory.getSeparator(UnitData.FORMAT);
+    public static final String PAIR_SEPARATOR = DataUnitFactory.getPairSeparator(UnitData.FORMAT);
+
     PlayerData[] playerData;
     UnitData[] unitData;
     DungeonData dungeonData;
@@ -41,10 +50,10 @@ public class LaunchDataKeeper {
                             String hardcodedDungeonData) {
         unitData = new UnitData[2];
         //suppose it's just a list of units? coordinates will be figured out later then
-        unitData[0] = Spawner.generateData(hardcodedPlayerData,
+        unitData[0] =  generateData(hardcodedPlayerData,
 //         game.getPlayer(true)
          null, null, null);
-        unitData[1] = Spawner.generateData(hardcodedEnemyData,
+        unitData[1] = generateData(hardcodedEnemyData,
 //         game.getPlayer(false)
          null, null, null);
         dungeonData = DungeonInitializer.generateDungeonData(hardcodedDungeonData);
@@ -95,6 +104,45 @@ public class LaunchDataKeeper {
 
     public void setDungeonData(DungeonData dungeonData) {
         this.dungeonData = dungeonData;
+    }
+
+    public static UnitData generateData(String dataString) {
+        return generateData(dataString, null, null, null);
+    }
+
+    public static UnitData generateData(String dataString,
+                                        DC_Player player,
+                                        Coordinates spawnAt,
+                                        Positioner positioner) {
+        String units = "";
+        String coordinates = "";
+        String data = "";
+
+        for (String substring : StringMaster.openContainer(dataString)) {
+            if (dataString.contains("=")) {
+                coordinates += substring.split("=")[0] + StringMaster.SEPARATOR;
+                units += substring.split("=")[1] + StringMaster.SEPARATOR;
+            } else if (dataString.contains("(") && dataString.contains(")")) {
+                units += VariableManager.removeVarPart(substring) + StringMaster.SEPARATOR;
+                coordinates += VariableManager.getVar(substring) + StringMaster.SEPARATOR;
+            } else
+                units += substring+ StringMaster.SEPARATOR;
+        }
+
+        if (positioner != null)
+            if (coordinates.isEmpty()) {
+                StringMaster.joinStringList(
+                 StringMaster.convertToStringList(
+                  positioner.getPlayerPartyCoordinates(StringMaster.openContainer(units))), ",");
+//                List<Coordinates> coordinatesList =
+//                 positioner.getCoordinates(player, spawnAt, units);
+//                coordinates = StringMaster.joinStringList(
+//                 StringMaster.convertToStringList(coordinatesList), ",");
+            }
+        if (!coordinates.isEmpty())
+            data += PARTY_VALUE.COORDINATES + PAIR_SEPARATOR + coordinates + SEPARATOR;
+        data += PARTY_VALUE.MEMBERS + PAIR_SEPARATOR + units + SEPARATOR;
+        return new UnitData(data);
     }
 
 }

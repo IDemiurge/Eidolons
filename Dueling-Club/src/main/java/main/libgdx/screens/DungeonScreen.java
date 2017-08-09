@@ -52,7 +52,7 @@ public class DungeonScreen extends ScreenWithLoader {
     private AnimationEffectStage animationEffectStage;
 
     private Vector2 velocity;
-    private boolean cameraAutoCenteringOn;
+    private boolean cameraAutoCenteringOn=true;
 
     public static DungeonScreen getInstance() {
         return instance;

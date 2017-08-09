@@ -7,7 +7,6 @@ import main.client.dc.Launcher;
 import main.content.C_OBJ_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
-import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
@@ -20,16 +19,17 @@ import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game.GAME_MODES;
+import main.game.core.launch.LaunchDataKeeper;
 import main.libgdx.bf.BFDataCreatedEvent;
 import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
-import main.system.data.DataUnitFactory;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.test.TestMasterContent;
 import main.system.util.Refactor;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static main.system.GuiEventType.SCREEN_LOADED;
@@ -37,8 +37,6 @@ import static main.system.GuiEventType.SCREEN_LOADED;
 
 public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public static final Integer MAX_SPACE_PERC_CREEPS = 25; // 1 per cell only
-    public static final String SEPARATOR = DataUnitFactory.getSeparator(UnitData.FORMAT);
-    public static final String PAIR_SEPARATOR = DataUnitFactory.getPairSeparator(UnitData.FORMAT);
     private static final Integer MAX_SPACE_PERC_PARTY = 0;
     //    public Spawner(String unitData, DC_Player player, SPAWN_MODE mode) {
     boolean coordinatesSet;
@@ -49,45 +47,6 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public static void setEnemyUnitGroupMode(boolean b) {
 
-    }
-
-    public static UnitData generateData(String dataString) {
-        return generateData(dataString, null, null, null);
-    }
-
-    public static UnitData generateData(String dataString,
-                                        DC_Player player,
-                                        Coordinates spawnAt,
-                                        Positioner positioner) {
-        String units = "";
-        String coordinates = "";
-        String data = "";
-
-        for (String substring : StringMaster.openContainer(dataString)) {
-            if (dataString.contains("=")) {
-                coordinates += substring.split("=")[0] + StringMaster.SEPARATOR;
-                units += substring.split("=")[1] + StringMaster.SEPARATOR;
-            } else if (dataString.contains("(") && dataString.contains(")")) {
-                units += VariableManager.removeVarPart(substring) + StringMaster.SEPARATOR;
-                coordinates += VariableManager.getVar(substring) + StringMaster.SEPARATOR;
-            } else
-                units += substring+ StringMaster.SEPARATOR;
-        }
-
-        if (positioner != null)
-            if (coordinates.isEmpty()) {
-                StringMaster.joinStringList(
-                 StringMaster.convertToStringList(
-                  positioner.getPlayerPartyCoordinates(StringMaster.openContainer(units))), ",");
-//                List<Coordinates> coordinatesList =
-//                 positioner.getCoordinates(player, spawnAt, units);
-//                coordinates = StringMaster.joinStringList(
-//                 StringMaster.convertToStringList(coordinatesList), ",");
-            }
-        if (!coordinates.isEmpty())
-            data += PARTY_VALUE.COORDINATES + PAIR_SEPARATOR + coordinates + SEPARATOR;
-        data += PARTY_VALUE.MEMBERS + PAIR_SEPARATOR + units + SEPARATOR;
-        return new UnitData(data);
     }
 
     @Refactor
@@ -109,6 +68,11 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     }
 
     protected void spawnDone() {
+//       TODO selective??
+// getGame().getMetaMaster().getPartyManager().getParty().getMembers()
+        List<Unit> unitsList=     new LinkedList<>() ;
+        unitsList.addAll(game.getUnits());
+        getFacingAdjuster().adjustFacing(unitsList);
 
         final Integer cellsX = game.getDungeon().getCellsX();
         final Integer cellsY = game.getDungeon().getCellsY();
@@ -126,12 +90,13 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public UnitData generateData(String dataString, DC_Player player,
                                  Coordinates spawnAt) {
-        return generateData(dataString,
+        return LaunchDataKeeper.generateData(dataString,
          player,
          spawnAt, getPositioner());
     }
 
-    public void spawn(UnitData data, DC_Player owner, SPAWN_MODE mode) {
+    public List<Unit> spawn(UnitData data, DC_Player owner, SPAWN_MODE mode) {
+        List<Unit> units = new LinkedList<>();
         int i = 0;
         if (owner == null)
             owner = getPlayerManager().getPlayer(data.getContainerValue(PARTY_VALUE.PLAYER_NAME, i));
@@ -141,23 +106,21 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
             coordinates = getPositioner().getCoordinates(types, owner, mode);
         }
         while (true) {
-            if (i == types.size())
-                return;
+            if (i >= types.size())
+                return units;
             String facing = data.getContainerValue(PARTY_VALUE.FACING, i);
             String c = coordinates.get(i);
 
             String level = data.getContainerValue(PARTY_VALUE.LEVEL, i);
             String type = data.getContainerValue(PARTY_VALUE.MEMBERS, i);
             i++;
-            spawnUnit(type, c, owner, facing, level);
+           units.add(spawnUnit(type, c, owner, facing, level));
         }
-//     coordinate
 
-        //facing
 
     }
 
-    public void spawnUnit(String typeName, String coordinates, DC_Player owner,
+    public Unit spawnUnit(String typeName, String coordinates, DC_Player owner,
                           String facing, String level) {
         if (coordinates == null) {
 //          TODO  getPositioner().getcoo
@@ -181,6 +144,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
             UnitTrainingMaster.train(unit);
         if (unit.isMine())
             TestMasterContent.addTestItems(unit.getType(), false);
+        return unit;
     }
 
     public void spawnCustomParty(Coordinates origin, Boolean me, ObjType party) {

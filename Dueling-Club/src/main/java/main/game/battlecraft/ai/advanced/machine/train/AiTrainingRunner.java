@@ -106,8 +106,14 @@ public class AiTrainingRunner implements Runnable {
              @Override
              public void evolve(PriorityProfile profile) {
                  Float score = new Float(new Random().nextInt(100 + profile.getFitness()));
-                 if (!evolutionTestMode)
-                     score = trainer.train(profile, criteria, parameters).getValue();
+                 if (!evolutionTestMode) {
+                     AiTrainingResult result = trainer.train(profile, criteria, parameters);
+                     score = result
+                      .getValue();
+                     main.system.auxiliary.log.LogMaster.log(1,
+                      "evaluated " + profile + "; score= " + score);
+
+                 }
                  profile.addScore(score);
              }
          };
