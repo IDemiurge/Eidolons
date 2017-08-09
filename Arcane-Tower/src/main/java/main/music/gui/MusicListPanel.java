@@ -12,9 +12,9 @@ import main.music.MusicCore;
 import main.music.ahk.AHK_Master;
 import main.swing.generic.components.G_Panel;
 import main.system.SortMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.GuiManager;
-import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,6 +42,7 @@ public class MusicListPanel extends G_Panel {
     Map<String, List<String>> listMap;
     private MC_ControlPanel controlPanel;
     private G_Panel sidePanel;
+    private Map<G_Panel, JScrollPane> scrollsMap=new HashMap();
 
     public MusicListPanel(String key, Map<String, List<String>> map) {
         super("flowy");
@@ -104,7 +105,7 @@ public class MusicListPanel extends G_Panel {
         removeAll();
 
         if (view != null) {
-            add(view);
+            add(getScrolledView(view) );
         } else {
             view = initView(listMap, isLetterShown());
             add(view);
@@ -123,6 +124,16 @@ public class MusicListPanel extends G_Panel {
         // getControlPanelY());
         super.refresh();
         revalidate();
+    }
+
+    private JScrollPane getScrolledView(G_Panel view) {
+        JScrollPane scroll=scrollsMap.get(view);
+        if (scroll == null ){
+            scroll = new JScrollPane(view);
+
+            scrollsMap.put(view, scroll);
+        }
+        return scroll;
     }
 
     protected String getControlPanelX() {

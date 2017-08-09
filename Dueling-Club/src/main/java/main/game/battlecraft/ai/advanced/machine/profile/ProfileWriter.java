@@ -43,7 +43,7 @@ public class ProfileWriter {
 
         Unit unit = result.getUnitStats().getUnit();
         String type = unit.getAI().getType().toString();
-        String preset = result.getParameters().getPresetPath();
+        String preset = result.getParameters().getDungeonData();
         String name = result.getParameters().getTraineeType() + ".profile";
 
         StringBuilder builder=new StringBuilder();

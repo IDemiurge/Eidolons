@@ -8,6 +8,7 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.WeightMap;
+import main.system.math.MathMaster;
 
 import java.util.*;
 
@@ -15,7 +16,7 @@ public class RandomWizard<E> {
     public static final long seed = System.nanoTime();
     static Random randomGenerator = new Random(seed);
     private LinkedHashMap<Integer, E> invertedMap;
-
+    private static boolean averaged;
     public static boolean isWeightMap(String property) {
         for (String string : StringMaster.openContainer(property)) {
             try {
@@ -59,7 +60,7 @@ public class RandomWizard<E> {
         if (inclusive) {
             n++;
         }
-        int k = i + randomGenerator.nextInt(n);
+        int k =(averaged)? i+MathMaster.round(n/2) : i + randomGenerator.nextInt(n);
         // main.system.auxiliary.LogMaster.log(1, "*** NEW RANDOM: " + k + "[" +
         // i + " - " + j + "], "
         // + randomGenerator);
@@ -67,6 +68,14 @@ public class RandomWizard<E> {
             return -k;
         }
         return k;
+    }
+
+    public static boolean isAveraged() {
+        return averaged;
+    }
+
+    public static void setAveraged(boolean averaged) {
+        RandomWizard.averaged = averaged;
     }
 
     public static int getRandomIntBetween(int i, int j) {

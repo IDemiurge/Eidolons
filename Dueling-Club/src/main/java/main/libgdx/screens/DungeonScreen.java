@@ -52,6 +52,7 @@ public class DungeonScreen extends ScreenWithLoader {
     private AnimationEffectStage animationEffectStage;
 
     private Vector2 velocity;
+    private boolean cameraAutoCenteringOn;
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -142,8 +143,8 @@ public class DungeonScreen extends ScreenWithLoader {
         guiStage.act(delta);
         animationEffectStage.act(delta);
         gridStage.act(delta);
-
-        cameraShift();
+        if (isCameraAutoCenteringOn())
+            cameraShift();
         //cam.update();
         if (canShowScreen()) {
             if (backTexture != null) {
@@ -181,7 +182,7 @@ public class DungeonScreen extends ScreenWithLoader {
                 Vector2 unitPosition = new Vector2(coordinatesActiveObj.x*GridConst.CELL_W + GridConst.CELL_W/2, (gridPanel.getRows()-coordinatesActiveObj.y)*GridConst.CELL_H - GridConst.CELL_H/2);
 //                Vector2 unitPosition2 = new Vector2(coordinatesActiveObj.x*GridConst.CELL_W, coordinatesActiveObj.y*GridConst.CELL_H);
                 if(Intersector.overlaps(new Circle(new Vector2(cam.position.x, cam.position.y), 1f), new Circle(unitPosition, 1f))) {
-                    velocity.setZero();
+                    cameraStop();
                 }
             } catch (Exception exp) {
                 Gdx.app.log("DungeonScreen::cameraShift()", "-- exp:" + exp);
@@ -191,6 +192,9 @@ public class DungeonScreen extends ScreenWithLoader {
 //        Gdx.app.log("DungeonScreen::cameraShift()", "-- End!");
     }
 
+    public void cameraStop() {
+        velocity.setZero();
+    }
     @Override
     public void resize(int width, int height) {
 /*        animationEffectStage.getViewport().update(width, height);
@@ -212,5 +216,13 @@ public class DungeonScreen extends ScreenWithLoader {
 
     public Stage getAnimsStage() {
         return animationEffectStage;
+    }
+
+    public boolean isCameraAutoCenteringOn() {
+        return cameraAutoCenteringOn;
+    }
+
+    public void setCameraAutoCenteringOn(boolean cameraAutoCenteringOn) {
+        this.cameraAutoCenteringOn = cameraAutoCenteringOn;
     }
 }

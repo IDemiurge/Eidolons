@@ -10,6 +10,7 @@ import main.libgdx.anims.particles.lighting.FireLightProt;
 import main.libgdx.anims.particles.lighting.LightMap;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.audio.AudioMaster;
+import main.libgdx.screens.DungeonScreen;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -137,6 +138,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
             camera.position.y -= (yCamPos - screenY) * camera.zoom;
             xCamPos = screenX;
             yCamPos = screenY;
+            DungeonScreen.getInstance().cameraStop();
         }
 
         return false;

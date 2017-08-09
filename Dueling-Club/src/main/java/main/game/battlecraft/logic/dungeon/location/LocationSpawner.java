@@ -55,6 +55,8 @@ public class LocationSpawner extends Spawner<Location> {
               getGame().getState().addObject(member);
               member.setOriginalOwner(player);
               member.setOwner(player);
+              member.setFacing(
+               getFacingAdjuster().getPartyMemberFacing(member.getCoordinates()));
               //what else should be done to *spawn*?
           }
         } else {
@@ -67,14 +69,6 @@ public class LocationSpawner extends Spawner<Location> {
             // how to add them to a mission?
             // via encounters most likely... or unitGroups
             //TODO
-            //TODO
-            //TODO
-            //TODO
-            //TODO
-            //TODO
-            //TODO
-            //TODO
-
 
         }
 //        if (respawn)

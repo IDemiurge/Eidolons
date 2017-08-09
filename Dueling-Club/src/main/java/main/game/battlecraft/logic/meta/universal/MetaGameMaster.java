@@ -71,6 +71,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 //        metaDataManager.init();
         game=createGame();
         metaGame=  initializer.initMetaGame(data);
+        preStart();
         partyManager.initPlayerParty();
     }
 

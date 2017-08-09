@@ -20,9 +20,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     @Override
     public void preStart() {
 //  TODO       is this the right time to set it?
-        party.setProperty(PROPS.PARTY_MISSION,
-     StringMaster.openContainer(getMetaGame().getScenario().
-      getProperty(PROPS.SCENARIO_MISSIONS)).get(0), true);
+
     }
 
     @Override
@@ -31,7 +29,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
        int i = getMetaGame().getMissionIndex();
 //        getMetaDataManager().getMissionName()
         if (i>0){
-            heroName = heroName + NameMaster.appendVersionToName(heroName, i+1);
+            heroName =   NameMaster.appendVersionToName(heroName, i+1);
         }
         return super.checkLeveledHeroVersionNeeded(heroName);
     }
@@ -63,6 +61,10 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
         getGame().getState().addObject(party);
         getGame().getDataKeeper().addUnitData(new UnitData(party));
+
+        party.setProperty(PROPS.PARTY_MISSION,
+         StringMaster.openContainer(getMetaGame().getScenario().
+          getProperty(PROPS.SCENARIO_MISSIONS)).get(0), true);
         return party;
 
     }

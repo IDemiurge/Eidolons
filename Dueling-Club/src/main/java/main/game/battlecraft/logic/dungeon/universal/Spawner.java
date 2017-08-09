@@ -65,13 +65,13 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         for (String substring : StringMaster.openContainer(dataString)) {
             if (dataString.contains("=")) {
-                coordinates += substring.split("=")[0]+ StringMaster.SEPARATOR;
+                coordinates += substring.split("=")[0] + StringMaster.SEPARATOR;
                 units += substring.split("=")[1] + StringMaster.SEPARATOR;
             } else if (dataString.contains("(") && dataString.contains(")")) {
                 units += VariableManager.removeVarPart(substring) + StringMaster.SEPARATOR;
                 coordinates += VariableManager.getVar(substring) + StringMaster.SEPARATOR;
             } else
-                units += substring;
+                units += substring+ StringMaster.SEPARATOR;
         }
 
         if (positioner != null)
@@ -102,7 +102,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
                 data = generateData("", player, null);
             spawn(data, player, getSpawnMode(player, true));
         }
-       spawnDone();
+        spawnDone();
 
         //initEmblem
 
@@ -113,7 +113,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         final Integer cellsX = game.getDungeon().getCellsX();
         final Integer cellsY = game.getDungeon().getCellsY();
         GuiEventManager.trigger(SCREEN_LOADED,
-                new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
+         new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
 
         //WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
     }
@@ -127,8 +127,8 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public UnitData generateData(String dataString, DC_Player player,
                                  Coordinates spawnAt) {
         return generateData(dataString,
-                player,
-                spawnAt, getPositioner());
+         player,
+         spawnAt, getPositioner());
     }
 
     public void spawn(UnitData data, DC_Player owner, SPAWN_MODE mode) {
@@ -159,26 +159,28 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public void spawnUnit(String typeName, String coordinates, DC_Player owner,
                           String facing, String level) {
-        FACING_DIRECTION facing_direction =facing==null ? FACING_DIRECTION.NORTH: FacingMaster.getFacing(facing);
-       if (coordinates==null ){
-//           getPositioner().getcoo
-       }
+        if (coordinates == null) {
+//          TODO  getPositioner().getcoo
+        }
         Coordinates c = new Coordinates(coordinates);
+        FACING_DIRECTION facing_direction = facing == null
+         ? getFacingAdjuster().getFacingForEnemy(c)
+         : FacingMaster.getFacing(facing);
         ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.UNITS_CHARS);
         //TODO chars or units?!
         if (level != null) {
-        int levelUps = StringMaster.getInteger(level);
-        if (levelUps > 0) {
-            type = new UnitLevelManager().getLeveledType(type, levelUps);
-        }
+            int levelUps = StringMaster.getInteger(level);
+            if (levelUps > 0) {
+                type = new UnitLevelManager().getLeveledType(type, levelUps);
+            }
         }
 
         Unit unit = (Unit) game.getManager().getObjCreator().createUnit(type, c.x, c.y, owner, new Ref(game));
         unit.setFacing(facing_direction);
         if (!unit.isHero())
-         UnitTrainingMaster.train(unit);
+            UnitTrainingMaster.train(unit);
         if (unit.isMine())
-        TestMasterContent.addTestItems(unit.getType(), false);
+            TestMasterContent.addTestItems(unit.getType(), false);
     }
 
     public void spawnCustomParty(Coordinates origin, Boolean me, ObjType party) {
@@ -191,12 +193,9 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     }
 
 
-
     public void spawnCustomParty(boolean me) {
         spawnCustomParty(me, null);
     }
-
-
 
 
     public void spawnCustomParty(boolean me, String partyData) {
@@ -214,7 +213,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         if (!partyData.contains(DC_ObjInitializer.COORDINATES_OBJ_SEPARATOR)) {
             partyData = DC_ObjInitializer.convertVarStringToObjCoordinates(partyData);
         }
-        UnitData data = generateData(partyData, player, null );
+        UnitData data = generateData(partyData, player, null);
         spawn(data, player, SPAWN_MODE.PARTY);
 //        List<MicroObj> list = DC_ObjInitializer.processUnitDataString(player, partyData, game);
 //        if (!ListMaster.isNotEmpty(list)) {
@@ -235,8 +234,8 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
             if (party.getPartyCoordinates() == null) {
                 if (
-                        getGame().getGameMode() == GAME_MODES.ARENA ||
-                                getGame().getGameMode() == GAME_MODES.ARENA_ARCADE) {
+                 getGame().getGameMode() == GAME_MODES.ARENA ||
+                  getGame().getGameMode() == GAME_MODES.ARENA_ARCADE) {
                     hero.setFacing(FacingMaster.getPresetFacing(true));
                 }
 //                else
@@ -262,7 +261,8 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         }
 //        game.getPlayer(true).setEmblem(party.getLeader().getEmblem().getImage());
     }
-//TODO
+
+    //TODO
     public void spawnWave(String typeName, DC_Player player, Coordinates coordinate) {
     }
 

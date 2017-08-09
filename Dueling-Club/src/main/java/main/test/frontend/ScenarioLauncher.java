@@ -34,13 +34,14 @@ public class ScenarioLauncher {
         DC_Engine.jarInit();
         BattleSceneLauncher.main(null);
         DC_Engine.mainMenuInit();
+//        Eidolons.mainGame.getMetaMaster().preStart();
         Eidolons.initScenario(typeName);
 
         ScreenData data = new ScreenData(ScreenType.BATTLE, "name");
          //new SceneFactory("Test")
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         DC_Engine.gameStartInit();
-        Eidolons.mainGame.getMetaMaster().preStart();
+
 //        Eidolons.mainGame.getMetaMaster().getGame().init( );
         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
         Eidolons.mainGame.getMetaMaster().getGame().battleInit();

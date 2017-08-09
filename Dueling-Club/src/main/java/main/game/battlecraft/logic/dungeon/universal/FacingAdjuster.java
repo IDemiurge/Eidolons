@@ -59,7 +59,8 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
     public FACING_DIRECTION getPartyMemberFacing(Coordinates c) {
-
+        if (isAutoOptimalFacing())
+        return getFacingOptimal(c);
         if (facingMap.containsKey(c)) {
             return facingMap.get(c);
         }

@@ -23,7 +23,6 @@ import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums;
-import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.content.mode.STD_MODES;
@@ -62,6 +61,7 @@ import main.game.battlecraft.ai.tools.target.AI_SpellMaster;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.battlecraft.ai.tools.target.SpellAnalyzer;
 import main.game.battlecraft.ai.tools.target.TargetingMaster;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.rules.UnitAnalyzer;
 import main.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import main.game.battlecraft.rules.combat.damage.DamageCalculator;
@@ -1240,10 +1240,15 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         if (mod == 0) {
             return (less_or_more_for_health ? 0 : 100);
         }
+        int profileMod=((int) getConstValue(unit.isHostileTo((DC_Player) targetObj.getOwner())
+         ? AiConst.ENEMY_PRIORITY_HEALTH
+         : AiConst.ALLY_PRIORITY_HEALTH));
         if (less_or_more_for_health) {
-            healthMod = healthMod * (150) / (100 + mod);
+            healthMod = healthMod * profileMod / (100 + mod);
         } else {
-            healthMod = healthMod * 100 / (150 - mod);
+
+            healthMod = healthMod * 100 /
+             (profileMod - mod);
         }
         return healthMod;
     }
@@ -1375,15 +1380,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     private int getRestorationPriorityMod(Unit unit) {
         int mod = getConstInt(AiConst.DEFAULT_RESTORATION_PRIORITY_MOD);
-        if (unit.getAI().getType() == AI_TYPE.BRUTE) {
-            mod -= 15;
-        }
-        if (unit.getAI().checkMod(AI_MODIFIERS.TRUE_BRUTE)) {
-            mod -= 15;
-        }
-        if (unit.isMine()) {
-            mod += 15;
-        }
+        mod = (int) (mod * getConstValue(AiConst.SELF_VALUE));
         return mod;
     }
 
@@ -1477,11 +1474,11 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             mod += getPriorityModifier().getPriorityModifier(as);
             if (getMetaGoalMaster().isOn())
                 try {
-                getUnitAi().setMetaGoals(getMetaGoalMaster().initMetaGoalsForUnit(getUnitAi()));
-                mod += getMetaGoalMaster().getPriorityMultiplier(as);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                    getUnitAi().setMetaGoals(getMetaGoalMaster().initMetaGoalsForUnit(getUnitAi()));
+                    mod += getMetaGoalMaster().getPriorityMultiplier(as);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             as.setPriorityMultiplier(mod);
 
 
