@@ -2,7 +2,7 @@ package main.libgdx.anims;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import main.ability.effects.Effect;
 import main.data.XLinkedMap;
 import main.entity.Entity;

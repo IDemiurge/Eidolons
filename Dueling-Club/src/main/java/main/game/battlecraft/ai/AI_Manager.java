@@ -102,7 +102,7 @@ public class AI_Manager extends AiMaster {
         setUnit(unit);
         Coordinates bufferedCoordinates = unit.getCoordinates();
         try {
-            action = actionManager.chooseAction(getAI(unit));
+            action = actionManager.chooseAction( );
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

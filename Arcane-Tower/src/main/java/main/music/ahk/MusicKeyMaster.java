@@ -2,7 +2,7 @@ package main.music.ahk;
 
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import main.content.VALUE;
 import main.data.DataManager;
 import main.entity.type.ObjType;

@@ -1,5 +1,6 @@
 package main.game.battlecraft.ai.advanced.machine;
 
+import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiConstant;
 import main.game.battlecraft.ai.advanced.machine.evolution.Evolvable;
 import main.game.battlecraft.ai.advanced.machine.evolution.Mutatable;
 import main.game.battlecraft.ai.advanced.machine.profile.ProfileChooser.AI_PROFILE_GROUP;
@@ -17,18 +18,18 @@ import java.util.Set;
  */
 public class PriorityProfile implements Evolvable {
     Collection<Float> constants;
-    Map<AiConst, Float> map;
+    Map<AiConstant, Float> map;
     AiTrainingResult result;
     AI_PROFILE_GROUP group;
     //accumulate over multiple train sessions
     int score = 0;
 
     public PriorityProfile(PriorityProfile parent) {
-        this.map = new MapMaster<AiConst, Float>().cloneLinkedHashMap(parent.getMap());
+        this.map = new MapMaster<AiConstant, Float>().cloneLinkedHashMap(parent.getMap());
         this.group = parent.getGroup();
     }
 
-    public PriorityProfile(Map<AiConst, Float> map) {
+    public PriorityProfile(Map<AiConstant, Float> map) {
         this.map = map;
     }
 
@@ -36,7 +37,7 @@ public class PriorityProfile implements Evolvable {
         return constants;
     }
 
-    public Map<AiConst, Float> getMap() {
+    public Map<AiConstant, Float> getMap() {
         return map;
     }
 

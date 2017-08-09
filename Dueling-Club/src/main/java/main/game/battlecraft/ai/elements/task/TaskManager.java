@@ -212,7 +212,7 @@ public class TaskManager extends AiHandler {
             case COATING:
                 Set<Obj> objects = action.getTargeting().getFilter().getObjects(action.getRef());
                 for (Obj q : objects) {
-                    if ( q.getRef().getSourceObj()==unit) { //q.isOwnedBy(ai.getUnit().getOwner())
+                    if ( q.getRef().getSourceObj()== getUnit()) { //q.isOwnedBy(ai.getUnit().getOwner())
                         ids.add(q.getId());
                    }
                 }

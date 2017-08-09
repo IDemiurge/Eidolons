@@ -39,8 +39,8 @@ public class PathSequenceConstructor extends AiHandler {
     }
 
     public List<ActionPath> getRetreatPaths(Object arg) {
-        return getPathSequences(AiUnitActionMaster.getMoveActions(unit), new Action(unit
-          .getAction("Move"), unit.getRef().getCopy())
+        return getPathSequences(AiUnitActionMaster.getMoveActions(getUnit()), new Action(getUnit()
+          .getAction("Move"), getUnit().getRef().getCopy())
          // *flee* action?
          , new ListMaster<Coordinates>().getList(game.getObjectById((Integer) arg)
           .getCoordinates()));
@@ -120,7 +120,7 @@ public class PathSequenceConstructor extends AiHandler {
             }
         }
 
-        Coordinates originalCoordinate = unit.getCoordinates();
+        Coordinates originalCoordinate = getUnit().getCoordinates();
         List<Coordinates> list = cellsCache.get(targetAction.getTargeting());
         if (list != null) {
             return list;
@@ -133,7 +133,7 @@ public class PathSequenceConstructor extends AiHandler {
                  targetAction.getSource();
                 for (Coordinates c : center.getCoordinates()
                  .getAdjacentCoordinates()) {
-                    if (!TargetingMaster.isValidTargetingCell(targetAction, c, unit)) // TODO
+                    if (!TargetingMaster.isValidTargetingCell(targetAction, c, getUnit())) // TODO
                     {
                         continue;
                     }
@@ -147,16 +147,16 @@ public class PathSequenceConstructor extends AiHandler {
             if (list.isEmpty()) {
                 List<Coordinates> coordinatesList = null;// TODO prioritizedCells;
                 if (!ListMaster.isNotEmpty(coordinatesList)) {
-                    coordinatesList = unit.getGame().getBattleField().getGrid()
+                    coordinatesList = getUnit().getGame().getBattleField().getGrid()
                      .getCoordinatesList();
                 }
                 // TODO FILTER THESE!!!
                 // prune by distance/direction from target?
                 for (Coordinates c : coordinatesList) {
-                    if (!TargetingMaster.isValidTargetingCell(targetAction, c, unit)) {
+                    if (!TargetingMaster.isValidTargetingCell(targetAction, c, getUnit())) {
                         continue;
                     }
-                    unit.setCoordinates(c); // TODO causes visuals!
+                    getUnit().setCoordinates(c); // TODO causes visuals!
 
                     if (TargetingMaster.canBeTargeted(targetAction)) {
                         list.add(c);
@@ -166,12 +166,12 @@ public class PathSequenceConstructor extends AiHandler {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            unit.setCoordinates(originalCoordinate);
+            getUnit().setCoordinates(originalCoordinate);
         }
         if (list.size() > 1) {
             list = getPruneMaster().pruneTargetCells(targetAction, list);
         }
-        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
+        if (getUnit().getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
             LogMaster.log(LOG_CHANNELS.AI_DEBUG, "***" + targetAction
              + " has target cells for PB: " + list);
         }

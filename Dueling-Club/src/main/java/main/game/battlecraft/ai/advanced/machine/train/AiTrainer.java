@@ -77,7 +77,7 @@ public class AiTrainer {
             game.start(true);
         } else if (parameters.getEnvironmentType() == TRAINING_ENVIRONMENT.DUNGEON_LEVEL) {
 
-            GameLauncher a = new GameLauncher(GAME_SUBCLASS.TEST);
+            GameLauncher a = new GameLauncher(GAME_SUBCLASS.SCENARIO);
             if (StringMaster.isEmpty(parameters.getPartyData())) {
                 parameters.setPartyData(getDefaultPartyData());
             }

@@ -36,6 +36,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -354,7 +355,8 @@ public class ActionSequenceConstructor extends AiHandler {
         // not very good
         Action action = actions.get(0);
         if (!action.canBeActivated()) {
-            LogMaster.log(1, "No sequence for "
+
+            LogMaster.log(LOG_CHANNELS.AI_DEBUG2, "No sequence for "
              + actions.get(actions.size() - 1) + " - " + action.getActive().getName() + ": "
              + action.getActive().getCosts().getReason());
             return null;

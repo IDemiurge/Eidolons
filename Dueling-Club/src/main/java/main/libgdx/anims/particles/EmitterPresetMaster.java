@@ -2,13 +2,14 @@ package main.libgdx.anims.particles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import javafx.util.Pair;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
 import java.io.IOException;
@@ -264,7 +265,7 @@ public class EmitterPresetMaster {
         List<Pair<String, String>> list = new LinkedList<>();
         for (String substring : StringMaster.openContainer(text, "\n")) {
             String[] parts = substring.split(value_separator);
-            list.add(new Pair<>(parts[0], parts[1]));
+            list.add(new ImmutablePair<>(parts[0], parts[1]));
         }
         return list;
     }

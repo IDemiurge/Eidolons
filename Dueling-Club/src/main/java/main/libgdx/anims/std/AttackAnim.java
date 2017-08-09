@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import javafx.util.Pair;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
@@ -23,6 +22,8 @@ import main.libgdx.bf.GridConst;
 import main.system.auxiliary.data.FileManager;
 import main.system.math.PositionMaster;
 import main.system.test.TestMasterContent;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -214,7 +215,7 @@ size - elongate
                 }
                 RotateByAction mainRotate = getRotateAction(angle, duration);
 
-                swings.add(new Pair<>(mainMove, mainRotate));
+                swings.add(new ImmutablePair<>(mainMove, mainRotate));
                 swings.forEach(swing -> {
                     sequence.addAction(new ParallelAction(swing.getKey(), swing.getValue()));
                 });

@@ -40,7 +40,6 @@ import java.util.List;
 
 public class ActionManager extends AiHandler {
 
-
     public ActionManager(AiMaster master) {
         super(master);
 
@@ -77,17 +76,17 @@ public class ActionManager extends AiHandler {
         getBehaviorMaster().initialize();
     }
 
-    public Action chooseAction(UnitAI ai) {
+    public Action chooseAction() {
+        UnitAI ai = getMaster().getUnitAI();
         if (ai.checkStandingOrders()) {
             return ai.getStandingOrders().get(0);
         }
 
         getPathSequenceConstructor().clearCache(); // TODO try not to? :)
-        if (unit != ai.getUnit()) {
+        if (getUnit() != ai.getUnit()) {
             getCellPrioritizer().reset();
         } else {
         }
-        setUnit(ai.getUnit());
         ai.setEngaged(DungeonCrawler.checkEngaged(ai));
 
         checkDeactivate();
@@ -102,16 +101,17 @@ public class ActionManager extends AiHandler {
 //       TODO      return behaviorMaster.getBehaviorAction(ai);
 //        }
 
-        FACING_DIRECTION originalFacing = unit.getFacing();
-        Coordinates originalCoordinates = unit.getCoordinates();
-        Action action;
+        FACING_DIRECTION originalFacing = getUnit().getFacing();
+        Coordinates originalCoordinates = getUnit().getCoordinates();
+        Action action = null;
         ActionSequence chosenSequence = null;
         boolean atomic = false;
-        try {
-            atomic = getAtomicAi().checkAtomicActionRequired(ai);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        if (isAtomicAiOn())
+            try {
+                atomic = getAtomicAi().checkAtomicActionRequired(ai);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         if (!atomic) {
             List<ActionSequence> actions = new LinkedList<>();
             try {
@@ -128,28 +128,28 @@ public class ActionManager extends AiHandler {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                unit.setCoordinates(originalCoordinates);
-                unit.setFacing(originalFacing);
+                getUnit().setCoordinates(originalCoordinates);
+                getUnit().setFacing(originalFacing);
             }
 
         }
 
         if (chosenSequence == null) {
-            action = getAtomicAi().getAtomicAction(ai);
+            if (isAtomicAiOn())
+                action = getAtomicAi().getAtomicAction(ai);
             if (action == null) {
                 action = getForcedAction(ai);
             }
             return action;
-        }
-        else {
-            if (chosenSequence.getType()==GOAL_TYPE.DEFEND)
+        } else {
+            if (chosenSequence.getType() == GOAL_TYPE.DEFEND)
                 return chosenSequence.getNextAction();
 
         }
-        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE) {
+        if (getUnit().getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE) {
             if (Launcher.DEV_MODE)
                 game.getLogManager().log(LOG.GAME_INFO, ai.getUnit().getName()
-                + " chooses task: " + chosenSequence.getTask().toShortString());
+                 + " chooses task: " + chosenSequence.getTask().toShortString());
             LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Action chosenSequence chosen: "
              + chosenSequence + StringMaster.wrapInParenthesis(chosenSequence.getPriority() + ""));
         }
@@ -157,6 +157,8 @@ public class ActionManager extends AiHandler {
         ai.checkSetOrders(chosenSequence);
         return chosenSequence.getNextAction();
     }
+
+
 
 
     public Action getForcedAction(UnitAI ai) {
@@ -174,7 +176,7 @@ public class ActionManager extends AiHandler {
         if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK) {
             return new Action(ai.getUnit().getAction("Rage"));
         }
-        Action action = getAtomicAi().getAtomicActionPrepare(unit.getAI());
+        Action action = getAtomicAi().getAtomicActionPrepare(getUnit().getAI());
         if (action != null) {
             return action;
         }
@@ -185,12 +187,12 @@ public class ActionManager extends AiHandler {
             actions.addAll(getActionSequenceConstructor().createActionSequences(new Goal(goal, ai, true), ai));
         }
         if (behaviorMode == null) {
-            if (ParamAnalyzer.isFatigued(unit)) {
-                actions.add(new ActionSequence(AiEnums.GOAL_TYPE.PREPARE, getAction(unit,
+            if (ParamAnalyzer.isFatigued(getUnit())) {
+                actions.add(new ActionSequence(AiEnums.GOAL_TYPE.PREPARE, getAction(getUnit(),
                  STD_MODE_ACTIONS.Rest.name())));
             }
-            if (ParamAnalyzer.isHazed(unit)) { // when is that used?
-                actions.add(new ActionSequence(AiEnums.GOAL_TYPE.PREPARE, getAction(unit,
+            if (ParamAnalyzer.isHazed(getUnit())) { // when is that used?
+                actions.add(new ActionSequence(AiEnums.GOAL_TYPE.PREPARE, getAction(getUnit(),
                  STD_MODE_ACTIONS.Concentrate.name())));
             }
             // Integer id = checkWaitForBlockingAlly(); TODO can actually preCheck
@@ -206,21 +208,21 @@ public class ActionManager extends AiHandler {
             // }
         }
         if (actions.isEmpty()) {
-            return getAction(unit, STD_MODE_ACTIONS.Defend.name(), null);
+            return getAction(getUnit(), STD_MODE_ACTIONS.Defend.name(), null);
         }
         ActionSequence sequence = getPriorityManager().chooseByPriority(actions);
-        action =sequence.getNextAction();
-       if (action == null) {
-           return getAction(unit, STD_MODE_ACTIONS.Defend.name(), null);
+        action = sequence.getNextAction();
+        if (action == null) {
+            return getAction(getUnit(), STD_MODE_ACTIONS.Defend.name(), null);
         }
         return action;
     }
 
     private Integer checkWaitForBlockingAlly() {
 
-        Coordinates c = unit.getCoordinates()
-         .getAdjacentCoordinate(unit.getFacing().getDirection());
-        Obj obj = unit.getGame().getObjectVisibleByCoordinate(c);
+        Coordinates c = getUnit().getCoordinates()
+         .getAdjacentCoordinate(getUnit().getFacing().getDirection());
+        Obj obj = getUnit().getGame().getObjectVisibleByCoordinate(c);
         if (obj instanceof Unit) {
             if (((Unit) obj).canActNow())
             // if (!((DC_HeroObj) obj).checkStatus(STATUS.WAITING))
@@ -246,7 +248,7 @@ public class ActionManager extends AiHandler {
     }
 
     private void checkDeactivate() {
-        DequeImpl<DC_UnitAction> list = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ACTION);
+        DequeImpl<DC_UnitAction> list = getUnit().getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ACTION);
         if (list == null) {
             return;
         }
@@ -258,11 +260,11 @@ public class ActionManager extends AiHandler {
                         case "Stealth Mode":
                         case "Hide":
                             // spotted?
-                            result = unit.getBuff(StealthRule.SPOTTED) != null;
+                            result = getUnit().getBuff(StealthRule.SPOTTED) != null;
                             // preCheck has actions before turn left!
                             break;
                         case "Search Mode":
-                            result = Analyzer.getVisibleEnemies(unit.getUnitAI()).isEmpty();
+                            result = Analyzer.getVisibleEnemies(getUnit().getUnitAI()).isEmpty();
                             break;
                     }
 

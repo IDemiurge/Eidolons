@@ -23,6 +23,7 @@ import main.game.battlecraft.logic.battlefield.DC_MovementManager;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.FuncMaster;
 import main.system.math.PositionMaster;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
 public class AtomicAi extends AiHandler {
 
     private boolean hotzoneMode;
+    private boolean on;
 
     public AtomicAi(AiMaster master) {
         super(master);
@@ -57,13 +59,13 @@ public class AtomicAi extends AiHandler {
         if (!checkAtomicActionCase(ATOMIC_LOGIC_CASE.PREPARE, ai)) {
             return null;
         }
-        if (ParamAnalyzer.isFatigued(unit)) {
+        if (ParamAnalyzer.isFatigued(getUnit())) {
            return AiActionFactory.newAction(STD_MODE_ACTIONS.Rest.name(),
-            unit.getAI());
+            getUnit().getAI());
         }
-        if (ParamAnalyzer.isHazed(unit)) {
+        if (ParamAnalyzer.isHazed(getUnit())) {
             return AiActionFactory.newAction(STD_MODE_ACTIONS.Concentrate.name(),
-             unit.getAI());
+             getUnit().getAI());
         }
         if (ai.getType() == AI_TYPE.ARCHER) {
             return getReloadAction(ai);
@@ -106,9 +108,10 @@ public class AtomicAi extends AiHandler {
          getApproachCoordinate(ai);
         if (pick == null) return null;
         List<Action> sequence = getTurnSequenceConstructor()
-         .getTurnSequence(FACING_SINGLE.IN_FRONT, unit, pick);
-        return sequence.get(0);
-
+         .getTurnSequence(FACING_SINGLE.IN_FRONT, getUnit(), pick);
+        if (ListMaster.isNotEmpty(sequence))
+             return sequence.get(0);
+        return null;
     }
 
     private Coordinates getApproachCoordinate(UnitAI ai) {
@@ -116,11 +119,11 @@ public class AtomicAi extends AiHandler {
         if (units.isEmpty())
             return null;
         FACING_DIRECTION facing = FacingMaster.
-         getOptimalFacingTowardsUnits(unit.getCoordinates(),
+         getOptimalFacingTowardsUnits(getUnit().getCoordinates(),
           units
           , t -> getThreatAnalyzer().getThreat(ai, (Unit) t)
          );
-        return unit.getCoordinates().getAdjacentCoordinate(facing.getDirection());
+        return getUnit().getCoordinates().getAdjacentCoordinate(facing.getDirection());
 
     }
 
@@ -152,7 +155,7 @@ public class AtomicAi extends AiHandler {
             pick = getApproachCoordinate(ai);
         }
         Action action = null;
-        List<Action> sequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, unit, pick);
+        List<Action> sequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, getUnit(), pick);
         if (!sequence.isEmpty()) {
             action = sequence.get(0);
         }
@@ -213,15 +216,16 @@ public class AtomicAi extends AiHandler {
         return ATOMIC_LOGIC.GEN_AGGRO;
     }
     public boolean checkAtomicActionRequired(UnitAI ai) {
-        if (getSituationAnalyzer().canAttackNow(ai))
-            return false;
+
         return checkAtomicActionCaseAny(ai);
     }
 
     public boolean checkAtomicActionCaseAny(UnitAI ai) {
-//        if (ai.getGroup().getEncounterType()== ENCOUNTER_TYPE.BOSS)
-//            return false;
+        boolean canAttack = getSituationAnalyzer().canAttackNow(ai);
         for (ATOMIC_LOGIC_CASE C : ATOMIC_LOGIC_CASE.values()) {
+            if (C!=ATOMIC_LOGIC_CASE.PREPARE)
+                if (canAttack)
+                    continue;
             try {
                 if (checkAtomicActionCase(C, ai)) {
                     return true;
@@ -364,6 +368,18 @@ public class AtomicAi extends AiHandler {
 
     public void setHotzoneMode(boolean hotzoneMode) {
         this.hotzoneMode = hotzoneMode;
+    }
+
+    public boolean isOn() {
+
+        if (getUnitAI().getType()==AI_TYPE.ARCHER){
+            return true;
+        }
+        return on;
+    }
+
+    public void setOn(boolean on) {
+        this.on = on;
     }
 
     public enum ATOMIC_LOGIC {

@@ -49,7 +49,7 @@ public class PriorityModifier extends AiHandler {
 
     public int getCostPenalty(ActionSequence as) {
         Costs cost = ActionManager.getTotalCost(as.getActions());
-        int cost_penalty = getParamAnalyzer().getCostPriorityFactor(cost, unit);
+        int cost_penalty =100- getParamAnalyzer().getCostPriorityFactor(cost, getUnit());
         String string = "cost";
         try {
             if (as.getLastAction().getActive().isChanneling()) {

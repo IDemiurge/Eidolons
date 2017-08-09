@@ -232,7 +232,7 @@ public class FacingMaster {
      Coordinates c,Collection<? extends Obj> units
     ,  Function<Entity, Integer> function
     ) {
-        HashMap<FACING_DIRECTION, Integer> map = new HashMap<>();
+        HashMap<FACING_DIRECTION, Double> map = new HashMap<>();
         for (Obj member : units) { // [QUICK
             // FIX]
             // getGame().getParty().getMembers()
@@ -241,17 +241,17 @@ public class FacingMaster {
 //                facing = FacingMaster.getFacingFromDirection(DirectionMaster.getRelativeDirection(
 //                        c, member.getCoordinates()));
             }
-
-            Integer i = map.get(facing);
+            double x =((Unit) member).calculatePower() / PositionMaster.getExactDistance(member.getCoordinates(), c);
+            Double i = map.get(facing);
             if (i == null) {
-                i = 0;
+                i = 0.0;
             }
-            i+= function.apply(member);
+            i+= function.apply(member)*x;
             map.put(facing, i);
 
         }
         FACING_DIRECTION pick = null;
-        Integer max = 0;
+        Double max = 0.0;
         for (FACING_DIRECTION fac : map.keySet()) {
             if (map.get(fac) > max) {
                 max = map.get(fac);

@@ -779,6 +779,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             ModifyValueEffect valueEffect = (ModifyValueEffect) e;
             for (String sparam : StringMaster.openContainer(valueEffect.getParamString())) {
                 for (PARAMETER param : DC_ContentManager.getParams(sparam)) {
+                        //TODO apply generic fix!
+                    if (param== PARAMS.C_INITIATIVE_BONUS)
+                        param = PARAMS.C_INITIATIVE;
+
                     if (TextParser.checkHasValueRefs(valueEffect.getFormula().toString())) {
                         String parsed = TextParser.parse(valueEffect.getFormula().toString(),
                          action.getRef(), TextParser.ACTIVE_PARSING_CODE);
@@ -870,15 +874,16 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         if (multiplier != 0) {
             valid = true;
         }
-        addConstant(multiplier, param.getShortName() + " const");
-
-        amount = MathMaster.getCentimalPercentage(amount, target.getIntParam(param));
-        int p = 0;
+        addConstant(multiplier, param.getShortName() + " const");       amount = MathMaster.getCentimalPercentage(amount, target.getIntParam(param));
+        int percentagePriority = 0;
         if (!ParamAnalyzer.isParamIgnored(unit, param))
-            p = (int) getPriorityConstantMaster().getParamModPriority(param);
+        {
+            percentagePriority = (int) getPriorityConstantMaster().getParamPriority(param)
+             * target.getIntParam(param)/100;
+        }
 
 
-        multiplier = MathMaster.getFractionValueCentimal(p, amount) * mod / 100;
+        multiplier = MathMaster.getFractionValueCentimal(percentagePriority, amount) * mod / 100;
 
         addMultiplier(multiplier, param.getShortName() + " mod");
         return valid;

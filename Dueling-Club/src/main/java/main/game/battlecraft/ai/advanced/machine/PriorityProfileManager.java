@@ -3,6 +3,7 @@ package main.game.battlecraft.ai.advanced.machine;
 import main.data.XLinkedMap;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.UnitAI;
+import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiConstant;
 import main.game.battlecraft.ai.advanced.machine.profile.ProfileChooser.AI_PROFILE_GROUP;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
@@ -48,7 +49,7 @@ public class PriorityProfileManager extends AiHandler {
 
 
     public PriorityProfile createNewProfile(float[] array) {
-        Map<AiConst, Float> map = new XLinkedMap<>();
+        Map<AiConstant, Float> map = new XLinkedMap<>();
         if (array != null) {
             int i = 0;
             for (AiConst c : AiConst.values()) {
@@ -68,7 +69,7 @@ public class PriorityProfileManager extends AiHandler {
         return createProfile(map);
     }
 
-    public PriorityProfile createProfile(Map<AiConst, Float> map) {
+    public PriorityProfile createProfile(Map<AiConstant, Float> map) {
         PriorityProfile p = new PriorityProfile(map);
         p.setGroup(group);
         return p;

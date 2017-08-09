@@ -1,6 +1,6 @@
 package main.music;
 
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import main.content.ContentManager;
 import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
@@ -71,7 +71,7 @@ public class MusicCore {
     public static void addFilterValue() {
         int i = DialogMaster.optionChoice(FILTER_VALUES, "Filter value name?");
         String val = DialogMaster.inputText("Filter's value?");
-        filterValues.add(new Pair<>(FILTER_VALUES[i], val));
+        filterValues.add(new ImmutablePair<>(FILTER_VALUES[i], val));
     }
 
     public static void removeFilterValue() {

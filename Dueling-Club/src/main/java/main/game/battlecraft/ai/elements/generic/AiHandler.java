@@ -3,6 +3,7 @@ package main.game.battlecraft.ai.elements.generic;
 import main.content.values.parameters.PARAMETER;
 import main.entity.obj.unit.Unit;
 import main.game.ai.AI_Logic;
+import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
 import main.game.battlecraft.ai.advanced.companion.MetaGoalMaster;
 import main.game.battlecraft.ai.advanced.machine.AiConst;
@@ -34,7 +35,6 @@ import java.util.List;
 public abstract class AiHandler {
     protected AiMaster master;
     protected DC_Game game;
-    protected Unit unit;
 
 
     public AiHandler(AiMaster master) {
@@ -55,12 +55,9 @@ public abstract class AiHandler {
         return getMaster().getConstInt(p);
     }
 
-    public Unit getUnit() {
-        return getMaster().getUnit();
-    }
 
-    public void setUnit(Unit unit) {
-        this.unit = unit;
+    public boolean isAtomicAiOn() {
+        return getAtomicAi().isOn();
     }
 
     public void initialize() {
@@ -178,4 +175,12 @@ public abstract class AiHandler {
     public DC_Game getGame() {
         return game;
     }
+
+    public Unit getUnit() {
+        return getMaster().getUnit();
+    }
+    public UnitAI getUnitAI() {
+        return getMaster().getUnitAI();
+    }
+
 }

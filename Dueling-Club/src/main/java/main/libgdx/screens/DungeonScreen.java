@@ -24,6 +24,7 @@ import main.libgdx.stage.BattleGuiStage;
 import main.libgdx.stage.ChainedStage;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 
 import java.util.List;
 
@@ -185,6 +186,7 @@ public class DungeonScreen extends ScreenWithLoader {
                     cameraStop();
                 }
             } catch (Exception exp) {
+                if (CoreEngine.isGraphicTestMode())
                 Gdx.app.log("DungeonScreen::cameraShift()", "-- exp:" + exp);
             }
             cam.update();
@@ -193,6 +195,7 @@ public class DungeonScreen extends ScreenWithLoader {
     }
 
     public void cameraStop() {
+        if (velocity!=null )
         velocity.setZero();
     }
     @Override

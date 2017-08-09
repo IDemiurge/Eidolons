@@ -3,7 +3,8 @@ package main.libgdx.texture;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;
@@ -125,7 +126,7 @@ public class TextureManager {
                     }
                     int h = texture.getHeight() / y1;
                     if (w == h) {
-                        return new Pair<>(x1, y1);
+                        return new ImmutablePair<>(x1, y1);
                     }
                 }
             }
@@ -137,7 +138,7 @@ public class TextureManager {
         if (y == 0) {
             y = 1;
         }
-        return new Pair<>(x, y);
+        return new ImmutablePair<>(x, y);
 
     }
 

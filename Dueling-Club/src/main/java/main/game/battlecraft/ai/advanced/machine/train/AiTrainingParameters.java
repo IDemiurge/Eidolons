@@ -3,7 +3,7 @@ package main.game.battlecraft.ai.advanced.machine.train;
 import main.content.C_OBJ_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.game.battlecraft.ai.advanced.machine.AiConst;
+import main.game.battlecraft.ai.advanced.machine.train.AiTrainingCriteria.CRITERIA_TYPE_NUMERIC;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.system.auxiliary.StringMaster;
 
@@ -130,12 +130,12 @@ public class AiTrainingParameters {
 
     public enum TRAINING_CRITERIA_MODS {
         AGGRO,
-        COWARDICE(AiConst.SELF_VALUE, AiConst.RETREAT_PRIORITY_FACTOR),
+        COWARDICE(CRITERIA_TYPE_NUMERIC.DAMAGE_TAKEN ),
         EFFICIENT,
         ;
-        AiConst[] consts;
+        CRITERIA_TYPE_NUMERIC[] consts;
 
-        TRAINING_CRITERIA_MODS(AiConst... consts) {
+        TRAINING_CRITERIA_MODS(CRITERIA_TYPE_NUMERIC... consts) {
             this.consts = consts;
         }
     }

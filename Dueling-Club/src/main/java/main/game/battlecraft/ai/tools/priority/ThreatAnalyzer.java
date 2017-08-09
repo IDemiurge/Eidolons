@@ -115,11 +115,11 @@ public class ThreatAnalyzer extends AiHandler {
             }
         }
 
-        threat = FutureBuilder.precalculateDamage(attack, unit, true) * factor;
+        threat = FutureBuilder.precalculateDamage(attack, getUnit(), true) * factor;
 
         // special attacks? dual wielding?
 
-        int distance = 1 + PositionMaster.getDistance(unit, enemy);
+        int distance = 1 + PositionMaster.getDistance(getUnit(), enemy);
         threat /= distance;
 
         return threat;

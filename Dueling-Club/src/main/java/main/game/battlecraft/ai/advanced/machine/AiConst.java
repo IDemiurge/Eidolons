@@ -1,5 +1,7 @@
 package main.game.battlecraft.ai.advanced.machine;
 
+import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiConstant;
+
 /**
  * Created by JustMe on 7/31/2017.
  * <p>
@@ -7,7 +9,7 @@ package main.game.battlecraft.ai.advanced.machine;
  */
 
 //IDEA - generate consts dynamically?
-public enum AiConst {
+    public enum AiConst implements AiConstant {
     //technical
     DEFAULT_PRUNE_SIZE(5),
     DEFAULT_PRIORITY(100),
@@ -99,7 +101,7 @@ public enum AiConst {
     PARAM_C_ENDURANCE(2), PARAM_ENDURANCE(3), PARAM_C_TOUGHNESS(3), PARAM_TOUGHNESS(5),
     PARAM_C_STAMINA(8), PARAM_C_FOCUS(6), PARAM_C_MORALE(3), PARAM_C_ESSENCE(4), PARAM_C_N_OF_ACTIONS(50),
     PARAM_C_N_OF_COUNTERS(30), PARAM_SPIRIT(30), PARAM_CONCEALMENT_DARKVISION(2), PARAM_CONCEALMENT(3),
-    PARAM_C_INITIATIVE_BONUS(2), PARAM_ARMOR(5), PARAM_RESISTANCE(4), PARAM_BASE_DAMAGE(2.5f),
+    PARAM_C_INITIATIVE(2),PARAM_C_INITIATIVE_BONUS(2), PARAM_ARMOR(5), PARAM_RESISTANCE(4), PARAM_BASE_DAMAGE(2.5f),
     PARAM_DAMAGE_BONUS(2.5f), PARAM_DEFENSE(3), PARAM_ATTACK(3), PARAM_STAMINA(12), PARAM_FOCUS(9), PARAM_MORALE(5),
     PARAM_ESSENCE(6), PARAM_N_OF_ACTIONS(80), PARAM_N_OF_COUNTERS(40),
     /*

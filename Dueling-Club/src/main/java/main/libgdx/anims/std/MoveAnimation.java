@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import javafx.util.Pair;
 import main.ability.effects.oneshot.move.MoveEffect;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
@@ -17,6 +16,8 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -152,12 +153,12 @@ public class MoveAnimation extends ActionAnim {
 
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnStart() {
-        return Arrays.asList(new Pair<>(DESTROY_UNIT_MODEL, new EventCallbackParam(unit)));
+        return Arrays.asList(new ImmutablePair<>(DESTROY_UNIT_MODEL, new EventCallbackParam(unit)));
     }
 
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnFinish() {
-        return Arrays.asList(new Pair<>(UNIT_MOVED, new EventCallbackParam(unit)));
+        return Arrays.asList(new ImmutablePair<>(UNIT_MOVED, new EventCallbackParam(unit)));
     }
 
     @Override
