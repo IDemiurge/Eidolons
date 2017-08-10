@@ -10,7 +10,7 @@ import main.entity.obj.unit.Unit;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
-import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
@@ -110,7 +110,7 @@ public class SpellRadialManager {
 
                 @Override
                 public List<ValueContainer> getCostsList() {
-                    return UnitDataSource.getActionCostList(action);
+                    return AttackTooltipFactory.getActionCostList(action);
                 }
             });
             valueContainer.addListener(tooltip.getController());

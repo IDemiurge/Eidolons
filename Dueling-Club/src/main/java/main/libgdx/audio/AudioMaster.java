@@ -8,8 +8,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import main.data.filesys.PathFinder;
 
-import java.io.File;
-
 /**
  * Created by JustMe on 1/30/2017.
  */
@@ -23,6 +21,7 @@ public class AudioMaster {
     String badSoundsPath = soundPath + "/badSounds";
 
     private AudioMaster() {
+
         Gdx.app.log("AudioMaster::AudioMaster()", "-- START!");
         instance = this;
 

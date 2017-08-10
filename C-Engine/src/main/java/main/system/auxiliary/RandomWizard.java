@@ -104,7 +104,11 @@ public class RandomWizard<E> {
     }
 
     public static int getRandomListIndex(Collection list) {
-        return getRandomListIndex(list, randomGenerator);
+        boolean bool = averaged;
+        averaged=false;
+        int index = getRandomListIndex(list, randomGenerator);
+        averaged=bool;
+        return index ;
     }
 
     public static int getRandomListIndex(Collection list, Random random) {

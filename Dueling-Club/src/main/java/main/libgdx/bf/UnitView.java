@@ -1,5 +1,6 @@
 package main.libgdx.bf;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -81,6 +82,8 @@ public class UnitView extends BaseView {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
     }
+
+
 
     public int getCurId() {
         return curId;

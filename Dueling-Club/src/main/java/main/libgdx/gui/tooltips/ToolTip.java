@@ -9,6 +9,8 @@ import main.system.GuiEventType;
 
 public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
 
+    private boolean showing;
+
     public ToolTip() {
 
     }
@@ -34,7 +36,11 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
     }
 
     protected void onMouseMoved(InputEvent event, float x, float y) {
+        if (showing) {
+            return;
+        }
         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, this);
+        showing = true;
     }
 
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -43,5 +49,6 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
 
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
+        showing = false;
     }
 }

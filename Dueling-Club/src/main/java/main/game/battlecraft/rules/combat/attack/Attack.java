@@ -267,6 +267,8 @@ public class Attack {
 
     public void setAttacked(Unit attacked) {
         this.attacked = attacked;
+        ref.setTarget(attacked.getId());
+        action.setTargetObj(attacked);
     }
 
     public boolean isAttackOfOpportunity() {

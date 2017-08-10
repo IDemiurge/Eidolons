@@ -67,11 +67,10 @@ public class PriorityModifier extends AiHandler {
 
     public int getSequenceLengthPenalty(ActionSequence as) {
         int length = as.getActions().size() - 1;
-        int penalty = (int)
-         -Math.round(length * Math.sqrt(length) * 2)
-         - length * 10;
-        if (penalty < -95) {
-            penalty = -95;
+        int penalty =  (int) Math.round(length * Math.sqrt(length) * 2)
+         + length * 10;
+        if (penalty >95) {
+            penalty =95;
         }
         return (penalty);
     }

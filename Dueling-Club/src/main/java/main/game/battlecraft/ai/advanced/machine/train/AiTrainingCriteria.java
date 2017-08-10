@@ -48,9 +48,11 @@ public class AiTrainingCriteria {
              sub
 //             sub.split("=")[1]
             );
+            if (modMap != null) {
             Integer mod = modMap.get(criteria);
             if (mod!=null )
                 n = n*mod/100;
+            }
 
             Pair<CRITERIA_TYPE_NUMERIC, Float> pair = new ImmutablePair(criteria, n);
             numericCriteria.add(pair);
@@ -91,7 +93,7 @@ public class AiTrainingCriteria {
 
 //        ENEMIES_KILLED(1f),
         ENEMIES_KILLED_POWER(1f),
-        DAMAGE_TAKEN(0.01f),
+        DAMAGE_TAKEN(-0.005f),
         FALLEN_UNCONSCIOUS(-5f),
         DIED(-25f),
 

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource.getActionCostList;
+import static main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory.getActionCostList;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class PanelActionsDataSource implements

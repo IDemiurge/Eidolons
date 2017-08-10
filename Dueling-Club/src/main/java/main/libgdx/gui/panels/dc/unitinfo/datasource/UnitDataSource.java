@@ -2,36 +2,34 @@ package main.libgdx.gui.panels.dc.unitinfo.datasource;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.PARAMS;
-import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
-import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_ArmorObj;
 import main.entity.item.DC_WeaponObj;
-import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.VerticalValueContainer;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
-import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
-import main.libgdx.gui.panels.dc.unitinfo.tooltips.*;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionToolTip;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTip;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTipDataSource;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.texture.TextureCache;
-import main.system.images.ImageManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static main.content.UNIT_INFO_PARAMS.*;
 import static main.content.ValuePages.*;
-import static main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster.getIconPathForTableRow;
-import static main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltipMaster.getStringForTableValue;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class UnitDataSource implements
@@ -44,59 +42,6 @@ public class UnitDataSource implements
 
     public UnitDataSource(Unit unit) {
         this.unit = unit;
-    }
-
-    private static List<MultiValueContainer> extractActionValues(DC_UnitAction el
-     , VALUE[] baseKeys) {
-        List<MultiValueContainer> list = new ArrayList<>();
-        Pair<PARAMS, PARAMS> pair;
-        for (VALUE key : baseKeys) {
-            pair = ACTION_TOOLTIPS_PARAMS_MAP.get(key);
-
-            String name = getStringForTableValue(key, el);
-            String imagePath = getIconPathForTableRow(key);
-            final String leftVal = ActionTooltipMaster.getValueForTableParam(pair.getLeft(), el);
-            final String rightVal = ActionTooltipMaster.getValueForTableParam(pair.getRight(), el);
-            MultiValueContainer mvc;
-            if (!ImageManager.isImage(imagePath)) {
-                mvc = new MultiValueContainer(name, leftVal, rightVal);
-            } else {
-                mvc = new MultiValueContainer(getOrCreateR(imagePath), name, leftVal, rightVal);
-            }
-            list.add(mvc);
-        }
-        return list;
-    }
-
-    public static <T extends Obj> Function<T, ValueContainer> getObjValueContainerMapper() {
-        return obj -> {
-            final ValueContainer container = new ValueContainer(getOrCreateR(obj.getType().getProperty(G_PROPS.IMAGE)));
-
-            ToolTip toolTip = new ValueTooltip();
-            toolTip.setUserObject(Arrays.asList(new ValueContainer(obj.getName(), "")));
-            container.addListener(toolTip.getController());
-
-            return container;
-        };
-    }
-
-    public static List<ValueContainer> getActionCostList(DC_ActiveObj el) {
-        List<ValueContainer> costsList = new ArrayList<>();
-        for (int i = 0, costsLength = RESOURCE_COSTS.length; i < costsLength; i++) {
-            PARAMETER cost = RESOURCE_COSTS[i];
-            final double param = el.getParamDouble(cost);
-            if (param > 0) {
-                final String iconPath = ImageManager.getValueIconPath(COSTS_ICON_PARAMS[i]);
-                costsList.add(new ValueContainer(getOrCreateR(iconPath), String.format(Locale.US, "%.1f", param)));
-            }
-        }
-
-        final double reqRes = el.getParamDouble(MIN_REQ_RES_FOR_USE.getLeft());
-        if (reqRes > 0) {
-            final String iconPath = ImageManager.getValueIconPath(MIN_REQ_RES_FOR_USE.getRight());
-            costsList.add(new ValueContainer(getOrCreateR(iconPath), String.format(Locale.US, "> %.1f", reqRes)));
-        }
-        return costsList;
     }
 
     @Override
@@ -251,7 +196,7 @@ public class UnitDataSource implements
     public List<ValueContainer> getEffects() {
         return unit.getBuffs().stream()
          .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-         .map(getObjValueContainerMapper())
+         .map(AttackTooltipFactory.getObjValueContainerMapper())
          .collect(Collectors.toList());
     }
 
@@ -259,7 +204,7 @@ public class UnitDataSource implements
     public List<ValueContainer> getAbilities() {
         return unit.getPassives().stream()
          .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-         .map(getObjValueContainerMapper())
+         .map(AttackTooltipFactory.getObjValueContainerMapper())
          .collect(Collectors.toList());
     }
 
@@ -361,7 +306,7 @@ public class UnitDataSource implements
                 public List<ValueContainer> getBuffs() {
                     return armor.getBuffs().stream()
                      .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-                     .map(getObjValueContainerMapper())
+                     .map(AttackTooltipFactory.getObjValueContainerMapper())
                      .collect(Collectors.toList());
                 }
             });
@@ -460,7 +405,7 @@ public class UnitDataSource implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return     new LinkedList<>() ;
+        return new LinkedList<>();
     }
 
     @Override
@@ -481,66 +426,12 @@ public class UnitDataSource implements
         List<ValueContainer> result = new ArrayList<>();
 
         if (weapon != null) {
-            weapon.getOrCreateAttackActions()
-             .forEach(el -> {
-                 final ValueContainer valueContainer = new ValueContainer(getOrCreateR(el.getImagePath()));
-
-                 Pair<PARAMS, PARAMS> pair = ACTION_TOOLTIPS_PARAMS_MAP.get(ACTION_TOOLTIP_HEADER_KEY);
-                 String name = getStringForTableValue(ACTION_TOOLTIP_HEADER_KEY, el);
-                 final String leftImage = ActionTooltipMaster.getIconPathForTableRow(pair.getLeft());
-                 final String rightImage = ActionTooltipMaster.getIconPathForTableRow(pair.getRight());
-                 MultiValueContainer head = new MultiValueContainer(name, leftImage, rightImage);
-
-                 VALUE[] baseKeys = ACTION_TOOLTIP_BASE_KEYS;
-                 final List<MultiValueContainer> base = extractActionValues(el, baseKeys);
-
-                 baseKeys = ACTION_TOOLTIP_RANGE_KEYS;
-                 final List<MultiValueContainer> range = extractActionValues(el, baseKeys);
-
-                 List/*<List<MultiValueContainer>>*/ textsList = new ArrayList<>();
-                 for (PARAMS[] params : ACTION_TOOLTIP_PARAMS_TEXT) {
-                     textsList.add(Arrays.stream(params).map(p -> {
-                          final String textForTableValue = ActionTooltipMaster.
-                           getTextForTableValue(p, el);
-                          if (StringUtils.isEmpty(textForTableValue)) {
-                              return null;
-                          } else {
-                              return new ValueContainer(textForTableValue, "");
-                          }
-                      }
-                     ).filter(Objects::nonNull).collect(Collectors.toList()));
-                 }
-
-                 ToolTip toolTip = new ActionToolTip();
-                 toolTip.setUserObject(new ActionTooltipSource() {
-                     @Override
-                     public MultiValueContainer getHead() {
-                         return head;
-                     }
-
-                     @Override
-                     public List<MultiValueContainer> getBase() {
-                         return base;
-                     }
-
-                     @Override
-                     public List<MultiValueContainer> getRange() {
-                         return range;
-                     }
-
-                     @Override
-                     public List<List<ValueContainer>> getText() {
-                         return textsList;
-                     }
-
-                     @Override
-                     public CostTableSource getCostsSource() {
-                         return () -> getActionCostList(el);
-                     }
-                 });
-                 valueContainer.addListener(toolTip.getController());
-                 result.add(valueContainer);
-             });
+            for (DC_UnitAction el : weapon.getOrCreateAttackActions()) {
+                final ValueContainer valueContainer = new ValueContainer(getOrCreateR(el.getImagePath()));
+                ActionToolTip toolTip = AttackTooltipFactory.createAttackTooltip(el);
+                valueContainer.addListener(toolTip.getController());
+                result.add(valueContainer);
+            }
         }
 
         return result;
@@ -600,7 +491,7 @@ public class UnitDataSource implements
                 public List<ValueContainer> getBuffs() {
                     return weapon.getBuffs().stream()
                      .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-                     .map(getObjValueContainerMapper())
+                     .map(AttackTooltipFactory.getObjValueContainerMapper())
                      .collect(Collectors.toList());
                 }
             });

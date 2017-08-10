@@ -112,6 +112,9 @@ public class DC_AttackMaster {
 //        LogEntryNode entry = game.getLogManager().newLogEntryNode(type,
 //         attack.getAttacker().getName(), attack.getAttackedUnit().getName(), attack.getAction());
         Boolean result = null;
+        if (!extraAttack)
+            attack.setAttacked((Unit) GuardRule.checkTargetChanged(attack.getAction()));
+
         attack.setSneak(SneakRule.checkSneak(ref));
         try {
             main.system.auxiliary.log.LogMaster.log(1,

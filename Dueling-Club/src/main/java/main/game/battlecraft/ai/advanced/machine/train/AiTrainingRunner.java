@@ -8,6 +8,7 @@ import main.game.battlecraft.ai.advanced.machine.evolution.EvolutionMaster;
 import main.game.battlecraft.ai.advanced.machine.profile.ProfileWriter;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 import main.system.math.FuncMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -40,6 +41,7 @@ public class AiTrainingRunner implements Runnable {
     public static void main(String[] args) {
         //run X instances simultaneously, repeat Y times before yielding winner Profile
         running = (true);
+        CoreEngine.setGraphicsOff(true);
         if (!ArrayMaster.isNotEmpty(args)) {
             args =
              ArrayMaster.getFilledStringArray(instances, getDefaultData());

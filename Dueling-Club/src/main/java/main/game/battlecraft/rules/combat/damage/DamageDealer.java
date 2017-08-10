@@ -44,6 +44,8 @@ public class DamageDealer {
 
     private static int dealDamage(Damage damage, boolean isBonusDamage) {
         logOn = true;
+//       damage.getRef().getGame().
+//        damage.getSource().getGame().getBattleMaster().getOptionManager().applyDifficulty(damage);
         int result = dealDamageOfType(damage.getDmgType(),
          damage.getTarget()
          , damage.getRef(), damage.getAmount(), isBonusDamage);

@@ -80,10 +80,15 @@ public class Analyzer extends AiHandler {
                                       Boolean enemy, Boolean vision_no_vision, Boolean dead) {
         return getUnits(ai, ally, enemy, vision_no_vision, dead, false);
     }
-
     public static List<Unit> getUnits(UnitAI ai, Boolean ally,
                                       Boolean enemy, Boolean vision_no_vision, Boolean dead,
                                       Boolean neutral) {
+        return getUnits(ai, ally, enemy, vision_no_vision, dead, neutral, false);
+    }
+
+    public static List<Unit> getUnits(UnitAI ai, Boolean ally,
+                                      Boolean enemy, Boolean vision_no_vision, Boolean dead,
+                                      Boolean neutral, Boolean unconscious) {
 
         List<Unit> list = new XList<>();
         for (Unit unit : Eidolons.game.getUnits()) {
@@ -116,7 +121,11 @@ public class Analyzer extends AiHandler {
                     continue;
                 }
             }
-
+            if (!unconscious) {
+                if (unit.isUnconscious()) {
+                    continue;
+                }
+            }
             list.add(unit);
         }
 

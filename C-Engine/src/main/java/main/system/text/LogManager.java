@@ -21,6 +21,7 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.graphics.ANIM;
+import main.system.launch.CoreEngine;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.*;
@@ -235,6 +236,8 @@ public abstract class LogManager {
     // }
 
     protected void addTextToDisplayed(String entry) {
+        if (CoreEngine.isGraphicsOff())
+            return ;
         getTopDisplayedEntries().add(entry);
         getDisplayedLines().addAll(TextWrapper.wrap(entry, EntryNodeMaster.getWrapLength(true)));
     }

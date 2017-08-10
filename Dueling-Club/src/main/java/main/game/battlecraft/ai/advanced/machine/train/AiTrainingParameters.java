@@ -18,7 +18,7 @@ public class AiTrainingParameters {
     String dungeonData; //TODO OR SAVE FILE!
     RULE_SCOPE ruleScope;
     Integer roundsMax;
-    boolean deterministic=true;
+    boolean deterministic;
     TRAINING_ENVIRONMENT environmentType;
     private ObjType traineeType;
     STANDARD_TRAINING_PARAMETERS preset = STANDARD_TRAINING_PARAMETERS.GWYN;
@@ -130,7 +130,7 @@ public class AiTrainingParameters {
 
     public enum TRAINING_CRITERIA_MODS {
         AGGRO,
-        COWARDICE(CRITERIA_TYPE_NUMERIC.DAMAGE_TAKEN ),
+        COWARDICE(CRITERIA_TYPE_NUMERIC.DAMAGE_TAKEN,CRITERIA_TYPE_NUMERIC.DIED,CRITERIA_TYPE_NUMERIC.FALLEN_UNCONSCIOUS ),
         EFFICIENT,
         ;
         CRITERIA_TYPE_NUMERIC[] consts;
@@ -142,7 +142,7 @@ public class AiTrainingParameters {
 
     public enum STANDARD_TRAINING_CRITERIA {
         ASSASSIN(
-         new CriteriaMod(TRAINING_CRITERIA_MODS.COWARDICE, 0.1f)
+         new CriteriaMod(TRAINING_CRITERIA_MODS.COWARDICE, 225)
         ),
         ;
             CriteriaMod[] mods;

@@ -18,8 +18,8 @@ import main.system.GuiEventManager;
 import java.util.Arrays;
 import java.util.List;
 
-import static main.libgdx.gui.controls.radial.RadialManager.createNew;
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
+import static main.system.GuiEventType.UPDATE_GUI;
 
 public class RadialMenu extends Group {
     private RadialValueContainer currentNode;
@@ -43,12 +43,15 @@ public class RadialMenu extends Group {
             }
         });
 
-        GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
+        GuiEventManager.bind(UPDATE_GUI, obj -> {
+            RadialManager.clearCache();
+        });
+            GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
             DC_Obj dc_obj = (DC_Obj) obj.get();
             if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 init(DebugRadialManager.getDebugNodes(dc_obj));
             } else {
-                init(createNew(dc_obj));
+                init(RadialManager.getOrCreateRadialMenu(dc_obj));
             }
         });
     }

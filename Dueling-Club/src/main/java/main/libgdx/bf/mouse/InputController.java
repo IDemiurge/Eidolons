@@ -1,6 +1,5 @@
 package main.libgdx.bf.mouse;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import main.libgdx.anims.particles.lighting.FireLightProt;
 import main.libgdx.anims.particles.lighting.LightMap;
 import main.libgdx.anims.particles.lighting.LightingManager;
-import main.libgdx.audio.AudioMaster;
 import main.libgdx.screens.DungeonScreen;
 
 import java.util.LinkedList;
@@ -237,9 +235,9 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean tap(float v, float v1, int i, int i1) { // и то работает пока только за пределами карты. пиздец
-        Gdx.app.log("InputController::tap(" + v + ", " + v1 + ", " + i + ", " + i1 + ")", "-- Start!");
-        AudioMaster.getInstance().playSound(i);
-        Gdx.app.log("InputController::tap(" + v + ", " + v1 + ", " + i + ", " + i1 + ")", "-- End!");
+//        Gdx.app.log("InputController::tap(" + v + ", " + v1 + ", " + i + ", " + i1 + ")", "-- Start!");
+//        AudioMaster.getInstance().playSound(i);
+//        Gdx.app.log("InputController::tap(" + v + ", " + v1 + ", " + i + ", " + i1 + ")", "-- End!");
         return false;
     }
 

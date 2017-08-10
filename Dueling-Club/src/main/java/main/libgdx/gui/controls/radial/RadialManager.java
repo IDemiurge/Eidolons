@@ -9,6 +9,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
+import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.DC_Cell;
@@ -25,6 +26,8 @@ import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionToolTip;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -40,6 +43,8 @@ import static main.libgdx.texture.TextureCache.getOrCreateGrayscaleR;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class RadialManager {
+
+    private static Map<DC_Obj, List<RadialValueContainer>> cache = new HashMap<>();
 
     public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
         Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
@@ -88,10 +93,20 @@ public class RadialManager {
 
             @Override
             public List<ValueContainer> getCostsList() {
-                return UnitDataSource.getActionCostList(el);
+                return AttackTooltipFactory.getActionCostList(el);
             }
         });
         valueContainer.addListener(tooltip.getController());
+    }
+
+
+    public static List<RadialValueContainer> getOrCreateRadialMenu(DC_Obj target) {
+        List<RadialValueContainer> nodes = cache.get(target);
+        if (nodes==null ){
+            nodes=createNew(target);
+        }
+        cache.put(target, nodes);
+        return nodes;
     }
 
     public static List<RadialValueContainer> createNew(DC_Obj target) {
@@ -250,6 +265,14 @@ public class RadialManager {
         tooltip.setUserObject(Arrays.asList(new ValueContainer(name, "")));
         el.addListener(tooltip.getController());
     }
+    private static void addAttackTooltip(RadialValueContainer valueContainer,
+                                         DC_ActiveObj activeObj,
+                                         DC_Obj target) {
+        ActionToolTip tooltip = AttackTooltipFactory.createAttackTooltip((DC_UnitAction)
+         activeObj);
+        valueContainer.addListener(tooltip.getController());
+
+    }
 
     private static Filter<Obj> getFilter(DC_ActiveObj active) {
         active.getRef().setMatch(active.getOwnerObj().getId()); // for filter
@@ -321,15 +344,16 @@ public class RadialManager {
         if (activeObj.getOwnerObj() == target) {
             final RadialValueContainer valueContainer =
              configureSelectiveTargetedNode(activeObj);
-            addSimpleTooltip(valueContainer, activeObj.getName());
+            addAttackTooltip(valueContainer, activeObj, target);
             return (valueContainer);
         } else if (activeObj.getTargeting() instanceof SelectiveTargeting) {
             final RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR(activeObj.getImagePath()), getRunnable(target, activeObj));
-            addSimpleTooltip(valueContainer, activeObj.getName());
+            addAttackTooltip(valueContainer, activeObj, target);
             return (valueContainer);
         }
         return null;
     }
+
 
     private static RadialValueContainer configureMoveNode(DC_Obj target,
                                                           DC_ActiveObj dcActiveObj) {
@@ -374,6 +398,10 @@ public class RadialManager {
 
 
         };
+    }
+
+    public static void clearCache() {
+        cache.clear();
     }
 
     public enum RADIAL_PARENT_NODE {

@@ -101,9 +101,9 @@ public class AiTrainer {
             e.printStackTrace();
         }
         main.system.auxiliary.log.LogMaster.log(1,
-         "unit Stats= " + result.getUnitStats()
-         +"ally Stats= " + result.getAllyStats()
-         + "enemy Stats= " + result.getEnemyStats());
+         "unit Stats= " + result.getUnitStats().getStatMap()
+         +"ally Stats= " + result.getAllyStats().getStatsMap()
+         + "enemy Stats= " + result.getEnemyStats().getStatsMap());
         return result;
     }
 

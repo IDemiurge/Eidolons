@@ -1,6 +1,7 @@
 package main.libgdx.bf;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,9 +12,12 @@ import main.system.GuiEventManager;
 import static main.system.GuiEventType.CALL_BLUE_BORDER_ACTION;
 
 public class BaseView extends Group implements Borderable {
+    private static final float DEFAULT_ALPHA_FLUCTUATION = 0.6f;
     protected Image portrait;
     protected Image border = null;
     private TextureRegion borderTexture;
+    private float borderAlpha = 1f;
+    private boolean alphaGrowing=false;
 
     public BaseView(UnitViewOptions o) {
         this(o.getPortrateTexture());
@@ -37,6 +41,34 @@ public class BaseView extends Group implements Borderable {
                 }
             }
         });
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (!isAlphaFluctuationOn())
+            return;
+        if (border==null )
+            return ;
+        Color color = border.getColor();
+        borderAlpha = borderAlpha +  getAlphaFluctuation(delta);
+        border.setColor(color.r, color.g, color.b, borderAlpha);
+    }
+
+    private float getAlphaFluctuation(float delta) {
+        float fluctuation =delta* DEFAULT_ALPHA_FLUCTUATION;
+        if (borderAlpha <= fluctuation)
+            alphaGrowing = !alphaGrowing;
+        else if (borderAlpha > 1+fluctuation)
+            alphaGrowing = !alphaGrowing;
+
+        if (!alphaGrowing)
+            return -fluctuation;
+        return fluctuation;
+    }
+
+    private boolean isAlphaFluctuationOn() {
+        return true;
     }
 
     @Override
