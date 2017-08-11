@@ -269,7 +269,7 @@ public class RadialManager {
                                          DC_ActiveObj activeObj,
                                          DC_Obj target) {
         ActionToolTip tooltip = AttackTooltipFactory.createAttackTooltip((DC_UnitAction)
-         activeObj);
+         activeObj, target);
         valueContainer.addListener(tooltip.getController());
 
     }

@@ -1,5 +1,7 @@
 package main.game.battlecraft.logic.battle.universal;
 
+import main.content.PARAMS;
+import main.entity.obj.BattleFieldObject;
 import main.game.battlecraft.logic.battle.universal.BattleOptions.DIFFICULTY;
 import main.game.battlecraft.rules.combat.damage.Damage;
 
@@ -39,15 +41,39 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
 //
 //        Boolean ally_enemy_neutral = damage.getTarget().isMine()
 //         && damage.getSource().isHostileTo(damage.getTarget().getOwner());
-//if (ally_enemy_neutral==null ){
+//        if (ally_enemy_neutral == null) {
 //
-//} else if (ally_enemy_neutral) {
-//    damage.setAmount(damage.getAmount() * getOptions().getDifficulty().getDamagePercentageTakenAllies());
-//}   else if (ally_enemy_neutral) {
-//    damage.setAmount(damage.getAmount() * getOptions().getDifficulty().
-////     getDamagePercentageTakenEnemies());
+//        } else if (ally_enemy_neutral) {
+//            damage.setAmount(damage.getAmount() * getOptions().getDifficulty().getDamagePercentageTakenAllies());
+//        } else if (ally_enemy_neutral) {
+//            damage.setAmount(damage.getAmount() * getOptions().getDifficulty().
+//     getDamagePercentageTakenEnemies());
 //}
 ////TODO maybe easier to modify endurance/tough
 //
+        }
+
+    public void applyDifficultyMods(BattleFieldObject unit) {
+        Boolean ally_enemy_neutral =null ;
+        if (unit.isMine())
+            ally_enemy_neutral= true;
+        if (unit.isEnemyTo(game.getPlayer(true)))
+            ally_enemy_neutral= false;
+        if (ally_enemy_neutral==null )
+            return;
+        int mod = 100;
+        if (ally_enemy_neutral)
+        {
+            if (unit.isMainHero()) {
+                mod = getOptions().getDifficulty().getHealthPercentageMainHero();
+            } else {
+                mod = getOptions().getDifficulty().getHealthPercentageAlly();
+            }
+        }
+        else
+            mod = getOptions().getDifficulty().getHealthPercentageEnemy();
+
+        unit.modifyParamByPercent(PARAMS.ENDURANCE, mod);
+        unit.modifyParamByPercent(PARAMS.TOUGHNESS , mod);
     }
 }

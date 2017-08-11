@@ -113,6 +113,8 @@ public interface PriorityManager {
 
     int getLethalDamagePriority();
 
+    int getUnconsciousDamagePriority();
+
     int getUnitPriority(Obj targetObj);
 
     int getUnitPriority(Obj targetObj, Boolean less_or_more_for_health);

@@ -26,7 +26,7 @@ import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiCons
     SUMMON_PRIORITY_MOD(1000),
     RETREAT_PRIORITY_FACTOR(0.33f),
     CAPACITY,
-    DAMAGE_PRIORITY_MOD,
+    DAMAGE_PRIORITY_MOD(150),
     //BEHAVIORS
     BERSERK_ATTACK_PRIORITY, //SEPARATE PROFILE?
     DANGER_RANGED_BASE(125),
@@ -175,7 +175,8 @@ import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiCons
      */
     GEN_SPELL_DURATION_MULTIPLIER(50),
     GEN_SPELL_DURATION_SQRT_MULTIPLIER(1000),
-    LETHAL_DAMAGE_MOD(200);
+    LETHAL_DAMAGE_MOD(200),
+    UNCONSCIOUS_DAMAGE_MOD(160);
 
     private float defValue;
 

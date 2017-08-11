@@ -12,13 +12,17 @@ import main.system.data.PlayerData.ALLEGIENCE;
 import main.system.data.PlayerData.PLAYER_VALUE;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class PlayerManager<E extends Battle> extends BattleHandler<E> {
 
     public final FLAG_COLOR[] playerColors = {FLAG_COLOR.BLUE, FLAG_COLOR.RED,
-            FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};
+     FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};
+    public final FLAG_COLOR[] enemyColors = {FLAG_COLOR.RED,FLAG_COLOR.ORANGE,FLAG_COLOR.CRIMSON,};
+    public final FLAG_COLOR[] allyColors = {FLAG_COLOR.BLUE,
+     FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};
     public List<FLAG_COLOR> unusedPlayerColorsList;
     List<DC_Player> players = new LinkedList<>();
     private String data;
@@ -28,11 +32,13 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
 
 
     }
+
     public void gameStarted() {
 //        DC_Player player = getPlayer(true);
 //        player.getControlledUnits()
 //        player..setHeroObj(hero);
     }
+
     public void initializePlayers() {
         if (getMaster().getGame().getDataKeeper().getPlayerData() != null) {
             // TODO init data from preset
@@ -41,23 +47,26 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
             data = generateDefaultPlayerData();
         }
         unusedPlayerColorsList = new ListMaster<FLAG_COLOR>()
-                .getList(playerColors);
+         .getList(playerColors);
         int i = 0;
         for (String substring : StringMaster.openContainer(data)) {
             DC_Player player = initPlayerFromString(substring);
             if (player.getAllegiance() == ALLEGIENCE.NEUTRAL)
                 Player.NEUTRAL = player;
 //            else
-                players.add(player);
-if (player.isEnemy())
-    player.setAi(true);
+            players.add(player);
+            if (player.isEnemy())
+                player.setAi(true);
 
             UnitData[] unitData = getMaster().getGame().getDataKeeper().getUnitData();
             if (unitData != null)
                 if (unitData.length > i) {
                     player.setUnitData(unitData[i]);
                 }
-                i++;
+            FLAG_COLOR color=getRandomColorFlag(player.isEnemy());
+            player.setFlagColor(color);
+
+            i++;
         }
         if (Player.NEUTRAL == null) {
             Player.NEUTRAL = new DC_Player("Neutral", FLAG_COLOR.BROWN, "", "", ALLEGIENCE.NEUTRAL);
@@ -88,21 +97,21 @@ if (player.isEnemy())
     public DC_Player initPlayerFromString(String data) {
         PlayerData dataUnit = new PlayerData(data);
         ALLEGIENCE allegience =
-                new EnumMaster<ALLEGIENCE>().retrieveEnumConst(ALLEGIENCE.class,
-                        dataUnit.getValue(PLAYER_VALUE.ALLEGIENCE));
+         new EnumMaster<ALLEGIENCE>().retrieveEnumConst(ALLEGIENCE.class,
+          dataUnit.getValue(PLAYER_VALUE.ALLEGIENCE));
         if (allegience == null) {
             allegience = ALLEGIENCE.NEUTRAL;
         }
         FLAG_COLOR color = new EnumMaster<FLAG_COLOR>().retrieveEnumConst(FLAG_COLOR.class,
-                dataUnit.getValue(PLAYER_VALUE.COLOR));
+         dataUnit.getValue(PLAYER_VALUE.COLOR));
         if (color == null) {
             color = getRandomColorFlag();
         }
         DC_Player player = new DC_Player(dataUnit.getValue(PLAYER_VALUE.NAME), color,
-                dataUnit.getValue(PLAYER_VALUE.EMBLEM), dataUnit.getValue(PLAYER_VALUE.PORTRAIT), allegience);
+         dataUnit.getValue(PLAYER_VALUE.EMBLEM), dataUnit.getValue(PLAYER_VALUE.PORTRAIT), allegience);
 
 
-        player.setMainHeroName(dataUnit.getValue(PLAYER_VALUE.MAIN_HERO) );
+        player.setMainHeroName(dataUnit.getValue(PLAYER_VALUE.MAIN_HERO));
 
         return player;
     }
@@ -110,6 +119,12 @@ if (player.isEnemy())
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    private FLAG_COLOR getRandomColorFlag(boolean enemy) {
+        List<FLAG_COLOR> list = new LinkedList<>(Arrays.asList(enemy ? enemyColors : allyColors));
+        int index = RandomWizard.getRandomListIndex(list);
+        return list.get(index);
     }
 
 

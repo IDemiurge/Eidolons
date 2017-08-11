@@ -1,6 +1,7 @@
 package main.libgdx.bf;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -143,4 +144,26 @@ public class GridCell extends Group implements Borderable {
         super.setUserObject(userObject);
         getChildren().forEach(ch -> ch.setUserObject(userObject));
     }
+
+
+    @Override
+    public boolean isTeamColorBorder() {
+        return false;
+    }
+
+    @Override
+    public void setTeamColorBorder(boolean teamColorBorder) {
+
+    }
+
+    @Override
+    public void setTeamColor(Color teamColor) {
+
+    }
+
+    @Override
+    public Color getTeamColorBorder() {
+        return null;
+    }
+
 }

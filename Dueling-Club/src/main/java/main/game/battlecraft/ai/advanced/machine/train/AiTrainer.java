@@ -21,9 +21,11 @@ import main.test.frontend.ScenarioLauncher;
  */
 public class AiTrainer {
 
+    private static final int MAX_ATTEMPTS = 25;
     private AiTrainingParameters parameters;
     private AiTrainingCriteria criteria;
     private PriorityProfile profile;
+    private ObjType trainee;
 
     public static String getDefaultDungeonData() {
         ObjType type = DataManager.getType(ScenarioLauncher.DEFAULT, DC_TYPE.SCENARIOS);
@@ -50,13 +52,20 @@ public class AiTrainer {
         this.parameters = parameters;
         this.criteria = criteria;
         this.profile = profile;
-        ObjType trainee = parameters.getTraineeType();
+         trainee = parameters.getTraineeType();
 
         initTrainingParameters(parameters);
-        runAiScenario(parameters.getDungeonData());
-        DC_Game.game.getAiManager().getPriorityProfileManager().setPriorityProfile(trainee, profile);
-        boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_FINISHED);
-        return evaluateResult(profile, parameters, criteria);
+        int i = 0;
+        while (i < MAX_ATTEMPTS) {
+            try {
+            return runAiScenario(parameters.getDungeonData());
+            } catch (Exception e) {
+                e.printStackTrace();
+                i++;
+            }
+        }
+
+        return null;
     }
 
     private void initTrainingParameters(AiTrainingParameters parameters) {
@@ -65,9 +74,10 @@ public class AiTrainer {
         parameters.getTraineeType();
     }
 
-    private void runAiScenario(String presetPath) {
-        if (AiTrainingRunner.evolutionTestMode)
-            return;
+    private AiTrainingResult runAiScenario(String presetPath) {
+        if (!AiTrainingRunner.evolutionTestMode)
+        {
+
         RandomWizard.setAveraged(parameters.deterministic);
         if (parameters.getEnvironmentType() == TRAINING_ENVIRONMENT.PRESET) {
             new GameLauncher(GAME_SUBCLASS.TEST).launchPreset(presetPath);
@@ -90,7 +100,11 @@ public class AiTrainer {
             DC_Game game = a.initGame();
             game.start(true);
         }
-
+        }
+        DC_Game.game.getAiManager().getPriorityProfileManager().setPriorityProfile
+         (trainee, profile);
+        boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_FINISHED);
+        return evaluateResult(profile, parameters, criteria);
     }
 
     private AiTrainingResult evaluateResult(PriorityProfile profile, AiTrainingParameters parameters, AiTrainingCriteria criteria) {
@@ -102,8 +116,8 @@ public class AiTrainer {
         }
         main.system.auxiliary.log.LogMaster.log(1,
          "unit Stats= " + result.getUnitStats().getStatMap()
-         +"ally Stats= " + result.getAllyStats().getStatsMap()
-         + "enemy Stats= " + result.getEnemyStats().getStatsMap());
+          + "ally Stats= " + result.getAllyStats().getStatsMap()
+          + "enemy Stats= " + result.getEnemyStats().getStatsMap());
         return result;
     }
 

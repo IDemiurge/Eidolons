@@ -32,7 +32,11 @@ public class StyleHolder {
     private static Map<Color, Label.LabelStyle> colorLabelStyleMap = new HashMap<>();
     private static Map<Integer, Label.LabelStyle> sizeLabelStyleMap = new HashMap<>();
 
-    public static Label.LabelStyle getDefaultLabelStyleSized(Integer size) {
+    public static Label.LabelStyle getStyledLabelStyle(Label.LabelStyle style, boolean italic, boolean bold) {
+        //TODO
+        return null;
+    }
+        public static Label.LabelStyle getDefaultLabelStyleSized(Integer size) {
         if (!sizeLabelStyleMap.containsKey(size)) {
             Label.LabelStyle style = new Label.LabelStyle
              (getFont(DEFAULT_FONT, DEFAULT_COLOR, size ), DEFAULT_COLOR);

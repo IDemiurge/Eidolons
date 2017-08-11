@@ -44,6 +44,13 @@ public class ActionToolTip extends ToolTip {
         baseTable.addElement(new ValueContainer(rightImage));
         baseTable.row();
 
+
+        ValueContainer precalcRow = source.getPrecalcRow();
+        if (precalcRow != null) {
+            baseTable.addElement(precalcRow);
+            baseTable.row();
+        }
+
         List<MultiValueContainer> list = source.getBase();
 
         for (Object o : list) {

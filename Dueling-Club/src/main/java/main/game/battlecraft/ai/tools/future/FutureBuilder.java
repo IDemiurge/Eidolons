@@ -20,6 +20,11 @@ public class FutureBuilder {
     public static final int LETHAL_DAMAGE = -666;
 
     public static int precalculateDamage(DC_ActiveObj active, Obj targetObj, boolean attack) {
+        return precalculateDamage(active, targetObj, attack, null);
+    }
+
+    public static int precalculateDamage(DC_ActiveObj active, Obj targetObj, boolean attack,
+                                         Boolean min_max_normal) {
         // TODO basically, I have to use a copy of the gamestate...! To make it
         // precise...
         int damage = 0;
@@ -29,15 +34,19 @@ public class FutureBuilder {
 
         List<Effect> effects;
         effects = EffectFinder.getEffectsOfClass(EffectFinder.getEffectsFromSpell(active),
-                attack ? AttackEffect.class : DealDamageEffect.class);
+         attack ? AttackEffect.class : DealDamageEffect.class);
         // TODO special effects?!
         for (Effect e : effects) {
-            damage += getDamage(active, targetObj, e);
+            damage += getDamage(active, targetObj, e, min_max_normal);
         }
         return damage;
     }
 
     public static int getDamage(DC_ActiveObj active, Obj targetObj, Effect e) {
+        return getDamage(active, targetObj, e, null);
+    }
+        public static int getDamage(DC_ActiveObj active, Obj targetObj, Effect e,
+                                    Boolean min_max_normal) {
         int damage;
         Ref ref = active.getOwnerObj().getRef().getCopy();
         ref.setTarget(targetObj.getId());
@@ -54,11 +63,11 @@ public class FutureBuilder {
         } else {
             Attack attack = ((AttackEffect) e).initAttack();
             // attack.setAttacked((DC_HeroObj) targetObj);
-            damage = DamageCalculator.precalculateDamage(attack);
+            damage = DamageCalculator.precalculateDamage(attack, min_max_normal);
         }
         // active.toBase();
         LogMaster.log(1, active.getName() + " on " + targetObj.getName()
-                + " - damage precalculated: " + damage);
+         + " - damage precalculated: " + damage);
         return damage;
     }
 
@@ -72,4 +81,6 @@ public class FutureBuilder {
         // TODO Auto-generated method stub
         return null;
     }
+
+
 }

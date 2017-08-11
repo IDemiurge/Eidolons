@@ -2,6 +2,7 @@ package main.game.battlecraft.ai.tools;
 
 import main.ability.conditions.WaitingFilterCondition;
 import main.ability.effects.oneshot.unit.RaiseEffect;
+import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.rules.VisionEnums;
@@ -73,7 +74,13 @@ public class Analyzer extends AiHandler {
     }
 
     public static List<Unit> getVisibleEnemies(UnitAI ai) {
-        return getUnits(ai, false, true, true, false);
+        return getUnits(ai, false, true, true, false, isTargetingUnconscious(ai));
+    }
+
+    private static Boolean isTargetingUnconscious(UnitAI ai) {
+        if (ai.checkMod(AI_MODIFIERS.CRUEL))
+            return true;
+        return false;
     }
 
     public static List<Unit> getUnits(UnitAI ai, Boolean ally,

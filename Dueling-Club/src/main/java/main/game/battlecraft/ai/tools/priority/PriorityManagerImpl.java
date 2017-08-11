@@ -1158,20 +1158,27 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 e1.printStackTrace();
             }
         }
-        if (DamageCalculator.isLethal(damage, targetObj)) {
-            if (checkKillPrioritized(targetObj, action))
+        float mod = getConstValue(AiConst.DAMAGE_PRIORITY_MOD);
 
+        if (DamageCalculator.isUnconscious(damage, targetObj)) {
+            if (checkKillPrioritized(targetObj, action))
             {
-                return getLethalDamagePriority();
+                return getUnconsciousDamagePriority()*(int)(mod*100)/100;
             }
         }
 
-        int e = targetObj.getIntParam(PARAMS.C_ENDURANCE) - damage;
-        int t = targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage;
-        e = MathMaster.getCentimalPercentage(damage, targetObj.getIntParam(PARAMS.C_ENDURANCE));
-        t = MathMaster.getCentimalPercentage(damage, targetObj.getIntParam(PARAMS.C_TOUGHNESS));
+        if (DamageCalculator.isLethal(damage, targetObj)) {
+            if (checkKillPrioritized(targetObj, action))
+            {
+                return getLethalDamagePriority()*(int)(mod*100)/100;
+            }
+        }
+        int e = targetObj.getIntParam(PARAMS.C_ENDURANCE)  ;
+        int t = targetObj.getIntParam(PARAMS.C_TOUGHNESS)  ;
+        e = MathMaster.getCentimalPercentage(damage, e);
+        t = MathMaster.getCentimalPercentage(damage, t);
 
-        return Math.max(e, t * 2 / 3);
+        return Math.max(e, t * 2 / 3)*(int)(mod*100)/100;
     }
 
     @Override
@@ -1193,6 +1200,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     @Override
     public int getLethalDamagePriority() {
         return getConstInt(AiConst.LETHAL_DAMAGE_MOD);
+    }
+    @Override
+    public int getUnconsciousDamagePriority() {
+        return getConstInt(AiConst.UNCONSCIOUS_DAMAGE_MOD);
     }
 
     @Override

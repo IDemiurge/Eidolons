@@ -19,6 +19,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.battlecraft.rules.combat.attack.Attack;
+import main.game.battlecraft.rules.combat.attack.AttackCalculator;
 import main.game.battlecraft.rules.combat.attack.SneakRule;
 import main.game.battlecraft.rules.round.UnconsciousRule;
 import main.libgdx.anims.phased.PhaseAnimator;
@@ -75,25 +76,35 @@ public class DamageCalculator {
         return Math.max(0, amount - armor);
     }
 
+    public static int precalculateDamage(Attack attack ) {
+        return precalculateDamage(attack, null);
+    }
     /**
      * Calculates damage for AI's FutureBuilder (AttackEffect)
      *
      * @param attack
      * @return
      */
-    public static int precalculateDamage(Attack attack) {
+    public static int precalculateDamage(Attack attack, Boolean min_max_normal) {
         BattleFieldObject attacked = attack.getAttackedUnit();
         Unit attacker = attack.getAttacker();
         if (!attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.SNEAK_IMMUNE)) {
             attack.setSneak(SneakRule.checkSneak(attack.getRef()));
         }
         // TODO ref.setFuture(true) -> average dice, auto-reset action etc
-        int amount = attack.getPrecalculatedDamageAmount();
+        AttackCalculator calculator = new AttackCalculator(attack, true);
+        if (min_max_normal!=null )
+            if (min_max_normal) {
+                calculator.setMin(true);
+            } else  {
+                calculator.setMax(true);
+            }
+        int amount = calculator.calculateFinalDamage();
         DAMAGE_TYPE dmg_type = attack.getDamageType();
-        if ( dmg_type == DAMAGE_TYPE.PURE || dmg_type == DAMAGE_TYPE.POISON) {
+        if (dmg_type == DAMAGE_TYPE.PURE || dmg_type == DAMAGE_TYPE.POISON) {
             return amount;
         }
-        if (!(attacked instanceof Unit)){
+        if (!(attacked instanceof Unit)) {
             return amount;
         }
         amount -= // applyAverageShieldReduction
@@ -125,7 +136,7 @@ public class DamageCalculator {
         amount -= blocked;
         amount -= amount * ResistMaster.getResistanceForDamageType(
          (Unit) ref.getTargetObj(), sourceObj,
-         damageType)/100;
+         damageType) / 100;
 
         return amount;// applySpellArmorReduction(amount, (DC_HeroObj)
         // ref.getTargetObj(), ref.getSourceObj());
@@ -154,7 +165,7 @@ public class DamageCalculator {
           .toString());
     }
 
-   public static boolean isPeriodic(Ref ref) {
+    public static boolean isPeriodic(Ref ref) {
         return StringMaster.compare(ref.getValue(KEYS.DAMAGE_MODS),
          GenericEnums.DAMAGE_MODIFIER.PERIODIC
           .toString());
@@ -173,6 +184,17 @@ public class DamageCalculator {
     }
 
     public static boolean isLethal(int damage, Obj targetObj) {
+        return isDamageBeyondThreshold(damage, targetObj , false);
+    }
+    public static boolean isUnconscious(int damage, Obj targetObj) {
+return isDamageBeyondThreshold(damage, targetObj , true);
+    }
+        public static boolean isDamageBeyondThreshold(int damage, Obj targetObj, boolean unconscious) {
+        if (targetObj instanceof Unit)
+            return UnconsciousRule.checkUnitDies(
+             targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage,
+             targetObj.getIntParam(PARAMS.C_ENDURANCE) - damage, (Unit) targetObj,
+             null, unconscious);
         if (damage >= targetObj.getIntParam(PARAMS.C_TOUGHNESS)) {
             return true;
         }

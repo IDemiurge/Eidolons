@@ -15,4 +15,6 @@ public interface ActionTooltipSource {
     List<List<ValueContainer>> getText();
 
     CostTableSource getCostsSource();
+
+    ValueContainer getPrecalcRow();
 }

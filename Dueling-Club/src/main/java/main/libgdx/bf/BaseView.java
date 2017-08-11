@@ -13,11 +13,16 @@ import static main.system.GuiEventType.CALL_BLUE_BORDER_ACTION;
 
 public class BaseView extends Group implements Borderable {
     private static final float DEFAULT_ALPHA_FLUCTUATION = 0.6f;
+    private static final float DEFAULT_ALPHA_MIN = 0.2f;
+    private static final float DEFAULT_ALPHA_MAX = 1f;
     protected Image portrait;
     protected Image border = null;
     private TextureRegion borderTexture;
     private float borderAlpha = 1f;
     private boolean alphaGrowing=false;
+    private boolean teamColorBorder;
+    private Color teamColor;
+
 
     public BaseView(UnitViewOptions o) {
         this(o.getPortrateTexture());
@@ -48,10 +53,13 @@ public class BaseView extends Group implements Borderable {
         super.act(delta);
         if (!isAlphaFluctuationOn())
             return;
-        if (border==null )
-            return ;
+        if (border == null)
+            return;
         Color color = border.getColor();
-        borderAlpha = borderAlpha +  getAlphaFluctuation(delta);
+        if (isTeamColorBorder()) {
+            color = getTeamColorBorder();
+        }
+        borderAlpha = borderAlpha + getAlphaFluctuation(delta);
         border.setColor(color.r, color.g, color.b, borderAlpha);
     }
 
@@ -92,6 +100,7 @@ public class BaseView extends Group implements Borderable {
         if (texture == null) {
             border = null;
             borderTexture = null;
+            setTeamColorBorder(false);
         } else {
             addActor(border = new Image(texture));
             borderTexture = texture;
@@ -106,5 +115,21 @@ public class BaseView extends Group implements Borderable {
             border.setHeight(getHeight() + 12);
             border.setWidth(getWidth() + 12);
         }
+    }
+    @Override
+    public boolean isTeamColorBorder() {
+        return teamColorBorder;
+    }
+@Override
+    public void setTeamColorBorder(boolean teamColorBorder) {
+        this.teamColorBorder = teamColorBorder;
+    }
+    @Override
+    public void setTeamColor(Color teamColor) {
+        this.teamColor = teamColor;
+    }
+    @Override
+    public Color getTeamColorBorder() {
+        return teamColor;
     }
 }

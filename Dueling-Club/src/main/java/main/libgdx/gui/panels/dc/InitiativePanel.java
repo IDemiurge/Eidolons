@@ -38,17 +38,28 @@ public class InitiativePanel extends Group {
             addOrUpdate(p);
         });
 
+        GuiEventManager.bind(GuiEventType.UPDATE_GUI, obj -> {
+            cleanUp();
+        });
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
             UnitView p = (UnitView) obj.get();
-            for (int i = 0; i < queue.length; i++) {
-                if (queue[i] != null && queue[i].id == p.getCurId()) {
-                    queueGroup.removeActor(queue[i]);
-                    queue[i] = null;
-                    sort();
-                    break;
-                }
-            }
+            removeView(p);
         });
+    }
+
+    private void removeView(UnitView p) {
+        for (int i = 0; i < queue.length; i++) {
+            if (queue[i] != null && queue[i].id == p.getCurId()) {
+                queueGroup.removeActor(queue[i]);
+                queue[i] = null;
+                sort();
+                break;
+            }
+        }
+    }
+
+    private void cleanUp() {
+
     }
 
     private void init() {

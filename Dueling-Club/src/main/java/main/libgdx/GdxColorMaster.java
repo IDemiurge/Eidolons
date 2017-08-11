@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.values.parameters.PARAMETER;
+import main.system.graphics.ColorManager.FLAG_COLOR;
 
 /**
  * Created by JustMe on 1/23/2017.
@@ -122,4 +123,37 @@ public class GdxColorMaster {
         return Color.WHITE;
     }
 
+    public static Color getColor(FLAG_COLOR flagColor) {
+        if (flagColor==null )
+        return Color.BROWN;
+        switch (flagColor) {
+            case BLUE:
+                return Color.BLUE;
+            case CYAN:
+                return Color.CYAN;
+            case GREEN:
+                return Color.GREEN;
+            case DARK_GREEN:
+                return DARK_GREEN;
+            case PURPLE:
+                return PURPLE;
+            case RED:
+                return Color.RED;
+            case CRIMSON:
+                return CRIMSON;
+            case YELLOW:
+                return Color.YELLOW;
+            case BROWN:
+                return Color.BROWN;
+            case ORANGE:
+                return Color.ORANGE;
+            case BLACK:
+                return Color.BLACK;
+            case GRAY:
+                return Color.GRAY;
+            case WHITE:
+                return Color.WHITE;
+        }
+        return null;
+    }
 }

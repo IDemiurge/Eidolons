@@ -14,6 +14,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.Game;
@@ -58,7 +59,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     @Override
     public String toString() {
         if (getGame().isDebugMode())
-        return super.toString();
+            return super.toString();
         return getName();
     }
 
@@ -94,10 +95,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
                 }
             }
             ((BattleFieldObject) killer)
-                    .applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL, this, REF);
+             .applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL, this, REF);
 
             applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH,
-                    ((BattleFieldObject) killer), REF);
+             ((BattleFieldObject) killer), REF);
             if (!ignoreInterrupt) {
                 if (ref.checkInterrupted()) {
                     return false;
@@ -118,6 +119,16 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     }
 
+    public boolean isEnemyTo(DC_Player player) {
+        return  getOwner().isHostileTo(player);
+    }
+    public boolean isAlliedTo(DC_Player player) {
+        return !getOwner().isHostileTo(player);
+//if (getOwner().equals(player))
+//    return true;
+//if (player.getGame().getBattleMaster().getPlayerManager().)
+//        return false;
+    }
     public boolean isObstructing(Obj obj, DC_Obj target) {
 
         if (target == null) {
@@ -197,9 +208,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     }
 
 
-
-
-
     @Override
     public void addDynamicValues() {
         setParam(G_PARAMS.POS_X, x, true);
@@ -220,13 +228,19 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     }
 
     public void resetPercentages() {
-        Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p->resetPercentage(p));
+        Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p -> resetPercentage(p));
     }
 
     public void resetCurrentValues() {
-        Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p->resetCurrentValue(p));
+        if (getGame().getBattleMaster() != null) {
+            try {
+                getGame().getBattleMaster().getOptionManager().applyDifficultyMods(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p -> resetCurrentValue(p));
     }
-
 
 
     public boolean removeStatus(STATUS status) {
@@ -309,7 +323,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     public DIRECTION getDirection() {
         if (direction == null) {
             direction = new EnumMaster<DIRECTION>().retrieveEnumConst(DIRECTION.class,
-                    getProperty(PROPS.DIRECTION));
+             getProperty(PROPS.DIRECTION));
         }
         return direction;
     }
@@ -353,6 +367,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     }
 
     public boolean canCounter(DC_ActiveObj action, boolean sneak) {
+        return false;
+    }
+
+    public boolean isMainHero() {
         return false;
     }
 }

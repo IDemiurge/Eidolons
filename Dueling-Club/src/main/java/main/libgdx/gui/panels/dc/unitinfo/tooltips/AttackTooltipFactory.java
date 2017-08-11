@@ -2,11 +2,14 @@ package main.libgdx.gui.panels.dc.unitinfo.tooltips;
 
 import main.content.PARAMS;
 import main.content.VALUE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
+import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.game.battlecraft.ai.tools.future.FutureBuilder;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
 import main.libgdx.gui.tooltips.ToolTip;
@@ -28,7 +31,37 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
  * Created by JustMe on 8/10/2017.
  */
 public class AttackTooltipFactory {
+
     public static ActionToolTip createAttackTooltip(DC_UnitAction el) {
+        return createAttackTooltip(el, false, true, true, false, null);
+    }
+
+    public static ActionToolTip createAttackTooltip(DC_UnitAction activeObj, DC_Obj target) {
+        return createAttackTooltip(activeObj, true, true, true, false, target);
+    }
+
+    private static ValueContainer createPrecalcRow(boolean precalc, DC_UnitAction el, DC_Obj target) {
+        if (!precalc) {
+            return null;
+        }
+        int min_damage = FutureBuilder.precalculateDamage(el, target, true, true);
+        int max_damage = FutureBuilder.precalculateDamage(el, target, true, false);
+        DAMAGE_TYPE dmgType = el.getDamageType();
+//        TODO display all bonus damage!
+//          Attack attack = EffectFinder.getAttackFromAction(el);
+//        DamageFactory.getDamageFromAttack();
+        String info=min_damage+"-" +max_damage+ dmgType.getName() + " damage";
+        String tooltip="";
+//        if ()
+//            DamageCalculator.isUnconscious()
+//        "(will drop)";
+//        tooltip +=" (shield!)";
+        ValueContainer container = new ValueContainer(info, tooltip);
+        return container;
+    }
+    public static ActionToolTip createAttackTooltip(DC_UnitAction el,
+                                                    boolean precalc, boolean costs,
+                                                    boolean additionalInfo, boolean combatMode, DC_Obj target) {
         Pair<PARAMS, PARAMS> pair = ACTION_TOOLTIPS_PARAMS_MAP.get(ACTION_TOOLTIP_HEADER_KEY);
         String name = getStringForTableValue(ACTION_TOOLTIP_HEADER_KEY, el);
         final String leftImage = ActionTooltipMaster.getIconPathForTableRow(pair.getLeft());
@@ -36,10 +69,10 @@ public class AttackTooltipFactory {
         MultiValueContainer head = new MultiValueContainer(name, leftImage, rightImage);
 
         VALUE[] baseKeys = ACTION_TOOLTIP_BASE_KEYS;
-        final List<MultiValueContainer> base =  extractActionValues(el, baseKeys);
+        final List<MultiValueContainer> base = extractActionValues(el, baseKeys);
 
         baseKeys = ACTION_TOOLTIP_RANGE_KEYS;
-        final List<MultiValueContainer> range =  extractActionValues(el, baseKeys);
+        final List<MultiValueContainer> range = extractActionValues(el, baseKeys);
 
         List/*<List<MultiValueContainer>>*/ textsList = new ArrayList<>();
         for (PARAMS[] params : ACTION_TOOLTIP_PARAMS_TEXT) {
@@ -56,6 +89,8 @@ public class AttackTooltipFactory {
         }
 
         ActionToolTip toolTip = new ActionToolTip();
+
+        ValueContainer precalcRow = createPrecalcRow(precalc, el, target);
         toolTip.setUserObject(new ActionTooltipSource() {
             @Override
             public MultiValueContainer getHead() {
@@ -81,9 +116,15 @@ public class AttackTooltipFactory {
             public CostTableSource getCostsSource() {
                 return () -> getActionCostList(el);
             }
+
+            @Override
+            public ValueContainer getPrecalcRow() {
+                return precalcRow;
+            }
         });
         return toolTip;
     }
+
 
     private static List<MultiValueContainer> extractActionValues(DC_UnitAction el
      , VALUE[] baseKeys) {
@@ -137,4 +178,6 @@ public class AttackTooltipFactory {
         }
         return costsList;
     }
+
+
 }

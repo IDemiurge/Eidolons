@@ -1,10 +1,12 @@
 package main.libgdx.bf;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.C_OBJ_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.BattleFieldObject;
+import main.libgdx.GdxColorMaster;
 
 import static main.content.PARAMS.C_INITIATIVE;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
@@ -23,10 +25,15 @@ public class UnitViewOptions {
     private int directionValue;
 
     private int clockValue;
+    private Color teamColor;
 
 
     public UnitViewOptions(BattleFieldObject obj) {
         createFromGameObject(obj);
+    }
+
+    public Color getTeamColor() {
+        return teamColor;
     }
 
     public final Runnable getRunnable() {
@@ -75,6 +82,8 @@ public class UnitViewOptions {
             this.clockTexture = getOrCreateR("/UI/value icons/actions.png");
             String emblem = obj.getProperty(G_PROPS.EMBLEM, true);
             this.clockValue = obj.getIntParam(C_INITIATIVE);
+            this.teamColor =
+             GdxColorMaster.getColor(obj.getOwner().getFlagColor());
         }
     }
 }

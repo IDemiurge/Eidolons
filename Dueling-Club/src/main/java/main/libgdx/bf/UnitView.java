@@ -1,6 +1,5 @@
 package main.libgdx.bf;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -21,15 +20,14 @@ public class UnitView extends BaseView {
     protected boolean mobilityState = true;//mobility state, temporary.
 
     public UnitView(UnitViewOptions o) {
-        super(o);
-        curId = lastId.getAndIncrement();
-        init(o.getClockTexture(), o.getClockValue());
+        this(o, lastId.getAndIncrement());
     }
 
     protected UnitView(UnitViewOptions o, int curId) {
         super(o);
         this.curId = curId;
         init(o.getClockTexture(), o.getClockValue());
+        setTeamColor(o.getTeamColor());
     }
 
     public void setToolTip(ToolTip toolTip) {
