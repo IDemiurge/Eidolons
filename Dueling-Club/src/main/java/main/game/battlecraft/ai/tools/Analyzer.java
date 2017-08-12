@@ -43,6 +43,11 @@ public class Analyzer extends AiHandler {
         super(master);
     }
 
+    public static List<Unit> getProtectTargets(UnitAI ai) {
+        List<Unit> list = getAllies(ai);
+        //TODO filter
+        return list;
+    }
     public static List<Unit> getAllies(UnitAI ai) {
         List<Unit> list = new XList<>();
         for (Unit unit : Eidolons.game.getUnits()) {

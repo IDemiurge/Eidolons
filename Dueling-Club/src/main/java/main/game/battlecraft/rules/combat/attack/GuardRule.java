@@ -1,6 +1,7 @@
 package main.game.battlecraft.rules.combat.attack;
 
 import main.content.enums.GenericEnums.ROLL_TYPES;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.mode.STD_MODES;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
@@ -26,7 +27,9 @@ public class GuardRule {
         Collection<Unit> units = target.getGame().getUnitsForCoordinates(target.getCoordinates());
         for (Unit unit : units) {
             if (unit.isAlliedTo(target.getOwner())) {
-                if (unit.getMode() == STD_MODES.GUARDING) {
+                if (unit.getMode() == STD_MODES.GUARDING
+                 || unit.checkStatus(STATUS.GUARDING))
+                {
                     Ref ref= Ref.getCopy(action.getRef() );
                     ref.setTarget(target.getId());
                     if (!SneakRule.checkSneak(ref))

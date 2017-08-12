@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.system.GuiEventManager;
 
@@ -95,8 +96,10 @@ public class GridUnitView extends UnitView {
 
     public void updateRotation(int val) {
         if (arrow != null) {
-            arrowRotation = val + 90;
-            arrow.setRotation(arrowRotation);
+            ActorMaster.addRotateToAction(arrow, arrowRotation, val + 90);
+             arrowRotation = val + 90;
+//            arrow.setRotation(arrowRotation);
+
         }
     }
 
@@ -112,6 +115,27 @@ public class GridUnitView extends UnitView {
             arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
             arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
             arrow.setRotation(arrowRotation);
+        }
+
+        main.system.auxiliary.log.LogMaster.log(1, this + " Scale=" + getScaledWidth());
+        if (getScaledWidth()==0)
+            return ;
+        if (getScaledHeight()==0  )
+            return ;
+        Image image = clockImage;
+        if (image != null) {
+            image.setScaleX(getScaledWidth());
+            image.setScaleY(getScaledHeight());
+        }
+        image = emblem;
+        if (image != null) {
+            image.setScaleX(getScaledWidth());
+            image.setScaleY(getScaledHeight());
+        }
+        image = arrow;
+        if (image != null) {
+            image.setScaleX(getScaledWidth());
+            image.setScaleY(getScaledHeight());
         }
     }
 

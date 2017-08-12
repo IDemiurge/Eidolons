@@ -76,9 +76,10 @@ public class DamageCalculator {
         return Math.max(0, amount - armor);
     }
 
-    public static int precalculateDamage(Attack attack ) {
+    public static int precalculateDamage(Attack attack) {
         return precalculateDamage(attack, null);
     }
+
     /**
      * Calculates damage for AI's FutureBuilder (AttackEffect)
      *
@@ -93,10 +94,10 @@ public class DamageCalculator {
         }
         // TODO ref.setFuture(true) -> average dice, auto-reset action etc
         AttackCalculator calculator = new AttackCalculator(attack, true);
-        if (min_max_normal!=null )
+        if (min_max_normal != null)
             if (min_max_normal) {
                 calculator.setMin(true);
-            } else  {
+            } else {
                 calculator.setMax(true);
             }
         int amount = calculator.calculateFinalDamage();
@@ -184,17 +185,22 @@ public class DamageCalculator {
     }
 
     public static boolean isLethal(int damage, Obj targetObj) {
-        return isDamageBeyondThreshold(damage, targetObj , false);
+        return isDamageBeyondThreshold(damage, targetObj, false);
     }
+
     public static boolean isUnconscious(int damage, Obj targetObj) {
-return isDamageBeyondThreshold(damage, targetObj , true);
+        return isDamageBeyondThreshold(damage, targetObj, true);
     }
-        public static boolean isDamageBeyondThreshold(int damage, Obj targetObj, boolean unconscious) {
-        if (targetObj instanceof Unit)
-            return UnconsciousRule.checkUnitDies(
-             targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage,
-             targetObj.getIntParam(PARAMS.C_ENDURANCE) - damage, (Unit) targetObj,
-             null, unconscious);
+
+    public static boolean isDamageBeyondThreshold(int damage, Obj targetObj, boolean unconscious) {
+        if (targetObj instanceof Unit){
+            return
+             unconscious ? UnconsciousRule.checkFallsUnconscious((Unit) targetObj)
+              : UnconsciousRule.checkUnitDies(
+              targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage,
+              targetObj.getIntParam(PARAMS.C_ENDURANCE) - damage, (Unit) targetObj,
+              null, false);
+    }
         if (damage >= targetObj.getIntParam(PARAMS.C_TOUGHNESS)) {
             return true;
         }

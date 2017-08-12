@@ -197,6 +197,7 @@ public class ActionSequenceConstructor extends AiHandler {
                 singleAction = (action).canBeActivated();
             }
         }
+
         // if (!singleAction)
         // if (ReasonMaster.getReasons(action).getOrCreate(0)==FILTER_REASON.FACING)
         if (singleAction) {

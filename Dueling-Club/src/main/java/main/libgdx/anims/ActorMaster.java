@@ -78,4 +78,14 @@ public class ActorMaster {
         return action;
     }
 
+    public static void addRotateToAction(Actor actor, int from, int to) {
+
+        RotateToAction action = new RotateToAction();
+        action.setRotation(to);
+        float speed=360; //* options
+        float duration= Math.abs(from - to)/speed;
+        action.setDuration(duration);
+        actor.addAction(action);
+        action.setTarget(actor);
+    }
 }

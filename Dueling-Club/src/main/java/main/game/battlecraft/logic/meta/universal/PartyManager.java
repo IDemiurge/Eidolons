@@ -38,8 +38,17 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         Ref ref = new Ref(getParty().getLeader());
         Unit hero = getGame().getMaster().getUnitByName(name, ref, true, null, null);
         //will find 1st if name==null
-        player.setHeroObj(hero);
-        getParty().setProperty(PROPS.PARTY_MAIN_HERO, name);
+        mainHeroSelected(party, hero);
+    }
+
+    private void mainHeroSelected(PartyObj party, Unit hero) {
+        party.getMembers().forEach(member->{
+            member.setMainHero(false);
+        });
+        hero.getOwner().setHeroObj(hero);
+        hero.setMainHero(true);
+        party.setProperty(PROPS.PARTY_MAIN_HERO, hero.getName());
+
     }
 
     public void preStart() {

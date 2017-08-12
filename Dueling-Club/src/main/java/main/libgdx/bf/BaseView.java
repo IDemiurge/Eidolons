@@ -22,6 +22,9 @@ public class BaseView extends Group implements Borderable {
     private boolean alphaGrowing=false;
     private boolean teamColorBorder;
     private Color teamColor;
+    private float scaledWidth;
+    private float scaledHeight;
+    private boolean hovered;
 
 
     public BaseView(UnitViewOptions o) {
@@ -65,9 +68,9 @@ public class BaseView extends Group implements Borderable {
 
     private float getAlphaFluctuation(float delta) {
         float fluctuation =delta* DEFAULT_ALPHA_FLUCTUATION;
-        if (borderAlpha <= fluctuation)
+        if (borderAlpha <=DEFAULT_ALPHA_MIN- fluctuation)
             alphaGrowing = !alphaGrowing;
-        else if (borderAlpha > 1+fluctuation)
+        else if (borderAlpha > DEFAULT_ALPHA_MAX+fluctuation)
             alphaGrowing = !alphaGrowing;
 
         if (!alphaGrowing)
@@ -82,8 +85,8 @@ public class BaseView extends Group implements Borderable {
     @Override
     protected void sizeChanged() {
         super.sizeChanged();
-
         portrait.setSize(getWidth(), getHeight());
+
     }
 
     @Override
@@ -96,6 +99,8 @@ public class BaseView extends Group implements Borderable {
         if (border != null) {
             removeActor(border);
         }
+        alphaGrowing=false;
+        borderAlpha=0.75f;
 
         if (texture == null) {
             border = null;
@@ -131,5 +136,29 @@ public class BaseView extends Group implements Borderable {
     @Override
     public Color getTeamColorBorder() {
         return teamColor;
+    }
+
+    public void setScaledWidth(float scaledWidth) {
+        this.scaledWidth = scaledWidth;
+    }
+
+    public float getScaledWidth() {
+        return scaledWidth;
+    }
+
+    public void setScaledHeight(float scaledHeight) {
+        this.scaledHeight = scaledHeight;
+    }
+
+    public float getScaledHeight() {
+        return scaledHeight;
+    }
+
+    public boolean isHovered() {
+        return hovered;
+    }
+
+    public void setHovered(boolean hovered) {
+        this.hovered = hovered;
     }
 }

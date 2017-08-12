@@ -53,7 +53,7 @@ public class DungeonScreen extends ScreenWithLoader {
     private AnimationEffectStage animationEffectStage;
 
     private Vector2 velocity;
-    private boolean cameraAutoCenteringOn=true;
+    private boolean cameraAutoCenteringOn = false;
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -84,7 +84,7 @@ public class DungeonScreen extends ScreenWithLoader {
         });
 
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
-              DialogueHandler handler= (DialogueHandler) obj.get();
+            DialogueHandler handler = (DialogueHandler) obj.get();
             final List<DialogScenario> list = handler.getList();
             if (dialogsStage == null) {
                 dialogsStage = new ChainedStage(list);
@@ -105,9 +105,16 @@ public class DungeonScreen extends ScreenWithLoader {
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
         gridStage.addActor(gridPanel);
-        GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, p-> {
+//        GuiEventManager.bind(GuiEventType.BF_CREATED, p -> {
+        try {
+            controller.setDefaultPos();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        });
+        GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, p -> {
             Coordinates coordinatesActiveObj = DC_Game.game.getManager().getActiveObj().getCoordinates();
-            Vector2 unitPosition = new Vector2(coordinatesActiveObj.x*GridConst.CELL_W + GridConst.CELL_W/2, (gridPanel.getRows()-coordinatesActiveObj.y)*GridConst.CELL_H - GridConst.CELL_H/2);
+            Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridConst.CELL_W + GridConst.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridConst.CELL_H - GridConst.CELL_H / 2);
 //            Vector2 unitPosition = new Vector2(coordinatesActiveObj.x*GridConst.CELL_W, coordinatesActiveObj.y*GridConst.CELL_H);
             velocity = new Vector2(unitPosition.x - cam.position.x, unitPosition.y - cam.position.y).nor().scl(Math.min(cam.position.dst(unitPosition.x, unitPosition.y, 0f), 200f));
             Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- coordinatesActiveObj:" + coordinatesActiveObj);
@@ -176,18 +183,18 @@ public class DungeonScreen extends ScreenWithLoader {
 
     private void cameraShift() {
 //        Gdx.app.log("DungeonScreen::cameraShift()", "-- Start! cam:" + cam + " velocity:" + velocity);
-        if(cam != null) {
+        if (cam != null) {
             try {
-                cam.position.add(velocity.x*Gdx.graphics.getDeltaTime(), velocity.y*Gdx.graphics.getDeltaTime(), 0f);
+                cam.position.add(velocity.x * Gdx.graphics.getDeltaTime(), velocity.y * Gdx.graphics.getDeltaTime(), 0f);
                 Coordinates coordinatesActiveObj = DC_Game.game.getManager().getActiveObj().getCoordinates();
-                Vector2 unitPosition = new Vector2(coordinatesActiveObj.x*GridConst.CELL_W + GridConst.CELL_W/2, (gridPanel.getRows()-coordinatesActiveObj.y)*GridConst.CELL_H - GridConst.CELL_H/2);
+                Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridConst.CELL_W + GridConst.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridConst.CELL_H - GridConst.CELL_H / 2);
 //                Vector2 unitPosition2 = new Vector2(coordinatesActiveObj.x*GridConst.CELL_W, coordinatesActiveObj.y*GridConst.CELL_H);
-                if(Intersector.overlaps(new Circle(new Vector2(cam.position.x, cam.position.y), 1f), new Circle(unitPosition, 1f))) {
+                if (Intersector.overlaps(new Circle(new Vector2(cam.position.x, cam.position.y), 1f), new Circle(unitPosition, 1f))) {
                     cameraStop();
                 }
             } catch (Exception exp) {
                 if (CoreEngine.isGraphicTestMode())
-                Gdx.app.log("DungeonScreen::cameraShift()", "-- exp:" + exp);
+                    Gdx.app.log("DungeonScreen::cameraShift()", "-- exp:" + exp);
             }
             cam.update();
         }
@@ -195,9 +202,10 @@ public class DungeonScreen extends ScreenWithLoader {
     }
 
     public void cameraStop() {
-        if (velocity!=null )
-        velocity.setZero();
+        if (velocity != null)
+            velocity.setZero();
     }
+
     @Override
     public void resize(int width, int height) {
 /*        animationEffectStage.getViewport().update(width, height);

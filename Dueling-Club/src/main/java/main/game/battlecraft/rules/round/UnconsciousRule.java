@@ -52,7 +52,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         super(game);
     }
 
-    public static boolean checkUnitWakesUp(Unit unit) {
+    public static boolean checkUnitRecovers(Unit unit) {
         // toughness barrier... ++ focus? ++status?
         if (unit.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) >= 25) {
             if (unit.getIntParam(PARAMS.C_FOCUS) >= unit.getIntParam(PARAMS.FOCUS_RECOVER_REQ)
@@ -67,6 +67,10 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     private static void unitRecovers(Unit unit) {
         // unit.removeBuff(BUFF_NAME);
+
+        unit.getGame().
+         fireEvent(new Event(
+          STANDARD_EVENT_TYPE.UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS, unit.getRef()));
         getWakeUpEffect(unit).apply(); // remove buff pretty much
         unit.getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.CONSCIOUS, unit);
 
@@ -97,6 +101,10 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     private static void fallUnconscious(Unit unit) {
+        unit.getGame().
+         fireEvent(new Event(
+          STANDARD_EVENT_TYPE.UNIT_HAS_FALLED_UNCONSCIOUS, unit.getRef()));
+
         SoundMaster.playEffectSound(SOUNDS.DEATH, unit);
         SoundMaster.playEffectSound(SOUNDS.FALL, unit);
         getUnconsciousEffect(unit).apply();
@@ -121,35 +129,46 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     public static boolean checkUnitDies(Integer toughness, Integer endurance, Unit unit,
-                                        Integer barrier, boolean unconscious) {
+                                        Integer barrier,
+                                        boolean unconscious //false if checking Annihilation
+    ) {
         if (0 >= endurance) {
             return true;
         }
         if (toughness > 0) {
             return false;
         }
-        if (barrier == null) {
-            barrier = getDeathBarrier(unit);
-        }
         if (!unconscious) {
             if (!canBeAnnihilated(unit)) {
                 return false;
             }
-        } else if (!canFallUnconscious(unit)) {
+        } else
+            if (!canFallUnconscious(unit)) {
             return toughness <= 0;
         }
-        // some attacks may reduce the barrier...
-        Integer max_toughness = unit.getIntParam(PARAMS.TOUGHNESS);
-        // TODO + PARAMS.DEATH_BARRIER_MOD
-        if (toughness < -max_toughness * barrier / 100) {
+        if (toughness<=0){
+            if (checkFallsUnconscious(unit))
+            {
+                fallUnconscious(unit);
+                return false;
+            }
             return true;
         }
-        if (unconscious) {
-            if (!unit.isUnconscious()) {
-                fallUnconscious(unit);
-            }
+        Integer max_toughness = unit.getIntParam(PARAMS.TOUGHNESS);
+        if (barrier == null) {//  TODO some attacks may reduce the barrier...
+            barrier = getDeathBarrier(unit);   // TODO + PARAMS.DEATH_BARRIER_MOD
         }
-        return false;
+
+        return toughness < -max_toughness * barrier / 100;
+
+    }
+
+    public static boolean checkFallsUnconscious(Unit unit) {
+        if ( unit.isUnconscious())
+            return false;
+        if (!canFallUnconscious(unit))
+            return false;
+        return unit.getIntParam(PARAMS.C_TOUGHNESS) <=0;
     }
 
     private static boolean canBeAnnihilated(Unit unit) {
@@ -187,7 +206,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
             return false;
         }
         if (unit.isUnconscious()) {
-            return checkUnitWakesUp(unit);
+            return checkUnitRecovers(unit);
         }
 
         return false;

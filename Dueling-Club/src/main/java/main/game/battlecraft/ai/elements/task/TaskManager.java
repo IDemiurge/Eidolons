@@ -208,6 +208,9 @@ public class TaskManager extends AiHandler {
             case WAIT:
                 targets = Analyzer.getWaitUnits(ai);
                 break;
+            case PROTECT:
+                targets = Analyzer.getProtectTargets(ai);
+                break;
 
             case COATING:
                 Set<Obj> objects = action.getTargeting().getFilter().getObjects(action.getRef());

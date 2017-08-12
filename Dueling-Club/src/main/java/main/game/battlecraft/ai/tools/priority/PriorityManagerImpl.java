@@ -131,6 +131,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         } else {
             switch (goal) {
                 case PROTECT:
+                    setBasePriority(getGuardPriority(action));
+                    break;
                 case ATTACK:
                     setBasePriority(getAttackPriority(as));
                     if (goal == GOAL_TYPE.PROTECT) {
@@ -214,6 +216,14 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         LogMaster.log(1, "AI: " + priority + " priority for " + as);
         return priority;
 
+    }
+
+    private int getGuardPriority(Action action) {
+        action.getTarget(); //TODO targets should be cells, then be allies there...
+        // it's harder for when allies move, eh?
+        // >> Add "remove guard" priority penalty
+        // 
+        return getConstInt(AiConst.GOAL_PROTECT);
     }
 
     private void applyCustomPriorityMethod(PRIORITY_FUNCS func, Object... args) {

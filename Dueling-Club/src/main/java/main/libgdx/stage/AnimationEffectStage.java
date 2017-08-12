@@ -7,8 +7,11 @@ import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.anims.phased.PhaseAnimator;
 
 public class AnimationEffectStage extends Stage {
+    private   ParticleManager particleManager;
+
     public AnimationEffectStage() {
-        new ParticleManager(this);
+        particleManager = new ParticleManager(this);
+        addActor(particleManager);
         new PhaseAnimator(this);
     }
 

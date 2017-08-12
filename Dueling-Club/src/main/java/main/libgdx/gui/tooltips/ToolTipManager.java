@@ -3,11 +3,13 @@ package main.libgdx.gui.tooltips;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import main.libgdx.bf.BaseView;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.system.GuiEventManager;
 
-import static main.system.GuiEventType.SHOW_TOOLTIP;
+import static main.system.GuiEventType.*;
 
 public class ToolTipManager extends TablePanel {
 
@@ -21,6 +23,28 @@ public class ToolTipManager extends TablePanel {
             } else {
                 init((ToolTip) object);
             }
+        });
+
+        GuiEventManager.bind(UNIT_VIEW_HOVER_ON, (event) -> {
+            BaseView object = (BaseView) event.get();
+//            if (object.getScaleX()== 1)
+//                if (object.getScaleX()== 1)
+
+            ScaleToAction action = new ScaleToAction();
+            action.setScale(1,1);
+            action.setDuration(0.35f);
+            object.addAction(action);
+            action.setTarget(object);
+            object.setHovered(true);
+        });
+        GuiEventManager.bind(UNIT_VIEW_HOVER_OFF, (event) -> {
+            BaseView object = (BaseView) event.get();
+            ScaleToAction action = new ScaleToAction();
+            action.setScale(object.getScaledWidth(), object.getScaledHeight());
+            action.setDuration(0.35f);
+            object.addAction(action);
+            action.setTarget(object);
+            object.setHovered(false);
         });
         actorCell = addElement(null);
     }

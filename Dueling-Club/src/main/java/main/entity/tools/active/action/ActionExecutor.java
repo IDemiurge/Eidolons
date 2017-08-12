@@ -1,6 +1,7 @@
 package main.entity.tools.active.action;
 
 import main.ability.effects.oneshot.mechanic.ModeEffect;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.DistanceCondition;
@@ -31,26 +32,22 @@ public class ActionExecutor extends Executor {
     @Override
     public boolean activate() {
         if (checkContinuousMode()) {
+            removeModeBuffs();
             return true;
         }
         return super.activate();
     }
 
     private boolean checkContinuousMode() {
-        ModeEffect effect = getAction().getModeEffect();
-        if (effect == null) {
-            return false;
-        }
-        if (effect.getMode().isContinuous()) {
-            return false;
-        }
+
         if (checkContinuousModeDeactivate()) {
             deactivate();
             return true;
         }
-
-        removeModeBuffs();
-        return false;
+        ModeEffect effect = getAction().getModeEffect();
+        if (effect == null)
+            return false;
+        return effect.getMode().isContinuous();
     }
 
     private void removeModeBuffs() {
@@ -130,8 +127,16 @@ public class ActionExecutor extends Executor {
     }
 
     public boolean checkContinuousModeDeactivate() {
-        if (getAction().getModeEffect() == null) {
+        ModeEffect effect = getAction().getModeEffect();
+        if (effect == null) {
             return false;
+        }
+        if (getOwnerObj().getMode().equals(STD_MODES.GUARDING)
+         || getOwnerObj().checkStatus(STATUS.GUARDING)
+         ) {
+            if (effect.getMode().isDisableCounter()) {
+                return true;
+            }
         }
         return (getEntity().getOwnerObj().getBuff(getAction().getModeBuffName()) != null);
 

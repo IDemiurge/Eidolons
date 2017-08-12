@@ -223,6 +223,7 @@ public class UnitEnums {
         EXHAUSTED,
         DISCOMBOBULATED,
         HAZED,
+        GUARDING,
 
         // FATIGUED,
         // EXHAUSTED,
