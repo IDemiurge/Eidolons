@@ -357,7 +357,7 @@ public class GridPanel extends Group {
             Unit unit = (Unit) obj.get();
             UnitView view = (UnitView) unitMap .get(unit);
             if (view!=null ) {
-                if (unit.getMode() == null || unit.getMode() == STD_MODES.NORMAL)
+                if (unit.getModeFinal() == null || unit.getModeFinal() == STD_MODES.NORMAL)
                     view.updateModeImage(null);
                 else
                     try {

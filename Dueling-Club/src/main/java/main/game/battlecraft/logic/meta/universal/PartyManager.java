@@ -66,11 +66,12 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
             WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, t);
         });
-        GuiEventManager.trigger(ADD_FLOATING_TEXT, p);
-        party.getMembers().forEach(hero->{
-            FloatingTextMaster.getInstance().createFloatingText
-             (TEXT_CASES.BATTLE_COMMENT , hero.getName(),  hero  );
-        });
+
+         party.getMembers().forEach(hero -> {
+             GuiEventManager.trigger(ADD_FLOATING_TEXT,
+              FloatingTextMaster.getInstance().getFloatingText
+               (hero, TEXT_CASES.BATTLE_COMMENT, hero.getName()));
+         }) ;
         GuiEventManager.trigger(SELECT_MULTI_OBJECTS, p);
         Unit unit = (Unit) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ);
         return unit.getName();

@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
@@ -53,7 +51,7 @@ public class DungeonScreen extends ScreenWithLoader {
     private AnimationEffectStage animationEffectStage;
 
     private Vector2 velocity;
-    private boolean cameraAutoCenteringOn = false;
+    private boolean cameraAutoCenteringOn = true;
 
     public static DungeonScreen getInstance() {
         return instance;

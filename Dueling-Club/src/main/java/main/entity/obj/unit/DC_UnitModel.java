@@ -636,4 +636,8 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     public void setHidden(boolean b) {
         hidden = b;
     }
+
+    public  MODE  getModeFinal() {
+        return mode;
+    }
 }
