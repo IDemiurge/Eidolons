@@ -60,7 +60,7 @@ public class BehaviorMaster extends AiHandler {
             case AMBUSH:
                 return (AiEnums.GOAL_TYPE.AMBUSH);
             case GUARD:
-                return (AiEnums.GOAL_TYPE.GUARD);
+                return (AiEnums.GOAL_TYPE.STAND_GUARD);
             case PATROL:
                 return (AiEnums.GOAL_TYPE.PATROL);
             case STALK:
@@ -99,7 +99,7 @@ public class BehaviorMaster extends AiHandler {
                 break;
             case STALK:
                 break;
-            case GUARD:
+            case STAND_GUARD:
             case PATROL:
                 PatrolMaster.getPatrolAction(ai);
             case SEARCH: // having already turned on the Mode

@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.game.bf.Coordinates;
 import main.libgdx.bf.datasource.GridCellDataSource;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class GridCellContainer extends GridCell {
@@ -33,29 +34,44 @@ public class GridCellContainer extends GridCell {
         graveyard.setHeight(getHeight());
 
         setUserObject(new GridCellDataSource(
-                new Coordinates(getGridX(), getGridY())
+         new Coordinates(getGridX(), getGridY())
         ));
         return this;
+    }
+
+    public List<GridUnitView> getUnitViews() {
+        List<GridUnitView> list = new LinkedList<>();
+        for (Actor actor : getChildren()) {
+            if (actor instanceof GridUnitView)
+                list.add((GridUnitView) actor);
+        }
+        return list;
     }
 
     private void recalcUnitViewBounds() {
         if (unitViewCount == 0) {
             return;
         }
-        final int perImageOffsetX = ((int) getWidth()) / 2 / unitViewCount;
-        final int perImageOffsetY = ((int) getHeight()) / 2 / unitViewCount;
-        final int w = ((int) getWidth()) - perImageOffsetX * (unitViewCount - 1);
-        final int h = ((int) getHeight()) - perImageOffsetY * (unitViewCount - 1);
+        final int perImageOffsetX = getSizeDiffX();
+        final int perImageOffsetY = getSizeDiffY();
+        final int w = GridConst.CELL_W - perImageOffsetX * (unitViewCount - 1);
+        final int h = GridConst.CELL_H - perImageOffsetY * (unitViewCount - 1);
         int i = 0;
-
+        float scaleX = new Float(w) / GridConst.CELL_W;
+        float scaleY = new Float(h) / GridConst.CELL_H;
         for (Actor actor : getChildren()) {
             if (actor instanceof GridUnitView) {
-                actor.setBounds(
-                        perImageOffsetX * i,
-                        perImageOffsetY * ((unitViewCount - 1) - i),
-                        w,
-                        h
-                );
+//                actor.setBounds(
+//                 perImageOffsetX * i,
+//                 perImageOffsetY * ((unitViewCount - 1) - i)
+//                 , GridConst.CELL_W * scaleX, GridConst.CELL_H * scaleY
+//                );
+                actor.setPosition( perImageOffsetX * i,
+                perImageOffsetY * ((unitViewCount - 1) - i));
+                actor.setScale(scaleX, scaleY);
+                ((GridUnitView) actor).sizeChanged();
+                ((GridUnitView) actor).setScaledHeight(scaleY);
+                ((GridUnitView) actor).setScaledWidth(scaleX);
                 i++;
             }
         }
@@ -63,6 +79,34 @@ public class GridCellContainer extends GridCell {
         if (graveyard != null) {
             graveyard.setZIndex(Integer.MAX_VALUE);
         }
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        int i =  getChildren().size;
+        for (GridUnitView actor : getUnitViews()) {
+            if (actor.isHovered())
+                actor.setZIndex(Integer.MAX_VALUE - 1);
+//            else
+//                actor.setZIndex(i);
+            i++;
+        }
+    }
+
+    private int getSizeDiffY() {
+        return Math.round(getHeight() /
+         (getSizeFactorPerView() * unitViewCount));
+    }
+
+    private int getSizeDiffX() {
+        return Math.round(getWidth() /
+         (getSizeFactorPerView() * unitViewCount));
+    }
+
+    private float getSizeFactorPerView() {
+        return 2.4f;
     }
 
     public void addActor(Actor actor) {
@@ -86,14 +130,22 @@ public class GridCellContainer extends GridCell {
 
     private void recalcImagesPos() {
         int i = 0;
-        final int perImageOffsetX = ((int) getWidth()) / 2 / unitViewCount;
-        final int perImageOffsetY = ((int) getHeight()) / 2 / unitViewCount;
+        final float perImageOffsetX = getSizeDiffX() * getPosDiffFactorX();
+        final float perImageOffsetY = getSizeDiffY() * getPosDiffFactorY();
         for (Actor actor : getChildren()) {
             if (actor instanceof GridUnitView) {
                 actor.setX(perImageOffsetX * i);
                 actor.setY(perImageOffsetY * ((unitViewCount - 1) - i++));
             }
         }
+    }
+
+    private float getPosDiffFactorX() {
+        return 1.25f;
+    }
+
+    private float getPosDiffFactorY() {
+        return 1.25f;
     }
 
     public void popupUnitView(BaseView uv) {
@@ -156,4 +208,5 @@ public class GridCellContainer extends GridCell {
     public void updateGraveyard() {
         graveyard.updateGraveyard();
     }
+
 }

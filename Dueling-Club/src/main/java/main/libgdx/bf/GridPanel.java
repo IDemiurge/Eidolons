@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.content.mode.STD_MODES;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BattleFieldObject;
@@ -74,7 +75,7 @@ public class GridPanel extends Group {
                 TextureRegion texture = null;
                 if (outline != null) {
                     texture = TextureCache.getOrCreateR(
-                            Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
+                     Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
                 }
             }
         });
@@ -92,7 +93,7 @@ public class GridPanel extends Group {
 
 
         int rows1 = rows - 1;
-        int cols1 = cols - 1;
+        int cols1 = cols - 1; // ??
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
                 cells[x][y] = new GridCellContainer(emptyImage, x, rows1 - y);
@@ -131,12 +132,25 @@ public class GridPanel extends Group {
         return this;
     }
 
+    private UnitView getUnitView(BattleFieldObject battleFieldObject) {
+        return (UnitView) unitMap.get(battleFieldObject);
+    }
+
     private void bindEvents() {
 
-        GuiEventManager.bind(UNIT_MOVED, obj -> {
-moveUnitView((BattleFieldObject) obj.get());
+        GuiEventManager.bind(UNIT_TOGGLE_GREYED_OUT, obj -> {
+            UnitView unitView = getUnitView((BattleFieldObject) obj.get());
+            unitView.toggleGreyedOut();
         });
-            GuiEventManager.bind(UPDATE_GUI, obj -> {
+
+        GuiEventManager.bind(UNIT_MOVED, obj -> {
+            moveUnitView((BattleFieldObject) obj.get());
+        });
+
+        GuiEventManager.bind(UNIT_MOVED, obj -> {
+            moveUnitView((BattleFieldObject) obj.get());
+        });
+        GuiEventManager.bind(UPDATE_GUI, obj -> {
             if (Eidolons.game.getVisionMaster().getVisibilityMaster().isOutlinesOn()) {
                 updateOutlines();
             }
@@ -217,6 +231,7 @@ moveUnitView((BattleFieldObject) obj.get());
         });
     }
 
+
     private EventCallback onIngameEvent() {
         return param -> {
             Event event = (Event) param.get();
@@ -226,12 +241,9 @@ moveUnitView((BattleFieldObject) obj.get());
             if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED) {
                 GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED, event.getRef().getEffect());
                 caught = true;
-            }
-
-
-            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE) {
+            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING
+             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
+             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE) {
                 BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET);
                 BaseView view = unitMap.get(hero);
                 if (view != null && view instanceof GridUnitView) {
@@ -239,9 +251,11 @@ moveUnitView((BattleFieldObject) obj.get());
                     unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
                 }
                 caught = true;
-            }
-
-            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
+            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_FALLED_UNCONSCIOUS
+             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS
+             ) {
+                GuiEventManager.trigger(UNIT_TOGGLE_GREYED_OUT, ref.getSourceObj());
+            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
 
                 if (!DeathAnim.isOn() || ref.isDebug()) {
                     GuiEventManager.trigger(DESTROY_UNIT_MODEL, ref.getTargetObj());
@@ -255,14 +269,10 @@ moveUnitView((BattleFieldObject) obj.get());
 //                );
 
                 caught = true;
-            }
-
-            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
+            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
                 removeUnitView((BattleFieldObject) ref.getSourceObj());
                 caught = true;
-            }
-
-            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
+            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
                 moveUnitView((BattleFieldObject) ref.getSourceObj());
                 caught = true;
             }
@@ -271,25 +281,20 @@ moveUnitView((BattleFieldObject) obj.get());
 //                caught = true; now in ObjCreator
 //            }
 
-            if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
+            else if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
                 caught = true;
                 /*switch (event.getType().getArg()) {
                     case "Spellpower":
                         int a = 10;
                         break;
                 }*/
-            }
-            if (event.getType().name().startsWith("PROP_")) {
+            } else if (event.getType().name().startsWith("PROP_")) {
                 caught = true;
-            }
-            if (event.getType().name().startsWith("ABILITY_")) {
+            } else if (event.getType().name().startsWith("ABILITY_")) {
                 caught = true;
-            }
-            if (event.getType().name().startsWith("EFFECT_")) {
+            } else if (event.getType().name().startsWith("EFFECT_")) {
                 caught = true;
-            }
-
-            if (event.getType().name().startsWith("PARAM_MODIFIED")) {
+            } else if (event.getType().name().startsWith("PARAM_MODIFIED")) {
                 switch (event.getType().getArg()) {
                     case "Illumination":
                         if (lightingManager != null) {
@@ -305,9 +310,10 @@ moveUnitView((BattleFieldObject) obj.get());
                 caught = true;
             }
 
-/*            if (!caught) {
-                System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
-            }*/
+            if (!caught) {
+             /*      System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
+           */
+            }
         };
     }
 
@@ -347,16 +353,29 @@ moveUnitView((BattleFieldObject) obj.get());
             views.forEach(gridCellContainer::addActor);
             gridCellContainer.setOverlays(overlays);
         }
+        GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
+            Unit unit = (Unit) obj.get();
+            UnitView view = (UnitView) unitMap .get(unit);
+            if (view!=null ) {
+                if (unit.getMode() == null || unit.getMode() == STD_MODES.NORMAL)
+                    view.updateModeImage(null);
+                else
+                    try {
+                        view.updateModeImage(unit.getBuff(unit.getMode().getBuffName()).getImagePath());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+            }
+        });
 
         GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
             Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
             GridUnitView uv = (GridUnitView) unitMap.get(p.getLeft());
-            if (uv==null )
-            {
-                addUnitView(  p.getLeft());
+            if (uv == null) {
+                addUnitView(p.getLeft());
                 uv = (GridUnitView) unitMap.get(p.getLeft());
             }
-            if (uv!=null )
+            if (uv != null)
                 uv.updateInitiative(p.getRight());
         });
         GuiEventManager.bind(UNIT_CREATED, p -> {
@@ -409,8 +428,34 @@ moveUnitView((BattleFieldObject) obj.get());
         }
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        loop:
+        for (int x = 0; x < cols; x++) {
+            for (int y = 0; y < rows; y++) {
+                GridCellContainer cell = cells[x][y];
+                List<GridUnitView> views = cell.getUnitViews();
+//                if (views.size()>1)
+                for (GridUnitView sub : views) {
+                    if (sub.isHovered()) {
+                        cell.setZIndex(Integer.MAX_VALUE - 1);
+                        break loop;
+                    }
+//                    else
+//                        cell.setZIndex(100+x*rows+y);
+                }
+            }
+        }
+        animMaster.setZIndex(Integer.MAX_VALUE);
+    }
+
     public Map<BattleFieldObject, BaseView> getUnitMap() {
         return unitMap;
+    }
+
+    public int getCols() {
+        return cols;
     }
 
     public int getRows() {

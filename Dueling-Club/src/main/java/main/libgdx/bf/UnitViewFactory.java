@@ -25,7 +25,7 @@ public class UnitViewFactory {
     public static BaseView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view = new GridUnitView(options);
-        final UnitViewTooltip tooltip = new UnitViewTooltip();
+        final UnitViewTooltip tooltip = new UnitViewTooltip(view);
         tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
         view.setToolTip(tooltip);
         view.addListener(createListener(bfObj));
@@ -34,7 +34,7 @@ public class UnitViewFactory {
 
     public static BaseView createBaseView(BattleFieldObject bfObj) {
         BaseView view = new BaseView(getOrCreateR(bfObj.getImagePath()));
-        final UnitViewTooltip tooltip = new UnitViewTooltip();
+        final UnitViewTooltip tooltip = new UnitViewTooltip(view);
         tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
         view.addListener(tooltip.getController());
         view.addListener(createListener(bfObj));

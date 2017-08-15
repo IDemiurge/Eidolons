@@ -9,7 +9,7 @@ import main.system.GuiEventType;
 
 public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
 
-    private boolean showing;
+    protected boolean showing;
 
     public ToolTip() {
 

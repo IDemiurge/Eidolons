@@ -3,10 +3,25 @@ package main.game.battlecraft.logic.meta.universal;
 import main.client.cc.logic.party.PartyObj;
 import main.content.PROPS;
 import main.entity.Ref;
+import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
+import main.libgdx.anims.text.FloatingTextMaster;
+import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import main.libgdx.bf.TargetRunnable;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
+import main.system.GuiEventManager;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static main.system.GuiEventType.ADD_FLOATING_TEXT;
+import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 
 public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E> {
 
@@ -31,15 +46,44 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
                 name = getMaster().getEntity().getProperty(PROPS.PARTY_MAIN_HERO);
             }
 //            if (true){
-        name = ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
+        name = chooseMainHero();
         if (name==null )
         name = "Harlen Rolwain";
 
         Ref ref = new Ref(getParty().getLeader());
         Unit hero = getGame().getMaster().getUnitByName(name, ref, true, null, null);
         //will find 1st if name==null
-        player.setHeroObj(hero);
-        getParty().setProperty(PROPS.PARTY_MAIN_HERO, name);
+        mainHeroSelected(party, hero);
+    }
+
+    private String chooseMainHero() {
+        if (!WaitMaster.isComplete(WAIT_OPERATIONS.GUI_READY)){
+            Object result = WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY, 4000);
+            if (result==null )
+                return ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
+        }
+        Set<Obj> selectingSet= new HashSet<>(party.getMembers());
+        Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
+            WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, t);
+        });
+        GuiEventManager.trigger(ADD_FLOATING_TEXT, p);
+        party.getMembers().forEach(hero->{
+            FloatingTextMaster.getInstance().createFloatingText
+             (TEXT_CASES.BATTLE_COMMENT , hero.getName(),  hero  );
+        });
+        GuiEventManager.trigger(SELECT_MULTI_OBJECTS, p);
+        Unit unit = (Unit) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ);
+        return unit.getName();
+    }
+
+    private void mainHeroSelected(PartyObj party, Unit hero) {
+        party.getMembers().forEach(member->{
+            member.setMainHero(false);
+        });
+        hero.getOwner().setHeroObj(hero);
+        hero.setMainHero(true);
+        party.setProperty(PROPS.PARTY_MAIN_HERO, hero.getName());
+
     }
 
     public void preStart() {

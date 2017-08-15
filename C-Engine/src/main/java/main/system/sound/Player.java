@@ -229,8 +229,8 @@ public class Player {
 //            }
 
         } catch (Exception ex) {
-            System.err.println(ex);
-            ex.printStackTrace(System.err);
+//            System.err.println(ex);
+//            ex.printStackTrace(System.err);
         } finally {
             // if (clip != null)
             // clip.close();

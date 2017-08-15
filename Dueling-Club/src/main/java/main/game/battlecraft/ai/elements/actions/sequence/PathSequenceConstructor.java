@@ -1,6 +1,7 @@
 package main.game.battlecraft.ai.elements.actions.sequence;
 
 import main.elements.targeting.Targeting;
+import main.entity.active.DC_ActionManager.STD_SPEC_ACTIONS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.game.battlecraft.ai.UnitAI;
@@ -13,6 +14,7 @@ import main.game.battlecraft.ai.tools.path.ActionPath;
 import main.game.battlecraft.ai.tools.target.TargetingMaster;
 import main.game.battlecraft.ai.tools.time.TimeLimitMaster;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
@@ -108,7 +110,10 @@ public class PathSequenceConstructor extends AiHandler {
         if (targetAction.isDummy()) {
             return new ListMaster<Coordinates>().getList(targetAction.getTarget().getCoordinates());
         }
-
+        if (targetAction.getActive().getName().equalsIgnoreCase(
+         StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Guard_Mode.toString()))) {
+            return new ListMaster<Coordinates>().toList_(targetAction.getTask().getObjArg().getCoordinates());
+        }
         Boolean fastPickClosestToTargetOrSelf = null;
         if (TimeLimitMaster.isFastPickCell()) {
             if (targetAction.getActive().isRanged()) {
@@ -127,9 +132,9 @@ public class PathSequenceConstructor extends AiHandler {
         }
         list = new ArrayList<>();
         try {
-            if (fastPickClosestToTargetOrSelf!=null ) {
+            if (fastPickClosestToTargetOrSelf != null) {
                 double min = Integer.MAX_VALUE;
-               DC_Obj center = fastPickClosestToTargetOrSelf ? targetAction.getTarget() :
+                DC_Obj center = fastPickClosestToTargetOrSelf ? targetAction.getTarget() :
                  targetAction.getSource();
                 for (Coordinates c : center.getCoordinates()
                  .getAdjacentCoordinates()) {

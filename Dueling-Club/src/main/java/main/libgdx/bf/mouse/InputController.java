@@ -5,9 +5,12 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import main.game.bf.Coordinates;
+import main.game.core.game.DC_Game;
 import main.libgdx.anims.particles.lighting.FireLightProt;
 import main.libgdx.anims.particles.lighting.LightMap;
 import main.libgdx.anims.particles.lighting.LightingManager;
+import main.libgdx.bf.GridConst;
 import main.libgdx.screens.DungeonScreen;
 
 import java.util.LinkedList;
@@ -23,6 +26,7 @@ import static com.badlogic.gdx.Input.Keys.CONTROL_LEFT;
 public class InputController implements InputProcessor, GestureDetector.GestureListener {
 
 
+    private static final float MARGIN = 300;
     private float xCamPos;
     private float yCamPos;
     private OrthographicCamera camera;
@@ -30,21 +34,15 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     private boolean alt = false;
     private boolean ctrl = false;
     private char lastTyped;
-    private char lastUp;
     private List<String> charsUp = new LinkedList<>();
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;
-//        xCamPos = 500;
-//        yCamPos = 500;
-//        this.camera.position.x = xCamPos;
-//        this.camera.position.y = yCamPos;
+
     }
 
-    // сюда передаются все обьекты, что есть в мире, и потом отсюда они управляются
     @Override
     public boolean keyDown(int i) {
-//        Gdx.app.log("InputController::keyDown(" + i + ");", "-- Start!");
         if (i == ALT_LEFT) {
             alt = true;
         }
@@ -59,7 +57,6 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
             LightMap.resizeFBOb();
         }
 
-//        Gdx.app.log("InputController::keyDown(" + i + ");", "-- End!");
         return false;
         // alt = 57, crtl = 129
     }
@@ -75,7 +72,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
                 ctrl = false;
                 break;
             default:
-                lastUp = ((char) i);
+//                lastUp = ((char) i);
                 String c = Keys.toString(i);//Character.valueOf((char) i);
 
                 if (!charsUp.contains(c)) {
@@ -104,11 +101,6 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-//        Gdx.app.log("InputController::touchDown(" + screenX + ", " + screenY + ", " + pointer + ", " + button + ")", "-- Start!");
-/*        bf.addActor(new ParticleInterface(PARTICLE_EFFECTS.SMOKE_TEST.getPath(),
-         GameScreen.getInstance().getWorld()
-         , screenX, screenY));*/
-        // Условно у меня на ширину приложения пикселей приходится ширина камеры абстрактрых едениц
 
         if (button == LEFT) {
             xCamPos = screenX;
@@ -116,7 +108,6 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
             isLeftClick = true;
         }
 
-//        Gdx.app.log("InputController::touchDown(" + screenX + ", " + screenY + ", " + pointer + ", " + button + ")", "-- End!");
         return false;
     }
 
@@ -130,16 +121,58 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 
-//        System.out.println("screenX = " + screenX + " || screenY = " + screenY + " || pointer = "  + pointer);
         if (isLeftClick) {
-            camera.position.x += (xCamPos - screenX) * camera.zoom;
-            camera.position.y -= (yCamPos - screenY) * camera.zoom;
-            xCamPos = screenX;
-            yCamPos = screenY;
+            tryPullCameraX(screenX);
+            tryPullCameraY(screenY);
             DungeonScreen.getInstance().cameraStop();
         }
 
         return false;
+    }
+
+    private void tryPullCameraY(int screenY) {
+        float diffY = (yCamPos - screenY) * camera.zoom;
+        if ( checkCameraPosLimitY(camera.position.y - diffY))
+        {
+            camera.position.y -= diffY;
+            yCamPos = screenY;
+        }
+    }
+        private void tryPullCameraX(int screenX) {
+        float diffX = (xCamPos - screenX) * camera.zoom;
+        float max = MARGIN+
+         DungeonScreen.getInstance().getGridPanel().getCols()
+          * GridConst.CELL_W * camera.zoom;
+        float min = -MARGIN;
+        if (!(diffX>0 && camera.position.x + diffX > max)
+            || !(diffX<0 &&camera.position.x + diffX<min )){
+            camera.position.x += diffX;
+            xCamPos = screenX;
+        }
+    }
+
+    private boolean checkCameraPosLimitX(float x) {
+        float max = MARGIN+
+         DungeonScreen.getInstance().getGridPanel().getCols() * GridConst.CELL_W * camera.zoom;
+        float min = -MARGIN;
+        return  (x>max || x< min);
+    }
+    private boolean checkCameraPosLimitY(float y) {
+        float max = MARGIN+
+         DungeonScreen.getInstance().getGridPanel().getRows() * GridConst.CELL_H * camera.zoom;
+        float min = -MARGIN;
+        return  !(y>max || y< min);
+    }
+
+    public void setDefaultPos() {
+        centerAt(DC_Game.game.getPlayer(true).getHeroObj().getCoordinates());
+    }
+
+    private void centerAt(Coordinates coordinates) {
+        float x = coordinates.x * GridConst.CELL_W * camera.zoom;
+        float y = coordinates.x * GridConst.CELL_W * camera.zoom;
+        camera.position.set(x, y, 0);
+
     }
 
     @Override

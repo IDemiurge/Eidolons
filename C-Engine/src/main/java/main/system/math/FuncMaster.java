@@ -24,6 +24,12 @@ public class FuncMaster<T> {
     }
 
 
+    public   T getGreatest_
+     (List<? extends T> list, Function<T, Integer> function) {
+        list.sort(new SortMaster<T>().getSorterByExpression_(function));
+        return list.get(0);
+    }
+
     public static Object getGreatest
      (List<? extends Object> list, Function<Object, Integer> function) {
         list.sort(SortMaster.getSorterByExpression(function));

@@ -6,7 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.actions.*;
 import main.game.bf.Coordinates;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.bf.GridMaster;
+import main.system.auxiliary.ClassMaster;
 import main.system.auxiliary.log.LogMaster;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by JustMe on 1/26/2017.
@@ -38,18 +43,18 @@ public class ActorMaster {
     }
 
     public static MoveToAction getMoveToAction(
-            Coordinates destination, EmitterActor actor, int pixelsPerSecond) {
+     Coordinates destination, EmitterActor actor, int pixelsPerSecond) {
 
         MoveToAction action = new MoveToAction();
         Vector2 v = GridMaster.
-                getVectorForCoordinateWithOffset(destination);
+         getVectorForCoordinateWithOffset(destination);
         action.setPosition(v.x, v.y);
         Float duration = (float) (Math.sqrt(v.x * v.x + v.y * v.y) / pixelsPerSecond);
         action.setDuration(
-                duration);
+         duration);
         LogMaster.log(1, "MoveTo " +
-                v +
-                " duration: " + duration);
+         v +
+         " duration: " + duration);
         actor.addAction(action);
         action.setTarget(actor);
         return action;
@@ -78,4 +83,37 @@ public class ActorMaster {
         return action;
     }
 
+    public static void addRotateToAction(Actor actor, int from, int to) {
+        from= from% 360;
+        to= to% 360;
+        RotateByAction action = new RotateByAction();
+        action.setAmount(-(from - to) );
+//        action.setReverse(true); intercepts
+        float speed = 360; //* options
+        float duration = Math.abs(from - to) / speed;
+        action.setDuration(duration);
+        actor.addAction(action);
+        action.setTarget(actor);
+    }
+
+    public static void addScaleAction(Actor actor, float scaleX, float scaleY, float v) {
+        ScaleToAction action = new ScaleToAction();
+        action.setScale(scaleX, scaleY);
+        action.setDuration(v);
+        actor.addAction(action);
+        action.setTarget(actor);
+    }
+
+    public static void addScaleActionIfNoActions(Actor actor, float scaleX,
+                                                 float scaleY, float v) {
+        if (actor.getActions().size > 0) {
+            List<Object> instances = ClassMaster.getInstances(
+             new LinkedList<>(Arrays.asList(actor.getActions().toArray())),
+             ScaleToAction.class);
+            if (instances.size() > 0) {
+                return;
+            }
+        }
+        addScaleAction(actor, scaleX, scaleY, v);
+    }
 }

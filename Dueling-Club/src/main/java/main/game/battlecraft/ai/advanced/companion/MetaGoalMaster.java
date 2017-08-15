@@ -92,7 +92,7 @@ public class MetaGoalMaster extends AiHandler {
             if (metaGoal.getArg().equals(sequence.getTask().getArg())) {
                 mod += getModForSameArgTask(sequence.getTask().getType(), metaGoal.getType());
             } else {
-                Unit unit = sequence.getTask().getUnitArg();
+                Unit unit = (Unit) sequence.getTask().getObjArg();
                 mod += getModForOtherArgTask(unit, metaGoal.getArg(), sequence, metaGoal.getType());
 
             }

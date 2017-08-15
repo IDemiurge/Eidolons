@@ -80,7 +80,7 @@ public class DebugRadialManager {
             });
         } else {
             node = new RadialValueContainer(defaultTexture, object.toString(), null);
-            node.setChilds(list);
+            node.setChildNodes(list);
         }
 
         RadialManager.addSimpleTooltip(node, object.toString());

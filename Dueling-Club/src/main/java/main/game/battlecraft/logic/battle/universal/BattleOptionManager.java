@@ -2,6 +2,7 @@ package main.game.battlecraft.logic.battle.universal;
 
 import main.content.PARAMS;
 import main.entity.obj.BattleFieldObject;
+import main.game.battlecraft.logic.battle.universal.BattleOptions.ARENA_GAME_OPTIONS;
 import main.game.battlecraft.logic.battle.universal.BattleOptions.DIFFICULTY;
 import main.game.battlecraft.rules.combat.damage.Damage;
 
@@ -16,6 +17,7 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
     public BattleOptionManager(BattleMaster<E> master) {
         super(master);
         options = new BattleOptions();
+        options.setValue(ARENA_GAME_OPTIONS.DIFFICULTY, defaultDifficulty.name());
     }
 
 //    public int getBattleLevel() {
@@ -51,29 +53,27 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
 //}
 ////TODO maybe easier to modify endurance/tough
 //
-        }
+    }
 
     public void applyDifficultyMods(BattleFieldObject unit) {
-        Boolean ally_enemy_neutral =null ;
+        Boolean ally_enemy_neutral = null;
         if (unit.isMine())
-            ally_enemy_neutral= true;
+            ally_enemy_neutral = true;
         if (unit.isEnemyTo(game.getPlayer(true)))
-            ally_enemy_neutral= false;
-        if (ally_enemy_neutral==null )
+            ally_enemy_neutral = false;
+        if (ally_enemy_neutral == null)
             return;
         int mod = 100;
-        if (ally_enemy_neutral)
-        {
+        if (ally_enemy_neutral) {
             if (unit.isMainHero()) {
                 mod = getOptions().getDifficulty().getHealthPercentageMainHero();
             } else {
                 mod = getOptions().getDifficulty().getHealthPercentageAlly();
             }
-        }
-        else
+        } else
             mod = getOptions().getDifficulty().getHealthPercentageEnemy();
-
+        mod -= 100;
         unit.modifyParamByPercent(PARAMS.ENDURANCE, mod);
-        unit.modifyParamByPercent(PARAMS.TOUGHNESS , mod);
+        unit.modifyParamByPercent(PARAMS.TOUGHNESS, mod);
     }
 }

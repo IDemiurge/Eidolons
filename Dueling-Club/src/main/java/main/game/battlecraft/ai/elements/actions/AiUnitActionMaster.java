@@ -52,7 +52,9 @@ public class AiUnitActionMaster {
         // cache
         List<DC_ActiveObj> actions = new XList<>();
         switch (type) {
-
+            case PROTECT:
+                actions.add(AiActionFactory.getUnitAction(unit, "Guard Mode"));
+                break;
             case PATROL:
             case WANDER:
             case RETREAT:

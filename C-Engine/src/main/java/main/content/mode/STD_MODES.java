@@ -14,10 +14,10 @@ public enum STD_MODES implements MODE {
     MEDITATION(true, true, true, "C_ESSENCE", "max(100, {SOURCE_MEDITATION_MOD})/100*("
             + Formulas.MEDITATION_BASE + "+{SOURCE_MEDITATION_BONUS})"), // {ACTIVE_something}
     DEFENDING(false, false, true),
-    GUARDING(false, false, true),
     CHANNELING(true, true, false),
     DIVINATION(true, true, true),
     HIDE(true, false, true),
+    GUARDING(false, false, false, "Defense(25);", "Ap penalty(50)", "Status(Guarding)"),
     STEALTH(false, false, false, "Stealth(50);", "Ap penalty(50)", ""),
     SEARCH(false, false, false, "Detection(50);", "Ap penalty(50)", ""),
 
@@ -50,6 +50,7 @@ public enum STD_MODES implements MODE {
         CHANNELING.setRemoveEvent(null);
         DIVINATION.setEndTurnEffect(true);
         CHANNELING.setEndTurnEffect(false);
+        GUARDING.setContinuous(true);
         HIDE.setContinuous(true);
         STEALTH.setContinuous(true);
         SEARCH.setContinuous(true);

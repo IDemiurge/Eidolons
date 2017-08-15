@@ -13,12 +13,10 @@ import java.util.Map.Entry;
 import static main.system.GuiEventType.*;
 
 public class CellBorderManager extends Group {
-    private static final String cyanPath = "UI\\Borders\\neo\\color flag\\cyan 132.png";
-    private static final String bluePath = "UI\\Borders\\neo\\color flag\\blue 132.png";
-    private static final String teamcolorPath = "UI\\Borders\\neo\\color flag\\white 132.png";
-    private static final String orangePath = "UI\\Borders\\neo\\color flag\\orange 132.png";
-    private static final String purplePath = "UI\\Borders\\neo\\color flag\\purple 132.png";
-    private static final String redPath = "UI\\Borders\\neo\\color flag\\red 132.png";
+    public static final String cyanPath = "UI\\Borders\\neo\\color flag\\cyan 132.png";
+    public static final String bluePath = "UI\\Borders\\neo\\color flag\\blue 132.png";
+    public static final String teamcolorPath = "UI\\Borders\\neo\\color flag\\white 132.png";
+    public static final String redPath = "UI\\Borders\\neo\\color flag\\red 132.png";
     public TextureRegion singleBorderImageBackup = null;
     protected TextureRegion blueTexture;
     private Borderable unitBorderOwner = null;

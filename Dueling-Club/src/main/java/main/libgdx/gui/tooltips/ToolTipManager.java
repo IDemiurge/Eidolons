@@ -4,10 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import main.libgdx.anims.ActorMaster;
+import main.libgdx.bf.BaseView;
+import main.libgdx.bf.GridUnitView;
+import main.libgdx.bf.UnitView;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.system.GuiEventManager;
 
-import static main.system.GuiEventType.SHOW_TOOLTIP;
+import static main.system.GuiEventType.*;
 
 public class ToolTipManager extends TablePanel {
 
@@ -21,6 +25,61 @@ public class ToolTipManager extends TablePanel {
             } else {
                 init((ToolTip) object);
             }
+        });
+
+        GuiEventManager.bind(UNIT_VIEW_HOVER_ON, (event) -> {
+            UnitView object = (UnitView) event.get();
+//            if (object.getScaleX()== 1)
+//                if (object.getScaleX()== 1)
+
+            float scaleX = 1;
+            if (object.getScaleX() == 1)
+                scaleX = 1.12f;
+            float scaleY = 1;
+            if (object.getScaleY() == 1)
+                scaleY = 1.12f;
+
+            ActorMaster.
+             addScaleActionIfNoActions(object, scaleX, scaleY, 0.35f);
+            if (object instanceof GridUnitView) {
+                if (scaleX == 1)
+                    scaleX = 1.12f;
+                if (scaleY == 1)
+                    scaleY = 1.12f;
+                ActorMaster.
+                 addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
+                  , scaleX, scaleY, 0.35f);
+            } else {
+
+            }
+//           DungeonScreen.getInstance().getGridPanel().getbo
+            object.setHovered(true);
+        });
+        GuiEventManager.bind(UNIT_VIEW_HOVER_OFF, (event) -> {
+            BaseView object = (BaseView) event.get();
+
+            float scaleX;
+            float scaleY;
+
+            if (object instanceof GridUnitView) {
+                scaleX = object.getScaledWidth();
+                scaleY = object.getScaledHeight();
+                ActorMaster.
+                 addScaleAction(object, scaleX, scaleY, 0.35f);
+                scaleX = 1.0f;
+                scaleY = 1.0f;
+                ActorMaster.
+                 addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
+                  , scaleX, scaleY, 0.35f);
+            } else {
+                scaleX = 1.0f;
+                scaleY = 1.0f;
+                ActorMaster.
+                 addScaleAction(object, scaleX, scaleY, 0.35f);
+            }
+
+            object.setHovered(false);
+
         });
         actorCell = addElement(null);
     }

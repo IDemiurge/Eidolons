@@ -16,6 +16,7 @@ import main.system.math.Formula;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class StringMaster {
 
@@ -887,7 +888,11 @@ public class StringMaster {
         return joinStringList(list, divider, true);
     }
 
-    public static String getValueRef(KEYS objRef, VALUE valRef) {
+    public static String getValueRefs(KEYS objRef, VALUE... valRef) {
+       return  build(Arrays.stream(valRef).map(val -> getValueRef(objRef, val))
+         .collect(Collectors.toList()));
+    }
+        public static String getValueRef(KEYS objRef, VALUE valRef) {
         return getValueRef(objRef + "", valRef + "");
     }
 
@@ -1245,17 +1250,22 @@ public class StringMaster {
         return result.substring(0, result.length() - 1);
     }
 
-    public static String build(String... strings) {
+
+        public static String build(String... strings) {
+
         return build(false, strings);
     }
+    public static String build(  List<String> list) {
+        return build(list.toArray(new String[list.size()]));
+    }
         public static String build(boolean whitespaces, String... strings) {
-        String result = "";
-        for (String s : strings) {
-            result += s;
-            if (whitespaces)
-                result += " ";
-        }
-        return result;
+            StringBuilder builder = new StringBuilder();
+            Arrays.stream(strings).forEach(s -> {
+                builder.append(s);
+                if (whitespaces)
+                    builder.append(" ");
+            });
+            return builder.toString();
     }
 
     public static String cropLast(String str1, int i, String suffix) {

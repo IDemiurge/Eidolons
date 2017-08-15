@@ -1468,6 +1468,9 @@ public abstract class DataModel {
         return getId() + "";
     }
 
+    public String getNameAndId() {
+                return getName()+getId()  ;
+    }
     public String getRawValue(VALUE value) {
         String string = getRawValues().get(value);
         if (string == null) {
@@ -1591,5 +1594,10 @@ public abstract class DataModel {
 
     public String getImagePath() {
         return getProperty(G_PROPS.IMAGE);
+    }
+
+
+    public int getParamPercentage(PARAMETER parameter) {
+        return getIntParam(ContentManager.getPercentageParam(parameter)) / MathMaster.MULTIPLIER;
     }
 }

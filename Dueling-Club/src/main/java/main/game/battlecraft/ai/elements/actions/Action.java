@@ -1,6 +1,7 @@
 package main.game.battlecraft.ai.elements.actions;
 
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.elements.targeting.AutoTargeting;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.SelectiveTargeting;
@@ -73,6 +74,11 @@ public class Action {
     }
 
     public boolean canBeTargeted(Integer id) {
+        if (task.getType()== GOAL_TYPE.PROTECT) {
+            if (!active.getOwnerObj().getCoordinates().equals(active.getGame().
+             getObjectById(id).getCoordinates()))
+                return false;
+        }
         ref.setID(KEYS.ACTIVE, active.getId());
         return active.canBeTargeted(id);
     }

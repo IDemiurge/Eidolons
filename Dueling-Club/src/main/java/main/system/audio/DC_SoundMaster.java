@@ -228,6 +228,8 @@ public class DC_SoundMaster extends SoundMaster {
 
         String file =
          FileManager.findFirstFile(path, spell.getName(), true);
+        if (file==null )
+            return null ;
 //        FileManager.findFirstFile(path, part.toString(), true);
         String corePath = StringMaster.cropFormat(file);
         try {

@@ -31,7 +31,7 @@ public class UnitViewTooltipFactory {
     }
 
     private static ValueContainer getValueContainer(BattleFieldObject hero, PARAMS cur, PARAMS max) {
-        final Integer cv = hero.getIntParam(max);
+        final Integer cv =StringMaster.getInteger(hero.getCachedValue(max));
         final Integer v = hero.getIntParam(cur);
         final String name = max.getName();
         final TextureRegion iconTexture = getOrCreateR("UI\\value icons\\" + name.replaceAll("_", " ") + ".png");

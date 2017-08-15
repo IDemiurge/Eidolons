@@ -26,7 +26,6 @@ import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
-import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionToolTip;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.GuiEventManager;
@@ -37,6 +36,7 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static main.libgdx.texture.TextureCache.getOrCreateGrayscaleR;
@@ -236,7 +236,7 @@ public class RadialManager {
         }
         RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR(type.getIconPath()), null);
 //        getOrCreateGrayscaleR(
-        valueContainer.setChilds(containers);
+        valueContainer.setChildNodes(containers);
         addSimpleTooltip(valueContainer, type.getName());
         return (valueContainer);
     }
@@ -268,9 +268,10 @@ public class RadialManager {
     private static void addAttackTooltip(RadialValueContainer valueContainer,
                                          DC_ActiveObj activeObj,
                                          DC_Obj target) {
-        ActionToolTip tooltip = AttackTooltipFactory.createAttackTooltip((DC_UnitAction)
-         activeObj, target);
-        valueContainer.addListener(tooltip.getController());
+        valueContainer.setTooltipSupplier(() -> AttackTooltipFactory.createAttackTooltip((DC_UnitAction)
+         activeObj, target));
+
+
 
     }
 
@@ -318,6 +319,18 @@ public class RadialManager {
         };
         return new RadialValueContainer(textureRegion, runnable);
     }
+public Supplier<List<RadialValueContainer>> get(RADIAL_PARENT_NODE type,
+                                                DC_ActiveObj activeObj,
+                                                DC_Obj target){
+        return ()->{
+            return getChildNodes(type, activeObj, target);
+        };
+}
+
+    private List<RadialValueContainer> getChildNodes(RADIAL_PARENT_NODE type, DC_ActiveObj activeObj, DC_Obj target) {
+ List<RadialValueContainer> list = new LinkedList<>();
+return list;
+}
 
     private static RadialValueContainer configureAttackParentNode(
 
@@ -335,7 +348,7 @@ public class RadialManager {
         RadialValueContainer valueContainer =
          new RadialValueContainer(new TextureRegion(getTextureForActive(parent, target)), null);
         addSimpleTooltip(valueContainer, parentNode.getName());
-        valueContainer.setChilds(list);
+        valueContainer.setChildNodes(list);
 
         return valueContainer;
     }

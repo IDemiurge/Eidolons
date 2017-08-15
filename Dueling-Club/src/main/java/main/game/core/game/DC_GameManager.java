@@ -182,6 +182,7 @@ public class DC_GameManager extends GameManager {
     @Override
     public void reset() {
         if (!game.isStarted()) {
+            updateGraphics();
             return;
         }
         getGameMaster().getUnitCache().clear();
@@ -202,6 +203,10 @@ public class DC_GameManager extends GameManager {
             ((DC_Obj) u).setOutlineType(null);
         }
 
+        updateGraphics();
+    }
+
+    private void updateGraphics() {
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_LIGHT, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);

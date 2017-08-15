@@ -52,6 +52,8 @@ public class DC_UnitAction extends DC_ActiveObj {
 
 
     public String getModeBuffName() {
+        if (getModeEffect()==null )
+            return null ;
         return getModeEffect().getMode().getBuffName();
     }
 
@@ -96,7 +98,7 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     @Override
     public String getToolTip() {
-        if (getHandler().checkContinuousModeDeactivate()) {
+        if (getHandler().checkActionDeactivatesContinuousMode()) {
             return "Deactivate " + getName();
         }
         return super.getToolTip();
@@ -139,7 +141,7 @@ public class DC_UnitAction extends DC_ActiveObj {
     }
 
     public boolean checkContinuousModeDeactivate() {
-        return getHandler().checkContinuousModeDeactivate();
+        return getHandler().checkActionDeactivatesContinuousMode();
     }
 
     @Override

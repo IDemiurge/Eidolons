@@ -53,6 +53,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static main.system.GuiEventType.INITIATIVE_CHANGED;
+import static main.system.GuiEventType.SHOW_MODE_ICON;
 
 public abstract class DC_UnitModel extends BattleFieldObject implements Rotatable {
 
@@ -109,11 +110,10 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     public String getImagePath() {
         if (getGame().getDungeonMaster().getDungeonWrapper() != null) {
             return ImageManager.getThemedImagePath(super.getImagePath(), getGame()
-                    .getDungeonMaster().getDungeonWrapper().getColorTheme());
+             .getDungeonMaster().getDungeonWrapper().getColorTheme());
         }
         return super.getImagePath();
     }
-
 
 
     @Override
@@ -150,7 +150,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
                 vision_mode = VisionEnums.VISION_MODE.NORMAL_VISION;
             } else {
                 vision_mode = new EnumMaster<VISION_MODE>().retrieveEnumConst(VISION_MODE.class,
-                        name);
+                 name);
             }
         }
         return vision_mode;
@@ -168,8 +168,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             setParam(PARAMS.XP, xp);
         }
     }
-
-
 
 
     protected void initMode() {
@@ -217,8 +215,8 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
         if (before - after != 0) {
             GuiEventManager.trigger(
-                    INITIATIVE_CHANGED,
-                    new ImmutablePair<>(this, after)
+             INITIATIVE_CHANGED,
+             new ImmutablePair<>(this, after)
             );
         }
     }
@@ -261,7 +259,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     public void setPreferredAttackOfOpportunity(DC_ActiveObj preferredAttackOfOpportunity) {
         this.preferredAttackOfOpportunity = preferredAttackOfOpportunity;
         setProperty(PROPS.DEFAULT_ATTACK_OF_OPPORTUNITY_ACTION, preferredAttackOfOpportunity
-                .getName());
+         .getName());
     }
 
     public DC_ActiveObj getPreferredAttackAction() {
@@ -290,11 +288,11 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     }
 
 
-
     public MODE getMode() {
         if (mode == null || mode == STD_MODES.NORMAL) {
             initMode();
-        }
+        } else if (mode.isContinuous())
+            initMode(); //this is a quickfix for Guarding+Defend/Alert compatibility...
         return mode;
     }
 
@@ -305,6 +303,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         } else {
             setProperty(G_PROPS.MODE, StringMaster.getWellFormattedString(mode.toString()));
         }
+        GuiEventManager.trigger(SHOW_MODE_ICON, this);
     }
 
 
@@ -600,8 +599,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         }
         return ai;
     }
-
-
 
 
     public DC_ActiveObj getDummyAction() {

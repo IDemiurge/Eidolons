@@ -3,6 +3,7 @@ package main.entity;
 import main.ability.AbilityObj;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
+import main.content.VALUE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ASPECT;
 import main.content.values.parameters.PARAMETER;
@@ -25,8 +26,7 @@ import main.system.threading.Weaver;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -58,6 +58,7 @@ public abstract class Entity extends DataModel implements OBJ {
 
     protected boolean added;
     EntityMaster master;
+    protected Map<VALUE, String > valueCache= new HashMap<>(); //to cache valid tooltip values
 
 
     public Entity() {
@@ -152,6 +153,8 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public void toBase() {
+
+        //TODO DRY!
         if (getMaster() != null) {
             if (getResetter() != null) {
                 getResetter().toBase();
@@ -192,6 +195,9 @@ public abstract class Entity extends DataModel implements OBJ {
 
             String baseValue = getType().getParam(p);
             String value = getParam(p);
+
+            getValueCache().put(p, value );
+
             if (!value.equals(baseValue)) {
                 String amount = getType().getParam(p);
                 putParameter(p, amount);
@@ -220,6 +226,7 @@ public abstract class Entity extends DataModel implements OBJ {
                 }
             }
             String value = getProperty(p);
+            getValueCache().put(p, value );
             if (!value.equals(baseValue)) {
                 putProperty(p, baseValue);
             } else {
@@ -231,7 +238,18 @@ public abstract class Entity extends DataModel implements OBJ {
         setDirty(false);
 
     }
+    public Map<VALUE, String> getValueCache() {
+        return valueCache;
+    }
 
+    public String getCachedValue(VALUE value) {
+        String val = valueCache.get(value);
+        if (val==null){
+            return getValue(value);
+        }
+
+        return val;
+    }
     public void constructConcurrently() {
         if (constructing) {
             return;

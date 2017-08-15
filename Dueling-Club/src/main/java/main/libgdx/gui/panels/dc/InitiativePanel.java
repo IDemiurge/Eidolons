@@ -9,26 +9,32 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.utils.Align;
+import main.data.XLinkedMap;
+import main.game.core.game.DC_Game;
 import main.libgdx.bf.UnitView;
 import main.libgdx.gui.tooltips.ValueTooltip;
+import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class InitiativePanel extends Group {
     private final int maxSize = 25;
-    private final int visualSize = 8;
-    private final int imageSize = 96;
-    private final int offset = 2;
+    private final int visualSize = 10;
+    private final int imageSize = 104;
+    private final int offset = -12;
     private ImageContainer[] queue;
     private WidgetGroup queueGroup;
+    private boolean cleanUpOn=false;
 
     public InitiativePanel() {
         init();
         registerCallback();
+        resetZIndices();
     }
 
     private void registerCallback() {
@@ -41,15 +47,37 @@ public class InitiativePanel extends Group {
         GuiEventManager.bind(GuiEventType.UPDATE_GUI, obj -> {
             cleanUp();
         });
+        GuiEventManager.bind(GuiEventType.UNIT_VIEW_HOVER_ON, obj -> {
+            UnitView p = (UnitView) obj.get();
+            ImageContainer view = getIfExists(p.getCurId());
+            if (view!=null )
+            view.setZIndex(Integer.MAX_VALUE-1);
+        });
+        GuiEventManager.bind(GuiEventType.UNIT_VIEW_HOVER_OFF, obj -> {
+            resetZIndices();
+
+        });
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
             UnitView p = (UnitView) obj.get();
             removeView(p);
         });
     }
 
+    private void resetZIndices() {
+        int i = 0;
+        for (ImageContainer view : queue) {
+            if (view != null) {
+                view.setZIndex(i++);
+            }
+        }
+    }
+
     private void removeView(UnitView p) {
+        removeView(p.getCurId());
+    }
+        private void removeView(int id) {
         for (int i = 0; i < queue.length; i++) {
-            if (queue[i] != null && queue[i].id == p.getCurId()) {
+            if (queue[i] != null && queue[i].id == id) {
                 queueGroup.removeActor(queue[i]);
                 queue[i] = null;
                 sort();
@@ -59,7 +87,19 @@ public class InitiativePanel extends Group {
     }
 
     private void cleanUp() {
-
+        if (!isCleanUpOn())
+            return;
+        Map<Integer, UnitView> views = new XLinkedMap<>();
+        DC_Game.game.getTurnManager().getDisplayedUnitQueue().stream().forEach(unit -> {
+            UnitView view = (UnitView) DungeonScreen.getInstance().getGridPanel().getUnitMap().get(unit);
+            views.put(view.getCurId(), view);
+        });
+        for (ImageContainer sub : queue) {
+            if (sub == null)
+                continue;
+            if (!views.containsKey(sub.id))
+                removeView((sub.id));
+        }
     }
 
     private void init() {
@@ -217,6 +257,8 @@ public class InitiativePanel extends Group {
                 if (container.getX() != pixPos) {
                     MoveToAction a = new MoveToAction();
                     a.setX(pixPos);
+                    a.setDuration(1.5f);
+                    a.setTarget(container);
                     container.addAction(a);
                 }
                 rpos++;
@@ -237,10 +279,23 @@ public class InitiativePanel extends Group {
         return null;
     }
 
+    public boolean isCleanUpOn() {
+        return cleanUpOn;
+    }
+
+    public void setCleanUpOn(boolean cleanUpOn) {
+        this.cleanUpOn = cleanUpOn;
+    }
+
 
     private class ImageContainer extends Container<UnitView> {
         public int initiative;
         public int id;
         public boolean mobilityState;
+
+        @Override
+        public void draw(Batch batch, float parentAlpha) {
+            super.draw(batch, parentAlpha);
+        }
     }
 }

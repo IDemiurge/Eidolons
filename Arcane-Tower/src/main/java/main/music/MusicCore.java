@@ -1,6 +1,5 @@
 package main.music;
 
-import org.apache.commons.lang3.tuple.Pair;
 import main.content.ContentManager;
 import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
@@ -22,9 +21,13 @@ import main.music.gui.MusicMouseListener;
 import main.music.m3u.TrackReader;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.DialogMaster;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.awt.*;
 import java.io.File;

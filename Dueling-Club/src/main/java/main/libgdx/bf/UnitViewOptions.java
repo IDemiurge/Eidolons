@@ -7,6 +7,7 @@ import main.content.C_OBJ_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.BattleFieldObject;
 import main.libgdx.GdxColorMaster;
+import main.system.images.ImageManager;
 
 import static main.content.PARAMS.C_INITIATIVE;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
@@ -22,6 +23,7 @@ public class UnitViewOptions {
     private Texture iconTexture;
 
     private TextureRegion clockTexture;
+    private TextureRegion emblem;
     private int directionValue;
 
     private int clockValue;
@@ -58,6 +60,9 @@ public class UnitViewOptions {
         return this.iconTexture;
     }
 
+    public TextureRegion getEmblem() {
+        return emblem;
+    }
 
     public final TextureRegion getClockTexture() {
         return this.clockTexture;
@@ -81,9 +86,14 @@ public class UnitViewOptions {
 
             this.clockTexture = getOrCreateR("/UI/value icons/actions.png");
             String emblem = obj.getProperty(G_PROPS.EMBLEM, true);
+            if (ImageManager.isImage(emblem))
+            this.emblem = getOrCreateR(emblem);
             this.clockValue = obj.getIntParam(C_INITIATIVE);
             this.teamColor =
              GdxColorMaster.getColor(obj.getOwner().getFlagColor());
+            if (teamColor==null ){
+                teamColor= GdxColorMaster.NEUTRAL;
+            }
         }
     }
 }

@@ -22,6 +22,7 @@ import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.battlecraft.rules.action.StackingRule;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
@@ -37,12 +38,19 @@ import main.system.math.PositionMaster;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Analyzer extends AiHandler {
     public Analyzer(AiMaster master) {
         super(master);
     }
 
+    public static List<DC_Cell> getProtectCells(UnitAI ai) {
+        List<Unit> list = getAllies(ai);
+        List<DC_Cell> cells = list.stream().map(unit -> unit.getGame().getCellByCoordinate(unit.getCoordinates())).collect(Collectors.toList());
+        //TODO filter
+        return cells;
+    }
     public static List<Unit> getAllies(UnitAI ai) {
         List<Unit> list = new XList<>();
         for (Unit unit : Eidolons.game.getUnits()) {
@@ -208,13 +216,12 @@ public class Analyzer extends AiHandler {
         if (!unit.getCoordinates().isAdjacent(target.getCoordinates())) {
             return false;
         }
-
         Coordinates c = unit.getCoordinates().getAdjacentCoordinate(
                 unit.getFacing().getDirection());
         if (c == null) {
             return false;
         }
-        return c.equals(target.getCoordinates());
+        return !StackingRule.checkCanPlace(c, unit, null );
 
     }
 

@@ -9,6 +9,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.*;
 
@@ -33,7 +34,16 @@ public class ListMaster<E> {
         return list;
     }
 
-    public static List<Object> toList(Object... values) {
+    public   List<E> toList_(E... values) {
+        List<E> list = new LinkedList<>();
+        for (E v : values) {
+            if (v != null) {
+                list.add(v);
+            }
+        }
+        return list;
+    }
+        public static List<Object> toList(Object... values) {
         List<Object> list = new LinkedList<>();
         for (Object v : values) {
             if (v != null) {

@@ -86,7 +86,7 @@ public class Unit extends DC_UnitModel {
     private boolean aiControlled;
     private MACRO_MODES macroMode;
     private GENDER gender;
-    private boolean mainHero;
+    private Boolean mainHero;
     private FLIP flip;
     private ObjType backgroundType;
     private Map<DC_ActiveObj, String> actionModeMap;
@@ -500,14 +500,14 @@ public class Unit extends DC_UnitModel {
 
     public Entity getItem(String name) {
         // for (String generic: getInventory())
-         List<Entity> list = new LinkedList<>();
+        List<Entity> list = new LinkedList<>();
         list.add(getWeapon(true));
         list.add(getWeapon(false));
         list.add(getNaturalWeapon(true));
         list.add(getNaturalWeapon(false));
-        getInventory().forEach(item->list.add(item));
-        getQuickItems().forEach(item->list.add(item));
-        getJewelry().forEach(item->list.add(item));
+        getInventory().forEach(item -> list.add(item));
+        getQuickItems().forEach(item -> list.add(item));
+        getJewelry().forEach(item -> list.add(item));
         return new SearchMaster<Entity>().find(name, list);
     }
 
@@ -749,7 +749,7 @@ public class Unit extends DC_UnitModel {
                 setSecondWeapon(null);
                 break;
         }
-        if (item instanceof DC_WeaponObj){
+        if (item instanceof DC_WeaponObj) {
             if (((DC_WeaponObj) item).isRanged()) {
                 setRangedWeapon(null);
             }
@@ -901,31 +901,28 @@ public class Unit extends DC_UnitModel {
     }
 
     public boolean isAiControlled() {
-        if (AI_Manager.isOff())
-            return false;
-        if (aiControlled) {
+        if (!getAI().getForcedActions().isEmpty()) {
             return true;
-        } if (!owner.isAi())
-        if (!getGame().isDebugMode()) {
-            if (!getGame().getCombatMaster().isFullManualControl()) {
-                if (owner.getHeroObj() != null) {
-                    if (owner.getHeroObj() != this) {
-                        return true;
+        }
+        if (aiControlled || checkBool(DYNAMIC_BOOLS.AI_CONTROLLED)) {
+            return !AI_Manager.isOff();
+        }
+        if (owner.isAi()) {
+            if (!checkBool(DYNAMIC_BOOLS.PLAYER_CONTROLLED)) {
+                return !AI_Manager.isOff();
+            }
+        } else {
+            if (!getGame().isDebugMode()) {
+                if (!getGame().getCombatMaster().isFullManualControl()) {
+                    if (owner.getHeroObj() != null) {
+                        if (!isMainHero()) {
+                            return !AI_Manager.isOff();
+                        }
                     }
                 }
             }
         }
-        if (owner.isAi()) {
-            if (!checkBool(DYNAMIC_BOOLS.PLAYER_CONTROLLED)) {
-                return true;
-            }
-        }
-        if (checkBool(DYNAMIC_BOOLS.AI_CONTROLLED)) {
-            return true;
-        }
-        if (! getAI().getForcedActions().isEmpty()) {
-            return true;
-        }
+
         return getBehaviorMode() != null;
     }
 
@@ -969,9 +966,6 @@ public class Unit extends DC_UnitModel {
         return gender;
     }
 
-    
-
-   
 
     public FLIP getFlip() {
         return flip;
@@ -982,6 +976,8 @@ public class Unit extends DC_UnitModel {
     }
 
     public boolean isMainHero() {
+        if (mainHero == null)
+            mainHero = owner.getHeroObj() == this;
         return mainHero;
     }
 
@@ -1013,7 +1009,8 @@ public class Unit extends DC_UnitModel {
         }
         return animation.isDrawReady();
     }
-@Deprecated
+
+    @Deprecated
     public void initToolTip() {
 
     }
@@ -1274,7 +1271,7 @@ public class Unit extends DC_UnitModel {
     }
 
     public DC_Obj getLinkedObj(IdKey key) {
-        return  new KeyResolver().getObj(key, this);
+        return new KeyResolver().getObj(key, this);
     }
 
     public DC_WeaponObj getRangedWeapon() {
@@ -1295,8 +1292,8 @@ public class Unit extends DC_UnitModel {
         if (isDead()) {
             prefix += "(Dead) ";
         }
-        return prefix + getName() + (game.isDebugMode()  ? " at " + getCoordinates()
-         : "") ;
+        return prefix + getName() + (game.isDebugMode() ? " at " + getCoordinates()
+         : "");
     }
 
 }
