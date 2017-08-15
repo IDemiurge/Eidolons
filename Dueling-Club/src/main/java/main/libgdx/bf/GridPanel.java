@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.content.mode.STD_MODES;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BattleFieldObject;
@@ -92,7 +93,7 @@ public class GridPanel extends Group {
 
 
         int rows1 = rows - 1;
-        int cols1 = cols - 1;
+        int cols1 = cols - 1; // ??
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
                 cells[x][y] = new GridCellContainer(emptyImage, x, rows1 - y);
@@ -309,9 +310,10 @@ public class GridPanel extends Group {
                 caught = true;
             }
 
-         if (!caught) {
+            if (!caught) {
              /*      System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
-           */ }
+           */
+            }
         };
     }
 
@@ -351,6 +353,20 @@ public class GridPanel extends Group {
             views.forEach(gridCellContainer::addActor);
             gridCellContainer.setOverlays(overlays);
         }
+        GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
+            Unit unit = (Unit) obj.get();
+            UnitView view = (UnitView) unitMap .get(unit);
+            if (view!=null ) {
+                if (unit.getMode() == null || unit.getMode() == STD_MODES.NORMAL)
+                    view.updateModeImage(null);
+                else
+                    try {
+                        view.updateModeImage(unit.getBuff(unit.getMode().getBuffName()).getImagePath());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+            }
+        });
 
         GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
             Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
@@ -410,6 +426,28 @@ public class GridPanel extends Group {
         if (lightingManager != null) {
             lightingManager.updateLight();
         }
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        loop:
+        for (int x = 0; x < cols; x++) {
+            for (int y = 0; y < rows; y++) {
+                GridCellContainer cell = cells[x][y];
+                List<GridUnitView> views = cell.getUnitViews();
+//                if (views.size()>1)
+                for (GridUnitView sub : views) {
+                    if (sub.isHovered()) {
+                        cell.setZIndex(Integer.MAX_VALUE - 1);
+                        break loop;
+                    }
+//                    else
+//                        cell.setZIndex(100+x*rows+y);
+                }
+            }
+        }
+        animMaster.setZIndex(Integer.MAX_VALUE);
     }
 
     public Map<BattleFieldObject, BaseView> getUnitMap() {

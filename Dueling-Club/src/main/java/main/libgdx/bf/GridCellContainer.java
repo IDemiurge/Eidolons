@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.game.bf.Coordinates;
 import main.libgdx.bf.datasource.GridCellDataSource;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class GridCellContainer extends GridCell {
@@ -38,29 +39,39 @@ public class GridCellContainer extends GridCell {
         return this;
     }
 
+    public List<GridUnitView> getUnitViews() {
+        List<GridUnitView> list = new LinkedList<>();
+        for (Actor actor : getChildren()) {
+            if (actor instanceof GridUnitView)
+                list.add((GridUnitView) actor);
+        }
+        return list;
+    }
+
     private void recalcUnitViewBounds() {
         if (unitViewCount == 0) {
             return;
         }
         final int perImageOffsetX = getSizeDiffX();
         final int perImageOffsetY = getSizeDiffY();
-        final int w = ((int) getWidth()) - perImageOffsetX * (unitViewCount - 1);
-        final int h = ((int) getHeight()) - perImageOffsetY * (unitViewCount - 1);
+        final int w = GridConst.CELL_W - perImageOffsetX * (unitViewCount - 1);
+        final int h = GridConst.CELL_H - perImageOffsetY * (unitViewCount - 1);
         int i = 0;
         float scaleX = new Float(w) / GridConst.CELL_W;
         float scaleY = new Float(h) / GridConst.CELL_H;
         for (Actor actor : getChildren()) {
             if (actor instanceof GridUnitView) {
-                actor.setBounds(
-                 perImageOffsetX * i,
-                 perImageOffsetY * ((unitViewCount - 1) - i)
-                 , actor.getWidth() * scaleX, actor.getHeight() * scaleY
-                );
+//                actor.setBounds(
+//                 perImageOffsetX * i,
+//                 perImageOffsetY * ((unitViewCount - 1) - i)
+//                 , GridConst.CELL_W * scaleX, GridConst.CELL_H * scaleY
+//                );
+                actor.setPosition( perImageOffsetX * i,
+                perImageOffsetY * ((unitViewCount - 1) - i));
                 actor.setScale(scaleX, scaleY);
+                ((GridUnitView) actor).sizeChanged();
                 ((GridUnitView) actor).setScaledHeight(scaleY);
                 ((GridUnitView) actor).setScaledWidth(scaleX);
-
-
                 i++;
             }
         }
@@ -73,12 +84,14 @@ public class GridCellContainer extends GridCell {
     @Override
     public void act(float delta) {
         super.act(delta);
-        for (Actor actor : getChildren()) {
-            if (actor instanceof GridUnitView) {
-                if (((GridUnitView) actor).isHovered())
-                    actor.setZIndex(Integer.MAX_VALUE - 1);
-                break;
-            }
+
+        int i =  getChildren().size;
+        for (GridUnitView actor : getUnitViews()) {
+            if (actor.isHovered())
+                actor.setZIndex(Integer.MAX_VALUE - 1);
+//            else
+//                actor.setZIndex(i);
+            i++;
         }
     }
 
@@ -195,4 +208,5 @@ public class GridCellContainer extends GridCell {
     public void updateGraveyard() {
         graveyard.updateGraveyard();
     }
+
 }

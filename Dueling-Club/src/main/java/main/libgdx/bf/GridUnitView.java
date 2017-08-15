@@ -104,6 +104,20 @@ public class GridUnitView extends UnitView {
     }
 
     @Override
+    public float getWidth() {
+        if (super.getWidth()==0)
+            return GridConst.CELL_W;
+        return super.getWidth();
+    }
+
+    @Override
+    public float getHeight() {
+        if (super.getHeight()==0)
+            return GridConst.CELL_H;
+        return super.getHeight();
+    }
+
+    @Override
     protected void sizeChanged() {
         super.sizeChanged();
 
@@ -127,7 +141,7 @@ public class GridUnitView extends UnitView {
             image.setScaleX(getScaledWidth());
             image.setScaleY(getScaledHeight());
         }
-        image = emblem;
+        image = emblemImage;
         if (image != null) {
             image.setScaleX(getScaledWidth());
             image.setScaleY(getScaledHeight());

@@ -19,7 +19,11 @@ public class WaitMaster {
         LogMaster.log(LogMaster.WAIT_DEBUG, "Unmarked As Complete: " + operation);
     }
 
-    public static void markAsComplete(WAIT_OPERATIONS operation) {
+    public static boolean isComplete(WAIT_OPERATIONS operation) {
+        return
+         getCompleteOperations().contains(operation);
+    }
+        public static void markAsComplete(WAIT_OPERATIONS operation) {
         getCompleteOperations().add(operation);
         LogMaster.log(LogMaster.WAIT_DEBUG, "Marked As Complete: " + operation);
         // waiters.get(operation).

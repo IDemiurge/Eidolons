@@ -12,19 +12,19 @@ import main.system.GuiEventManager;
 import static main.system.GuiEventType.CALL_BLUE_BORDER_ACTION;
 
 public class BaseView extends Group implements Borderable {
-    private static final float DEFAULT_ALPHA_FLUCTUATION = 0.6f;
-    private static final float DEFAULT_ALPHA_MIN = 0.2f;
-    private static final float DEFAULT_ALPHA_MAX = 1f;
+    protected static final float DEFAULT_ALPHA_FLUCTUATION = 0.6f;
+    protected static final float DEFAULT_ALPHA_MIN = 0.2f;
+    protected static final float DEFAULT_ALPHA_MAX = 1f;
     protected Image portrait;
     protected Image border = null;
-    private TextureRegion borderTexture;
-    private float borderAlpha = 1f;
-    private boolean alphaGrowing=false;
-    private boolean teamColorBorder;
-    private Color teamColor;
-    private float scaledWidth;
-    private float scaledHeight;
-    private boolean hovered;
+    protected TextureRegion borderTexture;
+    protected float borderAlpha = 1f;
+    protected boolean alphaGrowing=false;
+    protected boolean teamColorBorder;
+    protected Color teamColor;
+    protected float scaledWidth;
+    protected float scaledHeight;
+    protected boolean hovered;
 
 
     public BaseView(UnitViewOptions o) {
@@ -54,19 +54,25 @@ public class BaseView extends Group implements Borderable {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (!isAlphaFluctuationOn())
-            return;
-        if (border == null)
-            return;
-        Color color = border.getColor();
-        if (isTeamColorBorder()) {
-            color = getTeamColorBorder();
-        }
-        borderAlpha = borderAlpha + getAlphaFluctuation(delta);
-        border.setColor(color.r, color.g, color.b, borderAlpha);
+       alphaFluctuation(border, delta);
     }
 
-    private float getAlphaFluctuation(float delta) {
+    protected void alphaFluctuation(Image image, float delta) {
+        if (!isAlphaFluctuationOn())
+            return;
+        if (image == null)
+            return;
+        Color color = image.getColor();
+        if (isTeamColorBorder())
+            if (getTeamColorBorder()!=null ) {
+                color = getTeamColorBorder();
+            }
+        borderAlpha = borderAlpha + getAlphaFluctuation(delta);
+        if (image != null) //TODO control access!
+            image.setColor(color.r, color.g, color.b, borderAlpha);
+
+    }
+    protected float getAlphaFluctuation(float delta) {
         float fluctuation =delta* DEFAULT_ALPHA_FLUCTUATION;
         if (borderAlpha <=DEFAULT_ALPHA_MIN- fluctuation)
             alphaGrowing = !alphaGrowing;
@@ -78,7 +84,7 @@ public class BaseView extends Group implements Borderable {
         return fluctuation;
     }
 
-    private boolean isAlphaFluctuationOn() {
+    protected boolean isAlphaFluctuationOn() {
         return true;
     }
 
@@ -113,7 +119,7 @@ public class BaseView extends Group implements Borderable {
         }
     }
 
-    private void updateBorderSize() {
+    protected void updateBorderSize() {
         if (border != null) {
             border.setX(-6);
             border.setY(-6);

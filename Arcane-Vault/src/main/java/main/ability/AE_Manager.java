@@ -3,6 +3,7 @@ package main.ability;
 import main.ability.gui.AE_EditPanel;
 import main.ability.gui.AE_Element;
 import main.ability.gui.AE_MainPanel;
+import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.PROPS;
@@ -55,24 +56,24 @@ public class AE_Manager {
 
     public static AE_MainPanel getAE_View(String typeName) {
         AE_MainPanel panel = cacheMap.get(typeName);
-        boolean valid=panel != null;
-        if (valid){
-            valid = panel.getEditPanel()!=null ;
+        boolean valid = panel != null;
+        if (valid) {
+            valid = panel.getEditPanel() != null;
         }
         if (!valid) {
             LogMaster.log(0, "creating AE view ..."
-                    + typeName);
+             + typeName);
             panel = new AE_MainPanel((typeName));
             cacheMap.put(typeName, panel);
             smallCache = new HashMap<>();
             smallCaches.put(panel, smallCache);
         } else {
             LogMaster.log(0, "AE view FOUND! - "
-                    + typeName);
+             + typeName);
             smallCache = smallCaches.get(panel);
             if (smallCache == null) {
                 LogMaster.log(0,
-                        "*** smallCache NOT FOUND! - " + typeName);
+                 "*** smallCache NOT FOUND! - " + typeName);
             }
         }
 
@@ -80,12 +81,12 @@ public class AE_Manager {
     }
 
     public static Node getDoc(String typeName) {
-        OBJ_TYPE TYPE = null;
-        if (!ArcaneVault.isDialogueMode()) {
-            TYPE = DC_TYPE.ABILS;
-        } else {
-            TYPE = DC_TYPE.DIALOGUE;
-        }
+        OBJ_TYPE TYPE = ArcaneVault.getSelectedOBJ_TYPE();
+//        if (!ArcaneVault.isDialogueMode()) {
+//            TYPE = DC_TYPE.ABILS;
+//        } else {
+//            TYPE = DC_TYPE.DIALOGUE;
+//        }
 
 
         ObjType type;
@@ -102,19 +103,24 @@ public class AE_Manager {
     }
 
     public static void saveTreesIntoXML() {
-        OBJ_TYPE TYPE = null;
+        OBJ_TYPE TYPE =  C_OBJ_TYPE.XML_TYPES;
         PROPERTY XML_PROP = null;
-        if (!ArcaneVault.isDialogueMode()) {
-            TYPE = DC_TYPE.ABILS;
-            XML_PROP = G_PROPS.ABILITIES;
-        } else {
-             TYPE = DC_TYPE.DIALOGUE;
-             XML_PROP = PROPS.DIALOGUE_DATA;
-        }
+//        if (!ArcaneVault.isDialogueMode()) {
+//            TYPE = DC_TYPE.ABILS;
+//            XML_PROP = G_PROPS.ABILITIES;
+//        } else {
+//             TYPE = DC_TYPE.DIALOGUE;
+//             XML_PROP = PROPS.DIALOGUE_DATA;
+//        }
         for (String typeName : cacheMap.keySet()) {
             ObjType type = DataManager.getType(typeName, TYPE);
             if (type == null) {
                 continue;
+            }
+            if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ABILS) {
+                XML_PROP = G_PROPS.ABILITIES;
+            } else {
+                XML_PROP = PROPS.DIALOGUE_DATA;
             }
             saveTreeIntoXML(TYPE, XML_PROP, type);
             // dirty flag can help
@@ -148,7 +154,7 @@ public class AE_Manager {
         } catch (Exception e) {
             e.printStackTrace();
             LogMaster.log(2, type.getName()
-                    + " is not ready to be saved!");
+             + " is not ready to be saved!");
             return;
         }
 

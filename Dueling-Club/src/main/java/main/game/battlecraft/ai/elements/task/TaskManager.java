@@ -118,7 +118,7 @@ public class TaskManager extends AiHandler {
         // ai.getGroup().getBehaviorPref();
         // ai.getGroup().getKnownEnemyCoordinatesMap();
         switch (goal) {
-            case GUARD:
+            case STAND_GUARD:
             case AMBUSH:
                 // preCheck engagement level, default prefs
             case SELF:
@@ -209,7 +209,7 @@ public class TaskManager extends AiHandler {
                 targets = Analyzer.getWaitUnits(ai);
                 break;
             case PROTECT:
-                targets = Analyzer.getProtectTargets(ai);
+                targets = Analyzer.getProtectCells(ai);
                 break;
 
             case COATING:

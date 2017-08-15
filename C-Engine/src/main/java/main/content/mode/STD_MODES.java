@@ -17,7 +17,7 @@ public enum STD_MODES implements MODE {
     CHANNELING(true, true, false),
     DIVINATION(true, true, true),
     HIDE(true, false, true),
-    GUARDING(false, false, true, "Defense(50);", "Ap penalty(50)", ""),
+    GUARDING(false, false, false, "Defense(25);", "Ap penalty(50)", "Status(Guarding)"),
     STEALTH(false, false, false, "Stealth(50);", "Ap penalty(50)", ""),
     SEARCH(false, false, false, "Detection(50);", "Ap penalty(50)", ""),
 
@@ -50,6 +50,7 @@ public enum STD_MODES implements MODE {
         CHANNELING.setRemoveEvent(null);
         DIVINATION.setEndTurnEffect(true);
         CHANNELING.setEndTurnEffect(false);
+        GUARDING.setContinuous(true);
         HIDE.setContinuous(true);
         STEALTH.setContinuous(true);
         SEARCH.setContinuous(true);

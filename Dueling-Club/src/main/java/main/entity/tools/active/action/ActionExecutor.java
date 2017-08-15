@@ -32,22 +32,56 @@ public class ActionExecutor extends Executor {
     @Override
     public boolean activate() {
         if (checkContinuousMode()) {
-            removeModeBuffs();
             return true;
         }
         return super.activate();
     }
 
+    //will remove all mode buffs?
     private boolean checkContinuousMode() {
-
-        if (checkContinuousModeDeactivate()) {
-            deactivate();
-            return true;
-        }
         ModeEffect effect = getAction().getModeEffect();
         if (effect == null)
             return false;
-        return effect.getMode().isContinuous();
+
+        STD_MODES mode = (STD_MODES) getOwnerObj().getMode();
+        switch (mode) {
+            case SEARCH: // search disabled by any mode!
+                return true;
+        }
+
+        if (effect.getMode().isContinuous())
+        {
+            if (checkActionDeactivatesContinuousMode())
+            {
+                ownerObj.removeBuff(effect.getMode().getBuffName());
+                //deactivation overrides
+                return true;
+            }
+        }
+        if (getOwnerObj().getMode().equals(STD_MODES.GUARDING)
+         || getOwnerObj().checkStatus(STATUS.GUARDING)
+         ) {
+            if (!effect.getMode().isDisableCounter()) {
+                //GUARD is semi-compatible
+                return false;
+            }
+        }
+
+
+        else {
+            //mode activation proceeds
+            removeModeBuffs();
+            return false;
+        }
+        return false;
+    }
+
+
+
+    public boolean checkActionDeactivatesContinuousMode() {
+        //check same mode deactivated
+        return (getEntity().getOwnerObj().getBuff(getAction().getModeBuffName()) != null);
+
     }
 
     private void removeModeBuffs() {
@@ -126,22 +160,6 @@ public class ActionExecutor extends Executor {
         };
     }
 
-    public boolean checkContinuousModeDeactivate() {
-        ModeEffect effect = getAction().getModeEffect();
-        if (effect == null) {
-            return false;
-        }
-        if (getOwnerObj().getMode().equals(STD_MODES.GUARDING)
-         || getOwnerObj().checkStatus(STATUS.GUARDING)
-         ) {
-            if (effect.getMode().isDisableCounter()) {
-                return true;
-            }
-        }
-        return (getEntity().getOwnerObj().getBuff(getAction().getModeBuffName()) != null);
-
-    }
-
     @Override
     protected Activator createActivator(DC_ActiveObj active, ActiveMaster entityMaster) {
         return new Activator(active, entityMaster) {
@@ -160,7 +178,7 @@ public class ActionExecutor extends Executor {
                     }
                 }
                 if (getAction().isContinuousMode()) {
-                    if (checkContinuousModeDeactivate()) {
+                    if (checkActionDeactivatesContinuousMode()) {
                         return true;
                     }
                 }

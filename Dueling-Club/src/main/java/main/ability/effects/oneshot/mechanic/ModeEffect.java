@@ -141,11 +141,14 @@ public class ModeEffect extends MicroEffect implements OneshotEffect {
     private void addPropMods() {
         Map<PROPERTY, String> map = new RandomWizard<PROPERTY>().constructStringWeightMap(mode
          .getPropsAdded(), PROPERTY.class);
-        for (PROPERTY param : map.keySet()) {
-            // addBuffEffect.addEffect(new ModifyValueEffect(param,
-            // MODVAL_TYPE.MODIFY_BY_PERCENT, ""+map.getOrCreate(param)));
+        for (PROPERTY property : map.keySet()) {
+                if (property != null) {
+                    addBuffEffect.addEffect(new ModifyPropertyEffect(property,
+                     MOD_PROP_TYPE.ADD,   map.get(property)));
+        }
         }
     }
+
 
     private void addParamBonuses() {
         add(false, mode.getParameterBoni());

@@ -92,8 +92,12 @@ public class Attack {
 
     @Override
     public String toString() {
-        return "Attack by" + attacker.getNameAndCoordinate() + " on "
+        return "Attack by " + attacker.getNameAndCoordinate() + " on "
                 + attacked.getNameAndCoordinate();
+    }
+    public String toLogString() {
+        return getAction().getName()+" by " + attacker.getNameIfKnown() + " on "
+         + attacked.getNameIfKnown();
     }
 
     public Integer getPrecalculatedDamageAmount() {

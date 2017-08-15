@@ -125,7 +125,7 @@ public class AiEnums {
         STALK(true),
         AGGRO(true),
         PATROL(true),
-        GUARD(true),
+        STAND_GUARD(true),
         IDLE(true),;
         private boolean behavior;
 

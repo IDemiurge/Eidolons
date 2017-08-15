@@ -29,6 +29,7 @@ public class DC_PriorityManager {
 
     private static PriorityManager impl;
     private static AiMaster aiHandler;
+    private static PriorityManager mainImpl;
 
     public static PriorityManager
     init(AiMaster handler) {
@@ -48,6 +49,15 @@ public class DC_PriorityManager {
 
     public static int getAttackPriority(DC_ActiveObj active, Unit targetObj) {
         return impl.getAttackPriority(active, targetObj);
+    }
+
+    public static void toggleImplementation(PriorityManager newImpl) {
+        if (newImpl == null) {
+            impl = mainImpl;
+            return;
+        }
+        mainImpl = impl;
+        impl = newImpl;
     }
 
     public static int getUnitPriority(Obj targetObj) {

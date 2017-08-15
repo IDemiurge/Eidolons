@@ -17,6 +17,7 @@ public class UnitViewTooltip extends ValueTooltip {
     @Override
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         updateRequired = true;
+        if (view.getTeamColorBorder()!= null ) //TODO quick fix to ignore bf obj
         GuiEventManager.trigger(GuiEventType.UNIT_VIEW_HOVER_ON, view);
         super.onMouseEnter(event, x, y, pointer, fromActor);
     }
@@ -25,6 +26,7 @@ public class UnitViewTooltip extends ValueTooltip {
             return;
         }
         super.onMouseMoved(event, x, y);
+        if (view.getTeamColorBorder()!= null) //TODO quick fix to ignore bf obj
         GuiEventManager.trigger(GuiEventType.UNIT_VIEW_HOVER_ON, view);
         showing = true;
     }
@@ -32,6 +34,7 @@ public class UnitViewTooltip extends ValueTooltip {
 
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
         super.onMouseExit(event, x, y, pointer, toActor);
+        if (view.getTeamColorBorder()!= null) //TODO quick fix to ignore bf obj
         GuiEventManager.trigger(GuiEventType.UNIT_VIEW_HOVER_OFF, view);
     }
 }

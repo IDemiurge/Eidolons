@@ -14,9 +14,10 @@ public class NewsReader {
     private static List<String> websites;
 
     public static void watch() {
-        for (String sub : websites) {
+        for (String website : websites) {
+            website= website.substring(0, website.lastIndexOf("/"));
             try {
-                watch(sub);
+                watch(website);
             } catch (Exception e) {
                 e.printStackTrace();
             }

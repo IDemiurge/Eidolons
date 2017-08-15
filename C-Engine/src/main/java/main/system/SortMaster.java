@@ -20,7 +20,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
-public class SortMaster {
+public class SortMaster<T> {
 
     private static Comparator<? super Entity> idSorter;
 
@@ -145,6 +145,11 @@ public class SortMaster {
     public static Comparator<? super Object> getSorterByExpression
      (Function<Object, Integer> function) {
         return Comparator.comparingInt(o -> function.apply(  o)).reversed();
+
+    }
+    public   Comparator<? super T> getSorterByExpression_
+     (Function<T, Integer> function) {
+        return Comparator.comparingInt(o -> function.apply((T)o)).reversed();
 
     }
 

@@ -91,6 +91,9 @@ public class UnitViewOptions {
             this.clockValue = obj.getIntParam(C_INITIATIVE);
             this.teamColor =
              GdxColorMaster.getColor(obj.getOwner().getFlagColor());
+            if (teamColor==null ){
+                teamColor= GdxColorMaster.NEUTRAL;
+            }
         }
     }
 }

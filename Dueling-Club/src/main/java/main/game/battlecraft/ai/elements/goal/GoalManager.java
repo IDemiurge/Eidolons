@@ -77,7 +77,8 @@ public class GoalManager extends AiHandler {
 
     public static List<GOAL_TYPE> getDefaultGoals() {
         return new LinkedList<>(Arrays.asList(new GOAL_TYPE[]{AiEnums.GOAL_TYPE.PREPARE,
-         AiEnums.GOAL_TYPE.DEFEND, AiEnums.GOAL_TYPE.ATTACK, AiEnums.GOAL_TYPE.WAIT,}));
+         AiEnums.GOAL_TYPE.ATTACK,  AiEnums.GOAL_TYPE.DEFEND,
+         GOAL_TYPE.PROTECT, AiEnums.GOAL_TYPE.WAIT,}));
     }
 
     private static void addEnemyGoals(List<GOAL_TYPE> list) {

@@ -120,7 +120,7 @@ public class SpellRadialManager {
                     null
             );
 
-            valueContainer.setChilds(object.getItems(source).stream()
+            valueContainer.setChildNodes(object.getItems(source).stream()
                     .map(el -> createNodeBranch(el, source, target))
                     .collect(Collectors.toList()));
 

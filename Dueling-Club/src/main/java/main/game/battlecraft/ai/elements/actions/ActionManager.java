@@ -181,10 +181,10 @@ public class ActionManager extends AiHandler {
             return action;
         }
 
-        actions = getActionSequenceConstructor().createActionSequences(new Goal(goal, ai, true), ai);
+        actions = getActionSequenceConstructor().createActionSequencesForGoal(new Goal(goal, ai, true), ai);
         if (ai.checkMod(AI_MODIFIERS.TRUE_BRUTE)) {
             goal = AiEnums.GOAL_TYPE.ATTACK;
-            actions.addAll(getActionSequenceConstructor().createActionSequences(new Goal(goal, ai, true), ai));
+            actions.addAll(getActionSequenceConstructor().createActionSequencesForGoal(new Goal(goal, ai, true), ai));
         }
         if (behaviorMode == null) {
             if (ParamAnalyzer.isFatigued(getUnit())) {

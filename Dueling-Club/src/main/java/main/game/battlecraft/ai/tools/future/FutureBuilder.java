@@ -13,11 +13,16 @@ import main.game.battlecraft.rules.combat.attack.Attack;
 import main.game.battlecraft.rules.combat.damage.DamageCalculator;
 import main.system.auxiliary.log.LogMaster;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FutureBuilder {
 
     public static final int LETHAL_DAMAGE = -666;
+    private static Map<String, Integer> cache = new HashMap<>();
+    private static Map<String, Integer> minCache = new HashMap<>();
+    private static Map<String, Integer> maxCache = new HashMap<>();
 
     public static int precalculateDamage(DC_ActiveObj active, Obj targetObj, boolean attack) {
         return precalculateDamage(active, targetObj, attack, null);
@@ -27,7 +32,12 @@ public class FutureBuilder {
                                          Boolean min_max_normal) {
         // TODO basically, I have to use a copy of the gamestate...! To make it
         // precise...
-        int damage = 0;
+        Map<String, Integer> cache = getCache(min_max_normal);
+
+        Integer damage = cache.get(active.getNameAndId() + targetObj.getNameAndId());
+        if (damage != null)
+            return damage;
+        damage = 0;
         if (!active.isConstructed()) {
             active.construct();
         }
@@ -39,14 +49,42 @@ public class FutureBuilder {
         for (Effect e : effects) {
             damage += getDamage(active, targetObj, e, min_max_normal);
         }
+        getCache(min_max_normal).put(active.getNameAndId() + targetObj.getNameAndId() , damage);
         return damage;
+    }
+
+    public static void clearCaches() {
+        getCache().clear();
+        getMinCache().clear();
+        getMaxCache().clear();
+    }
+
+    private static Map<String, Integer> getCache(Boolean min_max_normal) {
+        if (min_max_normal == null) {
+            return getCache();
+        } else {
+            return min_max_normal ? getMinCache() : getMaxCache();
+        }
+    }
+
+    private static Map<String, Integer> getCache() {
+        return cache;
+    }
+
+    private static Map<String, Integer> getMinCache() {
+        return minCache;
+    }
+
+    private static Map<String, Integer> getMaxCache() {
+        return maxCache;
     }
 
     public static int getDamage(DC_ActiveObj active, Obj targetObj, Effect e) {
         return getDamage(active, targetObj, e, null);
     }
-        public static int getDamage(DC_ActiveObj active, Obj targetObj, Effect e,
-                                    Boolean min_max_normal) {
+
+    public static int getDamage(DC_ActiveObj active, Obj targetObj, Effect e,
+                                Boolean min_max_normal) {
         int damage;
         Ref ref = active.getOwnerObj().getRef().getCopy();
         ref.setTarget(targetObj.getId());

@@ -24,9 +24,9 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class InitiativePanel extends Group {
     private final int maxSize = 25;
-    private final int visualSize = 8;
-    private final int imageSize = 96;
-    private final int offset = 2;
+    private final int visualSize = 10;
+    private final int imageSize = 104;
+    private final int offset = -12;
     private ImageContainer[] queue;
     private WidgetGroup queueGroup;
     private boolean cleanUpOn=false;
@@ -34,6 +34,7 @@ public class InitiativePanel extends Group {
     public InitiativePanel() {
         init();
         registerCallback();
+        resetZIndices();
     }
 
     private void registerCallback() {
@@ -46,10 +47,29 @@ public class InitiativePanel extends Group {
         GuiEventManager.bind(GuiEventType.UPDATE_GUI, obj -> {
             cleanUp();
         });
+        GuiEventManager.bind(GuiEventType.UNIT_VIEW_HOVER_ON, obj -> {
+            UnitView p = (UnitView) obj.get();
+            ImageContainer view = getIfExists(p.getCurId());
+            if (view!=null )
+            view.setZIndex(Integer.MAX_VALUE-1);
+        });
+        GuiEventManager.bind(GuiEventType.UNIT_VIEW_HOVER_OFF, obj -> {
+            resetZIndices();
+
+        });
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
             UnitView p = (UnitView) obj.get();
             removeView(p);
         });
+    }
+
+    private void resetZIndices() {
+        int i = 0;
+        for (ImageContainer view : queue) {
+            if (view != null) {
+                view.setZIndex(i++);
+            }
+        }
     }
 
     private void removeView(UnitView p) {

@@ -17,6 +17,7 @@ import main.game.logic.action.context.Context;
 import main.system.math.FuncMaster;
 import main.system.math.PositionMaster;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,8 +25,8 @@ import java.util.Map;
  */
 public class ThreatAnalyzer extends AiHandler {
 
-    Map<UnitAI, Map<Unit, Integer>> threatMemoryMap;
-    Map<UnitAI, Map<Unit, Integer>> grudgeMemoryMap;
+    Map<UnitAI, Map<Unit, Integer>> threatMemoryMap = new HashMap<>();
+//    Map<UnitAI, Map<Unit, Integer>> grudgeMemoryMap = new HashMap<>();
 
     public ThreatAnalyzer(AiMaster master) {
         super(master);
@@ -33,17 +34,29 @@ public class ThreatAnalyzer extends AiHandler {
 
     public float getRelativeThreat(UnitAI ai, Unit enemy) {
         int threat = getThreat(ai, enemy);
-        int selfPriority = getPriorityManager().getUnitPriority(null , ai.getUnit(), false);
+        int selfPriority = getPriorityManager().getUnitPriority(null, ai.getUnit(), false);
         return new Float(threat) / selfPriority;
     }
-        public int getThreat(UnitAI ai, Unit enemy) {
+
+    public int getThreat(UnitAI ai, Unit enemy) {
+        Integer threat = getMemoryMap(ai).get(enemy);
+        if (threat != null)
+            return threat;
         double distance = PositionMaster.getExactDistance(ai.getUnit().getCoordinates(), enemy.getCoordinates());
-        int threat = (int) Math.round(enemy.getIntParam(PARAMS.POWER) / distance);
+        threat =
+         (int) Math.round(enemy.getIntParam(PARAMS.POWER) / distance);
         if (enemy.getAI().getType().isRanged()) {
             threat += getRangedThreat(ai.getUnit(), enemy);
         }
-
+        getMemoryMap(ai).put(enemy, threat);
         return threat;
+    }
+
+    private Map<Unit, Integer> getMemoryMap(UnitAI ai) {
+        Map<Unit, Integer> map = threatMemoryMap.get(ai);
+        if (map == null )
+            threatMemoryMap.put(ai, new HashMap<>());
+        return  threatMemoryMap.get(ai);
     }
 
     public int getRangedThreat(Unit target, Unit unit) {
@@ -114,14 +127,23 @@ public class ThreatAnalyzer extends AiHandler {
                 // e.printStackTrace();
             }
         }
-
-        threat = FutureBuilder.precalculateDamage(attack, getUnit(), true) * factor;
-
+        DC_ActiveObj subAttack = (DC_ActiveObj) FuncMaster.getGreatestEntity(attack.getSubActions(), atk ->
+         FutureBuilder.precalculateDamage(attack, getUnit(), true));
+        DC_PriorityManager.toggleImplementation(new PriorityManagerImpl(getMaster()) {
+            @Override
+            public Unit getUnit() {
+                return enemy;
+            }
+        });
+        threat = DC_PriorityManager.getAttackPriority(subAttack, getUnit()) * factor;
+        DC_PriorityManager.toggleImplementation(null);
         // special attacks? dual wielding?
 
         int distance = 1 + PositionMaster.getDistance(getUnit(), enemy);
         threat /= distance;
-
+        main.system.auxiliary.log.LogMaster.log(1, getUnit() + " feels " +
+         threat +
+         " threat from " + enemy);
         return threat;
     }
 

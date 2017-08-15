@@ -187,7 +187,7 @@ public class WanderMaster {
             case WANDER:
                 return false;
             case STALK:
-            case GUARD:
+            case STAND_GUARD:
             case PATROL:
                 return true;
         }

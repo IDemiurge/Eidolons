@@ -57,16 +57,16 @@ public class ActionSequenceConstructor extends AiHandler {
     public List<ActionSequence> createActionSequences(UnitAI ai) {
         List<ActionSequence> list = new ArrayList<>();
         getActionSequenceConstructor().setPrioritizedCells(null);
-        boolean forced=false;
-        if (ai.getCurrentOrder()!=null )
+        boolean forced = false;
+        if (ai.getCurrentOrder() != null)
             forced = true;
         for (GOAL_TYPE type : GoalManager.getGoalsForUnit(ai)) {
             List<ActionSequence> sequences = null;
             try {
-                Goal goal=new Goal(type, null // ???
+                Goal goal = new Goal(type, null // ???
                  , ai);
                 goal.setForced(forced);
-                sequences = createActionSequences(goal, ai);
+                sequences = createActionSequencesForGoal(goal, ai);
                 list.addAll(sequences);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -76,11 +76,8 @@ public class ActionSequenceConstructor extends AiHandler {
         return list;
     }
 
-    private String getChronosPrefix() {
-        return "TIMED AI ACTION ";
-    }
 
-    public List<ActionSequence> createActionSequences(Goal goal, UnitAI ai) {
+    public List<ActionSequence> createActionSequencesForGoal(Goal goal, UnitAI ai) {
         List<ActionSequence> actionSequences = new LinkedList<>();
         List<DC_ActiveObj> actions = AiUnitActionMaster.getFullActionList(goal.getTYPE(), ai.getUnit());
         actions.addAll(addSubactions(actions));
@@ -106,7 +103,7 @@ public class ActionSequenceConstructor extends AiHandler {
                 }
                 Chronos.mark(getChronosPrefix() + string);
                 try {
-                    addSequences(task, actionSequences, action);
+                    actionSequences.addAll(getSequences(task, action));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -117,7 +114,8 @@ public class ActionSequenceConstructor extends AiHandler {
         return actionSequences;
     }
 
-    private void addSequences(Task task, List<ActionSequence> sequences, DC_ActiveObj active) {
+    private List<ActionSequence> getSequences(Task task, DC_ActiveObj active) {
+        List<ActionSequence> sequences = new LinkedList<>();
         Ref ref = task.getUnit().getRef().getCopy();
         Integer arg = TaskManager.checkTaskArgReplacement(task, active);
 //        if (arg == null) {
@@ -128,7 +126,7 @@ public class ActionSequenceConstructor extends AiHandler {
         Action action = AiActionFactory.newAction(active, ref);
         action.setTask(task);
         try {
-            newSequences = getSequences(action, task.getArg(), task);
+            newSequences = getSequencesWithPathsForAction(action, task.getArg(), task);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -137,9 +135,9 @@ public class ActionSequenceConstructor extends AiHandler {
         } else {
             // if no pathing is required/available [QUICK FIX]
             if (!action.canBeTargetedOnAny()) {
-                return;
+                return sequences;
             }
-            ActionSequence sequence = getSequence(action, task);
+            ActionSequence sequence = constructSingleActionSequence(action, task);
             if (sequence != null) {
                 if (active.isRanged()) {
                     sequences.addAll(AiUnitActionMaster.splitRangedSequence(sequence));
@@ -157,6 +155,7 @@ public class ActionSequenceConstructor extends AiHandler {
                 // return;
             }
         }
+        return sequences;
     }
 
 
@@ -169,7 +168,7 @@ public class ActionSequenceConstructor extends AiHandler {
     }
 
 
-    public List<ActionSequence> getSequences(Action action, Object arg, Task task) {
+    private List<ActionSequence> getSequencesWithPathsForAction(Action action, Object arg, Task task) {
         List<ActionSequence> list = new ArrayList<>();
         game = action.getRef().getGame();
         unit = action.getSource();
@@ -201,15 +200,15 @@ public class ActionSequenceConstructor extends AiHandler {
         // if (!singleAction)
         // if (ReasonMaster.getReasons(action).getOrCreate(0)==FILTER_REASON.FACING)
         if (singleAction) {
-            ActionSequence sequence = getSequence(action, task);
+            ActionSequence sequence = constructSingleActionSequence(action, task);
             if (sequence == null) {
                 return null;
             }
             list.add(sequence);
             return list;
         }
-        if (!task.isForced()) {
-            if (task.getType() != AiEnums.GOAL_TYPE.ATTACK && task.getType() != AiEnums.GOAL_TYPE.RETREAT
+        if (!task.isForced()) { //TODO REFACTOR
+            if (task.getType() != GOAL_TYPE.PROTECT && task.getType() != AiEnums.GOAL_TYPE.ATTACK && task.getType() != AiEnums.GOAL_TYPE.RETREAT
              && task.getType() != AiEnums.GOAL_TYPE.SEARCH && task.getType() != AiEnums.GOAL_TYPE.MOVE
              && !task.getType().isBehavior()) {
                 return null;
@@ -269,7 +268,7 @@ public class ActionSequenceConstructor extends AiHandler {
         for (ActionPath path : paths) {
             ActionSequence sequence = new ActionSequence(path.getActions(), task, task.getAI());
             if (action.getActive().isRanged()) {
-                List<Action> rangedAttackSequence = getAttackSequence(action, task);
+                List<Action> rangedAttackSequence = constructSingleAttackSequence(action, task);
                 if (rangedAttackSequence.isEmpty()) {
                     return list;
                 }
@@ -283,6 +282,7 @@ public class ActionSequenceConstructor extends AiHandler {
         return list;
     }
 
+    // now replaced with Atomic logic?
     private List<AiQuickItemAction> getRangedReloadAction(Action action) {
         Obj weapon = action.getActive().getRef().getObj(KEYS.RANGED);
         WEAPON_GROUP weapon_group = null;
@@ -313,6 +313,10 @@ public class ActionSequenceConstructor extends AiHandler {
         return list;
     }
 
+    private String getChronosPrefix() {
+        return "TIMED AI ACTION ";
+    }
+
     private List<DC_ActiveObj> getMoveActions(Action action) {
 
         // QUICK FIX
@@ -322,13 +326,13 @@ public class ActionSequenceConstructor extends AiHandler {
         return DC_MovementManager.getMoves(unit);
     }
 
-    public ActionSequence getSequence(Action targetAction, Task task) {
+    public ActionSequence constructSingleActionSequence(Action targetAction, Task task) {
         List<Action> actions = new ArrayList<>();
         UnitAI ai = task.getAI();
         targetAction.getRef().setID(KEYS.ACTIVE, targetAction.getActive().getId());
         switch (task.getType()) {
             case ATTACK: {
-                actions = getAttackSequence(targetAction, task); // only facing!
+                actions = constructSingleAttackSequence(targetAction, task); // only facing!
                 break;
             }
             case DEBUFF:
@@ -366,7 +370,7 @@ public class ActionSequenceConstructor extends AiHandler {
         return new ActionSequence(actions, task, ai);
     }
 
-    private List<Action> getAttackSequence(Action targetAction, Task task) {
+    private List<Action> constructSingleAttackSequence(Action targetAction, Task task) {
         List<Action> list = new ArrayList<>();
         if (task.getArg() instanceof Integer) {
             Integer id = (Integer) task.getArg();

@@ -108,7 +108,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             case ACTION:
                 Action action = AiActionFactory.newAction(arg.toString(), ai);
                 sequence = //new ActionSequence();
-                getActionSequenceConstructor().getSequence(action,
+                getActionSequenceConstructor().constructSingleActionSequence(action,
                  new Task(ai, goal, args[0]));
                 break;
             case ATTACK:

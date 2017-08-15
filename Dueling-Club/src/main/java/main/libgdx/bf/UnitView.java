@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Align;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.shaders.GrayscaleShader;
+import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,7 +22,9 @@ public class UnitView extends BaseView {
     protected Image clockImage;
     protected boolean mobilityState = true;//mobility state, temporary.
     protected boolean flickering;
-    protected Image emblem;
+    protected Image emblemImage;
+    protected Image emblemBorder;
+    protected Image modeImage;
     protected boolean greyedOut;
 
 
@@ -44,10 +47,16 @@ public class UnitView extends BaseView {
         this.initiativeIntVal = clockVal;
 
         if (emblem != null) {
-            this.emblem = new Image(emblem);
+            this.emblemImage = new Image(emblem);
             //TODO add sized team-colored border
-            this.emblem.setAlign(Align.bottomLeft);
-            addActor(this.emblem);
+            this.emblemImage.setAlign(Align.bottomLeft);
+            addActor(this.emblemImage);
+
+            emblemBorder= new Image(TextureCache.getOrCreateR(CellBorderManager.teamcolorPath));
+            emblemBorder.setBounds(emblemImage.getX()-6,emblemImage.getY()-6
+             , emblem.getRegionWidth()+10, emblem.getRegionHeight()+10);
+            addActor(emblemBorder);
+
         }
         if (clockTexture != null) {
             this.clockTexture = clockTexture;
@@ -57,6 +66,15 @@ public class UnitView extends BaseView {
             addActor(clockImage);
             addActor(initiativeLabel);
         }
+    }
+    protected void updateModeImage(String pathToImage) {
+        removeActor(modeImage);
+        if (pathToImage==null )
+            return ;
+        modeImage = new Image(TextureCache.getOrCreateR(pathToImage ));
+        addActor(this.modeImage);
+        modeImage.setVisible(true);
+        modeImage.setPosition(emblemImage.getX(),emblemImage.getY()+modeImage.getImageHeight());
     }
 
     @Override
@@ -89,12 +107,14 @@ public class UnitView extends BaseView {
 
     @Override
     public void act(float delta) {
-
+        super.act(delta);
         if (flickering) {
 
         }
-        super.act(delta);
+        alphaFluctuation(emblemBorder, delta);
+
     }
+
 
     @Override
     public void draw(Batch batch, float parentAlpha) {

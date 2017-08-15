@@ -146,14 +146,12 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
             if (!canFallUnconscious(unit)) {
             return toughness <= 0;
         }
-        if (toughness<=0){
             if (checkFallsUnconscious(unit))
             {
                 fallUnconscious(unit);
                 return false;
             }
-            return true;
-        }
+
         Integer max_toughness = unit.getIntParam(PARAMS.TOUGHNESS);
         if (barrier == null) {//  TODO some attacks may reduce the barrier...
             barrier = getDeathBarrier(unit);   // TODO + PARAMS.DEATH_BARRIER_MOD

@@ -38,29 +38,36 @@ public class RollMaster {
 
     public static final int DEFAULT_MIN_ROLL_PERC = 20;
     public final static String STD_MASS = "{source_C_Carrying_Weight}+{source_Weight};"
-            + "{target_C_Carrying_Weight}+{target_Weight}";
+     + "{target_C_Carrying_Weight}+{target_Weight}";
     public final static String STD_BODY_STRENGTH = "{Strength};{Strength}";
     public final static String STD_REFLEX = "{Agility};{target_Dexterity}";
     public final static String STD_ACCURACY = "{target_Dexterity};{Agility}";
+    public static final String STD_QUICK_WIT = "{Intelligence};{target_Intelligence}";
+    public static final String STD_FAITH = "{Charisma}+{Willpower};{spell_spell_difficulty}";
+    public static final String STD_DETECTION = "{target_Detection};{stealth}";
+    public static final String STD_STEALTH = "{Detection};{target_stealth}";
+    public static final String STD_DEFENSE = "{Attack};2*{target_Defense}";
+    public static final String STD_IMMATERIAL = "{Willpower};{target_Spellpower}";
+    public static final String STD_DISPEL = "{spell_spell_difficulty}+{source_Mastery}+{source_Spellpower};{target_spell_difficulty}+{summoner_Mastery}+{summoner_Spellpower}";
+    public static final String STD_UNLOCK = "{source_pick lock};{target_lock level}";
+    public static final String STD_DISARM_TRAP = "{source_trap_skill};{target_trap level}";
+    //TODO
+    public final static String STD_REACTION =
+     StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE_MODIFIER)
+      + ";" +
+      StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE_MODIFIER);
+
+    public static final String STD_FORCE =
+     StringMaster.getValueRefs(KEYS.SOURCE, PARAMS.STRENGTH, PARAMS.WEIGHT)
+      + ";" +
+      StringMaster.getValueRefs(KEYS.TARGET, PARAMS.STRENGTH, PARAMS.WEIGHT);
+
     private static final String STD_SPELL_ROLL = "{Mastery}+{Spellpower}+2*{Spell_SpellDifficulty}";
     // (fail;success)
     public final static String STD_MIND_AFFECTING = STD_SPELL_ROLL + ";"
-            + getSTD_SPELL_RESIST_ROLL("{Target_Willpower}+5*{Target_Spirit}");
-    private static final String STD_QUICK_WIT = "{Intelligence};{target_Intelligence}";
-    private static final String STD_FORTITUDE = STD_SPELL_ROLL + ";"
-            + getSTD_SPELL_RESIST_ROLL("3*{Target_Vitality}");
-
-    private static final String STD_FAITH = "{Charisma}+{Willpower};{spell_spell_difficulty}";
-    private static final String STD_DETECTION = "{target_Detection};{stealth}";
-    private static final String STD_STEALTH = "{Detection};{target_stealth}";
-    private static final String STD_DEFENSE = "{Attack};2*{target_Defense}";
-
-    private static final String STD_IMMATERIAL = "{Willpower};{target_Spellpower}";
-    private static final String STD_DISPEL = "{spell_spell_difficulty}+{source_Mastery}+{source_Spellpower};{target_spell_difficulty}+{summoner_Mastery}+{summoner_Spellpower}";
-
-    private static final String STD_UNLOCK = "{source_pick lock};{target_lock level}";
-    private static final String STD_DISARM_TRAP = "{source_trap_skill};{target_trap level}";
-
+     + getSTD_SPELL_RESIST_ROLL("{Target_Willpower}+5*{Target_Spirit}");
+    public static final String STD_FORTITUDE = STD_SPELL_ROLL + ";"
+     + getSTD_SPELL_RESIST_ROLL("3*{Target_Vitality}");
     private static String logString;
 
     private static int rolledValue;
@@ -76,7 +83,12 @@ public class RollMaster {
     public static String getStdFormula(ROLL_TYPES roll_type, Boolean success) {
         String formulas = "";
         switch (roll_type) {
+            case REACTION:
+                formulas = STD_REACTION;
+                break;
             case FORCE:
+                formulas = STD_FORCE;
+                break;
             case DISARM_TRAP:
                 formulas = STD_DISARM_TRAP;
                 break;
@@ -203,22 +215,22 @@ public class RollMaster {
         }
 
         Object[] args = {roll_type.getName(), ref.getSourceObj().getName(),
-                ref.getTargetObj().getName()};
+         ref.getTargetObj().getName()};
 
         if (roll_type.isLogToTop()) {
             args = new Object[]{main.system.text.LogManager.WRITE_TO_TOP, roll_type.getName(),
-                    ref.getSourceObj().getName(), ref.getTargetObj().getName()};
+             ref.getSourceObj().getName(), ref.getTargetObj().getName()};
         }
         LogEntryNode entry = ref.getGame().getLogManager().newLogEntryNode(
-                result ? ENTRY_TYPE.ROLL_LOST : ENTRY_TYPE.ROLL_WON, args);
+         result ? ENTRY_TYPE.ROLL_LOST : ENTRY_TYPE.ROLL_WON, args);
         ref.getGame().getLogManager().log(RollMaster.logString);
         ref.getGame().getLogManager().doneLogEntryNode();
-if (CoreEngine.isPhaseAnimsOn())
-        if (ref.getActive() != null) {
-            ANIM anim = new EffectAnimation((DC_ActiveObj) ref.getActive());
-            anim.addPhase(new AnimPhase(PHASE_TYPE.ROLL, roll));
-            entry.setLinkedAnimation(anim);
-        }
+        if (CoreEngine.isPhaseAnimsOn())
+            if (ref.getActive() != null) {
+                ANIM anim = new EffectAnimation((DC_ActiveObj) ref.getActive());
+                anim.addPhase(new AnimPhase(PHASE_TYPE.ROLL, roll));
+                entry.setLinkedAnimation(anim);
+            }
 
         // if (ref.getActive().getAnimation() != null)
         // entry.setLinkedAnimation(ref.getActive().getAnimation().getFilteredClone(
@@ -234,6 +246,9 @@ if (CoreEngine.isPhaseAnimsOn())
         return roll(roll_type, success, fail, ref, logAppendix, rollSource, null);
     }
 
+    /**
+     * @return true if {failure} formula rolls more, false otherwise
+     */
     public static boolean roll(ROLL_TYPES roll_type, String success, String fail, Ref ref,
                                String logAppendix, String rollSource, Boolean logged) {
         Obj source = ref.getSourceObj();
@@ -290,8 +305,8 @@ if (CoreEngine.isPhaseAnimsOn())
         }
         String rollTarget = rolledValue2 + " out of " + max2;
         logString = target.getName() + ((result) ? " fails" : " wins") + " a "
-                + roll_type.getName() + " roll with " + rollTarget + " vs " + source.getName()
-                + "'s " + rollSource;
+         + roll_type.getName() + " roll with " + rollTarget + " vs " + source.getName()
+         + "'s " + rollSource;
 
         if (logAppendix != null) {
             if (isAppendixAdded(logAppendix, result)) {
@@ -328,7 +343,7 @@ if (CoreEngine.isPhaseAnimsOn())
 
     public static boolean isAppendixAdded(String logAppendix, Boolean result) {
         return (result && logAppendix.contains(getSuccessAppendixIdentifier()))
-                || (!result && !logAppendix.contains(getSuccessAppendixIdentifier()));
+         || (!result && !logAppendix.contains(getSuccessAppendixIdentifier()));
     }
 
     public static String getSuccessAppendixIdentifier() {
@@ -400,7 +415,7 @@ if (CoreEngine.isPhaseAnimsOn())
         }
         if (!result) {
             ref.getGame().getLogManager().logAlert(
-                    unit.getName() + " is immune to " + rollType.getName() + " !");
+             unit.getName() + " is immune to " + rollType.getName() + " !");
         }
         return result;
     }
@@ -427,7 +442,7 @@ if (CoreEngine.isPhaseAnimsOn())
             String varPart = VariableManager.getVarPart(s);
             if (StringMaster.isEmpty(varPart)) {
                 rolls.add(new Roll(new EnumMaster<ROLL_TYPES>().retrieveEnumConst(ROLL_TYPES.class,
-                        s), null, null));
+                 s), null, null));
                 continue;
             }
             s = s.replace(varPart, "");
@@ -467,12 +482,12 @@ if (CoreEngine.isPhaseAnimsOn())
 
     public static Boolean makeReactionRoll(Unit unit, DC_ActiveObj action, DC_ActiveObj attack) {
         String fail = StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE_MODIFIER) + "/"
-                + (1 + action.getIntParam(PARAMS.AP_COST)) + "*"
-                + getDexterousModifier(unit, action);
+         + (1 + action.getIntParam(PARAMS.AP_COST)) + "*"
+         + getDexterousModifier(unit, action);
 
         String success = StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE_MODIFIER) + "/"
-                + (1 + attack.getIntParam(PARAMS.CP_COST)) + "*"
-                + getVigilanceModifier(unit, action);
+         + (1 + attack.getIntParam(PARAMS.CP_COST)) + "*"
+         + getVigilanceModifier(unit, action);
         String successTooltip = "to avoid Attack of Opportunity";
 
         Roll dex = new Roll(GenericEnums.ROLL_TYPES.REACTION, success, fail, 25);

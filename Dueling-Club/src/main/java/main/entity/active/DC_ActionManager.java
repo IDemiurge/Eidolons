@@ -677,6 +677,9 @@ if (RuleMaster.checkFeature(FEATURE.DUAL_ATTACKS))
         }
 
         actives.add(getOrCreateAction(SEARCH_MODE, unit));
+//  TODO condition?      if (unit.isHero())
+        actives.add(getOrCreateAction(StringMaster.getWellFormattedString(
+         STD_SPEC_ACTIONS.Guard_Mode.name()), unit));
 
         // for (Entity e : LockMaster.getObjectsToUnlock(unit)) {
         // actives.add(getUnlockAction(unit, e));
@@ -991,7 +994,7 @@ public String toString() {
     }
 
     public enum STD_SPEC_ACTIONS {
-        Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Watch, Wait
+        Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode,Guard_Mode, Watch, Wait
     }
 
     public enum WEAPON_ATTACKS {

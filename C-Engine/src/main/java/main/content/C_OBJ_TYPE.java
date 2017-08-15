@@ -30,6 +30,8 @@ public class C_OBJ_TYPE implements OBJ_TYPE {
             DC_TYPE.BF_OBJ, DC_TYPE.CHARS, DC_TYPE.TERRAIN, DC_TYPE.ARMOR,
             DC_TYPE.WEAPONS);
 
+    public static final C_OBJ_TYPE XML_TYPES = new C_OBJ_TYPE(DC_TYPE.ABILS,DC_TYPE.DIALOGUE);
+
     private DC_TYPE[] TYPES;
 
     public C_OBJ_TYPE(DC_TYPE... TYPES) {

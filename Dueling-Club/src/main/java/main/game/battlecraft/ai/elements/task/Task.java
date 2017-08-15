@@ -1,6 +1,7 @@
 package main.game.battlecraft.ai.elements.task;
 
 import main.content.enums.system.AiEnums.GOAL_TYPE;
+import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 
@@ -53,8 +54,8 @@ public class Task {
         return unit;
     }
 
-    public Unit getUnitArg() {
-        return (Unit) getUnit().getGame().getObjectById(
+    public Obj getObjArg() {
+        return   getUnit().getGame().getObjectById(
          (Integer) getArg());
     }
 

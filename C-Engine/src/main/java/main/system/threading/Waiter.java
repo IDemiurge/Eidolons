@@ -48,12 +48,12 @@ public class Waiter {
                         // makeWakeupNeeded();
                         // lock.notifyAll();
                     }
-                    synchronized (monitor){
-                    try {
-                        monitor.wait(PING_PERIOD);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    synchronized (monitor) {
+                        try {
+                            monitor.wait(PING_PERIOD);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
@@ -70,7 +70,7 @@ public class Waiter {
 
     public synchronized Object startWaiting(Long timeLimit) {
         LogMaster.log(LogMaster.WAITING_DEBUG, operation.name() + " WAITING STARTED : " + input
-                + interrupted);
+         + interrupted);
         this.timeLimit = timeLimit;
 
         n++;
@@ -97,19 +97,27 @@ public class Waiter {
                     timeElapsed = Chronos.getTimeElapsedForMark(getId());
                 }
             }
-            lock.lock();
-            try {
-                waiting.await();
-            } catch (InterruptedException e1) {
+            if (timeLimit != null)
+                try {
+                    wait(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            else {
+                lock.lock();
+                try {
+                    waiting.await();
+                } catch (InterruptedException e1) {
 
-                e1.printStackTrace();
-            } finally {
-                lock.unlock();
+                    e1.printStackTrace();
+                } finally {
+                    lock.unlock();
+                }
             }
         }
 
         LogMaster.log(LogMaster.WAITING_DEBUG, operation.name()
-                + " WAIT LOOP EXITED WITH : " + input);
+         + " WAIT LOOP EXITED WITH : " + input);
         lock.lock();
         waiting.signal();
         lock.unlock();
@@ -148,7 +156,7 @@ public class Waiter {
         lock.unlock();
 
         LogMaster.log(LogMaster.WAITING_DEBUG, "WAITER INTERRUPTED: "
-                + operation.name());
+         + operation.name());
     }
 
 }

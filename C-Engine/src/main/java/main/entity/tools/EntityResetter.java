@@ -26,12 +26,12 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
         getPropCache().clear();
         getEntity().getIntegerMap(false).clear(); // TODO [OPTIMIZED] no need to clear
         // type's map?
-        if (getEntity(). getModifierMaps() != null) {
-            getEntity(). getModifierMaps().clear(); // remember? For interesting spells or log
+        if (getEntity().getModifierMaps() != null) {
+            getEntity().getModifierMaps().clear(); // remember? For interesting spells or log
         }
         // info...
-        if (!getType(). checkProperty(G_PROPS.DISPLAYED_NAME)){
-            getEntity(). setProperty(G_PROPS.DISPLAYED_NAME, getName(), true);
+        if (!getType().checkProperty(G_PROPS.DISPLAYED_NAME)) {
+            getEntity().setProperty(G_PROPS.DISPLAYED_NAME, getName(), true);
         }
 
         if (this.getEntity().getOwner() != getEntity().getOriginalOwner()) {
@@ -39,7 +39,7 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
              + ": original owner restored!");
         }
 
-       getEntity().setOwner(getEntity().getOriginalOwner());
+        getEntity().setOwner(getEntity().getOriginalOwner());
 
         HashSet<PARAMETER> params = new HashSet<>(getEntity().getParamMap().keySet());
         params.addAll(getType().getParamMap().keySet());
@@ -56,20 +56,21 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
 
             String baseValue = getType().getParam(p);
             String value = getParam(p);
+            getEntity().getValueCache().put(p, value);
             if (!value.equals(baseValue)) {
                 String amount = getType().getParam(p);
                 if (getEntity().isTypeLinked()) {
                     getType().getParamMap().put(p, value);
                 }
-                getEntity().getParamMap().  put(p, amount);
+                getEntity().getParamMap().put(p, amount);
                 if (game.isStarted() && !game.isSimulation()) {
                     if (p.isDynamic()) {
-                        getEntity(). fireParamEvent(p, amount, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
+                        getEntity().fireParamEvent(p, amount, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
                     }
                 }
             }
         }
-        HashSet<PROPERTY> props = new HashSet<>(getEntity(). getPropMap().keySet());
+        HashSet<PROPERTY> props = new HashSet<>(getEntity().getPropMap().keySet());
         props.addAll(getType().getPropMap().keySet());
         for (PROPERTY p : props) {
 
@@ -87,6 +88,7 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
                 }
             }
             String value = getProperty(p);
+            getEntity().getValueCache().put(p, value);
             if (!value.equals(baseValue)) {
                 if (getEntity().isTypeLinked()) {
                     getType().getPropMap().put(p, value);

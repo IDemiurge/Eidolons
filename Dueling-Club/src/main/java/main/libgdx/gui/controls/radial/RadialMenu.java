@@ -71,7 +71,7 @@ public class RadialMenu extends Group {
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setPosition(v2.x, v2.y);
-        closeButton.setChilds(nodes);
+        closeButton.setChildNodes(nodes);
 
         setParents(closeButton, null);
         if (closeButton.getChildren().size < 1) {
@@ -82,7 +82,7 @@ public class RadialMenu extends Group {
 
     private void setParents(RadialValueContainer el, RadialValueContainer parent) {
         el.setParent(parent);
-        el.getChilds().forEach(inn -> setParents(inn, el));
+        el.getChildNodes().forEach(inn -> setParents(inn, el));
     }
 
     private void setCurrentNode(RadialValueContainer node) {
@@ -90,29 +90,29 @@ public class RadialMenu extends Group {
         addActor(node);
         currentNode = node;
         updateCallbacks();
-        currentNode.getChilds().forEach(this::addActor);
+        currentNode.getChildNodes().forEach(this::addActor);
         currentNode.setChildVisible(true);
         updatePosition();
         setVisible(true);
     }
 
     private void updatePosition() {
-        int step = 360 / currentNode.getChilds().size();
+        int step = 360 / currentNode.getChildNodes().size();
         int pos;
 
-        double coefficient = currentNode.getChilds().size() > 6 ? 2 : 1.5;
+        double coefficient = currentNode.getChildNodes().size() > 6 ? 2 : 1.5;
 
-        if (currentNode.getChilds().size() > 10) {
+        if (currentNode.getChildNodes().size() > 10) {
             coefficient = 2.5;
         }
         boolean makeSecondRing = false;
-        if (currentNode.getChilds().size() > 15) {
+        if (currentNode.getChildNodes().size() > 15) {
             makeSecondRing = true;
             coefficient = 3.5;
         }
 
         radius = (int) (72 * coefficient);
-        final List<RadialValueContainer> childs = currentNode.getChilds();
+        final List<RadialValueContainer> childs = currentNode.getChildNodes();
         for (int i = 0; i < childs.size(); i++) {
             final RadialValueContainer valueContainer = childs.get(i);
             int r = radius;
@@ -126,7 +126,7 @@ public class RadialMenu extends Group {
         }
     }
 
-/*    final List<RadialValueContainer> childs = currentNode.getChilds();
+/*    final List<RadialValueContainer> childs = currentNode.getChildNodes();
     final int length = childs.size() * (step+1);
         for (int i = 90, c = 0; i <= length; i += step, c++) {
         final RadialValueContainer valueContainer = childs.get(c);
@@ -144,8 +144,8 @@ public class RadialMenu extends Group {
         if (currentNode.getParent() != null) {
             currentNode.bindAction(() -> setCurrentNode(currentNode.getParent()));
         }
-        for (final RadialValueContainer child : currentNode.getChilds()) {
-            if (child.getChilds().size() > 0) {
+        for (final RadialValueContainer child : currentNode.getChildNodes()) {
+            if (child.getChildNodes().size() > 0) {
                 child.bindAction(() -> setCurrentNode(child));
             } else {
                 Runnable action = child.getClickAction();

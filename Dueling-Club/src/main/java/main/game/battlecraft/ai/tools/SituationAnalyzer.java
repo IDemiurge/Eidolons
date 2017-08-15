@@ -51,8 +51,8 @@ public class SituationAnalyzer extends AiHandler {
     }
 
     public int getMeleeDangerFactor(Unit unit, boolean adjacentOnly, boolean now) {
-        List<? extends Entity> units = (!adjacentOnly) ? Analyzer.getAdjacentEnemies(unit, false)
-         : Analyzer.getMeleeEnemies(unit);
+        List<? extends Entity> units = ( adjacentOnly) ? Analyzer.getMeleeEnemies(unit)
+         : Analyzer.getVisibleEnemies(unit.getAI());
         int factor = 0;
         for (Entity e : units) {
             Unit enemy = (Unit) e;
@@ -61,7 +61,8 @@ public class SituationAnalyzer extends AiHandler {
             LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Melee threat " + meleeThreat + " from " + enemy.getName());
         }
 
-        int mod = getConstInt(AiConst.DANGER_RANGED_BASE) - ParamPriorityAnalyzer.getUnitLifeFactor(unit);
+        int mod = getConstInt(AiConst.DANGER_MELEE_BASE)
+         - ParamPriorityAnalyzer.getUnitLifeFactor(unit) ;
         LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Melee threat mod " + mod + " for " + unit.getName());
 
         if (mod != 0) {
@@ -110,5 +111,13 @@ public class SituationAnalyzer extends AiHandler {
                 }
         }
         return false;
+    }
+
+    public int getDangerFactor(Unit unit) {
+        return getMeleeDangerFactor(unit)+getRangedDangerFactor(unit);
+    }
+
+    public int getTimeModifier() {
+        return getGame().getRules().getTimeRule().getTimePercentageRemaining();
     }
 }
