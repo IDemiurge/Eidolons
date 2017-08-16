@@ -25,6 +25,7 @@ public class BaseView extends Group implements Borderable {
     protected float scaledWidth;
     protected float scaledHeight;
     protected boolean hovered;
+    private boolean active;
 
 
     public BaseView(UnitViewOptions o) {
@@ -166,5 +167,13 @@ public class BaseView extends Group implements Borderable {
 
     public void setHovered(boolean hovered) {
         this.hovered = hovered;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }

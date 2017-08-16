@@ -21,6 +21,7 @@ import java.util.List;
  * Created by JustMe on 8/10/2017.
  */
 public class GuardRule {
+    public static final boolean on = false;
 
     public static BattleFieldObject checkTargetChanged(DC_ActiveObj action) {
 
@@ -31,9 +32,8 @@ public class GuardRule {
         for (Unit unit : units) {
             if (unit.isAlliedTo(target.getOwner())) {
                 if (unit.getMode() == STD_MODES.GUARDING
-                 || unit.checkStatus(STATUS.GUARDING))
-                {
-                    Ref ref= Ref.getCopy(action.getRef() );
+                 || unit.checkStatus(STATUS.GUARDING)) {
+                    Ref ref = Ref.getCopy(action.getRef());
                     ref.setTarget(target.getId());
                     if (!SneakRule.checkSneak(ref))
                         guards.add(unit);
@@ -42,7 +42,8 @@ public class GuardRule {
         }
         //add special defenders - adjacent or in line
         //TODO sort
-        for (Unit guard : guards) { if (guard==target) continue;
+        for (Unit guard : guards) {
+            if (guard == target) continue;
             if (action.isAttackAny()) {
                 if (action.isRanged()) {
                     if (checkDefenderTakesMissile(action, guard))
@@ -58,19 +59,20 @@ public class GuardRule {
             }
         }
         //what kind of animation would there be?
-        return null ;
+        return null;
     }
+
     private static boolean checkDefenderTakesAttack(Attack attack, Unit guard) {
-        Ref ref=   Ref.getCopy(attack.getRef());
+        Ref ref = Ref.getCopy(attack.getRef());
         ref.setTarget(guard.getId());
-        String success= StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE_MODIFIER)
-         +"*(100+" +RollMaster.getVigilanceModifier(guard, attack.getAction())+
-         ")/100/3 "   ;
-        String fail=StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE_MODIFIER)+
-         "*(100+" +RollMaster.getDexterousModifier(guard, attack.getAction())+
-         ")/100/"+attack.getAction().getIntParam(PARAMS.AP_COST);
-        String log=" to defend "+attack.getAttackedUnit().getName() +
-         " against " +attack.getAction().getName();
+        String success = StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE_MODIFIER)
+         + "*(100+" + RollMaster.getVigilanceModifier(guard, attack.getAction()) +
+         ")/100/3 ";
+        String fail = StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE_MODIFIER) +
+         "*(100+" + RollMaster.getDexterousModifier(guard, attack.getAction()) +
+         ")/100/" + attack.getAction().getIntParam(PARAMS.AP_COST);
+        String log = " to defend " + attack.getAttackedUnit().getName() +
+         " against " + attack.getAction().getName();
         boolean result = !RollMaster.roll(ROLL_TYPES.REACTION, success, fail, ref, log);
 //        boolean result = RollMaster.roll(ROLL_TYPES.REACTION, ref);
 

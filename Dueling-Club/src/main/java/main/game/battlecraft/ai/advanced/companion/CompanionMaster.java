@@ -2,9 +2,11 @@ package main.game.battlecraft.ai.advanced.companion;
 
 import main.content.DC_ValueManager.VALUE_GROUP;
 import main.content.PARAMS;
+import main.content.PROPS;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
+import main.system.auxiliary.EnumMaster;
 
 public class CompanionMaster {
 
@@ -25,7 +27,12 @@ public class CompanionMaster {
     }
 
     private static AI_TYPE getAiType(Unit hero) {
-        AI_TYPE type = AI_TYPE.NORMAL;
+        AI_TYPE type =  new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class,
+         hero.getProperty(PROPS.AI_TYPE));
+        if (type!=null ){
+            main.system.auxiliary.log.LogMaster.log(1, hero.getName() + "'s Ai Type is pre-set: " + type);
+            return type;
+        }
         int maxWeight = 0;
         int total = 0;
         for (AI_TYPE v : AI_TYPE.values()) {
@@ -39,15 +46,17 @@ public class CompanionMaster {
                 type = v;
             }
         }
-        int average = total / AI_TYPE.values().length;
-        if (average > maxWeight)
-            type = AI_TYPE.NORMAL;
+//        int average = total / AI_TYPE.values().length;
+//        if (average > maxWeight/2)
+//            type = AI_TYPE.NORMAL;
         main.system.auxiliary.log.LogMaster.log(1, hero.getName() + "'s Ai Type chosen: " + type);
         return type;
     }
 
     private static int getWeight(AI_TYPE v, Unit hero) {
         switch (v) {
+            case NORMAL:
+                return hero.calculatePower();
             case BRUTE:
                 return hero.getSumOfParams(PARAMS.ATTACK,
                  PARAMS.OFF_HAND_ATTACK, PARAMS.STRENGTH,
@@ -55,7 +64,7 @@ public class CompanionMaster {
                  - hero.getSumOfParams(PARAMS.STEALTH, PARAMS.INTELLIGENCE)
                  ;
             case SNEAK:
-                return 2 * hero.getIntParam(PARAMS.STEALTH);
+                return   hero.getIntParam(PARAMS.STEALTH);
             case TANK:
                 return hero.getSumOfParams(PARAMS.VITALITY, PARAMS.VITALITY,
                  PARAMS.WILLPOWER, PARAMS.ARMOR, PARAMS.STRENGTH) / 3

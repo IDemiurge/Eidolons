@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public class AtomicAi extends AiHandler {
 
     private boolean hotzoneMode;
-    private boolean on;
+    private boolean on=true;
 
     public AtomicAi(AiMaster master) {
         super(master);
@@ -346,12 +346,12 @@ public class AtomicAi extends AiHandler {
 
         if (distance > maxDistance && distance < 999) {
             return true;
-        }
+        } if (distance<=2) return false;
         if (ai.getGroup() != null) {
             if (ai.getGroup().getMembers().size() > 8) {
                 return true;
             }
-        }
+        } // check unit is negligible
         Double average = ai.getGroup().getMembers().stream().collect(
          Collectors.averagingInt((t) -> t.getIntParam(PARAMS.POWER)));
         if (ai.getUnit().getIntParam(PARAMS.POWER) < average / 2) {

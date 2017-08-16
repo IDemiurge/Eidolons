@@ -10,6 +10,8 @@ import main.content.values.properties.PROPERTY;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
@@ -73,7 +75,14 @@ public class UnitViewTooltipFactory {
                     values.add(activationTooltip);
                 }
             }
-            if (!hero.isMine())
+
+//            if (VisionManager.isVisibilityOn()){
+                if ( RuleMaster.isRuleOn(RULE.VISIBILITY)){
+                    addParamStringToValues(hero, values, PARAMS.LIGHT_EMISSION);
+                    addParamStringToValues(hero, values, PARAMS.ILLUMINATION);
+                    addParamStringToValues(hero, values, PARAMS.CONCEALMENT);
+                }
+           if (!hero.isMine())
                 if (!hero.getGame().isDebugMode())
                     if (hero.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) {
                         final ValueContainer nameContainer = new ValueContainer(hero.getNameIfKnown(), "");
@@ -100,9 +109,6 @@ public class UnitViewTooltipFactory {
 //                    outlineContainer.setNameAlignment(Align.left);
 //                    values.add(outlineContainer);
 
-                        addParamStringToValues(hero, values, PARAMS.LIGHT_EMISSION);
-                        addParamStringToValues(hero, values, PARAMS.ILLUMINATION);
-                        addParamStringToValues(hero, values, PARAMS.CONCEALMENT);
                         return values;
                     }
             final ValueContainer nameContainer = new ValueContainer(hero.getName(), "");

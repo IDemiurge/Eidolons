@@ -13,7 +13,7 @@ import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiCons
     //technical
     DEFAULT_PRUNE_SIZE(5),
     DEFAULT_PRIORITY(100),
-    DEFAULT_ATTACK_PRIORITY(100),
+    DEFAULT_ATTACK_PRIORITY(250),
 
     TURN_,
     SEQUENCE_LENGTH_PENALTY,

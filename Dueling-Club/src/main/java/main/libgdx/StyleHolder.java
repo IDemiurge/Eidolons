@@ -24,6 +24,7 @@ public class StyleHolder {
     private static final String UP = "_up";
     private static final String CHECKED = "_down";
     private static final FONT DEFAULT_FONT = FONT.MAIN;
+    private static final FONT ALT_FONT = FONT.NYALA;
     private static final int DEFAULT_SIZE = 14;
     private static Label.LabelStyle defaultLabelStyle;
     private static Label.LabelStyle avqLabelStyle;
@@ -45,10 +46,16 @@ public class StyleHolder {
         }
         return sizeLabelStyleMap.get(size);
     }
-        public static Label.LabelStyle getDefaultLabelStyle(Color color) {
+    public static Label.LabelStyle getDefaultLabelStyle(Color color) {
+        return getLabelStyle(DEFAULT_FONT, color);
+    }
+    public static Label.LabelStyle getAltLabelStyle(Color color) {
+        return getLabelStyle(ALT_FONT, color);
+    }
+        public static Label.LabelStyle getLabelStyle(FONT font, Color color) {
         if (!colorLabelStyleMap.containsKey(color)) {
             Label.LabelStyle style = new Label.LabelStyle
-             (getFont(DEFAULT_FONT, DEFAULT_COLOR, DEFAULT_SIZE ), color);
+             (getFont(font, DEFAULT_COLOR, DEFAULT_SIZE ), color);
             style.font.getData().markupEnabled = true;
             colorLabelStyleMap.put(color, style);
         }
@@ -78,9 +85,9 @@ public class StyleHolder {
     public static Label.LabelStyle getAVQLabelStyle() {
         if (avqLabelStyle == null) {
             avqLabelStyle = new Label.LabelStyle(new BitmapFont(
-//             new FileHandle(
-//              PathFinder.getFontPath()+ FONT.AVQ.path
-//             )
+             new FileHandle(
+              PathFinder.getFontPath()+ FONT.AVQ.path
+             )
             ),
              DEFAULT_COLOR);
         }

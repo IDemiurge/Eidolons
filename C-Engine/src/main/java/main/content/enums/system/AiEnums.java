@@ -34,6 +34,10 @@ public class AiEnums {
         BRUTE,
         SNEAK,
         TANK,
+        BRAWLER,
+        ASSASSIN,
+        GUARD,
+
         CASTER_MELEE,
         CASTER(true),
         CASTER_SUPPORT(true),

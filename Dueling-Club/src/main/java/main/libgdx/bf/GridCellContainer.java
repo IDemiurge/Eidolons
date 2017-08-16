@@ -84,14 +84,11 @@ public class GridCellContainer extends GridCell {
     @Override
     public void act(float delta) {
         super.act(delta);
-
-        int i =  getChildren().size;
         for (GridUnitView actor : getUnitViews()) {
             if (actor.isHovered())
                 actor.setZIndex(Integer.MAX_VALUE - 1);
-//            else
-//                actor.setZIndex(i);
-            i++;
+            else if (actor.isActive())
+                    actor.setZIndex(Integer.MAX_VALUE - 2);
         }
     }
 

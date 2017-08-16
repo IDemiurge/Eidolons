@@ -21,6 +21,7 @@ import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.anims.std.DeathAnim;
+import main.libgdx.bf.light.ShadowMap;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallback;
@@ -60,6 +61,8 @@ public class GridPanel extends Group {
     private int rows;
     private LightingManager lightingManager;
     private AnimMaster animMaster;
+    private ShadowMap shadowMap;
+    private boolean shadowMapOn=true;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -202,9 +205,10 @@ public class GridPanel extends Group {
                 ((GridCellContainer) view.getParent()).popupUnitView(view);
             }
 
+            unitMap.values().stream().forEach(v -> v.setActive(false));
+            view.setActive(true);
             if (hero.isMine()) {
                 GuiEventManager.trigger(SHOW_GREEN_BORDER, view);
-
                 GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL, new PanelActionsDataSource((Unit) hero));
             } else {
                 GuiEventManager.trigger(SHOW_RED_BORDER, view);
@@ -318,6 +322,11 @@ public class GridPanel extends Group {
     }
 
     private void createUnitsViews(DequeImpl<BattleFieldObject> units) {
+        if (shadowMapOn)
+        {
+            shadowMap = new ShadowMap(this);
+            addActor(shadowMap);
+        }
         lightingManager = new LightingManager(units, rows, cols);
 
         Map<Coordinates, List<BattleFieldObject>> map = new HashMap<>();
@@ -355,8 +364,8 @@ public class GridPanel extends Group {
         }
         GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
             Unit unit = (Unit) obj.get();
-            UnitView view = (UnitView) unitMap .get(unit);
-            if (view!=null ) {
+            UnitView view = (UnitView) unitMap.get(unit);
+            if (view != null) {
                 if (unit.getModeFinal() == null || unit.getModeFinal() == STD_MODES.NORMAL)
                     view.updateModeImage(null);
                 else
@@ -447,7 +456,8 @@ public class GridPanel extends Group {
                 }
             }
         }
-        animMaster.setZIndex(Integer.MAX_VALUE);
+        shadowMap.setZIndex(Integer.MAX_VALUE-2);
+        animMaster.setZIndex(Integer.MAX_VALUE-1);
     }
 
     public Map<BattleFieldObject, BaseView> getUnitMap() {
@@ -456,6 +466,10 @@ public class GridPanel extends Group {
 
     public int getCols() {
         return cols;
+    }
+
+    public GridCellContainer[][] getCells() {
+        return cells;
     }
 
     public int getRows() {

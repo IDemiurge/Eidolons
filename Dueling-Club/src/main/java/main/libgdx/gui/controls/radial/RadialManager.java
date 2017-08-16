@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 
 import static main.libgdx.texture.TextureCache.getOrCreateGrayscaleR;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
+import static main.system.GuiEventType.GAME_FINISHED;
 
 public class RadialManager {
 
@@ -110,6 +111,12 @@ public class RadialManager {
     }
 
     public static List<RadialValueContainer> createNew(DC_Obj target) {
+
+        try {
+            GuiEventManager.trigger(GAME_FINISHED, DC_Game.game);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         List<RadialValueContainer> list = new LinkedList<>();
         if (target instanceof Unit) {
             list.add(getExamineNode(target));

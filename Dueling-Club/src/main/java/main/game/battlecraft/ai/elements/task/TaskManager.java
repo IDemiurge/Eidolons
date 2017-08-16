@@ -14,6 +14,9 @@ import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.Analyzer;
+import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.RULE;
+import main.game.battlecraft.rules.combat.attack.GuardRule;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 
@@ -209,7 +212,9 @@ public class TaskManager extends AiHandler {
                 targets = Analyzer.getWaitUnits(ai);
                 break;
             case PROTECT:
-                targets = Analyzer.getProtectCells(ai);
+                if (RuleMaster.isRuleOn(RULE.GUARD))
+                    if (GuardRule.on)
+                        targets = Analyzer.getProtectCells(ai);
                 break;
 
             case COATING:

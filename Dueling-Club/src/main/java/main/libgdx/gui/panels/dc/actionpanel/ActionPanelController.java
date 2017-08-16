@@ -2,6 +2,7 @@ package main.libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
 import main.system.GuiEventManager;
 
@@ -60,7 +61,9 @@ public class ActionPanelController extends Group {
             final ActiveQuickSlotsDataSource source = (ActiveQuickSlotsDataSource) obj.get();
             if (source != null) {
                 if (getY() < 0) {
-                    setY(0);
+                    ActorMaster.addMoveToAction(this, getX(), 0, 1);
+                    ActorMaster.addFadeInOrOut(leftOrbPanel,1);
+                    ActorMaster.addFadeInOrOut(rigthOrbPanel,1);
                 }
                 quickSlotPanel.setUserObject(source);
                 modeActionsPanel.setUserObject(source);
@@ -69,7 +72,10 @@ public class ActionPanelController extends Group {
                 leftOrbPanel.setUserObject(source);
                 rigthOrbPanel.setUserObject(source);
             } else {
-                setY(-IMAGE_SIZE);
+//                setY(-IMAGE_SIZE);
+                ActorMaster.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
+                ActorMaster.addFadeInOrOut(leftOrbPanel,1);
+                ActorMaster.addFadeInOrOut(rigthOrbPanel,1);
             }
         });
     }

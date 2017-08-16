@@ -12,6 +12,8 @@ import main.libgdx.anims.particles.lighting.LightMap;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.bf.GridConst;
 import main.libgdx.screens.DungeonScreen;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -222,10 +224,10 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
         }
         if (alt && ctrl) {
             if (i == 1) {
-                LightMap.setAmbient(LightMap.getAmbint() + 0.02f);
+                LightMap.setAmbient(LightMap.getAmbient() + 0.02f);
             }
             if (i == -1) {
-                LightMap.setAmbient(LightMap.getAmbint() - 0.02f);
+                LightMap.setAmbient(LightMap.getAmbient() - 0.02f);
             }
 
         }
@@ -263,14 +265,12 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean touchDown(float v, float v1, int i, int i1) {
+        GuiEventManager.trigger(GuiEventType.ADD_LIGHT, new Vector2(v, v1));
         return false;
     }
 
     @Override
-    public boolean tap(float v, float v1, int i, int i1) { // и то работает пока только за пределами карты. пиздец
-//        Gdx.app.log("InputController::tap(" + v + ", " + v1 + ", " + i + ", " + i1 + ")", "-- Start!");
-//        AudioMaster.getInstance().playSound(i);
-//        Gdx.app.log("InputController::tap(" + v + ", " + v1 + ", " + i + ", " + i1 + ")", "-- End!");
+    public boolean tap(float v, float v1, int i, int i1) {
         return false;
     }
 

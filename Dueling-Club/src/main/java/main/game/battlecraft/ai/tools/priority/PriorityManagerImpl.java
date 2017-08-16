@@ -23,6 +23,7 @@ import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.content.mode.STD_MODES;
@@ -132,11 +133,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                     break;
                 case ATTACK:
                     setBasePriority(getAttackPriority(as));
-                    if (goal == GOAL_TYPE.PROTECT) {
-                        Unit unitToProtect = (Unit) as.getAi().getArgMap().get(GOAL_TYPE.PROTECT);
-                        applyCustomPriorityMethod(PRIORITY_FUNCS.DANGER_TO_ALLY, unitToProtect, as.getTask().getArg());
-                    }
-                    // preview results?
                     break;
                 case WAIT:
                     setBasePriority(getWaitPriority(action));
@@ -219,16 +215,39 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     private int getGuardPriority(Action action) {
+        if (getUnitAi().getType()== AI_TYPE.ARCHER
+         ||getUnitAi().getType()== AI_TYPE.CASTER
+         ||getUnitAi().getType()== AI_TYPE.SNEAK
+         ||getUnitAi().getType()== AI_TYPE.CASTER_SUMMONER
+         ||getUnitAi().getType()== AI_TYPE.CASTER_OFFENSE )
+            return 0;
         Coordinates c = action.getTarget().getCoordinates(); //TODO targets should be cells, then be allies there...
         // it's harder for when allies move, eh?
         // >> Add "remove guard" priority penalty
         Collection<Unit> list = game.getUnitsForCoordinates(c);
-        int factor = ParamPriorityAnalyzer.getUnitLifeFactor(getUnit()) - 100;
+        float factor = ParamPriorityAnalyzer.getUnitLifeFactor(getUnit()) - 100;
+//        getCounterPenalty()
+//        getParamAnalyzer().getParamPriority()
         for (Unit unit : list) {
             if (unit.isAlliedTo(getUnit().getOwner())) {
-                factor += getSituationAnalyzer().getDangerFactor(unit);
+                float danger =getSituationAnalyzer().getDangerFactor(unit);
+                if (unit.isUnconscious())
+                    danger*=1.25f;
+                factor += danger;
             }
         }
+        float mod =   unit.getIntParam(PARAMS.N_OF_COUNTERS)*5;
+        mod+= unit.getIntParam(PARAMS.C_N_OF_COUNTERS)*2;
+         mod+= unit.getIntParam(PARAMS.COUNTER_MOD)/3+
+         unit.getIntParam(PARAMS.COUNTER_ATTACK_MOD)/3;
+
+        if (getUnitAi().getType()== AI_TYPE.TANK)
+            mod*=1.5f;
+        if (getUnitAi().getType()== AI_TYPE.GUARD)
+            mod*=2f;
+
+        factor = factor*mod;
+
         return Math.round(factor * getConstValue(AiConst.GOAL_PROTECT));
     }
 
@@ -1021,7 +1040,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             // if (AttackOfOpportunityRule.checkAction(active)) {
             // counter_penalty = getAttackOfOpportunityPenalty(active,
             // targetObj);
-            // }TODO
+            // }
 
         } else {
             if (targetObj.canCounter() &&
@@ -1037,20 +1056,26 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         }
         // TODO ++ counter penalty
 
-
-//        if (!getUnit().checkAiMod(AI_MODIFIERS.TRUE_BRUTE)) {
-        priority += getConstInt(AiConst.DEFAULT_ATTACK_PRIORITY);
-//        }
-        if (active.getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
+        // TODO spells!
+        if (active instanceof DC_SpellObj) {
+            //check mod effects too
+            Action action = AiActionFactory.newAction(active,
+             new Context(getUnit(), targetObj));
+            damage_priority +=
+             getSpellPriority(GOAL_TYPE.DEBILITATE, action);
+            damage_priority +=
+             getSpellPriority(GOAL_TYPE.DEBUFF,
+              action);
+            if (getUnit().getAiType().isCaster()) {
+                damage_priority *= 2;
+            }
+        } else {
+            priority += getConstInt(AiConst.DEFAULT_ATTACK_PRIORITY);
             if (active.isRanged()) {
                 if (getUnit().getAiType() == AiEnums.AI_TYPE.ARCHER) {
                     damage_priority *= 2;
                 }
             } else if (getUnit().getAiType() == AiEnums.AI_TYPE.BRUTE) {
-                damage_priority *= 2;
-            }
-        } else if (active.getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.SPELL) {
-            if (getUnit().getAiType() == AiEnums.AI_TYPE.CASTER) {
                 damage_priority *= 2;
             }
         }

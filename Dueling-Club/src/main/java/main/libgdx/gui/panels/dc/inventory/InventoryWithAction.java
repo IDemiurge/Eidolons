@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import main.libgdx.gui.panels.dc.ButtonStyled;
+import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
@@ -38,15 +40,15 @@ public class InventoryWithAction extends TablePanel {
 
         actionPointsText = lower.addElement(null).left();
 
-        undoButton = lower.addElement(new InventoryActionButton("UI/components/small/back2.png"))
+        undoButton = lower.addElement(new ButtonStyled(STD_BUTTON.UNDO))
                 .fill(false).expand(0, 0).right()
                 .pad(20, 0, 20, 0).size(50, 50);
 
-        cancelButton = lower.addElement(new InventoryActionButton("UI/components/small/no.png"))
+        cancelButton = lower.addElement(new ButtonStyled(STD_BUTTON.OK))
                 .fill(false).expand(0, 0).right()
                 .pad(20, 10, 20, 0).size(50, 50);
 
-        doneButton = lower.addElement(new InventoryActionButton("UI/components/small/ok.png"))
+        doneButton = lower.addElement(new ButtonStyled(STD_BUTTON.CANCEL))
                 .fill(false).expand(0, 0).right()
                 .pad(20, 10, 20, 10).size(50, 50);
 
@@ -99,15 +101,15 @@ public class InventoryWithAction extends TablePanel {
 
         actionPointsText.setActor(new ValueContainer("Actions available:", source.getOperationsString()));
 
-        InventoryActionButton button = (InventoryActionButton) doneButton.getActor();
+        ButtonStyled button = (ButtonStyled) doneButton.getActor();
         button.addListener(source.getDoneHandler());
         button.setDisabled(source.isDoneDisabled());
 
-        button = (InventoryActionButton) cancelButton.getActor();
+        button = (ButtonStyled) cancelButton.getActor();
         button.addListener(source.getCancelHandler());
         button.setDisabled(source.isCancelDisabled());
 
-        button = (InventoryActionButton) undoButton.getActor();
+        button = (ButtonStyled) undoButton.getActor();
         button.addListener(source.getUndoHandler());
         button.setDisabled(source.isUndoDisabled());
     }

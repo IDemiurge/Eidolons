@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import main.libgdx.GdxColorMaster;
 import main.libgdx.StyleHolder;
+import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.shaders.GrayscaleShader;
 import main.libgdx.texture.TextureCache;
@@ -60,8 +62,14 @@ public class UnitView extends BaseView {
         }
         if (clockTexture != null) {
             this.clockTexture = clockTexture;
-            initiativeLabel = new Label("[#00FF00FF]" + String.valueOf(clockVal) + "[]", StyleHolder.getDefaultLabelStyle());
-            initiativeLabel.setFontScale(1.3f);
+            initiativeLabel = new Label(
+//             "[#00FF00FF]" +
+             String.valueOf(clockVal)
+//             + "[]"
+             ,
+             StyleHolder.getAltLabelStyle( GdxColorMaster.CYAN
+//              GdxColorMaster.getColor(SmartTextManager.getValueCase())
+             ));
             clockImage = new Image(clockTexture);
             addActor(clockImage);
             addActor(initiativeLabel);
@@ -80,12 +88,16 @@ public class UnitView extends BaseView {
     @Override
     protected void sizeChanged() {
         super.sizeChanged();
+/*
+emblem
+arrow
+emblem border
+mode icon
+any other overlays!
+ */
 
-        if (initiativeLabel != null) {
-            clockImage.setPosition(
-             getWidth() - clockTexture.getRegionWidth(),
-             0
-            );
+            if (initiativeLabel != null) {
+            clockImage.setPosition(getWidth() - clockTexture.getRegionWidth(),0);
             initiativeLabel.setPosition(
              clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()),
              clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
@@ -120,6 +132,7 @@ public class UnitView extends BaseView {
     public void draw(Batch batch, float parentAlpha) {
         if (greyedOut) {
             batch.setShader(GrayscaleShader.getGrayscaleShader());
+            ActorMaster.addFadeInOrOutIfNoActions(this, 1);
         }
         super.draw(batch, parentAlpha);
         batch.setShader(null);

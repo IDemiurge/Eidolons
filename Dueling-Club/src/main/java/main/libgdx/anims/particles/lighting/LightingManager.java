@@ -9,13 +9,13 @@ import main.system.datatypes.DequeImpl;
  * Created by JustMe on 12/28/2016.
  */
 public class LightingManager {
-    public static float ambient_light = 0.35f;
+    public static float ambient_light = 0.55f;
     public static boolean debug = false;
     public static float darkening = 0;
     public static float mouse_light_distance = 450;
     public static float mouse_light_distance_to_turn_off = 10;
-    public static boolean mouse_light = false;
-    private static boolean lightOn;
+    public static boolean mouse_light = true;
+    private static boolean lightOn=false;
     private static boolean testMode;
     private LightMap lightMap;
 

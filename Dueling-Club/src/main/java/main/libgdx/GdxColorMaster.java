@@ -61,7 +61,11 @@ public class GdxColorMaster {
     private static final Color DARK_GREEN = getColor(35, 155, 45, 1f);
     private static final Color DARK_BLUE = getColor(35, 45, 155, 1f);
     private static final Color MAGENTA = getColor(195, 55, 225, 1f);
-    public static Color getColor(int r, int b, int g, float a) {
+
+    public static Color getColor(java.awt.Color c) {
+        return new Color(c.getRed(), c.getGreen(), c.getBlue(), 1);
+    }
+        public static Color getColor(int r, int b, int g, float a) {
         return new Color(r / 100, b / 100, g / 100, a);
     }
 

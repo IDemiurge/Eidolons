@@ -5,6 +5,7 @@ import main.ability.ActiveAbility;
 import main.ability.effects.AttachmentEffect;
 import main.ability.effects.ContainerEffect;
 import main.ability.effects.Effect;
+import main.client.dc.Launcher;
 import main.data.xml.XML_Converter;
 import main.elements.conditions.Condition;
 import main.elements.targeting.FixedTargeting;
@@ -57,7 +58,8 @@ public class AddTriggerEffect extends MultiEffect implements
         }
         if (trigger == null) {
             trigger = new Trigger(event_type, conditions, ability);
-            if (!AiTrainingRunner.running)
+            if (!Launcher.DEV_MODE)
+                if (!AiTrainingRunner.running)
             if (conditions!=null )
                 if (conditions.toXml()==null )
             try {

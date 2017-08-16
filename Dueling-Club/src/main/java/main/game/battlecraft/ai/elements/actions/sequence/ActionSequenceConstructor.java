@@ -185,12 +185,15 @@ public class ActionSequenceConstructor extends AiHandler {
         }
 
         boolean singleAction = action.isSingle();
-        if (!singleAction) {
+        if (task.getType() == GOAL_TYPE.PROTECT) {
+            singleAction = action.getSource().getCoordinates().equals(
+             action.getTarget().getCoordinates());
+
+        } else if (!singleAction) {
             if (arg != null) {
                 singleAction =
                  // action.canBeTargeted(StringMaster.getInteger(arg
                  // .toString()));
-
                  TargetingMaster.canBeTargeted(action, true);
             } else {
                 singleAction = (action).canBeActivated();

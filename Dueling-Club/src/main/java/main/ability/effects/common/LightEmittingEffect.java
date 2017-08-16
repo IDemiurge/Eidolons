@@ -31,6 +31,7 @@ public class LightEmittingEffect extends DC_Effect {
                     // SpectrumEffect
                     new SpectrumEffect(new ModifyValueEffect(PARAMS.ILLUMINATION,
                             MOD.MODIFY_BY_CONST, formula.toString()), rangeFormula, circular);
+           effect.setReductionForDistanceModifier("*2");
             effect.setApplyThrough(true);
 
         }

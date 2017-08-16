@@ -336,7 +336,7 @@ public class RuleMaster implements Controller {
         WEIGHT,
         INJURY(RULE_SCOPE.FULL),
         CRITICAL_ATTACK(),
-        DODGE(),;
+        DODGE(), GUARD();
 
         String tooltip;
         RULE_SCOPE scope;

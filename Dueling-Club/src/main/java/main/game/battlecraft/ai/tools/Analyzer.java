@@ -51,6 +51,7 @@ public class Analyzer extends AiHandler {
         //TODO filter
         return cells;
     }
+
     public static List<Unit> getAllies(UnitAI ai) {
         List<Unit> list = new XList<>();
         for (Unit unit : Eidolons.game.getUnits()) {
@@ -68,7 +69,7 @@ public class Analyzer extends AiHandler {
 
     public static List<Unit> getWaitUnits(UnitAI ai) {
         List<Unit> list = new XList<>();
-        for (Unit unit :Eidolons.game.getUnits()) {
+        for (Unit unit : Eidolons.game.getUnits()) {
             if (unit.equals(ai.getUnit())) {
                 continue;
             }
@@ -95,6 +96,7 @@ public class Analyzer extends AiHandler {
                                       Boolean enemy, Boolean vision_no_vision, Boolean dead) {
         return getUnits(ai, ally, enemy, vision_no_vision, dead, false);
     }
+
     public static List<Unit> getUnits(UnitAI ai, Boolean ally,
                                       Boolean enemy, Boolean vision_no_vision, Boolean dead,
                                       Boolean neutral) {
@@ -148,28 +150,28 @@ public class Analyzer extends AiHandler {
     }
 
     public static boolean hasSpecialActions(Unit unit) {
-        DequeImpl<DC_UnitAction> actions =     new DequeImpl<>((unit.getActionMap().get(
+        DequeImpl<DC_UnitAction> actions = new DequeImpl<>((unit.getActionMap().get(
          ACTION_TYPE.SPECIAL_ACTION)));
         if (!ListMaster.isNotEmpty(actions))
             return false;
-        for (STD_SPEC_ACTIONS action : DC_ActionManager.STD_SPEC_ACTIONS.values()){
+        for (STD_SPEC_ACTIONS action : DC_ActionManager.STD_SPEC_ACTIONS.values()) {
             actions.remove(unit.getAction(
-              StringMaster.getWellFormattedString(
-             action.toString())));
+             StringMaster.getWellFormattedString(
+              action.toString())));
         }
         if (!ListMaster.isNotEmpty(actions))
             return false;
         return true;
     }
 
-        public static boolean hasAnySpecialActions(Unit unit) {
+    public static boolean hasAnySpecialActions(Unit unit) {
         if (hasSpells(unit)) {
             return true;
         }
         if (hasQuickItems(unit)) {
-                return true;
+            return true;
         }
-            return hasSpecialActions(unit);
+        return hasSpecialActions(unit);
     }
 
     public static boolean hasQuickItems(Unit unit) {
@@ -217,11 +219,11 @@ public class Analyzer extends AiHandler {
             return false;
         }
         Coordinates c = unit.getCoordinates().getAdjacentCoordinate(
-                unit.getFacing().getDirection());
+         unit.getFacing().getDirection());
         if (c == null) {
             return false;
         }
-        return !StackingRule.checkCanPlace(c, unit, null );
+        return !StackingRule.checkCanPlace(c, unit, null);
 
     }
 
@@ -230,9 +232,9 @@ public class Analyzer extends AiHandler {
         for (DC_Obj obj : ai.getUnit().getOwner().getLastSeenCache().keySet()) {
             if (isEnemy(obj, ai.getUnit())) {
                 Coordinates coordinates = ai.getUnit().getOwner()
-                        .getLastSeenCache().get(obj);
+                 .getLastSeenCache().get(obj);
                 list.add(obj.getGame().getCellByCoordinate(
-                        coordinates));
+                 coordinates));
             }
         }
 
@@ -268,51 +270,39 @@ public class Analyzer extends AiHandler {
 
     public static List<? extends DC_Obj> getEnemies(Unit unit,
                                                     boolean checkAct, boolean
-                                                            checkAttack, boolean adjacentOnly) {
+                                                     checkAttack, boolean adjacentOnly) {
         return getUnits(unit, true, checkAct, checkAttack, adjacentOnly);
     }
 
     private static List<Unit> getUnits(Unit unit, Boolean enemy_or_ally_only, boolean checkAct, boolean checkAttack, Collection<Coordinates> coordinatesToCheck) {
+
         List<Unit> list = new LinkedList<>();
         for (Coordinates coordinates : coordinatesToCheck)
-            for (  Obj obj  :  unit.getGame().getUnitsForCoordinates(coordinates)) {
+            for (Unit obj : unit.getGame().getUnitsForCoordinates(coordinates)) {
                 if (obj == null) {
                     continue;
                 }
-
-                Unit enemy = (Unit) obj;
-                if (enemy_or_ally_only != null) {
-                    if (enemy_or_ally_only) {
-                        if (obj.getOwner().equals(unit.getOwner())) {
-                            continue;
-                        }
-                    } else {
-                        if (!obj.getOwner().equals(unit.getOwner())) {
-                            continue;
-                        }
-                    }
-                }
-
-                if (!checkAct) {
-                    list.add(enemy);
-                }
-                if (enemy.canActNow()) {
-                    if (!checkAttack) {
-                        list.add(enemy);
-                    } else if (enemy.canAttack()) {
-                        list.add(enemy);
-                    }
-                }
-
+                list.add(obj);
             }
-
+        if (enemy_or_ally_only != null) {
+            if (enemy_or_ally_only)
+                list.removeIf(e -> e.getOwner().equals(unit.getOwner()));
+            if (!enemy_or_ally_only)
+                list.removeIf(e -> !e.getOwner().equals(unit.getOwner()));
+        }
+        if (checkAct)
+            list.removeIf(e -> !e.canActNow());
+        if (checkAttack)
+            list.removeIf(e -> !e.canAttack());
+        list.removeIf(u -> u.isDead());
         return list;
     }
+
     public static List<Unit> getUnits(Unit unit,
                                       Boolean enemy_or_ally_only, boolean checkAct,
                                       boolean checkAttack, boolean adjacent) {
         Collection<Coordinates> coordinatesToCheck = adjacent ? unit.getCoordinates()
-                .getAdjacentCoordinates() : unit.getGame().getCoordinates();
+         .getAdjacentCoordinates() : unit.getGame().getCoordinates();
         return getUnits(unit, enemy_or_ally_only, checkAct, checkAttack, coordinatesToCheck);
     }
 
@@ -400,14 +390,14 @@ public class Analyzer extends AiHandler {
 
             if (adjacent) {
                 if (!obj.getCoordinates().isAdjacent(
-                        targetUnit.getCoordinates())) {
+                 targetUnit.getCoordinates())) {
                     continue;
                 }
             }
 
             if (free) {
                 Unit unit = targetUnit.getGame().getUnitByCoordinate(
-                        cell.getCoordinates());
+                 cell.getCoordinates());
                 if (unit != null) {
                     if (VisionManager.checkVisible(unit)) {
                         continue;
@@ -451,7 +441,7 @@ public class Analyzer extends AiHandler {
                 }
             }
             if (PositionMaster.getDistance(cell, ai.getUnit()) <= ai
-                    .getMaxWanderDistance()) {
+             .getMaxWanderDistance()) {
                 list.add(cell);
             }
         }
@@ -483,7 +473,7 @@ public class Analyzer extends AiHandler {
     private static List<DC_Cell> getCorpseCells(Unit unit) {
 
         return unit.getGame().getCellsForCoordinates(
-                unit.getGame().getGraveyardManager().getCorpseCells());
+         unit.getGame().getGraveyardManager().getCorpseCells());
     }
 
     public static List<? extends DC_Obj> getZoneDamageCells(Unit unit) {
@@ -510,16 +500,16 @@ public class Analyzer extends AiHandler {
         List<DC_Cell> cells = getLastSeenEnemyCells(ai);
         if (!cells.isEmpty()) {
             return new ListMaster<DC_Cell>()
-                    .getList(new RandomWizard<DC_Cell>()
-                            .getRandomListItem(cells));
+             .getList(new RandomWizard<DC_Cell>()
+              .getRandomListItem(cells));
         }
         return new ListMaster<DC_Cell>().getList(ai
-                .getUnit()
-                .getGame()
-                .getCellByCoordinate(
-                        new RandomWizard<Coordinates>().getRandomListItem(ai
-                                .getUnit().getCoordinates()
-                                .getAdjacentCoordinates())));
+         .getUnit()
+         .getGame()
+         .getCellByCoordinate(
+          new RandomWizard<Coordinates>().getRandomListItem(ai
+           .getUnit().getCoordinates()
+           .getAdjacentCoordinates())));
         // List<DC_Cell> list = new LinkedList<>();
         //
         // DC_HeroObj unit = ai.getUnit();
@@ -550,16 +540,16 @@ public class Analyzer extends AiHandler {
             return null;
         }
         list.sort(
-                SortMaster.getObjSorterByExpression(
-                        (t) -> PositionMaster.getDistance(t.getCoordinates(), unit.getCoordinates())));
+         SortMaster.getObjSorterByExpression(
+          (t) -> PositionMaster.getDistance(t.getCoordinates(), unit.getCoordinates())));
         return (Unit) list.get(0);
     }
 
 
     public boolean isRanged(UnitAI ai) {
-        if (ai.getType()== AI_TYPE.ARCHER){
-            if (ai.getUnit().getRangedWeapon()!=null )
-                if (ai.getUnit().getRangedWeapon().getAmmo()!=null)
+        if (ai.getType() == AI_TYPE.ARCHER) {
+            if (ai.getUnit().getRangedWeapon() != null)
+                if (ai.getUnit().getRangedWeapon().getAmmo() != null)
                     return true;
         }
         return false;

@@ -73,7 +73,10 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
                (hero, TEXT_CASES.BATTLE_COMMENT, hero.getName()));
          }) ;
         GuiEventManager.trigger(SELECT_MULTI_OBJECTS, p);
-        Unit unit = (Unit) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ);
+        Unit unit = (Unit) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ, 5000);
+        if (unit==null ){
+            return ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
+        }
         return unit.getName();
     }
 

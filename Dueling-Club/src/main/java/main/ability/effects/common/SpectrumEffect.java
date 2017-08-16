@@ -34,6 +34,7 @@ public class SpectrumEffect extends DC_Effect {
     private boolean circular;
     private boolean vision;
     private Condition filterConditions;
+    private String reductionForDistanceModifier;
 
     public SpectrumEffect(Effect effects, String rangeFormula, Boolean circular) {
         this.effects = new Effects(effects);
@@ -126,12 +127,15 @@ public class SpectrumEffect extends DC_Effect {
                         // to set original
                         effect.resetOriginalFormula();
                         String reduction = reductionForDistance;
+                        if (reductionForDistanceModifier!=null )
+                            reduction+=(reductionForDistanceModifier);
+
                         Formula effectFormula = effect.getFormula();
                         reduction = reduction.replace(X, effectFormula.toString());
                         int distance = PositionMaster.getDistance(REF.getSourceObj(), REF
                                 .getTargetObj());
                         reduction = reduction.replace("distance", distance + "");
-                        effect.getFormula().append(reduction);
+                        effectFormula.append(reduction);
                     }
                     effect.apply(REF);
                 }
@@ -181,12 +185,12 @@ public class SpectrumEffect extends DC_Effect {
         this.circular = circular;
     }
 
-    public String getReductionForDistance() {
+    public String getReductionForDistanceModifier() {
         return reductionForDistance;
     }
 
-    public void setReductionForDistance(String reductionForDistance) {
-        this.reductionForDistance = reductionForDistance;
+    public void setReductionForDistanceModifier(String reductionForDistance) {
+        this.reductionForDistanceModifier = reductionForDistance;
     }
 
 }

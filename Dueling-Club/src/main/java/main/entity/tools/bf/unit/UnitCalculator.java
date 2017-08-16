@@ -60,11 +60,11 @@ public class UnitCalculator extends EntityCalculator<Unit> {
         }
 
         int power = DC_MathManager.getUnitPower(getEntity());
-        if (!getChecker().isHero()) {
-            if (power != 0) {
-                return 0;
-            }
-        }
+//        if (!getChecker().isHero()) {
+//            if (power != 0) {
+//                return 0;
+//            }
+//        }
         setParam(PARAMS.POWER, power);
         // GetParam(PARAMS.UNIT_LEVEL, power);
         return power;

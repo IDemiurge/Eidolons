@@ -78,7 +78,7 @@ public class IlluminationRule {
                 + source.getGame().getCellByCoordinate(source.getCoordinates()).getIntParam(
                 PARAMS.CONCEALMENT);
         int value = source.getIntParam(PARAMS.LIGHT_EMISSION) - concealment;
-        return value;
+        return value*100;
     }
 
 }

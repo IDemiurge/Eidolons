@@ -2,6 +2,8 @@ package main.game.battlecraft.logic.battle.universal;
 
 import main.entity.obj.Obj;
 import main.game.logic.battle.player.Player;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.audio.MusicMaster;
 import main.system.audio.MusicMaster.MUSIC_MOMENT;
 import main.system.threading.WaitMaster;
@@ -20,10 +22,20 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
         return outcome;
     }
 
+public enum OUTCOME{
+        SURRENDER,
+        DEFEAT,
+    VICTORY,
+    RETREAT,
+    ENEMY_RETREAT,
+    TIMED_VICTORY,
+    TIME_DEFEAT,
+}
 
     public void end() {
         // battle.setOutcome(outcome);
         game.stop();
+        GuiEventManager.trigger(GuiEventType. GAME_FINISHED, getGame());
         WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, outcome);
     }
 

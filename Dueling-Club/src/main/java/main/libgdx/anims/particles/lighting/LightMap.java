@@ -1,5 +1,6 @@
 package main.libgdx.anims.particles.lighting;
 
+import box2dLight.ConeLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
@@ -12,6 +13,7 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.MicroObj;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
+import main.libgdx.GdxColorMaster;
 import main.libgdx.bf.GridConst;
 import main.libgdx.screens.DungeonScreen;
 import main.system.auxiliary.log.LogMaster;
@@ -31,6 +33,8 @@ public class LightMap {
     private static RayHandler rayHandler;
     private static float SECOND = 1000000000;
     private static float ambient = 0.05f;
+    private static float ambientAlpha = 0.05f;
+    private Color ambientColor;
     private static int testA;
     private static int testB;
     private static PointLight mouseLight;
@@ -53,15 +57,6 @@ public class LightMap {
         init(units, world, new RayHandler(world), GridConst.CELL_W, GridConst.CELL_H, rows, cols);
     }
 
-    public static void setAmbient(float c) {
-        rayHandler.setAmbientLight(c);
-        rayHandler.update();
-        ambient = c;
-    }
-
-    public static float getAmbint() {
-        return ambient;
-    }
 
     public static void resizeFBOb() {
         testB += 50;
@@ -96,6 +91,10 @@ public class LightMap {
         mouseLight.setDistance(distance);
     }
 
+    public static float getAmbient() {
+        return ambient;
+    }
+
     //
     private void init(DequeImpl<BattleFieldObject> units, World world,
                       RayHandler rayHandler, float cellWidth, float cellHeight, int rows, int cols) {
@@ -121,20 +120,35 @@ public class LightMap {
         LightMap.rayHandler = rayHandler;
         LightMap.rayHandler.setBlur(true);
         LightMap.rayHandler.setBlurNum(15);
-        LightMap.rayHandler.setAmbientLight(Color.GRAY);
+          ambientColor = new Color(0.2f, 0.1f, 0.3f, ambientAlpha);
+        LightMap.rayHandler.setAmbientLight(ambientColor);
         LightMap.rayHandler.setAmbientLight(LightingManager.ambient_light);
         RayHandler.setGammaCorrection(true);
         debugRenderer = new Box2DDebugRenderer();
         mouseLight = new PointLight(rayHandler, 100, Color.RED, LightingManager.mouse_light_distance, 0, 0);
         LightingManager.setMouse_light(true);
+        new ConeLight(rayHandler, 3, GdxColorMaster.ENEMY_COLOR, 200, 350, 350, 200, 100);
 
         updateMap();
+//        bindEvents();
     }
+
+
+
+    public static void setAmbient(float c) {
+        rayHandler.setAmbientLight(c);
+
+        rayHandler.update();
+        ambient = c;
+    }
+
 
     //    public void updateMap(Map<DC_HeroObj, BaseView> units) {
     public void updateMap() {
+        new ConeLight(rayHandler, 3, GdxColorMaster.ENEMY_COLOR, 200, 350, 350, 200, 100);
+
         LogMaster.log(LogMaster.VISIBILITY_DEBUG,
-                "UpdateMap method was called");
+         "UpdateMap method was called");
         valid = false;
         if (bodyMap != null) {
             bodyMap.clear();
@@ -175,10 +189,10 @@ public class LightMap {
                 fdef.shape = shape;
                 body.createFixture(fdef);
                 FireLightProt fireLightProt = new FireLightProt(world, rayHandler,
-                        unit.getX() * cellWidth + cellWidth / 2,
-                        unit.getY() *
-                                cellHeight + cellHeight / 2,
-                        lightStrength * LIGHT_MULTIPLIER, 360, SECOND);
+                 unit.getX() * cellWidth + cellWidth / 2,
+                 unit.getY() *
+                  cellHeight + cellHeight / 2,
+                 lightStrength * LIGHT_MULTIPLIER, 360, SECOND);
                 fireLightProt.attachToBody(body);
                 fireLightProtMap.put(i, fireLightProt);
                 valid = true;
@@ -208,9 +222,9 @@ public class LightMap {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         // TODO : add DequeImpl<DC_HeroObj> units update here, about DIrection - Game->GetDirectionmap
         for (Map.Entry<Integer, FireLightProt> entry : fireLightProtMap.entrySet()) {
-            entry.getValue().update();
+//            entry.getValue().update();
         }
-        world.step(1 / 60, 4, 4);
+//        world.step(1 / 60, 4, 4);
         rayHandler.setCombinedMatrix(DungeonScreen.camera);
         rayHandler.updateAndRender();
         if (LightingManager.debug) {
