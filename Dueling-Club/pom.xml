@@ -164,6 +164,11 @@
             <artifactId>gdx-tools</artifactId>
             <version>${libgdx.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-freetype</artifactId>
+            <version>0.9.9</version>
+        </dependency>
 
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>

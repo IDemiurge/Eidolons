@@ -1,7 +1,7 @@
 package main.libgdx.bf.light;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.core.game.DC_Game;
@@ -18,7 +18,7 @@ public class ShadowMap extends Group {
      "UI\\outlines\\shadows\\shadow.png";
     private GridPanel grid;
     private Image[][] shadowCells;
-    private TextureRegion shadowTexture;
+    private Texture shadowTexture;
 
     public ShadowMap(GridPanel grid) {
         this.grid = grid;
@@ -27,7 +27,7 @@ public class ShadowMap extends Group {
 
     private void init() {
         shadowCells = new Image[grid.getCols()][grid.getRows()];
-        shadowTexture = TextureCache.getOrCreateR(shadowTexturePath);
+        shadowTexture = TextureCache.getOrCreate(shadowTexturePath);
         for (int x = 0; x < grid.getCols(); x++) {
             for (int y = 0; y < grid.getRows(); y++) {
                 shadowCells[x][y] = new Image(shadowTexture);
