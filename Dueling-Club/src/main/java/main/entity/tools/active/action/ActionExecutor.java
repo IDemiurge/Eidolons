@@ -43,11 +43,11 @@ public class ActionExecutor extends Executor {
         if (effect == null)
             return false;
 
-        STD_MODES mode = (STD_MODES) getOwnerObj().getMode();
-        switch (mode) {
-            case SEARCH: // search disabled by any mode!
-                return true;
-        }
+//        STD_MODES mode = (STD_MODES) getOwnerObj().getMode();
+//        switch (mode) {
+//            case SEARCH: // search disabled by any mode!
+//                return true;
+//        }
 
         if (effect.getMode().isContinuous())
         {

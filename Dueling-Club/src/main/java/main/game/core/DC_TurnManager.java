@@ -140,7 +140,11 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     private void resetQueue() {
 
         unitQueue.clear();
-        WaitRule.checkMap();
+        try {
+            WaitRule.checkMap();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         for (Unit unit : game.getUnits()) {
 //                if (game.getMainHero() != null) {
@@ -181,7 +185,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
             }
 
             LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
-                    + "Active unit: " + getActiveUnit());
+             + "Active unit: " + getActiveUnit());
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
-package main.misc.news;
+package main.news;
 
+import main.data.XLinkedMap;
 import main.system.auxiliary.log.Err;
 
 import javax.mail.Message;
@@ -9,6 +10,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -16,7 +18,7 @@ import java.util.Properties;
  */
 public class NewsAlerter {
     private static List<String> emails;
-    private static String alertMessage="test message";
+    private static Map<String, StringBuilder> alertMessageMap=new XLinkedMap<>() ;
 
     public static List<String> getEmails() {
         return emails;
@@ -74,29 +76,46 @@ public class NewsAlerter {
         transport.close();
     }
 
-    public static void spotted(NewsArticle article, String keywords, String website) {
+    public static void spotted( NewsArticle article, String keywords, String website) {
         System.out.println(website + "'s '" + article.getLink() + "' contains " + keywords);
-        alertMessage += website + "'s article (link - " + article.getLink() + ") contains " + keywords + "\n";
-        NewsLogger.articleSpotted(keywords, website, article);
+        StringBuilder alertMessage = getAlertMessage(website);
+        alertMessage.append( website + "'s article (link - " + article.getLink() + ") contains " + keywords + "\n");
+         NewsLogger.articleSpotted(keywords, website, article);
+        
+    }
+
+    public static StringBuilder getAlertMessage(String website) {
+        StringBuilder alertMessage = alertMessageMap.get(website);
+        if (alertMessage==null )
+        {
+            alertMessage = new StringBuilder();
+            alertMessageMap.put(website, alertMessage);
+        }
+        return alertMessage;
     }
 
     public static void sendAlerts() {
-        if (alertMessage.isEmpty())
+        StringBuilder message = new StringBuilder();
+      for (StringBuilder sub: alertMessageMap.values())
+      {
+          message.append(sub.toString() + "\n                                   <><><><><> ");
+      }
+          if (message.toString().isEmpty() )
         {
-            Err.warn("Sorry, NewsWatcher failed to find any relevant articles! Keywords: " + NewsFilterer.keywords);
+            Err.warn("Sorry, NewsWatcher failed to find any relevant articles! Keywords: " +  NewsFilterer.keywords);
             return ;
         }
             String title = "NewsWatcher has relevant articles for you!";
 
             try {
-                send(emails.toArray(new String[emails.size()]), alertMessage, title);
+                send(emails.toArray(new String[emails.size()]), message.toString(), title);
                 Err.info("Mail sent! Addresses: " + emails);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
                 Err.warn("Failed to send alert email!");
             }
-            alertMessage = "";
+        alertMessageMap = new XLinkedMap<>();
         }
 
     }

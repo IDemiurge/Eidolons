@@ -17,6 +17,7 @@ import main.entity.active.DC_SpellObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BuffObj;
 import main.entity.obj.DC_Cell;
+import main.entity.obj.unit.Unit;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
@@ -24,9 +25,12 @@ import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.sprite.SpriteAnimationFactory;
 import main.libgdx.anims.std.*;
 import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
@@ -36,6 +40,7 @@ import java.util.*;
  * Created by JustMe on 1/11/2017.
  */
 public class AnimationConstructor {
+    private final boolean preconstructOn = true;
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
     private VALUE[] anim_vals = {
 //     PROPS.ANIM_MODS,
@@ -80,6 +85,13 @@ public class AnimationConstructor {
     private boolean reconstruct = false;
     private boolean findClosestResource;
 
+    public AnimationConstructor() {
+        if (preconstructOn)
+            GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, p -> {
+                preconstructSpells((Unit) p.get());
+            });
+    }
+
     public CompositeAnim getOrCreate(ActiveObj active) {
         if (active == null) {
             return null;
@@ -97,6 +109,26 @@ public class AnimationConstructor {
             e.printStackTrace();
         }
         return anim;
+    }
+
+    public void preconstructSpells(Unit unit) {
+        if (ListMaster.isNotEmpty(unit.getSpells())) {
+            new Thread(() -> {
+                unit.getSpells().forEach(spell -> getOrCreate(spell));
+            }, unit + " Spell anim preconstruct thread").start();
+        }
+    }
+
+    public void preconstructAll(Unit unit) {
+        new Thread(() -> {
+            unit.getActives().forEach(spell -> getOrCreate(spell));
+        }, unit + "   anim preconstruct thread").start();
+    }
+
+    public void preconstruct(DC_ActiveObj active) {
+        new Thread(() -> {
+            getOrCreate(active);
+        }, active + " anim preconstruct thread").start();
     }
 
     private CompositeAnim construct(DC_ActiveObj active) {
@@ -217,18 +249,18 @@ public class AnimationConstructor {
             sprites.add(SpriteAnimationFactory.getSpriteAnimation(path));
             exists = true;
         }
-        List<EmitterActor> list =     new LinkedList<>()  ;
-       try{
-           list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
-       }catch(Exception e){
-           e.printStackTrace();
-           if (CoreEngine.isJar())
-               System.out.println("getEffect failed"+data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+        List<EmitterActor> list = new LinkedList<>();
+        try {
+            list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (CoreEngine.isJar())
+                System.out.println("getEffect failed" + data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
 
-           list = EmitterPools.getEmitters(
-            getPath(ANIM_VALUES.PARTICLE_EFFECTS)+
-            data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
-       }
+            list = EmitterPools.getEmitters(
+             getPath(ANIM_VALUES.PARTICLE_EFFECTS) +
+              data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+        }
         if (!list.isEmpty()) {
             exists = true;
         }
@@ -433,7 +465,7 @@ public class AnimationConstructor {
 //        if (file != null || closest || isPartIgnored(partPath))
 
         if (CoreEngine.isJar())
-            System.out.println(pathRoot+ " root; file found "+file);
+            System.out.println(pathRoot + " root; file found " + file);
         return file;
 //        return findResourceForSpell(spell, partPath, size, props, pathRoot, true);
     }

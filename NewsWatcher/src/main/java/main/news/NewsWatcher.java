@@ -1,8 +1,9 @@
-package main.misc.news;
+package main.news;
 
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.datatypes.DequeImpl;
 
 import java.util.List;
 import java.util.TimerTask;
@@ -15,10 +16,10 @@ public class NewsWatcher {
     private static final String EMAILS_PATH = "emails.txt";
     private static final String WEBSITES_PATH = "websites.txt";
 
-
     static long watchPeriod;
     private static boolean jar;
     private static boolean cyrillic = true;
+    private static boolean multithreaded = true;
 
 
     public static void main(String[] websitesToWatch) {
@@ -28,7 +29,11 @@ public class NewsWatcher {
     public static void start() {
         readConfig();
 //        NewsFilterer.setFilterKeywords(filterKeywords);
+        if (multithreaded) {
+            NewsReader.watchMultiThreaded();
+        } else {
         NewsReader.watch();
+        }
 //        if (!continuous)
 //            return ;
 //        Timer timer = new Timer();
@@ -36,12 +41,12 @@ public class NewsWatcher {
     }
 
     private static void readConfig() {
-        List<String> list = StringMaster.openContainer(
-         readFile(getKeywordsPath(),cyrillic), "#");
+        List<String> list =  StringMaster.openContainer(
+         readFile(getKeywordsPath(),cyrillic), "#" );
         NewsFilterer.setKeywords(list);
         list = StringMaster.openContainer(
          readFile(getWebsitesPath(),false), "\n");
-        NewsReader.setWebsites(list);
+        NewsReader.setWebsites(new DequeImpl(list));
         list = StringMaster.openContainer(
          readFile(getEmailsPath(),false), "\n");
         NewsAlerter.setEmails(list);
@@ -55,23 +60,23 @@ public class NewsWatcher {
 
     private static String getKeywordsPath() {
         if (!jar) {
-            return PathFinder.getEnginePath() + "xml\\" + KEYWORDS_PATH;
+            return PathFinder. getModulePath() +  KEYWORDS_PATH;
         }
-        return PathFinder.getEnginePath() + KEYWORDS_PATH;
+        return PathFinder. getModulePath() + KEYWORDS_PATH;
     }
 
     private static String getEmailsPath() {
         if (!jar) {
-            return PathFinder.getEnginePath() + "xml\\" + EMAILS_PATH;
+            return PathFinder. getModulePath() +  EMAILS_PATH;
         }
-        return PathFinder.getEnginePath() + KEYWORDS_PATH;
+        return PathFinder. getModulePath() + KEYWORDS_PATH;
     }
 
     private static String getWebsitesPath() {
         if (!jar) {
-            return PathFinder.getEnginePath() + "xml\\" + WEBSITES_PATH;
+            return PathFinder. getModulePath() +  WEBSITES_PATH;
         }
-        return PathFinder.getEnginePath() + KEYWORDS_PATH;
+        return PathFinder. getModulePath() + KEYWORDS_PATH;
     }
 
     private static TimerTask getTask() {

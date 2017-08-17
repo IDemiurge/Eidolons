@@ -121,6 +121,9 @@ public abstract class LogManager {
         // && node.getLineIndex() < (getCurrentIndex() + 1) * getRowCount()
 
         // start point is known, so why not init index/y ?
+        if (CoreEngine.isGraphicsOff()) {
+            addTextToDisplayed(entry.getHeader());
+            return entry; }
 
         if (top || writeToTop) {
             int size = getDisplayedLines().size();

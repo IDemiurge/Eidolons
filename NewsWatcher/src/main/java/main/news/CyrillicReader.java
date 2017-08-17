@@ -1,4 +1,4 @@
-package main.misc.news;
+package main.news;
 
 import java.io.File;
 import java.io.IOException;

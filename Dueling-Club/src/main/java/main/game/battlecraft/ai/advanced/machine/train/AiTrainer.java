@@ -104,6 +104,9 @@ public class AiTrainer {
         DC_Game.game.getAiManager().getPriorityProfileManager().setPriorityProfile
          (trainee, profile);
         boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_FINISHED);
+        if (!result){
+            throw new RuntimeException();
+        }
         return evaluateResult(profile, parameters, criteria);
     }
 

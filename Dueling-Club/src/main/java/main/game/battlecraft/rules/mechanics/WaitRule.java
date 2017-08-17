@@ -15,19 +15,18 @@ import java.util.Map;
 public class WaitRule {
     public static final String WAIT_BUFF = "Waiting";
 
-    static Map<Integer, Integer> waitMap;
+    static Map<Unit, Unit> waitMap;
     static Map<Integer, Integer> alertMap;
 
     private static Game game;
 
     public static void checkMap() {
-        for (Integer id : getWaitMap().keySet()) {
-            Unit unit = (Unit) game.getObjectById(id);
+        for (Unit unit : getWaitMap().keySet()) {
             if (unit == null) {
                 continue;
             }
             if (checkWakeUp(unit,
-                    (Unit) game.getObjectById(waitMap.get(id)))) {
+             waitMap.get(unit))) {
                 wakeUp(unit);
             }
         }
@@ -54,7 +53,7 @@ public class WaitRule {
         if (game == null) {
             game = unit.getGame();
         }
-        getWaitMap().put(unit.getId(), target.getId());
+        getWaitMap().put(unit , target );
     }
 
     private static void wakeUp(Unit unit) {
@@ -95,7 +94,7 @@ public class WaitRule {
         return alertMap;
     }
 
-    public static Map<Integer, Integer> getWaitMap() {
+    private static Map<Unit, Unit> getWaitMap() {
         if (waitMap == null) {
             waitMap = new HashMap<>();
         }

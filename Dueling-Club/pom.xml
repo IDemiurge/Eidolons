@@ -164,11 +164,7 @@
             <artifactId>gdx-tools</artifactId>
             <version>${libgdx.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-freetype</artifactId>
-            <version>0.9.9</version>
-        </dependency>
+
 
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
@@ -219,7 +215,8 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>main.test.frontend.ScenarioLauncher</mainClass>
+                            <!--<mainClass>main.test.frontend.ScenarioLauncher</mainClass>-->
+                            <mainClass>main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -240,7 +237,8 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>main.test.frontend.ScenarioLauncher</mainClass>
+                                    <mainClass>main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>
+                                    <!--<mainClass>main.test.frontend.ScenarioLauncher</mainClass>-->
                                     <!--<mainClass>main.test.frontend.FAST_DC</mainClass>-->
                                 </transformer>
                             </transformers>

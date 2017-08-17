@@ -14,7 +14,10 @@ public class ScenarioLauncher {
     public static final String DEFAULT = "Pride and Treachery";
     public static String missionIndex="0";
 
-    public static void main(String[] args) {
+
+        public static void main(String[] args) {
+if (args.length>2)
+   DemoLauncher. initQuickLaunch();
 
         if (args.length>1)
         missionIndex = args[1];

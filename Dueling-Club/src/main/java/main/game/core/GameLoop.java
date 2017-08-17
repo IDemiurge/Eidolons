@@ -2,6 +2,7 @@ package main.game.core;
 
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.rules.combat.misc.ChargeRule;
 import main.game.battlecraft.rules.magic.ChannelingRule;
@@ -33,7 +34,19 @@ public class GameLoop {
     }
 
     public void start() {
-        while (roundLoop());
+        while (true) {
+            if (!AiTrainingRunner.running)
+                roundLoop();
+            else
+                try {
+                    roundLoop();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    break;
+            }
+        }
+        WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, false);
+
     }
 
     private boolean roundLoop() {
@@ -54,7 +67,7 @@ public class GameLoop {
                 break;
             }
             result = makeAction();
-            if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()){
+            if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
                 return false;
             }
             if (result == null) {
@@ -76,20 +89,16 @@ public class GameLoop {
     }
 
     /**
-     *
-     * @return
-     * true if round must end, null if active unit is to be retained
+     * @return true if round must end, null if active unit is to be retained
      */
     private Boolean makeAction() {
 
         Boolean result;
-        if (activeUnit.getHandler().getChannelingSpellData() != null)
-        {
+        if (activeUnit.getHandler().getChannelingSpellData() != null) {
             ActionInput data = activeUnit.getHandler().getChannelingSpellData();
             ChannelingRule.channelingResolves(activeUnit);
             result = activateAction(data);
-        }
-        else if (game.getManager().getActiveObj().isAiControlled()) {
+        } else if (game.getManager().getActiveObj().isAiControlled()) {
             result = activateAction(waitForAI());
         } else {
             result = activateAction(waitForPlayerInput());
@@ -101,9 +110,9 @@ public class GameLoop {
     }
 
     private void waitForPause() {
-        if (paused){
-            WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE );
-            paused=false;
+        if (paused) {
+            WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE);
+            paused = false;
         }
     }
 
@@ -169,13 +178,14 @@ public class GameLoop {
         return activatingAction;
     }
 
-    public void setPaused(boolean paused) { main.system.auxiliary.log.LogMaster.log(1,"Pause game: " +paused);
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        main.system.auxiliary.log.LogMaster.log(1, "Pause game: " + paused);
         this.paused = paused;
         if (!paused)
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE, true);
-    }
-
-    public boolean isPaused() {
-        return paused;
     }
 }

@@ -1,4 +1,4 @@
-package main.misc.news;
+package main.news;
 
 /**
  * Created by JustMe on 7/31/2017.

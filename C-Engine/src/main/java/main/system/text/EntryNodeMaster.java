@@ -56,8 +56,13 @@ public class EntryNodeMaster {
     }
 
     public static int getWrapLength(boolean top) {
-        return FontMaster.getStringLengthForWidth(top ? getTopFont() : getSubNodeFont(),
-                INNER_WIDTH);
+        try {
+            return FontMaster.getStringLengthForWidth(top ? getTopFont() : getSubNodeFont(),
+             INNER_WIDTH);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Integer.MAX_VALUE;
     }
 
     public static Font getTopFont() {

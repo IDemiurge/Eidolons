@@ -83,7 +83,14 @@ public class Analyzer extends AiHandler {
     }
 
     public static List<Unit> getVisibleEnemies(UnitAI ai) {
-        return getUnits(ai, false, true, true, false, isTargetingUnconscious(ai));
+        Boolean unconscious=isTargetingUnconscious(ai);
+        List<Unit> enemies = getUnits(ai, false, true, true, false,false, unconscious);
+        if (enemies.isEmpty())
+            if (unconscious!=null ){
+            if (!unconscious)
+                enemies = getUnits(ai, false, true, true, false, false, true);
+            }
+        return enemies;
     }
 
     private static Boolean isTargetingUnconscious(UnitAI ai) {

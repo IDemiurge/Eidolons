@@ -176,6 +176,7 @@ import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiCons
     GEN_SPELL_DURATION_MULTIPLIER(50),
     GEN_SPELL_DURATION_SQRT_MULTIPLIER(1000),
     LETHAL_DAMAGE_MOD(200),
+    LETHAL_DAMAGE_MOD_VS_UNCONSCIOUS(150),
     UNCONSCIOUS_DAMAGE_MOD(160), DAMAGE_PERCENTAGE_MOD_MINIMUM(10);
 
     private float defValue;

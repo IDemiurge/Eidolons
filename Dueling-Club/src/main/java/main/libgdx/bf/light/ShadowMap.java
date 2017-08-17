@@ -28,13 +28,16 @@ public class ShadowMap extends Group {
     private void init() {
         shadowCells = new Image[grid.getCols()][grid.getRows()];
         shadowTexture = TextureCache.getOrCreate(shadowTexturePath);
+        float xPos = 0;
+        float yPos = 0;
         for (int x = 0; x < grid.getCols(); x++) {
             for (int y = 0; y < grid.getRows(); y++) {
                 shadowCells[x][y] = new Image(shadowTexture);
                 addActor(shadowCells[x][y]);
-//                TODO shadowCells[x][y].setPosition();
-            }
-        }
+                xPos = grid.getCells()[x][y].getX();
+                yPos = grid.getCells()[x][y].getY();
+                shadowCells[x][y].setPosition(xPos, yPos);
+            }}
         bindEvents();
         update();
     }

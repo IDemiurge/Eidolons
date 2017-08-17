@@ -19,7 +19,6 @@ import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
-import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
@@ -183,10 +182,10 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         while (Loop.loopContinues()) {
             int x = playerC.x + RandomWizard.getRandomIntBetween(-4, 4);
             int y = playerC.y + RandomWizard.getRandomIntBetween(-4, 4);
-            if (y >= GuiManager.getBattleFieldHeight() - 1) {
+            if (y >= getDungeon().getCellsY() - 1) {
                 continue;
             }
-            if (x >= GuiManager.getBattleFieldWidth() - 1) {
+            if (x >= getDungeon().getCellsX() - 1) {
                 continue;
             }
             if (y <= 0) {

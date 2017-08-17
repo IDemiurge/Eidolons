@@ -878,6 +878,9 @@ public class StringMaster {
         return (cropLastDivider) ? result.substring(0, result.lastIndexOf(divider)) : result;
     }
 
+    public static String join(String s, String... parts) {
+       return  joinStringList( new LinkedList<>(Arrays.asList(parts)), s, true);
+    }
     public static String joinList(List  list ) {
         return joinList(list, SEPARATOR);
     }
@@ -1653,6 +1656,7 @@ public class StringMaster {
         }
         return array[i];
     }
+
 
     public enum STD_DEITY_TYPE_NAMES {
         Faithless

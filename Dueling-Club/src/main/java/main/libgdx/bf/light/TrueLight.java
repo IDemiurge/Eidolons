@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import main.libgdx.GdxColorMaster;
-import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -31,11 +30,10 @@ public class TrueLight {
          rayHandler.setBlurNum(15);
         ambientColor = new Color(0.2f, 0.1f, 0.3f, ambientAlpha);
          rayHandler.setAmbientLight(ambientColor);
-         rayHandler.setAmbientLight(LightingManager.ambient_light);
+         rayHandler.setAmbientLight( ambient);
         RayHandler.setGammaCorrection(true);
-        LightingManager.setMouse_light(true);
-        new ConeLight(rayHandler, 3, GdxColorMaster.ENEMY_COLOR, 200, 350, 350, 200, 100);
-
+        ConeLight light = new ConeLight(rayHandler, 3, GdxColorMaster.ENEMY_COLOR, 200, 350, 350, 200, 100);
+        light.setActive(true);
 //        updateMap();
         bindEvents();
     }

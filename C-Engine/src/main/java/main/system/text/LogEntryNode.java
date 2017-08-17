@@ -3,6 +3,7 @@ package main.system.text;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
+import main.system.launch.CoreEngine;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.LinkedList;
@@ -62,6 +63,8 @@ public class LogEntryNode {
     }
 
     public void addString(String string) {
+        if (CoreEngine.isGraphicsOff())
+            return;
         List<String> lines = TextWrapper.wrap(string, EntryNodeMaster.getWrapLength(false));
         if (lines.size() > EntryNodeMaster.getMaxLinesPerHeader()) {
             ListMaster.cropLast(lines, lines.size() - EntryNodeMaster.getMaxLinesPerHeader());

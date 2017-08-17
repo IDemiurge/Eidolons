@@ -1211,10 +1211,14 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 return getUnconsciousDamagePriority() * (int) (mod * 100) / 100;
             }
         }
-
-        if (DamageCalculator.isLethal(damage, targetObj)) {
-            if (checkKillPrioritized(targetObj, action)) {
-                return getLethalDamagePriority() * (int) (mod * 100) / 100;
+        if (checkKillPrioritized(targetObj, action)) {
+            if (DamageCalculator.isLethal(damage, targetObj)) {
+                int p = getLethalDamagePriority();
+                if (targetObj instanceof Unit) {
+                    if (((Unit) targetObj).isUnconscious())
+                        p = getConstInt(AiConst.LETHAL_DAMAGE_MOD_VS_UNCONSCIOUS);
+                }
+                return p * (int) (mod * 100) / 100;
             }
         }
         int e = targetObj.getIntParam(PARAMS.C_ENDURANCE);

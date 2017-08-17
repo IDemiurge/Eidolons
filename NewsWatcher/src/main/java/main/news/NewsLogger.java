@@ -1,6 +1,9 @@
-package main.misc.news;
+package main.news;
 
 import main.data.filesys.PathFinder;
+import main.news.NewsAlerter;
+import main.news.NewsArticle;
+import main.news.NewsFilterer;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 
@@ -21,7 +24,7 @@ public class NewsLogger {
         if (logText == null) {
             logText = "\nKeywords: " + NewsFilterer.keywords.toString();
             logText = "\nEmails: " + NewsAlerter.getEmails().toString();
-            logText = "\nWebsites: " + NewsReader.getWebsites().toString();
+            logText = "\nWebsites: " +  NewsReader.getWebsites().toString();
         }
         return logText;
     }

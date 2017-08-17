@@ -16,6 +16,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BfObj;
 import main.entity.type.XmlHoldingType;
+import main.game.core.game.Game;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
@@ -37,12 +38,23 @@ public class AbilityConstructor {
 
     private static final String TARGETING = "Targeting";
     private static final String EFFECTS = "Effect";
-    private static Map<Integer, Map<String, AbilityObj>> abilCache = new XLinkedMap<>();
+    private static Map<Game,Map<Integer, Map<String, AbilityObj>>> safeCache = new XLinkedMap<>();
+
+    //if Game is reinitialized, static id-caches must be destroyed!
+    //TODO get rid of static
+    public static Map<Integer, Map<String, AbilityObj>> getAbilCache() {
+        Map<Integer, Map<String, AbilityObj>> cache = safeCache.get(Game.game);
+        if (cache==null ){
+            safeCache.clear();
+            cache = new XLinkedMap<>();
+            safeCache.put(Game.game, cache);
+        }
+        return cache;
+    }
 
     /**
      * a method per OBJ_TYPE? passives and actives
      *
-     * @param value
      */
 
     @SuppressWarnings("rawtypes")
@@ -123,7 +135,7 @@ public class AbilityConstructor {
         return (Targeting) ConstructionManager.construct(node);
     }
 
-    public static Effect constructEffects(Node node) {
+    private static Effect constructEffects(Node node) {
         Effect effects = (Effect) ConstructionManager.construct(node);
         if (effects == null) {
             Err.info("null effects! " + node.toString());
@@ -246,9 +258,9 @@ public class AbilityConstructor {
     public static AbilityObj getPassive(String passive, Entity entity) {
         AbilityObj ability = null;
 
-        if (abilCache.get(entity.getId()) != null) {
+        if (getAbilCache().get(entity.getId()) != null) {
             try {
-                ability = abilCache.get(entity.getId()).get(passive);
+                ability = getAbilCache().get(entity.getId()).get(passive);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -258,7 +270,7 @@ public class AbilityConstructor {
                     TextParser.setAbilityParsing(true);
                     entity.getRef().setID(KEYS.INFO, entity.getId());
                     passive = TextParser.parse(passive, entity.getRef());
-                    ability = abilCache.get(entity.getId()).get(passive);
+                    ability = getAbilCache().get(entity.getId()).get(passive);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -269,7 +281,7 @@ public class AbilityConstructor {
                 return ability;
             }
         } else {
-            abilCache.put(entity.getId(), new HashMap<>());
+            getAbilCache().put(entity.getId(), new HashMap<>());
         }
         return (AbilityObj) newAbility(passive, entity, true);
     }
@@ -347,10 +359,10 @@ public class AbilityConstructor {
         }
         // if (type.getAbilities() == null)
         construct(type);
-        Map<String, AbilityObj> map = abilCache.get(entity.getId());
+        Map<String, AbilityObj> map = getAbilCache().get(entity.getId());
         if (map == null) {
             map = new HashMap<>();
-            abilCache.put(entity.getId(), map);
+            getAbilCache().put(entity.getId(), map);
         }
         AbilityObj ability = map.get(abilTypeName);
         if (ability == null) {

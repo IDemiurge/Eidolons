@@ -7,6 +7,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.Launcher;
 import main.data.filesys.PathFinder;
 import main.game.core.game.DC_Game;
@@ -14,6 +15,7 @@ import main.libgdx.EngineEmulator;
 import main.libgdx.screens.*;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
+import main.system.launch.CoreEngine;
 import org.dizitart.no2.Nitrite;
 
 import java.util.function.Supplier;
@@ -26,7 +28,14 @@ public class DemoLauncher extends Game {
     private DC_Game coreGame;
     private EngineEmulator engine;
     private ScreenViewport viewport;
+    private static String quickTypes=
+     "units;bf obj;terrain;missions;places;scenarios;party;";
 
+    public static void initQuickLaunch() {
+        CoreEngine.setSelectivelyReadTypes(quickTypes);
+        ItemGenerator.setGenerationOn(false);
+
+    }
     public DemoLauncher() {
 
 

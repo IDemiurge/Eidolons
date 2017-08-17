@@ -147,6 +147,7 @@ public class EmitterMap {
         Vector2 v = GridMaster.
          getVectorForCoordinateWithOffset(c);
         Ambience fog = ambiencePool.obtain();
+        fog.added();
         fog.setTarget(c);
         fogMap.put(c, fog);
         fog.setPosition(v.x, v.y);

@@ -168,6 +168,12 @@ public class PathFinder {
         return ENGINE_PATH;
     }
 
+    public static String getModulePath() {
+        init();
+//        if (CoreEngine.isJar())
+//            return ENGINE_PATH;
+        return StringMaster.cropLastPathSegment(ENGINE_PATH);
+    }
     public static String getEnginePathPlusNewResourceProject() {
         init();
         return ENGINE_PATH + "\\\\resource\\";
