@@ -2,6 +2,9 @@ package main.libgdx.bf.light;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.core.game.DC_Game;
@@ -40,6 +43,19 @@ public class ShadowMap extends Group {
             }}
         bindEvents();
         update();
+        addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+//                event.cancel();
+//             event.reset();
+             return false;
+            }
+        });
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        return null ;
     }
 
     private void bindEvents() {
@@ -52,15 +68,17 @@ public class ShadowMap extends Group {
     private void update() {
         for (int x = 0; x < grid.getCols(); x++) {
             for (int y = 0; y < grid.getRows(); y++) {
-                float gamma = 0;
+                float gamma = 1;
                 try {
                     gamma =DC_Game.game.getVisionMaster().
                       getGammaMaster().getGammaForCell(x, y);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Gdx.app.log("ShadowMap", (x+y)+ " gamma = "+gamma);
-                shadowCells[x][y].setColor(1, 1, 1, gamma);
+
+                float alpha = 1 - gamma;
+                Gdx.app.log("ShadowMap", (x+y)+ " alpha = "+alpha);
+                 shadowCells[x][y].setColor(1, 1, 1, alpha);
 
 //                    GridCellContainer cell = grid.getCells()[x][y];
 //                    List<GridUnitView> views = cell.getUnitViews();
