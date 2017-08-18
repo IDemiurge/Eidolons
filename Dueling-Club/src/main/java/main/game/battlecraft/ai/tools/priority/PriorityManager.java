@@ -83,8 +83,8 @@ public interface PriorityManager {
 
     int getDurationMultiplier(Action action);
 
-    boolean applyParamModPriority(DC_Obj target, Effect e, PARAMETER param,
-                                  int amount);
+    float getParamModFactor(DC_Obj target, Effect e, PARAMETER param,
+                            int amount);
 
     int getCounterModSpellPriority(Action action);
 

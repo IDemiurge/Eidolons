@@ -14,6 +14,8 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.battlecraft.rules.UnitAnalyzer;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
@@ -78,6 +80,8 @@ public class StackingRule implements ActionRule {
     }
 
     public static void actionMissed(DC_ActiveObj action) {
+        if (RuleMaster.isRuleOn(RULE.MISSED_ATTACK_REDIRECTION))
+            return ;
         Ref ref = action.getRef();
         Obj target = ref.getTargetObj();
         List<Unit> units = action.getGame().getObjectsOnCoordinate(

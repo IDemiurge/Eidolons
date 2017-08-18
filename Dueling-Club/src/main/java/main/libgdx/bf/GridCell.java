@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.entity.obj.DC_Obj;
+import main.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
@@ -84,6 +85,18 @@ public class GridCell extends Group implements Borderable {
         if (DC_Game.game.isDebugMode()) {
             if (!cordsText.isVisible()) {
                 cordsText.setVisible(true);
+            }
+            if (GammaMaster.DEBUG_MODE){
+                cordsText.setText(getGridX() + ":" + getGridY() + ", gamma="
+                 + DC_Game.game.getVisionMaster().getGammaMaster().
+                 getGammaForCell(getGridX(), getGridY())
+                );
+                cordsText.setPosition( 0, getHeight() / 2 - cordsText.getHeight() / 2);
+
+            }
+            else {
+                cordsText = new Label(getGridX() + ":" + getGridY(), StyleHolder.getDefaultLabelStyle());
+                cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2, getHeight() / 2 - cordsText.getHeight() / 2);
             }
         } else {
             if (cordsText.isVisible()) {

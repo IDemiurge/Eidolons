@@ -11,8 +11,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class PathFinder {
 
-    private static final String BG_PATH = "big\\";
-    private static final String PRESENTATION = "presentation\\";
+    private static final String BG_PATH = "big"+StringMaster.getPathSeparator();
+    private static final String PRESENTATION = "presentation"+StringMaster.getPathSeparator();
     public static String MICRO_MODULE_NAME = "duel-club";
     private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + "//templates";
     private static String MACRO_MODULE_NAME = "macro";
@@ -62,15 +62,15 @@ public class PathFinder {
         }
 
         RES_PATH = "resource" + File.separator;
-        IMG_PATH = ENGINE_PATH + RES_PATH + "img\\";
+        IMG_PATH = ENGINE_PATH + RES_PATH + "img"+StringMaster.getPathSeparator();
 
-        SND_PATH = ENGINE_PATH + RES_PATH + "sound\\";
+        SND_PATH = ENGINE_PATH + RES_PATH + "sound"+StringMaster.getPathSeparator();
 
-        FONT_PATH = ENGINE_PATH + RES_PATH + "Fonts\\";
+        FONT_PATH = ENGINE_PATH + RES_PATH + "Fonts"+StringMaster.getPathSeparator();
 
-        MACRO_TYPES_PATH = XML_PATH + MACRO_MODULE_NAME + "\\types\\";
+        MACRO_TYPES_PATH = XML_PATH + MACRO_MODULE_NAME + StringMaster.getPathSeparator()+"types"+StringMaster.getPathSeparator();
 
-        TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + "\\types\\"
+        TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + StringMaster.getPathSeparator()+"types"+StringMaster.getPathSeparator()
          + ((PRESENTATION_MODE) ? PRESENTATION : "");
 
     }
@@ -91,42 +91,42 @@ public class PathFinder {
 
     public static String getDungeonFolder() {
         init();
-        return XML_PATH + "\\dungeons\\";
+        return XML_PATH + StringMaster.getPathSeparator()+"dungeons"+StringMaster.getPathSeparator();
     }
 
     public static String getDungeonMissionFolder() {
         init();
-        return XML_PATH + "\\dungeons\\missions\\";
+        return XML_PATH + StringMaster.getPathSeparator()+"dungeons"+StringMaster.getPathSeparator()+"missions"+StringMaster.getPathSeparator();
     }
 
     public static String getSkirmishBattlefieldFolder() {
         init();
-        return getDungeonLevelFolder() + "\\skirmish\\battlefields\\";
+        return getDungeonLevelFolder() + StringMaster.getPathSeparator()+"skirmish"+StringMaster.getPathSeparator()+"battlefields"+StringMaster.getPathSeparator();
     }
 
     public static String getDungeonLevelFolder() {
         init();
-        return XML_PATH + "\\dungeons\\levels\\";
+        return XML_PATH + StringMaster.getPathSeparator()+"dungeons"+StringMaster.getPathSeparator()+"levels"+StringMaster.getPathSeparator();
     }
 
     public static String getTextPath() {
         init();
-        return RES_PATH + "\\text\\";
+        return RES_PATH + StringMaster.getPathSeparator()+"text"+StringMaster.getPathSeparator();
     }
 
     public static String getScenariosPath() {
         init();
-        return RES_PATH + "\\text\\scenario\\";
+        return RES_PATH + StringMaster.getPathSeparator()+"text"+StringMaster.getPathSeparator()+"scenario"+StringMaster.getPathSeparator();
     }
 
     public static String getLogPath() {
         init();
-        return getTextPath() + "\\log\\";
+        return getTextPath() + StringMaster.getPathSeparator()+"log"+StringMaster.getPathSeparator();
     }
 
     public static String getUnitGroupPath() {
         init();
-        return XML_PATH + "\\groups\\";
+        return XML_PATH + StringMaster.getPathSeparator()+"groups"+StringMaster.getPathSeparator();
     }
 
     public static String getImagePath() {
@@ -176,12 +176,12 @@ public class PathFinder {
     }
     public static String getEnginePathPlusNewResourceProject() {
         init();
-        return ENGINE_PATH + "\\\\resource\\";
+        return ENGINE_PATH  +StringMaster.getPathSeparator()+"resource"+StringMaster.getPathSeparator();
     }
 
     public static String getThemedBgPicsPath() {
         init();
-        return IMG_PATH + "\\mini\\bg\\";
+        return IMG_PATH + StringMaster.getPathSeparator()+"mini"+StringMaster.getPathSeparator()+"bg"+StringMaster.getPathSeparator();
     }
 
     public static String getMACRO_TYPES_PATH() {
@@ -191,12 +191,12 @@ public class PathFinder {
 
     public static String getPrefsPath() {
         init();
-        return ENGINE_PATH + getTextPath() + "prefs\\";
+        return ENGINE_PATH + getTextPath() + "prefs"+StringMaster.getPathSeparator();
     }
 
     public static String getWorkspacePath() {
         init();
-        return XML_PATH + "\\workspaces\\";
+        return XML_PATH + StringMaster.getPathSeparator()+"workspaces"+StringMaster.getPathSeparator();
     }
 
     public static String getXML_PATH() {
@@ -206,17 +206,17 @@ public class PathFinder {
 
     public static String getMapBlockFolderPath() {
         init();
-        return getLevelEditorPath() + "blocks\\";
+        return getLevelEditorPath() + "blocks"+StringMaster.getPathSeparator();
     }
 
     public static String getLevelEditorPath() {
         init();
-        return XML_PATH + "Level Editor\\";
+        return XML_PATH + "Level Editor"+StringMaster.getPathSeparator();
     }
 
     public static String getSpellUpgradeGlyphsFolder() {
         init();
-        return getImagePath() + "ui\\glyphs\\";
+        return getImagePath() + "ui"+StringMaster.getPathSeparator()+"glyphs"+StringMaster.getPathSeparator();
     }
 
     public static boolean isFullPath(String path) {
@@ -226,22 +226,22 @@ public class PathFinder {
 
     public static String getSfxPath() {
         init();
-        return getImagePath() + "mini\\sfx\\";
+        return getImagePath() + "mini"+StringMaster.getPathSeparator()+"sfx"+StringMaster.getPathSeparator();
     }
 
     public static String getSpritesPath() {
         init();
-        return getImagePath() + "mini\\sprites\\";
+        return getImagePath() +  "mini"+StringMaster.getPathSeparator()+"sprites"+StringMaster.getPathSeparator() ;
     }
 
     public static String getParticlePresetPath() {
         init();
-        return getImagePath() + "mini\\sfx\\";
+        return getImagePath() + "mini"+StringMaster.getPathSeparator()+"sfx"+StringMaster.getPathSeparator();
     }
 
     public static String getParticleImagePath() {
         init();
-        return getParticlePresetPath() + "images\\";
+        return getParticlePresetPath() + "images"+StringMaster.getPathSeparator();
     }
 
     public static String removeSpecificPcPrefix(String imagePath) {

@@ -104,6 +104,10 @@ public class SpellRadialManager {
             ActionCostTooltip tooltip = new ActionCostTooltip();
             tooltip.setUserObject(new ActionCostSource() {
                 @Override
+                public ValueContainer getDescription() {
+                    return new ValueContainer(action.getDescription(), "");
+                }
+                @Override
                 public ValueContainer getName() {
                     return new ValueContainer(action.getName() + " !!!!", "");
                 }

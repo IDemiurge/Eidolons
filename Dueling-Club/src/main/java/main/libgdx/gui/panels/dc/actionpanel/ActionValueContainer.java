@@ -1,5 +1,6 @@
 package main.libgdx.gui.panels.dc.actionpanel;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -33,6 +34,11 @@ public class ActionValueContainer extends ValueContainer {
         if (action != null) {
             clickAction = action::run;
         }
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
     }
 
     public Runnable getClickAction() {

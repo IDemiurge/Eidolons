@@ -37,33 +37,35 @@ public class RuleMaster implements Controller {
         switch (statusForRule) {
             case BASIC:
                 switch (getScope()) {
+                    case ADVANCED:
                     case BASIC:
-                        return true;
                     case FULL:
-                        return true;
                     case TEST:
                         return true;
                 }
+                break;
             case FULL:
                 switch (getScope()) {
-                    case BASIC:
-                        return false;
+                    case ADVANCED:
                     case FULL:
-                        return true;
                     case TEST:
+                        return true;
+                }
+                break;
+            case ADVANCED:
+                switch (getScope()) {
+                    case TEST:
+                    case ADVANCED:
                         return true;
                 }
             case TEST:
                 switch (getScope()) {
-                    case BASIC:
-                        return false;
-                    case FULL:
-                        return false;
                     case TEST:
                         return true;
                 }
+                break;
         }
-        return null;
+        return false;
     }
 
     public static boolean checkRuleGroupIsOn(RULE_GROUP group) {
@@ -336,7 +338,7 @@ public class RuleMaster implements Controller {
         WEIGHT,
         INJURY(RULE_SCOPE.FULL),
         CRITICAL_ATTACK(),
-        DODGE(), GUARD();
+        DODGE(), GUARD(), MISSED_ATTACK_REDIRECTION(RULE_SCOPE.ADVANCED);
 
         String tooltip;
         RULE_SCOPE scope;
@@ -367,7 +369,7 @@ public class RuleMaster implements Controller {
     }
 
     public enum RULE_SCOPE {
-        TEST, BASIC, FULL,
+        TEST, BASIC, FULL,ADVANCED,
     }
 
     public enum SPELLCASTING_RULES {

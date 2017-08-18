@@ -1,6 +1,5 @@
 package main.libgdx.bf.light;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
@@ -77,13 +76,9 @@ public class ShadowMap extends Group {
                 }
 
                 float alpha = 1 - gamma;
-                Gdx.app.log("ShadowMap", (x+y)+ " alpha = "+alpha);
+//                Gdx.app.log("ShadowMap", (x+y)+ " alpha = "+alpha);
                  shadowCells[x][y].setColor(1, 1, 1, alpha);
 
-//                    GridCellContainer cell = grid.getCells()[x][y];
-//                    List<GridUnitView> views = cell.getUnitViews();
-//                    for (GridUnitView sub : views) {
-//                    }
             }
 
 

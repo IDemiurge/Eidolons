@@ -97,6 +97,9 @@ public class AnimMaster extends Group {
             FloatingText floatingText = (FloatingText) p.get();
             if (!floatingText.isInitialized())
                 floatingText.init();
+            else {
+                main.system.auxiliary.log.LogMaster.log(1,"rogue float text " );
+            }
             addActor(floatingText);
 
         });
@@ -383,10 +386,7 @@ public class AnimMaster extends Group {
         if (leadAnimation == null) {
             leadAnimation = next();
         }
-        if (leadAnimation == null) {
-            return;
-        }
-
+        if (leadAnimation != null) {
         boolean result = false;
         drawing = true;
         try {
@@ -397,6 +397,7 @@ public class AnimMaster extends Group {
         if (!result) {
             startNext();
         }
+    }
         // not turned on
         if (parallelDrawing) {
             leadQueue.forEach(a -> {

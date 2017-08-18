@@ -15,7 +15,9 @@ import main.system.math.PositionMaster;
  */
 public class IlluminationMaster {
 
-    private static final Integer DEFAULT_GLOBAL_ILLUMINATION = 10;
+    public static final Integer DEFAULT_GLOBAL_ILLUMINATION = 10;
+    public static final Integer DEFAULT_GLOBAL_ILLUMINATION_NIGHT = 20;
+    public static final Integer DEFAULT_GLOBAL_ILLUMINATION_DAY = 80;
     private Integer globalIllumination = 0;
     private Integer globalConcealment = 0;
 
@@ -59,16 +61,19 @@ public class IlluminationMaster {
         Integer sight = source.getIntParam(PARAMS.SIGHT_RANGE);
         FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(source, (BfObj) target);
         if (singleFacing == UnitEnums.FACING_SINGLE.BEHIND) {
-            sight = source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
+            sight =1+ source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
         } else if (singleFacing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
             sight -= source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
         }
+//        sight*=2; //TODO NEW
         int diff = sight - distance;
 
         if (diff < 0) {
-            ilMod = 100 + (diff * 10 - diff * diff * 5);
+            ilMod = 100 + (diff * 20
+//             - diff * diff * 5
+            );
         } else {
-            ilMod = (100 - (int) (diff * 5 + Math.sqrt(diff * 100)));
+            ilMod = (100 + (int) (diff * 3 + Math.sqrt(diff * 50)));
         }
 
         ilMod = Math.min(ilMod, 200);

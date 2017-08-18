@@ -619,4 +619,8 @@ public class DC_GameManager extends GameManager {
     public ObjCreator getObjCreator() {
         return objCreator;
     }
+
+    public Unit getMainHero() {
+        return (Unit) getGame().getPlayer(true).getHeroObj();
+    }
 }

@@ -30,8 +30,11 @@ public class NewsParser {
     }
 
     public static Elements getLinks(String content) {
+        return getElements(content, "a[href]");
+    }
+    public static Elements getElements(String content, String identifier) {
         Document doc = Jsoup.parse(content, "UTF-8");
-        return doc.select("a[href]");
+        return doc.select(identifier);
     }
 
     public static List<NewsArticle> parse(String content, String website) {

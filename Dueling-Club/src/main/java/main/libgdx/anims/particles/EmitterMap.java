@@ -21,6 +21,7 @@ import java.util.Map;
 public class EmitterMap {
 
     private static final int MIN_DISTANCE_FROM_LIGHT = 1;
+    private static final boolean HIDE_SMOKE_AROUND_MAIN_HERO =false ;
     private static   float MIN_FOG_DISTANCE_FROM_ALLY = 3;
     private static   float MIN_DISTANCE_BETWEEN_FOG = 4;
     private final Pool<Ambience> ambiencePool = new Pool<Ambience>() {
@@ -55,8 +56,8 @@ public class EmitterMap {
 //    }
 
     public void initFog() {
-        int xDistanceFog = 3;
-        int yDistanceFog = 3;
+        int xDistanceFog = 2;
+        int yDistanceFog = 2;
         for (int x = 0; x < DungeonScreen.getInstance().getGridPanel().getRows(); x += xDistanceFog)
             for (int y = 0; y < DungeonScreen.getInstance().getGridPanel().getCols(); y += yDistanceFog) {
                 addSmoke(new Coordinates(x, y));
@@ -71,11 +72,11 @@ public class EmitterMap {
         }
         if (fogMap.isEmpty())
             initFog();
-
         for (Coordinates c1 : fogMap.keySet()) {
             Coordinates mainHeroCoordinates =
              DC_Game.game.getPlayer(true).getHeroObj().getCoordinates();
-            if (PositionMaster.getDistance(c1, mainHeroCoordinates)
+            if (HIDE_SMOKE_AROUND_MAIN_HERO&&
+            PositionMaster.getDistance(c1, mainHeroCoordinates)
              < MIN_DISTANCE_BETWEEN_FOG) {
                 hideSmoke(c1);
             }
@@ -147,10 +148,10 @@ public class EmitterMap {
         Vector2 v = GridMaster.
          getVectorForCoordinateWithOffset(c);
         Ambience fog = ambiencePool.obtain();
-        fog.added();
         fog.setTarget(c);
         fogMap.put(c, fog);
         fog.setPosition(v.x, v.y);
+        fog.added();
         if (!manager.getChildren().contains(fog, true))
         manager.addActor(fog);
         //DungeonScreen.getInstance().getAmbienceStage().addActor(fog);

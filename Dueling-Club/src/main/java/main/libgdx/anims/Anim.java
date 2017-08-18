@@ -125,7 +125,15 @@ public class Anim extends Group implements Animation {
         GuiEventManager.trigger(GuiEventType.ANIMATION_STARTED, this);
     }
 
+public void adjustPosForZoom(int zoom){
+        setPosition(getX()*zoom/100, getY()*zoom/100 );
+    // maybe animMaster must be part of the viewport?
+    //creating anim at wrong coordinates vs updating
 
+    // not just zoom - coords are often 'wrong': ranged weapon, some melee atks
+
+
+}
     @Override
     public boolean draw(Batch batch) {
 //switch(template){

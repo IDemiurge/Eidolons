@@ -12,6 +12,7 @@ import main.data.DataManager;
 import main.data.xml.XML_Converter;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battlefield.vision.IlluminationMaster;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import main.game.bf.Coordinates;
@@ -28,8 +29,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Dungeon extends LightweightEntity {
-    private static final Integer DEFAULT_GLOBAL_ILLUMINATION_NIGHT = 15;
-    private static final Integer DEFAULT_GLOBAL_ILLUMINATION_DAY = 75;
     Integer z;
     private COLOR_THEME colorTheme;
     private DUNGEON_TYPE dungeonType;
@@ -203,10 +202,11 @@ if (levelFilePath!=null )
             }// day/night
             else {
                 if ( isPermanentDusk())
-                    return (DEFAULT_GLOBAL_ILLUMINATION_DAY+DEFAULT_GLOBAL_ILLUMINATION_NIGHT)/2;
+                    return (IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_DAY
+                     +IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_NIGHT)/2;
                     if ( isDaytime())
-                    return DEFAULT_GLOBAL_ILLUMINATION_DAY;
-                return DEFAULT_GLOBAL_ILLUMINATION_NIGHT;
+                    return IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_DAY;
+                return IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_NIGHT;
             }
         }
 

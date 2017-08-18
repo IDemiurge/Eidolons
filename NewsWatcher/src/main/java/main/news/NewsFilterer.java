@@ -1,6 +1,8 @@
 package main.news;
 
 import main.system.auxiliary.StringMaster;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.List;
 
@@ -10,6 +12,12 @@ import java.util.List;
 public class NewsFilterer {
     public static List<String> keywords;
     static String[] watchedTags = {
+     "title" ,
+     "meta" ,
+     "div" ,
+     "a"
+    };
+    static String[] watched  = {
      "<title>" ,
      "<meta>" ,
      "<div>" ,
@@ -41,14 +49,21 @@ public class NewsFilterer {
     public static String getKeywordsPresent(String contents) {
         String keywordsPresent="";
         String relevant="";
-        String[] pieces = contents.split(delimiters);
-        for (String sub : pieces) {
-            String[] subParts = sub.split(delimitersClosed);
-            for (String subPart : subParts) {
-                 relevant+= subPart;
-                break;
+        for (String sub: watchedTags)
+        {
+            Elements elements = NewsParser.getElements(contents, sub);
+            for (Element e : elements) {
+              relevant+=  e.text();
             }
         }
+//        String[] pieces = contents.split(delimiters);
+//        for (String sub : pieces) {
+//            String[] subParts = sub.split(delimitersClosed);
+//            for (String subPart : subParts) {
+//                 relevant+= subPart;
+//                break;
+//            }
+//        }
         /*
 
          */

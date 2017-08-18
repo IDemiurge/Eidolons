@@ -20,6 +20,7 @@ import java.util.function.Supplier;
  */
 public class FloatingText extends Group {
 
+    private static final boolean DEBUG_MODE = true;
     int alphaLoops = 1;
     boolean inverseAlpha;
     float displacementX;
@@ -49,7 +50,10 @@ public class FloatingText extends Group {
 
     public void draw(Batch batch, float parentAlpha) {
         act(Gdx.graphics.getDeltaTime());
-
+        if (DEBUG_MODE) {
+            debug();
+//            main.system.auxiliary.log.LogMaster.log(1, getText() + " at " + getX() + " " + getY()+" color ="+getColor());
+        }
 //        new SearchMaster<MoveByAction>().findInstanceOf(MoveByAction.class, getActions());
         if (inverseAlpha) {
             parentAlpha = 1 - parentAlpha;
@@ -63,12 +67,12 @@ public class FloatingText extends Group {
     }
 
 
-
     public FloatingText init() {
         return
-        init(new Vector2(getX(), getY()), displacementX, displacementY, getDuration());
+         init(new Vector2(getX(), getY()), displacementX, displacementY, getDuration());
     }
-    public FloatingText init( Vector2 origin, float x, float y, float duration) {
+
+    public FloatingText init(Vector2 origin, float x, float y, float duration) {
         SequenceAction alphaActionSequence = new SequenceAction();
         for (int i = alphaLoops; i > 0; i--) {
             AlphaAction fadeOutAction = new AlphaAction();
@@ -111,7 +115,7 @@ public class FloatingText extends Group {
         }
 
         Label label =
-                new Label(getText(), StyleHolder.getDefaultLabelStyle());
+         new Label(getText(), StyleHolder.getDefaultLabelStyle());
         label.setColor(c);
         label.setPosition(0, -20);
         addActor(label);

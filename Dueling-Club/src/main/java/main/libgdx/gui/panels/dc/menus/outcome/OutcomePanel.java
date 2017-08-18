@@ -1,5 +1,6 @@
 package main.libgdx.gui.panels.dc.menus.outcome;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import main.libgdx.StyleHolder;
+import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.panels.dc.ButtonStyled;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import main.libgdx.gui.panels.dc.TabbedPanel;
@@ -23,6 +25,7 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
  * Created by JustMe on 8/15/2017.
  */
 public class OutcomePanel extends TablePanel implements EventListener {
+    public static final boolean TEST_MODE = true;
     private OutcomeDatasource datasource;
     private Image picture;
     private Label message;
@@ -33,7 +36,7 @@ public class OutcomePanel extends TablePanel implements EventListener {
 
     public OutcomePanel(OutcomeDatasource outcomeDatasource) {
 //        setDebug(true);
-addListener(this);
+        addListener(this);
         TextureRegion textureRegion = new TextureRegion(getOrCreateR(VISUALS.END_PANEL.getImgPath()));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
@@ -71,12 +74,23 @@ addListener(this);
          .fill(false).expand(0, 0).right()
          .pad(20, 10, 20, 10).size(50, 50);
 
+        doneButton.getActor().addListener(this);
+
         addElement(buttonTable).pad(0, 20, 20, 20);
     }
 
 
     @Override
     public boolean handle(Event event) {
+        Actor actor = event.getTarget();
+        if (doneButton.getActor() == actor) {
+//            datasource.getHandler().done();
+//            GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, );
+            ActorMaster.addMoveToAction(this, getX(), Gdx.graphics.getHeight(), 1.5f);
+            ActorMaster.addRemoveAfter(this);
+
+        }
+
         return false;
     }
 }

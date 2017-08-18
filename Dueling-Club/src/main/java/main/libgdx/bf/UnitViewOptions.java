@@ -3,9 +3,9 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import main.content.C_OBJ_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.BattleFieldObject;
+import main.entity.obj.unit.Unit;
 import main.libgdx.GdxColorMaster;
 import main.system.images.ImageManager;
 
@@ -28,6 +28,7 @@ public class UnitViewOptions {
 
     private int clockValue;
     private Color teamColor;
+    private boolean playerControlled;
 
 
     public UnitViewOptions(BattleFieldObject obj) {
@@ -80,11 +81,17 @@ public class UnitViewOptions {
 
     public final void createFromGameObject(BattleFieldObject obj) {
         this.portrateTexture = getOrCreateR(obj.getImagePath());
-        if (C_OBJ_TYPE.UNITS_CHARS.equals(obj.getOBJ_TYPE_ENUM())) {
+
+
+        if (obj instanceof Unit) {
+            playerControlled=!((Unit) obj).isAiControlled();
             this.directionValue = obj.getFacing().getDirection().getDegrees();
             this.directionPointerTexture = getOrCreateR("/UI/DIRECTION POINTER.png");
 
-            this.clockTexture = getOrCreateR("/UI/value icons/actions.png");
+            this.clockTexture = getOrCreateR(
+             "UI\\SPECIAL\\Data4_orc-0000001290.png"
+//             "/UI/value icons/actions.png"
+            );
             String emblem = obj.getProperty(G_PROPS.EMBLEM, true);
             if (ImageManager.isImage(emblem))
             this.emblem = getOrCreateR(emblem);

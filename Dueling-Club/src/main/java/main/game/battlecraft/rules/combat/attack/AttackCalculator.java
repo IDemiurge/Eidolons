@@ -389,7 +389,7 @@ public class AttackCalculator {
             if (ranged == null) {
                 return; //TODO ??
             }
-            DC_Obj ammo = (DC_Obj) ranged.getRef().getObj(KEYS.AMMO);
+            DC_Obj ammo = ((DC_WeaponObj) ranged).getAmmo() ;
             if (ammo != null) {
                 action.modifyParameter(PARAMS.IMPACT_AREA, ammo.getIntParam(PARAMS.IMPACT_AREA));
                 // weapon. //IN DC_WEAPONOBJ

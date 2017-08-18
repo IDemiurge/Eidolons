@@ -1,7 +1,6 @@
 package main.libgdx.stage;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.core.game.DC_Game;
 import main.libgdx.anims.ActorMaster;
@@ -24,6 +23,7 @@ import main.system.GuiEventType;
 public class BattleGuiStage extends Stage {
 
     private OutcomePanel outcomePanel;
+
     public BattleGuiStage() {
 
         InitiativePanel initiativePanel = new InitiativePanel();
@@ -53,13 +53,14 @@ public class BattleGuiStage extends Stage {
 
     private void bindEvents() {
         GuiEventManager.bind(GuiEventType.GAME_FINISHED, p -> {
-          if (outcomePanel!=null )outcomePanel.remove();  outcomePanel = new OutcomePanel(new OutcomeDatasource((DC_Game) p.get()));
+            if (outcomePanel != null) outcomePanel.remove();
+            outcomePanel = new OutcomePanel(new OutcomeDatasource((DC_Game) p.get()));
             addActor(outcomePanel);
             outcomePanel.setZIndex(getActors().size);
-            outcomePanel.setColor(new Color(1, 1, 1, 0));
-            ActorMaster.addFadeInOrOut(outcomePanel, 2.5f);
+//            outcomePanel.setColor(new Color(1, 1, 1, 0));
+//            ActorMaster.addFadeInOrOut(outcomePanel, 2.5f);
             float y = Gdx.graphics.getHeight() -
-             (Gdx.graphics.getHeight() - outcomePanel.getHeight()) / 2;
+             (Gdx.graphics.getHeight() - outcomePanel.getHeight()/ 2) ;
             float x = (Gdx.graphics.getWidth() - outcomePanel.getWidth()) / 2;
             outcomePanel.setPosition(x, y + outcomePanel.getHeight());
             ActorMaster.addMoveToAction(outcomePanel, x, y, 2.5f);
@@ -69,15 +70,15 @@ public class BattleGuiStage extends Stage {
     @Override
     public void act() {
         super.act();
-        if (outcomePanel!=null )
+        if (outcomePanel != null)
             outcomePanel.setZIndex(Integer.MAX_VALUE);
     }
 
     @Override
     public boolean keyTyped(char character) {
-       boolean result = DC_Game.game.getKeyManager().handleKeyTyped(0, character);
-       if (result)
-           return true;
+        boolean result = DC_Game.game.getKeyManager().handleKeyTyped(0, character);
+        if (result)
+            return true;
         return super.keyTyped(character);
     }
 

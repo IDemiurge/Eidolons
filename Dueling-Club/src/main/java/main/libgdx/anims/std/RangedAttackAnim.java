@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
 import main.entity.Entity;
-import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
@@ -33,7 +32,7 @@ public class RangedAttackAnim extends AttackAnim {
 
         //another actor? separate sprite?
         rangedWeaponImage = TextureCache.getOrCreate(getRangedWeaponImage(getActive()));
-        ammo = weapon.getRef().getObj(KEYS.AMMO);
+        ammo = weapon.getAmmo( );
 //        if (ammo ==null )
 //        ammo = weapon.getRef().getLastRemovedObj(KEYS.AMMO);
         if (ammo instanceof DC_QuickItemObj) {

@@ -138,6 +138,10 @@ public class AI_SpellMaster {
             if (logic != null) {
                 return logic;
             }
+
+            if (EffectFinder.check(actives, DealDamageEffect.class)) {
+                return AiEnums.AI_LOGIC.DAMAGE;
+            }
             try {
                 logic = getBuffLogic(spell);
             } catch (Exception e) {
@@ -170,9 +174,6 @@ public class AI_SpellMaster {
             }
             if (EffectFinder.check(actives, CreateObjectEffect.class)) {
                 return AiEnums.AI_LOGIC.SUMMON;
-            }
-            if (EffectFinder.check(actives, DealDamageEffect.class)) {
-                return AiEnums.AI_LOGIC.DAMAGE;
             }
 
             if (EffectFinder.check(actives, InstantDeathEffect.class)) {

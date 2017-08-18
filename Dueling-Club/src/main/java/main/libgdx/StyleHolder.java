@@ -23,8 +23,8 @@ public class StyleHolder {
     private static final String DOWN = "_down";
     private static final String UP = "_up";
     private static final String CHECKED = "_down";
-    private static final FONT DEFAULT_FONT = FONT.MAIN;
-    private static final FONT ALT_FONT = FONT.NYALA;
+    public static final FONT DEFAULT_FONT = FONT.MAIN;
+    public static final FONT ALT_FONT = FONT.NYALA;
     private static final int DEFAULT_SIZE = 14;
     private static Label.LabelStyle defaultLabelStyle;
     private static Label.LabelStyle avqLabelStyle;
@@ -37,10 +37,13 @@ public class StyleHolder {
         //TODO
         return null;
     }
-        public static Label.LabelStyle getDefaultLabelStyleSized(Integer size) {
+    public static Label.LabelStyle getSizedLabelStyle(FONT fontStyle, Integer size) {
+        return getSizedColoredLabelStyle(fontStyle, size, DEFAULT_COLOR);
+    }
+        public static Label.LabelStyle getSizedColoredLabelStyle(FONT fontStyle, Integer size, Color color) {
         if (!sizeLabelStyleMap.containsKey(size)) {
             Label.LabelStyle style = new Label.LabelStyle
-             (getFont(DEFAULT_FONT, DEFAULT_COLOR, size ), DEFAULT_COLOR);
+             (getFont(fontStyle, color, size ), color);
             style.font.getData().markupEnabled = true;
             sizeLabelStyleMap.put(size, style);
         }
@@ -49,6 +52,7 @@ public class StyleHolder {
     public static Label.LabelStyle getDefaultLabelStyle(Color color) {
         return getLabelStyle(DEFAULT_FONT, color);
     }
+
     public static Label.LabelStyle getAltLabelStyle(Color color) {
         return getLabelStyle(ALT_FONT, color);
     }

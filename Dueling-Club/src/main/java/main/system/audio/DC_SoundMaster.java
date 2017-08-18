@@ -168,7 +168,7 @@ public class DC_SoundMaster extends SoundMaster {
             try { //TODO ON SEPARATE THREAD!!!!
                 playAnimStartSound(activeObj, anim.getPart());
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         });
         GuiEventManager.bind(GuiEventType.COMPOSITE_ANIMATION_STARTED, p -> {

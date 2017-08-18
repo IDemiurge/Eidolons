@@ -80,27 +80,41 @@ public class PanelActionsDataSource implements
 
     private Function<DC_ActiveObj, ActionValueContainer> getActiveObjValueContainerFunction() {
         return el -> {
-            final ActionValueContainer container = new ActionValueContainer(
-                    getOrCreateR(el.getImagePath()),
-                    el::invokeClicked
-            );
-            ActionCostTooltip tooltip = new ActionCostTooltip();
-            tooltip.setUserObject(new ActionCostSource() {
-
-                @Override
-                public ValueContainer getName() {
-                    return new ValueContainer(el.getName(), "");
-                }
-
-                @Override
-                public List<ValueContainer> getCostsList() {
-                    return getActionCostList(el);
-                }
-            });
-
-            container.addListener(tooltip.getController());
-            return container;
+           return  getActionValueContainer(el);
         };
+    }
+
+    public static ActionValueContainer getActionValueContainer(DC_ActiveObj el) {
+        final ActionValueContainer container = new ActionValueContainer(
+         getOrCreateR(getImage(el)),
+         el::invokeClicked
+        );
+        ActionCostTooltip tooltip = new ActionCostTooltip();
+        tooltip.setUserObject(new ActionCostSource() {
+
+            @Override
+            public ValueContainer getDescription() {
+                return new ValueContainer(el.getDescription(), "");
+            }
+            @Override
+            public ValueContainer getName() {
+                return new ValueContainer(el.getName(), "");
+            }
+
+            @Override
+            public List<ValueContainer> getCostsList() {
+                return getActionCostList(el);
+            }
+        });
+
+        container.addListener(tooltip.getController());
+        return container;
+    }
+
+    private static String getImage(DC_ActiveObj el) {
+        String image = el.getImagePath();
+//        if (el.can)
+        return image;
     }
 
     @Override

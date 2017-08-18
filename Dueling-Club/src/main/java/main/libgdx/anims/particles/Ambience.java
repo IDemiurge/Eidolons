@@ -10,8 +10,8 @@ import main.system.auxiliary.RandomWizard;
  */
 public class Ambience extends EmitterActor {
     private static boolean modifyParticles;
-    float moveSpeedMax;
-    float moveRadius;
+    float moveSpeedMax=12;
+    float moveRadius=300;
     Vector2 velocity;
     Vector2 acceleration;
     Vector2 originPos;

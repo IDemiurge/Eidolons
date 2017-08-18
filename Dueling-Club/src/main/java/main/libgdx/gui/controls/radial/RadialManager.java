@@ -25,6 +25,7 @@ import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
+import main.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
 import main.libgdx.gui.tooltips.ValueTooltip;
@@ -88,6 +89,11 @@ public class RadialManager {
         ActionCostTooltip tooltip = new ActionCostTooltip();
         tooltip.setUserObject(new ActionCostSource() {
             @Override
+            public ValueContainer getDescription() {
+                return new ValueContainer(el.getDescription(), "");
+            }
+
+            @Override
             public ValueContainer getName() {
                 return new ValueContainer(el.getName(), "");
             }
@@ -103,20 +109,20 @@ public class RadialManager {
 
     public static List<RadialValueContainer> getOrCreateRadialMenu(DC_Obj target) {
         List<RadialValueContainer> nodes = cache.get(target);
-        if (nodes==null ){
-            nodes=createNew(target);
+        if (nodes == null) {
+            nodes = createNew(target);
         }
         cache.put(target, nodes);
         return nodes;
     }
 
     public static List<RadialValueContainer> createNew(DC_Obj target) {
-
-        try {
-            GuiEventManager.trigger(GAME_FINISHED, DC_Game.game);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        if (OutcomePanel.TEST_MODE)
+            try {
+                GuiEventManager.trigger(GAME_FINISHED, DC_Game.game);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         List<RadialValueContainer> list = new LinkedList<>();
         if (target instanceof Unit) {
             list.add(getExamineNode(target));
@@ -272,12 +278,12 @@ public class RadialManager {
         tooltip.setUserObject(Arrays.asList(new ValueContainer(name, "")));
         el.addListener(tooltip.getController());
     }
+
     private static void addAttackTooltip(RadialValueContainer valueContainer,
                                          DC_ActiveObj activeObj,
                                          DC_Obj target) {
         valueContainer.setTooltipSupplier(() -> AttackTooltipFactory.createAttackTooltip((DC_UnitAction)
          activeObj, target));
-
 
 
     }
@@ -326,18 +332,6 @@ public class RadialManager {
         };
         return new RadialValueContainer(textureRegion, runnable);
     }
-public Supplier<List<RadialValueContainer>> get(RADIAL_PARENT_NODE type,
-                                                DC_ActiveObj activeObj,
-                                                DC_Obj target){
-        return ()->{
-            return getChildNodes(type, activeObj, target);
-        };
-}
-
-    private List<RadialValueContainer> getChildNodes(RADIAL_PARENT_NODE type, DC_ActiveObj activeObj, DC_Obj target) {
- List<RadialValueContainer> list = new LinkedList<>();
-return list;
-}
 
     private static RadialValueContainer configureAttackParentNode(
 
@@ -374,7 +368,6 @@ return list;
         return null;
     }
 
-
     private static RadialValueContainer configureMoveNode(DC_Obj target,
                                                           DC_ActiveObj dcActiveObj) {
         RadialValueContainer result;
@@ -392,7 +385,6 @@ return list;
 
         return result;
     }
-
 
     protected static Runnable getRunnable(DC_Obj target, Entity activeObj) {
 //        Runnable runnable=        runnableCaches.get(target).get(activeObj);
@@ -422,6 +414,19 @@ return list;
 
     public static void clearCache() {
         cache.clear();
+    }
+
+    public Supplier<List<RadialValueContainer>> get(RADIAL_PARENT_NODE type,
+                                                    DC_ActiveObj activeObj,
+                                                    DC_Obj target) {
+        return () -> {
+            return getChildNodes(type, activeObj, target);
+        };
+    }
+
+    private List<RadialValueContainer> getChildNodes(RADIAL_PARENT_NODE type, DC_ActiveObj activeObj, DC_Obj target) {
+        List<RadialValueContainer> list = new LinkedList<>();
+        return list;
     }
 
     public enum RADIAL_PARENT_NODE {

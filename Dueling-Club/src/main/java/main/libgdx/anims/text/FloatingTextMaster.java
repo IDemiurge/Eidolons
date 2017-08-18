@@ -169,9 +169,9 @@ public class FloatingTextMaster {
           , getColor(CASE, arg));
 
 
-//        floatingText.setDisplacementX(x);
-//        floatingText.setDisplacementY(y);
-//        floatingText.setDuration(dur);
+        floatingText.setDisplacementX(getDisplacementX(CASE));
+        floatingText.setDisplacementY(getDisplacementY(CASE));
+        floatingText.setDuration(getDefaultDuration(CASE));
         return floatingText;
     }
 

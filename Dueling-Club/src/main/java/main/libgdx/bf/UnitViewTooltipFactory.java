@@ -81,6 +81,9 @@ public class UnitViewTooltipFactory {
                     addParamStringToValues(hero, values, PARAMS.LIGHT_EMISSION);
                     addParamStringToValues(hero, values, PARAMS.ILLUMINATION);
                     addParamStringToValues(hero, values, PARAMS.CONCEALMENT);
+                    addKeyAndValue("Gamma", ""+hero.getGame().getVisionMaster().
+                     getGammaMaster().
+                     getGamma(false, hero.getGame().getManager().getActiveObj(), hero), values);
                 }
            if (!hero.isMine())
                 if (!hero.getGame().isDebugMode())
@@ -179,14 +182,21 @@ public class UnitViewTooltipFactory {
         values.add(valueContainer);
     }
 
-    private static void addParamStringToValues(BattleFieldObject hero, List<ValueContainer> values,
+    private static void addParamStringToValues(BattleFieldObject hero,
+                                               List<ValueContainer> values,
                                                PARAMETER param) {
         if (hero.getIntParam(param) > 0) {
-            final ValueContainer valueContainer =
-             new ValueContainer(param.getName(), hero.getStrParam(param));
-            valueContainer.setNameAlignment(Align.left);
-            valueContainer.setValueAlignment(Align.right);
-            values.add(valueContainer);
+            String value = hero.getStrParam(param);
+            String key = param.getName();
+           addKeyAndValue(key, value, values);
         }
     }
+
+    private static void addKeyAndValue(String key, String value, List<ValueContainer> values) {
+        final ValueContainer valueContainer =
+         new ValueContainer(key, value);
+        valueContainer.setNameAlignment(Align.left);
+        valueContainer.setValueAlignment(Align.right);
+        values.add(valueContainer);}
+
 }

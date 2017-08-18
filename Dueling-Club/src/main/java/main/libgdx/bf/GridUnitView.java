@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.tooltips.ToolTip;
+import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
@@ -52,11 +53,10 @@ public class GridUnitView extends UnitView {
 
     @Override
     public void updateInitiative(Integer val) {
-        super.updateInitiative(val);
-        if (clockTexture != null) {
+//        super.updateInitiative(val);
             initiativeQueueUnitView.updateInitiative(val);
             GuiEventManager.trigger(ADD_OR_UPDATE_INITIATIVE, initiativeQueueUnitView);
-        }
+
     }
 
     private void init(TextureRegion arrowTexture, int arrowRotation, Texture iconTexture) {
@@ -131,7 +131,7 @@ public class GridUnitView extends UnitView {
             arrow.setRotation(arrowRotation);
         }
 
-        main.system.auxiliary.log.LogMaster.log(1, this + " Scale=" + getScaledWidth());
+//        main.system.auxiliary.log.LogMaster.log(1, this + " Scale=" + getScaledWidth());
         if (getScaledWidth()==0)
             return ;
         if (getScaledHeight()==0  )
@@ -152,7 +152,16 @@ public class GridUnitView extends UnitView {
             image.setScaleY(getScaledHeight());
         }
     }
-
+    protected void updateModeImage(String pathToImage) {
+        removeActor(modeImage);
+        if (pathToImage == null)
+            return;
+        modeImage = new Image(TextureCache.getOrCreateR(pathToImage));
+        addActor(this.modeImage);
+        modeImage.setVisible(true);
+        if (emblemImage!=null )
+            modeImage.setPosition(emblemImage.getX(), emblemImage.getY() + modeImage.getImageHeight());
+    }
     @Override
     public void setMobilityState(boolean mobilityState) {
         super.setMobilityState(mobilityState);

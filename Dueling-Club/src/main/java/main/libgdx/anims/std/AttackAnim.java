@@ -19,6 +19,8 @@ import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.sprite.SpriteAnimationFactory;
 import main.libgdx.bf.GridConst;
+import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.math.PositionMaster;
 import main.system.test.TestMasterContent;
@@ -27,6 +29,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static main.libgdx.gui.panels.dc.logpanel.LogPanel.path;
 
 /**
  * Created by JustMe on 1/14/2017.
@@ -52,7 +56,7 @@ public class AttackAnim extends ActionAnim {
 
 
         weapon = getActive().getActiveWeapon();
-        debug();
+//        debug();
     }
 
     protected static AnimData getWeaponAnimData(Entity active, ATK_ANIMS... anims) {
@@ -75,12 +79,19 @@ public class AttackAnim extends ActionAnim {
         if (weapon == null) {
             return "";
         }
-        String path = PathFinder.getSpritesPath() + "weapons\\"
-                + (weapon.isNatural() ? "natural\\" : "")
-                + (weapon.isRanged() ? "ranged\\" : "")
-         + (weapon.isAmmo() ? "ammo\\" : "")
-         + (TestMasterContent. isArtifact(weapon) ? "artifact\\" : "");
+        StrPathBuilder builder = new StrPathBuilder(PathFinder.getSpritesPath(), "weapons");
+
+        builder.append
+         (weapon.isNatural() ? "natural"
+          : null);
+        builder.append(weapon.isRanged() ? "ranged" : null);
+        builder.append(weapon.isAmmo() ? "ammo" : null);
+        builder.append(TestMasterContent.isArtifact(weapon) ? "artifact" : null);
         String file = FileManager.findFirstFile(path, weapon.getName(), false);
+        if (file == null) {
+            if (TestMasterContent.isArtifact(weapon))
+                file = StringMaster.cropFirstSegment(path, StringMaster.getPathSeparator());
+        }
         if (file == null) {
             file = FileManager.findFirstFile(path, weapon.getProperty(G_PROPS.BASE_TYPE), false);
         }
@@ -105,15 +116,15 @@ public class AttackAnim extends ActionAnim {
 
     public String getTexturePath() {
         if (imgPath == null)
-//            imgPath = FileManager.getRandomFile(PathFinder.getSpritesPath() + "weapons\\"
-//             + (weapon.isNatural() ? "natural\\" : "")
-//             + (weapon.isRanged() ? "ranged\\" : "")
+//            imgPath = FileManager.getRandomFile(PathFinder.getSpritesPath() + "weapons"+StringMaster.getPathSeparator()
+//             + (weapon.isNatural() ? "natural"+StringMaster.getPathSeparator() : "")
+//             + (weapon.isRanged() ? "ranged"+StringMaster.getPathSeparator() : "")
 //            ).getPath();
         {
             imgPath = findWeaponSprite(getActive().getActiveWeapon());
         }
         return imgPath;
-//        return PathFinder.getSpritesPath() + "weapons\\" + "scimitar.png";
+//        return PathFinder.getSpritesPath() + "weapons"+StringMaster.getPathSeparator() + "scimitar.png";
     }
 
     @Override
@@ -141,7 +152,7 @@ public class AttackAnim extends ActionAnim {
     public void initPosition() {
         super.initPosition();
         initialAngle =
-                getInitialAngle();
+         getInitialAngle();
         initFlip();
         initOffhand();
 //            destination.x = destination.x+offsetX;
@@ -171,7 +182,7 @@ public class AttackAnim extends ActionAnim {
 
     protected int getInitialAngle() {
         return
-                FacingMaster.getFacing(active.getRef().getSourceObj()).getDirection().getDegrees();
+         FacingMaster.getFacing(active.getRef().getSourceObj()).getDirection().getDegrees();
     }
 
     protected FACING_DIRECTION getFacing() {
@@ -196,7 +207,7 @@ size - elongate
             for (float angle : anim.targetAngles) {
                 List<Pair<MoveByAction, RotateByAction>> swings = new LinkedList<>();
                 float duration =
-                        this.duration;
+                 this.duration;
                 if (duration <= 0) {
                     duration = 1;
                 }
@@ -232,7 +243,7 @@ size - elongate
         MoveByAction mainMove = new MoveByAction();
         mainMove.setDuration(duration);
         int distanceX = active.getRef().getSourceObj().getX() -
-                getActive().getAnimator().getAnimRef(). getTargetObj().getX();
+         getActive().getAnimator().getAnimRef().getTargetObj().getX();
         x -= distanceX * GridConst.CELL_W;
         int distanceY = active.getRef().getSourceObj().getY() -
          getActive().getAnimator().getAnimRef().getTargetObj().getY();
@@ -257,8 +268,8 @@ size - elongate
         }
 
         FACING_SINGLE relativeFacing = FacingMaster.getSingleFacing(
-                facing,
-                getOriginCoordinates(), getDestinationCoordinates());
+         facing,
+         getOriginCoordinates(), getDestinationCoordinates());
 //increase angle?
         int addAngle = 0;
         switch (relativeFacing) {
@@ -316,17 +327,17 @@ size - elongate
         float targetOffsetY = 25;
         float baseAngle = 0; // 0 - horizontal; 90 - vertical
         float[] targetAngles = {
-                -90
+         -90
         };
 
         float[] durations = {
-                0.5f
+         0.5f
         };
         float[] offsetsY = {
-                0f
+         0f
         };
         float[] offsetsX = {
-                0f
+         0f
         };
 
         // will assume each one in turn during animation

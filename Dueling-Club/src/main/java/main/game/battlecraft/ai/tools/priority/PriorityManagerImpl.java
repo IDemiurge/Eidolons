@@ -770,6 +770,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     public int getParamModSpellPriority(Action action, Boolean buff) {
         DC_ActiveObj spell = action.getActive();
         DC_Obj target = action.getTarget();
+
         if (buff == null) {
             buff = EffectFinder.check(spell.getAbilities(), AddBuffEffect.class);
         }
@@ -794,7 +795,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             }
         }
 
-        setBasePriority(getUnitPriority(target, false));
+        int priority = (getUnitPriority(target, false));
 
         boolean ally = target.getOwner().equals(getUnit().getOwner());
         // boolean mod = EffectMaster.preCheck(spell.getAbilities(),
@@ -852,10 +853,13 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                     if (!ally && !drain) {
                         amount = -amount;
                     }
-                    valid |= applyParamModPriority(target, e, param, amount);
+                    priority =(int)(priority*
+                      getParamModFactor(target, e, param, amount));
                     if (drain) {
                         // TODO limit the amount!
-                        applyParamModPriority(getUnit(), null, param, amount);
+                        priority=
+                         (int)(priority*
+                          getParamModFactor(getUnit(), null, param, amount));
                     }
                 }
             }
@@ -865,13 +869,11 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                     applyResistPenalty(action);
                 }
             } else {
-                int duration = new Formula(spell.getParam(G_PARAMS.DURATION)).getInt(action
-                 .getRef());
-                applyMultiplier(getDurationMultiplier(action), duration + " duration");
+                priority=priority*(getDurationMultiplier(action))/100;
             }
         }
-        if (!valid) {
-            applyMultiplier(0, "Empty");
+        if (!valid) {return 0;
+//            applyMultiplier(0, "Empty");
         }
         return priority;
     }
@@ -890,8 +892,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public boolean applyParamModPriority(DC_Obj target, Effect e, PARAMETER param,
-                                         int amount) {
+    public float getParamModFactor(DC_Obj target, Effect e, PARAMETER param,
+                                   int amount) {
         boolean valid = false;
         RollEffect roll = rollMap.get(e);
         if (roll != null) {
@@ -909,19 +911,19 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         if (multiplier != 0) {
             valid = true;
         }
-        addConstant(multiplier, param.getShortName() + " const");
-        amount = MathMaster.getCentimalPercentage(amount, target.getIntParam(param));
-        int percentagePriority = 0;
+
+       int percentagePriority = 0;
         if (!ParamAnalyzer.isParamIgnored(getUnit(), param)) {
             percentagePriority = (int) getPriorityConstantMaster().getParamPriority(param)
-             * target.getIntParam(param) / 100;
+             * amount ;
         }
+        int percentage = MathMaster.getCentimalPercentage(amount, target.getIntParam(param));
 
 
-        multiplier = MathMaster.getFractionValueCentimal(percentagePriority, amount) * mod / 100;
+        multiplier+=   MathMaster.getFractionValueCentimal(percentagePriority, percentage) * mod / 100;
 
-        addMultiplier(multiplier, param.getShortName() + " mod");
-        return valid;
+
+        return  new Float(multiplier)/100;
     }
 
     private void initRollMap(DC_ActiveObj spell, List<Effect> effects) {
@@ -1205,7 +1207,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             }
         }
         float mod = getConstValue(AiConst.DAMAGE_PRIORITY_MOD);
-        addConstant(damage, "Damage");
+
         if (DamageCalculator.isUnconscious(damage, targetObj)) {
             if (checkKillPrioritized(targetObj, action)) {
                 return getUnconsciousDamagePriority() * (int) (mod * 100) / 100;

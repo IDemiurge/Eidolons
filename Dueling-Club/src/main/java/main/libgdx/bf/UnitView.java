@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import main.libgdx.GdxColorMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.tooltips.ToolTip;
@@ -28,6 +27,7 @@ public class UnitView extends BaseView {
     protected Image emblemBorder;
     protected Image modeImage;
     protected boolean greyedOut;
+    private boolean emblemBorderOn;
 
 
     public UnitView(UnitViewOptions o) {
@@ -37,67 +37,58 @@ public class UnitView extends BaseView {
     protected UnitView(UnitViewOptions o, int curId) {
         super(o);
         this.curId = curId;
-        init(o.getClockTexture(), o.getClockValue(), o.getEmblem());
         setTeamColor(o.getTeamColor());
+        init(o.getClockTexture(), o.getClockValue(), o.getEmblem());
     }
 
     public void setToolTip(ToolTip toolTip) {
         addListener(toolTip.getController());
     }
 
+    public void reset() {
+        if (isEmblemBorderOn()) {
+            emblemBorder = new Image(TextureCache.getOrCreateR(
+             CellBorderManager.teamcolorPath));
+            emblemBorder.setBounds(emblemImage.getX() - 6, emblemImage.getY() - 6
+             , this.emblemImage.getWidth() + 10, this.emblemImage.getHeight() + 10);
+            addActor(emblemBorder);
+        }
+    }
+
     private void init(TextureRegion clockTexture, int clockVal, TextureRegion emblem) {
         this.initiativeIntVal = clockVal;
-
+if (this instanceof GridUnitView)
         if (emblem != null) {
             this.emblemImage = new Image(emblem);
             //TODO add sized team-colored border
             this.emblemImage.setAlign(Align.bottomLeft);
             addActor(this.emblemImage);
-
-            emblemBorder= new Image(TextureCache.getOrCreateR(CellBorderManager.teamcolorPath));
-            emblemBorder.setBounds(emblemImage.getX()-6,emblemImage.getY()-6
-             , emblem.getRegionWidth()+10, emblem.getRegionHeight()+10);
-            addActor(emblemBorder);
-
         }
-        if (clockTexture != null) {
-            this.clockTexture = clockTexture;
-            initiativeLabel = new Label(
-//             "[#00FF00FF]" +
-             String.valueOf(clockVal)
-//             + "[]"
-             ,
-             StyleHolder.getAltLabelStyle( GdxColorMaster.CYAN
+        if (!(this instanceof GridUnitView))
+            if (clockTexture != null) {
+                this.clockTexture = clockTexture;
+                initiativeLabel = new Label(
+                 String.valueOf(clockVal),
+                 StyleHolder.getSizedColoredLabelStyle(StyleHolder.ALT_FONT, 16,
+                  getTeamColorBorder()
+//                  GdxColorMaster.CYAN
 //              GdxColorMaster.getColor(SmartTextManager.getValueCase())
-             ));
-            clockImage = new Image(clockTexture);
-            addActor(clockImage);
-            addActor(initiativeLabel);
-        }
+                 ));
+                clockImage = new Image(clockTexture);
+                addActor(clockImage);
+                addActor(initiativeLabel);
+            }
     }
+
     protected void updateModeImage(String pathToImage) {
-        removeActor(modeImage);
-        if (pathToImage==null )
-            return ;
-        modeImage = new Image(TextureCache.getOrCreateR(pathToImage ));
-        addActor(this.modeImage);
-        modeImage.setVisible(true);
-        modeImage.setPosition(emblemImage.getX(),emblemImage.getY()+modeImage.getImageHeight());
-    }
+        }
 
     @Override
     protected void sizeChanged() {
         super.sizeChanged();
-/*
-emblem
-arrow
-emblem border
-mode icon
-any other overlays!
- */
 
-            if (initiativeLabel != null) {
-            clockImage.setPosition(getWidth() - clockTexture.getRegionWidth(),0);
+        if (initiativeLabel != null) {
+            clockImage.setPosition(0, 0);
             initiativeLabel.setPosition(
              clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()),
              clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
@@ -107,8 +98,9 @@ any other overlays!
     public void updateInitiative(Integer val) {
         if (clockTexture != null) {
             initiativeIntVal = val;
-            initiativeLabel.setText("[#00FF00FF]" + String.valueOf(val) + "[]");
-
+            initiativeLabel.setText(String.valueOf(val));
+            initiativeLabel.setStyle(StyleHolder.getSizedColoredLabelStyle(StyleHolder.ALT_FONT, 16,
+             getTeamColorBorder()));
             initiativeLabel.setPosition(
              clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()),
              clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
@@ -165,5 +157,13 @@ any other overlays!
 
     public void setMobilityState(boolean mobilityState) {
         this.mobilityState = mobilityState;
+    }
+
+    public boolean isEmblemBorderOn() {
+        return emblemBorderOn;
+    }
+
+    public void setEmblemBorderOn(boolean emblemBorderOn) {
+        this.emblemBorderOn = emblemBorderOn;
     }
 }
