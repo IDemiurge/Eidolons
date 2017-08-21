@@ -10,8 +10,9 @@ public class AnimationEffectStage extends Stage {
     private   ParticleManager particleManager;
 
     public AnimationEffectStage() {
-        particleManager = new ParticleManager(this);
-        addActor(particleManager);
+        particleManager = new ParticleManager( );
+        addActor(particleManager.getEmitterMap());
+        particleManager.getEmitterMap().setX(300);
         new PhaseAnimator(this);
     }
 

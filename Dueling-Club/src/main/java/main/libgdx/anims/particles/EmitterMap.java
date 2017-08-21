@@ -1,6 +1,7 @@
 package main.libgdx.anims.particles;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Pool;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.game.bf.Coordinates;
@@ -18,7 +19,7 @@ import java.util.Map;
 /**
  * Created by JustMe on 1/9/2017.
  */
-public class EmitterMap {
+public class EmitterMap extends Group{
 
     private static final int MIN_DISTANCE_FROM_LIGHT = 1;
     private static final boolean HIDE_SMOKE_AROUND_MAIN_HERO =true ;
@@ -30,11 +31,9 @@ public class EmitterMap {
             return new Ambience(getFogSfx());
         }
     };
-    private final ParticleManager manager;
     Map<Coordinates, Ambience> fogMap = new LinkedHashMap<>();
 
-    public EmitterMap(ParticleManager manager) {
-        this.manager = manager;
+    public EmitterMap( ) {
         GuiEventManager.bind(GuiEventType.UPDATE_AMBIENCE, p -> {
             try {
                 Chronos.mark("UPDATE_AMBIENCE");
@@ -152,8 +151,8 @@ public class EmitterMap {
         fogMap.put(c, fog);
         fog.setPosition(v.x, v.y);
         fog.added();
-        if (!manager.getChildren().contains(fog, true))
-        manager.addActor(fog);
+        if (! getChildren().contains(fog, true))
+         addActor(fog);
         //DungeonScreen.getInstance().getAmbienceStage().addActor(fog);
         fog.setVisible(true);
         fog.getEffect().start();

@@ -216,7 +216,7 @@ public class ActionManager extends AiHandler {
          + " with priorioty of " + sequence.getPriority());
 
         getMaster().getMessageBuilder().append("Task: " + sequence.getTask().toShortString());
-        
+
         action = sequence.getNextAction();
         if (action == null) {
             return getAction(getUnit(), STD_MODE_ACTIONS.Defend.name(), null);

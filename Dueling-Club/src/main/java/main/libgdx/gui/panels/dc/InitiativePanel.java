@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
-import com.badlogic.gdx.utils.Align;
 import main.data.XLinkedMap;
 import main.game.core.game.DC_Game;
 import main.libgdx.bf.UnitView;
@@ -68,10 +67,10 @@ public class InitiativePanel extends Group {
     }
 
     private void resetZIndices() {
-        int i = 0;
+
         for (ImageContainer view : queue) {
             if (view != null) {
-                view.setZIndex(i++);
+                view.setZIndex(getChildren().size);
             }
         }
     }
@@ -120,8 +119,8 @@ public class InitiativePanel extends Group {
         final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("UI",
          "components","2017","panels","initiativePanel.png"));
         final ValueContainer image = new ValueContainer(textureRegion);
-        image.setPosition(0, 0);
-        image.align(Align.bottomLeft);
+        image.setPosition(50, 20);
+//        image.align(Align.bottomLeft);
 //        image.overrideImageSize(imageSize, imageSize);
 //        image.setSize(imageSize, imageSize);
         ValueTooltip tooltip = new ValueTooltip();

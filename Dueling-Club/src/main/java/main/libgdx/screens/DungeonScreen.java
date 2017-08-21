@@ -13,6 +13,7 @@ import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.libgdx.DialogScenario;
+import main.libgdx.anims.particles.EmitterMap;
 import main.libgdx.bf.BFDataCreatedEvent;
 import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridPanel;
