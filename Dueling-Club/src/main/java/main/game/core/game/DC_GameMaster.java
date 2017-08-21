@@ -168,17 +168,6 @@ public class DC_GameMaster extends GameMaster {
         return list;
     }
 
-    public void remove(Obj obj) {
-        game.getState().removeObject(obj.getId());
-        obj.removed();
-        if (obj instanceof Unit) {
-            getUnits().remove(obj);
-        }
-        if (obj instanceof Structure) {
-            getStructures().remove(obj);
-        }
-    }
-
     public DC_Cell getCellByCoordinate(Coordinates coordinates) {
         return (DC_Cell) getGame().getBattleField().getCell(coordinates);
     }
@@ -244,6 +233,17 @@ public class DC_GameMaster extends GameMaster {
 
     public DequeImpl<Unit> getUnits() {
         return units;
+    }
+
+    public void remove(Obj obj) {
+        game.getState().removeObject(obj.getId());
+        obj.removed();
+        if (obj instanceof Unit) {
+            getUnits().remove(obj);
+        }
+        if (obj instanceof Structure) {
+            getStructures().remove(obj);
+        }
     }
 
     public DequeImpl<Structure> getStructures() {

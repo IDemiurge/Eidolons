@@ -452,9 +452,12 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         // Units(OBJ_TYPES.UNITS, G_PROPS.DEITY,
         // DC_ContentManager.getStandardDeitiesString(", ")),
 
-        Units(DC_TYPE.UNITS, G_PROPS.ASPECT, "Neutral", G_PROPS.UNIT_GROUP, "Humans, Knights, Bandits, Greenskins, Dwarves, Undead, Dark, Demons, Animals, "
+        Units(DC_TYPE.UNITS, G_PROPS.ASPECT, "Neutral",
+         G_PROPS.UNIT_GROUP,
+         "Humans, Knights, Bandits, Greenskins, Dwarves, Undead, Dark, Demons, Animals, "
                 + "Light, Constructs, Magi, North, Critters, Dungeon"),
-        Chars(DC_TYPE.CHARS, G_PROPS.GROUP, "Preset", G_PROPS.RACE, "Human, Dwarf, Elf, Demon, "
+        Chars(DC_TYPE.CHARS, G_PROPS.GROUP, "Preset",
+         G_PROPS.RACE, "Human, Dwarf, Elf, Demon, "
                 + "Goblinoid, Vampire"),
         // ENCOUNTER_SUBGROUP
         All(DC_TYPE.UNITS, DC_TYPE.ENCOUNTERS, DC_TYPE.CHARS),

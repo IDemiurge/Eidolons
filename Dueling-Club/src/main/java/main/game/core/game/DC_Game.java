@@ -18,38 +18,38 @@ import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Reader;
 import main.entity.Ref;
+import main.entity.active.DC_ActionManager;
 import main.entity.obj.*;
 import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.tools.DC_Bf_Analyzer;
+import main.game.battlecraft.logic.battle.BattleManager;
+import main.game.battlecraft.logic.battle.BattleOptions;
+import main.game.battlecraft.logic.battle.arena.ArenaManager;
+import main.game.battlecraft.logic.battle.player.DC_Player;
+import main.game.battlecraft.logic.battle.player.PlayerMaster;
+import main.game.battlecraft.logic.battle.turn.DC_TurnManager;
 import main.game.battlecraft.logic.battlefield.*;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.battlecraft.logic.battlefield.vision.VisionMaster;
+import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.DungeonMaster;
+import main.game.battlecraft.logic.meta.arcade.ArcadeManager;
+import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
+import main.game.battlecraft.rules.DC_Rules;
+import main.game.battlecraft.rules.combat.attack.DC_AttackMaster;
+import main.game.battlecraft.rules.combat.damage.ArmorMaster;
+import main.game.battlecraft.rules.mechanics.WaitRule;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.options.UIOptions;
 import main.game.bf.pathing.PathingManager;
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
-import main.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import main.game.core.GameLoop;
 import main.game.core.state.DC_GameState;
 import main.game.core.state.DC_StateManager;
-import main.game.battlecraft.logic.meta.arcade.ArcadeManager;
-import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
-import main.game.battlecraft.logic.battle.arena.ArenaManager;
-import main.game.battlecraft.logic.battle.BattleManager;
-import main.game.battlecraft.logic.battle.BattleOptions;
-import main.game.battlecraft.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
-import main.game.battlecraft.logic.battle.player.PlayerMaster;
-import main.game.battlecraft.logic.battle.turn.DC_TurnManager;
-import main.game.battlecraft.rules.combat.attack.DC_AttackMaster;
-import main.game.battlecraft.rules.combat.damage.ArmorMaster;
-import main.game.battlecraft.logic.dungeon.Dungeon;
-import main.game.battlecraft.logic.dungeon.DungeonMaster;
-import main.entity.active.DC_ActionManager;
-import main.game.battlecraft.rules.DC_Rules;
-import main.game.battlecraft.rules.mechanics.WaitRule;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.GuiMaster;
 import main.system.DC_ConditionMaster;
@@ -93,6 +93,7 @@ public class DC_Game extends MicroGame {
     private TestMasterContent testMaster;
     private ArenaManager arenaManager;
     private BattleManager battleManager;
+    private DungeonMaster dungeonMaster;
 
     private ToolTipMaster toolTipMaster;
     private PlayerMaster playerMaster;
@@ -105,7 +106,6 @@ public class DC_Game extends MicroGame {
     private AI_Manager aiManager;
     private AnimationManager animationManager;
     private DroppedItemManager droppedItemManager;
-    private DungeonMaster dungeonMaster;
     private DC_KeyManager keyManager;
     private boolean AI_ON = true;
     private Thread gameLoopThread;
@@ -119,7 +119,7 @@ public class DC_Game extends MicroGame {
     private boolean battleInit;
     private String enemyParty;
     private boolean paused;
-    private Map<Coordinates, Map<Unit, DIRECTION>> directionMap;
+    private Map<Coordinates, Map<BattleFieldObject, DIRECTION>> directionMap;
     private HashMap<Coordinates, Map<Unit, FLIP>> flipMap;
     private boolean testMode;
     private boolean dummyPlus;
@@ -156,7 +156,7 @@ public class DC_Game extends MicroGame {
         manager = new DC_GameManager(getState(), this);
         manager.init();
 //        } //TODO FIX classdefnotfound!
-        this.setIdManager(new DC_IdManager( this));
+        this.setIdManager(new DC_IdManager(this));
         guiMaster = new GuiMaster(this);
         armorMaster = new ArmorMaster(false);
         armorSimulator = new ArmorMaster(true);
@@ -180,10 +180,10 @@ public class DC_Game extends MicroGame {
         conditionMaster = new DC_ConditionMaster();
         logManager = new DC_LogManager(this);
         rules = new DC_Rules(this);
-        if (!isSimulation()){
-        keyManager = new DC_KeyManager( getManager());
-        keyManager.init();
-}
+        if (!isSimulation()) {
+            keyManager = new DC_KeyManager(getManager());
+            keyManager.init();
+        }
     }
 
     @Override
@@ -213,11 +213,12 @@ public class DC_Game extends MicroGame {
     public DC_BattleFieldManager getBattleFieldManager() {
 
         if (battleFieldManager == null) {
-            battleFieldManager = new DC_BattleFieldManager(this );
+            battleFieldManager = new DC_BattleFieldManager(this);
         }
         return (DC_BattleFieldManager) super.getBattleFieldManager();
     }
-//call each time Battlefield is launched
+
+    //call each time Battlefield is launched
     public void battleInit() {
 
         inventoryTransactionManager = new InventoryTransactionManager(this);
@@ -234,18 +235,18 @@ public class DC_Game extends MicroGame {
         unitData1 = "";
         unitData2 = "";
 
-            setOffline(true);
-            if (isAI_ON()) {
-                player2.setAi(true);
-            } else {
-                setAnalyzer(new DC_Bf_Analyzer((MicroGame) Game.game));
-            }
+        setOffline(true);
+        if (isAI_ON()) {
+            player2.setAi(true);
+        } else {
+            setAnalyzer(new DC_Bf_Analyzer((MicroGame) Game.game));
+        }
 
         // if (battlefield == null) {
 
         battlefield = new DC_BattleField(new DC_BattleFieldGrid(getDungeon()));
         setGraveyardManager(new DC_GraveyardManager(this));
-        battleFieldManager = new DC_BattleFieldManager(this );
+        battleFieldManager = new DC_BattleFieldManager(this);
         movementManager.setGrid(battlefield.getGrid());
         // }
         if (getUiOptions() == null) {
@@ -267,7 +268,7 @@ public class DC_Game extends MicroGame {
         turnManager.init();
 
         if (isDebugMode()) {
-            debugMaster = new DebugMaster(getState() );
+            debugMaster = new DebugMaster(getState());
         }
 
         arenaManager.startGame();
@@ -413,7 +414,7 @@ public class DC_Game extends MicroGame {
     }
 
     public List<BattleFieldObject> getOverlayingObjects(Coordinates c) {
-        List<BattleFieldObject> list = getBfObjectsOnCoordinate(c);
+        List<BattleFieldObject> list = getBfObjectsOnCoordinate(c, true);
         list.removeIf(obj -> !obj.isOverlaying());
         return list;
     }
@@ -447,7 +448,6 @@ public class DC_Game extends MicroGame {
     }
 
 
-
     public Map<Coordinates, List<Unit>> getUnitCache() {
         return getMaster().getUnitCache();
     }
@@ -458,11 +458,9 @@ public class DC_Game extends MicroGame {
             return idManager;
         }
 
-        return idManager = new DC_IdManager(  this);
+        return idManager = new DC_IdManager(this);
 
     }
-
-
 
 
     public boolean isAI_ON() {
@@ -496,7 +494,7 @@ public class DC_Game extends MicroGame {
     public synchronized DebugMaster getDebugMaster() {
         if (debugMaster == null) {
             if (getBattleField() != null) {
-                debugMaster = new DebugMaster(getState()  );
+                debugMaster = new DebugMaster(getState());
             }
         }
         return debugMaster;
@@ -726,7 +724,7 @@ public class DC_Game extends MicroGame {
         return flipMap;
     }
 
-    public Map<Coordinates, Map<Unit, DIRECTION>> getDirectionMap() {
+    public Map<Coordinates, Map<BattleFieldObject, DIRECTION>> getDirectionMap() {
         if (directionMap == null) {
             directionMap = new HashMap<>();
         }
@@ -799,21 +797,30 @@ public class DC_Game extends MicroGame {
     }
 
 
-    public List<BattleFieldObject> getBfObjectsOnCoordinate(Coordinates c) {
+    public List<BattleFieldObject> getBfObjectsOnCoordinate(Coordinates c, boolean overlaying) {
 
-        DequeImpl<BattleFieldObject> list =  getBfObjects();
+        DequeImpl<BattleFieldObject> list = getBfObjects();
         if (list == null) {
             return new LinkedList<>();
         }
         List<BattleFieldObject> objects = new LinkedList<>();
         for (BattleFieldObject obj : list) {
-            if (obj.getCoordinates().equals(c))
-                if (!obj.isOverlaying()) {
-                    objects.add((  obj) );
-                }
+            if (!obj.getCoordinates().equals(c))
+                continue;
+            if (!overlaying)
+                if (obj.isOverlaying())
+                    continue;
+
+            objects.add((obj));
+
         }
         return objects;
     }
+
+    public List<BattleFieldObject> getBfObjectsOnCoordinate(Coordinates c) {
+        return getBfObjectsOnCoordinate(c, false);
+    }
+
     public Obj getObjectByCoordinate(Coordinates
                                       c) {
         return getObjectByCoordinate(c, false);

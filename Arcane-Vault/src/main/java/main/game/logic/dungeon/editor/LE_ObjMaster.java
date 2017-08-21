@@ -88,8 +88,8 @@ public class LE_ObjMaster {
     }
 
     public static void removeObj(Coordinates coordinates) {
-        // LevelEditor.getCurrentLevel().removeObj(coordinates);
         cache();
+         LevelEditor.getCurrentLevel().removeObj(coordinates);
 //        LevelEditor.getSimulation().getUnitMap().remove(coordinates);
         LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates).forEach(obj->{
             LevelEditor.getSimulation().getMaster().remove(obj);
@@ -326,9 +326,12 @@ public class LE_ObjMaster {
 //        }
 //        getObjCache().put(type, obj);
         obj = (BattleFieldObject) LevelEditor.getSimulation().getObjectByCoordinate(c);
-        if (obj==null )
-            obj = (BattleFieldObject) LevelEditor.getSimulation().createUnit(type, c, DC_Player.NEUTRAL);
 
+        if (obj!=null )
+            if (obj.getType().equals(type))
+            return obj;
+
+        obj = (BattleFieldObject) LevelEditor.getSimulation().createUnit(type, c, DC_Player.NEUTRAL);
         return obj;
     }
 
@@ -363,13 +366,13 @@ public class LE_ObjMaster {
 
         }
 
-        Map<Unit, DIRECTION> map = obj.getGame().getDirectionMap().get(c);
+        Map<BattleFieldObject, DIRECTION> map = obj.getGame().getDirectionMap().get(c);
 
         if (map == null) {
             map = new HashMap<>();
             obj.getGame().getDirectionMap().put(c, map);
         }
-        map.put((Unit) obj, d);
+        map.put(  obj, d);
 
     }
 

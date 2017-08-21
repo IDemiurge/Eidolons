@@ -52,9 +52,7 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
     public void objClicked(Obj obj) {
     }
 
-    public void removeObj(Obj obj) {
-        LevelEditor.getObjMaster().removeObj((DC_Obj) obj);
-    }
+
 
     public void mouseWheelMoved(MouseWheelEvent e) {
         int modifier = 1;
@@ -217,9 +215,15 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
             return;
         }
         Coordinates coordinates = lastClicked.getCoordinates();
+        ObjType selectedType = LevelEditor.getMainPanel().getPalette().getSelectedType();
+
         boolean alt = e.isAltDown();
         boolean add = e.isShiftDown() || LevelEditor.isMouseAddMode();
-        boolean empty = LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates).isEmpty();
+        boolean empty =
+
+         LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates).isEmpty();
+         if (EntityCheckMaster.isOverlaying(selectedType))
+             empty = true;
         // LevelEditor.getMapMaster().getActiveZone()
         // how to ignore this if necessary?
         // don't wanna select obj being removed, e.g. ...
@@ -260,7 +264,6 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
         // ++ DIRECTION CHANGE
         if (!empty) {
             if (e.isControlDown() && right) {
-                ObjType selectedType = LevelEditor.getMainPanel().getPalette().getSelectedType();
                 LevelEditor.cache();
                 LevelEditor.setMouseAddMode(true);
                 LevelEditor.getObjMaster().stackObj(selectedType, coordinates);
@@ -270,8 +273,6 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
         }
         else
         if (right) {
-            ObjType selectedType = LevelEditor.getMainPanel().getPalette().getSelectedType();
-
             if (selectedType != null) {
                 if ((EntityCheckMaster.isOverlaying(selectedType) && !EntityCheckMaster
                         .isOverlaying(lastClicked))

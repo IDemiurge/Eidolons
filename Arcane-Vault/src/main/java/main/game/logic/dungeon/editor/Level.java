@@ -289,7 +289,7 @@ public class Level {
         for (Coordinates c : getDirectionMap().keySet())
 
         {
-            Map<Unit, DIRECTION> map = getDirectionMap().get(c);
+            Map<BattleFieldObject, DIRECTION> map = getDirectionMap().get(c);
             for (DC_Obj obj : map.keySet()) {
                 if (obj instanceof BattleFieldObject) {
                     BattleFieldObject u = (BattleFieldObject) obj;
@@ -365,6 +365,7 @@ public class Level {
         List<DC_Obj> list = new LinkedList<>();
         for (Coordinates coordinates : c) {
             for (DC_Obj obj : getObjects(coordinates)) {
+                if (!obj.isOverlaying())
                 if (objNameFilter != null) {
                     if (!StringMaster.compare(objNameFilter, obj.getName())) {
                         continue;
@@ -377,7 +378,7 @@ public class Level {
     }
 
     private List<BattleFieldObject> getObjects(Coordinates coordinates) {
-        return LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates);
+        return LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates, true);
     }
 
     public void removeObj(DC_Obj obj) {
@@ -591,7 +592,7 @@ public class Level {
         return mission;
     }
 
-    public Map<Coordinates, Map<Unit, DIRECTION>> getDirectionMap() {
+    public Map<Coordinates, Map<BattleFieldObject, DIRECTION>> getDirectionMap() {
         return LevelEditor.getSimulation(this).getDirectionMap();
     }
 

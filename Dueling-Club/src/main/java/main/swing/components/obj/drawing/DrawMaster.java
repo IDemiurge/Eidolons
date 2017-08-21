@@ -392,7 +392,7 @@ public class DrawMaster {
             DIRECTION d = obj.getDirection();
             // if (CoreEngine.isLevelEditor()) {
             if (d == null) {
-                Map<Unit, DIRECTION> map = obj.getGame().getDirectionMap().get(
+                Map<BattleFieldObject, DIRECTION> map = obj.getGame().getDirectionMap().get(
                  cellComp.getCoordinates());
                 if (map != null) {
                     d = map.get(obj);

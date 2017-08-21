@@ -143,11 +143,7 @@ public class LE_Simulation extends DC_Game {
 
     @Override
     public void remove(Obj obj) {
-        state.removeObject(obj.getId());
-        // obj.removed();
-        if (obj instanceof Unit) {
-            removeUnit((Unit) obj);
-        }
+        getMaster().remove(obj);
     }
 
     private void unitAdded(Unit obj) {
@@ -219,7 +215,7 @@ public class LE_Simulation extends DC_Game {
                     if (!obj.isOverlaying()) {
                         continue;
                     }
-                }
+                } else
                 if (obj.isOverlaying()) {
                     continue;
                 }

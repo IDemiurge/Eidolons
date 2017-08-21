@@ -429,7 +429,7 @@ public class DC_ObjInitializer {
         for (String data : directionMap.keySet()) {
             Coordinates c = getCoordinatesFromObjString(data);
             DIRECTION d = directionMap.get(data);
-            for (Unit obj : DC_Game.game.getObjectsOnCoordinate(z, c, null, false, false)) {
+            for (BattleFieldObject obj : DC_Game.game.getBfObjectsOnCoordinate(c, true)) {
 
                 String name = getNameFromObjString(data);
                 if (name.contains(MULTI_DIRECTION_SUFFIX)) {
@@ -438,7 +438,7 @@ public class DC_ObjInitializer {
                 if (!name.equals(obj.getName())) {
                     continue;
                 }
-                Map<Unit, DIRECTION> map = obj.getGame().getDirectionMap().get(c);
+                Map<BattleFieldObject, DIRECTION> map = obj.getGame().getDirectionMap().get(c);
                 if (map == null) {
                     map = new HashMap<>();
                     obj.getGame().getDirectionMap().put(c, map);

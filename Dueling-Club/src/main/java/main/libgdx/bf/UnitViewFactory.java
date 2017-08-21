@@ -4,7 +4,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import main.entity.obj.BattleFieldObject;
-import main.entity.obj.unit.Unit;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.system.GuiEventManager;
@@ -58,8 +57,8 @@ public class UnitViewFactory {
         OverlayView view = new OverlayView(options);
         view.setScale(OverlayView.SCALE, OverlayView.SCALE);
 
-        Map<Coordinates, Map<Unit, Coordinates.DIRECTION>> directionMap = DC_Game.game.getDirectionMap();
-        Map<Unit, Coordinates.DIRECTION> heroObjDIRECTIONMap = directionMap.get(bfObj.getCoordinates());
+        Map<Coordinates, Map<BattleFieldObject, Coordinates.DIRECTION>> directionMap = DC_Game.game.getDirectionMap();
+        Map<BattleFieldObject, Coordinates.DIRECTION> heroObjDIRECTIONMap = directionMap.get(bfObj.getCoordinates());
 
         if (heroObjDIRECTIONMap != null) {
             view.setDirection(heroObjDIRECTIONMap.get(bfObj));
