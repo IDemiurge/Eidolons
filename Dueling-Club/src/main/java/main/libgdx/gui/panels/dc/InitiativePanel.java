@@ -16,6 +16,7 @@ import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StrPathBuilder;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -42,10 +43,12 @@ public class InitiativePanel extends Group {
         GuiEventManager.bind(GuiEventType.ADD_OR_UPDATE_INITIATIVE, obj -> {
             UnitView p = (UnitView) obj.get();
             addOrUpdate(p);
+            resetZIndices();
         });
 
         GuiEventManager.bind(GuiEventType.UPDATE_GUI, obj -> {
             cleanUp();
+            resetZIndices();
         });
         GuiEventManager.bind(GuiEventType.UNIT_VIEW_HOVER_ON, obj -> {
             UnitView p = (UnitView) obj.get();
@@ -60,6 +63,7 @@ public class InitiativePanel extends Group {
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
             UnitView p = (UnitView) obj.get();
             removeView(p);
+            resetZIndices();
         });
     }
 
@@ -113,12 +117,13 @@ public class InitiativePanel extends Group {
         container.left().bottom();
         addActor(container);
 
-        final TextureRegion textureRegion = getOrCreateR("UI/custom/initiativePanel.png");
+        final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("UI",
+         "components","2017","panels","initiativePanel.png"));
         final ValueContainer image = new ValueContainer(textureRegion);
         image.setPosition(0, 0);
         image.align(Align.bottomLeft);
-        image.overrideImageSize(imageSize, imageSize);
-        image.setSize(imageSize, imageSize);
+//        image.overrideImageSize(imageSize, imageSize);
+//        image.setSize(imageSize, imageSize);
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer("Good time to die!", "")));
         image.addListener(tooltip.getController());

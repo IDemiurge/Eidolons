@@ -9,7 +9,7 @@ public class StrPathBuilder  {
     public StrPathBuilder(String... parts) {
         builder = new StringBuilder();
         if (parts!=null )
-            build(parts);
+            build_(parts);
     }
 
     public StringBuilder append(String str) {
@@ -17,7 +17,10 @@ public class StrPathBuilder  {
         return builder.append(str+StringMaster.getPathSeparator());
     }
 
-    public String build(String... strings) {
+    public static String build(String... strings) {
+        return new StrPathBuilder(strings).build_();
+    }
+        public String build_(String... strings) {
         for (String s : strings) {
             builder.append(s +StringMaster.getPathSeparator());
         }

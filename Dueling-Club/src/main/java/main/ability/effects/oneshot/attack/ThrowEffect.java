@@ -11,7 +11,7 @@ import main.entity.obj.unit.Unit;
 public class ThrowEffect extends AttackEffect {
 
     boolean stormOfMissiles;
-    private Boolean fromHand = false;
+    private Boolean fromHand = true;
 
     public ThrowEffect() {
         this(false, false);

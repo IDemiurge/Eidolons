@@ -38,6 +38,7 @@ public class AiMaster {
 
     protected DC_Game game;
     protected Unit unit;
+    protected StringBuffer messageBuilder;
     protected TaskManager taskManager;
     protected GoalManager goalManager;
     protected ActionManager actionManager;
@@ -152,6 +153,9 @@ public class AiMaster {
         return logic;
     }
 
+    public StringBuffer getMessageBuilder() {
+        return messageBuilder;
+    }
 
     public TaskManager getTaskManager() {
         return taskManager;

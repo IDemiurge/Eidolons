@@ -13,14 +13,16 @@ import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiCons
     //technical
     DEFAULT_PRUNE_SIZE(5),
     DEFAULT_PRIORITY(100),
-    DEFAULT_ATTACK_PRIORITY(850),
+    DEFAULT_ATTACK_PRIORITY(350),
+    DEFAULT_SPELL_ATTACK_PRIORITY(150),
 
     TURN_,
-    SEQUENCE_LENGTH_PENALTY,
+    SEQUENCE_LENGTH_PENALTY_POW15(3),
+    SEQUENCE_LENGTH_PENALTY(12),
     //ATOMIC
 
     //general
-    COST_SQUARE(5),
+    COST_SQUARE(6),
     COST_DIVIDER(20),
     CONVERGING_FACTOR(0.5f),
     SUMMON_PRIORITY_MOD(1000),
@@ -63,7 +65,7 @@ import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiCons
     GOAL_BUFF, // ALL ALLIES
     GOAL_SELF, // ALL non-std SELFIES
     GOAL_DEBUFF,
-    GOAL_RESTORE,
+    GOAL_RESTORE(0.5f),
     GOAL_DEBILITATE,
 
     GOAL_SUMMONING,
@@ -177,7 +179,8 @@ import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiCons
     GEN_SPELL_DURATION_SQRT_MULTIPLIER(1000),
     LETHAL_DAMAGE_MOD(200),
     LETHAL_DAMAGE_MOD_VS_UNCONSCIOUS(150),
-    UNCONSCIOUS_DAMAGE_MOD(160), DAMAGE_PERCENTAGE_MOD_MINIMUM(10);
+    UNCONSCIOUS_DAMAGE_MOD(160), DAMAGE_PERCENTAGE_MOD_MINIMUM(10),
+    UNCONSCIOUS_UNIT_PRIORITY_MOD(0.25f);
 
     private float defValue;
 

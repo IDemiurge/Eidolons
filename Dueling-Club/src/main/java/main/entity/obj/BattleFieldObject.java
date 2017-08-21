@@ -15,6 +15,7 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.Game;
@@ -54,6 +55,25 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     public boolean isObstructing(Obj obj) {
         return isObstructing(obj, null);
 
+    }
+
+    @Override
+    public String getToolTip() {
+             if (getOutlineTypeForPlayer()!=null )
+                 return getOutlineTypeForPlayer().getName();
+//         if (!isDetected())
+             if (!VisionManager.checkDetected(this)) {
+                 return "Unknown";
+             }
+        String prefix ="";
+        if (isMainHero())
+            prefix = "(You) ";
+        else
+        if (isMine())
+            prefix="Enemy ";
+        else if (!isNeutral())
+            prefix ="Ally ";
+        return prefix+ getDisplayedName();
     }
 
     @Override

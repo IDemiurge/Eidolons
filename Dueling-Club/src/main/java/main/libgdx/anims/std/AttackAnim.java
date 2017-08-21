@@ -30,8 +30,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.LinkedList;
 import java.util.List;
 
-import static main.libgdx.gui.panels.dc.logpanel.LogPanel.path;
-
 /**
  * Created by JustMe on 1/14/2017.
  */
@@ -80,17 +78,18 @@ public class AttackAnim extends ActionAnim {
             return "";
         }
         StrPathBuilder builder = new StrPathBuilder(PathFinder.getSpritesPath(), "weapons");
-
+        String path = "";
         builder.append
          (weapon.isNatural() ? "natural"
           : null);
         builder.append(weapon.isRanged() ? "ranged" : null);
         builder.append(weapon.isAmmo() ? "ammo" : null);
         builder.append(TestMasterContent.isArtifact(weapon) ? "artifact" : null);
+        path = builder.toString();
         String file = FileManager.findFirstFile(path, weapon.getName(), false);
         if (file == null) {
             if (TestMasterContent.isArtifact(weapon))
-                file = StringMaster.cropFirstSegment(path, StringMaster.getPathSeparator());
+                file = StringMaster.cropLastPathSegment(path);
         }
         if (file == null) {
             file = FileManager.findFirstFile(path, weapon.getProperty(G_PROPS.BASE_TYPE), false);

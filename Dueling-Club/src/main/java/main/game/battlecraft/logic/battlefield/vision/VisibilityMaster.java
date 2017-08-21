@@ -121,8 +121,8 @@ public class VisibilityMaster {
 
     public void resetOutlineAndVisibilityLevel(DC_Obj unit) {
         OUTLINE_TYPE type = master.getOutlineMaster().getOutlineType(unit);
-
-        unit.setOutlineType(type);
+        if (master.getActiveUnit().isMainHero())
+            unit.setOutlineType(type);
         unit.setVisibilityLevel(getVisibility(type));
         // if (unit.getPlayerVisionStatus() == UNIT_TO_PLAYER_VISION.DETECTED)
         // return null; //
@@ -170,13 +170,13 @@ public class VisibilityMaster {
 
     public boolean isZeroVisibility(DC_Obj obj, boolean active) {
         return obj.getVisibilityLevel(active) == VISIBILITY_LEVEL.BLOCKED
-                || obj.getVisibilityLevel(active) == VISIBILITY_LEVEL.CONCEALED;
+         || obj.getVisibilityLevel(active) == VISIBILITY_LEVEL.CONCEALED;
     }
 
 
     public VISIBILITY_LEVEL getUnitVisibilityLevel(DC_Obj target, Unit source) {
         VISIBILITY_LEVEL visibilityLevel = getVisibility(master.getOutlineMaster().
-                getOutlineType(target, source));
+         getOutlineType(target, source));
         return visibilityLevel;
     }
 

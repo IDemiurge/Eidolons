@@ -43,7 +43,7 @@ public class GraveyardView extends TablePanel {
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(
                 new ValueContainer("\"Death smiles at us all,", ""),
-                new ValueContainer("but all a man can do is smile back.\"", "")));
+                new ValueContainer("all a man can do is smile back.\"", "")));
         graveyardButton.addListener(tooltip.getController());
 
         graveyardButton.addListener(new ClickListener() {

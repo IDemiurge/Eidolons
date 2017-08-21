@@ -21,9 +21,9 @@ import java.util.Map;
 public class EmitterMap {
 
     private static final int MIN_DISTANCE_FROM_LIGHT = 1;
-    private static final boolean HIDE_SMOKE_AROUND_MAIN_HERO =false ;
+    private static final boolean HIDE_SMOKE_AROUND_MAIN_HERO =true ;
     private static   float MIN_FOG_DISTANCE_FROM_ALLY = 3;
-    private static   float MIN_DISTANCE_BETWEEN_FOG = 4;
+    private static   float MIN_DISTANCE_BETWEEN_FOG = 3;
     private final Pool<Ambience> ambiencePool = new Pool<Ambience>() {
         @Override
         protected Ambience newObject() {
@@ -56,7 +56,7 @@ public class EmitterMap {
 //    }
 
     public void initFog() {
-        int xDistanceFog = 2;
+        int xDistanceFog = 3;
         int yDistanceFog = 2;
         for (int x = 0; x < DungeonScreen.getInstance().getGridPanel().getRows(); x += xDistanceFog)
             for (int y = 0; y < DungeonScreen.getInstance().getGridPanel().getCols(); y += yDistanceFog) {

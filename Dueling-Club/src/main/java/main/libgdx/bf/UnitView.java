@@ -102,7 +102,7 @@ if (this instanceof GridUnitView)
             initiativeLabel.setStyle(StyleHolder.getSizedColoredLabelStyle(StyleHolder.ALT_FONT, 16,
              getTeamColorBorder()));
             initiativeLabel.setPosition(
-             clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()),
+             clockImage.getX()  +(clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()/2),
              clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
         } else {
             LogMaster.error("Initiative set to wrong object type != OBJ_TYPES.UNITS");

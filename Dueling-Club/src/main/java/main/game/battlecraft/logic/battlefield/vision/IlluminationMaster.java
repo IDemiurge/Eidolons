@@ -16,10 +16,10 @@ import main.system.math.PositionMaster;
 public class IlluminationMaster {
 
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION = 10;
-    public static final Integer DEFAULT_GLOBAL_ILLUMINATION_NIGHT = 20;
+    public static final Integer DEFAULT_GLOBAL_ILLUMINATION_NIGHT = 30;
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION_DAY = 80;
     private Integer globalIllumination = 0;
-    private Integer globalConcealment = 0;
+    private Integer globalConcealment = 10;
 
     public IlluminationMaster(VisionMaster visionManager) {
 

@@ -1,7 +1,9 @@
 package main.game.battlecraft.logic.meta.scenario;
 
 import main.client.cc.logic.party.PartyObj;
+import main.content.DC_TYPE;
 import main.content.PROPS;
+import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.battlecraft.logic.meta.universal.PartyManager;
@@ -28,9 +30,13 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
        int i = getMetaGame().getMissionIndex();
 //        getMetaDataManager().getMissionName()
-        if (i>0){
+        while (i>0){
             heroName =   NameMaster.appendVersionToName(heroName, i+1);
+            if (DataManager.isTypeName(heroName, DC_TYPE.CHARS))
+                break;
+            i--;
         }
+
         return super.checkLeveledHeroVersionNeeded(heroName);
     }
 

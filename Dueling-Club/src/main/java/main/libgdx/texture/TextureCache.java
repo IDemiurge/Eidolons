@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.GreyscaleUtils;
 import main.system.images.ImageManager;
@@ -92,13 +93,13 @@ public class TextureCache {
 
     private static boolean checkAltTexture(String path) {
         if (altTexturesOn) {
-            return path.contains("//gen//");
+            return path.contains(StrPathBuilder.build ("gen"));
         }
         return false;
     }
 
     private String getAltTexturePath(String filePath) {
-        return filePath.replace("//gen//", "//erdem//");
+        return filePath.replace(StrPathBuilder.build ("gen", "entity"), StrPathBuilder.build ("main"));
     }
     public static TextureRegion getOrCreateGrayscaleR(String path) {
         return new TextureRegion(getOrCreateGrayscale(path));
@@ -146,8 +147,9 @@ public class TextureCache {
                 try {
                     t = new Texture(new FileHandle(getAltTexturePath(filePath)),
                      Pixmap.Format.RGBA8888, false);
+                    cache.put(path, t);
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             if (t == null)
                 try {

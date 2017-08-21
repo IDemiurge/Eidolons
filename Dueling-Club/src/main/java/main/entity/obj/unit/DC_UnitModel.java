@@ -118,7 +118,10 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     @Override
     public String getToolTip() {
-        if (!game.isSimulation()) {
+        if (!game.isSimulation())
+        return super.getToolTip();
+else
+    {
             if (checkSelectHighlighted()) {
                 String actionTargetingTooltip = "";
                 DC_ActiveObj action = (DC_ActiveObj) getGame().getManager().getActivatingAction();

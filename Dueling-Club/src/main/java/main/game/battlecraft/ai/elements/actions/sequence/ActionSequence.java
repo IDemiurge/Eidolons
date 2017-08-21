@@ -4,6 +4,7 @@ import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.task.Task;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
@@ -49,7 +50,8 @@ public class ActionSequence {
         // for (Action a : actions){
         //
         // }
-        return getType() + ":" + actions.toString()
+        return  StringMaster.getWellFormattedString(getType() .toString())
+         + ":" + actions.toString()
                 // + " priority: " + priority
                 ;
 

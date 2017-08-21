@@ -88,7 +88,7 @@ public class UnitViewTooltipFactory {
            if (!hero.isMine())
                 if (!hero.getGame().isDebugMode())
                     if (hero.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) {
-                        final ValueContainer nameContainer = new ValueContainer(hero.getNameIfKnown(), "");
+                        final ValueContainer nameContainer = new ValueContainer(hero.getToolTip(), "");
                         nameContainer.setNameAlignment(Align.left);
                         values.add(nameContainer);
 
@@ -114,7 +114,7 @@ public class UnitViewTooltipFactory {
 
                         return values;
                     }
-            final ValueContainer nameContainer = new ValueContainer(hero.getName(), "");
+            final ValueContainer nameContainer = new ValueContainer(hero.getToolTip(), "");
             nameContainer.setNameAlignment(Align.left);
             values.add(nameContainer);
 
@@ -154,8 +154,11 @@ public class UnitViewTooltipFactory {
             if (hero.getCustomParamMap() != null) {
                 hero.getCustomParamMap().keySet().forEach(counter -> {
                     final String name = counter;
+                    String img = CounterMaster.getImagePath(counter);
+                    if (img != null) {
+
                     TextureRegion texture = TextureCache.getOrCreateR(
-                     CounterMaster.getImagePath(counter));
+                   img);
 
                     final ValueContainer valueContainer = (texture == null)
                      ? new ValueContainer(name, hero.getCustomParamMap().get(counter))
@@ -163,6 +166,7 @@ public class UnitViewTooltipFactory {
                     valueContainer.setNameAlignment(Align.left);
                     valueContainer.setValueAlignment(Align.right);
                     values.add(valueContainer);
+                    }
                 });
             }
             return values;

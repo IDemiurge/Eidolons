@@ -1,7 +1,6 @@
 package main.game.battlecraft.logic.battlefield.vision;
 
 import main.ability.conditions.special.ClearShotCondition;
-import main.content.PARAMS;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;
@@ -13,7 +12,6 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.core.DC_TurnManager;
 import main.game.core.game.DC_Game;
-import main.system.math.PositionMaster;
 import main.test.debug.DebugMaster;
 
 /**
@@ -109,7 +107,7 @@ public class OutlineMaster {
                 return null;
             }
         }
-        if (gamma > 50) {// ++ dark vision!
+        if (gamma > master.getGammaMaster().getGammaForClearSight()) {// ++ dark vision!
             // flat/blocked?
 
             // [quick fix]
@@ -119,10 +117,10 @@ public class OutlineMaster {
             }
             return null;
         }
-        int distance = PositionMaster.getDistance(activeUnit, unit);
-        int diff = distance - activeUnit.getIntParam(PARAMS.SIGHT_RANGE);
-        // if adjacent, gamma must be
-        if (gamma < 40 - diff * 10) {
+
+
+
+        if (gamma < master.getGammaMaster().getGammaForDarkOutline()  ) {
             return OUTLINE_TYPE.DARK_OUTLINE;
         }
         return OUTLINE_TYPE.VAGUE_OUTLINE;

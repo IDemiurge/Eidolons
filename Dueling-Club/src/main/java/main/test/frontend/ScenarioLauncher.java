@@ -16,6 +16,7 @@ public class ScenarioLauncher {
 
 
         public static void main(String[] args) {
+            main.system.auxiliary.log.LogMaster.log(1,1/2*2+" " );
 if (args.length>2)
    DemoLauncher. initQuickLaunch();
 

@@ -29,7 +29,6 @@ public class GridCell extends Group implements Borderable {
     private TextureRegion borderTexture;
 
     private Label cordsText;
-    private float gamma;
 
     public GridCell(TextureRegion backTexture, int gridX, int gridY) {
         this.backTexture = backTexture;
@@ -90,6 +89,13 @@ public class GridCell extends Group implements Borderable {
                 cordsText.setText(getGridX() + ":" + getGridY() + ", gamma="
                  + DC_Game.game.getVisionMaster().getGammaMaster().
                  getGammaForCell(getGridX(), getGridY())
+//                 +"\n gamma="
+//                 + DC_Game.game.getVisionMaster().getGammaMaster().
+//                 getGammaForCell(getGridX(), getGridY())+"\n Illumination="
+//                 + DC_Game.game.getVisionMaster().getIlluminationMaster().
+//                 getIllumination(getGridX(), getGridY()))+"\n gamma="
+//                 + DC_Game.game.getVisionMaster().getGammaMaster().
+//                 getGammaForCell(getGridX(), getGridY())
                 );
                 cordsText.setPosition( 0, getHeight() / 2 - cordsText.getHeight() / 2);
 

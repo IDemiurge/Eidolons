@@ -1,5 +1,6 @@
 package main.game.core;
 
+import com.badlogic.gdx.Application;
 import main.game.EidolonsGame;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.core.game.DC_Game;
@@ -18,6 +19,7 @@ public class Eidolons {
     public static DC_StateManager stateManager;
 
     public static EidolonsGame mainGame;
+    public static Application gdxApplication;
 
     public static void initScenario(String data){
         mainGame = new EidolonsGame();

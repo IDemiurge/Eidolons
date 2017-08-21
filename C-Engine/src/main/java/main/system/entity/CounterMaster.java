@@ -148,6 +148,9 @@ public class CounterMaster {
     }
 
     public static String getImagePath(String counter) {
-        return getCounter(counter, false).getImagePath();
+        COUNTER v = getCounter(counter, false);
+        if (v!=null )
+        return v.getImagePath();
+        return null ;
     }
 }

@@ -250,7 +250,14 @@ public class AnimationConstructor {
             exists = true;
         }
         List<EmitterActor> list = new LinkedList<>();
-        try {
+//     if (!Thread.currentThread().getName().contains("LWJGL")){
+//
+//     }
+//       Eidolons.gdxApplication.postRunnable(()->{
+//        list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+//        });
+
+       try {
             list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
         } catch (Exception e) {
             e.printStackTrace();

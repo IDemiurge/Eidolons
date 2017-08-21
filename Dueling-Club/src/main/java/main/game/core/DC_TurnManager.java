@@ -174,6 +174,13 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 
     private boolean chooseUnit() {
         setActiveUnit(unitQueue.peek());
+        for (Unit sub : unitQueue) {
+            if (sub.getIntParam(PARAMS.C_INITIATIVE) == getActiveUnit().getIntParam(PARAMS.C_INITIATIVE)) {
+                getActiveUnit().modifyParameter(PARAMS.C_INITIATIVE, 1, null, true);
+
+            }
+            break;
+        }
         try {
             if (!game.getManager().activeSelect(getActiveUnit())) {
                 return false;
@@ -242,6 +249,8 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     public int compare(Unit u1, Unit u2) {
         int a1 = u1.getIntParam(PARAMS.C_INITIATIVE);
         int a2 = u2.getIntParam(PARAMS.C_INITIATIVE);
+
+
         // TODO re-random if match?
         // if (a1 == a2) {
         // while (a1 == a2) {

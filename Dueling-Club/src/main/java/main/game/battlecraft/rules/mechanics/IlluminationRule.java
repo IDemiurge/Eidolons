@@ -25,7 +25,7 @@ public class IlluminationRule {
         for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
             LightEmittingEffect effect = getLightEmissionEffect(obj);
             if (effect != null) {
-                effect.setFormula(new Formula(getIllumination(obj) + ""));
+                effect.setFormula(new Formula(getLightEmission(obj) + ""));
                 effects.add(effect);
             }
         }
@@ -48,7 +48,7 @@ public class IlluminationRule {
         if (source.getIntParam(PARAMS.LIGHT_EMISSION) <= 0) {
             return null;
         }
-        int value = getIllumination(source);
+        int value = getLightEmission(source);
         if (value <= 0) {
             return null;
         }
@@ -73,12 +73,12 @@ public class IlluminationRule {
 
     }
 
-    public static int getIllumination(Obj source) {
-        Integer concealment = source.getIntParam(PARAMS.CONCEALMENT)
-                + source.getGame().getCellByCoordinate(source.getCoordinates()).getIntParam(
-                PARAMS.CONCEALMENT);
-        int value = source.getIntParam(PARAMS.LIGHT_EMISSION) - concealment;
-        return value*100;
+    public static int getLightEmission(Obj source) {
+//        Integer concealment = source.getIntParam(PARAMS.CONCEALMENT)
+//                + source.getGame().getCellByCoordinate(source.getCoordinates()).getIntParam(
+//                PARAMS.CONCEALMENT);
+        int value = source.getIntParam(PARAMS.LIGHT_EMISSION)  ;
+        return value;
     }
 
 }

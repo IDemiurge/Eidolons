@@ -25,7 +25,7 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
  * Created by JustMe on 8/15/2017.
  */
 public class OutcomePanel extends TablePanel implements EventListener {
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
     private OutcomeDatasource datasource;
     private Image picture;
     private Label message;

@@ -1,6 +1,5 @@
 package main.game.battlecraft.ai;
 
-import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.entity.obj.unit.Unit;
@@ -15,6 +14,9 @@ import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import main.game.battlecraft.ai.tools.priority.PriorityManager;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
+import main.libgdx.anims.text.FloatingTextMaster;
+import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import main.system.launch.CoreEngine;
 
 import java.util.List;
 
@@ -97,6 +99,7 @@ public class AI_Manager extends AiMaster {
         if (unit.isMine()) {
             unit.getQuickItemActives();
         }
+        messageBuilder = new StringBuffer();
         Action action = null;
         running = true;
         setUnit(unit);
@@ -121,8 +124,10 @@ public class AI_Manager extends AiMaster {
         if (!bufferedCoordinates.equals(unit.getCoordinates())) {
             unit.setCoordinates(bufferedCoordinates);
         }
-        if (action.getActive().getActionGroup()== ACTION_TYPE_GROUPS.MODE)
-            return action;
+        if (!CoreEngine.isGraphicsOff()){
+           FloatingTextMaster.getInstance().
+             createFloatingText(TEXT_CASES.BATTLE_COMMENT, getMessageBuilder().toString(), getUnit());
+        }
         return action;
     }
 

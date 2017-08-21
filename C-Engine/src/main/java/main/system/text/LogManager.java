@@ -44,6 +44,7 @@ public abstract class LogManager {
     private Map<ENTRY_TYPE, LogEntryNode> pendingEntries = new HashMap<>();
     private int layer;
     private Map<ENTRY_TYPE, List<ANIM>> pendingAnimsToLink;
+    private boolean logNodesOn;
 
     public LogManager(Game game) {
         this.game = game;
@@ -192,6 +193,7 @@ public abstract class LogManager {
         if (entry == null || log == null || LogMaster.isOff()) {
             return false;
         }
+        entry=entry.trim();
         if (addPeriod) {
             if (!entry.endsWith(".") && !entry.endsWith("?") && !entry.endsWith("!")
                     && !entry.endsWith("<")) {
@@ -200,7 +202,6 @@ public abstract class LogManager {
         }
         // pendingEntriesMap.put(enclosingEntryType, list);
         // list.add(entry);
-
         if (currentNode != null) {
             currentNode.addString(entry);
             // will increase Y
@@ -218,7 +219,7 @@ public abstract class LogManager {
 
         LogMaster.log(entry);
 
-        if (currentNode == null) {
+        if (!logNodesOn || currentNode == null) {
             addTextToDisplayed(entry);
         }
 

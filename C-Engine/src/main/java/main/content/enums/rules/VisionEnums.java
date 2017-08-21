@@ -33,6 +33,10 @@ public class VisionEnums {
 
         }
 
+        public String getName() {
+            return  StringMaster.getWellFormattedString(toString());
+        }
+
         // hasSelectImage(){
         //
         // }
