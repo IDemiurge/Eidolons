@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -25,14 +26,14 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
  * Created by JustMe on 8/15/2017.
  */
 public class OutcomePanel extends TablePanel implements EventListener {
-    public static final boolean TEST_MODE = false;
-    private OutcomeDatasource datasource;
-    private Image picture;
-    private Label message;
-    private  TabbedPanel unitStatTabs;
+    public static final boolean TEST_MODE = true;
     Cell<ButtonStyled> doneButton;
     Cell<ButtonStyled> exitButton;
     Cell<ButtonStyled> continueButton;
+    private OutcomeDatasource datasource;
+    private Image picture;
+    private Label message;
+    private TabbedPanel unitStatTabs;
 
     public OutcomePanel(OutcomeDatasource outcomeDatasource) {
 //        setDebug(true);
@@ -41,24 +42,24 @@ public class OutcomePanel extends TablePanel implements EventListener {
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
 
-        datasource=outcomeDatasource;
-        String imgPath="UI\\big\\victory.jpg";
-        if (outcomeDatasource.getOutcome()!=null )
+        datasource = outcomeDatasource;
+        String imgPath = "UI\\big\\victory.jpg";
+        if (outcomeDatasource.getOutcome() != null)
             imgPath = outcomeDatasource.getOutcome() ? "UI\\big\\victory.jpg" : "UI\\big\\defeat.jpg";
         picture = new Image(TextureCache.getOrCreateR(imgPath));
 
         addActor(picture);
         picture.setAlign(Align.center);
 
-        String messageText="That's it";
-        if (outcomeDatasource.getOutcome()!=null )
+        String messageText = "That's it";
+        if (outcomeDatasource.getOutcome() != null)
             messageText = outcomeDatasource.getOutcome() ? "Victory!" : "Defeat!";
         message = new Label(messageText, StyleHolder.getDefaultLabelStyle());
         addActor(message);
         message.setAlignment(Align.top);
 
         TablePanel<Actor> stats = new TablePanel<>();
-        datasource.getPlayerStatsContainers().forEach(c->{
+        datasource.getPlayerStatsContainers().forEach(c -> {
             stats.addElement(c).fill(false).expand(0, 0).bottom()
              .size(150, 50);
             stats.row();
@@ -79,16 +80,28 @@ public class OutcomePanel extends TablePanel implements EventListener {
         addElement(buttonTable).pad(0, 20, 20, 20);
     }
 
+    @Override
+    public boolean remove() {
+        Gdx.app.exit();
+        return super.remove();
+    }
 
     @Override
-    public boolean handle(Event event) {
+    public boolean handle(Event e) {
+        if (!(e instanceof InputEvent)) return true;
+        InputEvent event = ((InputEvent) e);
         Actor actor = event.getTarget();
         if (doneButton.getActor() == actor) {
 //            datasource.getHandler().done();
 //            GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, );
+            //credits?
             ActorMaster.addMoveToAction(this, getX(), Gdx.graphics.getHeight(), 1.5f);
             ActorMaster.addRemoveAfter(this);
-
+//            DungeonScreen.getInstance().getGridPanel()
+//greyscale shader?
+            //pan camera to main hero
+            // zoom?
+            //
         }
 
         return false;

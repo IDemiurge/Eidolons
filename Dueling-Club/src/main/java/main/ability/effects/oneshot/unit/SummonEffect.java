@@ -25,12 +25,12 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.DC_Formulas;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 import main.system.math.Property;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 
 public class SummonEffect extends MicroEffect  implements OneshotEffect {
@@ -132,7 +132,7 @@ public class SummonEffect extends MicroEffect  implements OneshotEffect {
             REF.setTarget(getUnit().getId());
             return effects.apply(REF);
         }
-        SoundMaster.playEffectSound(SOUNDS.READY, unit);
+        DC_SoundMaster.playEffectSound(SOUNDS.READY, unit);
         return true;
     }
 

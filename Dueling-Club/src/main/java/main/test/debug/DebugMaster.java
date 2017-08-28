@@ -58,6 +58,7 @@ import main.swing.generic.services.dialog.DialogMaster;
 import main.system.DC_Formulas;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -69,7 +70,6 @@ import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 import main.system.options.OptionsMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.test.TestMasterContent;
 import main.system.threading.WaitMaster;
@@ -219,7 +219,7 @@ public class DebugMaster {
     }
 
     public void promptFunctionToExecute() {
-        SoundMaster.playStandardSound(RandomWizard.random() ? STD_SOUNDS.DIS__OPEN_MENU
+        DC_SoundMaster.playStandardSound(RandomWizard.random() ? STD_SOUNDS.DIS__OPEN_MENU
          : STD_SOUNDS.SLING);
         String message = "Input function name";
         String funcName = JOptionPane.showInputDialog(null, message, lastFunction);
@@ -302,7 +302,7 @@ public class DebugMaster {
     }
 
     private void playFuncExecuteSound() {
-        SoundMaster.playStandardSound(RandomWizard.random() ? STD_SOUNDS.SKILL_LEARNED
+        DC_SoundMaster.playStandardSound(RandomWizard.random() ? STD_SOUNDS.SKILL_LEARNED
          : STD_SOUNDS.SPELL_UPGRADE_LEARNED);
     }
 

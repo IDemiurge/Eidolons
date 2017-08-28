@@ -1,11 +1,13 @@
 package main.libgdx.texture;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import main.libgdx.bf.GridConst;
+import main.system.auxiliary.StringMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +16,66 @@ import java.util.List;
  * Created by JustMe on 12/30/2016.
  */
 public class TextureManager {
+    public static final int CELL_TEXTURE_ID = 1;
+    private static final String emptyCellPath = "UI/cells/Empty Cell v3.png";
+    //    public static final int CELL_SHADOW_TEXTURE_ID = 1;
+//    public static final int CELL_SHADE_TEXTURE_ID = 1;
+//    public static final int CELL_LIGHT_TEXTURE_ID = 1;
+//    public static final int CELL_EMITTER_TEXTURE_ID = 1;
     public static String SINGLE_SPRITE = "[SINGLE_SPRITE]";
+    private static SpriteCache spriteCache;
+    private static int gridHeight;
+    private static int cellIdStart;
+    private static int cacheId;
+    private static int backgroundId;
+    private static int cellSpriteCacheId;
+
+    public static SpriteCache getSpriteCache() {
+        if (spriteCache == null) {
+            cacheId = 0;
+            spriteCache = new SpriteCache();
+        }
+        return spriteCache;
+    }
+
+    public static void addCellsToCache(int cols, int rows) {
+        cellIdStart = cacheId;
+        gridHeight = rows;
+        for (int x = 0; x < cols; x++) {
+            for (int y = 0; y < rows; y++) {
+                getSpriteCache().beginCache();
+                getSpriteCache().add(TextureCache.createTexture(emptyCellPath,false),
+                 x * GridConst.CELL_W,
+                 y * GridConst.CELL_H);
+                cacheId++;
+                getSpriteCache().endCache();
+
+            }
+        }
+        cellSpriteCacheId=cacheId;
+    }
+
+    public static void drawFromSpriteCache(int id) {
+        getSpriteCache().begin();
+        getSpriteCache().draw(id);
+        getSpriteCache().end();
+    }
+    public static void initBackgroundCache(TextureRegion backTexture) {
+        backgroundId=cacheId;
+        getSpriteCache().beginCache();
+        getSpriteCache().add(backTexture, 0, 0);
+        cacheId++;
+        getSpriteCache().endCache();
+    }
+
+    public static int getBackgroundId() {
+        return backgroundId;
+    }
+
+    public static int getCellSpriteCacheId() {
+        return cellSpriteCacheId;
+    }
+
 
     public static Array<TextureRegion> getSpriteSheetFrames(String path,
                                                             boolean singleSprite, Texture texture) {
@@ -44,11 +105,14 @@ public class TextureManager {
             FRAME_ROWS = 1;
         }
         Texture sheet = path == null ? texture : TextureCache.getOrCreate(path);
+        if (sheet == TextureCache.getEmptyTexture()) {
+            main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>> Sprite not found: " + path);
+        }
         TextureRegion[][] tmp = null;
         try {
             tmp = TextureRegion.split(sheet,
-                            sheet.getWidth() / FRAME_COLS,
-                            sheet.getHeight() / FRAME_ROWS);
+             sheet.getWidth() / FRAME_COLS,
+             sheet.getHeight() / FRAME_ROWS);
         } catch (Exception e) {
             e.printStackTrace();
             return new Array<>();
@@ -88,8 +152,8 @@ public class TextureManager {
             return StringMaster.getInteger(x);
         }
         return xOrY ?
-                getXY(origPath).getKey() :
-                getXY(origPath).getValue();
+         getXY(origPath).getKey() :
+         getXY(origPath).getValue();
     }
 
     public static float getFrameNumber(String path) {
@@ -140,6 +204,10 @@ public class TextureManager {
         }
         return new ImmutablePair<>(x, y);
 
+    }
+
+    public static int getCellSpriteCacheId(int gridX, int gridY) {
+        return cellIdStart + gridX * gridHeight + gridY;
     }
 
 

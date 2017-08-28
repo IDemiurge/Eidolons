@@ -26,6 +26,7 @@ import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E> {
 
     protected PartyObj party;
+    private int partyLevel;
 
     public PartyManager(MetaGameMaster master) {
         super(master);
@@ -75,7 +76,8 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         GuiEventManager.trigger(SELECT_MULTI_OBJECTS, p);
         Unit unit = (Unit) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ, 5000);
         if (unit==null ){
-            return ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
+            String hero = ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
+            return hero;
         }
         return unit.getName();
     }
@@ -96,5 +98,13 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
 
     public String checkLeveledHeroVersionNeeded(String heroName) {
         return heroName;
+    }
+
+    public int getPartyLevel() {
+        return partyLevel;
+    }
+
+    public void setPartyLevel(int partyLevel) {
+        this.partyLevel = partyLevel;
     }
 }

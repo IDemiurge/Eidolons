@@ -75,7 +75,7 @@ public class Property extends DynamicValue {
             return ref.getValue(value_string);
         }
         String str = (strict) ? entity.getProperty(
-                ContentManager.getPROP(value_string, true), base) : entity
+                ContentManager.getPROP(value_string ), base) : entity
                 .getProperty(ContentManager.getPROP(value_string), base);
 
         return str;

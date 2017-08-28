@@ -53,7 +53,7 @@ public class GameControlPanel extends G_Panel {
 //                    DungeonMaster.getDungeons());
 //            String result = new ListChooser(SELECTION_MODE.SINGLE, convertToNameIntList,
 //                    DC_TYPE.DUNGEONS).choose();
-//            SoundMaster.playStandardSound(STD_SOUNDS.SLING);
+//            DC_SoundMaster.playStandardSound(STD_SOUNDS.SLING);
 //            for (Dungeon d : DungeonMaster.getDungeons()) {
 //                if (d.getType().getName().equals(result)) {
 //                    DungeonMaster.goToDungeon(d);

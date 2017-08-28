@@ -7,6 +7,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.swing.components.obj.drawing.DrawMaster.INTERACTIVE_ELEMENT;
 import main.swing.generic.services.dialog.DialogMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.AnimPhase;
@@ -15,7 +16,6 @@ import main.system.graphics.AnimationManager.MouseItem;
 import main.system.graphics.GuiManager;
 import main.system.graphics.PhaseAnimation;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.ToolTipMaster;
 import main.system.threading.WaitMaster;
@@ -167,7 +167,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                     AnimPhase phase = anim.getPhase();
                     if (phase != null) {
                         if (anim.subPhaseClosed()) {
-                            SoundMaster.playStandardSound(STD_SOUNDS.BACK);
+                            DC_SoundMaster.playStandardSound(STD_SOUNDS.BACK);
                             return true;
                         }
                     }
@@ -221,11 +221,11 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                         return false;
                     }
                     if (item.getArg() == null) {
-                        SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+                        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
                         return true;
                     }
                     anim.subPhaseOpened(anim.getPhase((PHASE_TYPE) item.getArg()));
-                    SoundMaster.playStandardSound(STD_SOUNDS.DIS__OPEN_MENU);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__OPEN_MENU);
                     return true;
                 case CONTROL_BACK:
                     anim.pageFlipped(false);
@@ -430,7 +430,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
         yOffset = Math.min(max_offsetY, yOffset);
         xOffset = Math.min(max_offsetX, xOffset);
         if (Math.abs(xOffset) > 0 || Math.abs(yOffset) > 0) {
-            SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
             gridComp.offset(xOffset, true);
             gridComp.offset(yOffset, false);
         }

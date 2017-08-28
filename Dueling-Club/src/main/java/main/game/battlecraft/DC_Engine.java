@@ -32,11 +32,12 @@ public class DC_Engine extends  CoreEngine{
     public static void jarInit() {
         CoreEngine.setEngineObject(new DC_Engine());
     }
+
     public static void gameStartInit() {
         gameInit();
     }
-        public static void systemInit() {
 
+        public static void systemInit() {
              CoreEngine.systemInit();
         OptionsMaster.init();
         DC_GuiManager.init();
@@ -44,17 +45,21 @@ public class DC_Engine extends  CoreEngine{
     }
 
     public static void dataInit(  ) {
+        Chronos.mark("DATA INIT");
         new DC_ContentManager().init();
         CoreEngine.dataInit(  false);
         //read save game?
         DC_ContentManager.initTypeDynamicValues();
+        Chronos.logTimeElapsedForMark("DATA INIT");
     }
 
 
     public static void gameInit() {
         // DC_CostsFactory.createCostsForTypes();
+        Chronos.mark("GAME INIT");
         ConditionMaster.setInstance(new DC_ConditionMaster());
         DC_ActionManager.init();
         DrawHelper.init();
+        Chronos.logTimeElapsedForMark("GAME INIT");
     }
 }

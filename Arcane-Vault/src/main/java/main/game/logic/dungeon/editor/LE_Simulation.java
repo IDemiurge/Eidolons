@@ -221,47 +221,6 @@ public class LE_Simulation extends DC_Game {
         // c, false, true, false);
     }
 
-    @Override
-    public List<Unit> getObjectsOnCoordinate(Integer z, Coordinates c,
-                                             Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
-        List<Unit> list = getUnitMap().get(c);
-        if (list == null) {
-            return new LinkedList<>();
-        }
-        List<Unit> objects = new LinkedList<>();
-        for (Unit obj : list) {
-            if (overlayingIncluded != null) {
-                if (overlayingIncluded) {
-                    if (!obj.isOverlaying()) {
-                        continue;
-                    }
-                }
-                if (obj.isOverlaying()) {
-                    continue;
-                }
-            }
-            objects.add(obj);
-        }
-        return objects;
-
-    }
-
-    public List<Unit> getOverlayingObjects(Coordinates c) {
-        // return getObjectsOnCoordinate(getLevel().getDungeon().getZ(), c,
-        // true, true, false);
-        List<Unit> list = getUnitMap().get(c);
-        if (list == null) {
-            return new LinkedList<>();
-        }
-
-        List<Unit> objects = new LinkedList<>();
-        for (Unit obj : list) {
-            if (obj.isOverlaying()) {
-                objects.add(obj);
-            }
-        }
-        return objects;
-    }
 
     public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded) {
         List<Unit> unitObjects = getUnitMap().get(c);

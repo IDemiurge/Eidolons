@@ -14,11 +14,11 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.combat.damage.ArmorMaster;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.ListItem;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.graphics.GuiManager;
 import main.system.graphics.MigMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import javax.swing.*;
@@ -180,7 +180,7 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
             boolean armor = clickedItem == itemMap.get(ItemEnums.ITEM_SLOT.ARMOR);
             if (armor) {
                 if (!ArmorMaster.isArmorUnequipAllowed(hero)) {
-                    SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
                     return;
                 }
             }
@@ -189,7 +189,7 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
 
 //            if (itemListManager instanceof DC_InventoryManager) {
 //                if (!((DC_InventoryManager) itemListManager).hasOperations(n)) {
-//                    SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+//                    DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
 //                    return;
 //                }
 //            }
@@ -215,7 +215,7 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
                 item.refresh();
 
             }
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
             itemListManager.typeSelected(clickedItem.getValue(), null);
         }
     }

@@ -26,6 +26,11 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     }
 
     @Override
+    public int getPartyLevel() {
+        return getMetaGame().getMissionIndex();
+    }
+
+    @Override
     public String checkLeveledHeroVersionNeeded(String heroName) {
 
        int i = getMetaGame().getMissionIndex();

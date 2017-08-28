@@ -6,12 +6,10 @@ import main.ability.ActiveAbility;
 import main.ability.effects.special.meta.EndGameEffect;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
-import main.elements.conditions.ObjComparison;
 import main.elements.targeting.FixedTargeting;
 import main.elements.triggers.Trigger;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
@@ -81,14 +79,14 @@ public class ObjectiveMaster {
                 Coordinates c = DC_ObjInitializer.getCoordinatesFromObjString(objectiveData);
                 // new Coordinates(s);
                 name = DC_ObjInitializer.getNameFromObjString(objectiveData);
-                for (Unit u : DC_Game.game.getObjectsOnCoordinate(dungeon.getZ(), c, false,
-                        false, false)) {
-                    if (u.getName().equals(name)) {
-                        id = u.getId();
-                    }
-                }
-                ref.setID(KEY, id);
-                conditions.add(new ObjComparison(KEY, KEYS.TARGET.toString()));
+//                for (Unit u : DC_Game.game.getObjectsOnCoordinate(dungeon.getZ(), c, false,
+//                        false, false)) {
+//                    if (u.getName().equals(name)) {
+//                        id = u.getId();
+//                    }
+//                }
+//                ref.setID(KEY, id);
+//                conditions.add(new ObjComparison(KEY, KEYS.TARGET.toString()));
                 break;
             case CAPTURE_HOLD:
                 // holdWaveSequence

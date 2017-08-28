@@ -9,7 +9,7 @@ import main.content.PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.obj.unit.Unit;
 import main.swing.components.buttons.CustomButton;
-import main.system.sound.SoundMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 // display max sd, total sd... 
@@ -39,7 +39,7 @@ public class DivinationPanel extends SecondaryItemList {
 
             @Override
             protected void playClickSound() {
-                SoundMaster.playStandardSound(STD_SOUNDS.SPELL_ACTIVATE);
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_ACTIVATE);
             }
         };
         add(divinationButton, "@pos center_x-4 0");

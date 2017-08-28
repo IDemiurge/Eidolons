@@ -14,7 +14,7 @@ public class EffectsPanel extends TablePanel {
 
         final EffectsAndAbilitiesSource source = (EffectsAndAbilitiesSource) getUserObject();
 
-        source.getEffects().forEach(el -> {
+        source.getBuffs().forEach(el -> {
             el.overrideImageSize(32, 32);
             add(el).left().bottom();
         });

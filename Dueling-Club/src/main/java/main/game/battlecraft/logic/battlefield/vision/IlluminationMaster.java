@@ -18,11 +18,27 @@ public class IlluminationMaster {
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION = 10;
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION_NIGHT = 30;
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION_DAY = 80;
+    private   VisionMaster master;
+    private Integer lightEmissionModifier = 200;
     private Integer globalIllumination = 0;
     private Integer globalConcealment = 10;
 
     public IlluminationMaster(VisionMaster visionManager) {
+        master = visionManager;
 
+    }
+
+    public Integer getLightEmissionModifier() {
+        Dungeon dungeon =master.  getGame().getDungeon();
+        if (dungeon != null) {
+            if (dungeon.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER) != 0)
+                return dungeon.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER);
+        }
+        return lightEmissionModifier;
+    }
+
+    public void setLightEmissionModifier(Integer lightEmissionModifier) {
+        this.lightEmissionModifier = lightEmissionModifier;
     }
 
     public Integer getGlobalIllumination() {
@@ -41,7 +57,10 @@ public class IlluminationMaster {
         this.globalConcealment = globalConcealment;
     }
 
-    public Integer getIllumination(Unit source, DC_Obj target) {
+    public Integer getIllumination(DC_Obj target) {
+        return getIllumination(master.getSeeingUnit(), target);
+    }
+        public Integer getIllumination(Unit source, DC_Obj target) {
         Dungeon dungeon = source.getGame().getDungeon();
 
         Integer illumination =
@@ -69,14 +88,14 @@ public class IlluminationMaster {
         int diff = sight - distance;
 
         if (diff < 0) {
-            ilMod = 100 + (diff * 20
-//             - diff * diff * 5
+            ilMod = 100 + (diff * 12
+             - diff * diff * 2
             );
         } else {
-            ilMod = (100 + (int) (diff * 3 + Math.sqrt(diff * 50)));
+            ilMod = (100 + (int) (diff * 8 + Math.sqrt(diff * 65)));
         }
 
-        ilMod = Math.min(ilMod, 200);
+        ilMod = Math.min(ilMod, 300);
         ilMod = Math.max(ilMod, 1);
 
         // TODO DISTANCE FACTOR?

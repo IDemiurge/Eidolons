@@ -21,10 +21,10 @@ import main.game.module.adventure.travel.MacroParty;
 import main.swing.generic.components.CompVisuals;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.images.ImageManager.STD_IMAGES;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import javax.swing.*;
@@ -357,7 +357,7 @@ public class MapComp implements MouseListener {
                 - MacroGuiManager.getMapOffsetY());
         Area area = AreaManager.getAreaForCoordinate(c);
         if (area != null) {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
             MacroGame.getGame().getManager().infoSelect(area);
         }
 

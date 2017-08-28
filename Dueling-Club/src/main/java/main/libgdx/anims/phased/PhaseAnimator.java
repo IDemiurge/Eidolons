@@ -136,7 +136,7 @@ public class PhaseAnimator extends Group {
             anim.update();
             addActor(anim);
             Vector2 p = GridMaster
-                    .getVectorForCoordinateWithOffset(anim.getAnim().getSourceCoordinates());
+                    .getCenteredPos(anim.getAnim().getSourceCoordinates());
             float x = p.x;
             float y = p.y;
 //            y = GridMaster.getCellHeight() *

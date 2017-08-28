@@ -337,13 +337,6 @@ public class LE_ObjMaster {
         }
         d = FLIP.values()[i];
 
-        Map<Unit, FLIP> map = obj.getGame().getFlipMap().get(c);
-
-        if (map == null) {
-            map = new HashMap<>();
-            obj.getGame().getFlipMap().put(c, map);
-        }
-        map.put(obj, d);
     }
 
     public static void setDirection(Unit obj, Coordinates c) {
@@ -359,14 +352,6 @@ public class LE_ObjMaster {
             d = DIRECTION.values()[i - 1];
 
         }
-
-        Map<Unit, DIRECTION> map = obj.getGame().getDirectionMap().get(c);
-
-        if (map == null) {
-            map = new HashMap<>();
-            obj.getGame().getDirectionMap().put(c, map);
-        }
-        map.put(obj, d);
 
     }
 

@@ -18,6 +18,7 @@ import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTipDataSource;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.texture.TextureCache;
+import main.system.images.ImageManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -193,8 +194,9 @@ public class UnitDataSource implements
     }
 
     @Override
-    public List<ValueContainer> getEffects() {
+    public List<ValueContainer> getBuffs() {
         return unit.getBuffs().stream()
+         .filter(obj ->obj.isDisplayed())
          .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
          .map(AttackTooltipFactory.getObjValueContainerMapper())
          .collect(Collectors.toList());
@@ -203,24 +205,26 @@ public class UnitDataSource implements
     @Override
     public List<ValueContainer> getAbilities() {
         return unit.getPassives().stream()
-         .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
+         .filter(obj ->obj.isDisplayed())
+          .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
          .map(AttackTooltipFactory.getObjValueContainerMapper())
          .collect(Collectors.toList());
     }
 
-    @Override
-    public VerticalValueContainer getResistance() {
-        final String param = unit.getStrParam(PARAMS.RESISTANCE);
+    public VerticalValueContainer getParamContainer(PARAMETER parameter) {
+        final String param = unit.getStrParam(parameter);
         final VerticalValueContainer container =
          new VerticalValueContainer(
-          getOrCreateR("UI/value icons/resistance.jpg"),
+          getOrCreateR(ImageManager.getValueIconPath(parameter)),
           param);
-
         ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.RESISTANCE.getName(), param)));
+        tooltip.setUserObject(Arrays.asList(new ValueContainer(parameter.getName(), param)));
         container.addListener(tooltip.getController());
-
         return container;
+    }
+    @Override
+    public VerticalValueContainer getResistance() {
+        return getParamContainer(PARAMS.RESISTANCE);
     }
 
     @Override

@@ -14,6 +14,7 @@ import java.util.*;
 public class DataUnit<T extends Enum<T>> {
     public static final String TRUE = "TRUE";
     protected Class<? extends Enum<T>> enumClass;
+    protected Class<? extends T> enumClazz;
     protected Map<String, String> values = new ConcurrentMap<>();
     // Map<T, String>
     protected String[] relevantValues;
@@ -36,6 +37,13 @@ public class DataUnit<T extends Enum<T>> {
       return
               StringMaster.openContainer(getValue(t));
     }
+    public T getKeyConst(String name){
+        return new EnumMaster<T>().retrieveEnumConst(getEnumClazz(), name);
+}
+
+    public Class<? extends T> getEnumClazz() {
+        return enumClazz;
+    }
 
     public boolean getBooleanValue(T t) {
         return StringMaster.getBoolean(getValue(t));
@@ -55,9 +63,10 @@ public class DataUnit<T extends Enum<T>> {
 
     public T getEnumConst(String string) {
         if (enumClass == null) {
+            enumClass=getEnumClazz();
             return null;
         }
-        return (T) new EnumMaster<>().getEnum(string, enumClass.getEnumConstants());
+        return (T) new EnumMaster<>().getEnum(string, getEnumClazz().getEnumConstants());
     }
 
     @Override

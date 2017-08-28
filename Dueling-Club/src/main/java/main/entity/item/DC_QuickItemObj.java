@@ -15,9 +15,9 @@ import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
 import main.game.module.dungeoncrawl.special.Trap;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.TypeInitializer;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
@@ -118,6 +118,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         ObjType type = initActiveType();
         setActive(new DC_QuickItemAction(type, getOriginalOwner(), getGame(), ref));
         getActive().setActives(getActives());
+        getActive().setConstructed(true);
         getActive().setItem(this);
 
     }
@@ -273,7 +274,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     public void clicked() {
         // TODO // threading?
         if (getGame().getLoop().getActivatingAction() != null) {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
             return;
         }
         if (game.getManager().isSelecting()) {

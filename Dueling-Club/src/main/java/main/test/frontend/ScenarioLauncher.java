@@ -12,23 +12,23 @@ import main.system.GuiEventType;
  */
 public class ScenarioLauncher {
     public static final String DEFAULT = "Pride and Treachery";
-    public static String missionIndex="0";
+    public static String missionIndex = "0";
 
 
-        public static void main(String[] args) {
-            main.system.auxiliary.log.LogMaster.log(1,1/2*2+" " );
-if (args.length>2)
-   DemoLauncher. initQuickLaunch();
+    public static void main(String[] args) {
+        if (args.length > 2)
+            DemoLauncher.initQuickLaunch();
 
-        if (args.length>1)
-        missionIndex = args[1];
-        if (args.length>0){
-            if (args[0]!=null )
-            launch(args[0]);
+
+
+        if (args.length > 1)
+            missionIndex = args[1];
+        if (args.length > 0) {
+            if (args[0] != null)
+                launch(args[0]);
             else
                 launch(DEFAULT);
-        }
-        else{
+        } else {
             launch(DEFAULT);
         }
     }
@@ -42,7 +42,7 @@ if (args.length>2)
         Eidolons.initScenario(typeName);
 
         ScreenData data = new ScreenData(ScreenType.BATTLE, "name");
-         //new SceneFactory("Test")
+        //new SceneFactory("Test")
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         DC_Engine.gameStartInit();
 

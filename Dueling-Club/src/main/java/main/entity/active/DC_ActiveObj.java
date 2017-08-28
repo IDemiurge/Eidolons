@@ -37,13 +37,14 @@ import main.game.core.game.Game;
 import main.game.logic.action.context.Context;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.PhaseAnimation;
 import main.system.graphics.SpriteAnimated;
+import main.system.launch.CoreEngine;
 import main.system.math.ModMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.LinkedList;
@@ -290,7 +291,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 //        if (dont && CoreEngine.isSwingOn()) {
 //            getGame().getToolTipMaster().initActionToolTip(this, false);
 //
-//            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+//            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
 //            return; // "hollow sound"? TODO
 //        }
 //        if (getGame().getManager().isSelecting()) {
@@ -299,7 +300,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 //        } else {
 //            if (getGame().getManager().isActivatingAction()
 //             || !getGame().getManager().getActiveObj().equals(getOwnerObj())) {
-//                SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+//                DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
 //                return;
 //            }
 //            getGame().getManager().setActivatingAction(this);
@@ -315,7 +316,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     @Override
     public String toString() {
-
+        if (getOwnerObj() == null) {
+            return getName();
+        }
         return StringMaster.getPossessive(getOwnerObj().getNameIfKnown()) + " " + getName();
     }
 
@@ -349,7 +352,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public void playActivateSound() {
-        SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
     }
 
     public Targeting getTargeting() {
@@ -437,6 +440,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
 
     public TARGETING_MODE getTargetingMode() {
+        if (CoreEngine.isArcaneVault())
+            return new EnumMaster<TARGETING_MODE>().retrieveEnumConst(TARGETING_MODE.class, getProperty(G_PROPS.TARGETING_MODE));
         return getTargeter().getTargetingMode();
     }
 

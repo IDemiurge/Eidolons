@@ -17,6 +17,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 import org.w3c.dom.Node;
 
@@ -58,10 +59,12 @@ public class AddTriggerEffect extends MultiEffect implements
         }
         if (trigger == null) {
             trigger = new Trigger(event_type, conditions, ability);
+
             if (!Launcher.DEV_MODE)
                 if (!AiTrainingRunner.running)
             if (conditions!=null )
                 if (conditions.toXml()==null )
+                    if (!StringMaster.isEmpty(toXml()))
             try {
                 Node xml = XML_Converter.findNode(toXml(), "Conditions");
                 if (xml != null)

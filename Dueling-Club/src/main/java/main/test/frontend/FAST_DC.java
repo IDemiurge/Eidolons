@@ -30,13 +30,11 @@ public class FAST_DC {
     public static Boolean FAST_MODE = false;
     public static int ENEMY_CODE = CODE.CHOOSE;
     public static int PARTY_CODE = CODE.CHOOSE; // preset generic-code?
-    public static String ENEMY_PARTY = "Minotaur;Troglodyte;Harpy";
-    public static String PLAYER_PARTY = ""
-            + "Bandit Archer;"
-            ;
+    public static String ENEMY_PARTY = null;//"Minotaur;Troglodyte;Harpy";
+    public static String PLAYER_PARTY = null;//""+ "Bandit Archer;";
     public static String objData = "";
     public static String objData2
-            = "7-5=Minotaur,8-5=Troglodyte,";
+     = "7-5=Minotaur,8-5=Troglodyte,";
     public static boolean SUPER_FAST_MODE;
     public static String exceptions = "";
     public static boolean forceRunGT = false;
@@ -76,13 +74,21 @@ public class FAST_DC {
         List<String> arglist = new LinkedList<>(Arrays.asList(args));
         if (args != null) {
             if (args == SKIP_CHOICE_ARGS || (arglist.contains(PRESET_OPTION_ARG) ||
-                    (arglist.contains(PRESET_ARG)))) {
+             (arglist.contains(PRESET_ARG)))) {
                 skipChoice = true;
 
             }
         }
 
         testLauncher = new TestLauncher(game, FAST_MODE, SUPER_FAST_MODE);
+        if (PLAYER_PARTY != null) {
+            testLauncher.PARTY_CODE = CODE.PRESET;
+            testLauncher.PLAYER_PARTY = PLAYER_PARTY;
+        }
+        if (ENEMY_PARTY != null) {
+            testLauncher.ENEMY_CODE = CODE.PRESET;
+            testLauncher.ENEMY_PARTY = ENEMY_PARTY;
+        }
         if (skipChoice) {
             if (args[0] == PRESET_OPTION_ARG) {
                 PresetLauncher.PRESET_OPTION = StringMaster.getInteger(args[1]);
@@ -102,8 +108,8 @@ public class FAST_DC {
             testLauncher.ENEMY_CODE = CODE.PRESET;
             testLauncher.PARTY_CODE = CODE.PRESET;
         }
-        if (DEFAULT_DUNGEON!=null )
-        testLauncher.setDungeon(DEFAULT_DUNGEON);
+        if (DEFAULT_DUNGEON != null)
+            testLauncher.setDungeon(DEFAULT_DUNGEON);
         if (!skipChoice) {
             if (BEHAVIOR_TEST_ON) {
                 SUPER_FAST_MODE = true;
@@ -167,8 +173,9 @@ public class FAST_DC {
 //            Chronos.logTimeElapsedForMark("xStream save2");
 //        }
 
+        if (!Saver.TEST_MODE)
+            return ;
         Chronos.mark("custom save");
-
         String x = Saver.save("test");
         System.out.println(x);
         Chronos.logTimeElapsedForMark("custom save");
@@ -186,7 +193,6 @@ public class FAST_DC {
 //            Chronos.logTimeElapsedForMark("custom save2");
 //        }
     }
-
 
 
     private static void initKeyManager() {

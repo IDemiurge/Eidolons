@@ -43,22 +43,23 @@ public class SpriteEmitter extends Emitter {
     @Override
     public void draw(Batch batch, float delta) {
         time += delta;
-        TextureRegion texture = animation.getKeyFrame(time, true);
+        try {
+            TextureRegion texture = animation.getKeyFrame(time, true);
 //        getSprite().setRegion( texture);
 //        setSprite(new Sprite(texture));
-
-
-        for (Particle p : getParticles()) {
-            if (p == null) {
-                continue;
-            }
-            if (percentageOfLaggingParticles > 0) {
-                if (RandomWizard.chance(percentageOfLaggingParticles)) {
-                    texture = animation.getPrevious(texture);
+            for (Particle p : getParticles()) {
+                if (p == null) {
+                    continue;
                 }
+                if (percentageOfLaggingParticles > 0) {
+                    if (RandomWizard.chance(percentageOfLaggingParticles)) {
+                        texture = animation.getPrevious(texture);
+                    }
+                }
+                p.setRegion(texture);
             }
-            p.setRegion(texture);
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         super.draw(batch, delta);
     }

@@ -3,8 +3,8 @@ package main.swing.components.buttons;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.CompVisuals;
 import main.swing.generic.components.ComponentVisuals;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import javax.swing.*;
@@ -69,7 +69,7 @@ public abstract class CustomButton extends TextCompDC implements MouseListener {
     }
 
     protected void playDisabledSound() {
-        SoundMaster.playStandardSound(getDisabledClickSound());
+        DC_SoundMaster.playStandardSound(getDisabledClickSound());
     }
 
     protected STD_SOUNDS getDisabledClickSound() {
@@ -77,7 +77,7 @@ public abstract class CustomButton extends TextCompDC implements MouseListener {
     }
 
     protected void playClickSound() {
-        SoundMaster.playStandardSound(getClickSound());
+        DC_SoundMaster.playStandardSound(getClickSound());
 
     }
 

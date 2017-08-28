@@ -10,7 +10,7 @@
             </manifest>
             <fileset dir="X:/Dropbox/code/Dueling-Club/bin"/>
             <fileset dir="X:/Dropbox/code/C-Engine/bin"/>
-        	 <fileset dir="X:/Dropbox/code/C-Engine/RES"/>
+            <fileset dir="X:/Dropbox/code/C-Engine/RES"/>
             <zipfileset excludes="META-INF/*.SF" src="X:/Dropbox/code/C-Engine/lib/miglayout15-swing.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="X:/Dropbox/code/C-Engine/lib/log4j-1.2.16.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="X:/Dropbox/code/C-Engine/lib/jintellitype-1.3.8.jar"/>

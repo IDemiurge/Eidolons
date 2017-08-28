@@ -477,6 +477,9 @@ public class ImageManager {
     public static ImageIcon getEmptyEmblem() {
         return getIcon("UI//emblems//empty emblem.jpg");
     }
+    public static String getEmptyEmblemPath() {
+        return  ("UI//emblems//auto//Knights.png");
+    }
 
     // public static ImageIcon getHighlightedVersion(ImageIcon pic, HIGHLIGHT
     // hl, boolean terrain) {
@@ -1222,6 +1225,7 @@ public class ImageManager {
     }
 
     public enum STD_IMAGES {
+        LIGHT("UI\\outlines\\shadows\\light emitter.png"),
         SCROLL_ATTACK_CHOICE("UI\\components\\neo\\attack choice scroll.png"),
         SCROLL_ATTACK_TEXT("UI\\components\\neo\\choose attack.png"),
         SCROLL_END_HORIZONTAL_DOUBLE("UI\\components\\neo\\scroll.png"),
@@ -1381,6 +1385,7 @@ public class ImageManager {
             }
             return height;
         }
+
 
     }
 

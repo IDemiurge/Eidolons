@@ -108,7 +108,9 @@ public enum OUTCOME{
     }
 
     protected boolean checkDefeat() {
-        return checkNoPlayerUnitsLeft();
+       return  (game.getPlayer(true).getHeroObj().isDead());
+//            return true;
+//        return checkNoPlayerUnitsLeft();
     }
 
     protected boolean checkVictory() {

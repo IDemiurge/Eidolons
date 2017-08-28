@@ -14,10 +14,10 @@ import main.game.battlecraft.rules.combat.attack.Attack;
 import main.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import main.game.core.game.DC_Game;
 import main.swing.generic.services.dialog.DialogMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 
 import java.util.LinkedList;
@@ -239,9 +239,9 @@ public class EngagedRule implements ActionRule {
         // when moved, instead of Collision perhaps... though in some cases
         // getting pushed out is OK
         engager.setEngagementTarget(engaged);
-        SoundMaster.playEffectSound(SOUNDS.THREAT, engager);
+        DC_SoundMaster.playEffectSound(SOUNDS.THREAT, engager);
         if (RandomWizard.random()) {
-            SoundMaster.playEffectSound(SOUNDS.THREAT, engaged);
+            DC_SoundMaster.playEffectSound(SOUNDS.THREAT, engaged);
         }
         if (!isAutoEngageOff(engaged)) {
             if (engaged.getEngagementTarget() == null) // TODO preCheck dead!

@@ -13,16 +13,17 @@ public abstract class SuperActor extends Group implements Borderable {
     protected static final float DEFAULT_ALPHA_FLUCTUATION = 0.6f;
     protected static final float DEFAULT_ALPHA_MIN = 0.2f;
     protected static final float DEFAULT_ALPHA_MAX = 1f;
+    protected static boolean alphaFluctuationOn;
     protected Image border = null;
     protected TextureRegion borderTexture;
-    protected float borderAlpha = 1f;
+    protected float fluctuatingAlpha = 1f;
     protected boolean alphaGrowing=false;
     protected boolean teamColorBorder;
     protected Color teamColor;
     protected float scaledWidth;
     protected float scaledHeight;
     protected boolean hovered;
-    private boolean active;
+    protected boolean active;
 
     @Override
     public TextureRegion getBorder() {
@@ -35,7 +36,7 @@ public abstract class SuperActor extends Group implements Borderable {
             removeActor(border);
         }
         alphaGrowing=false;
-        borderAlpha=0.75f;
+        fluctuatingAlpha =0.75f;
 
         if (texture == null) {
             border = null;
@@ -60,29 +61,32 @@ public abstract class SuperActor extends Group implements Borderable {
     @Override
     public void act(float delta) {
         super.act(delta);
-        alphaFluctuation(border, delta);
+        alphaFluctuation(  delta);
     }
 
-    protected void alphaFluctuation(Image image, float delta) {
+    protected void alphaFluctuation(  float delta) {
+        alphaFluctuation(border, delta);
+    }
+        protected void alphaFluctuation(Image image, float delta) {
         if (!isAlphaFluctuationOn())
             return;
         if (image == null)
             return;
         Color color = image.getColor();
         if (isTeamColorBorder())
-            if (getTeamColorBorder()!=null ) {
-                color = getTeamColorBorder();
+            if (getTeamColor()!=null ) {
+                color = getTeamColor();
             }
-        borderAlpha = borderAlpha + getAlphaFluctuation(delta);
+        fluctuatingAlpha = fluctuatingAlpha + getAlphaFluctuation(delta);
         if (image != null) //TODO control access!
-            image.setColor(color.r, color.g, color.b, borderAlpha);
+            image.setColor(color.r, color.g, color.b, fluctuatingAlpha);
 
     }
     protected float getAlphaFluctuation(float delta) {
-        float fluctuation =delta* DEFAULT_ALPHA_FLUCTUATION;
-        if (borderAlpha <=DEFAULT_ALPHA_MIN- fluctuation)
+        float fluctuation =delta* getAlphaFluctuationPerDelta();
+        if (getFluctuatingAlpha () <=getAlphaFluctuationMin()- fluctuation)
             alphaGrowing = !alphaGrowing;
-        else if (borderAlpha > DEFAULT_ALPHA_MAX+fluctuation)
+        else if (fluctuatingAlpha > getAlphaFluctuationMax()+fluctuation)
             alphaGrowing = !alphaGrowing;
 
         if (!alphaGrowing)
@@ -90,8 +94,27 @@ public abstract class SuperActor extends Group implements Borderable {
         return fluctuation;
     }
 
-    protected boolean isAlphaFluctuationOn() {
-        return true;
+    protected float getFluctuatingAlpha() {
+        return fluctuatingAlpha;
+    }
+
+    protected float getAlphaFluctuationMin() {
+        return DEFAULT_ALPHA_MIN;
+    }
+    protected float getAlphaFluctuationMax() {
+        return DEFAULT_ALPHA_MAX;
+    }
+
+    protected float getAlphaFluctuationPerDelta() {
+        return DEFAULT_ALPHA_FLUCTUATION;
+    }
+
+    public static void setAlphaFluctuationOn(boolean alphaFluctuationOn) {
+        SuperActor.alphaFluctuationOn = alphaFluctuationOn;
+    }
+
+    public static boolean isAlphaFluctuationOn() {
+        return alphaFluctuationOn;
     }
     @Override
     public boolean isTeamColorBorder() {
@@ -106,7 +129,7 @@ public abstract class SuperActor extends Group implements Borderable {
         this.teamColor = teamColor;
     }
     @Override
-    public Color getTeamColorBorder() {
+    public Color getTeamColor() {
         return teamColor;
     }
 

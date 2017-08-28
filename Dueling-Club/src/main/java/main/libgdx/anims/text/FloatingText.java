@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import main.libgdx.StyleHolder;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
@@ -21,6 +22,7 @@ import java.util.function.Supplier;
 public class FloatingText extends Group {
 
     private static final boolean DEBUG_MODE = true;
+    private static final Integer DEFAULT_FONT_SIZE = 18;
     int alphaLoops = 1;
     boolean inverseAlpha;
     float displacementX;
@@ -32,6 +34,7 @@ public class FloatingText extends Group {
     private float duration;
     private float delay;
     private boolean initialized;
+    private LabelStyle fontStyle;
 
     public FloatingText(String text, Color c) {
         this.text = text;
@@ -115,7 +118,7 @@ public class FloatingText extends Group {
         }
 
         Label label =
-         new Label(getText(), StyleHolder.getDefaultLabelStyle());
+         new Label(getText(), getFontStyle());
         label.setColor(c);
         label.setPosition(0, -20);
         addActor(label);
@@ -134,6 +137,10 @@ public class FloatingText extends Group {
             text = textSupplier.get();
         }
         return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public void setDisplacementX(float displacementX) {
@@ -175,5 +182,35 @@ public class FloatingText extends Group {
 
     public void setInitialized(boolean initialized) {
         this.initialized = initialized;
+    }
+
+    public LabelStyle getFontStyle() {
+        if (fontStyle == null)
+            return StyleHolder.getSizedLabelStyle(StyleHolder.DEFAULT_FONT, DEFAULT_FONT_SIZE);
+        return fontStyle;
+    }
+
+    public void setFontStyle(LabelStyle fontStyle) {
+        this.fontStyle = fontStyle;
+    }
+
+    public void setAlphaLoops(int alphaLoops) {
+        this.alphaLoops = alphaLoops;
+    }
+
+    public void setInverseAlpha(boolean inverseAlpha) {
+        this.inverseAlpha = inverseAlpha;
+    }
+
+    public void setC(Color c) {
+        this.c = c;
+    }
+
+    public void setTextSupplier(Supplier<String> textSupplier) {
+        this.textSupplier = textSupplier;
+    }
+
+    public void setImageSupplier(Supplier<String> imageSupplier) {
+        this.imageSupplier = imageSupplier;
     }
 }

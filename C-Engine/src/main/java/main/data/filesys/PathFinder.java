@@ -1,5 +1,6 @@
 package main.data.filesys;
 
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
@@ -251,5 +252,9 @@ public class PathFinder {
 
     public static String getJarPath() {
         return getEnginePath()+jarName;
+    }
+
+    public static String getEmblemAutoFindPath() {
+        return StrPathBuilder.build(getImagePath(), "ui", "emblems", "auto")+StringMaster.getPathSeparator();
     }
 }

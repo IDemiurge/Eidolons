@@ -162,6 +162,9 @@ public class ForceRule {
         if (!isForceEnabled(action)) {
             return;
         }
+        if (!( action.getRef().getTargetObj() instanceof BattleFieldObject)) {
+            return;
+        }
         BattleFieldObject source = action.getOwnerObj();
         BattleFieldObject target = (BattleFieldObject) action.getRef().getTargetObj();
         Damage dmg = getDamageObject(action, source, target);

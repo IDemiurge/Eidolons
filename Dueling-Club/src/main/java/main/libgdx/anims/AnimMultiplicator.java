@@ -23,7 +23,7 @@ import main.system.auxiliary.secondary.GeometryMaster;
 
 import java.util.*;
 
-import static main.libgdx.bf.GridMaster.getVectorForCoordinateWithOffset;
+import static main.libgdx.bf.GridMaster.getCenteredPos;
 
 /**
  * Created by JustMe on 1/29/2017.
@@ -243,7 +243,7 @@ public class AnimMultiplicator implements Runnable {
 
     private void createAndAddEmitterActions(EmitterActor actor, Coordinates c) {
 //        MoveToAction action = ActorMaster.getMoveToAction(c, actor, pixelsPerSecond);
-        Vector2 v = getVectorForCoordinateWithOffset(c);
+        Vector2 v = getCenteredPos(c);
         int speed = getPixelsPerSecond();
         if (template != null) {
             GridMaster.offset(

@@ -88,7 +88,7 @@ public class DataManager {
             if (type != null) {
                 return type;
             } else {
-                continue;
+                CONTINUE;
             }
         }
         return null;

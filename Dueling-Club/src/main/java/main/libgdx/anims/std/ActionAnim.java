@@ -55,6 +55,15 @@ public class ActionAnim extends Anim {
     }
 
     @Override
+    public void finished() {
+        if (action != null)
+            if (action.getActor() != null)
+                if (action.getActor().getActions() != null)
+                    action.getActor().getActions().clear();
+        super.finished();
+    }
+
+    @Override
     public void start() {
 
         setRotation(initialAngle);
@@ -68,7 +77,7 @@ public class ActionAnim extends Anim {
 
     public Actor getActor() {
         return DungeonScreen.getInstance().getGridPanel().getUnitMap()
-                .get(getActive().getOwnerObj());
+         .get(getActive().getOwnerObj());
     }
 
     //for triggers!

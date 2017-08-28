@@ -93,7 +93,7 @@ public class SituationAnalyzer extends AiHandler {
         if (unit_ai.getType() == AiEnums.AI_TYPE.TANK) {
             return 50;
         }
-        if (unit_ai.getType().isRanged()) {
+        if (unit_ai.getType().isCaster()) {
             return 200;
         }
         return 100;

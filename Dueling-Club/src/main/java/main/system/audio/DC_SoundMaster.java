@@ -1,25 +1,41 @@
 package main.system.audio;
 
+import main.content.ContentManager;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.ItemEnums;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
+import main.data.DataManager;
+import main.data.filesys.PathFinder;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.rules.magic.ChannelingRule;
+import main.game.bf.Coordinates;
+import main.game.core.game.DC_Game;
 import main.libgdx.anims.Anim;
+import main.libgdx.anims.AnimationConstructor;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.CompositeAnim;
+import main.libgdx.audio.SoundPlayer;
+import main.libgdx.bf.GridMaster;
+import main.libgdx.screens.DungeonScreen;
 import main.system.ContentGenerator;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.sound.Player;
 import main.system.sound.SoundMaster;
 
 import java.io.File;
@@ -27,36 +43,63 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+//import main.game.logic.battle.player.Player;
+
 public class DC_SoundMaster extends SoundMaster {
+
+    public static final PROPERTY[] propsExact = {
+     G_PROPS.NAME, G_PROPS.SPELL_SUBGROUP,
+     G_PROPS.SPELL_GROUP, G_PROPS.ASPECT,
+    };
+    public static final PROPERTY[] props = {
+     PROPS.DAMAGE_TYPE,
+     G_PROPS.SPELL_TYPE,
+    };
+    private  static SoundPlayer soundPlayer;
+    private   DungeonScreen screen;
+
+    public DC_SoundMaster(DungeonScreen screen) {
+        this.screen=screen;
+    }
 
     public static void playRangedAttack(DC_WeaponObj weapon) {
         // TODO double weapon sound
         if (weapon.getWeaponGroup() == ItemEnums.WEAPON_GROUP.CROSSBOWS) {
-            SoundMaster
-             .playRandomSoundVariant("weapon\\crossbow\\" + weapon.getWeaponSize(), false);
+            getPlayer().playRandomSoundVariant("weapon\\crossbow\\" + weapon.getWeaponSize(), false);
         } else if (weapon.getWeaponGroup() == ItemEnums.WEAPON_GROUP.BOLTS) {
-            SoundMaster.playRandomSoundVariant("weapon\\bow\\" + weapon.getWeaponSize(), false);
+            getPlayer().playRandomSoundVariant("weapon\\bow\\" + weapon.getWeaponSize(), false);
         } else {
-            SoundMaster.playRandomSoundVariant("weapon\\throw\\" + weapon.getWeaponSize(), false);
+            getPlayer().playRandomSoundVariant("weapon\\throw\\" + weapon.getWeaponSize(), false);
         }
 
     }
 
     public static void playMissedSound(Unit attacker, DC_WeaponObj attackWeapon) {
 
-        SoundMaster.playRandomSoundVariant("weapon\\miss\\"
+        getPlayer().playRandomSoundVariant("weapon\\miss\\"
          + attackWeapon.getWeaponSize().toString().toLowerCase(), false);
 
+    }
+    public static void playEffectSound(SOUNDS sound_type, Obj obj) {
+        setPositionFor(obj.getCoordinates());
+        getPlayer().playEffectSound(sound_type, obj);
     }
 
     public static void playParrySound(Unit attacked, DC_WeaponObj attackWeapon) {
         // TODO double weapon sound
+        setPositionFor(attacked.getCoordinates());
         DC_WeaponObj parryWeapon = attacked.getActiveWeapon(true);
 
-        SoundMaster.playRandomSoundFromFolder("soundsets\\" + "weapon\\"
+        getPlayer().playRandomSoundFromFolder("soundsets\\" + "weapon\\"
          + attackWeapon.getWeaponGroup() + "\\");
-        SoundMaster.playRandomSoundVariant("soundsets\\" + "weapon\\" + "parry\\"
+        getPlayer().playRandomSoundVariant("soundsets\\" + "weapon\\" + "parry\\"
          + parryWeapon.getDamageType(), false);
+    }
+
+    private static void setPositionFor(Coordinates c) {
+        if (getSoundPlayer()!=null )
+        getSoundPlayer().setPosition(
+         GridMaster.getPosWithOffset(c));
     }
 
     public static void playBlockedSound(Obj attacker, Obj attacked, DC_WeaponObj shield,
@@ -65,18 +108,18 @@ public class DC_SoundMaster extends SoundMaster {
         if (shield.getWeaponSize() == ItemEnums.WEAPON_SIZE.TINY
          || shield.getWeaponSize() == ItemEnums.WEAPON_SIZE.SMALL) {
             if (RandomWizard.chance(75, new Random())) {
-                SoundMaster.playRandomSoundVariant(
+                getPlayer().playRandomSoundVariant(
                  "armor\\buckler\\s " + weaponObj.getDamageType(), false);
             } else {
-                SoundMaster.playRandomSoundVariant("soundsets\\" + "armor\\buckler\\s", false);
+                getPlayer().playRandomSoundVariant("soundsets\\" + "armor\\buckler\\s", false);
             }
         } else {
             if (weaponObj != null) {
                 if (RandomWizard.chance(75)) {
-                    SoundMaster.playRandomSoundVariant("soundsets\\" + "armor\\shield\\s "
+                    getPlayer().playRandomSoundVariant("soundsets\\" + "armor\\shield\\s "
                      + weaponObj.getDamageType(), false);
                 } else {
-                    SoundMaster.playRandomSoundVariant("soundsets\\" + "armor\\shield\\s", false);
+                    getPlayer().playRandomSoundVariant("soundsets\\" + "armor\\shield\\s", false);
                 }
             }
         }
@@ -118,10 +161,10 @@ public class DC_SoundMaster extends SoundMaster {
     public static void playSoundForModeToggle(boolean on_off, DC_ActiveObj action, String mode) {
         // STD_ACTION_MODES
         if (on_off) {
-            SoundMaster.playStandardSound(STD_SOUNDS.ON_OFF);
-        }// SoundMaster.playStandardSound(STD_SOUNDS.CHAIN);
+            getPlayer().playStandardSound(STD_SOUNDS.ON_OFF);
+        }// soundPlayer.playStandardSound(STD_SOUNDS.CHAIN);
         else {
-            SoundMaster.playStandardSound(STD_SOUNDS.ButtonDown);
+            getPlayer().playStandardSound(STD_SOUNDS.ButtonDown);
         }
 
     }
@@ -158,7 +201,7 @@ public class DC_SoundMaster extends SoundMaster {
             return;
         }
         File file = FileManager.getRandomFile(files);
-        SoundMaster.play(file);
+        getPlayer().play(file);
     }
 
     public static void bindEvents() {
@@ -202,16 +245,16 @@ public class DC_SoundMaster extends SoundMaster {
         switch (part) {
             case PRECAST:
                 ChannelingRule.playChannelingSound(activeObj, activeObj.getOwnerObj().getGender() == GENDER.FEMALE);
-                playEffectSound(SOUNDS.PRECAST, activeObj);
+                getPlayer().playEffectSound(SOUNDS.PRECAST, activeObj);
                 break;
             case CAST:
-                playEffectSound(SOUNDS.CAST, activeObj);
+                getPlayer().playEffectSound(SOUNDS.CAST, activeObj);
                 break;
             case RESOLVE:
-                playEffectSound(SOUNDS.RESOLVE, activeObj);
+                getPlayer().playEffectSound(SOUNDS.RESOLVE, activeObj);
                 break;
             case MAIN:
-                playEffectSound(SOUNDS.EFFECT, activeObj);
+                getPlayer().playEffectSound(SOUNDS.EFFECT, activeObj);
                 break;
             case IMPACT:
                 playImpact(activeObj);
@@ -221,25 +264,85 @@ public class DC_SoundMaster extends SoundMaster {
         }
     }
 
-    private static String getActionEffectSoundPath(DC_SpellObj spell, ANIM_PART part) {
-        String path = getPath() + "soundset\\spells\\";
-        path = StringMaster.buildPath(path,spell.getAspect().toString(),
-         spell.getSpellGroup().toString(), part.toString() );
-
-        String file =
-         FileManager.findFirstFile(path, spell.getName(), true);
-        if (file==null )
-            return null ;
-//        FileManager.findFirstFile(path, part.toString(), true);
-        String corePath = StringMaster.cropFormat(file);
-        try {
-            return FileManager.getRandomFilePathVariant(corePath, "mp3", true);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void preconstructEffectSounds() {
+        for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
+            DC_SpellObj active = new DC_SpellObj(type, DC_Player.NEUTRAL, DC_Game.game, new Ref());
+            for (ANIM_PART part : ANIM_PART.values()) {
+                preconstructSpell(active, part);
+            }
         }
+    }
 
-        return file;
+    private static void preconstructSpell(DC_SpellObj spell, ANIM_PART part) {
+        String file = AnimationConstructor.findResourceForSpell(spell,
+         part.toString(), "", propsExact,
+         getSpellSoundPath(), false);
+        if (file == null) {
+            file = AnimationConstructor.findResourceForSpell(spell,
+             part.toString(), "", props,
+             getSpellSoundPath(), true);
+        }
+        if (file == null) {
+            file = getActionEffectSoundPath(spell, part);
+        }
+        if (file == null) {
+            return;
+        }
+        file = file.replace(PathFinder.getSoundPath().toLowerCase(), "");
+        PROPERTY prop = getProp(part);
+        if (prop == null)
+            return;
+        spell.getType().setProperty(prop, file);
+    }
 
+    private static PROPERTY getProp(ANIM_PART part) {
+        return ContentManager.findPROP("SOUND_" + part);
+    }
+
+    private static String getActionEffectSoundPath(DC_SpellObj spell, ANIM_PART part) {
+        String file = spell.getProperty(getProp(part));
+        String identifier;
+        String path;
+        if (!file.isEmpty()) {
+            file = PathFinder.getSoundPath() + file;
+            identifier = StringMaster.getLastPathSegment(file);
+            path = StringMaster.cropLastPathSegment(file);
+        } else {
+            identifier = spell.getName();
+            path = getSpellSoundPath();
+            path = StringMaster.buildPath(path, spell.getAspect().toString(),
+             spell.getSpellGroup().toString(), part.toString());
+        }
+        int i = 0;
+        while (i < 3) {
+            i++;
+            if (StringMaster.isEmpty(file))
+                file =
+                 FileManager.findFirstFile(path, identifier, true);
+            if (file != null)
+            {
+            String corePath = StringMaster.cropFormat(file);
+            try {
+                file = FileManager.getRandomFilePathVariant(corePath, "mp3", true);
+            } catch (Exception e) {
+//            e.printStackTrace();
+            }
+        }
+            if (file != null) {
+                if (main.system.sound.Player.getLastplayed().peek().equalsIgnoreCase(file)) {
+                    i--;
+                    continue;
+                }
+                return file;
+            }
+            identifier = StringMaster.getLastPathSegment(path);
+            path = StringMaster.cropLastPathSegment(path);
+        }
+        return null;
+    }
+
+    private static String getSpellSoundPath() {
+        return getPath() + "soundset\\spells\\";
     }
 
     private static void playImpact(DC_ActiveObj activeObj) {
@@ -249,9 +352,24 @@ public class DC_SoundMaster extends SoundMaster {
              activeObj.getIntParam(PARAMS.DAMAGE_LAST_AMOUNT) - activeObj.getIntParam(PARAMS.DAMAGE_LAST_DEALT)
             );
         } else {
-            playEffectSound(SOUNDS.IMPACT, activeObj);
+            getPlayer().playEffectSound(SOUNDS.IMPACT, activeObj);
         }
 //        AudioMaster.getInstance().playRandomSound();
     }
 
+    public static SoundPlayer getSoundPlayer() {
+        return soundPlayer;
+    }
+
+    private static main.system.sound.Player getPlayer() {
+        if (soundPlayer ==null )
+            return new Player();
+        return soundPlayer;
+    }
+
+    public   void doPlayback(float delta ) {
+        if (soundPlayer == null)
+            soundPlayer = new SoundPlayer(screen);
+        soundPlayer.doPlayback(delta);
+    }
 }

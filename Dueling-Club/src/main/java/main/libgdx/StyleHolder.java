@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.data.filesys.PathFinder;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster.FONT;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
 import java.util.HashMap;
@@ -32,6 +34,7 @@ public class StyleHolder {
     private static TextButton.TextButtonStyle defaultTextButtonStyle;
     private static Map<Color, Label.LabelStyle> colorLabelStyleMap = new HashMap<>();
     private static Map<Integer, Label.LabelStyle> sizeLabelStyleMap = new HashMap<>();
+    private static Map<Pair<Integer,Color>, Label.LabelStyle> sizeColorLabelStyleMap = new HashMap<>();
 
     public static Label.LabelStyle getStyledLabelStyle(Label.LabelStyle style, boolean italic, boolean bold) {
         //TODO
@@ -41,13 +44,14 @@ public class StyleHolder {
         return getSizedColoredLabelStyle(fontStyle, size, DEFAULT_COLOR);
     }
         public static Label.LabelStyle getSizedColoredLabelStyle(FONT fontStyle, Integer size, Color color) {
-        if (!sizeLabelStyleMap.containsKey(size)) {
+            ImmutablePair<Integer, Color> pair = new ImmutablePair<>(size, color);
+        if (!sizeColorLabelStyleMap.containsKey(pair)) {
             Label.LabelStyle style = new Label.LabelStyle
              (getFont(fontStyle, color, size ), color);
             style.font.getData().markupEnabled = true;
-            sizeLabelStyleMap.put(size, style);
+            sizeColorLabelStyleMap.put(pair, style);
         }
-        return sizeLabelStyleMap.get(size);
+        return sizeColorLabelStyleMap.get(pair);
     }
     public static Label.LabelStyle getDefaultLabelStyle(Color color) {
         return getLabelStyle(DEFAULT_FONT, color);

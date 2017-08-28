@@ -1,16 +1,20 @@
 package main.libgdx.bf;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.Align;
+import main.game.core.game.DC_Game;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.tooltips.ToolTip;
+import main.libgdx.screens.DungeonScreen;
 import main.libgdx.shaders.GrayscaleShader;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.log.LogMaster;
+import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import main.system.options.OptionsMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,6 +32,8 @@ public class UnitView extends BaseView {
     protected Image modeImage;
     protected boolean greyedOut;
     private boolean emblemBorderOn;
+    private Texture outline;
+    private boolean initialized;
 
 
     public UnitView(UnitViewOptions o) {
@@ -38,7 +44,7 @@ public class UnitView extends BaseView {
         super(o);
         this.curId = curId;
         setTeamColor(o.getTeamColor());
-        init(o.getClockTexture(), o.getClockValue(), o.getEmblem());
+        init(o.getClockTexture(), o.getClockValue());
     }
 
     public void setToolTip(ToolTip toolTip) {
@@ -46,6 +52,8 @@ public class UnitView extends BaseView {
     }
 
     public void reset() {
+
+
         if (isEmblemBorderOn()) {
             emblemBorder = new Image(TextureCache.getOrCreateR(
              CellBorderManager.teamcolorPath));
@@ -55,33 +63,27 @@ public class UnitView extends BaseView {
         }
     }
 
-    private void init(TextureRegion clockTexture, int clockVal, TextureRegion emblem) {
+    private void init(TextureRegion clockTexture, int clockVal) {
         this.initiativeIntVal = clockVal;
-if (this instanceof GridUnitView)
-        if (emblem != null) {
-            this.emblemImage = new Image(emblem);
-            //TODO add sized team-colored border
-            this.emblemImage.setAlign(Align.bottomLeft);
-            addActor(this.emblemImage);
-        }
-        if (!(this instanceof GridUnitView))
-            if (clockTexture != null) {
-                this.clockTexture = clockTexture;
-                initiativeLabel = new Label(
-                 String.valueOf(clockVal),
-                 StyleHolder.getSizedColoredLabelStyle(StyleHolder.ALT_FONT, 16,
-                  getTeamColorBorder()
+            if (!(this instanceof GridUnitView))
+                if (clockTexture != null) {
+                    this.clockTexture = clockTexture;
+                    initiativeLabel = new Label(
+                     String.valueOf(clockVal),
+                     StyleHolder.getSizedColoredLabelStyle(StyleHolder.ALT_FONT, 16,
+                      getTeamColor()
 //                  GdxColorMaster.CYAN
 //              GdxColorMaster.getColor(SmartTextManager.getValueCase())
-                 ));
-                clockImage = new Image(clockTexture);
-                addActor(clockImage);
-                addActor(initiativeLabel);
-            }
-    }
+                     ));
+                    clockImage = new Image(clockTexture);
+                    addActor(clockImage);
+                    addActor(initiativeLabel);
+                }
+                setInitialized(true);
+        }
 
     protected void updateModeImage(String pathToImage) {
-        }
+    }
 
     @Override
     protected void sizeChanged() {
@@ -93,6 +95,8 @@ if (this instanceof GridUnitView)
              clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()),
              clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
         }
+        if (isInitialized())
+            reset();
     }
 
     public void updateInitiative(Integer val) {
@@ -100,9 +104,9 @@ if (this instanceof GridUnitView)
             initiativeIntVal = val;
             initiativeLabel.setText(String.valueOf(val));
             initiativeLabel.setStyle(StyleHolder.getSizedColoredLabelStyle(StyleHolder.ALT_FONT, 16,
-             getTeamColorBorder()));
+             getTeamColor()));
             initiativeLabel.setPosition(
-             clockImage.getX()  +(clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()/2),
+             clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth() / 2),
              clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
         } else {
             LogMaster.error("Initiative set to wrong object type != OBJ_TYPES.UNITS");
@@ -115,8 +119,17 @@ if (this instanceof GridUnitView)
         if (flickering) {
 
         }
-        alphaFluctuation(emblemBorder, delta);
+//        alphaFluctuation(emblemBorder, delta);
 
+    }
+
+    protected boolean checkIgnored() {
+        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
+            if (!DungeonScreen.getInstance().
+             getController().isWithinCamera(getX(), getY(), getWidth(), getHeight())) {
+                return false;
+            }
+        return false;
     }
 
 
@@ -127,6 +140,10 @@ if (this instanceof GridUnitView)
             ActorMaster.addFadeInOrOutIfNoActions(this, 1);
         }
         super.draw(batch, parentAlpha);
+        if (DC_Game.game.isDebugMode())
+        if (outline != null)
+            batch.draw(outline, 0, 0);
+
         batch.setShader(null);
     }
 
@@ -165,5 +182,21 @@ if (this instanceof GridUnitView)
 
     public void setEmblemBorderOn(boolean emblemBorderOn) {
         this.emblemBorderOn = emblemBorderOn;
+    }
+
+    public Texture getOutline() {
+        return outline;
+    }
+
+    public void setOutline(Texture outline) {
+        this.outline = outline;
+    }
+
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    public void setInitialized(boolean initialized) {
+        this.initialized = initialized;
     }
 }

@@ -42,14 +42,30 @@ public class AtomicAi extends AiHandler {
     }
 
     public Action getAtomicAction(UnitAI ai) {
-        Action action = getAtomicActionPrepare(ai);
+        Action action =null ;
+        if (ai.getType() == AI_TYPE.ARCHER) {
+            action = getReloadAction(ai);
+            action.setTaskDescription("Ammo Reload");
+        }
+        if (action!=null )
+            return action;
+        action =getAtomicActionPrepare(ai);
         if (action == null) {
             if (checkAtomicActionTurn(ai))
+            {
                 action = getAtomicActionTurn(ai);
+                action.setTaskDescription("Facing Adjustment");
+            }
             else
+            {
                 action = getAtomicActionApproach(ai);
+                action.setTaskDescription("Approach");
+            }
         }
-
+        else
+        {
+            action.setTaskDescription("Restoration");
+        }
         return action;
     }
 
@@ -67,9 +83,7 @@ public class AtomicAi extends AiHandler {
             return AiActionFactory.newAction(STD_MODE_ACTIONS.Concentrate.name(),
              getUnit().getAI());
         }
-        if (ai.getType() == AI_TYPE.ARCHER) {
-            return getReloadAction(ai);
-        }
+
         if (ai.getType() == AI_TYPE.CASTER) {
             return AiActionFactory.newAction(STD_MODE_ACTIONS.Meditate.toString(), ai);
         }

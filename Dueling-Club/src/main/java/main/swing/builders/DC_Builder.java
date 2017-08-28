@@ -343,14 +343,14 @@ public class DC_Builder  {
 //        if (actionModePanel.getParent() == comp) {
 //            comp.remove(actionModePanel);
 //            if (actionModePanel.getAction() == activeObj) {
-//                SoundMaster.playStandardSound(STD_SOUNDS.CLOSE);
+//                DC_SoundMaster.playStandardSound(STD_SOUNDS.CLOSE);
 //                return;
 //            }
 //        }
 //        if (closeOnly) {
 //            return;
 //        }
-//        SoundMaster.playStandardSound(STD_SOUNDS.DIS__OPEN_MENU);
+//        DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__OPEN_MENU);
 //        int column = -1;
 //        DC_PagedUnitActionPanel actionPanel = null;
 //        for (ACTION_DISPLAY_GROUP group : getUap().getUapMap().keySet()) {

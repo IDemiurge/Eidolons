@@ -14,14 +14,20 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
+import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.core.game.Game;
 import main.game.module.adventure.MacroManager;
+import main.libgdx.screens.ScreenData;
+import main.libgdx.screens.ScreenType;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.windows.G_Frame;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -33,9 +39,8 @@ import main.system.graphics.GuiManager;
 import main.system.hotkey.HC_KeyManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
-import main.test.frontend.GdxLauncher;
+import main.test.frontend.BattleSceneLauncher;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -75,7 +80,7 @@ public class Launcher {
     private static G_Panel viewPanel;
     private static JLabel background;
     private static boolean macroMode = true;
-    private static DC_Game game;
+
     private static MainManager mainManager;
     private static Map<VIEWS, Component> views = new HashMap<>();
     private static KeyListener dcKeyListener;
@@ -156,7 +161,7 @@ public class Launcher {
         initKeyListeners();
 
 
-        simulationInit();
+//        simulationInit();
 
         initTopGUI();
         initMainMenu();
@@ -212,8 +217,8 @@ public class Launcher {
             case "Test":
                 DEV_MODE = true;
                 DEBUG_MODE = true;
-                if (game != null) {
-                    game.setDebugMode(DEBUG_MODE);
+                if (Eidolons.game != null) {
+                    Eidolons.game.setDebugMode(DEBUG_MODE);
                 }
                 break;
             // HC_TEST_MODE = true;
@@ -262,7 +267,7 @@ public class Launcher {
     }
 
     private static void welcome() {
-        SoundMaster.playStandardSound(STD_SOUNDS.DEATH);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.DEATH);
     }
 
     static void exit() {
@@ -300,10 +305,10 @@ public class Launcher {
         views.put(view, viewComp);
 
         macroView = newView == VIEWS.MAP || newView == VIEWS.TOWN || newView == VIEWS.DIALOGUE;
-
+if ( Eidolons.getGame()!=null )
         if (!macroView && newView != VIEWS.MINI_MAP && newView != VIEWS.DC) {
-            Simulation.getGame().setSimulation(true);
-            Simulation.getGame().setGameMode(GAME_MODES.SIMULATION);
+            Eidolons.getGame().setSimulation(true);
+            Eidolons.getGame().setGameMode(GAME_MODES.SIMULATION);
         }
     }
 
@@ -434,14 +439,14 @@ public class Launcher {
     }
 
     private static void exitDC(boolean mainMenu) {
-        if (game == null) {
+        if (Eidolons.game == null) {
             return;
         }
         try {
-            game.exit(mainMenu);
+            Eidolons.game.exit(mainMenu);
         } catch (InterruptedException e) {
             e.printStackTrace();
-            game.getGameLoopThread().interrupt();
+            Eidolons.game.getGameLoopThread().interrupt();
         }
         //
 
@@ -516,7 +521,7 @@ public class Launcher {
         /*
          * initObjectString buffs and dynamic params non-bf objects - items,
 		 */
-
+        DC_Game game = Eidolons.game;
         try {
             initFullData();
 
@@ -525,7 +530,14 @@ public class Launcher {
                 first = true;
                 DC_Engine.gameInit();
             }
-            GdxLauncher.main(new String[]{});
+
+            BattleSceneLauncher.main(new String[]{});
+            ScreenData data = new ScreenData(ScreenType.BATTLE, "name");
+            GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
+//        Eidolons.mainGame.getMetaMaster().getGame().init( );
+            Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
+
+//            GdxLauncher.main(new String[]{});
             game = Simulation.getGame();
             if (game == null) {
                 game = new DC_Game(false);

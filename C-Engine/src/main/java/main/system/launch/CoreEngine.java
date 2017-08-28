@@ -25,7 +25,7 @@ public class CoreEngine {
     private static CoreEngine engineObject;
 
     public final static String[] classFolderPaths = {"main.elements", "main.ability"};
-    public static final String VERSION = "0.106";
+    public static final String VERSION = "0.200";
     public static boolean swingOn = false;
     public static boolean animationTestMode;
     private static boolean TEST_MODE = true;

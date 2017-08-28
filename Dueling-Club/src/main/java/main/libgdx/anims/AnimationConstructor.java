@@ -3,14 +3,14 @@ package main.libgdx.anims;
 import main.ability.effects.Effect;
 import main.ability.effects.common.ModifyValueEffect;
 import main.ability.effects.oneshot.DealDamageEffect;
-import main.content.PARAMS;
-import main.content.PROPS;
-import main.content.VALUE;
+import main.content.*;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
+import main.data.DataManager;
 import main.data.filesys.PathFinder;
+import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_SpellObj;
@@ -18,6 +18,9 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.BuffObj;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.unit.Unit;
+import main.entity.type.ObjType;
+import main.game.core.game.DC_Game;
+import main.game.logic.battle.player.Player;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
@@ -40,11 +43,13 @@ import java.util.*;
  * Created by JustMe on 1/11/2017.
  */
 public class AnimationConstructor {
-    private final boolean preconstructOn = true;
+    private final boolean preconstructOn = false; //TODO
+    private   boolean autoconstruct = false;
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
     private VALUE[] anim_vals = {
 //     PROPS.ANIM_MODS,
 //
+     PROPS.ANIM_SPRITE_PRECAST,
      PROPS.ANIM_SPRITE_CAST,
      PROPS.ANIM_SPRITE_RESOLVE,
      PROPS.ANIM_SPRITE_MAIN,
@@ -54,6 +59,7 @@ public class AnimationConstructor {
      PROPS.ANIM_MODS_SPRITE,
      PROPS.ANIM_MISSILE_SFX,
 //
+     PROPS.ANIM_SFX_PRECAST,
      PROPS.ANIM_SFX_CAST,
      PROPS.ANIM_SFX_RESOLVE,
      PROPS.ANIM_SFX_MAIN,
@@ -88,8 +94,56 @@ public class AnimationConstructor {
     public AnimationConstructor() {
         if (preconstructOn)
             GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, p -> {
-                preconstructSpells((Unit) p.get());
+                if (isPreconstructOn((Unit) p.get()))
+                    preconstructSpells((Unit) p.get());
             });
+    }
+
+    public static void preconstructAllForAV() {
+        for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
+            DC_SpellObj active = new DC_SpellObj(type, Player.NEUTRAL, DC_Game.game, new Ref());
+            AnimData data = null;
+            try {
+                int i = 0;
+                for (ANIM_PART part : ANIM_PART.values()) {
+                    data = new AnimationConstructor().getStandardData(active, part, i);
+                    for (ANIM_VALUES val : ANIM_VALUES.values()) {
+                        String identifier;
+                        switch (val) {
+                            case PARTICLE_EFFECTS:
+                                identifier = "SFX";
+                                break;
+                            case SPRITES:
+                                identifier = "SPRITE";
+                                break;
+                            default:
+                                continue;
+                        }
+                        String value = data.getValue(val);
+                        if (StringMaster.isEmpty(value))
+                            continue;
+                        value = value.replace(PathFinder.getImagePath().toLowerCase(), "");
+                        i++;
+                        PROPERTY prop = ContentManager.findPROP("anim" +
+                         "_" + identifier + "_" + part);
+                        if (prop == null)
+                            continue;
+                        type.setProperty(prop, value);
+
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private boolean isPreconstructOn(Unit unit) {
+        if (unit.getSpells().size() > 3)
+            return false;
+
+        return true;
     }
 
     public CompositeAnim getOrCreate(ActiveObj active) {
@@ -173,7 +227,8 @@ public class AnimationConstructor {
                 return null;
             }
 
-
+            if (!autoconstruct)
+                return null ;
             data = getStandardData((DC_SpellObj) active, part, composite);
             if (!initAnim(data, active, part, anim)) {
                 return null;
@@ -257,7 +312,7 @@ public class AnimationConstructor {
 //        list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
 //        });
 
-       try {
+        try {
             list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
         } catch (Exception e) {
             e.printStackTrace();
@@ -365,8 +420,11 @@ public class AnimationConstructor {
         return false;
     }
 
-
     AnimData getStandardData(DC_SpellObj spell, ANIM_PART part, CompositeAnim compositeAnim) {
+        return getStandardData(spell, part, compositeAnim.getMap().size());
+    }
+
+    AnimData getStandardData(DC_SpellObj spell, ANIM_PART part, int partsCount) {
         AnimData data = new AnimData();
 
         String partPath = part.toString();
@@ -386,11 +444,10 @@ public class AnimationConstructor {
 
         PROPERTY[] propsExact = {
          G_PROPS.NAME, G_PROPS.SPELL_SUBGROUP,
-         G_PROPS.SPELL_GROUP,
+         G_PROPS.SPELL_GROUP, G_PROPS.ASPECT,
         };
         PROPERTY[] props = {
-         G_PROPS.ASPECT, PROPS.DAMAGE_TYPE,
-
+         PROPS.DAMAGE_TYPE,
          G_PROPS.SPELL_TYPE,
         };
          /*
@@ -404,14 +461,14 @@ public class AnimationConstructor {
         if (sprite == null)
             if (emitter == null) {
                 emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
-                if (isFindClosestResource(part, ANIM_VALUES.PARTICLE_EFFECTS, compositeAnim)) {
+                if (isFindClosestResource(part, ANIM_VALUES.PARTICLE_EFFECTS, partsCount)) {
                     if (emitter == null)
                         emitter = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
                     if (emitter == null)
                         emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
 
                 }
-                if (isFindClosestResource(part, ANIM_VALUES.SPRITES, compositeAnim))
+                if (isFindClosestResource(part, ANIM_VALUES.SPRITES, partsCount))
                     if (emitter == null) {
                         pathRoot = getPath(ANIM_VALUES.SPRITES);
                         sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
@@ -444,7 +501,7 @@ public class AnimationConstructor {
         return data;
     }
 
-    private String findResourceForSpell(DC_SpellObj spell,
+    public static String findResourceForSpell(DC_SpellObj spell,
                                         String partPath, String size,
                                         PROPERTY[] props, String pathRoot,
                                         boolean closest) {
@@ -454,6 +511,7 @@ public class AnimationConstructor {
         String file = null;
         for (PROPERTY p : props) {
             String name = spell.getProperty(p);
+            if (name.isEmpty()) continue;
             file = FileManager.findFirstFile(path, name, closest);
             if (file != null) {
                 break;
@@ -543,11 +601,12 @@ public class AnimationConstructor {
         return false;
     }
 
-    public boolean isFindClosestResource(ANIM_PART part, ANIM_VALUES val, CompositeAnim compositeAnim) {
+    public boolean isFindClosestResource(ANIM_PART part, ANIM_VALUES val,
+                                         int partsCount) {
 
         if (part != ANIM_PART.PRECAST)
             if (part != ANIM_PART.AFTEREFFECT)
-                if (compositeAnim.getMap().size() < 2)
+                if (partsCount < 2)
                     return true;
 
         switch (part) {

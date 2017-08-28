@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.core.game.DC_Game;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.controls.radial.RadialMenu;
+import main.libgdx.gui.panels.dc.ButtonStyled;
+import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.actionpanel.ActionPanelController;
 import main.libgdx.gui.panels.dc.inventory.InventoryWithAction;
@@ -16,6 +18,7 @@ import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
 import main.libgdx.gui.tooltips.ToolTipManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.options.OptionsMaster;
 
 /**
  * Created by JustMe on 3/31/2017.
@@ -33,6 +36,11 @@ public class BattleGuiStage extends Stage {
         addActor(new ActionPanelController(0, 0));
 
         addActor(new UnitInfoPanel(0, 0));
+
+        ButtonStyled menuButton = new ButtonStyled(STD_BUTTON.OPTIONS, () -> OptionsMaster.openMenu());
+        menuButton.setPosition(Gdx.graphics.getWidth() - menuButton.getWidth(),
+         Gdx.graphics.getHeight() - menuButton.getHeight());
+        addActor(menuButton);
 
         addActor(new RadialMenu());
 

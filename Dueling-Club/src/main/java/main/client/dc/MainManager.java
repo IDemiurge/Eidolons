@@ -16,6 +16,7 @@ import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
 import main.game.battlecraft.logic.meta.scenario.ScenarioPrecombatMaster;
 import main.game.battlecraft.logic.meta.skirmish.SkirmishMaster;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
+import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;
@@ -139,7 +140,7 @@ public class MainManager implements SequenceManager {
             }
 
             case NEW_DEMO:
-
+                Eidolons.initDemoMeta();
                 launchHC(PartyHelper.loadParty(DemoManager.PARTY_NAME, game, false));
                 DemoManager.hqEntered();
                 break;
@@ -227,6 +228,7 @@ public class MainManager implements SequenceManager {
                 SkirmishMaster.chooseSkirmish();
                 break;
             case HERO_CREATOR:
+                Simulation.init();
                 break;
             case OPTIONS:
                 break;

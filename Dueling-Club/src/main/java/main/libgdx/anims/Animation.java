@@ -1,6 +1,7 @@
 package main.libgdx.anims;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import main.entity.Ref;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.system.EventCallback;
 import main.system.EventCallbackParam;
@@ -15,6 +16,8 @@ public interface Animation {
     void finished();
 
     boolean draw(Batch batch);
+
+    void start(Ref ref);
 
     void start();
 

@@ -122,14 +122,14 @@ public class MapBlock {
                     map.put(c, obj);
                 }
             }
-            for (Unit obj : DC_Game.game.getOverlayingObjects(c)) {
-                if (map.containsKey(c)) {
-                    ZCoordinates coordinates = new ZCoordinates(c.x, c.y, new Random().nextInt());
-                    map.put(coordinates, obj);
-                } else {
-                    map.put(c, obj);
-                }
-            }
+//            for (Unit obj : DC_Game.game.getOverlayingObjects(c)) {
+//                if (map.containsKey(c)) {
+//                    ZCoordinates coordinates = new ZCoordinates(c.x, c.y, new Random().nextInt());
+//                    map.put(coordinates, obj);
+//                } else {
+//                    map.put(c, obj);
+//                }
+//            }
         }
     }
 

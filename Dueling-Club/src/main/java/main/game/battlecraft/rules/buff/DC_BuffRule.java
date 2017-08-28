@@ -176,6 +176,9 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     }
 
     public Integer getBuffLevel(Unit unit) {
+        if (!levelCache.containsKey(unit)){
+          return   initBuffLevel(unit);
+        }
         return levelCache.get(unit);
     }
 

@@ -14,5 +14,5 @@ public interface Borderable {
 
     public void setTeamColor(Color teamColor);
 
-    public Color getTeamColorBorder();
+    public Color getTeamColor();
 }

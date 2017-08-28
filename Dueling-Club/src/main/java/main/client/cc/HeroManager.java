@@ -38,12 +38,12 @@ import main.game.logic.event.MessageManager;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.town.Shop;
 import main.system.DC_Formulas;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.*;
@@ -508,7 +508,7 @@ public class HeroManager {
         }
         saveHero(hero);
         hero.saveRanks(skill);
-        // SoundMaster.playSkillAddSound(STD_SOUNDS.ButtonUp);
+        // DC_SoundMaster.playSkillAddSound(STD_SOUNDS.ButtonUp);
         int xpCost = feat.getIntParam(PARAMS.XP_COST) * feat.getIntParam(PARAMS.RANK_XP_MOD) / 100;
         hero.modifyParameter(PARAMS.XP, -xpCost);
         update(hero);
@@ -907,7 +907,7 @@ public class HeroManager {
         DC_SpellObj spell = hero.getSpell(entity.getName());
         boolean verbatim = spell.getSpellPool() == SpellEnums.SPELL_POOL.VERBATIM;
         if (!SpellUpgradeMaster.checkUpgrade(verbatim, hero, spell, selected)) {
-            SoundMaster.playStandardSound(STD_SOUNDS.FAIL);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.FAIL);
             return;
         }
         // result = SpellUpgradeMaster.isUpgraded(spell);
@@ -919,9 +919,9 @@ public class HeroManager {
                 hero.modifyParameter(PARAMS.XP, -SpellUpgradeMaster.getXpCost(entity, hero,
                         selected));
             }
-            SoundMaster.playStandardSound(STD_SOUNDS.SPELL_UPGRADE_LEARNED);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_UPGRADE_LEARNED);
         } else {
-            SoundMaster.playStandardSound(STD_SOUNDS.SPELL_UPGRADE_UNLEARNED);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_UPGRADE_UNLEARNED);
         }
         if (!verbatim) {
             update(hero);

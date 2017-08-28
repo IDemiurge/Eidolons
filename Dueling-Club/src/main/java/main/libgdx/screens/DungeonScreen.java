@@ -13,7 +13,6 @@ import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.libgdx.DialogScenario;
-import main.libgdx.anims.particles.EmitterMap;
 import main.libgdx.bf.BFDataCreatedEvent;
 import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridPanel;
@@ -21,9 +20,13 @@ import main.libgdx.bf.mouse.InputController;
 import main.libgdx.stage.AnimationEffectStage;
 import main.libgdx.stage.BattleGuiStage;
 import main.libgdx.stage.ChainedStage;
+import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.audio.DC_SoundMaster;
 import main.system.launch.CoreEngine;
+import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import main.system.options.OptionsMaster;
 
 import java.util.List;
 
@@ -52,7 +55,8 @@ public class DungeonScreen extends ScreenWithLoader {
     private AnimationEffectStage animationEffectStage;
 
     private Vector2 velocity;
-    private boolean cameraAutoCenteringOn = true;
+    private boolean cameraAutoCenteringOn = false;
+    private DC_SoundMaster soundMaster;
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -80,6 +84,10 @@ public class DungeonScreen extends ScreenWithLoader {
         GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
             final String path = (String) param.get();
             backTexture = getOrCreateR(path);
+            if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
+                TextureManager.initBackgroundCache(backTexture);
+            }
+
         });
 
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
@@ -103,6 +111,7 @@ public class DungeonScreen extends ScreenWithLoader {
         cam = camera = (OrthographicCamera) viewPort.getCamera();
         controller = new InputController(cam);
 
+        soundMaster = new DC_SoundMaster(this);
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
         gridStage.addActor(gridPanel);
@@ -154,7 +163,6 @@ public class DungeonScreen extends ScreenWithLoader {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
             DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
         }
-
         super.render(delta);
 
         guiStage.act(delta);
@@ -165,9 +173,13 @@ public class DungeonScreen extends ScreenWithLoader {
         //cam.update();
         if (canShowScreen()) {
             if (backTexture != null) {
-                guiStage.getBatch().begin();
-                guiStage.getBatch().draw(backTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                guiStage.getBatch().end();
+                if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
+                    TextureManager.drawFromSpriteCache(TextureManager.getBackgroundId());
+                } else {
+                    guiStage.getBatch().begin();
+                    guiStage.getBatch().draw(backTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                    guiStage.getBatch().end();
+                }
             }
 
             gridStage.draw();
@@ -186,6 +198,16 @@ public class DungeonScreen extends ScreenWithLoader {
                 } else {
                     dialogsStage.draw();
                 }
+            }
+
+            if (gridPanel.getFpsLabel() != null)
+                if (gridPanel != null)
+                    gridPanel.getFpsLabel().setText(new Float(1 / delta) + "");
+
+            try {
+                soundMaster.doPlayback(delta);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

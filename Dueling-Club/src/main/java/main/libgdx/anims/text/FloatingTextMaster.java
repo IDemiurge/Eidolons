@@ -1,21 +1,26 @@
 package main.libgdx.anims.text;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import main.ability.effects.common.ModifyStatusEffect;
 import main.ability.effects.oneshot.mechanic.ModeEffect;
 import main.elements.costs.Cost;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
+import main.entity.obj.BattleFieldObject;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.battlecraft.rules.combat.damage.Damage;
 import main.game.battlecraft.rules.combat.damage.MultiDamage;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.GdxColorMaster;
+import main.libgdx.StyleHolder;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.CompositeAnim;
+import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.Producer;
@@ -34,7 +39,7 @@ import java.util.List;
 public class FloatingTextMaster {
     private static final float DEFAULT_DISPLACEMENT_Y = 160;
     private static final float DEFAULT_DISPLACEMENT_X = 40;
-    private static final float DEFAULT_DURATION = 6.25f;
+    private static final float DEFAULT_DURATION = 8.25f;
     private static FloatingTextMaster instance;
 
     public FloatingTextMaster() {
@@ -92,7 +97,7 @@ public class FloatingTextMaster {
     private String getText(Entity active, TEXT_CASES aCase, Object arg) {
         switch (aCase) {
             case CANNOT_ACTIVATE:
-                DC_ActiveObj activeObj= (DC_ActiveObj) active;
+                DC_ActiveObj activeObj = (DC_ActiveObj) active;
                 return activeObj.getCosts().getReasonsString();
             case BONUS_DAMAGE:
                 return String.valueOf(((Damage) arg).getAmount());
@@ -169,10 +174,34 @@ public class FloatingTextMaster {
           , getColor(CASE, arg));
 
 
+        floatingText.setFontStyle(getFontStyle(CASE, arg));
         floatingText.setDisplacementX(getDisplacementX(CASE));
         floatingText.setDisplacementY(getDisplacementY(CASE));
         floatingText.setDuration(getDefaultDuration(CASE));
         return floatingText;
+    }
+
+    private LabelStyle getFontStyle(TEXT_CASES aCase, Object arg) {
+        switch (aCase) {
+            case REQUIREMENT:
+                break;
+            case CANNOT_ACTIVATE:
+                break;
+            case HIT:
+                return StyleHolder.getSizedLabelStyle(StyleHolder.DEFAULT_FONT, 20);
+//                DamageFactory.getDamageFromAttack(
+//                 DC_AttackMaster.getAttackFromAction(
+//                  (DC_ActiveObj) arg))
+            case BONUS_DAMAGE:
+                int size = 17;
+                size = Math.min(22, size + ((Damage) arg).getAmount() / 20);
+                return StyleHolder.getSizedLabelStyle(StyleHolder.DEFAULT_FONT, size);
+            case ATTACK_CRITICAL:
+                break;
+            case ATTACK_SNEAK:
+                break;
+        }
+        return null;
     }
 
     private FloatingText addFloatingText(DC_ActiveObj active,
@@ -194,7 +223,7 @@ public class FloatingTextMaster {
 
         switch (aCase) {
             case BATTLE_COMMENT:
-                return  0;
+                return 0;
         }
         return DEFAULT_DISPLACEMENT_Y;
     }
@@ -202,13 +231,15 @@ public class FloatingTextMaster {
     private float getDisplacementX(TEXT_CASES aCase) {
         switch (aCase) {
             case BATTLE_COMMENT:
-                return  0;
+                return 0;
         }
         return DEFAULT_DISPLACEMENT_X;
     }
 
     private float getDefaultDuration(TEXT_CASES aCase) {
         switch (aCase) {
+            case BONUS_DAMAGE:
+                return 10;
             case BATTLE_COMMENT:
                 return 10;
         }
@@ -244,6 +275,11 @@ public class FloatingTextMaster {
             e.printStackTrace();
             return;
         }
+        if (entity instanceof BattleFieldObject) {
+            Vector2 v = GridMaster.getCenteredPos(((BattleFieldObject) entity).getCoordinates());
+            text.setPosition(v);
+        }
+
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, text);
     }
 
@@ -290,7 +326,11 @@ public class FloatingTextMaster {
             return new Object[]{
              ef.getMode()
             };
-        }), BATTLE_COMMENT;
+        }),
+
+        BATTLE_COMMENT,
+
+        HIT;
         public boolean atOrigin;
         private Producer<Event, Object[]> argProducer;
 

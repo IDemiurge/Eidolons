@@ -16,8 +16,8 @@ import main.entity.tools.active.Executor;
 import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.audio.DC_SoundMaster;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -122,7 +122,7 @@ public class SpellExecutor extends Executor {
     @Override
     public boolean activate() {
         ownerObj.getRef().setID(Ref.KEYS.SPELL, getId());
-        SoundMaster.playEffectSound(SOUNDS.PRECAST, getSpell());
+        DC_SoundMaster.playEffectSound(SOUNDS.PRECAST, getSpell());
         if (!channeling) if (getAction().isChanneling()) {
             return activateChanneling();
         }
@@ -146,7 +146,7 @@ public class SpellExecutor extends Executor {
         }
 
         applySpellpowerMod();
-        SoundMaster.playEffectSound(SOUNDS.RESOLVE, getSpell());
+        DC_SoundMaster.playEffectSound(SOUNDS.RESOLVE, getSpell());
         super.resolve();
         if (result) {
             applyImpactSpecialEffect();
@@ -158,11 +158,11 @@ public class SpellExecutor extends Executor {
 
         if (!result) {
             if (channeling) {
-                SoundMaster.playEffectSound(SOUNDS.FAIL, getSpell());
+                DC_SoundMaster.playEffectSound(SOUNDS.FAIL, getSpell());
             } else
             // try fail sound?
             {
-                SoundMaster.playStandardSound(STD_SOUNDS.SPELL_RESISTED);
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_RESISTED);
             }
         }
 

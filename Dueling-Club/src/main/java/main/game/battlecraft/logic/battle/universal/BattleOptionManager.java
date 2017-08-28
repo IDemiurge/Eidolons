@@ -76,6 +76,6 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
         unit.modifyParamByPercent(PARAMS.ENDURANCE, mod);
         unit.modifyParamByPercent(PARAMS.TOUGHNESS, mod);
 
-        unit.modifyParamByPercent(PARAMS.TOUGHNESS, mod);
+        unit.modifyParamByPercent(PARAMS.INITIATIVE, mod);
     }
 }

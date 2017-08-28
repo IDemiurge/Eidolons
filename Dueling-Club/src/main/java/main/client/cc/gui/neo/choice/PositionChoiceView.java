@@ -7,11 +7,11 @@ import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
 import main.swing.generic.components.list.G_List;
 import main.swing.generic.components.panels.G_ListPanel;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.graphics.GuiManager;
 import main.system.math.PositionMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import javax.swing.*;
@@ -87,13 +87,13 @@ public class PositionChoiceView extends ChoiceView<Unit> implements MouseListene
             partyCoordinates.put(swappedHero, c);
         }
         if (!valid) {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
             return;
         }
         if (e.isAltDown()) {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ACTIVATE);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ACTIVATE);
         } else {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
         }
 
         int i = transformCoordinateIntoIndex(newCoordinates);

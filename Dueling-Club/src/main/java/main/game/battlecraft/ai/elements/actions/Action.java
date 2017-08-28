@@ -23,6 +23,7 @@ public class Action {
 
     boolean complete;
     private Task task;
+    private String taskDescription;
 
     public Action(DC_ActiveObj actives, Ref ref) {
         this.active = actives;
@@ -41,7 +42,6 @@ public class Action {
         getRef().setTarget(enemy.getId());
         getRef().setID(KEYS.ACTIVE, action.getId());
     }
-
 
 
     @Override
@@ -65,7 +65,7 @@ public class Action {
             String name = ref.getTargetObj().getName();
             if (ref.getTargetObj() instanceof DC_Cell) {
                 name = ref.getTargetObj().getProp("name")
-                        + StringMaster.wrapInBraces(ref.getTargetObj().getCoordinates().toString());
+                 + StringMaster.wrapInBraces(ref.getTargetObj().getCoordinates().toString());
             }
             return active.getName() + " on " + name;
         }
@@ -143,7 +143,7 @@ public class Action {
     public DC_Obj getTarget() {
         if (ref.getTargetObj() == null) {
             if (active.getTargeting() instanceof AutoTargeting
-                    || active.getTargeting() instanceof FixedTargeting) {
+             || active.getTargeting() instanceof FixedTargeting) {
                 active.getTargeting().select(ref);
             }
         }
@@ -173,5 +173,16 @@ public class Action {
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+    public String getTaskDescription() {
+        if (taskDescription == null)
+            if (task != null)
+                return task.toShortString();
+        return taskDescription;
+    }
+
+    public void setTaskDescription(String taskDescription) {
+        this.taskDescription = taskDescription;
     }
 }

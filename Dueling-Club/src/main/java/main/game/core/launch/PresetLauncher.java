@@ -7,6 +7,7 @@ import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
+import main.game.battlecraft.logic.meta.faction.FactionMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
@@ -43,6 +44,10 @@ import java.util.List;
 import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
 
 public class PresetLauncher {
+    public final static String[] LAUNCH_OPTIONS_TUTORIAL = {
+     "Basic", "Advanced","Trial",
+    };
+    public static final int OPTION_NEW = 4;
     public final static String[] LAUNCH_OPTIONS = {
      "AI", "Gui", "Last", "Recent", "New", "Anims", "Load",
 //           "Usability", "Emitters","Light",     "Standoff Test", "Standoff Preset", "Standoff",
@@ -135,6 +140,7 @@ public class PresetLauncher {
                 case "New":
                     FAST_DC.getTestLauncher().DUMMY_MODE = false;
                     FAST_DC.getTestLauncher().DUMMY_PP = false;
+                    if (FactionMaster.isFactionsSupported())
                     UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
                     return null;
                 case "Superfast":

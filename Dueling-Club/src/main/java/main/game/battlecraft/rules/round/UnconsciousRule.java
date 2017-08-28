@@ -16,8 +16,8 @@ import main.game.battlecraft.rules.action.ActionRule;
 import main.game.core.game.DC_Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.audio.DC_SoundMaster;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
@@ -105,8 +105,8 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
          fireEvent(new Event(
           STANDARD_EVENT_TYPE.UNIT_HAS_FALLED_UNCONSCIOUS, unit.getRef()));
 
-        SoundMaster.playEffectSound(SOUNDS.DEATH, unit);
-        SoundMaster.playEffectSound(SOUNDS.FALL, unit);
+        DC_SoundMaster.playEffectSound(SOUNDS.DEATH, unit);
+        DC_SoundMaster.playEffectSound(SOUNDS.FALL, unit);
         getUnconsciousEffect(unit).apply();
         unit.getGame().fireEvent(
          new Event(STANDARD_EVENT_TYPE.UNIT_FALLS_UNCONSCIOUS,
@@ -199,6 +199,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
             }
             return false;
         }
+        else
         if (checkUnitDies(unit, getDeathBarrier(unit), true)) {
             unit.getGame().getManager().unitDies(unit, unit, true, false);
             return false;

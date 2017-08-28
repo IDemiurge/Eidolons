@@ -7,8 +7,8 @@ import main.content.enums.entity.HeroEnums.HERO_SOUNDSET;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.unit.Unit;
 import main.swing.components.panels.page.info.element.ListTextItem;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.secondary.InfoMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 
 import javax.swing.*;
@@ -122,12 +122,12 @@ public class SoundsetChoiceView extends ChoiceView<HERO_SOUNDSET> implements
     @Override
     protected void ok() {
         super.ok();
-        SoundMaster.playEffectSound(SOUNDS.READY, hero);
+        DC_SoundMaster.playEffectSound(SOUNDS.READY, hero);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        SoundMaster.playRandomSound(data.get(getSelectedIndex()));
+        DC_SoundMaster.playRandomSound(data.get(getSelectedIndex()));
     }
 
     @Override

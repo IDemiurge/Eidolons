@@ -7,6 +7,8 @@ import main.system.auxiliary.log.LogMaster;
 public class TimeLimitMaster {
     public static final long CRITICAL_FAIL_FACTOR = 10;
     private static double TIME_LIMIT_FACTOR = 5;
+    private static int AI_TIME_LIMIT_MIN = 5000;
+    private static int AI_TIME_LIMIT_PER_POWER = 150;
     private static int ACTION_TIME_LIMIT = 3000;
     private static int PATH_TIME_LIMIT = 2000;
     private static int CELL_PATH_TIME_LIMIT = 500;
@@ -82,6 +84,10 @@ public class TimeLimitMaster {
                     + TimeLimitMaster.getTimeLimitForPathStep() + ")");
         }
         return result;
+    }
+
+    public static long getTimeLimitForAi(UnitAI ai) {
+        return Math.max(AI_TIME_LIMIT_MIN, ai.getUnit().calculatePower() * AI_TIME_LIMIT_PER_POWER);
     }
 
     public enum METRIC {

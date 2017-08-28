@@ -23,6 +23,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.swing.generic.components.G_Panel.VISUALS;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -30,7 +31,6 @@ import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import javax.swing.*;
@@ -215,7 +215,7 @@ public class HC_Master {
             CharacterCreator.getPanel().getTabs().select(index);
         }
         CharacterCreator.getPanel().getMvp().goToSkillTree(param);
-        SoundMaster.playStandardSound(STD_SOUNDS.SLING);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.SLING);
 
     }
 

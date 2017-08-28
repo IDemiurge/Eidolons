@@ -46,7 +46,7 @@ public class ActorMaster {
 
         MoveToAction action = new MoveToAction();
         Vector2 v = GridMaster.
-         getVectorForCoordinateWithOffset(destination);
+         getCenteredPos(destination);
         action.setPosition(v.x, v.y);
         Float duration = (float) (Math.sqrt(v.x * v.x + v.y * v.y) / pixelsPerSecond);
         action.setDuration(

@@ -12,6 +12,7 @@ public class FactionMaster {
      */
     static DequeImpl<FactionObj> factions;
     private static boolean allFactions;
+    private static boolean factionsSupported;
 
     public static FactionObj getFaction(String name) {
         for (FactionObj f : factions) {
@@ -33,6 +34,14 @@ public class FactionMaster {
 
     public static List<FACTIONS> getEnemyFactions(FACTIONS f) {
         return null;
+    }
+
+    public static boolean isFactionsSupported() {
+        return factionsSupported;
+    }
+
+    public static void setFactionsSupported(boolean factionsSupported) {
+        FactionMaster.factionsSupported = factionsSupported;
     }
 
     public enum FACTIONS {

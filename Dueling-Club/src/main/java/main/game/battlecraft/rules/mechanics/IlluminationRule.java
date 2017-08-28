@@ -8,7 +8,9 @@ import main.content.enums.GenericEnums;
 import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
+import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.system.math.Formula;
 
@@ -23,9 +25,9 @@ public class IlluminationRule {
     public static void initLightEmission(DC_Game game) {
         List<Effect> effects = new LinkedList<>();
         for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
-            LightEmittingEffect effect = getLightEmissionEffect(obj);
+            LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
             if (effect != null) {
-                effect.setFormula(new Formula(getLightEmission(obj) + ""));
+                effect.setFormula(new Formula(getLightEmission((DC_Obj) obj) + ""));
                 effects.add(effect);
             }
         }
@@ -38,16 +40,13 @@ public class IlluminationRule {
         }
     }
 
-    public static LightEmittingEffect getLightEmissionEffect(Obj source) {
+    public static LightEmittingEffect getLightEmissionEffect(DC_Obj source) {
         // if (!source.getVisionMode()==VISION_MODE.NORMAL_VISION)
         // whether to be added to the objects IN SIGHT; but there ought to be
         // other levels... e.g. detection from afar without revealing the real
         // obj-type... as with walls
 
         // Twilight Rule!
-        if (source.getIntParam(PARAMS.LIGHT_EMISSION) <= 0) {
-            return null;
-        }
         int value = getLightEmission(source);
         if (value <= 0) {
             return null;
@@ -73,11 +72,22 @@ public class IlluminationRule {
 
     }
 
-    public static int getLightEmission(Obj source) {
+    public static int getLightEmission(DC_Obj source) {
+
 //        Integer concealment = source.getIntParam(PARAMS.CONCEALMENT)
 //                + source.getGame().getCellByCoordinate(source.getCoordinates()).getIntParam(
 //                PARAMS.CONCEALMENT);
-        int value = source.getIntParam(PARAMS.LIGHT_EMISSION)  ;
+        int value = source.getIntParam(PARAMS.LIGHT_EMISSION);
+        if (source instanceof Unit) {
+            if (source.getGame().getVisionMaster().
+             getIlluminationMaster().getIllumination(source) < 50)
+                value += ((Unit) source).isHero() ? 20 : 10;
+        }
+        Integer mod = source.getGame().getVisionMaster().getIlluminationMaster().
+         getLightEmissionModifier();
+        if (mod != null)
+            value = value * mod / 100;
+
         return value;
     }
 

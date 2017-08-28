@@ -19,7 +19,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.math.PositionMaster;
 
 public class MoraleKillingRule extends DC_RuleImpl {
-    final String FORMULA = "{SOURCE_POWER}/3";
+    final String FORMULA = "{SOURCE_POWER}/4";
     // "{SOURCE_LEVEL}*{SOURCE_LEVEL}";
     private ModifyValueEffect boostEffect = new ModifyValueEffect(PARAMS.C_MORALE,
             MOD.MODIFY_BY_CONST, FORMULA);

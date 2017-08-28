@@ -1,6 +1,7 @@
 package main.libgdx.bf.generic;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.bf.SuperActor;
 
 /**
@@ -12,5 +13,14 @@ public  class SuperContainer extends SuperActor {
     public SuperContainer(Actor content) {
         this.content = content;
         addActor(content);
+    }
+
+    public Actor getContent() {
+        return content;
+    }
+
+    @Override
+    protected void alphaFluctuation(Image image, float delta) {
+        super.alphaFluctuation(image, delta);
     }
 }

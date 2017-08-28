@@ -364,11 +364,11 @@ public class DrawMaster {
             DIRECTION d = obj.getDirection();
             // if (CoreEngine.isLevelEditor()) {
             if (d == null) {
-                Map<Unit, DIRECTION> map = obj.getGame().getDirectionMap().get(
-                        cellComp.getCoordinates());
-                if (map != null) {
-                    d = map.get(obj);
-                }
+//                Map<Unit, DIRECTION> map = obj.getGame().getDirectionMap().get(
+//                        cellComp.getCoordinates());
+//                if (map != null) {
+//                    d = map.get(obj);
+//                }
                 // }
             }
             int size = overlayingSize;
@@ -1343,10 +1343,10 @@ public class DrawMaster {
 
         FLIP flip = obj.getFlip();
         if (flip == null) {
-            Map<Unit, FLIP> map = obj.getGame().getFlipMap().get(cellComp.getCoordinates());
-            if (map != null) {
-                flip = map.get(obj);
-            }
+//            Map<Unit, FLIP> map = obj.getGame().getFlipMap().get(cellComp.getCoordinates());
+//            if (map != null) {
+//                flip = map.get(obj);
+//            }
         }
         if (flip != null) {
             image = ImageTransformer.flip(flip, image);

@@ -154,6 +154,8 @@ public class AiMaster {
     }
 
     public StringBuffer getMessageBuilder() {
+        if (messageBuilder==null )
+            messageBuilder = new StringBuffer();
         return messageBuilder;
     }
 

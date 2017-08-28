@@ -6,6 +6,7 @@ import main.entity.tools.EntityChecker;
 import main.entity.tools.EntityInitializer;
 import main.entity.tools.active.ActiveMaster;
 import main.entity.tools.active.Executor;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 2/23/2017.
@@ -35,6 +36,8 @@ public class SpellActiveMaster extends ActiveMaster {
 
     @Override
     protected Executor createHandler() {
+        if (CoreEngine.isArcaneVault())
+            return null ;
         return new SpellExecutor(getEntity(), this) ;
     }
 }

@@ -4,9 +4,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.values.properties.G_PROPS;
+import main.data.filesys.PathFinder;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.libgdx.GdxColorMaster;
+import main.libgdx.texture.TextureCache;
+import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 
 import static main.content.PARAMS.C_INITIATIVE;
@@ -84,7 +87,7 @@ public class UnitViewOptions {
 
 
         if (obj instanceof Unit) {
-            playerControlled=!((Unit) obj).isAiControlled();
+            playerControlled = !((Unit) obj).isAiControlled();
             this.directionValue = obj.getFacing().getDirection().getDegrees();
             this.directionPointerTexture = getOrCreateR("/UI/DIRECTION POINTER.png");
 
@@ -93,13 +96,30 @@ public class UnitViewOptions {
 //             "/UI/value icons/actions.png"
             );
             String emblem = obj.getProperty(G_PROPS.EMBLEM, true);
+
             if (ImageManager.isImage(emblem))
-            this.emblem = getOrCreateR(emblem);
+            {
+                this.emblem = getOrCreateR(emblem);
+            }
+            else {
+                emblem =PathFinder.getEmblemAutoFindPath()+
+                 FileManager.findFirstFile(PathFinder.getEmblemAutoFindPath(),
+                  obj.getSubGroupingKey(), true);
+                if (ImageManager.isImage(emblem))
+                    this.emblem = getOrCreateR(emblem);
+                else
+                    emblem = obj.getOwner().getHeroObj().getProperty(G_PROPS.EMBLEM, true);
+                if (ImageManager.isImage(emblem))
+                    this.emblem = getOrCreateR(emblem);
+            }
+            if (this.emblem == null)
+                this.emblem = TextureCache.getOrCreateR(ImageManager.getEmptyEmblemPath());
+
             this.clockValue = obj.getIntParam(C_INITIATIVE);
             this.teamColor =
              GdxColorMaster.getColor(obj.getOwner().getFlagColor());
-            if (teamColor==null ){
-                teamColor= GdxColorMaster.NEUTRAL;
+            if (teamColor == null) {
+                teamColor = GdxColorMaster.NEUTRAL;
             }
         }
     }

@@ -13,8 +13,8 @@ import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.entity.MacroActionManager.MACRO_MODES;
 import main.game.module.adventure.entity.MacroActionManager.MACRO_PARTY_ACTIONS;
+import main.system.audio.DC_SoundMaster;
 import main.system.graphics.ANIM;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class MacroAction extends MacroObj implements ActiveObj {
@@ -96,7 +96,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
     public void clicked() {
         if (!MacroActionManager.isActionsBlocked() && canBeActivated()) {
             MacroActionManager.setActionsBlocked(true);
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ACTIVATE);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ACTIVATE);
             try {
                 activate();
             } catch (Exception e) {

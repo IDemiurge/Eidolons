@@ -7,7 +7,6 @@ import main.client.cc.gui.neo.tree.HT_Node;
 import main.client.cc.gui.neo.tree.view.HT_View;
 import main.client.cc.gui.neo.tree.view.TreeControlPanel;
 import main.content.C_OBJ_TYPE;
-import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.values.properties.G_PROPS;
@@ -24,9 +23,9 @@ import main.simulation.SimulationManager;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.G_Table;
 import main.system.DC_Formulas;
-import main.system.graphics.ColorManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.ColorManager;
 import main.system.launch.CoreEngine;
 
 import javax.swing.*;
@@ -399,19 +398,20 @@ public class EditViewPanel implements TableModelListener {
             if (ListMaster.isNotEmpty(ArcaneVault.getSelectedTypes())) {
                 if ((ArcaneVault.getSelectedTypes()).size() > 1) {
                     for (ObjType t : ArcaneVault.getSelectedTypes()) {
-                        if (alt) {
-                            if (ContentManager.isParameter(valName)) {
-                                int amount = Integer.valueOf(newValue);
-                                t.modifyParameter(ContentManager.getPARAM(valName), amount);
-
-                                t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
-                                t.setProperty(G_PROPS.LAST_EDITOR, System.getProperty("user.name"));
-                            } else {
-                                t.addProperty(ContentManager.getPROP(valName), newValue);
-
-                                t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
-                            }
-                        } else {
+//                        if (alt) {
+//                            if (ContentManager.isParameter(valName)) {
+//                                int amount = Integer.valueOf(newValue);
+//                                t.modifyParameter(ContentManager.getPARAM(valName), amount);
+//
+//                                t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
+//                                t.setProperty(G_PROPS.LAST_EDITOR, System.getProperty("user.name"));
+//                            } else {
+//                                t.addProperty(ContentManager.getPROP(valName), newValue);
+//
+//                                t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
+//                            }
+//                        } else
+                            {
                             t.setValue(valName, newValue);
                             t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
                         }

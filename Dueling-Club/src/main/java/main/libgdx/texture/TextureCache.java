@@ -25,12 +25,14 @@ public class TextureCache {
     private static TextureCache textureCache;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);
-    private static boolean altTexturesOn=true;
+    private static boolean altTexturesOn = true;
+    private static Texture emptyTexture;
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
     private String imagePath;
     private TextureAtlas textureAtlas;
     private Pattern pattern;
+
 
     private TextureCache() {
         this.imagePath = PathFinder.getImagePath();
@@ -93,16 +95,34 @@ public class TextureCache {
 
     private static boolean checkAltTexture(String path) {
         if (altTexturesOn) {
-            return path.contains(StrPathBuilder.build ("gen"));
+            return path.contains(StrPathBuilder.build("gen"));
         }
         return false;
     }
 
-    private String getAltTexturePath(String filePath) {
-        return filePath.replace(StrPathBuilder.build ("gen", "entity"), StrPathBuilder.build ("main"));
-    }
     public static TextureRegion getOrCreateGrayscaleR(String path) {
         return new TextureRegion(getOrCreateGrayscale(path));
+    }
+
+    public static void setAltTexturesOn(boolean altTexturesOn) {
+        TextureCache.altTexturesOn = altTexturesOn;
+    }
+
+    public static Texture getEmptyTexture() {
+        if (emptyTexture == null)
+            emptyTexture = new Texture(getEmptyPath());
+
+        return emptyTexture;
+    }
+
+    private static String getEmptyPath() {
+        return
+         ImageManager.getImageFolderPath() +
+          ImageManager.getDefaultEmptyListIcon();
+    }
+
+    private String getAltTexturePath(String filePath) {
+        return filePath.replace(StrPathBuilder.build("gen", "entity"), StrPathBuilder.build("main"));
     }
 
     private Texture _getOrCreateGrayScale(String path) {
@@ -140,44 +160,59 @@ public class TextureCache {
         }
 
         if (!this.cache.containsKey(path)) {
-            Path p = Paths.get(imagePath, path);
-            String filePath = p.toString();
-            Texture t = null;
-            if (checkAltTexture(filePath))
-                try {
-                    t = new Texture(new FileHandle(getAltTexturePath(filePath)),
-                     Pixmap.Format.RGBA8888, false);
-                    cache.put(path, t);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            if (t == null)
-                try {
-                    t = new Texture(new FileHandle(filePath), Pixmap.Format.RGBA8888, false);
-                    cache.put(path, t);
-                } catch (Exception e) {
-//                e.printStackTrace();
-                    if (!cache.containsKey(getEmptyPath())) {
-                        Texture emptyTexture = new Texture(getEmptyPath());
-                        cache.put(getEmptyPath(), emptyTexture);
-                        return emptyTexture;
-                    }
-                    return cache.get(getEmptyPath());
-
-                }
+            Texture x = _createTexture(path);
+            if (x != null)
+                return x;
         }
 
         return this.cache.get(path);
     }
 
-    public static void setAltTexturesOn(boolean altTexturesOn) {
-        TextureCache.altTexturesOn = altTexturesOn;
+    public static Texture  createTexture(String path) {
+        return  createTexture(path, true);
     }
 
-    private String getEmptyPath() {
-        return
-         ImageManager.getImageFolderPath() +
-          ImageManager.getDefaultEmptyListIcon();
+    public static Texture  createTexture(String path, boolean putIntoCache) {
+        if (textureCache == null) {
+            init();
+        }
+        return textureCache._createTexture(path, putIntoCache);
+    }
+
+    public Texture _createTexture(String path) {
+        return _createTexture(path, true);
+    }
+
+    public Texture _createTexture(String path, boolean putIntoCache) {
+        Path p = Paths.get(imagePath, path);
+        String filePath = p.toString();
+        Texture t = null;
+        if (checkAltTexture(filePath))
+            try {
+                t = new Texture(new FileHandle(getAltTexturePath(filePath)),
+                 Pixmap.Format.RGBA8888, false);
+                if (putIntoCache)
+                    cache.put(path, t);
+            } catch (Exception e) {
+
+            }
+        if (t == null)
+            try {
+                t = new Texture(new FileHandle(filePath), Pixmap.Format.RGBA8888, false);
+                if (putIntoCache) {
+                    cache.put(path, t);
+                }
+            } catch (Exception e) {
+//                e.printStackTrace();
+                if (!cache.containsKey(getEmptyPath())) {
+                    if (putIntoCache)
+                        cache.put(getEmptyPath(), getEmptyTexture());
+                    return getEmptyTexture();
+                }
+                return cache.get(getEmptyPath());
+
+            }
+        return t;
     }
 }
 

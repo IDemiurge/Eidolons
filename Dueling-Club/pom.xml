@@ -136,7 +136,6 @@
         </dependency>
 
 
-
         <!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-box2d -->
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
@@ -215,8 +214,9 @@
                 <configuration>
                     <archive>
                         <manifest>
+                            <mainClass>main.test.frontend.Showcase</mainClass>
                             <!--<mainClass>main.test.frontend.ScenarioLauncher</mainClass>-->
-                            <mainClass>main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>
+                            <!--<mainClass>main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>-->
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -236,8 +236,10 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>main.test.frontend.Showcase</mainClass>
+                                    <!--<mainClass>main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>-->
                                     <!--<mainClass>main.test.frontend.ScenarioLauncher</mainClass>-->
                                     <!--<mainClass>main.test.frontend.FAST_DC</mainClass>-->
                                 </transformer>

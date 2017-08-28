@@ -5,7 +5,7 @@ import main.entity.obj.unit.Unit;
 import main.game.module.adventure.MacroManager;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Panel;
-import main.system.sound.SoundMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 
 import java.awt.event.MouseEvent;
@@ -55,7 +55,7 @@ public class PartyMemberComp extends G_Panel implements MouseListener {
         membersPanel.setSelectedPartyMember(hero);
         MacroManager.setSelectedPartyMember(hero);
         MacroManager.refreshGui();
-        SoundMaster.playEffectSound(SOUNDS.WHAT, hero);
+        DC_SoundMaster.playEffectSound(SOUNDS.WHAT, hero);
     }
 
     @Override

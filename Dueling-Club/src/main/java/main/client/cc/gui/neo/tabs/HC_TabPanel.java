@@ -6,10 +6,10 @@ import main.swing.SwingMaster;
 import main.swing.generic.components.ComponentVisuals;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.graphics.ColorManager;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.awt.*;
@@ -68,7 +68,7 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
     public void removeTab(int i) {
         tabs.remove(i);
 
-        SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
         tabPanel.setData(tabs);
         tabPanel.refresh();
         select(0);
@@ -151,7 +151,7 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        SoundMaster.playStandardSound(getClickSound());
+        DC_SoundMaster.playStandardSound(getClickSound());
         // int i = 0;
         // for (HC_Tab tab : tabs) {
         // if (tab.getComponent() == e.getSource())

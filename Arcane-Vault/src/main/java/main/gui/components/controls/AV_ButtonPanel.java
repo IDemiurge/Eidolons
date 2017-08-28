@@ -18,10 +18,12 @@ import main.gui.builders.TabBuilder;
 import main.gui.components.table.TableMouseListener;
 import main.gui.tree.AV_T3View;
 import main.launch.ArcaneVault;
+import main.libgdx.anims.AnimationConstructor;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.panels.G_ButtonPanel;
 import main.swing.generic.services.dialog.DialogMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.GuiManager;
@@ -46,16 +48,16 @@ public class AV_ButtonPanel extends G_ButtonPanel {
     public static final String NEW_TREE = "New Tree";
     public static final String WS_TOGGLE = "WS Add";
     static String[] commands = new String[]{"Add", "Remove", "Upgrade", "Undo", "Save all",
-            NEW_TREE
-            // "Reload", doesn't work yet!
-            // "New Hero",
-            // "Edit",
-            // RENAME_TYPE, RENAME_VALUE, REMOVE_VALUE
-            , WS_TOGGLE, "Save",
-            // "Group", "Clone",
-            "Add Tab", "Toggle",
-            // CLEAN_UP,
-            "Edit", "Backup", "Add WS", "Test"
+     NEW_TREE
+     // "Reload", doesn't work yet!
+     // "New Hero",
+     // "Edit",
+     // RENAME_TYPE, RENAME_VALUE, REMOVE_VALUE
+     , WS_TOGGLE, "Save",
+     // "Group", "Clone",
+     "Add Tab", "Toggle",
+     // CLEAN_UP,
+     "Edit", "Backup", "Add WS", "Test"
 
     };
     protected boolean skillSelectionListeningThreadRunning;
@@ -111,6 +113,12 @@ public class AV_ButtonPanel extends G_ButtonPanel {
     public void handleButtonClick(boolean alt, String command) {
         switch (command) {
             case "Test":
+                if (alt)
+                    DC_SoundMaster.preconstructEffectSounds();
+                else
+                    AnimationConstructor.preconstructAllForAV();
+                break;
+            case "Test1":
 
                 ItemGenerator.setGenerationOn(true);
 
@@ -122,7 +130,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                     playerParty = type.getProperty(PROPS.MEMBERS);
                 } else if (ArcaneVault.getWorkspaceManager().getActiveWorkspace() != null) {
                     type = DataManager.getType(ArcaneVault.getWorkspaceManager()
-                            .getActiveWorkspace().getName(), DC_TYPE.PARTY);
+                     .getActiveWorkspace().getName(), DC_TYPE.PARTY);
                     playerParty = type.getProperty(PROPS.MEMBERS);
                     // default
                     // for selected type(s)
@@ -160,11 +168,11 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 // types.removeAll( XML_Reader.getXmlMap().keySet());
                 Class<?> ENUM_CLASS = DC_TYPE.class;
                 String toAdd = ListChooser.chooseEnum(ENUM_CLASS,
-                        SELECTION_MODE.MULTIPLE);
+                 SELECTION_MODE.MULTIPLE);
 
                 for (String sub : StringMaster.openContainer(toAdd)) {
                     ArcaneVault.getMainBuilder().getTabBuilder().addTab(
-                            ENUM_CLASS, sub);
+                     ENUM_CLASS, sub);
                 }
                 break;
             }
@@ -187,18 +195,18 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                     public void run() {
                         if (alt_) {
                             ArcaneVault.getSelectedType().copyValues(
-                                    ArcaneVault.getPreviousSelectedType(), getCopyVals());
+                             ArcaneVault.getPreviousSelectedType(), getCopyVals());
                         } else {
                             ArcaneVault.getSelectedType().cloneMapsWithExceptions(
-                                    ArcaneVault.getPreviousSelectedType(),
-                                    G_PROPS.NAME,
-                                    G_PROPS.DISPLAYED_NAME,
-                                    G_PROPS.IMAGE,
-                                    G_PROPS.GROUP,
-                                    ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM()
-                                            .getGroupingKey(),
-                                    ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM()
-                                            .getSubGroupingKey());
+                             ArcaneVault.getPreviousSelectedType(),
+                             G_PROPS.NAME,
+                             G_PROPS.DISPLAYED_NAME,
+                             G_PROPS.IMAGE,
+                             G_PROPS.GROUP,
+                             ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM()
+                              .getGroupingKey(),
+                             ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM()
+                              .getSubGroupingKey());
                         }
                         refresh();
                     }
@@ -251,7 +259,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 
                 ArcaneVault.addTree(tabBuilder);
                 JFrame window = GuiManager.inNewWindow(comp, "Arcane Vault", new Dimension(
-                        ArcaneVault.TREE_WIDTH, ArcaneVault.TREE_HEIGHT));
+                 ArcaneVault.TREE_WIDTH, ArcaneVault.TREE_HEIGHT));
                 // window.isActive()
                 break;
             }
@@ -385,7 +393,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 
     protected VALUE[] getCopyVals() {
         return new VALUE[]{PARAMS.FORCE, PARAMS.FORCE_SPELLPOWER_MOD, PARAMS.FORCE_DAMAGE_MOD,
-                PARAMS.FORCE_KNOCK_MOD, PARAMS.FORCE_PUSH_MOD,};
+         PARAMS.FORCE_KNOCK_MOD, PARAMS.FORCE_PUSH_MOD,};
     }
 
     private void cleanUp() {
@@ -401,11 +409,11 @@ public class AV_ButtonPanel extends G_ButtonPanel {
         }
         OBJ_TYPE TYPE = ArcaneVault.getSelectedOBJ_TYPE();
         String subgroup = (result) ? ArcaneVault.getSelectedType().getGroupingKey() : ArcaneVault
-                .getSelectedType().getSubGroupingKey();
+         .getSelectedType().getSubGroupingKey();
         List<String> types = (result) ? DataManager.getTypesGroupNames(TYPE, subgroup)
-                : DataManager.getTypesSubGroupNames(TYPE, subgroup);
+         : DataManager.getTypesSubGroupNames(TYPE, subgroup);
         List<String> retained = StringMaster.openContainer(new ListChooser(SELECTION_MODE.MULTIPLE,
-                types, TYPE).choose());
+         types, TYPE).choose());
         for (String t : types) {
             if (retained.contains(t)) {
                 continue;
@@ -419,8 +427,8 @@ public class AV_ButtonPanel extends G_ButtonPanel {
         int n = ArcaneVault.getMainBuilder().getTree().getRowCount();
         ArcaneVault.getMainBuilder().getTree().setSelectionRow(Math.min(1, n));
         ArcaneVault.getMainBuilder().getTree().getListeners(TreeSelectionListener.class)[0]
-                .valueChanged(new TreeSelectionEvent(ArcaneVault.getMainBuilder().getTree(), null,
-                        null, null, null));
+         .valueChanged(new TreeSelectionEvent(ArcaneVault.getMainBuilder().getTree(), null,
+          null, null, null));
         ArcaneVault.getMainBuilder().getEditViewPanel().refresh();
 
         // reset tree
@@ -432,7 +440,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
             public void run() {
                 boolean skill = TYPE == DC_TYPE.SKILLS;
                 WAIT_OPERATIONS operation = skill ? WAIT_OPERATIONS.SELECTION
-                        : WAIT_OPERATIONS.CUSTOM_SELECT;
+                 : WAIT_OPERATIONS.CUSTOM_SELECT;
                 if (skill) {
                     skillSelectionListeningThreadRunning = true;
                 } else {
@@ -444,9 +452,9 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                         selectedTypeName = (String) WaitMaster.waitForInput(operation);
                         if (selectedTypeName != null) {
                             final String name = selectedTypeName;
-                            SwingUtilities.invokeAndWait(()->
-                            ArcaneVault.getMainBuilder().getEditViewPanel().selectType(true,
-                                    DataManager.getType(name, TYPE))
+                            SwingUtilities.invokeAndWait(() ->
+                             ArcaneVault.getMainBuilder().getEditViewPanel().selectType(true,
+                              DataManager.getType(name, TYPE))
                             );
                         }
                         if (window != null) {
@@ -454,8 +462,8 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                                 break;
                             }
                             final String name = selectedTypeName;
-                            SwingUtilities.invokeAndWait(()->
-                            AV_T3View.selected(name, TYPE)  );
+                            SwingUtilities.invokeAndWait(() ->
+                             AV_T3View.selected(name, TYPE));
                         }
                     }
                 } catch (Exception e) {

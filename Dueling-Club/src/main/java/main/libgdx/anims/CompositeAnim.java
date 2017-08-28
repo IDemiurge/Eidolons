@@ -2,10 +2,10 @@ package main.libgdx.anims;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import org.apache.commons.lang3.tuple.Pair;
 import main.ability.effects.Effect;
 import main.data.XLinkedMap;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
@@ -20,6 +20,9 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.options.AnimationOptions.ANIMATION_OPTION;
+import main.system.options.OptionsMaster;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -44,17 +47,19 @@ public class CompositeAnim implements Animation {
     private Anim currentAnim;
     private float time = 0;
     private List<Event> textEvents;
+    private Ref ref;
+
 
     public CompositeAnim(Anim... anims) {
         this(new MapMaster<ANIM_PART, Anim>().constructMap(new LinkedList<>(Arrays.asList(ANIM_PART.values()).subList(0, anims.length)),
-                new LinkedList<>(Arrays.asList(anims))));
+         new LinkedList<>(Arrays.asList(anims))));
 
     }
 
     public CompositeAnim(Map<ANIM_PART, Anim> map) {
         this.map = map;
-        reset();
         resetMaps();
+        reset();
     }
 
     public CompositeAnim(DC_ActiveObj active) {
@@ -91,26 +96,32 @@ public class CompositeAnim implements Animation {
                 return false;
             }
             initPartAnim();
-            currentAnim.start();
+            currentAnim.start(getRef());
             triggerStartEvents();
         }
         drawAttached(batch);
         return true;
     }
 
-    private void checkAfterEffects() {
+    @Override
+    public void start(Ref ref) {
+        setRef(ref);
+        start();
+    }
+
+    private void checkAfterEffects() { if (OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION. GENERATE_AFTER_EFFECTS))
         if (!map.containsKey(ANIM_PART.AFTEREFFECT)) {
 
             if (timeAttachedAnims.get(ANIM_PART.AFTEREFFECT) != null) {
                 timeAttachedAnims.get(ANIM_PART.AFTEREFFECT).forEach(a -> {
-                    a.start();
+                    a.start(getRef());
 //                    a.setDelayNotCounted(true); TODO
                     AnimMaster.getInstance().addAttached(a);
                 });
             }
             if (attached.get(ANIM_PART.AFTEREFFECT) != null) {
                 attached.get(ANIM_PART.AFTEREFFECT).forEach(a -> {
-                    a.start();
+                    a.start(getRef());
                     AnimMaster.getInstance().addAttached(a);
                 });
             }
@@ -128,7 +139,7 @@ public class CompositeAnim implements Animation {
         timeAttachedAnims.get(part).forEach(a -> {
             if (!a.isRunning()) {
                 if (a.getDelay() <= time) {
-                    a.start();
+                    a.start(getRef());
                     AnimMaster.getInstance().addAttached(a);
                 }
             }
@@ -144,7 +155,7 @@ public class CompositeAnim implements Animation {
         }
         list.forEach(anim -> {
             if (!anim.isRunning()) {
-                anim.start();
+                anim.start(getRef());
             }
             anim.draw(batch);
 
@@ -155,7 +166,7 @@ public class CompositeAnim implements Animation {
         List<Animation> list = attached.get(part);
         if (list != null) {
             list.forEach(anim -> {
-                anim.start();
+                anim.start(getRef());
 
             });
         }
@@ -181,16 +192,18 @@ public class CompositeAnim implements Animation {
 
 
     private void triggerStartEvents() {
-        if (onStartEventMap.get(part) != null) {
-            onStartEventMap.get(part).forEach(e -> {
+        if (currentAnim != null)
+            if (currentAnim.getEventsOnStart() != null) {
+            currentAnim.getEventsOnStart().forEach(e -> {
                 GuiEventManager.trigger(e.getKey(), e.getValue());
             });
         }
     }
 
     private void triggerFinishEvents() {
-        if (onFinishEventMap.get(part) != null) {
-            onFinishEventMap.get(part).forEach(e -> {
+        if (currentAnim != null)
+        if (currentAnim.getEventsOnFinish() != null) {
+            currentAnim.getEventsOnFinish().forEach(e -> {
                 GuiEventManager.trigger(e.getKey(), e.getValue());
             });
         }
@@ -203,20 +216,37 @@ public class CompositeAnim implements Animation {
     }
 
     private void addEvents(ANIM_PART part, Anim anim) {
-        MapMaster.addToListMap(onFinishEventMap,
-                part, anim.getEventsOnFinish());
         MapMaster.addToListMap(onStartEventMap,
-                part, anim.getEventsOnStart());
+         part, anim.getEventsOnStart());
+        MapMaster.addToListMap(onFinishEventMap,
+         part, anim.getEventsOnFinish());
     }
 
     public void reset() {
+        onStartEventMap.clear();
+        onFinishEventMap.clear();
         map.values().forEach(anim -> {
             anim.reset();
+            addEvents(anim.getPart(), anim);
         });
         finished = false;
     }
 
+    public Ref getRef() {
+        if (ref == null)
+            if (getActive() == null)
+                return null;
+            else
+                return getActive().getRef();
+        return ref;
+    }
+
+    public void setRef(Ref ref) {
+        this.ref = ref;
+    }
+
     public void start() {
+
         time = 0;
         index = 0;
         initPartAnim();
@@ -225,7 +255,7 @@ public class CompositeAnim implements Animation {
         }
 
         try {
-            currentAnim.start();
+            currentAnim.start(getRef());
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -407,7 +437,7 @@ public class CompositeAnim implements Animation {
 
     public void queueTextEvents() {
         getTextEvents().forEach(event ->
-                FloatingTextMaster.getInstance().addFloatingTextForEventAnim(event, this));
+         FloatingTextMaster.getInstance().addFloatingTextForEventAnim(event, this));
 //        AnimMaster;
     }
 
@@ -431,6 +461,8 @@ public class CompositeAnim implements Animation {
     }
 
     public Entity getActive() {
+        if (getCurrentAnim() == null)
+            return null;
         return getCurrentAnim().getActive();
     }
 }

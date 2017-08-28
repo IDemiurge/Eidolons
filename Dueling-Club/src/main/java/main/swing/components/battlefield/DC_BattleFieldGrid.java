@@ -6,6 +6,8 @@ import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
+import main.entity.obj.BattleFieldObject;
+import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
@@ -63,8 +65,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         this.game = dungeon.getGame();
         this.w = GuiManager.getBF_CompDisplayedCellsX();
         this.h = GuiManager.getBF_CompDisplayedCellsY();
-            this.w = game.getDungeonMaster().getDungeonWrapper(). getWidth();
-            this.h = game.getDungeonMaster().getDungeonWrapper(). getHeight();
+            this.w = dungeon. getWidth();
+            this.h = dungeon. getHeight();
 
         gridComp = new BfGridComp(this);
         if (CoreEngine.isLevelEditor()) {
@@ -129,7 +131,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     private int getDisplayedCellsY() {
         return gridComp.getDisplayedCellsY();
     }
-
+@Deprecated
     private void resetComponents() {
         int offsetX = getOffsetX();
         int offsetY = getOffsetY();
@@ -140,7 +142,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 int x = i + getOffsetX();
                 int y = j + getOffsetY();
                 Coordinates c = new Coordinates(x, y);
-                List<Unit> objects = game.getObjectsOnCoordinate(getZ(), c, false, true,
+                List<BattleFieldObject> objects = game.getObjectsOnCoordinate(getZ(), c, false, true,
                         false);
                 List<Unit> overlayingObjects = new LinkedList<>(new DequeImpl(game
                         .getObjectsOnCoordinate(getZ(), c, true, true, false))
@@ -149,8 +151,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 // visibility preCheck!
 
                 CellComp comp = gridComp.getCells()[x][y];
-                List<Unit> list = new LinkedList<>();
-                for (Unit obj : objects) {
+                List<BattleFieldObject> list = new LinkedList<>();
+                for (BattleFieldObject obj : objects) {
                     if (VisionManager.checkVisible(obj)) {
                         list.add(obj);
                     }
@@ -158,7 +160,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 comp.setSizeFactor(gridComp.getZoom());
                 comp.setOverlayingObjects(overlayingObjects);
                 if (list.size() != 0) {
-                    comp.setObjects(list);
+//                    comp.setObjects(list);
                 }
                 comp.refresh();
             }
@@ -538,8 +540,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     public Set<Obj> getCells() {
         if (cells == null) {
             cells = new HashSet<>();
-            for (CellComp comp : gridComp.getMap().values()) {
-                cells.add(comp.getTerrainObj());
+            for (DC_Cell comp : gridComp.getCellEntityMap(). values()) {
+                cells.add(comp );
             }
         }
         return cells;
@@ -557,10 +559,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     @Override
     public Obj getCell(Coordinates coordinates) {
-        if (gridComp.getMap().get(coordinates) == null) {
-            return null;
-        }
-        return gridComp.getMap().get(coordinates).getTerrainObj();
+        return gridComp.getCellEntityMap().get(coordinates) ;
     }
 
     public Obj getObj(Coordinates c) {

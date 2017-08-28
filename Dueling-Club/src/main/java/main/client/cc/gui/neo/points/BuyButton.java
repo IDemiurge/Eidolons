@@ -2,8 +2,8 @@ package main.client.cc.gui.neo.points;
 
 import main.client.cc.CharacterCreator;
 import main.swing.components.buttons.CustomButton;
+import main.system.audio.DC_SoundMaster;
 import main.system.math.DC_MathManager;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class BuyButton extends CustomButton {
@@ -53,9 +53,9 @@ public class BuyButton extends CustomButton {
 
     protected void playClickSound() {
         if (gold) {
-            SoundMaster.playStandardSound(STD_SOUNDS.DIS__COINS);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__COINS);
         } else {
-            SoundMaster.playStandardSound(STD_SOUNDS.DIS__BOOK_OPEN);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__BOOK_OPEN);
         }
 
     }

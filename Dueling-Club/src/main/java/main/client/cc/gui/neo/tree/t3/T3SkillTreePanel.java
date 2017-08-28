@@ -32,7 +32,7 @@ public class T3SkillTreePanel extends SkillTreeView {
             HC_Master.getT3View(getHero(), true).selected(left, type);
         }
         super.select(node, type);
-        // SoundMaster.playStandardSound(STD_SOUNDS.SLOT);
+        // DC_SoundMaster.playStandardSound(STD_SOUNDS.SLOT);
         // HC_Master.setSelectedTreeNode(node);
         // tree.refresh();
         // tree.getPanel().repaint();

@@ -3,7 +3,7 @@ package main.swing.components.buttons;
 import main.client.dc.Launcher;
 import main.game.core.game.DC_Game;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.sound.SoundMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class MenuButton extends CustomButton implements Runnable {
@@ -45,7 +45,7 @@ public class MenuButton extends CustomButton implements Runnable {
 
 
     protected void playClickSound() {
-        SoundMaster.playStandardSound(STD_SOUNDS.TURN);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.TURN);
     }
 
     public void run() {

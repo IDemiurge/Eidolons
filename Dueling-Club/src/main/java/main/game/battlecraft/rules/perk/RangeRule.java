@@ -36,8 +36,8 @@ public class RangeRule {
 
     }
 
-    public static Boolean isCloseQuartersOrLongReach( Unit source,
-                                                     BattleFieldObject target,   DC_WeaponObj weapon, DC_ActiveObj action) {
+    public static Boolean isCloseQuartersOrLongReach(Unit source,
+                                                     BattleFieldObject target, DC_WeaponObj weapon, DC_ActiveObj action) {
         int distance = PositionMaster.getDistance(source, target);
 
         if (action.isThrow()) {
@@ -57,7 +57,8 @@ public class RangeRule {
         if (distance < 1) {
             return true;
         }
-
+        if (weapon == null)
+            return null;
         if (distance > weapon.getIntParam(PARAMS.RANGE, true)) {
             return false;
         }

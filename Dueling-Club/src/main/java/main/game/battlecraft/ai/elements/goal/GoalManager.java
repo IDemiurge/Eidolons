@@ -17,6 +17,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -70,9 +71,23 @@ public class GoalManager extends AiHandler {
 
             addEnemyGoals(list);
         }
+        list.sort(getSorter(ai));
         // SEARCH
         // FLEE
         return list;
+    }
+
+    private static Comparator<? super GOAL_TYPE> getSorter(UnitAI ai) {
+        return new Comparator<GOAL_TYPE>() {
+            @Override
+            public int compare(GOAL_TYPE o1, GOAL_TYPE o2) {
+                if (ai.getType().isCaster())
+                {
+//                    if (o1==)
+                }
+                return 0;
+            }
+        };
     }
 
     public static List<GOAL_TYPE> getDefaultGoals() {

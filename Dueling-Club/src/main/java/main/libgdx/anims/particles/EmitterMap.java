@@ -32,6 +32,7 @@ public class EmitterMap extends Group{
         }
     };
     Map<Coordinates, Ambience> fogMap = new LinkedHashMap<>();
+    private static Boolean on;
 
     public EmitterMap( ) {
         GuiEventManager.bind(GuiEventType.UPDATE_AMBIENCE, p -> {
@@ -44,6 +45,14 @@ public class EmitterMap extends Group{
             }
 
         });
+    }
+
+    public static void setOn(Boolean on) {
+        EmitterMap.on = on;
+    }
+
+    public static Boolean getOn() {
+        return on;
     }
 
     private SFX getFogSfx() {
@@ -145,7 +154,7 @@ public class EmitterMap extends Group{
         }
 
         Vector2 v = GridMaster.
-         getVectorForCoordinateWithOffset(c);
+         getCenteredPos(c);
         Ambience fog = ambiencePool.obtain();
         fog.setTarget(c);
         fogMap.put(c, fog);

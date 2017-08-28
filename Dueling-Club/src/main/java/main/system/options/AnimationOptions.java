@@ -1,19 +1,24 @@
 package main.system.options;
 
-import main.swing.components.menus.OptionsPanel;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
 
-public class AnimationOptions extends Options<ANIMATION_OPTION> {
+public class AnimationOptions extends Options<ANIMATION_OPTION,ANIMATION_OPTION> {
     @Override
-    public Class<Boolean> getValueClass(Enum option) {
-        // TODO Auto-generated method stub
-        return null;
+    protected Class getOptionClass() {
+        return ANIMATION_OPTION.class;
     }
 
-    // AI_PARAMS,
-    public enum ANIMATION_OPTION implements OptionsPanel.OPTION {
-        INFO_LEVEL(1), SPEED(100), PHASE_TIME(500), OFFSET_FOR_OVERLAP(true),;
 
+    // AI_PARAMS,
+    public enum ANIMATION_OPTION implements Options.OPTION {
+        WAIT_FOR_ANIM(false ),
+        INFO_LEVEL(1, 0, 1), SPEED(100, 0, 100), PHASE_TIME(500, 0, 1000), OFFSET_FOR_OVERLAP(true),
+        GENERATE_AFTER_EFFECTS(false),
+          PARALLEL_DRAWING (true) ,
+        MAX_ANIM_WAIT_TIME(1200, 0, 3500),
+        ;
+
+        boolean exclusive;
         Object[] options;
         Integer min;
         Integer max;
@@ -33,7 +38,7 @@ public class AnimationOptions extends Options<ANIMATION_OPTION> {
             this.options = options;
         }
 
-        ANIMATION_OPTION(Object defaultValue) {
+        ANIMATION_OPTION(boolean defaultValue) {this.exclusive = defaultValue;
             this.defaultValue = defaultValue;
         }
 
@@ -55,7 +60,7 @@ public class AnimationOptions extends Options<ANIMATION_OPTION> {
 
         @Override
         public Boolean isExclusive() {
-            return null;
+            return exclusive;
         }
     }
 

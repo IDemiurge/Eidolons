@@ -30,6 +30,7 @@ public class InitiativePanel extends Group {
     private ImageContainer[] queue;
     private WidgetGroup queueGroup;
     private boolean cleanUpOn=false;
+    private ValueContainer clockImage;
 
     public InitiativePanel() {
         init();
@@ -67,10 +68,10 @@ public class InitiativePanel extends Group {
     }
 
     private void resetZIndices() {
-
+        clockImage.setZIndex(0);
         for (ImageContainer view : queue) {
             if (view != null) {
-                view.setZIndex(getChildren().size);
+                view.setZIndex(Integer.MAX_VALUE);
             }
         }
     }
@@ -118,15 +119,15 @@ public class InitiativePanel extends Group {
 
         final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("UI",
          "components","2017","panels","initiativePanel.png"));
-        final ValueContainer image = new ValueContainer(textureRegion);
-        image.setPosition(50, 20);
+       clockImage = new ValueContainer(textureRegion);
+        clockImage.setPosition(50, 25);
 //        image.align(Align.bottomLeft);
 //        image.overrideImageSize(imageSize, imageSize);
 //        image.setSize(imageSize, imageSize);
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer("Good time to die!", "")));
-        image.addListener(tooltip.getController());
-        addActor(image);
+        clockImage.addListener(tooltip.getController());
+        addActor(clockImage);
 
         setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
     }

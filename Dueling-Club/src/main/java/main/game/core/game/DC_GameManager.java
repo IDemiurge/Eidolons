@@ -30,11 +30,11 @@ import main.libgdx.bf.TargetRunnable;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.Manager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.ColorManager;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.threading.WaitMaster;
@@ -139,7 +139,7 @@ public class DC_GameManager extends GameManager {
             e.printStackTrace();
         }
         // if (VisionManager.c)
-        // SoundMaster.playEffectSound(SOUNDS.WHAT, obj);
+        // DC_SoundMaster.playEffectSound(SOUNDS.WHAT, obj);
 
         ColorManager.setCurrentColor(ColorManager.getDarkerColor(ColorManager.getAltAspectColor(obj
          .getType()), 80));
@@ -269,7 +269,7 @@ public class DC_GameManager extends GameManager {
 
         }
 
-        SoundMaster.playStandardSound(STD_SOUNDS.CLICK_TARGET_SELECTED);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_TARGET_SELECTED);
         try {
             selectingStopped(false);
         } catch (Exception e) {
@@ -285,7 +285,7 @@ public class DC_GameManager extends GameManager {
         if (!CoreEngine.isSwingOn()) {
             return;
         }
-        SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
         if (!(obj instanceof DC_Obj)) {
             return;
         }
@@ -374,7 +374,7 @@ public class DC_GameManager extends GameManager {
         if (selectingSet.isEmpty()) {
 //            getGame().getToolTipMaster().addTooltip(SCREEN_POSITION.ACTIVE_UNIT_BOTTOM,
 //             "No targets available!");
-            SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
             return null;
         }
         setSelecting(true);

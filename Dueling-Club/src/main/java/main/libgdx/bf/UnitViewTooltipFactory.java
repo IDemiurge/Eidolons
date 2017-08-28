@@ -76,27 +76,20 @@ public class UnitViewTooltipFactory {
                 }
             }
 
-//            if (VisionManager.isVisibilityOn()){
-                if ( RuleMaster.isRuleOn(RULE.VISIBILITY)){
-                    addParamStringToValues(hero, values, PARAMS.LIGHT_EMISSION);
-                    addParamStringToValues(hero, values, PARAMS.ILLUMINATION);
-                    addParamStringToValues(hero, values, PARAMS.CONCEALMENT);
-                    addKeyAndValue("Gamma", ""+hero.getGame().getVisionMaster().
-                     getGammaMaster().
-                     getGamma(false, hero.getGame().getManager().getActiveObj(), hero), values);
-                }
            if (!hero.isMine())
                 if (!hero.getGame().isDebugMode())
-                    if (hero.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) {
+                    if (hero.getVisibilityLevelForPlayer() !=
+                     VISIBILITY_LEVEL.CLEAR_SIGHT) {
                         final ValueContainer nameContainer = new ValueContainer(hero.getToolTip(), "");
                         nameContainer.setNameAlignment(Align.left);
                         values.add(nameContainer);
-
-                        final ValueContainer valueContainer =
-                         new ValueContainer(StringMaster.getWellFormattedString(hero.getUnitVisionStatus().name()), "");
+                        if (hero.getGame().isStarted())
+                        if (hero.getUnitVisionStatus() != null) {
+                            final ValueContainer valueContainer =
+                             new ValueContainer(StringMaster.getWellFormattedString(hero.getUnitVisionStatus().name()), "");
                         valueContainer.setNameAlignment(Align.left);
                         values.add(valueContainer);
-
+                        }
                         String text = hero.getGame().getVisionMaster().getHintMaster().getHintsString(hero);
                         TextureRegion texture = TextureCache.getOrCreateR(VISUALS.QUESTION.getImgPath());
                         final ValueContainer hintsContainer = new ValueContainer(texture, text);
@@ -147,9 +140,6 @@ public class UnitViewTooltipFactory {
                 addPropStringToValues(hero, values, G_PROPS.MODE);
                 addPropStringToValues(hero, values, G_PROPS.STATUS);
             }
-            addParamStringToValues(hero, values, PARAMS.LIGHT_EMISSION);
-            addParamStringToValues(hero, values, PARAMS.ILLUMINATION);
-            addParamStringToValues(hero, values, PARAMS.CONCEALMENT);
 
             if (hero.getCustomParamMap() != null) {
                 hero.getCustomParamMap().keySet().forEach(counter -> {
@@ -168,6 +158,16 @@ public class UnitViewTooltipFactory {
                     values.add(valueContainer);
                     }
                 });
+            }
+
+//            if (VisionManager.isVisibilityOn()){
+            if ( RuleMaster.isRuleOn(RULE.VISIBILITY)){
+                addParamStringToValues(hero, values, PARAMS.LIGHT_EMISSION);
+                addParamStringToValues(hero, values, PARAMS.ILLUMINATION);
+                addParamStringToValues(hero, values, PARAMS.CONCEALMENT);
+//                    addKeyAndValue("Gamma", ""+hero.getGame().getVisionMaster().
+//                     getGammaMaster().
+//                     getGamma(false, hero.getGame().getManager().getActiveObj(), hero), values);
             }
             return values;
         };

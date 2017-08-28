@@ -6,8 +6,8 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.swing.components.panels.page.info.element.ValueTextComp;
+import main.system.audio.DC_SoundMaster;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class PointSpinnerModel {
@@ -53,7 +53,7 @@ public class PointSpinnerModel {
     }
 
     public void up() {
-        SoundMaster.playStandardSound(getUpSound());
+        DC_SoundMaster.playStandardSound(getUpSound());
         buffer.modifyParameter(pool, -getCost());
         buffer.modifyParameter(param, 1);
         refresh(true);
@@ -110,7 +110,7 @@ public class PointSpinnerModel {
 
     public void tryUp() {
         if (!checkUp()) {
-            SoundMaster.playStandardSound(getBlockedSound());
+            DC_SoundMaster.playStandardSound(getBlockedSound());
             return;
         }
         up();
@@ -136,17 +136,17 @@ public class PointSpinnerModel {
         boolean result = checkDown();
         if (!result) {
             // if (Launcher.DEV_MODE) {
-            // SoundMaster.playStandardSound(STD_SOUNDS.SLING);
+            // DC_SoundMaster.playStandardSound(STD_SOUNDS.SLING);
             // down();
             // } else
-            SoundMaster.playStandardSound(getBlockedSound());
+            DC_SoundMaster.playStandardSound(getBlockedSound());
         } else {
             down();
         }
     }
 
     public void down() {
-        SoundMaster.playStandardSound(getDownSound());
+        DC_SoundMaster.playStandardSound(getDownSound());
         buffer.modifyParameter(pool, getCost(true)); // *previous* cost!
         buffer.modifyParameter(param, -1);
         refresh(false);

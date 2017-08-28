@@ -7,8 +7,8 @@ import main.client.cc.gui.neo.tree.t3.T3UpperPanel;
 import main.client.cc.gui.neo.tree.view.TreeControlPanel;
 import main.client.dc.SequenceManager;
 import main.swing.generic.components.panels.G_PagePanel;
+import main.system.audio.DC_SoundMaster;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.awt.event.KeyEvent;
@@ -96,12 +96,12 @@ public class HC_KeyManager implements KeyListener {
 
     private void tabScrollForward() {
         tabPanel.select(tabPanel.getIndex() + 1);
-        SoundMaster.playStandardSound(STD_SOUNDS.ON_OFF);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.ON_OFF);
     }
 
     private void tabScrollBackward() {
         tabPanel.select(tabPanel.getIndex() - 1);
-        SoundMaster.playStandardSound(STD_SOUNDS.CLOCK);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLOCK);
     }
 
     @Override

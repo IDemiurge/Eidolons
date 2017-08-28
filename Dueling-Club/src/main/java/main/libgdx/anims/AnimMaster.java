@@ -1,6 +1,7 @@
 package main.libgdx.anims;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import main.ability.Ability;
 import main.ability.effects.Effect;
@@ -25,8 +26,11 @@ import main.system.GuiEventType;
 import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.options.AnimationOptions.ANIMATION_OPTION;
+import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import main.test.frontend.Showcase;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,9 +44,10 @@ public class AnimMaster extends Group {
 
     static private boolean on;
     private static AnimMaster instance;
+    private final SpriteCache spriteCache;
     Stack<CompositeAnim> leadQueue = new Stack<>(); //if more Action Stacks have been created before leadAnimation is finished
     CompositeAnim leadAnimation; // wait for it to finish before popping more from the queue
-    boolean parallelDrawing = true;
+
     ConcurrentMap<BuffObj, BuffAnim> continuousAnims = new ConcurrentMap<>();
     DequeImpl<Animation> attachedAnims = new DequeImpl<>();
     private AnimController controller;
@@ -56,6 +61,8 @@ public class AnimMaster extends Group {
     //animations will use emitters, light, sprites, text and icons
     public AnimMaster() {
         instance = this;
+        spriteCache =new SpriteCache();
+//        spriteCache.add();
         floatingTextMaster = new FloatingTextMaster();
         continuousAnimsOn =
          false;
@@ -97,9 +104,6 @@ public class AnimMaster extends Group {
             FloatingText floatingText = (FloatingText) p.get();
             if (!floatingText.isInitialized())
                 floatingText.init();
-            else {
-                main.system.auxiliary.log.LogMaster.log(1,"rogue float text " );
-            }
             addActor(floatingText);
 
         });
@@ -199,11 +203,11 @@ public class AnimMaster extends Group {
         animation.reset();
         if (leadAnimation == null) {
             leadAnimation = animation;
-            leadAnimation.start();
+            leadAnimation.start(activeObj.getRef());
         } else {
             leadQueue.add(animation);
-            if (parallelDrawing) {
-                animation.start();
+            if (OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING)) {
+                animation.start(activeObj.getRef());
             }
             controller.store(animation);
         }
@@ -368,6 +372,17 @@ public class AnimMaster extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (Showcase.isRunning())
+        try {
+            drawAnims(batch, parentAlpha);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        else
+            drawAnims(batch, parentAlpha);
+    }
+
+    public void drawAnims(Batch batch, float parentAlpha) {
         if (!isOn()) {
             return;
         }
@@ -387,19 +402,19 @@ public class AnimMaster extends Group {
             leadAnimation = next();
         }
         if (leadAnimation != null) {
-        boolean result = false;
-        drawing = true;
-        try {
-            result = leadAnimation.draw(batch);
-        } catch (Exception e) {
-            e.printStackTrace();
+            boolean result = false;
+            drawing = true;
+            try {
+                result = leadAnimation.draw(batch);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (!result) {
+                startNext();
+            }
         }
-        if (!result) {
-            startNext();
-        }
-    }
         // not turned on
-        if (parallelDrawing) {
+        if (OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING)) {
             leadQueue.forEach(a -> {
                 a.draw(batch);
 

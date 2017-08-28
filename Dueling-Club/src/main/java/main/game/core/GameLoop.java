@@ -9,7 +9,10 @@ import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context;
 import main.libgdx.anims.AnimMaster;
+import main.system.auxiliary.log.Err;
 import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.options.AnimationOptions.ANIMATION_OPTION;
+import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -19,31 +22,31 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
  */
 public class GameLoop {
 
-    private static Integer MAX_ANIM_TIME;
     private Unit activeUnit;
     private DC_Game game;
     private DC_ActiveObj activatingAction;
     private boolean paused;
+    private boolean aiFailNotified;
 
     public GameLoop(DC_Game game) {
         this.game = game;
     }
 
-    public static void setMaxAnimTime(int maxAnimTime) {
-        MAX_ANIM_TIME = maxAnimTime;
-    }
-
     public void start() {
         while (true) {
-            if (!AiTrainingRunner.running)
-                roundLoop();
-            else
+            if (!AiTrainingRunner.running) {
+                if (!roundLoop())
+                    break;
+            } else
                 try {
-                    roundLoop();
+                    {
+                        if (!roundLoop())
+                            break;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     break;
-            }
+                }
         }
         WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, false);
 
@@ -93,14 +96,24 @@ public class GameLoop {
      */
     private Boolean makeAction() {
 
-        Boolean result;
+        Boolean result = null;
         if (activeUnit.getHandler().getChannelingSpellData() != null) {
             ActionInput data = activeUnit.getHandler().getChannelingSpellData();
             ChannelingRule.channelingResolves(activeUnit);
             result = activateAction(data);
         } else if (game.getManager().getActiveObj().isAiControlled()) {
-            result = activateAction(waitForAI());
-        } else {
+            //SHOWCASE SECURITY
+            try {
+                result = activateAction(waitForAI());
+            } catch (Exception e) {
+                if (!aiFailNotified) {
+                    Err.error("Sorry, autopilot failed, you gotta take control now or we're dead!");
+                    aiFailNotified = true;
+                }
+                e.printStackTrace();
+            }
+        }
+        if (result == null) {
             result = activateAction(waitForPlayerInput());
         }
 //        if ()
@@ -117,6 +130,8 @@ public class GameLoop {
     }
 
     private void waitForAnimations() {
+        Integer MAX_ANIM_TIME =
+         OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME);
         if (MAX_ANIM_TIME != null) {
             if (MAX_ANIM_TIME > 0) {
                 if (AnimMaster.getInstance().isDrawing()) {
@@ -138,7 +153,7 @@ public class GameLoop {
             result = input.getAction().getHandler().activateOn(input.getContext());
         } catch (Exception e) {
             e.printStackTrace();
-            return true;
+            return null ;
         } finally {
             activatingAction = null;
         }

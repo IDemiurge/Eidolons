@@ -24,7 +24,6 @@ import main.system.threading.WaitMaster;
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Stack;
@@ -35,12 +34,12 @@ public class Player {
     private static final String FORMAT = ".mp3";
     private static final String ALT_FORMAT = ".wav";
     private static final String SOUNDSET_FOLDER_PATH = PathFinder.getSoundPath() + SOUNDSETS;
-    static Stack<String> lastplayed = new Stack<>();
-    private static boolean neverRepeat = false;
+    private static Stack<String> lastplayed = new Stack<>();
+    private static boolean neverRepeat = true;
     private static boolean switcher = true;
-    LinkedList<String> played;
     private int volume;
     private int delay = 0;
+//    Stack<SoundFx> process =new Stack();
 
     // mute
     public Player() {
@@ -50,6 +49,10 @@ public class Player {
     public Player(int volume) {
         this.setVolume(volume * SoundMaster.getMasterVolume() / 100);
 
+    }
+
+    public static Stack<String> getLastplayed() {
+        return lastplayed;
     }
 
     public static boolean isNeverRepeat() {
@@ -136,17 +139,19 @@ public class Player {
     }
 
     public void play(final String sound, final int delay) {
+        if (sound == null)
+            return;
         if (!switcher) {
             return;
         }
         if (lastplayed.size() > 1) {
             if (neverRepeat) {
-                if (lastplayed.peek().equals(sound)
-                 && !lastplayed.get(lastplayed.size() - 2).equals(sound)) {
-                    LogMaster.log(0, "NOT playing twice! - " + sound);
-
-                    return;
-                }
+                if (!lastplayed.isEmpty())
+                    if (lastplayed.peek().equals(sound)
+                     && !lastplayed.get(lastplayed.size() - 2).equals(sound)) {
+                        LogMaster.log(0, "NOT playing twice! - " + sound);
+                        return;
+                    }
             }
         }
         LogMaster.log(0, "Playing: " + sound);
@@ -160,126 +165,42 @@ public class Player {
             }
             return;
         }
-        // if (delay == 0)
-        // playNow(sound);
-        // else
-        new Thread(new Runnable() {
-            public void run() {
-                if (delay > 0) {
-                    WaitMaster.WAIT(delay);
-                }
-                playNow(sound);
+        play(new SoundFx(sound, volume, delay));
+
+    }
+
+    public void play(SoundFx sound) {
+        new Thread(() -> {
+            if (delay > 0) {
+                WaitMaster.WAIT(delay);
             }
-
+            playNow(sound);
         }, " sound - " + sound).start();
-
-        // sound = sound.replaceAll("\\\\", "\\\\\\\\");
-        //
-        // Media hit;
-        // try {
-        // hit = new Media(new File(sound).toURI().toURL().toExternalForm());
-        // MediaPlayer mediaPlayer = new MediaPlayer(hit);
-        // mediaPlayer.play();
-        // lastplayed.push(sound);
-        //
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
-
     }
 
     public void playNow(String sound) {
-        playNow(sound, new Random().nextInt(100));
+        playNow(new SoundFx(sound, 1, 0));
     }
 
-    public void playNow(String sound, int volumePercentage) {
+    public void playNow(SoundFx sound) {
         if (SoundMaster.isBlockNextSound()) {
             SoundMaster.setBlockNextSound(false);
             return;
         }
-        // VOLUME CONTROL TO BE ADDED TODO
-        // main.system.auxiliary.LogMaster.log(1, "playing - " + sound +
-        // " with " + volumePercentage
-        // + " volumePercentage ");
-        // float gain = new Float(getVolume()) * volumePercentage / 100 - 100;
-        // Clip clip = null;
-        // if (gain != 0.0f)
-        // try {
-        // clip = createSoundClip(sound);
-        // } catch (UnsupportedAudioFileException e) {
-        // e.printStackTrace();
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // } catch (LineUnavailableException e) {
-        // e.printStackTrace();
-        // }
-        // if (clip != null) {
-        // FloatControl gainControl = (FloatControl) clip
-        // .getControl(FloatControl.Type.MASTER_GAIN);
-        // gainControl.setValue(gain);
-        // }
-
+        if (sound.getSound().endsWith(".ini"))
+            return ;
         try {
-            Sound soundFile = Gdx.audio.newSound(Gdx.files.getFileHandle(sound, FileType.Absolute));
+            Sound soundFile = Gdx.audio.newSound(Gdx.files.getFileHandle(sound.getSound(),
+             FileType.Absolute));
+            soundFile.setVolume(0, sound.getVolume());
             soundFile.play();
-            //            Gdx.audio.
-//            jlp player = jlp.createInstance(new String[]{sound});
-//            if (player != null) {
-//                player.play();
-//            }
+            lastplayed.push(sound.getSound());
 
         } catch (Exception ex) {
-//            System.err.println(ex);
-//            ex.printStackTrace(System.err);
-        } finally {
-            // if (clip != null)
-            // clip.close();
+            ex.printStackTrace();
         }
-        lastplayed.push(sound);
     }
 
-    private Clip createSoundClip(String sound) throws UnsupportedAudioFileException, IOException,
-     LineUnavailableException {
-        /*
-         * Once you have a handle to the inputStream, get the audioInputStream and do the rest.
-
-		InputStream is = getClass().getResourceAsStream("......");
-		AudioInputStream ais = AudioSystem.getAudioInputStream(is);
-		Clip clip = AudioSystem.getClip();
-		clip.open(ais);
-		 */
-        Clip clip = null;
-        try {
-            clip = AudioSystem.getClip();
-            AudioInputStream ulawIn = AudioSystem.getAudioInputStream(new File(sound));
-
-            // define a target AudioFormat that is likely to be supported by
-            // your audio hardware,
-            // i.e. 44.1kHz sampling rate and 16 bit samples.
-            AudioInputStream pcmIn = AudioSystem.getAudioInputStream(new AudioFormat(
-             AudioFormat.Encoding.PCM_SIGNED, 44100f, 16, 1, 2, 44100f, true), ulawIn);
-
-            clip.open(pcmIn);
-            // clip.start();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-
-        // AudioInputStream audioStream =
-        // AudioSystem.getAudioInputStream(FileManager.getFile(sound));
-        // AudioFormat baseFormat = audioStream.getFormat();
-        // AudioFormat decodedFormat = new
-        // AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat
-        // .getSampleRate(), 16, baseFormat.getChannels(),
-        // baseFormat.getChannels() * 2,
-        // baseFormat.getSampleRate(), false);
-        // AudioInputStream audioStream2 =
-        // AudioSystem.getAudioInputStream(decodedFormat, audioStream);
-        //
-        // Clip clip = AudioSystem.getClip();
-        // clip.open(audioStream2);
-        return clip;
-    }
 
     private String getRandomSound(SOUNDS sound_type, SOUNDSET soundSet) {
         String corePath = getFullPath(sound_type, soundSet);
@@ -312,12 +233,14 @@ public class Player {
     }
 
     public void playEffectSound(final SOUNDS sound_type, final Obj obj, int volumePercentage) {
-        new Thread(new Runnable() {
-            public void run() {
-                playSoundOnCurrentThread(sound_type, obj);
-            }
-        }, "playing " + sound_type + " sound for " + obj).start();
+        try {
+            playSoundOnCurrentThread(sound_type, obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        new Thread(() -> playSoundOnCurrentThread(sound_type, obj), "playing " + sound_type + " sound for " + obj).start();
     }
+
 
     public void playSoundOnCurrentThread(SOUNDS sound_type, Obj obj) {
 
@@ -340,15 +263,6 @@ public class Player {
         }
 
         if (!result) {
-
-            if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
-                /*
-				 * by aspect -- deity? unit soundset folders...
-				 *
-				 * but it doesn't seem plausible that I can just auto-find by
-				 * anything other than unit's name...
-				 */
-            }
             if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS) {
                 String autopath = SOUNDSET_FOLDER_PATH + "\\spells\\"
                  + obj.getAspect().toString().toLowerCase() + "\\"
@@ -559,7 +473,7 @@ public class Player {
     public void playNow(String sound, int volume_percentage, int delay) {
         setDelay(delay);
         setVolume(volume_percentage);
-        playNow(sound, volume_percentage);
+        playNow(sound, volume_percentage, delay);
     }
 
     public void playEffectSound(SOUNDS sound_type, Obj obj, int volume_percentage, int delay) {
@@ -606,6 +520,73 @@ public class Player {
         setVolume(volume_percentage);
         playSkillAddSound(type, mastery, masteryGroup, rank);
     }
+
+    private Clip createSoundClip(String sound) throws UnsupportedAudioFileException, IOException,
+     LineUnavailableException {
+        /*
+         * Once you have a handle to the inputStream, get the audioInputStream and do the rest.
+
+		InputStream is = getClass().getResourceAsStream("......");
+		AudioInputStream ais = AudioSystem.getAudioInputStream(is);
+		Clip clip = AudioSystem.getClip();
+		clip.open(ais);
+		 */
+        Clip clip = null;
+        try {
+            clip = AudioSystem.getClip();
+            AudioInputStream ulawIn = AudioSystem.getAudioInputStream(new File(sound));
+
+            // define a target AudioFormat that is likely to be supported by
+            // your audio hardware,
+            // i.e. 44.1kHz sampling rate and 16 bit samples.
+            AudioInputStream pcmIn = AudioSystem.getAudioInputStream(new AudioFormat(
+             AudioFormat.Encoding.PCM_SIGNED, 44100f, 16, 1, 2, 44100f, true), ulawIn);
+
+            clip.open(pcmIn);
+            // clip.start();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        // AudioInputStream audioStream =
+        // AudioSystem.getAudioInputStream(FileManager.getFile(sound));
+        // AudioFormat baseFormat = audioStream.getFormat();
+        // AudioFormat decodedFormat = new
+        // AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat
+        // .getSampleRate(), 16, baseFormat.getChannels(),
+        // baseFormat.getChannels() * 2,
+        // baseFormat.getSampleRate(), false);
+        // AudioInputStream audioStream2 =
+        // AudioSystem.getAudioInputStream(decodedFormat, audioStream);
+        //
+        // Clip clip = AudioSystem.getClip();
+        // clip.open(audioStream2);
+        return clip;
+    }
+
+
+    // VOLUME CONTROL TO BE ADDED TODO
+    // main.system.auxiliary.LogMaster.log(1, "playing - " + sound +
+    // " with " + volumePercentage
+    // + " volumePercentage ");
+    // float gain = new Float(getVolume()) * volumePercentage / 100 - 100;
+    // Clip clip = null;
+    // if (gain != 0.0f)
+    // try {
+    // clip = createSoundClip(sound);
+    // } catch (UnsupportedAudioFileException e) {
+    // e.printStackTrace();
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // } catch (LineUnavailableException e) {
+    // e.printStackTrace();
+    // }
+    // if (clip != null) {
+    // FloatControl gainControl = (FloatControl) clip
+    // .getControl(FloatControl.Type.MASTER_GAIN);
+    // gainControl.setValue(gain);
+    // }
+
 
     public enum SOUND_LEVEL {
         TINY, SMALL, MODERATE, LARGE, HUGE

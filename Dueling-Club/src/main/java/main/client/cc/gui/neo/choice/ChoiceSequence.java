@@ -6,10 +6,10 @@ import main.client.dc.Launcher.VIEWS;
 import main.client.dc.SequenceManager;
 import main.entity.Entity;
 import main.swing.generic.components.G_Panel;
+import main.system.audio.DC_SoundMaster;
 import main.system.graphics.ColorManager;
 import main.system.graphics.GuiManager;
 import main.system.hotkey.HC_KeyManager;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.Arrays;
@@ -120,10 +120,10 @@ public class ChoiceSequence {
     public void tryNext() {
         // if (view.getSelectedIndex()==-1) return;
         if (!view.checkBlocked(view.getSelectedIndex())) {
-            SoundMaster.playStandardSound(STD_SOUNDS.SLING);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.SLING);
             selected(view.getSelectedIndex());
         } else {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
         }
 
     }

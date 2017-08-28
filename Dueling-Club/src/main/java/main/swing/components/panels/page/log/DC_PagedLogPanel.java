@@ -8,11 +8,11 @@ import main.swing.components.ImageButton;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.ANIM;
 import main.system.graphics.FontMaster;
 import main.system.graphics.PhaseAnimation;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.EntryNodeMaster;
 import main.system.text.LogEntryNode;
@@ -80,7 +80,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
             }
 
             protected void playClickSound() {
-                SoundMaster.playStandardSound(STD_SOUNDS.SLING);
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.SLING);
             }
 
             public VISUALS getVisuals() {
@@ -101,7 +101,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
         // }
         //
         // protected void playSound() {
-        // SoundMaster.playStandardSound(STD_SOUNDS.CLOCK);
+        // DC_SoundMaster.playStandardSound(STD_SOUNDS.CLOCK);
         // }
         //
         // };
@@ -157,7 +157,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
 
                     @Override
                     protected void playClickSound() {
-                        SoundMaster.playStandardSound(STD_SOUNDS.DIS__OPEN_MENU);
+                        DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__OPEN_MENU);
                     }
 
                 };
@@ -401,9 +401,9 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
     public void mouseClicked(MouseEvent e) {
         if (SwingUtilities.isRightMouseButton(e)) {
             if (entryNode != null) {
-                SoundMaster.playStandardSound(STD_SOUNDS.SLING);
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.SLING);
             } else {
-                SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
             }
             back();
         }

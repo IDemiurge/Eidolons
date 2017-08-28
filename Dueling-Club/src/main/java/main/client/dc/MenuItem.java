@@ -2,9 +2,9 @@ package main.client.dc;
 
 import main.client.dc.MainManager.MAIN_MENU_ITEMS;
 import main.swing.components.buttons.CustomButton;
+import main.system.audio.DC_SoundMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.awt.*;
@@ -48,7 +48,7 @@ public class MenuItem extends CustomButton {
 
     @Override
     protected void playClickSound() {
-        SoundMaster.playStandardSound(STD_SOUNDS.TURN);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.TURN);
     }
 
     @Override

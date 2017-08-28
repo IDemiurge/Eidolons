@@ -70,9 +70,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
             prefix = "(You) ";
         else
         if (isMine())
-            prefix="Enemy ";
-        else if (!isNeutral())
-            prefix ="Ally ";
+            prefix="Ally ";
+        else if (!getOwner().isNeutral())
+            prefix ="Enemy ";
         return prefix+ getDisplayedName();
     }
 

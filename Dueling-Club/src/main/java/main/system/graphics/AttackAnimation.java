@@ -27,7 +27,6 @@ import main.system.images.ImageManager.ALIGNMENT;
 import main.system.images.ImageManager.BORDER;
 import main.system.images.ImageManager.STD_IMAGES;
 import main.system.math.roll.RollMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -138,17 +137,17 @@ public class AttackAnimation extends ActionAnimation {
                     DC_SoundMaster.playParrySound((Unit) getTarget(), attack.getWeapon());
                     break;
                 case PRE_ATTACK:
-                    SoundMaster.playEffectSound(SOUNDS.ATTACK, source);
+                    DC_SoundMaster.playEffectSound(SOUNDS.ATTACK, source);
                     break;
                 case DAMAGE_DEALT:
-                    SoundMaster.playEffectSound(SOUNDS.HIT, getTarget());
+                    DC_SoundMaster.playEffectSound(SOUNDS.HIT, getTarget());
                     break;
                 case ATTACK_DODGED:
-                    SoundMaster.playStandardSound(STD_SOUNDS.MISSED_MELEE);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.MISSED_MELEE);
                     DC_SoundMaster.playMissedSound((Unit) getTarget(), attack.getWeapon());
                     break;
                 case MISSED:
-                    SoundMaster.playStandardSound(STD_SOUNDS.MISSED);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.MISSED);
                     break;
                 case REDUCTION_ARMOR:
                     DC_SoundMaster.playAttackImpactSound(attack.getWeapon(), source,

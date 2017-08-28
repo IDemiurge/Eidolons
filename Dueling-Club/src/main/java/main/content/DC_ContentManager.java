@@ -865,7 +865,7 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static DC_WeaponObj getDefaultWeapon(Unit heroObj) {
-        return new DC_WeaponObj(DataManager.getType(DEFAULT_WEAPON), heroObj);
+        return new DC_WeaponObj(DataManager.getType(DEFAULT_WEAPON, DC_TYPE.WEAPONS), heroObj);
     }
 
     public static String getFocusMasteries() {

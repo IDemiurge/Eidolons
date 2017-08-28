@@ -33,6 +33,7 @@ public class Saver {
     public static final String EFECTS_NODE = "Effects";
     public static final String DUNGEON_NODE = "Dungeon";
     public static final String WRAPPER_NODE = "Save";
+    public static final boolean TEST_MODE = false;
 
     public static String save(String saveName) {
         String xml = getXmlFromState(DC_Game.game.getState());

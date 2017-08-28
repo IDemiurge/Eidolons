@@ -26,7 +26,7 @@ public class EffectAndAbilitiesPanel extends TablePanel {
         final int h = 3;
         final int w = 4;
 
-        List<ValueContainer> effects = source.getEffects();
+        List<ValueContainer> effects = source.getBuffs();
         IconGrid effectsGrid = new IconGrid(effects, w, h);
         addElement(effectsGrid).size(32 * w, 32 * h);
 

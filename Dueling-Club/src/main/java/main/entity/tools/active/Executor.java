@@ -98,7 +98,7 @@ public class Executor extends ActiveHandler {
             targeter.setForcePresetTarget(false);
         this.context = context;
         activate();
-        return result;
+        return BooleanMaster.isTrue(isCancelled());
     }
 
     public void activateOn(Ref ref) {
@@ -194,8 +194,9 @@ public class Executor extends ActiveHandler {
 
     private boolean interrupted() {
         log(getAction().getNameAndCoordinate() + " is interrupted", false);
+        setResult(false);
         actionComplete();
-        return isResult();
+        return false;
     }
 
 
@@ -215,6 +216,7 @@ public class Executor extends ActiveHandler {
             // TODO NEW ENTRY AOO?
             payCosts();
             setResult(false);
+            setInterrupted(true);
         } else {
 //            activated(ref); TODO
         }
@@ -234,6 +236,7 @@ public class Executor extends ActiveHandler {
                 ConcealmentRule.logMissed(game.getLogManager(), getAction());
             }
             if (missed) {
+                payCosts();
                 setResult(false);
                 setInterrupted(true);
                 StackingRule.actionMissed(getAction());
@@ -299,7 +302,7 @@ public class Executor extends ActiveHandler {
             }
         }
 
-//        SoundMaster.playEffectSound(SOUNDS.IMPACT, this); //TODO queue on anim!
+//        DC_SoundMaster.playEffectSound(SOUNDS.IMPACT, this); //TODO queue on anim!
 
     }
 

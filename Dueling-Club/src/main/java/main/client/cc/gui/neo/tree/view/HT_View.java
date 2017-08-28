@@ -34,6 +34,7 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.services.dialog.DialogMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -41,7 +42,6 @@ import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -264,10 +264,10 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
             return;
         }
         if (tryIncrementRank(type)) {
-            SoundMaster.playStandardSound(STD_SOUNDS.ButtonUp);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.ButtonUp);
             refreshComponents();
         } else {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
             tree.setDisplayRequirements(true);
             tree.setReqTextType(type);
             tree.refresh();
@@ -385,7 +385,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
                 added(type);
 
             } else {
-                SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
                 getTree().setDisplayRequirements(true);
             }
 
@@ -437,9 +437,9 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
                     type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS ? WAIT_OPERATIONS.SELECTION
                             : WAIT_OPERATIONS.CUSTOM_SELECT, type.getName(), false);
         }
-        SoundMaster.playStandardSound(STD_SOUNDS.SLOT);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.SLOT);
         // if (node.getParentType() != null)
-        // SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
+        // DC_SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
 
         HC_Master.setSelectedTreeNode(node);
         tree.refresh();
@@ -452,7 +452,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
         String aspect = type.getProperty(G_PROPS.SKILL_GROUP);
         String rank = "";
         // type.getIntParam(params.circle)>4
-        SoundMaster.playSkillAddSound(type, mastery, aspect, rank);
+        DC_SoundMaster.playSkillAddSound(type, mastery, aspect, rank);
         tree.refresh();
         tree.getPanel().repaint();
     }
@@ -829,7 +829,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
         }
         mode = TREE_VIEW_MODE.values()[index];
         tree.setMode(mode);
-        SoundMaster.playStandardSound(STD_SOUNDS.SLING);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.SLING);
         tree.refresh();
         tree.getPanel().repaint();
     }

@@ -13,7 +13,7 @@ import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
-import main.system.sound.SoundMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import javax.swing.*;
@@ -240,7 +240,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
             if (isRemovable((HC_PagedListPanel) hlp.getParent())
                     || (!getHero().getGame().isSimulation() && PROP == PROPS.INVENTORY)) {
                 removeType(type, hlp, isAltProp(hlp) ? prop2 : PROP);
-                SoundMaster.playStandardSound(getRemoveSound(type.getOBJ_TYPE_ENUM()));
+                DC_SoundMaster.playStandardSound(getRemoveSound(type.getOBJ_TYPE_ENUM()));
                 // coins clink! failed to parse xml
                 return;
             }
@@ -252,19 +252,19 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
 
         if (alt || e.getClickCount() > 1) {
             if (addType(type, hlp, alt)) {
-                SoundMaster.playStandardSound(getAddSound(type.getOBJ_TYPE_ENUM()));
+                DC_SoundMaster.playStandardSound(getAddSound(type.getOBJ_TYPE_ENUM()));
             } else {
                 failedAddType(type);
             }
 
         } else {
             typeSelected(type, hlp);
-            SoundMaster.playStandardSound(STD_SOUNDS.MODE);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.MODE);
         }
     }
 
     private void failedAddType(ObjType type) {
-        SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
 
         updateToolTip(type, true);
     }

@@ -14,9 +14,9 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.unit.Unit;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
-import main.system.sound.SoundMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -127,7 +127,7 @@ public class ChannelingRule {
         }
 
         String basePath = PathFinder.getSoundPath() + PATH + prop;
-        SoundMaster.playRandomSoundVariant(basePath, true); // TODO find files
+        DC_SoundMaster.playRandomSoundVariant(basePath, true); // TODO find files
         // refactor!
     }
 

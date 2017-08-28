@@ -129,6 +129,9 @@ public class Attack {
                 weapon = (DC_WeaponObj) ref.getObj(KEYS.WEAPON);
             }
         }
+        if (weapon == null) {
+            return attacker.getActiveWeapon(offhand);
+        }
         return weapon;
     }
 

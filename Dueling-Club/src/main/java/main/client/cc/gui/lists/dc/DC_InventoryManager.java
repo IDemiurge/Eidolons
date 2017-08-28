@@ -12,9 +12,9 @@ import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 /**
@@ -182,7 +182,7 @@ public class DC_InventoryManager {
 
     public boolean addType(ObjType itemType, boolean alt) {
         if (!hasOperations()) {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
             return false;
         }
         int result = CharacterCreator.getHeroManager().addSlotItem(getHero(), itemType, alt);
@@ -193,7 +193,7 @@ public class DC_InventoryManager {
 
     public void removeType(Entity item, PROPERTY p) {
         if (!hasOperations()) {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
             return;
         }
         OPERATIONS operations = OPERATIONS.UNEQUIP;

@@ -694,6 +694,8 @@ public class StringMaster {
         return getInteger(value, null);
     }
         public static Integer getInteger(String value, Ref ref) {
+        if (value ==null)
+            return 0;
         if (!isInteger(value)) {
             try {
                 return new Formula(value).getInt(ref==null  ? new Ref(): ref);
@@ -1319,6 +1321,7 @@ public class StringMaster {
             }
             i++;
         }
+        weight -= longer.length() - shorter.length();
         return weight;
     }
 

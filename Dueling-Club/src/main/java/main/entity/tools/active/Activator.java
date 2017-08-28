@@ -84,6 +84,8 @@ public class Activator extends ActiveHandler {
         if (getChecker().isBlocked()) {
             return false;
         }
+        if (game.isDebugMode())
+            return true;
         Boolean checkSubActionMode =
                 checkSubActionModeActivation();
         if (checkSubActionMode != null) {
@@ -103,7 +105,7 @@ public class Activator extends ActiveHandler {
          getEntity().getCosts().getReasonsString());
         f.setDisplacementY(100);
         f.setDuration(3);
-        Vector2 c = GridMaster.getVectorForCoordinateWithOffset(getEntity()
+        Vector2 c = GridMaster.getCenteredPos(getEntity()
          .getOwnerObj().getCoordinates());
         f.setX(c.x);
         f.setY(c.y);

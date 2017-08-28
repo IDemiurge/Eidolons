@@ -283,7 +283,14 @@ public class ContentManager {
                 return p;
             }
         }
-
+        //TODO this created bugs, but why?..
+//        if (!strict) {
+//            for (PARAMETER p : params) {
+//                if (StringMaster.compare(valueName, p.toString(), strict)) {
+//                    return p;
+//                }
+//            }
+//        }
         return null;
     }
 
@@ -352,7 +359,7 @@ public class ContentManager {
         return (PROPERTY) find(valueName, false);
     }
 
-    public static PROPERTY getPROP(String valueName, boolean strict) {
+    private static PROPERTY getPROP(String valueName, boolean strict) {
         for (PROPERTY p : props) {
             if (StringMaster.compareByChar(valueName, p.toString(), strict)) {
                 return p;
@@ -424,9 +431,9 @@ public class ContentManager {
             }
         }
 
-        v = getPROP(valueName, true);
+        v = getPROP(valueName, true );
         if (v == null) {
-            v = getPARAM(valueName, true);
+            v = getPARAM(valueName, true );
         }
         if (v == null) {
             if (extensiveSearch) {

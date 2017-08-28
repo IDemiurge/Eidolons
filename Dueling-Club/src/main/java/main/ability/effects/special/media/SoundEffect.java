@@ -5,7 +5,7 @@ import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.system.sound.SoundMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -45,17 +45,17 @@ public class SoundEffect extends DC_Effect {
     @Override
     public boolean applyThis() {
         if (std_sound != null) {
-            SoundMaster.playStandardSound(std_sound);
+            DC_SoundMaster.playStandardSound(std_sound);
         } else if (soundset != null) {
-            SoundMaster.playEffectSound(sound_type, soundset);
+            DC_SoundMaster.playEffectSound(sound_type, soundset);
         } else {
             if (obj == null) {
                 obj = ref.getObj(key);
             }
             if (custom) {
-                SoundMaster.playCustomEffectSound(sound_type, obj);
+                DC_SoundMaster.playCustomEffectSound(sound_type, obj);
             } else {
-                SoundMaster.playEffectSound(sound_type, obj);
+                DC_SoundMaster.playEffectSound(sound_type, obj);
             }
         }
 

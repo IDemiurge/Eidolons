@@ -33,6 +33,7 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.CounterMaster;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.math.FormulaFactory;
 import main.system.math.FormulaMaster;
@@ -978,7 +979,9 @@ public abstract class DataModel {
 
     public void setProperty(PROPERTY prop, String value) {
         if (prop == G_PROPS.NAME) {
-            this.name = XML_Formatter.restoreXmlNodeName(value);
+            if (CoreEngine.isArcaneVault())
+                this.name = XML_Formatter.restoreXmlNodeName(value);
+            else this.name = value;
         }
         putProperty(prop, value);
         getPropCache().remove(prop);
@@ -1469,8 +1472,9 @@ public abstract class DataModel {
     }
 
     public String getNameAndId() {
-                return getName()+getId()  ;
+        return getName() + getId();
     }
+
     public String getRawValue(VALUE value) {
         String string = getRawValues().get(value);
         if (string == null) {

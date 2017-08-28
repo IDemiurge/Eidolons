@@ -352,4 +352,8 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         return buffType;
     }
 
+    public boolean isDisplayed() {
+
+        return true;
+    }
 }

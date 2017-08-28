@@ -25,8 +25,8 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.listeners.ButtonHandler;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.data.FileManager;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.NameMaster;
 
@@ -153,7 +153,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
 
     public void handleClick(String command, final boolean alt) {
         if (processing) {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
             return;
         }
         processing = true;
@@ -177,7 +177,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                     }
                     break;
                 case ADD:
-                    SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
 
                     if (PartyHelper.checkPartySize() || Launcher.DEV_MODE) {
                         Launcher.getMainManager().getSequenceMaster().chooseNewMember(
@@ -207,13 +207,13 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
 //                            }
                     break;
                 case EXPORT_HERO: {
-                    SoundMaster.playStandardSound(STD_SOUNDS.DONE);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.DONE);
                     new Thread(new Runnable() {
                         public void run() {
                             CharacterCreator.saveAs(
                                     CharacterCreator.getSelectedHeroType(), !alt);
                             // CharacterCreator.savePreset(hero.getType());
-                            SoundMaster.playStandardSound(STD_SOUNDS.OK);
+                            DC_SoundMaster.playStandardSound(STD_SOUNDS.OK);
                         }
                     }).start();
                     break;
@@ -252,7 +252,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                 }
 
                 case SAVE:
-                    SoundMaster.playStandardSound(STD_SOUNDS.DONE);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.DONE);
                     if (CharacterCreator.isPartyMode()) {
                         PartyHelper.saveParty();
                     } else {
@@ -260,23 +260,23 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
 
                     }
 
-                    SoundMaster.playStandardSound(STD_SOUNDS.OK);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.OK);
                     break;
 
                 case BACK:
-                    SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
                     CharacterCreator.getHeroManager().stepBack(hero);
                     CharacterCreator.refreshGUI();
                     break;
                 case LEVEL_UP:
                     // always ready?
                     if (!CharacterCreator.isLevelUpEnabled(hero)) {
-                        SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+                        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
                         break;
                     }
 
                     HeroLevelManager.levelUp(hero);
-                    SoundMaster.playStandardSound(STD_SOUNDS.LEVEL_UP);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.LEVEL_UP);
                     break;
 
             }
@@ -291,10 +291,10 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
 
     public void fight() {
 
-        if (Launcher.getMainManager().getSequenceMaster().mainHeroChoiceSequence(hero)) {
+//        if (Launcher.getMainManager().getSequenceMaster().mainHeroChoiceSequence(hero)) {
             DemoManager.battleEntered();
             Launcher.launchDC();
-        }
+//        }
 
 //        if (hero.getGame().getGameType() == GAME_TYPE.ARCADE){
 ////            ArcadeManager.

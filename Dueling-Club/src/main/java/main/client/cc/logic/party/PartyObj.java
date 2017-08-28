@@ -118,6 +118,8 @@ public class PartyObj extends Obj {
         members.add(hero);
         addProperty(PROPS.MEMBERS, hero.getName());
         type.addProperty(PROPS.MEMBERS, hero.getName());
+        if (!getType().getProperty(G_PROPS.EMBLEM).isEmpty())
+             hero.setProperty(G_PROPS.EMBLEM, getType().getProperty(G_PROPS.EMBLEM), true);
         hero.getRef().setID(KEYS.PARTY, getId());
     }
 

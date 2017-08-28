@@ -1,7 +1,5 @@
 package main.system.audio;
 
-import main.system.sound.SoundMaster;
-
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -28,7 +26,7 @@ public class MusicMaster {
 
     public static void playMoment(MUSIC_MOMENT moment) {
         String corePath = moment.getCorePath();
-        SoundMaster.playRandomSoundVariant(corePath, false);
+        DC_SoundMaster.playRandomSoundVariant(corePath, false);
     }
 
     public void autoPlaylist() {

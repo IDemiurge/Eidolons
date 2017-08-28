@@ -5,10 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import main.libgdx.bf.GridMaster;
 import main.swing.PointX;
+import main.system.audio.DC_SoundMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.AnimationManager.MouseItem;
 import main.system.graphics.PhaseAnimation;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.awt.*;
@@ -54,7 +54,7 @@ public class PhaseAnimListener extends InputListener {
 //                    AnimPhase phase = anim.getPhase();
 //                    if (phase != null)
 //                        if (anim.subPhaseClosed()) {
-//                            SoundMaster.playStandardSound(STD_SOUNDS.BACK);
+//                            DC_SoundMaster.playStandardSound(STD_SOUNDS.BACK);
 //                            return true;
 
 
@@ -66,7 +66,7 @@ public class PhaseAnimListener extends InputListener {
             }
         }
         Vector2 v = GridMaster.
-                getVectorForCoordinateWithOffset(anim.getSourceCoordinates());
+         getCenteredPos(anim.getSourceCoordinates());
         return new Rectangle(
                 (int) v.x, (int) v.y, anim.getW(), anim.getH()).contains(x, y);
 
@@ -88,11 +88,11 @@ public class PhaseAnimListener extends InputListener {
                         return false;
                     }
                     if (item.getArg() == null) {
-                        SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+                        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
                         return true;
                     }
                     anim.subPhaseOpened(anim.getPhase((PHASE_TYPE) item.getArg()));
-                    SoundMaster.playStandardSound(STD_SOUNDS.DIS__OPEN_MENU);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__OPEN_MENU);
                     return true;
                 case CONTROL_BACK:
                     anim.pageFlipped(false);

@@ -16,7 +16,7 @@ public class ModifyEnumEffect extends DC_Effect  implements OneshotEffect {
     public ModifyEnumEffect(String name, int mod) {
         this.name = name;
         this.mod = mod;
-        prop = ContentManager.getPROP(name, false).getName();
+        prop = ContentManager.getPROP(name ).getName();
     }
 
     @Override

@@ -6,9 +6,9 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.system.audio.DC_SoundMaster;
 import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import javax.swing.*;
@@ -35,7 +35,7 @@ public class UnlockMaster {
 
         if (!entity.checkParam(PARAMS.GOLD, goldCost + "")
                 && !entity.checkParam(PARAMS.XP, xpCost + "")) {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
             return false;
         }
         // gold/xp cost reduction?
@@ -108,9 +108,9 @@ public class UnlockMaster {
         CharacterCreator.getHeroManager().update((ObjType) entity);
 
         if (gold) {
-            SoundMaster.playStandardSound(STD_SOUNDS.DIS__COINS);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__COINS);
         } else {
-            SoundMaster.playStandardSound(STD_SOUNDS.DIS__BOOK_OPEN);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__BOOK_OPEN);
         }
 
     }

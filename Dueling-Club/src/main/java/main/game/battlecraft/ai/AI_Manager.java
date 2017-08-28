@@ -73,7 +73,7 @@ public class AI_Manager extends AiMaster {
     public static GroupAI getCustomUnitGroup(Unit unit) {
         if (unit.isMine()) {
             return
-                    getAllyGroup();
+             getAllyGroup();
         }
         return getEnemyGroup();
     }
@@ -105,7 +105,7 @@ public class AI_Manager extends AiMaster {
         setUnit(unit);
         Coordinates bufferedCoordinates = unit.getCoordinates();
         try {
-            action = actionManager.chooseAction( );
+            action = actionManager.chooseAction();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -120,13 +120,20 @@ public class AI_Manager extends AiMaster {
             } finally {
                 running = false;
             }
+        } else {
+            try {
+                getMessageBuilder().append("Task: " + action.getTaskDescription());
+                if (!CoreEngine.isGraphicsOff()) {
+                    FloatingTextMaster.getInstance().
+                     createFloatingText(TEXT_CASES.BATTLE_COMMENT,
+                      getMessageBuilder().toString(), getUnit());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         if (!bufferedCoordinates.equals(unit.getCoordinates())) {
             unit.setCoordinates(bufferedCoordinates);
-        }
-        if (!CoreEngine.isGraphicsOff()){
-           FloatingTextMaster.getInstance().
-             createFloatingText(TEXT_CASES.BATTLE_COMMENT, getMessageBuilder().toString(), getUnit());
         }
         return action;
     }

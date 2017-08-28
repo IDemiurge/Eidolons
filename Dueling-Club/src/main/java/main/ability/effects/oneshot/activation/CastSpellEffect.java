@@ -6,8 +6,8 @@ import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.game.battlecraft.ai.tools.target.ReasonMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.data.ListMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.List;
@@ -43,7 +43,7 @@ public class CastSpellEffect extends MicroEffect  implements OneshotEffect {
                         active.getOwnerObj().getName()
                                 + "'s channeling has failed ("
                                 + active.getName() + ")");
-                SoundMaster.playStandardSound(STD_SOUNDS.FAIL);
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.FAIL);
                 return false;
             }
         }
@@ -55,7 +55,7 @@ public class CastSpellEffect extends MicroEffect  implements OneshotEffect {
                         active.getOwnerObj().getName()
                                 + "'s channeling has been cancelled ("
                                 + active.getName() + ")");
-                SoundMaster.playStandardSound(STD_SOUNDS.SPELL_CANCELLED);
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_CANCELLED);
                 return false;
             }
         }

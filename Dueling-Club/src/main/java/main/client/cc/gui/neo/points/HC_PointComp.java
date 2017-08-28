@@ -13,10 +13,10 @@ import main.swing.components.panels.page.info.element.ValueTextComp;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ColorManager;
 import main.system.images.ImageManager;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import javax.swing.*;
@@ -264,7 +264,7 @@ public class HC_PointComp extends G_Panel implements MouseListener {
 
     protected void lockClick(MouseEvent e) {
         if (!param.isMastery()) {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
         } else {
             if (e.getClickCount() > 1) {
                 UnlockMaster.unlock(hero, param, SwingUtilities.isRightMouseButton(e));
@@ -286,7 +286,7 @@ public class HC_PointComp extends G_Panel implements MouseListener {
         CharacterCreator.getHeroPanel(hero).getMvp().getCurrentViewComp().refresh();
         CharacterCreator.getHeroPanel(hero).getCurrentTab().refresh();
 
-        SoundMaster.playStandardSound(STD_SOUNDS.ON_OFF);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.ON_OFF);
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import main.entity.obj.BattleFieldObject;
-import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import main.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
@@ -73,11 +72,11 @@ public class UnitViewFactory {
         OverlayView view = new OverlayView(options);
         view.setScale(OverlayView.SCALE, OverlayView.SCALE);
 
-        Map<Coordinates, Map<Unit, Coordinates.DIRECTION>> directionMap = DC_Game.game.getDirectionMap();
-        Map<Unit, Coordinates.DIRECTION> heroObjDIRECTIONMap = directionMap.get(bfObj.getCoordinates());
+        Map<Coordinates, Map<BattleFieldObject, Coordinates.DIRECTION>> directionMap = DC_Game.game.getDirectionMap();
+        Map<BattleFieldObject, Coordinates.DIRECTION> map = directionMap.get(bfObj.getCoordinates());
 
-        if (heroObjDIRECTIONMap != null) {
-            view.setDirection(heroObjDIRECTIONMap.get(bfObj));
+        if (map != null) {
+            view.setDirection(map.get(bfObj));
         }
 
         return view;

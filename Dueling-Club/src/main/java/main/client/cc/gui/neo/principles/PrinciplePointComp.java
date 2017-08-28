@@ -9,9 +9,9 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.rules.rpg.IntegrityRule;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.awt.*;
@@ -111,7 +111,7 @@ public class PrinciplePointComp extends HC_PointComp {// do I really need to?
             @Override
             public void tryDown() {
                 if (!checkDown()) {
-                    SoundMaster.playStandardSound(getBlockedSound());
+                    DC_SoundMaster.playStandardSound(getBlockedSound());
                 } else {
                     down();
                 }
@@ -214,7 +214,7 @@ public class PrinciplePointComp extends HC_PointComp {// do I really need to?
     @Override
     protected void infoClick() {
         panel.getView().principleSelected(principle);
-        SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
     }
 
     @Override

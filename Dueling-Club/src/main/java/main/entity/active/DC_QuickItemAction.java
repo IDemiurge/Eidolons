@@ -11,8 +11,8 @@ import main.entity.tools.active.item.ItemActiveMaster;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
+import main.system.audio.DC_SoundMaster;
 import main.system.graphics.Sprite;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class DC_QuickItemAction extends DC_ActiveObj {
@@ -39,8 +39,13 @@ public class DC_QuickItemAction extends DC_ActiveObj {
     }
 
     @Override
+    public boolean activate() {
+        return super.activate();
+    }
+
+    @Override
     public void playCancelSound() {
-        SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
     }
 
     @Override

@@ -6,12 +6,12 @@ import main.game.battlecraft.rules.mechanics.WaitRule;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.turn.TurnManager;
 import main.system.GuiEventManager;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
@@ -19,7 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import static main.system.GuiEventType.*;
+import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
+import static main.system.GuiEventType.UPDATE_UNIT_ACT_STATE;
 
 /**
  * After each Action, recalculates Initiative for each unit,
@@ -95,8 +96,9 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         boolean result;
 
         result = chooseUnit();
+//TODO if (OptionsMaster.getEngineOptions().getBooleanValue(ENGINE_OPTION.RESET_COSTS))
+//        game.getActionManager().resetCostsInNewThread();
 
-        game.getActionManager().resetCostsInNewThread();
         resetDisplayedQueue();
         result &= activeUnit.turnStarted();
         return result;
@@ -128,9 +130,9 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         for (Unit unit : unitQueue) {
             if (game.getVisionMaster().checkDetectedEnemy(unit)) {
                 displayedUnitQueue.add(unit);
-                GuiEventManager.trigger(UPDATE_UNIT_VISIBLE, new ImmutablePair<>(unit, true));
+//                GuiEventManager.trigger(UPDATE_UNIT_VISIBLE, new ImmutablePair<>(unit, true));
             } else {
-                GuiEventManager.trigger(UPDATE_UNIT_VISIBLE, new ImmutablePair<>(unit, false));
+//                GuiEventManager.trigger(UPDATE_UNIT_VISIBLE, new ImmutablePair<>(unit, false));
             }
         }
 
@@ -211,9 +213,9 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 //        resetQueue();
         game.getRules().getTimeRule().newRound();
         if (game.isStarted()) {
-            SoundMaster.playStandardSound(STD_SOUNDS.DEATH);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.DEATH);
         } else {
-            SoundMaster.playStandardSound(STD_SOUNDS.FIGHT);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.FIGHT);
         }
 //        if (isStarted()) {
 //            if (!playerHasActiveUnits()) {

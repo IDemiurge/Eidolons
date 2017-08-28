@@ -1,7 +1,9 @@
 package main.swing.components.obj;
 
 import main.data.XLinkedMap;
+import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
+import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -51,6 +53,7 @@ public class BfGridComp {
     private boolean dirty;
     private int pixelOffsetY;
     private int pixelOffsetX;
+    private Map<Coordinates, DC_Cell> cellEntityMap = new XLinkedMap<>();
 
     public BfGridComp(DC_Game simulation, int width, int height, int zoom) {
         editMode = true;
@@ -70,7 +73,10 @@ public class BfGridComp {
         zoom = 100;
         initCellsAndMap();
         if (CoreEngine.isLevelEditor())
+        {
+
             initPanel();
+        }
     }
 
     private static Map<XLine, Image> getMap(boolean overOrUnder) {
@@ -127,7 +133,12 @@ public class BfGridComp {
         cells = new CellComp[getCellsX()][getCellsY()];
         for (int i = 0; i < getCellsX(); i++) {
             for (int j = 0; j < getCellsY(); j++) {
+                DC_Cell cellEntity = new DC_Cell(i, j, game, new Ref(), game
+                 .getDungeon());
                 Coordinates coordinates = new Coordinates(i, j);
+                cellEntityMap.put(coordinates, cellEntity);
+                if (!CoreEngine.isLevelEditor())
+                    continue;
                 CellComp cell = new CellComp(game, coordinates, this);
                 getMap().put(coordinates, cell);
                 cells[i][j] = cell;
@@ -383,7 +394,7 @@ public class BfGridComp {
                 if (editMode) {
                     Coordinates c = new Coordinates(i + getOffsetX(), j + getOffsetY());
                     cellComp.setObjects(getGame().getObjectsOnCoordinate(c));
-                    cellComp.setOverlayingObjects(getGame().getOverlayingObjects(c));
+//                    cellComp.setOverlayingObjects(getGame().getOverlayingObjects(c));
                     cellComp.setSizeFactor(zoom);
                     cellComp.setWidth(getCellWidth());
                     cellComp.setHeight(getCellHeight());
@@ -619,5 +630,13 @@ public class BfGridComp {
     }
 
     private void setOffsetIsNotReady(boolean offsetIsNotReady) {
+    }
+
+    public Map<Coordinates, DC_Cell> getCellEntityMap() {
+        return cellEntityMap;
+    }
+
+    public void setCellEntityMap(Map<Coordinates, DC_Cell> cellEntityMap) {
+        this.cellEntityMap = cellEntityMap;
     }
 }

@@ -416,8 +416,10 @@ NEXT_MISSION(null,false, "missions"),
     // unit in the middle of each GROUP
 
 
-    ANIM_SPRITE_CAST
+    ANIM_SPRITE_PRECAST
             ("", true, "spells", "actions"),
+    ANIM_SPRITE_CAST
+     ("", true, "spells", "actions"),
     ANIM_SPRITE_RESOLVE
             ("", true, "spells", "actions"),
     ANIM_SPRITE_MAIN
@@ -430,7 +432,8 @@ NEXT_MISSION(null,false, "missions"),
             ("", true, "spells", "actions"), ANIM_MODS_SPRITE
             ("", true, "spells", "actions"), ANIM_MISSILE_SFX
 //
-            ("", true, "spells", "actions"), ANIM_SFX_CAST
+            ("", true, "spells", "actions"),ANIM_SFX_PRECAST
+     ("", true, "spells", "actions"), ANIM_SFX_CAST
             ("", true, "spells", "actions"), ANIM_SFX_RESOLVE
             ("", true, "spells", "actions"), ANIM_SFX_MAIN
             ("", true, "spells", "actions"), ANIM_SFX_IMPACT

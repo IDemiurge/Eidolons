@@ -5,11 +5,10 @@ import main.entity.EntityCheckMaster;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
-import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.module.dungeoncrawl.dungeon.minimap.MiniObjComp;
 import main.launch.ArcaneVault;
 import main.swing.components.obj.BfGridComp;
@@ -26,7 +25,6 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.List;
 import java.util.Map;
 
 public class LE_MouseMaster implements MouseMotionListener, MouseListener, MouseWheelListener {
@@ -231,12 +229,7 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
         if (e.getClickCount() > 1 || (alt && !empty)) {
             if (right) {
                 // choose if stacked?
-                List<Unit> objectsOnCoordinate = LevelEditor.getSimulation()
-                        .getObjectsOnCoordinate(null, lastClicked.getCoordinates(), false, false,
-                                false);
-                LevelEditor.cache();
-                LE_ObjMaster.removeObj(lastClicked.getCoordinates());
-                SoundMaster.playStandardSound(STD_SOUNDS.ERASE);
+
                 return;
             } else if (e.isShiftDown()) {
                 int i = lastClicked.getIntParam(G_PARAMS.CHANCE);

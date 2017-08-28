@@ -10,6 +10,8 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.system.images.ImageManager;
+import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import main.system.options.OptionsMaster;
 
 import java.awt.*;
 
@@ -18,11 +20,11 @@ public class VisibilityMaster {
     private final String TARGET = " t";
     private final String INFO = " s";
     private VisionMaster master;
-    private boolean outlinesOn;
+    private boolean outlinesOn = true;
 
     public VisibilityMaster(VisionMaster visionMaster) {
         master = visionMaster;
-        outlinesOn = !visionMaster.getGame().isDummyPlus() && !VisionManager.isVisionHacked();
+//        outlinesOn = !visionMaster.getGame().isDummyPlus() && !VisionManager.isVisionHacked();
 
     }
 
@@ -181,6 +183,11 @@ public class VisibilityMaster {
     }
 
     public boolean isOutlinesOn() {
+        try {
+            return OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OUTLINES);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return outlinesOn;
     }
 

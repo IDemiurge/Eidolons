@@ -1,10 +1,12 @@
 package main.libgdx.bf.mouse;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.libgdx.anims.particles.lighting.FireLightProt;
@@ -134,36 +136,37 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     private void tryPullCameraY(int screenY) {
         float diffY = (yCamPos - screenY) * camera.zoom;
-        if ( checkCameraPosLimitY(camera.position.y - diffY))
-        {
+        if (checkCameraPosLimitY(camera.position.y - diffY)) {
             camera.position.y -= diffY;
             yCamPos = screenY;
         }
     }
-        private void tryPullCameraX(int screenX) {
+
+    private void tryPullCameraX(int screenX) {
         float diffX = (xCamPos - screenX) * camera.zoom;
-        float max = MARGIN+
+        float max = MARGIN +
          DungeonScreen.getInstance().getGridPanel().getCols()
           * GridConst.CELL_W * camera.zoom;
         float min = -MARGIN;
-        if (!(diffX>0 && camera.position.x + diffX > max)
-            || !(diffX<0 &&camera.position.x + diffX<min )){
+        if (!(diffX > 0 && camera.position.x + diffX > max)
+         || !(diffX < 0 && camera.position.x + diffX < min)) {
             camera.position.x += diffX;
             xCamPos = screenX;
         }
     }
 
     private boolean checkCameraPosLimitX(float x) {
-        float max = MARGIN+
+        float max = MARGIN +
          DungeonScreen.getInstance().getGridPanel().getCols() * GridConst.CELL_W * camera.zoom;
         float min = -MARGIN;
-        return  (x>max || x< min);
+        return (x > max || x < min);
     }
+
     private boolean checkCameraPosLimitY(float y) {
-        float max = MARGIN+
+        float max = MARGIN +
          DungeonScreen.getInstance().getGridPanel().getRows() * GridConst.CELL_H * camera.zoom;
         float min = -MARGIN;
-        return  !(y>max || y< min);
+        return !(y > max || y < min);
     }
 
     public void setDefaultPos() {
@@ -250,6 +253,30 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
         }
     }
 
+    public boolean isCellWithinCamera(int x, int y) {
+        return isWithinCamera(GridConst.CELL_W * x, GridConst.CELL_H * y, GridConst.CELL_W, GridConst.CELL_H);
+    }
+
+    public boolean isWithinCamera(Actor actor) {
+        return isWithinCamera(actor.getX(), actor.getY(), actor.getWidth(), actor.getHeight());
+    }
+        public boolean isWithinCamera(float x, float y, float width, float height) {
+//            width = width / getZoom();
+//            height = height / getZoom();
+//            float minY = camera.position.y - Gdx.graphics.getHeight()/2;
+//            float maxY = camera.position.y + Gdx.graphics.getHeight()/2;
+//
+//        float x1 =   x/getZoom();
+//        if (camera.position.x - x1 <width ||camera.position.x - x1 >2*Gdx.graphics.getWidth())
+//            return false;
+        if (Math.abs(camera.position.x - x)-width > Gdx.graphics.getWidth() * getZoom() / 2)
+            return false;
+        if (Math.abs(camera.position.y - y)-height >  Gdx.graphics.getHeight() * getZoom() / 2)
+//        if (y1-camera.position.y   <height ||y1-camera.position.y   >2*Gdx.graphics.getHeight())
+            return false;
+
+        return true;
+    }
 
     public float getZoom() {
         return camera.zoom;
@@ -308,4 +335,5 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     public void pinchStop() {
 
     }
+
 }

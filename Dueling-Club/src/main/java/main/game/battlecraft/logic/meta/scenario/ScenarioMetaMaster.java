@@ -9,6 +9,8 @@ import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.meta.scenario.hq.HqShopManager;
 import main.game.battlecraft.logic.meta.universal.*;
+import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.game.core.game.ScenarioGame;
 import main.system.auxiliary.StringMaster;
 import main.test.frontend.ScenarioLauncher;
@@ -30,7 +32,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
          */
     @Override
     public void preStart() {
-
+        RuleMaster.setScope(RULE_SCOPE.FULL);
         String missionName =
          getMetaDataManager().getMissionName();
 

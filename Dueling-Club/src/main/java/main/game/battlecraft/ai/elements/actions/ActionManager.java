@@ -159,32 +159,38 @@ public class ActionManager extends AiHandler {
     }
 
 
-
-
     public Action getForcedAction(UnitAI ai) {
         BEHAVIOR_MODE behaviorMode = ai.getBehaviorMode();
         GOAL_TYPE goal = AiEnums.GOAL_TYPE.PREPARE;
 
-        List<ActionSequence> actions;
-
-        if (behaviorMode == AiEnums.BEHAVIOR_MODE.PANIC) {
-            return new Action(ai.getUnit().getAction("Cower"));
+        Action action = null;
+        if (behaviorMode != null) {
+            if (behaviorMode == AiEnums.BEHAVIOR_MODE.PANIC) {
+                action = new Action(ai.getUnit().getAction("Cower"));
+            }
+            if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
+                action = new Action(ai.getUnit().getAction("Stumble"));
+            }
+            if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK) {
+                action = new Action(ai.getUnit().getAction("Rage"));
+            }
+            action.setTaskDescription("Forced Behavior");
         }
-        if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
-            return new Action(ai.getUnit().getAction("Stumble"));
+        try {
+            action = getAtomicAi().getAtomicActionPrepare(getUnit().getAI());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK) {
-            return new Action(ai.getUnit().getAction("Rage"));
-        }
-        Action action = getAtomicAi().getAtomicActionPrepare(getUnit().getAI());
         if (action != null) {
             return action;
         }
 
-        actions = getActionSequenceConstructor().createActionSequencesForGoal(new Goal(goal, ai, true), ai);
+        List<ActionSequence> actions = getActionSequenceConstructor()
+         .createActionSequencesForGoal(new Goal(goal, ai, true), ai);
         if (ai.checkMod(AI_MODIFIERS.TRUE_BRUTE)) {
             goal = AiEnums.GOAL_TYPE.ATTACK;
             actions.addAll(getActionSequenceConstructor().createActionSequencesForGoal(new Goal(goal, ai, true), ai));
+
         }
         if (behaviorMode == null) {
             if (ParamAnalyzer.isFatigued(getUnit())) {
@@ -195,27 +201,16 @@ public class ActionManager extends AiHandler {
                 actions.add(new ActionSequence(AiEnums.GOAL_TYPE.PREPARE, getAction(getUnit(),
                  STD_MODE_ACTIONS.Concentrate.name())));
             }
-            // Integer id = checkWaitForBlockingAlly(); TODO can actually preCheck
-            // if movement is blocked and wait on the least sturdy in line...
-            // if (id != null) {
-            // Task task = new Task(ai, GOAL_TYPE.PREPARE, ai);
-            // ActionSequence sequence = ActionSequenceConstructor
-            // .getSequence(
-            // getAction(unit, STD_ACTIONS.Wait.name(), id),
-            // task);
-            // if (sequence != null)
-            // actions.add(sequence);
-            // }
         }
         if (actions.isEmpty()) {
             return getAction(getUnit(), STD_MODE_ACTIONS.Defend.name(), null);
         }
         ActionSequence sequence = getPriorityManager().chooseByPriority(actions);
 
-        LogMaster.log(1, getUnit() + " has chosen " + "" + sequence
+        LogMaster.log(1, getUnit() + " has been Forced to choose " + "" + sequence
          + " with priorioty of " + sequence.getPriority());
 
-        getMaster().getMessageBuilder().append("Task: " + sequence.getTask().toShortString());
+        getMaster().getMessageBuilder().append("Forced Task: " + sequence.getTask().toShortString());
 
         action = sequence.getNextAction();
         if (action == null) {

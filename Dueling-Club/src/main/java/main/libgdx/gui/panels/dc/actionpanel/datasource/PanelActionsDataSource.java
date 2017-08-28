@@ -118,8 +118,8 @@ public class PanelActionsDataSource implements
     }
 
     @Override
-    public List<ValueContainer> getEffects() {
-        return unitDataSource.getEffects();
+    public List<ValueContainer> getBuffs() {
+        return unitDataSource.getBuffs();
     }
 
     @Override

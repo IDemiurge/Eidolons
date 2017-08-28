@@ -15,7 +15,11 @@ import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.libgdx.StyleHolder;
+import main.libgdx.screens.DungeonScreen;
+import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
+import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import main.system.options.OptionsMaster;
 
 import static main.system.GuiEventType.CALL_BLUE_BORDER_ACTION;
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
@@ -37,6 +41,7 @@ public class GridCell extends Group implements Borderable {
     }
 
     public GridCell init() {
+
         backImage = new Image(backTexture);
         backImage.setFillParent(true);
         addActor(backImage);
@@ -73,22 +78,36 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        Color color = getColor(); //keep reference to avoid multiple method calls
-//        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-        super.draw(batch, parentAlpha);
+        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
+            if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), getWidth(), getHeight())) {
+                return;
+            }
+        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)){
+//            if (getGridY()==0 && getGridX()==0)
+            TextureManager. drawFromSpriteCache(TextureManager.getCellSpriteCacheId(
+             getGridX(), getGridY()
+            ));
+        }
+//         else
+            super.draw(batch, parentAlpha);
+
     }
 
     @Override
     public void act(float delta) {
+        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
+            if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), getWidth(), getHeight())) {
+                return;
+            }
         super.act(delta);
         if (DC_Game.game.isDebugMode()) {
             if (!cordsText.isVisible()) {
                 cordsText.setVisible(true);
             }
-            if (GammaMaster.DEBUG_MODE){
+            if (GammaMaster.DEBUG_MODE) {
                 cordsText.setText(getGridX() + ":" + getGridY() + ", gamma="
-                 + DC_Game.game.getVisionMaster().getGammaMaster().
-                 getGammaForCell(getGridX(), getGridY())
+                  + DC_Game.game.getVisionMaster().getGammaMaster().
+                  getGammaForCell(getGridX(), getGridY())
 //                 +"\n gamma="
 //                 + DC_Game.game.getVisionMaster().getGammaMaster().
 //                 getGammaForCell(getGridX(), getGridY())+"\n Illumination="
@@ -97,10 +116,9 @@ public class GridCell extends Group implements Borderable {
 //                 + DC_Game.game.getVisionMaster().getGammaMaster().
 //                 getGammaForCell(getGridX(), getGridY())
                 );
-                cordsText.setPosition( 0, getHeight() / 2 - cordsText.getHeight() / 2);
+                cordsText.setPosition(0, getHeight() / 2 - cordsText.getHeight() / 2);
 
-            }
-            else {
+            } else {
                 cordsText = new Label(getGridX() + ":" + getGridY(), StyleHolder.getDefaultLabelStyle());
                 cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2, getHeight() / 2 - cordsText.getHeight() / 2);
             }
@@ -119,7 +137,6 @@ public class GridCell extends Group implements Borderable {
 //            setColor(0.1f, 0.1f, 0.1f, 1);
 //        }
     }
-
 
 
     @Override
@@ -176,13 +193,13 @@ public class GridCell extends Group implements Borderable {
     }
 
     @Override
-    public void setTeamColor(Color teamColor) {
-
+    public Color getTeamColor() {
+        return null;
     }
 
     @Override
-    public Color getTeamColorBorder() {
-        return null;
+    public void setTeamColor(Color teamColor) {
+
     }
 
 }

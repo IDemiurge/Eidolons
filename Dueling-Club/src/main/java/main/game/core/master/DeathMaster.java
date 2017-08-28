@@ -16,11 +16,11 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.audio.DC_SoundMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.text.LogEntryNode;
@@ -111,7 +111,7 @@ public class DeathMaster extends Master {
                 }
             }
 
-            SoundMaster.playEffectSound(SOUNDS.DEATH, killed);
+            DC_SoundMaster.playEffectSound(SOUNDS.DEATH, killed);
 
             game.getLogManager().logDeath(killed, killer);
             getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF));

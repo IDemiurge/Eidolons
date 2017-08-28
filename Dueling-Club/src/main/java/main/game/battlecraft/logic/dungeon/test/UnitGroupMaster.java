@@ -38,12 +38,12 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.swing.generic.services.dialog.DialogMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.entity.FilterMaster;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -311,7 +311,7 @@ public class UnitGroupMaster {
         if (!result) {
             return null;
         }
-        SoundMaster.playStandardSound(STD_SOUNDS.OK);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.OK);
         return ListMaster.toObjAtCoordinate(units);
     }
 

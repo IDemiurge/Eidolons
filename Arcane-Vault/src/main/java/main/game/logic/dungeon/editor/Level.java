@@ -9,6 +9,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -281,7 +282,7 @@ public class Level extends DungeonWrapper<Location> {
         for (Coordinates c : getDirectionMap().keySet())
 
         {
-            Map<Unit, DIRECTION> map = getDirectionMap().get(c);
+            Map<BattleFieldObject, DIRECTION> map = getDirectionMap().get(c);
             for (DC_Obj obj : map.keySet()) {
                 if (obj instanceof Unit) {
                     Unit u = (Unit) obj;
@@ -587,7 +588,7 @@ public class Level extends DungeonWrapper<Location> {
         return mission;
     }
 
-    public Map<Coordinates, Map<Unit, DIRECTION>> getDirectionMap() {
+    public Map<Coordinates, Map<BattleFieldObject, DIRECTION>> getDirectionMap() {
         return LevelEditor.getSimulation(this).getDirectionMap();
     }
 

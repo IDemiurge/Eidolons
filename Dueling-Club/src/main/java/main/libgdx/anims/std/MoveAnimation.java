@@ -3,7 +3,7 @@ package main.libgdx.anims.std;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import main.ability.effects.oneshot.move.MoveEffect;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
@@ -12,6 +12,9 @@ import main.game.bf.Coordinates;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.sprite.SpriteAnimation;
+import main.libgdx.bf.BaseView;
+import main.libgdx.bf.GridMaster;
+import main.libgdx.screens.DungeonScreen;
 import main.system.EventCallbackParam;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
@@ -23,8 +26,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import static main.system.GuiEventType.DESTROY_UNIT_MODEL;
 import static main.system.GuiEventType.UNIT_MOVED;
+import static main.system.GuiEventType.UNIT_STARTS_MOVING;
 
 /**
  * Created by JustMe on 1/14/2017.
@@ -32,14 +35,14 @@ import static main.system.GuiEventType.UNIT_MOVED;
 public class MoveAnimation extends ActionAnim {
 
 
-    static boolean on = false;
-    private MoveToAction action;
+    static boolean on = true;
+    private MoveByAction action;
     private Unit unit;
 
     public MoveAnimation(Entity active, AnimData params) {
         super(active, params);
         if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
-                MoveEffect.class))) // for teleports, telekinesis etc
+         MoveEffect.class))) // for teleports, telekinesis etc
         {
             unit = (Unit) getRef().getTargetObj();
         }
@@ -56,14 +59,15 @@ public class MoveAnimation extends ActionAnim {
         duration = 0.1f;
     }
 
+
     protected Action getAction() {
         if (action == null) {
-            action = new MoveToAction() {
+            action = new MoveByAction() {
                 @Override
                 protected void begin() {
                     super.begin();
-                    LogMaster.log(1, this + " begins! "
-                            + this.getX() + " " + this.getY());
+//                    LogMaster.log(1, this + " begins! "
+//                     + this.getX() + " " + this.getY());
                 }
 
                 @Override
@@ -72,17 +76,37 @@ public class MoveAnimation extends ActionAnim {
                     LogMaster.log(1, this + ": " + getActor().getX() + " " + getActor().getY());
                 }
 
-                @Override
-                public String toString() {
-                    return super.toString() + " on " + getActor() + " to: " + this.getX() + " " + this.getY();
-                }
+//                @Override
+//                public String toString() {
+//                    return super.toString() + " on " + getActor() + " to: " + this.getX() + " " + this.getY();
+//                }
             };
         }
-        action.setPosition(getDestination().x, getDestination().y);
+        action.setAmount(getDestination().x-getOrigin().x, getDestination().y-getOrigin().y);
         action.setDuration(1);
+        setDuration(1);
+
         return action;
     }
 
+    @Override
+    protected boolean checkFinished() {
+//        return getActor().getActions().size>0)
+        return super.checkFinished();
+    }
+
+    public void initPosition() {
+        origin = GridMaster
+         .getVectorForCoordinate(getOriginCoordinates(), false, true);
+        main.system.auxiliary.log.LogMaster.log(1,
+         this + " origin: " + origin);
+        destination = GridMaster
+         .getVectorForCoordinate(getDestinationCoordinates(), false, true);
+        main.system.auxiliary.log.LogMaster.log(1,
+         this + " destination: " + destination);
+
+        defaultPosition = getDefaultPosition();
+    }
     @Override
     public List<SpriteAnimation> getSprites() {
         return new LinkedList<>();
@@ -95,19 +119,27 @@ public class MoveAnimation extends ActionAnim {
 
 
     @Override
+    protected void add() {
+        super.add();
+    }
+
+    @Override
     public void start() {
-        super.start();
-//        DC_HeroObj unit = (DC_HeroObj) getRef().getSourceObj();
-//        if (!ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
-//         MoveEffect.class)))
-//            unit = (DC_HeroObj) getRef().getTargetObj();
-//        BaseView actor = GameScreen.getInstance().getGridPanel().getUnitMap()
-//         .get(unit);
-//        GameScreen.getInstance().getGridStage().addActor(actor);
+        try {
+            super.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Unit unit = (Unit) getRef().getSourceObj();
+        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
+         MoveEffect.class)))
+            unit = (Unit) getRef().getTargetObj();
+        BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
+         .get(unit);
+//        DungeonScreen.getInstance().getGridStage().addActor(actor);
 //        actor.setPosition(getX(), getY());
-//        main.system.auxiliary.LogMaster.log(1, " ");
-//        actor.addAction(getAction());
-//        action.setTarget(actor);
+        actor.addAction(getAction());
+        action.setTarget(actor);
 
 
     }
@@ -125,7 +157,7 @@ public class MoveAnimation extends ActionAnim {
 //            return getRef().getTargetObj().getCoordinates();
 //        return super.getOriginCoordinates();
         MoveEffect e = (MoveEffect) EffectFinder.getFirstEffectOfClass(getActive(),
-                MoveEffect.class);
+         MoveEffect.class);
         return e.getOrigin();
 
     }
@@ -135,7 +167,7 @@ public class MoveAnimation extends ActionAnim {
 
 
         MoveEffect e = (MoveEffect) EffectFinder.getFirstEffectOfClass(getActive(),
-                MoveEffect.class); //TODO could be 2+?
+         MoveEffect.class); //TODO could be 2+?
         return e.getDestination();
 //            if (e.getDirection() != null) {
 //                return ref.getSourceObj().getCoordinates().getAdjacentCoordinate
@@ -153,7 +185,7 @@ public class MoveAnimation extends ActionAnim {
 
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnStart() {
-        return Arrays.asList(new ImmutablePair<>(DESTROY_UNIT_MODEL, new EventCallbackParam(unit)));
+        return Arrays.asList(new ImmutablePair<>(UNIT_STARTS_MOVING, new EventCallbackParam(unit)));
     }
 
     @Override

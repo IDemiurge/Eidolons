@@ -1,7 +1,7 @@
 package main.game.module.dungeoncrawl.dungeon.minimap;
 
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.awt.*;
@@ -47,7 +47,7 @@ public class DragOffsetMouseListener implements MouseListener, AWTEventListener,
     }
 
     private void offset() {
-        SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
         int diff_x = pressPoint.x - releasePoint.x;
         int diff_y = pressPoint.y - releasePoint.y;
         int yOffset = diff_y / factor;

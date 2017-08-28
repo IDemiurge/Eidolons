@@ -10,7 +10,6 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
-import main.game.battlecraft.ai.tools.future.FutureBuilder;
 import main.game.battlecraft.rules.combat.attack.AttackCalculator;
 import main.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import main.game.logic.action.context.Context;
@@ -54,9 +53,9 @@ public class ThreatAnalyzer extends AiHandler {
 
     private Map<Unit, Integer> getMemoryMap(UnitAI ai) {
         Map<Unit, Integer> map = threatMemoryMap.get(ai);
-        if (map == null )
+        if (map == null)
             threatMemoryMap.put(ai, new HashMap<>());
-        return  threatMemoryMap.get(ai);
+        return threatMemoryMap.get(ai);
     }
 
     public int getRangedThreat(Unit target, Unit unit) {
@@ -101,34 +100,25 @@ public class ThreatAnalyzer extends AiHandler {
                 return 0;
             }
         }
+        int distance = 1 + PositionMaster.getDistance(getUnit(), enemy);
+        if (distance > 5)
+            return 0;
         int threat = 0;
         int factor = 1;
         DC_UnitAction attack = enemy.getAction(DC_ActionManager.ATTACK);
         if (attack == null) {
             return 0;
         }
-        if (now) {
-            attack.initCosts();
-            try {
-                int ap_factor = enemy.getIntParam(PARAMS.C_N_OF_ACTIONS)
-                 / attack.getCosts().getCost(PARAMS.C_N_OF_ACTIONS).getPayment()
-                 .getAmountFormula().getInt(enemy.getRef());
-                int sta_factor = enemy.getIntParam(PARAMS.C_STAMINA)
-                 / attack.getCosts().getCost(PARAMS.C_STAMINA).getPayment()
-                 .getAmountFormula().getInt(enemy.getRef());
-                int foc_factor = enemy.getIntParam(PARAMS.C_FOCUS)
-                 / attack.getCosts().getCost(PARAMS.C_FOCUS).getPayment().getAmountFormula()
-                 .getInt(enemy.getRef());
-                factor = Math.min(sta_factor, ap_factor);
-                factor = Math.min(factor, foc_factor);// extract to
-                // getTimesActivate()
-                // TODO
-            } catch (Exception e) {
-                // e.printStackTrace();
-            }
-        }
-        DC_ActiveObj subAttack = (DC_ActiveObj) FuncMaster.getGreatestEntity(attack.getSubActions(), atk ->
-         FutureBuilder.precalculateDamage(attack, getUnit(), true));
+        DC_ActiveObj subAttack = (DC_ActiveObj) FuncMaster.getGreatestEntity(
+         attack.getSubActions(), atk ->
+         {
+             if (enemy.getIntParam(PARAMS.C_N_OF_ACTIONS) >
+              atk.getIntParam(PARAMS.AP_COST))
+                 return atk.getIntParam(PARAMS.AP_COST);
+             return 0;
+         }
+//         FutureBuilder.precalculateDamage(attack, getUnit(), true)
+        );
         DC_PriorityManager.toggleImplementation(new PriorityManagerImpl(getMaster()) {
             @Override
             public Unit getUnit() {
@@ -139,7 +129,6 @@ public class ThreatAnalyzer extends AiHandler {
         DC_PriorityManager.toggleImplementation(null);
         // special attacks? dual wielding?
 
-        int distance = 1 + PositionMaster.getDistance(getUnit(), enemy);
         threat /= distance;
         main.system.auxiliary.log.LogMaster.log(1, getUnit() + " feels " +
          threat +
@@ -147,6 +136,26 @@ public class ThreatAnalyzer extends AiHandler {
         return threat;
     }
 
+//        if (now) {
+//        attack.initCosts();
+//        try {
+//            int ap_factor = enemy.getIntParam(PARAMS.C_N_OF_ACTIONS)
+//             / attack.getCosts().getCost(PARAMS.C_N_OF_ACTIONS).getPayment()
+//             .getAmountFormula().getInt(enemy.getRef());
+//            int sta_factor = enemy.getIntParam(PARAMS.C_STAMINA)
+//             / attack.getCosts().getCost(PARAMS.C_STAMINA).getPayment()
+//             .getAmountFormula().getInt(enemy.getRef());
+//            int foc_factor = enemy.getIntParam(PARAMS.C_FOCUS)
+//             / attack.getCosts().getCost(PARAMS.C_FOCUS).getPayment().getAmountFormula()
+//             .getInt(enemy.getRef());
+//            factor = Math.min(sta_factor, ap_factor);
+//            factor = Math.min(factor, foc_factor);// extract to
+//            // getTimesActivate()
+//            // TODO
+//        } catch (Exception e) {
+//            // e.printStackTrace();
+//        }
+//    }
 
     public enum THREAT_TYPE {
         RANGED,

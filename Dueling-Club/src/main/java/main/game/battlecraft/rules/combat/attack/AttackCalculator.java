@@ -215,7 +215,7 @@ public class AttackCalculator {
         int mod = CriticalAttackRule.
          getCriticalDamagePercentage(action, attacked);
 
-        int bonus = MathMaster.applyMod(amount, mod) - amount;
+        int bonus = MathMaster.applyMod(amount, mod)  ;
         if (!precalc) {
             if (attack.getAnimation() != null) {
                 attack.getAnimation().addPhase(
@@ -303,14 +303,15 @@ public class AttackCalculator {
         if (modMap.get(MOD_IDENTIFIER.EXTRA_ATTACK) != null) {
             totalMod += modMap.get(MOD_IDENTIFIER.EXTRA_ATTACK);
         }
+        bonus =0;
 
-        if (critical) {
-            bonus = getCriticalDamageBonus(attack, totalBonus, attacker, attacked, action, offhand);
-            bonusMap.put(MOD_IDENTIFIER.CRIT, bonus);
-        } else {
-            bonus = getAttackDefenseDamageBonus(attack, totalBonus, attacker, attacked, action,
+            bonus += getAttackDefenseDamageBonus(attack, totalBonus, attacker, attacked, action,
              offhand);
             bonusMap.put(MOD_IDENTIFIER.ATK_DEF, bonus);
+        if (critical) {
+            bonus/=3*2;
+            bonus += getCriticalDamageBonus(attack, totalBonus, attacker, attacked, action, offhand);
+            bonusMap.put(MOD_IDENTIFIER.CRIT, bonus);
         }
         // bonusMap.put() inside
         totalBonus += bonus;

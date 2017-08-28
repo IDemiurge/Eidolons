@@ -44,7 +44,7 @@ public class GenericListChooser<E> implements ListSelectionListener {
     private Class<?> varClass;
     private int maxRowCount = 17;
     private int maxRowCountEnum = 29;
-    private int maxColumnNumber = 6;
+    private int maxColumnNumber = 5;
     private TextComp toolTipPanel;
     private Map<String, String> tooltipMap;
     private Decorator decorator;

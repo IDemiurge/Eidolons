@@ -81,7 +81,7 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
 //        if (game.getParty() != null) {
 //            Unit randomMember = game.getParty().getRandomMember();
 //            if (!randomMember.isDead()) {
-//                SoundMaster.playEffectSound(SOUNDS.THREAT, randomMember);
+//                DC_SoundMaster.playEffectSound(SOUNDS.THREAT, randomMember);
 //            }
 //        } else {
 //            // active unit?
@@ -134,7 +134,7 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
             game.getLogManager().log(
                     "*** Enemies cleared! Encounters left: " + getScheduledWaves().toString());
             if (PartyHelper.getParty() != null) {
-//                SoundMaster.playEffectSound(SOUNDS.TAUNT, game.getParty().getLeader());
+//                DC_SoundMaster.playEffectSound(SOUNDS.TAUNT, game.getParty().getLeader());
             }
         }
 //        roundsToWait =  getOptions().getIntValue(

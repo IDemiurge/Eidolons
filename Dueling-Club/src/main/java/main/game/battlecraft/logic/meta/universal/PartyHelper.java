@@ -26,11 +26,11 @@ import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
 import main.swing.generic.services.dialog.DialogMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.io.File;
@@ -60,13 +60,13 @@ public class PartyHelper {
             CharacterCreator.partyMemberAdded(hero);
         }
         if (hero.getIntParam(PARAMS.LEVEL) < getParty().getIntParam(PARAMS.LEVEL)) {
-            // SoundMaster.playStandardSound(STD_SOUNDS.LEVEL_UP); why not have
+            // DC_SoundMaster.playStandardSound(STD_SOUNDS.LEVEL_UP); why not have
             // some fun with this loop...
             Loop.startLoop(10);
             while (!Loop.loopEnded()
                     && hero.getIntParam(PARAMS.LEVEL) < getParty().getIntParam(PARAMS.LEVEL)) {
                 if (hero.getGame().isSimulation()) {
-                    SoundMaster.playStandardSound(STD_SOUNDS.LEVEL_UP);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.LEVEL_UP);
                 }
                 HeroLevelManager.levelUp(hero);
             }

@@ -58,7 +58,7 @@ public class LockMaster {
         }
         // roll
         lockedObj.getIntParam(PARAMS.LOCK_LEVEL);
-        // SoundMaster.playStandardSound(STD_SOUNDS.UNLOCK_SUCCESS);
+        // DC_SoundMaster.playStandardSound(STD_SOUNDS.UNLOCK_SUCCESS);
         return result;
     }
 

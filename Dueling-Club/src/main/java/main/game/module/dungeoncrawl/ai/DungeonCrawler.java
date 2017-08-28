@@ -5,12 +5,36 @@ import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
+import main.system.math.PositionMaster;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class DungeonCrawler {
+    public static final int AGGRO_RANGE = 3;
+    public static final int AGGRO_GROUP_RANGE = 3;
     private static boolean aiTestOn = true;
+    boolean sightRequiredForAggro = true;
+static DC_Game game;
+
+
+    public static void checkCombatStarts() {
+        Unit hero = (Unit) game.getPlayer(true).getHeroObj();
+         List<Unit> list =
+          new LinkedList<>(game.getUnits());
+//        Analyzer.getEnemies(hero, false, false, false);
+        list.removeIf(unit -> !unit.isEnemyTo(game.getPlayer(true)));
+        list.removeIf(unit-> PositionMaster.getExactDistance(
+         hero.getCoordinates(), unit.getCoordinates())<=AGGRO_RANGE);
+        List<Unit> aggroGroup = new LinkedList<>();
+        for (Unit sub : list) {
+        }
+
+        list =
+         new LinkedList<>(game.getUnits());
+        list.removeIf(unit-> PositionMaster.getExactDistance(
+         hero.getCoordinates(), unit.getCoordinates())<=AGGRO_RANGE);
+    }
 
     public static boolean isAiTestOn() {
         return aiTestOn;
@@ -70,6 +94,7 @@ public class DungeonCrawler {
 
         return list;
     }
+
 
     public enum ENGAGEMENT_LEVEL {
 

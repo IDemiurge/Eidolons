@@ -9,7 +9,6 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.system.DC_ConditionMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.math.Formula;
 
@@ -110,20 +109,12 @@ public class DC_CostsFactory {
         Formula formula;
 
         boolean var;
-        try {
-            int amount = Integer.valueOf(paramValue);
+            int amount = StringMaster.getInteger( paramValue);
             if (amount == 0) {
                 return null;
             }
             formula = new Formula(amount + "");
             var = false;
-        } catch (NumberFormatException e) {
-            formula = new Formula(paramValue);
-            LogMaster.log(0, cost_param + " var cost: "
-                    + paramValue);
-            var = true;
-
-        }
 
         Cost cost = new CostImpl(new Payment(pay_param, formula), cost_param);
         cost.setVariable(var);

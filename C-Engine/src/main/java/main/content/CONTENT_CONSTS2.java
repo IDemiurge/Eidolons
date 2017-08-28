@@ -124,6 +124,8 @@ public class CONTENT_CONSTS2 {
     // PERHAPS ENCOUNTERS COULD HAVE DEITY PROPERTY AS WELL;
     public enum UNIT_GROUP {
 ELEMENTALS(""),
+        RAVENGUARD(""),
+
         HUMANS("Militia,Scum,Guards,Army,Melee"),
         GREENSKINS("goblins,orcs"),
         BANDITS("Pirates,Thieving Crew,Robbers,"),

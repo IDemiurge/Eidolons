@@ -16,9 +16,9 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.graphics.Sprite;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.List;
@@ -117,12 +117,12 @@ public class DC_UnitAction extends DC_ActiveObj {
     }
 
     public void playActivateSound() {
-        SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ACTIVATE);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ACTIVATE);
     }
 
     @Override
     public void playCancelSound() {
-        SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
     }
 
     @Override

@@ -305,7 +305,7 @@ public abstract class DC_Obj extends MicroObj {
     public void setVisibilityLevel(VISIBILITY_LEVEL visibilityLevel) {
         if (getGame().getManager().getActiveObj() != null) {
             if (getGame().getManager().getActiveObj().isMine())
-            // TODO MAIN HERO ONLY?
+                if (getGame().getManager().getActiveObj().isMainHero())
             {
                 setVisibilityLevelForPlayer(visibilityLevel);
             }

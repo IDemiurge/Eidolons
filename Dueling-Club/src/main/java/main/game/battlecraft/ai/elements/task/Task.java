@@ -4,6 +4,7 @@ import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
+import main.system.auxiliary.StringMaster;
 
 public class Task {
     private GOAL_TYPE type;
@@ -27,10 +28,10 @@ public class Task {
     }
 
     public String toShortString() {
-        return type + " on "
+        return  StringMaster.getWellFormattedString(type.toString()) + " on "
          +
          (arg instanceof Integer ?
-          getUnit().getGame().getObjectById((Integer) arg) :
+          getUnit().getGame().getObjectById((Integer) arg).getNameIfKnown() :
           arg == null ? "" : arg);
     }
 

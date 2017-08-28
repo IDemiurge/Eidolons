@@ -16,6 +16,7 @@ public class Formula {
 
     private String formula;
     private String buffer;
+    private static FuncMap functionMap;
 
     public Formula(String formula) {
         this.formula = formula;
@@ -28,8 +29,8 @@ public class Formula {
         if (StringMaster.isEmpty(formula)) {
             return 0;
         }
-            if (StringMaster.isInteger(formula)) {
-                return StringMaster.getInteger(formula);
+        if (StringMaster.isInteger(formula)) {
+            return StringMaster.getInteger(formula);
         }
 
         if (StringMaster.isNumber(formula, false)) {
@@ -40,7 +41,7 @@ public class Formula {
         VarMap vm = new VarMap(false /* case sensitive */);
 
         try {
-            buffer =new DynamicValueParser( ).parseDynamicValues(buffer, ref);
+            buffer = new DynamicValueParser().parseDynamicValues(buffer, ref);
         } catch (Exception e) {
             return 0;
         }
@@ -53,11 +54,10 @@ public class Formula {
             e.printStackTrace();
             return 0;
         }
-        FuncMap fm = new FuncMap(false);
-        fm.loadDefaultFunctions();
+
         double result = 0;
         try {
-            result = expression.eval(vm, fm);
+            result = expression.eval(vm, getFunctionMap());
         } catch (Exception e) {
             if (!FormulaMaster.getFailedFormulas().contains(toString())) {
                 e.printStackTrace();
@@ -174,5 +174,12 @@ public class Formula {
     }
 
 
+    public static FuncMap getFunctionMap() {
+        if (functionMap == null) {
+        functionMap = new FuncMap(false);
+        functionMap.loadDefaultFunctions();
+    }
+        return functionMap;
+    }
 
 }

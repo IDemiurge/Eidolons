@@ -18,7 +18,6 @@ import main.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import main.game.battlecraft.logic.dungeon.universal.Spawner;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
-import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
 import main.game.core.game.GameFactory;
 import main.game.core.game.GameFactory.GAME_SUBCLASS;
@@ -40,6 +39,7 @@ import main.test.Preset;
 import main.test.PresetMaster;
 import main.test.debug.DebugMaster;
 import main.test.frontend.FAST_DC;
+import main.test.frontend.Showcase;
 
 import java.util.List;
 
@@ -269,7 +269,7 @@ public class TestLauncher //extends MetaGameMaster
         }
         DC_KeyManager.DEFAULT_CONTROLLER = launch.controller;
 
-        GameLoop.setMaxAnimTime(launch.maxAnimTime);
+//TODO options init!         GameLoop.setMaxAnimTime(launch.maxAnimTime);
     }
 
     protected void initLogicTest() {
@@ -282,7 +282,7 @@ public class TestLauncher //extends MetaGameMaster
                 PLAYER_PARTY = choosePlayerUnits(PLAYER_CHOICE_OPTION);
                 break;
             case CODE.RANDOM:
-                ENEMY_PARTY = randomizeParty();
+                PLAYER_PARTY = randomizeParty();
                 break;
         }
 
@@ -297,6 +297,8 @@ public class TestLauncher //extends MetaGameMaster
             // case CODE.NONE:
             // break;
         }
+        Showcase.launchData+=PLAYER_PARTY+";";
+        Showcase.launchData+=ENEMY_PARTY+";";
     }
 
     public String randomizeParty() {
@@ -358,8 +360,12 @@ public class TestLauncher //extends MetaGameMaster
     }
 
     protected String chooseParty() {
-        ObjType party = ListChooser.chooseType_(DataManager
-         .getTypesGroup(DC_TYPE.PARTY, "Preset"), DC_TYPE.PARTY);
+        ObjType party = ListChooser.chooseType_(
+         DataManager
+          .getTypes(DC_TYPE.PARTY )
+//         DataManager
+//          .getTypesGroup(DC_TYPE.PARTY, "Preset")
+         , DC_TYPE.PARTY);
         return party.getProperty(PROPS.MEMBERS);
     }
 

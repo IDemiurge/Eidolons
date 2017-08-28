@@ -351,4 +351,8 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
         return false;
     }
 
+    public boolean isDisplayed() {
+        return false;
+
+    }
 }

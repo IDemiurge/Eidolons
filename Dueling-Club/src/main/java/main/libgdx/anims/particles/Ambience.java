@@ -3,7 +3,10 @@ package main.libgdx.anims.particles;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import main.content.CONTENT_CONSTS2.SFX;
+import main.libgdx.screens.DungeonScreen;
 import main.system.auxiliary.RandomWizard;
+import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import main.system.options.OptionsMaster;
 
 /**
  * Created by JustMe on 1/10/2017.
@@ -26,10 +29,20 @@ public class Ambience extends EmitterActor {
 
     @Override
     public void act(float delta) {
-        super.act(delta);
         if (!isVisible())
             return ;
-        float angle = acceleration.angle();
+        if (!OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AMBIENCE_MOVE_SUPPORTED))
+        {
+            return ;
+        }
+        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
+            if (!DungeonScreen.getInstance().getController().
+             isWithinCamera(getX(), getY(), getWidth()*2, getHeight()*2)) {
+                return;
+            }
+
+        super.act(delta);
+            float angle = acceleration.angle();
         float dst = originPos.dst(new Vector2(getX(), getY()));
         if (dst > moveRadius) {
             angle += RandomWizard.getRandomInt(360);
@@ -46,7 +59,27 @@ public class Ambience extends EmitterActor {
     }
 
     @Override
+    public float getWidth() {
+//        FuncMaster.getGreatest()
+//        getEffect().getEmitters().forEach(e->
+//        e.getSpawnWidth().getHighMax());
+        return 400;
+    }
+
+    @Override
+    public float getHeight() {
+        switch (sfx) {
+        }
+        return 400;
+    }
+
+    @Override
     public void draw(Batch spriteBatch, float delta) {
+        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
+            if (!DungeonScreen.getInstance().getController().
+             isWithinCamera(getX(), getY(), getWidth() , getHeight() )) {
+                return;
+            }
         if (modifyParticles) {
             getEffect().modifyParticles();
         }

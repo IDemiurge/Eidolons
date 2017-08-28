@@ -258,6 +258,7 @@ public enum PARAMS implements PARAMETER {
 
     GLOBAL_CONCEALMENT(null, null, false, 0, "dungeons"),
     GLOBAL_ILLUMINATION(null, null, false, 0, "dungeons"),
+    LIGHT_EMISSION_MODIFIER(null, null, false, 0, "dungeons"),
 
     PERCEPTION(null, null, false, 0, "bf obj", "units", "chars", "armor", "skills"),
     NOISE(null, null, false, 0, "action", "spell", "bf obj", "units", "chars", "armor", "skills"),

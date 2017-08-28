@@ -3,6 +3,7 @@ package main.game.core.game;
 import main.content.PARAMS;
 import main.data.XList;
 import main.entity.Ref;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.entity.obj.Structure;
@@ -84,24 +85,29 @@ public class DC_GameMaster extends GameMaster {
         return list.get(0);
     }
 
-
+@Deprecated
     public List<Unit> getObjectsOnCoordinate(Coordinates c) {
         // [QUICK FIX] - consider no-reset coordinate changes for AI etc
-        List<Unit> units = getUnitCache().get(c);
-        if (units != null) {
-            return units;
-        }
-        units = getObjectsOnCoordinate(null, c, null, true, false);
-        getUnitCache().put(c, units);
-        return units;
-    }
+//        List<Unit> units = getUnitCache().get(c);
+//        if (units != null) {
+//            return units;
+//        }
+//        units = getObjectsOnCoordinate(null, c, null, true, false);
+//        getUnitCache().put(c, units);
+//        return units;
+    return     new LinkedList<>() ;
+}
 
-    public List<Unit> getOverlayingObjects(Coordinates c) {
+    public List<BattleFieldObject> getOverlayingObjects(Coordinates c) {
         return getObjectsOnCoordinate(null, c, true, true, false);
 
     }
+    public List<BattleFieldObject> getObjectsOnCoordinate(Coordinates c,
+                                                          Boolean overlayingIncluded) {
+        return getObjectsOnCoordinate(null, c, overlayingIncluded, true, false);
+    }
 
-    public List<Unit> getObjectsOnCoordinate(Integer z, Coordinates c,
+        public List<BattleFieldObject> getObjectsOnCoordinate(Integer z, Coordinates c,
                                              Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
         // TODO auto adding cells won't work!
         if (c == null) {
@@ -111,31 +117,31 @@ public class DC_GameMaster extends GameMaster {
         if (z == null) {
             z = getGame().getDungeon().getZ();
         }
-        XList<Unit> list = new XList<>();
+        XList<BattleFieldObject> list = new XList<>();
 
-        for (Unit unit : getUnits()) {
+        for (BattleFieldObject object : getGame().getBfObjects()) {
             if (overlayingIncluded != null) {
                 if (overlayingIncluded) {
-                    if (!unit.isOverlaying()) {
+                    if (!object.isOverlaying()) {
                         continue;
                     }
                 } else {
-                    if (unit.isOverlaying()) {
+                    if (object.isOverlaying()) {
                         continue;
                     }
                 }
             }
 
             if (!passableIncluded) {
-                if (unit.isPassable()) {
+                if (object.isPassable()) {
                     continue;
                 }
             }
-            if (unit.getZ() != z) {
+            if (object.getZ() != z) {
                 continue;
             }
-            if (unit.getCoordinates().equals(c)) {
-                list.add(unit);
+            if (object.getCoordinates().equals(c)) {
+                list.add(object);
             }
         }
 
@@ -224,13 +230,14 @@ public class DC_GameMaster extends GameMaster {
         return structures;
     }
 
+    @Deprecated
     public Map<Coordinates, List<Unit>> getUnitMap() {
         if (unitMap == null) {
             unitMap = new HashMap<>();
         }
         return unitMap;
     }
-
+@Deprecated
     public Map<Coordinates, List<Unit>> getUnitCache() {
         return unitCache;
     }

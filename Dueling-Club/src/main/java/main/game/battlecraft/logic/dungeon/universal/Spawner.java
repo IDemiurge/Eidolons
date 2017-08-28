@@ -22,9 +22,9 @@ import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.launch.LaunchDataKeeper;
 import main.libgdx.bf.BFDataCreatedEvent;
 import main.system.GuiEventManager;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.test.TestMasterContent;
 import main.system.util.Refactor;
@@ -56,6 +56,9 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         for (Object player1 : getBattleMaster().getPlayerManager().getPlayers()) {
 
             DC_Player player = (DC_Player) player1;
+            if (player.isNeutral()) {
+                continue;
+            }
             UnitData data = player.getUnitData();
             if (data == null)
                 data = generateData("", player, null);
@@ -70,7 +73,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     protected void spawnDone() {
 //       TODO selective??
 // getGame().getMetaMaster().getPartyManager().getParty().getMembers()
-        List<Unit> unitsList=     new LinkedList<>() ;
+        List<Unit> unitsList = new LinkedList<>();
         unitsList.addAll(game.getUnits());
         getFacingAdjuster().adjustFacing(unitsList);
 
@@ -111,13 +114,28 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
             String facing = data.getContainerValue(PARTY_VALUE.FACING, i);
             String c = coordinates.get(i);
 
-            String level = data.getContainerValue(PARTY_VALUE.LEVEL, i);
             String type = data.getContainerValue(PARTY_VALUE.MEMBERS, i);
+            String level = data.getContainerValue(PARTY_VALUE.LEVEL, i);
+            if (!owner.isMe())
+                if (owner.isAi())
+                    if (StringMaster.getInteger(level) == 0) {
+                        level = getMinLevel(type) + "";
+                    }
+            units.add(spawnUnit(type, c, owner, facing, level));
             i++;
-           units.add(spawnUnit(type, c, owner, facing, level));
         }
 
 
+    }
+
+    public int getMinLevel(String type) {
+        int level = 0;
+        try {
+            level = getGame().getMetaMaster().getPartyManager().getPartyLevel();
+        } catch (Exception e) {
+        }
+
+        return level;
     }
 
     public Unit spawnUnit(String typeName, String coordinates, DC_Player owner,
@@ -168,7 +186,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         if (BooleanMaster.isTrue(me)) {
             PartyObj party = PartyHelper.getParty();
             if (party != null) {
-                SoundMaster.playEffectSound(SOUNDS.READY, party.getLeader());
+                DC_SoundMaster.playEffectSound(SOUNDS.READY, party.getLeader());
                 spawnPlayerParty(party, partyData);
                 return;
             }

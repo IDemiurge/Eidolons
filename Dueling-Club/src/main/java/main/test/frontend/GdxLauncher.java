@@ -26,7 +26,6 @@ public class GdxLauncher implements ApplicationListener {
         LwjglApplicationConfiguration conf = new LwjglApplicationConfiguration();
         conf.title = "Eidolons: Battlecraft v" + Launcher.VERSION;
         conf.useGL30 = true;
-
         conf.width = 1600;
         conf.height = 900;
         conf.fullscreen = false;

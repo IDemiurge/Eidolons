@@ -16,6 +16,7 @@ import main.game.battlecraft.rules.combat.damage.ArmorMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.game.DC_Game;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -32,7 +33,6 @@ import main.system.images.ImageManager.BORDER;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 
@@ -617,7 +617,7 @@ public class ActionAnimation extends PhaseAnimation {
         if (phase != null) {
             switch (phase.getType()) {
                 case MISSED:
-                    SoundMaster.playStandardSound(STD_SOUNDS.MISSED);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.MISSED);
                     break;
             }
         }

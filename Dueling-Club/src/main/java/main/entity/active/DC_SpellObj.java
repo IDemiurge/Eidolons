@@ -18,9 +18,9 @@ import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.graphics.Sprite;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class DC_SpellObj extends DC_ActiveObj {
@@ -49,7 +49,7 @@ public class DC_SpellObj extends DC_ActiveObj {
 
     @Override
     public void playCancelSound() {
-        SoundMaster.playStandardSound(STD_SOUNDS.SPELL_CANCELLED);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_CANCELLED);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class DC_SpellObj extends DC_ActiveObj {
     }
 
     public void playActivateSound() {
-        SoundMaster.playStandardSound(STD_SOUNDS.SPELL_ACTIVATE);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_ACTIVATE);
     }
 
 

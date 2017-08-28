@@ -352,9 +352,8 @@ public class LogMaster {
 
         LogFileMaster.checkWriteToFileNewThread(priority, s);
     }
-
     private static boolean isLogInNewThread() {
-        return true;
+        return false;
     }
 
     public static void logToFile(String string) {

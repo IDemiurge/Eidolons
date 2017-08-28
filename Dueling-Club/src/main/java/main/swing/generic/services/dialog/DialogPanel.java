@@ -7,10 +7,10 @@ import main.game.core.game.DC_Game;
 import main.swing.builders.DC_Builder;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
+import main.system.audio.DC_SoundMaster;
 import main.system.graphics.ColorManager;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import net.miginfocom.swing.MigLayout;
 
@@ -99,10 +99,10 @@ public class DialogPanel extends G_Panel {
 
     public void mouseClicked(MouseEvent e) {
         if (ok.contains(e.getLocationOnScreen())) {
-            SoundMaster.playStandardSound(STD_SOUNDS.OK_STONE);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.OK_STONE);
             ok();
         } else if (cancel.contains(e.getLocationOnScreen())) {
-            SoundMaster.playStandardSound(STD_SOUNDS.BACK);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.BACK);
             close();
         }
 

@@ -8,6 +8,7 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
+import main.game.battlecraft.logic.dungeon.test.TestSpawner;
 import main.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import main.game.battlecraft.rules.action.StackingRule;
 import main.game.bf.Coordinates;
@@ -175,6 +176,9 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         // default - getOrCreate a random point in some range from player start
 
         Coordinates playerC = getPlayerSpawnCoordinates();
+        if (true) //TODO sometimes not?
+            return new Coordinates(playerC.x, playerC.y - (
+             TestSpawner.isPlayerUnitGroupMode() ? 1 : 3));
         if (playerC == null) {
             playerC =getPlayerSpawnCoordinates();// Coordinates.getMiddleCoordinate(ArenaPositioner.DEFAULT_PLAYER_SIDE);
         }

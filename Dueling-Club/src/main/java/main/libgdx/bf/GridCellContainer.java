@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.game.bf.Coordinates;
 import main.libgdx.bf.datasource.GridCellDataSource;
+import main.system.graphics.MigMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -69,9 +70,9 @@ public class GridCellContainer extends GridCell {
                 actor.setPosition( perImageOffsetX * i,
                 perImageOffsetY * ((unitViewCount - 1) - i));
                 actor.setScale(scaleX, scaleY);
-                ((GridUnitView) actor).sizeChanged();
                 ((GridUnitView) actor).setScaledHeight(scaleY);
                 ((GridUnitView) actor).setScaledWidth(scaleX);
+                ((GridUnitView) actor).sizeChanged();
                 i++;
             }
         }
@@ -122,6 +123,7 @@ public class GridCellContainer extends GridCell {
         if (result && actor instanceof GridUnitView) {
             unitViewCount--;
             recalcUnitViewBounds();
+            ((GridUnitView) actor).sizeChanged();
         }
 
         return result;
@@ -158,47 +160,67 @@ public class GridCellContainer extends GridCell {
             return;
         }
 
-        final int xOffset = (int) (getWidth() / 3);
-        final int yOffset = (int) (getHeight() / 3);
+        final int width = (int) (getWidth()* OverlayView.SCALE);
+        final int height = (int) (getHeight()* OverlayView.SCALE);
         overlays.forEach(view -> {
             Coordinates.DIRECTION direction = view.getDirection();
             int calcXOffset = 0;
             int calcYOffset = 0;
             if (direction == null) {
-                calcXOffset += xOffset;
-                calcYOffset += yOffset;
+                calcXOffset+= (getWidth()-width)* OverlayView.SCALE;
+                calcYOffset+= (getHeight()-height)* OverlayView.SCALE;
             } else {
-                switch (direction) {
-                    case UP:
-                        calcXOffset += xOffset;
-                        calcYOffset += yOffset * 2;
-                        break;
-                    case DOWN:
-                        calcXOffset += xOffset;
-                        break;
-                    case LEFT:
-                        calcYOffset += yOffset;
-                        break;
-                    case RIGHT:
-                        calcXOffset += xOffset * 2;
-                        calcYOffset += yOffset;
-                        break;
-                    case UP_LEFT:
-                        calcYOffset += yOffset * 2;
-                        break;
-                    case UP_RIGHT:
-                        calcXOffset += xOffset * 2;
-                        calcYOffset += yOffset * 2;
-                        break;
-                    case DOWN_RIGHT:
-                        calcXOffset += xOffset * 2;
-                        break;
-                    case DOWN_LEFT:
-                        break;
+                int size = width;
+                int x = MigMaster.getCenteredPosition((int) getWidth(), size);
+                if (direction != null) {
+                    if (direction.isGrowX() == null) {
+                        x = MigMaster.getCenteredPosition((int)getWidth(), size);
+                    } else {
+                        x = (direction.isGrowX()) ? (int)getWidth() - size : 0;
+                    }
                 }
+
+                int y = MigMaster.getCenteredPosition((int)getHeight(), size);
+                if (direction != null) {
+                    if (direction.isGrowY() == null) {
+                        y = MigMaster.getCenteredPosition((int)getHeight(), size);
+                    } else {
+                        y = (direction.isGrowY()) ? (int)getHeight() - size : 0;
+                    }
+                }
+                calcXOffset = x;
+                  calcYOffset = y;
+//                switch (direction) {
+//                    case UP:
+//                        calcXOffset += (getWidth()-width)* OverlayView.SCALE;
+//                        calcYOffset += height * 2;
+//                        break;
+//                    case DOWN:
+//                        calcXOffset += (getWidth()-width)* OverlayView.SCALE;
+//                        break;
+//                    case LEFT:
+//                        calcYOffset += height;
+//                        break;
+//                    case RIGHT:
+//                        calcXOffset += width * 2;
+//                        calcYOffset += height;
+//                        break;
+//                    case UP_LEFT:
+//                        calcYOffset += height * 2;
+//                        break;
+//                    case UP_RIGHT:
+//                        calcXOffset += width * 2;
+//                        calcYOffset += height * 2;
+//                        break;
+//                    case DOWN_RIGHT:
+//                        calcXOffset += width * 2;
+//                        break;
+//                    case DOWN_LEFT:
+//                        break;
+//                }
             }
 
-            view.setBounds(calcXOffset, calcYOffset, xOffset, yOffset);
+            view.setBounds(calcXOffset, calcYOffset, width, height);
             addActor(view);
             overlayCount++;
         });

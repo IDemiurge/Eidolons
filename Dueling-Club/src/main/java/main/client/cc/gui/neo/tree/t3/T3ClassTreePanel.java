@@ -31,7 +31,7 @@ public class T3ClassTreePanel extends ClassTreeView {
         super.select(node, type);
         // HC_Master.getT3View(getHero(), false).selected(left, type);
         // CharacterCreator.typeSelected(type);
-        // SoundMaster.playStandardSound(STD_SOUNDS.SLOT);
+        // DC_SoundMaster.playStandardSound(STD_SOUNDS.SLOT);
         // HC_Master.setSelectedTreeNode(node);
         // tree.refresh();
         // tree.getPanel().repaint();

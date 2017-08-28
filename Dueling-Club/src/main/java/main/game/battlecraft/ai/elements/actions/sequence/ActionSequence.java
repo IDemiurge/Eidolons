@@ -38,6 +38,7 @@ public class ActionSequence {
         this.task = task;
         this.ai = ai;
         this.actions = actions;
+        actions.forEach(action ->action.setTask(getTask()));
     }
 
     public ActionSequence(Task task2, UnitAI ai2, Action... actions) {

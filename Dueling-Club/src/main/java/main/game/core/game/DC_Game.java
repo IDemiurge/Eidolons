@@ -54,6 +54,7 @@ import main.game.logic.battle.player.Player;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.system.DC_ConditionMaster;
 import main.system.DC_RequirementsManager;
+import main.system.GuiEventManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
@@ -69,6 +70,8 @@ import main.test.PresetMaster;
 import main.test.debug.DebugMaster;
 
 import java.util.*;
+
+import static main.system.GuiEventType.UPDATE_LIGHT;
 
 /**
  * contains references to everything that may be needed in scope of a single game
@@ -106,8 +109,8 @@ public class DC_Game extends MicroGame {
 
     private boolean paused; //to game loop!
 
-    private Map<Coordinates, Map<Unit, DIRECTION>> directionMap; // ?!
-    private HashMap<Coordinates, Map<Unit, FLIP>> flipMap;
+    private Map<Coordinates, Map<BattleFieldObject, DIRECTION>> directionMap; // ?!
+    private HashMap<Coordinates, Map<BattleFieldObject, FLIP>> flipMap;
 
     private boolean testMode;
     private boolean dummyPlus;
@@ -250,6 +253,7 @@ public class DC_Game extends MicroGame {
         getState().gameStarted(first);
         if (getMetaMaster()!=null )
         getMetaMaster().gameStarted();
+        GuiEventManager.trigger(UPDATE_LIGHT, null);
 
         // TODO: 30.10.2016 insert gui init here
 
@@ -381,11 +385,11 @@ public class DC_Game extends MicroGame {
         return getMaster().getObjectByCoordinate(z, c, cellsIncluded, passableIncluded, overlayingIncluded);
     }
 
-    public List<Unit> getOverlayingObjects(Coordinates c) {
+    public List<BattleFieldObject> getOverlayingObjects(Coordinates c) {
         return getMaster().getOverlayingObjects(c);
     }
 
-    public List<Unit> getObjectsOnCoordinate(Integer z, Coordinates c, Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
+    public List<BattleFieldObject> getObjectsOnCoordinate(Integer z, Coordinates c, Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
         return getMaster().getObjectsOnCoordinate(z, c, overlayingIncluded, passableIncluded, cellsIncluded);
     }
 
@@ -586,14 +590,14 @@ public class DC_Game extends MicroGame {
         this.gameType = game_mode;
     }
 
-    public Map<Coordinates, Map<Unit, FLIP>> getFlipMap() {
+    public Map<Coordinates, Map<BattleFieldObject, FLIP>> getFlipMap() {
         if (flipMap == null) {
             flipMap = new HashMap<>();
         }
         return flipMap;
     }
 
-    public Map<Coordinates, Map<Unit, DIRECTION>> getDirectionMap() {
+    public Map<Coordinates, Map<BattleFieldObject, DIRECTION>> getDirectionMap() {
         if (directionMap == null) {
             directionMap = new HashMap<>();
         }

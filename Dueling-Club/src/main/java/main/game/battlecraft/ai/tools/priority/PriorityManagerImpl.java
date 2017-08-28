@@ -1340,15 +1340,20 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         }
         switch (action) {
             case Concentrate:
-                return getModePriority(getUnit(), STD_MODES.CONCENTRATION);
+                priority= getModePriority(getUnit(), STD_MODES.CONCENTRATION);
+                break;
             case Defend:
-                return getDefendPriority(getUnitAi());
+                 priority= getDefendPriority(getUnitAi());
+                break;
             case On_Alert:
-                return getAlertPriority(getUnit());
+                priority = getAlertPriority(getUnit());
+                break;
             case Meditate:
-                return getModePriority(getUnit(), STD_MODES.MEDITATION);
+                priority = getModePriority(getUnit(), STD_MODES.MEDITATION);
+                break;
             case Rest:
-                return getModePriority(getUnit(), STD_MODES.RESTING);
+                priority = getModePriority(getUnit(), STD_MODES.RESTING);
+                break;
         }
         return priority;
     }
@@ -1432,22 +1437,22 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         Integer percentage = unit.getIntParam(ContentManager.getPercentageParam(new Param(
          ContentManager.getBaseParameterFromCurrent(p))))
          / MathMaster.MULTIPLIER;
-        int factor = getParamAnalyzer().getParamPriority(p, unit); // how important/good it is for
+        int base = getParamAnalyzer().getParamPriority(p, unit); // how important/good it is for
         // this unit
         int modifier = 0; // how important/good is it now
         switch (mode) {
             case MEDITATION:
-                factor = getSituationAnalyzer().getCastingPriority(unit);
+                base = getSituationAnalyzer().getCastingPriority(unit);
             case CONCENTRATION:
             case RESTING:
                 modifier -= getSituationAnalyzer().getMeleeDangerFactor(unit, false, true);
                 modifier -= getSituationAnalyzer().getRangedDangerFactor(unit);
-                factor = factor * getRestorationPriorityMod(unit) / 100;
+                base = base * getRestorationPriorityMod(unit) / 100;
                 break;
             default:
                 return 0;
         }
-        priority = factor;
+        priority = base;
         applyMultiplier(100 - percentage, "param percentage missing");
         // ++ Life factor?
         addMultiplier(modifier, "danger factor");

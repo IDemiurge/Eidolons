@@ -3,7 +3,7 @@ package main.swing.neo;
 import main.client.cc.gui.neo.top.HC_ControlButton;
 import main.swing.generic.components.G_Panel;
 import main.swing.listeners.ButtonHandler;
-import main.system.sound.SoundMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.awt.*;
@@ -57,7 +57,7 @@ public abstract class ControlPanel extends G_Panel implements ButtonHandler {
 
     public void handleClick(String command) {
         if (processing) {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
             return;
         }
         processing = true;

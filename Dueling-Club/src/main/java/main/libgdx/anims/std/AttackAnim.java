@@ -86,11 +86,19 @@ public class AttackAnim extends ActionAnim {
         builder.append(weapon.isAmmo() ? "ammo" : null);
         builder.append(TestMasterContent.isArtifact(weapon) ? "artifact" : null);
         path = builder.toString();
-        String file = FileManager.findFirstFile(path, weapon.getName(), false);
+
+        String file = findWeaponSprite(path,weapon);
         if (file == null) {
             if (TestMasterContent.isArtifact(weapon))
-                file = StringMaster.cropLastPathSegment(path);
+                path = StringMaster.cropLastPathSegment(path);
         }
+        file = findWeaponSprite(path,weapon);
+        return file;
+    }
+
+    private String findWeaponSprite(String path, DC_WeaponObj weapon) {
+        String file = FileManager.findFirstFile(path, weapon.getName(), false);
+
         if (file == null) {
             file = FileManager.findFirstFile(path, weapon.getProperty(G_PROPS.BASE_TYPE), false);
         }

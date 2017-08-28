@@ -1,7 +1,5 @@
 package test;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -68,11 +66,11 @@ public class AnimatedGraphics extends JComponent implements ActionListener {
         fraction = Math.min(1.0f, fraction);
         // interpolate between start and end colors with current fraction
         int red = (int) (fraction * endColor.getRed() + (1 - fraction)
-                * startColor.getRed());
+         * startColor.getRed());
         int green = (int) (fraction * endColor.getGreen() + (1 - fraction)
-                * startColor.getGreen());
+         * startColor.getGreen());
         int blue = (int) (fraction * endColor.getBlue() + (1 - fraction)
-                * startColor.getBlue());
+         * startColor.getBlue());
         // set our new color appropriately
         currentColor = new Color(red, green, blue);
         // force a repaint to display our oval with its new color

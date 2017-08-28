@@ -21,7 +21,7 @@ import main.game.module.adventure.travel.AreaManager;
 import main.game.module.adventure.travel.MacroParty;
 import main.game.module.adventure.travel.TravelMaster;
 import main.game.module.adventure.utils.SaveMaster;
-import main.system.sound.SoundMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -112,9 +112,9 @@ public class MacroGameManager extends GameManager {
             Integer id = null;
             if (getSelectionSet().contains(obj)) {
                 id = obj.getId();
-                SoundMaster.playStandardSound(STD_SOUNDS.CLICK_TARGET_SELECTED);
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_TARGET_SELECTED);
             } else {
-                SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
             }
             WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_MAP_OBJ, id);
             setSelecting(false);

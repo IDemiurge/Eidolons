@@ -22,6 +22,10 @@ public class TestPositioner<E extends DungeonWrapper> extends Positioner<E> {
         super(master);
     }
 
+    @Override
+    public Coordinates getEnemySpawningCoordinates() {
+        return super.getEnemySpawningCoordinates();
+    }
 
     public List<Coordinates> initPartyCoordinates(List<String> partyTypes,
                                                   Boolean mine_enemy_third) {

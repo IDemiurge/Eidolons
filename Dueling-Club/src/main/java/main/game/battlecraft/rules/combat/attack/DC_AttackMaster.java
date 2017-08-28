@@ -224,7 +224,7 @@ public class DC_AttackMaster {
             attack.getAnimation().addPhase(new AnimPhase(PHASE_TYPE.INTERRUPTED, ref));
             return false;
         }
-        SoundMaster.playEffectSound(SOUNDS.ATTACK, attacker); // TODO revamp
+        DC_SoundMaster.playEffectSound(SOUNDS.ATTACK, attacker); // TODO revamp
 
         if (action.isRanged()) {
             DC_SoundMaster.playRangedAttack(getAttackWeapon(ref, offhand));

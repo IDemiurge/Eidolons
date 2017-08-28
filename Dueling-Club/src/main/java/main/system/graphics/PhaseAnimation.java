@@ -15,6 +15,7 @@ import main.swing.PointX;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -32,7 +33,6 @@ import main.system.images.ImageManager.ALIGNMENT;
 import main.system.images.ImageManager.BORDER;
 import main.system.launch.CoreEngine;
 import main.system.options.OptionsMaster;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.TextItem;
 import main.system.text.TextItem.TEXT_TYPE;
@@ -1002,12 +1002,12 @@ public abstract class PhaseAnimation implements ANIM {
         if (isSubPhaseOpen()) {
             if (forward) {
                 if (index == phases.size() - 1) {
-                    SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
                     return;
                 }
             }
             if (index == 0) {
-                SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
                 return;
             }
 
@@ -1018,9 +1018,9 @@ public abstract class PhaseAnimation implements ANIM {
 
             // TODO remove();
             finished();
-            SoundMaster.playStandardSound(STD_SOUNDS.SCROLL);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.SCROLL);
         } else {
-            SoundMaster.playStandardSound(STD_SOUNDS.SLING);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.SLING);
         }
     }
 

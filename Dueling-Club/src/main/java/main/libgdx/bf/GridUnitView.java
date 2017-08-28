@@ -8,12 +8,14 @@ import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
+import main.system.images.ImageManager.STD_IMAGES;
 
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
 import static main.system.GuiEventType.REMOVE_FROM_INITIATIVE_PANEL;
 
 public class GridUnitView extends UnitView {
     private Image arrow;
+    private Image emblemLighting;
     private Image icon;
     private int arrowRotation;
     private float alpha = 1f;
@@ -22,7 +24,7 @@ public class GridUnitView extends UnitView {
 
     public GridUnitView(UnitViewOptions o) {
         super(o);
-        init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getIconTexture());
+        init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getIconTexture(), o.getEmblem());
 
         initQueueView(o);
     }
@@ -54,12 +56,30 @@ public class GridUnitView extends UnitView {
     @Override
     public void updateInitiative(Integer val) {
 //        super.updateInitiative(val);
-            initiativeQueueUnitView.updateInitiative(val);
-            GuiEventManager.trigger(ADD_OR_UPDATE_INITIATIVE, initiativeQueueUnitView);
+        initiativeQueueUnitView.updateInitiative(val);
+        GuiEventManager.trigger(ADD_OR_UPDATE_INITIATIVE, initiativeQueueUnitView);
 
     }
 
-    private void init(TextureRegion arrowTexture, int arrowRotation, Texture iconTexture) {
+    @Override
+    public void reset() {
+        super.reset();
+        if (emblemImage != null) {
+            emblemImage.setPosition(getWidth() - emblemImage.getWidth(),
+             getHeight() - emblemImage.getHeight());
+            emblemLighting.setPosition(getWidth() - emblemLighting.getWidth(),
+             getHeight() - emblemLighting.getHeight());
+            if (getTeamColor() != null)
+                emblemLighting.setColor(getTeamColor());
+
+        }
+        if (arrow != null)
+            arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
+
+
+    }
+
+    private void init(TextureRegion arrowTexture, int arrowRotation, Texture iconTexture, TextureRegion emblem) {
         if (arrowTexture != null) {
             arrow = new Image(arrowTexture);
             addActor(arrow);
@@ -73,6 +93,21 @@ public class GridUnitView extends UnitView {
             addActor(icon);
             icon.setPosition(0, getHeight() - icon.getImageHeight());
         }
+
+        if (emblem != null) {
+            emblemLighting = new Image(TextureCache.getOrCreateR(STD_IMAGES.LIGHT.getPath()));
+            emblemLighting.setSize(36, 36);
+            emblemLighting.setPosition(getWidth() - emblemLighting.getWidth(), getHeight() - emblemLighting.getHeight());
+            if (getTeamColor() != null)
+                emblemLighting.setColor(getTeamColor());
+            addActor(emblemLighting);
+
+            emblemImage = new Image(emblem);
+            addActor(emblemImage);
+            emblemImage.setSize(32, 32);
+            emblemImage.setPosition(getWidth() - emblemImage.getWidth(), getHeight() - emblemImage.getHeight());
+        }
+        setInitialized(true);
     }
 
     public void setVisibleVal(int val) {
@@ -94,10 +129,22 @@ public class GridUnitView extends UnitView {
         super.draw(batch, parentAlpha);
     }
 
+    @Override
+    public void act(float delta) {
+        if (checkIgnored())
+            return ;
+        if (emblemLighting!=null )
+        if (isActive() || isHovered())
+            alphaFluctuation(emblemLighting, delta);
+        else
+            emblemLighting.setColor(getTeamColor());
+        super.act(delta);
+    }
+
     public void updateRotation(int val) {
         if (arrow != null) {
             ActorMaster.addRotateToAction(arrow, arrowRotation, val + 90);
-             arrowRotation = val + 90;
+            arrowRotation = val + 90;
 //            arrow.setRotation(arrowRotation);
 
         }
@@ -105,14 +152,14 @@ public class GridUnitView extends UnitView {
 
     @Override
     public float getWidth() {
-        if (super.getWidth()==0)
+        if (super.getWidth() == 0)
             return GridConst.CELL_W;
         return super.getWidth();
     }
 
     @Override
     public float getHeight() {
-        if (super.getHeight()==0)
+        if (super.getHeight() == 0)
             return GridConst.CELL_H;
         return super.getHeight();
     }
@@ -132,10 +179,10 @@ public class GridUnitView extends UnitView {
         }
 
 //        main.system.auxiliary.log.LogMaster.log(1, this + " Scale=" + getScaledWidth());
-        if (getScaledWidth()==0)
-            return ;
-        if (getScaledHeight()==0  )
-            return ;
+        if (getScaledWidth() == 0)
+            return;
+        if (getScaledHeight() == 0)
+            return;
         Image image = clockImage;
         if (image != null) {
             image.setScaleX(getScaledWidth());
@@ -146,12 +193,13 @@ public class GridUnitView extends UnitView {
             image.setScaleX(getScaledWidth());
             image.setScaleY(getScaledHeight());
         }
-        image = arrow;
-        if (image != null) {
-            image.setScaleX(getScaledWidth());
-            image.setScaleY(getScaledHeight());
-        }
+//        image = arrow;
+//        if (image != null) {
+//            image.setScaleX(getScaledWidth());
+//            image.setScaleY(getScaledHeight());
+//        }
     }
+
     protected void updateModeImage(String pathToImage) {
         removeActor(modeImage);
         if (pathToImage == null)
@@ -159,9 +207,9 @@ public class GridUnitView extends UnitView {
         modeImage = new Image(TextureCache.getOrCreateR(pathToImage));
         addActor(this.modeImage);
         modeImage.setVisible(true);
-        if (emblemImage!=null )
-            modeImage.setPosition(emblemImage.getX(), emblemImage.getY() + modeImage.getImageHeight());
+        modeImage.setPosition(0, 0);
     }
+
     @Override
     public void setMobilityState(boolean mobilityState) {
         super.setMobilityState(mobilityState);

@@ -85,7 +85,9 @@ public class Anim extends Group implements Animation {
         if (active==null ) {
             ref = new Ref();
         }
-        this.ref = active.getRef().getCopy();
+        this.ref = active.getRef()
+//         .getCopy()
+        ;
         textureSupplier = () -> getTexture();
         reset();
         if (data.getIntValue(ANIM_VALUES.FRAME_DURATION) > 0) {
@@ -94,7 +96,11 @@ public class Anim extends Group implements Animation {
 //        duration= params.getIntValue(ANIM_VALUES.DURATION);
         initEmitters();
     }
-
+    @Override
+    public void start(Ref ref) {
+        setRef(ref);
+        start();
+    }
     @Override
     public void start() {
         emittersWaitingDone = false;
@@ -151,7 +157,7 @@ public void adjustPosForZoom(int zoom){
         }
         if (duration >= 0) //|| finished //  lifecycle duration for continuous?
         {
-            if (time >= duration) {
+            if (checkFinished()) {
                 if (AnimMaster.isSmoothStop(this)) {
                     if (!isEmittersWaitingDone()) {
                         emittersWaitingDone = true;
@@ -194,6 +200,10 @@ public void adjustPosForZoom(int zoom){
             e.draw(batch, 1f);
         });
         return true;
+    }
+
+    protected boolean checkFinished() {
+        return time >= getDuration();
     }
 
     private float getTimeToFinish() {
@@ -268,6 +278,8 @@ public void adjustPosForZoom(int zoom){
                     }
                 }
         );
+        if (emitterCache==null )
+            emitterCache=    new LinkedList<>()  ;
         emitterList = emitterCache;
         emitterCache = new LinkedList<>(emitterList);
         emitterList.forEach(e -> {
@@ -455,13 +467,13 @@ public void adjustPosForZoom(int zoom){
 
     public void initPosition() {
         origin = GridMaster
-                .getVectorForCoordinateWithOffset(getOriginCoordinates());
+                .getCenteredPos(getOriginCoordinates());
 
 //        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
 //         this + " origin: " + origin);
 
         destination = GridMaster
-                .getVectorForCoordinateWithOffset(getDestinationCoordinates());
+                .getCenteredPos(getDestinationCoordinates());
 
 //        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
 //         this + " destination: " + destination);
@@ -680,7 +692,9 @@ public void adjustPosForZoom(int zoom){
     }
 
     public Ref getRef() {
-        return ref;
+    if (ref==null )
+        return active.getRef();
+     return ref;
 //        if (active == null) {
 //            return (DC_Game.game.getManager().getActiveObj().getRef());
 //        }
@@ -750,5 +764,9 @@ public void adjustPosForZoom(int zoom){
 
     public void setComposite(CompositeAnim composite) {
         this.composite = composite;
+    }
+
+    public void setRef(Ref ref) {
+        this.ref = ref;
     }
 }
