@@ -20,8 +20,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.options.AnimationOptions.ANIMATION_OPTION;
-import main.system.options.OptionsMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
@@ -91,9 +89,10 @@ public class CompositeAnim implements Animation {
             triggerFinishEvents();
             playAttached();
             if (map.size() <= index) {
-                checkAfterEffects();
+                if (!checkAfterEffects()){
                 finished();
                 return false;
+            }
             }
             initPartAnim();
             currentAnim.start(getRef());
@@ -109,9 +108,10 @@ public class CompositeAnim implements Animation {
         start();
     }
 
-    private void checkAfterEffects() { if (OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION. GENERATE_AFTER_EFFECTS))
-        if (!map.containsKey(ANIM_PART.AFTEREFFECT)) {
-
+    private boolean checkAfterEffects() {
+        if (attached.containsKey(ANIM_PART.AFTEREFFECT))
+//        if (OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION. GENERATE_AFTER_EFFECTS))
+         {
             if (timeAttachedAnims.get(ANIM_PART.AFTEREFFECT) != null) {
                 timeAttachedAnims.get(ANIM_PART.AFTEREFFECT).forEach(a -> {
                     a.start(getRef());
@@ -119,16 +119,31 @@ public class CompositeAnim implements Animation {
                     AnimMaster.getInstance().addAttached(a);
                 });
             }
-            if (attached.get(ANIM_PART.AFTEREFFECT) != null) {
-                attached.get(ANIM_PART.AFTEREFFECT).forEach(a -> {
-                    a.start(getRef());
-                    AnimMaster.getInstance().addAttached(a);
-                });
+//            if (attached.get(ANIM_PART.AFTEREFFECT) != null) {
+//                attached.get(ANIM_PART.AFTEREFFECT).forEach(a -> {
+//                    a.start(getRef());
+//                    AnimMaster.getInstance().addAttached(a);
+//                });
+//            }
+            if (attached.get(ANIM_PART.AFTEREFFECT).isEmpty())
+            {
+                return false;
             }
-            part = ANIM_PART.AFTEREFFECT; //TODO rework this!
-            triggerFinishEvents();
+             if (map.containsKey(ANIM_PART.AFTEREFFECT)){
+                 index--;
+             }
+            for (Animation sub:    new LinkedList<>( attached.get(ANIM_PART.AFTEREFFECT))){
+                map.put(ANIM_PART.AFTEREFFECT, (Anim) sub);
+                attached.get(ANIM_PART.AFTEREFFECT).remove(sub);
+                break;
+            }
+
+//            part = ANIM_PART.AFTEREFFECT; //TODO rework this!
+//            triggerFinishEvents();
+       return true;
         }
 
+        return false;
     }
 
 

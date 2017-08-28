@@ -150,10 +150,10 @@ public class BuffAnim extends ActionAnim {
     @Override
     protected void initDuration() {
         if (isPlayOnNewRound()) {
-            duration = 2;
+            setDuration(2) ;
         }
         if (isPlayOnHover()) {
-            duration = 3;
+            setDuration(3) ;
         }
         if (isPlayContinuous()) {
             duration = -1;

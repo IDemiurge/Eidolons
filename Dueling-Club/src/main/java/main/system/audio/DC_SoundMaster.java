@@ -35,6 +35,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.sound.Player;
 import main.system.sound.SoundMaster;
 
@@ -55,11 +56,11 @@ public class DC_SoundMaster extends SoundMaster {
      PROPS.DAMAGE_TYPE,
      G_PROPS.SPELL_TYPE,
     };
-    private  static SoundPlayer soundPlayer;
-    private   DungeonScreen screen;
+    private static SoundPlayer soundPlayer;
+    private DungeonScreen screen;
 
     public DC_SoundMaster(DungeonScreen screen) {
-        this.screen=screen;
+        this.screen = screen;
     }
 
     public static void playRangedAttack(DC_WeaponObj weapon) {
@@ -80,6 +81,7 @@ public class DC_SoundMaster extends SoundMaster {
          + attackWeapon.getWeaponSize().toString().toLowerCase(), false);
 
     }
+
     public static void playEffectSound(SOUNDS sound_type, Obj obj) {
         setPositionFor(obj.getCoordinates());
         getPlayer().playEffectSound(sound_type, obj);
@@ -97,9 +99,9 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     private static void setPositionFor(Coordinates c) {
-        if (getSoundPlayer()!=null )
-        getSoundPlayer().setPosition(
-         GridMaster.getPosWithOffset(c));
+        if (getSoundPlayer() != null)
+            getSoundPlayer().setPosition(
+             GridMaster.getPosWithOffset(c));
     }
 
     public static void playBlockedSound(Obj attacker, Obj attacked, DC_WeaponObj shield,
@@ -263,7 +265,9 @@ public class DC_SoundMaster extends SoundMaster {
                 break;
         }
     }
-
+    public static void playNow(String sound) {
+        getPlayer().playNow(sound);
+    }
     public static void preconstructEffectSounds() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             DC_SpellObj active = new DC_SpellObj(type, DC_Player.NEUTRAL, DC_Game.game, new Ref());
@@ -314,35 +318,37 @@ public class DC_SoundMaster extends SoundMaster {
              spell.getSpellGroup().toString(), part.toString());
         }
         int i = 0;
-        while (i < 3) {
+        while (i < 6) {
             i++;
             if (StringMaster.isEmpty(file))
                 file =
                  FileManager.findFirstFile(path, identifier, true);
-            if (file != null)
-            {
-            String corePath = StringMaster.cropFormat(file);
-            try {
-                file = FileManager.getRandomFilePathVariant(corePath, "mp3", true);
-            } catch (Exception e) {
-//            e.printStackTrace();
-            }
-        }
             if (file != null) {
+                String corePath = StringMaster.cropFormat(path+file);
+                try {
+                    file = FileManager.getRandomFilePathVariant(corePath, StringMaster.getFormat(file), true);
+                } catch (Exception e) {
+//            e.printStackTrace();
+                }
+            }
+            if (file != null) {
+                if (ListMaster.isNotEmpty(main.system.sound.Player.getLastplayed()))
                 if (main.system.sound.Player.getLastplayed().peek().equalsIgnoreCase(file)) {
                     i--;
                     continue;
                 }
                 return file;
             }
-            identifier = StringMaster.getLastPathSegment(path);
-            path = StringMaster.cropLastPathSegment(path);
+            if (i % 2 == 1)
+                identifier = StringMaster.getLastPathSegment(path);
+            else
+                path = StringMaster.cropLastPathSegment(path);
         }
         return null;
     }
 
     private static String getSpellSoundPath() {
-        return getPath() + "soundset\\spells\\";
+        return getPath() + "soundsets\\spells\\";
     }
 
     private static void playImpact(DC_ActiveObj activeObj) {
@@ -362,12 +368,12 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     private static main.system.sound.Player getPlayer() {
-        if (soundPlayer ==null )
+        if (soundPlayer == null)
             return new Player();
         return soundPlayer;
     }
 
-    public   void doPlayback(float delta ) {
+    public void doPlayback(float delta) {
         if (soundPlayer == null)
             soundPlayer = new SoundPlayer(screen);
         soundPlayer.doPlayback(delta);

@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Pool;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.Chronos;
 import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
@@ -93,6 +94,8 @@ public class EmitterPools {
         List<EmitterActor> list = new LinkedList<>();
         for (String path :
          StringMaster.openContainer(data)) {
+
+            Chronos.mark("emitter " + path);
             EmitterActor emitter = null;
             SFX sfx = new EnumMaster<SFX>().
              retrieveEnumConst(SFX.class, path);
@@ -105,6 +108,7 @@ public class EmitterPools {
                 list.add(emitter
                 );
             }
+            Chronos.logTimeElapsedForMark("emitter " + path);
         }
         return list;
     }

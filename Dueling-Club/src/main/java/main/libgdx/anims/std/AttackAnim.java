@@ -87,16 +87,27 @@ public class AttackAnim extends ActionAnim {
         builder.append(TestMasterContent.isArtifact(weapon) ? "artifact" : null);
         path = builder.toString();
 
-        String file = findWeaponSprite(path,weapon);
+        String file = findWeaponSprite(path, weapon);
         if (file == null) {
             if (TestMasterContent.isArtifact(weapon))
-                path = StringMaster.cropLastPathSegment(path);
+                file = findWeaponSprite
+                 (StringMaster.cropLastPathSegment(path), weapon);
+            if (file == null) {
+                file = findWeaponSprite(path, weapon, false);
+                if (file == null)
+                    file = findWeaponSprite
+                     (StringMaster.cropLastPathSegment(path), weapon, false);
+            }
         }
-        file = findWeaponSprite(path,weapon);
-        return file;
+
+        return path+file;
     }
 
     private String findWeaponSprite(String path, DC_WeaponObj weapon) {
+        return findWeaponSprite(path, weapon, true);
+    }
+
+    private String findWeaponSprite(String path, DC_WeaponObj weapon, boolean strict) {
         String file = FileManager.findFirstFile(path, weapon.getName(), false);
 
         if (file == null) {
@@ -109,6 +120,8 @@ public class AttackAnim extends ActionAnim {
         if (file == null) {
             file = FileManager.findFirstFile(path, weapon.getProperty(G_PROPS.BASE_TYPE), true);
         }
+        if (strict)
+            return file;
         if (file == null) {
             file = FileManager.findFirstFile(path, weapon.getName(), true);
         }
@@ -179,11 +192,11 @@ public class AttackAnim extends ActionAnim {
         defaultPosition.x = getX() + offsetX;
         defaultPosition.y = getY() + offsetY;
         setPosition(defaultPosition.x, defaultPosition.y);
-
+// TODO for down??
         if (!getFacing().isVertical()) {
             flipY = !flipY;
         } else {
-            flipX = !flipX;
+            flipX = !flipX; //for west?
         }
     }
 
@@ -242,18 +255,28 @@ size - elongate
 
         }
 
-        this.duration = totalDuration;
+        setDuration(totalDuration);
         return sequence;
     }
 
     protected MoveByAction getMoveAction(float x, float y, float duration) {
         MoveByAction mainMove = new MoveByAction();
         mainMove.setDuration(duration);
-        int distanceX = active.getRef().getSourceObj().getX() -
-         getActive().getAnimator().getAnimRef().getTargetObj().getX();
+        int distanceX =
+         getOriginCoordinates().
+//         active.getRef().getSourceObj().
+ getX() -
+//         getActive().getAnimator().getAnimRef().getTargetObj()
+          getDestinationCoordinates()
+           .getX();
         x -= distanceX * GridConst.CELL_W;
-        int distanceY = active.getRef().getSourceObj().getY() -
-         getActive().getAnimator().getAnimRef().getTargetObj().getY();
+        int distanceY =
+         getOriginCoordinates().
+//         active.getRef().getSourceObj().
+ getY() -
+//         getActive().getAnimator().getAnimRef().getTargetObj()
+          getDestinationCoordinates()
+           .getY();
         y += distanceY * GridConst.CELL_H;
 
         mainMove.setAmount(x, y);

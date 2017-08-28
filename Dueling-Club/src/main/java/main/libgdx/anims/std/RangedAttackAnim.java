@@ -100,17 +100,18 @@ public class RangedAttackAnim extends AttackAnim {
     }
 
 
+
     @Override
-    protected void initDuration() {
-        super.initDuration();
-
-
+    public int getPixelsPerSecond() {
+        return 750;
     }
-
 
     @Override
     protected Action getAction() {
-        return super.getAction();
+        Action action =super.getAction();
+        if (action!=null )
+            action.reset();
+        return action;
 
     }
 }

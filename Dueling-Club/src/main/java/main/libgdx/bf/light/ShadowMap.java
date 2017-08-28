@@ -69,6 +69,7 @@ public class ShadowMap   {
             for (int y = 0; y < grid.getRows(); y++) {
                 for (SHADE_LIGHT type : SHADE_LIGHT.values()) {
                     float alpha = 0;
+                    if (isOn())
                     try {
                         alpha = DC_Game.game.getVisionMaster().
                          getGammaMaster().getAlphaForShadowMapCell(x, y, type);

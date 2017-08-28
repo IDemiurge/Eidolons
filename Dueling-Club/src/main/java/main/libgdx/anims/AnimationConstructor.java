@@ -34,8 +34,11 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.options.AnimationOptions.ANIMATION_OPTION;
+import main.system.options.OptionsMaster;
 
 import java.util.*;
 
@@ -44,8 +47,8 @@ import java.util.*;
  */
 public class AnimationConstructor {
     private final boolean preconstructOn = false; //TODO
-    private   boolean autoconstruct = false;
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
+    private boolean autoconstruct = false;
     private VALUE[] anim_vals = {
 //     PROPS.ANIM_MODS,
 //
@@ -138,6 +141,39 @@ public class AnimationConstructor {
         }
     }
 
+    public static String findResourceForSpell(DC_SpellObj spell,
+                                              String partPath, String size,
+                                              PROPERTY[] props, String pathRoot,
+                                              boolean closest) {
+        String path = StringMaster.buildPath(
+         pathRoot, partPath);
+//        spell.getTargeting();
+        String file = null;
+        for (PROPERTY p : props) {
+            String name = spell.getProperty(p);
+            if (name.isEmpty()) continue;
+            file = FileManager.findFirstFile(path, name, closest);
+            if (file != null) {
+                break;
+            }
+            name = spell.getProperty(p);
+            file = FileManager.findFirstFile(path, name, closest);
+            if (file != null) {
+                break;
+            }
+            name = spell.getProperty(p) + " " + partPath + size;
+            file = FileManager.findFirstFile(path, name, closest);
+            if (file != null) {
+                break;
+            }
+        }
+//        if (file != null || closest || isPartIgnored(partPath))
+
+        if (CoreEngine.isJar())
+            System.out.println(pathRoot + " root; file found " + file);
+        return file;
+//        return findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+    }
 
     private boolean isPreconstructOn(Unit unit) {
         if (unit.getSpells().size() > 3)
@@ -192,16 +228,17 @@ public class AnimationConstructor {
 //        active.getActionGroup()
 
         Arrays.stream(ANIM_PART.values()).forEach(part -> {
-            Anim animPart = getPartAnim(active, part, anim);
-            if (animPart != null) {
-                anim.add(part, animPart);
+            if (!isPartIgnored(part)) {
+                Anim animPart = getPartAnim(active, part, anim);
+                if (animPart != null) {
+                    anim.add(part, animPart);
+                }
             }
         });
 
         map.put(active, anim);
         return anim;
     }
-
 
     public Anim getPartAnim(DC_ActiveObj active, ANIM_PART part, CompositeAnim anim) {
 //        active.getProperty(sfx);
@@ -228,7 +265,7 @@ public class AnimationConstructor {
             }
 
             if (!autoconstruct)
-                return null ;
+                return null;
             data = getStandardData((DC_SpellObj) active, part, composite);
             if (!initAnim(data, active, part, anim)) {
                 return null;
@@ -301,7 +338,9 @@ public class AnimationConstructor {
             if (path.isEmpty()) {
                 continue;
             }
+            Chronos.mark("sprite " + path);
             sprites.add(SpriteAnimationFactory.getSpriteAnimation(path));
+            Chronos.logTimeElapsedForMark("sprite " + path);
             exists = true;
         }
         List<EmitterActor> list = new LinkedList<>();
@@ -339,7 +378,6 @@ public class AnimationConstructor {
         anim.setEmitterList(list);
         return exists;
     }
-
 
     private boolean checkForcedAnimation(DC_ActiveObj active, ANIM_PART part) {
         switch (part) {
@@ -501,49 +539,28 @@ public class AnimationConstructor {
         return data;
     }
 
-    public static String findResourceForSpell(DC_SpellObj spell,
-                                        String partPath, String size,
-                                        PROPERTY[] props, String pathRoot,
-                                        boolean closest) {
-        String path = StringMaster.buildPath(
-         pathRoot, partPath);
-//        spell.getTargeting();
-        String file = null;
-        for (PROPERTY p : props) {
-            String name = spell.getProperty(p);
-            if (name.isEmpty()) continue;
-            file = FileManager.findFirstFile(path, name, closest);
-            if (file != null) {
-                break;
-            }
-            name = spell.getProperty(p);
-            file = FileManager.findFirstFile(path, name, closest);
-            if (file != null) {
-                break;
-            }
-            name = spell.getProperty(p) + " " + partPath + size;
-            file = FileManager.findFirstFile(path, name, closest);
-            if (file != null) {
-                break;
-            }
-        }
-//        if (file != null || closest || isPartIgnored(partPath))
-
-        if (CoreEngine.isJar())
-            System.out.println(pathRoot + " root; file found " + file);
-        return file;
-//        return findResourceForSpell(spell, partPath, size, props, pathRoot, true);
-    }
-
     private boolean isPartIgnored(String partPath) {
         partPath = partPath.replace("missile", "main");
-        switch (new EnumMaster<ANIM_PART>().retrieveEnumConst(ANIM_PART.class, partPath)) {
+        return isPartIgnored(new EnumMaster<ANIM_PART>().retrieveEnumConst(ANIM_PART.class, partPath));
+    }
+
+    private boolean isPartIgnored(ANIM_PART part) {
+        switch (part) {
+            case AFTEREFFECT:
+                return                 !OptionsMaster.getAnimOptions().getBooleanValue(
+                 ANIMATION_OPTION.AFTER_EFFECTS_ANIMATIONS);
             case CAST:
-            case MAIN:
-            case IMPACT:
-                return false;
+                return                 !OptionsMaster.getAnimOptions().getBooleanValue(
+                 ANIMATION_OPTION.CAST_ANIMATIONS);
+            case PRECAST:
+                return                 !OptionsMaster.getAnimOptions().getBooleanValue(
+                 ANIMATION_OPTION.PRECAST_ANIMATIONS);
+
+//            case MAIN:
+//            case IMPACT:
+//                return false;
         }
-        return true;
+        return false;
     }
 
 

@@ -27,6 +27,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
+import main.system.options.AnimationOptions.ANIMATION_OPTION;
+import main.system.options.OptionsMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
@@ -82,7 +84,7 @@ public class Anim extends Group implements Animation {
     public Anim(Entity active, AnimData params) {
         data = params;
         this.active = active;
-        if (active==null ) {
+        if (active == null) {
             ref = new Ref();
         }
         this.ref = active.getRef()
@@ -96,11 +98,13 @@ public class Anim extends Group implements Animation {
 //        duration= params.getIntValue(ANIM_VALUES.DURATION);
         initEmitters();
     }
+
     @Override
     public void start(Ref ref) {
         setRef(ref);
         start();
     }
+
     @Override
     public void start() {
         emittersWaitingDone = false;
@@ -131,17 +135,21 @@ public class Anim extends Group implements Animation {
         GuiEventManager.trigger(GuiEventType.ANIMATION_STARTED, this);
     }
 
-public void adjustPosForZoom(int zoom){
-        setPosition(getX()*zoom/100, getY()*zoom/100 );
-    // maybe animMaster must be part of the viewport?
-    //creating anim at wrong coordinates vs updating
+    public void adjustPosForZoom(int zoom) {
+        setPosition(getX() * zoom / 100, getY() * zoom / 100);
+        // maybe animMaster must be part of the viewport?
+        //creating anim at wrong coordinates vs updating
 
-    // not just zoom - coords are often 'wrong': ranged weapon, some melee atks
+        // not just zoom - coords are often 'wrong': ranged weapon, some melee atks
 
 
-}
+    }
+
     @Override
     public boolean draw(Batch batch) {
+        if (getX() == 0 && getY() == 0) {
+            getX();
+        }
 //switch(template){
 //}
         float delta = Gdx.graphics.getDeltaTime();
@@ -211,7 +219,7 @@ public void adjustPosForZoom(int zoom){
         for (EmitterActor e : emitterList) {
             for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
                 float timeLeft = emitter.getDuration().getLowMax() / 1000 *
-                        Math.max(0, emitter.getPercentComplete());
+                 Math.max(0, emitter.getPercentComplete());
                 if (timeLeft > time) {
                     time = timeLeft;
                 }
@@ -225,6 +233,9 @@ public void adjustPosForZoom(int zoom){
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (getX() == 0 && getY() == 0) {
+            getX();
+        }
         super.draw(batch, parentAlpha);
 
         if (!isDrawTexture()) {
@@ -238,9 +249,9 @@ public void adjustPosForZoom(int zoom){
         }
 
         batch.draw((texture), this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
-                this.getHeight(), this.getScaleX(), this.getScaleY(),
-                this.getRotation(), 0, 0,
-                texture.getWidth(), texture.getHeight(), flipX, flipY);
+         this.getHeight(), this.getScaleX(), this.getScaleY(),
+         this.getRotation(), 0, 0,
+         texture.getWidth(), texture.getHeight(), flipX, flipY);
 
     }
 
@@ -272,14 +283,14 @@ public void adjustPosForZoom(int zoom){
     protected void resetEmitters() {
 
         getEmitterList().forEach(e ->
-                {
-                    if (e.isGenerated()) {
-                        e.getEffect().dispose();
-                    }
-                }
+         {
+             if (e.isGenerated()) {
+                 e.getEffect().dispose();
+             }
+         }
         );
-        if (emitterCache==null )
-            emitterCache=    new LinkedList<>()  ;
+        if (emitterCache == null)
+            emitterCache = new LinkedList<>();
         emitterList = emitterCache;
         emitterCache = new LinkedList<>(emitterList);
         emitterList.forEach(e -> {
@@ -295,7 +306,7 @@ public void adjustPosForZoom(int zoom){
 
     protected void initDuration() {
 
-        duration = 2;
+        setDuration(2);
         if (part != null) {
             duration = part.getDefaultDuration();
         }
@@ -329,6 +340,8 @@ public void adjustPosForZoom(int zoom){
         if (data.getIntValue(ANIM_VALUES.MISSILE_SPEED) != 0) {
             pixelsPerSecond = data.getIntValue(ANIM_VALUES.MISSILE_SPEED);
         }
+        else
+            pixelsPerSecond = getPixelsPerSecond();
         if (pixelsPerSecond == 0) {
             return;
         }
@@ -339,12 +352,13 @@ public void adjustPosForZoom(int zoom){
         if (distance == 0) {
             return;
         }
-        duration = (float) distance / pixelsPerSecond;
+        setDuration((float) distance / pixelsPerSecond);
 
         speedX = x / duration;
         speedY = y / duration;
 
     }
+//        setDuration(getOrigin().dst(getDestination())/new Vector2(getSpeedX(), getSpeedY()).len());
 
     protected boolean isSpeedSupported() {
         if (part == ANIM_PART.MAIN) {
@@ -467,13 +481,13 @@ public void adjustPosForZoom(int zoom){
 
     public void initPosition() {
         origin = GridMaster
-                .getCenteredPos(getOriginCoordinates());
+         .getCenteredPos(getOriginCoordinates());
 
 //        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
 //         this + " origin: " + origin);
 
         destination = GridMaster
-                .getCenteredPos(getDestinationCoordinates());
+         .getCenteredPos(getDestinationCoordinates());
 
 //        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
 //         this + " destination: " + destination);
@@ -660,7 +674,13 @@ public void adjustPosForZoom(int zoom){
     }
 
     public void setDuration(float duration) {
-        this.duration = duration;
+        if (OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED) > 0)
+            this.duration = duration * OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)
+             / 100;
+        else {
+
+            this.duration = duration;
+        }
     }
 
     public float getOffsetX() {
@@ -692,13 +712,17 @@ public void adjustPosForZoom(int zoom){
     }
 
     public Ref getRef() {
-    if (ref==null )
-        return active.getRef();
-     return ref;
+        if (ref == null)
+            return active.getRef();
+        return ref;
 //        if (active == null) {
 //            return (DC_Game.game.getManager().getActiveObj().getRef());
 //        }
 //        return active.getRef();
+    }
+
+    public void setRef(Ref ref) {
+        this.ref = ref;
     }
 
     public float getDelay() {
@@ -724,7 +748,6 @@ public void adjustPosForZoom(int zoom){
         return pixelsPerSecond;
     }
 
-
     public boolean isEmittersWaitingDone() {
         return emittersWaitingDone;
     }
@@ -733,7 +756,7 @@ public void adjustPosForZoom(int zoom){
         getFloatingText().forEach(floatingText1 -> {
             if (time >= floatingText1.getDelay()) {
                 GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText1);
-                  }
+            }
         });
     }
 
@@ -750,12 +773,12 @@ public void adjustPosForZoom(int zoom){
         return floatingText;
     }
 
-    public void setMaster(AnimMaster master) {
-        this.master = master;
-    }
-
     public AnimMaster getMaster() {
         return master;
+    }
+
+    public void setMaster(AnimMaster master) {
+        this.master = master;
     }
 
     public CompositeAnim getComposite() {
@@ -764,9 +787,5 @@ public void adjustPosForZoom(int zoom){
 
     public void setComposite(CompositeAnim composite) {
         this.composite = composite;
-    }
-
-    public void setRef(Ref ref) {
-        this.ref = ref;
     }
 }

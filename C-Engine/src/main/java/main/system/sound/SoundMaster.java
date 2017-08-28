@@ -190,6 +190,9 @@ public class SoundMaster {
     }
 
     public enum STD_SOUNDS {
+        POTION,
+
+
         HERO,
         SCROLL,
         SCROLL2,

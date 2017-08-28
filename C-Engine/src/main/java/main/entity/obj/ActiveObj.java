@@ -58,4 +58,6 @@ public interface ActiveObj extends Cancellable, Active, OBJ {
     Obj getTargetObj();
 
     GroupImpl getTargetGroup();
+
+    boolean isConstructed();
 }

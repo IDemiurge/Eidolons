@@ -42,6 +42,7 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
     }
 
 
+
     @Override
     public AbilityType getType() {
         return (AbilityType) super.getType();

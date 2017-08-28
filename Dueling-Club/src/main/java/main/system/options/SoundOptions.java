@@ -11,7 +11,15 @@ public class SoundOptions extends Options<SOUND_OPTION,SOUND_OPTION> {
 
 
     public enum SOUND_OPTION implements  Options.OPTION {
-        ALL_OFF, VOICE_OFF,
+        ALL_OFF,
+        VOICE_OFF,
+        MASTER_VOLUME,
+        MUSIC_VOLUME,
+        VOICE_VOLUME,
+        EFFECT_VOLUME,
+        POSITIONED_SOUND,
+        NEVER_REPEAT,
+
         ;
 
         @Override

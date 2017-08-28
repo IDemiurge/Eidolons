@@ -16,6 +16,7 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.test.TestMasterContent;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -84,7 +85,8 @@ public class SpellMaster extends Master {
             return new LinkedList<>();
         }
         List<DC_SpellObj> spells = obj.getSpells();
-        if (spells != null && !reset) {
+      if (!TestMasterContent.addAllSpells)
+          if (spells != null && !reset) {
             if (!spells.isEmpty()) {
                 return spells;
             }

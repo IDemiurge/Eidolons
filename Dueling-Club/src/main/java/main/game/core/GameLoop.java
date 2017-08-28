@@ -15,6 +15,7 @@ import main.system.options.AnimationOptions.ANIMATION_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import main.test.frontend.Showcase;
 
 
 /**
@@ -27,6 +28,7 @@ public class GameLoop {
     private DC_ActiveObj activatingAction;
     private boolean paused;
     private boolean aiFailNotified;
+    private boolean aftermath;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -49,6 +51,10 @@ public class GameLoop {
                 }
         }
         WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, false);
+        if (Showcase.isRunning()) {
+            aftermath = true;
+             start();
+        }
 
     }
 
@@ -71,6 +77,7 @@ public class GameLoop {
             }
             result = makeAction();
             if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
+                if (!aftermath)
                 return false;
             }
             if (result == null) {

@@ -13,12 +13,15 @@ public class AnimationOptions extends Options<ANIMATION_OPTION,ANIMATION_OPTION>
     public enum ANIMATION_OPTION implements Options.OPTION {
         WAIT_FOR_ANIM(false ),
         INFO_LEVEL(1, 0, 1), SPEED(100, 0, 100), PHASE_TIME(500, 0, 1000), OFFSET_FOR_OVERLAP(true),
-        GENERATE_AFTER_EFFECTS(false),
-          PARALLEL_DRAWING (true) ,
+         PARALLEL_DRAWING (true) ,
         MAX_ANIM_WAIT_TIME(1200, 0, 3500),
+        PRECAST_ANIMATIONS(true),
+        CAST_ANIMATIONS(true),
+        AFTER_EFFECTS_ANIMATIONS(false),
+
         ;
 
-        boolean exclusive;
+        Boolean exclusive;
         Object[] options;
         Integer min;
         Integer max;
@@ -38,7 +41,8 @@ public class AnimationOptions extends Options<ANIMATION_OPTION,ANIMATION_OPTION>
             this.options = options;
         }
 
-        ANIMATION_OPTION(boolean defaultValue) {this.exclusive = defaultValue;
+        ANIMATION_OPTION(boolean defaultValue) {
+            this.exclusive = defaultValue;
             this.defaultValue = defaultValue;
         }
 

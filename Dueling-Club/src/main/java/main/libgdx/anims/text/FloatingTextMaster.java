@@ -211,8 +211,15 @@ public class FloatingTextMaster {
         floatingText.setDuration(getDefaultDuration(CASE));
         floatingText.setDisplacementX(getDisplacementX(CASE));
         floatingText.setDisplacementY(getDisplacementY(CASE));
-        anim.initPosition(); // TODO rework this!
+//        anim.initPosition(); // TODO rework this!
+        if (anim.getOrigin() == null) {
+            anim.initPosition();
+        }
+        if (anim.getDestination() == null) {
+            anim.initPosition();
+        }
         floatingText.setPosition(CASE.atOrigin ? anim.getOrigin() : anim.getDestination());
+
         anim.addFloatingText(floatingText
         );
 
@@ -330,7 +337,14 @@ public class FloatingTextMaster {
 
         BATTLE_COMMENT,
 
-        HIT;
+        HIT{
+            @Override
+            public Object[] getArgs(Event e) {
+                  return new Object[]{
+                 e.getRef().getAmount()
+                };
+            }
+        };
         public boolean atOrigin;
         private Producer<Event, Object[]> argProducer;
 
@@ -351,7 +365,7 @@ public class FloatingTextMaster {
         public Object[] getArgs(Event e) {
             if (argProducer == null) {
                 return new Object[]{
-                 "arg!"
+                 StringMaster.getWellFormattedString(e.getType().toString())
                 };
             }
             return argProducer.produce(e);

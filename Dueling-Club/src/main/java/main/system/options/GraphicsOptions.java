@@ -17,6 +17,11 @@ static {
     }
 
     public enum GRAPHIC_OPTION implements Options.OPTION {
+
+    FULLSCREEN(false),
+        //RESOLUTION
+        GAMMA(),
+
         AMBIENCE(false),
         PARTICLE_EFFECTS(false),
         ANIMATED_UI(false),

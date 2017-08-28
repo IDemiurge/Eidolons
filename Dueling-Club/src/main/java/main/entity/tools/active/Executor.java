@@ -98,7 +98,9 @@ public class Executor extends ActiveHandler {
             targeter.setForcePresetTarget(false);
         this.context = context;
         activate();
-        return BooleanMaster.isTrue(isCancelled());
+        if (BooleanMaster.isTrue(isCancelled()))
+            return false;
+        return true;
     }
 
     public void activateOn(Ref ref) {

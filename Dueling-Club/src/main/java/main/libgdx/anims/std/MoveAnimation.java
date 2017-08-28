@@ -53,14 +53,11 @@ public class MoveAnimation extends ActionAnim {
         return on;
     }
 
-    @Override
-    protected void initDuration() {
-        super.initDuration();
-        duration = 0.1f;
-    }
+
 
 
     protected Action getAction() {
+//        new Pool.Poolable()
         if (action == null) {
             action = new MoveByAction() {
                 @Override
@@ -82,18 +79,14 @@ public class MoveAnimation extends ActionAnim {
 //                }
             };
         }
-        action.setAmount(getDestination().x-getOrigin().x, getDestination().y-getOrigin().y);
-        action.setDuration(1);
+        action.reset();
         setDuration(1);
+        action.setAmount(getDestination().x-getOrigin().x, getDestination().y-getOrigin().y);
+        action.setDuration(getDuration());
 
         return action;
     }
 
-    @Override
-    protected boolean checkFinished() {
-//        return getActor().getActions().size>0)
-        return super.checkFinished();
-    }
 
     public void initPosition() {
         origin = GridMaster
@@ -118,10 +111,6 @@ public class MoveAnimation extends ActionAnim {
     }
 
 
-    @Override
-    protected void add() {
-        super.add();
-    }
 
     @Override
     public void start() {
@@ -188,6 +177,9 @@ public class MoveAnimation extends ActionAnim {
         return Arrays.asList(new ImmutablePair<>(UNIT_STARTS_MOVING, new EventCallbackParam(unit)));
     }
 
+    public static void setOn(boolean on) {
+        MoveAnimation.on = on;
+    }
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnFinish() {
         return Arrays.asList(new ImmutablePair<>(UNIT_MOVED, new EventCallbackParam(unit)));

@@ -66,13 +66,16 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
                  return "Unknown";
              }
         String prefix ="";
-        if (isMainHero())
-            prefix = "(You) ";
-        else
-        if (isMine())
-            prefix="Ally ";
+
+        if (isMine()){
+            if (isMainHero())
+                prefix = "(You) ";
+            else
+                prefix="Ally ";
+        }
         else if (!getOwner().isNeutral())
             prefix ="Enemy ";
+
         return prefix+ getDisplayedName();
     }
 

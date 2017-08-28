@@ -1,6 +1,7 @@
 package main.libgdx.anims;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import main.game.bf.Coordinates;
@@ -16,14 +17,17 @@ import java.util.LinkedList;
  * Created by JustMe on 1/26/2017.
  */
 public class ActorMaster {
-    public static void addRemoveAfter(Actor actor) {
+    public static void addAfter(Actor actor, Action action) {
         AfterAction aa = new AfterAction();
-        RemoveActorAction remove = new RemoveActorAction();
-        remove.setTarget(actor);
-
-        aa.setAction(remove);
+        action.setTarget(actor);
+        aa.setAction(action);
         actor.addAction(aa);
         aa.setTarget(actor);
+    }
+        public static void addRemoveAfter(Actor actor) {
+        addAfter(actor, new RemoveActorAction());
+
+
 
     }
 

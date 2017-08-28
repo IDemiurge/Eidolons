@@ -51,12 +51,12 @@ public class DamageDealer {
          , damage.getRef(), damage.getAmount(), isBonusDamage);
 
         if (damage instanceof MultiDamage) {
-            logOn=false;
+            logOn = false;
             int bonus = dealBonusDamage((MultiDamage) damage, result);
             result += bonus;
         }
 
-        logOn=true;
+        logOn = true;
         return result;
     }
 
@@ -176,12 +176,12 @@ public class DamageDealer {
             if (ref.getSource() != ref.getTarget()) {
                 if (isAttack(ref)) {
                     blocked = attacked.getGame()
-                            .getArmorMaster().getArmorBlockDamage(amount,
-                                    attacked, attacker, active);
+                     .getArmorMaster().getArmorBlockDamage(amount,
+                      attacked, attacker, active);
                 } else {
                     blocked = attacked.getGame()
-                            .getArmorMaster().getArmorBlockForActionDamage(amount, dmg_type,
-                                    attacker, active);
+                     .getArmorMaster().getArmorBlockForActionDamage(amount, dmg_type,
+                      attacker, active);
                 }
             }
         }
@@ -266,7 +266,7 @@ public class DamageDealer {
         if (ref.isQuiet()) {
             return true;
         }
-        if (ref.getActive() != null  &&statsParam != null ) {
+        if (ref.getActive() != null && statsParam != null) {
             try {
                 Ref REF = ref.getActive().getRef();
                 if (add) {
@@ -384,12 +384,15 @@ public class DamageDealer {
             // if (DC_GameManager.checkInterrupted(ref))
             // return 0; ???
         }
-        LogMaster.log(1, toughness_dmg + " / " + endurance_dmg + " damage has been dealt to "
-         + attacked.toString());
+        if (toughness_dmg < 0 || endurance_dmg < 0) {
+            LogMaster.log(1, toughness_dmg + "rogue damage " + endurance_dmg);
+        } else
+            LogMaster.log(1, toughness_dmg + " / " + endurance_dmg + " damage has been dealt to "
+             + attacked.toString());
 
         if (isLogOn()) {
             attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked,
-                    damageDealt);
+             damageDealt);
         }
         processDamageEvent(null, ref, damageDealt, STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE);
         return damageDealt;

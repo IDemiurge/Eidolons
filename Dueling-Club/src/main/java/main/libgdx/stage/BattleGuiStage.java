@@ -61,7 +61,8 @@ public class BattleGuiStage extends Stage {
 
     private void bindEvents() {
         GuiEventManager.bind(GuiEventType.GAME_FINISHED, p -> {
-            if (outcomePanel != null) outcomePanel.remove();
+            if (outcomePanel != null)
+                outcomePanel.remove();
             outcomePanel = new OutcomePanel(new OutcomeDatasource((DC_Game) p.get()));
             addActor(outcomePanel);
             outcomePanel.setZIndex(getActors().size);

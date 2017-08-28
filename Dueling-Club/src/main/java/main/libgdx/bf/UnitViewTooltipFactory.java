@@ -17,6 +17,8 @@ import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.CounterMaster;
+import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import main.system.options.OptionsMaster;
 import main.system.text.ToolTipMaster;
 
 import java.util.ArrayList;
@@ -78,6 +80,7 @@ public class UnitViewTooltipFactory {
 
            if (!hero.isMine())
                 if (!hero.getGame().isDebugMode())
+                    if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OUTLINES))
                     if (hero.getVisibilityLevelForPlayer() !=
                      VISIBILITY_LEVEL.CLEAR_SIGHT) {
                         final ValueContainer nameContainer = new ValueContainer(hero.getToolTip(), "");

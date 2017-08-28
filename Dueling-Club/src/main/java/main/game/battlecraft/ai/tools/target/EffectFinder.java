@@ -47,8 +47,8 @@ public class EffectFinder {
 
     public static Effects getEffectsFromSpell(ActiveObj active) {
         Effects effects = new Effects();
-        // if (!active.isConstructed())
-        active.construct();
+        if (!active.isConstructed())
+            active.construct();
         if (active.getAbilities() != null) {
             for (Ability a : active.getAbilities()) {
                 effects.addAll(addEffectsFromAbility(a.getEffects()));
@@ -252,7 +252,7 @@ public class EffectFinder {
     public static Effects initParamModEffects(String modString, Ref ref) {
         Effects modEffects = new Effects();
         Map<PARAMETER, String> map = new RandomWizard<PARAMETER>().constructStringWeightMap(
-                modString, PARAMETER.class);
+         modString, PARAMETER.class);
         initParamModEffects(modEffects, map, ref);
         return modEffects;
     }
@@ -260,7 +260,7 @@ public class EffectFinder {
     public static Effects initPropModEffects(String modString, Ref ref) {
         Effects modEffects = new Effects();
         Map<PROPERTY, String> map = new RandomWizard<PROPERTY>().constructStringWeightMap(
-                modString, PROPERTY.class);
+         modString, PROPERTY.class);
         initPropModEffects(modEffects, map, ref);
         return modEffects;
     }
@@ -305,6 +305,7 @@ public class EffectFinder {
 
         }
     }
+
     public static Effects getEffectsFromAbilityString(String abilName, Ref ref) {
         Effects effects = (new Effects());
         String separator = StringMaster.AND_PROPERTY_SEPARATOR;

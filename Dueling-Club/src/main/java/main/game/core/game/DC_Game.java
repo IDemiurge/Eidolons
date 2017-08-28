@@ -55,6 +55,7 @@ import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.system.DC_ConditionMaster;
 import main.system.DC_RequirementsManager;
 import main.system.GuiEventManager;
+import main.system.audio.MusicMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
@@ -121,6 +122,7 @@ public class DC_Game extends MicroGame {
     private LaunchDataKeeper dataKeeper;
     @Refactor
     private Map<Unit, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
+    private MusicMaster musicMaster;
 
     public DC_Game() {
         this(false);
@@ -164,6 +166,7 @@ public class DC_Game extends MicroGame {
 
         dungeonMaster = createDungeonMaster();
         battleMaster = createBattleMaster();
+        musicMaster = new MusicMaster();
     }
 
     protected CombatMaster createCombatMaster() {
@@ -272,7 +275,8 @@ public class DC_Game extends MicroGame {
                 }
                 loop = new GameLoop(this);
                 loop.start();
-                setStarted(true);
+                setStarted(true); //TODO false?
+
                 main.system.auxiliary.log.LogMaster.log(1, "Game Loop exit ");
                 return;
 

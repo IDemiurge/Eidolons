@@ -28,6 +28,7 @@ import java.util.Map;
 public class OptionsMaster {
     private static Map<OPTIONS_GROUP, Options> optionsMap = new HashMap<>();
     private static Map<OPTIONS_GROUP, Options> cachedMap;
+    private static OptionsPanel optionsPanel;
 
     //OR LET THOSE CLASSES GET() OPTIONS?
     public static void applyGraphicsOptions(GraphicsOptions graphicsOptions) {
@@ -141,13 +142,19 @@ public class OptionsMaster {
     }
 
     public static void openMenu() {
-        new OptionsPanel(optionsMap);
-        GuiManager.inNewWindow(new OptionsPanel(optionsMap), "Options", new Dimension(800, 1000));
-    }
+//        if (optionsPanel == null) {
+//           optionsPanel = new OptionsPanel(optionsMap);
+            GuiManager.inNewWindow(new OptionsPanel(optionsMap),
+             "Options", new Dimension(800, 1000));
+//        } else { TODO won't reset!
+//            optionsPanel.setVisible(true);
+//        }
 
-    public static void readOptions(String data) {
+         }
+
+    public static Map<OPTIONS_GROUP, Options> readOptions(String data) {
         Document doc = XML_Converter.getDoc(data);
-        optionsMap = new XLinkedMap<>();
+        Map<OPTIONS_GROUP, Options> optionsMap = new XLinkedMap<>();
         for (Node sub : XML_Converter.getNodeListFromFirstChild(doc, true)) {
             OPTIONS_GROUP group=OPTIONS_GROUP.valueOf(sub.getNodeName());
             Options options = createOptions(group, sub);
@@ -155,6 +162,7 @@ public class OptionsMaster {
                 optionsMap.put(group, options);
         }
 
+        return optionsMap;
     }
 
     private static Options createOptions(OPTIONS_GROUP group, Node doc) {
@@ -168,22 +176,23 @@ public class OptionsMaster {
     public static void init() {
         String data = FileManager.readFile(getOptionsPath());
         if (data.isEmpty()) {
-            initDefaults();
+            optionsMap= initDefaults();
         } else {
-            readOptions(data);
+            optionsMap= readOptions(data);
         }
 
         applyGraphicsOptions(getGraphicsOptions());
     }
 
-    private static void initDefaults() {
-        optionsMap = new XLinkedMap<>();
+    private static Map<OPTIONS_GROUP, Options> initDefaults() {
+        XLinkedMap optionsMap = new XLinkedMap<>();
         for (OPTIONS_GROUP group : OPTIONS_GROUP.values()) {
 
             Options options = generateDefaultOptions(group);
             if (options != null)
                 optionsMap.put(group, options);
         }
+        return optionsMap;
     }
 
     private static Class<?> getOptionGroupEnumClass(OPTIONS_GROUP group) {
@@ -256,12 +265,18 @@ public class OptionsMaster {
 
     public static void resetToCached() {
         optionsMap= new MapMaster<OPTIONS_GROUP, Options>().cloneHashMap(cachedMap);
+        applyOptions();
+    }
+    public static void resetToDefaults() {
+        optionsMap= initDefaults();
+        applyOptions();
     }
 
     public static EngineOptions getEngineOptions() {
 //        return (EngineOptions) getOptions(OPTIONS_GROUP.ENGINE);
         return null;
     }
+
 
     public enum OPTIONS_GROUP {
         ANIMATION, SOUND, GRAPHICS, TUTORIAL, GAMEPLAY,ENGINE,

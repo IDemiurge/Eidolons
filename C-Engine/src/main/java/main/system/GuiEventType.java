@@ -10,6 +10,10 @@ package main.system;
 //
 //}
 public enum GuiEventType {
+    MUSIC_START,
+    MUSIC_PAUSE,
+    MUSIC_STOP,
+    MUSIC_RESUME,
 
     BF_CREATED,
     INGAME_EVENT_TRIGGERED,

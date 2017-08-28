@@ -2,10 +2,8 @@ package main.libgdx.gui.panels.dc.menus.outcome;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -19,6 +17,7 @@ import main.libgdx.gui.panels.dc.TabbedPanel;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
+import main.system.graphics.FontMaster.FONT;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
@@ -26,7 +25,11 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
  * Created by JustMe on 8/15/2017.
  */
 public class OutcomePanel extends TablePanel implements EventListener {
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
+    private static final String VICTORY_MESSAGE =
+     "+++That's It - You are Victorious!+++";
+    private static final String DEFEAT_MESSAGE =
+     "***Defeat - The Enemy has Prevailed!***";
     Cell<ButtonStyled> doneButton;
     Cell<ButtonStyled> exitButton;
     Cell<ButtonStyled> continueButton;
@@ -43,18 +46,18 @@ public class OutcomePanel extends TablePanel implements EventListener {
         setBackground(drawable);
 
         datasource = outcomeDatasource;
-        String imgPath = "UI\\big\\victory.jpg";
+        String imgPath = "UI\\big\\victory.png";
         if (outcomeDatasource.getOutcome() != null)
-            imgPath = outcomeDatasource.getOutcome() ? "UI\\big\\victory.jpg" : "UI\\big\\defeat.jpg";
+            imgPath = outcomeDatasource.getOutcome() ? "UI\\big\\victory.png" : "UI\\big\\defeat.jpg";
         picture = new Image(TextureCache.getOrCreateR(imgPath));
 
         addActor(picture);
         picture.setAlign(Align.center);
 
-        String messageText = "That's it";
+        String messageText = VICTORY_MESSAGE;
         if (outcomeDatasource.getOutcome() != null)
-            messageText = outcomeDatasource.getOutcome() ? "Victory!" : "Defeat!";
-        message = new Label(messageText, StyleHolder.getDefaultLabelStyle());
+            messageText = outcomeDatasource.getOutcome() ? VICTORY_MESSAGE : DEFEAT_MESSAGE;
+        message = new Label(messageText, StyleHolder.getSizedLabelStyle(FONT.AVQ, 22));
         addActor(message);
         message.setAlignment(Align.top);
 
@@ -82,7 +85,6 @@ public class OutcomePanel extends TablePanel implements EventListener {
 
     @Override
     public boolean remove() {
-        Gdx.app.exit();
         return super.remove();
     }
 
@@ -90,6 +92,8 @@ public class OutcomePanel extends TablePanel implements EventListener {
     public boolean handle(Event e) {
         if (!(e instanceof InputEvent)) return true;
         InputEvent event = ((InputEvent) e);
+
+        if (event.getType()!= Type.touchDown) return true;
         Actor actor = event.getTarget();
         if (doneButton.getActor() == actor) {
 //            datasource.getHandler().done();
@@ -97,6 +101,13 @@ public class OutcomePanel extends TablePanel implements EventListener {
             //credits?
             ActorMaster.addMoveToAction(this, getX(), Gdx.graphics.getHeight(), 1.5f);
             ActorMaster.addRemoveAfter(this);
+            ActorMaster.addAfter(this, new Action() {
+                @Override
+                public boolean act(float delta) {
+//                    Gdx.app.exit();
+                    return false;
+                }
+            });
 //            DungeonScreen.getInstance().getGridPanel()
 //greyscale shader?
             //pan camera to main hero

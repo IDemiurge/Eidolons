@@ -39,7 +39,7 @@ public class DeathAnim extends ActionAnim {
         super(e.getRef().getObj(KEYS.ACTIVE), getDeathAnimData(e));
         unit = (Unit) e.getRef().getTargetObj();
         template = getTemplate(getActive(), unit);
-        duration = 2;
+        setDuration( 2);
     }
 
     private static AnimData getDeathAnimData(Event e) {
@@ -106,13 +106,17 @@ public class DeathAnim extends ActionAnim {
                 }
             };
         }
-//        return skull;
-        return null;
+        return skull;
+//        return null;
     }
 
     private DEATH_ANIM getTemplate(DC_ActiveObj active, Unit unit) {
 //        getRef().getEvent().getRef().getDamageType();
         return DEATH_ANIM.FADE;
+    }
+
+    public static void setOn(boolean on) {
+        DeathAnim.on = on;
     }
 
     @Override

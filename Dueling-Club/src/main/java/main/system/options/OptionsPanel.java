@@ -41,9 +41,11 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
         }
         add(tabs, "x 100");
         G_Panel btnpanel = new G_Panel();
+        btnpanel.add(new G_Button("Ok", () -> ok()), "sg btns");
         btnpanel.add(new G_Button("Save", () -> save()), "sg btns");
-        btnpanel.add(new G_Button("Defaults", () -> save()), "sg btns");
-        btnpanel.add(new G_Button("Cancel", () -> save()), "sg btns");
+        btnpanel.add(new G_Button("Apply", () -> update()), "sg btns");
+        btnpanel.add(new G_Button("Cancel", () -> cancel()), "sg btns");
+        btnpanel.add(new G_Button("Defaults", () -> toDefaults()), "sg btns");
         add(btnpanel);
 
     }
@@ -140,17 +142,30 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
         OptionsMaster.saveOptions();
     }
 
-    public void loadProfile() {
-
-    }
 
     public void cancel() {
-
+        OptionsMaster.resetToCached();
+        close();
     }
 
     public void toDefaults() {
-
+        OptionsMaster.resetToDefaults();
     }
+
+
+    private void ok() {
+        update();
+        close();
+    }
+
+    private void close() {
+        setVisible(false);
+
+        if (getFrame() !=null ) {
+            (getFrame()).dispose();
+        }
+    }
+
 
 
 }

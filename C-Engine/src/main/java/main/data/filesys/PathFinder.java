@@ -240,6 +240,10 @@ public class PathFinder {
         return getImagePath() + "mini"+StringMaster.getPathSeparator()+"sfx"+StringMaster.getPathSeparator();
     }
 
+    public static String getMusicPath() {
+        init();
+        return getEnginePathPlusNewResourceProject()+"music"+StringMaster.getPathSeparator();
+    }
     public static String getParticleImagePath() {
         init();
         return getParticlePresetPath() + "images"+StringMaster.getPathSeparator();
@@ -257,4 +261,5 @@ public class PathFinder {
     public static String getEmblemAutoFindPath() {
         return StrPathBuilder.build(getImagePath(), "ui", "emblems", "auto")+StringMaster.getPathSeparator();
     }
+
 }

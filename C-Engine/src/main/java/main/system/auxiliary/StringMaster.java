@@ -1634,6 +1634,7 @@ public class StringMaster {
                                        Predicate<String> predicate) {
         StringBuilder builder = new StringBuilder(50);
         for (String sub : segments) {
+            if (sub.isEmpty()) continue;
             if (predicate.test(sub)) {
                 if (breakOnFalse) {
                     break;
