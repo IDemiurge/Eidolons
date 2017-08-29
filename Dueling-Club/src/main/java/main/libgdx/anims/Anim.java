@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
@@ -25,6 +26,7 @@ import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
@@ -339,8 +341,7 @@ public class Anim extends Group implements Animation {
         }
         if (data.getIntValue(ANIM_VALUES.MISSILE_SPEED) != 0) {
             pixelsPerSecond = data.getIntValue(ANIM_VALUES.MISSILE_SPEED);
-        }
-        else
+        } else
             pixelsPerSecond = getPixelsPerSecond();
         if (pixelsPerSecond == 0) {
             return;
@@ -375,10 +376,18 @@ public class Anim extends Group implements Animation {
         if (texture == null) {
             if (ImageManager.isImage(getTexturePath())) {
                 texture = TextureCache.getOrCreate(getTexturePath());
+            } else {
+                texture = TextureCache.getOrCreate(getDefaultTexturePath());
             }
         }
         return texture;
 
+    }
+
+    protected String getDefaultTexturePath() {
+        return
+         StrPathBuilder.build(PathFinder.getSpritesPath(),
+          "weapons", "artifact", "wraith force.png");
     }
 
     @Override

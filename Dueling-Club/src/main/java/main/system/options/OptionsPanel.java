@@ -30,6 +30,8 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
             Options options = optionsMap.get(group);
             for (Object v : options.getValues().keySet()) {
                 OPTION option = options.getKey(v.toString());
+                if (option == null)
+                    continue;
                 Component comp = getOptionComp(options, option);
                 if (comp == null)
                     continue;
