@@ -201,6 +201,8 @@ public class PathBuilder extends AiHandler {
             finished();
             return true;
         }
+        if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAI()))
+            return false;
         if (Chronos.getTimeElapsedForMark(getChronosPrefix() + targetAction) > TimeLimitMaster
                 .getTimeLimitForPathBuilding()
                 * TimeLimitMaster.CRITICAL_FAIL_FACTOR) {

@@ -334,7 +334,12 @@ public class UnitEnums {
         Ward,
 
         Soul,
-        Undying,
+        Undying{
+            @Override
+            public String toString() {
+                return super.toString();
+            }
+        },
         Blight,
         Corrosion, Oblivion,
         Taint, Aether,

@@ -16,6 +16,7 @@ import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
+import main.game.battlecraft.ai.tools.future.FutureBuilder;
 import main.game.battlecraft.rules.action.ActionRule;
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.bf.Coordinates;
@@ -186,6 +187,7 @@ public class DC_GameManager extends GameManager {
             return;
         }
         getGameMaster().getUnitCache().clear();
+        FutureBuilder.clearCaches();
         getStateManager().resetAllSynchronized();
         checkForChanges(true);
 

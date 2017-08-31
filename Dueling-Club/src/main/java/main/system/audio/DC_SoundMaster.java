@@ -84,7 +84,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     public static void playTurnSound(Unit unit) {
 //            getSoundPlayer().setPositionFor(unit);
-        getSoundPlayer().play(STD_SOUNDS.TURN.getPath());
+        getSoundPlayer().play(STD_SOUNDS.SLING.getPath());
     }
 
     public static void playMoveSound(Unit unit) {

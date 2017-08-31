@@ -400,6 +400,9 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 break;
 
         }
+        if (getUnit().getAiType().isCaster()) {
+            priority *= 3;
+        }
         return priority;
     }
 
@@ -1072,7 +1075,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
              getSpellPriority(GOAL_TYPE.DEBUFF,
               action);
             if (getUnit().getAiType().isCaster()) {
-                damage_priority *= 2;
+                damage_priority *= 4;
             }
 
         } else {

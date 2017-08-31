@@ -48,7 +48,6 @@ public class ActionSequenceConstructor extends AiHandler {
     private Game game;
     private Unit unit;
     private List<Coordinates> prioritizedCells;
-    private long timeLimitForAi;
 
     public ActionSequenceConstructor(AiMaster master) {
         super(master);
@@ -56,13 +55,12 @@ public class ActionSequenceConstructor extends AiHandler {
 
 
     public List<ActionSequence> createActionSequences(UnitAI ai) {
-        Chronos.mark(getChronosPrefix() + ai);
+        TimeLimitMaster. markTimeForAI(ai);
         List<ActionSequence> list = new ArrayList<>();
         getActionSequenceConstructor().setPrioritizedCells(null);
         boolean forced = false;
         if (ai.getCurrentOrder() != null)
             forced = true;
-          timeLimitForAi = TimeLimitMaster.getTimeLimitForAi(ai);
         for (GOAL_TYPE type : GoalManager.getGoalsForUnit(ai)) {
             List<ActionSequence> sequences = null;
             try {
@@ -75,9 +73,7 @@ public class ActionSequenceConstructor extends AiHandler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (Chronos.getTimeElapsedForMark(getChronosPrefix() + ai) > timeLimitForAi) {
-                LogMaster.log(1, "*********** TIME ELAPSED FOR  "
-                 + ai + StringMaster.wrapInParenthesis(timeLimitForAi + ""));
+            if (!TimeLimitMaster.checkTimeLimitForAi(ai)) {
                 break;
             }
         }
@@ -90,11 +86,8 @@ public class ActionSequenceConstructor extends AiHandler {
         List<DC_ActiveObj> actions = AiUnitActionMaster.getFullActionList(goal.getTYPE(), ai.getUnit());
         actions.addAll(addSubactions(actions));
         for (DC_ActiveObj action : actions) {
-            if (Chronos.getTimeElapsedForMark(getChronosPrefix() + ai) > timeLimitForAi) {
-                LogMaster.log(1, "*********** TIME ELAPSED FOR  "
-                 + ai + StringMaster.wrapInParenthesis(timeLimitForAi + ""));
+            if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAI()))
                 break;
-            }
 
             Chronos.mark(getChronosPrefix() + action);
             List<Task> tasks = getTaskManager().getTasks(goal.getTYPE(), ai, goal.isForced(), action);
@@ -283,11 +276,8 @@ public class ActionSequenceConstructor extends AiHandler {
                                                        Action action) {
         List<ActionSequence> list = new ArrayList<>();
         for (ActionPath path : paths) {
-            if (Chronos.getTimeElapsedForMark(getChronosPrefix() + getUnitAI()) > timeLimitForAi) {
-                LogMaster.log(1, "*********** TIME ELAPSED FOR  "
-                 + getUnitAI() + StringMaster.wrapInParenthesis(timeLimitForAi + ""));
-                break;
-            }
+            if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAI()))
+             break;
             ActionSequence sequence = new ActionSequence(path.getActions(), task, task.getAI());
             if (action.getActive().isRanged()) {
                 List<Action> rangedAttackSequence = constructSingleAttackSequence(action, task);

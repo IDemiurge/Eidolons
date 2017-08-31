@@ -8,22 +8,23 @@ import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import main.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory;
 import main.game.core.game.DC_Game;
+import main.system.GuiEventManager;
 
 /**
  * Created by JustMe on 5/7/2017.
  */
 public abstract class MetaGameMaster<E extends MetaGame> {
 
-    protected    String data;
-   protected PartyManager<E> partyManager;
-    protected  MetaInitializer<E> initializer;
-    protected  ShopManager<E> shopManager;
-    protected  MetaDataManager<E> metaDataManager;
-    protected  DialogueFactory dialogueFactory;
-    protected  IntroFactory introFactory;
+    protected String data;
+    protected PartyManager<E> partyManager;
+    protected MetaInitializer<E> initializer;
+    protected ShopManager<E> shopManager;
+    protected MetaDataManager<E> metaDataManager;
+    protected DialogueFactory dialogueFactory;
+    protected IntroFactory introFactory;
 
-    protected  E metaGame;
-    protected   DC_Game game; //<? extends DC_Game>
+    protected E metaGame;
+    protected DC_Game game; //<? extends DC_Game>
     DialogueManager dialogueManager;
     DialogueActorMaster dialogueActorMaster;
     private DataModel entity;
@@ -31,13 +32,13 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 //    AfterCombatManager<E> afterCombatManager;
 
     public MetaGameMaster(String data) {
-        this.data=data;
-        partyManager=createPartyManager();
-         initializer=createMetaInitializer ();
-         shopManager=createShopManager();
-          metaDataManager=createMetaDataManager();
-        dialogueFactory= createDialogueFactory();
-       introFactory= createIntroFactory();
+        this.data = data;
+        partyManager = createPartyManager();
+        initializer = createMetaInitializer();
+        shopManager = createShopManager();
+        metaDataManager = createMetaDataManager();
+        dialogueFactory = createDialogueFactory();
+        introFactory = createIntroFactory();
         dialogueManager = new DialogueManager(this);
         dialogueActorMaster = new DialogueActorMaster(this);
     }
@@ -52,7 +53,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
 
     //from data? if save
-    protected abstract  DC_Game createGame();
+    protected abstract DC_Game createGame();
+
     protected abstract PartyManager<E> createPartyManager();
 
     protected abstract MetaDataManager<E> createMetaDataManager();
@@ -66,21 +68,22 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected abstract MetaInitializer<E> createMetaInitializer();
 
 
-    public void init(){
+    public void init() {
 //        shopManager.init();
 //        metaDataManager.init();
-        game=createGame();
-        metaGame=  initializer.initMetaGame(data);
+        game = createGame();
+        metaGame = initializer.initMetaGame(data);
         preStart();
         partyManager.initPlayerParty();
     }
 
-    public void preStart(){
+    public void preStart() {
         partyManager.preStart();
 //        getGame().getDataKeeper().setDungeonData(new DungeonData(getMetaGame()));
 
     }
-    public void gameStarted(){
+
+    public void gameStarted() {
         partyManager.gameStarted();
 //   TODO remove lazy init hack?
 //     getDialogueFactory().init(this);
@@ -140,5 +143,19 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public void next(Boolean outcome) {
+        gameExited();
+    }
+
+    private void gameExited() {
+//        try {
+//            DungeonScreen.getInstance().dispose();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        try {
+            GuiEventManager.cleanUp();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

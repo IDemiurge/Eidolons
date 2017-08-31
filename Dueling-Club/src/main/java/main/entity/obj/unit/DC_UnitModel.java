@@ -10,8 +10,6 @@ import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.UnitEnums.IMMUNITIES;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.VISION_MODE;
-import main.content.enums.system.AiEnums;
-import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.mode.MODE;
 import main.content.mode.ModeImpl;
@@ -594,14 +592,7 @@ else
     }
 
 
-    public AI_TYPE getAiType() {
-        AI_TYPE ai = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class,
-         getProperty(PROPS.AI_TYPE));
-        if (ai == null) {
-            return AiEnums.AI_TYPE.NORMAL;
-        }
-        return ai;
-    }
+
 
 
     public DC_ActiveObj getDummyAction() {

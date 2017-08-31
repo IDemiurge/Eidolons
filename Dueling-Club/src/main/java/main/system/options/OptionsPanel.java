@@ -4,6 +4,7 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_TabbedPanel;
 import main.swing.generic.components.misc.G_Button;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.options.Options.OPTION;
 import main.system.options.OptionsMaster.OPTIONS_GROUP;
 
@@ -58,8 +59,11 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
     private Component getOptionComp(Options options, OPTION option) {
         switch (options.getValueClass(option).getSimpleName()) {
             case "String":
-                JComboBox<String> box = new JComboBox<String>(new Vector<>(
-                 options.getContainerValues((Enum) option)));
+                JComboBox<String> box = new JComboBox<>(new Vector<>(
+                 ListMaster.toStringList(option.getOptions())
+//                 options.getContainerValues((Enum) option))
+                ));
+                box.setSelectedItem(options.getValue(option.toString()));
                 map.put(option, box);
                 return new G_Panel(
                  new JLabel(option.getName()), box); //limit?
@@ -142,7 +146,7 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
 //            }
         });
 
-        OptionsMaster.applyOptions();
+       try{ OptionsMaster.applyOptions();             }catch(Exception e){                e.printStackTrace();            }
     }
 
     public void save() {

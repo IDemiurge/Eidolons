@@ -17,6 +17,16 @@ public class GuiEventManagerOld {
     private Lock lock = new ReentrantLock();
     private Map<GuiEventType, OnDemandCallback> onDemand = new ConcurrentHashMap<>();
 
+    public static void cleanUp() {
+        getInstance()._cleanUp();
+    }
+
+    private void _cleanUp() {
+        eventMap.clear();
+        eventQueue.clear();
+        onDemand.clear();
+    }
+
     public static void bind(GuiEventType type, final EventCallback event) {
         getInstance().bind_(type, event);
     }

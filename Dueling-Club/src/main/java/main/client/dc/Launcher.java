@@ -41,6 +41,7 @@ import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.test.frontend.BattleSceneLauncher;
+import main.test.frontend.Showcase;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -635,6 +636,7 @@ if ( Eidolons.getGame()!=null )
     }
 
     public static boolean isDEBUG_MODE_DEFAULT() {
+        if (Showcase.isRunning()) return false;
         return DEBUG_MODE || DEV_MODE;
     }
 

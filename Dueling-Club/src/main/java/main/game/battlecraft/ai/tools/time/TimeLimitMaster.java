@@ -1,6 +1,7 @@
 package main.game.battlecraft.ai.tools.time;
 
 import main.game.battlecraft.ai.UnitAI;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 
@@ -86,8 +87,25 @@ public class TimeLimitMaster {
         return result;
     }
 
+    public static boolean checkTimeLimitForAi(UnitAI ai) {
+        if (getTimeLimitForAi(ai) > getMarkForAi(ai))
+            return true;
+        LogMaster.log(1, "*********** TIME ELAPSED FOR  "
+         + ai + StringMaster.wrapInParenthesis(getMarkForAi(ai) + ""));
+        return false;
+    }
+
+    private static long getMarkForAi(UnitAI ai) {
+        return Chronos.getTimeElapsedForMark("ai limit for " + ai.getUnit().getName());
+    }
+
     public static long getTimeLimitForAi(UnitAI ai) {
         return Math.max(AI_TIME_LIMIT_MIN, ai.getUnit().calculatePower() * AI_TIME_LIMIT_PER_POWER);
+    }
+
+    public static void markTimeForAI(UnitAI ai) {
+      Chronos.mark(
+       "ai limit for "+ ai.getUnit().getName());
     }
 
     public enum METRIC {

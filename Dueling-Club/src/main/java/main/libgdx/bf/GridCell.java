@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.entity.active.DefaultActionHandler;
 import main.entity.obj.DC_Obj;
 import main.game.battlecraft.logic.battlefield.vision.GammaMaster;
@@ -16,6 +15,7 @@ import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.libgdx.StyleHolder;
+import main.libgdx.bf.mouse.BattleClickListener;
 import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
@@ -53,7 +53,7 @@ public class GridCell extends Group implements Borderable {
         cordsText.setVisible(false);
         addActor(cordsText);
 
-        addListener(new ClickListener() {
+        addListener(new BattleClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -69,9 +69,14 @@ public class GridCell extends Group implements Borderable {
 
                 if (button == Input.Buttons.LEFT) {
                     event.handle();
-                    if (getTapCount()>1)
-                    if (!DefaultActionHandler.leftClickCell(event, getGridX(), getGridY()))
-                    GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, GridCell.this);
+                    if (isAlt())
+                        try {
+                            if (DefaultActionHandler.leftClickCell(event, getGridX(), getGridY()))
+                                return;
+                            GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, GridCell.this);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                 }
             }
         });
@@ -82,25 +87,30 @@ public class GridCell extends Group implements Borderable {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
-            if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), getWidth(), getHeight())) {
+            if (!DungeonScreen.getInstance().getController().isWithinCamera
+//             (getX(), getY(), getWidth(), getHeight()))
+ (this)) {
                 return;
             }
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)){
+        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
 //            if (getGridY()==0 && getGridX()==0)
-            TextureManager. drawFromSpriteCache(TextureManager.getCellSpriteCacheId(
+            TextureManager.drawFromSpriteCache(TextureManager.getCellSpriteCacheId(
              getGridX(), getGridY()
             ));
         }
 //         else
-            super.draw(batch, parentAlpha);
+        super.draw(batch, parentAlpha);
 
     }
 
     @Override
     public void act(float delta) {
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
-            if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(),
-             2*getWidth(), 2*getHeight())) {
+            if (!DungeonScreen.getInstance().getController().isWithinCamera(
+//             getX(), getY(),
+//             2*getWidth(), 2*getHeight())
+             (this))
+             ) {
                 return;
             }
         super.act(delta);

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.mode.STD_MODES;
@@ -29,6 +28,7 @@ import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.anims.std.MoveAnimation;
 import main.libgdx.bf.light.ShadowMap;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
+import main.libgdx.bf.mouse.BattleClickListener;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureCache;
@@ -131,7 +131,7 @@ public class GridPanel extends Group {
         setHeight(cells[0][0].getHeight() * rows);
         setWidth(cells[0][0].getWidth() * cols);
 
-        addListener(new ClickListener() {
+        addListener(new BattleClickListener() {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 GridPanel.this.getStage().setScrollFocus(GridPanel.this);
@@ -398,7 +398,7 @@ public class GridPanel extends Group {
                     view.updateModeImage(null);
                 else
                     try {
-                        view.updateModeImage(unit.getBuff(unit.getMode().getBuffName()).getImagePath());
+                        view.updateModeImage(unit.getBuff(unit.getModeFinal().getBuffName()).getImagePath());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -461,6 +461,8 @@ public class GridPanel extends Group {
             LogMaster.log(1, obj + " IS ALREADY REMOVED!");
             return uv;
         }
+        else
+            LogMaster.log(1, obj + " unit view REMOVED!");
         gridCellContainer.removeActor(uv);
         uv.setVisible(false);
 

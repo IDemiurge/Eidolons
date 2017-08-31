@@ -73,18 +73,19 @@ public class TipMaster {
     public static String getText(BASIC_COMBAT_TIPS tip) {
         switch (tip) {
             case ARMOR:
-                return "Armor will reduce damage";
+                return "Armor reduces physical damage if attacker fails to penetrate it, but only as long as it has some Durability left.";
             case ATTACK_AND_DEFENSE:
                 return  StringMaster.getWellFormattedString(tip.name())
                  +" determine what percentage of damage is dealt. " +
                  "Greater difference creates chance to miss or make a critical strike";
             case DYNAMIC_ROUNDS:
                 return
-                 "Units make actions when they become 1st in the Initiative Queue on the top. \n" +
+                 "Units take actions when they become 1st " +
+                  "(from the right side) in the Initiative Queue on top of the screen. \n" +
                   "";
             case GAME_START:
                return
-                "Normally, you can only choose one hero to control in your party.";
+                "Normally, you choose one hero to control in your party when game starts.";
             case DEFAULT_ACTIONS:
                 return "To make a default action on a unit or cell, just left-click it." +
                  "Your hero will try to either move or attack accordingly.";

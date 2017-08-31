@@ -1,5 +1,8 @@
 package main.system.options;
 
+import main.game.battlecraft.logic.battle.universal.BattleOptions.DIFFICULTY;
+import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 
 public class GameplayOptions extends  Options<GAMEPLAY_OPTION,GAMEPLAY_OPTION>{
@@ -9,8 +12,13 @@ public class GameplayOptions extends  Options<GAMEPLAY_OPTION,GAMEPLAY_OPTION>{
         return GAMEPLAY_OPTION.class;
     }
 
+    static{
+        GAMEPLAY_OPTION.RULES_SCOPE.setDefaultValue(RULE_SCOPE.BASIC);
+        GAMEPLAY_OPTION.GAME_DIFFICULTY.setDefaultValue(DIFFICULTY.NOVICE);
+    }
     public enum GAMEPLAY_OPTION implements Options.OPTION {
-//RULE_SCOPE(RuleMaster.RULE_SCOPE.values()),
+        RULES_SCOPE(RuleMaster.RULE_SCOPE.values()),
+        GAME_DIFFICULTY(DIFFICULTY.values()),
 
 //        AI_SPEED,
         DEFAULT_ACTIONS(true),

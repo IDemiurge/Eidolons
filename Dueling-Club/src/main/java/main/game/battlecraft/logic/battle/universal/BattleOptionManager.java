@@ -5,6 +5,9 @@ import main.entity.obj.BattleFieldObject;
 import main.game.battlecraft.logic.battle.universal.BattleOptions.ARENA_GAME_OPTIONS;
 import main.game.battlecraft.logic.battle.universal.BattleOptions.DIFFICULTY;
 import main.game.battlecraft.rules.combat.damage.Damage;
+import main.system.auxiliary.EnumMaster;
+import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import main.system.options.OptionsMaster;
 
 /**
  * Created by JustMe on 5/7/2017.
@@ -16,11 +19,19 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
 
     public BattleOptionManager(BattleMaster<E> master) {
         super(master);
+        try {
+            defaultDifficulty =
+             new EnumMaster<DIFFICULTY>().retrieveEnumConst(DIFFICULTY.class,OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         options = new BattleOptions();
         options.setValue(ARENA_GAME_OPTIONS.DIFFICULTY, defaultDifficulty.name());
     }
 
-//    public int getBattleLevel() {
+    public DIFFICULTY getDifficulty() {
+        return   new EnumMaster<DIFFICULTY>().retrieveEnumConst(DIFFICULTY.class,OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
+    }
 //        battleLevel = 0;
 //
 //        List<? extends Obj> units = new LinkedList<>(game.getPlayer(true).getControlledUnits());
@@ -66,9 +77,9 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
         int mod = 100;
         if (ally_enemy_neutral) {
             if (unit.isMainHero()) {
-                mod = getOptions().getDifficulty().getHealthPercentageMainHero();
+                mod =  getDifficulty().getHealthPercentageMainHero();
             } else {
-                mod = getOptions().getDifficulty().getHealthPercentageAlly();
+                mod =  getDifficulty().getHealthPercentageAlly();
             }
         } else
             mod = getOptions().getDifficulty().getHealthPercentageEnemy();

@@ -128,7 +128,10 @@ public class UnitView extends BaseView {
     protected boolean checkIgnored() {
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
             if (!DungeonScreen.getInstance().
-             getController().isWithinCamera(getX(), getY(), 2*getWidth(), 2*getHeight())) {
+             getController().isWithinCamera(
+              this
+//              getX(), getY(), 2*getWidth(), 2*getHeight()
+             )) {
                 return false;
             }
         return false;

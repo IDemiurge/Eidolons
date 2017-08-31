@@ -1137,6 +1137,7 @@ public class StringMaster {
         if (segments.isEmpty()) {
             return string;
         }
+
         return segments.getLast();
     }
 

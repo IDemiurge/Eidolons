@@ -18,17 +18,19 @@ static {
 
     public enum GRAPHIC_OPTION implements Options.OPTION {
 
-    FULLSCREEN(false),
+//    FULLSCREEN(false),
         //RESOLUTION
-        GAMMA(),
+//        GAMMA(),
 
         AMBIENCE(false),
-        PARTICLE_EFFECTS(false),
         ANIMATED_UI(false),
         SHADOWMAP(false),
-        AMBIENCE_MOVE_SUPPORTED(false), OPTIMIZATION_ON(true),
+        AMBIENCE_MOVE_SUPPORTED(false),
+        OPTIMIZATION_ON(true),
+        SPRITE_CACHE_ON(true),
+        OUTLINES(false),
 
-        SPRITE_CACHE_ON(true), OUTLINES(false), RESOLUTION();
+        ;
         private Boolean exclusive;
         private Integer min;
         private Integer max;

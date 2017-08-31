@@ -30,6 +30,14 @@ public class GuiEventManager {
         }
     }
 
+    public static void cleanUp() {
+        if (!vertx){
+            GuiEventManagerOld.cleanUp();
+        }
+        else {
+            GuiEventManagerVertx.cleanUp();
+        }
+    }
     public static void bindSound(GuiEventType type, final EventCallback event) {
 
     }

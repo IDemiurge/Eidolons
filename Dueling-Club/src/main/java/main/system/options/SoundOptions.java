@@ -12,12 +12,13 @@ public class SoundOptions extends Options<SOUND_OPTION,SOUND_OPTION> {
 
 
     public enum SOUND_OPTION implements  Options.OPTION {
-//        ALL_OFF,
+        SOUNDS_OFF(false),
 //        VOICE_OFF,
+       MUSIC_OFF(false),
         MASTER_VOLUME(100, 0, 100),
         MUSIC_VOLUME(100, 0, 100),
-        VOICE_VOLUME(100, 0, 100),
-        EFFECT_VOLUME(100, 0, 100),
+//        VOICE_VOLUME(100, 0, 100),
+//        EFFECT_VOLUME(100, 0, 100),
         MUSIC_VARIANT(MusicMaster.MUSIC_VARIANT.values()),
 
 //        POSITIONED_SOUND(),

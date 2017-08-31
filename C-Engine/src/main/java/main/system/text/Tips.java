@@ -62,7 +62,31 @@ public class Tips {
     }
 
 
-    public enum BASIC_COMBAT_TIPS implements TIP {
+    public enum SHOWCASE_TOOLTIPS implements TIP {
+        SHOWCASE,
+
+        MISSION("There are 6 missions in this version, plus custom-skirmish setup mode!"),
+
+        PAUSE,
+        OPTIONS,
+
+        ;
+
+        String text;
+
+        SHOWCASE_TOOLTIPS(String... text) {
+            if (text.length > 0)
+                this.text = text[0];
+        }
+
+        @Override
+        public String getText() {
+            if (text == null) text = TipMaster.getText(this);
+            return text;
+
+        }
+    }
+        public enum BASIC_COMBAT_TIPS implements TIP {
         RESISTANCE, ARMOR, ATTACK_AND_DEFENSE, VISION, DYNAMIC_ROUNDS, MODES, GAME_START(), DEFAULT_ACTIONS();
 
         String text;

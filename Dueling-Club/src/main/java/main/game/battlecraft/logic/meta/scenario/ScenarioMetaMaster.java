@@ -70,9 +70,12 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
         }
         super.next(outcome);
         if (outcome)
+        {
             ScenarioLauncher.missionIndex++;
-
-         init();
+//        no need    getMetaDataManager().setMissionName(null );
+        }
+        Eidolons.initScenario(
+        new ScenarioMetaMaster(getData()));
 //   TODO       getDialogueManager().getDialogueForMission(getMissionName());
         ScreenData data = new ScreenData(ScreenType.BATTLE, getMissionName());
 //        //new SceneFactory("Test")
@@ -149,6 +152,8 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
     }
 
     public String getMissionName() {
+        if (getMetaDataManager().getMissionName()!=null )
+            return getMetaDataManager().getMissionName();
         return getPartyManager().getParty().getMission();
     }
 }

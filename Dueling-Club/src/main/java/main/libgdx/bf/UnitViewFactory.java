@@ -12,6 +12,7 @@ import main.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.libgdx.DialogScenario;
+import main.libgdx.bf.mouse.BattleClickListener;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.test.frontend.IntroTestLauncher;
@@ -43,7 +44,7 @@ public class UnitViewFactory {
     }
 
     private static ClickListener createListener(BattleFieldObject bfObj) {
-        return new ClickListener() {
+        return new BattleClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return event.getButton() == Input.Buttons.RIGHT;
@@ -54,7 +55,7 @@ public class UnitViewFactory {
                 if (IntroTestLauncher.running) {
                     ScenarioMetaMaster m = new ScenarioMetaMaster("Pride and Treachery");
                     GameDialogue dialogue = null;//new LinearDialogue();
-                    dialogue =  bfObj.getGame().getMetaMaster().getDialogueFactory().getDialogue("Interrogation");
+                    dialogue = bfObj.getGame().getMetaMaster().getDialogueFactory().getDialogue("Interrogation");
                     List<DialogScenario> list = SceneFactory.getScenes(dialogue);
                     GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, list);
                 }
@@ -64,11 +65,14 @@ public class UnitViewFactory {
                     GuiEventManager.trigger(CREATE_RADIAL_MENU, bfObj);
                     event.handle();
                     event.stop();
-                }
-                else {
+                } else {
                     if (event.getButton() == Buttons.LEFT)
-                        if (getTapCount()>1)
-                    DefaultActionHandler.leftClickUnit(bfObj);
+                        if (isAlt())
+                            try {
+                                DefaultActionHandler.leftClickUnit(bfObj);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                 }
             }
         };

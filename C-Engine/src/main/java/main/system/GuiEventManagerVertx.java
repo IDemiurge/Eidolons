@@ -20,6 +20,9 @@ public class GuiEventManagerVertx extends GuiEventManager {
     private static Lock initLock = new ReentrantLock();
     private static List<Runnable> callbacks = new ArrayList<>(20);
 
+    public static void cleanUp() {
+        callbacks.clear();
+    }
     public static void bind(GuiEventType type, final EventCallback event) {
         if (CoreEngine.isGraphicsOff())
             return;

@@ -41,13 +41,23 @@ public class OptionsMaster {
              retrieveEnumConst(SOUND_OPTION.class,
               soundOptions.getValues().get(sub).toString());
             SOUND_OPTION key = soundOptions.getKey((sub.toString()));
-            if (key == SOUND_OPTION.MUSIC_VARIANT) {
-                MusicMaster.getInstance().setVariant(
-                 new EnumMaster<MUSIC_VARIANT>().retrieveEnumConst(MUSIC_VARIANT.class,
-                  soundOptions.getValue(key)   ));
-                continue;
-            }
             String value = soundOptions.getValue(key);
+            if (!StringMaster.isInteger(value)) {
+                switch (key) {
+                    case SOUNDS_OFF:
+                        SoundMaster.setOn(false);
+//                        MusicMaster.resetSwitcher();
+                        break;
+                    case MUSIC_OFF:
+                        MusicMaster.resetSwitcher();
+                        break;
+                    case MUSIC_VARIANT:
+                        MusicMaster.getInstance().setVariant(
+                         new EnumMaster<MUSIC_VARIANT>().retrieveEnumConst(MUSIC_VARIANT.class,
+                          soundOptions.getValue(key)));
+                        break;
+                }
+            } else {
             Integer integer = Integer.valueOf(value.toLowerCase());
             Float v = new Float(integer) / 100;
             switch (key) {
@@ -56,17 +66,11 @@ public class OptionsMaster {
                     MusicMaster.resetVolume();
                     break;
                 case MUSIC_VOLUME:
-
                     MusicMaster.resetVolume();
-                     //auto
-                    break;
-                case VOICE_VOLUME:
-//                    DC_SoundMaster.setVoiceVolume(integer);
-                    break;
-                case EFFECT_VOLUME:
-//                    DC_SoundMaster.setVoiceVolume(integer);
+                    //auto
                     break;
             }
+        }
         }
     }
 
@@ -77,14 +81,13 @@ public class OptionsMaster {
              retrieveEnumConst(GRAPHIC_OPTION.class,
               graphicsOptions.getValues().get(sub).toString());
             GRAPHIC_OPTION key = graphicsOptions.getKey((sub.toString()));
+            if (key == null)
+                continue;
             String value = graphicsOptions.getValue(key);
             boolean bool = Boolean.valueOf(value.toLowerCase());
             switch (key) {
                 case AMBIENCE:
                     ParticleManager.setAmbienceOn(bool);
-                    break;
-                case PARTICLE_EFFECTS:
-//                ParticleManager.setAmbienceOn(bool);
                     break;
                 case ANIMATED_UI:
                     UnitView.setAlphaFluctuationOn(bool);
@@ -224,8 +227,12 @@ public class OptionsMaster {
         } else {
             optionsMap = readOptions(data);
         }
+        try {
+            applyOptions();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        applyGraphicsOptions(getGraphicsOptions());
     }
 
     private static Map<OPTIONS_GROUP, Options> initDefaults() {
@@ -324,7 +331,8 @@ public class OptionsMaster {
     }
 
     public static int getAnimPhasePeriod() {
-        return optionsMap.get(OPTIONS_GROUP.ANIMATION).getIntValue(ANIMATION_OPTION.PHASE_TIME);
+        return 1000;
+//        return optionsMap.get(OPTIONS_GROUP.ANIMATION).getIntValue(ANIMATION_OPTION.PHASE_TIME);
     }
 
     public static void cacheOptions() {

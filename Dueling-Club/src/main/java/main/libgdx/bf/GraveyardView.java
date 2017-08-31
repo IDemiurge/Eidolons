@@ -3,10 +3,10 @@ package main.libgdx.bf;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.libgdx.StyleHolder;
 import main.libgdx.bf.datasource.GraveyardDataSource;
+import main.libgdx.bf.mouse.BattleClickListener;
 import main.libgdx.gui.NinePathFactory;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
@@ -46,7 +46,7 @@ public class GraveyardView extends TablePanel {
                 new ValueContainer("all a man can do is smile back.\"", "")));
         graveyardButton.addListener(tooltip.getController());
 
-        graveyardButton.addListener(new ClickListener() {
+        graveyardButton.addListener(new BattleClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 graveTables.setVisible(graveyardButton.isChecked());

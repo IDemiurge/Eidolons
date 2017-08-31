@@ -29,7 +29,8 @@ public class Showcase {
     public static final  String launchDataPath = PathFinder.getXML_PATH()+"last.txt";
     public static final String[] launch_options = {
      "Mission","Last Custom",  "Custom",
-//     "Tutorial", "Test",
+//     "Tutorial",
+ "Test",
     };
     private static boolean running;
 
@@ -78,8 +79,9 @@ public class Showcase {
             );
         }
         else
-        if (index==2){
-
+        {
+            FAST_DC.main(new String[]{
+            });
         }
         if (!StringMaster.isEmpty(launchData) ) {
             FileManager.write(launchData, launchDataPath);

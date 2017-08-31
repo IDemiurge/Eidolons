@@ -21,6 +21,7 @@ public class SoundMaster {
     private static String path;
     public static int masterVolume = 100;
     private static boolean blockNextSound;
+    private static boolean on=true;
 
     public static void initialize() {
         path = PathFinder.getSoundPath();
@@ -28,7 +29,7 @@ public class SoundMaster {
     }
 
     public static void play(File file) {
-        getPlayer().play(file);
+        if (isOn()) getPlayer().play(file);
     }
 
     public static void playRandomStandardSound(STD_SOUNDS... sounds) {
@@ -37,7 +38,7 @@ public class SoundMaster {
     }
 
     public static void playStandardSound(STD_SOUNDS sound) {
-        getPlayer().playStandardSound(sound);
+        if (isOn()) getPlayer().playStandardSound(sound);
     }
 
     private static Player getPlayer() {
@@ -45,116 +46,118 @@ public class SoundMaster {
     }
 
     public static void playRandomSound(HERO_SOUNDSET hero_SOUNDSET) {
-        getPlayer().playRandomSound(hero_SOUNDSET);
+        if (isOn()) getPlayer().playRandomSound(hero_SOUNDSET);
     }
 
     public static void playRandomSoundVariant(String basePath, boolean alt) {
-        getPlayer().playRandomSoundVariant(basePath, alt);
+        if (isOn()) if (isOn()) getPlayer().playRandomSoundVariant(basePath, alt);
     }
 
     public static boolean playEffectSound(SOUNDS sound_type, SOUNDSET soundset) {
-        return getPlayer().playEffectSound(sound_type, soundset);
+        if (isOn())  return  getPlayer().playEffectSound(sound_type, soundset);
+        return false;
     }
 
     public static void play(String sound) {
-        getPlayer().play(sound);
+        if (isOn()) getPlayer().play(sound);
     }
 
     public static void play(String sound, int delay) {
-        getPlayer().play(sound, delay);
+        if (isOn()) getPlayer().play(sound, delay);
     }
 
     public static void playNow(String sound) {
-        getPlayer().playNow(sound);
+        if (isOn()) getPlayer().playNow(sound);
     }
 
     public static void playEffectSound(SOUNDS sound_type, Obj obj) {
-        getPlayer().playEffectSound(sound_type, obj);
+        if (isOn()) getPlayer().playEffectSound(sound_type, obj);
     }
 
     public static void playSoundOnCurrentThread(SOUNDS sound_type, Obj obj) {
-        getPlayer().playSoundOnCurrentThread(sound_type, obj);
+        if (isOn()) getPlayer().playSoundOnCurrentThread(sound_type, obj);
     }
 
     public static void playRandomSoundFromFolder(String path) {
-        getPlayer().playRandomSoundFromFolder(path);
+        if (isOn()) getPlayer().playRandomSoundFromFolder(path);
     }
 
     public static void playCustomEffectSound(SOUNDS sound_type, Obj obj) {
-        getPlayer().playCustomEffectSound(sound_type, obj);
+        if (isOn()) getPlayer().playCustomEffectSound(sound_type, obj);
     }
 
     public static void playHitSound(Obj obj) {
-        getPlayer().playHitSound(obj);
+        if (isOn()) getPlayer().playHitSound(obj);
     }
 
     public static void playSkillAddSound(ObjType type, PARAMETER mastery, String masteryGroup,
                                          String rank) {
-        getPlayer().playSkillAddSound(type, mastery, masteryGroup, rank);
+        if (isOn()) getPlayer().playSkillAddSound(type, mastery, masteryGroup, rank);
     }
 
     // FULL PARAMETER METHODS
     // TODO [REFACTOR] - use (volume_percentage, delay) constructor instead!
     public static void play(File file, int volume_percentage, int delay) {
-        getPlayer().play(file, volume_percentage, delay);
+        if (isOn()) getPlayer().play(file, volume_percentage, delay);
     }
 
     public static void playStandardSound(STD_SOUNDS sound, int volume_percentage, int delay) {
-        getPlayer().playStandardSound(sound, volume_percentage, delay);
+        if (isOn()) getPlayer().playStandardSound(sound, volume_percentage, delay);
     }
 
     public static void playRandomSound(HERO_SOUNDSET hero_SOUNDSET, int volume_percentage, int delay) {
-        getPlayer().playRandomSound(hero_SOUNDSET, volume_percentage, delay);
+        if (isOn()) getPlayer().playRandomSound(hero_SOUNDSET, volume_percentage, delay);
     }
 
     public static void playRandomSoundVariant(String basePath, boolean alt, int volume_percentage,
                                               int delay) {
-        getPlayer().playRandomSoundVariant(basePath, alt, volume_percentage, delay);
+        if (isOn()) getPlayer().playRandomSoundVariant(basePath, alt, volume_percentage, delay);
     }
 
     public static boolean playEffectSound(SOUNDS sound_type, SOUNDSET soundset,
                                           int volume_percentage, int delay) {
-        return getPlayer().playEffectSound(sound_type, soundset, volume_percentage, delay);
+        if (isOn())   return getPlayer().playEffectSound(sound_type, soundset, volume_percentage, delay);
+        return false;
     }
 
     public static void play(String sound, int volume_percentage, int delay) {
-        getPlayer().play(sound, volume_percentage, delay);
+        if (isOn()) getPlayer().play(sound, volume_percentage, delay);
     }
 
     public static void playNow(String sound, int volume_percentage, int delay) {
-        getPlayer().playNow(sound, volume_percentage, delay);
+        if (isOn()) getPlayer().playNow(sound, volume_percentage, delay);
     }
 
     public static void playEffectSound(SOUNDS sound_type, Obj obj, int volume_percentage, int delay) {
-        getPlayer().playEffectSound(sound_type, obj, volume_percentage, delay);
+        if (isOn()) getPlayer().playEffectSound(sound_type, obj, volume_percentage, delay);
     }
 
     public static void playEffectSound(SOUNDS sound_type, Obj obj, int volumePercentage,
                                        int volume_percentage, int delay) {
-        getPlayer().playEffectSound(sound_type, obj, volumePercentage, volume_percentage, delay);
+        if (isOn()) getPlayer().playEffectSound(sound_type, obj, volumePercentage, volume_percentage, delay);
     }
 
     public static void playSoundOnCurrentThread(SOUNDS sound_type, Obj obj, int volume_percentage,
                                                 int delay) {
-        getPlayer().playSoundOnCurrentThread(sound_type, obj, volume_percentage, delay);
+        if (isOn()) getPlayer().playSoundOnCurrentThread(sound_type, obj, volume_percentage, delay);
     }
 
     public static void playRandomSoundFromFolder(String path, int volume_percentage, int delay) {
-        getPlayer().playRandomSoundFromFolder(path, volume_percentage, delay);
+        if (isOn()) getPlayer().playRandomSoundFromFolder(path, volume_percentage, delay);
     }
 
     public static void playCustomEffectSound(SOUNDS sound_type, Obj obj, int volume_percentage,
                                              int delay) {
-        getPlayer().playCustomEffectSound(sound_type, obj, volume_percentage, delay);
+        if (isOn()) getPlayer().playCustomEffectSound(sound_type, obj, volume_percentage, delay);
     }
 
     public static void playHitSound(Obj obj, int volume_percentage, int delay) {
-        getPlayer().playHitSound(obj, volume_percentage, delay);
+        if (isOn()) getPlayer().playHitSound(obj, volume_percentage, delay);
     }
 
     public static void playSkillAddSound(ObjType type, PARAMETER mastery, String masteryGroup,
                                          String rank, int volume_percentage, int delay) {
-        getPlayer().playSkillAddSound(type, mastery, masteryGroup, rank, volume_percentage, delay);
+        if (isOn()) getPlayer().playSkillAddSound(type, mastery, masteryGroup, rank, volume_percentage, delay);
     }
 
     public static boolean checkSoundTypePlayer(SOUNDS sound_type) {
@@ -187,6 +190,14 @@ public class SoundMaster {
 
     public static void playScribble() {
         playRandomStandardSound(STD_SOUNDS.SCRIBBLE, STD_SOUNDS.SCRIBBLE2, STD_SOUNDS.SCRIBBLE3);
+    }
+
+    public static boolean isOn() {
+        return on;
+    }
+
+    public static void setOn(boolean on) {
+        SoundMaster.on = on;
     }
 
     public enum STD_SOUNDS {

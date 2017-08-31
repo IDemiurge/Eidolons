@@ -70,9 +70,10 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
 
     public void createMissionTriggers() {
         String scripts = getBattle().getMission().getProperty(PROPS.MISSION_SCRIPTS);
+       if (!scripts.isEmpty())
+           scripts += ScriptSyntax.SCRIPTS_SEPARATOR;
         try {
-            scripts +=
-             ScriptSyntax.SCRIPTS_SEPARATOR + readScriptsFile();
+            scripts +=  readScriptsFile();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -86,8 +87,11 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
          StringMaster.buildPath(
           getMaster().getMissionResourceFolderPath()
           , ScriptGenerator.SCRIPTS_FILE_NAME));
-        text = StringMaster.getLastPart(text, ScriptSyntax.COMMENT_CLOSE);
-        return text;
+//        text = StringMaster.getLastPart(text, ScriptSyntax.COMMENT_CLOSE);
+        String[] parts = text.split(ScriptSyntax.COMMENT_CLOSE);
+        if (parts.length==1)
+            return "";
+        return parts[1];
     }
 
     @Override

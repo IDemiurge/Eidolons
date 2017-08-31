@@ -67,11 +67,11 @@ public class DefaultActionHandler {
                 break;
             case TO_THE_SIDE:
 
-                boolean left =
+                boolean right =
                  source.getFacing().isVertical() ?
-                  d.isGrowY() : d.isGrowX();
-                name = left ? "Move Right" :
-                 "Move Right";
+                  d.isGrowX() : d.isGrowY();
+                name =  right ? "Move Right" :
+                 "Move Left";
                 break;
             case NONE:
                 break;

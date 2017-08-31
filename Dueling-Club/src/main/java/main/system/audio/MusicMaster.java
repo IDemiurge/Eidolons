@@ -8,6 +8,7 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -36,6 +37,7 @@ public class MusicMaster {
     static Map<MUSIC_SCOPE, Integer> indexMap;
     static Map<MUSIC_SCOPE, List<Integer>> indexListMap;
     private static MusicMaster instance;
+    private static boolean on=true;
     Stack<String> playList;
     Stack<String> cachedPlayList;
     MUSIC_SCOPE scope;
@@ -100,10 +102,20 @@ public class MusicMaster {
         DC_SoundMaster.playRandomSoundVariant(corePath, false);
     }
 
+    public static void resetSwitcher() {
+        on =   !(OptionsMaster.getSoundOptions().
+         getBooleanValue(SOUND_OPTION.MUSIC_OFF)) ;
+
+        if (!on  ){
+          getInstance().pause();
+        } else {
+            getInstance().resume();
+        }
+
+}
     public static void resetVolume() {
-        Float volume =
-         getInstance().getVolume();
-        getInstance().getPlayedMusic().setVolume(volume);
+        if (getInstance().getPlayedMusic()!=null )
+        getInstance().getPlayedMusic().setVolume(getInstance().getVolume());
     }
 
     public Stack<String> getPlayList() {
@@ -117,6 +129,9 @@ public class MusicMaster {
     public void init() {
         scope = MUSIC_SCOPE.ATMO;
         variant = MUSIC_VARIANT.EIDOLONS_SCORE;
+        if (RandomWizard.random()){
+            theme = RandomWizard.random() ? MUSIC_THEME.GOODLY : MUSIC_THEME.DARK;
+        }
         autoplay = true;
     }
 
@@ -306,6 +321,7 @@ public class MusicMaster {
         }
 
     }
+
 
     // SOUNDS VS THEME-FILES?!
     public enum AMBIENCE {

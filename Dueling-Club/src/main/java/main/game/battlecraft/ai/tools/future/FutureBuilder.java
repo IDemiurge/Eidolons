@@ -34,7 +34,7 @@ public class FutureBuilder {
         // precise...
         Map<String, Integer> cache = getCache(min_max_normal);
 
-        Integer damage = cache.get(active.getNameAndId() + targetObj.getNameAndId());
+        Integer damage = cache.get(getCacheKey(active, targetObj));
         if (damage != null)
             return damage;
         damage = 0;
@@ -49,8 +49,12 @@ public class FutureBuilder {
         for (Effect e : effects) {
             damage += getDamage(active, targetObj, e, min_max_normal);
         }
-        getCache(min_max_normal).put(active.getNameAndId() + targetObj.getNameAndId() , damage);
+        cache.put(active.getNameAndId() + targetObj.getNameAndId() , damage);
         return damage;
+    }
+
+    private static String getCacheKey(DC_ActiveObj active, Obj targetObj) {
+        return active.getNameAndId() + targetObj.getNameAndId();
     }
 
     public static void clearCaches() {
@@ -85,7 +89,7 @@ public class FutureBuilder {
 
     public static int getDamage(DC_ActiveObj active, Obj targetObj, Effect e,
                                 Boolean min_max_normal) {
-        int damage;
+        Integer damage;
         Ref ref = active.getOwnerObj().getRef().getCopy();
         ref.setTarget(targetObj.getId());
         ref.setID(KEYS.ACTIVE, active.getId());
@@ -101,7 +105,12 @@ public class FutureBuilder {
         } else {
             Attack attack = ((AttackEffect) e).initAttack();
             // attack.setAttacked((DC_HeroObj) targetObj);
-            damage = DamageCalculator.precalculateDamage(attack, min_max_normal);
+            Map<String, Integer> _cache = getCache(min_max_normal);
+           damage =  _cache.get(getCacheKey(active, targetObj));
+           if (damage == null ){
+               damage = DamageCalculator.precalculateDamage(attack, min_max_normal);
+                _cache.put(getCacheKey(active, targetObj), damage);
+           }
         }
         // active.toBase();
         LogMaster.log(1, active.getName() + " on " + targetObj.getName()

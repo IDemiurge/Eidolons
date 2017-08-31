@@ -17,6 +17,7 @@ import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.MetaEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -1296,4 +1297,14 @@ public class Unit extends DC_UnitModel {
          : "");
     }
 
+    public AI_TYPE getAiType() {
+        if (getAI() != null)
+            return getAI().getType();
+        AI_TYPE ai = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class,
+         getProperty(PROPS.AI_TYPE));
+        if (ai == null) {
+            return AiEnums.AI_TYPE.NORMAL;
+        }
+        return ai;
+    }
 }
