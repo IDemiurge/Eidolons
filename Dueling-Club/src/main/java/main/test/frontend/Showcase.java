@@ -25,12 +25,14 @@ public class Showcase {
      "The Tunnel",
      "Bone Temple",
     };
+    public static final String[] missions_alt =
+     "Prison Break;Escape;Into the Woods;Demon Shrine;On Pirate Ship;Ledwraith Castle".split(";");
     public static   String launchData = "";
     public static final  String launchDataPath = PathFinder.getXML_PATH()+"last.txt";
     public static final String[] launch_options = {
      "Mission","Last Custom",  "Custom",
 //     "Tutorial",
- "Test",
+     "Test", "Showcase",
     };
     private static boolean running;
 
@@ -52,14 +54,15 @@ public class Showcase {
             FAST_DC.ENEMY_PARTY= parts.get(2);
 
         }
-        if (index == 0) {
-            index = DialogMaster.optionChoice(missions, "Choose mission to launch");
+        if (index == 4 || index == 0) {
+            String[] options = index == 0 ? missions : missions_alt;
+            index = DialogMaster.optionChoice(options, "Choose mission to launch");
             if (index==-1)
                 return ;
 
             launchData+=index+";";
             String[] args1 = {
-             null, index + ""
+             index == 0 ? null : "Showcase", index + ""
             };
             ScenarioLauncher.main(args1);
         }
