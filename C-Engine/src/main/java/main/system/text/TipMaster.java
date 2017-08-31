@@ -87,8 +87,10 @@ public class TipMaster {
                return
                 "Normally, you choose one hero to control in your party when game starts.";
             case DEFAULT_ACTIONS:
-                return "To make a default action on a unit or cell, just left-click it." +
-                 "Your hero will try to either move or attack accordingly.";
+                return
+                 "To move quickly to a cell, press alt and left-click it." ;
+//                 "To make a default action on a unit or cell, press alt and left-click it." +
+//                 "Your hero will try to either move or attack accordingly.";
             case RESISTANCE:
                 return "";
             case VISION:

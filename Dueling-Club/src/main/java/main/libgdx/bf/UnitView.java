@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.game.core.game.DC_Game;
+import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.tooltips.ToolTip;
@@ -13,6 +14,7 @@ import main.libgdx.screens.DungeonScreen;
 import main.libgdx.shaders.GrayscaleShader;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.log.LogMaster;
+import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 
@@ -24,6 +26,7 @@ public class UnitView extends BaseView {
     protected int initiativeIntVal;
     protected TextureRegion clockTexture;
     protected Label initiativeLabel;
+    protected Label mainHeroLabel;
     protected Image clockImage;
     protected boolean mobilityState = true;//mobility state, temporary.
     protected boolean flickering;
@@ -31,7 +34,7 @@ public class UnitView extends BaseView {
     protected Image emblemBorder;
     protected Image modeImage;
     protected boolean greyedOut;
-    protected   boolean mainHero;
+    protected boolean mainHero;
     protected boolean emblemBorderOn;
     protected Texture outline;
     protected boolean initialized;
@@ -67,22 +70,29 @@ public class UnitView extends BaseView {
 
     protected void init(TextureRegion clockTexture, int clockVal) {
         this.initiativeIntVal = clockVal;
-            if (!(this instanceof GridUnitView))
-                if (clockTexture != null) {
-                    this.clockTexture = clockTexture;
-                    initiativeLabel = new Label(
-                     String.valueOf(clockVal),
-                     StyleHolder.getSizedColoredLabelStyle(StyleHolder.ALT_FONT, 16,
-                      getTeamColor()
+        if (!(this instanceof GridUnitView))
+            if (clockTexture != null) {
+                this.clockTexture = clockTexture;
+                initiativeLabel = new Label(
+                 String.valueOf(clockVal),
+                 StyleHolder.getSizedColoredLabelStyle(StyleHolder.ALT_FONT, 16,
+                  getTeamColor()
 //                  GdxColorMaster.CYAN
 //              GdxColorMaster.getColor(SmartTextManager.getValueCase())
-                     ));
-                    clockImage = new Image(clockTexture);
-                    addActor(clockImage);
-                    addActor(initiativeLabel);
-                }
-                setInitialized(true);
-        }
+                 ));
+                clockImage = new Image(clockTexture);
+                addActor(clockImage);
+                addActor(initiativeLabel);
+            }
+
+        if (!(this instanceof GridUnitView))
+            if (mainHero) {
+                mainHeroLabel = new Label("Your Turn!", StyleHolder.getSizedLabelStyle(StyleHolder.DEFAULT_FONT, 20));
+                addActor(clockImage);
+                mainHeroLabel.setPosition(0, GdxMaster.top(mainHeroLabel));
+            }
+        setInitialized(true);
+    }
 
     protected void updateModeImage(String pathToImage) {
     }
@@ -118,8 +128,17 @@ public class UnitView extends BaseView {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (flickering) {
 
+        if (mainHeroLabel != null) {
+            if (!isActive()) {
+                mainHeroLabel.setVisible(false);
+                return;
+            }
+            if (!OptionsMaster.getGameplayOptions().
+             getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL))
+                return;
+            mainHeroLabel.setVisible(true);
+            alphaFluctuation(mainHeroLabel, delta);
         }
 //        alphaFluctuation(emblemBorder, delta);
 
@@ -129,10 +148,10 @@ public class UnitView extends BaseView {
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
             if (!DungeonScreen.getInstance().
              getController().isWithinCamera(
-              this
+             this
 //              getX(), getY(), 2*getWidth(), 2*getHeight()
-             )) {
-                return false;
+            )) {
+                return true;
             }
         return false;
     }
@@ -146,8 +165,8 @@ public class UnitView extends BaseView {
         }
         super.draw(batch, parentAlpha);
         if (DC_Game.game.isDebugMode())
-        if (outline != null)
-            batch.draw(outline, 0, 0);
+            if (outline != null)
+                batch.draw(outline, 0, 0);
 
         batch.setShader(null);
     }

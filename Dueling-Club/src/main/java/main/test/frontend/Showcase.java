@@ -26,7 +26,7 @@ public class Showcase {
      "Bone Temple",
     };
     public static final String[] missions_alt =
-     "Prison Break;Escape;Into the Woods;Demon Shrine;On Pirate Ship;Ledwraith Castle".split(";");
+     "Prison Break;Demon Shrine;Escape;Into the Woods;On Pirate Ship;Ledwraith Castle".split(";");
     public static   String launchData = "";
     public static final  String launchDataPath = PathFinder.getXML_PATH()+"last.txt";
     public static final String[] launch_options = {

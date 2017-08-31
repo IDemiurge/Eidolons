@@ -43,7 +43,7 @@ public class ScenarioLauncher {
         BattleSceneLauncher.main(null);
         DC_Engine.mainMenuInit();
 //        Eidolons.mainGame.getMetaMaster().preStart();
-        master = new ScenarioMetaMaster(ScenarioLauncher.DEFAULT);
+        master = new ScenarioMetaMaster(typeName);
         Eidolons.initScenario(master);
 
         ScreenData data = new ScreenData(ScreenType.BATTLE,

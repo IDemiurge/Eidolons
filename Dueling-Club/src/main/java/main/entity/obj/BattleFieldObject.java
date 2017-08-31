@@ -15,6 +15,7 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
+import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
@@ -59,12 +60,14 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     @Override
     public String getToolTip() {
+        if (OutlineMaster.isOutlineModeOn()){
              if (getOutlineTypeForPlayer()!=null )
                  return getOutlineTypeForPlayer().getName();
 //         if (!isDetected())
              if (!VisionManager.checkDetected(this)) {
                  return "Unknown";
              }
+        }
         String prefix ="";
 
         if (isMine()){

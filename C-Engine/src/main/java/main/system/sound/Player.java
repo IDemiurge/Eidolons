@@ -292,8 +292,9 @@ public class Player {
     }
 
     public void playRandomSoundFromFolder(String path) {
-        if (!path.contains(SOUNDSET_FOLDER_PATH)) {
-            path = SOUNDSET_FOLDER_PATH + path;
+        if (!path.contains(PathFinder.getSoundPath())) {
+            path = PathFinder.getSoundPath() + path;
+//            StringMaster.addMissingPathSegments(
         }
         File file = FileManager.getRandomFile(path);
 

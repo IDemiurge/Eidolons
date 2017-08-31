@@ -147,6 +147,12 @@ public class GridUnitView extends UnitView {
         super.act(delta);
     }
 
+    @Override
+    public void setActive(boolean active) {
+        super.setActive(active);
+        initiativeQueueUnitView.setActive(active);
+    }
+
     public void updateRotation(int val) {
         if (arrow != null) {
 

@@ -46,10 +46,10 @@ public class BattleOptions extends DataUnit<ARENA_GAME_OPTIONS> {
     }
 
     public enum DIFFICULTY {
-        NEOPHYTE(100, 175, 75, 200, 250),
-        NOVICE(125, 150, 85, 150, 200),
-        DISCIPLE(150, 125, 100, 125, 150),
-        ADEPT(200, 100, 125, 100, 100),
+        NEOPHYTE(100, 175, 75, 300, 350),
+        NOVICE(125, 150, 85, 200, 250),
+        DISCIPLE(150, 125, 100, 150, 175),
+        ADEPT(200, 100, 100, 100, 100),
         CHAMPION(300, 75, 150, 75, 80),
         AVATAR(450, 50, 200, 60, 65);
         private int powerPercentage;

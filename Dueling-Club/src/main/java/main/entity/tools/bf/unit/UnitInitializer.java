@@ -51,6 +51,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     protected void initDefaults() {
 
     }
+
     @Override
     public UnitCalculator getCalculator() {
         return (UnitCalculator) super.getCalculator();
@@ -70,22 +71,23 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
     public void initMode() {
         String name = getProperty(G_PROPS.MODE);
-         MODE mode = (new EnumMaster<STD_MODES>().retrieveEnumConst(STD_MODES.class, name));
+        MODE mode = (new EnumMaster<STD_MODES>().retrieveEnumConst(STD_MODES.class, name));
         if (mode == null) {
             BEHAVIOR_MODE behavior = new EnumMaster<BEHAVIOR_MODE>().retrieveEnumConst(
              BEHAVIOR_MODE.class, name);
             if (behavior != null) {
-                 mode = new ModeImpl(behavior);
+                mode = new ModeImpl(behavior);
             }
         }
         if (mode == null) {
-             mode = (STD_MODES.NORMAL);
+            mode = (STD_MODES.NORMAL);
         }
 
-       getEntity(). setMode(mode);
+        getEntity().setMode(mode);
         LogMaster.log(LogMaster.CORE_DEBUG, getName() + " has mode: " + mode);
 
     }
+
     public void initHeroObjects() {
         if ((getChecker().isHero() || getChecker().checkPassive(UnitEnums.STANDARD_PASSIVES.FAVORED)) && getEntity().getDeity() != null) {
             addProperty(G_PROPS.PASSIVES, getEntity().getDeity().getProperty(G_PROPS.PASSIVES));
@@ -227,10 +229,9 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initItems() {
-        if (CoreEngine.isItemGenerationOff())
-        {
-            main.system.auxiliary.log.LogMaster.log(1,"NO ITEMS! - Item Generation Off!" );
-            return ;
+        if (CoreEngine.isItemGenerationOff()) {
+            main.system.auxiliary.log.LogMaster.log(1, "NO ITEMS! - Item Generation Off!");
+            return;
         }
         try {
             initInventory();
@@ -321,7 +322,12 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
                 featObj = (DC_FeatObj) getGame().getSimulationObj(getEntity(), featType, PROP);
             }
             if (featObj == null) {
-                featObj = new DC_FeatObj(featType, getEntity().getOriginalOwner(), getGame(), getRef());
+                try {
+                    featObj = new DC_FeatObj(featType, getEntity().getOriginalOwner(), getGame(), getRef());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    continue;
+                }
                 if (game.isSimulation()) {
                     getGame().addSimulationObj(getEntity(), featType, featObj, PROP);
                 }

@@ -12,6 +12,8 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.core.DC_TurnManager;
 import main.game.core.game.DC_Game;
+import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import main.system.options.OptionsMaster;
 import main.test.debug.DebugMaster;
 
 /**
@@ -189,4 +191,7 @@ public class OutlineMaster {
         return OUTLINE_IMAGE.UNKNOWN;
     }
 
+    public static boolean isOutlineModeOn() {
+        return OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OUTLINES);
+    }
 }

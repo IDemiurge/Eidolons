@@ -3,6 +3,7 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -67,7 +68,7 @@ public abstract class SuperActor extends Group implements Borderable {
     protected void alphaFluctuation(  float delta) {
         alphaFluctuation(border, delta);
     }
-        protected void alphaFluctuation(Image image, float delta) {
+        protected void alphaFluctuation(Actor image, float delta) {
         if (!isAlphaFluctuationOn())
             return;
         if (image == null)

@@ -143,6 +143,10 @@ public class RuleMaster implements Controller {
                 break;
             case BASIC:
                 switch (feature) {
+
+                    case WATCH:
+                    case USE_INVENTORY:
+                    case ORDERS:
                     case DUAL_ATTACKS:
                     case VISIBILITY:
                         return false;
@@ -150,6 +154,7 @@ public class RuleMaster implements Controller {
                 break;
             case FULL:
                 switch (feature) {
+                    case ORDERS:
                     case DUAL_ATTACKS:
                         return false;
                 }
@@ -325,7 +330,7 @@ public class RuleMaster implements Controller {
     public enum FEATURE {
         USE_INVENTORY, WATCH, FLEE, DIVINATION, TOSS_ITEM, PICK_UP,
         ENTER, DUAL_ATTACKS,
-        VISIBILITY;
+        VISIBILITY, ORDERS;
         int featureLevel;
     }
 

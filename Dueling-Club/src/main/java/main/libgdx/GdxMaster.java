@@ -14,6 +14,8 @@ public class GdxMaster {
         return Gdx.graphics.getHeight() / 2 - actor.getHeight()/2;
     }
     public static float top(Actor actor) {
+        if (actor.getParent()!=null )
+            return actor.getParent().getHeight()   - actor.getHeight() ;
         return Gdx.graphics.getHeight()   - actor.getHeight() ;
     }
     public static float right(Actor actor) {

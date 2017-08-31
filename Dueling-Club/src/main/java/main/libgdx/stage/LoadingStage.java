@@ -77,9 +77,9 @@ public class LoadingStage extends Stage {
         if (ScenarioLauncher.running) {
             missionName = new Label(data.getName()
              , StyleHolder.getSizedLabelStyle(FONT.AVQ, 24));
-            addActor(missionName);
             missionName.setPosition(GdxMaster.centerWidth(missionName),
              GdxMaster.top(missionName));
+            addActor(missionName);
             if (fogOn) {
                 addActor(ParticleManager.addFogOn(
                  new Vector2(missionName.getX()+300, missionName.getY()-300)

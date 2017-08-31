@@ -23,6 +23,7 @@ public class GraveyardView extends TablePanel {
     private TablePanel<UnitView> graveTables;
 
     private Button graveyardButton;
+    private int graveCount=0;
 
     public GraveyardView() {
         graveyardButton = new Button(
@@ -69,6 +70,11 @@ public class GraveyardView extends TablePanel {
         if (current != null) {
             addAt(current, ++pos);
         }
+        graveCount++;
+    }
+
+    public int getGraveCount() {
+        return graveCount;
     }
 
     public void updateGraveyard() {

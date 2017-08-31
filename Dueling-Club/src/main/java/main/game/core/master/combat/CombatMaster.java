@@ -11,6 +11,8 @@ import main.game.bf.GraveyardManager;
 import main.game.bf.MovementManager;
 import main.game.core.DC_TurnManager;
 import main.game.core.game.DC_Game;
+import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import main.system.options.OptionsMaster;
 
 /**
  * Created by JustMe on 6/2/2017.
@@ -106,10 +108,8 @@ public class CombatMaster {
         }
 
     public boolean isFullManualControl() {
-        return fullManualControl;
+        return OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL);
     }
 
-    public void setFullManualControl(boolean fullManualControl) {
-        this.fullManualControl = fullManualControl;
-    }
+
 }

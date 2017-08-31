@@ -78,7 +78,7 @@ public class OutcomePanel extends TablePanel implements EventListener {
         message.setAlignment(Align.top);
         message.setPosition(
          MigMaster.center(textureRegion.getRegionWidth(), message.getWidth()),
-         MigMaster.top(textureRegion.getRegionHeight(), message.getHeight() - 55
+         MigMaster.top(textureRegion.getRegionHeight(), message.getHeight() + 55
          ));
 
         TablePanel<Actor> stats = new TablePanel<>();

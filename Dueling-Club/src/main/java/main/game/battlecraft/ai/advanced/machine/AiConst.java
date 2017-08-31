@@ -13,8 +13,8 @@ import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiCons
     //technical
     DEFAULT_PRUNE_SIZE(5),
     DEFAULT_PRIORITY(100),
-    DEFAULT_ATTACK_PRIORITY(350),
-    DEFAULT_SPELL_ATTACK_PRIORITY(150),
+    DEFAULT_ATTACK_PRIORITY(450),
+    DEFAULT_SPELL_ATTACK_PRIORITY(350),
 
     TURN_,
     SEQUENCE_LENGTH_PENALTY_POW15(3),
@@ -63,7 +63,7 @@ import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiCons
     GOAL_ATTACK, // ALL HOSTILE GOALS
     GOAL_APPROACH,
     GOAL_BUFF, // ALL ALLIES
-    GOAL_SELF, // ALL non-std SELFIES
+    GOAL_SELF(0.5f), // ALL non-std SELFIES
     GOAL_DEBUFF,
     GOAL_RESTORE(0.5f),
     GOAL_DEBILITATE,
@@ -71,8 +71,8 @@ import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiCons
     GOAL_SUMMONING,
     GOAL_MOVE, // STD AND CUSTOM MOVE ACTIONS
     GOAL_WAIT, // on allies or enemies!
-    GOAL_PREPARE, // BUFFS, MODES
-    GOAL_DEFEND, // ALERT OR DEFEND
+    GOAL_PREPARE(0.5f), // BUFFS, MODES
+    GOAL_DEFEND(0.5f), // ALERT OR DEFEND
     GOAL_PROTECT,
     GOAL_RETREAT, // USUALLY FORCED
     GOAL_SEARCH, // IF NO ENEMIES DETECTED, LOOK AROUND

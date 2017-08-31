@@ -813,7 +813,7 @@ if (actives!=null )
                 }
             }
         }
-
+if (RuleMaster.checkFeature(FEATURE.ORDERS))
         actives.addAll(getOrderActions( unit));
         // checkDual(unit);
         // checkInv(unit);
