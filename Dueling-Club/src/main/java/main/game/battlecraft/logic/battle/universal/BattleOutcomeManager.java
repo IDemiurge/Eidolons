@@ -1,11 +1,14 @@
 package main.game.battlecraft.logic.battle.universal;
 
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.game.logic.battle.player.Player;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.audio.MusicMaster;
 import main.system.audio.MusicMaster.MUSIC_MOMENT;
+import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -71,6 +74,9 @@ public enum OUTCOME{
 
     }
 
+    public void next() {
+        getGame().getMetaMaster().next(outcome);
+    }
 
     public void setRoundLimit(Integer roundLimit) {
         this.roundLimit = roundLimit;
@@ -108,9 +114,11 @@ public enum OUTCOME{
     }
 
     protected boolean checkDefeat() {
+        if (!OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL))
+            if (!game.isDebugMode())
        return  (game.getPlayer(true).getHeroObj().isDead());
-//            return true;
-//        return checkNoPlayerUnitsLeft();
+
+        return checkNoPlayerUnitsLeft();
     }
 
     protected boolean checkVictory() {
@@ -130,9 +138,16 @@ public enum OUTCOME{
 
     private boolean checkPlayerHasNoUnits(Player player) {
         for (Obj d : player.getControlledUnits()) {
+            if (d instanceof Unit){
+//                ((Unit) d).isAiControlled()
+
+            }
+//            if (player.isMe())
+//                if (d.isai)
             if (!d.isDead()) {
                 return false;
             }
+
             // panicked? preCheck ownership change?
         }
         return true;

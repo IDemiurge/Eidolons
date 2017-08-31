@@ -31,7 +31,8 @@ public class UnitViewOptions {
 
     private int clockValue;
     private Color teamColor;
-    private boolean playerControlled;
+    private boolean mainHero;
+    private String name;
 
 
     public UnitViewOptions(BattleFieldObject obj) {
@@ -84,10 +85,11 @@ public class UnitViewOptions {
 
     public final void createFromGameObject(BattleFieldObject obj) {
         this.portrateTexture = getOrCreateR(obj.getImagePath());
+        this.name =  obj.getName() ;
+        this.mainHero =  obj.isMainHero() ;
 
 
         if (obj instanceof Unit) {
-            playerControlled = !((Unit) obj).isAiControlled();
             this.directionValue = obj.getFacing().getDirection().getDegrees();
             this.directionPointerTexture = getOrCreateR("/UI/DIRECTION POINTER.png");
 
@@ -122,5 +124,13 @@ public class UnitViewOptions {
                 teamColor = GdxColorMaster.NEUTRAL;
             }
         }
+    }
+
+    public boolean isMainHero() {
+        return mainHero;
+    }
+
+    public String getName() {
+        return name;
     }
 }

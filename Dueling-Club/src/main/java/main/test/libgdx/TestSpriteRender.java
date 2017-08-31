@@ -51,7 +51,7 @@ public class TestSpriteRender implements ApplicationListener {
 
         lwjglApplicationConfiguration.width = 1600;
         lwjglApplicationConfiguration.height = 900;
-        lwjglApplicationConfiguration.fullscreen = false;
+        lwjglApplicationConfiguration.fullscreen = true;
 
 
         TestSpriteRender r = new TestSpriteRender();

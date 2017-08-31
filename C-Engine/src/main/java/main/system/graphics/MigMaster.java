@@ -147,4 +147,11 @@ public class MigMaster {
         return constraints;
     }
 
+    public static float center(float parentSize, float size) {
+        return (parentSize-size)/2;
+    }
+
+    public static float top(float parentHeight, float height) {
+        return (parentHeight-height) ;
+    }
 }

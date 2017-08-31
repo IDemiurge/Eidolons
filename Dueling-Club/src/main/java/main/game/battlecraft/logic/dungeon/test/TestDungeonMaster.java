@@ -1,7 +1,9 @@
 package main.game.battlecraft.logic.dungeon.test;
 
+import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import main.game.battlecraft.logic.dungeon.universal.*;
 import main.game.core.game.DC_Game;
+import main.test.frontend.FAST_DC;
 
 /**
  * Created by JustMe on 5/8/2017.
@@ -17,8 +19,14 @@ public class TestDungeonMaster extends DungeonMaster<TestDungeon> {
     }
 
     @Override
-    protected DungeonBuilder<TestDungeon> createBuilder() {
+    protected DungeonBuilder createBuilder() {
+        if (isLocation())
+            return new LocationBuilder(this);
         return new TestDungeonBuilder<>(this);
+    }
+
+    private boolean isLocation() {
+        return !FAST_DC.TEST_MODE;
     }
 
     @Override

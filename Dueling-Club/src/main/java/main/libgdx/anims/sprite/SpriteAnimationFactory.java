@@ -2,6 +2,7 @@ package main.libgdx.anims.sprite;
 
 import com.badlogic.gdx.graphics.Texture;
 import main.system.images.ImageManager;
+import main.test.frontend.Showcase;
 
 /**
  * Created by JustMe on 3/6/2017.
@@ -20,9 +21,15 @@ public class SpriteAnimationFactory {
 
     public static SpriteAnimation getSpriteAnimation(String path
      , boolean singleSprite) {
-        if (!ImageManager.isImage(path)) {
-            path = ImageManager.getEmptyItemIconPath(false);
-        }
+//        if (!ImageManager.isImage(path)) {
+//            path = ImageManager.getEmptyItemIconPath(false);
+//        }
+        if (Showcase.isRunning())
+            try {
+                return new SpriteAnimation(defaultFrameDuration, false, 1, path, null, singleSprite);
+            } catch (Exception e) {
+                path = ImageManager.getEmptyItemIconPath(false);
+            }
         return new SpriteAnimation(defaultFrameDuration, false, 1, path, null, singleSprite);
     }
 

@@ -14,6 +14,16 @@ public class Task {
     private boolean blocked;
     private boolean forced;
 
+    public enum TASK_DESCRIPTION{
+        AMMO,
+        ATTACK,
+        APPROACH,
+        WAIT,
+        RESTORATION, //"Restoration"
+        ;
+        ;
+
+    }
     // a more concrete directive than Goal; from which Actions can be derived
     public Task(UnitAI ai, GOAL_TYPE type, Object arg) {
         this.ai = ai;

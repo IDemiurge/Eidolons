@@ -220,7 +220,12 @@ public class FileManager {
         return getRandomFilePathVariant(corePath, format, false);
     }
 
-    public static String getRandomFilePathVariant(String corePath, String format, boolean underslash) {
+    public static String getRandomFilePathVariant(String corePath,
+                                                  String format, boolean underslash ) {
+        return getRandomFilePathVariant(corePath, format, underslash, false);
+    }
+        public static String getRandomFilePathVariant(String corePath,
+         String format, boolean underslash, boolean recursion) {
         File file = new File(corePath + format);
         if (!file.isFile()) {
             LogMaster.log(1, "no  file available for " + corePath + " - " + format);
@@ -238,6 +243,9 @@ public class FileManager {
             i++;
         }
         if (i == 2) {
+            if (!recursion){
+                return getRandomFilePathVariant(corePath, format, underslash, true);
+            }
             return corePath + format;
         }
         int number = (new Random().nextInt(i));
@@ -258,6 +266,16 @@ public class FileManager {
 
         for (File file : files) {
             list.add(file.getName());
+        }
+        return list;
+
+    }
+    public static List<String> getFilePaths(List<File> files) {
+
+        List<String> list = new LinkedList<>();
+
+        for (File file : files) {
+            list.add(file.getAbsolutePath());
         }
         return list;
 

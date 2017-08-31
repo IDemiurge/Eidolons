@@ -22,6 +22,8 @@ import main.game.core.game.GameManager;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.Rule;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.config.ConfigMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -335,6 +337,7 @@ public class DC_StateManager extends StateManager {
             }
 
             game.getTurnManager().newRound();
+            GuiEventManager.trigger(GuiEventType.UPDATE_LIGHT, null);
 //            getGameManager().refreshAll();
         }
 //        getGameManager().reset();

@@ -445,7 +445,7 @@ public class ModelManager {
                 || obj_type == DC_TYPE.CLASSES || obj_type == DC_TYPE.CHARS
                 || obj_type == DC_TYPE.UNITS) {
             for (ObjType type : DataManager.getTypes(obj_type)) {
-                PrincipleMaster.processPrincipleValues(type);
+//                PrincipleMaster.processPrincipleValues(type);
             }
         }
 

@@ -15,6 +15,8 @@ import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimMaster;
+import main.libgdx.bf.BaseView;
+import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventType;
@@ -30,7 +32,7 @@ import static main.system.GuiEventType.DESTROY_UNIT_MODEL;
  * Created by JustMe on 1/16/2017.
  */
 public class DeathAnim extends ActionAnim {
-    private static boolean on = false;
+    private static boolean on = true;
     Unit unit;
     DEATH_ANIM template;
     private Image skull;
@@ -83,11 +85,11 @@ public class DeathAnim extends ActionAnim {
         if (getActor() == null) {
             return;
         }
-        AnimMaster.getInstance().addActor(getActor());
-        getActor().setPosition(getOrigin().x, getOrigin().y);
+//        AnimMaster.getInstance().addActor(getActor());
+//        getActor().setPosition(getOrigin().x, getOrigin().y);
         AlphaAction action = ActorMaster.addFadeAction(getActor());
-
         action.setDuration(duration);
+        ActorMaster.addRemoveAfter(getActor());
     }
 
     @Override
@@ -97,6 +99,10 @@ public class DeathAnim extends ActionAnim {
 
     @Override
     public Actor getActor() {
+        BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
+         .get(unit);
+        if (actor!=null )
+        return actor;
         if (skull == null) {
             skull = new Image(TextureCache.getOrCreate("UI\\Empty.png")) {
                 @Override

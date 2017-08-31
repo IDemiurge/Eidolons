@@ -135,6 +135,7 @@ public class Anim extends Group implements Animation {
 
         running = true;
         GuiEventManager.trigger(GuiEventType.ANIMATION_STARTED, this);
+        playSound();
     }
 
     public void adjustPosForZoom(int zoom) {
@@ -747,7 +748,8 @@ public class Anim extends Group implements Animation {
         this.onDone = callback;
         callbackParam = param;
     }
-
+    public void playSound() {
+    }
     @Override
     public boolean isRunning() {
         return running;

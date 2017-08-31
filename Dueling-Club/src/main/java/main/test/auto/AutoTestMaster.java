@@ -57,8 +57,8 @@ public class AutoTestMaster {
         FAST_DC.DEFAULT_DUNGEON = TEST_DUNGEON;
         FAST_DC.ENEMY_PARTY = "Base Hero Type";
         FAST_DC.PLAYER_PARTY = "Base Hero Type";
-        FAST_DC.getTestLauncher().DUMMY_MODE = true; // TODO not all of it
-        FAST_DC.getTestLauncher().DUMMY_PP = false;
+        FAST_DC.getLauncher().DUMMY_MODE = true; // TODO not all of it
+        FAST_DC.getLauncher().DUMMY_PP = false;
 
         FAST_DC.main(FAST_DC.SKIP_CHOICE_ARGS);
 

@@ -164,7 +164,8 @@ public class DungeonScreen extends ScreenWithLoader {
             DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
         }
         super.render(delta);
-
+if (!hideLoader)
+    return ;
         guiStage.act(delta);
         animationEffectStage.act(delta);
         gridStage.act(delta);

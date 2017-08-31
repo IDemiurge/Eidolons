@@ -10,14 +10,14 @@ import main.libgdx.stage.LoadingStage;
 import main.system.EventCallbackParam;
 
 public abstract class ScreenWithLoader extends ScreenAdapter {
-    protected final LoadingStage loadingStage;
+    protected   LoadingStage loadingStage;
     protected boolean hideLoader = false;
     protected ScreenData data;
     protected ScreenViewport viewPort;
     protected ChainedStage introStage;
 
     public ScreenWithLoader() {
-        this.loadingStage = new LoadingStage();
+        //TODO loader here, but need data!
     }
 
     protected void preLoad() {
@@ -43,6 +43,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     protected void hideLoader() {
         this.hideLoader = true;
+        loadingStage.done();
         if (introStage!=null )
         if (introStage.isDone()) {
             updateInputController();
@@ -91,5 +92,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     protected void updateInputController() {
         Gdx.input.setInputProcessor(getInputController());
+    }
+
+    public void initLoadingStage(ScreenData meta) {
+        this.loadingStage = new LoadingStage(meta );
     }
 }

@@ -29,7 +29,7 @@ public class IntroTestLauncher extends DemoLauncher {
 
     @Override
     protected void initEngine() {
-        ScreenData data = new ScreenData(ScreenType.BATTLE, "name", factory);
+        ScreenData data = new ScreenData(ScreenType.BATTLE, "Loading...", factory);
         screenSwitcher(new EventCallbackParam(data));
     }
 }

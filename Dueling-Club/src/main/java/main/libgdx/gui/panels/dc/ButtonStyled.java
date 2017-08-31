@@ -19,11 +19,12 @@ public class ButtonStyled extends Button implements EventListener {
     }
 
     public ButtonStyled(STD_BUTTON b) {
-        this(b.path);
+        super(StyleHolder.getCustomButtonStyle(b.path));
     }
 
-    public ButtonStyled(String backGroundPath) {
-        super(StyleHolder.getCustomButtonStyle(backGroundPath));
+    public ButtonStyled(String name) {
+//         setStyle();
+        setName(name);
     }
 
     @Override

@@ -8,7 +8,7 @@ public class StrPathBuilder  {
 
     public StrPathBuilder(String... parts) {
         builder = new StringBuilder();
-        if (parts!=null )
+        if (parts.length>0 )
             build_(parts);
     }
 

@@ -28,7 +28,7 @@ static {
         SHADOWMAP(false),
         AMBIENCE_MOVE_SUPPORTED(false), OPTIMIZATION_ON(true),
 
-        SPRITE_CACHE_ON(true), OUTLINES(false);
+        SPRITE_CACHE_ON(true), OUTLINES(false), RESOLUTION();
         private Boolean exclusive;
         private Integer min;
         private Integer max;

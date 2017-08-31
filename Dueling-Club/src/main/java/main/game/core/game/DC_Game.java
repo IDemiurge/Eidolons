@@ -31,6 +31,7 @@ import main.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
 import main.game.battlecraft.logic.battlefield.DroppedItemManager;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.battlefield.vision.VisionMaster;
+import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.battlecraft.logic.dungeon.test.TestDungeonMaster;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -69,9 +70,11 @@ import main.system.text.DC_LogManager;
 import main.system.util.Refactor;
 import main.test.PresetMaster;
 import main.test.debug.DebugMaster;
+import main.test.frontend.FAST_DC;
 
 import java.util.*;
 
+import static main.system.GuiEventType.MUSIC_START;
 import static main.system.GuiEventType.UPDATE_LIGHT;
 
 /**
@@ -162,11 +165,14 @@ public class DC_Game extends MicroGame {
         setTestMaster(new TestMasterContent(this));
         conditionMaster = new DC_ConditionMaster();
         logManager = new DC_LogManager(this);
+
         rules = new DC_Rules(this);
 
         dungeonMaster = createDungeonMaster();
         battleMaster = createBattleMaster();
-        musicMaster = new MusicMaster();
+        if (!CoreEngine.isCombatGame())
+            return ;
+        musicMaster = MusicMaster.getInstance();
     }
 
     protected CombatMaster createCombatMaster() {
@@ -201,8 +207,12 @@ public class DC_Game extends MicroGame {
         return new TestBattleMaster(this);
     }
 
+    private boolean isLocation() {
+        return !FAST_DC.TEST_MODE;
+    }
     protected DungeonMaster createDungeonMaster() {
-//        return new LocationMaster(this);
+        if (isLocation())
+            return new LocationMaster(this);
         return new TestDungeonMaster(this);
     }
     // before all other masters?
@@ -253,6 +263,9 @@ public class DC_Game extends MicroGame {
         getGraveyardManager().init();//TODO in init?
         battleMaster.startGame();
         dungeonMaster.gameStarted();
+
+        GuiEventManager.trigger(MUSIC_START, null);
+
         getState().gameStarted(first);
         if (getMetaMaster()!=null )
         getMetaMaster().gameStarted();

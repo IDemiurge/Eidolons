@@ -14,6 +14,8 @@ import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
+import main.system.audio.SoundController;
+import main.system.audio.SoundController.SOUND_EVENT;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,6 +60,7 @@ public class RadialMenu extends Group {
 
     public void close() {
         setVisible(false);
+        SoundController.playCustomEventSound(SOUND_EVENT.RADIAL_CLOSED);
     }
 
     private String getEmptyNodePath() {

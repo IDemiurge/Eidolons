@@ -30,6 +30,13 @@ public class GuiEventManager {
         }
     }
 
+    public static void bindSound(GuiEventType type, final EventCallback event) {
+
+    }
+    private static void checkSoundEvent(GuiEventType type, Object obj) {
+
+    }
+
     public static void trigger(final GuiEventType type) {
         trigger(type, null);
     }
@@ -37,6 +44,7 @@ public class GuiEventManager {
     public static void trigger(final GuiEventType type, Object obj) {
         if (CoreEngine.isGraphicsOff())
             return   ;
+        checkSoundEvent(type, obj);
         if (!vertx){
             GuiEventManagerOld.trigger(type, obj);
         }

@@ -96,7 +96,7 @@ public class GridUnitView extends UnitView {
 
         if (emblem != null) {
             emblemLighting = new Image(TextureCache.getOrCreateR(STD_IMAGES.LIGHT.getPath()));
-            emblemLighting.setSize(36, 36);
+            emblemLighting.setSize(getEmblemSize()*10/9, getEmblemSize()*10/9);
             emblemLighting.setPosition(getWidth() - emblemLighting.getWidth(), getHeight() - emblemLighting.getHeight());
             if (getTeamColor() != null)
                 emblemLighting.setColor(getTeamColor());
@@ -104,10 +104,16 @@ public class GridUnitView extends UnitView {
 
             emblemImage = new Image(emblem);
             addActor(emblemImage);
-            emblemImage.setSize(32, 32);
+            emblemImage.setSize(getEmblemSize(), getEmblemSize());
             emblemImage.setPosition(getWidth() - emblemImage.getWidth(), getHeight() - emblemImage.getHeight());
         }
         setInitialized(true);
+    }
+
+    private float getEmblemSize() {
+        if (mainHero)
+            return 36;
+        return 32;
     }
 
     public void setVisibleVal(int val) {
@@ -143,7 +149,10 @@ public class GridUnitView extends UnitView {
 
     public void updateRotation(int val) {
         if (arrow != null) {
+
             ActorMaster.addRotateToAction(arrow, arrowRotation, val + 90);
+
+
             arrowRotation = val + 90;
 //            arrow.setRotation(arrowRotation);
 

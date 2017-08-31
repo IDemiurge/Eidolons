@@ -35,6 +35,8 @@ public class Ambience extends EmitterActor {
         {
             return ;
         }
+        if (isCullingOn())
+        if ( DungeonScreen.getInstance().getController()!=null )
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
             if (!DungeonScreen.getInstance().getController().
              isWithinCamera(getX(), getY(), getWidth()*2, getHeight()*2)) {
@@ -75,7 +77,9 @@ public class Ambience extends EmitterActor {
 
     @Override
     public void draw(Batch spriteBatch, float delta) {
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
+        if (isCullingOn())
+        if ( DungeonScreen.getInstance().getController()!=null )
+            if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
             if (!DungeonScreen.getInstance().getController().
              isWithinCamera(getX(), getY(), getWidth() , getHeight() )) {
                 return;
@@ -84,6 +88,10 @@ public class Ambience extends EmitterActor {
             getEffect().modifyParticles();
         }
         super.draw(spriteBatch, delta);
+    }
+
+    protected boolean isCullingOn() {
+        return true;
     }
 
     public enum AMBIENT_SFX {

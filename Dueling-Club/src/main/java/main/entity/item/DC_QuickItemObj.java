@@ -14,6 +14,8 @@ import main.entity.obj.HeroItem;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.module.dungeoncrawl.special.Trap;
 import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
@@ -208,6 +210,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
             }
             // if (!game.isDebugMode())
             removeCharge();
+            getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_USED_QUICK_ITEM, ref));
         } else {
 
         }

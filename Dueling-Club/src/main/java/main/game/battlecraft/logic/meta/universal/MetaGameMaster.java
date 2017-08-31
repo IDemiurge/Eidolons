@@ -139,4 +139,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return entity;
     }
 
+    public void next(Boolean outcome) {
+    }
 }

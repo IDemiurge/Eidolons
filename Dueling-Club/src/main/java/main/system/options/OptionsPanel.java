@@ -4,8 +4,6 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_TabbedPanel;
 import main.swing.generic.components.misc.G_Button;
 import main.system.auxiliary.StringMaster;
-import main.system.options.AnimationOptions.ANIMATION_OPTION;
-import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.Options.OPTION;
 import main.system.options.OptionsMaster.OPTIONS_GROUP;
 
@@ -66,10 +64,17 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
                 return new G_Panel(
                  new JLabel(option.getName()), box); //limit?
             case "Integer":
-                JTextField tbox = new JTextField(options.getValue((Enum) option));
-                map.put(option, tbox);
+//                JTextField tbox = new JTextField(options.getValue((Enum) option));
+//                map.put(option, tbox);
+//                return new G_Panel(
+//                 new JLabel(option.getName()), tbox
+//                );
+//            case "Long":
+                JSlider s = new JSlider(option.getMin(), option.getMax(),
+                 (Integer) options.getIntValue(option.toString()));
+            map.put(option, s);
                 return new G_Panel(
-                 new JLabel(option.getName()), tbox
+                 new JLabel(option.getName()), s
                 );
             case "Boolean":
                 JCheckBox cbox = new JCheckBox("", options.getBooleanValue((Enum) option));
@@ -77,9 +82,6 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
                 return new G_Panel(
                  new JLabel(option.getName()), cbox
                 );
-            case "Long":
-                return new JSlider(option.getMin(), option.getMax(),
-                 (Integer) option.getDefaultValue());
         }
         return null;
 //		return new JComboBox<String>(options.getOptionItems(option));
@@ -119,6 +121,9 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
             Component comp = map.get(o);
             Object value = null;
 
+            if (comp instanceof JSlider) {
+                value = ((JSlider) comp).getValue();
+            }
             if (comp instanceof JComboBox) {
                 value = ((JComboBox) comp).getSelectedItem();
             }
@@ -128,19 +133,20 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
             if (comp instanceof JTextField) {
                 value = ((JTextField) comp).getText();
             }
-            if (o instanceof GRAPHIC_OPTION) {
-                OptionsMaster.getGraphicsOptions().setValue((GRAPHIC_OPTION) o, value.toString());
-            }
-            if (o instanceof ANIMATION_OPTION) {
-                OptionsMaster.getAnimOptions().setValue((ANIMATION_OPTION) o, value.toString());
-            }
+            OptionsMaster.getOptions(o).setValue(o.toString(), value.toString());
+//            if (o instanceof GRAPHIC_OPTION) {
+//                OptionsMaster.getGraphicsOptions().setValue((GRAPHIC_OPTION) o, value.toString());
+//            }
+//            if (o instanceof ANIMATION_OPTION) {
+//                OptionsMaster.getAnimOptions().setValue((ANIMATION_OPTION) o, value.toString());
+//            }
         });
 
+        OptionsMaster.applyOptions();
     }
 
     public void save() {
         update();
-        OptionsMaster.applyOptions();
         OptionsMaster.saveOptions();
     }
 

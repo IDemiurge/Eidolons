@@ -171,6 +171,7 @@ public class DataManager {
 
         Map<String, ObjType> map = getTypeMap(obj_type);
         if (map == null) {
+            main.system.auxiliary.log.LogMaster.log(0,"NO TYPE MAP: "+obj_type );
             return null;
         }
         ObjType type = map.get(typeName);
@@ -194,7 +195,7 @@ public class DataManager {
                     return map.get(s);
                 }
             }
-            LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
+            LogMaster.log(0, "Type not found: " + obj_type
                     + ":" + typeName);
             return null;
         }
@@ -244,6 +245,7 @@ public class DataManager {
         }
 
         if (obj_type.equals(DC_TYPE.JEWELRY)) {
+            main.system.auxiliary.log.LogMaster.log(0,"NO JEWELRY!  "  );
             return null;
         }
         int i = 0;

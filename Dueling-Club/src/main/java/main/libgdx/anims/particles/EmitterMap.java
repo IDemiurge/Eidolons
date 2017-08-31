@@ -10,7 +10,6 @@ import main.libgdx.bf.GridMaster;
 import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.log.Chronos;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedHashMap;
@@ -37,9 +36,7 @@ public class EmitterMap extends Group{
     public EmitterMap( ) {
         GuiEventManager.bind(GuiEventType.UPDATE_AMBIENCE, p -> {
             try {
-                Chronos.mark("UPDATE_AMBIENCE");
                 update();
-                Chronos.logTimeElapsedForMark("UPDATE_AMBIENCE");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -134,7 +131,6 @@ public class EmitterMap extends Group{
         fog.remove();
         fog.setVisible(false);
         ambiencePool.free(fog);
-        main.system.auxiliary.log.LogMaster.log(1, ">>>>Removed fog from " + c + " map: " + fogMap);
     }
 
     private void hideSmoke(Coordinates c) {
@@ -146,7 +142,6 @@ public class EmitterMap extends Group{
 
         fog.setVisible(false);
         ambiencePool.free(fog);
-        main.system.auxiliary.log.LogMaster.log(1, ">>>>Hid fog from " + c + " map: " + fogMap);
     }
     private void addSmoke(Coordinates c) {
         if (fogMap.containsKey(c)) {
@@ -165,7 +160,6 @@ public class EmitterMap extends Group{
         //DungeonScreen.getInstance().getAmbienceStage().addActor(fog);
         fog.setVisible(true);
         fog.getEffect().start();
-        main.system.auxiliary.log.LogMaster.log(1, ">>>>Added fog t0 " + c + " map: " + fogMap);
     }
 
 

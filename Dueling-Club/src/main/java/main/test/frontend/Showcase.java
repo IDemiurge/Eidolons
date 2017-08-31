@@ -1,7 +1,9 @@
 package main.test.frontend;
 
 import main.data.filesys.PathFinder;
+import main.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import main.game.core.launch.PresetLauncher;
+import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -26,7 +28,8 @@ public class Showcase {
     public static   String launchData = "";
     public static final  String launchDataPath = PathFinder.getXML_PATH()+"last.txt";
     public static final String[] launch_options = {
-     "Last Custom", "Mission", "Custom", "Tutorial", "Test",
+     "Mission","Last Custom",  "Custom",
+//     "Tutorial", "Test",
     };
     private static boolean running;
 
@@ -37,17 +40,18 @@ public class Showcase {
         int index = DialogMaster.optionChoice(launch_options,
          "Choose the type of Eidolons game you want to launch...");
 
-        if (index==0){
+        if (index==1){
             String data = FileManager.readFile(launchDataPath);
             List<String> parts = StringMaster.openContainer(data);
             index = 2;
 //            index = StringMaster.getInteger(parts.get(0));
 //            if (parts.size()>0)
-            FAST_DC.PLAYER_PARTY= parts.get(0);
-            FAST_DC.ENEMY_PARTY= parts.get(1);
+            FAST_DC.DEFAULT_DUNGEON= parts.get(0);
+            FAST_DC.PLAYER_PARTY= parts.get(1);
+            FAST_DC.ENEMY_PARTY= parts.get(2);
 
         }
-        if (index == 1) {
+        if (index == 0) {
             index = DialogMaster.optionChoice(missions, "Choose mission to launch");
             if (index==-1)
                 return ;
@@ -60,7 +64,17 @@ public class Showcase {
         }
         else
         if (index==2){
-            FAST_DC.main(new String[]{String.valueOf(PresetLauncher.OPTION_NEW)}
+            String d = new FileChooser(PathFinder.getDungeonLevelFolder() + "showcase")
+             .launch("", "");
+            if (d==null ){
+                d= DungeonInitializer.RANDOM_DUNGEON;
+            }
+            FAST_DC.DEFAULT_DUNGEON= d;
+            launchData += d + ";";
+
+//            FAST_DC.PLAYER_PARTY= TestLauncher.c
+//            FAST_DC.ENEMY_PARTY= parts.get(2);
+             FAST_DC.main(new String[]{String.valueOf(PresetLauncher.OPTION_NEW)}
             );
         }
         else

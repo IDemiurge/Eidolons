@@ -44,8 +44,9 @@ public class FAST_DC {
     private static DC_Game game;
     private static boolean running;
     private static int unitGroupLevel;
-    private static TestLauncher testLauncher;
+    private static TestLauncher launcher;
     private static GdxLauncher guiLauncher;
+    public static boolean TEST_MODE;
 
     public static boolean isRunning() {
         return running;
@@ -80,14 +81,18 @@ public class FAST_DC {
             }
         }
 
-        testLauncher = new TestLauncher(game, FAST_MODE, SUPER_FAST_MODE);
+        launcher =
+//         (TEST_MODE)?
+          new TestLauncher(game, FAST_MODE, SUPER_FAST_MODE)
+//          : new GameLauncher(GAME_SUBCLASS.SCENARIO)
+        ;
         if (PLAYER_PARTY != null) {
-            testLauncher.PARTY_CODE = CODE.PRESET;
-            testLauncher.PLAYER_PARTY = PLAYER_PARTY;
+            launcher.PARTY_CODE = CODE.PRESET;
+            launcher.PLAYER_PARTY = PLAYER_PARTY;
         }
         if (ENEMY_PARTY != null) {
-            testLauncher.ENEMY_CODE = CODE.PRESET;
-            testLauncher.ENEMY_PARTY = ENEMY_PARTY;
+            launcher.ENEMY_CODE = CODE.PRESET;
+            launcher.ENEMY_PARTY = ENEMY_PARTY;
         }
         if (skipChoice) {
             if (args[0] == PRESET_OPTION_ARG) {
@@ -95,21 +100,21 @@ public class FAST_DC {
                 FAST_MODE = PresetLauncher.chooseLaunchOption();
             } else if (arglist.contains(PRESET_ARG)) {
                 if (arglist.size() > 1) {
-                    testLauncher.PLAYER_PARTY = arglist.get(1);
+                    launcher.PLAYER_PARTY = arglist.get(1);
                 }
                 if (arglist.size() > 2) {
-                    testLauncher.ENEMY_PARTY = arglist.get(2);
+                    launcher.ENEMY_PARTY = arglist.get(2);
                 }
                 if (arglist.size() > 3) {
                     DEFAULT_DUNGEON = arglist.get(3);
                 }
 
             }
-            testLauncher.ENEMY_CODE = CODE.PRESET;
-            testLauncher.PARTY_CODE = CODE.PRESET;
+            launcher.ENEMY_CODE = CODE.PRESET;
+            launcher.PARTY_CODE = CODE.PRESET;
         }
         if (DEFAULT_DUNGEON != null)
-            testLauncher.setDungeon(DEFAULT_DUNGEON);
+            launcher.setDungeon(DEFAULT_DUNGEON);
         if (!skipChoice) {
             if (BEHAVIOR_TEST_ON) {
                 SUPER_FAST_MODE = true;
@@ -123,10 +128,10 @@ public class FAST_DC {
         if (!skipChoice) {
             if (FAST_MODE != null) {
                 if (FAST_MODE || SUPER_FAST_MODE) {
-                    testLauncher.ENEMY_CODE = CODE.NONE;
-                    testLauncher.PARTY_CODE = CODE.PRESET;
-                    testLauncher.LEADER_MOVES_FIRST = true;
-                    testLauncher.VISION_HACK = SUPER_FAST_MODE;
+                    launcher.ENEMY_CODE = CODE.NONE;
+                    launcher.PARTY_CODE = CODE.PRESET;
+                    launcher.LEADER_MOVES_FIRST = true;
+                    launcher.VISION_HACK = SUPER_FAST_MODE;
 
                     // preset
                     ItemGenerator.setGenerationOn(!SUPER_FAST_MODE
@@ -150,7 +155,7 @@ public class FAST_DC {
         DC_Engine.fullInit();
         Chronos.mark("GAME LAUNCHED");
 
-        game = testLauncher.initDC_Game();
+        game = launcher.initDC_Game();
         game.start(true);
         initKeyManager();
 
@@ -201,16 +206,16 @@ public class FAST_DC {
         }
     }
 
-    public static TestLauncher getTestLauncher() {
-        if (testLauncher == null) {
-            testLauncher = new TestLauncher(game, FAST_MODE, SUPER_FAST_MODE);
+    public static TestLauncher getLauncher() {
+        if (launcher == null) {
+            launcher = new TestLauncher(game, FAST_MODE, SUPER_FAST_MODE);
         }
 
-        return testLauncher;
+        return launcher;
     }
 
-    public static void setTestLauncher(TestLauncher testLauncher) {
-        FAST_DC.testLauncher = testLauncher;
+    public static void setLauncher(TestLauncher launcher) {
+        FAST_DC.launcher = launcher;
     }
 
 }

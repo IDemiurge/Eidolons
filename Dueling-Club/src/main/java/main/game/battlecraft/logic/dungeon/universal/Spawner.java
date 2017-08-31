@@ -8,12 +8,14 @@ import main.content.C_OBJ_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
+import main.entity.obj.MicroObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
+import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.bf.Coordinates;
@@ -24,7 +26,9 @@ import main.libgdx.bf.BFDataCreatedEvent;
 import main.system.GuiEventManager;
 import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.math.MathMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.test.TestMasterContent;
 import main.system.util.Refactor;
@@ -250,7 +254,52 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public void addDungeonEncounter(Dungeon c_dungeon, MapBlock block, Coordinates c, ObjType type) {
     }
+    protected List<Unit> spawnUnitGroup(boolean me, String filePath) {
+        String data = UnitGroupMaster.readGroupFile(filePath);
+        boolean mirror = me;
+        if (UnitGroupMaster.isFactionMode()) {
+            if (UnitGroupMaster.factionLeaderRequired) {
+                data += UnitGroupMaster.getHeroData(me);
+            }
+            mirror = !mirror;
+        }
+        UnitGroupMaster.setMirror(mirror);
 
+        int width = UnitGroupMaster.maxX;
+        int height = UnitGroupMaster.maxY;
+
+        Coordinates offset_coordinate;
+        Coordinates spawnCoordinates;
+        int offsetX = -width / 2;
+        int offsetY = -height / 2;
+        if (!UnitGroupMaster.isFactionMode()) {
+            UnitGroupMaster.setCurrentGroupHeight(MathMaster.getMaxY(data));
+            UnitGroupMaster.setCurrentGroupWidth(MathMaster.getMaxX(data));
+            width = 1 + UnitGroupMaster.getCurrentGroupWidth();
+            height = 2 * UnitGroupMaster.getCurrentGroupHeight();
+            offsetX = -width / 2;
+            offsetY = -height / 2;
+        } else {
+            if (UnitGroupMaster.isMirror()) {
+                offsetY -= 1;
+            }
+
+        }
+        spawnCoordinates = (me) ? getPositioner().getPlayerSpawnCoordinates() : getPositioner()
+         .getEnemySpawningCoordinates();
+        offset_coordinate = spawnCoordinates.getOffsetByX(offsetX).getOffsetByY(offsetY);
+        List<MicroObj> units = DC_ObjInitializer.createUnits(game.getPlayer(me), data, offset_coordinate);
+
+        LogMaster.logToFile("spawnCoordinates=" + spawnCoordinates + " ;offset_coordinate="
+         + offset_coordinate + ";height=" + height + "; width=" + width);
+        LogMaster.log(1, "spawnCoordinates=" + spawnCoordinates
+         + " ;offset_coordinate=" + offset_coordinate + ";height=" + height + "; width="
+         + width);
+
+        List<Unit> list = new LinkedList<>();
+        units.stream().forEach(unit-> list.add((Unit) unit));
+        return list;
+    }
 
     public enum FACING_TEMPLATE {
         TOWARDS_CENTER,

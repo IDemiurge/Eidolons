@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.Launcher;
 import main.data.filesys.PathFinder;
+import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.libgdx.EngineEmulator;
 import main.libgdx.screens.*;
@@ -58,18 +59,24 @@ public class DemoLauncher extends Game {
             configuration = getConf();
             repository.insert(configuration);
         }*/
-
-        new LwjglApplication(new DemoLauncher(), getConf());
+         Eidolons.setApplication(new LwjglApplication(new DemoLauncher(), getConf()));
     }
 
     protected static LwjglApplicationConfiguration getConf() {
+//        Eidolons. getApplication().getGraphics().setFullscreenMode();
         LwjglApplicationConfiguration conf = new LwjglApplicationConfiguration();
         conf.title = "Eidolons: Battlecraft v" + Launcher.VERSION;
         conf.useGL30 = true;
 
+
+        conf.fullscreen =false;
+//         OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
+//        RESOLUTION resolution =
+//          new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class,
+//         OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
+
         conf.width = 1600;
         conf.height = 900;
-        conf.fullscreen = false;
         conf.resizable = false;
         try {
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo32.png", FileType.Absolute);
@@ -86,7 +93,7 @@ public class DemoLauncher extends Game {
         GuiEventManager.bind(SCREEN_LOADED, this::onScreenLoadDone);
         OrthographicCamera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
-
+//if (!Showcase.isRunning())
         initEngine();
     }
 
@@ -135,6 +142,7 @@ public class DemoLauncher extends Game {
 
     private void switchScreen(Supplier<ScreenWithLoader> factory, ScreenData meta) {
         final ScreenWithLoader newScreen = factory.get();
+        newScreen.initLoadingStage(meta);
         newScreen.setViewPort(viewport);
         newScreen.setData(meta);
         final Screen oldScreen = getScreen();

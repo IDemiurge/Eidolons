@@ -33,7 +33,8 @@ public class DC_Player extends Player {
     private UnitData unitData;
 
     public DC_Player(String name, Color color, boolean me) {
-
+//        int volume = sound.getVolume() * OptionsMaster.getSoundOptions().
+//         getIntValue(SOUND_OPTION.MUSIC_VOLUME) / 100;
         super(name, color, me, null);
     }
 

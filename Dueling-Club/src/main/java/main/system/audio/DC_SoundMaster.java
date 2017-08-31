@@ -33,6 +33,7 @@ import main.system.ContentGenerator;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
@@ -57,27 +58,48 @@ public class DC_SoundMaster extends SoundMaster {
      G_PROPS.SPELL_TYPE,
     };
     private static SoundPlayer soundPlayer;
+    private SoundController controller;
     private DungeonScreen screen;
 
     public DC_SoundMaster(DungeonScreen screen) {
         this.screen = screen;
+        controller = new SoundController(this);
     }
 
     public static void playRangedAttack(DC_WeaponObj weapon) {
         // TODO double weapon sound
         if (weapon.getWeaponGroup() == ItemEnums.WEAPON_GROUP.CROSSBOWS) {
-            getPlayer().playRandomSoundVariant("weapon\\crossbow\\" + weapon.getWeaponSize(), false);
+            getPlayer().playRandomSoundVariant("soundsets\\weapon\\crossbow\\" + weapon.getWeaponSize(), false);
         } else if (weapon.getWeaponGroup() == ItemEnums.WEAPON_GROUP.BOLTS) {
-            getPlayer().playRandomSoundVariant("weapon\\bow\\" + weapon.getWeaponSize(), false);
+            getPlayer().playRandomSoundVariant("soundsets\\weapon\\bow\\" + weapon.getWeaponSize(), false);
         } else {
-            getPlayer().playRandomSoundVariant("weapon\\throw\\" + weapon.getWeaponSize(), false);
+            getPlayer().playRandomSoundVariant("soundsets\\weapon\\throw\\" + weapon.getWeaponSize(), false);
         }
+
+    }
+
+    public static void play(String s) {
+        getSoundPlayer().play(s);
+    }
+
+    public static void playTurnSound(Unit unit) {
+//            getSoundPlayer().setPositionFor(unit);
+        getSoundPlayer().play(STD_SOUNDS.TURN.getPath());
+    }
+
+    public static void playMoveSound(Unit unit) {
+        String type = "natural";
+//        unit.getGame().getDungeon().isSurface()
+        getPlayer().playRandomSoundFromFolder(
+         "effects\\movement\\" + type
+//          + unit.getSize()
+        );
 
     }
 
     public static void playMissedSound(Unit attacker, DC_WeaponObj attackWeapon) {
 
-        getPlayer().playRandomSoundVariant("weapon\\miss\\"
+        getPlayer().playRandomSoundVariant("soundsets\\weapon\\miss\\"
          + attackWeapon.getWeaponSize().toString().toLowerCase(), false);
 
     }
@@ -238,11 +260,10 @@ public class DC_SoundMaster extends SoundMaster {
                 case CAST:
                 case RESOLVE:
                 case MAIN:
+                case IMPACT:
                 case AFTEREFFECT:
                     playNow(getActionEffectSoundPath((DC_SpellObj) activeObj, part));
-                    break;
-                case IMPACT:
-                    break;
+                    return;
             }
         switch (part) {
             case PRECAST:
@@ -265,9 +286,11 @@ public class DC_SoundMaster extends SoundMaster {
                 break;
         }
     }
+
     public static void playNow(String sound) {
         getPlayer().playNow(sound);
     }
+
     public static void preconstructEffectSounds() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             DC_SpellObj active = new DC_SpellObj(type, DC_Player.NEUTRAL, DC_Game.game, new Ref());
@@ -324,7 +347,7 @@ public class DC_SoundMaster extends SoundMaster {
                 file =
                  FileManager.findFirstFile(path, identifier, true);
             if (file != null) {
-                String corePath = StringMaster.cropFormat(path+file);
+                String corePath = StringMaster.cropFormat(StrPathBuilder.build(path, file));
                 try {
                     file = FileManager.getRandomFilePathVariant(corePath, StringMaster.getFormat(file), true);
                 } catch (Exception e) {
@@ -333,10 +356,10 @@ public class DC_SoundMaster extends SoundMaster {
             }
             if (file != null) {
                 if (ListMaster.isNotEmpty(main.system.sound.Player.getLastplayed()))
-                if (main.system.sound.Player.getLastplayed().peek().equalsIgnoreCase(file)) {
-                    i--;
-                    continue;
-                }
+                    if (main.system.sound.Player.getLastplayed().peek().equalsIgnoreCase(file)) {
+                        i--;
+                        continue;
+                    }
                 return file;
             }
             if (i % 2 == 1)

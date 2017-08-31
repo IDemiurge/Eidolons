@@ -15,7 +15,6 @@ import main.system.options.AnimationOptions.ANIMATION_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.test.frontend.Showcase;
 
 
 /**
@@ -29,6 +28,7 @@ public class GameLoop {
     private boolean paused;
     private boolean aiFailNotified;
     private boolean aftermath;
+    private boolean skippingToNext;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -50,11 +50,19 @@ public class GameLoop {
                     break;
                 }
         }
-        WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, false);
-        if (Showcase.isRunning()) {
-            aftermath = true;
-             start();
+        if (AiTrainingRunner.running) {
+            WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, false);
+        } else {
+            Boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_FINISHED);
+            if (result) {
+                Eidolons.getGame().getBattleMaster().getOutcomeManager().next();
+            } else {
+                aftermath = true;
+                start();
+            }
+
         }
+
 
     }
 
@@ -76,10 +84,10 @@ public class GameLoop {
                 break;
             }
             result = makeAction();
-            if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
-                if (!aftermath)
-                return false;
-            }
+            if (!aftermath)
+                if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
+                    return false;
+                }
             if (result == null) {
                 retainActiveUnit = true;
                 continue;
@@ -89,6 +97,12 @@ public class GameLoop {
                 break;
             }
         }
+        if (skippingToNext)
+            return false;
+        if (aftermath)
+            if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
+                return false;
+            }
         if (!game.getManager().endRound())
             return false;
         return true;
@@ -160,7 +174,7 @@ public class GameLoop {
             result = input.getAction().getHandler().activateOn(input.getContext());
         } catch (Exception e) {
             e.printStackTrace();
-            return null ;
+            return null;
         } finally {
             activatingAction = null;
         }
@@ -209,5 +223,13 @@ public class GameLoop {
         this.paused = paused;
         if (!paused)
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE, true);
+    }
+
+    public void setSkippingToNext(boolean skippingToNext) {
+        this.skippingToNext = skippingToNext;
+    }
+
+    public void setAftermath(boolean aftermath) {
+        this.aftermath = aftermath;
     }
 }

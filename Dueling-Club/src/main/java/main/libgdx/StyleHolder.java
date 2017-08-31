@@ -102,10 +102,14 @@ public class StyleHolder {
         return avqLabelStyle;
     }
 
-    public static TextButton.TextButtonStyle getTextButtonStyle() {
+    public static TextButton.TextButtonStyle getDefaultTextButtonStyle() {
+        return getTextButtonStyle(FONT.AVQ, DEFAULT_COLOR, 18 );
+    }
+        public static TextButton.TextButtonStyle getTextButtonStyle(
+         FONT FONT, Color color, int size) {
         if (defaultTextButtonStyle == null) {
             defaultTextButtonStyle = new TextButton.TextButtonStyle();
-            defaultTextButtonStyle.font = new BitmapFont();
+            defaultTextButtonStyle.font =getFont(FONT, color, size);// new BitmapFont();
             defaultTextButtonStyle.fontColor = DEFAULT_COLOR;
             defaultTextButtonStyle.overFontColor = new Color(DEFAULT_COLOR).add(50, 50, 50, 0);
             defaultTextButtonStyle.checkedFontColor = new Color(0xFF_00_00_FF);
@@ -141,7 +145,7 @@ public class StyleHolder {
         final String upPath = baseString + UP + endString;
         final String checkedPath = baseString + CHECKED + endString;
 
-        TextButton.TextButtonStyle style = getTextButtonStyle();
+        TextButton.TextButtonStyle style = getTextButtonStyle(DEFAULT_FONT, DEFAULT_COLOR, 18);
 
         File f = new File(disabledPath);
         boolean isExists = false;

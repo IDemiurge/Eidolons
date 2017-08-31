@@ -19,7 +19,7 @@ public class SoundMaster {
     private static final String FORMAT = ".mp3";
     private static final String ALT_FORMAT = ".wav";
     private static String path;
-    private static int masterVolume = 100;
+    public static int masterVolume = 100;
     private static boolean blockNextSound;
 
     public static void initialize() {
@@ -191,6 +191,7 @@ public class SoundMaster {
 
     public enum STD_SOUNDS {
         POTION,
+        POTION2,
 
 
         HERO,

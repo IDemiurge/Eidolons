@@ -16,6 +16,8 @@ public class EventAnimCreator {
             switch (((STANDARD_EVENT_TYPE) e.getType())) {
                 case UNIT_HAS_BEEN_KILLED:
                     return new DeathAnim(e);
+                case UNIT_HAS_USED_QUICK_ITEM:
+                    return new QuickItemAnim(e);
             }
 
         }

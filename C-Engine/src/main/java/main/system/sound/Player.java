@@ -188,12 +188,14 @@ public class Player {
             return;
         }
         if (sound.getSound().endsWith(".ini"))
-            return ;
+            return;
         try {
             Sound soundFile = Gdx.audio.newSound(Gdx.files.getFileHandle(sound.getSound(),
              FileType.Absolute));
+
             soundFile.setVolume(0, sound.getVolume());
             soundFile.play();
+
             lastplayed.push(sound.getSound());
 
         } catch (Exception ex) {

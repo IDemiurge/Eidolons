@@ -1,8 +1,10 @@
 package main.libgdx.bf;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import main.entity.active.DefaultActionHandler;
 import main.entity.obj.BattleFieldObject;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
@@ -40,8 +42,8 @@ public class UnitViewFactory {
         return view;
     }
 
-    private static InputListener createListener(BattleFieldObject bfObj) {
-        return new InputListener() {
+    private static ClickListener createListener(BattleFieldObject bfObj) {
+        return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return event.getButton() == Input.Buttons.RIGHT;
@@ -62,6 +64,11 @@ public class UnitViewFactory {
                     GuiEventManager.trigger(CREATE_RADIAL_MENU, bfObj);
                     event.handle();
                     event.stop();
+                }
+                else {
+                    if (event.getButton() == Buttons.LEFT)
+                        if (getTapCount()>1)
+                    DefaultActionHandler.leftClickUnit(bfObj);
                 }
             }
         };

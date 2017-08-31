@@ -376,7 +376,7 @@ public class AnimMaster extends Group {
         try {
             drawAnims(batch, parentAlpha);
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         else
             drawAnims(batch, parentAlpha);

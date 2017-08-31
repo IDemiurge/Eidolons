@@ -16,6 +16,7 @@ import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.AiActionFactory;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
+import main.game.battlecraft.ai.elements.task.Task.TASK_DESCRIPTION;
 import main.game.battlecraft.ai.tools.Analyzer;
 import main.game.battlecraft.ai.tools.ParamAnalyzer;
 import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
@@ -64,7 +65,7 @@ public class AtomicAi extends AiHandler {
         }
         else
         {
-            action.setTaskDescription("Restoration");
+            action.setTaskDescription(TASK_DESCRIPTION.RESTORATION.toString());
         }
         return action;
     }

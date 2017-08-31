@@ -41,7 +41,7 @@ public class ShadeLightCell extends SuperContainer {
     public void draw(Batch batch, float parentAlpha) {
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
             if (!DungeonScreen.getInstance().getController().
-             isWithinCamera(this)) {
+             isWithinCamera(getX()+getWidth(), getY()+getHeight(), 2*getWidth(), 2*getHeight())) {
                 return;
             }
         super.draw(batch, parentAlpha);
@@ -81,7 +81,7 @@ public class ShadeLightCell extends SuperContainer {
     public void act(float delta) {
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
             if (!DungeonScreen.getInstance().getController().
-             isWithinCamera(this)) {
+             isWithinCamera(getX()+getWidth(), getY()+getHeight(), 2*getWidth(), 2*getHeight()) ) {
                 return;
             }
 

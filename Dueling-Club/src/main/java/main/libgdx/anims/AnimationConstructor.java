@@ -282,7 +282,9 @@ public class AnimationConstructor {
         if (active instanceof DC_QuickItemAction) {
             if (((DC_QuickItemAction) active).getItem().isAmmo()) {
                 return new ReloadAnim(active);
-            }
+            } else
+                return new QuickItemAnim(((DC_QuickItemAction) active).getItem());
+
         }
 
         if (active.isAttackAny()) {

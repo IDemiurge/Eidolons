@@ -59,7 +59,7 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
         setDungeonPath(getGame().getDataKeeper().getDungeonData().getValue(DUNGEON_VALUE.PATH));
         setPresetDungeonType(getGame().getDataKeeper().getDungeonData().getValue(DUNGEON_VALUE.TYPE_NAME));
 
-        if (FAST_DC.getTestLauncher().getSUPER_FAST_MODE()) {
+        if (FAST_DC.getLauncher().getSUPER_FAST_MODE()) {
 //        setDungeonPath(FAST_DC.DEFAULT_TEST_DUNGEON);
         }
         if (getDungeonPath() != null) {

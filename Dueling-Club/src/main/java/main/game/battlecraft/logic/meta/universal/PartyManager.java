@@ -6,6 +6,7 @@ import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
+import main.game.core.Eidolons;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.bf.TargetRunnable;
@@ -41,6 +42,8 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
     public void gameStarted() {
         DC_Player player = getMaster().getBattleMaster().getPlayerManager().getPlayer(true);
         String name = getParty().getProperty(PROPS.PARTY_MAIN_HERO);
+        if ( Eidolons.getSelectedMainHero()!=null )
+            name =  Eidolons.getSelectedMainHero();
         if (name.isEmpty())
             if (getMaster().getEntity() != null) {
                 //TODO set main hero if created
@@ -74,9 +77,16 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
                (hero, TEXT_CASES.BATTLE_COMMENT, hero.getName()));
          }) ;
         GuiEventManager.trigger(SELECT_MULTI_OBJECTS, p);
-        Unit unit = (Unit) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ, 5000);
+        Unit unit = (Unit) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ, 25000);
         if (unit==null ){
-            String hero = ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
+//            List<JButton> pics = party.getMembers().stream().map(hero ->
+//             new JButton(ImageManager.getIcon(hero.getImagePath().replace(" 128", "")))).collect(Collectors.toList());
+//            int i = DialogMaster.optionChoice(pics.toArray(), "Choose a hero to control...");
+//            if (i==-1)
+//                i=0;
+            String hero =
+//             party.getMembers().get(i).getName();
+             ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
             return hero;
         }
         return unit.getName();
@@ -89,7 +99,7 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         hero.getOwner().setHeroObj(hero);
         hero.setMainHero(true);
         party.setProperty(PROPS.PARTY_MAIN_HERO, hero.getName());
-
+        Eidolons.setSelectedMainHero(  hero.getName());
     }
 
     public void preStart() {

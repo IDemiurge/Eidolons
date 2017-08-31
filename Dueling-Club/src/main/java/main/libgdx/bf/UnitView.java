@@ -31,9 +31,10 @@ public class UnitView extends BaseView {
     protected Image emblemBorder;
     protected Image modeImage;
     protected boolean greyedOut;
-    private boolean emblemBorderOn;
-    private Texture outline;
-    private boolean initialized;
+    protected   boolean mainHero;
+    protected boolean emblemBorderOn;
+    protected Texture outline;
+    protected boolean initialized;
 
 
     public UnitView(UnitViewOptions o) {
@@ -42,6 +43,7 @@ public class UnitView extends BaseView {
 
     protected UnitView(UnitViewOptions o, int curId) {
         super(o);
+        this.mainHero = o.isMainHero();
         this.curId = curId;
         setTeamColor(o.getTeamColor());
         init(o.getClockTexture(), o.getClockValue());
@@ -63,7 +65,7 @@ public class UnitView extends BaseView {
         }
     }
 
-    private void init(TextureRegion clockTexture, int clockVal) {
+    protected void init(TextureRegion clockTexture, int clockVal) {
         this.initiativeIntVal = clockVal;
             if (!(this instanceof GridUnitView))
                 if (clockTexture != null) {
@@ -126,7 +128,7 @@ public class UnitView extends BaseView {
     protected boolean checkIgnored() {
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
             if (!DungeonScreen.getInstance().
-             getController().isWithinCamera(getX(), getY(), getWidth(), getHeight())) {
+             getController().isWithinCamera(getX(), getY(), 2*getWidth(), 2*getHeight())) {
                 return false;
             }
         return false;

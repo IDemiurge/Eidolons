@@ -138,15 +138,15 @@ public class PresetLauncher {
                     chooseRecentPreset();
                     break;
                 case "New":
-                    FAST_DC.getTestLauncher().DUMMY_MODE = false;
-                    FAST_DC.getTestLauncher().DUMMY_PP = false;
+                    FAST_DC.getLauncher().DUMMY_MODE = false;
+                    FAST_DC.getLauncher().DUMMY_PP = false;
                     if (FactionMaster.isFactionsSupported())
                     UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
                     return null;
                 case "Superfast":
-                    FAST_DC.getTestLauncher().DUMMY_MODE = true;
-                    FAST_DC.getTestLauncher().DUMMY_PP = true;
-                    FAST_DC.getTestLauncher().setSUPER_FAST_MODE(true);
+                    FAST_DC.getLauncher().DUMMY_MODE = true;
+                    FAST_DC.getLauncher().DUMMY_PP = true;
+                    FAST_DC.getLauncher().setSUPER_FAST_MODE(true);
                     return false;
                 case "Load":
 //                    File save = ListChooser.chooseFile(Saver.getSavePath());

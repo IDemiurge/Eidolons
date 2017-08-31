@@ -6,9 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import main.entity.active.DefaultActionHandler;
 import main.entity.obj.DC_Obj;
 import main.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import main.game.bf.Coordinates;
@@ -52,7 +53,7 @@ public class GridCell extends Group implements Borderable {
         cordsText.setVisible(false);
         addActor(cordsText);
 
-        addListener(new InputListener() {
+        addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -68,6 +69,8 @@ public class GridCell extends Group implements Borderable {
 
                 if (button == Input.Buttons.LEFT) {
                     event.handle();
+                    if (getTapCount()>1)
+                    if (!DefaultActionHandler.leftClickCell(event, getGridX(), getGridY()))
                     GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, GridCell.this);
                 }
             }
@@ -96,7 +99,8 @@ public class GridCell extends Group implements Borderable {
     @Override
     public void act(float delta) {
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
-            if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), getWidth(), getHeight())) {
+            if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(),
+             2*getWidth(), 2*getHeight())) {
                 return;
             }
         super.act(delta);

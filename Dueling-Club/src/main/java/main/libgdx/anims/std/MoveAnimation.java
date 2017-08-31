@@ -17,6 +17,7 @@ import main.libgdx.bf.GridMaster;
 import main.libgdx.screens.DungeonScreen;
 import main.system.EventCallbackParam;
 import main.system.GuiEventType;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -111,6 +112,9 @@ public class MoveAnimation extends ActionAnim {
     }
 
 
+    public void playSound() {
+        DC_SoundMaster.playMoveSound(getActive().getOwnerObj());
+    }
 
     @Override
     public void start() {

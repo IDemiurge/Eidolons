@@ -116,6 +116,7 @@ public class DebugMaster {
      DEBUG_FUNCTIONS.PAUSE,
      DEBUG_FUNCTIONS.SAVE,
      DEBUG_FUNCTIONS.LOAD,
+     GUI_EVENT
     };
     public static final DEBUG_FUNCTIONS[] group_toggle = {
      TOGGLE_DUMMY,
@@ -571,7 +572,7 @@ public class DebugMaster {
                 case RESTART:
 //                    if (!altMode) {
 //                        if (DialogMaster.confirm("Select anew?")) {
-//                            FAST_DC.getTestLauncher().selectiveInit();
+//                            FAST_DC.getLauncher().selectiveInit();
 //                        }
 //                    }
 
@@ -845,6 +846,14 @@ public class DebugMaster {
                 case TOGGLE_LIGHTING:
                     break;
                 case TOGGLE_FOG:
+                    break;
+                case GUI_EVENT:
+                    EmitterController.getInstance();
+                    String string= ListChooser.chooseEnum(GuiEventType.class);
+                    GuiEventManager.trigger(
+                      new EnumMaster<GuiEventType>().
+                       retrieveEnumConst(GuiEventType.class,
+                        string ), null);
                     break;
                 case SFX_PLAY_LAST:
                     EmitterController.getInstance();
@@ -1380,7 +1389,7 @@ SAVE,
         SFX_ADD_RANDOM,
         SFX_MODIFY,
         SFX_SAVE,
-        SFX_PLAY_LAST, SFX_SET;
+        SFX_PLAY_LAST, SFX_SET, GUI_EVENT;
 
         boolean transmitted;
 

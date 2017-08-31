@@ -36,6 +36,7 @@ import main.libgdx.texture.TextureManager;
 import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
@@ -275,9 +276,12 @@ public class GridPanel extends Group {
                 if (view != null && view instanceof GridUnitView) {
                     GridUnitView unitView = ((GridUnitView) view);
                     unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
+//                    SoundController.getCustomEventSound(SOUND_EVENT.UNIT_TURNS, );
+                    if (hero instanceof Unit)
+                        DC_SoundMaster.playTurnSound((Unit) hero);
                 }
                 caught = true;
-            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_FALLED_UNCONSCIOUS
+            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS
              || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS
              ) {
                 GuiEventManager.trigger(UNIT_TOGGLE_GREYED_OUT, ref.getSourceObj());

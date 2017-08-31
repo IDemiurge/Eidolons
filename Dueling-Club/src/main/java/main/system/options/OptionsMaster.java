@@ -8,6 +8,8 @@ import main.libgdx.bf.UnitView;
 import main.libgdx.bf.light.ShadowMap;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
+import main.system.audio.MusicMaster;
+import main.system.audio.MusicMaster.MUSIC_VARIANT;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -16,8 +18,11 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
+import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import main.system.options.Options.OPTION;
 import main.system.options.SoundOptions.SOUND_OPTION;
+import main.system.sound.SoundMaster;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -29,6 +34,41 @@ public class OptionsMaster {
     private static Map<OPTIONS_GROUP, Options> optionsMap = new HashMap<>();
     private static Map<OPTIONS_GROUP, Options> cachedMap;
     private static OptionsPanel optionsPanel;
+
+    private static void applySoundOptions(SoundOptions soundOptions) {
+        for (Object sub : soundOptions.getValues().keySet()) {
+            new EnumMaster<SOUND_OPTION>().
+             retrieveEnumConst(SOUND_OPTION.class,
+              soundOptions.getValues().get(sub).toString());
+            SOUND_OPTION key = soundOptions.getKey((sub.toString()));
+            if (key == SOUND_OPTION.MUSIC_VARIANT) {
+                MusicMaster.getInstance().setVariant(
+                 new EnumMaster<MUSIC_VARIANT>().retrieveEnumConst(MUSIC_VARIANT.class,
+                  soundOptions.getValue(key)   ));
+                continue;
+            }
+            String value = soundOptions.getValue(key);
+            Integer integer = Integer.valueOf(value.toLowerCase());
+            Float v = new Float(integer) / 100;
+            switch (key) {
+                case MASTER_VOLUME:
+                    SoundMaster.setMasterVolume(integer);
+                    MusicMaster.resetVolume();
+                    break;
+                case MUSIC_VOLUME:
+
+                    MusicMaster.resetVolume();
+                     //auto
+                    break;
+                case VOICE_VOLUME:
+//                    DC_SoundMaster.setVoiceVolume(integer);
+                    break;
+                case EFFECT_VOLUME:
+//                    DC_SoundMaster.setVoiceVolume(integer);
+                    break;
+            }
+        }
+    }
 
     //OR LET THOSE CLASSES GET() OPTIONS?
     public static void applyGraphicsOptions(GraphicsOptions graphicsOptions) {
@@ -113,18 +153,22 @@ public class OptionsMaster {
 
     public static void applyOptions() {
         applyGraphicsOptions(getGraphicsOptions());
+        applySoundOptions(getSoundOptions());
+
     }
-        public static void saveOptions() {
+
+
+    public static void saveOptions() {
         StringBuilder content = new StringBuilder();
-        content.append(XML_Converter.openXml("Options"+ StringMaster.NEW_LINE));
+        content.append(XML_Converter.openXml("Options" + StringMaster.NEW_LINE));
         for (OPTIONS_GROUP sub : optionsMap.keySet()) {
-            content.append(XML_Converter.openXml(sub.toString())+ StringMaster.NEW_LINE);
+            content.append(XML_Converter.openXml(sub.toString()) + StringMaster.NEW_LINE);
             //OR PUT UNID-DATA-STRING there
             for (Object option : optionsMap.get(sub).getValues().keySet()) {
                 content.append(XML_Converter.wrap(option.toString(),
-                 optionsMap.get(sub).getValues().get(option).toString())+ StringMaster.NEW_LINE);
+                 optionsMap.get(sub).getValues().get(option).toString()) + StringMaster.NEW_LINE);
             }
-            content.append(XML_Converter.closeXml(sub.toString())+ StringMaster.NEW_LINE);
+            content.append(XML_Converter.closeXml(sub.toString()) + StringMaster.NEW_LINE);
         }
         content.append(XML_Converter.closeXml("Options"));
         FileManager.write(content.toString(), getOptionsPath());
@@ -144,19 +188,19 @@ public class OptionsMaster {
     public static void openMenu() {
 //        if (optionsPanel == null) {
 //           optionsPanel = new OptionsPanel(optionsMap);
-            GuiManager.inNewWindow(new OptionsPanel(optionsMap),
-             "Options", new Dimension(800, 1000));
+        GuiManager.inNewWindow(new OptionsPanel(optionsMap),
+         "Options", new Dimension(800, 1000));
 //        } else { TODO won't reset!
 //            optionsPanel.setVisible(true);
 //        }
 
-         }
+    }
 
     public static Map<OPTIONS_GROUP, Options> readOptions(String data) {
         Document doc = XML_Converter.getDoc(data);
         Map<OPTIONS_GROUP, Options> optionsMap = new XLinkedMap<>();
         for (Node sub : XML_Converter.getNodeListFromFirstChild(doc, true)) {
-            OPTIONS_GROUP group=OPTIONS_GROUP.valueOf(sub.getNodeName());
+            OPTIONS_GROUP group = OPTIONS_GROUP.valueOf(sub.getNodeName());
             Options options = createOptions(group, sub);
             if (options != null)
                 optionsMap.put(group, options);
@@ -176,9 +220,9 @@ public class OptionsMaster {
     public static void init() {
         String data = FileManager.readFile(getOptionsPath());
         if (data.isEmpty()) {
-            optionsMap= initDefaults();
+            optionsMap = initDefaults();
         } else {
-            optionsMap= readOptions(data);
+            optionsMap = readOptions(data);
         }
 
         applyGraphicsOptions(getGraphicsOptions());
@@ -206,6 +250,10 @@ public class OptionsMaster {
             case TUTORIAL:
 //                return TUTORIAL_OPTION.class;
 
+            case GAMEPLAY:
+                return GAMEPLAY_OPTION.class;
+            case ENGINE:
+//                return Engine_Options.class;
         }
         return null;
     }
@@ -216,6 +264,26 @@ public class OptionsMaster {
 
     public static GraphicsOptions getGraphicsOptions() {
         return (GraphicsOptions) optionsMap.get(OPTIONS_GROUP.GRAPHICS);
+    }
+
+    public static GameplayOptions getGameplayOptions() {
+        return (GameplayOptions) optionsMap.get(OPTIONS_GROUP.GAMEPLAY);
+    }
+
+    public static Options getOptions(OPTION group) {
+        if (group instanceof SOUND_OPTION) {
+            return optionsMap.get(OPTIONS_GROUP.SOUND);
+        }
+        if (group instanceof GRAPHIC_OPTION) {
+            return optionsMap.get(OPTIONS_GROUP.GRAPHICS);
+        }
+        if (group instanceof ANIMATION_OPTION) {
+            return optionsMap.get(OPTIONS_GROUP.ANIMATION);
+        }
+        if (group instanceof GAMEPLAY_OPTION) {
+            return optionsMap.get(OPTIONS_GROUP.GAMEPLAY);
+        }
+        return null;
     }
 
     public static Options getOptions(OPTIONS_GROUP group) {
@@ -242,15 +310,15 @@ public class OptionsMaster {
     private static Options createOptions(OPTIONS_GROUP group) {
         switch (group) {
             case ANIMATION:
-               return  new AnimationOptions();
+                return new AnimationOptions();
             case SOUND:
-                break;
+                return new SoundOptions();
             case GRAPHICS:
-               return  new GraphicsOptions();
+                return new GraphicsOptions();
             case TUTORIAL:
                 break;
             case GAMEPLAY:
-                break;
+                return new GameplayOptions();
         }
         return null;
     }
@@ -264,11 +332,12 @@ public class OptionsMaster {
     }
 
     public static void resetToCached() {
-        optionsMap= new MapMaster<OPTIONS_GROUP, Options>().cloneHashMap(cachedMap);
+        optionsMap = new MapMaster<OPTIONS_GROUP, Options>().cloneHashMap(cachedMap);
         applyOptions();
     }
+
     public static void resetToDefaults() {
-        optionsMap= initDefaults();
+        optionsMap = initDefaults();
         applyOptions();
     }
 
@@ -277,9 +346,13 @@ public class OptionsMaster {
         return null;
     }
 
+    public static SoundOptions getSoundOptions() {
+        return (SoundOptions) getOptions(OPTIONS_GROUP.SOUND);
+    }
+
 
     public enum OPTIONS_GROUP {
-        ANIMATION, SOUND, GRAPHICS, TUTORIAL, GAMEPLAY,ENGINE,
+        ANIMATION, SOUND, GRAPHICS, TUTORIAL, GAMEPLAY, ENGINE,
     }
 
 }

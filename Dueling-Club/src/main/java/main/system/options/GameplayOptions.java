@@ -10,14 +10,14 @@ public class GameplayOptions extends  Options<GAMEPLAY_OPTION,GAMEPLAY_OPTION>{
     }
 
     public enum GAMEPLAY_OPTION implements Options.OPTION {
-RULE_SCOPE,
+//RULE_SCOPE(RuleMaster.RULE_SCOPE.values()),
 
-        AI_SPEED,
-        DEFAULT_ACTIONS,
-        ALT_DEFAULT_ACTIONS,
+//        AI_SPEED,
+        DEFAULT_ACTIONS(true),
+//        ALT_DEFAULT_ACTIONS,
 
-        MANUAL_CONTROL,
-        DEBUG_MODE,
+        MANUAL_CONTROL(false),
+        DEBUG_MODE(false),
 
      ;
      private Boolean exclusive;
@@ -39,18 +39,13 @@ RULE_SCOPE,
          this.options = options;
      }
 
-     GAMEPLAY_OPTION(Integer min, Integer max, Object... options) {
+     GAMEPLAY_OPTION(Integer defaultValue,Integer min, Integer max ) {
          this.min = min;
          this.max = max;
+         this.defaultValue = defaultValue;
 
      }
 
-     GAMEPLAY_OPTION(Boolean exclusive, Integer min, Integer max, Object... options) {
-         this.exclusive = exclusive;
-         this.min = min;
-         this.max = max;
-         this.options = options;
-     }
 
      @Override
      public Integer getMin() {

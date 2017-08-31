@@ -14,12 +14,15 @@ import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.universal.Spawner;
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
+import main.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import main.game.bf.Coordinates;
 import main.game.module.adventure.travel.EncounterMaster;
 import main.game.module.dungeoncrawl.ai.DungeonCrawler;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
+import main.system.data.DataUnitFactory;
 import main.test.PresetMaster;
 
 import java.util.*;
@@ -42,37 +45,44 @@ public class LocationSpawner extends Spawner<Location> {
 
     @Override
     public List<Unit> spawn(UnitData data, DC_Player player, SPAWN_MODE mode) {
-        if (player.isMe() && PresetMaster.getPreset()==null ) {
+        if (data.getValue(PARTY_VALUE.MEMBERS) != null) {
+            String units = data.getValue(PARTY_VALUE.MEMBERS).
+             replace(DataUnitFactory.getContainerSeparator(UnitData.FORMAT), "");
+            if (FileManager.isFile(units))
+                return spawnUnitGroup(player.isMe(), units);
+        }
+       if (player.isMe() && PresetMaster.getPreset() == null) {
             List<String> list = ListMaster.toNameList(
              getGame().getMetaMaster().getPartyManager()
               .getParty().getMembers());
             getPositioner().setMaxSpacePercentageTaken(50);
             Iterator<Coordinates> iterator = getPositioner().getPlayerPartyCoordinates(list).iterator();
 
-          for (Unit member:getGame().getMetaMaster().getPartyManager().getParty().getMembers()){
-              member.setCoordinates( iterator.next());
-              member.setConstructed(false);
-              getGame().getState().addObject(member);
-              member.setOriginalOwner(player);
-              member.setOwner(player);
-              member.setFacing(
-               getFacingAdjuster().getPartyMemberFacing(member.getCoordinates()));
-              //what else should be done to *spawn*?
-          }
+            for (Unit member : getGame().getMetaMaster().getPartyManager().getParty().getMembers()) {
+                member.setCoordinates(iterator.next());
+                member.setConstructed(false);
+                getGame().getState().addObject(member);
+                member.setOriginalOwner(player);
+                member.setOwner(player);
+                member.setFacing(
+                 getFacingAdjuster().getPartyMemberFacing(member.getCoordinates()));
+                //what else should be done to *spawn*?
+            }
         } else {
             super.spawn(data, player, mode);
         }
 
 
-             //so dungeon-units are spawned 'automatically' by DungeonBuilder...
-            // what about future waves?
-            // how to add them to a mission?
-            // via encounters most likely... or unitGroups
-            //TODO
+        //so dungeon-units are spawned 'automatically' by DungeonBuilder...
+        // what about future waves?
+        // how to add them to a mission?
+        // via encounters most likely... or unitGroups
+        //TODO
 
         return null;
     }
-//        if (respawn)
+
+    //        if (respawn)
 //        if (player.isMe()) {
 //        List<String> list = ListMaster.toNameList(
 //         getGame().getMetaMaster().getPartyManager()
@@ -142,8 +152,8 @@ public class LocationSpawner extends Spawner<Location> {
 
         int preferredPower = dungeon.getLevel()
 
-                // + PartyManager.getParty().getPower()
-                + getBattleMaster().getOptionManager().getOptions().getBattleLevel();
+         // + PartyManager.getParty().getPower()
+         + getBattleMaster().getOptionManager().getOptions().getBattleLevel();
         int min = preferredPower * 2 / 3;
         int max = preferredPower * 3 / 2;
 
@@ -153,14 +163,14 @@ public class LocationSpawner extends Spawner<Location> {
             if (specialEncounters.get(dungeon) != null) {
                 Map<Coordinates, ObjType> specEncounters = specialEncounters.get(dungeon)
 
-                        .get(block);
+                 .get(block);
                 for (Coordinates c : specEncounters.keySet()) {
                     ObjType waveType = specEncounters.get(c);
 
                     if (waveType.getGroup().equalsIgnoreCase("Substitute")) {
                         waveType = EncounterMaster.getSubstituteEncounterType(waveType, dungeon.getDungeon(),
 
-                                preferredPower);
+                         preferredPower);
                     }
 
                     group = new Wave(waveType, game, new Ref(), game.getPlayer(false));
@@ -209,10 +219,10 @@ public class LocationSpawner extends Spawner<Location> {
         }
         return block.getRoomType() == ROOM_TYPE.GUARD_ROOM
 
-                || block.getRoomType() == ROOM_TYPE.COMMON_ROOM
-                || block.getRoomType() == ROOM_TYPE.THRONE_ROOM
-                || block.getRoomType() == ROOM_TYPE.EXIT_ROOM
-                || block.getRoomType() == ROOM_TYPE.DEATH_ROOM;
+         || block.getRoomType() == ROOM_TYPE.COMMON_ROOM
+         || block.getRoomType() == ROOM_TYPE.THRONE_ROOM
+         || block.getRoomType() == ROOM_TYPE.EXIT_ROOM
+         || block.getRoomType() == ROOM_TYPE.DEATH_ROOM;
     }
 
     private Wave getCreepGroupForBlock(int preferredPower, Dungeon dungeon, MapBlock block,

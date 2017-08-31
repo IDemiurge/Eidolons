@@ -11,7 +11,12 @@ import main.game.battlecraft.logic.meta.scenario.hq.HqShopManager;
 import main.game.battlecraft.logic.meta.universal.*;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
+import main.game.core.Eidolons;
 import main.game.core.game.ScenarioGame;
+import main.libgdx.screens.ScreenData;
+import main.libgdx.screens.ScreenType;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.test.frontend.ScenarioLauncher;
 
@@ -37,7 +42,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
          getMetaDataManager().getMissionName();
 
         if (StringMaster.isEmpty(missionName)) {
-            int missionIndex = StringMaster.getInteger(ScenarioLauncher.missionIndex);
+            int missionIndex =  (ScenarioLauncher.missionIndex);
 
             getMetaGame().setMissionIndex(missionIndex);
 
@@ -55,6 +60,27 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
          levelPath);
 
         super.preStart();
+    }
+
+    @Override
+    public void next(Boolean outcome) {
+        if (outcome==null ){
+            outcome = true;
+//            return ;//TODO exit? credits?
+        }
+        super.next(outcome);
+        if (outcome)
+            ScenarioLauncher.missionIndex++;
+
+         init();
+//   TODO       getDialogueManager().getDialogueForMission(getMissionName());
+        ScreenData data = new ScreenData(ScreenType.BATTLE, getMissionName());
+//        //new SceneFactory("Test")
+        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
+
+        Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
+        Eidolons.mainGame.getMetaMaster().getGame().battleInit();
+        Eidolons.mainGame.getMetaMaster().getGame().start(true);
     }
 
     @Override
