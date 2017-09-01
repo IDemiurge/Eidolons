@@ -3,6 +3,7 @@ package main.libgdx.bf;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.libgdx.StyleHolder;
 import main.libgdx.bf.datasource.GraveyardDataSource;
@@ -11,6 +12,7 @@ import main.libgdx.gui.NinePathFactory;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.ValueTooltip;
+import main.libgdx.texture.TextureCache;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,8 +28,12 @@ public class GraveyardView extends TablePanel {
     private int graveCount=0;
 
     public GraveyardView() {
-        graveyardButton = new Button(
-                StyleHolder.getCustomButtonStyle("UI/components/small/skulls_32x32.png"));
+        graveyardButton = new Button(new Image(
+         TextureCache.getOrCreate(
+         "UI/components/small/skulls_32x32.png")),
+//                StyleHolder.getCustomButtonStyle("UI/components/small/skulls_32x32.png")
+         StyleHolder.getDefaultTextButtonStyle()
+        );
 
         graveyardButton.setChecked(true);
         add(graveyardButton).left().bottom();

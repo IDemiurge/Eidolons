@@ -18,8 +18,6 @@ import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
-import main.system.options.AnimationOptions.ANIMATION_OPTION;
-import main.system.options.OptionsMaster;
 import main.system.text.SmartText;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -208,7 +206,8 @@ public class AnimationManager {
     }
 
     public boolean isOffsetForOverlap() {
-        return OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.OFFSET_FOR_OVERLAP);
+         return false;
+//        return OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.OFFSET_FOR_OVERLAP);
     }
 
     private PhaseAnimation getAnimBelow(PhaseAnimation anim, PhaseAnimation anim1) {

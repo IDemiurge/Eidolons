@@ -1,5 +1,6 @@
 package main.test.frontend;
 
+import main.client.dc.Launcher;
 import main.data.filesys.PathFinder;
 import main.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import main.game.core.launch.PresetLauncher;
@@ -25,14 +26,14 @@ public class Showcase {
      "The Tunnel",
      "Bone Temple",
     };
-    public static final String[] missions_alt =
-     "Prison Break;Demon Shrine;Escape;Into the Woods;On Pirate Ship;Ledwraith Castle".split(";");
+    public static final String[] missions_showcase =
+     "Prison Break;The Demon Shrine;The Escape;Into the Woods;On a Pirate Ship;Ledwraith Castle".split(";");
     public static   String launchData = "";
     public static final  String launchDataPath = PathFinder.getXML_PATH()+"last.txt";
     public static final String[] launch_options = {
      "Mission","Last Custom",  "Custom",
 //     "Tutorial",
-     "Test", "Showcase",
+     "Test", "Showcase","Hero Creator",
     };
     private static boolean running;
 
@@ -43,6 +44,10 @@ public class Showcase {
         int index = DialogMaster.optionChoice(launch_options,
          "Choose the type of Eidolons game you want to launch...");
 
+        if (index == 5) {
+            Launcher.main(null );
+            return ;
+        }
         if (index==1){
             String data = FileManager.readFile(launchDataPath);
             List<String> parts = StringMaster.openContainer(data);
@@ -55,14 +60,15 @@ public class Showcase {
 
         }
         if (index == 4 || index == 0) {
-            String[] options = index == 0 ? missions : missions_alt;
+            boolean showcase = index == 4;
+            String[] options = !showcase ? missions : missions_showcase;
             index = DialogMaster.optionChoice(options, "Choose mission to launch");
             if (index==-1)
                 return ;
 
             launchData+=index+";";
             String[] args1 = {
-             index == 0 ? null : "Showcase", index + ""
+             showcase ? "Showcase" : null, index + ""
             };
             ScenarioLauncher.main(args1);
         }

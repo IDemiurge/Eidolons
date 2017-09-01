@@ -15,15 +15,16 @@ public class AnimationOptions extends Options<ANIMATION_OPTION,ANIMATION_OPTION>
         MAX_ANIM_WAIT_TIME(1200, 0, 3500),
         PARALLEL_DRAWING (true) ,
         SPEED(100, 0, 100),
+        TEXT_DURATION(100, 0, 300),
 //        INFO_LEVEL(1, 0, 1),
 //        PHASE_TIME(500, 0, 1000),
-        OFFSET_FOR_OVERLAP(true),
+//        OFFSET_FOR_OVERLAP(true),
         PRECAST_ANIMATIONS(true),
         CAST_ANIMATIONS(true),
         AFTER_EFFECTS_ANIMATIONS(false),
-        DEATH_ANIM(true),
-        MOVE_ANIM(true),
-        MELEE_ANIMS(true),
+//        DEATH_ANIM(true),
+//        MOVE_ANIM(true),
+//        MELEE_ANIMS(true),
 
         ;
 

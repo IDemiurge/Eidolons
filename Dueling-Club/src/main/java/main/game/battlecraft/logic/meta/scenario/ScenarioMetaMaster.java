@@ -37,7 +37,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
          */
     @Override
     public void preStart() {
-        RuleMaster.setScope(RULE_SCOPE.FULL);
+
         String missionName =
          getMetaDataManager().getMissionName();
 

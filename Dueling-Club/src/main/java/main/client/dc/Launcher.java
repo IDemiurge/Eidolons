@@ -66,7 +66,7 @@ public class Launcher {
     private static final String BACKGROUND_IMAGE_1920x1080 = "UI\\components\\main\\bg_1920x1080.png";
     private static final String BACKGROUND_IMAGE_1680x1050 = "big\\DC\\bg.jpg";
     private static final String[] LAUNCH_OPTIONS = {"Last", "Default", "Test", "Fast Party",
-            "New Arcade", "Continue Arcade",};
+     "New Arcade", "Continue Arcade",};
     public static boolean DEV_MODE = false;
     static MAIN_MENU_ITEMS[] autoPressSequence;
     static String loadPath;
@@ -132,7 +132,7 @@ public class Launcher {
                 gameType = GAME_TYPE.ARCADE;
                 gameMode = GAME_MODES.ARENA_ARCADE;
                 autoPressSequence = new MAIN_MENU_ITEMS[]{MAIN_MENU_ITEMS.CONTINUE_ARCADE,
-                        MAIN_MENU_ITEMS.CONTINUE_LAST};
+                 MAIN_MENU_ITEMS.CONTINUE_LAST};
                 break;
             case "Last":
                 preset = readLast();
@@ -170,7 +170,7 @@ public class Launcher {
 
         CoreEngine.setLogicTest(false);
         if (isAutoHC)
-        initAutoLaunches();
+            initAutoLaunches();
 
         // CharacterCreator.getPanel().getTabs().select(0);
         // CharacterCreator.getHeroPanel().getMvp().toggleTreeView();
@@ -187,7 +187,7 @@ public class Launcher {
         } else if (preset != null || HC_TEST_MODE || CHOICE_TEST_MODE) {
             getMainManager().setCurrentItem(MAIN_MENU_ITEMS.PRESET_HERO);
             getMainManager().launchSelection(DC_TYPE.CHARS, StringMaster.PRESET,
-                    InfoMaster.CHOOSE_HERO);
+             InfoMaster.CHOOSE_HERO);
             if (preset != null) {
                 initPreset();
             } else {
@@ -306,11 +306,11 @@ public class Launcher {
         views.put(view, viewComp);
 
         macroView = newView == VIEWS.MAP || newView == VIEWS.TOWN || newView == VIEWS.DIALOGUE;
-if ( Eidolons.getGame()!=null )
-        if (!macroView && newView != VIEWS.MINI_MAP && newView != VIEWS.DC) {
-            Eidolons.getGame().setSimulation(true);
-            Eidolons.getGame().setGameMode(GAME_MODES.SIMULATION);
-        }
+        if (Eidolons.getGame() != null)
+            if (!macroView && newView != VIEWS.MINI_MAP && newView != VIEWS.DC) {
+                Eidolons.getGame().setSimulation(true);
+                Eidolons.getGame().setGameMode(GAME_MODES.SIMULATION);
+            }
     }
 
     private static void addBackground() {
@@ -327,15 +327,15 @@ if ( Eidolons.getGame()!=null )
             viewPanel = new G_Panel();
             viewPanel.setLayout(new GridLayout());
             viewPanel.setSize(
-                    // TODO
-                    GuiManager.getScreenSize());
+             // TODO
+             GuiManager.getScreenSize());
             frame.add(viewPanel, "pos 0 0");
         } else {
             DEV_MODE = false;
             initBackground();
             frame.add(background, "pos 0 0");
             viewPanel = new G_Panel(
-                    // VISUALS.ROOT_FRAME
+             // VISUALS.ROOT_FRAME
             );
             viewPanel.setLayout(new GridLayout()); // otherwise there is this
             // size calc issue? viewPanel.setSize(VIEW_PANEL_SIZE);
@@ -368,7 +368,7 @@ if ( Eidolons.getGame()!=null )
     private static void setCustomCursor() {
         Image image = ImageManager.getDefaultCursor();
         Cursor c = Toolkit.getDefaultToolkit().createCustomCursor(image,
-                new Point(frame.getX(), frame.getY()), "img");
+         new Point(frame.getX(), frame.getY()), "img");
         frame.setCursor(c);
     }
 
@@ -496,7 +496,7 @@ if ( Eidolons.getGame()!=null )
         if (isDataInitialized()) {
             return;
         }
-        DC_Engine.dataInit(  );
+        DC_Engine.dataInit();
         setDataInitialized(true);
     }
 
@@ -533,10 +533,14 @@ if ( Eidolons.getGame()!=null )
             }
 
             BattleSceneLauncher.main(new String[]{});
-            ScreenData data = new ScreenData(ScreenType.BATTLE, "name");
+            ScreenData data = new ScreenData(ScreenType.BATTLE, "Loading...");
             GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
 //        Eidolons.mainGame.getMetaMaster().getGame().init( );
-            Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
+            try {
+                Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 //            GdxLauncher.main(new String[]{});
             game = Simulation.getGame();

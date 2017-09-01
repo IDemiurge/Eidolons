@@ -5,7 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.StyleHolder;
+import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
 
 public class ButtonStyled extends Button implements EventListener {
@@ -19,7 +21,16 @@ public class ButtonStyled extends Button implements EventListener {
     }
 
     public ButtonStyled(STD_BUTTON b) {
-        super(StyleHolder.getCustomButtonStyle(b.path));
+        super(
+         !b.isVersioned() ?
+          new Image(
+           TextureCache.getOrCreate(b.path))
+          :null ,
+
+          b.isVersioned() ?
+           StyleHolder.getCustomButtonStyle(b.path)
+           : StyleHolder.getDefaultTextButtonStyle()
+        );
     }
 
     public ButtonStyled(String name) {
@@ -48,7 +59,12 @@ public class ButtonStyled extends Button implements EventListener {
         OK("UI/components/small/ok.png"),
         CANCEL("UI/components/small/no.png"),
         UNDO("UI/components/small/back2.png"),
-        OPTIONS(VISUALS.GEARS.getImgPath()),
+        OPTIONS(VISUALS.GEARS.getImgPath()){
+            @Override
+            public boolean isVersioned() {
+                return false;
+            }
+        },
 //        NEXT, LEVEL_UP,
         ;
         String path;
@@ -56,5 +72,8 @@ public class ButtonStyled extends Button implements EventListener {
         STD_BUTTON(String path) {
             this.path = path;
         }
+
+        public boolean isVersioned() {
+            return true;}
     }
 }

@@ -5,6 +5,8 @@ import main.entity.obj.unit.Unit;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.controls.Controller;
+import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import main.system.options.OptionsMaster;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +24,12 @@ public class RuleMaster implements Controller {
     }
 
     public static void init() {
+        try {
+            scope = new EnumMaster<RULE_SCOPE>().retrieveEnumConst(RULE_SCOPE.class,
+             OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.RULES_SCOPE));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         for (RULE r : RULE.values()) {
             Boolean on = checkStatus(getScopeForRule(r));
             map.put(r, on);
@@ -392,7 +400,7 @@ public class RuleMaster implements Controller {
     }
 
     public enum RULE_SCOPE {
-        TEST, BASIC, FULL,ADVANCED,
+        TEST, BASIC, FULL, ADVANCED,
     }
 
     public enum SPELLCASTING_RULES {

@@ -245,6 +245,8 @@ public class FloatingTextMaster {
 
     private float getDefaultDuration(TEXT_CASES aCase) {
         switch (aCase) {
+            case REQUIREMENT:
+                return 11;
             case BONUS_DAMAGE:
                 return 10;
             case BATTLE_COMMENT:
@@ -286,7 +288,13 @@ public class FloatingTextMaster {
             Vector2 v = GridMaster.getCenteredPos(((BattleFieldObject) entity).getCoordinates());
             text.setPosition(v);
         }
-
+ else {
+            if (entity instanceof DC_ActiveObj) {
+                Vector2 v = GridMaster.getCenteredPos(
+                 ((DC_ActiveObj) entity).getOwnerObj( ).getCoordinates());
+                text.setPosition(v);
+            }
+        }
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, text);
     }
 

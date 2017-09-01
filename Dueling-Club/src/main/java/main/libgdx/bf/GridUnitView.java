@@ -96,7 +96,7 @@ public class GridUnitView extends UnitView {
 
         if (emblem != null) {
             emblemLighting = new Image(TextureCache.getOrCreateR(STD_IMAGES.LIGHT.getPath()));
-            emblemLighting.setSize(getEmblemSize()*10/9, getEmblemSize()*10/9);
+            emblemLighting.setSize(getEmblemSize() * 10 / 9, getEmblemSize() * 10 / 9);
             emblemLighting.setPosition(getWidth() - emblemLighting.getWidth(), getHeight() - emblemLighting.getHeight());
             if (getTeamColor() != null)
                 emblemLighting.setColor(getTeamColor());
@@ -138,19 +138,20 @@ public class GridUnitView extends UnitView {
     @Override
     public void act(float delta) {
         if (checkIgnored())
-            return ;
-        if (emblemLighting!=null )
-        if (isActive() || isHovered())
-            alphaFluctuation(emblemLighting, delta);
-        else
-            emblemLighting.setColor(getTeamColor());
+            return;
+        if (emblemLighting != null)
+            if (isActive() || isHovered())
+                alphaFluctuation(emblemLighting, delta);
+            else
+                emblemLighting.setColor(getTeamColor());
         super.act(delta);
     }
 
     @Override
     public void setActive(boolean active) {
         super.setActive(active);
-        initiativeQueueUnitView.setActive(active);
+        if (initiativeQueueUnitView != null)
+            initiativeQueueUnitView.setActive(active);
     }
 
     public void updateRotation(int val) {

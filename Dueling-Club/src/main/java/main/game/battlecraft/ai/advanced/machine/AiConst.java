@@ -63,7 +63,7 @@ import main.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiCons
     GOAL_ATTACK, // ALL HOSTILE GOALS
     GOAL_APPROACH,
     GOAL_BUFF, // ALL ALLIES
-    GOAL_SELF(0.5f), // ALL non-std SELFIES
+    GOAL_SELF( ), // ALL non-std SELFIES
     GOAL_DEBUFF,
     GOAL_RESTORE(0.5f),
     GOAL_DEBILITATE,

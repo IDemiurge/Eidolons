@@ -163,5 +163,7 @@ public abstract class SuperActor extends Group implements Borderable {
     }
 
     public boolean isActive() {
+        if (active)
+            return active;
         return active;
     }}

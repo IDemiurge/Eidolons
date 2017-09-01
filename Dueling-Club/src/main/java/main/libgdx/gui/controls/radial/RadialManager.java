@@ -10,11 +10,9 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_UnitAction;
+import main.entity.active.DefaultActionHandler;
 import main.entity.item.DC_QuickItemObj;
-import main.entity.obj.ActiveObj;
-import main.entity.obj.DC_Cell;
-import main.entity.obj.DC_Obj;
-import main.entity.obj.Obj;
+import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
 import main.game.core.ActionInput;
 import main.game.core.game.DC_Game;
@@ -60,12 +58,29 @@ public class RadialManager {
             return false;
         }
         DC_ActiveObj action = ((DC_ActiveObj) el);
+
+
         if (target != action.getOwnerObj()) {
             if (action.getActionType() == ACTION_TYPE.MODE) {
                 return false;
             }
             if (action.getActionGroup() == ACTION_TYPE_GROUPS.TURN) {
                 return false;
+            }
+            if (action.getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
+                if (target.getX()-action.getOwnerObj().getX()>2
+                 || target.getY()-action.getOwnerObj().getY()>2
+                 ){
+                    return false;
+                }
+                if (action!=
+                DefaultActionHandler.getActionForCell(action.getOwnerObj(),
+                 target.getCoordinates()))
+                    return false;
+//
+                if (target instanceof BattleFieldObject){
+                    target = target.getGame().getCellByCoordinate(target.getCoordinates());
+                }
             }
         } else {
             if (action.getActionGroup() == ACTION_TYPE_GROUPS.ATTACK) {
@@ -110,7 +125,7 @@ public class RadialManager {
     public static List<RadialValueContainer> getOrCreateRadialMenu(DC_Obj target) {
         List<RadialValueContainer> nodes = cache.get(target);
         if (nodes == null) {
-            nodes = createNew(target);
+        nodes = createNew(target);
         }
         cache.put(target, nodes);
         return nodes;
@@ -301,30 +316,43 @@ public class RadialManager {
 
     protected static RadialValueContainer configureActionNode(DC_Obj target, DC_ActiveObj el) {
         if (el.getTargeting() instanceof SelectiveTargeting) {
-            if (target == el.getOwnerObj()) {
-                return configureSelectiveTargetedNode(el);
-            }
+            return configureSelectiveTargetedNode(el, target);
         }
-
         RadialValueContainer valueContainer = new RadialValueContainer(new TextureRegion(getTextureForActive(el, target)), getRunnable(target, el));
         addSimpleTooltip(valueContainer, el.getName());
         return valueContainer;
     }
 
-    private static RadialValueContainer configureSelectiveTargetedNode(DC_ActiveObj active) {
+    private static RadialValueContainer
+    configureSelectiveTargetedNode(DC_ActiveObj active) {
+        return configureSelectiveTargetedNode(active, null);
+    }
 
+    private static RadialValueContainer configureSelectiveTargetedNode(
+     DC_ActiveObj active, DC_Obj target) {
+        boolean wasValid ;
         Set<Obj> objSet = CoreEngine.isActionTargetingFiltersOff() ?
          DC_Game.game.getUnits().parallelStream().distinct().collect(Collectors.toSet())
          : getFilter(active).getObjects();
+        if (target == null)
+            wasValid = objSet.size() > 0 &&
+             active.canBeManuallyActivated();
+        else
+            wasValid = active.canBeManuallyActivated();
 
-        final boolean valid = objSet.size() > 0 &&
-         active.canBeManuallyActivated();
+        final boolean valid = wasValid;
+
         TextureRegion textureRegion = valid ?
          getOrCreateR(active.getImagePath()) :
          getOrCreateGrayscaleR(active.getImagePath());
         Runnable runnable = () -> {
             if (valid) {
-                WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(active, new Context(active.getOwnerObj().getRef())));
+                Context context = new Context(active.getOwnerObj().getRef());
+                if (target != null) {
+                    context.setTarget(target.getId());
+                }
+                WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
+                 new ActionInput(active, context));
             } else {
                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.CANNOT_ACTIVATE, "", active);
             }
@@ -361,7 +389,9 @@ public class RadialManager {
             addAttackTooltip(valueContainer, activeObj, target);
             return (valueContainer);
         } else if (activeObj.getTargeting() instanceof SelectiveTargeting) {
-            final RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR(activeObj.getImagePath()), getRunnable(target, activeObj));
+            final RadialValueContainer valueContainer =
+             new RadialValueContainer(getOrCreateR(activeObj.getImagePath()),
+              getRunnable(target, activeObj));
             addAttackTooltip(valueContainer, activeObj, target);
             return (valueContainer);
         }

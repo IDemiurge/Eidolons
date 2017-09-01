@@ -2,6 +2,7 @@ package main.entity.active;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.elements.targeting.SelectiveTargeting;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -38,52 +39,25 @@ public class DefaultActionHandler {
         if (source.isAiControlled())
             return false;
         Coordinates c = new Coordinates(gridX, gridY);
-        if (c.x - source.getX()>1){
+        if (c.x - source.getX() > 1) {
             return false;
         }
-        if (c.y - source.getY()>1){
+        if (c.y - source.getY() > 1) {
             return false;
         }
-        DIRECTION d = DirectionMaster.getRelativeDirection(source.getCoordinates(),
-         c);
-        FACING_SINGLE f = FacingMaster.getSingleFacing(source.getFacing(), source.getCoordinates(),
-         c);
-        String name = null;
-        Obj target = null;
 
-
-        switch (f) {
-            case IN_FRONT:
-                if (d.isDiagonal()) {
-                    target = Eidolons.getGame().getCellByCoordinate(c);
-                    name =
-                     "Clumsy Leap";
-                    break;
-                }
-                name = "Move";
-                break;
-            case BEHIND:
-                name = "Move Back";
-                break;
-            case TO_THE_SIDE:
-
-                boolean right =
-                 source.getFacing().isVertical() ?
-                  d.isGrowX() : d.isGrowY();
-                name =  right ? "Move Right" :
-                 "Move Left";
-                break;
-            case NONE:
-                break;
-        }
-        if (name == null) {
-//            SoundController.getCustomEventSound(SOUND_EVENT.RADIAL_CLOSED);
+        DC_UnitAction action = getActionForCell(source, c);
+        if (action == null) {
             return false;
         }
+        Obj target = action.getTargeting() instanceof SelectiveTargeting ?
+         Eidolons.getGame().getCellByCoordinate(c) : null;
         Context context = new Context(source, target);
-        DC_UnitAction action = source.getAction(name);
-        if (!action.canBeActivated(context, true))
+        if (!action.getActivator().  canBeActivated(context, true))
+        {
+            action.getActivator().  cannotActivate();
             return false;
+        }
         if (target != null)
             if (!action.canBeTargeted(target.getId()))
                 return false;
@@ -92,6 +66,47 @@ public class DefaultActionHandler {
          new ActionInput(action, context));
         return true;
     }
+
+    public  static DC_UnitAction getActionForCell(Unit source, Coordinates c) {
+        DIRECTION d = DirectionMaster.getRelativeDirection(source.getCoordinates(),
+         c);
+        FACING_SINGLE f = FacingMaster.getSingleFacing(source.getFacing(), source.getCoordinates(),
+         c);
+        String name = null;
+
+        switch (f) {
+            case IN_FRONT:
+                if (d.isDiagonal()) {
+//                    target = Eidolons.getGame().getCellByCoordinate(c);
+                    name =
+                     "Clumsy Leap";
+                    break;
+                }
+                name = "Move";
+                break;
+            case BEHIND:
+                if (d.isDiagonal())
+                    return null;
+                name = "Move Back";
+                break;
+            case TO_THE_SIDE:
+
+                boolean right =
+                 source.getFacing().isVertical() ?
+                  d.isGrowX() : d.isGrowY();
+                name = right ? "Move Right" :
+                 "Move Left";
+                break;
+            case NONE:
+                break;
+        }
+        if (name == null) {
+//            SoundController.getCustomEventSound(SOUND_EVENT.RADIAL_CLOSED);
+            return null;
+        }
+        return source.getAction(name);
+    }
+
 
     public static void leftClickUnit(BattleFieldObject target) {
         if (OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.DEFAULT_ACTIONS)) {

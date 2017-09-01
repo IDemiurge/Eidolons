@@ -19,6 +19,8 @@ import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.images.ImageManager;
+import main.system.options.AnimationOptions.ANIMATION_OPTION;
+import main.system.options.OptionsMaster;
 
 import java.util.function.Supplier;
 
@@ -89,7 +91,9 @@ public class HitAnim extends ActionAnim {
     @Override
     public void start() {
         super.start();
-        floatingText.init(destination, 0, 128, 1.5f);
+        floatingText.init(destination, 0, 128, getDuration()*
+         OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.TEXT_DURATION)
+        );
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);
         Damage damage = getActive().getDamageDealt();
         FloatingTextMaster.getInstance().initFloatTextForDamage(damage, this);
