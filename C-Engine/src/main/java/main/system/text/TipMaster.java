@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.text.Tips.*;
 
 import java.util.LinkedList;
@@ -72,17 +71,29 @@ public class TipMaster {
 
     public static String getText(BASIC_COMBAT_TIPS tip) {
         switch (tip) {
-            case ARMOR:
-                return "Armor reduces physical damage if attacker fails to penetrate it, but only as long as it has some Durability left.";
-            case ATTACK_AND_DEFENSE:
-                return  StringMaster.getWellFormattedString(tip.name())
-                 +" determine what percentage of damage is dealt. " +
-                 "Greater difference creates chance to miss or make a critical strike";
+//            case ARMOR:
+//                return "Armor reduces physical damage if attacker fails to penetrate it, but only as long as it has some Durability left.";
+//            case ATTACK_AND_DEFENSE:
+//                return  StringMaster.getWellFormattedString(tip.name())
+//                 +" determine what percentage of damage is dealt. " +
+//                 "Greater difference creates chance to miss or make a critical strike";
             case DYNAMIC_ROUNDS:
                 return
                  "Units take actions when they become 1st " +
                   "(from the right side) in the Initiative Queue on top of the screen. \n" +
                   "";
+            case DEBUG:
+                return "Press [ctrl]+[alt] to enter full-manual mode and debug mode";
+            case PAUSE:
+                return "Press [spacebar] to pause the game";
+            case MISSION:
+                return "There are two sets of 6 missions in this version, plus custom-skirmish setup mode!";
+            case OPTIONS:
+                return
+                 "You can adjust options by clicking on gears icon in top-right corner";
+            case MODES:
+                return "Use Restoration Mode on the bottom panel to regain lost Stamina, Focus or Essence";
+
             case GAME_START:
                return
                 "Normally, you choose one hero to control in your party when game starts.";
@@ -94,7 +105,7 @@ public class TipMaster {
             case RESISTANCE:
                 return "";
             case VISION:
-                return "";
+                return "If 'outlines' option is on, some units will not be identified without enough Illumination!";
             default:
                 return "";
 

@@ -342,7 +342,7 @@ public class RadialManager {
         Set<Obj> objSet = CoreEngine.isActionTargetingFiltersOff() ?
          DC_Game.game.getUnits().parallelStream().distinct().collect(Collectors.toSet())
          : getFilter(active).getObjects();
-        if (target == null)
+        if (target == null || target.equals(active.getOwnerObj()))
             wasValid = objSet.size() > 0 &&
              active.canBeManuallyActivated();
         else

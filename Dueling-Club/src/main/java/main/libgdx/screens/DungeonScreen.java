@@ -174,7 +174,7 @@ public class DungeonScreen extends ScreenWithLoader {
     }
 
     private float getCameraMinCameraPanDist() {
-        return 80;
+        return 140;
     }
 
     private float getCameraDistanceFactor() {

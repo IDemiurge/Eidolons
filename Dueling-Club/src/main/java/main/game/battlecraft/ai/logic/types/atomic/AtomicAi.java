@@ -24,6 +24,7 @@ import main.game.battlecraft.logic.battlefield.DC_MovementManager;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.FuncMaster;
@@ -154,11 +155,15 @@ public class AtomicAi extends AiHandler {
                 i += getCellPriority(c, ai);
                 if (BooleanMaster.isFalse(approach_retreat_search)) {
                     for (Unit a : allies) {
-                        i += getAllyPriority(c, a, ai, logic);
+                        i += getAllyPriority(c, a, ai, logic) + RandomWizard.getRandomInt(10);
                     }
                 }
                 for (Unit e : enemies) {
-                    i = i + ((approach_retreat_search ? 1 : -1) * getEnemyPriority(c, e, ai, logic));
+                    i = i + ((approach_retreat_search ? 1 : -1)
+                     * getEnemyPriority(c, e, ai, logic))
+                    + RandomWizard.getRandomInt(10)
+                    ;
+
                 }
                 i = i * getCellPriorityMod(c, ai) / 100;
                 if (i > greatest) {

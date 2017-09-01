@@ -87,7 +87,13 @@ public class Tips {
         }
     }
         public enum BASIC_COMBAT_TIPS implements TIP {
-        RESISTANCE, ARMOR, ATTACK_AND_DEFENSE, VISION, DYNAMIC_ROUNDS, MODES, GAME_START(), DEFAULT_ACTIONS();
+        RESISTANCE, ARMOR, ATTACK_AND_DEFENSE, VISION, DYNAMIC_ROUNDS, 
+            PAUSE
+            
+            ,  MISSION(),
+
+            OPTIONS,
+            MODES, GAME_START(), DEFAULT_ACTIONS(), DEBUG();
 
         String text;
 

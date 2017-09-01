@@ -2,7 +2,6 @@ package main.test.frontend;
 
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -66,15 +65,15 @@ public class DemoLauncher extends Game {
             repository.insert(configuration);
         }*/
         Eidolons.setApplication(new LwjglApplication(new DemoLauncher(), getConf()));
+
     }
 
     protected static LwjglApplicationConfiguration getConf() {
 //        Eidolons. getApplication().getGraphics().setFullscreenMode();
         LwjglApplicationConfiguration conf = new LwjglApplicationConfiguration();
         conf.title = "Eidolons: Battlecraft v" + Launcher.VERSION;
-        if (Gdx.graphics.isGL30Available())
+//        if (Gdx.graphics.isGL30Available())
         conf.useGL30 = true;
-
         OptionsMaster.init();
 
         conf.fullscreen = //false;
@@ -100,12 +99,15 @@ public class DemoLauncher extends Game {
                 }
                 conf.width = w;
                 conf.height = h;
+                if (w<1500)
+                    conf.useGL30 = false;
                 System.out.println("resolution width "+w );
                 System.out.println("resolution height "+h );
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         conf.resizable = true;
         try {
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo32.png", FileType.Absolute);
