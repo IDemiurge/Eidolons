@@ -29,10 +29,12 @@ public class Ambience extends EmitterActor {
 
     @Override
     public void act(float delta) {
+        if (!ParticleManager.isAmbienceOn())
+            return ;
         if (!isVisible())
             return ;
-        if (!OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AMBIENCE_MOVE_SUPPORTED))
-        {
+        if (!ParticleManager.isAmbienceMoveOn())
+          {
             return ;
         }
         if (isCullingOn())
@@ -77,6 +79,9 @@ public class Ambience extends EmitterActor {
 
     @Override
     public void draw(Batch spriteBatch, float delta) {
+
+        if (!ParticleManager.isAmbienceOn())
+            return ;
         if (isCullingOn())
         if ( DungeonScreen.getInstance().getController()!=null )
             if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))

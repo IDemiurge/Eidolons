@@ -3,6 +3,7 @@ package main.libgdx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -80,9 +81,19 @@ public class DungeonScreen extends ScreenWithLoader {
         animationEffectStage.setViewport(viewPort);
 
         GL30 gl = Gdx.graphics.getGL30();
-        gl.glEnable(GL30.GL_BLEND);
-        gl.glEnable(GL30.GL_TEXTURE_2D);
-        gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
+        if (gl!=null )
+        {
+            gl.glEnable(GL30.GL_BLEND);
+            gl.glEnable(GL30.GL_TEXTURE_2D);
+            gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
+        }
+        else {
+            GL20 gl20 =  Gdx.graphics.getGL20();
+            gl20.glEnable(GL20.GL_BLEND);
+            gl20.glEnable(GL20.GL_TEXTURE_2D);
+            gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        }
+
 
         GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
             final String path = (String) param.get();
@@ -126,10 +137,11 @@ public class DungeonScreen extends ScreenWithLoader {
         }
 //        });
         GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, p -> {
+            if (isCameraAutoCenteringOn()){
             Coordinates coordinatesActiveObj = DC_Game.game.getManager().getActiveObj().getCoordinates();
-
             Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridConst.CELL_W + GridConst.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridConst.CELL_H - GridConst.CELL_H / 2);
             cameraPan(unitPosition);
+            }
         });
         if (CoreEngine.isGraphicTestMode()) {
             Gdx.app.log("DungeonScreen::afterLoad()", "-- End!");
@@ -148,7 +160,7 @@ public class DungeonScreen extends ScreenWithLoader {
     }
 
     private void cameraPan(Vector2 unitPosition) {
-this.cameraDestination = unitPosition;
+    this.cameraDestination = unitPosition;
         float dest = cam.position.dst(unitPosition.x, unitPosition.y, 0f) / getCameraDistanceFactor();
         if (dest < getCameraMinCameraPanDist())
             return;
@@ -196,7 +208,7 @@ this.cameraDestination = unitPosition;
         guiStage.act(delta);
         animationEffectStage.act(delta);
         gridStage.act(delta);
-        if (isCameraAutoCenteringOn())
+
             cameraShift();
         //cam.update();
         if (canShowScreen()) {

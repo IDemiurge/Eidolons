@@ -12,7 +12,7 @@ static {
 
 }
 static {
-    GRAPHIC_OPTION.RESOLUTION.setDefaultValue(RESOLUTION._1600x900);
+    GRAPHIC_OPTION.RESOLUTION.setDefaultValue(RESOLUTION._1680x1050);
 }
     @Override
     protected Class getOptionClass() {
@@ -21,7 +21,7 @@ static {
 
     public enum GRAPHIC_OPTION implements Options.OPTION {
 
-//    FULLSCREEN(false),
+    FULLSCREEN(false),
         //RESOLUTION
 //        GAMMA(),
 

@@ -3,6 +3,8 @@ package main.system.options;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.bf.UnitView;
 import main.libgdx.bf.light.ShadowMap;
@@ -35,6 +37,37 @@ public class OptionsMaster {
     private static Map<OPTIONS_GROUP, Options> optionsMap = new HashMap<>();
     private static Map<OPTIONS_GROUP, Options> cachedMap;
     private static OptionsPanel optionsPanel;
+    private static boolean initialized;
+
+    private static void applyGameplayOptions(GameplayOptions gameplayOptions) {
+        for (Object sub : gameplayOptions.getValues().keySet()) {
+            new EnumMaster<GAMEPLAY_OPTION>().
+             retrieveEnumConst(GAMEPLAY_OPTION.class,
+              gameplayOptions.getValues().get(sub).toString());
+            GAMEPLAY_OPTION key = gameplayOptions.getKey((sub.toString()));
+            String value = gameplayOptions.getValue(key);
+            if (!StringMaster.isInteger(value)) {
+                switch (key) {
+                    case RULES_SCOPE:
+                        RuleMaster.setScope(
+                         new EnumMaster<RULE_SCOPE>().
+                          retrieveEnumConst(RULE_SCOPE.class,
+                           gameplayOptions.getValues().get(sub).toString()
+                          ));
+                        break;
+                    case GAME_DIFFICULTY:
+                        break;
+                    case DEFAULT_ACTIONS:
+                        break;
+                    case MANUAL_CONTROL:
+                        break;
+                    case DEBUG_MODE:
+                        break;
+                    case INFO_DETAIL_LEVEL:
+                        break;
+                }
+            }
+        }}
 
     private static void applySoundOptions(SoundOptions soundOptions) {
         for (Object sub : soundOptions.getValues().keySet()) {
@@ -99,6 +132,10 @@ public class OptionsMaster {
                 case SHADOWMAP:
                     ShadowMap.setOn(bool);
                     break;
+                case AMBIENCE_MOVE_SUPPORTED:
+                    ParticleManager.setAmbienceMoveOn(
+                     bool
+                    );
             }
         }
     }
@@ -161,7 +198,7 @@ public class OptionsMaster {
     public static void applyOptions() {
         applyGraphicsOptions(getGraphicsOptions());
         applySoundOptions(getSoundOptions());
-
+        applyGameplayOptions(getGameplayOptions());
     }
 
 
@@ -196,7 +233,7 @@ public class OptionsMaster {
 //        if (optionsPanel == null) {
 //           optionsPanel = new OptionsPanel(optionsMap);
         GuiManager.inNewWindow(new OptionsPanel(optionsMap),
-         "Options", new Dimension(800, 1000));
+         "Options", new Dimension(800, 600));
 //        } else { TODO won't reset!
 //            optionsPanel.setVisible(true);
 //        }
@@ -225,6 +262,8 @@ public class OptionsMaster {
     }
 
     public static void init() {
+        if (initialized)
+            return ;
         String data = FileManager.readFile(getOptionsPath());
         if (data.isEmpty()) {
             optionsMap = initDefaults();
@@ -233,6 +272,7 @@ public class OptionsMaster {
         }
         try {
             applyOptions();
+            initialized = true;
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -2,6 +2,7 @@ package main.test.frontend;
 
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -71,11 +72,13 @@ public class DemoLauncher extends Game {
 //        Eidolons. getApplication().getGraphics().setFullscreenMode();
         LwjglApplicationConfiguration conf = new LwjglApplicationConfiguration();
         conf.title = "Eidolons: Battlecraft v" + Launcher.VERSION;
+        if (Gdx.graphics.isGL30Available())
         conf.useGL30 = true;
 
+        OptionsMaster.init();
 
-        conf.fullscreen = false;
-//         OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
+        conf.fullscreen = //false;
+         OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
 
         conf.width = 1600;
         conf.height = 900;
@@ -84,20 +87,26 @@ public class DemoLauncher extends Game {
              new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class,
               OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
             if (resolution != null) {
-                String[] parts = resolution.toString().substring(0).
+                String[] parts = resolution.toString().substring(1).
                  split("x");
                 Integer w =
                  StringMaster.getInteger(
                   parts[0]);
                 Integer h =
                  StringMaster.getInteger(parts[1]);
+                if (!conf.fullscreen){
+                    w=w*95/100;
+                    h=h*90/100;
+                }
                 conf.width = w;
                 conf.height = h;
+                System.out.println("resolution width "+w );
+                System.out.println("resolution height "+h );
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        conf.resizable = false;
+        conf.resizable = true;
         try {
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo32.png", FileType.Absolute);
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo64.png", FileType.Absolute);

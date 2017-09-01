@@ -23,7 +23,7 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
 
     public OptionsPanel(Map<OPTIONS_GROUP, Options> optionsMap) {
         super(("flowy "));
-        tabs = new G_TabbedPanel(new Dimension(600, 800));
+        tabs = new G_TabbedPanel(new Dimension(600, 400));
         for (OPTIONS_GROUP group : optionsMap.keySet()) {
             G_Panel subpanel = new G_Panel("flowy");
             Options options = optionsMap.get(group);

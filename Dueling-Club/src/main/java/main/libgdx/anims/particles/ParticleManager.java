@@ -13,6 +13,7 @@ public class ParticleManager {
     private static boolean ambienceOn = true;
     public boolean debugMode;
     EmitterMap emitterMap;
+    private static boolean ambienceMoveOn;
 
 
     public ParticleManager() {
@@ -43,6 +44,14 @@ public class ParticleManager {
         if (fogList != null)
             fogList.add(fog);
         return fog;
+    }
+
+    public static boolean isAmbienceMoveOn() {
+        return ambienceMoveOn;
+    }
+
+    public static void setAmbienceMoveOn(boolean ambienceMoveOn) {
+        ParticleManager.ambienceMoveOn = ambienceMoveOn;
     }
 
     public EmitterMap getEmitterMap() {
