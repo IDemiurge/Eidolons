@@ -91,7 +91,7 @@ public class HitAnim extends ActionAnim {
     @Override
     public void start() {
         super.start();
-        floatingText.init(destination, 0, 128, getDuration()*
+        floatingText.init(destination, 0, 128, getDuration()*0.3f*
          OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.TEXT_DURATION)
         );
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);

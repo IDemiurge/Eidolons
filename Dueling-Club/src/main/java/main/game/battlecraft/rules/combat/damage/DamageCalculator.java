@@ -22,10 +22,7 @@ import main.game.battlecraft.rules.combat.attack.Attack;
 import main.game.battlecraft.rules.combat.attack.AttackCalculator;
 import main.game.battlecraft.rules.combat.attack.SneakRule;
 import main.game.battlecraft.rules.round.UnconsciousRule;
-import main.libgdx.anims.phased.PhaseAnimator;
 import main.system.auxiliary.StringMaster;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.PhaseAnimation;
 import main.system.math.MathMaster;
 
 import java.util.LinkedList;
@@ -65,14 +62,14 @@ public class DamageCalculator {
         amount = amount - MathMaster.applyMod(amount, resistance);
         int armor = ArmorMaster.getArmorValue(attacked, damage_type);
         //applies natural armor
-        PhaseAnimation animation = magical ? PhaseAnimator.getActionAnimation(ref, attacker) : PhaseAnimator.getAttackAnimation(ref,
-         attacked);
-        if (animation != null) {
-            if (resistance != 0 || armor != 0) {
-                animation.addPhaseArgs(PHASE_TYPE.REDUCTION_NATURAL, armor, resistance, base_damage
-                 - blocked);
-            }
-        }
+//        PhaseAnimation animation = magical ? PhaseAnimator.getActionAnimation(ref, attacker) : PhaseAnimator.getAttackAnimation(ref,
+//         attacked);
+//        if (animation != null) {
+//            if (resistance != 0 || armor != 0) {
+//                animation.addPhaseArgs(PHASE_TYPE.REDUCTION_NATURAL, armor, resistance, base_damage
+//                 - blocked);
+//            }
+//        }
         return Math.max(0, amount - armor);
     }
 

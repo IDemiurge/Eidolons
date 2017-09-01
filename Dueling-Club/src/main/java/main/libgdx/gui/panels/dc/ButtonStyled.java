@@ -4,13 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import main.libgdx.StyleHolder;
 import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
 
-public class ButtonStyled extends Button implements EventListener {
+public class ButtonStyled extends Image implements EventListener {
 
     Runnable runnable;
 
@@ -21,15 +19,15 @@ public class ButtonStyled extends Button implements EventListener {
     }
 
     public ButtonStyled(STD_BUTTON b) {
-        super(
-         !b.isVersioned() ?
-          new Image(
-           TextureCache.getOrCreate(b.path))
-          :null ,
-
-          b.isVersioned() ?
-           StyleHolder.getCustomButtonStyle(b.path)
-           : StyleHolder.getDefaultTextButtonStyle()
+        super(TextureCache.getOrCreate(b.path)
+//         !b.isVersioned() ?
+//          new Image(
+//           TextureCache.getOrCreate(b.path))
+//          :null ,
+//
+//          b.isVersioned() ?
+//           StyleHolder.getCustomButtonStyle(b.path)
+//           : StyleHolder.getDefaultTextButtonStyle()
         );
     }
 
@@ -50,10 +48,10 @@ public class ButtonStyled extends Button implements EventListener {
         return true;
     }
 
-    @Override
-    public void setDisabled(boolean isDisabled) {
-        super.setDisabled(isDisabled);
-    }
+//    @Override
+//    public void setDisabled(boolean isDisabled) {
+//        super.setDisabled(isDisabled);
+//    }
 
     public enum STD_BUTTON {
         OK("UI/components/small/ok.png"),

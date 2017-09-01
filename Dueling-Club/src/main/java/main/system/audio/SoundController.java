@@ -95,9 +95,9 @@ public class SoundController {
         switch (type) {
             case ROUND_ENDS:
                 return STD_SOUNDS.DEATH.getPath();
-            case UNIT_HAS_FALLEN_UNCONSCIOUS:
-                if (e.getRef().getSourceObj().isMine())
-                    return STD_SOUNDS.FAIL.getPath();
+//            case UNIT_HAS_FALLEN_UNCONSCIOUS:
+//                if (e.getRef().getSourceObj().isMine())
+//                    return STD_SOUNDS.FAIL.getPath();
 
         }
         return null;

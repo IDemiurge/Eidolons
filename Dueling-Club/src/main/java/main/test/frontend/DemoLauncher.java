@@ -16,7 +16,11 @@ import main.libgdx.EngineEmulator;
 import main.libgdx.screens.*;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
+import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import main.system.options.OptionsMaster;
 import org.dizitart.no2.Nitrite;
 
 import java.util.function.Supplier;
@@ -26,17 +30,12 @@ import static main.system.GuiEventType.SWITCH_SCREEN;
 
 public class DemoLauncher extends Game {
     private static Nitrite db;
+    private static String quickTypes =
+     "units;bf obj;terrain;missions;places;scenarios;party;";
     private DC_Game coreGame;
     private EngineEmulator engine;
     private ScreenViewport viewport;
-    private static String quickTypes=
-     "units;bf obj;terrain;missions;places;scenarios;party;";
 
-    public static void initQuickLaunch() {
-        CoreEngine.setSelectivelyReadTypes(quickTypes);
-        ItemGenerator.setGenerationOn(false);
-
-    }
     public DemoLauncher() {
 
 
@@ -46,6 +45,12 @@ public class DemoLauncher extends Game {
         coreGame.init();
         DC_Game.game=(coreGame);
         coreGame.start(true);*/
+    }
+
+    public static void initQuickLaunch() {
+        CoreEngine.setSelectivelyReadTypes(quickTypes);
+        ItemGenerator.setGenerationOn(false);
+
     }
 
     public static void main(String[] args) {
@@ -59,7 +64,7 @@ public class DemoLauncher extends Game {
             configuration = getConf();
             repository.insert(configuration);
         }*/
-         Eidolons.setApplication(new LwjglApplication(new DemoLauncher(), getConf()));
+        Eidolons.setApplication(new LwjglApplication(new DemoLauncher(), getConf()));
     }
 
     protected static LwjglApplicationConfiguration getConf() {
@@ -69,14 +74,29 @@ public class DemoLauncher extends Game {
         conf.useGL30 = true;
 
 
-        conf.fullscreen =false;
+        conf.fullscreen = false;
 //         OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
-//        RESOLUTION resolution =
-//          new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class,
-//         OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
 
         conf.width = 1600;
         conf.height = 900;
+        try {
+            RESOLUTION resolution =
+             new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class,
+              OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
+            if (resolution != null) {
+                String[] parts = resolution.toString().substring(0).
+                 split("x");
+                Integer w =
+                 StringMaster.getInteger(
+                  parts[0]);
+                Integer h =
+                 StringMaster.getInteger(parts[1]);
+                conf.width = w;
+                conf.height = h;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         conf.resizable = false;
         try {
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo32.png", FileType.Absolute);

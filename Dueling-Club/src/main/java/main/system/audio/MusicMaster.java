@@ -8,6 +8,7 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
@@ -22,10 +23,8 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Stack;
 //a folder tree per music theme!
 //standard path structure
 
@@ -37,14 +36,14 @@ public class MusicMaster {
     static Map<MUSIC_SCOPE, Integer> indexMap;
     static Map<MUSIC_SCOPE, List<Integer>> indexListMap;
     private static MusicMaster instance;
-    private static boolean on=true;
+    private static boolean on = true;
     Stack<String> playList;
     Stack<String> cachedPlayList;
     MUSIC_SCOPE scope;
     MUSIC_VARIANT variant;
     MUSIC_THEME theme;
     AMBIENCE ambience = AMBIENCE.FOREST_NIGHT;
-    private boolean shuffle = false;
+    private boolean shuffle = true;
     private boolean autoplay = true;
     private boolean loopPlaylist = false;
     private Map<String, Music> musicCache = new XLinkedMap<>();
@@ -67,7 +66,11 @@ public class MusicMaster {
         GuiEventManager.bind(GuiEventType.MUSIC_START, p -> {
             Object data = p.get();
             if (data == null) {
-                checkNewMusicToPlay();
+                try {
+                    checkNewMusicToPlay();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return;
             }
             if (data instanceof String) {
@@ -87,7 +90,7 @@ public class MusicMaster {
                 musicReset();
             }
         });
-        startLoop();
+
     }
 
     public static MusicMaster getInstance() {
@@ -103,19 +106,20 @@ public class MusicMaster {
     }
 
     public static void resetSwitcher() {
-        on =   !(OptionsMaster.getSoundOptions().
-         getBooleanValue(SOUND_OPTION.MUSIC_OFF)) ;
+        on = !(OptionsMaster.getSoundOptions().
+         getBooleanValue(SOUND_OPTION.MUSIC_OFF));
 
-        if (!on  ){
-          getInstance().pause();
+        if (!on) {
+            getInstance().pause();
         } else {
             getInstance().resume();
         }
 
-}
+    }
+
     public static void resetVolume() {
-        if (getInstance().getPlayedMusic()!=null )
-        getInstance().getPlayedMusic().setVolume(getInstance().getVolume());
+        if (getInstance().getPlayedMusic() != null)
+            getInstance().getPlayedMusic().setVolume(getInstance().getVolume());
     }
 
     public Stack<String> getPlayList() {
@@ -128,8 +132,13 @@ public class MusicMaster {
 
     public void init() {
         scope = MUSIC_SCOPE.ATMO;
-        variant = MUSIC_VARIANT.EIDOLONS_SCORE;
-        if (RandomWizard.random()){
+        variant =
+         new EnumMaster<MUSIC_VARIANT>().retrieveEnumConst(MUSIC_VARIANT.class,
+          OptionsMaster.getSoundOptions().getValue(SOUND_OPTION.MUSIC_VARIANT));
+        if (variant == null) {
+            variant = MUSIC_VARIANT.EIDOLONS_SCORE;
+        }
+        if (RandomWizard.random()) {
             theme = RandomWizard.random() ? MUSIC_THEME.GOODLY : MUSIC_THEME.DARK;
         }
         autoplay = true;
@@ -144,11 +153,11 @@ public class MusicMaster {
     }
 
     private void checkUpdateTypes() {
-        if (scope==MUSIC_SCOPE.ATMO){
+        if (scope == MUSIC_SCOPE.ATMO) {
             scope = MUSIC_SCOPE.BATTLE;
         } else {
             scope = MUSIC_SCOPE.ATMO;
-            if (theme==null ){
+            if (theme == null) {
                 theme = MUSIC_THEME.DARK;
             } else {
                 theme = MUSIC_THEME.GOODLY;
@@ -204,20 +213,28 @@ public class MusicMaster {
     }
 
     private String getMusicFolder() {
+
         StrPathBuilder builder = new StrPathBuilder(PathFinder.getMusicPath());
         if (scope != null)
             builder.append(StringMaster.getWellFormattedString(
              scope.toString()));
-        if (variant != null)
-            builder.append(StringMaster.getWellFormattedString(
-             variant.toString()));
+        if (variant != null) {
+            if (variant == MUSIC_VARIANT.RANDOM) {
+                builder.append(
+                 StringMaster.getWellFormattedString(
+                  RandomWizard.getRandomListObject(
+                   Arrays.asList(MUSIC_VARIANT.values())
+                  ).toString()));
+            } else
+                builder.append(StringMaster.getWellFormattedString(variant.toString()));
+        }
         if (theme != null)
             builder.append(StringMaster.getWellFormattedString(
              theme.toString()));
         return builder.toString();
     }
 
-    private void startLoop() {
+    public void startLoop() {
         new Thread(() -> {
             while (true) {
                 try {
@@ -282,15 +299,22 @@ public class MusicMaster {
     }
 
     public void setScope(MUSIC_SCOPE scope) {
-        this.scope = scope;
+        if (scope!=this.scope) {
+            this.scope = scope;
+            musicReset();
+        }
     }
 
     public void setVariant(MUSIC_VARIANT variant) {
+        if (variant!=this.variant){
         this.variant = variant;
+        musicReset();
+        }
     }
 
     public void setTheme(MUSIC_THEME theme) {
         this.theme = theme;
+        musicReset();
     }
 
     public void setShuffle(boolean shuffle) {
@@ -393,7 +417,8 @@ public class MusicMaster {
         DARK,
         FANTASY,
         EPIC,
-        SCI_FI,
+        RPG,
+        RANDOM,
     }
 
     // stopScope()

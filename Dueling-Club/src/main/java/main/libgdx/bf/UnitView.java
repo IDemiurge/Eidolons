@@ -131,6 +131,10 @@ public class UnitView extends BaseView {
 
         if (mainHeroLabel != null) {
             if (!isActive()) {
+//                new MapMaster<>()
+//                 .getKeyForValue(DungeonScreen.getInstance().getGridPanel().getUnitMap())
+//                getCurId()
+
                 mainHeroLabel.setVisible(false);
                 return;
             }
@@ -144,17 +148,7 @@ public class UnitView extends BaseView {
 
     }
 
-    protected boolean checkIgnored() {
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
-            if (!DungeonScreen.getInstance().
-             getController().isWithinCamera(
-             this
-//              getX(), getY(), 2*getWidth(), 2*getHeight()
-            )) {
-                return true;
-            }
-        return false;
-    }
+
 
 
     @Override

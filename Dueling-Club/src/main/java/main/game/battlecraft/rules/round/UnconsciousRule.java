@@ -39,9 +39,9 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 	 * 
 	 */
 
-    public static final Integer DEFAULT_FOCUS_REQ = 25;
+    public static final Integer DEFAULT_FOCUS_REQ = 10;
     // ++ only regen part of toughness ...
-    public static final int DEFAULT_DEATH_BARRIER = 35;
+    public static final int DEFAULT_DEATH_BARRIER = 33;
     public static final int DEFAULT_ANNIHILATION_BARRIER = 100;
     public static final String BUFF_NAME = null;
     public static final int MIN_FOCUS_REQ = 5;

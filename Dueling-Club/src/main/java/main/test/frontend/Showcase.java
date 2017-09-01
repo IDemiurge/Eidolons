@@ -1,5 +1,6 @@
 package main.test.frontend;
 
+import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.Launcher;
 import main.data.filesys.PathFinder;
 import main.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
@@ -33,7 +34,8 @@ public class Showcase {
     public static final String[] launch_options = {
      "Mission","Last Custom",  "Custom",
 //     "Tutorial",
-     "Test", "Showcase","Hero Creator",
+     "Test", "Showcase",
+     "Hero Creator",
     };
     private static boolean running;
 
@@ -65,7 +67,9 @@ public class Showcase {
             index = DialogMaster.optionChoice(options, "Choose mission to launch");
             if (index==-1)
                 return ;
-
+if (index>2){
+    ItemGenerator.setBasicMode(false);
+}
             launchData+=index+";";
             String[] args1 = {
              showcase ? "Showcase" : null, index + ""

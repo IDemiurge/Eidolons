@@ -13,8 +13,7 @@ public class VisionManager {
 
     public static boolean isVisionHacked() {
 
-        if (!RuleMaster.checkFeature(FEATURE.VISIBILITY))
-            return true;
+
         return visionHacked;
     }
 

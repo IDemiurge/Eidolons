@@ -173,6 +173,7 @@ public class DC_Game extends MicroGame {
         if (!CoreEngine.isCombatGame())
             return ;
         musicMaster = MusicMaster.getInstance();
+        musicMaster.startLoop();
     }
 
     protected CombatMaster createCombatMaster() {

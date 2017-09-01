@@ -20,8 +20,6 @@ import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.AttackAnimation;
 import main.system.graphics.PhaseAnimation;
-import main.system.text.EntryNodeMaster.ENTRY_TYPE;
-import main.system.text.LogEntryNode;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -70,20 +68,20 @@ public class PhaseAnimator extends Group {
 
         return getActionAnimation(ref, obj);
     }
-
+@Deprecated
     public static void handleDamageAnimAndLog(Ref ref, Unit attacked, boolean magical, DAMAGE_TYPE dmg_type) {
-        LogEntryNode entry = attacked.getGame().getLogManager().newLogEntryNode(true,
-                ENTRY_TYPE.DAMAGE);
-        PhaseAnimation animation = magical ? PhaseAnimator.getActionAnimation(ref, attacked)
-                : PhaseAnimator.getAttackAnimation(ref,
-                attacked);
+//        LogEntryNode entry = attacked.getGame().getLogManager().newLogEntryNode(true,
+//                ENTRY_TYPE.DAMAGE);
+//        PhaseAnimation animation = magical ? PhaseAnimator.getActionAnimation(ref, attacked)
+//                : PhaseAnimator.getAttackAnimation(ref,
+//                attacked);
 
-        entry.addLinkedAnimations(animation);
-        entry.setAnimPhasesToPlay(PHASE_TYPE.DAMAGE_DEALT);
-//active.getAnimator(). TODO
-        if (animation != null) {
-            animation.addPhaseArgs(true, PHASE_TYPE.REDUCTION_NATURAL, dmg_type);
-        }
+//        entry.addLinkedAnimations(animation);
+//        entry.setAnimPhasesToPlay(PHASE_TYPE.DAMAGE_DEALT);
+////active.getAnimator(). TODO
+//        if (animation != null) {
+//            animation.addPhaseArgs(true, PHASE_TYPE.REDUCTION_NATURAL, dmg_type);
+//        }
     }
 
     public void init() {

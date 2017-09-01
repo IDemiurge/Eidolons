@@ -187,12 +187,20 @@ public class RadialManager {
                  turns.add(valueContainer);
              } else if (el.getChecker().isDualAttack()) {
                  dualAttacks.add(getAttackActionNode(el, target));
-             } else if (el.isStandardAttack()) {
+             } else if (el.isStandardAttack()
+              || (
+              el.getActionGroup()==ACTION_TYPE_GROUPS.SPECIAL &&
+               el.getActionType()==ACTION_TYPE.SPECIAL_ATTACK)) {
                  if (el.isOffhand())
                      offhandAttacks.add(getAttackActionNode(el, target));
                  else
                      attacks.add(getAttackActionNode(el, target));
-             } else {
+             }
+//             if (el.getActionType()==ACTION_TYPE.SPECIAL_ATTACK){
+//                 attacks.add(getAttackActionNode(el, target));
+//                 offhandAttacks.add(getAttackActionNode(el, target));
+//             }
+             else {
                  final RadialValueContainer valueContainer = configureActionNode(target, el);
 //                 if (el.isSpell()) { DONE VIA SpellRadialManager
 //                     spells.add(valueContainer);
@@ -383,19 +391,19 @@ public class RadialManager {
     }
 
     private static RadialValueContainer getAttackActionNode(DC_ActiveObj activeObj, DC_Obj target) {
-        if (activeObj.getOwnerObj() == target) {
+//        if (activeObj.getOwnerObj() == target) {
             final RadialValueContainer valueContainer =
-             configureSelectiveTargetedNode(activeObj);
+             configureSelectiveTargetedNode(activeObj, target);
+//            addAttackTooltip(valueContainer, activeObj, target);
+//            return (valueContainer);
+//        } else if (activeObj.getTargeting() instanceof SelectiveTargeting) {
+//            final RadialValueContainer valueContainer =
+//             new RadialValueContainer(getOrCreateR(activeObj.getImagePath()),
+//              getRunnable(target, activeObj));
             addAttackTooltip(valueContainer, activeObj, target);
             return (valueContainer);
-        } else if (activeObj.getTargeting() instanceof SelectiveTargeting) {
-            final RadialValueContainer valueContainer =
-             new RadialValueContainer(getOrCreateR(activeObj.getImagePath()),
-              getRunnable(target, activeObj));
-            addAttackTooltip(valueContainer, activeObj, target);
-            return (valueContainer);
-        }
-        return null;
+//        }
+//        return null;
     }
 
     private static RadialValueContainer configureMoveNode(DC_Obj target,

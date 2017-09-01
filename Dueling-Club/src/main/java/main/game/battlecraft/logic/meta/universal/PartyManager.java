@@ -77,7 +77,7 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
                (hero, TEXT_CASES.BATTLE_COMMENT, hero.getName()));
          }) ;
         GuiEventManager.trigger(SELECT_MULTI_OBJECTS, p);
-        Unit unit = (Unit) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ, 25000);
+        Unit unit = (Unit) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ, 15000);
         if (unit==null ){
 //            List<JButton> pics = party.getMembers().stream().map(hero ->
 //             new JButton(ImageManager.getIcon(hero.getImagePath().replace(" 128", "")))).collect(Collectors.toList());

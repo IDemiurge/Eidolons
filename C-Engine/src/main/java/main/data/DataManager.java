@@ -197,6 +197,9 @@ public class DataManager {
             }
             //LogMaster.log(1, "Type not found: " + obj_type
 //                    + ":" + typeName);
+//            if (C_OBJ_TYPE.ITEMS.equals(obj_type)) {
+//             TODO    itemgenetor
+//            }
             return null;
         }
         if (typeName.endsWith(";")) {

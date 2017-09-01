@@ -113,6 +113,8 @@ public class PartyObj extends Obj {
     public void addMember(Unit hero) {
         if (hero==null )
             return ;
+        if (checkDuplicateHero(hero))
+            return ;
         if (leader!=null )
             setLeader(hero);
         members.add(hero);
@@ -121,6 +123,17 @@ public class PartyObj extends Obj {
         if (!getType().getProperty(G_PROPS.EMBLEM).isEmpty())
              hero.setProperty(G_PROPS.EMBLEM, getType().getProperty(G_PROPS.EMBLEM), true);
         hero.getRef().setID(KEYS.PARTY, getId());
+    }
+
+    private boolean checkDuplicateHero(Unit hero) {
+        for (Unit sub : getMembers()) {
+            if (hero.getName().contains(" v"))
+            if (sub.getName().contains(StringMaster.
+             cropLastSegment(hero.getName(), " "))){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void removeMember(Unit hero) {

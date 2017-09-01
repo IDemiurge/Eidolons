@@ -16,6 +16,7 @@ import main.entity.obj.unit.DC_UnitModel;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.FEATURE;
 import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.battlecraft.rules.action.ActionRule;
 import main.game.core.game.DC_Game;
@@ -58,6 +59,8 @@ public class StealthRule implements ActionRule {
     }
 
     public static boolean checkInvisible(DC_Obj unit) {
+        if (!RuleMaster.checkFeature(FEATURE.VISIBILITY))
+            return false;
         if (VisionManager.isVisionHacked()) {
             return false;
         }

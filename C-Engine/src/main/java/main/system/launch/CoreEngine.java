@@ -48,6 +48,7 @@ public class CoreEngine {
     private static boolean itemGenerationOff;
     private static boolean targetingResultCachingOn;
     private static boolean jar;
+    private static boolean exe=true;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -312,4 +313,11 @@ public class CoreEngine {
         return !isArcaneTower() && !isArcaneVault() && !isLevelEditor();
     }
 
+    public static boolean isExe() {
+        return exe;
+    }
+
+    public static void setExe(boolean exe) {
+        CoreEngine.exe = exe;
+    }
 }

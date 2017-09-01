@@ -60,8 +60,10 @@ public class ArcaneVault {
     public static final int TABLE_WIDTH = (WIDTH - TREE_WIDTH) / 2;
     public static final int TABLE_HEIGHT = TREE_HEIGHT * 19 / 20;
     public final static boolean defaultTypesGenerateOn = false;
-    public final static String presetTypes = "abils;spells;skills;"
-            + "weapons;armor;actions;" + "";
+    public final static String presetTypes = "units;chars;party;missions;scenarios;" +
+     "abils;spells;skills;"+
+//             "weapons;armor;" +
+     "actions;" + "";
     private static final boolean ENABLE_ITEM_GENERATION = true;
     private static final String[] LAUNCH_OPTIONS = {"Last", "Selective", "Selective Custom",
             "Full", "Battlecraft", "Arcane Tower",};

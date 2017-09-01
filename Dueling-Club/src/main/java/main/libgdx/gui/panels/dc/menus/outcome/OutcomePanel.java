@@ -20,7 +20,6 @@ import main.libgdx.gui.panels.dc.TabbedPanel;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
-import main.swing.generic.services.dialog.DialogMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.graphics.MigMaster;
 import main.system.threading.WaitMaster;
@@ -157,14 +156,14 @@ public class OutcomePanel extends TablePanel implements EventListener {
                         //pan camera to main hero
                         // zoom?
                     } else if (exit_continue_next) {
-                        if (DialogMaster.confirm("Must you really go?.."))
+//                        if (DialogMaster.confirm("Must you really go?.."))
                         Gdx.app.exit();
-                    else DialogMaster.inform("Glad you're still with us! :)");
+//                    else DialogMaster.inform("Glad you're still with us! :)");
 
                     } else   {
                         WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED,
                          false);
-                        DialogMaster.inform("Feel free to roam around, until next round...))");
+//                        DialogMaster.inform("Feel free to roam around, until next round...))");
 
                     }
                     remove();

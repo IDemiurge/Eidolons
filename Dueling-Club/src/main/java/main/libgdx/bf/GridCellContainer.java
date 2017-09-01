@@ -4,7 +4,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.game.bf.Coordinates;
 import main.libgdx.bf.datasource.GridCellDataSource;
+import main.libgdx.screens.DungeonScreen;
 import main.system.graphics.MigMaster;
+import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import main.system.options.OptionsMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -82,8 +85,21 @@ public class GridCellContainer extends GridCell {
         }
     }
 
+    protected boolean checkIgnored() {
+        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
+            if (!DungeonScreen.getInstance().
+             getController().isWithinCamera(
+             this
+//              getX(), getY(), 2*getWidth(), 2*getHeight()
+            )) {
+                return true;
+            }
+        return false;
+    }
     @Override
     public void act(float delta) {
+        if (checkIgnored())
+            return;
         super.act(delta);
         for (GridUnitView actor : getUnitViews())
             if (actor.isHovered())
@@ -235,6 +251,6 @@ public class GridCellContainer extends GridCell {
         return unitViewCount;
     }
     public int getUnitViewCountEffective() {
-        return unitViewCount-graveyard.getGraveCount() ;
+        return unitViewCount;//-graveyard.getGraveCount() ;
     }
 }

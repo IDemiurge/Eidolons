@@ -334,6 +334,7 @@ public class UnitEnums {
         Ward,
 
         Soul,
+        Undying_Counter,
         Undying{
             @Override
             public String toString() {

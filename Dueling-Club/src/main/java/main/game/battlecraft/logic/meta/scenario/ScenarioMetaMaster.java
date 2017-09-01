@@ -8,16 +8,14 @@ import main.game.battlecraft.logic.battle.mission.MissionBattleMaster;
 import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.meta.scenario.hq.HqShopManager;
+import main.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import main.game.battlecraft.logic.meta.universal.*;
-import main.game.battlecraft.rules.RuleMaster;
-import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.game.core.Eidolons;
 import main.game.core.game.ScenarioGame;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
 import main.test.frontend.ScenarioLauncher;
 
 /**
@@ -37,24 +35,9 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
          */
     @Override
     public void preStart() {
+        getMetaDataManager().initMissionName();
 
-        String missionName =
-         getMetaDataManager().getMissionName();
-
-        if (StringMaster.isEmpty(missionName)) {
-            int missionIndex =  (ScenarioLauncher.missionIndex);
-
-            getMetaGame().setMissionIndex(missionIndex);
-
-            chosenMission(StringMaster.openContainer(getMetaGame().getScenario().
-             getProperty(PROPS.SCENARIO_MISSIONS)).get(missionIndex));
-            missionName = getMetaDataManager().getMissionName();
-        } else {
-            getMetaGame().setMissionIndex(StringMaster.openContainer(getMetaGame().getScenario().
-             getProperty(PROPS.SCENARIO_MISSIONS)).indexOf(missionName));
-
-        }
-        String levelPath = DataManager.getType(missionName, DC_TYPE.MISSIONS).
+        String levelPath = DataManager.getType(getMissionName(), DC_TYPE.MISSIONS).
          getProperty(PROPS.MISSION_FILE_PATH);
         getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,
          levelPath);
@@ -64,22 +47,30 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
     @Override
     public void next(Boolean outcome) {
-        if (outcome==null ){
+        if (outcome == null) {
             outcome = true;
 //            return ;//TODO exit? credits?
         }
         super.next(outcome);
-        if (outcome)
-        {
+        if (outcome) {
             ScenarioLauncher.missionIndex++;
 //        no need    getMetaDataManager().setMissionName(null );
         }
-        Eidolons.initScenario(
-        new ScenarioMetaMaster(getData()));
+        if (ScenarioLauncher.missionIndex >= 6) {
+            ScreenData data = new ScreenData(ScreenType.BATTLE, getMissionName(),
+             new SceneFactory("Test"));
+            GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
+            return;
+        }
 //   TODO       getDialogueManager().getDialogueForMission(getMissionName());
+        getMetaDataManager().setMissionName(null);
+        getMetaDataManager().initMissionName();
+
         ScreenData data = new ScreenData(ScreenType.BATTLE, getMissionName());
-//        //new SceneFactory("Test")
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
+
+        Eidolons.initScenario(
+         new ScenarioMetaMaster(getData()));
 
         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
@@ -152,7 +143,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
     }
 
     public String getMissionName() {
-        if (getMetaDataManager().getMissionName()!=null )
+        if (getMetaDataManager().getMissionName() != null)
             return getMetaDataManager().getMissionName();
         return getPartyManager().getParty().getMission();
     }

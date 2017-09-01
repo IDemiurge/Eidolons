@@ -8,10 +8,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static main.system.GuiEventType.* ;
+
 public class GuiEventManagerOld {
     private static GuiEventManagerOld instance;
     private static boolean isInitialized;
     private static Lock initLock = new ReentrantLock();
+    private static final GuiEventType[] savedBindings = {
+        SWITCH_SCREEN,
+     SCREEN_LOADED,
+     LOAD_SCREEN,
+    };
     private Map<GuiEventType, EventCallback> eventMap = new HashMap<>();
     private List<Runnable> eventQueue = new ArrayList<>();
     private Lock lock = new ReentrantLock();
@@ -19,12 +26,6 @@ public class GuiEventManagerOld {
 
     public static void cleanUp() {
         getInstance()._cleanUp();
-    }
-
-    private void _cleanUp() {
-        eventMap.clear();
-        eventQueue.clear();
-        onDemand.clear();
     }
 
     public static void bind(GuiEventType type, final EventCallback event) {
@@ -66,6 +67,21 @@ public class GuiEventManagerOld {
 
     private static void init() {
         instance = new GuiEventManagerOld();
+    }
+
+    private void _cleanUp() {
+        Map<GuiEventType, EventCallback> cache = new HashMap<>();
+        for (GuiEventType eventType : savedBindings) {
+            EventCallback saved = eventMap.get(eventType);
+            cache.put(eventType, saved);
+        }
+        eventMap.clear();
+        eventQueue.clear();
+        onDemand.clear();
+
+        for (GuiEventType eventType : cache.keySet()) {
+            eventMap.put(eventType, cache.get(eventType));
+        }
     }
 
     public void bind_(GuiEventType type, final EventCallback event) {

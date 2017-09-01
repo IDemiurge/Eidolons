@@ -190,7 +190,7 @@ public class DamageDealer {
          dmg_type);
         int e_damage = DamageCalculator.calculateEnduranceDamage(attacked, attacker, amount, magical, ref, blocked,
          dmg_type);
-        PhaseAnimator.handleDamageAnimAndLog(ref, attacked, magical, dmg_type);
+//        PhaseAnimator.handleDamageAnimAndLog(ref, attacked, magical, dmg_type);
 
         ref.setAmount(e_damage);
         // TODO separate event types?

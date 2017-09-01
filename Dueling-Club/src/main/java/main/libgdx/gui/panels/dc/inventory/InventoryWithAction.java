@@ -101,16 +101,16 @@ public class InventoryWithAction extends TablePanel {
 
         actionPointsText.setActor(new ValueContainer("Actions available:", source.getOperationsString()));
 
-        ButtonStyled button = (ButtonStyled) doneButton.getActor();
-        button.addListener(source.getDoneHandler());
-        button.setDisabled(source.isDoneDisabled());
-
-        button = (ButtonStyled) cancelButton.getActor();
-        button.addListener(source.getCancelHandler());
-        button.setDisabled(source.isCancelDisabled());
-
-        button = (ButtonStyled) undoButton.getActor();
-        button.addListener(source.getUndoHandler());
-        button.setDisabled(source.isUndoDisabled());
+//        ButtonStyled button = (ButtonStyled) doneButton.getActor();
+//        button.addListener(source.getDoneHandler());
+//        button.setDisabled(source.isDoneDisabled());
+//
+//        button = (ButtonStyled) cancelButton.getActor();
+//        button.addListener(source.getCancelHandler());
+//        button.setDisabled(source.isCancelDisabled());
+//
+//        button = (ButtonStyled) undoButton.getActor();
+//        button.addListener(source.getUndoHandler());
+//        button.setDisabled(source.isUndoDisabled());
     }
 }

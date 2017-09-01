@@ -41,6 +41,8 @@ public class PathFinder {
             //FOR JARS
             CoreEngine.setJar(true);
 
+
+
             URI uri = null;
             try {
                 uri =
@@ -50,6 +52,10 @@ public class PathFinder {
             }
             if (jarName==null )
                 jarName = StringMaster.getLastPathSegment((uri.toString()));
+
+            if (jarName.contains(".exe")){
+                CoreEngine.setExe(true);
+            }
 
             System.out.println("jarName: " + jarName);
             String path =

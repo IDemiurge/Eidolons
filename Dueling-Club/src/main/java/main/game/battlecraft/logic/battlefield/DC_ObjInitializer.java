@@ -204,6 +204,8 @@ public class DC_ObjInitializer {
 
                 }
                 ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.BF_OBJ);
+               if (type == null )
+                   continue;
                 if (type.getOBJ_TYPE_ENUM()== DC_TYPE.BF_OBJ)
                     owner = DC_Player.NEUTRAL;
                     else

@@ -76,6 +76,9 @@ public class ShadowMap   {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    if (type== SHADE_LIGHT.GAMMA_LIGHT){
+                        alpha /=2;
+                    }
                     if (type.getCells()[x][y].getColor().a != alpha){
                         type.getCells()[x][y].setBaseAlpha(alpha);
                         type.getCells()[x][y].setColor(1, 1, 1, alpha );

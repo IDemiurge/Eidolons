@@ -13,6 +13,7 @@ import main.libgdx.anims.AnimData;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.bf.BaseView;
+import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridMaster;
 import main.libgdx.screens.DungeonScreen;
 import main.system.EventCallbackParam;
@@ -82,7 +83,18 @@ public class MoveAnimation extends ActionAnim {
         }
         action.reset();
         setDuration(1);
-        action.setAmount(getDestination().x-getOrigin().x, getDestination().y-getOrigin().y);
+        float x = getDestination().x-getOrigin().x;
+        if (x>160){
+            x= GridConst.CELL_W;
+        }
+        float y =getDestination().y-getOrigin().y;
+        if (y>160){
+            y= GridConst.CELL_H;
+        }
+        action.setAmount(x
+         ,
+         y);
+
         action.setDuration(getDuration());
 
         return action;

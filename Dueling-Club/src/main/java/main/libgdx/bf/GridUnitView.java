@@ -134,11 +134,8 @@ public class GridUnitView extends UnitView {
         }
         super.draw(batch, parentAlpha);
     }
-
     @Override
     public void act(float delta) {
-        if (checkIgnored())
-            return;
         if (emblemLighting != null)
             if (isActive() || isHovered())
                 alphaFluctuation(emblemLighting, delta);

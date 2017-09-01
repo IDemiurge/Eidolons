@@ -75,7 +75,7 @@ public class GridPanel extends Group {
     private AnimMaster animMaster;
     private ShadowMap shadowMap;
     private Label fpsLabel;
-    private boolean fpsDebug=true;
+    private boolean fpsDebug=false;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;

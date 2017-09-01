@@ -3,6 +3,7 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import main.content.PARAMS;
+import main.content.enums.rules.VisionEnums.INFO_LEVEL;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -12,11 +13,14 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE;
+import main.game.core.Eidolons;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.CounterMaster;
+import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.text.ToolTipMaster;
@@ -114,8 +118,34 @@ public class UnitViewTooltipFactory {
             nameContainer.setNameAlignment(Align.left);
             values.add(nameContainer);
 
+
+
+
+
+            INFO_LEVEL   info_level =
+              new EnumMaster<INFO_LEVEL>().
+               retrieveEnumConst(INFO_LEVEL.class,
+            OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.INFO_DETAIL_LEVEL));
+
             values.add(getValueContainer(hero, PARAMS.C_TOUGHNESS, PARAMS.TOUGHNESS));
             values.add(getValueContainer(hero, PARAMS.C_ENDURANCE, PARAMS.ENDURANCE));
+if (info_level!=null )
+            switch (info_level){
+                case VERBOSE:
+                    values.add(getValueContainer(hero, PARAMS.C_STAMINA, PARAMS.STAMINA));
+                    values.add(getValueContainer(hero, PARAMS.C_FOCUS, PARAMS.FOCUS));
+                    values.add(getValueContainer(hero, PARAMS.C_MORALE, PARAMS.MORALE));
+                    values.add(getValueContainer(hero, PARAMS.C_ESSENCE, PARAMS.ESSENCE));
+                case NORMAL:
+                    addParamStringToValues(hero, values, PARAMS.ARMOR);
+                    addParamStringToValues(hero, values, PARAMS.RESISTANCE);
+                case BASIC:
+                    addParamStringToValues(hero, values, PARAMS.DAMAGE);
+                    addParamStringToValues(hero, values, PARAMS.ATTACK);
+                    addParamStringToValues(hero, values, PARAMS.DEFENSE);
+            }
+
+
 
             if (hero.getIntParam(PARAMS.N_OF_ACTIONS) > 0) {
                 values.add(getValueContainer(hero, PARAMS.C_N_OF_ACTIONS, PARAMS.N_OF_ACTIONS));
@@ -164,7 +194,7 @@ public class UnitViewTooltipFactory {
             }
 
 //            if (VisionManager.isVisibilityOn()){
-            if ( RuleMaster.isRuleOn(RULE.VISIBILITY)){
+            if ( RuleMaster.isRuleOn(RULE.VISIBILITY) || Eidolons.game.isDebugMode()){
                 addParamStringToValues(hero, values, PARAMS.LIGHT_EMISSION);
                 addParamStringToValues(hero, values, PARAMS.ILLUMINATION);
                 addParamStringToValues(hero, values, PARAMS.CONCEALMENT);

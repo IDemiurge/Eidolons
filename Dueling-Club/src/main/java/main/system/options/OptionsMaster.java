@@ -6,6 +6,7 @@ import main.data.xml.XML_Converter;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.bf.UnitView;
 import main.libgdx.bf.light.ShadowMap;
+import main.libgdx.screens.DungeonScreen;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.audio.MusicMaster;
@@ -86,6 +87,9 @@ public class OptionsMaster {
             String value = graphicsOptions.getValue(key);
             boolean bool = Boolean.valueOf(value.toLowerCase());
             switch (key) {
+                case AUTO_CAMERA:
+                    DungeonScreen.setCameraAutoCenteringOn(bool);
+                    break;
                 case AMBIENCE:
                     ParticleManager.setAmbienceOn(bool);
                     break;

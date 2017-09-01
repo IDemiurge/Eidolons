@@ -1,6 +1,7 @@
 package main.system.options;
 
 import main.system.audio.MusicMaster;
+import main.system.audio.MusicMaster.MUSIC_VARIANT;
 import main.system.options.SoundOptions.SOUND_OPTION;
 
 public class SoundOptions extends Options<SOUND_OPTION,SOUND_OPTION> {
@@ -10,7 +11,9 @@ public class SoundOptions extends Options<SOUND_OPTION,SOUND_OPTION> {
     }
 
 
-
+static {
+    SOUND_OPTION.MUSIC_VARIANT.setDefaultValue(MUSIC_VARIANT.EIDOLONS_SCORE);
+}
     public enum SOUND_OPTION implements  Options.OPTION {
         SOUNDS_OFF(false),
 //        VOICE_OFF,

@@ -69,7 +69,7 @@ public class BattleGuiStage extends Stage {
 //            outcomePanel.setColor(new Color(1, 1, 1, 0));
 //            ActorMaster.addFadeInOrOut(outcomePanel, 2.5f);
             float y = Gdx.graphics.getHeight() -
-             (Gdx.graphics.getHeight() - outcomePanel.getHeight()/ 2) ;
+             (Gdx.graphics.getHeight() - outcomePanel.getHeight() / 2);
             float x = (Gdx.graphics.getWidth() - outcomePanel.getWidth()) / 2;
             outcomePanel.setPosition(x, y + outcomePanel.getHeight());
             ActorMaster.addMoveToAction(outcomePanel, x, y, 2.5f);
@@ -85,7 +85,12 @@ public class BattleGuiStage extends Stage {
 
     @Override
     public boolean keyTyped(char character) {
-        boolean result = DC_Game.game.getKeyManager().handleKeyTyped(0, character);
+        boolean result = false;
+        try {
+            result = DC_Game.game.getKeyManager().handleKeyTyped(0, character);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (result)
             return true;
         return super.keyTyped(character);

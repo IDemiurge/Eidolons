@@ -1,6 +1,7 @@
 package main.system.options;
 
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import main.test.frontend.RESOLUTION;
 
 public class GraphicsOptions extends Options<GRAPHIC_OPTION,GRAPHIC_OPTION>{
 static {
@@ -10,7 +11,9 @@ static {
      //caching
 
 }
-
+static {
+    GRAPHIC_OPTION.RESOLUTION.setDefaultValue(RESOLUTION._1600x900);
+}
     @Override
     protected Class getOptionClass() {
         return GRAPHIC_OPTION.class;
@@ -30,7 +33,8 @@ static {
         SPRITE_CACHE_ON(true),
         OUTLINES(false),
 
-        ;
+        AUTO_CAMERA(true),
+        RESOLUTION(main.test.frontend.RESOLUTION.values());
         private Boolean exclusive;
         private Integer min;
         private Integer max;

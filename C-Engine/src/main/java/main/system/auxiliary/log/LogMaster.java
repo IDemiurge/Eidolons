@@ -4,6 +4,7 @@ import main.data.filesys.PathFinder;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
@@ -136,12 +137,15 @@ public class LogMaster {
     }
 
     public static void shout(String s) {
-
+if (!CoreEngine.isExe())
         System.out.println(shout + s + shout);
     }
 
     public static void log(String s) {
         if (off) {
+            return;
+        }
+        if (CoreEngine.isExe()) {
             return;
         }
 

@@ -1149,7 +1149,11 @@ public class StringMaster {
         return replaceLast(cropped, "\\", "");
     }
 
-    public static String cropLastPathSegment(String path) {
+    public static String cropLastSegment(String path, String separator) {
+        return replaceLast(path, getLastPart(path, separator), "");
+
+    }
+        public static String cropLastPathSegment(String path) {
         return replaceLast(path, getLastPathSegment(path), "");
     }
 

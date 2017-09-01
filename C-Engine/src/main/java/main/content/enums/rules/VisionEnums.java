@@ -21,6 +21,12 @@ public class VisionEnums {
         // spell too!
         ;
     }
+        public enum INFO_LEVEL {
+        MINIMAL,
+        BASIC,
+            NORMAL,
+            VERBOSE,
+        }
 
     public enum OUTLINE_TYPE {
         BLINDING_LIGHT, VAGUE_LIGHT, THICK_DARKNESS, VAGUE_OUTLINE, DARK_OUTLINE, BRILLIANT_OUTLINE, CLEAR_OUTLINE, MASS_OUTLINE, BLOCKED_OUTLINE, FLAT_OUTLINE;
