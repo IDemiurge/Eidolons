@@ -19,16 +19,16 @@ import main.game.battlecraft.rules.combat.mechanics.ForceRule;
 import main.game.battlecraft.rules.mechanics.ConcealmentRule;
 import main.game.battlecraft.rules.perk.EvasionRule;
 import main.game.core.ActionInput;
+import main.game.core.Eidolons;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -107,7 +107,7 @@ public class Executor extends ActiveHandler {
         targeter.setForcePresetTarget(true);
 
 
-        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
+        Eidolons.getGame().getGameLoop().actionInput(
          new ActionInput(getAction(), new Context(ref)));
     }
 
@@ -118,12 +118,13 @@ public class Executor extends ActiveHandler {
             activate();
             return;
         }
-        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
+        Eidolons.getGame().getGameLoop().actionInput(
          new ActionInput(getAction(), t));
     }
 
     public void activateOnGameLoopThread() {
-        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
+
+        Eidolons.getGame().getGameLoop().actionInput(
          new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }
 
@@ -333,6 +334,10 @@ public class Executor extends ActiveHandler {
     public void payCosts() {
         if (getAction().isFree()) {
             return;
+        }
+        if (ExplorationMaster.isExplorationOn()) {
+            getGame().getDungeonMaster().getExplorationMaster().getActionHandler().payCosts(getEntity());
+
         }
         addCooldown();
 

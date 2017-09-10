@@ -138,6 +138,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         return true;
     }
 
+    public boolean canCounter() {
+        return false;
+    }
+
     private void preventDeath() {
         LogMaster.log(1, "****preventDeath for " + this);
         setParam(PARAMS.C_ENDURANCE, Math.max(1, getIntParam(PARAMS.C_ENDURANCE)));

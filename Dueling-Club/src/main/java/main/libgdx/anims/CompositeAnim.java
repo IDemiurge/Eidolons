@@ -475,7 +475,10 @@ public class CompositeAnim implements Animation {
         });
     }
 
-    public Entity getActive() {
+    public DC_ActiveObj getActive_() {
+        return (DC_ActiveObj) getActive();
+    }
+        public Entity getActive() {
         if (getCurrentAnim() == null)
             return null;
         return getCurrentAnim().getActive();

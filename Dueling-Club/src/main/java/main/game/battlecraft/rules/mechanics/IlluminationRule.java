@@ -22,7 +22,15 @@ import java.util.Map;
 public class IlluminationRule {
     static Map<Obj, LightEmittingEffect> effectCache = new HashMap<>();
 
-    public static void initLightEmission(DC_Game game) {
+    public static void resetIllumination(DC_Game game) {
+        game.getCells() . forEach(cell->{
+            cell.setParam(PARAMS.ILLUMINATION, 0);
+        });
+        game.getBfObjects() . forEach(unit->{
+            unit.setParam(PARAMS.ILLUMINATION, 0);
+        });
+    }
+        public static void initLightEmission(DC_Game game) {
         List<Effect> effects = new LinkedList<>();
         for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
             LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);

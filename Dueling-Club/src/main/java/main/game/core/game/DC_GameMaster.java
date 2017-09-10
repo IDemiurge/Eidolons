@@ -17,6 +17,7 @@ import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -95,7 +96,8 @@ public class DC_GameMaster extends GameMaster {
 //        units = getObjectsOnCoordinate(null, c, null, true, false);
 //        getUnitCache().put(c, units);
 //        return units;
-    return     new LinkedList<>() ;
+    return
+     getUnits().stream().filter(u->u.getCoordinates().equals(c)).collect(Collectors.toList());
 }
 
     public List<BattleFieldObject> getOverlayingObjects(Coordinates c) {

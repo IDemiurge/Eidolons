@@ -13,6 +13,7 @@ import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.controls.AnimController;
 import main.libgdx.anims.std.BuffAnim;
@@ -34,7 +35,6 @@ import main.test.frontend.Showcase;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * Created by JustMe on 1/9/2017.
@@ -45,7 +45,7 @@ public class AnimMaster extends Group {
     static private boolean on;
     private static AnimMaster instance;
     private final SpriteCache spriteCache;
-    Stack<CompositeAnim> leadQueue = new Stack<>(); //if more Action Stacks have been created before leadAnimation is finished
+    DequeImpl<CompositeAnim> leadQueue = new DequeImpl<>(); //if more Action Stacks have been created before leadAnimation is finished
     CompositeAnim leadAnimation; // wait for it to finish before popping more from the queue
 
     ConcurrentMap<BuffObj, BuffAnim> continuousAnims = new ConcurrentMap<>();
@@ -57,6 +57,7 @@ public class AnimMaster extends Group {
     private Integer showBuffAnimsOnNewRoundLength = 2;
     private Integer showBuffAnimsOnHoverLength = 3; //continuous
     private boolean drawing;
+    private boolean drawingPlayer;
 
     //animations will use emitters, light, sprites, text and icons
     public AnimMaster() {
@@ -217,6 +218,7 @@ public class AnimMaster extends Group {
         if (event.getRef().isDebug()) {
             return;
         }
+
         if (event.getType() == STANDARD_EVENT_TYPE.NEW_ROUND) {
             if (showBuffAnimsOnNewRoundLength != null) {
                 continuousAnims.values().forEach(anim -> {
@@ -364,8 +366,12 @@ public class AnimMaster extends Group {
                 drawing = false;
                 WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, true);
             }
+            drawingPlayer=false;
             return null;
         }
+
+        //TODO Stack: counter atk will animated first - last in first out :(
+
         leadAnimation = leadQueue.pop();
         return leadAnimation;
     }
@@ -399,16 +405,13 @@ public class AnimMaster extends Group {
         });
 
         if (leadAnimation == null) {
-            leadAnimation = next();
+            startNext();
         }
+
         if (leadAnimation != null) {
-            boolean result = false;
             drawing = true;
-            try {
-                result = leadAnimation.draw(batch);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+           boolean result =tryDrawAnimation(batch, leadAnimation);
+
             if (!result) {
                 startNext();
             }
@@ -416,8 +419,7 @@ public class AnimMaster extends Group {
         // not turned on
         if (OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING)) {
             leadQueue.forEach(a -> {
-                a.draw(batch);
-
+                tryDrawAnimation(batch, a);
             });
 
             leadQueue.removeIf((CompositeAnim anim) -> anim.isFinished());
@@ -428,11 +430,37 @@ public class AnimMaster extends Group {
         }
     }
 
+    private boolean tryDrawAnimation(Batch batch, CompositeAnim anim) {
+        boolean result = false;
+        if (ExplorationMaster.isExplorationOn())
+            if (anim.getActive_()!=null )
+                if (anim.getActive_().getOwnerObj().isMine())
+                    if (anim.getActive_().getOwnerObj().isMainHero()){
+                        drawingPlayer=result;
+                    }
+                    try {
+            result = anim.draw(batch);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return result;
+    }
+
     public AnimationConstructor getConstructor() {
         return constructor;
     }
 
     public void onDone(Event event, EventCallback callback, EventCallbackParam param) {
         getParentAnim(event.getRef()).onDone(callback, param);
+    }
+
+    public boolean isDrawingPlayer() {
+        return drawingPlayer;
+    }
+
+    public void setDrawingPlayer(boolean drawingPlayer) {
+        this.drawingPlayer = drawingPlayer;
     }
 }

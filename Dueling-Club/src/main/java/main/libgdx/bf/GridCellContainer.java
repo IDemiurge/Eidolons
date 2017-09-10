@@ -128,7 +128,7 @@ public class GridCellContainer extends GridCell {
     public void addActor(Actor actor) {
         super.addActor(actor);
         if (actor instanceof GridUnitView) {
-            unitViewCount = getUnitViewCount() + 1;
+            unitViewCount =   getUnitViews().size();
             recalcUnitViewBounds();
         }
     }
@@ -137,7 +137,7 @@ public class GridCellContainer extends GridCell {
         boolean result = super.removeActor(actor);
 
         if (result && actor instanceof GridUnitView) {
-            unitViewCount = getUnitViewCount() - 1;
+            unitViewCount =   getUnitViews().size();
             recalcUnitViewBounds();
             ((GridUnitView) actor).sizeChanged();
         }

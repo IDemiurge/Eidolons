@@ -1,6 +1,7 @@
 package main.game.battlecraft.ai.tools.time;
 
 import main.game.battlecraft.ai.UnitAI;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
@@ -10,6 +11,8 @@ public class TimeLimitMaster {
     private static double TIME_LIMIT_FACTOR = 5;
     private static int AI_TIME_LIMIT_MIN = 5000;
     private static int AI_TIME_LIMIT_PER_POWER = 150;
+    private static int AI_TIME_LIMIT_MIN_EXPLORE = 500;
+    private static int AI_TIME_LIMIT_PER_POWER_EXPLORE = 15;
     private static int ACTION_TIME_LIMIT = 3000;
     private static int PATH_TIME_LIMIT = 2000;
     private static int CELL_PATH_TIME_LIMIT = 500;
@@ -100,6 +103,9 @@ public class TimeLimitMaster {
     }
 
     public static long getTimeLimitForAi(UnitAI ai) {
+        if (ExplorationMaster.isExplorationOn()){
+            return Math.max(AI_TIME_LIMIT_MIN_EXPLORE, ai.getUnit().calculatePower() * AI_TIME_LIMIT_PER_POWER_EXPLORE);
+        }
         return Math.max(AI_TIME_LIMIT_MIN, ai.getUnit().calculatePower() * AI_TIME_LIMIT_PER_POWER);
     }
 

@@ -59,13 +59,13 @@ public class PathChoiceMaster {
     }
 
 
-    List<Choice> getChoices(ActionPath path, Coordinates c_coordinate, FACING_DIRECTION c_facing) {
+    List<Choice> getChoices(ActionPath path, Coordinates c_coordinate,Coordinates targetCoordinate, FACING_DIRECTION c_facing) {
         Chronos.mark("Finding choices for " + path);
         pathBuilder.adjustUnit();
 
         List<Choice> choices = new LinkedList<>();
-        for (Coordinates targetCoordinate : getDefaultCoordinateTargets(path, c_coordinate)) {
-            Choice stdMoveChoice = constructStdMoveChoice(targetCoordinate, c_coordinate, c_facing);
+        for (Coordinates c : getDefaultCoordinateTargets(path, c_coordinate)) {
+            Choice stdMoveChoice = constructStdMoveChoice(c, c_coordinate, c_facing);
             if (stdMoveChoice != null) {
                 choices.add(stdMoveChoice);
             }

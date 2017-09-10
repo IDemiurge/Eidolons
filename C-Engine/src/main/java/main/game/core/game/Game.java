@@ -6,6 +6,7 @@ import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.ValueManager;
 import main.data.DataManager;
+import main.data.GenericItemGenerator;
 import main.elements.conditions.RequirementsManager;
 import main.entity.Ref;
 import main.entity.obj.Obj;
@@ -40,7 +41,7 @@ public abstract class Game  implements Serializable {
     protected GameState state;
     protected IdManager idManager;
     protected GameManager manager;
-
+    protected GenericItemGenerator itemGenerator;
     protected MathMaster mathManager;
     protected EffectManager effectManager;
 
@@ -136,9 +137,9 @@ public abstract class Game  implements Serializable {
         return null ;
     }
 
-
-
-
+    public GenericItemGenerator getItemGenerator() {
+        return itemGenerator;
+    }
 
     public Log getLog() {
         return log;

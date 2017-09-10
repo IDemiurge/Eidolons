@@ -133,6 +133,8 @@ public class StackingRule implements ActionRule {
         for (BattleFieldObject u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
             if (!units.contains(u)) {
                 units.addCast(u.getType());
+                if (u.isWall())
+                    return false;
             }
         }
         //check if '1 unit per cell' is on

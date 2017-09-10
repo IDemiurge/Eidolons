@@ -8,6 +8,7 @@ import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -94,7 +95,7 @@ public interface PriorityManager {
 
     int getItemPriority(DC_Obj targetObj);
 
-    int getAttackPriority(DC_ActiveObj active, Unit targetObj);
+    int getAttackPriority(DC_ActiveObj active, BattleFieldObject targetObj);
 
     int getSpecialEffectsPriority(SPECIAL_EFFECTS_CASE CASE, Unit source,
                                   Unit target);

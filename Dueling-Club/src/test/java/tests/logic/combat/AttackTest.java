@@ -1,6 +1,5 @@
 package tests.logic.combat;
 
-import tests.init.JUnitDcInitializer;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.data.DataManager;
@@ -11,11 +10,13 @@ import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.ActionInput;
+import main.game.core.Eidolons;
 import main.game.logic.action.context.Context;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.junit.Before;
 import org.junit.Test;
+import tests.init.JUnitDcInitializer;
 
 import static org.junit.Assert.assertTrue;
 /**
@@ -67,7 +68,7 @@ public class AttackTest {
 
             DC_UnitAction attackAction = source.getAction("punch");
             assertTrue (attackAction !=null );
-            WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
+            Eidolons.getGame().getGameLoop().actionInput(
              new ActionInput(attackAction, new Context(source, target)));
 //            old! attackAction.activateOn(target);
            Boolean result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_COMPLETE);

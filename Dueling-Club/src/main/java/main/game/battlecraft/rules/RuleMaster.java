@@ -2,6 +2,7 @@ package main.game.battlecraft.rules;
 
 import main.data.XLinkedMap;
 import main.entity.obj.unit.Unit;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.controls.Controller;
@@ -122,7 +123,18 @@ public class RuleMaster implements Controller {
         return true;
     }
 
-    public static boolean isRuleTestOn(RULE rule) {
+    public static boolean isRuleOnInExploreMode(RULE rule) {
+        switch (rule) {
+            case CHANNELING:
+            case ATTACK_OF_OPPORTUNITY:
+            case INSTANT_ATTACK:
+            case TIME:
+                return false;
+
+        }
+        return true;
+    }
+        public static boolean isRuleTestOn(RULE rule) {
         if (BooleanMaster.isTrue(mapTest.get(rule))) {
             return true;
         }
@@ -130,6 +142,10 @@ public class RuleMaster implements Controller {
     }
 
     public static boolean isRuleOn(RULE rule) {
+        if (ExplorationMaster.isExplorationOn()) {
+            if (!isRuleOnInExploreMode(rule))
+                return false;
+        }
         if (overrideMap.containsKey(rule)) {
             return overrideMap.get(rule);
         }

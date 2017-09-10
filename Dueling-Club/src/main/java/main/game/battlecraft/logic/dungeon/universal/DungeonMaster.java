@@ -3,6 +3,7 @@ package main.game.battlecraft.logic.dungeon.universal;
 import main.game.battlecraft.logic.battle.universal.*;
 import main.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import main.game.core.game.DC_Game;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
@@ -23,6 +24,8 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     protected Spawner<E> spawner;
     protected FacingAdjuster<E> facingAdjuster;
     protected DungeonMapGenerator<E> mapGenerator;
+    private ExplorationMaster explorationMaster;
+
     public DungeonMaster(DC_Game game) {
         this.game = game;
         initializer = createInitializer();
@@ -31,6 +34,8 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         facingAdjuster = createFacingAdjuster();
         builder = createBuilder();
         mapGenerator = new DungeonMapGenerator<E>(this);
+
+        explorationMaster = new ExplorationMaster(game);
     }
 
     protected DungeonBuilder<E> createBuilder() {
@@ -129,4 +134,10 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     public Dungeon getDungeon() {
         return dungeonWrapper.getDungeon();
     }
+
+    public ExplorationMaster getExplorationMaster() {
+        return explorationMaster;
+    }
+
+
 }

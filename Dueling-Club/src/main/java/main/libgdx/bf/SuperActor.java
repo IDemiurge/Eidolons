@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.libgdx.screens.DungeonScreen;
+import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import main.system.options.OptionsMaster;
 
 /**
  * Created by JustMe on 8/17/2017.
@@ -58,7 +61,17 @@ public abstract class SuperActor extends Group implements Borderable {
             border.setWidth(getWidth() + 12);
         }
     }
-
+    protected boolean isIgnored() {
+        if (getColor().a==0)
+            return true;
+        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
+            if (!DungeonScreen.getInstance().getController().
+             isWithinCamera(
+              this)) {
+                return true;
+            }
+        return false;
+    }
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -114,7 +127,7 @@ public abstract class SuperActor extends Group implements Borderable {
         SuperActor.alphaFluctuationOn = alphaFluctuationOn;
     }
 
-    public static boolean isAlphaFluctuationOn() {
+    public   boolean isAlphaFluctuationOn() {
         return alphaFluctuationOn;
     }
     @Override

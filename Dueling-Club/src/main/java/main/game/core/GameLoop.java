@@ -10,6 +10,7 @@ import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context;
 import main.libgdx.anims.AnimMaster;
 import main.system.auxiliary.log.Err;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
 import main.system.options.OptionsMaster;
@@ -22,13 +23,13 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
  */
 public class GameLoop {
 
-    private Unit activeUnit;
-    private DC_Game game;
-    private DC_ActiveObj activatingAction;
-    private boolean paused;
-    private boolean aiFailNotified;
-    private boolean aftermath;
-    private boolean skippingToNext;
+    protected Unit activeUnit;
+    protected DC_Game game;
+    protected DC_ActiveObj activatingAction;
+    protected boolean paused;
+    protected boolean aiFailNotified;
+    protected boolean aftermath;
+    protected boolean skippingToNext;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -50,6 +51,11 @@ public class GameLoop {
                     break;
                 }
         }
+        loopExit();
+        return;
+    }
+
+    protected void loopExit() {
         if (AiTrainingRunner.running) {
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, false);
         } else {
@@ -63,10 +69,20 @@ public class GameLoop {
 
         }
 
-
+        LogMaster.log(1, "Game Loop exit ");
     }
 
-    private boolean roundLoop() {
+    public Thread startInNewThread() {
+        Thread thread = new Thread(() -> {
+            start();
+        }, "Game Loop");
+        ;
+        thread.start();
+
+        return thread;
+    }
+
+    protected boolean roundLoop() {
         game.getStateManager().newRound();
         boolean retainActiveUnit = false;
         while (true) {
@@ -108,6 +124,8 @@ public class GameLoop {
         return true;
     }
 
+
+
     public DC_Game getGame() {
         return game;
     }
@@ -115,7 +133,7 @@ public class GameLoop {
     /**
      * @return true if round must end, null if active unit is to be retained
      */
-    private Boolean makeAction() {
+    protected Boolean makeAction() {
 
         Boolean result = null;
         if (activeUnit.getHandler().getChannelingSpellData() != null) {
@@ -143,14 +161,14 @@ public class GameLoop {
         return result;
     }
 
-    private void waitForPause() {
+    protected void waitForPause() {
         if (paused) {
             WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE);
             paused = false;
         }
     }
 
-    private void waitForAnimations() {
+    protected void waitForAnimations() {
         Integer MAX_ANIM_TIME =
          OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME);
         if (MAX_ANIM_TIME != null) {
@@ -162,7 +180,7 @@ public class GameLoop {
         }
     }
 
-    private Boolean activateAction(ActionInput input) {
+    protected Boolean activateAction(ActionInput input) {
         if (input == null) {
             return true;
         }
@@ -181,6 +199,10 @@ public class GameLoop {
         if (!result) {
             return false;
         }
+        return checkEndRound(input);
+    }
+
+    protected Boolean checkEndRound(ActionInput input) {
         int timeCost = input.getAction().getHandler().getTimeCost();
         Boolean endTurn = getGame().getRules().getTimeRule().
          actionComplete(input.getAction(), timeCost);
@@ -200,13 +222,13 @@ public class GameLoop {
         return endTurn;
     }
 
-    private ActionInput waitForAI() {
+    protected ActionInput waitForAI() {
         Action aiAction =
          game.getAiManager().getAction(game.getManager().getActiveObj());
         return new ActionInput(aiAction.getActive(), new Context(aiAction.getRef()));
     }
 
-    private ActionInput waitForPlayerInput() {
+    protected ActionInput waitForPlayerInput() {
         return (ActionInput) WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_INPUT);
     }
 
@@ -219,7 +241,7 @@ public class GameLoop {
     }
 
     public void setPaused(boolean paused) {
-        main.system.auxiliary.log.LogMaster.log(1, "Pause game: " + paused);
+       game.getLogManager().log(paused? "Game paused": "Game resumed"  );
         this.paused = paused;
         if (!paused)
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE, true);
@@ -231,5 +253,9 @@ public class GameLoop {
 
     public void setAftermath(boolean aftermath) {
         this.aftermath = aftermath;
+    }
+
+    public void actionInput(ActionInput actionInput) {
+        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, actionInput);
     }
 }

@@ -512,6 +512,10 @@ else
         return getChecker().canAttack(attacked);
     }
 
+    public boolean canCounter() {
+        return getChecker().canCounter();
+    }
+
     public boolean canCounter(DC_ActiveObj active) {
         return getChecker().canCounter(active);
     }
@@ -536,9 +540,6 @@ else
         return getChecker().isImmortalityOn();
     }
 
-    public boolean canCounter() {
-        return getChecker().canCounter();
-    }
 
     public boolean isDisabled() {
         return getChecker().isDisabled();

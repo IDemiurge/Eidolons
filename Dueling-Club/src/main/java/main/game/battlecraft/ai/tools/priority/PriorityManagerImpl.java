@@ -41,6 +41,7 @@ import main.entity.Ref.KEYS;
 import main.entity.active.*;
 import main.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import main.entity.item.DC_WeaponObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -1024,7 +1025,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getAttackPriority(DC_ActiveObj active, Unit targetObj) {
+    public int getAttackPriority(DC_ActiveObj active, BattleFieldObject targetObj) {
 
         if (getUnit().getBehaviorMode() != AiEnums.BEHAVIOR_MODE.BERSERK
          && getUnit().getBehaviorMode() != AiEnums.BEHAVIOR_MODE.CONFUSED) {
@@ -1058,7 +1059,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 if ((damage_priority != getLethalDamagePriority()
                  && damage_priority != getUnconsciousDamagePriority())
                  || targetObj.checkPassive(UnitEnums.STANDARD_PASSIVES.FIRST_STRIKE)) {
-                    counter_penalty = getCounterPenalty(targetObj);
+                    counter_penalty = getCounterPenalty((Unit) targetObj);
                 }
             }
         }

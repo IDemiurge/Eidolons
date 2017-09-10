@@ -28,6 +28,9 @@ import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.sprite.SpriteAnimationFactory;
 import main.libgdx.anims.std.*;
 import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
+import main.libgdx.anims.weapons.Missile3dAnim;
+import main.libgdx.anims.weapons.Ranged3dAnim;
+import main.libgdx.anims.weapons.Weapon3dAnim;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
@@ -288,19 +291,30 @@ public class AnimationConstructor {
         }
 
         if (active.isAttackAny()) {
-            if (part == ANIM_PART.MAIN) {
-                if (active.isThrow()) {
-                    return new ThrowAnim(active);
-                }
+            if (AnimMaster3d.is3dAnim(active)) {
                 if (active.isRanged()) {
-                    return new RangedAttackAnim(active);
+                    if (part == ANIM_PART.CAST)
+                        return new Ranged3dAnim(active);
+                    if (part == ANIM_PART.MAIN)
+                        return new Missile3dAnim(active);
                 }
-                return new AttackAnim(active);
+                if (part == ANIM_PART.MAIN)
+                    return new Weapon3dAnim(active);
+
+        } else if (part == ANIM_PART.MAIN) {
+
+            if (active.isThrow()) {
+                return new ThrowAnim(active);
             }
-            if (part == ANIM_PART.IMPACT) {
-                return new HitAnim(active, data);
+            if (active.isRanged()) {
+                return new RangedAttackAnim(active);
             }
+            return new AttackAnim(active);
         }
+        if (part == ANIM_PART.IMPACT) {
+            return new HitAnim(active, data);
+        }
+    }
 
         if (active.isSpell()) {
             if (active.isMissile()) {
@@ -549,13 +563,13 @@ public class AnimationConstructor {
     private boolean isPartIgnored(ANIM_PART part) {
         switch (part) {
             case AFTEREFFECT:
-                return                 !OptionsMaster.getAnimOptions().getBooleanValue(
+                return !OptionsMaster.getAnimOptions().getBooleanValue(
                  ANIMATION_OPTION.AFTER_EFFECTS_ANIMATIONS);
             case CAST:
-                return                 !OptionsMaster.getAnimOptions().getBooleanValue(
+                return !OptionsMaster.getAnimOptions().getBooleanValue(
                  ANIMATION_OPTION.CAST_ANIMATIONS);
             case PRECAST:
-                return                 !OptionsMaster.getAnimOptions().getBooleanValue(
+                return !OptionsMaster.getAnimOptions().getBooleanValue(
                  ANIMATION_OPTION.PRECAST_ANIMATIONS);
 
 //            case MAIN:

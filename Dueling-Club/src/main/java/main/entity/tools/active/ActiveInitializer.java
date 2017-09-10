@@ -93,9 +93,10 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
 
         }
         costs.setActive(getEntity());
-        if (!getHandler().isInstantMode() || getHandler().isCounterMode()) {
-            getHandler().getActivator().setCanActivate(costs.canBePaid(getRef()));
-        }
+//   TODO what for?
+//     if (!getHandler().isInstantMode() || getHandler().isCounterMode()) {
+//            getHandler().getActivator().setCanActivate(costs.canBePaid(getRef()));
+//        }
 
         costs.setActiveId(getId());
         getEntity().setCosts(costs);

@@ -7,6 +7,7 @@ import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.bf.UnitView;
+import main.libgdx.bf.light.ShadeLightCell;
 import main.libgdx.bf.light.ShadowMap;
 import main.libgdx.screens.DungeonScreen;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -128,6 +129,9 @@ public class OptionsMaster {
                     break;
                 case ANIMATED_UI:
                     UnitView.setAlphaFluctuationOn(bool);
+                    break;
+                case ANIMATED_SHADOWMAP:
+                    ShadeLightCell.setAlphaFluctuation(bool);
                     break;
                 case SHADOWMAP:
                     ShadowMap.setOn(bool);

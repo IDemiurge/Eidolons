@@ -1,5 +1,6 @@
 package main.system.math;
 
+import com.badlogic.gdx.math.Vector2;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldGrid;
@@ -74,7 +75,7 @@ public class PositionMaster {
     public static int getMaxStraightDistance(Coordinates coordinates, Coordinates cell) {
 
         int range = Math.max(Math.abs(getX_Diff(coordinates, cell)), Math.abs(getY_Diff(
-                coordinates, cell)));
+         coordinates, cell)));
         return range;
     }
 
@@ -131,7 +132,7 @@ public class PositionMaster {
 
     public static boolean checkNoObstaclesInLine(MicroObj obj1, MicroObj obj2) {
         return noObstaclesInLine(obj1.getCoordinates(), obj2.getCoordinates(), obj1.getGame()
-                .getBattleField().getGrid(), obj1);
+         .getBattleField().getGrid(), obj1);
     }
 
     public static int getMaxStraightDistance(Obj obj, Obj cell) {
@@ -165,7 +166,7 @@ public class PositionMaster {
         double sqrt = Math.sqrt(x * x + y * y);
         int distance =
 
-                ((int) ((roundMathematically) ? Math.round(sqrt) : sqrt));
+         ((int) ((roundMathematically) ? Math.round(sqrt) : sqrt));
 
         return distance;
     }
@@ -229,7 +230,7 @@ public class PositionMaster {
         int y1 = xLine.getY1();
         int y2 = xLine.getY2();
         double result = Math.abs((y2 - y1) * x - (x2 - x1) * y - y2 * x1 + x2 * y1)
-                / Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
+         / Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
         // return (int) Math.round(result);
         // denominator =
         return result;
@@ -262,6 +263,15 @@ public class PositionMaster {
         }
 
         return true;
+
+    }
+
+    public static float getAngle(Obj obj, Obj obj2) {
+        return getAngle(obj.getCoordinates(), obj2.getCoordinates());
+    }
+
+    public static float getAngle(Coordinates c, Coordinates c2) {
+        return new Vector2(c.getX(), c.getY()).angle(new Vector2(c2.getX(), c2.getY()));
 
     }
 

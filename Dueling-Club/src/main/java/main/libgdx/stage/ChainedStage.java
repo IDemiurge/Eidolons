@@ -1,6 +1,7 @@
 package main.libgdx.stage;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -86,7 +87,36 @@ public class ChainedStage extends Stage {
         root.draw(batch, 1);
         batch.end();
     }
+    private Matrix4 idt = new Matrix4();
+    private Matrix4 shear = new Matrix4();
+    private OrthographicCamera cam;
 
+    public static Matrix4 toShear(Matrix4 m, float shx, float shy) {
+        m.idt();
+        m.val[Matrix4.M01] = shx;
+        m.val[Matrix4.M10] = shy;
+        return m;
+    }
+
+//    @Override
+//    public void render () {
+//        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+//
+//        cam.setToOrtho(false);
+//        spriteBatch.setProjectionMatrix( cam.combined );
+//        spriteBatch.begin();
+//
+//        //draw your regular sprites with identity transform...
+//        spriteBatch.setTransformMatrix( idt );
+//        spriteBatch.draw(texture, 0, 0, 25, 25);
+//
+//        //now draw your sheared sprites
+//        toShear(shear, 0.80f, 0.0f);
+//        spriteBatch.setTransformMatrix( shear );
+//
+//        spriteBatch.draw(texture, 50, 50);
+//        spriteBatch.end();
+//    }
     public boolean isDone() {
         return done;
     }

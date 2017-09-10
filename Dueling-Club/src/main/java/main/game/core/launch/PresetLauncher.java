@@ -49,7 +49,7 @@ public class PresetLauncher {
     };
     public static final int OPTION_NEW = 4;
     public final static String[] LAUNCH_OPTIONS = {
-     "AI", "Gui", "Last", "Recent", "New", "Anims", "Load",
+    "AI", "Gui", "Last", "Recent", "New", "Anims", "Load", "Exploration", "Exploration_Test",
 //           "Usability", "Emitters","Light",     "Standoff Test", "Standoff Preset", "Standoff",
      "Profiling"
 
@@ -409,10 +409,14 @@ public class PresetLauncher {
         SELECT_config,
 
     }
-
+static{
+    LAUNCH.AI.logicTest = true;
+}
     public enum LAUNCH {
+        EXPLORATION("exploration.xml", RULE_SCOPE.FULL, null ),
+        EXPLORATION_TEST("exploration test.xml", RULE_SCOPE.TEST, true),
         AI("ai.xml", RULE_SCOPE.TEST, false),
-        Gui("graphics test.xml", RULE_SCOPE.BASIC, null),
+        Gui("graphics test.xml", RULE_SCOPE.BASIC, true),
         Playtest("ai full.xml", RULE_SCOPE.FULL, null),
         Anims(null , RULE_SCOPE.BASIC, true),
         Emitters(true),
@@ -511,7 +515,7 @@ public class PresetLauncher {
             this.freeActions = true;
             this.fast = true;
             ruleScope = RULE_SCOPE.TEST;
-            logicTest=true;
+
         }
 
 

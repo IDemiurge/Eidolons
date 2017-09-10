@@ -125,8 +125,14 @@ public class ThreatAnalyzer extends AiHandler {
                 return enemy;
             }
         });
-        threat = DC_PriorityManager.getAttackPriority(subAttack, getUnit()) * factor;
-        DC_PriorityManager.toggleImplementation(null);
+        try {
+            threat = DC_PriorityManager.getAttackPriority(subAttack, getUnit()) * factor;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }   finally {
+            DC_PriorityManager.toggleImplementation(null);
+        }
+
         // special attacks? dual wielding?
 
         threat /= distance;

@@ -14,10 +14,8 @@ import main.system.data.PlayerData.ALLEGIENCE;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Regulus
@@ -79,15 +77,19 @@ public class DC_Player extends Player {
         return (DC_Game) super.getGame();
     }
 
-    public Set<Obj> getControlledUnits() {
-
-        Set<Obj> units = new LinkedHashSet<>();
-        for (Unit unit : (getGame().getUnits())) {
-            if (unit.getOwner() == this) {
-                units.add(unit);
-            }
-        }
-        return units;
+    public Set<Unit> getControlledUnits_() {
+        return getGame().getUnits().stream().filter(unit -> unit.isOwnedBy(this))
+         .collect(Collectors.toSet());
+    }
+        public Set<Obj> getControlledUnits() {
+           return getGame().getUnits().stream().
+            filter(unit -> unit.isOwnedBy(this)).collect(Collectors.toSet());
+//        Set<Obj> units = new LinkedHashSet<>();
+//        for (Unit unit : (getGame().getUnits())) {
+//            if (unit.getOwner() == this) {
+//                units.add(unit);
+//            }
+//        return units;
 
     }
 

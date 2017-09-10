@@ -18,10 +18,15 @@ import main.system.options.OptionsMaster;
 public class ShadeLightCell extends SuperContainer {
 
     private float baseAlpha;
+    private static boolean alphaFluctuation=true;
 
     public ShadeLightCell(SHADE_LIGHT type, int x, int y) {
         super(new Image(TextureCache.getOrCreate(type.getTexturePath())));
 
+    }
+
+    public static void setAlphaFluctuation(boolean alphaFluctuation) {
+        ShadeLightCell.alphaFluctuation = alphaFluctuation;
     }
 
     public float getBaseAlpha() {
@@ -39,15 +44,19 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
-            if (!DungeonScreen.getInstance().getController().
-             isWithinCamera(
-              this
-//              getX()+getWidth(), getY()+getHeight(), 2*getWidth(), 2*getHeight()
-             )) {
-                return;
-            }
+        if (isIgnored())
+            return;
+
         super.draw(batch, parentAlpha);
+    }
+
+    @Override
+    public boolean isAlphaFluctuationOn() {
+        if (!alphaFluctuationOn)
+            return false;
+        if (!alphaFluctuation)
+            return false;
+        return true;
     }
 
     @Override
@@ -62,7 +71,7 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     protected float getAlphaFluctuationMin() {
-        return baseAlpha*4/5;
+        return baseAlpha * 4 / 5;
     }
 
     @Override
@@ -72,7 +81,7 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     protected float getAlphaFluctuationPerDelta() {
-        return  new Float(RandomWizard.getRandomInt((int) (super.getAlphaFluctuationPerDelta()*50)))/100;
+        return new Float(RandomWizard.getRandomInt((int) (super.getAlphaFluctuationPerDelta() * 50))) / 100;
     }
 
     @Override
@@ -84,7 +93,7 @@ public class ShadeLightCell extends SuperContainer {
     public void act(float delta) {
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
             if (!DungeonScreen.getInstance().getController().
-             isWithinCamera(getX()+getWidth(), getY()+getHeight(), 2*getWidth(), 2*getHeight()) ) {
+             isWithinCamera(getX() + getWidth(), getY() + getHeight(), 2 * getWidth(), 2 * getHeight())) {
                 return;
             }
 

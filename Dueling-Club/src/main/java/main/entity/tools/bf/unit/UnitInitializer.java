@@ -185,9 +185,9 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             Collection<DC_HeroItemObj> items = new LinkedList<>();
             for (String subString : StringMaster.openContainer(getProperty(prop))) {
                 ObjType type = DataManager.getType(subString, C_OBJ_TYPE.ITEMS);
-
+//|| !StringMaster.isInteger(subString)
                 DC_HeroItemObj item = null;
-                if (game.isSimulation()) {
+                if (game.isSimulation() ) {
                     item = (DC_HeroItemObj) getGame().getSimulationObj(getEntity(), type, prop);
                 }
                 if (item == null) {

@@ -154,7 +154,7 @@ public class GridUnitView extends UnitView {
     public void updateRotation(int val) {
         if (arrow != null) {
 
-            ActorMaster.addRotateToAction(arrow, arrowRotation, val + 90);
+            ActorMaster.addRotateByAction(arrow, arrowRotation, val%360 + 90);
 
 
             arrowRotation = val + 90;

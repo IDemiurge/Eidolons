@@ -34,7 +34,7 @@ static {
         OUTLINES(false),
 
         AUTO_CAMERA(true),
-        RESOLUTION(main.test.frontend.RESOLUTION.values());
+        RESOLUTION(main.test.frontend.RESOLUTION.values()), ANIMATED_SHADOWMAP(true);
         private Boolean exclusive;
         private Integer min;
         private Integer max;

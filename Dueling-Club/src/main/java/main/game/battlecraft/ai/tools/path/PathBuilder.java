@@ -1,12 +1,14 @@
 package main.game.battlecraft.ai.tools.path;
 
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.elements.costs.Costs;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.ActionManager;
+import main.game.battlecraft.ai.elements.actions.AiActionFactory;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
@@ -49,6 +51,7 @@ public class PathBuilder extends AiHandler {
     private boolean failed;
 
     private PathChoiceMaster pathChoiceMaster;
+    private int timeLimit;
 
     private PathBuilder(AiMaster master) {
         super(master);
@@ -58,11 +61,20 @@ public class PathBuilder extends AiHandler {
         instance = new PathBuilder(master);
         return instance;
     }
+
     public static PathBuilder getInstance() {
         return instance;
     }
 
     public PathBuilder init(List<DC_ActiveObj> moveActions, Action targetAction) {
+
+        if (moveActions == null) {
+            moveActions = new LinkedList<>(getUnit().getActionMap().get(ACTION_TYPE.STANDARD));
+            moveActions.add(getUnit().getAction("Move"));
+        }
+        if (targetAction == null) {
+            targetAction = AiActionFactory.newAction(("Move"), getUnitAI());
+        }
         this.targetAction = targetAction;
         init();
         pathChoiceMaster.init(unit, targetAction, targetCoordinate, moveActions);
@@ -82,6 +94,7 @@ public class PathBuilder extends AiHandler {
         previousCoordinate = null;
         previousFacing = null;
         failed = false;
+
     }
 
     private void resetUnit() {
@@ -104,7 +117,7 @@ public class PathBuilder extends AiHandler {
     }
 
     public List<ActionPath> build(List<Coordinates> targetCoordinates
-            , List<DC_ActiveObj> moveActions, Action targetAction) {
+     , List<DC_ActiveObj> moveActions, Action targetAction) {
         this.targetAction = targetAction;
         init();
         pathChoiceMaster.init(unit, targetAction, targetCoordinate, moveActions);
@@ -144,7 +157,7 @@ public class PathBuilder extends AiHandler {
             reset();
             path = new ActionPath(originalCoordinate);
             // TODO first step must be activateable!
-            List<Choice> choices = pathChoiceMaster.getChoices(path, c_coordinate, c_facing);
+            List<Choice> choices = pathChoiceMaster.getChoices(path, c_coordinate, targetCoordinate,c_facing);
             for (Choice choice : choices) {
                 base_choice = choice;
                 Chronos.mark(getChronosPrefix() + base_choice);
@@ -166,7 +179,6 @@ public class PathBuilder extends AiHandler {
         }
         return paths;
     }
-
 
 
     private void applyChoice(Choice choice) {
@@ -203,12 +215,13 @@ public class PathBuilder extends AiHandler {
         }
         if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAI()))
             return false;
-        if (Chronos.getTimeElapsedForMark(getChronosPrefix() + targetAction) > TimeLimitMaster
-                .getTimeLimitForPathBuilding()
-                * TimeLimitMaster.CRITICAL_FAIL_FACTOR) {
+        if (Chronos.getTimeElapsedForMark(getChronosPrefix() + targetAction) >
+         (timeLimit>0? timeLimit :
+         TimeLimitMaster         .getTimeLimitForPathBuilding()
+         * TimeLimitMaster.CRITICAL_FAIL_FACTOR)) {
             Chronos.logTimeElapsedForMark(getChronosPrefix() + targetAction);
             LogMaster.log(1, "*** CRITICAL_FAIL TimeLimitForPathBuilding "
-                    + targetAction);
+             + targetAction);
             return false;
         }
         if (paths.size() > 0) {
@@ -219,7 +232,7 @@ public class PathBuilder extends AiHandler {
                 return false;
             }
             if (!TimeLimitMaster.checkTimeLimit(METRIC.PATH_CELL, getChronosPrefix()
-                    + targetCoordinate)) {
+             + targetCoordinate)) {
                 return false;
             }
             if (!TimeLimitMaster.checkTimeLimit(METRIC.ACTION, getChronosPrefix() + targetAction)) {
@@ -230,7 +243,7 @@ public class PathBuilder extends AiHandler {
             return true;
         }
 
-        List<Choice> choices = pathChoiceMaster.getChoices(path, c_coordinate, c_facing);
+        List<Choice> choices = pathChoiceMaster.getChoices(path, c_coordinate,targetCoordinate, c_facing);
         // depth first search
         for (Choice nextChoice : choices) {
             if (!step(nextChoice)) {
@@ -304,7 +317,7 @@ public class PathBuilder extends AiHandler {
 
     private void log(int result) {
         LogMaster.log(LOG_CHANNELS.PATHING_DEBUG, result
-                + " priority for path: " + path);
+         + " priority for path: " + path);
     }
 
     private boolean checkFailed() {
@@ -371,5 +384,14 @@ public class PathBuilder extends AiHandler {
 
     public Coordinates getPreviousCoordinate() {
         return previousCoordinate;
+    }
+
+    public PathBuilder setTimeLimit(int timeLimit) {
+        this.timeLimit = timeLimit;
+        return this;
+    }
+
+    public int getTimeLimit() {
+        return timeLimit;
     }
 }

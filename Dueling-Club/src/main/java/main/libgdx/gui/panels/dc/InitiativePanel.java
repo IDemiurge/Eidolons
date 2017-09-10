@@ -7,9 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import main.data.XLinkedMap;
+import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.libgdx.StyleHolder;
 import main.libgdx.bf.UnitView;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.screens.DungeonScreen;
@@ -27,9 +31,10 @@ public class InitiativePanel extends Group {
     private final int visualSize = 10;
     private final int imageSize = 104;
     private final int offset = -12;
+    Label timeLabel;
     private ImageContainer[] queue;
     private WidgetGroup queueGroup;
-    private boolean cleanUpOn=false;
+    private boolean cleanUpOn = false;
     private ValueContainer clockImage;
 
     public InitiativePanel() {
@@ -41,29 +46,40 @@ public class InitiativePanel extends Group {
     private void registerCallback() {
 
         GuiEventManager.bind(GuiEventType.ADD_OR_UPDATE_INITIATIVE, obj -> {
-            UnitView p = (UnitView) obj.get();
-            addOrUpdate(p);
-            resetZIndices();
+            if (!isRealTime()) {
+                UnitView p = (UnitView) obj.get();
+                addOrUpdate(p);
+                resetZIndices();
+
+            }
         });
 
         GuiEventManager.bind(GuiEventType.UPDATE_GUI, obj -> {
-            cleanUp();
-            resetZIndices();
+            if (!isRealTime()) {
+                cleanUp();
+                resetZIndices();
+            }
         });
         GuiEventManager.bind(GuiEventType.UNIT_VIEW_HOVER_ON, obj -> {
-            UnitView p = (UnitView) obj.get();
-            ImageContainer view = getIfExists(p.getCurId());
-            if (view!=null )
-            view.setZIndex(Integer.MAX_VALUE-1);
+            if (!isRealTime()) {
+                UnitView p = (UnitView) obj.get();
+                ImageContainer view = getIfExists(p.getCurId());
+                if (view != null)
+                    view.setZIndex(Integer.MAX_VALUE - 1);
+            }
         });
         GuiEventManager.bind(GuiEventType.UNIT_VIEW_HOVER_OFF, obj -> {
-            resetZIndices();
+            if (!isRealTime()) {
+                resetZIndices();
+            }
 
         });
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
-            UnitView p = (UnitView) obj.get();
-            removeView(p);
-            resetZIndices();
+            if (!isRealTime()) {
+                UnitView p = (UnitView) obj.get();
+                removeView(p);
+                resetZIndices();
+            }
         });
     }
 
@@ -79,7 +95,8 @@ public class InitiativePanel extends Group {
     private void removeView(UnitView p) {
         removeView(p.getCurId());
     }
-        private void removeView(int id) {
+
+    private void removeView(int id) {
         for (int i = 0; i < queue.length; i++) {
             if (queue[i] != null && queue[i].id == id) {
                 queueGroup.removeActor(queue[i]);
@@ -118,8 +135,8 @@ public class InitiativePanel extends Group {
         addActor(container);
 
         final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("UI",
-         "components","2017","panels","initiativePanel.png"));
-       clockImage = new ValueContainer(textureRegion);
+         "components", "2017", "panels", "initiativePanel.png"));
+        clockImage = new ValueContainer(textureRegion);
         clockImage.setPosition(50, 25);
 //        image.align(Align.bottomLeft);
 //        image.overrideImageSize(imageSize, imageSize);
@@ -128,11 +145,18 @@ public class InitiativePanel extends Group {
         tooltip.setUserObject(Arrays.asList(new ValueContainer("Good time to die!", "")));
         clockImage.addListener(tooltip.getController());
         addActor(clockImage);
+        clockImage.setPosition(0, 15);
 
-        setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
+        setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, clockImage.getHeight() + 15);
+
+        timeLabel = new Label("Time", StyleHolder.getDefaultLabelStyle());
+        addActor(timeLabel);
+        timeLabel.setPosition(50, 0);
+
     }
 
     private void addOrUpdate(UnitView unitView) {
+        updateTime();
         ImageContainer container = getIfExists(unitView.getCurId());
         if (container == null) {
             container = new ImageContainer();
@@ -149,6 +173,7 @@ public class InitiativePanel extends Group {
         container.mobilityState = unitView.getMobilityState();
         sort();
     }
+
 
     private Image newImage(int pos, InitiativePanelParam panelParam) {
         Image i = new Image(panelParam.getTextureRegion());
@@ -186,6 +211,31 @@ public class InitiativePanel extends Group {
             actor = null;
         }
         return actor;
+    }
+
+    @Override
+    public void act(float delta) {
+        if (isRealTime()) {
+            updateTime();
+            queueGroup.setVisible(false);
+        } else {
+            queueGroup.setVisible(true);
+        }
+        super.act(delta);
+    }
+
+    private boolean isRealTime() {
+        return ExplorationMaster.isExplorationOn();
+    }
+
+    private void updateTime() {
+        String time = "";
+        if (isRealTime()) {
+            time = Eidolons.game.getDungeonMaster().getExplorationMaster().getTimeMaster().getDisplayedTime();
+        } else {
+            time = String.valueOf(Eidolons.game.getRules().getTimeRule().getTimeRemaining());
+        }
+        timeLabel.setText(time);
     }
 
     @Override

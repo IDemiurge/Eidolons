@@ -190,6 +190,9 @@ public class DamageCalculator {
     }
 
     public static boolean isDamageBeyondThreshold(int damage, Obj targetObj, boolean unconscious) {
+        if (targetObj.isDead()){
+            return false;
+        } //annihilation!
         if (targetObj instanceof Unit){
             return
              unconscious ? UnconsciousRule.checkFallsUnconscious((Unit) targetObj)

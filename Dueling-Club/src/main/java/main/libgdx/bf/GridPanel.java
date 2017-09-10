@@ -385,10 +385,9 @@ public class GridPanel extends Group {
             views.forEach(gridCellContainer::addActor);
             gridCellContainer.setOverlays(overlays);
         }
-        if (ShadowMap.isOn()) {
+
             shadowMap = new ShadowMap(this);
 //            addActor(shadowMap);
-        }
 
         GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
             Unit unit = (Unit) obj.get();
@@ -443,7 +442,7 @@ public class GridPanel extends Group {
         unitMap.put(heroObj, uv);
         moveUnitView(heroObj);
     }
-    private void detachUnitView(BattleFieldObject heroObj) {
+    public void detachUnitView(BattleFieldObject heroObj) {
         BaseView uv = unitMap.get(heroObj);
         if (!(uv.getParent() instanceof GridCellContainer))
             return;

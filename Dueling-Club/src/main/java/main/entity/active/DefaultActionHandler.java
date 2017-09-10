@@ -15,8 +15,8 @@ import main.game.core.Eidolons;
 import main.game.logic.action.context.Context;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.OptionsMaster;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+
+import java.util.List;
 
 /**
  * Created by JustMe on 8/30/2017.
@@ -53,21 +53,24 @@ public class DefaultActionHandler {
         Obj target = action.getTargeting() instanceof SelectiveTargeting ?
          Eidolons.getGame().getCellByCoordinate(c) : null;
         Context context = new Context(source, target);
-        if (!action.getActivator().  canBeActivated(context, true))
-        {
-            action.getActivator().  cannotActivate();
+        return activate(context, action);
+
+    }
+
+    private static boolean activate(Context context, DC_ActiveObj action) {
+        if (!action.getActivator().canBeActivated(context, true)) {
+            action.getActivator().cannotActivate();
             return false;
         }
-        if (target != null)
-            if (!action.canBeTargeted(target.getId()))
+        if (context.getTargetObj() != null)
+            if (!action.canBeTargeted(context.getTarget()))
                 return false;
-
-        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
+        Eidolons.getGame().getGameLoop().actionInput(
          new ActionInput(action, context));
         return true;
     }
 
-    public  static DC_UnitAction getActionForCell(Unit source, Coordinates c) {
+    public static DC_UnitAction getActionForCell(Unit source, Coordinates c) {
         DIRECTION d = DirectionMaster.getRelativeDirection(source.getCoordinates(),
          c);
         FACING_SINGLE f = FacingMaster.getSingleFacing(source.getFacing(), source.getCoordinates(),
@@ -92,8 +95,11 @@ public class DefaultActionHandler {
             case TO_THE_SIDE:
 
                 boolean right =
-                 source.getFacing().isVertical() ?
-                  d.isGrowX() : d.isGrowY();
+                  !source.getFacing().isVertical() ?
+                  d.isGrowY() : d.isGrowX();
+                if (!source.getFacing().isVertical())
+                if (source.getFacing().isCloserToZero())
+                    right = !right;
                 name = right ? "Move Right" :
                  "Move Left";
                 break;
@@ -108,45 +114,43 @@ public class DefaultActionHandler {
     }
 
 
-    public static void leftClickUnit(BattleFieldObject target) {
-        if (OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.DEFAULT_ACTIONS)) {
-            Unit source = Eidolons.getGame().getManager().getActiveObj();
-            DC_ActiveObj action = getPreferredAttackAction(
+    public static boolean leftClickUnit(BattleFieldObject target) {
+        if (!OptionsMaster.getGameplayOptions().getBooleanValue
+         (GAMEPLAY_OPTION.DEFAULT_ACTIONS))
+            return false;
+        Unit source = Eidolons.getGame().getManager().getActiveObj();
+        DC_ActiveObj action = getPreferredAttackAction(
+         source, target);
+        if (action == null)
+            return false;
+        Context context = new Context(source, target);
+        return activate(context, action);
 
-             source, target);
-
-        }
     }
 
     private static DC_ActiveObj getPreferredAttackAction(Unit source, BattleFieldObject target) {
-//    source.getAttack()
-
-        return null;
+// if (offhand)
+        return pickAutomatically(source.getAttack().getSubActions(), target);
     }
-//
-//    private DC_ActiveObj pickAttack() {
-//        List<DC_ActiveObj> subActions = new LinkedList<>();
-//        for (DC_ActiveObj attack : getActiveObj().getSubActions()) {
-//            if (attack.canBeActivated(ref, true)) {
-//                if (attack.canBeTargeted(target)) {
-//                    subActions.add(attack);
-//                }
-//            }
-//        } if (subActions.size() == 1) {
-//            return subActions.get(0);
-//        }
-//
-//        private DC_ActiveObj pickAutomatically(List<DC_ActiveObj> subActions) {
-//            DC_ActiveObj pick = null;
-//            int max = 0;
-//
-//            for (DC_ActiveObj attack : subActions) {
-//                int priority = calculatePriority(attack, getTarget());
-//                if (priority > max) {
-//                    pick = attack;
-//                    max = priority;
-//                }
-//            }
-//            return pick;
-//        }
+
+    //
+    private static DC_ActiveObj pickAutomatically(List<DC_ActiveObj> subActions,
+                                                  BattleFieldObject target) {
+        DC_ActiveObj pick = null;
+        int max = 0;
+        for (DC_ActiveObj attack : subActions) {
+            if (!attack.canBeActivated(attack.getRef(), true))
+                continue;
+            if (attack.canBeTargeted(target.getId()))
+                continue;
+            int priority =
+             attack.getGame().getAiManager()
+              .getPriorityManager().getAttackPriority(attack, target);
+            if (priority > max) {
+                pick = attack;
+                max = priority;
+            }
+        }
+        return pick;
+    }
 }

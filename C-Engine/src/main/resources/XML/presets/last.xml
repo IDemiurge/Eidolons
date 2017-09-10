@@ -1,1 +1,2 @@
-ENEMY_PARTY=,PLAYER_PARTY=,PLAYER_UNITS=,FIRST_DUNGEON=XML\dungeons\levels\showcase\Deadwood.xml,DUNGEONS=,ENEMIES=,
+PLAYER_UNITS=Gwyn(1-10); 
+,FIRST_DUNGEON=demo\dungeon.xml,

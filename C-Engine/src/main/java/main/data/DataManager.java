@@ -66,7 +66,7 @@ public class DataManager {
                 continue;
             }
             lists.add(getFilteredTypeNameList(criterion, ContentManager.getOBJ_TYPE(type),
-                    filterValue));
+             filterValue));
         }
 
         return lists;
@@ -95,7 +95,19 @@ public class DataManager {
     }
 
     public static ObjType getType(String typeName, OBJ_TYPE obj_type) {
-        return getType(typeName, obj_type, true);
+        if (typeName.isEmpty())
+            return null;
+        ObjType type = getType(typeName, obj_type, true);
+        if (type == null) {
+            if (C_OBJ_TYPE.ITEMS.equals(obj_type))
+                try {
+                    return Game.game.getItemGenerator().getOrCreateItemType(typeName, obj_type);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null ;
+                }
+        }
+        return type;
     }
 
     public static List<ObjType> findTypes(String typeName, boolean strict) {
@@ -139,12 +151,12 @@ public class DataManager {
         return new SearchMaster<ObjType>().findClosest(typeName, list);
     }
 
-    public static ObjType getType(String typeName, OBJ_TYPE obj_type, boolean recursion) {
-        if (C_OBJ_TYPE.ITEMS.equals(obj_type)) {
+    public static ObjType getType(String typeName, OBJ_TYPE TYPE, boolean recursion) {
+        if (C_OBJ_TYPE.ITEMS.equals(TYPE)) {
             // 1) get quality 2) find base type name 3) crop and use
             ObjType type = null;
             try {
-                type = getItemType(typeName, obj_type);
+                type = getItemType(typeName, TYPE);
             } catch (Exception e) {
 
             }
@@ -156,20 +168,20 @@ public class DataManager {
             return null;
         }
         typeName = typeName.trim();
-        if (obj_type == null) {
+        if (TYPE == null) {
             if (recursion) {
                 return getType(typeName, false);
             }
         }
 
-        if (obj_type instanceof C_OBJ_TYPE) {
-            return getConstructedType(typeName, (C_OBJ_TYPE) obj_type);
+        if (TYPE instanceof C_OBJ_TYPE) {
+            return getConstructedType(typeName, (C_OBJ_TYPE) TYPE);
         }
-        if (obj_type instanceof C_MACRO_OBJ_TYPE) {
-            return getConstructedMacroType(typeName, (C_MACRO_OBJ_TYPE) obj_type);
+        if (TYPE instanceof C_MACRO_OBJ_TYPE) {
+            return getConstructedMacroType(typeName, (C_MACRO_OBJ_TYPE) TYPE);
         }
 
-        Map<String, ObjType> map = getTypeMap(obj_type);
+        Map<String, ObjType> map = getTypeMap(TYPE);
         if (map == null) {
             //main.system.auxiliary.log.LogMaster.log(1,"NO TYPE MAP: "+obj_type );
             return null;
@@ -191,15 +203,12 @@ public class DataManager {
         if (!recursion) {
             for (String s : map.keySet()) {
                 if (StringMaster
-                        .compareByChar(s.replace(" ", ""), typeName.replace(" ", ""), false)) {
+                 .compareByChar(s.replace(" ", ""), typeName.replace(" ", ""), false)) {
                     return map.get(s);
                 }
             }
             //LogMaster.log(1, "Type not found: " + obj_type
 //                    + ":" + typeName);
-//            if (C_OBJ_TYPE.ITEMS.equals(obj_type)) {
-//             TODO    itemgenetor
-//            }
             return null;
         }
         if (typeName.endsWith(";")) {
@@ -207,11 +216,11 @@ public class DataManager {
         }
         // String formattedTypeName =
         // StringMaster.getFormattedTypeName(typeName);
-        type = getType(typeName, obj_type, false);
+        type = getType(typeName, TYPE, false);
         if (type != null) {
             return type;
         }
-        return getType(StringMaster.getWellFormattedString(typeName), obj_type, false);
+        return getType(StringMaster.getWellFormattedString(typeName), TYPE, false);
     }
 
     private static ObjType getConstructedMacroType(String typeName, C_MACRO_OBJ_TYPE obj_type) {
@@ -223,7 +232,7 @@ public class DataManager {
             }
         }
         LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
-                + ":" + typeName);
+         + ":" + typeName);
         return type;
     }
 
@@ -237,7 +246,7 @@ public class DataManager {
             }
         }
         LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
-                + ":" + typeName);
+         + ":" + typeName);
         return type;
     }
 
@@ -255,7 +264,7 @@ public class DataManager {
         List<String> parts = StringMaster.openContainer(typeName, " ");
         String qualityName = parts.get(0);
         QUALITY_LEVEL q = new EnumMaster<QUALITY_LEVEL>().retrieveEnumConst(QUALITY_LEVEL.class,
-                qualityName);
+         qualityName);
         if (q == null) {
             q = ItemEnums.QUALITY_LEVEL.NORMAL;
         } else {
@@ -488,7 +497,7 @@ public class DataManager {
         // return list;
 
         List<String> groupsList = EnumMaster.findEnumConstantNames(TYPE.getSubGroupingKey()
-                .toString());
+         .toString());
         // TODO preCheck TYPES!
         if (groupsList.isEmpty()) {
             if (DC_TYPE.isOBJ_TYPE(subgroup)) {
@@ -552,7 +561,7 @@ public class DataManager {
                     list.add(objName);
                 }
             } else if (StringMaster.compare(objName.getValue(filterValue),
-                    filter, true)) {
+             filter, true)) {
                 list.add(objName);
             }
         }
@@ -585,7 +594,7 @@ public class DataManager {
         if (list.isEmpty()) {
             for (ObjType type : set) {
                 if (StringMaster.compareByChar(type.getProperty(TYPE.getSubGroupingKey()), group,
-                        true)) {
+                 true)) {
                     list.add(type);
                 }
             }
@@ -640,7 +649,7 @@ public class DataManager {
                 continue;
             }
             if (StringMaster.compare(type.getProperty(ContentManager.getPROP(RES_LEVEL_PROP)),
-                    res_level)) {
+             res_level)) {
                 list.add(name);
             }
         }
@@ -712,7 +721,7 @@ public class DataManager {
             typesSubGroups = new HashMap<>();
             for (String sub : XML_Reader.getXmlMap().keySet()) {
                 typesSubGroups.put(ContentManager.getOBJ_TYPE(sub),
-                        new HashMap<>());
+                 new HashMap<>());
             }
         }
         return typesSubGroups;

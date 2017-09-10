@@ -22,6 +22,7 @@ import main.game.core.game.GameManager;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.Rule;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.config.ConfigMaster;
@@ -79,7 +80,12 @@ public class DC_StateManager extends StateManager {
     }
 
     private void resetAll() {
+if (ExplorationMaster.isExplorationOn()){
+    // we will need full reset: after traps or other spec. effects; for Cells/Illumination
 
+    getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
+    return;
+}
         super.resetAllSynchronized();
         if (getGame().isStarted()) {
             try {

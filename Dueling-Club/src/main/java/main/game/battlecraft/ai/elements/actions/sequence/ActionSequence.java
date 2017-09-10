@@ -16,7 +16,7 @@ public class ActionSequence {
     // always re-generate or retain half-executed ones?
     private List<Action> actions;
     private Integer priority;
-    private int i = -1;
+    private int i = 0;
     private Integer priorityMultiplier;
 
     public ActionSequence(GOAL_TYPE type, Action... actions) {
@@ -69,12 +69,14 @@ public class ActionSequence {
         actions.remove(0);
     }
 
-    public Action getNextAction() {
-        i++;
-        if (actions.size() <= i) {
+    public Action getCurrentAction() {
+        return actions.get(i);
+    }
+        public Action nextAction() {
+        if (actions.size() <= i+1) {
             return null;
         }
-        return actions.get(i);
+        return actions.get(i++);
 
     }
 

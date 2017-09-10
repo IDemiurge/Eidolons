@@ -24,6 +24,8 @@ public class CounterAttackRule {
         if (!attacked.canCounter()) {
             return false;
         }
+        if (attacked.isAlliedTo(active.getOwnerObj().getOwner()))
+            return false;
         if (active.checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
             return false;
         }

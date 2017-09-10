@@ -59,6 +59,8 @@ public class UnitAI {
     private List<MetaGoal> metaGoals;
     private boolean immediate;
     private boolean free;
+    private float explorationTimePassed;
+    private float explorationTimeOfLastAction;
 //    private CHARACTER_TYPE characterType;
 //    private INCLINATION_TYPE characterType;
 //    private IMPULSE_TYPE impulseType;
@@ -364,6 +366,7 @@ public class UnitAI {
     }
 
     public void setStandingOrders(ActionSequence standingOrders) {
+        if (standingOrders != null) {
         if (standingOrders.getType() == AiEnums.GOAL_TYPE.MOVE) {
             orderType = ORDER_TYPE.MOVE;
         } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.WANDER) {
@@ -373,6 +376,7 @@ public class UnitAI {
         } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.STALK
                 || standingOrders.getType() == AiEnums.GOAL_TYPE.AGGRO) {
             orderType = ORDER_TYPE.PURSUIT;
+        }
         }
         this.standingOrders = standingOrders;
     }
@@ -476,6 +480,22 @@ public class UnitAI {
 
     public boolean isFree() {
         return free;
+    }
+
+    public float getExplorationTimePassed() {
+        return explorationTimePassed;
+    }
+
+    public void setExplorationTimePassed(float explorationTimePassed) {
+        this.explorationTimePassed = explorationTimePassed;
+    }
+
+    public void setExplorationTimeOfLastAction(float explorationTimeOfLastAction) {
+        this.explorationTimeOfLastAction = explorationTimeOfLastAction;
+    }
+
+    public float getExplorationTimeOfLastAction() {
+        return explorationTimeOfLastAction;
     }
 
 

@@ -52,6 +52,8 @@ import main.game.core.master.combat.CombatMaster;
 import main.game.core.state.DC_GameState;
 import main.game.core.state.DC_StateManager;
 import main.game.logic.battle.player.Player;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.system.DC_ConditionMaster;
 import main.system.DC_RequirementsManager;
@@ -171,7 +173,7 @@ public class DC_Game extends MicroGame {
         dungeonMaster = createDungeonMaster();
         battleMaster = createBattleMaster();
         if (!CoreEngine.isCombatGame())
-            return ;
+            return;
         musicMaster = MusicMaster.getInstance();
         musicMaster.startLoop();
     }
@@ -186,11 +188,8 @@ public class DC_Game extends MicroGame {
         //TempEventManager.trigger("create-cell-object" + i + ":" + j, objects);
 
         initObjTypes();
-        if (!CoreEngine.isLevelEditor() && (!CoreEngine.isArcaneVault() ||
-         !XML_Reader.isMacro())
-         && !CoreEngine.isItemGenerationOff()
-         )
-            ItemGenerator.init();
+
+
 //    TODO to battle init!
 //            SpellGenerator.init();
 //            ActionGenerator.init();
@@ -211,6 +210,7 @@ public class DC_Game extends MicroGame {
     private boolean isLocation() {
         return !FAST_DC.TEST_MODE;
     }
+
     protected DungeonMaster createDungeonMaster() {
         if (isLocation())
             return new LocationMaster(this);
@@ -224,7 +224,8 @@ public class DC_Game extends MicroGame {
 
     public void battleInit() {
 //            SpellGenerator.init();
-        setSimulation(false);    ActionGenerator.init();
+        setSimulation(false);
+        ActionGenerator.init();
 
 
         inventoryTransactionManager = new InventoryTransactionManager(this);
@@ -239,7 +240,7 @@ public class DC_Game extends MicroGame {
         // if (battlefield == null) {
 
         battlefield = new DC_BattleField(new DC_BattleFieldGrid(getDungeon()));
-         battleFieldManager = new DC_BattleFieldManager(this);
+        battleFieldManager = new DC_BattleFieldManager(this);
         getMovementManager().setGrid(battlefield.getGrid());
         // }
 
@@ -265,39 +266,33 @@ public class DC_Game extends MicroGame {
         battleMaster.startGame();
         dungeonMaster.gameStarted();
 
-        GuiEventManager.trigger(MUSIC_START, null);
 
-        getState().gameStarted(first);
-        if (getMetaMaster()!=null )
-        getMetaMaster().gameStarted();
-        GuiEventManager.trigger(UPDATE_LIGHT, null);
-
-        // TODO: 30.10.2016 insert gui init here
-
-        startGameLoop();
+        startGameLoop(first);
 
         Chronos.logTimeElapsedForMark("GAME_START");
     }
 
-    private void startGameLoop() {
+    public void startGameLoop() {
+        startGameLoop(false);
+    }
+
+    public void startGameLoop(boolean first) {
+        GuiEventManager.trigger(MUSIC_START, null);
+        getState().gameStarted(first);
+        if (getMetaMaster() != null)
+            getMetaMaster().gameStarted();
+        GuiEventManager.trigger(UPDATE_LIGHT, null);
+
+        loop = createGameLoop();
+        setGameLoopThread(loop.startInNewThread());
         setRunning(true);
+        setStarted(true);
+    }
 
-        if (getGameLoopThread() == null) {
-            setGameLoopThread(new Thread(() -> {
-                if (!CoreEngine.isGraphicsOff()) {
-//                    WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
-                }
-                loop = new GameLoop(this);
-                loop.start();
-                setStarted(true); //TODO false?
-
-                main.system.auxiliary.log.LogMaster.log(1, "Game Loop exit ");
-                return;
-
-            }, "Game Loop"));
-            getGameLoopThread().start();
-        }
-
+    private GameLoop createGameLoop() {
+        if (ExplorationMaster.isExplorationOn())
+            return new ExploreGameLoop(this);
+        return new GameLoop(this);
     }
 
     public DC_StateManager getStateManager() {
@@ -385,6 +380,15 @@ public class DC_Game extends MicroGame {
                 initTYPE(TYPE);
             }
         }
+        if (!CoreEngine.isLevelEditor()
+         && (!CoreEngine.isArcaneVault()
+         ||!XML_Reader.isMacro())
+         && !CoreEngine.isItemGenerationOff()
+         )
+//
+            itemGenerator = new ItemGenerator(true);
+            itemGenerator.init();
+
     }
 
     public Obj getObjectVisibleByCoordinate(Coordinates c) {
@@ -648,10 +652,8 @@ public class DC_Game extends MicroGame {
     }
 
     public DequeImpl<BattleFieldObject> getBfObjects() {
-        DequeImpl<BattleFieldObject> list = new DequeImpl();
-        list.addAll(getUnits());
+        DequeImpl<BattleFieldObject> list = new DequeImpl(getUnits());
         list.addAll(getStructures());
-
         return list;
     }
 
@@ -758,7 +760,6 @@ public class DC_Game extends MicroGame {
         SCENARIO, ARCADE, SKIRMISH, TEST,
 
     }
-
 
 
 }

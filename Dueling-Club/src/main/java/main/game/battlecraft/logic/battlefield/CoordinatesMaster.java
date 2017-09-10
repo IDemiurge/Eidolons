@@ -7,6 +7,7 @@ import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -510,6 +511,18 @@ if (!ListMaster.isNotEmpty(coordinates))
         }
         return coordinates;
     }
+
+    public static Coordinates getRandomAdjacentCoordinate(Coordinates coordinates) {
+        Loop loop = new Loop(20);
+        while (loop.continues()) {
+            Coordinates c = coordinates.getAdjacentCoordinate(
+             new RandomWizard<DIRECTION>().getRandomEnumConst(DIRECTION.class));
+            if (c==null )
+                return c; 
+        }
+        return coordinates;
+    }
+    
 
     // public boolean isOnEdgeX(Coordinates coordinates, int border) {
     // return coordinates.getX() - getOffsetX() == 0

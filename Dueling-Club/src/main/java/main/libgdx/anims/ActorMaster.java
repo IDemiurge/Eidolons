@@ -12,6 +12,7 @@ import main.system.auxiliary.log.LogMaster;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by JustMe on 1/26/2017.
@@ -24,9 +25,9 @@ public class ActorMaster {
         actor.addAction(aa);
         aa.setTarget(actor);
     }
-        public static void addRemoveAfter(Actor actor) {
-        addAfter(actor, new RemoveActorAction());
 
+    public static void addRemoveAfter(Actor actor) {
+        addAfter(actor, new RemoveActorAction());
 
 
     }
@@ -86,12 +87,19 @@ public class ActorMaster {
         return action;
     }
 
-    public static void addRotateToAction(Actor actor, int from, int to) {
-        from = from % 360;
-        to = to % 360;
+    public static void addRotateByAction(Actor actor, int from, int to) {
+        if (!getActionsOfClass(actor, RotateByAction.class).isEmpty()){
+            getActionsOfClass(actor, RotateByAction.class).forEach(action->{
+            if (action instanceof  Action)
+                actor.removeAction(( Action)action);
+            });
+            actor.setRotation(from);
+        }
         RotateByAction action = new RotateByAction();
-        action.setAmount(-(from - to));
-//        action.setReverse(true); intercepts
+        action.setAmount(to - from);
+        if (Math.abs(action.getAmount()) >= 270)
+            action.setAmount((action.getAmount() + 360) % 360);
+
         float speed = 360; //* options
         float duration = Math.abs(from - to) / speed;
         action.setDuration(duration);
@@ -118,12 +126,16 @@ public class ActorMaster {
     public static AlphaAction addFadeInOrOutIfNoActions(Actor actor, float duration) {
 
         if (actor.getActions().size > 0)
-            if (ClassMaster.getInstances(
-             new LinkedList<>(Arrays.asList(actor.getActions().toArray())),
-             AlphaAction.class).size() > 0) {
+            if (getActionsOfClass(actor, AlphaAction.class).size() > 0) {
                 return null;
             }
         return addFadeInOrOut(actor, duration);
+    }
+
+    private static List<Object> getActionsOfClass(Actor actor, Class<? extends Action> c) {
+        return ClassMaster.getInstances(
+         new LinkedList<>(Arrays.asList(actor.getActions().toArray())),
+         c);
     }
 
     public static void addScaleActionIfNoActions(Actor actor, float scaleX,

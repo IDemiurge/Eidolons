@@ -1,5 +1,6 @@
 package main.game.battlecraft.logic.battlefield;
 
+import main.ability.conditions.req.CellCondition;
 import main.ability.effects.oneshot.move.MoveEffect;
 import main.ability.effects.oneshot.move.SelfMoveEffect;
 import main.content.PARAMS;
@@ -77,7 +78,8 @@ public class DC_MovementManager implements MovementManager {
         FACING_SINGLE relative = FacingMaster.getSingleFacing(unit.getFacing(),
                 unit.getCoordinates(), coordinates);
         if (relative == FACING_SINGLE.IN_FRONT) {
-            return AiActionFactory.newAction("Move", unit.getAI());
+            if (new CellCondition(UNIT_DIRECTION.AHEAD).check(unit))
+                return AiActionFactory.newAction("Move", unit.getAI());
         }
         boolean left = (unit.getFacing().isVertical()) ?
                 PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)
@@ -86,6 +88,8 @@ public class DC_MovementManager implements MovementManager {
             left = !left;
         }
 
+        if (!new CellCondition(left ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
+            return null ;
         return AiActionFactory.newAction("Move " + (left ? "Left" : "Right"), unit.getAI());
 //        List<ActionPath> paths = instance.buildPath(unit, coordinates);
 //            if (!ListMaster.isNotEmpty(paths)) {

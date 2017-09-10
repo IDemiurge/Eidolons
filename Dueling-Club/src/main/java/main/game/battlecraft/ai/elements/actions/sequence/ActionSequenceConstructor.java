@@ -272,7 +272,7 @@ public class ActionSequenceConstructor extends AiHandler {
 
     }
 
-    private List<ActionSequence> getSequencesFromPaths(List<ActionPath> paths, Task task,
+    public List<ActionSequence> getSequencesFromPaths(List<ActionPath> paths, Task task,
                                                        Action action) {
         List<ActionSequence> list = new ArrayList<>();
         for (ActionPath path : paths) {

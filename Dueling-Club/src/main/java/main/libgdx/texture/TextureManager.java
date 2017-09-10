@@ -97,7 +97,6 @@ public class TextureManager {
 //if (FRAME_COLS==1 && FRAME_ROWS==1){
 //    Pair<Integer, Integer> xy = get
 //}
-
         if (FRAME_COLS == 0) {
             FRAME_COLS = 1;
         }

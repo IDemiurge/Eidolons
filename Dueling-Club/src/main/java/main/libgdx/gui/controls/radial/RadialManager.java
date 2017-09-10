@@ -15,6 +15,7 @@ import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
 import main.game.core.ActionInput;
+import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
 import main.game.logic.action.context.Context;
@@ -31,8 +32,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -57,6 +56,8 @@ public class RadialManager {
         if (!(el instanceof DC_ActiveObj)) {
             return false;
         }
+        if (((DC_ActiveObj) el).getGame().isDebugMode())
+            return true;
         DC_ActiveObj action = ((DC_ActiveObj) el);
 
 
@@ -68,17 +69,17 @@ public class RadialManager {
                 return false;
             }
             if (action.getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
-                if (target.getX()-action.getOwnerObj().getX()>2
-                 || target.getY()-action.getOwnerObj().getY()>2
-                 ){
+                if (target.getX() - action.getOwnerObj().getX() > 2
+                 || target.getY() - action.getOwnerObj().getY() > 2
+                 ) {
                     return false;
                 }
-                if (action!=
-                DefaultActionHandler.getActionForCell(action.getOwnerObj(),
-                 target.getCoordinates()))
+                if (action !=
+                 DefaultActionHandler.getActionForCell(action.getOwnerObj(),
+                  target.getCoordinates()))
                     return false;
 //
-                if (target instanceof BattleFieldObject){
+                if (target instanceof BattleFieldObject) {
                     target = target.getGame().getCellByCoordinate(target.getCoordinates());
                 }
             }
@@ -125,7 +126,7 @@ public class RadialManager {
     public static List<RadialValueContainer> getOrCreateRadialMenu(DC_Obj target) {
         List<RadialValueContainer> nodes = cache.get(target);
         if (nodes == null) {
-        nodes = createNew(target);
+            nodes = createNew(target);
         }
         cache.put(target, nodes);
         return nodes;
@@ -189,8 +190,8 @@ public class RadialManager {
                  dualAttacks.add(getAttackActionNode(el, target));
              } else if (el.isStandardAttack()
               || (
-              el.getActionGroup()==ACTION_TYPE_GROUPS.SPECIAL &&
-               el.getActionType()==ACTION_TYPE.SPECIAL_ATTACK)) {
+              el.getActionGroup() == ACTION_TYPE_GROUPS.SPECIAL &&
+               el.getActionType() == ACTION_TYPE.SPECIAL_ATTACK)) {
                  if (el.isOffhand())
                      offhandAttacks.add(getAttackActionNode(el, target));
                  else
@@ -338,14 +339,15 @@ public class RadialManager {
 
     private static RadialValueContainer configureSelectiveTargetedNode(
      DC_ActiveObj active, DC_Obj target) {
-        boolean wasValid ;
+        boolean wasValid;
         Set<Obj> objSet = CoreEngine.isActionTargetingFiltersOff() ?
          DC_Game.game.getUnits().parallelStream().distinct().collect(Collectors.toSet())
          : getFilter(active).getObjects();
-        if (target == null || target.equals(active.getOwnerObj()))
+        if (target == null || target.equals(active.getOwnerObj())) {
             wasValid = objSet.size() > 0 &&
              active.canBeManuallyActivated();
-        else
+
+        } else
             wasValid = active.canBeManuallyActivated();
 
         final boolean valid = wasValid;
@@ -356,10 +358,11 @@ public class RadialManager {
         Runnable runnable = () -> {
             if (valid) {
                 Context context = new Context(active.getOwnerObj().getRef());
-                if (target != null) {
+                if (target != null)
+                    if (!target.equals(active.getOwnerObj())) {
                     context.setTarget(target.getId());
                 }
-                WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
+                Eidolons.getGame().getGameLoop().actionInput(
                  new ActionInput(active, context));
             } else {
                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.CANNOT_ACTIVATE, "", active);
@@ -392,16 +395,16 @@ public class RadialManager {
 
     private static RadialValueContainer getAttackActionNode(DC_ActiveObj activeObj, DC_Obj target) {
 //        if (activeObj.getOwnerObj() == target) {
-            final RadialValueContainer valueContainer =
-             configureSelectiveTargetedNode(activeObj, target);
+        final RadialValueContainer valueContainer =
+         configureSelectiveTargetedNode(activeObj, target);
 //            addAttackTooltip(valueContainer, activeObj, target);
 //            return (valueContainer);
 //        } else if (activeObj.getTargeting() instanceof SelectiveTargeting) {
 //            final RadialValueContainer valueContainer =
 //             new RadialValueContainer(getOrCreateR(activeObj.getImagePath()),
 //              getRunnable(target, activeObj));
-            addAttackTooltip(valueContainer, activeObj, target);
-            return (valueContainer);
+        addAttackTooltip(valueContainer, activeObj, target);
+        return (valueContainer);
 //        }
 //        return null;
     }

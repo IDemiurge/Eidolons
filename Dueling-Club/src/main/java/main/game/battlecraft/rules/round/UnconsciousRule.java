@@ -132,6 +132,9 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
                                         Integer barrier,
                                         boolean unconscious //false if checking Annihilation
     ) {
+        if (unit.isDead()){
+            return false;
+        }
         if (0 >= endurance) {
             return true;
         }

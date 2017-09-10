@@ -268,4 +268,15 @@ public class PathFinder {
         return StrPathBuilder.build(getImagePath(), "ui", "emblems", "auto")+StringMaster.getPathSeparator();
     }
 
+    public static String getWeaponAnimPath() {
+        return StrPathBuilder.build(getSpritesPathMain(), "weapons3d")+StringMaster.getPathSeparator();
+    }
+
+    private static String getSpritesPathMain() {
+        init();
+        return getImagePath() +
+         "main"+StringMaster.getPathSeparator()+"sprites"+StringMaster.getPathSeparator() ;
+
+
+    }
 }

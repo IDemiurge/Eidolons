@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import main.libgdx.texture.TextureManager;
 
 import java.util.Arrays;
@@ -15,6 +17,7 @@ import java.util.Arrays;
  */
 public class SpriteAnimation extends Animation<TextureRegion> {
     final static float defaultFrameDuration = 0.025f;
+    private   Array<AtlasRegion> regions;
     public float x;
     public float y;
     boolean backAndForth;
@@ -31,6 +34,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private Sprite sprite;
     private boolean attached = true;
     private PlayMode originalPlayMode;
+    private boolean flipX;
+    private boolean flipY;
 
 
     public SpriteAnimation(String path) {
@@ -56,6 +61,15 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public SpriteAnimation(Texture texture) {
         this(defaultFrameDuration, false, 1, null, texture, false);
+    }
+
+    public SpriteAnimation(float frameDuration, boolean  looping ,
+                           Array<AtlasRegion> re
+    ) {
+        super(frameDuration,re);
+        regions = re;
+        this.looping = looping;
+        this.frameNumber = re.size;
     }
 
     public void reset() {
@@ -115,7 +129,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
                 - currentFrame.getRegionHeight() / 2);
         sprite.draw(batch);
 
-
+    sprite.setFlip(flipX, flipY);
         return true;
     }
 
@@ -127,6 +141,18 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     public void dispose() {
 //        spriteBatch.dispose();
 //        sheet.dispose();
+    }
+
+    public Array<AtlasRegion> getRegions() {
+        return regions;
+    }
+
+    public void setFlipX(boolean flipX) {
+        this.flipX = flipX;
+    }
+
+    public void setFlipY(boolean flipY) {
+        this.flipY = flipY;
     }
 
     public int getLoops() {

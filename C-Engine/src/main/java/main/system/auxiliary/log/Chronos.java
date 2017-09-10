@@ -36,14 +36,11 @@ public class Chronos {
         // Logger l = ;
 
         long x = -1;
-        try {
-            x = timeMap.get(string).getTime().getTime();
-        } catch (Exception e) {
-            // main.system.auxiliary.LogMaster.log(LogMaster.PERFORMANCE_DEBUG,
-            // "No mark for "
-            // + (string));
+        if (timeMap.get(string)==null )
             return x;
-        }
+
+        x = timeMap.get(string).getTime().getTime();
+
         return calendar.getTime().getTime() - x;
     }
 

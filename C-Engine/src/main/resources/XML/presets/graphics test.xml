@@ -1,1 +1,2 @@
-FIRST_DUNGEON=BATTLE\Mograve Keep.xml,PLAYER_UNITS=Artemis Entreri v3(7-4);Death Worshipper(7-4);Death Worshipper(7-4);,ENEMIES=Ravenguard Crossbowman(5-3);Shieldman(6-4);Shieldman(7-3);
+FIRST_DUNGEON=BATTLE\Mograve Keep.xml,PLAYER_UNITS=Elinda Carrow(7-4);Gnauri Viragost(7-5);Eidas Adeilar(8-5);Belved Edexis(6-4); 
+,ENEMIES=Ravenguard Crossbowman(5-3) ;

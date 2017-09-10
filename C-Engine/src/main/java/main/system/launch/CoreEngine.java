@@ -48,7 +48,7 @@ public class CoreEngine {
     private static boolean itemGenerationOff;
     private static boolean targetingResultCachingOn;
     private static boolean jar;
-    private static boolean exe=true;
+    private static boolean exe;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");

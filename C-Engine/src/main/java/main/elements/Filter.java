@@ -131,7 +131,7 @@ public class Filter<T extends Entity> extends ReferredElement {
             loop:
             for (Obj obj : list) {
                 for (Condition c : getConditions()) {
-                    if (!match(c, obj.getId())) {
+                    if (!match(c, obj.getId())) { if (conditionDebugCache!=null )
                         conditionDebugCache.put(obj.getId(), c);
                         continue loop;
                     }

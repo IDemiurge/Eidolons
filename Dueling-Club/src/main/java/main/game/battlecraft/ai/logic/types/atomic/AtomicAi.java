@@ -22,6 +22,7 @@ import main.game.battlecraft.ai.tools.ParamAnalyzer;
 import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import main.game.battlecraft.logic.battlefield.DC_MovementManager;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
+import main.game.battlecraft.logic.dungeon.universal.Positioner;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
@@ -37,35 +38,30 @@ import java.util.stream.Collectors;
 public class AtomicAi extends AiHandler {
 
     private boolean hotzoneMode;
-    private boolean on=true;
+    private boolean on = true;
 
     public AtomicAi(AiMaster master) {
         super(master);
     }
 
     public Action getAtomicAction(UnitAI ai) {
-        Action action =null ;
+        Action action = null;
         if (ai.getType() == AI_TYPE.ARCHER) {
             action = getReloadAction(ai);
             action.setTaskDescription("Ammo Reload");
         }
-        if (action!=null )
+        if (action != null)
             return action;
-        action =getAtomicActionPrepare(ai);
+        action = getAtomicActionPrepare(ai);
         if (action == null) {
-            if (checkAtomicActionTurn(ai))
-            {
+            if (checkAtomicActionTurn(ai)) {
                 action = getAtomicActionTurn(ai);
                 action.setTaskDescription("Facing Adjustment");
-            }
-            else
-            {
+            } else {
                 action = getAtomicActionApproach(ai);
                 action.setTaskDescription("Approach");
             }
-        }
-        else
-        {
+        } else {
             action.setTaskDescription(TASK_DESCRIPTION.RESTORATION.toString());
         }
         return action;
@@ -78,8 +74,8 @@ public class AtomicAi extends AiHandler {
             return null;
         }
         if (ParamAnalyzer.isFatigued(getUnit())) {
-           return AiActionFactory.newAction(STD_MODE_ACTIONS.Rest.name(),
-            getUnit().getAI());
+            return AiActionFactory.newAction(STD_MODE_ACTIONS.Rest.name(),
+             getUnit().getAI());
         }
         if (ParamAnalyzer.isHazed(getUnit())) {
             return AiActionFactory.newAction(STD_MODE_ACTIONS.Concentrate.name(),
@@ -126,7 +122,7 @@ public class AtomicAi extends AiHandler {
         List<Action> sequence = getTurnSequenceConstructor()
          .getTurnSequence(FACING_SINGLE.IN_FRONT, getUnit(), pick);
         if (ListMaster.isNotEmpty(sequence))
-             return sequence.get(0);
+            return sequence.get(0);
         return null;
     }
 
@@ -139,49 +135,68 @@ public class AtomicAi extends AiHandler {
           units
           , t -> getThreatAnalyzer().getThreat(ai, (Unit) t)
          );
-        return getUnit().getCoordinates().getAdjacentCoordinate(facing.getDirection());
+        Coordinates c = getUnit().getCoordinates().getAdjacentCoordinate(facing.getDirection());
+        return Positioner.adjustCoordinate(ai.getUnit(), c, ai.getUnit().getFacing());
 
     }
 
     public Action getAtomicActionMove(UnitAI ai, Boolean approach_retreat_search) {
+        Coordinates pick = null;
+        boolean b = isHotzoneMode();
+        if (b) {
+            pick = getHotZoneCell(ai, approach_retreat_search);
+        } else {
+            pick = getApproachCoordinate(ai);
+        }
+        Action a = getAtomicMove(pick, ai.getUnit());
+        if (a == null) {
+            return getAtomicMove(b ? getApproachCoordinate(ai)
+             : getHotZoneCell(ai, approach_retreat_search),
+             ai.getUnit());
+        }
+        return a;
+    }
+
+    private Coordinates getHotZoneCell(UnitAI ai, Boolean approach_retreat_search) {
         ATOMIC_LOGIC logic = getAtomicLogic(ai);
         List<Unit> enemies = Analyzer.getVisibleEnemies(ai);
         List<Unit> allies = Analyzer.getAllies(ai);
         float greatest = 0;
-        Coordinates pick = null;
-        if (isHotzoneMode()) {
-            for (Coordinates c : ai.getUnit().getCoordinates().getAdjacentCoordinates()) {
-                float i = 0;
-                i += getCellPriority(c, ai);
-                if (BooleanMaster.isFalse(approach_retreat_search)) {
-                    for (Unit a : allies) {
-                        i += getAllyPriority(c, a, ai, logic) + RandomWizard.getRandomInt(10);
-                    }
-                }
-                for (Unit e : enemies) {
-                    i = i + ((approach_retreat_search ? 1 : -1)
-                     * getEnemyPriority(c, e, ai, logic))
-                    + RandomWizard.getRandomInt(10)
-                    ;
 
-                }
-                i = i * getCellPriorityMod(c, ai) / 100;
-                if (i > greatest) {
-                    greatest = i;
-                    pick = c;
+        Coordinates pick = null;
+        for (Coordinates c : ai.getUnit().getCoordinates().getAdjacentCoordinates()) {
+            float i = 0;
+            i += getCellPriority(c, ai);
+            if (BooleanMaster.isFalse(approach_retreat_search)) {
+                for (Unit a : allies) {
+                    i += getAllyPriority(c, a, ai, logic) + RandomWizard.getRandomInt(10);
                 }
             }
-        } else {
-            pick = getApproachCoordinate(ai);
+            for (Unit e : enemies) {
+                i = i + ((approach_retreat_search ? 1 : -1)
+                 * getEnemyPriority(c, e, ai, logic))
+                 + RandomWizard.getRandomInt(10)
+                ;
+
+            }
+            i = i * getCellPriorityMod(c, ai) / 100;
+            if (i > greatest) {
+                greatest = i;
+                pick = c;
+            }
         }
-        Action action = null;
+        return pick;
+    }
+
+    public Action getAtomicMove(Coordinates pick, Unit unit) {
         List<Action> sequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, getUnit(), pick);
+        Action action = null;
         if (!sequence.isEmpty()) {
             action = sequence.get(0);
         }
         if (action == null) {
             try {
-                action = DC_MovementManager.getFirstAction(ai.getUnit(), pick);
+                action = DC_MovementManager.getFirstAction(unit, pick);
                 main.system.auxiliary.log.LogMaster.log(1, " ATOMIC ACTION " + action +
                  " CHOSEN TO GET TO " + pick);
             } catch (Exception e) {
@@ -189,7 +204,6 @@ public class AtomicAi extends AiHandler {
                 //TODO what to return???
             }
         }
-
         return action;
     }
 
@@ -235,6 +249,7 @@ public class AtomicAi extends AiHandler {
     private ATOMIC_LOGIC getAtomicLogic(UnitAI ai) {
         return ATOMIC_LOGIC.GEN_AGGRO;
     }
+
     public boolean checkAtomicActionRequired(UnitAI ai) {
 
         return checkAtomicActionCaseAny(ai);
@@ -243,7 +258,7 @@ public class AtomicAi extends AiHandler {
     public boolean checkAtomicActionCaseAny(UnitAI ai) {
         boolean canAttack = getSituationAnalyzer().canAttackNow(ai);
         for (ATOMIC_LOGIC_CASE C : ATOMIC_LOGIC_CASE.values()) {
-            if (C!=ATOMIC_LOGIC_CASE.PREPARE)
+            if (C != ATOMIC_LOGIC_CASE.PREPARE)
                 if (canAttack)
                     continue;
             try {
@@ -294,7 +309,8 @@ public class AtomicAi extends AiHandler {
 
         return false;
     }
-//TODO
+
+    //TODO
     private boolean checkAtomicActionAttack(UnitAI ai) {
         return false;
     }
@@ -366,7 +382,8 @@ public class AtomicAi extends AiHandler {
 
         if (distance > maxDistance && distance < 999) {
             return true;
-        } if (distance<=2) return false;
+        }
+        if (distance <= 2) return false;
         if (ai.getGroup() != null) {
             if (ai.getGroup().getMembers().size() > 8) {
                 return true;
@@ -392,7 +409,7 @@ public class AtomicAi extends AiHandler {
 
     public boolean isOn() {
 
-        if (getUnitAI().getType()==AI_TYPE.ARCHER){
+        if (getUnitAI().getType() == AI_TYPE.ARCHER) {
             return true;
         }
         return on;

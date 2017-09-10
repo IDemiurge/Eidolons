@@ -131,7 +131,7 @@ public class FAST_DC {
                     launcher.ENEMY_CODE = CODE.NONE;
                     launcher.PARTY_CODE = CODE.PRESET;
                     launcher.LEADER_MOVES_FIRST = true;
-                    launcher.VISION_HACK = SUPER_FAST_MODE;
+//                    launcher.VISION_HACK = SUPER_FAST_MODE;
 
                     // preset
                     ItemGenerator.setGenerationOn(!SUPER_FAST_MODE

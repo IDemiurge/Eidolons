@@ -361,6 +361,9 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 	 */
 
     public DC_QuickItemAction getActive() {
+        if (active==null )
+            if (!isConstructed())
+                construct();
         return active;
     }
 

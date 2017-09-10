@@ -14,6 +14,7 @@ import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
+import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import main.libgdx.DialogScenario;
 import main.libgdx.bf.BFDataCreatedEvent;
 import main.libgdx.bf.GridConst;
@@ -61,6 +62,7 @@ public class DungeonScreen extends ScreenWithLoader {
     private static boolean cameraAutoCenteringOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
     private DC_SoundMaster soundMaster;
     private Vector2 cameraDestination;
+    private RealTimeGameLoop realTimeGameLoop;
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -212,6 +214,9 @@ public class DungeonScreen extends ScreenWithLoader {
             cameraShift();
         //cam.update();
         if (canShowScreen()) {
+            if (realTimeGameLoop!=null )
+                realTimeGameLoop.act(delta);
+
             if (backTexture != null) {
                 if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
                     TextureManager.drawFromSpriteCache(TextureManager.getBackgroundId());
@@ -316,5 +321,13 @@ if (cameraDestination!=null )
 
     public static void setCameraAutoCenteringOn(boolean b) {
          cameraAutoCenteringOn = b;
+    }
+
+    public void setRealTimeGameLoop(RealTimeGameLoop realTimeGameLoop) {
+        this.realTimeGameLoop = realTimeGameLoop;
+    }
+
+    public RealTimeGameLoop getRealTimeGameLoop() {
+        return realTimeGameLoop;
     }
 }

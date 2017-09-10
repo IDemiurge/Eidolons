@@ -14,6 +14,7 @@ public class ClassMaster {
         }
         Class<? extends Object> OBJ_CLASS = object.getClass();
         while (OBJ_CLASS != null) {
+            if (OBJ_CLASS!= Object.class)
             if (OBJ_CLASS.equals(CLASS)) {
                 return true;
             }
@@ -31,7 +32,7 @@ public class ClassMaster {
         if (object instanceof Collection) {
             Collection collection = (Collection) object;
             for (Object o : collection) {
-                list.add(getInstances(o, CLASS));
+                list.addAll(getInstances(o, CLASS));
             }
         }
 

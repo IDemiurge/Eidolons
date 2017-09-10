@@ -72,6 +72,8 @@ public class MapMaster<E, T> {
     }
 
     public static Object get(Map map, int i) {
+        if (map.keySet().size()<=i)
+            return null ;
         return map.keySet().toArray()[i];
     }
 
