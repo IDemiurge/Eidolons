@@ -10,15 +10,15 @@ import main.game.core.game.DC_Game;
  */
 public abstract class ActiveHandler extends EntityHandler<DC_ActiveObj> {
 
-    protected Unit ownerObj;
+//    protected Unit ownerObj;
 
     public ActiveHandler(DC_ActiveObj entity, ActiveMaster entityMaster) {
         super(entity, entityMaster);
-        ownerObj = entity.getOwnerObj();
+//        ownerObj = entity.getOwnerObj();
     }
 
     public Unit getOwnerObj() {
-        return ownerObj;
+        return getAction().getOwnerObj();
     }
 
     @Override

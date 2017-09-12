@@ -17,7 +17,7 @@ import main.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import main.game.bf.Coordinates;
 import main.game.module.adventure.travel.EncounterMaster;
-import main.game.module.dungeoncrawl.ai.DungeonCrawler;
+import main.game.module.dungeoncrawl.ai.AggroMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -214,7 +214,7 @@ public class LocationSpawner extends Spawner<Location> {
     }
 
     private boolean checkSpawnBlock(MapBlock block) {
-        if (DungeonCrawler.isAiTestOn()) {
+        if (AggroMaster.isAiTestOn()) {
             return block.getId() < 2;
         }
         return block.getRoomType() == ROOM_TYPE.GUARD_ROOM

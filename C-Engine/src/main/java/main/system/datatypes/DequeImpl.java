@@ -2,10 +2,7 @@ package main.system.datatypes;
 
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 @SuppressWarnings("serial")
@@ -23,6 +20,11 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
     }
 
     public DequeImpl() {
+    }
+
+    public DequeImpl(Collection<E> ... lists) {
+        for (Collection<E> sub: lists)
+            addAll(sub);
     }
 
     public int indexOf(E e) {

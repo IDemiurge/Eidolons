@@ -136,6 +136,8 @@ public class SpectrumEffect extends DC_Effect {
                                 .getTargetObj());
                         reduction = reduction.replace("distance", distance + "");
                         effectFormula.append(reduction);
+                        //TODO
+                        effect.setAmount(effectFormula.getInt(ref));
                     }
                     effect.apply(REF);
                 }

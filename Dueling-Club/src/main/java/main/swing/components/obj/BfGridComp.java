@@ -406,8 +406,8 @@ public class BfGridComp {
             }
         }
 
-        DrawMasterStatic.drawDiagonalJoints(zoom, g, getOffsetX(), getOffsetY(), getCellWidth(),
-         getCellHeight(), getGame().getBattleFieldManager().getDiagonalJoints());
+//        DrawMasterStatic.drawDiagonalJoints(zoom, g, getOffsetX(), getOffsetY(), getCellWidth(),
+//         getCellHeight(), getGame().getBattleFieldManager().getDiagonalJoints());
 
         Unit activeObj = getGame().getManager().getActiveObj();
         if (activeObj != null) {

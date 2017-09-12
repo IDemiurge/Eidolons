@@ -53,7 +53,7 @@ public class ActionExecutor extends Executor {
         {
             if (checkActionDeactivatesContinuousMode())
             {
-                ownerObj.removeBuff(effect.getMode().getBuffName());
+                getAction().getOwnerObj().removeBuff(effect.getMode().getBuffName());
                 //deactivation overrides
                 return true;
             }
@@ -86,14 +86,14 @@ public class ActionExecutor extends Executor {
 
     private void removeModeBuffs() {
         for (STD_MODES s : STD_MODES.values()) {
-            ownerObj.removeBuff(s.getBuffName());
+            getAction().getOwnerObj().removeBuff(s.getBuffName());
         }
 
     }
 
     public boolean deactivate() {
         try {
-            ownerObj.removeBuff(getAction().getModeBuffName());
+            getAction().getOwnerObj().removeBuff(getAction().getModeBuffName());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -114,7 +114,7 @@ public class ActionExecutor extends Executor {
     public void actionComplete() {
         super.actionComplete();
         try {
-            CadenceRule.checkDualAttackCadence(getAction(), ownerObj);
+            CadenceRule.checkDualAttackCadence(getAction(), getAction().getOwnerObj());
         } catch (Exception e) {
             e.printStackTrace();
         }

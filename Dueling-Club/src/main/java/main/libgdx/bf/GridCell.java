@@ -69,11 +69,13 @@ public class GridCell extends Group implements Borderable {
 
                 if (button == Input.Buttons.LEFT) {
                     event.handle();
-                    if (isAlt()
-                     //|| ExplorationMaster.isExplorationOn()
+
+                    if (isAlt() ||isShift() ||isControl()
+                        //|| ExplorationMaster.isExplorationOn()
                      )
                         try {
-                            if (DefaultActionHandler.leftClickCell(event, getGridX(), getGridY()))
+                            if (DefaultActionHandler.
+                             leftClickCell(isShift(), isControl(), getGridX(), getGridY()))
                                 return;
                              } catch (Exception e) {
                             e.printStackTrace();

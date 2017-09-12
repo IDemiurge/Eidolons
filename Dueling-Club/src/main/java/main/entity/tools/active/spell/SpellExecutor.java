@@ -80,11 +80,11 @@ public class SpellExecutor extends Executor {
     public boolean activateChanneling() {
         getAction().initCosts();
         getInitializer().initChannelingCosts();
-        game.getLogManager().log(">> " + ownerObj.getName() + " has begun Channeling " + getName());
+        game.getLogManager().log(">> " + getAction().getOwnerObj().getName() + " has begun Channeling " + getName());
         boolean result = (checkExtraAttacksDoNotInterrupt(ENTRY_TYPE.ACTION));
         if (result) {
             this.channeling = true;
-            ChannelingRule.playChannelingSound(getSpell(), HeroAnalyzer.isFemale(ownerObj));
+            ChannelingRule.playChannelingSound(getSpell(), HeroAnalyzer.isFemale(getAction().getOwnerObj()));
             result = ChannelingRule.activateChanneing(getSpell());
 
         }
@@ -121,7 +121,7 @@ public class SpellExecutor extends Executor {
 //    }
     @Override
     public boolean activate() {
-        ownerObj.getRef().setID(Ref.KEYS.SPELL, getId());
+        getAction().getOwnerObj().getRef().setID(Ref.KEYS.SPELL, getId());
         DC_SoundMaster.playEffectSound(SOUNDS.PRECAST, getSpell());
         if (!channeling) if (getAction().isChanneling()) {
             return activateChanneling();
@@ -178,13 +178,13 @@ public class SpellExecutor extends Executor {
         // TODO spell itself should also have special effects available and
         // separate from unit's!
         if (getRef().getTargetObj() instanceof DC_UnitModel) {
-            ownerObj.applySpecialEffects(case_type, (BattleFieldObject) getRef().getTargetObj(), getRef());
+            getAction().getOwnerObj().applySpecialEffects(case_type, (BattleFieldObject) getRef().getTargetObj(), getRef());
         }
         if (getRef().getGroup() != null) {
             for (Obj unit : getRef().getGroup().getObjects()) {
                 if (unit != getRef().getTargetObj()) {
                     if (unit instanceof DC_UnitModel) {
-                        ownerObj.applySpecialEffects(case_type, (BattleFieldObject) unit, getRef());
+                        getAction().getOwnerObj().applySpecialEffects(case_type, (BattleFieldObject) unit, getRef());
                     }
                 }
             }
@@ -192,11 +192,11 @@ public class SpellExecutor extends Executor {
     }
 
     private void applySpellpowerMod() {
-        ownerObj.modifyParameter(PARAMS.SPELLPOWER, getIntParam(PARAMS.SPELLPOWER_BONUS));
+        getAction().getOwnerObj().modifyParameter(PARAMS.SPELLPOWER, getIntParam(PARAMS.SPELLPOWER_BONUS));
 
         Integer perc = getIntParam(PARAMS.SPELLPOWER_MOD);
         if (perc != 100) {
-            ownerObj.multiplyParamByPercent(PARAMS.SPELLPOWER, MathMaster.getFullPercent(perc),
+            getAction().getOwnerObj().multiplyParamByPercent(PARAMS.SPELLPOWER, MathMaster.getFullPercent(perc),
              false);
         }
 

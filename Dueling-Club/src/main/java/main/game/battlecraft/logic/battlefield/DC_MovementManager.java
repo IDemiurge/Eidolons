@@ -30,10 +30,11 @@ import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.bf.Coordinates.UNIT_DIRECTION;
 import main.game.bf.pathing.Path;
 import main.game.bf.pathing.PathingManager;
+import main.game.core.ActionInput;
 import main.game.core.game.DC_Game;
+import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.swing.generic.services.dialog.DialogMaster;
 import main.system.CustomValueManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -158,6 +159,12 @@ public class DC_MovementManager implements MovementManager {
         moveTo(path.getTargetCoordinates());
     }
 
+    public List<ActionPath> getAutoPath(Obj activeUnit) {
+       return   pathCache.get(activeUnit);
+    }
+    public void cancelAutomove(Obj activeUnit) {
+        pathCache.remove(activeUnit);
+    }
     public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
         List<DC_ActiveObj> moves = getMoves(unit);
         PathBuilder builder = PathBuilder.getInstance().init
@@ -166,7 +173,7 @@ public class DC_MovementManager implements MovementManager {
         if (paths.isEmpty()) {
             return null;
         }
-        pathCache.put(unit, paths);
+
         return paths;
     }
 
@@ -178,25 +185,33 @@ public class DC_MovementManager implements MovementManager {
 
     public void moveTo(Coordinates coordinates) {
         Unit unit = game.getManager().getActiveObj();
-        List<ActionPath> paths = buildPath(unit, coordinates);
+        List<ActionPath> paths = pathCache.get(unit);
         if (paths == null) {
-            Coordinates adjacentCoordinate = coordinates.getAdjacentCoordinate(DirectionMaster
-                    .getRelativeDirection(unit.getCoordinates(), coordinates));
-            if (DialogMaster.confirm("No path could be built to " + coordinates
-                    + "; proceed to the closest cell? - " + adjacentCoordinate)) {
-                moveTo(adjacentCoordinate);
-            } else {
-                return;
-            }
+            paths = buildPath(unit, coordinates);
+//            Coordinates adjacentCoordinate = coordinates.getAdjacentCoordinate(DirectionMaster
+//                    .getRelativeDirection(unit.getCoordinates(), coordinates));
+//            if (DialogMaster.confirm("No path could be built to " + coordinates
+//                    + "; proceed to the closest cell? - " + adjacentCoordinate)) {
+//                moveTo(adjacentCoordinate);
+//            } else {
+//                return;
+//            }
+            pathCache.put(unit, paths);
         }
-        pathCache.get(unit);
+        if (paths == null) {
+            return ;
+        }
         Action action = null;
         for (ActionPath path : paths) {
-            if (DialogMaster.confirm("Path built to : " + path + "\nExecute "
-                    + path.getActions().get(0).toString() + "?")) {
-                action = path.getActions().get(0);
-                break;
-            }
+//            if (DialogMaster.confirm("Path built to : " + path + "\nExecute "
+//                    + path.getActions().get(0).toString() + "?")) {
+//                action = path.getActions().get(0);
+//                break;
+//            }
+            //just check if still passible
+//            if (path.getActions().get(0))
+            action = path.getActions().get(0);
+            break;
         }
         if (action == null) {
             pathCache.remove(unit);
@@ -205,12 +220,12 @@ public class DC_MovementManager implements MovementManager {
         // ActionAnimation anim = new ActionAnimation(action);
         // anim.start();
 
-        Ref ref = unit.getRef().getCopy();
+        Context context =new Context( unit.getRef());
         if (action.getActive().isMove()) {
-            ref.setTarget(game.getCellByCoordinate(coordinates).getId());
+            context.setTarget(game.getCellByCoordinate(coordinates).getId());
         }
-        action.getActive().activatedOn(ref);
-        action.getActive().actionComplete();
+        unit.getGame().getGameLoop().
+         actionInput(new ActionInput(action.getActive(), context));
     }
 
     @Deprecated

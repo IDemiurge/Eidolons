@@ -246,6 +246,13 @@ public abstract class DataModel {
         return StringMaster.getDouble(getDoubleParam(param, false));
     }
 
+    public Float getParamFloat(PARAMETER param) {
+        String doubleParam = getDoubleParam(param, false);
+        if (doubleParam.isEmpty()) {
+            return 0.0f;
+        }
+        return StringMaster.getFloat(getDoubleParam(param, false));
+    }
     public Double getParamDouble(PARAMETER param, boolean base) {
         return StringMaster.getDouble(getDoubleParam(param, base));
     }
@@ -815,7 +822,11 @@ public abstract class DataModel {
         return getGame().fireEvent(new Event(event_type, "" + param, REF));
     }
 
-    public void resetParam(PARAMETER param) {
+    /**
+     *
+     * @param param - c_ parameter to reset
+     */
+    public void resetDynamicParam(PARAMETER param) {
         setParam(param, getParam(ContentManager.getBaseParameterFromCurrent(param)));
     }
 

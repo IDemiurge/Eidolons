@@ -8,7 +8,7 @@ import main.game.battlecraft.ai.tools.Analyzer;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.module.adventure.rules.TurnRule;
-import main.game.module.dungeoncrawl.ai.DungeonCrawler.ENGAGEMENT_LEVEL;
+import main.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
 import main.system.math.PositionMaster;
 
 import java.util.Collection;

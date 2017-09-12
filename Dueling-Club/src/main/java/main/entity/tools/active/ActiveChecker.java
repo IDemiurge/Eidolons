@@ -58,7 +58,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     public boolean isBlocked() {
         getEntity().setCustomTooltip(null);
         if (getEntity().getOwnerObj().isAiControlled()) {
-            getEntity().setCustomTooltip("This unit is AI controlled!");
+            getEntity().getCosts().setReason("This unit is AI controlled!");
             return true;
         }
         if (!getEntity().getOwnerObj().isMine()) {

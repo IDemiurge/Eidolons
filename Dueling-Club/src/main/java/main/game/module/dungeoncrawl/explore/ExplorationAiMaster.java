@@ -40,7 +40,8 @@ public class ExplorationAiMaster extends ExplorationHandler {
         master.getGame().getUnits().forEach(unit ->
          {
              if (unit.isAiControlled())
-                 activeUnitAIs.add(unit.getAI());
+                 if (unit.canActNow())
+                    activeUnitAIs.add(unit.getAI());
          }
         );
     }
@@ -55,21 +56,32 @@ public class ExplorationAiMaster extends ExplorationHandler {
         for (UnitAI ai : activeUnitAIs) {
             if (ai.getExplorationTimePassed() <= ExplorationTimeMaster.secondsPerAP)
                 continue;
-            if (ai.getStandingOrders() == null) {
-                ai.setStandingOrders(getOrders(ai));
+            try {
+                if (tryMoveAi(ai))
+                    isAiActs = true;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            Double cost = ai.getStandingOrders().getCurrentAction().getActive().
-             getParamDouble(PARAMS.AP_COST);
-            int timePassed = master.getTimeMaster().getTimePassedSinceAiActions(ai);
-            //ai.getExplorationTimePassed()
-            if (timePassed >= Math.round(cost *
-             ExplorationTimeMaster.secondsPerAP)) {
-                aiMoves(ai);
-                isAiActs = true;
-            }
+
         }
         if (isAiActs)
             aiActs = true;
+    }
+
+    private boolean tryMoveAi(UnitAI ai) {
+        if (ai.getStandingOrders() == null) {
+            ai.setStandingOrders(getOrders(ai));
+        }
+        Double cost = ai.getStandingOrders().getCurrentAction().getActive().
+         getParamDouble(PARAMS.AP_COST);
+        int timePassed = master.getTimeMaster().getTimePassedSinceAiActions(ai);
+        //ai.getExplorationTimePassed()
+        if (timePassed >= Math.round(cost *
+         ExplorationTimeMaster.secondsPerAP)) {
+            aiMoves(ai);
+            return true;
+        }
+        return false;
     }
 
     private void aiMoves(UnitAI ai) {
@@ -78,7 +90,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
          new Context(ai.getStandingOrders().getCurrentAction().getRef()));
         aiActionQueue.push(input);
         ai.setExplorationTimeOfLastAction(master.getTimeMaster().getTime());
-        if (ai.getStandingOrders().nextAction() == null)
+        if (ai.getStandingOrders().getCurrentAction() == ai.getStandingOrders().getLastAction())
             ai.setStandingOrders(null);
 
     }
@@ -112,7 +124,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
         master.getGame().getAiManager().setUnit(ai.getUnit());
 //        master.getGame().getAiManager().getPathBuilder().init(null, null);
 //        TimeLimitMaster.markTimeForAI(ai);
-        List<ActionPath> paths =    new LinkedList<>() ;
+        List<ActionPath> paths = new LinkedList<>();
 //         master.getGame().getAiManager().getPathBuilder().build(c);
 
         Task task = new Task(ai, GOAL_TYPE.WANDER, null);

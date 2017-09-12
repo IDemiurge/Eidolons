@@ -287,9 +287,10 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean canActNow() {
-        if (getGame().isDummyPlus() && !isMine()) {
+        if (getEntity().isDead()) {
             return false;
         }
+
         if (getEntity().getOwner() == Player.NEUTRAL) {
             return false;
         }

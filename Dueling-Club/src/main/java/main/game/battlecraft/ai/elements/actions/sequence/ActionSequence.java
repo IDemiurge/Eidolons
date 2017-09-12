@@ -73,7 +73,7 @@ public class ActionSequence {
         return actions.get(i);
     }
         public Action nextAction() {
-        if (actions.size() <= i+1) {
+        if (actions.size() <= i) {
             return null;
         }
         return actions.get(i++);

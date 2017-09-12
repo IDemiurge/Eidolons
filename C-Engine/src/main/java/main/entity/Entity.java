@@ -84,8 +84,8 @@ public abstract class Entity extends DataModel implements OBJ {
             setOriginalName(type.getName());
             LogMaster.log(-1, id + " - NEW ID for " + type.getName());
 
-            setRef(ref);
             master = initMaster();
+            setRef(ref);
             init();
         }
     }

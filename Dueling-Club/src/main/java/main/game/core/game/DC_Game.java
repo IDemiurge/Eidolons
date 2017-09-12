@@ -28,6 +28,7 @@ import main.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.DC_BattleField;
 import main.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
+import main.game.battlecraft.logic.battlefield.DC_MovementManager;
 import main.game.battlecraft.logic.battlefield.DroppedItemManager;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.battlefield.vision.VisionMaster;
@@ -43,7 +44,6 @@ import main.game.battlecraft.rules.mechanics.WaitRule;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.GraveyardManager;
-import main.game.bf.MovementManager;
 import main.game.core.DC_TurnManager;
 import main.game.core.GameLoop;
 import main.game.core.launch.LaunchDataKeeper;
@@ -266,7 +266,10 @@ public class DC_Game extends MicroGame {
         battleMaster.startGame();
         dungeonMaster.gameStarted();
 
+        if (dungeonMaster.getExplorationMaster()!=null ){
+            dungeonMaster.getExplorationMaster().init();
 
+        }
         startGameLoop(first);
 
         Chronos.logTimeElapsedForMark("GAME_START");
@@ -571,8 +574,8 @@ public class DC_Game extends MicroGame {
     }
 
     @Override
-    public MovementManager getMovementManager() {
-        return combatMaster.getMovementManager();
+    public DC_MovementManager getMovementManager() {
+        return (DC_MovementManager) combatMaster.getMovementManager();
     }
 
     @Override
@@ -593,12 +596,9 @@ public class DC_Game extends MicroGame {
     }
 
     public boolean isPaused() {
-        return paused;
+        return getGameLoop().isPaused();
     }
 
-    public void setPaused(boolean paused) {
-        this.paused = paused;
-    }
 
     public Dungeon getDungeon() {
         return getDungeonMaster().getDungeonWrapper().getDungeon();

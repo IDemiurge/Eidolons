@@ -20,7 +20,7 @@ import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import main.game.battlecraft.ai.tools.AiExecutor;
 import main.game.bf.Coordinates;
-import main.game.module.dungeoncrawl.ai.DungeonCrawler.ENGAGEMENT_LEVEL;
+import main.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
@@ -61,6 +61,9 @@ public class UnitAI {
     private boolean free;
     private float explorationTimePassed;
     private float explorationTimeOfLastAction;
+    private boolean outsideCombat;
+    private float explorationTimeOfModeEffect;
+    private float explorationTimeOfRegenEffects;
 //    private CHARACTER_TYPE characterType;
 //    private INCLINATION_TYPE characterType;
 //    private IMPULSE_TYPE impulseType;
@@ -496,6 +499,30 @@ public class UnitAI {
 
     public float getExplorationTimeOfLastAction() {
         return explorationTimeOfLastAction;
+    }
+
+    public void setOutsideCombat(boolean outsideCombat) {
+        this.outsideCombat = outsideCombat;
+    }
+
+    public boolean isOutsideCombat() {
+        return outsideCombat;
+    }
+
+    public float getExplorationTimeOfModeEffect() {
+        return explorationTimeOfModeEffect;
+    }
+
+    public void setExplorationTimeOfModeEffect(float explorationTimeOfModeEffect) {
+        this.explorationTimeOfModeEffect = explorationTimeOfModeEffect;
+    }
+
+    public float getExplorationTimeOfRegenEffects() {
+        return explorationTimeOfRegenEffects;
+    }
+
+    public void setExplorationTimeOfRegenEffects(float explorationTimeOfRegenEffects) {
+        this.explorationTimeOfRegenEffects = explorationTimeOfRegenEffects;
     }
 
 

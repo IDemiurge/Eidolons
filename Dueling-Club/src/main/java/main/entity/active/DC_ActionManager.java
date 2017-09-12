@@ -40,6 +40,7 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.generic.ActionManager;
 import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.game.module.dungeoncrawl.special.LockMaster;
 import main.game.module.dungeoncrawl.special.Trap;
 import main.game.module.dungeoncrawl.special.TrapMaster;
@@ -118,7 +119,7 @@ public class DC_ActionManager implements ActionManager {
             modeActionTypes.add(type);
         }
 
-         orderActionTypes = new LinkedList<>();
+        orderActionTypes = new LinkedList<>();
         for (STD_ORDER_ACTIONS type : STD_ORDER_ACTIONS.values()) {
             ActionType actionType = (ActionType) DataManager.getType(StringMaster
              .getWellFormattedString(type.toString()), DC_TYPE.ACTIONS);
@@ -277,7 +278,6 @@ public class DC_ActionManager implements ActionManager {
         }
         return null;
     }
-
 
 
     @Override
@@ -544,6 +544,21 @@ public class DC_ActionManager implements ActionManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if (ExplorationMaster.isExplorationOn())
+            try {
+                actives.removeIf(activeObj -> unit.getGame().getDungeonMaster().
+                 getExplorationMaster().getActionHandler().
+                 isActivationDisabledByExploration((DC_ActiveObj) activeObj));
+
+                List<DC_ActiveObj> actions = unit.getGame().getDungeonMaster().
+                 getExplorationMaster().getActionHandler().
+                 getExplorationActions(unit);
+                actives.addAll(actions);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         unit.setActives(new LinkedList<>(actives));
         if (!unit.isBfObj()) {
             addHiddenActions(unit, unit.getActives());
@@ -597,7 +612,7 @@ public class DC_ActionManager implements ActionManager {
             throwAction.setName("Throw " + weapon.getName());
             list.add((DC_UnitAction) throwAction);
         }
-        weapon.setAttackActions(    new LinkedList<>(list));
+        weapon.setAttackActions(new LinkedList<>(list));
         return list;
     }
 
@@ -625,13 +640,13 @@ public class DC_ActionManager implements ActionManager {
         }
 
         actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
-if (RuleMaster.checkFeature(FEATURE.DUAL_ATTACKS))
-        if (UnitAnalyzer.checkDualWielding(unit)) {
-            actives.addAll(   DualAttackMaster.getDualAttacks(unit)) ;
-            // good idea! :) dual thrust, dual
-            // stunning blow, many possibilities! :) but it will be tricky...
-            // TODO should add all dual actions
-        }
+        if (RuleMaster.checkFeature(FEATURE.DUAL_ATTACKS))
+            if (UnitAnalyzer.checkDualWielding(unit)) {
+                actives.addAll(DualAttackMaster.getDualAttacks(unit));
+                // good idea! :) dual thrust, dual
+                // stunning blow, many possibilities! :) but it will be tricky...
+                // TODO should add all dual actions
+            }
         actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Wait.name(), unit));
 
         if (RuleMaster.checkFeature(FEATURE.USE_INVENTORY)) {
@@ -785,15 +800,15 @@ if (RuleMaster.checkFeature(FEATURE.DUAL_ATTACKS))
     }
 
     private void addOffhandActions(DequeImpl<DC_UnitAction> actives, Unit unit) {
-if (actives!=null )
-        for (ActiveObj attack : actives) {
-            ObjType offhand = (DataManager.getType(ActionGenerator.getOffhandActionName(attack
-             .getName()), DC_TYPE.ACTIONS));
-            if (offhand == null) {
-                continue;
+        if (actives != null)
+            for (ActiveObj attack : actives) {
+                ObjType offhand = (DataManager.getType(ActionGenerator.getOffhandActionName(attack
+                 .getName()), DC_TYPE.ACTIONS));
+                if (offhand == null) {
+                    continue;
+                }
+                actives.add(getOrCreateAction(offhand.getName(), unit));
             }
-            actives.add(getOrCreateAction(offhand.getName(), unit));
-        }
 
     }
 
@@ -813,8 +828,9 @@ if (actives!=null )
                 }
             }
         }
-if (RuleMaster.checkFeature(FEATURE.ORDERS))
-        actives.addAll(getOrderActions( unit));
+
+        if (RuleMaster.checkFeature(FEATURE.ORDERS))
+            actives.addAll(getOrderActions(unit));
         // checkDual(unit);
         // checkInv(unit);
 
@@ -857,7 +873,7 @@ if (RuleMaster.checkFeature(FEATURE.ORDERS))
         if (action.getSubActions().isEmpty()) {
             action.setSubActions(new LinkedList<>(subActions));
         }
-       return subActions;
+        return subActions;
     }
 
     private DequeImpl<DC_UnitAction> getStandardActionsForGroup(ACTION_TYPE type,
@@ -872,8 +888,8 @@ if (RuleMaster.checkFeature(FEATURE.ORDERS))
         switch (type) {
             case STANDARD_ATTACK:
                 // TODO
-              actions.addAll( getAndInitAttacks(false,  unit));
-                actions.addAll(  getAndInitAttacks(true,   unit));
+                actions.addAll(getAndInitAttacks(false, unit));
+                actions.addAll(getAndInitAttacks(true, unit));
                 break;
             case HIDDEN:
                 // TODO extract into separate?
@@ -898,7 +914,7 @@ if (RuleMaster.checkFeature(FEATURE.ORDERS))
                                                Unit unit) {
         List<DC_UnitAction> list = new LinkedList<>();
         for (ActionType type : actionTypes) {
-            if (type==null )
+            if (type == null)
                 continue;
             // Ref ref = Ref.getCopy(unit.getRef());
             DC_UnitAction action = getOrCreateAction(type.getName(), unit);
@@ -958,7 +974,15 @@ if (RuleMaster.checkFeature(FEATURE.ORDERS))
     }
 
     public enum STD_ACTIONS {
-        Attack, Turn_Anticlockwise, Turn_Clockwise, Move ;
+        Attack, Turn_Anticlockwise, Turn_Clockwise, Move;
+
+        public String toString() {
+            return StringMaster.getWellFormattedString(name());
+        }
+    }
+
+    public enum STD_MODE_ACTIONS {
+        Defend, Concentrate, Rest, Meditate, On_Alert;
 
         public String toString() {
             return StringMaster.getWellFormattedString(name());
@@ -967,34 +991,27 @@ if (RuleMaster.checkFeature(FEATURE.ORDERS))
 
     public enum STD_ORDER_ACTIONS {
         Press_the_Attack,
-          Hold_Fast,
-          Protect_me,
-          Heal_me,
-          Kill_Him,
+        Hold_Fast,
+        Protect_me,
+        Heal_me,
+        Kill_Him,
         Retreat,
-        Cancel_Order{
+        Cancel_Order {
             @Override
             public String toString() {
                 return StringMaster.getWellFormattedString(name());
             }
-        },
-        ;
-public String toString() {
-            return "Order: " +StringMaster.getWellFormattedString(name()+
+        },;
+
+        public String toString() {
+            return "Order: " + StringMaster.getWellFormattedString(name() +
              "!");
         }
 
-        }
-        public enum STD_MODE_ACTIONS {
-        Defend, Concentrate, Rest, Meditate, On_Alert;
-
-        public String toString() {
-            return StringMaster.getWellFormattedString(name());
-        }
     }
 
     public enum STD_SPEC_ACTIONS {
-        Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode,Guard_Mode, Watch, Wait
+        Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Guard_Mode, Watch, Wait
     }
 
     public enum WEAPON_ATTACKS {

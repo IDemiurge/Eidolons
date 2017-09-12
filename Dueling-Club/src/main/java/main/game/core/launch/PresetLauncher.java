@@ -165,6 +165,10 @@ public class PresetLauncher {
 
     private static boolean customInit(LAUNCH launch) {
         switch (launch) {
+            case EXPLORATION:
+            case EXPLORATION_TEST:
+
+                return true;
             case Emitters:
                 ParticleManager.setAmbienceOn(true);
                 EmitterController.setTestMode(true);

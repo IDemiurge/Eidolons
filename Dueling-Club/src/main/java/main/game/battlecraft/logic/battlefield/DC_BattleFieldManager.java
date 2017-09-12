@@ -12,6 +12,8 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
 import main.game.core.game.DC_Game;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -79,6 +81,8 @@ public class DC_BattleFieldManager extends BattleFieldManager {
             }
         }
         resetWallMap(wallMap);
+        GuiEventManager.trigger(GuiEventType. UPDATE_WALL_MAP, this.wallMap);
+        GuiEventManager.trigger(GuiEventType. UPDATE_DIAGONAL_WALL_MAP, this.diagonalJoints);
     }
 
     public void resetWallMap(Map<Coordinates, BattleFieldObject> wallObjects) {

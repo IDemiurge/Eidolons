@@ -10,30 +10,39 @@ import main.system.math.PositionMaster;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DungeonCrawler {
-    public static final int AGGRO_RANGE = 3;
-    public static final int AGGRO_GROUP_RANGE = 3;
+public class AggroMaster {
+    public static final float AGGRO_RANGE = 2.5f;
+    public static final float AGGRO_GROUP_RANGE = 1.5f;
     private static boolean aiTestOn = true;
     boolean sightRequiredForAggro = true;
-static DC_Game game;
 
 
-    public static void checkCombatStarts() {
-        Unit hero = (Unit) game.getPlayer(true).getHeroObj();
+    public static List<Unit> getAggroGroup() {
+        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
+        return getAggroGroup(hero);
+    }
+        public static List<Unit> getAggroGroup( Unit hero ) {
          List<Unit> list =
-          new LinkedList<>(game.getUnits());
+          new LinkedList<>(DC_Game.game.getUnits());
 //        Analyzer.getEnemies(hero, false, false, false);
-        list.removeIf(unit -> !unit.isEnemyTo(game.getPlayer(true)));
+            list.removeIf(unit -> !unit.canActNow());
+            list.removeIf(unit -> !unit.isEnemyTo(DC_Game.game.getPlayer(true)));
         list.removeIf(unit-> PositionMaster.getExactDistance(
-         hero.getCoordinates(), unit.getCoordinates())<=AGGRO_RANGE);
+         hero.getCoordinates(), unit.getCoordinates())>AGGRO_RANGE);
+
         List<Unit> aggroGroup = new LinkedList<>();
         for (Unit sub : list) {
-        }
+            List<Unit> aggroed = new LinkedList<>(DC_Game.game.getUnits());
+            aggroed.removeIf(unit ->
+             !unit.canActNow() ||
+              !unit.isEnemyTo(DC_Game.game.getPlayer(true))||
+            aggroGroup.contains(sub) ||
+             PositionMaster.getExactDistance(
+             sub.getCoordinates(), unit.getCoordinates()) >= AGGRO_GROUP_RANGE);
 
-        list =
-         new LinkedList<>(game.getUnits());
-        list.removeIf(unit-> PositionMaster.getExactDistance(
-         hero.getCoordinates(), unit.getCoordinates())<=AGGRO_RANGE);
+            aggroGroup.addAll(aggroed);
+        }
+        return aggroGroup;
     }
 
     public static boolean isAiTestOn() {

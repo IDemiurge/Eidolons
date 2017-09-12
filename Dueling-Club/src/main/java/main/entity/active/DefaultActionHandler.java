@@ -6,6 +6,7 @@ import main.elements.targeting.SelectiveTargeting;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
@@ -27,7 +28,32 @@ public class DefaultActionHandler {
         return false;
     }
 
-    public static boolean leftClickCell(InputEvent event, int gridX, int gridY) {
+    public static boolean moveToMotion(Unit source, Coordinates coordinates) {
+//        List<ActionPath> paths = source.getGame().getAiManager().getPathBuilder().getInstance(source)
+//         .build(new ListMaster<Coordinates>().getList(coordinates));
+
+        source.getGame().getMovementManager().cancelAutomove(source);
+        new Thread(() -> {
+            source.getGame().getMovementManager().moveTo(
+             source.getGame().getCellByCoordinate(coordinates));
+        }, "moveTo thread").start();
+        return true;
+//       return      source.getGame().getMovementManager().getAutoPath(source)!=null ;
+    }
+
+    public static boolean turnToMotion(Unit source, Coordinates coordinates) {
+        List<Action> sequence =
+         source.getGame().getAiManager().getTurnSequenceConstructor().
+          getTurnSequence(FACING_SINGLE.IN_FRONT, source, coordinates);
+
+        DC_ActiveObj action = sequence.get(0).getActive();
+        Context context = new Context(source, null);
+        return activate(context, action);
+    }
+
+
+    public static boolean leftClickCell(boolean turn, boolean moveTo, int gridX, int gridY) {
+
         Unit source = null;
         try {
             source = Eidolons.getGame().getManager().getActiveObj();
@@ -39,6 +65,13 @@ public class DefaultActionHandler {
         if (source.isAiControlled())
             return false;
         Coordinates c = new Coordinates(gridX, gridY);
+
+        if (turn) {
+            return turnToMotion(source, c);
+        }
+        if (moveTo) {
+            return moveToMotion(source, c);
+        }
         if (c.x - source.getX() > 1) {
             return false;
         }
@@ -95,10 +128,12 @@ public class DefaultActionHandler {
             case TO_THE_SIDE:
 
                 boolean right =
-                  !source.getFacing().isVertical() ?
+                 !source.getFacing().isVertical() ?
                   d.isGrowY() : d.isGrowX();
-                if (!source.getFacing().isVertical())
-                if (source.getFacing().isCloserToZero())
+                if (!source.getFacing().isVertical()) {
+                    if (source.getFacing().isCloserToZero())
+                        right = !right;
+                } else if (!source.getFacing().isCloserToZero())
                     right = !right;
                 name = right ? "Move Right" :
                  "Move Left";

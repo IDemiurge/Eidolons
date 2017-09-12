@@ -35,8 +35,11 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
 
     void setReconstruct(boolean reconstruct);
 
+    public void setAmount(int amount);
 
-    void setAltering(boolean altering);
+    public int getAmount();
+
+        void setAltering(boolean altering);
 
 
     void setAltered(boolean altered);

@@ -39,6 +39,7 @@ import main.system.math.roll.RollMaster;
 public class ForceRule {
     public static final int ROLL_FACTOR = 50;
     private static final int DAMAGE_FACTOR = 100;
+    private static final int DAMAGE_SUBTRACTION = 10;
     private static final float PUSH_DISTANCE_COEFFICIENT = 0.1F;
     private static final float KNOCK_MAX_WEIGHT_COEFFICIENT = 0.25F;
     private static final float KNOCK_ALWAYS_WEIGHT_COEFFICIENT = 0.05F;
@@ -255,7 +256,7 @@ public class ForceRule {
     }
 
     private static int getDamage(int force, Entity attack, Entity source, BattleFieldObject attacked) {
-        int damage = Math.round(force / DAMAGE_FACTOR);
+        int damage = Math.round(force / DAMAGE_FACTOR) - DAMAGE_SUBTRACTION;
         damage = damage
 
          * attack.getIntParam(PARAMS.FORCE_DAMAGE_MOD)

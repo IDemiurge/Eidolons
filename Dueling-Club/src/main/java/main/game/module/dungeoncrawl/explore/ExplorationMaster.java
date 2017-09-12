@@ -3,7 +3,6 @@ package main.game.module.dungeoncrawl.explore;
 import main.client.cc.logic.party.PartyObj;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
-import main.game.core.game.DC_Game.GAME_MODES;
 
 /**
  * Created by JustMe on 8/2/2017.
@@ -11,6 +10,7 @@ import main.game.core.game.DC_Game.GAME_MODES;
 public class ExplorationMaster {
     static boolean explorationOn;
     private static boolean testMode = true;
+    private   ExploreCleaner cleaner;
     DC_Game game;
     ExplorationAiMaster aiMaster;
     ExplorationTimeMaster timeMaster;
@@ -24,6 +24,7 @@ public class ExplorationMaster {
         timeMaster = new ExplorationTimeMaster(this);
         resetter = new ExplorationResetHandler(this);
         crawler = new DungeonCrawler(this);
+        cleaner =new ExploreCleaner(this);
         actionHandler = new ExplorationActionHandler(this);
     }
 
@@ -31,41 +32,46 @@ public class ExplorationMaster {
         return testMode;
     }
 
-    public static boolean checkExplorationSupported(DC_Game game) {
-        if (testMode)
-            return true;
-        if (game.getGameMode() == GAME_MODES.DUNGEON_CRAWL) {
-            return true;
-        }
-
-        return false;
+    public static boolean isExplorationSupported(DC_Game game) {
+//        if (testMode)
+//            return true;
+//        if (game.getGameMode() == GAME_MODES.DUNGEON_CRAWL) {
+//            return true;
+//        }
+//TODO only if disabled by <?>>
+        return true;
     }
 
-    public static void switchExplorationMode(boolean on) {
-        if (explorationOn==on)
-            return ;
+    public   void switchExplorationMode(boolean on) {
+        if (explorationOn == on)
+            return;
         explorationOn = on;
         explorationToggled();
     }
 
-    private static ExplorerUnit createExplorerUnit(PartyObj partyObj) {
+    private   ExplorerUnit createExplorerUnit(PartyObj partyObj) {
         ExplorerUnit e = new ExplorerUnit(null);
 
         return e;
     }
 
 
-    private static void explorationToggled() {
+    private   void explorationToggled() {
         //speed up resets?
         //cache unit state?
+        if (isExplorationOn()){
+            //TODO quick-fix
+          cleaner.cleanUpAfterBattle();
+
+        }
         Eidolons.game.startGameLoop();
+        Eidolons.game.getManager().reset();
         //exceptions: triggers, scripts,
 
     }
 
+
     public static boolean isExplorationOn() {
-        if (testMode)
-            return true;
         return explorationOn;
     }
 
@@ -89,8 +95,15 @@ public class ExplorationMaster {
         return crawler;
     }
 
+    public ExploreCleaner getCleaner() {
+        return cleaner;
+    }
+
     public ExplorationActionHandler getActionHandler() {
         return actionHandler;
     }
 
+    public void init() {
+        explorationOn = getCrawler().checkExplorationDefault();
+    }
 }

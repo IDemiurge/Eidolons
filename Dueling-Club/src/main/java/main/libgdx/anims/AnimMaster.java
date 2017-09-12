@@ -234,6 +234,7 @@ public class AnimMaster extends Group {
         if (floatingTextMaster.isEventDisplayable(event)) {
             parentAnim = getParentAnim(event.getRef());
             if (parentAnim != null) {
+                parentAnim.getTextEvents().clear();
                 parentAnim.addTextEvent(event);
             }
         }

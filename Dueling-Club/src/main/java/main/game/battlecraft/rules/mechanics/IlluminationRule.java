@@ -35,7 +35,7 @@ public class IlluminationRule {
         for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
             LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
             if (effect != null) {
-                effect.setFormula(new Formula(getLightEmission((DC_Obj) obj) + ""));
+//                effect.setFormula(new Formula(getLightEmission((DC_Obj) obj) + ""));
                 effects.add(effect);
             }
         }
@@ -55,12 +55,13 @@ public class IlluminationRule {
         // obj-type... as with walls
 
         // Twilight Rule!
-        int value = getLightEmission(source);
-        if (value <= 0) {
-            return null;
-        }
+
         LightEmittingEffect effect = effectCache.get(source);
-        // if (effect == null) {
+         if (effect == null) {
+             int value = getLightEmission(source);
+             if (value <= 0) {
+                 return null;
+             }
         Boolean circular = true;
         if (source.checkBool(GenericEnums.STD_BOOLS.SPECTRUM_LIGHT)) {
             circular = false;
@@ -73,9 +74,9 @@ public class IlluminationRule {
         effect = new LightEmittingEffect(("" + value), circular);
         effect.setRef(new Ref(source));
         effectCache.put(source, effect);
-        // } else
-        // effect.getEffect().getEffectsStage().getOrCreate(0).setFormula(new Formula("" +
-        // value));
+         } else
+             effect.getEffect().getEffects().setFormula(new Formula("" +
+              getLightEmission(source)));
         return effect;
 
     }
@@ -85,7 +86,10 @@ public class IlluminationRule {
 //        Integer concealment = source.getIntParam(PARAMS.CONCEALMENT)
 //                + source.getGame().getCellByCoordinate(source.getCoordinates()).getIntParam(
 //                PARAMS.CONCEALMENT);
-        int value = source.getIntParam(PARAMS.LIGHT_EMISSION);
+        int value =
+//         source.getGame().getVisionMaster().
+//          getIlluminationMaster().getIllumination(source);
+         source.getIntParam(PARAMS.LIGHT_EMISSION);
         if (source instanceof Unit) {
             if (source.getGame().getVisionMaster().
              getIlluminationMaster().getIllumination(source) < 50)

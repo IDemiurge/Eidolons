@@ -35,11 +35,16 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     private Unit activeUnit;
     private boolean retainActiveUnit;
     private boolean started;
+    private DequeImpl<Unit> unitGroup;
 
     public DC_TurnManager(DC_Game game) {
         this.game = game;
         // init();
 
+    }
+
+    public void setUnitGroup(DequeImpl<Unit> unitGroup) {
+        this.unitGroup = unitGroup;
     }
 
     public static boolean isVisionInitialized() {
@@ -104,8 +109,16 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         return result;
     }
 
+    public DequeImpl<Unit> getUnits() {
+        if (unitGroup!=null )
+            return unitGroup;
+        return game.getUnits();
+    }
+
     public void resetInitiative(boolean first) {
-        for (Unit unit : game.getUnits()) {
+        for (Unit unit :getUnits()) {
+            if (unit.getAI().isOutsideCombat())
+                continue;
             resetInitiative(unit, first);
 //            int before = unit.getIntParam(PARAMS.C_INITIATIVE);
 //            int after = unit.getIntParam(PARAMS.C_INITIATIVE);
@@ -148,22 +161,36 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
             e.printStackTrace();
         }
 
-        for (Unit unit : game.getUnits()) {
+        for (Unit unit :  getUnits()) {
 //                if (game.getMainHero() != null) {
 //                    if (game.getMainHero().getZ() != unit.getZ()) {
 //                        continue;
 //                    }
 //                }
-            final boolean actNow = unit.canActNow();
+
+
+            final boolean actNow =unit.getAI().isOutsideCombat()? false : unit.canActNow();
             if (actNow) {
-                unitQueue.add(unit);
+                if (getGame().isDummyMode() &&getGame().isDummyPlus() && !unit.isMine())
+                {
+                   //?
+                }
+                else
+                {
+                    unitQueue.add(unit);
+                }
             }
+            if (!unit.getAI().isOutsideCombat())
             GuiEventManager.trigger(UPDATE_UNIT_ACT_STATE, new ImmutablePair<>(unit, actNow));
         }
 
         ArrayList<Unit> list = new ArrayList<>(getUnitQueue());
         Collections.sort(list, this);
         setUnitQueue(new DequeImpl<>(list));
+    }
+
+    public DC_Game getGame() {
+        return game;
     }
 
     public Unit getActiveUnit() {
@@ -176,7 +203,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 
     private boolean chooseUnit() {
         setActiveUnit(unitQueue.peek());
-        for (Unit sub : unitQueue) {
+        for (Unit sub : unitQueue) { if (sub!= getActiveUnit())
             if (sub.getIntParam(PARAMS.C_INITIATIVE) == getActiveUnit().getIntParam(PARAMS.C_INITIATIVE)) {
                 getActiveUnit().modifyParameter(PARAMS.C_INITIATIVE, 1, null, true);
 

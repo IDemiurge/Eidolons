@@ -4,8 +4,10 @@ import main.content.PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.elements.costs.Costs;
 import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.Unit;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -31,12 +33,24 @@ public class ExplorationActionHandler extends ExplorationHandler {
 
         return false;
     }
-
-    public static boolean isActivationDisabledByExploration() {
-
+    public void playerActionActivated(DC_ActiveObj activeObj) {
+//        int time = getTimeForAction(activeObj);
+//        DequeImpl<UnitAI> aiList = master.getAiMaster().getActiveUnitAIs();
+//        aiList.forEach(ai -> ai.setExplorationTimePassed(ai.getExplorationTimePassed() - time));
+        master.getCleaner().cleanUpAfterAction(activeObj.getOwnerObj());
+    }
+    public   boolean isActivationDisabledByExploration(DC_ActiveObj action) {
+switch (action.getName()){
+    case "Defend":
+        return true;
+}
         return false;
     }
 
+    public List<DC_ActiveObj> getExplorationActions(Unit unit) {
+        List<DC_ActiveObj> list = new LinkedList<>();
+        return list;
+    }
     private static void adjustCosts(Costs costs) {
         costs.getCosts().removeIf(cost ->
          ignoredCosts.contains(cost.getCostParam())
@@ -49,4 +63,5 @@ public class ExplorationActionHandler extends ExplorationHandler {
         adjustCosts(entity.getCosts());
         entity.getCosts().pay(entity.getRef());
     }
+
 }

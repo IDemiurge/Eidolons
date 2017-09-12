@@ -107,7 +107,7 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
     }
 
     public void resetParam(PARAMETER param) {
-        getEntity().resetParam(param);
+        getEntity().resetDynamicParam(param);
     }
 
     public void resetPropertyFromList(PROPERTY prop, List<? extends Entity> list) {

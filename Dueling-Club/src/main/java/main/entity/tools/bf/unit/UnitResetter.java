@@ -161,7 +161,7 @@ if (CoreEngine.isLogicTest())
                 }
                 if (game.isDummyMode()) {
                     if (getGame().isDummyPlus()) {
-                        getEntity().resetParam(PARAMS.C_N_OF_COUNTERS);
+                        getEntity().resetDynamicParam(PARAMS.C_N_OF_COUNTERS);
                         resetParam(PARAMS.C_STAMINA);
                         resetParam(PARAMS.C_FOCUS);
                         resetParam(PARAMS.C_ESSENCE);

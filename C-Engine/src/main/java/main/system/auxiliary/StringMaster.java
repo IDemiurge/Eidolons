@@ -1491,6 +1491,15 @@ public class StringMaster {
         }
         return 0.0;
     }
+    public static Float getFloat(String floatParam) {
+        floatParam = floatParam.replace("(", "").replace(")", "");
+        try {
+            return Float.valueOf(floatParam);
+        } catch (Exception e) {
+            // e.printStackTrace();
+        }
+        return 0.0f;
+    }
 
     public static String getCodeFromChar(String key) {
         return UNICODE + key.codePointAt(0) + CODEEND;

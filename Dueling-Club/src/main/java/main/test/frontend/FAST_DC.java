@@ -98,6 +98,7 @@ public class FAST_DC {
             if (args[0] == PRESET_OPTION_ARG) {
                 PresetLauncher.PRESET_OPTION = StringMaster.getInteger(args[1]);
                 FAST_MODE = PresetLauncher.chooseLaunchOption();
+                CoreEngine.setExe(true);
             } else if (arglist.contains(PRESET_ARG)) {
                 if (arglist.size() > 1) {
                     launcher.PLAYER_PARTY = arglist.get(1);

@@ -13,11 +13,11 @@ import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.StringMaster;
 
-public class BleedingCounterRule extends DamageCounterRule {
+public class BleedingDamageRule extends DamageCounterRule {
 
     private static final String PERC_PER_COUNTER = "1";
 
-    public BleedingCounterRule(DC_Game game) {
+    public BleedingDamageRule(DC_Game game) {
         super(game);
     }
 

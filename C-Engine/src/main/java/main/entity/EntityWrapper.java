@@ -373,7 +373,7 @@ public class EntityWrapper<E extends DataModel> {
     }
 
     public void resetParam(PARAMETER param) {
-        entity.resetParam(param);
+        entity.resetDynamicParam(param);
     }
 
     public void setParam(PARAMETER param, int i, boolean quietly, boolean base) {

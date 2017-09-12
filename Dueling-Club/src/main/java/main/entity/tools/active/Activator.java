@@ -113,14 +113,14 @@ public class Activator extends ActiveHandler {
     }
 
     public DC_UnitAction getModeAction() {
-        String mode = ownerObj.getActionMode(getEntity());
+        String mode = getAction().getOwnerObj().getActionMode(getEntity());
         if (mode == null) {
             return null;
         }
         if (getChecker().isAttackGeneric()) {
-            return (DC_UnitAction) game.getActionManager().getAction(mode, ownerObj);
+            return (DC_UnitAction) game.getActionManager().getAction(mode, getAction().getOwnerObj());
         }
-        return (DC_UnitAction) game.getActionManager().getAction(mode + " " + getName(), ownerObj);
+        return (DC_UnitAction) game.getActionManager().getAction(mode + " " + getName(), getAction().getOwnerObj());
     }
 
 

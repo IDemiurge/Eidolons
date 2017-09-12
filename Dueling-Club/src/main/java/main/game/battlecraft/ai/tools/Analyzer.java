@@ -13,6 +13,7 @@ import main.entity.active.DC_ActionManager.STD_SPEC_ACTIONS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.active.DC_UnitAction;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -473,7 +474,17 @@ public class Analyzer extends AiHandler {
                 cells.addAll(getCells(e, true, false, true));
             }
         }
-
+cells.removeIf(cell->{
+    boolean result = true;
+    if (ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates()) instanceof
+     BattleFieldObject){
+        if (
+        ((BattleFieldObject)
+         ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates())).isWall())
+result = false;
+    }
+   return result ;
+});
         return cells;
     }
 

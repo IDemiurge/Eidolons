@@ -137,7 +137,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         if (ammo) {
             ref.setID(KEYS.AMMO, getId());
         }
-        if (getActive() != null) {
+        if (active != null) {
             ref.setID(KEYS.ACTIVE, getActive().getId());
         }
     }

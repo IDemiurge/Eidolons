@@ -41,7 +41,7 @@ public class DC_Rules implements GameRules {
     private ScoutingRule scoutingRule;
 
     private BleedingRule bleedingTriggerRule;
-    private BleedingCounterRule bleedingRule;
+    private BleedingDamageRule bleedingRule;
     private WoundsBuffRule woundsRule;
     private PoisonRule poisonRule;
     private FreezeRule freezeRule;
@@ -112,7 +112,7 @@ public class DC_Rules implements GameRules {
 
         moraleKillingRule = new MoraleKillingRule(getGame());
 
-        bleedingRule = new BleedingCounterRule(game);
+        bleedingRule = new BleedingDamageRule(game);
         poisonRule = new PoisonRule(game);
         diseaseRule = new DiseaseRule(game);
         blazeRule = new BlazeRule(game);
@@ -269,7 +269,7 @@ public class DC_Rules implements GameRules {
         return bleedingTriggerRule;
     }
 
-    public BleedingCounterRule getBleedingRule() {
+    public BleedingDamageRule getBleedingRule() {
         return bleedingRule;
     }
 

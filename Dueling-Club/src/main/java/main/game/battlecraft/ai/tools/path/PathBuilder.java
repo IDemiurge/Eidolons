@@ -394,4 +394,14 @@ public class PathBuilder extends AiHandler {
     public int getTimeLimit() {
         return timeLimit;
     }
+
+    public PathBuilder getInstance(Unit source) {
+        PathBuilder clone = new PathBuilder(new AiMaster(game));
+        clone.setUnit(source);
+        return clone;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
 }

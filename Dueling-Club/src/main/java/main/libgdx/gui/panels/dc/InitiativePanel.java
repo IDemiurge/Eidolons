@@ -2,6 +2,7 @@ package main.libgdx.gui.panels.dc;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -14,12 +15,14 @@ import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.StyleHolder;
+import main.libgdx.anims.ActorMaster;
 import main.libgdx.bf.UnitView;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.graphics.FontMaster.FONT;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -36,6 +39,8 @@ public class InitiativePanel extends Group {
     private WidgetGroup queueGroup;
     private boolean cleanUpOn = false;
     private ValueContainer clockImage;
+    private Container<WidgetGroup> container;
+    private float queueOffsetY=15;
 
     public InitiativePanel() {
         init();
@@ -83,6 +88,50 @@ public class InitiativePanel extends Group {
         });
     }
 
+    private void init() {
+
+        queue = new ImageContainer[maxSize];
+        queueGroup = new WidgetGroup();
+        queueGroup.setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
+        container = new Container<>(queueGroup);
+        container.setBounds(imageSize - offset, queueOffsetY, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
+        container.left().bottom();
+        if (ExplorationMaster.isExplorationOn()) {
+            container.setY(imageSize);
+            container.setVisible(false);
+        }
+
+        addActor(container);
+
+        final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("UI",
+         "components", "2017", "panels", "initiativePanel.png"));
+        clockImage = new ValueContainer(textureRegion);
+        clockImage.setPosition(50, 15+ queueOffsetY);
+//        image.align(Align.bottomLeft);
+//        image.overrideImageSize(imageSize, imageSize);
+//        image.setSize(imageSize, imageSize);
+        ValueTooltip tooltip = new ValueTooltip();
+        tooltip.setUserObject(Arrays.asList(new ValueContainer("Good time to die!", "")));
+        clockImage.addListener(tooltip.getController());
+        addActor(clockImage);
+//        clockImage.setPosition(0, -textureRegion.getRegionHeight());
+
+        setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize,
+//         textureRegion.getRegionHeight()
+         imageSize+ queueOffsetY);
+
+        timeLabel = new Label("Time", StyleHolder.getSizedLabelStyle(FONT.NYALA, 22));
+        addActor(timeLabel);
+        timeLabel.setPosition(30, 0);
+
+    }
+
+    private void resetPositions() {
+        container.setBounds(imageSize + offset, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
+        clockImage.setPosition(0, -clockImage.getHeight());
+        timeLabel.setPosition(50, 0);
+    }
+
     private void resetZIndices() {
         clockImage.setZIndex(0);
         for (ImageContainer view : queue) {
@@ -121,38 +170,6 @@ public class InitiativePanel extends Group {
             if (!views.containsKey(sub.id))
                 removeView((sub.id));
         }
-    }
-
-    private void init() {
-
-
-        queue = new ImageContainer[maxSize];
-        queueGroup = new WidgetGroup();
-        queueGroup.setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
-        Container<WidgetGroup> container = new Container<>(queueGroup);
-        container.setBounds(imageSize + offset, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
-        container.left().bottom();
-        addActor(container);
-
-        final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("UI",
-         "components", "2017", "panels", "initiativePanel.png"));
-        clockImage = new ValueContainer(textureRegion);
-        clockImage.setPosition(50, 25);
-//        image.align(Align.bottomLeft);
-//        image.overrideImageSize(imageSize, imageSize);
-//        image.setSize(imageSize, imageSize);
-        ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer("Good time to die!", "")));
-        clockImage.addListener(tooltip.getController());
-        addActor(clockImage);
-        clockImage.setPosition(0, 15);
-
-        setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, clockImage.getHeight() + 15);
-
-        timeLabel = new Label("Time", StyleHolder.getDefaultLabelStyle());
-        addActor(timeLabel);
-        timeLabel.setPosition(50, 0);
-
     }
 
     private void addOrUpdate(UnitView unitView) {
@@ -217,11 +234,35 @@ public class InitiativePanel extends Group {
     public void act(float delta) {
         if (isRealTime()) {
             updateTime();
-            queueGroup.setVisible(false);
+            if (container.isVisible())
+                if (ActorMaster.getActionsOfClass(container, MoveToAction.class).size()==0){
+                toggleQueue(false);
+            }
         } else {
-            queueGroup.setVisible(true);
+            if (!container.isVisible())
+                if (ActorMaster.getActionsOfClass(container, MoveToAction.class).size()==0)
+                toggleQueue(true);
         }
         super.act(delta);
+    }
+
+    private void toggleQueue(boolean visible) {
+        main.system.auxiliary.log.LogMaster.log(1,
+         container.getY() + " = y; queue toggled; h= " + container.getHeight() + " " + visible);
+
+        float x = container.getX();
+        float y = !visible ? container.getHeight() : queueOffsetY;
+        ActorMaster.addMoveToAction(container, x, y, 1);
+        if (visible)
+            container.setVisible(visible);
+        else
+            ActorMaster.addAfter(container, new Action() {
+                @Override
+                public boolean act(float delta) {
+                    container.setVisible(false);
+                    return true;
+                }
+            });
     }
 
     private boolean isRealTime() {

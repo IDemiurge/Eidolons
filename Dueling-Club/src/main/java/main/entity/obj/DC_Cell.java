@@ -122,6 +122,9 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     public void toBase() {
         super.toBase();
+        name = super.getName()
+         + StringMaster.wrapInParenthesis(StringMaster
+         .getWellFormattedString(getProperty(PROPS.VISIBILITY_STATUS)));
     }
 
     public String getToolTip() {
@@ -188,9 +191,7 @@ public class DC_Cell extends DC_Obj implements Cell {
         // }
         return
                 // visibilityPrefix + " " +
-                super.getName()
-                        + StringMaster.wrapInParenthesis(StringMaster
-                        .getWellFormattedString(getProperty(PROPS.VISIBILITY_STATUS)));
+                name;
     }
 
     //

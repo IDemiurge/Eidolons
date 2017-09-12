@@ -132,7 +132,7 @@ public class ActorMaster {
         return addFadeInOrOut(actor, duration);
     }
 
-    private static List<Object> getActionsOfClass(Actor actor, Class<? extends Action> c) {
+    public static List<Object> getActionsOfClass(Actor actor, Class<? extends Action> c) {
         return ClassMaster.getInstances(
          new LinkedList<>(Arrays.asList(actor.getActions().toArray())),
          c);

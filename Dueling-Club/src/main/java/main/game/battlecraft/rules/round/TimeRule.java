@@ -204,6 +204,8 @@ public class TimeRule {
     }
 
     public int getTimePercentageRemaining() {
+        if (baseTime==0)
+            return 0;
         return Math.round(new Float(timeRemaining * 100 / baseTime));
     }
 

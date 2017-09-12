@@ -243,7 +243,9 @@ public class Costs extends CostImpl {
     }
 
     public String getReasonsString() {
-        return StringMaster.joinStringList(reasons, ", ");
+        if (getReasonList().size()<2)
+            return reason;
+        return StringMaster.joinStringList(getReasonList(), ", ");
     }
 
     public void removeCost(PARAMETER param) {

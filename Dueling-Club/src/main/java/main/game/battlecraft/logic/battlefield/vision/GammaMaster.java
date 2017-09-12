@@ -20,13 +20,14 @@ import java.util.stream.Collectors;
  */
 public class GammaMaster {
 
-    public static final boolean DEBUG_MODE = false;
+    public static final boolean DEBUG_MODE = true;
     private static final Float CELL_GAMMA_MODIFIER = 0.01F;
     private static final Float UNIT_GAMMA_MODIFIER = 5F;
     private static final Float LIGHT_EMITTER_ALPHA_FACTOR = 0.01f;
     private static final Float CONCEALMENT_ALPHA_FACTOR = 0.02f;
     private VisionMaster master;
     private Map<DC_Obj, Integer> cache = new HashMap<>();
+    private boolean dirty;
 
     public GammaMaster(VisionMaster visionManager) {
         master = visionManager;
@@ -52,13 +53,17 @@ public class GammaMaster {
         if (source == null) {
             source = target.getGame().getManager().getActiveObj();
         }
+        if (!dirty)
+            if (target.getGamma()!=null )
+                if (source == target.getGame().getManager().getActiveObj())
+                    return target.getGamma();
+
         Integer illumination = master.getIlluminationMaster().getIllumination(source, target);
         Integer concealment = master.getIlluminationMaster().getConcealment(source, target);
 
 
         Integer gamma = illumination - concealment;
 //        cache.put(target, gamma);
-
         if (source == target.getGame().getManager().getActiveObj()) {
             target.setGamma(gamma);
         }
@@ -132,6 +137,7 @@ if (VisionManager.isVisionHacked()){
 
     public void clearCache() {
         cache.clear();
+        dirty = true;
     }
 
     public float getGammaForCell(int x, int y) {

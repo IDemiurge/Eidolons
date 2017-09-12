@@ -1,5 +1,6 @@
 package main.game.module.dungeoncrawl.explore;
 
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
 
 /**
@@ -28,12 +29,13 @@ public class ExplorationResetHandler extends ExplorationHandler {
         //position-based effects?
         IlluminationRule.resetIllumination(master.game);
         IlluminationRule.initLightEmission(master.game);
+
 //        checkCounterRules();
-        master.getGame().getManager().checkForChanges(false);
+        master.getGame().getManager().checkForChanges(true);
 
         //reset once after *all* ai moves?
 
-        master.getCrawler().checkStatusUpdate();
+
         resetNeeded = false;
         //check time triggers!
     }

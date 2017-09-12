@@ -298,12 +298,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         if (isFull()) {
             return;
         }
-        regen(PARAMS.ENDURANCE);
-        regen(PARAMS.FOCUS);
-        regen(PARAMS.ESSENCE);
-        regen(PARAMS.STAMINA);
-
-        regen(PARAMS.ENERGY);
+        Arrays.stream(DC_ContentManager.REGEN_PARAMS).forEach(parameter -> {
+           regen(parameter);
+        });
 
     }
 

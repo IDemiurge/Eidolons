@@ -34,7 +34,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         facingAdjuster = createFacingAdjuster();
         builder = createBuilder();
         mapGenerator = new DungeonMapGenerator<E>(this);
-
+    if (ExplorationMaster.isExplorationSupported(game))
         explorationMaster = new ExplorationMaster(game);
     }
 

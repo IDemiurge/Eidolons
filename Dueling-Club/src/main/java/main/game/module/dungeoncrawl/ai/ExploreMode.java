@@ -5,7 +5,7 @@ import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.game.DC_Game;
-import main.game.module.dungeoncrawl.ai.DungeonCrawler.ENGAGEMENT_LEVEL;
+import main.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
 
 public class ExploreMode {
     /*

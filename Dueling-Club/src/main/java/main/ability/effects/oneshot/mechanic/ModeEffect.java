@@ -27,6 +27,7 @@ import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.game.battlecraft.rules.mechanics.InterruptRule;
 import main.game.battlecraft.rules.perk.AlertRule;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -81,8 +82,27 @@ public class ModeEffect extends MicroEffect implements OneshotEffect {
         this.mode = template;
     }
 
+    private boolean applyExplorationVersion() {
+        /*
+        start restoring <?> over time
+set mode all the same, just allow breaking it?
+while in Mode, restore...
+
+isModeDisablesActions
+
+alert - ?
+divination?
+         */
+
+
+        return false;
+    }
+
     @Override
     public boolean applyThis() {
+//        if (ExplorationMaster.isExplorationOn()){
+//            return applyExplorationVersion();
+//        }
         if (reinit) {
             initBuffEffect();
         }
@@ -92,6 +112,10 @@ public class ModeEffect extends MicroEffect implements OneshotEffect {
         if (mode.isDispelOnHit()) {
             addDispelOnHitTrigger();
         }
+        if (ExplorationMaster.isExplorationOn()){
+            //dispel on action? in
+
+        } else
         if (mode.isEndTurnEffect()) {
             addEndTurnEffect();
         }

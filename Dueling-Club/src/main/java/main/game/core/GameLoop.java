@@ -2,12 +2,14 @@ package main.game.core;
 
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.rules.combat.misc.ChargeRule;
 import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.AnimMaster;
 import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
@@ -59,6 +61,9 @@ public class GameLoop {
         if (AiTrainingRunner.running) {
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, false);
         } else {
+           if (ExplorationMaster.isExplorationOn())
+                return ;
+
             Boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_FINISHED);
             if (result) {
                 Eidolons.getGame().getBattleMaster().getOutcomeManager().next();
@@ -100,6 +105,8 @@ public class GameLoop {
                 break;
             }
             result = makeAction();
+            if (ExplorationMaster.isExplorationOn())
+                return false;
             if (!aftermath)
                 if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
                     return false;
@@ -144,7 +151,9 @@ public class GameLoop {
             //SHOWCASE SECURITY
             try {
                 result = activateAction(waitForAI());
+                AI_Manager.setOff(false);
             } catch (Exception e) {
+                AI_Manager.setOff(true);
                 if (!aiFailNotified) {
                     Err.error("Sorry, autopilot failed, you gotta take control now or we're dead!");
                     aiFailNotified = true;

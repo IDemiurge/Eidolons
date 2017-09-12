@@ -773,7 +773,9 @@ public class Anim extends Group implements Animation {
 
     public void addFloatingText(FloatingText floatingText) {
         getFloatingText().add(floatingText);
-
+if (floatingText.getDelay()==0){
+    floatingText.setDelay(getFloatingText().size()-1);
+}
 
     }
 

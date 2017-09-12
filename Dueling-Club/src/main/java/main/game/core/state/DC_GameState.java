@@ -40,7 +40,8 @@ public class DC_GameState extends MicroGameState {
         if (first) {
             this.setRound(DEFAULT_ROUND);
         } else {
-            this.setRound(DEFAULT_ROUND - 1);
+            this.setRound(DEFAULT_ROUND);
+//          ???  this.setRound(DEFAULT_ROUND - 1);
         }
 
     }

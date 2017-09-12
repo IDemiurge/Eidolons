@@ -143,17 +143,16 @@ public class Executor extends ActiveHandler {
         boolean gameLog = getAction().getLogger().isActivationLogged();
         String targets = " ";
         if (getAction().getLogger().isTargetLogged())
-        if (getAction().getTargetObj() != null) {
-     if (game.isDebugMode())
-                targets = getAction().getTargetObj().getNameAndCoordinate();
-            else
-                targets = getAction().getTargetObj().getNameIfKnown();
-        } else if (getAction().getTargetGroup() != null)
-            {
+            if (getAction().getTargetObj() != null) {
+                if (game.isDebugMode())
+                    targets = getAction().getTargetObj().getNameAndCoordinate();
+                else
+                    targets = getAction().getTargetObj().getNameIfKnown();
+            } else if (getAction().getTargetGroup() != null) {
                 targets = getAction().getTargetGroup().toString();
             }
         log(getAction().getOwnerObj().getNameIfKnown() + " activates "
-         + getAction().getNameIfKnown() +" "+ targets, gameLog);
+         + getAction().getNameIfKnown() + " " + targets, gameLog);
         beingActivated();
         if (isInterrupted()) {
             return interrupted();
@@ -253,7 +252,7 @@ public class Executor extends ActiveHandler {
 
     private void initActivation() {
         fireEvent(STANDARD_EVENT_TYPE.ACTION_ACTIVATED, true);
-        ownerObj.getRef().setID(KEYS.ACTIVE, getId());
+        getAction().getOwnerObj().getRef().setID(KEYS.ACTIVE, getId());
         triggered = getRef().isTriggered();
         getCalculator().calculateTimeCost();
         getInitializer().construct();
@@ -323,10 +322,10 @@ public class Executor extends ActiveHandler {
 
     private void addStdPassives() {
         if (!StringMaster.isEmpty(getAction().getProperty(G_PROPS.STANDARD_PASSIVES))) {
-            ownerObj.addProperty(G_PROPS.STANDARD_PASSIVES, getAction().getProperty(G_PROPS.STANDARD_PASSIVES));
+            getAction().getOwnerObj().addProperty(G_PROPS.STANDARD_PASSIVES, getAction().getProperty(G_PROPS.STANDARD_PASSIVES));
         }
         if (!StringMaster.isEmpty(getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES))) {
-            ownerObj.addProperty(G_PROPS.STANDARD_PASSIVES,
+            getAction().getOwnerObj().addProperty(G_PROPS.STANDARD_PASSIVES,
              getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
         }
     }
@@ -379,7 +378,11 @@ public class Executor extends ActiveHandler {
         }
 
         fireEvent(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, false);
-        getMaster().getLogger().logCompletion();
+        try {
+            getMaster().getLogger().logCompletion();
+        } catch (Exception e) {
+           main.system.ExceptionMaster.printStackTrace( e);
+        }
         getGame().getManager().applyActionRules(getAction());
         try {
             checkPendingAttacksOfOpportunity();
@@ -402,7 +405,7 @@ public class Executor extends ActiveHandler {
 //    public boolean activateChanneling() {
 //        initCosts();
 //        initChannelingCosts();
-//        game.getLogManager().log(">> " + ownerObj.getName() + " has begun Channeling " + getName());
+//        game.getLogManager().log(">> " + getAction().getOwnerObj().getName() + " has begun Channeling " + getName());
 //        boolean result = (checkExtraAttacksDoNotInterrupt(ENTRY_TYPE.ACTION));
 //        if (result) {
 //            this.channeling = true;
@@ -429,12 +432,12 @@ public class Executor extends ActiveHandler {
 
     private void checkPendingAttacksOfOpportunity() {
         for (DC_ActiveObj attack : new LinkedList<>(getPendingAttacksOpportunity())) {
-            if (!AttackOfOpportunityRule.checkPendingAttackProceeds(ownerObj, attack)) {
+            if (!AttackOfOpportunityRule.checkPendingAttackProceeds(getAction().getOwnerObj(), attack)) {
                 continue;
             }
             getPendingAttacksOpportunity().remove(attack);
             Ref REF = Ref.getCopy(attack.getRef());
-            REF.setTarget(ownerObj.getId());
+            REF.setTarget(getAction().getOwnerObj().getId());
             attack.activatedOn(REF);
         }
 

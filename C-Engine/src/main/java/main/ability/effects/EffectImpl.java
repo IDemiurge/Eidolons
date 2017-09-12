@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
 // EFFECT ARE ABOUT WHAT
 // ABILITIE ARE ABOUT HOW
 public abstract class EffectImpl extends ReferredElement implements Effect {
+    private static Map<UUID, Pair<Class, String>[]> constructorMap;
     protected Formula formula;
     // protected Obj target_obj;
     // ?Ability ability;
@@ -59,6 +60,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     protected boolean quietMode;
     protected Integer forcedLayer;
     protected Trigger trigger;
+    boolean mapped;
     private boolean ignoreGroupTargeting;
     private GroupImpl targetGroup;
     private boolean irresistible;
@@ -68,31 +70,16 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     private boolean continuousWrapped;
     private Boolean forceStaticParse;
     private Formula originalFormula;
+    private int amount;
     private boolean applied;
     private ActiveObj animationActive;
     private ANIM animation;
     private String xml;
-    boolean mapped;
     private UUID id;
+    private String name;
 
     public EffectImpl() {
         super();
-    }
-
-    public void mapThisToConstrParams(Object... args){
-//        if (ConstructionManager.isConstructing())
-//            return ;
-        if (!isMappingOn())
-            return ;
-        if (mapped)
-            return ;
-        Pair<Class, String>[] paramType = Arrays.stream(args).map(obj ->
-         new ImmutablePair(obj.getClass(), ConstructionManager.getXmlFromObject(obj))
-        ).collect(Collectors.toList()).toArray(new Pair[args.length]);
-           id = UUID.randomUUID();
-        getConstructorMap().put(id, paramType);
-        xml = ConstructionManager.getXmlFromConstructorData(getClass().getSimpleName(), getConstructorMap().get(id));
-
     }
 
     private static boolean isMappingOn() {
@@ -103,12 +90,34 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         return true;
     }
 
-    private static Map<UUID, Pair<Class, String>[]> constructorMap;
-
     public static Map<UUID, Pair<Class, String>[]> getConstructorMap() {
-        if (constructorMap==null )
+        if (constructorMap == null)
             constructorMap = new HashMap<>();
         return constructorMap;
+    }
+
+    public void mapThisToConstrParams(Object... args) {
+//        if (ConstructionManager.isConstructing())
+//            return ;
+        if (!isMappingOn())
+            return;
+        if (mapped)
+            return;
+        Pair<Class, String>[] paramType = Arrays.stream(args).map(obj ->
+         new ImmutablePair(obj.getClass(), ConstructionManager.getXmlFromObject(obj))
+        ).collect(Collectors.toList()).toArray(new Pair[args.length]);
+        id = UUID.randomUUID();
+        getConstructorMap().put(id, paramType);
+        xml = ConstructionManager.getXmlFromConstructorData(getClass().getSimpleName(), getConstructorMap().get(id));
+
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     @Override
@@ -117,7 +126,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             return xml;
         if (construct != null)
             return construct.toXml();
-        if (id!=null ){
+        if (id != null) {
             xml = ConstructionManager.getXmlFromConstructorData(getClass().getSimpleName(), getConstructorMap().get(id));
         }
         //custom - just gonna have to serialize all fields using reflection?!
@@ -140,12 +149,13 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
     @Override
     public ANIM getAnimation() {
-        if (animation == null) {
-            if (getAnimationActive() instanceof ActiveObj) {
-                ActiveObj activeObj = getAnimationActive();
-                animation = activeObj.getAnimation();
+        if (animation == null)
+            if (CoreEngine.isPhaseAnimsOn()) {
+                if (getAnimationActive() instanceof ActiveObj) {
+                    ActiveObj activeObj = getAnimationActive();
+                    animation = activeObj.getAnimation();
+                }
             }
-        }
         return animation;
     }
 
@@ -191,8 +201,10 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName()
+        if (name != null) return name;
+        name = getClass().getSimpleName()
          + ("" + this.hashCode()).substring(("" + this.hashCode()).length() - 2);
+        return name;
     }
 
     @Override
@@ -283,11 +295,12 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     @Override
     public boolean apply() {
         if (!quietMode) {
-            if (!game.getManager().effectApplies(this)) {
-                LogMaster.log(1, "effect resisted! - " + toString());
-                // TODO sound?
-                return false;
-            }
+            if (checkEventsFired())
+                if (!game.getManager().effectApplies(this)) {
+                    LogMaster.log(1, "effect resisted! - " + toString());
+                    // TODO sound?
+                    return false;
+                }
         }
 
         if (isInterrupted()) {
@@ -313,7 +326,8 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         try {
             result = applyThis();
             applied = true;
-            game.fireEvent(new Event(STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED, ref));
+            if (checkEventsFired())
+                game.fireEvent(new Event(STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED, ref));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -321,6 +335,10 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
         return result;
 
+    }
+
+    protected boolean checkEventsFired() {
+        return false;
     }
 
     public boolean isApplied() {
@@ -413,11 +431,12 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         super.setRef(REF);
         this.source = REF.getSource();
         this.target = REF.getTarget();
-        if (getAnimationActive() == null) {
-            setAnimationActive(ref.getAnimationActive()); // TODO ??
-        } else {
-            this.ref.setAnimationActive(getAnimationActive());
-        }
+        if (CoreEngine.isPhaseAnimsOn())
+            if (getAnimationActive() == null) {
+                setAnimationActive(ref.getAnimationActive()); // TODO ??
+            } else {
+                this.ref.setAnimationActive(getAnimationActive());
+            }
     }
 
     public boolean isAltering() {

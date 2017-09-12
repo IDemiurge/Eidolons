@@ -84,6 +84,11 @@ public class DC_ContentManager extends ContentManager {
 
       PARAMS.COUNTER_MOD));
     private static final String DEFAULT_WEAPON = "Petty Fist";
+    public static PARAMETER[] REGEN_PARAMS = {
+     PARAMS.ENDURANCE, PARAMS.FOCUS,
+     PARAMS.ESSENCE, PARAMS.STAMINA
+//   ,PARAMS.ENERGY
+    };
     private static PARAMETER[] WEAPON_MODIFYING_PARAMS = {
 
      PARAMS.ARMOR, PARAMS.DEFENSE, PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.STAMINA_PENALTY,

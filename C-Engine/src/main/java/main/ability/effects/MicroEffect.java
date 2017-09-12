@@ -99,6 +99,8 @@ public abstract class MicroEffect extends EffectImpl {
     }
 
     private void cleanAnimation() {
+        if (!CoreEngine.isPhaseAnimsOn())
+            return ;
         AnimPhase lastPhase = getAnimation().getPhases().isEmpty() ? null : getAnimation()
                 .getPhases().get(getAnimation().getPhases().size() - 1);
         // getActiveObj().initAnimation();

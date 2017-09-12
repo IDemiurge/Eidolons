@@ -11,6 +11,14 @@ import main.game.core.Eidolons;
  */
 public class BattleClickListener extends ClickListener {
 
+    public boolean isShift( ) {
+        return Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)
+         || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT);
+    }
+    public boolean isControl( ) {
+        return Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)
+         || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT);
+    }
     public boolean isAlt( ) {
         return Gdx.input.isKeyPressed(Keys.ALT_RIGHT)
          || Gdx.input.isKeyPressed(Keys.ALT_LEFT);

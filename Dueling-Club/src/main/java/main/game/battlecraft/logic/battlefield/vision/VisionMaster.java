@@ -63,6 +63,7 @@ public class VisionMaster implements GenericVisionManager {
 
     public void resetVisibilityStatuses() {
         getGammaMaster().clearCache();
+        getIlluminationMaster().clearCache();
 //        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
         setActiveUnit(game.getTurnManager().getActiveUnit(true));
 

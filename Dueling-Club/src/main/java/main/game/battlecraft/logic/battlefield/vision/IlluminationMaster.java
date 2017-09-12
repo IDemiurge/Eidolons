@@ -10,6 +10,9 @@ import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.system.math.PositionMaster;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by JustMe on 2/22/2017.
  */
@@ -18,10 +21,11 @@ public class IlluminationMaster {
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION = 10;
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION_NIGHT = 30;
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION_DAY = 80;
-    private   VisionMaster master;
-    private Integer lightEmissionModifier = 200;
+    private VisionMaster master;
+    private Integer lightEmissionModifier = 100;
     private Integer globalIllumination = 0;
     private Integer globalConcealment = 10;
+    private Map<DC_Obj, Integer> cache = new HashMap<>();
 
     public IlluminationMaster(VisionMaster visionManager) {
         master = visionManager;
@@ -29,7 +33,7 @@ public class IlluminationMaster {
     }
 
     public Integer getLightEmissionModifier() {
-        Dungeon dungeon =master.  getGame().getDungeon();
+        Dungeon dungeon = master.getGame().getDungeon();
         if (dungeon != null) {
             if (dungeon.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER) != 0)
                 return dungeon.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER);
@@ -60,11 +64,18 @@ public class IlluminationMaster {
     public Integer getIllumination(DC_Obj target) {
         return getIllumination(master.getSeeingUnit(), target);
     }
-        public Integer getIllumination(Unit source, DC_Obj target) {
-        Dungeon dungeon = source.getGame().getDungeon();
 
-        Integer illumination =
-         target.getIntParam(PARAMS.ILLUMINATION);
+    public Integer getIllumination(Unit source, DC_Obj target) {
+        Integer illumination = null;
+        if (source == master.getSeeingUnit()) {
+            illumination = cache.get(target);
+            if (illumination != null) {
+                return illumination;
+            }
+        }
+
+        illumination = target.getIntParam(PARAMS.ILLUMINATION);
+        Dungeon dungeon = source.getGame().getDungeon();
         illumination += target.getIntParam(PARAMS.LIGHT_EMISSION) / 2;
         if (dungeon != null) {
             illumination = Math.max(illumination, dungeon.getGlobalIllumination());
@@ -80,7 +91,7 @@ public class IlluminationMaster {
         Integer sight = source.getIntParam(PARAMS.SIGHT_RANGE);
         FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(source, (BfObj) target);
         if (singleFacing == UnitEnums.FACING_SINGLE.BEHIND) {
-            sight =1+ source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
+            sight = 1 + source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
         } else if (singleFacing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
             sight -= source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
         }
@@ -99,7 +110,9 @@ public class IlluminationMaster {
         ilMod = Math.max(ilMod, 1);
 
         // TODO DISTANCE FACTOR?
-        return illumination * ilMod / 100;
+        illumination =  illumination * ilMod / 100;
+          cache.put(target, illumination);
+        return illumination ;
     }
 
     public Integer getConcealment(Unit source, DC_Obj target) {
@@ -119,5 +132,9 @@ public class IlluminationMaster {
         }
 
         return concealment * cMod / 100;
+    }
+
+    public void clearCache() {
+        cache.clear();
     }
 }
