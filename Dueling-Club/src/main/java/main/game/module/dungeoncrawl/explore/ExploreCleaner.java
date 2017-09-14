@@ -30,6 +30,7 @@ public class ExploreCleaner extends ExplorationHandler {
         if (unit.getMode() != null)
             if (unit.getBuff(unit.getMode().getBuffName()) != null)
                 unit.getBuff(unit.getMode().getBuffName()).remove();
+                unit.getMode(); //to reset
 //             for (BuffObj buff : unit.getBuffs()) {
 //                 if (checkBuffRemoved(buff))
 //                     buff.remove();

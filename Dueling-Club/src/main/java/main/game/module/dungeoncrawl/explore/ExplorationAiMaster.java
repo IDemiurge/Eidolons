@@ -2,6 +2,7 @@ package main.game.module.dungeoncrawl.explore;
 
 import main.content.PARAMS;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
+import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.AiActionFactory;
@@ -18,7 +19,9 @@ import main.system.datatypes.DequeImpl;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 9/9/2017.
@@ -28,6 +31,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
     private DequeImpl<UnitAI> activeUnitAIs;
     private boolean aiActs;
     private Stack<ActionInput> aiActionQueue;
+    private Set<Unit> allies;
 
     public ExplorationAiMaster(ExplorationMaster master) {
         super(master);
@@ -36,15 +40,20 @@ public class ExplorationAiMaster extends ExplorationHandler {
     }
 
     public void reset() {
+
+        allies = master.getGame().getPlayer(true).getControlledUnits_();
         activeUnitAIs.clear();
         master.getGame().getUnits().forEach(unit ->
          {
-             if (unit.isAiControlled())
+             if (!unit.getAI().isAttached())
+                 if (unit.isAiControlled()) {
                  if (unit.canActNow())
-                    activeUnitAIs.add(unit.getAI());
+                     activeUnitAIs.add(unit.getAI());
+             }
          }
         );
     }
+
 
     public void checkAiActs() {
 //        master.getGame().getAiManager().getBehaviorMaster().
@@ -79,6 +88,29 @@ public class ExplorationAiMaster extends ExplorationHandler {
         if (timePassed >= Math.round(cost *
          ExplorationTimeMaster.secondsPerAP)) {
             aiMoves(ai);
+            return true;
+        }
+        return false;
+    }
+
+    public void tryMoveAiTurnBased(float timePercentage) {
+        reset();
+        for (UnitAI ai : getActiveUnitAIs(true)) {
+            tryMoveAiTurnBased(ai, timePercentage);
+        }
+    }
+
+    private boolean tryMoveAiTurnBased(UnitAI ai, float timePercentage) {
+        if (ai.getStandingOrders() == null) {
+            ai.setStandingOrders(getOrders(ai));
+        }
+        Double cost = ai.getStandingOrders().getCurrentAction().getActive().
+         getParamDouble(PARAMS.AP_COST) / ai.getUnit().getIntParam(PARAMS.N_OF_ACTIONS);
+        if (timePercentage >= cost) {
+            ActionInput input = new ActionInput(
+             ai.getStandingOrders().getCurrentAction().getActive(),
+             new Context(ai.getStandingOrders().getCurrentAction().getRef()));
+            master.getGame().getGameLoop().actionInput(input);
             return true;
         }
         return false;
@@ -145,6 +177,15 @@ public class ExplorationAiMaster extends ExplorationHandler {
     }
 
     public DequeImpl<UnitAI> getActiveUnitAIs() {
+        return getActiveUnitAIs(false);
+    }
+
+    public DequeImpl<UnitAI> getActiveUnitAIs(boolean outOfBattleOnly) {
+        if (outOfBattleOnly) {
+            DequeImpl<UnitAI> d = new DequeImpl<UnitAI>(activeUnitAIs);
+            d.removeIf(ai -> !ai.isOutsideCombat());
+            return d;
+        }
         return activeUnitAIs;
     }
 
@@ -160,4 +201,18 @@ public class ExplorationAiMaster extends ExplorationHandler {
     public Stack<ActionInput> getAiActionQueue() {
         return aiActionQueue;
     }
+
+    public Set<Unit> getAllies() {
+        return allies;
+    }
+
+    public DequeImpl<UnitAI> getAlliesAndActiveUnitAIs(boolean outOfBattleOnly) {
+        DequeImpl<UnitAI> deque = new DequeImpl<>(allies.stream().map
+         (unit -> unit.getAI()).collect(Collectors.toList()), getActiveUnitAIs());
+        if (outOfBattleOnly) {
+            deque.removeIf(ai -> !ai.isOutsideCombat());
+        }
+        return deque;
+    }
+
 }

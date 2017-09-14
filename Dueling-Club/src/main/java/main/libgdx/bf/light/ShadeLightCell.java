@@ -17,12 +17,13 @@ import main.system.options.OptionsMaster;
  */
 public class ShadeLightCell extends SuperContainer {
 
+    private static boolean alphaFluctuation = true;
+    private SHADE_LIGHT type;
     private float baseAlpha;
-    private static boolean alphaFluctuation=true;
 
     public ShadeLightCell(SHADE_LIGHT type, int x, int y) {
         super(new Image(TextureCache.getOrCreate(type.getTexturePath())));
-
+        this.type = type;
     }
 
     public static void setAlphaFluctuation(boolean alphaFluctuation) {

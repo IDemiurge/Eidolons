@@ -36,6 +36,7 @@ import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.bf.Rotatable;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
@@ -290,7 +291,7 @@ else
 
 
     public MODE getMode() {
-        if (mode == null || mode == STD_MODES.NORMAL) {
+        if (mode == null || mode == STD_MODES.NORMAL || ExplorationMaster.isExplorationOn()) {
             initMode();
         } else if (mode.isContinuous())
             initMode(); //this is a quickfix for Guarding+Defend/Alert compatibility...

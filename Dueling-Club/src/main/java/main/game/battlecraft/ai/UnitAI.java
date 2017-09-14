@@ -64,6 +64,7 @@ public class UnitAI {
     private boolean outsideCombat;
     private float explorationTimeOfModeEffect;
     private float explorationTimeOfRegenEffects;
+    private boolean attached;
 //    private CHARACTER_TYPE characterType;
 //    private INCLINATION_TYPE characterType;
 //    private IMPULSE_TYPE impulseType;
@@ -523,6 +524,14 @@ public class UnitAI {
 
     public void setExplorationTimeOfRegenEffects(float explorationTimeOfRegenEffects) {
         this.explorationTimeOfRegenEffects = explorationTimeOfRegenEffects;
+    }
+
+    public boolean isAttached() {
+        return attached;
+    }
+
+    public void setAttached(boolean attached) {
+        this.attached = attached;
     }
 
 

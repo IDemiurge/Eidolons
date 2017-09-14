@@ -13,8 +13,6 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.Loop;
 import main.system.threading.WaitMaster;
 
-import java.util.Stack;
-
 import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
 
 /**
@@ -24,7 +22,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     private static final int REAL_TIME_LOGIC_PERIOD = 150;
     private static Thread realTimeThread;
     private ExplorationMaster master;
-    private Stack<ActionInput> playerActionQueue = new Stack<>();
+
 
     public ExploreGameLoop(DC_Game game) {
         super(game);
@@ -33,6 +31,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     protected static void startRealTimeLogic() {
+        Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
         while (true) {
             WaitMaster.WAIT(REAL_TIME_LOGIC_PERIOD);
             if (Eidolons.getGame().isPaused()) continue;
@@ -89,21 +88,23 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 //            ChannelingRule.channelingResolves(activeUnit);
 //             activateAction(data);
 //        }
-        if (playerActionQueue.isEmpty()) {
+        if (actionQueue.isEmpty()) {
             game.getMovementManager().promptContinuePath(activeUnit);
             return false;
         }
 
 
-        master.getCrawler().reset();
         master.getAiMaster().reset();
         master.getResetter().setResetNeeded(true);
         //recheck?!
-        ActionInput playerAction = playerActionQueue.pop();
+        ActionInput playerAction = actionQueue.removeLast();
         if (checkActionInputValid(playerAction)) {
             game.getMovementManager().cancelAutomove(activeUnit);
             activateAction(playerAction);
             master.getActionHandler().playerActionActivated(playerAction.getAction());
+
+            master.getPartyMaster().leaderActionDone(playerAction);
+
             VisionManager.refresh();
             waitForAnimations();
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
@@ -112,7 +113,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return false; //check unit!
     }
 
-    private boolean checkActionInputValid(ActionInput playerAction) {
+    protected boolean checkActionInputValid(ActionInput playerAction) {
         if (!playerAction.getAction().canBeActivated(playerAction.getContext(), true))
             return false;
         if (playerAction.getAction().getTargeting() instanceof SelectiveTargeting)
@@ -132,31 +133,37 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     @Override
-    public void actionInput(ActionInput actionInput) {
-        if (playerActionQueue.size() > 1)
+    public void queueActionInput(ActionInput actionInput) {
+        if (actionQueue.size() > 1)
             return;
-        if (playerActionQueue.contains(actionInput))
+        if (actionQueue.contains(actionInput))
             return;
-        if (playerActionQueue.size() > 0) {
+        if (actionQueue.size() > 0) {
             new Thread(() -> {
                 Loop loop = new Loop(20);
                 while (loop.continues()) {
                     WaitMaster.WAIT(100);
-                    if (playerActionQueue.isEmpty()) {
+                    if (actionQueue.isEmpty()) {
                         //check validity
-                        tryPushToPlayerActions(actionInput);
+                        tryAddPlayerActions(actionInput);
                         break;
                     }
                 }
 
             }, "Player ActionInput Thread").start();
         } else
-            tryPushToPlayerActions(actionInput);
+            tryAddPlayerActions(actionInput);
     }
 
-    private void tryPushToPlayerActions(ActionInput actionInput) {
+    @Override
+    public void actionInput(ActionInput actionInput) {
+        queueActionInput(actionInput);
 
-        playerActionQueue.push(actionInput);
+    }
+
+    private void tryAddPlayerActions(ActionInput actionInput) {
+
+        actionQueue.add(actionInput);
     }
 
     @Override
@@ -171,7 +178,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         activeUnit = (Unit) game.getPlayer(true).getHeroObj();
         game.getManager().setSelectedActiveObj(activeUnit);
         GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
-
+        master.getPartyMaster().reset();
         while (true) {
             Boolean result = makeAction();
             if (result) {

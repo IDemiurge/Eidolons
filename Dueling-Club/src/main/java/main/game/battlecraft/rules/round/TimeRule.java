@@ -73,7 +73,7 @@ public class TimeRule {
         int totalTime = 0;
         for (Unit unit : game.getUnits()) {
             Integer totalInitiative = unit.getIntParam(PARAMS.C_INITIATIVE)
-                    - unit.getIntParam(PARAMS.C_INITIATIVE_BONUS);
+             - unit.getIntParam(PARAMS.C_INITIATIVE_BONUS);
             if (totalInitiative > totalTime) {
                 totalTime = totalInitiative;
             }
@@ -100,9 +100,16 @@ public class TimeRule {
 
         if (time > maxTime) {
             maxTime = time;
+            int delta = getTimeRemaining() - (baseTime - time);
+            float percent = new Float(delta) / baseTime;
+            if (game.getDungeonMaster().getExplorationMaster() != null)
+                game.getDungeonMaster().getExplorationMaster().
+                getAiMaster().tryMoveAiTurnBased(percent);
+            //% of time spent...
+
             timeRemaining = baseTime - time;
             game.getLogManager().log(LOG.GAME_INFO,
-                    "*** Time remaining for this round: " + timeRemaining, ENTRY_TYPE.ACTION);
+             "*** Time remaining for this round: " + timeRemaining, ENTRY_TYPE.ACTION);
         }
         return timeRemaining <= 0;
 
@@ -139,12 +146,12 @@ public class TimeRule {
         for (Unit unit : lateUnits) {
             // transferInitiative(unit);
             unit.setParam(PARAMS.C_INITIATIVE_TRANSFER, Math.max(0, unit
-                    .getIntParam(PARAMS.C_INITIATIVE)));
+             .getIntParam(PARAMS.C_INITIATIVE)));
             // negative transfer should be possible, but...
         }
 
         game.getLogManager().log("*** " + speedyUnit.getName() + " prompts the round to end"
-                // +"The hour has come for this round to end!"
+         // +"The hour has come for this round to end!"
         );
 
         return true;
@@ -168,8 +175,8 @@ public class TimeRule {
                 speedyUnit = action.getOwnerObj();
 
                 game.getLogManager().log(
-                        "***" + speedyUnit.getName() + " acts swiftly, units with less than "
-                                + getTimeThreshold() + " will be out of time for this round.");
+                 "***" + speedyUnit.getName() + " acts swiftly, units with less than "
+                  + getTimeThreshold() + " will be out of time for this round.");
 
                 // return false;
             }
@@ -199,12 +206,12 @@ public class TimeRule {
         AddStatusEffect effect;
         effect = new AddStatusEffect(UnitEnums.STATUS.LATE);
         new AddBuffEffect((preliminary) ? BUFF_NAME_PRELIMINARY : BUFF_NAME, effect, 1).apply(Ref
-                .getSelfTargetingRefCopy(unitObj));
+         .getSelfTargetingRefCopy(unitObj));
 
     }
 
     public int getTimePercentageRemaining() {
-        if (baseTime==0)
+        if (baseTime == 0)
             return 0;
         return Math.round(new Float(timeRemaining * 100 / baseTime));
     }

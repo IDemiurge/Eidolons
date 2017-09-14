@@ -14,6 +14,7 @@ import main.libgdx.anims.AnimMaster;
 import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.datatypes.DequeImpl;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
@@ -32,6 +33,7 @@ public class GameLoop {
     protected boolean aiFailNotified;
     protected boolean aftermath;
     protected boolean skippingToNext;
+    protected DequeImpl<ActionInput> actionQueue = new DequeImpl<>();
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -143,6 +145,10 @@ public class GameLoop {
     protected Boolean makeAction() {
 
         Boolean result = null;
+        if (!actionQueue.isEmpty()){
+            result = activateAction(actionQueue.removeLast());
+        }
+        else
         if (activeUnit.getHandler().getChannelingSpellData() != null) {
             ActionInput data = activeUnit.getHandler().getChannelingSpellData();
             ChannelingRule.channelingResolves(activeUnit);
@@ -264,7 +270,10 @@ public class GameLoop {
         this.aftermath = aftermath;
     }
 
-    public void actionInput(ActionInput actionInput) {
+    public void queueActionInput(ActionInput actionInput) {
+        actionQueue.add(actionInput);
+    }
+        public void actionInput(ActionInput actionInput) {
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, actionInput);
     }
 }

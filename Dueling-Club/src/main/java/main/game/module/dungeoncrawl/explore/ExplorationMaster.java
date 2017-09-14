@@ -10,6 +10,7 @@ import main.game.core.game.DC_Game;
 public class ExplorationMaster {
     static boolean explorationOn;
     private static boolean testMode = true;
+    private   ExplorePartyMaster partyMaster;
     private   ExploreCleaner cleaner;
     DC_Game game;
     ExplorationAiMaster aiMaster;
@@ -26,6 +27,12 @@ public class ExplorationMaster {
         crawler = new DungeonCrawler(this);
         cleaner =new ExploreCleaner(this);
         actionHandler = new ExplorationActionHandler(this);
+        partyMaster = new ExplorePartyMaster(this);
+//        aiGroupMaster = new ExplorePartyMasterEnemy(this);
+    }
+
+    public ExplorePartyMaster getPartyMaster() {
+        return partyMaster;
     }
 
     public static boolean isTestMode() {

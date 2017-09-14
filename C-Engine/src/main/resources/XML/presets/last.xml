@@ -1,2 +1,2 @@
-PLAYER_UNITS=Gwyn(1-10); 
+PLAYER_UNITS=Gwyn(1-9);Gnauri Viragost(1-10);Elinda Carrow(1-10); 
 ,FIRST_DUNGEON=demo\dungeon.xml,

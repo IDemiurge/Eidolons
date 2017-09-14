@@ -4,23 +4,18 @@ import main.entity.obj.unit.Unit;
 import main.game.module.dungeoncrawl.ai.AggroMaster;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by JustMe on 9/9/2017.
  */
 public class DungeonCrawler extends ExplorationHandler {
-    private Set<Unit> allies;
+
     private int minDistance=4;
 
     public DungeonCrawler(ExplorationMaster master) {
         super(master);
     }
 
-
-    public void reset() {
-        allies = master.getGame().getPlayer( true).getControlledUnits_();
-    }
 
     private boolean checkDanger() {
         //range? potential vision?
@@ -44,7 +39,7 @@ public class DungeonCrawler extends ExplorationHandler {
             for (Unit sub : master.getGame().getUnits()) {
                 sub.getAI().setOutsideCombat(false);
                 if (!aggroGroup.contains(sub))
-                    if (!allies.contains(sub))
+                    if (!master.getAiMaster().getAllies().contains(sub))
                         sub.getAI().setOutsideCombat(true);
             }
 //            aggroGroup.forEach(unit -> unit.getAI().setEngaged(true));
@@ -64,7 +59,6 @@ public class DungeonCrawler extends ExplorationHandler {
         return !checkEngaged();
     }
     public void checkStatusUpdate() {
-        reset();
         if (checkEngaged()) {
             master.switchExplorationMode(false);
         } else {
