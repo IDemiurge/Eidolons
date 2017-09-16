@@ -1,7 +1,6 @@
 package main.libgdx.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
@@ -16,12 +15,12 @@ import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import main.libgdx.DialogScenario;
+import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.bf.BFDataCreatedEvent;
 import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridMaster;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.mouse.InputController;
-import main.libgdx.stage.AnimationEffectStage;
 import main.libgdx.stage.BattleGuiStage;
 import main.libgdx.stage.ChainedStage;
 import main.libgdx.texture.TextureManager;
@@ -47,25 +46,30 @@ import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
 public class DungeonScreen extends ScreenWithLoader {
     public static OrthographicCamera camera;
     private static DungeonScreen instance;
-
+    private static boolean cameraAutoCenteringOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
     private Stage gridStage;
     private BattleGuiStage guiStage;
     private GridPanel gridPanel;
     private ChainedStage dialogsStage = null;
     private OrthographicCamera cam;
     private InputController controller;
-
     private TextureRegion backTexture;
-    private AnimationEffectStage animationEffectStage;
-
     private Vector2 velocity;
-    private static boolean cameraAutoCenteringOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
     private DC_SoundMaster soundMaster;
     private Vector2 cameraDestination;
     private RealTimeGameLoop realTimeGameLoop;
+    private ParticleManager particleManager;
 
     public static DungeonScreen getInstance() {
         return instance;
+    }
+
+    public static boolean isCameraAutoCenteringOn() {
+        return cameraAutoCenteringOn;
+    }
+
+    public static void setCameraAutoCenteringOn(boolean b) {
+        cameraAutoCenteringOn = b;
     }
 
     @Override
@@ -73,24 +77,19 @@ public class DungeonScreen extends ScreenWithLoader {
         instance = this;
         super.preLoad();
 
-        gridStage = new Stage();
-        gridStage.setViewport(viewPort);
+        gridStage = new Stage(viewPort, getBatch());
 
-        guiStage = new BattleGuiStage();
-        //guiStage.setViewport(viewPort);
+        guiStage = new BattleGuiStage(null , getBatch());
 
-        animationEffectStage = new AnimationEffectStage();
-        animationEffectStage.setViewport(viewPort);
+
 
         GL30 gl = Gdx.graphics.getGL30();
-        if (gl!=null )
-        {
+        if (gl != null) {
             gl.glEnable(GL30.GL_BLEND);
             gl.glEnable(GL30.GL_TEXTURE_2D);
             gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
-        }
-        else {
-            GL20 gl20 =  Gdx.graphics.getGL20();
+        } else {
+            GL20 gl20 = Gdx.graphics.getGL20();
             gl20.glEnable(GL20.GL_BLEND);
             gl20.glEnable(GL20.GL_TEXTURE_2D);
             gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -110,7 +109,7 @@ public class DungeonScreen extends ScreenWithLoader {
             DialogueHandler handler = (DialogueHandler) obj.get();
             final List<DialogScenario> list = handler.getList();
             if (dialogsStage == null) {
-                dialogsStage = new ChainedStage(list);
+                dialogsStage = new ChainedStage(viewPort, getBatch(), list);
                 updateInputController();
             } else {
                 dialogsStage.play(list);
@@ -131,6 +130,8 @@ public class DungeonScreen extends ScreenWithLoader {
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
         gridStage.addActor(gridPanel);
+        particleManager = new ParticleManager( );
+        gridStage. addActor(particleManager.getEmitterMap());
 //        GuiEventManager.bind(GuiEventType.BF_CREATED, p -> {
         try {
             controller.setDefaultPos();
@@ -139,10 +140,10 @@ public class DungeonScreen extends ScreenWithLoader {
         }
 //        });
         GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, p -> {
-            if (isCameraAutoCenteringOn()){
-            Coordinates coordinatesActiveObj = DC_Game.game.getManager().getActiveObj().getCoordinates();
-            Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridConst.CELL_W + GridConst.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridConst.CELL_H - GridConst.CELL_H / 2);
-            cameraPan(unitPosition);
+            if (isCameraAutoCenteringOn()) {
+                Coordinates coordinatesActiveObj = DC_Game.game.getManager().getActiveObj().getCoordinates();
+                Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridConst.CELL_W + GridConst.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridConst.CELL_H - GridConst.CELL_H / 2);
+                cameraPan(unitPosition);
             }
         });
         if (CoreEngine.isGraphicTestMode()) {
@@ -162,7 +163,7 @@ public class DungeonScreen extends ScreenWithLoader {
     }
 
     private void cameraPan(Vector2 unitPosition) {
-    this.cameraDestination = unitPosition;
+        this.cameraDestination = unitPosition;
         float dest = cam.position.dst(unitPosition.x, unitPosition.y, 0f) / getCameraDistanceFactor();
         if (dest < getCameraMinCameraPanDist())
             return;
@@ -201,20 +202,19 @@ public class DungeonScreen extends ScreenWithLoader {
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
-            DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
-        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+//            DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
+//        }
         super.render(delta);
         if (!hideLoader)
             return;
         guiStage.act(delta);
-        animationEffectStage.act(delta);
         gridStage.act(delta);
 
-            cameraShift();
+        cameraShift();
         //cam.update();
         if (canShowScreen()) {
-            if (realTimeGameLoop!=null )
+            if (realTimeGameLoop != null)
                 realTimeGameLoop.act(delta);
 
             if (backTexture != null) {
@@ -229,7 +229,6 @@ public class DungeonScreen extends ScreenWithLoader {
 
             gridStage.draw();
 
-            animationEffectStage.draw();
 
             guiStage.draw();
 
@@ -259,33 +258,31 @@ public class DungeonScreen extends ScreenWithLoader {
 
     private void cameraShift() {
 //        Gdx.app.log("DungeonScreen::cameraShift()", "-- Start! cam:" + cam + " velocity:" + velocity);
-if (cameraDestination!=null )
-        if (cam != null && velocity != null && !velocity.isZero()) {
-            try {
-                cam.position.add(velocity.x * Gdx.graphics.getDeltaTime(), velocity.y * Gdx.graphics.getDeltaTime(), 0f);
+        if (cameraDestination != null)
+            if (cam != null && velocity != null && !velocity.isZero()) {
+                try {
+                    cam.position.add(velocity.x * Gdx.graphics.getDeltaTime(), velocity.y * Gdx.graphics.getDeltaTime(), 0f);
 //                Coordinates coordinatesActiveObj = getCenteredCoordinates();
 //                Vector2 cameraDestination = new Vector2(coordinatesActiveObj.x * GridConst.CELL_W + GridConst.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridConst.CELL_H - GridConst.CELL_H / 2);
-                float dest = cam.position.dst(cameraDestination.x, cameraDestination.y, 0f) / getCameraDistanceFactor();
-                Vector2 velocityNow = new Vector2(cameraDestination.x - cam.position.x, cameraDestination.y - cam.position.y).nor().scl(Math.min(cam.position.dst(cameraDestination.x, cameraDestination.y, 0f), dest));
+                    float dest = cam.position.dst(cameraDestination.x, cameraDestination.y, 0f) / getCameraDistanceFactor();
+                    Vector2 velocityNow = new Vector2(cameraDestination.x - cam.position.x, cameraDestination.y - cam.position.y).nor().scl(Math.min(cam.position.dst(cameraDestination.x, cameraDestination.y, 0f), dest));
 //                if(Intersector.overlaps(new Circle(new Vector2(cam.position.x, cam.position.y), 1f), new Circle(unitPosition, 1f))) {
-                if (CoreEngine.isGraphicTestMode()) {
-                    Gdx.app.log("DungeonScreen::cameraShift()", "-- velocity:" + velocity);
-                    Gdx.app.log("DungeonScreen::cameraShift()", "-- velocityNow:" + velocityNow);
-                    Gdx.app.log("DungeonScreen::cameraShift()", "-- velocity.hasOppositeDirection(velocityNow):" + velocity.hasOppositeDirection(velocityNow));
+                    if (CoreEngine.isGraphicTestMode()) {
+                        Gdx.app.log("DungeonScreen::cameraShift()", "-- velocity:" + velocity);
+                        Gdx.app.log("DungeonScreen::cameraShift()", "-- velocityNow:" + velocityNow);
+                        Gdx.app.log("DungeonScreen::cameraShift()", "-- velocity.hasOppositeDirection(velocityNow):" + velocity.hasOppositeDirection(velocityNow));
+                    }
+                    if (velocity.hasOppositeDirection(velocityNow)) {
+                        cameraStop();
+                    }
+                } catch (Exception exp) {
+                    if (CoreEngine.isGraphicTestMode())
+                        Gdx.app.log("DungeonScreen::cameraShift()", "-- exp:" + exp);
                 }
-                if (velocity.hasOppositeDirection(velocityNow)) {
-                    cameraStop();
-                }
-            } catch (Exception exp) {
-                if (CoreEngine.isGraphicTestMode())
-                    Gdx.app.log("DungeonScreen::cameraShift()", "-- exp:" + exp);
+                cam.update();
             }
-            cam.update();
-        }
 //        Gdx.app.log("DungeonScreen::cameraShift()", "-- End!");
     }
-
-
 
     public void cameraStop() {
         if (velocity != null)
@@ -311,23 +308,12 @@ if (cameraDestination!=null )
         return gridStage;
     }
 
-    public Stage getAnimsStage() {
-        return animationEffectStage;
-    }
 
-    public static boolean isCameraAutoCenteringOn() {
-        return cameraAutoCenteringOn;
-    }
-
-    public static void setCameraAutoCenteringOn(boolean b) {
-         cameraAutoCenteringOn = b;
+    public RealTimeGameLoop getRealTimeGameLoop() {
+        return realTimeGameLoop;
     }
 
     public void setRealTimeGameLoop(RealTimeGameLoop realTimeGameLoop) {
         this.realTimeGameLoop = realTimeGameLoop;
-    }
-
-    public RealTimeGameLoop getRealTimeGameLoop() {
-        return realTimeGameLoop;
     }
 }

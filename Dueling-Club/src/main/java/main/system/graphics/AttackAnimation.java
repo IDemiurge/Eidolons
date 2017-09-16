@@ -70,7 +70,7 @@ public class AttackAnimation extends ActionAnimation {
     public void setAttack(Attack attack) {
         this.attack = attack;
 
-        setTarget(attack.getAttackedUnit());
+        setTarget(attack.getAttacked());
         source = attack.getAttacker();
         game = attack.getAction().getGame();
         direction = DirectionMaster.flip(DirectionMaster.getRelativeDirection(source, getTarget()));

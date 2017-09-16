@@ -3,10 +3,14 @@ package main.libgdx.stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import main.libgdx.DialogScenario;
 
@@ -21,7 +25,12 @@ public class ChainedStage extends Stage {
     private Runnable onDoneCallback;
     private DialogueHandler dialogueHandler;
 
-    public ChainedStage(List<DialogScenario> list) {
+    public ChainedStage(ScreenViewport viewport, Batch batch, List<DialogScenario> list) {
+        super(viewport==null ?
+         new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(),
+         Gdx.graphics.getHeight(), new OrthographicCamera()) : viewport,
+         batch == null ?  new SpriteBatch() :
+         batch);
         current = new Container<>();
         iterator = list.iterator();
         if (iterator.hasNext()) {

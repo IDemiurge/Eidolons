@@ -320,4 +320,8 @@ public class CoreEngine {
     public static void setExe(boolean exe) {
         CoreEngine.exe = exe;
     }
+
+    public static boolean isDefaultValuesAddedDynamically() {
+        return false;
+    }
 }

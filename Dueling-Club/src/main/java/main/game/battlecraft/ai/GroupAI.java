@@ -20,7 +20,7 @@ import java.util.*;
 public class GroupAI {
     private ENCOUNTER_TYPE encounterType;
     private Unit leader;
-    private List<Unit> members;
+    private List<Unit> members= new LinkedList<>();
     private PartyObj party;
     private Wave creepGroup;
     private ENGAGEMENT_LEVEL engagementLevel;
@@ -39,9 +39,14 @@ public class GroupAI {
     private boolean backAndForth;
     private Patrol patrol;
 
+    public GroupAI( ) {
+
+    }
+    public GroupAI(Unit leader) {
+        this.leader = leader;
+    }
     public GroupAI(Wave creepGroup) {
         this.creepGroup = creepGroup;
-        members = new LinkedList<>();
         if (creepGroup != null) {
             encounterType = creepGroup.getWaveType();
             if (creepGroup == null) {

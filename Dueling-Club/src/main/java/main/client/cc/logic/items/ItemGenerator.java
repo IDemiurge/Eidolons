@@ -669,9 +669,14 @@ public class ItemGenerator implements GenericItemGenerator {
              new EnumMaster<MATERIAL>().retrieveEnumConst(
               MATERIAL.class, name);
         }
+        if (material == null) {
+            return null ;
+        }
         typeName = typeName.replace(material.toString(), "").trim();
 
-        ObjType baseType = DataManager.getType(typeName, type);
+        ObjType baseType = DataManager.getType(typeName, type, true);
+        if (baseType==null )
+            return null ;
         return generateItem(weapon, quality, material, baseType);
 
     }

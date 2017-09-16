@@ -631,7 +631,7 @@ public class DataManager {
         return isTypeName(item, null);
     }
 
-    public static boolean isTypeName(String item, DC_TYPE TYPE) {
+    public static boolean isTypeName(String item, OBJ_TYPE TYPE) {
         if (item == null) {
             return false;
         }

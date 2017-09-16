@@ -23,7 +23,6 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.lighting.LightingManager;
-import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.anims.std.MoveAnimation;
 import main.libgdx.bf.light.ShadowMap;
@@ -140,7 +139,8 @@ public class GridPanel extends Group {
 
             @Override
             public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
-                return PhaseAnimator.getInstance().checkAnimClicked(x, y, pointer, button);
+//                return PhaseAnimator.getInstance().checkAnimClicked(x, y, pointer, button);
+                return false;
             }
         });
 

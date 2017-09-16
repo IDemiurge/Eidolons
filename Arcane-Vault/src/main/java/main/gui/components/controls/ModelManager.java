@@ -884,4 +884,11 @@ public class ModelManager {
         ArcaneVault.getMainBuilder().getTree().getTreeSelectionListeners()[0].valueChanged(null);
     }
 
+    public static void addDefaultValues(boolean alt) {
+        for (ObjType sub : DataManager.getTypes()) {
+            DC_ContentManager.addDefaultValues(sub);
+        }
+        if (!alt)
+            saveAll();
+    }
 }

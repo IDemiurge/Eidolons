@@ -34,6 +34,7 @@ public class ContentManager {
     public static final String DEFAULT_EMPTY_VALUE = "";
     public static final String OLD_EMPTY_VALUE = "[...]";
     private static final String MASTERY = "_MASTERY";
+    private static final boolean LOWER_CASE_CACHED = true;
 
 
     private static Map<String, List<String>> valueNamesMap = new ConcurrentMap<>();
@@ -78,8 +79,8 @@ public class ContentManager {
     private static Class<?>[] propEnumClasses;
     private static Class<?>[] paramEnumClasses;
     private static List<PARAMETER> finalAttributes;
-    private static Map<String, PARAMETER> paramCache = new ConcurrentMap<>();
-    private static Map<String, PROPERTY> propCache = new ConcurrentMap<>();
+    private static Map<String, PARAMETER> paramCache;// = new ConcurrentMap<>();
+    private static Map<String, PROPERTY> propCache;// = new ConcurrentMap<>();
     private static List<VALUE> values;
     private static Set<VALUE> excludedValueSet;
     private static TypeMaster typeMaster;
@@ -97,30 +98,26 @@ public class ContentManager {
         params = paramz;
         sparams = new ArrayList<>(params.size());
         sprops = new ArrayList<>(props.size());
+
+        propCache = new HashMap<>(props.size()*3/2);
         for (PROPERTY p : props) {
-            sprops.add(p.getName());
-            if (p.isLowPriority()) {
-                lowPriorityValues.add(p);
-            }
-            if (p.isSuperLowPriority()) {
-                superLowPriorityValues.add(p);
-            }
-            if (p.isHighPriority()) {
-                highPriorityValues.add(p.getName());
-            }
+            String name = p.getName();
+            sprops.add(name);
+
+            if (LOWER_CASE_CACHED)
+                name = name.toLowerCase();
+            propCache.put(name, p);
+
 
         }
+        paramCache = new HashMap<>(params.size()*3/2);
         for (PARAMETER p : params) {
-            sparams.add(p.getName());
-            if (p.isHighPriority()) {
-                highPriorityValues.add(p.getName());
-            }
-            if (p.isLowPriority()) {
-                lowPriorityValues.add(p);
-            }
-            if (p.isSuperLowPriority()) {
-                superLowPriorityValues.add(p);
-            }
+            String name = p.getName();
+            sparams.add(name);
+            if (LOWER_CASE_CACHED)
+                name = name.toLowerCase();
+            paramCache.put(name, p);
+
             if (p.isAttribute()) {
                 getAttributes().add(p);
             }
@@ -250,6 +247,8 @@ public class ContentManager {
         if (StringMaster.isEmpty(valueName)) {
             return null;
         }
+        if (LOWER_CASE_CACHED)
+            valueName = valueName.toLowerCase();
         PARAMETER param = paramCache.get(valueName);
         if (param == G_PARAMS.EMPTY_PARAMETER) {
             return null;
@@ -342,9 +341,12 @@ public class ContentManager {
                 value = p;
             }
         }
+        if (LOWER_CASE_CACHED)
+            valueName = valueName.toLowerCase();
         if (param) {
             paramCache.put(valueName, (PARAMETER) value);
         } else {
+
             propCache.put(valueName, (PROPERTY) value);
         }
         return value;
@@ -417,6 +419,8 @@ public class ContentManager {
         if (StringMaster.isEmpty(valueName)) {
             return null;
         }
+        if (LOWER_CASE_CACHED)
+             valueName = valueName.toLowerCase();
         VALUE v = propCache.get(valueName);
         if (v != null) {
             if (!checkExcluded(v)) {

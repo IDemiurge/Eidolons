@@ -36,7 +36,6 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
@@ -126,7 +125,7 @@ public class DC_AttackMaster {
         try {
             main.system.auxiliary.log.LogMaster.log(1,
              attack.getAttacker() + " attacks " +
-              attack.getAttackedUnit() +
+              attack.getAttacked() +
               " with " + attack.getAction());
             result = attackNow(attack, ref, free, canCounter, onHit, onKill, offhand, counter);
             boolean countered = false;

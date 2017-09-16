@@ -24,12 +24,12 @@ import main.system.math.roll.RollMaster;
  */
 public class DefenseVsAttackRule {
     public static int getAttackValue(Attack attack) {
-        return getAttackValue(attack.isOffhand(), attack.getAttacker(), attack.getAttackedUnit(),
+        return getAttackValue(attack.isOffhand(), attack.getAttacker(), attack.getAttacked(),
          attack.getAction());
     }
 
     public static int getDefenseValue(Attack attack) {
-        return getDefenseValue(attack.getAttacker(), attack.getAttackedUnit(), attack.getAction());
+        return getDefenseValue(attack.getAttacker(), attack.getAttacked(), attack.getAction());
     }
 
     //

@@ -15,6 +15,7 @@ import main.game.core.game.GameFactory.GAME_SUBCLASS;
 import main.game.core.launch.TestLauncher.CODE;
 import main.game.core.state.Loader;
 import main.game.core.state.Saver;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.controls.EmitterController;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.anims.particles.lighting.LightingManager;
@@ -167,7 +168,7 @@ public class PresetLauncher {
         switch (launch) {
             case EXPLORATION:
             case EXPLORATION_TEST:
-
+                ExplorationMaster.setTestMode(true);
                 return true;
             case Emitters:
                 ParticleManager.setAmbienceOn(true);

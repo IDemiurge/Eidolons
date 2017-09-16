@@ -140,7 +140,7 @@ public class EmitterController implements Controller {
     }
 
     public void add(EmitterActor actor, Vector2 v) {
-        DungeonScreen.getInstance().getAnimsStage().addActor(actor);
+        DungeonScreen.getInstance().getGridStage().addActor(actor);
         if (v == null) {
             v = GridMaster.getMouseCoordinates();
         }

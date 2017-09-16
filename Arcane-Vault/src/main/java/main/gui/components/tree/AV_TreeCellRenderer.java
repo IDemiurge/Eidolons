@@ -57,7 +57,7 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
         }
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
         String typeName = (String) node.toString();
-        ObjType type;
+        ObjType type = null;
         String parent = null;
         try {
             parent = ((DefaultMutableTreeNode) node.getParent()).getUserObject().toString();
@@ -65,6 +65,7 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
 
         }
         try {
+            if (DataManager.isTypeName(typeName, TYPE))
             if (workspace != null) {
                 type = DataManager.getType(typeName, workspace.getOBJ_TYPE(typeName, parent));
             } else {
@@ -72,7 +73,7 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
             }
             if (type == null) {
                 if (node.isLeaf()) {
-                    LogMaster.log(1, "NULL typeName!" + " " + typeName);
+                    LogMaster.log(1, "No such type: " + " " + typeName);
                 }
                 return getDefaultComp(tree, value, selected, expanded, leaf, row, hasFocus);
             }

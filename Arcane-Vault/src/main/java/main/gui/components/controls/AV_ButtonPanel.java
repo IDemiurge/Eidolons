@@ -47,6 +47,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
     public static final String CLEAN_UP = ("Clean Up");
     public static final String NEW_TREE = "New Tree";
     public static final String WS_TOGGLE = "WS Add";
+    public static final String DEFAULTS = "Defaults";
     static String[] commands = new String[]{"Add", "Remove", "Upgrade", "Undo", "Save all",
      NEW_TREE
      // "Reload", doesn't work yet!
@@ -57,7 +58,10 @@ public class AV_ButtonPanel extends G_ButtonPanel {
      // "Group", "Clone",
      "Add Tab", "Toggle",
      // CLEAN_UP,
-     "Edit", "Backup", "Add WS", "Test"
+     "Edit",
+     "Defaults",
+//     "Backup",
+     "Add WS", "Test"
 
     };
     protected boolean skillSelectionListeningThreadRunning;
@@ -112,6 +116,9 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 
     public void handleButtonClick(boolean alt, String command) {
         switch (command) {
+            case DEFAULTS:
+                ModelManager.addDefaultValues(alt);
+                break;
             case "Test":
                 if (alt)
                     DC_SoundMaster.preconstructEffectSounds();

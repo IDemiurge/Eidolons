@@ -116,7 +116,8 @@ public abstract class DC_Obj extends MicroObj {
         addDefaultValues();
     }
     protected void addDefaultValues() {
-        DC_ContentManager.addDefaultValues(this);
+        if (CoreEngine.isDefaultValuesAddedDynamically())
+            DC_ContentManager.addDefaultValues(this);
         // for (String value : DC_ContentManager
         // .getInfoPanelValueList(getOBJ_TYPE())) {
         // VALUE VAL = ContentManager.getValue(value);

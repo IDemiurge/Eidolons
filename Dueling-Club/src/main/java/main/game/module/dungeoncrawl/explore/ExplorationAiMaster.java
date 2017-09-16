@@ -20,7 +20,6 @@ import main.system.datatypes.DequeImpl;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 /**
@@ -30,12 +29,12 @@ public class ExplorationAiMaster extends ExplorationHandler {
 
     private DequeImpl<UnitAI> activeUnitAIs;
     private boolean aiActs;
-    private Stack<ActionInput> aiActionQueue;
+    private DequeImpl<ActionInput> aiActionQueue;
     private Set<Unit> allies;
 
     public ExplorationAiMaster(ExplorationMaster master) {
         super(master);
-        aiActionQueue = new Stack<>();
+        aiActionQueue = new DequeImpl<>();
         activeUnitAIs = new DequeImpl<>();
     }
 
@@ -47,9 +46,9 @@ public class ExplorationAiMaster extends ExplorationHandler {
          {
              if (!unit.getAI().isAttached())
                  if (unit.isAiControlled()) {
-                 if (unit.canActNow())
-                     activeUnitAIs.add(unit.getAI());
-             }
+                     if (unit.canActNow())
+                         activeUnitAIs.add(unit.getAI());
+                 }
          }
         );
     }
@@ -90,6 +89,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
             aiMoves(ai);
             return true;
         }
+
         return false;
     }
 
@@ -117,17 +117,38 @@ public class ExplorationAiMaster extends ExplorationHandler {
     }
 
     private void aiMoves(UnitAI ai) {
+
+
         ActionInput input = new ActionInput(
          ai.getStandingOrders().getCurrentAction().getActive(),
          new Context(ai.getStandingOrders().getCurrentAction().getRef()));
-        aiActionQueue.push(input);
+        queueAiAction(input);
         ai.setExplorationTimeOfLastAction(master.getTimeMaster().getTime());
         if (ai.getStandingOrders().getCurrentAction() == ai.getStandingOrders().getLastAction())
             ai.setStandingOrders(null);
 
     }
 
+    public void queueAiAction(ActionInput input) {
+        aiActionQueue.add(input);
+    }
+
     private ActionSequence getOrders(UnitAI ai) {
+
+        if (ai.getUnit().isMine()) //TODO
+            if (master.getPartyMaster().isFollowOn(ai.getUnit())) { //isFollow
+                Action move = master.getPartyMaster().getFollowMove(ai.getUnit());
+
+
+
+                if (move == null) {
+                    return new ActionSequence(GOAL_TYPE.IDLE, AiActionFactory.newAction("Cower", ai));
+                } else {
+                    return new ActionSequence(GOAL_TYPE.MOVE, move);
+                }
+            }
+        //get orders?
+
         try {
             return getWanderOrders(ai);
         } catch (Exception e) {
@@ -198,7 +219,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
         this.aiActs = aiActs;
     }
 
-    public Stack<ActionInput> getAiActionQueue() {
+    public DequeImpl<ActionInput> getAiActionQueue() {
         return aiActionQueue;
     }
 

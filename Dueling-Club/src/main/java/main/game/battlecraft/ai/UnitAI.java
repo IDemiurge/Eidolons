@@ -414,8 +414,10 @@ public class UnitAI {
 
     public GroupAI getGroupAI() {
         if (groupAI == null) {
-            AI_Manager.getCustomUnitGroup(getUnit()).add(getUnit());
-            groupAI = (AI_Manager.getCustomUnitGroup(getUnit()));
+            groupAI = (unit.getGame().getAiManager().getCustomUnitGroup(getUnit()));
+            if (groupAI != null) {
+           unit.getGame().getAiManager().getCustomUnitGroup(getUnit()).add(getUnit());
+        }
         }
         return groupAI;
     }

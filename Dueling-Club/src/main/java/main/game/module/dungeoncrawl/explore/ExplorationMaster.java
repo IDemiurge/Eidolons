@@ -9,7 +9,8 @@ import main.game.core.game.DC_Game;
  */
 public class ExplorationMaster {
     static boolean explorationOn;
-    private static boolean testMode = true;
+    private static boolean testMode   ;
+    private   ExploreEnemyPartyMaster enemyPartyMaster;
     private   ExplorePartyMaster partyMaster;
     private   ExploreCleaner cleaner;
     DC_Game game;
@@ -28,11 +29,19 @@ public class ExplorationMaster {
         cleaner =new ExploreCleaner(this);
         actionHandler = new ExplorationActionHandler(this);
         partyMaster = new ExplorePartyMaster(this);
-//        aiGroupMaster = new ExplorePartyMasterEnemy(this);
+        enemyPartyMaster = new ExploreEnemyPartyMaster(this);
+    }
+
+    public static void setTestMode(boolean testMode) {
+        ExplorationMaster.testMode = testMode;
     }
 
     public ExplorePartyMaster getPartyMaster() {
         return partyMaster;
+    }
+
+    public ExploreEnemyPartyMaster getEnemyPartyMaster() {
+        return enemyPartyMaster;
     }
 
     public static boolean isTestMode() {
@@ -40,13 +49,14 @@ public class ExplorationMaster {
     }
 
     public static boolean isExplorationSupported(DC_Game game) {
-//        if (testMode)
-//            return true;
-//        if (game.getGameMode() == GAME_MODES.DUNGEON_CRAWL) {
+        if (testMode)
+            return true;
+//        if (game.getGameMode() == GAME_MODES.ARENA)
+//            return false;
 //            return true;
 //        }
 //TODO only if disabled by <?>>
-        return true;
+        return false;
     }
 
     public   void switchExplorationMode(boolean on) {

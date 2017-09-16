@@ -1,7 +1,13 @@
 package main.libgdx.stage;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.game.core.game.DC_Game;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.controls.radial.RadialMenu;
@@ -27,8 +33,12 @@ public class BattleGuiStage extends Stage {
 
     private OutcomePanel outcomePanel;
 
-    public BattleGuiStage() {
-
+    public BattleGuiStage(ScreenViewport viewport, Batch batch) {
+        super(viewport==null ?
+          new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(),
+           Gdx.graphics.getHeight(), new OrthographicCamera()) : viewport,
+         batch == null ?  new SpriteBatch() :
+          batch);
         InitiativePanel initiativePanel = new InitiativePanel();
         initiativePanel.setPosition(0, Gdx.graphics.getHeight() - initiativePanel.getHeight());
         addActor(initiativePanel);

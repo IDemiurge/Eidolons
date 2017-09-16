@@ -21,6 +21,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.Event;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
@@ -653,6 +654,11 @@ public class AnimationConstructor {
 
     public void setFindClosestResource(boolean findClosestResource) {
         this.findClosestResource = findClosestResource;
+    }
+
+    public void preconstruct(Event event) {
+        Anim anim = EventAnimCreator.getAnim(event);
+        CompositeAnim parentAnim = AnimMaster.getInstance().getParentAnim(event.getRef());
     }
 
     public enum ANIM_PART {

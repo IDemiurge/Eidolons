@@ -1,29 +1,20 @@
 package main.libgdx.stage;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import main.game.core.game.DC_Game;
-import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.ParticleManager;
-import main.libgdx.anims.phased.PhaseAnimator;
 
-public class AnimationEffectStage extends Stage {
+public class AnimationEffectStage extends Group {
     private   ParticleManager particleManager;
 
-    public AnimationEffectStage() {
+    public AnimationEffectStage(){
         particleManager = new ParticleManager( );
         addActor(particleManager.getEmitterMap());
         particleManager.getEmitterMap().setX(300);
-        new PhaseAnimator(this);
+//        new PhaseAnimator(null );
     }
 
-    @Override
-    public void draw() {
-        super.draw();
-        if (AnimMaster.isOn()) {
-//            phaseAnimsStage.draw();
-//            animsStage.draw();
-        }
-    }
+
 
     @Override
     public void act(float delta) {

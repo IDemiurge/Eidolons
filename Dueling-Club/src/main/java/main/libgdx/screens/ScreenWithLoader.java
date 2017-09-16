@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.libgdx.stage.ChainedStage;
 import main.libgdx.stage.LoadingStage;
@@ -15,15 +17,22 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected ScreenData data;
     protected ScreenViewport viewPort;
     protected ChainedStage introStage;
+    Batch batch;
 
     public ScreenWithLoader() {
         //TODO loader here, but need data!
     }
 
+    public Batch getBatch() {
+        if (batch==null ){
+            batch = new SpriteBatch();
+        }
+        return batch;
+    }
+
     protected void preLoad() {
         if (data.getDialogScenarios().size() > 0) {
-            introStage = new ChainedStage(data.getDialogScenarios());
-            introStage.setViewport(viewPort);
+            introStage = new ChainedStage(viewPort, getBatch(), data.getDialogScenarios());
             introStage.setOnDoneCallback(() -> {
                 if (hideLoader) {
                     updateInputController();

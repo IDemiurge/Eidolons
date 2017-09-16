@@ -24,6 +24,7 @@ import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.libgdx.anims.AnimMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
@@ -170,6 +171,11 @@ public class Executor extends ActiveHandler {
 //                cancelled();
 //        }
         //TODO BEFORE RESOLVE???
+
+        if (AnimMaster.isOn())
+            if (!AnimMaster.getInstance().getConstructor().isReconstruct() )
+                AnimMaster.getInstance().getConstructor().preconstruct(getAction());
+
         GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, getAction());
 
         actionComplete();

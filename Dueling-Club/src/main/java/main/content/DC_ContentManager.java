@@ -344,8 +344,8 @@ public class DC_ContentManager extends ContentManager {
             return Collections.EMPTY_LIST;
         }
         List<String> valueNames = ContentManager.getValueNamesMap().get(objType);
-        // if (valueNames != null)
-        // return valueNames;
+         if (valueNames != null)
+            return valueNames;
         valueNames = ContentManager.getFullValueList(objType);
 
         // for (VALUE v : excludedValuesFromAll) {
@@ -525,7 +525,7 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static void addDefaultValues(Entity entity) {
-
+//this should be done in AV!!!
         for (String value : DC_ContentManager.getInfoPanelValueList(entity.getOBJ_TYPE())) {
             VALUE VAL = ContentManager.getValue(value);
             if (VAL == null) {

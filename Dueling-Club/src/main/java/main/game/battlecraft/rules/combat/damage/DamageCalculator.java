@@ -84,7 +84,7 @@ public class DamageCalculator {
      * @return
      */
     public static int precalculateDamage(Attack attack, Boolean min_max_normal) {
-        BattleFieldObject attacked = attack.getAttackedUnit();
+        BattleFieldObject attacked = attack.getAttacked();
         Unit attacker = attack.getAttacker();
         if (!attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.SNEAK_IMMUNE)) {
             attack.setSneak(SneakRule.checkSneak(attack.getRef()));

@@ -88,7 +88,7 @@ public class AttackCalculator {
         this.attack = attack;
         this.action = attack.getAction();
         this.attacker = attack.getAttacker();
-        this.attacked = attack.getAttackedUnit();
+        this.attacked = attack.getAttacked();
         this.weapon = attack.getWeapon();
         this.disengage = attack.isDisengagement();
         this.counter = attack.isCounter();
@@ -461,8 +461,8 @@ public class AttackCalculator {
             atk_mod += atkMod;
         }
         if (ref.getTargetObj() == null) {
-            if (attack.getAttackedUnit() != null) {
-                ref.setTarget(attack.getAttackedUnit().getId());
+            if (attack.getAttacked() != null) {
+                ref.setTarget(attack.getAttacked().getId());
             } else {
                 return;
             }

@@ -348,7 +348,7 @@ public class RuleMaster implements Controller {
     }
 
     public enum COUNTER_RULES {
-
+BLEEDING, BLAZE, FREEZE, POISON, DISEASE,
     }
 
     public enum FEATURE {

@@ -37,7 +37,6 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.GroupAI;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.logic.battle.arena.ArenaBattleMaster;
@@ -988,7 +987,7 @@ public class DebugMaster {
         effect.apply(ref);
 
         if (player.isAi()) {
-            AI_Manager.getCustomUnitGroup((Unit) effect.getUnit()).add(effect.getUnit());
+            game.getAiManager().getCustomUnitGroup((Unit) effect.getUnit()).add(effect.getUnit());
         }
         game.getManager().refreshAll();
     }

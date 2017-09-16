@@ -1,1 +1,1 @@
-<XML><Standard><Cell><params></params><props><Unique_Id>terrain Cell2914276628107150333</Unique_Id><Name>Cell</Name><Type>terrain</Type><Classifications>TERRAIN</Classifications><Group>Standard</Group><Image>UI\Empty Cell2.png</Image></props></Cell></Standard></XML>
+<XML><Standard><Cell><params><Space>1000</Space></params><props><Type>terrain</Type><Unique_Id>terrain Cell2914276628107150333</Unique_Id><Name>Cell</Name><Group>Standard</Group><Classifications>TERRAIN</Classifications><Image>UI\Empty Cell2.png</Image></props></Cell></Standard></XML>

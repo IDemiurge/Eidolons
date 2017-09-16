@@ -8,6 +8,7 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
+import main.game.battlecraft.rules.counter.DC_CounterRule;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
 
@@ -17,6 +18,8 @@ import main.system.math.MathMaster;
 public class ExplorationTimeMaster extends ExplorationHandler {
     public static final float secondsPerAP = 2f;
     private float time = 0;
+    private float lastTimeChecked;
+    private float delta;
 
     public ExplorationTimeMaster(ExplorationMaster master) {
         super(master);
@@ -52,8 +55,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     public void checkTimedEvents() {
+        delta =time - lastTimeChecked;
+        lastTimeChecked= time;
         master.getAiMaster().checkAiActs();
         processTimedEffects( );
+        //TODO queue this on gameloop?
     }
 
     private void processTimedEffects( ) {
@@ -64,14 +70,48 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             //bleeding? blaze?
             processRegen(ai.getUnit());
         });
+
+        if (delta >= getRoundEffectPeriod()) {
+            delta -=getRoundEffectPeriod();
+            processEndOfRoundEffects();
+        }
     }
 
-    private void processCounterRules(  Unit unit ) {
+    private float getRoundEffectPeriod() {
+        return 10;//* OptionsMaster.get
+    }
 
-
+    private void processEndOfRoundEffects() {
+        processCounterRules();
 
     }
-        private void processRegen(  Unit unit ) {
+
+    private void processCounterRules(   ) {
+        master.getGame().getRules().getCounterRules().forEach(rule->{
+            rule.newTurn();
+            master.getGame().getUnits().forEach(unit -> {
+                if (checkCounterRuleApplies(unit ,rule)){
+                    if (rule.checkApplies(unit)){
+                    }
+
+                }
+            });
+
+        });
+    }
+
+    private boolean checkCounterRuleApplies(Unit unit, DC_CounterRule rule) {
+        switch (rule.getCounter()) {
+            case Bleeding:
+            case Blaze:
+            case Poison:
+            case Disease:
+                return true;
+        }
+        return false;
+    }
+
+    private void processRegen(  Unit unit ) {
         //TODO
         float last = unit.getAI().getExplorationTimeOfRegenEffects();
         float delta = time - last;

@@ -31,7 +31,9 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     protected static void startRealTimeLogic() {
+        Eidolons.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
+
         while (true) {
             WaitMaster.WAIT(REAL_TIME_LOGIC_PERIOD);
             if (Eidolons.getGame().isPaused()) continue;
@@ -73,9 +75,15 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 //sort? change display?
                 // active unit?
                 try {
-                    ActionInput input = master.getAiMaster().getAiActionQueue().pop();
+                    ActionInput input = master.getAiMaster().getAiActionQueue().removeLast();
                     activateAction(input);
                     master.getTimeMaster().aiActionActivated(input.getAction().getOwnerObj().getAI(), input.getAction());
+                    master.getPartyMaster().reset();
+
+                    if (input.getAction().getOwnerObj().getAI().isLeader()){
+//                        master.getEnemyPartyMaster().setGroupAI();
+                        master.getEnemyPartyMaster().leaderActionDone(input);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -178,7 +186,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         activeUnit = (Unit) game.getPlayer(true).getHeroObj();
         game.getManager().setSelectedActiveObj(activeUnit);
         GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
-        master.getPartyMaster().reset();
+
         while (true) {
             Boolean result = makeAction();
             if (result) {

@@ -12,20 +12,25 @@ import main.game.battlecraft.ai.elements.task.TaskManager;
 import main.game.battlecraft.ai.tools.AiExecutor;
 import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import main.game.battlecraft.ai.tools.priority.PriorityManager;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.system.launch.CoreEngine;
+import main.system.math.PositionMaster;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class AI_Manager extends AiMaster {
     private static boolean running;
-    private static GroupAI allyGroup;
-    private static GroupAI enemyGroup;
+    private   GroupAI allyGroup;
+    private   GroupAI enemyGroup;
     private static boolean off;
     private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
+    private List<GroupAI> groups;
 
     public AI_Manager(DC_Game game) {
         super(game);
@@ -33,17 +38,17 @@ public class AI_Manager extends AiMaster {
         priorityManager = DC_PriorityManager.init(this);
     }
 
-    public static GroupAI getAllyGroup() {
+    public   GroupAI getAllyGroup() {
         if (allyGroup == null) {
-            allyGroup = new GroupAI(null);
+            allyGroup = new GroupAI();
         }
         return allyGroup;
     }
 
 
-    public static GroupAI getEnemyGroup() {
+    public   GroupAI getEnemyGroup() {
         if (enemyGroup == null) {
-            enemyGroup = new GroupAI(null);
+            enemyGroup = new GroupAI();
         }
         return enemyGroup;
     }
@@ -70,12 +75,18 @@ public class AI_Manager extends AiMaster {
         return topPriorityUnit;
     }
 
-    public static GroupAI getCustomUnitGroup(Unit unit) {
+    public   GroupAI getCustomUnitGroup(Unit unit) {
         if (unit.isMine()) {
             return
              getAllyGroup();
         }
+        if (isCustomGroups())
+            return null ;
         return getEnemyGroup();
+    }
+
+    private   boolean isCustomGroups() {
+        return ExplorationMaster.isExplorationSupported(getGame());
     }
 
     public static boolean isRunning() {
@@ -180,4 +191,42 @@ public class AI_Manager extends AiMaster {
     }
 
 
+    public List<GroupAI> getGroups() {
+        resetGroups();
+        return groups;
+    }
+
+    public void setGroups(List<GroupAI> groups) {
+        this.groups = groups;
+    }
+
+    private void resetGroups() {
+        //by proximity... not all mobs will be part of a group
+        groups = new LinkedList<>();
+
+        for (Object sub : game.getBattleMaster().getPlayerManager().getPlayers()) {
+            DC_Player player = (DC_Player) sub;
+            for (Unit unit : player.getControlledUnits_()) {
+                if (unit.getAI().getGroup() != null)
+                    continue;
+                GroupAI group = new GroupAI(unit);
+                for (Unit unit1 : player.getControlledUnits_()) {
+                    if (unit.getAI().getGroup() != null)
+                        continue;
+                    if (unit.equals(unit))
+                        continue;
+                    double max_distance = 2.5;
+                    if (PositionMaster.getExactDistance(unit1.getCoordinates(),
+                     unit.getCoordinates()) >= max_distance)
+                        continue;
+                    group.add(unit1);
+
+                }
+                groups.add(group);
+            }
+
+
+        }
+return ;
+    }
 }
