@@ -29,9 +29,13 @@ import java.util.Map;
  */
 public class Ref implements Cloneable, Serializable {
 
+    public final static KEYS[] REPLACING_KEYS = {
+     KEYS.BUFF, KEYS.TARGET, KEYS.SOURCE, KEYS.MATCH, KEYS.BASIS, KEYS.EVENT, KEYS.
+     SUMMONER, KEYS.ACTIVE, KEYS.SPELL, KEYS.WEAPON, KEYS.ARMOR,
+
+    };
     protected static final long serialVersionUID = 1L; //why was it necessary?
     protected static final String MULTI_TARGET = KEYS.TARGET.name() + "#";
-
     /*
     TARGET_WEAPON example
     ref replacement is there exactly to avoid putting the whole thing into map!
@@ -42,6 +46,9 @@ public class Ref implements Cloneable, Serializable {
     public boolean base;
     protected Map<KEYS, String> values = new XLinkedMap<>();
     protected Map<KEYS, String> removedValues;
+    //OPTIMIZATION
+    protected Map<String, Obj> objCache = new HashMap<>();
+    protected Obj source;
     protected GroupImpl group;
     protected String str;
     protected Player player;
@@ -57,6 +64,7 @@ public class Ref implements Cloneable, Serializable {
         this.game = Game.game;
     }
 
+
     public Ref(Integer summonerId) {
         setValue(KEYS.SUMMONER, summonerId + "");
     }
@@ -67,7 +75,6 @@ public class Ref implements Cloneable, Serializable {
         setSource(source);
     }
 
-
     public Ref(Game game) {
         this.game = game;
     }
@@ -76,12 +83,12 @@ public class Ref implements Cloneable, Serializable {
         this(entity.getGame(), entity.getId());
     }
 
+
     public Ref(Entity entity, Entity target) {
         this(entity.getGame(),
          entity.getId());
         setTarget(target.getId());
     }
-
 
     public static Ref getCopy(Ref ref) {
         if (ref == null) {
@@ -129,9 +136,24 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public Obj getObj(KEYS key) {
-        return game.getObjectById(getId(key));
+        return getObj(key.name());
     }
 
+    public Obj getObj(String string) {
+        if (objCache != null) {
+            Obj obj = objCache.get(string.toLowerCase());
+            if (obj==null )
+                obj =   game.getObjectById(getId(string));
+            objCache.put(string.toLowerCase(), obj);
+            return obj;
+        }
+//        try {
+        return game.getObjectById(getId(string));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+    }
 
     public Integer getId(String key) {
         return getInteger(key);
@@ -149,7 +171,6 @@ public class Ref implements Cloneable, Serializable {
         }
     }
 
-
     protected KEYS getKey(String name) {
         try {
             return KEYS.valueOf(name.toUpperCase());
@@ -160,7 +181,6 @@ public class Ref implements Cloneable, Serializable {
 //     return new EnumMaster<KEYS>().retrieveEnumConst(KEYS.class, name);
         return null;
     }
-
 
     public Map<KEYS, String> getValues() {
         return values;
@@ -173,10 +193,11 @@ public class Ref implements Cloneable, Serializable {
         String result = "REF values: \n";
         for (KEYS key : values.keySet()) {
             String value;
-            Integer id=null ;
+            Integer id = null;
             try {
-                value = values.get(key); if (value != null )
-                id = Integer.valueOf(value);
+                value = values.get(key);
+                if (value != null)
+                    id = Integer.valueOf(value);
             } catch (Exception e) {
                 continue;
             }
@@ -204,7 +225,6 @@ public class Ref implements Cloneable, Serializable {
 
     }
 
-
     public Object clone() {
         Ref ref = new Ref();
         ref.cloneMaps(this);
@@ -229,7 +249,6 @@ public class Ref implements Cloneable, Serializable {
         values = new HashMap<>(ref.getValues());
     }
 
-
     protected String formatKeyString(String key) {
         // return key;
         return key.toUpperCase();
@@ -252,7 +271,7 @@ public class Ref implements Cloneable, Serializable {
         // setStr(getStr().replace(MATCH_PREFIX, ""));
         // return game.getObjectById(getMatch()).getRef();
         // }
-        for (REPLACING_KEYS key : REPLACING_KEYS.values()) {
+        for (KEYS key : REPLACING_KEYS) {
             String prefix = key.name() + StringMaster.FORMULA_REF_SEPARATOR;
             if (getStr().contains(prefix)) {
                 setStr(getStr().replace(prefix, ""));
@@ -324,18 +343,17 @@ public class Ref implements Cloneable, Serializable {
         setID(KEYS.SOURCE, id);
     }
 
+    //
+
     public Integer getTarget() {
         return getId(KEYS.TARGET);
 
     }
 
-    //
-
     public void setTarget(Integer this_target) {
         setID(KEYS.TARGET, this_target);
 
     }
-
 
     public Ref getCopy() {
         return (Ref) clone();
@@ -399,7 +417,9 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public Obj getSourceObj() {
-        return game.getObjectById(getSource());
+        if (source == null)
+            source = game.getObjectById(getSource());
+        return source;
     }
 
     public Player getPlayer() {
@@ -413,15 +433,6 @@ public class Ref implements Cloneable, Serializable {
         this.player = player;
     }
 
-    public Obj getObj(String string) {
-        try {
-            return game.getObjectById(getId(string));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public Obj getLastRemovedObj(KEYS key) {
         try {
             return game.getObjectById(StringMaster.getInteger(getRemovedValues()
@@ -431,7 +442,6 @@ public class Ref implements Cloneable, Serializable {
             return null;
         }
     }
-
 
     public ObjType getType(String string) {
         try {
@@ -444,7 +454,6 @@ public class Ref implements Cloneable, Serializable {
     public Obj getTargetObj() {
         return getObj(KEYS.TARGET);
     }
-
 
     public void setObj(KEYS key, Obj obj) {
         if (obj == null) {
@@ -473,7 +482,6 @@ public class Ref implements Cloneable, Serializable {
         return getInteger(key.name());
     }
 
-
     public boolean checkInterrupted() {
 
         return false;
@@ -490,7 +498,6 @@ public class Ref implements Cloneable, Serializable {
     public Obj getMatchObj() {
         return getObj(KEYS.MATCH);
     }
-
 
     public Entity getEntity(KEYS key) {
         if (getObj(key) != null) {
@@ -560,7 +567,6 @@ public class Ref implements Cloneable, Serializable {
         this.animationActive = animationActive;
     }
 
-
     public boolean isDebug() {
         return debug;
     }
@@ -575,11 +581,11 @@ public class Ref implements Cloneable, Serializable {
         return ref;
     }
 
-    public String getInfoString() {
-        return "Ref: target ="+getTargetObj()+"\n ; group ="+ getGroup();
-    }
-
     //
+
+    public String getInfoString() {
+        return "Ref: target =" + getTargetObj() + "\n ; group =" + getGroup();
+    }
 
     public enum KEYS {
         THIS,
@@ -630,10 +636,6 @@ public class Ref implements Cloneable, Serializable {
 
         IMAGE,
         OBJECTIVE,
-    }
-
-    public enum REPLACING_KEYS {
-        BUFF, TARGET, SOURCE, MATCH, BASIS, EVENT, SUMMONER, ACTIVE, SPELL, WEAPON, ARMOR,
     }
 
 }

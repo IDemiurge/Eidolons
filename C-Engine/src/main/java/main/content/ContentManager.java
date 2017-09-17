@@ -133,8 +133,6 @@ public class ContentManager {
             }
         }
 
-        LogMaster.log(0, "<><><><><><><><><>props: " + sprops.toString());
-        LogMaster.log(0, "<><><><><><><><><>params: " + sparams.toString());
         // Collections.sort(props, new DefaultComparator<PROPERTY>());
         // Collections.sort(params, new DefaultComparator<PARAMETER>());
 

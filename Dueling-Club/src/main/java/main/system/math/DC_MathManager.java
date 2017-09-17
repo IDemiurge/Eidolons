@@ -37,9 +37,7 @@ public class DC_MathManager extends MathMaster {
         return MathMaster.applyMod(obj.getIntParam(PARAMS.STARTING_FOCUS), obj.getIntParam(PARAMS.ORGANIZATION));
     }
 
-    public static Integer getBaseFocus(Obj obj) {
-        return obj.getIntParam(PARAMS.BASE_FOCUS);
-    }
+
 
     public static int getDurabilityForDamage(int damage, int armor, OBJ_TYPE TYPE) {
         if (TYPE == DC_TYPE.WEAPONS) {

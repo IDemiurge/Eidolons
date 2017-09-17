@@ -65,7 +65,7 @@ public class WaitingThread implements Runnable {
                 return wt;
             }
         }
-        LogMaster.log(0, "WAITING THREAD NOT FOUND " + code);
+//        LogMaster.log(0, "WAITING THREAD NOT FOUND " + code);
 
         return null;
     }
@@ -76,8 +76,8 @@ public class WaitingThread implements Runnable {
         try {
             getThread(lastReceivedCode).setINPUT(INPUT);
         } catch (java.lang.NullPointerException e) {
-            LogMaster.log(0, INPUT + " - waiting thread not found: "
-                    + lastReceivedCode.name());
+//            LogMaster.log(0, INPUT + " - waiting thread not found: "
+//                    + lastReceivedCode.name());
 
             return false;
         }

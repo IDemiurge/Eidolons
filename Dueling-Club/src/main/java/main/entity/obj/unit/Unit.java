@@ -117,6 +117,7 @@ public class Unit extends DC_UnitModel {
     }
 
 
+
     @Override
     protected EntityMaster initMaster() {
         return new UnitMaster(this);

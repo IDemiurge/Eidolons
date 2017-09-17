@@ -17,7 +17,6 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.graphics.ANIM;
 import main.system.graphics.SpriteAnimated;
 import main.system.launch.CoreEngine;
@@ -233,11 +232,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
         if ((ref.getGroup() == null && targetGroup == null) || isIgnoreGroupTargeting()) {
             // single-target effect
-            if (ref.getTargetObj() != null) {
-                LogMaster.log(!active ? LOG_CHANNELS.EFFECT_PASSIVE_DEBUG
-                 : LOG_CHANNELS.EFFECT_ACTIVE_DEBUG, toString() + " is being applied to a "
-                 + ref.getTargetObj());
-            }
             return apply();
         } else {
 //multi-target effect, applies to each target
@@ -251,9 +245,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             if (group.isIgnoreGroupTargeting()) {
                 return apply();
             }
-            LogMaster.log(!active ? LOG_CHANNELS.EFFECT_PASSIVE_DEBUG
-             : LOG_CHANNELS.EFFECT_ACTIVE_DEBUG, toString()
-             + " is being applied to a group " + group);
             List<Integer> groupIds = group.getObjectIds();
             boolean result = true;
             for (Integer id : groupIds) {
@@ -268,8 +259,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
                 REF.getGroup().setIgnoreGroupTargeting(true);
 
                 REF.setTarget(id);
-                LogMaster.log(0, "GROUP EFFECT (" + toString()
-                 + ") applied to " + game.getObjectById(id));
 
                 if (construct != null) {
                     result &= getCopy().apply(REF);

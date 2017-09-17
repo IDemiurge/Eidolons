@@ -124,7 +124,6 @@ public class AbilityImpl extends ReferredElement implements Ability {
 
     @Override
     public boolean resolve() {
-        LogMaster.log(0, "ABILITY_BEING_RESOLVED " + getClass().getSimpleName());
         Event event = new Event(STANDARD_EVENT_TYPE.ABILITY_BEING_RESOLVED, ref);
         if (game.fireEvent(event)) {
 

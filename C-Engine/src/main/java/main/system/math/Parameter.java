@@ -2,12 +2,10 @@ package main.system.math;
 
 import main.content.ContentManager;
 import main.content.values.parameters.PARAMETER;
-import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager.AUTOVAR;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
 
 public class Parameter extends DynamicValue {
     private PARAMETER param;
@@ -55,7 +53,6 @@ public class Parameter extends DynamicValue {
         }
         Integer id = ref.getId(obj_string);
 
-        LogMaster.log(0, "Queried Obj: " + obj_string);
         if (id==null )
             entity = ref.getType(obj_string);
         else {
@@ -66,8 +63,6 @@ public class Parameter extends DynamicValue {
             }
         }
         if (entity == null) {
-            LogMaster.log(0, obj_string + "'s " + value_string
-             + " - Queried Obj not found; ref: " + ref);
             return 0;
         }
         if (value_string.equalsIgnoreCase(StringMaster.MASTERY)) {
@@ -84,15 +79,11 @@ public class Parameter extends DynamicValue {
             }
         }
 
-        LogMaster.log(0, "Retrieving " + getParam() + " from " +
 
-         obj_string);
         int x;
 
         x = Integer.valueOf((entity).getIntParam(getParam(), ref.isBase()));
 
-        LogMaster.log(0, "Parameter value evaluated: " + x + " for obj "
-                + entity.getProperty(G_PROPS.NAME));
         return x;
 
     }

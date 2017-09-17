@@ -139,8 +139,6 @@ public class ContinuousEffect extends MicroEffect {
     }
 
     public boolean apply() {
-        LogMaster.log(0, "CONTINUOUS EFFECT (" + toString() + ") applied to "
-                + ref.getTargetObj());
         return getEffect().apply();
     }
 

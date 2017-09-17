@@ -79,6 +79,8 @@ public class DemoLauncher extends Game {
         conf.fullscreen = //false;
          OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
 
+        conf.foregroundFPS=50;
+        conf.backgroundFPS=-1;
         conf.width = 1600;
         conf.height = 900;
         try {

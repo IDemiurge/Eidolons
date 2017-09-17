@@ -3,7 +3,6 @@ package main.system.auxiliary;
 import main.ability.AbilityType;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.system.auxiliary.log.LogMaster;
 
 import java.io.*;
 
@@ -35,7 +34,6 @@ public class CloneMaster<T> {
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
-        LogMaster.log(0, "DEEP COPY FAILED!");
         return null;
     }
 

@@ -13,6 +13,10 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.Loop;
 import main.system.threading.WaitMaster;
 
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
 
 /**
@@ -23,6 +27,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     private static Thread realTimeThread;
     private ExplorationMaster master;
 
+    Lock lock = new ReentrantLock();
+    Condition waiting = lock.newCondition();
 
     public ExploreGameLoop(DC_Game game) {
         super(game);
@@ -58,6 +64,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     @Override
     protected Boolean checkEndRound(ActionInput input) {
+        if (!input.getContext().getSourceObj().isMine()){
+            if (!master.getResetter().isResetNeeded())
+            return false;
+        }
         game.getManager().reset();
         return false;
     }
@@ -67,6 +77,14 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         //time to wait?
         //need another thread...
 
+        lock.lock();
+        try {
+            waiting.await();
+        } catch ( Exception e1) {
+            e1.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
 
         //check ai pending actions!
         if (master.getAiMaster().isAiActs()) {
@@ -166,12 +184,16 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     @Override
     public void actionInput(ActionInput actionInput) {
         queueActionInput(actionInput);
-
+        lock.lock();
+        waiting.signal();
+        lock.unlock();
     }
 
     private void tryAddPlayerActions(ActionInput actionInput) {
-
         actionQueue.add(actionInput);
+        lock.lock();
+        waiting.signal();
+        lock.unlock();
     }
 
     @Override

@@ -76,8 +76,6 @@ public abstract class Builder implements GameGUI {
     private void addComponents() {
         for (JComponent c : compArray) {
             String info = comps.get(c).getMiGString();
-            LogMaster.log(0, "adding " + c.getClass().getSimpleName()
-                    + " in " + getClass().getSimpleName() + " at " + info);
             add(c, info);
             getComp().setComponentZOrder(c, N);
             N++;

@@ -16,7 +16,7 @@ import main.system.math.MathMaster;
  * Created by JustMe on 9/9/2017.
  */
 public class ExplorationTimeMaster extends ExplorationHandler {
-    public static final float secondsPerAP = 2f;
+    public static final float secondsPerAP = 3f;
     private float time = 0;
     private float lastTimeChecked;
     private float delta;
