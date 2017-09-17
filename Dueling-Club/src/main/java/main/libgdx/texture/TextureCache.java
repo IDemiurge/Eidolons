@@ -27,6 +27,7 @@ public class TextureCache {
     private static AtomicInteger counter = new AtomicInteger(0);
     private static boolean altTexturesOn = true;
     private static Texture emptyTexture;
+    private static Map<String, TextureRegion> regionCache = new HashMap<>(300);
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
     private String imagePath;
@@ -38,7 +39,17 @@ public class TextureCache {
         this.imagePath = PathFinder.getImagePath();
         this.cache = new HashMap<>();
         this.greyscaleCache = new HashMap<>();
-        textureAtlas = new TextureAtlas(imagePath + "/testAtlas.txt");
+        textureAtlas = new TextureAtlas(imagePath + "/ui//ui.txt") {
+            @Override
+            public AtlasRegion addRegion(String name, TextureRegion textureRegion) {
+                return super.addRegion(name.toLowerCase(), textureRegion);
+            }
+
+            @Override
+            public AtlasRegion addRegion(String name, Texture texture, int x, int y, int width, int height) {
+                return super.addRegion(name.toLowerCase(), texture, x, y, width, height);
+            }
+        };
         pattern = Pattern.compile("^.*[/\\\\]([a-z _\\-0-9]*)\\..*$");
     }
 
@@ -75,22 +86,33 @@ public class TextureCache {
         if (textureCache == null) {
             init();
         }
+        TextureRegion region = regionCache.get(path);
+        if (region != null)
+            return region;
 
-
-        path = path.toLowerCase();
         final Matcher matcher = textureCache.pattern.matcher(path);
 
-
         if (matcher.matches()) {
-            final String name = matcher.group(1);
-            final TextureAtlas.AtlasRegion region = textureCache.textureAtlas.findRegion(name);
+            String name = path.substring(
+//          1+path.indexOf(StringMaster.getPathSeparator())
+             3
+             , path.lastIndexOf("."));// matcher.group(1);
+            name = StringMaster.constructStringContainer
+             (StringMaster.getPathSegments(name), "/");
+            name = name.substring(0, name.length() - 1);
+
+            region = textureCache.textureAtlas.findRegion(name);
             if (region != null) {
+                regionCache.put(path, region);
                 counter.incrementAndGet();
+                //cache!
                 return region;
             }
         }
 
-        return new TextureRegion(textureCache._getOrCreate(path));
+        region = new TextureRegion(textureCache._getOrCreate(path));
+        regionCache.put(path, region);
+        return region;
     }
 
     private static boolean checkAltTexture(String path) {
@@ -119,6 +141,17 @@ public class TextureCache {
         return
          ImageManager.getImageFolderPath() +
           ImageManager.getDefaultEmptyListIcon();
+    }
+
+    public static Texture createTexture(String path) {
+        return createTexture(path, true);
+    }
+
+    public static Texture createTexture(String path, boolean putIntoCache) {
+        if (textureCache == null) {
+            init();
+        }
+        return textureCache._createTexture(path, putIntoCache);
     }
 
     private String getAltTexturePath(String filePath) {
@@ -166,17 +199,6 @@ public class TextureCache {
         }
 
         return this.cache.get(path);
-    }
-
-    public static Texture  createTexture(String path) {
-        return  createTexture(path, true);
-    }
-
-    public static Texture  createTexture(String path, boolean putIntoCache) {
-        if (textureCache == null) {
-            init();
-        }
-        return textureCache._createTexture(path, putIntoCache);
     }
 
     public Texture _createTexture(String path) {

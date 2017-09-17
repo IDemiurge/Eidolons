@@ -80,6 +80,9 @@ public class RadialMenu extends Group {
         if (closeButton.getChildren().size < 1) {
             return;
         }
+        if (closeButton.getChildNodes().size() < 1) {
+            return;
+        }
         setCurrentNode(closeButton);
     }
 

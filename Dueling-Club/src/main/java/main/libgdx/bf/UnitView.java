@@ -3,6 +3,7 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.game.core.game.DC_Game;
@@ -10,12 +11,10 @@ import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.tooltips.ToolTip;
-import main.libgdx.screens.DungeonScreen;
 import main.libgdx.shaders.GrayscaleShader;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.log.LogMaster;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
-import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -153,7 +152,9 @@ public class UnitView extends BaseView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        ShaderProgram shader=null ;
         if (greyedOut) {
+            shader = batch.getShader();
             batch.setShader(GrayscaleShader.getGrayscaleShader());
             ActorMaster.addFadeInOrOutIfNoActions(this, 1);
         }
@@ -162,7 +163,8 @@ public class UnitView extends BaseView {
             if (outline != null)
                 batch.draw(outline, 0, 0);
 
-        batch.setShader(null);
+        if (batch.getShader()==GrayscaleShader.getGrayscaleShader() )
+            batch.setShader(shader);
     }
 
     public void setFlickering(boolean flickering) {

@@ -9,14 +9,43 @@ import main.data.filesys.PathFinder;
  */
 public class TexturePackerLaunch {
     static String packs[] = {
-     "long swords",
-     "hammers",
+//     "long swords",
+//     "hammers",
      "daggers",
-     "fists",
+//     "fists",
+     "short swords",
     };
 
+    static String mainFolders[] = {
+//     "gen",
+     "ui",
+//     "main",
+    };
+
+    static String mainFoldersExceptions[] = {
+     "main\\sprites",
+    };
     public static void main(String[] args) {
+        packImages(mainFolders);
         packWeaponSprites(packs);
+    }
+
+    private static void packImages(String[] folders) {
+        Settings settings = new Settings();
+        settings.maxHeight = (int) Math.pow(2, 15);
+        settings.maxWidth = (int) Math.pow(2, 15);
+        settings.square = false;
+        for (String sub : folders) {
+//            List<File> files = FileManager.getFilesFromDirectory(PathFinder.getImagePath() + sub, false, true);
+//            for (File folder : files) {
+                String inputDir = PathFinder.getImagePath() + sub;
+//            Math.sqrt(files.size())
+                String outputDir =inputDir;
+                String packFileName = sub  ;
+
+                TexturePacker.process(settings, inputDir, outputDir, packFileName);
+//            }
+        }
     }
 
     public static void packWeaponSprites(String[] args) {

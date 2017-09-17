@@ -22,7 +22,7 @@ public class ShadeLightCell extends SuperContainer {
     private float baseAlpha;
 
     public ShadeLightCell(SHADE_LIGHT type, int x, int y) {
-        super(new Image(TextureCache.getOrCreate(type.getTexturePath())));
+        super(new Image(TextureCache.getOrCreateR(type.getTexturePath())));
         this.type = type;
     }
 

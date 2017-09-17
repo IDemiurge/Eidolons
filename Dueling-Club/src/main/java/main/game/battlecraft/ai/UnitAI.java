@@ -7,7 +7,9 @@ import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.content.enums.system.AiEnums;
-import main.content.enums.system.AiEnums.*;
+import main.content.enums.system.AiEnums.AI_TYPE;
+import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.obj.DC_Cell;
@@ -71,18 +73,17 @@ public class UnitAI {
 //    Map<IMPULSE_TYPE, Integer> impulseMap;
 
     public UnitAI(Unit unit) {
-        this.unit =   unit;
+        this.unit = unit;
         initType();
         setOriginalCoordinates(unit.getCoordinates());
 
     }
 
 
-
     private void initType() {
         type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class, unit
          .getProperty(PROPS.AI_TYPE));
-        if (unit.isMine() || type ==null ){
+        if (unit.isMine() || type == null) {
             CompanionMaster.initCompanionAiParams(this);
         }
     }
@@ -107,13 +108,13 @@ public class UnitAI {
 
     private void initActionPriorities() {
         actionPriorityBonuses = RandomWizard.constructWeightMap(unit
-                .getProperty(PROPS.ACTION_PRIORITY_BONUSES), C_OBJ_TYPE.ACTIVE);
+         .getProperty(PROPS.ACTION_PRIORITY_BONUSES), C_OBJ_TYPE.ACTIVE);
 
         actionPriorityMods = RandomWizard.constructWeightMap(unit
-                .getProperty(PROPS.ACTION_PRIORITY_MODS), C_OBJ_TYPE.ACTIVE);
+         .getProperty(PROPS.ACTION_PRIORITY_MODS), C_OBJ_TYPE.ACTIVE);
 
         for (ObjType spell : DataManager.toTypeList(unit.getProperty(PROPS.VERBATIM_SPELLS),
-                DC_TYPE.SPELLS)) {
+         DC_TYPE.SPELLS)) {
             Integer mastery = unit.getIntParam(ContentManager.getSpellMasteryForSpell(spell));
 
             // WHY VERBATIM? MAYBE FROM *TYPE*, YES...
@@ -170,7 +171,6 @@ public class UnitAI {
         return unit.getBehaviorMode();
 
     }
-
 
 
     public Map<ObjType, Integer> getActionPriorityMods() {
@@ -288,6 +288,7 @@ public class UnitAI {
     }
 
     public boolean isLeader() {
+        if (getGroup() == null) return false;
         return getGroup().getLeader() == getUnit();
     }
 
@@ -329,7 +330,7 @@ public class UnitAI {
                 String FALSE = "Proceed";
                 String NULL = "Cancel"; // wait, resume last, on your own!
                 Boolean result = DialogMaster.askAndWait("Do you want to change "
-                        + getPlayerOrder() + "?", TRUE, FALSE, NULL);
+                 + getPlayerOrder() + "?", TRUE, FALSE, NULL);
 
                 if (result == null) {
 
@@ -371,16 +372,16 @@ public class UnitAI {
 
     public void setStandingOrders(ActionSequence standingOrders) {
         if (standingOrders != null) {
-        if (standingOrders.getType() == AiEnums.GOAL_TYPE.MOVE) {
-            orderType = ORDER_TYPE.MOVE;
-        } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.WANDER) {
-            orderType = ORDER_TYPE.WANDER;
-        } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.WANDER) {
-            orderType = ORDER_TYPE.PATROL;
-        } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.STALK
-                || standingOrders.getType() == AiEnums.GOAL_TYPE.AGGRO) {
-            orderType = ORDER_TYPE.PURSUIT;
-        }
+            if (standingOrders.getType() == AiEnums.GOAL_TYPE.MOVE) {
+                orderType = ORDER_TYPE.MOVE;
+            } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.WANDER) {
+                orderType = ORDER_TYPE.WANDER;
+            } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.WANDER) {
+                orderType = ORDER_TYPE.PATROL;
+            } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.STALK
+             || standingOrders.getType() == AiEnums.GOAL_TYPE.AGGRO) {
+                orderType = ORDER_TYPE.PURSUIT;
+            }
         }
         this.standingOrders = standingOrders;
     }
@@ -416,8 +417,8 @@ public class UnitAI {
         if (groupAI == null) {
             groupAI = (unit.getGame().getAiManager().getCustomUnitGroup(getUnit()));
             if (groupAI != null) {
-           unit.getGame().getAiManager().getCustomUnitGroup(getUnit()).add(getUnit());
-        }
+                unit.getGame().getAiManager().getCustomUnitGroup(getUnit()).add(getUnit());
+            }
         }
         return groupAI;
     }
@@ -438,24 +439,24 @@ public class UnitAI {
         return currentOrder;
     }
 
-    public Integer getGoalPriorityMod(GOAL_TYPE goalType) {
-        if (currentOrder==null ) return null ;
+    public void setCurrentOrder(Order currentOrder) {
+        this.currentOrder = currentOrder;
+    }
 
-        if (currentOrder.getStrictPriority()!=null ){
-           return  Arrays.stream(currentOrder.getStrictPriority().getGoalTypes()).
-            collect(Collectors.toList()).contains(goalType)
+    public Integer getGoalPriorityMod(GOAL_TYPE goalType) {
+        if (currentOrder == null) return null;
+
+        if (currentOrder.getStrictPriority() != null) {
+            return Arrays.stream(currentOrder.getStrictPriority().getGoalTypes()).
+             collect(Collectors.toList()).contains(goalType)
              ? 1000 : 0;
         }
 
         return currentOrder.getPriorityModsMap().get(goalType);
     }
 
-    public void setCurrentOrder(Order currentOrder) {
-        this.currentOrder = currentOrder;
-    }
-
     public Map<GOAL_TYPE, Object> getArgMap() {
-        if (argMap==null )
+        if (argMap == null)
             argMap = new HashMap<>();
         return argMap;
     }
@@ -472,20 +473,20 @@ public class UnitAI {
         getArgMap().put(goalType, arg);
     }
 
-    public void setImmediate(boolean immediate) {
-        this.immediate = immediate;
-    }
-
     public boolean isImmediate() {
         return immediate;
     }
 
-    public void setFree(boolean free) {
-        this.free = free;
+    public void setImmediate(boolean immediate) {
+        this.immediate = immediate;
     }
 
     public boolean isFree() {
         return free;
+    }
+
+    public void setFree(boolean free) {
+        this.free = free;
     }
 
     public float getExplorationTimePassed() {
@@ -496,20 +497,20 @@ public class UnitAI {
         this.explorationTimePassed = explorationTimePassed;
     }
 
-    public void setExplorationTimeOfLastAction(float explorationTimeOfLastAction) {
-        this.explorationTimeOfLastAction = explorationTimeOfLastAction;
-    }
-
     public float getExplorationTimeOfLastAction() {
         return explorationTimeOfLastAction;
     }
 
-    public void setOutsideCombat(boolean outsideCombat) {
-        this.outsideCombat = outsideCombat;
+    public void setExplorationTimeOfLastAction(float explorationTimeOfLastAction) {
+        this.explorationTimeOfLastAction = explorationTimeOfLastAction;
     }
 
     public boolean isOutsideCombat() {
         return outsideCombat;
+    }
+
+    public void setOutsideCombat(boolean outsideCombat) {
+        this.outsideCombat = outsideCombat;
     }
 
     public float getExplorationTimeOfModeEffect() {

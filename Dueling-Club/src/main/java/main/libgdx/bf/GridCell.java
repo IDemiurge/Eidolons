@@ -39,6 +39,7 @@ public class GridCell extends Group implements Borderable {
         this.backTexture = backTexture;
         this.gridX = gridX;
         this.gridY = gridY;
+        setTransform(false);
     }
 
     public GridCell init() {

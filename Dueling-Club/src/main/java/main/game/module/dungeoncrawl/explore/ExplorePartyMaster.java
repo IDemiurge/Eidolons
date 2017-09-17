@@ -134,6 +134,9 @@ public class ExplorePartyMaster extends ExplorationHandler {
 
     protected Action getFollowMove(Unit unit) {
         Action move = master.getGame().getAiManager().getAtomicAi().getAtomicMove(lastPosition, unit);
+
+        if (move == null)
+            return null;
         if (!checkMove(move, unit))
             return null;
         return move;

@@ -21,7 +21,7 @@ public abstract class SuperActor extends Group implements Borderable {
     protected Image border = null;
     protected TextureRegion borderTexture;
     protected float fluctuatingAlpha = 1f;
-    protected boolean alphaGrowing=false;
+    protected boolean alphaGrowing = false;
     protected boolean teamColorBorder;
     protected Color teamColor;
     protected float scaledWidth;
@@ -39,8 +39,8 @@ public abstract class SuperActor extends Group implements Borderable {
         if (border != null) {
             removeActor(border);
         }
-        alphaGrowing=false;
-        fluctuatingAlpha =0.75f;
+        alphaGrowing = false;
+        fluctuatingAlpha = 0.75f;
 
         if (texture == null) {
             border = null;
@@ -61,8 +61,9 @@ public abstract class SuperActor extends Group implements Borderable {
             border.setWidth(getWidth() + 12);
         }
     }
+
     protected boolean isIgnored() {
-        if (getColor().a==0)
+        if (getColor().a == 0)
             return true;
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
             if (!DungeonScreen.getInstance().getController().
@@ -72,23 +73,42 @@ public abstract class SuperActor extends Group implements Borderable {
             }
         return false;
     }
+
     @Override
     public void act(float delta) {
+        if (isTransform()) {
+            if (isTransformDisabled())
+                setTransform(false);
+        } else {
+            if (!isTransformDisabled())
+                setTransform(true);
+        }
         super.act(delta);
-        alphaFluctuation(  delta);
+        alphaFluctuation(delta);
     }
 
-    protected void alphaFluctuation(  float delta) {
+    protected boolean isTransformDisabled() {
+        if (getScaleX() != 1) {
+            return false;
+        }
+        if (getScaleY() != 1) {
+            return false;
+        }
+        return true;
+    }
+
+    protected void alphaFluctuation(float delta) {
         alphaFluctuation(border, delta);
     }
-        protected void alphaFluctuation(Actor image, float delta) {
+
+    protected void alphaFluctuation(Actor image, float delta) {
         if (!isAlphaFluctuationOn())
             return;
         if (image == null)
             return;
         Color color = image.getColor();
         if (isTeamColorBorder())
-            if (getTeamColor()!=null ) {
+            if (getTeamColor() != null) {
                 color = getTeamColor();
             }
         fluctuatingAlpha = fluctuatingAlpha + getAlphaFluctuation(delta);
@@ -96,11 +116,12 @@ public abstract class SuperActor extends Group implements Borderable {
             image.setColor(color.r, color.g, color.b, fluctuatingAlpha);
 
     }
+
     protected float getAlphaFluctuation(float delta) {
-        float fluctuation =delta* getAlphaFluctuationPerDelta();
-        if (getFluctuatingAlpha () <=getAlphaFluctuationMin()- fluctuation)
+        float fluctuation = delta * getAlphaFluctuationPerDelta();
+        if (getFluctuatingAlpha() <= getAlphaFluctuationMin() - fluctuation)
             alphaGrowing = !alphaGrowing;
-        else if (fluctuatingAlpha > getAlphaFluctuationMax()+fluctuation)
+        else if (fluctuatingAlpha > getAlphaFluctuationMax() + fluctuation)
             alphaGrowing = !alphaGrowing;
 
         if (!alphaGrowing)
@@ -115,6 +136,7 @@ public abstract class SuperActor extends Group implements Borderable {
     protected float getAlphaFluctuationMin() {
         return DEFAULT_ALPHA_MIN;
     }
+
     protected float getAlphaFluctuationMax() {
         return DEFAULT_ALPHA_MAX;
     }
@@ -123,44 +145,48 @@ public abstract class SuperActor extends Group implements Borderable {
         return DEFAULT_ALPHA_FLUCTUATION;
     }
 
+    public boolean isAlphaFluctuationOn() {
+        return alphaFluctuationOn;
+    }
+
     public static void setAlphaFluctuationOn(boolean alphaFluctuationOn) {
         SuperActor.alphaFluctuationOn = alphaFluctuationOn;
     }
 
-    public   boolean isAlphaFluctuationOn() {
-        return alphaFluctuationOn;
-    }
     @Override
     public boolean isTeamColorBorder() {
         return teamColorBorder;
     }
+
     @Override
     public void setTeamColorBorder(boolean teamColorBorder) {
         this.teamColorBorder = teamColorBorder;
     }
-    @Override
-    public void setTeamColor(Color teamColor) {
-        this.teamColor = teamColor;
-    }
+
     @Override
     public Color getTeamColor() {
         return teamColor;
     }
 
-    public void setScaledWidth(float scaledWidth) {
-        this.scaledWidth = scaledWidth;
+    @Override
+    public void setTeamColor(Color teamColor) {
+        this.teamColor = teamColor;
     }
 
     public float getScaledWidth() {
         return scaledWidth;
     }
 
-    public void setScaledHeight(float scaledHeight) {
-        this.scaledHeight = scaledHeight;
+    public void setScaledWidth(float scaledWidth) {
+        this.scaledWidth = scaledWidth;
     }
 
     public float getScaledHeight() {
         return scaledHeight;
+    }
+
+    public void setScaledHeight(float scaledHeight) {
+        this.scaledHeight = scaledHeight;
     }
 
     public boolean isHovered() {
@@ -171,12 +197,13 @@ public abstract class SuperActor extends Group implements Borderable {
         this.hovered = hovered;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     public boolean isActive() {
         if (active)
             return active;
         return active;
-    }}
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+}

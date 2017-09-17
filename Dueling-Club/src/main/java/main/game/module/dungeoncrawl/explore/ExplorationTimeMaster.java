@@ -101,6 +101,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private boolean checkCounterRuleApplies(Unit unit, DC_CounterRule rule) {
+        if (rule.getCounter() == null) {
+            return false;
+        }
         switch (rule.getCounter()) {
             case Bleeding:
             case Blaze:
