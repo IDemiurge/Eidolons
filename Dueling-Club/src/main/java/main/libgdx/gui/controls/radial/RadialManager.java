@@ -22,7 +22,7 @@ import main.game.logic.action.context.Context;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
+import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
@@ -102,23 +102,8 @@ public class RadialManager {
     }
 
     public static void addCostTooltip(DC_ActiveObj el, ValueContainer valueContainer) {
-        ActionCostTooltip tooltip = new ActionCostTooltip();
-        tooltip.setUserObject(new ActionCostSource() {
-            @Override
-            public ValueContainer getDescription() {
-                return new ValueContainer(el.getDescription(), "");
-            }
-
-            @Override
-            public ValueContainer getName() {
-                return new ValueContainer(el.getName(), "");
-            }
-
-            @Override
-            public List<ValueContainer> getCostsList() {
-                return AttackTooltipFactory.getActionCostList(el);
-            }
-        });
+        ActionCostTooltip tooltip = new ActionCostTooltip(el);
+        tooltip.setUserObject(new ActionCostSourceImpl(el) );
         valueContainer.addListener(tooltip.getController());
     }
 

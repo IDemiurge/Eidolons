@@ -3,6 +3,7 @@ package main.libgdx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -46,8 +47,20 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         this.hideLoader();
         afterLoad();
         updateInputController();
+        initCursor();
     }
 
+    private void initCursor() {
+        Gdx.graphics.setSystemCursor(SystemCursor.Ibeam);
+    }
+
+    private void initLoadingCursor() {
+
+//         cursor = Gdx.graphics.newCursor(myPixmap, 0, 0);
+//        Gdx.graphics.setCursor(cursor);
+        Gdx.graphics.setSystemCursor(SystemCursor.Crosshair);
+//        cursor.dispose();
+    }
     protected abstract void afterLoad();
 
     protected void hideLoader() {
@@ -105,5 +118,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public void initLoadingStage(ScreenData meta) {
         this.loadingStage = new LoadingStage(meta );
+        initLoadingCursor();
     }
+
 }

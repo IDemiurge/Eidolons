@@ -17,8 +17,11 @@ import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.bf.UnitView;
+import main.libgdx.bf.generic.SuperContainer;
+import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.screens.DungeonScreen;
+import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
@@ -38,9 +41,11 @@ public class InitiativePanel extends Group {
     private ImageContainer[] queue;
     private WidgetGroup queueGroup;
     private boolean cleanUpOn = false;
-    private ValueContainer clockImage;
+    private ValueContainer panelImage;
     private Container<WidgetGroup> container;
-    private float queueOffsetY=15;
+    private float queueOffsetY = 15;
+    private SuperContainer light;
+    private SuperContainer clock;
 
     public InitiativePanel() {
         init();
@@ -104,41 +109,67 @@ public class InitiativePanel extends Group {
         addActor(container);
 
         final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("UI",
-         "components", "2017", "panels", "initiativePanel.png"));
-        clockImage = new ValueContainer(textureRegion);
-        clockImage.setPosition(50, 15+ queueOffsetY);
+         "components", "2017", "panels", "initiativepanel",
+         "initiativePanel plain.png"));
+        panelImage = new ValueContainer(textureRegion);
+//
+        panelImage.setPosition(50, 25 + queueOffsetY);
 //        image.align(Align.bottomLeft);
 //        image.overrideImageSize(imageSize, imageSize);
 //        image.setSize(imageSize, imageSize);
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer("Good time to die!", "")));
-        clockImage.addListener(tooltip.getController());
-        addActor(clockImage);
-//        clockImage.setPosition(0, -textureRegion.getRegionHeight());
+        panelImage.addListener(tooltip.getController());
+        addActor(panelImage);
+//        panelImage.setPosition(0, -textureRegion.getRegionHeight());
 
         setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize,
 //         textureRegion.getRegionHeight()
-         imageSize+ queueOffsetY);
+         imageSize + queueOffsetY);
+
+        light = new SuperContainer(
+         new Image(TextureCache.getOrCreateR(SHADE_LIGHT.LIGHT_EMITTER.getTexturePath())), true);
+        clock = new SuperContainer(
+         new Image(TextureCache.getOrCreateR(StrPathBuilder.build("UI",
+          "components", "2017", "panels", "initiativepanel",
+          "clock.png"))), true){
+            @Override
+            protected float getAlphaFluctuationMin() {
+                return 0.6f;
+            }
+
+            @Override
+            protected float getAlphaFluctuationPerDelta() {
+                return super.getAlphaFluctuationPerDelta()/3;
+            }
+        };
+
+        addActor(light);
+        light.setPosition(-15, -14);
+        addActor(clock);
+        clock.setPosition(-23, -31);
+
 
         timeLabel = new Label("Time", StyleHolder.getSizedLabelStyle(FONT.NYALA, 22));
         addActor(timeLabel);
-        timeLabel.setPosition(30, 0);
-
+        timeLabel.setPosition(15, 100);
     }
 
     private void resetPositions() {
         container.setBounds(imageSize + offset, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
-        clockImage.setPosition(0, -clockImage.getHeight());
+        panelImage.setPosition(0, -panelImage.getHeight());
         timeLabel.setPosition(50, 0);
     }
 
     private void resetZIndices() {
-        clockImage.setZIndex(0);
+        panelImage.setZIndex(0);
         for (ImageContainer view : queue) {
             if (view != null) {
                 view.setZIndex(Integer.MAX_VALUE);
             }
         }
+        light.setZIndex(Integer.MAX_VALUE);
+        clock.setZIndex(Integer.MAX_VALUE);
     }
 
     private void removeView(UnitView p) {
@@ -176,7 +207,7 @@ public class InitiativePanel extends Group {
         updateTime();
         ImageContainer container = getIfExists(unitView.getCurId());
         if (container == null) {
-            container = new ImageContainer();
+            container = new ImageContainer(unitView);
             container.id = unitView.getCurId();
             container.size(imageSize, imageSize);
             container.left().bottom();
@@ -185,7 +216,6 @@ public class InitiativePanel extends Group {
             queueGroup.addActor(container);
         }
 
-        container.setActor(unitView);
         container.initiative = unitView.getInitiativeIntVal();
         container.mobilityState = unitView.getMobilityState();
         sort();
@@ -235,13 +265,13 @@ public class InitiativePanel extends Group {
         if (isRealTime()) {
             updateTime();
             if (container.isVisible())
-                if (ActorMaster.getActionsOfClass(container, MoveToAction.class).size()==0){
-                toggleQueue(false);
-            }
+                if (ActorMaster.getActionsOfClass(container, MoveToAction.class).size() == 0) {
+                    toggleQueue(false);
+                }
         } else {
             if (!container.isVisible())
-                if (ActorMaster.getActionsOfClass(container, MoveToAction.class).size()==0)
-                toggleQueue(true);
+                if (ActorMaster.getActionsOfClass(container, MoveToAction.class).size() == 0)
+                    toggleQueue(true);
         }
         super.act(delta);
     }
@@ -388,6 +418,18 @@ public class InitiativePanel extends Group {
         public int initiative;
         public int id;
         public boolean mobilityState;
+
+        public ImageContainer(UnitView actor) {
+            super(actor);
+            Image shadow = new Image(TextureCache.getOrCreateR(
+             StrPathBuilder.build("UI",
+              "components", "2017", "panels",
+              "initiativepanel",
+              "initiativepanel unitview shadow.png")));
+            shadow.setY(-48);
+            actor.addActor(shadow);
+
+        }
 
         @Override
         public void draw(Batch batch, float parentAlpha) {

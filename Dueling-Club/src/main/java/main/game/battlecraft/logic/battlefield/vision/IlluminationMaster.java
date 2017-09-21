@@ -3,6 +3,7 @@ package main.game.battlecraft.logic.battlefield.vision;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.entity.Ref;
 import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
@@ -66,12 +67,19 @@ public class IlluminationMaster {
     }
 
     public Integer getIllumination(Unit source, DC_Obj target) {
-        Integer illumination = null;
+        Integer illumination = 0;
         if (source == master.getSeeingUnit()) {
             illumination = cache.get(target);
             if (illumination != null) {
                 return illumination;
             }
+        }
+        Ref ref = new Ref(source);
+        ref.setMatch(target.getId());
+        if (!
+         master.getSightMaster().getClearShotCondition().preCheck(ref)) {
+            cache.put(target, -1);
+            return -1;
         }
 
         illumination = target.getIntParam(PARAMS.ILLUMINATION);
@@ -110,9 +118,9 @@ public class IlluminationMaster {
         ilMod = Math.max(ilMod, 1);
 
         // TODO DISTANCE FACTOR?
-        illumination =  illumination * ilMod / 100;
-          cache.put(target, illumination);
-        return illumination ;
+        illumination = illumination * ilMod / 100;
+        cache.put(target, illumination);
+        return illumination;
     }
 
     public Integer getConcealment(Unit source, DC_Obj target) {

@@ -3,14 +3,13 @@ package main.libgdx.gui.panels.dc.unitinfo.tooltips;
 import main.content.PARAMS;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
-import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.game.battlecraft.ai.tools.future.FutureBuilder;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.gui.tooltips.ValueTooltip;
@@ -18,7 +17,10 @@ import main.system.images.ImageManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -32,11 +34,11 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
  */
 public class AttackTooltipFactory {
 
-    public static ActionToolTip createAttackTooltip(DC_UnitAction el) {
+    public static AttackTooltip createAttackTooltip(DC_UnitAction el) {
         return createAttackTooltip(el, false, true, true, false, null);
     }
 
-    public static ActionToolTip createAttackTooltip(DC_UnitAction activeObj, DC_Obj target) {
+    public static AttackTooltip createAttackTooltip(DC_UnitAction activeObj, DC_Obj target) {
         return createAttackTooltip(activeObj, true, true, true, false, target);
     }
 
@@ -59,7 +61,7 @@ public class AttackTooltipFactory {
         ValueContainer container = new ValueContainer(info, tooltip);
         return container;
     }
-    public static ActionToolTip createAttackTooltip(DC_UnitAction el,
+    public static AttackTooltip createAttackTooltip(DC_UnitAction el,
                                                     boolean precalc, boolean costs,
                                                     boolean additionalInfo, boolean combatMode, DC_Obj target) {
         Pair<PARAMS, PARAMS> pair = ACTION_TOOLTIPS_PARAMS_MAP.get(ACTION_TOOLTIP_HEADER_KEY);
@@ -88,7 +90,7 @@ public class AttackTooltipFactory {
             ).filter(Objects::nonNull).collect(Collectors.toList()));
         }
 
-        ActionToolTip toolTip = new ActionToolTip();
+        AttackTooltip toolTip = new AttackTooltip(el);
 
         ValueContainer precalcRow = createPrecalcRow(precalc, el, target);
         toolTip.setUserObject(new ActionTooltipSource() {
@@ -114,7 +116,8 @@ public class AttackTooltipFactory {
 
             @Override
             public CostTableSource getCostsSource() {
-                return () -> getActionCostList(el);
+                return () ->
+                 ActionCostSourceImpl.getActionCostList(el);
             }
 
             @Override
@@ -160,24 +163,7 @@ public class AttackTooltipFactory {
         };
     }
 
-    public static List<ValueContainer> getActionCostList(DC_ActiveObj el) {
-        List<ValueContainer> costsList = new ArrayList<>();
-        for (int i = 0, costsLength = RESOURCE_COSTS.length; i < costsLength; i++) {
-            PARAMETER cost = RESOURCE_COSTS[i];
-            final double param = el.getParamDouble(cost);
-            if (param > 0) {
-                final String iconPath = ImageManager.getValueIconPath(COSTS_ICON_PARAMS[i]);
-                costsList.add(new ValueContainer(getOrCreateR(iconPath), String.format(Locale.US, "%.1f", param)));
-            }
-        }
 
-        final double reqRes = el.getParamDouble(MIN_REQ_RES_FOR_USE.getLeft());
-        if (reqRes > 0) {
-            final String iconPath = ImageManager.getValueIconPath(MIN_REQ_RES_FOR_USE.getRight());
-            costsList.add(new ValueContainer(getOrCreateR(iconPath), String.format(Locale.US, "> %.1f", reqRes)));
-        }
-        return costsList;
-    }
 
 
 }

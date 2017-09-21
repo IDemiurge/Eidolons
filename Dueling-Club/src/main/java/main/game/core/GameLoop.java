@@ -11,6 +11,7 @@ import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.AnimMaster;
+import main.libgdx.bf.SuperActor;
 import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
@@ -258,6 +259,7 @@ public class GameLoop {
     public void setPaused(boolean paused) {
        game.getLogManager().log(paused? "Game paused": "Game resumed"  );
         this.paused = paused;
+        SuperActor.setAlphaFluctuationOn(!paused);
         if (!paused)
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE, true);
     }

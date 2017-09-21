@@ -2,22 +2,31 @@ package main.libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.content.PARAMS;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
+import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
+import main.system.auxiliary.StrPathBuilder;
 
 import static main.system.GuiEventType.UPDATE_QUICK_SLOT_PANEL;
 
 public class ActionPanelController extends Group {
-    private final static int IMAGE_SIZE = 60;
-    private final LeftOrbPanel leftOrbPanel;
-    private QuickSlotPanel quickSlotPanel;
-    private ModeActionsPanel modeActionsPanel;
-    private SpellPanel spellPanel;
-    private EffectsPanel effectsPanel;
-    private RigthOrbPanel rigthOrbPanel;
+    protected final static int IMAGE_SIZE = 60;
+    private static final String BACKGROUND = StrPathBuilder.build(
+     "ui", "custom", "bottomPanelBackground.png");
+    protected OrbsPanel leftOrbPanel;
+    protected OrbsPanel rigthOrbPanel;
+    protected QuickSlotPanel quickSlotPanel;
+    protected ModeActionsPanel modeActionsPanel;
+    protected SpellPanel spellPanel;
+    protected EffectsPanel effectsPanel;
+    protected Image background;
 
     public ActionPanelController() {
+        background = new Image(TextureCache.getOrCreateR(BACKGROUND));
+        addActor(background);
         quickSlotPanel = new QuickSlotPanel(IMAGE_SIZE);
         final int quickSlotOffset = 70;
         quickSlotPanel.setPosition(quickSlotOffset, 0);
@@ -37,12 +46,13 @@ public class ActionPanelController extends Group {
         effectsPanel.setPosition(actionOffset, IMAGE_SIZE);
         addActor(effectsPanel);
 
-        leftOrbPanel = new LeftOrbPanel();
+        leftOrbPanel = new OrbsPanel(PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.STAMINA);
         leftOrbPanel.setPosition(quickSlotOffset + 76, IMAGE_SIZE);
         addActor(leftOrbPanel);
 
-        rigthOrbPanel = new RigthOrbPanel();
-        rigthOrbPanel.setPosition(spellOffset - 29, IMAGE_SIZE);
+        rigthOrbPanel = new OrbsPanel(PARAMS.MORALE, PARAMS.ESSENCE, PARAMS.FOCUS);
+        rigthOrbPanel.setPosition(spellOffset + 29
+         , IMAGE_SIZE);
         addActor(rigthOrbPanel);
 
 
@@ -56,14 +66,14 @@ public class ActionPanelController extends Group {
         setPosition(x, y);
     }
 
-    private void initListeners() {
+    protected void initListeners() {
         GuiEventManager.bind(UPDATE_QUICK_SLOT_PANEL, obj -> {
             final ActiveQuickSlotsDataSource source = (ActiveQuickSlotsDataSource) obj.get();
             if (source != null) {
                 if (getY() < 0) {
                     ActorMaster.addMoveToAction(this, getX(), 0, 1);
-                    ActorMaster.addFadeInOrOut(leftOrbPanel,1);
-                    ActorMaster.addFadeInOrOut(rigthOrbPanel,1);
+                    ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
+                    ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
                 }
                 quickSlotPanel.setUserObject(source);
                 modeActionsPanel.setUserObject(source);
@@ -74,8 +84,8 @@ public class ActionPanelController extends Group {
             } else {
 //                setY(-IMAGE_SIZE);
                 ActorMaster.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
-                ActorMaster.addFadeInOrOut(leftOrbPanel,1);
-                ActorMaster.addFadeInOrOut(rigthOrbPanel,1);
+                ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
+                ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
             }
         });
     }
@@ -88,5 +98,26 @@ public class ActionPanelController extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+    }
+
+    public QuickSlotPanel getQuickSlotPanel() {
+        return quickSlotPanel;
+    }
+
+    public ModeActionsPanel getModeActionsPanel() {
+        return modeActionsPanel;
+    }
+
+    public SpellPanel getSpellPanel() {
+        return spellPanel;
+    }
+
+    public EffectsPanel getEffectsPanel() {
+        return effectsPanel;
+    }
+
+    public void update() {
+        leftOrbPanel.setUpdateRequired(true);
+        rigthOrbPanel.setUpdateRequired(true);
     }
 }

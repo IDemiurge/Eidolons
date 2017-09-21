@@ -15,5 +15,7 @@ public class BattleSceneLauncher extends DemoLauncher {
     protected void initEngine() {
        ScreenData data = new ScreenData(ScreenType.BATTLE, "Loading...");
         screenSwitcher(new EventCallbackParam(data));
+
+
     }
 }

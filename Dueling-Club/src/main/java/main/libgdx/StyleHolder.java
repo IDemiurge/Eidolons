@@ -91,15 +91,16 @@ public class StyleHolder {
     }
 
     public static Label.LabelStyle getAVQLabelStyle() {
-        if (avqLabelStyle == null) {
-            avqLabelStyle = new Label.LabelStyle(new BitmapFont(
-             new FileHandle(
-              PathFinder.getFontPath()+ FONT.AVQ.path
-             )
-            ),
-             DEFAULT_COLOR);
-        }
-        return avqLabelStyle;
+       return  getLabelStyle(FONT.AVQ, DEFAULT_COLOR);
+//        if (avqLabelStyle == null) {
+//            avqLabelStyle = new Label.LabelStyle(new BitmapFont(
+//             new FileHandle(
+//              PathFinder.getFontPath()+ FONT.AVQ.path
+//             )
+//            ),
+//             DEFAULT_COLOR);
+//        }
+//        return avqLabelStyle;
     }
 
     public static TextButton.TextButtonStyle getDefaultTextButtonStyle() {

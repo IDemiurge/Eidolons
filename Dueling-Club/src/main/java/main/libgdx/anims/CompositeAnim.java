@@ -19,7 +19,6 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
-import main.system.auxiliary.log.LogMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
@@ -46,6 +45,7 @@ public class CompositeAnim implements Animation {
     private float time = 0;
     private List<Event> textEvents;
     private Ref ref;
+    private Anim continuous;
 
 
     public CompositeAnim(Anim... anims) {
@@ -284,10 +284,10 @@ public class CompositeAnim implements Animation {
         queueGraphicEvents();
         queueTextEvents();
         running = true;
-        LogMaster.log(LogMaster.ANIM_DEBUG, this + " started: "
-        );
+//        LogMaster.log(LogMaster.ANIM_DEBUG, this + " started: "
+//        );
 
-        GuiEventManager.trigger(GuiEventType.COMPOSITE_ANIMATION_STARTED, this);
+//       TODO  GuiEventManager.trigger(GuiEventType.COMPOSITE_ANIMATION_STARTED, this);
 
     }
 
@@ -482,5 +482,13 @@ public class CompositeAnim implements Animation {
         if (getCurrentAnim() == null)
             return null;
         return getCurrentAnim().getActive();
+    }
+
+    public void setContinuous(Anim continuous) {
+        this.continuous = continuous;
+    }
+
+    public Anim getContinuous() {
+        return continuous;
     }
 }

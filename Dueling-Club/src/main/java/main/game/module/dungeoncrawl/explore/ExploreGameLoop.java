@@ -25,10 +25,9 @@ import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
 public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     private static final int REAL_TIME_LOGIC_PERIOD = 150;
     private static Thread realTimeThread;
-    private ExplorationMaster master;
-
     Lock lock = new ReentrantLock();
     Condition waiting = lock.newCondition();
+    private ExplorationMaster master;
 
     public ExploreGameLoop(DC_Game game) {
         super(game);
@@ -64,9 +63,9 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     @Override
     protected Boolean checkEndRound(ActionInput input) {
-        if (!input.getContext().getSourceObj().isMine()){
+        if (!input.getContext().getSourceObj().isMine()) {
             if (!master.getResetter().isResetNeeded())
-            return false;
+                return false;
         }
         game.getManager().reset();
         return false;
@@ -77,15 +76,20 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         //time to wait?
         //need another thread...
 
-        lock.lock();
-        try {
-            waiting.await();
-        } catch ( Exception e1) {
-            e1.printStackTrace();
-        } finally {
-            lock.unlock();
+        if (actionQueue.isEmpty()) {
+            if (!master.getAiMaster().isAiActs()) {
+                lock.lock();
+//                processing = false;
+                try {
+                    waiting.await();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                } finally {
+                    lock.unlock();
+                }
+            }
         }
-
+//processing = true;
         //check ai pending actions!
         if (master.getAiMaster().isAiActs()) {
 
@@ -98,7 +102,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                     master.getTimeMaster().aiActionActivated(input.getAction().getOwnerObj().getAI(), input.getAction());
                     master.getPartyMaster().reset();
 
-                    if (input.getAction().getOwnerObj().getAI().isLeader()){
+                    if (input.getAction().getOwnerObj().getAI().isLeader()) {
 //                        master.getEnemyPartyMaster().setGroupAI();
                         master.getEnemyPartyMaster().leaderActionDone(input);
                     }
@@ -151,9 +155,19 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     @Override
     protected void waitForAnimations() {
         if (AnimMaster.getInstance().isDrawingPlayer()) {
+            int maxTime = 1000;
             Loop loop = new Loop(20);
-            while (loop.continues() && AnimMaster.getInstance().isDrawingPlayer()) {
+            int waitTime = 0;
+            while (
+             waitTime < maxTime &&
+              loop.continues() &&
+              (
+               DungeonScreen.getInstance().getGridPanel()
+                .getUnitMap().get(activeUnit).getActions().size > 0 ||
+                AnimMaster.getInstance().isDrawingPlayer()
+              )) {
                 WaitMaster.WAIT(100);
+                waitTime += 100;
             }
         }
     }

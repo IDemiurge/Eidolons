@@ -47,7 +47,7 @@ public class Anim extends Group implements Animation {
     protected Vector2 destination;
     protected Vector2 defaultPosition;
     protected List<EmitterActor> emitterList;
-    protected List<EmitterActor> emitterCache; //TODO not the best practice!
+    protected List<EmitterActor> emitterCache= new LinkedList<>(); //TODO not the best practice!
     protected List<SpriteAnimation> sprites;
     protected int lightEmission; // its own lightmap?
     protected Color color;
@@ -79,9 +79,12 @@ public class Anim extends Group implements Animation {
     EventCallback onDone;
     EventCallbackParam callbackParam;
     private boolean emittersWaitingDone;
-    private List<FloatingText> floatingText;
+    private List<FloatingText> floatingText= new LinkedList<>();
     private AnimMaster master;
     private CompositeAnim composite;
+    private boolean done;
+    private Vector2 offsetOrigin;
+    private Vector2 offsetDestination;
 
     public Anim(Entity active, AnimData params) {
         data = params;
@@ -166,7 +169,7 @@ public class Anim extends Group implements Animation {
             cycles = (int) (time / lifecycleDuration);
             lifecycle = time % lifecycleDuration / lifecycleDuration;
         }
-        if (duration >= 0) //|| finished //  lifecycle duration for continuous?
+        if (duration >= 0 ||  isContinuous()) //|| finished //  lifecycle duration for continuous?
         {
             if (checkFinished()) {
                 if (AnimMaster.isSmoothStop(this)) {
@@ -214,7 +217,13 @@ public class Anim extends Group implements Animation {
     }
 
     protected boolean checkFinished() {
+        if (isContinuous())
+            return isDone();
         return time >= getDuration();
+    }
+
+    protected boolean isContinuous() {
+        return false;
     }
 
     private float getTimeToFinish() {
@@ -262,12 +271,12 @@ public class Anim extends Group implements Animation {
     public void reset() {
         time = 0;
 //        time = -delay; TODO
-        offsetX = 0;
-        offsetY = 0;
+        setOffsetX(0);
+        setOffsetY(0);
         alpha = 1f;
         initDuration();
         initSpeed();
-        floatingText = new LinkedList<>();
+        floatingText .clear();
         resetEmitters();
     }
 
@@ -292,10 +301,9 @@ public class Anim extends Group implements Animation {
              }
          }
         );
-        if (emitterCache == null)
-            emitterCache = new LinkedList<>();
         emitterList = emitterCache;
-        emitterCache = new LinkedList<>(emitterList);
+        emitterCache.clear();
+        emitterCache.addAll(emitterList);//= new LinkedList<>(emitterList);
         emitterList.forEach(e -> {
             if (!e.isGenerated()) {
                 if (e.isAttached()) {
@@ -492,12 +500,15 @@ public class Anim extends Group implements Animation {
     public void initPosition() {
         origin = GridMaster
          .getCenteredPos(getOriginCoordinates());
-
+        if (getOffsetOrigin() != null)
+            origin.add(getOffsetOrigin());
 //        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
 //         this + " origin: " + origin);
 
         destination = GridMaster
          .getCenteredPos(getDestinationCoordinates());
+        if (getOffsetDestination() != null)
+            destination.add(getOffsetDestination());
 
 //        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
 //         this + " destination: " + destination);
@@ -552,28 +563,28 @@ public class Anim extends Group implements Animation {
             switch (part) {
                 case MAIN:
                     if (speedX != null) {
-                        offsetX += speedX * delta;
+                        setOffsetX(getOffsetX() + speedX * delta);
                     } else {
-                        offsetX = (destination.x - origin.x) * time / duration;
+                        setOffsetX((destination.x - origin.x) * time / duration);
                     }
                     if (speedY != null) {
-                        offsetY += speedY * delta;
+                        setOffsetY(getOffsetY() + speedY * delta);
                     } else {
-                        offsetY = (destination.y - origin.y) * time / duration;
+                        setOffsetY((destination.y - origin.y) * time / duration);
                     }
                     break;
             }
         }
 
         if (getActions().size == 0) {
-            setX(defaultPosition.x + offsetX);
-            setY(defaultPosition.y + offsetY);
+            setX(defaultPosition.x + getOffsetX());
+            setY(defaultPosition.y + getOffsetY());
         }
         sprites.forEach(s -> {
             if (s.isAttached()) {
                 if (getActions().size == 0) {
-                    s.setOffsetX(offsetX);
-                    s.setOffsetY(offsetY);
+                    s.setOffsetX(getOffsetX());
+                    s.setOffsetY(getOffsetY());
                 }
             }
             s.setRotation(getRotation());
@@ -693,21 +704,7 @@ public class Anim extends Group implements Animation {
         }
     }
 
-    public float getOffsetX() {
-        return offsetX;
-    }
 
-    public void setOffsetX(float offsetX) {
-        this.offsetX = offsetX;
-    }
-
-    public float getOffsetY() {
-        return offsetY;
-    }
-
-    public void setOffsetY(float offsetY) {
-        this.offsetY = offsetY;
-    }
 
     public AnimData getData() {
         return data;
@@ -800,5 +797,45 @@ if (floatingText.getDelay()==0){
 
     public void setComposite(CompositeAnim composite) {
         this.composite = composite;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public Vector2 getOffsetOrigin() {
+        return offsetOrigin;
+    }
+
+    public void setOffsetOrigin(Vector2 offsetOrigin) {
+        this.offsetOrigin = offsetOrigin;
+    }
+
+    public Vector2 getOffsetDestination() {
+        return offsetDestination;
+    }
+
+    public void setOffsetDestination(Vector2 offsetDestination) {
+        this.offsetDestination = offsetDestination;
+    }
+
+    public float getOffsetX() {
+        return offsetX;
+    }
+
+    public void setOffsetX(float offsetX) {
+        this.offsetX = offsetX;
+    }
+
+    public float getOffsetY() {
+        return offsetY;
+    }
+
+    public void setOffsetY(float offsetY) {
+        this.offsetY = offsetY;
     }
 }

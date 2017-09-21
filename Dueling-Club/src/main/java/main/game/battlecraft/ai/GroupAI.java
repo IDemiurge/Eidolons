@@ -43,7 +43,8 @@ public class GroupAI {
 
     }
     public GroupAI(Unit leader) {
-        this.leader = leader;
+        setLeader(leader);
+        add(leader);
     }
     public GroupAI(Wave creepGroup) {
         this.creepGroup = creepGroup;

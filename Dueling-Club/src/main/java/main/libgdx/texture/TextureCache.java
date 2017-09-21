@@ -28,6 +28,7 @@ public class TextureCache {
     private static boolean altTexturesOn = true;
     private static Texture emptyTexture;
     private static Map<String, TextureRegion> regionCache = new HashMap<>(300);
+    private static final boolean uiAtlasOn=false;
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
     private String imagePath;
@@ -39,6 +40,7 @@ public class TextureCache {
         this.imagePath = PathFinder.getImagePath();
         this.cache = new HashMap<>();
         this.greyscaleCache = new HashMap<>();
+        if (uiAtlasOn)
         textureAtlas = new TextureAtlas(imagePath + "/ui//ui.txt") {
             @Override
             public AtlasRegion addRegion(String name, TextureRegion textureRegion) {
@@ -50,6 +52,7 @@ public class TextureCache {
                 return super.addRegion(name.toLowerCase(), texture, x, y, width, height);
             }
         };
+
         pattern = Pattern.compile("^.*[/\\\\]([a-z _\\-0-9]*)\\..*$");
     }
 
@@ -101,6 +104,7 @@ public class TextureCache {
              (StringMaster.getPathSegments(name), "/");
             name = name.substring(0, name.length() - 1);
 
+            if (uiAtlasOn)
             region = textureCache.textureAtlas.findRegion(name);
             if (region != null) {
                 regionCache.put(path, region);

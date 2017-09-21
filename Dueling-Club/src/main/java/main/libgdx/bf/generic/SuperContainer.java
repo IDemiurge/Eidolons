@@ -8,10 +8,16 @@ import main.libgdx.bf.SuperActor;
  */
 public  class SuperContainer extends SuperActor {
     Actor content;
+    private boolean fluctuateAlpha;
 
     public SuperContainer(Actor content) {
         this.content = content;
         addActor(content);
+    }
+
+    public SuperContainer(Actor content, boolean fluctuateAlpha) {
+        this(content);
+        this.fluctuateAlpha = fluctuateAlpha;
     }
 
     public Actor getContent() {
@@ -21,5 +27,11 @@ public  class SuperContainer extends SuperActor {
     @Override
     protected void alphaFluctuation(Actor image, float delta) {
         super.alphaFluctuation(image, delta);
+    }
+
+    @Override
+    protected void alphaFluctuation(float delta) {
+        if (fluctuateAlpha)
+        super.alphaFluctuation(content, delta);
     }
 }

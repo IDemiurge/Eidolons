@@ -16,6 +16,7 @@ import main.game.logic.action.context.Context;
 import main.system.datatypes.DequeImpl;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -25,6 +26,8 @@ public class ExplorePartyMaster extends ExplorationHandler {
     DequeImpl<Unit> companions;
     Coordinates lastPosition;
     private Unit mainHero;
+    private boolean updateRequired;
+    private ActionInput lastAction;
 
     public ExplorePartyMaster(ExplorationMaster master) {
         super(master);
@@ -66,27 +69,54 @@ public class ExplorePartyMaster extends ExplorationHandler {
         return (Unit) master.getGame().getPlayer(true).getHeroObj();
     }
 
-    public void leaderActionDone(ActionInput input) {
+    //threaded use!
+    public void timedCheck() {
+        if (!updateRequired)
+            return;
+
         reset();
-        DC_ActiveObj active = input.getAction();
-        if (active.isMove() || active.isSpell()) {
-            checkFollow();
-        } else {
-            if (active.getActionGroup() == ACTION_TYPE_GROUPS.MODE) {
+        List<Unit> list = new LinkedList<>(companions);
+        for (Unit unit : list) {
+            if (unit.getAI().getStandingOrders() == null) {
+                if (!tryFollow(unit)) {
+                    checkNewGoal(unit);
+                }
+            }
+        }
+        updateRequired = false;
+    }
 
-                companions.forEach(unit -> {
-                    Goal goal = getNewGoal(active, unit.getAI());
-                    master.getGame().getAiManager().setUnit(unit);
-                    List<ActionSequence> sequences = master.getGame().getAiManager().
-                     getActionSequenceConstructor().
-                     createActionSequencesForGoal(goal, unit.getAI());
+    public void checkNewGoal(Unit unit) {
+        DC_ActiveObj active = lastAction.getAction();
+        if (active.getActionGroup() == ACTION_TYPE_GROUPS.MODE) {
 
+
+            Goal goal = getNewGoal(active, unit.getAI());
+            if (goal != null) {
+                master.getGame().getAiManager().setUnit(unit);
+                List<ActionSequence> sequences = master.getGame().getAiManager().
+                 getActionSequenceConstructor().
+                 createActionSequencesForGoal(goal, unit.getAI());
+                if (!sequences.isEmpty()) {
                     ActionSequence sequence = master.getGame().getAiManager().getPriorityManager().
                      chooseByPriority(sequences);
                     unit.getAI().setStandingOrders(sequence);
-                });
+                }
             }
         }
+//        if (mainHero.getMode()!=null ){
+//        }
+    }
+
+    public void leaderActionDone(ActionInput input) {
+        lastAction = input;
+        updateRequired = true;
+//        DC_ActiveObj active = input.getAction();
+//        if (active.isMove() || active.isSpell()) {
+//            checkFollow();
+//        } else {
+//
+//        }
     }
 
     public Goal getNewGoal(DC_ActiveObj active, UnitAI ai) {
@@ -95,7 +125,7 @@ public class ExplorePartyMaster extends ExplorationHandler {
                 case RESTING:
                 case MEDITATION:
                 case CONCENTRATION:
-                    return new Goal(GOAL_TYPE.RESTORE, ai, false);
+                    return new Goal(GOAL_TYPE.PREPARE, ai, false);
             }
         }
         if (active.getActionGroup() == ACTION_TYPE_GROUPS.ORDER) {
@@ -107,20 +137,19 @@ public class ExplorePartyMaster extends ExplorationHandler {
         return null;
     }
 
-    //after each player action?
-    private void checkFollow() {
-        for (Unit unit : companions) {
-            unit.getAI().setAttached(checkAttached(unit));
-            if (!unit.getAI().isAttached())
-                if (isFollowOn(unit)) {
-                    Action move = getFollowMove(unit);
-                    if (move != null) {
-                        ActionInput input = new ActionInput(move.getActive(), new Context(move.getRef()));
-                        master.getAiMaster().queueAiAction(input);
 
-                    }
+    private boolean tryFollow(Unit unit) {
+        unit.getAI().setAttached(checkAttached(unit));
+        if (!unit.getAI().isAttached())
+            if (isFollowOn(unit)) {
+                Action move = getFollowMove(unit);
+                if (move != null) {
+                    ActionInput input = new ActionInput(move.getActive(), new Context(move.getRef()));
+                    master.getAiMaster().queueAiAction(input);
+                    return true;
                 }
-        }
+            }
+        return false;
     }
 
     protected boolean checkAttached(Unit unit) {

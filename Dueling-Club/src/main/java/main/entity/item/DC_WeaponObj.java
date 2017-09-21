@@ -36,6 +36,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     private boolean natural;
     private List<DC_UnitAction> attackActions;
     private DC_QuickItemObj ammo;
+    private DC_QuickItemObj lastAmmo;
 
     public DC_WeaponObj(ObjType type, Player owner, MicroGame game, Ref ref) {
         this(type, owner, game, ref, false);
@@ -415,5 +416,12 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         } else {
             ref.setID(KEYS.AMMO, ammo.getId());
         }
+        if (ammo!=null )
+            lastAmmo = ammo;
     }
+
+    public DC_QuickItemObj getLastAmmo() {
+        return lastAmmo;
+    }
+
 }

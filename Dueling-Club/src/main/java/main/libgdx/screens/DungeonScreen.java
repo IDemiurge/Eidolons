@@ -1,6 +1,7 @@
 package main.libgdx.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
@@ -36,6 +37,7 @@ import java.util.List;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.DIALOG_SHOW;
 import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
+import static main.system.GuiEventType.UPDATE_GUI;
 
 /**
  * Created with IntelliJ IDEA.
@@ -146,6 +148,9 @@ public class DungeonScreen extends ScreenWithLoader {
                 cameraPan(unitPosition);
             }
         });
+        GuiEventManager.bind(UPDATE_GUI, obj -> {
+            updateGui();
+        });
         if (CoreEngine.isGraphicTestMode()) {
             Gdx.app.log("DungeonScreen::afterLoad()", "-- End!");
         }
@@ -159,6 +164,12 @@ public class DungeonScreen extends ScreenWithLoader {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    private void updateGui() {
+//        gridPanel.updateGui();
+        guiStage.getBottomPanel().update();
 
     }
 
@@ -202,9 +213,9 @@ public class DungeonScreen extends ScreenWithLoader {
 
     @Override
     public void render(float delta) {
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
-//            DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
-//        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
+        }
         super.render(delta);
         if (!hideLoader)
             return;

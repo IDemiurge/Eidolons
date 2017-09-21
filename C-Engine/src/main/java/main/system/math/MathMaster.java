@@ -204,6 +204,15 @@ public abstract class MathMaster {
         }
         return i;
     }
+    public static float getMinMax(float i, float min, float max) {
+        if (i >= max) {
+            return max;
+        }
+        if (i <= min) {
+            return min;
+        }
+        return i;
+    }
     public static float minMax(float i, float min, float max) {
         if (i >= max) {
             return max;

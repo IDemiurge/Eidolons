@@ -65,7 +65,8 @@ public class RadialValueContainer extends ActionValueContainer {
             if (tooltip ==null )
                 if (getTooltipSupplier()!=null ){
                  tooltip = tooltipSupplier.get();
-                addListener(tooltip.getController());
+                    addListener(tooltip.getController());
+
             }
     }
 

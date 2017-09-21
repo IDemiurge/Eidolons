@@ -4,23 +4,27 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import main.entity.active.DC_ActiveObj;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.NinePathFactory;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
-import main.libgdx.gui.tooltips.ToolTip;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
-public class ActionToolTip extends ToolTip {
+public class AttackTooltip extends ActionTooltip {
     private TablePanel baseTable;
     private TablePanel rangeTable;
 
     private List<TablePanel> textTables = new ArrayList<>();
+
+    public AttackTooltip(DC_ActiveObj el) {
+        super(el);
+    }
 
     @Override
     public void updateAct(float delta) {
@@ -108,7 +112,7 @@ public class ActionToolTip extends ToolTip {
 
     @Override
     public void afterUpdateAct(float delta) {
-        super.afterUpdateAct(delta);
+//        super.afterUpdateAct(delta);
         baseTable.setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
 
         rangeTable.setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
@@ -117,4 +121,6 @@ public class ActionToolTip extends ToolTip {
             tablePanel.setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
         });
     }
+
+
 }

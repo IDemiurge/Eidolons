@@ -1,5 +1,6 @@
 package main.libgdx.gui.panels.dc.actionpanel.datasource;
 
+import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_QuickItemObj;
@@ -8,16 +9,13 @@ import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.*;
-import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.datatypes.DequeImpl;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory.getActionCostList;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class PanelActionsDataSource implements
@@ -32,7 +30,24 @@ public class PanelActionsDataSource implements
         this.unit = unit;
         unitDataSource = new UnitDataSource(unit);
     }
-
+    @Override
+    public String getParam(PARAMS param) {
+        switch (param){
+            case STAMINA:
+                return getStamina();
+            case FOCUS:
+                return getFocus();
+            case TOUGHNESS:
+                return getToughness();
+            case  ENDURANCE :
+                return getEndurance();
+            case ESSENCE:
+                return getEssence();
+            case MORALE:
+                return getMorale();
+        }
+        return null;
+    }
     @Override
     public List<ActionValueContainer> getQuickSlotActions() {
         final DequeImpl<DC_QuickItemObj> items = unit.getQuickItems();
@@ -43,8 +58,8 @@ public class PanelActionsDataSource implements
                             getOrCreateR(key.getImagePath()),
                             key::invokeClicked
                     );
-                    ValueTooltip tooltip = new ValueTooltip();
-                    tooltip.setUserObject(Arrays.asList(new ValueContainer(key.getName(), "")));
+                    ActionCostTooltip tooltip = new ActionCostTooltip(key.getActive());
+                    tooltip.setUserObject(new ActionCostSourceImpl(key.getActive()) );
                     valueContainer.addListener(tooltip.getController());
                     return valueContainer;
                 })
@@ -89,23 +104,9 @@ public class PanelActionsDataSource implements
          getOrCreateR(getImage(el)),
          el::invokeClicked
         );
-        ActionCostTooltip tooltip = new ActionCostTooltip();
-        tooltip.setUserObject(new ActionCostSource() {
+        ActionCostTooltip tooltip = new ActionCostTooltip(el);
+        tooltip.setUserObject(new ActionCostSourceImpl(el) );
 
-            @Override
-            public ValueContainer getDescription() {
-                return new ValueContainer(el.getDescription(), "");
-            }
-            @Override
-            public ValueContainer getName() {
-                return new ValueContainer(el.getName(), "");
-            }
-
-            @Override
-            public List<ValueContainer> getCostsList() {
-                return getActionCostList(el);
-            }
-        });
 
         container.addListener(tooltip.getController());
         return container;

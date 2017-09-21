@@ -253,6 +253,7 @@ public abstract class DataModel {
         }
         return StringMaster.getFloat(getDoubleParam(param, false));
     }
+
     public Double getParamDouble(PARAMETER param, boolean base) {
         return StringMaster.getDouble(getDoubleParam(param, base));
     }
@@ -620,11 +621,11 @@ public abstract class DataModel {
 
         LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
          + param.getName() + " by " + amount);
-
-        if (!fireParamEvent(param, String.valueOf(amount),
-         CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
-            return true; // false?
-        }
+        if (!quietly)
+            if (!fireParamEvent(param, String.valueOf(amount),
+             CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
+                return true; // false?
+            }
 
         boolean result = true;
         try {
@@ -823,7 +824,6 @@ public abstract class DataModel {
     }
 
     /**
-     *
      * @param param - c_ parameter to reset
      */
     public void resetDynamicParam(PARAMETER param) {

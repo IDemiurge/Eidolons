@@ -3,7 +3,6 @@ package main.libgdx.anims;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.data.ConcurrentMap;
 import main.entity.Ref;
@@ -31,7 +30,6 @@ import main.system.options.AnimationOptions.ANIMATION_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.test.frontend.Showcase;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -62,7 +60,7 @@ public class AnimMaster extends Group {
     //animations will use emitters, light, sprites, text and icons
     public AnimMaster() {
         instance = this;
-        spriteCache =new SpriteCache();
+        spriteCache = new SpriteCache();
 //        spriteCache.add();
         floatingTextMaster = new FloatingTextMaster();
         continuousAnimsOn =
@@ -148,17 +146,17 @@ public class AnimMaster extends Group {
             }
 
         });
-        GuiEventManager.bind(GuiEventType.UPDATE_BUFFS, p -> {
-            updateContinuousAnims();
-        });
-        GuiEventManager.bind(GuiEventType.ABILITY_RESOLVES, p -> {
-            if (!isOn()) {
-                return;
-            }
-            Ability ability = (Ability) p.get();
-            //what about triggers?
+//        GuiEventManager.bind(GuiEventType.UPDATE_BUFFS, p -> {
+//            updateContinuousAnims();
+//        });
+//        GuiEventManager.bind(GuiEventType.ABILITY_RESOLVES, p -> {
+//            if (!isOn()) {
+//                return;
+//            }
+//            Ability ability = (Ability) p.get();
+        //what about triggers?
 //            getParentAnim(ability.getRef().getActive()).addAbilityAnims(ability);
-        });
+//        });
         GuiEventManager.bind(GuiEventType.INGAME_EVENT_TRIGGERED, p -> {
             if (!isOn()) {
                 return;
@@ -367,7 +365,7 @@ public class AnimMaster extends Group {
                 drawing = false;
                 WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, true);
             }
-            drawingPlayer=false;
+            drawingPlayer = false;
             return null;
         }
 
@@ -379,14 +377,7 @@ public class AnimMaster extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (Showcase.isRunning())
-        try {
-            drawAnims(batch, parentAlpha);
-        } catch (Exception e) {
-//            e.printStackTrace();
-        }
-        else
-            drawAnims(batch, parentAlpha);
+        drawAnims(batch, parentAlpha);
     }
 
     public void drawAnims(Batch batch, float parentAlpha) {
@@ -411,7 +402,7 @@ public class AnimMaster extends Group {
 
         if (leadAnimation != null) {
             drawing = true;
-           boolean result =tryDrawAnimation(batch, leadAnimation);
+            boolean result = tryDrawAnimation(batch, leadAnimation);
 
             if (!result) {
                 startNext();
@@ -434,17 +425,22 @@ public class AnimMaster extends Group {
     private boolean tryDrawAnimation(Batch batch, CompositeAnim anim) {
         boolean result = false;
         if (ExplorationMaster.isExplorationOn())
-            if (anim.getActive_()!=null )
+            if (anim.getActive_() != null)
                 if (anim.getActive_().getOwnerObj().isMine())
-                    if (anim.getActive_().getOwnerObj().isMainHero()){
-                        drawingPlayer=result;
-                    }
-                    try {
+                    if (anim.getActive_().getOwnerObj().isMainHero())
+                        drawingPlayer = true;
+
+        try {
             result = anim.draw(batch);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        if (ExplorationMaster.isExplorationOn())
+            if (anim.getActive_() != null)
+                if (anim.getActive_().getOwnerObj().isMine())
+                    if (anim.getActive_().getOwnerObj().isMainHero())
+                        drawingPlayer = result;
 
         return result;
     }
@@ -464,4 +460,6 @@ public class AnimMaster extends Group {
     public void setDrawingPlayer(boolean drawingPlayer) {
         this.drawingPlayer = drawingPlayer;
     }
+
+
 }

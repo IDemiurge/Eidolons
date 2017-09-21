@@ -14,12 +14,25 @@ public class AggroMaster {
     public static final float AGGRO_RANGE = 2.5f;
     public static final float AGGRO_GROUP_RANGE = 1.5f;
     private static boolean aiTestOn = true;
-    boolean sightRequiredForAggro = true;
+    private static boolean sightRequiredForAggro = true;
 
 
     public static List<Unit> getAggroGroup() {
-        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
-        return getAggroGroup(hero);
+//        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
+         List<Unit> list = new LinkedList<>();
+        for (Unit ally : DC_Game.game.getPlayer(true).getControlledUnits_()) {
+            if (sightRequiredForAggro){
+                if (!VisionManager.checkDetected(ally)){
+                   continue;
+                }
+            }
+            for (Unit unit :   getAggroGroup(ally)) {
+                if (!list.contains(unit))
+                list.add (unit);
+            }
+        }
+
+        return list;
     }
         public static List<Unit> getAggroGroup( Unit hero ) {
          List<Unit> list =
@@ -27,22 +40,27 @@ public class AggroMaster {
 //        Analyzer.getEnemies(hero, false, false, false);
             list.removeIf(unit -> !unit.canActNow());
             list.removeIf(unit -> !unit.isEnemyTo(DC_Game.game.getPlayer(true)));
-        list.removeIf(unit-> PositionMaster.getExactDistance(
-         hero.getCoordinates(), unit.getCoordinates())>AGGRO_RANGE);
+        list.removeIf(unit->
+          !checkAggro(unit, hero, AGGRO_RANGE)
+         );
 
         List<Unit> aggroGroup = new LinkedList<>();
         for (Unit sub : list) {
             List<Unit> aggroed = new LinkedList<>(DC_Game.game.getUnits());
             aggroed.removeIf(unit ->
              !unit.canActNow() ||
-              !unit.isEnemyTo(DC_Game.game.getPlayer(true))||
-            aggroGroup.contains(sub) ||
-             PositionMaster.getExactDistance(
-             sub.getCoordinates(), unit.getCoordinates()) >= AGGRO_GROUP_RANGE);
+              !unit.isEnemyTo(DC_Game.game.getPlayer(true)) ||
+              aggroGroup.contains(sub) ||
+              !checkAggro(unit, hero, AGGRO_GROUP_RANGE));
 
             aggroGroup.addAll(aggroed);
         }
         return aggroGroup;
+    }
+
+    private static boolean checkAggro(Unit unit, Unit hero, double range) {
+        return PositionMaster.getExactDistance(
+         hero.getCoordinates(), unit.getCoordinates())<=range;
     }
 
     public static boolean isAiTestOn() {

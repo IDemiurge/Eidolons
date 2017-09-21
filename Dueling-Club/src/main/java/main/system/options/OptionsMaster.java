@@ -6,7 +6,7 @@ import main.data.xml.XML_Converter;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.libgdx.anims.particles.ParticleManager;
-import main.libgdx.bf.UnitView;
+import main.libgdx.bf.SuperActor;
 import main.libgdx.bf.light.ShadeLightCell;
 import main.libgdx.bf.light.ShadowMap;
 import main.libgdx.screens.DungeonScreen;
@@ -128,7 +128,7 @@ public class OptionsMaster {
                     ParticleManager.setAmbienceOn(bool);
                     break;
                 case ANIMATED_UI:
-                    UnitView.setAlphaFluctuationOn(bool);
+                    SuperActor.setAlphaFluctuationOn(bool);
                     break;
                 case ANIMATED_SHADOWMAP:
                     ShadeLightCell.setAlphaFluctuation(bool);

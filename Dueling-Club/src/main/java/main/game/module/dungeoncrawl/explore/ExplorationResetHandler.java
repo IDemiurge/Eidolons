@@ -1,7 +1,8 @@
 package main.game.module.dungeoncrawl.explore;
 
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 /**
  * Created by JustMe on 9/10/2017.
@@ -37,6 +38,7 @@ public class ExplorationResetHandler extends ExplorationHandler {
 
 
         resetNeeded = false;
+        GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
         //check time triggers!
     }
 }

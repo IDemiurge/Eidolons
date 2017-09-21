@@ -34,7 +34,7 @@ public class UnitViewFactory {
         return view;
     }
 
-    public static BaseView createBaseView(BattleFieldObject bfObj) {
+    public static BaseView createGraveyardView(BattleFieldObject bfObj) {
         BaseView view = new BaseView(getOrCreateR(bfObj.getImagePath()));
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
         tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
@@ -47,7 +47,7 @@ public class UnitViewFactory {
         return new BattleClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return event.getButton() == Input.Buttons.RIGHT;
+                return true;//event.getButton() == Input.Buttons.RIGHT;
             }
 
             @Override

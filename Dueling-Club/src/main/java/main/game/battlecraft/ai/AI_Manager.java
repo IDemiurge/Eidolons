@@ -213,7 +213,7 @@ public class AI_Manager extends AiMaster {
                 for (Unit unit1 : player.getControlledUnits_()) {
                     if (unit.getAI().getGroup() != null)
                         continue;
-                    if (unit.equals(unit))
+                    if (unit1.equals(unit))
                         continue;
                     double max_distance = 2.5;
                     if (PositionMaster.getExactDistance(unit1.getCoordinates(),

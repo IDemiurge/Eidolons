@@ -1,19 +1,23 @@
 package main.ability.conditions.special;
 
 import main.content.DC_TYPE;
+import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.Unit;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
 import main.game.core.Eidolons;
 import main.swing.XLine;
 import main.system.auxiliary.data.ArrayMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.math.DC_PositionMaster;
 import main.system.math.PositionMaster;
 
 import java.util.List;
@@ -23,7 +27,8 @@ public class ClearShotCondition extends MicroCondition {
     private boolean vision;
     private String str1;
     private String str2;
-    private int log_priority = 0;
+    private int log_priority = 1;
+    boolean showVisuals;
 
     public ClearShotCondition() {
         this(KEYS.SOURCE.toString(), KEYS.MATCH.toString());
@@ -59,7 +64,7 @@ public class ClearShotCondition extends MicroCondition {
                                int x_, int y_) {
 
         Coordinates coordinates = new Coordinates(x_, y_);
-        List<Unit> units = Eidolons.gameMaster.getObjectsOnCoordinate(coordinates);
+        List<BattleFieldObject> units = Eidolons.gameMaster.getObjectsOnCoordinate(coordinates, false);
         if (units.isEmpty()) {
 
             if (!isVision()) {
@@ -68,7 +73,7 @@ public class ClearShotCondition extends MicroCondition {
             return false;
         } else {
             boolean obstructing = false;
-            for (Unit unit : units) {
+            for (BattleFieldObject unit : units) {
                 if (!isVision() || !unit.isTransparent()) {
                     obstructing = unit.isObstructing(source, target);
                 }
@@ -87,7 +92,7 @@ public class ClearShotCondition extends MicroCondition {
 
     @Override
     public boolean check(Ref ref) {
-       /* // consider flying/non-obstructing!
+       // consider flying/non-obstructing!
 
         DC_Obj target = (DC_Obj) game.getObjectById(ref.getId(str2));
         if (target == null) {
@@ -146,8 +151,9 @@ public class ClearShotCondition extends MicroCondition {
         if (!toCheck)
             return true;
 
-        return checkClearShot(source, target);*/
-        return true;
+
+//        return true;
+        return checkClearShot(source, target);
     }
 
 	/*
@@ -210,11 +216,11 @@ public class ClearShotCondition extends MicroCondition {
             }
         }
 
-        Boolean[][] array = new Boolean[x - 1][y + 1];
+        Boolean[][] array = new Boolean[x ][y + 1];
         log("Checking Clear Shot for " + source + " on " + target + "; mirrored = "
                 + mirrorRectangle + "; flippedX = " + flippedX + "; flippedY = " + flippedY);
         boolean toCheck = false;
-        for (int i = 1; i < x; i++)            // don't preCheck source
+        for (int i = 0; i < x; i++)            // don't preCheck source
         {
             for (int j = 0; j <= y; j++) { // don't preCheck target
                 int x_ = source.getX(); // greater mirrorRectangle ?
@@ -370,6 +376,10 @@ public class ClearShotCondition extends MicroCondition {
                 target.setBlockingWallDirection(d);
                 target.setBlockingWallCoordinate(c);
                 target.setBlockingDiagonalSide(left);
+
+                if (showVisuals) {
+//                    GuiEventManager.trigger(GuiEventType.SHOW_CLEARSHOT, new ClearShotData(target, d, c, left));
+                }
                 // TODO WALL HEIGHT!
                 return true;
 
@@ -455,7 +465,7 @@ public class ClearShotCondition extends MicroCondition {
             if (obstructionArray[(int) x - 1][(int) a]
                     && obstructionArray[(int) x - 1][(int) b]) {
                 // target.setBlockingCoordinate(new Coordinates(a, b));
-
+//                GuiEventManager.trigger(GuiEventType.SHOW_CLEARSHOT, new ClearShotData(ref , target, d, c, left));
                 return false;
             }
             x++;
@@ -475,9 +485,14 @@ public class ClearShotCondition extends MicroCondition {
     }
 
     private void log(String str) {
+        if (showVisuals || game.isDebugMode())
         if (!isVision()) {
             LogMaster.log(log_priority, str);
         }
+    }
+
+    public void setShowVisuals(boolean showVisuals) {
+        this.showVisuals = showVisuals;
     }
 
     public boolean isVision() {

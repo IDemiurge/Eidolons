@@ -31,19 +31,21 @@ import main.system.options.OptionsMaster;
  */
 public class BattleGuiStage extends Stage {
 
+    private final InitiativePanel initiativePanel;
+    private final ActionPanelController bottomPanel;
     private OutcomePanel outcomePanel;
 
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
-        super(viewport==null ?
+        super(viewport == null ?
           new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(),
            Gdx.graphics.getHeight(), new OrthographicCamera()) : viewport,
-         batch == null ?  new SpriteBatch() :
+         batch == null ? new SpriteBatch() :
           batch);
-        InitiativePanel initiativePanel = new InitiativePanel();
+        initiativePanel = new InitiativePanel();
         initiativePanel.setPosition(0, Gdx.graphics.getHeight() - initiativePanel.getHeight());
         addActor(initiativePanel);
-
-        addActor(new ActionPanelController(0, 0));
+        bottomPanel = new ActionPanelController(0, 0);
+        addActor(bottomPanel);
 
         addActor(new UnitInfoPanel(0, 0));
 
@@ -54,7 +56,7 @@ public class BattleGuiStage extends Stage {
 
         addActor(new RadialMenu());
 
-        addActor(new ToolTipManager());
+        addActor(new ToolTipManager(this));
 
         InventoryWithAction inventoryForm = new InventoryWithAction();
         inventoryForm.setPosition(0, Gdx.graphics.getHeight() - inventoryForm.getHeight());
@@ -123,4 +125,12 @@ public class BattleGuiStage extends Stage {
         root.draw(batch, 1);
         batch.end();
     }*/
+
+    public InitiativePanel getInitiativePanel() {
+        return initiativePanel;
+    }
+
+    public ActionPanelController getBottomPanel() {
+        return bottomPanel;
+    }
 }

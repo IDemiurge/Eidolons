@@ -1,5 +1,7 @@
 package main.libgdx.gui.panels.dc.unitinfo.datasource;
 
+import main.content.PARAMS;
+
 public interface ResourceSource {
     String getToughness();
 
@@ -12,4 +14,6 @@ public interface ResourceSource {
     String getEssence();
 
     String getFocus();
+
+    String getParam(PARAMS param);
 }

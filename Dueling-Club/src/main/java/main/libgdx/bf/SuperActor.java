@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.screens.DungeonScreen;
+import main.system.math.MathMaster;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 
@@ -111,7 +112,9 @@ public abstract class SuperActor extends Group implements Borderable {
             if (getTeamColor() != null) {
                 color = getTeamColor();
             }
-        fluctuatingAlpha = fluctuatingAlpha + getAlphaFluctuation(delta);
+        fluctuatingAlpha = MathMaster.getMinMax(
+         fluctuatingAlpha + getAlphaFluctuation(delta), getAlphaFluctuationMin(),
+         getAlphaFluctuationMax());
         if (image != null) //TODO control access!
             image.setColor(color.r, color.g, color.b, fluctuatingAlpha);
 
@@ -119,9 +122,9 @@ public abstract class SuperActor extends Group implements Borderable {
 
     protected float getAlphaFluctuation(float delta) {
         float fluctuation = delta * getAlphaFluctuationPerDelta();
-        if (getFluctuatingAlpha() <= getAlphaFluctuationMin() - fluctuation)
+        if (getFluctuatingAlpha() <= getAlphaFluctuationMin()  )
             alphaGrowing = !alphaGrowing;
-        else if (fluctuatingAlpha > getAlphaFluctuationMax() + fluctuation)
+        else if (fluctuatingAlpha >= getAlphaFluctuationMax()  )
             alphaGrowing = !alphaGrowing;
 
         if (!alphaGrowing)

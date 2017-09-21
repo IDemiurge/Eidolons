@@ -1,8 +1,7 @@
 package main.libgdx.anims.weapons;
 
 import main.entity.active.DC_ActiveObj;
-import main.libgdx.anims.AnimMaster3d;
-import main.libgdx.anims.sprite.SpriteAnimation;
+import main.libgdx.anims.AnimMaster3d.WEAPON_ANIM_CASE;
 
 /**
  * Created by JustMe on 9/9/2017.
@@ -18,10 +17,10 @@ public class Missile3dAnim extends Weapon3dAnim {
         //apply offsets?
     }
 
-    @Override
-    protected SpriteAnimation get3dSprite() {
-        return  AnimMaster3d.getSpriteForAction(getDuration(), getActive(),
-         ref.getTargetObj(),true);
+    protected WEAPON_ANIM_CASE getCase() {
+        if (getActive().isFailedLast())
+            return WEAPON_ANIM_CASE.MISSILE_MISS;
+        return WEAPON_ANIM_CASE.MISSILE ;
     }
 
     @Override

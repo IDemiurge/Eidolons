@@ -173,7 +173,7 @@ public class Executor extends ActiveHandler {
         //TODO BEFORE RESOLVE???
 
         if (AnimMaster.isOn())
-            if (!AnimMaster.getInstance().getConstructor().isReconstruct() )
+            if (!AnimMaster.getInstance().getConstructor().isReconstruct())
                 AnimMaster.getInstance().getConstructor().preconstruct(getAction());
 
         GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, getAction());
@@ -342,9 +342,12 @@ public class Executor extends ActiveHandler {
         }
         if (ExplorationMaster.isExplorationOn()) {
             getGame().getDungeonMaster().getExplorationMaster().getActionHandler().payCosts(getEntity());
-
+            getGame().getDungeonMaster().getExplorationMaster().getCleaner().cleanUpAfterAction(
+             getEntity(), getOwnerObj());
+        } else
+        {
+            addCooldown();
         }
-        addCooldown();
 
         try {
             getAction().getCosts().pay(getRef());
@@ -387,7 +390,7 @@ public class Executor extends ActiveHandler {
         try {
             getMaster().getLogger().logCompletion();
         } catch (Exception e) {
-           main.system.ExceptionMaster.printStackTrace( e);
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         getGame().getManager().applyActionRules(getAction());
         try {

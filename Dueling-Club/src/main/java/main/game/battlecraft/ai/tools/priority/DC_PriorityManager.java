@@ -2,6 +2,7 @@ package main.game.battlecraft.ai.tools.priority;
 
 import main.elements.costs.Costs;
 import main.entity.active.DC_ActiveObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
@@ -47,7 +48,7 @@ public class DC_PriorityManager {
         return impl.getAttackPriority(as);
     }
 
-    public static int getAttackPriority(DC_ActiveObj active, Unit targetObj) {
+    public static int getAttackPriority(DC_ActiveObj active, BattleFieldObject targetObj) {
         return impl.getAttackPriority(active, targetObj);
     }
 

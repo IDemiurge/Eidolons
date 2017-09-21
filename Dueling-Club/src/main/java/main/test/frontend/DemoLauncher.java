@@ -83,6 +83,11 @@ public class DemoLauncher extends Game {
         conf.backgroundFPS=-1;
         conf.width = 1600;
         conf.height = 900;
+
+
+//        System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+//        conf.width   = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
+//        conf.height =   LwjglApplicationConfiguration.getDesktopDisplayMode().height;
         try {
             RESOLUTION resolution =
              new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class,

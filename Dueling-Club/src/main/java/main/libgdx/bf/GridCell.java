@@ -45,11 +45,15 @@ public class GridCell extends Group implements Borderable {
     public GridCell init() {
 
         backImage = new Image(backTexture);
+//        bad idea
+//        backImage.setRotation(new Float(90)* RandomWizard.getRandomInt(3));
+
         backImage.setFillParent(true);
         addActor(backImage);
         setSize(GridConst.CELL_W, GridConst.CELL_H);
 
-        cordsText = new Label(getGridX() + ":" + getGridY(), StyleHolder.getDefaultLabelStyle());
+        cordsText = new Label(getGridX() + ":" + getGridY(),
+         StyleHolder.getAVQLabelStyle());
         cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2, getHeight() / 2 - cordsText.getHeight() / 2);
         cordsText.setVisible(false);
         addActor(cordsText);

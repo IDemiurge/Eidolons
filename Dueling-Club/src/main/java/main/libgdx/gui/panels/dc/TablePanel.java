@@ -82,4 +82,8 @@ public class TablePanel<T extends Actor> extends Table {
         getChildren().forEach(ch -> ch.setUserObject(userObject));
         updateRequired = true;
     }
+
+    public void setUpdateRequired(boolean updateRequired) {
+        this.updateRequired = updateRequired;
+    }
 }

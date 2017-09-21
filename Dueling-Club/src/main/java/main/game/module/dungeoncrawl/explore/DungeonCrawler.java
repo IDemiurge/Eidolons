@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class DungeonCrawler extends ExplorationHandler {
 
-    private int minDistance=4;
+    private int minDistance = 4;
 
     public DungeonCrawler(ExplorationMaster master) {
         super(master);
@@ -31,11 +31,10 @@ public class DungeonCrawler extends ExplorationHandler {
     private boolean checkEngaged() {
         List<Unit> aggroGroup = AggroMaster.getAggroGroup();
 
-        if (!aggroGroup.isEmpty())
-        {
+        if (!aggroGroup.isEmpty()) {
             for (Unit sub : aggroGroup) {
-            sub.getAI().setStandingOrders(null );
-                }
+                sub.getAI().setStandingOrders(null);
+            }
             for (Unit sub : master.getGame().getUnits()) {
                 sub.getAI().setOutsideCombat(false);
                 if (!aggroGroup.contains(sub))
@@ -48,7 +47,7 @@ public class DungeonCrawler extends ExplorationHandler {
             return true;
         }
 //        for (Unit ally :allies) {
-            // check block if (unit.getCoordinates())
+        // check block if (unit.getCoordinates())
 //         TODO    if (master. getGame().getVisionMaster().getDetectionMaster().checkDetected(ally))
 //                return true;
 //        }
@@ -58,11 +57,12 @@ public class DungeonCrawler extends ExplorationHandler {
     public boolean checkExplorationDefault() {
         return !checkEngaged();
     }
+
     public void checkStatusUpdate() {
         if (checkEngaged()) {
             master.switchExplorationMode(false);
         } else {
-            if (checkDanger()){
+            if (checkDanger()) {
                 //?
             } else {
                 master.switchExplorationMode(true);

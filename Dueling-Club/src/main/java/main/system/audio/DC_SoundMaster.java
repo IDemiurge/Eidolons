@@ -88,12 +88,12 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     public static void playMoveSound(Unit unit) {
-        String type = "natural";
+        String type = "soft";
 //        unit.getGame().getDungeon().isSurface()
-//        getPlayer().playRandomSoundFromFolder(
-//         "effects\\movement\\" + type
+        getPlayer().playRandomSoundFromFolder(
+         "effects\\movement\\" + type
 //          + unit.getSize()
-//        );
+        );
 
     }
 

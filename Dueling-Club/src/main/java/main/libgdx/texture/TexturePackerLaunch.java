@@ -1,5 +1,6 @@
 package main.libgdx.texture;
 
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import main.data.filesys.PathFinder;
@@ -8,12 +9,19 @@ import main.data.filesys.PathFinder;
  * Created by PC on 03.11.2016.
  */
 public class TexturePackerLaunch {
+    public static final String ATLAS_EXTENSION = ".txt";
+    public static final boolean TRIM =false ;
     static String packs[] = {
 //     "long swords",
 //     "hammers",
-     "daggers",
+//     "daggers",
 //     "fists",
-     "short swords",
+//     "short swords",
+//     "test",
+//     "crossbows",
+//     "bows",
+//     "bolts",
+     "arrows",
     };
 
     static String mainFolders[] = {
@@ -26,15 +34,12 @@ public class TexturePackerLaunch {
      "main\\sprites",
     };
     public static void main(String[] args) {
-        packImages(mainFolders);
+//        packImages(mainFolders);
         packWeaponSprites(packs);
     }
 
     private static void packImages(String[] folders) {
-        Settings settings = new Settings();
-        settings.maxHeight = (int) Math.pow(2, 15);
-        settings.maxWidth = (int) Math.pow(2, 15);
-        settings.square = false;
+        Settings settings =getSetting();
         for (String sub : folders) {
 //            List<File> files = FileManager.getFilesFromDirectory(PathFinder.getImagePath() + sub, false, true);
 //            for (File folder : files) {
@@ -48,14 +53,19 @@ public class TexturePackerLaunch {
         }
     }
 
-    public static void packWeaponSprites(String[] args) {
+    private static Settings getSetting() {
         Settings settings = new Settings();
         settings.maxHeight = (int) Math.pow(2, 14);
         settings.maxWidth = (int) Math.pow(2, 14);
-//        settings.stripWhitespaceY = true;
-//        settings.stripWhitespaceX = true;
+        settings.atlasExtension = ATLAS_EXTENSION;
+        settings.stripWhitespaceY = TRIM;
+        settings.stripWhitespaceX = TRIM;
         settings.square = false;
-
+        settings.format = Format.RGBA4444;
+        return settings;
+    }
+    public static void packWeaponSprites(String[] args) {
+        Settings settings = getSetting();
         for (String sub : args) {
 
             String inputDir = PathFinder.getWeaponAnimPath() + "workspace//" + sub;
@@ -67,5 +77,6 @@ public class TexturePackerLaunch {
         }
 //            TexturePacker.process(inputDir, outputDir, packFileName);
     }
+
 }
 

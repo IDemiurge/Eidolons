@@ -31,6 +31,7 @@ import main.libgdx.anims.std.*;
 import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
 import main.libgdx.anims.weapons.Missile3dAnim;
 import main.libgdx.anims.weapons.Ranged3dAnim;
+import main.libgdx.anims.weapons.Reload3dAnim;
 import main.libgdx.anims.weapons.Weapon3dAnim;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -258,7 +259,8 @@ public class AnimationConstructor {
 
     private Anim getPartAnim(AnimData data, DC_ActiveObj active,
                              ANIM_PART part, CompositeAnim composite) {
-
+//TODO if (!checkAnimValid())
+//    return null ;
         Anim anim = createAnim(active, data, part);
         if (anim == null) {
             return null;
@@ -285,7 +287,7 @@ public class AnimationConstructor {
         }
         if (active instanceof DC_QuickItemAction) {
             if (((DC_QuickItemAction) active).getItem().isAmmo()) {
-                return new ReloadAnim(active);
+                return new Reload3dAnim(active);
             } else
                 return new QuickItemAnim(((DC_QuickItemAction) active).getItem());
 
@@ -302,20 +304,20 @@ public class AnimationConstructor {
                 if (part == ANIM_PART.MAIN)
                     return new Weapon3dAnim(active);
 
-        } else if (part == ANIM_PART.MAIN) {
+            } else if (part == ANIM_PART.MAIN) {
 
-            if (active.isThrow()) {
-                return new ThrowAnim(active);
+                if (active.isThrow()) {
+                    return new ThrowAnim(active);
+                }
+                if (active.isRanged()) {
+                    return new RangedAttackAnim(active);
+                }
+                return new AttackAnim(active);
             }
-            if (active.isRanged()) {
-                return new RangedAttackAnim(active);
+            if (part == ANIM_PART.IMPACT) {
+                return new HitAnim(active, data);
             }
-            return new AttackAnim(active);
         }
-        if (part == ANIM_PART.IMPACT) {
-            return new HitAnim(active, data);
-        }
-    }
 
         if (active.isSpell()) {
             if (active.isMissile()) {
@@ -416,6 +418,10 @@ public class AnimationConstructor {
 //
 
             case CAST:
+                if (active instanceof DC_QuickItemAction)
+                    return true;
+                if (active.isRanged())
+                    return true;
             case RESOLVE:
                 break;
         }

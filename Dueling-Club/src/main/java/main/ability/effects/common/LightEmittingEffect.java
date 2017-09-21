@@ -44,7 +44,7 @@ public class LightEmittingEffect extends DC_Effect {
             }
         }
         if (reflectionMod > 0) {
-            reduction_for_distance_modifier += ("+" + reflectionMod);
+//            reduction_for_distance_modifier  += ("+" + reflectionMod);
         }
         return getEffect().apply(ref);
     }

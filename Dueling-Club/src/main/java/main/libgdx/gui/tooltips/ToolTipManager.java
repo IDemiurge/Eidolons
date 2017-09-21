@@ -4,27 +4,52 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import main.entity.Entity;
+import main.entity.active.DC_UnitAction;
 import main.libgdx.anims.ActorMaster;
+import main.libgdx.anims.AnimMaster3d;
 import main.libgdx.bf.BaseView;
 import main.libgdx.bf.GridUnitView;
 import main.libgdx.bf.UnitView;
 import main.libgdx.gui.panels.dc.TablePanel;
+import main.libgdx.stage.BattleGuiStage;
 import main.system.GuiEventManager;
 
 import static main.system.GuiEventType.*;
 
 public class ToolTipManager extends TablePanel {
 
+    private final BattleGuiStage guiStage;
     private Cell actorCell;
 
-    public ToolTipManager() {
+    public   void entityHover(Entity entity) {
+        if (entity instanceof DC_UnitAction) {
+            if (((DC_UnitAction) entity).isAttackAny())
+            AnimMaster3d.initHover((DC_UnitAction) entity);
+            return;
+        }
+
+        //differentiate radial from bottom panel? no matter really ... sync :)
+
+//        guiStage.getBottomPanel().getSpellPanel().getCells();
+
+    }
+    public   void entityHoverOff(Entity entity) {
+        if (entity instanceof DC_UnitAction) {
+            AnimMaster3d.hoverOff((DC_UnitAction) entity);
+        }
+    }
+    public ToolTipManager(BattleGuiStage battleGuiStage) {
+        guiStage = battleGuiStage;
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
+
             Object object = event.get();
             if (object == null) {
                 actorCell.setActor(null);
             } else {
                 init((ToolTip) object);
             }
+
         });
 
         GuiEventManager.bind(UNIT_VIEW_HOVER_ON, (event) -> {
@@ -84,13 +109,19 @@ public class ToolTipManager extends TablePanel {
         actorCell = addElement(null);
     }
 
+
     private void init(ToolTip toolTip) {
+        toolTip.setManager(this);
+
         toolTip.invalidate();
         actorCell.setActor(toolTip);
 
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setPosition(v2.x + 10, v2.y);
+
+        if (toolTip.getEntity()!=null )
+            entityHover(toolTip.getEntity());
     }
 
     @Override
@@ -125,4 +156,5 @@ public class ToolTipManager extends TablePanel {
     public Actor hit(float x, float y, boolean touchable) {
         return null;//this is untouchable element
     }
+
 }

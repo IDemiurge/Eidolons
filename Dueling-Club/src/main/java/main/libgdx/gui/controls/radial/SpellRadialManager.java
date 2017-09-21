@@ -7,10 +7,8 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
+import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
-import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
@@ -101,22 +99,8 @@ public class SpellRadialManager {
 ////                        }
 ////                    }
 //            );
-            ActionCostTooltip tooltip = new ActionCostTooltip();
-            tooltip.setUserObject(new ActionCostSource() {
-                @Override
-                public ValueContainer getDescription() {
-                    return new ValueContainer(action.getDescription(), "");
-                }
-                @Override
-                public ValueContainer getName() {
-                    return new ValueContainer(action.getName() + " !!!!", "");
-                }
-
-                @Override
-                public List<ValueContainer> getCostsList() {
-                    return AttackTooltipFactory.getActionCostList(action);
-                }
-            });
+            ActionCostTooltip tooltip = new ActionCostTooltip(action);
+            tooltip.setUserObject(new ActionCostSourceImpl(action) );
             valueContainer.addListener(tooltip.getController());
         } else {
             valueContainer = new RadialValueContainer(

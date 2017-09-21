@@ -11,7 +11,7 @@ import main.entity.obj.unit.Unit;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.VerticalValueContainer;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
-import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionToolTip;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTip;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTipDataSource;
@@ -135,6 +135,25 @@ public class UnitDataSource implements
         int c = unit.getIntParam(PARAMS.C_FOCUS);
         int m = unit.getIntParam(PARAMS.FOCUS);
         return c + "/" + m;
+    }
+
+    @Override
+    public String getParam(PARAMS param) {
+        switch (param){
+            case STAMINA:
+                return getStamina();
+            case FOCUS:
+                return getFocus();
+            case TOUGHNESS:
+                return getToughness();
+            case  ENDURANCE :
+                return getEndurance();
+            case ESSENCE:
+                return getEssence();
+            case MORALE:
+                return getMorale();
+        }
+        return null;
     }
 
     @Override
@@ -432,7 +451,7 @@ public class UnitDataSource implements
         if (weapon != null) {
             for (DC_UnitAction el : weapon.getOrCreateAttackActions()) {
                 final ValueContainer valueContainer = new ValueContainer(getOrCreateR(el.getImagePath()));
-                ActionToolTip toolTip = AttackTooltipFactory.createAttackTooltip(el);
+                AttackTooltip toolTip = AttackTooltipFactory.createAttackTooltip(el);
                 valueContainer.addListener(toolTip.getController());
                 result.add(valueContainer);
             }

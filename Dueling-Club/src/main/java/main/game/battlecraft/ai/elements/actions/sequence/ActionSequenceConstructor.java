@@ -264,10 +264,10 @@ public class ActionSequenceConstructor extends AiHandler {
 
         List<ActionPath> paths = getPathSequenceConstructor().getPathSequences(moveActions, action);
         list = getSequencesFromPaths(paths, task, action);
-        if (list.isEmpty()) {
-            paths = getPathSequenceConstructor().getPathSequences(moveActions, action);
-            list = getSequencesFromPaths(paths, task, action);
-        }
+//      TODO ?!  if (list.isEmpty()) {
+//            paths = getPathSequenceConstructor().getPathSequences(moveActions, action);
+//            list = getSequencesFromPaths(paths, task, action);
+//        }
         return list;
 
     }

@@ -25,7 +25,7 @@ public class GridCellDataSource implements GraveyardDataSource {
         if (deadUnits == null) return new ArrayList<>();
         return deadUnits.stream()
                 .limit(4)
-                .map(el -> UnitViewFactory.createBaseView((BattleFieldObject) el))
+                .map(el -> UnitViewFactory.createGraveyardView((BattleFieldObject) el))
                 .collect(Collectors.toList());
     }
 

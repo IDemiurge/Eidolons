@@ -24,6 +24,21 @@ public class ShadeLightCell extends SuperContainer {
     public ShadeLightCell(SHADE_LIGHT type, int x, int y) {
         super(new Image(TextureCache.getOrCreateR(type.getTexturePath())));
         this.type = type;
+        if (isColored())
+            getContent().setColor(getTeamColor());
+
+    }
+
+    private boolean isColored() {
+        switch(type){
+            case GAMMA_LIGHT:
+            case LIGHT_EMITTER:
+                return true;
+            case CONCEALMENT:
+            case GAMMA_SHADOW:
+                break;
+        }
+        return false;
     }
 
     public static void setAlphaFluctuation(boolean alphaFluctuation) {
@@ -62,7 +77,7 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     public Color getTeamColor() {
-        return Color.WHITE;
+        return new Color(1, 0.9f, 0.7f, 1);
     }
 
     @Override
@@ -72,7 +87,7 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     protected float getAlphaFluctuationMin() {
-        return baseAlpha * 4 / 5;
+        return baseAlpha * 3 / 5;
     }
 
     @Override

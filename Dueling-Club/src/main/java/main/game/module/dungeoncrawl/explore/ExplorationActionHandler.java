@@ -16,9 +16,6 @@ import java.util.List;
 public class ExplorationActionHandler extends ExplorationHandler {
     private static List<PARAMETER> ignoredCosts = Arrays.asList(new PARAMETER[]{
      PARAMS.AP_COST,
-     PARAMS.STA_COST,
-     PARAMS.FOC_COST,
-     PARAMS.ENDURANCE_COST,
     });
 
     public ExplorationActionHandler(ExplorationMaster master) {
@@ -37,7 +34,6 @@ public class ExplorationActionHandler extends ExplorationHandler {
 //        int time = getTimeForAction(activeObj);
 //        DequeImpl<UnitAI> aiList = master.getAiMaster().getActiveUnitAIs();
 //        aiList.forEach(ai -> ai.setExplorationTimePassed(ai.getExplorationTimePassed() - time));
-        master.getCleaner().cleanUpAfterAction(activeObj.getOwnerObj());
     }
     public   boolean isActivationDisabledByExploration(DC_ActiveObj action) {
 switch (action.getName()){

@@ -93,16 +93,17 @@ isModeDisablesActions
 alert - ?
 divination?
          */
-
-
+ Unit unit = (Unit) getRef().getSourceObj();
+        unit.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().
+         unitActivatesMode(unit);
         return false;
     }
 
     @Override
     public boolean applyThis() {
-//        if (ExplorationMaster.isExplorationOn()){
-//            return applyExplorationVersion();
-//        }
+        if (ExplorationMaster.isExplorationOn()){
+              applyExplorationVersion();
+        }
         if (reinit) {
             initBuffEffect();
         }

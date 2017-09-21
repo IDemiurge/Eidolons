@@ -3,10 +3,13 @@ package main.entity.active;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.elements.targeting.SelectiveTargeting;
+import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.elements.actions.Action;
+import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
+import main.game.battlecraft.ai.tools.priority.PriorityManagerImpl;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
@@ -71,6 +74,11 @@ public class DefaultActionHandler {
         }
         if (moveTo) {
             return moveToMotion(source, c);
+        }
+        if (source.getGame().isDebugMode()) {
+            Ref ref = new Ref(source);
+            ref.setMatch(source.getGame().getCellByCoordinate(c).getId());
+            source.getGame().getVisionMaster().getSightMaster().getClearShotCondition().preCheck(ref);
         }
         if (c.x - source.getX() > 1) {
             return false;
@@ -150,6 +158,8 @@ public class DefaultActionHandler {
 
 
     public static boolean leftClickUnit(BattleFieldObject target) {
+        if (target.isMine())
+            return false;
         if (!OptionsMaster.getGameplayOptions().getBooleanValue
          (GAMEPLAY_OPTION.DEFAULT_ACTIONS))
             return false;
@@ -176,12 +186,24 @@ public class DefaultActionHandler {
         for (DC_ActiveObj attack : subActions) {
             if (!attack.canBeActivated(attack.getRef(), true))
                 continue;
-            if (attack.canBeTargeted(target.getId()))
+            if (!attack.canBeTargeted(target.getId()))
                 continue;
-            int priority =
-             attack.getGame().getAiManager()
-              .getPriorityManager().getAttackPriority(attack, target);
-            if (priority > max) {
+            DC_PriorityManager.toggleImplementation(new PriorityManagerImpl(target.getGame().getAiManager()) {
+                @Override
+                public Unit getUnit() {
+                    return attack.getOwnerObj();
+                }
+            });
+            int priority = 0;
+            try {
+                priority = DC_PriorityManager.getAttackPriority(
+                 attack, target);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                DC_PriorityManager.toggleImplementation(null);
+            }
+            if (priority >= max) {
                 pick = attack;
                 max = priority;
             }

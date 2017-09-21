@@ -1,9 +1,6 @@
 package main.news;
 
 import main.data.filesys.PathFinder;
-import main.news.NewsAlerter;
-import main.news.NewsArticle;
-import main.news.NewsFilterer;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 
@@ -42,7 +39,7 @@ public class NewsLogger {
     }
 
     private static String getLogFilePath() {
-        return PathFinder.getXML_PATH() + "logs//log from " + TimeMaster.getDateString() + " at " +
+        return PathFinder.getEnginePath() + "logs//log from " + TimeMaster.getDateString() + " at " +
          TimeMaster.getFormattedTime() +
          ".txt";
     }

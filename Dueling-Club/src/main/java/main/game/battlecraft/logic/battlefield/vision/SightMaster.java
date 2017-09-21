@@ -22,13 +22,11 @@ import main.game.bf.DirectionMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.math.FuncMaster;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by JustMe on 2/22/2017.
@@ -141,7 +139,10 @@ public class SightMaster {
         // return;
         Collection<Coordinates> removeList = new LinkedList<>();
         for (Coordinates c : list) {
-            Obj obj = source.getGame().getBattleField().getGrid().getObjOrCell(c);
+            List<Unit> objs = source.getGame().getObjectsOnCoordinate(c);
+            if (objs.isEmpty()) continue;
+            Obj obj  = (Obj) FuncMaster.getGreatestEntity(objs, unit -> unit.getIntParam(PARAMS.HEIGHT));
+//            = source.getGame().getObjectByCoordinate(c); //getBattleField().getGrid().getObjOrCell(c);
             if (obj != null) {
                 Ref ref = new Ref(source);
                 ref.setMatch(obj.getId());
@@ -154,7 +155,7 @@ public class SightMaster {
         list.removeAll(removeList);
     }
 
-    private ClearShotCondition getClearShotCondition() {
+    public ClearShotCondition getClearShotCondition() {
         if (clearShotCondition == null) {
             clearShotCondition = new ClearShotCondition();
             clearShotCondition.setVision(true);

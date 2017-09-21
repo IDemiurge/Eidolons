@@ -874,6 +874,7 @@ public class StringMaster {
         StringBuilder builder = new StringBuilder();
 
         for (String str : list) {
+            if (str!=null )
             builder.append(str + divider);
         }
         String result = builder.toString();

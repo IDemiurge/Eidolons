@@ -10,20 +10,30 @@ import main.libgdx.bf.GridMaster;
 import main.system.auxiliary.ClassMaster;
 import main.system.auxiliary.log.LogMaster;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by JustMe on 1/26/2017.
  */
 public class ActorMaster {
+    public static final   Map<Class, ActionPool> poolMap= new HashMap<>();
     public static void addAfter(Actor actor, Action action) {
-        AfterAction aa = new AfterAction();
+        AfterAction aa = (AfterAction) getAction(AfterAction.class);
         action.setTarget(actor);
         aa.setAction(action);
         actor.addAction(aa);
         aa.setTarget(actor);
+    }
+
+    private static Action getAction(Class<? extends Action> aClass) {
+        ActionPool pool = poolMap.get(aClass);
+        if (pool==null ){
+            pool =new ActionPool(aClass);
+            poolMap.put(aClass,pool );
+        }
+        Action a = pool.obtain();
+        a.setPool(pool);
+        return a;
     }
 
     public static void addRemoveAfter(Actor actor) {
@@ -35,7 +45,7 @@ public class ActorMaster {
     public static MoveByAction getMoveByAction(Vector2 origin, Vector2 destination,
                                                EmitterActor actor, int pixelsPerSecond) {
 
-        MoveByAction action = new MoveByAction();
+        MoveByAction action = (MoveByAction) getAction(MoveByAction.class);// new MoveByAction();
         float x = destination.x - origin.x;
         float y = destination.y - origin.y;
         action.setAmount(x, y);
@@ -49,7 +59,7 @@ public class ActorMaster {
     public static MoveToAction getMoveToAction(
      Coordinates destination, EmitterActor actor, int pixelsPerSecond) {
 
-        MoveToAction action = new MoveToAction();
+        MoveToAction action = (MoveToAction) getAction(MoveToAction.class); //new MoveToAction();
         Vector2 v = GridMaster.
          getCenteredPos(destination);
         action.setPosition(v.x, v.y);
@@ -66,7 +76,7 @@ public class ActorMaster {
 
     public static AlphaAction addFadeInOrOut(Actor actor, float duration) {
         float alpha = actor.getColor().a;
-        AlphaAction action = new AlphaAction();
+        AlphaAction action = (AlphaAction) getAction(AlphaAction.class);// new AlphaAction();
         action.setAlpha(1 - alpha);
         action.setDuration(duration);
         action.setTarget(actor);
@@ -74,7 +84,7 @@ public class ActorMaster {
     }
 
     public static AlphaAction getFadeAction(Actor actor) {
-        AlphaAction action = new AlphaAction();
+        AlphaAction action = (AlphaAction) getAction(AlphaAction.class);// new AlphaAction();
         action.setAlpha(0);
         action.setDuration(3);
         action.setTarget(actor);
@@ -87,7 +97,7 @@ public class ActorMaster {
         return action;
     }
 
-    public static void addRotateByAction(Actor actor, int from, int to) {
+    public static void addRotateByAction(Actor actor, float from, float to) {
         if (!getActionsOfClass(actor, RotateByAction.class).isEmpty()){
             getActionsOfClass(actor, RotateByAction.class).forEach(action->{
             if (action instanceof  Action)
@@ -95,7 +105,7 @@ public class ActorMaster {
             });
             actor.setRotation(from);
         }
-        RotateByAction action = new RotateByAction();
+        RotateByAction action = (RotateByAction) getAction(RotateByAction.class);// new RotateByAction();
         action.setAmount(to - from);
         if (Math.abs(action.getAmount()) >= 270)
             action.setAmount((action.getAmount() + 360) % 360);
@@ -108,7 +118,7 @@ public class ActorMaster {
     }
 
     public static void addMoveToAction(Actor actor, float x, float y, float v) {
-        MoveToAction action = new MoveToAction();
+        MoveToAction action = (MoveToAction) getAction(MoveToAction.class);// new MoveToAction();
         action.setPosition(x, y);
         action.setDuration(v);
         actor.addAction(action);
@@ -116,7 +126,7 @@ public class ActorMaster {
     }
 
     public static void addScaleAction(Actor actor, float scaleX, float scaleY, float v) {
-        ScaleToAction action = new ScaleToAction();
+        ScaleToAction action = (ScaleToAction) getAction(ScaleToAction.class);// new ScaleToAction();
         action.setScale(scaleX, scaleY);
         action.setDuration(v);
         actor.addAction(action);

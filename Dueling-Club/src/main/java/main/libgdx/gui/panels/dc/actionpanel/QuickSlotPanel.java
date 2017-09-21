@@ -31,7 +31,7 @@ public class QuickSlotPanel extends BaseSlotPanel {
         }
 
         for (int i = tempLimit; i < 6; i++) {
-            final ValueContainer container = new ValueContainer(getOrCreateR("UI/disabled_pack.jpg"));
+            final ValueContainer container = new ValueContainer(getOrCreateR("UI/EMPTY_LIST_ITEM.jpg"));
             container.overrideImageSize(imageSize, imageSize);
             add(container).left().bottom();
         }
