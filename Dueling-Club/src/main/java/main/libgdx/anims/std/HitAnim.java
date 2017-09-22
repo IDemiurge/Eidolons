@@ -91,6 +91,8 @@ public class HitAnim extends ActionAnim {
     @Override
     public void start() {
         super.start();
+        if (textSupplier!=null )
+        floatingText.setText(textSupplier.get());
         floatingText.init(destination, 0, 128, getDuration()*0.3f*
          OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.TEXT_DURATION)
         );

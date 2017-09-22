@@ -33,6 +33,7 @@ public class BattleGuiStage extends Stage {
 
     private final InitiativePanel initiativePanel;
     private final ActionPanelController bottomPanel;
+    private final RadialMenu radial;
     private OutcomePanel outcomePanel;
 
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
@@ -53,8 +54,8 @@ public class BattleGuiStage extends Stage {
         menuButton.setPosition(Gdx.graphics.getWidth() - menuButton.getWidth(),
          Gdx.graphics.getHeight() - menuButton.getHeight());
         addActor(menuButton);
-
-        addActor(new RadialMenu());
+radial=new RadialMenu();
+        addActor(radial);
 
         addActor(new ToolTipManager(this));
 
@@ -89,10 +90,15 @@ public class BattleGuiStage extends Stage {
     }
 
     @Override
-    public void act() {
+    public void act( ) {
         super.act();
         if (outcomePanel != null)
             outcomePanel.setZIndex(Integer.MAX_VALUE);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
     }
 
     @Override

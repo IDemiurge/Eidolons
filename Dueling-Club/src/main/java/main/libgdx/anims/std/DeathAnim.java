@@ -87,7 +87,7 @@ public class DeathAnim extends ActionAnim {
         }
 //        AnimMaster.getInstance().addActor(getActor());
 //        getActor().setPosition(getOrigin().x, getOrigin().y);
-        AlphaAction action = ActorMaster.addFadeAction(getActor());
+        AlphaAction action = ActorMaster.addFadeOutAction(getActor());
         action.setDuration(duration);
         ActorMaster.addRemoveAfter(getActor());
     }

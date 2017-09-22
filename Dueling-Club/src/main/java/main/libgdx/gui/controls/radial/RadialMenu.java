@@ -2,6 +2,7 @@ package main.libgdx.gui.controls.radial;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import main.entity.obj.DC_Obj;
+import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.texture.TextureCache;
@@ -48,7 +50,8 @@ public class RadialMenu extends Group {
         GuiEventManager.bind(UPDATE_GUI, obj -> {
             RadialManager.clearCache();
         });
-            GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
+
+        GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
             DC_Obj dc_obj = (DC_Obj) obj.get();
             if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 init(DebugRadialManager.getDebugNodes(dc_obj));
@@ -59,15 +62,23 @@ public class RadialMenu extends Group {
     }
 
     public void close() {
-        setVisible(false);
+        if (isAnimated()) {
+            ActorMaster.addFadeOutAction(this, getAnimationDuration());
+            ActorMaster.addHideAfter(this);
+            currentNode.getChildNodes().forEach(child -> {
+                ActorMaster.addMoveToAction(child, currentNode.getX(), currentNode.getY(), 0.5f);
+            });
+            ActorMaster.addRotateByAction(closeButton, 90);
+        } else
+            setVisible(false);
         SoundController.playCustomEventSound(SOUND_EVENT.RADIAL_CLOSED);
     }
 
-    private String getEmptyNodePath() {
-        return "UI\\components\\2017\\radial\\empty.png";
-//        return "UI\\components\\2017\\radial\\empty dark.png";
-//        return "UI\\components\\2017\\radial\\empty dark.png";
+    @Override
+    public void act(float delta) {
+        super.act(delta);
     }
+
 
     public void init(List<RadialValueContainer> nodes) {
         currentNode = closeButton;
@@ -97,9 +108,20 @@ public class RadialMenu extends Group {
         currentNode = node;
         updateCallbacks();
         currentNode.getChildNodes().forEach(this::addActor);
+        open();
+    }
+
+    private void open() {
         currentNode.setChildVisible(true);
-        updatePosition();
         setVisible(true);
+        updatePosition();
+        setColor(new Color(1, 1, 1, 0));
+//        ActorMaster.addChained
+//         (this, ActorMaster.addFadeOutAction(this, getAnimationDuration()/2),
+        ActorMaster.addFadeInAction(this, getAnimationDuration()
+//           /2)
+        );
+        ActorMaster.addRotateByAction(closeButton, -90);
     }
 
     private void updatePosition() {
@@ -128,8 +150,27 @@ public class RadialMenu extends Group {
             pos = i * step;
             int y = (int) (r * Math.sin(Math.toRadians(pos + 90)));
             int x = (int) (r * Math.cos(Math.toRadians(pos + 90)));
-            valueContainer.setPosition(x + currentNode.getX(), y + currentNode.getY());
+            Vector2 v = new Vector2(x + currentNode.getX(), y + currentNode.getY());
+            if (isAnimated()) {
+                valueContainer.setPosition(currentNode.getX(), currentNode.getY());
+                ActorMaster.addMoveToAction(valueContainer, v.x, v.y, 0.5f);
+            } else
+                valueContainer.setPosition(v.x, v.y);
         }
+    }
+
+    private float getAnimationDuration() {
+        return 0.5f;
+    }
+
+    private String getEmptyNodePath() {
+        return "UI\\components\\2017\\radial\\empty.png";
+//        return "UI\\components\\2017\\radial\\empty dark.png";
+//        return "UI\\components\\2017\\radial\\empty dark.png";
+    }
+
+    private boolean isAnimated() {
+        return true;
     }
 
 /*    final List<RadialValueContainer> childs = currentNode.getChildNodes();
@@ -172,8 +213,8 @@ public class RadialMenu extends Group {
             v = currentNode.localToParentCoordinates(v);
             final int cradius = radius + 32;
             Rectangle rect = new Rectangle(
-                    v.x - cradius, v.y - cradius,
-                    cradius * 2, cradius * 2);
+             v.x - cradius, v.y - cradius,
+             cradius * 2, cradius * 2);
             if (rect.contains(v2)) {
                 actor = this;
             }

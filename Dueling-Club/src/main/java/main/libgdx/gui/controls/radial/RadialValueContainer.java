@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class RadialValueContainer extends ActionValueContainer {
+    Runnable lazyChildInitializer;
     private List<RadialValueContainer> childNodes = new ArrayList<>();
     private RadialValueContainer parent;
-    Runnable lazyChildInitializer;
     private Supplier<ToolTip> tooltipSupplier;
     private ToolTip tooltip;
 
@@ -35,7 +35,7 @@ public class RadialValueContainer extends ActionValueContainer {
 
     public List<RadialValueContainer> getChildNodes() {
         if (!ListMaster.isNotEmpty(childNodes))
-            if (lazyChildInitializer!=null)
+            if (lazyChildInitializer != null)
                 lazyChildInitializer.run();
         return childNodes;
     }
@@ -62,19 +62,24 @@ public class RadialValueContainer extends ActionValueContainer {
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (visible)
-            if (tooltip ==null )
-                if (getTooltipSupplier()!=null ){
-                 tooltip = tooltipSupplier.get();
+            if (tooltip == null)
+                if (getTooltipSupplier() != null) {
+                    try {
+                        tooltip = tooltipSupplier.get();
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
+                    if (tooltip != null)
                     addListener(tooltip.getController());
 
-            }
-    }
-
-    public void setTooltipSupplier(Supplier<ToolTip> tooltipSupplier) {
-        this.tooltipSupplier = tooltipSupplier;
+                }
     }
 
     public Supplier<ToolTip> getTooltipSupplier() {
         return tooltipSupplier;
+    }
+
+    public void setTooltipSupplier(Supplier<ToolTip> tooltipSupplier) {
+        this.tooltipSupplier = tooltipSupplier;
     }
 }

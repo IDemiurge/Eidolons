@@ -286,13 +286,7 @@ public class InitiativePanel extends Group {
         if (visible)
             container.setVisible(visible);
         else
-            ActorMaster.addAfter(container, new Action() {
-                @Override
-                public boolean act(float delta) {
-                    container.setVisible(false);
-                    return true;
-                }
-            });
+            ActorMaster.addHideAfter(container);
     }
 
     private boolean isRealTime() {

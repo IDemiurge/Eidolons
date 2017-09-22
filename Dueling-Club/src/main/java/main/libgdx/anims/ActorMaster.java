@@ -16,7 +16,8 @@ import java.util.*;
  * Created by JustMe on 1/26/2017.
  */
 public class ActorMaster {
-    public static final   Map<Class, ActionPool> poolMap= new HashMap<>();
+    public static final Map<Class, ActionPool> poolMap = new HashMap<>();
+
     public static void addAfter(Actor actor, Action action) {
         AfterAction aa = (AfterAction) getAction(AfterAction.class);
         action.setTarget(actor);
@@ -27,19 +28,30 @@ public class ActorMaster {
 
     private static Action getAction(Class<? extends Action> aClass) {
         ActionPool pool = poolMap.get(aClass);
-        if (pool==null ){
-            pool =new ActionPool(aClass);
-            poolMap.put(aClass,pool );
+        if (pool == null) {
+            pool = new ActionPool(aClass);
+            poolMap.put(aClass, pool);
         }
         Action a = pool.obtain();
         a.setPool(pool);
         return a;
     }
 
+
     public static void addRemoveAfter(Actor actor) {
         addAfter(actor, new RemoveActorAction());
 
 
+    }
+
+    public static void addHideAfter(Actor actor) {
+        addAfter(actor, new Action() {
+            @Override
+            public boolean act(float delta) {
+                actor.setVisible(false);
+                return true;
+            }
+        });
     }
 
     public static MoveByAction getMoveByAction(Vector2 origin, Vector2 destination,
@@ -80,28 +92,41 @@ public class ActorMaster {
         action.setAlpha(1 - alpha);
         action.setDuration(duration);
         action.setTarget(actor);
-        return action;
-    }
-
-    public static AlphaAction getFadeAction(Actor actor) {
-        AlphaAction action = (AlphaAction) getAction(AlphaAction.class);// new AlphaAction();
-        action.setAlpha(0);
-        action.setDuration(3);
-        action.setTarget(actor);
-        return action;
-    }
-
-    public static AlphaAction addFadeAction(Actor actor) {
-        AlphaAction action = getFadeAction(actor);
         actor.addAction(action);
         return action;
     }
 
+    public static AlphaAction addFadeOutAction(Actor actor, float dur) {
+        return addFadeAction(actor, dur, true);
+    }
+
+    public static AlphaAction addFadeInAction(Actor actor, float dur) {
+        return addFadeAction(actor, dur, false);
+    }
+
+    public static AlphaAction addFadeAction(Actor actor, float dur, boolean out) {
+        AlphaAction action = (AlphaAction) getAction(AlphaAction.class);// new AlphaAction();
+        action.setAlpha(out ? 0 : 1);
+        action.setDuration(dur);
+        action.setTarget(actor);
+        actor.addAction(action);
+        return action;
+    }
+
+    public static AlphaAction addFadeOutAction(Actor actor) {
+        return addFadeOutAction(actor, 3);
+
+    }
+
+    public static void addRotateByAction(Actor actor, float amount) {
+        addRotateByAction(actor, actor.getRotation(), actor.getRotation() + amount);
+    }
+
     public static void addRotateByAction(Actor actor, float from, float to) {
-        if (!getActionsOfClass(actor, RotateByAction.class).isEmpty()){
-            getActionsOfClass(actor, RotateByAction.class).forEach(action->{
-            if (action instanceof  Action)
-                actor.removeAction(( Action)action);
+        if (!getActionsOfClass(actor, RotateByAction.class).isEmpty()) {
+            getActionsOfClass(actor, RotateByAction.class).forEach(action -> {
+                if (action instanceof Action)
+                    actor.removeAction((Action) action);
             });
             actor.setRotation(from);
         }
@@ -161,4 +186,12 @@ public class ActorMaster {
         addScaleAction(actor, scaleX, scaleY, v);
     }
 
+    public static void addChained(Actor actor, Action... actions) {
+        actor.getActions().clear(); //dirty "fix"... refactor add!
+        SequenceAction action = new SequenceAction();
+        for (Action sub : actions) {
+            action.addAction(sub);
+        }
+        actor.addAction(action);
+    }
 }

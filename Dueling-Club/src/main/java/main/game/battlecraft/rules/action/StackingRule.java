@@ -196,7 +196,7 @@ public class StackingRule implements ActionRule {
                 }
             }
             girth += u.getIntParam(PARAMS.GIRTH);
-            if (DoorMaster.isDoor(u)) {
+            if (DoorMaster.isDoor((BattleFieldObject) u)) {
 
             }
             // main.system.auxiliary.LogMaster.log(1, "****************** " +

@@ -31,6 +31,7 @@ import main.libgdx.anims.std.MoveAnimation;
 import main.libgdx.bf.light.ShadowMap;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.bf.mouse.BattleClickListener;
+import main.libgdx.bf.overlays.WallMap;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureCache;
@@ -84,6 +85,7 @@ public class GridPanel extends Group {
     private Label fpsLabel;
     private boolean fpsDebug = false;
     private TextureRegion cornerRegion;
+    private WallMap wallMap;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -501,7 +503,8 @@ public class GridPanel extends Group {
         }
 
         shadowMap = new ShadowMap(this);
-//            addActor(shadowMap);
+        wallMap = new WallMap();
+            addActor(wallMap);
 
         GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
             Unit unit = (Unit) obj.get();
