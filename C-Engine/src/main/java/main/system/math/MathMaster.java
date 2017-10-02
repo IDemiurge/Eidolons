@@ -160,7 +160,7 @@ public abstract class MathMaster {
 
     public static String formatFormula(String formula) {
 
-        if (formula.startsWith("-")) {
+        if (formula.charAt(0) == '-')  {
             while (formula.startsWith("(", 1)) {
                 formula = StringMaster.replaceFirst(formula, "(", "");
                 formula = StringMaster.replaceFirst(formula, ")", "");
@@ -169,10 +169,11 @@ public abstract class MathMaster {
             }
 
         }
+        if (formula.contains("(--"))
+            formula = formula.replace("(--", "(");
 
-        formula = formula.replace("(--", "(");
-        formula = formula.replace("--", "+");
-
+        if (formula.contains("--"))
+            formula = formula.replace("--", "+");
         return formula;
     }
 

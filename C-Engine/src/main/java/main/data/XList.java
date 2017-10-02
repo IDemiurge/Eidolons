@@ -13,10 +13,11 @@ public class XList<E> extends LinkedList<E> {
         super(Arrays.asList(e));
     }
 
-    public void addAllCast(Collection<?> list) {
+    public XList<E> addAllCast(Collection<?> list) {
         for (Object e : list) {
             add((E) e);
         }
+        return this;
     }
 
     @Override

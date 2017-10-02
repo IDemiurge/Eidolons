@@ -113,7 +113,7 @@ public class PathFinder {
 
     public static String getDungeonLevelFolder() {
         init();
-        return XML_PATH + StringMaster.getPathSeparator()+"dungeons"+StringMaster.getPathSeparator()+"levels"+StringMaster.getPathSeparator();
+        return XML_PATH  +"dungeons"+StringMaster.getPathSeparator()+"levels"+StringMaster.getPathSeparator();
     }
 
     public static String getTextPath() {

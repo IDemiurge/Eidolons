@@ -8,8 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.screens.DungeonScreen;
 import main.system.math.MathMaster;
-import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import main.system.options.OptionsMaster;
 
 /**
  * Created by JustMe on 8/17/2017.
@@ -29,10 +27,15 @@ public abstract class SuperActor extends Group implements Borderable {
     protected float scaledHeight;
     protected boolean hovered;
     protected boolean active;
+    private static boolean cullingOff;
 
     @Override
     public TextureRegion getBorder() {
         return borderTexture;
+    }
+
+    public static void setCullingOff(boolean cullingOff) {
+        SuperActor.cullingOff = cullingOff;
     }
 
     @Override
@@ -66,7 +69,8 @@ public abstract class SuperActor extends Group implements Borderable {
     protected boolean isIgnored() {
         if (getColor().a == 0)
             return true;
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
+        if (cullingOff)
+            return false;
             if (!DungeonScreen.getInstance().getController().
              isWithinCamera(
               this)) {

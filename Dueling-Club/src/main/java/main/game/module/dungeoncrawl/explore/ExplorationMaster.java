@@ -123,4 +123,10 @@ public class ExplorationMaster {
     public void init() {
         explorationOn = getCrawler().checkExplorationDefault();
     }
+
+    public ExploreGameLoop getLoop() {
+        if (!explorationOn)
+            return null ;
+        return (ExploreGameLoop) game.getLoop();
+    }
 }

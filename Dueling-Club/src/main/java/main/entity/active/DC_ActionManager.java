@@ -41,9 +41,8 @@ import main.game.logic.generic.ActionManager;
 import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
-import main.game.module.dungeoncrawl.special.LockMaster;
-import main.game.module.dungeoncrawl.special.Trap;
-import main.game.module.dungeoncrawl.special.TrapMaster;
+import main.game.module.dungeoncrawl.objects.Trap;
+import main.game.module.dungeoncrawl.objects.TrapMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -726,7 +725,7 @@ public class DC_ActionManager implements ActionManager {
          hero.getOwner(), game, hero.getRef().getCopy()) {
             public boolean resolve() {
 //                animate(); // pass std icon as param?
-                LockMaster.tryUnlock(e, hero);
+//                LockMaster.tryUnlock(e, hero);
                 game.getManager().reset();
                 game.getManager().refresh(ownerObj.getOwner().isMe());
                 return true;
@@ -966,6 +965,7 @@ public class DC_ActionManager implements ActionManager {
         Free_Attack_of_Opportunity,
         Cower,
         Rage,
+        Idle,
         Stumble;
 
         public String toString() {

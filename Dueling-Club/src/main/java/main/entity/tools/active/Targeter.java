@@ -169,7 +169,7 @@ public class Targeter extends ActiveHandler {
         if (map2 == null) {
             map2 = new HashMap<>();
             map.put(getOwnerObj().getFacing(), map2);
-        } Boolean result = map2.get(id);
+        } Boolean result = map2.get(id); //TODO for ai?
         if (CoreEngine.isTargetingResultCachingOn()) {
          if (result != null)
          return result;

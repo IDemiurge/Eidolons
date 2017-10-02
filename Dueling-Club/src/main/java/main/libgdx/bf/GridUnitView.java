@@ -213,15 +213,6 @@ public class GridUnitView extends UnitView {
 //        }
     }
 
-    protected void updateModeImage(String pathToImage) {
-        removeActor(modeImage);
-        if (pathToImage == null)
-            return;
-        modeImage = new Image(TextureCache.getOrCreateR(pathToImage));
-        addActor(this.modeImage);
-        modeImage.setVisible(true);
-        modeImage.setPosition(0, 0);
-    }
 
     @Override
     public void setMobilityState(boolean mobilityState) {

@@ -1,4 +1,4 @@
-package main.game.module.dungeoncrawl.special;
+package main.game.module.dungeoncrawl.objects;
 
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;

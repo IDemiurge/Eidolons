@@ -72,8 +72,8 @@ public class ActionPanelController extends Group {
             if (source != null) {
                 if (getY() < 0) {
                     ActorMaster.addMoveToAction(this, getX(), 0, 1);
-                    ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
-                    ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
+                    //  ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
+                    //    ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
                 }
                 quickSlotPanel.setUserObject(source);
                 modeActionsPanel.setUserObject(source);
@@ -84,8 +84,8 @@ public class ActionPanelController extends Group {
             } else {
 //                setY(-IMAGE_SIZE);
                 ActorMaster.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
-                ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
-                ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
+                // ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
+                // ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
             }
         });
     }

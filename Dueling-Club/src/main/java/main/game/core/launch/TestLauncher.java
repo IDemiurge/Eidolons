@@ -173,7 +173,7 @@ public class TestLauncher //extends MetaGameMaster
         try {
             if (PresetMaster.getPreset() == null // &&
              // !BooleanMaster.isTrue(FAST_MODE)
-             && !SUPER_FAST_MODE) {
+             && BooleanMaster.isFalse(SUPER_FAST_MODE)) {
                 createPreset();
 //                autosavePreset();
             }
@@ -284,6 +284,8 @@ public class TestLauncher //extends MetaGameMaster
             case CODE.RANDOM:
                 PLAYER_PARTY = randomizeParty();
                 break;
+            case CODE.NONE:
+                PLAYER_PARTY ="";
         }
 
         switch (ENEMY_CODE) {
@@ -294,8 +296,9 @@ public class TestLauncher //extends MetaGameMaster
             case CODE.RANDOM:
                 ENEMY_PARTY = randomizeEnemies();
                 break;
-            // case CODE.NONE:
-            // break;
+             case CODE.NONE:
+                 ENEMY_PARTY ="";
+             break;
         }
         Showcase.launchData+=PLAYER_PARTY+";";
         Showcase.launchData+=ENEMY_PARTY+";";

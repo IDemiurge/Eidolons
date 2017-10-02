@@ -60,11 +60,11 @@ public class LightEmittingEffect extends DC_Effect {
 
         ref.getTargetObj().modifyParameter(PARAMS.ILLUMINATION, getAmount(), true);
         lastTarget=ref.getTargetObj();
-       if (debug)
-           main.system.auxiliary.log.LogMaster.log(1,ref.getTargetObj()+
-         " gets illumination: " +getAmount()+
-         " ; total illumination: " +lastTarget.getIntParam(PARAMS.ILLUMINATION)+
-         " ; Source: " +ref.getSourceObj());
+//       if (debug)
+//           main.system.auxiliary.log.LogMaster.log(1,ref.getTargetObj()+
+//         " gets illumination: " +getAmount()+
+//         " ; total illumination: " +lastTarget.getIntParam(PARAMS.ILLUMINATION)+
+//         " ; Source: " +ref.getSourceObj());
 
         return true;
     }

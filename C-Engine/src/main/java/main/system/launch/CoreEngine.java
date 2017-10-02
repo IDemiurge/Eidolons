@@ -46,7 +46,6 @@ public class CoreEngine {
     private static boolean phaseAnimsOn;
     private static boolean logicTest;
     private static boolean itemGenerationOff;
-    private static boolean targetingResultCachingOn;
     private static boolean jar;
     private static boolean exe;
 
@@ -286,12 +285,9 @@ public class CoreEngine {
     }
 
     public static boolean isTargetingResultCachingOn() {
-        return targetingResultCachingOn;
+        return !isLogicTest();
     }
 
-    public static void setTargetingResultCachingOn(boolean targetingResultCachingOn) {
-        CoreEngine.targetingResultCachingOn = targetingResultCachingOn;
-    }
 
     public static void setEngineObject(CoreEngine engineObject) {
         CoreEngine.engineObject = engineObject;

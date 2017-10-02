@@ -2,7 +2,6 @@ package main.game.battlecraft.ai.tools.group;
 
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
-import main.game.battlecraft.ai.GroupAI;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
 
@@ -24,7 +23,7 @@ public class GroupManager {
         int blockWidth = dungeon.getCellsX() / factor;
         int blockHeight = dungeon.getCellsY() / factor;
         List<Unit> units = new LinkedList<>();
-        GroupAI group = new GroupAI(null);
+//        GroupAI group = new GroupAI(null);
         // minimum group area...
         for (int n = 0; n < factor; n++) {
             Coordinates[] coordinates = new Coordinates[blockWidth * blockHeight];

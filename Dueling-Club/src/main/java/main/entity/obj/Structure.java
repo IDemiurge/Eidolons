@@ -1,5 +1,7 @@
 package main.entity.obj;
 
+import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.bf.structure.StructureMaster;
@@ -45,5 +47,9 @@ public class Structure extends BattleFieldObject {
 
     public void resetFacing() {
 //        getResetter().setFacing();
+    }
+
+    public boolean isLightEmitter() {
+      return    checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.LIGHT_EMITTER.toString());
     }
 }

@@ -13,6 +13,7 @@ import main.system.auxiliary.StrPathBuilder;
  */
 public class ShadowMap   {
 
+    public static final SHADE_LIGHT[] SHADE_LIGHT_VALUES = SHADE_LIGHT.values();
     private GridPanel grid;
     private static boolean on;
 
@@ -31,7 +32,7 @@ public class ShadowMap   {
 //TODO act -> fluctuate alpha
 
     private void init() {
-        for (SHADE_LIGHT type : SHADE_LIGHT.values()) {
+        for (SHADE_LIGHT type : SHADE_LIGHT_VALUES ) {
             type.setCells(new ShadeLightCell[grid.getCols()][grid.getRows()]);
             for (int x = 0; x < grid.getCols(); x++) {
                 for (int y = 0; y < grid.getRows(); y++) {
@@ -67,7 +68,7 @@ public class ShadowMap   {
     private void update() {
         for (int x = 0; x < grid.getCols(); x++) {
             for (int y = 0; y < grid.getRows(); y++) {
-                for (SHADE_LIGHT type : SHADE_LIGHT.values()) {
+                for (SHADE_LIGHT type : SHADE_LIGHT_VALUES) {
                     float alpha = 0;
                     if (isOn())
                     try {

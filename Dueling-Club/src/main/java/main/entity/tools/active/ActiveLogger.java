@@ -1,6 +1,7 @@
 package main.entity.tools.active;
 
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.active.DC_ActiveObj;
@@ -9,6 +10,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.tools.EntityLogger;
 import main.entity.tools.EntityMaster;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -101,6 +103,13 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
         if (getEntity().isAttackAny()) {
             return false;
         }
+        if (ExplorationMaster.isExplorationOn())
+            if (getEntity().isTurn() ||  getEntity().isMove()
+             || getEntity().getActionType()== ACTION_TYPE.HIDDEN
+             ) {
+                return false;
+        }
+//        if (getEntity().getOwnerObj().get)
         return true;
     }
 

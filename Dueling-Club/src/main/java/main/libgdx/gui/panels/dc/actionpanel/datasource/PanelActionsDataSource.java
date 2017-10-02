@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class PanelActionsDataSource implements
-        ActiveQuickSlotsDataSource, UnitActionsDataSource, SpellDataSource,
-        EffectsAndAbilitiesSource, ResourceSource,
-        MainWeaponDataSource<ActionValueContainer>, OffWeaponDataSource {
+ ActiveQuickSlotsDataSource, UnitActionsDataSource, SpellDataSource,
+ EffectsAndAbilitiesSource, ResourceSource,
+ MainWeaponDataSource<ActionValueContainer>, OffWeaponDataSource {
     private Unit unit;
 
     private UnitDataSource unitDataSource;
@@ -30,16 +30,36 @@ public class PanelActionsDataSource implements
         this.unit = unit;
         unitDataSource = new UnitDataSource(unit);
     }
+
+    public static ActionValueContainer getActionValueContainer(DC_ActiveObj el) {
+        final ActionValueContainer container = new ActionValueContainer(
+         getOrCreateR(getImage(el)),
+         el::invokeClicked
+        );
+        ActionCostTooltip tooltip = new ActionCostTooltip(el);
+        tooltip.setUserObject(new ActionCostSourceImpl(el));
+
+
+        container.addListener(tooltip.getController());
+        return container;
+    }
+
+    private static String getImage(DC_ActiveObj el) {
+        String image = el.getImagePath();
+//        if (el.can)
+        return image;
+    }
+
     @Override
     public String getParam(PARAMS param) {
-        switch (param){
+        switch (param) {
             case STAMINA:
                 return getStamina();
             case FOCUS:
                 return getFocus();
             case TOUGHNESS:
                 return getToughness();
-            case  ENDURANCE :
+            case ENDURANCE:
                 return getEndurance();
             case ESSENCE:
                 return getEssence();
@@ -48,22 +68,24 @@ public class PanelActionsDataSource implements
         }
         return null;
     }
+
     @Override
     public List<ActionValueContainer> getQuickSlotActions() {
         final DequeImpl<DC_QuickItemObj> items = unit.getQuickItems();
-
+        if (items == null)
+            return new LinkedList<>();
         List<ActionValueContainer> list = items.stream()
-                .map((DC_QuickItemObj key) -> {
-                    final ActionValueContainer valueContainer = new ActionValueContainer(
-                            getOrCreateR(key.getImagePath()),
-                            key::invokeClicked
-                    );
-                    ActionCostTooltip tooltip = new ActionCostTooltip(key.getActive());
-                    tooltip.setUserObject(new ActionCostSourceImpl(key.getActive()) );
-                    valueContainer.addListener(tooltip.getController());
-                    return valueContainer;
-                })
-                .collect(Collectors.toList());
+         .map((DC_QuickItemObj key) -> {
+             final ActionValueContainer valueContainer = new ActionValueContainer(
+              getOrCreateR(key.getImagePath()),
+              key::invokeClicked
+             );
+             ActionCostTooltip tooltip = new ActionCostTooltip(key.getActive());
+             tooltip.setUserObject(new ActionCostSourceImpl(key.getActive()));
+             valueContainer.addListener(tooltip.getController());
+             return valueContainer;
+         })
+         .collect(Collectors.toList());
 
         for (int i = 0; i < unit.getRemainingQuickSlots(); i++) {
             list.add(null);
@@ -82,40 +104,21 @@ public class PanelActionsDataSource implements
 
     public List<ActionValueContainer> getActions(ACTION_TYPE type) {
         return unit.getActionMap().get(type).stream()
-                .map(getActiveObjValueContainerFunction())
-                .collect(Collectors.toList());
+         .map(getActiveObjValueContainerFunction())
+         .collect(Collectors.toList());
     }
 
     @Override
     public List<ActionValueContainer> getSpells() {
         return unit.getSpells().stream()
-                .map(getActiveObjValueContainerFunction())
-                .collect(Collectors.toList());
+         .map(getActiveObjValueContainerFunction())
+         .collect(Collectors.toList());
     }
 
     private Function<DC_ActiveObj, ActionValueContainer> getActiveObjValueContainerFunction() {
         return el -> {
-           return  getActionValueContainer(el);
+            return getActionValueContainer(el);
         };
-    }
-
-    public static ActionValueContainer getActionValueContainer(DC_ActiveObj el) {
-        final ActionValueContainer container = new ActionValueContainer(
-         getOrCreateR(getImage(el)),
-         el::invokeClicked
-        );
-        ActionCostTooltip tooltip = new ActionCostTooltip(el);
-        tooltip.setUserObject(new ActionCostSourceImpl(el) );
-
-
-        container.addListener(tooltip.getController());
-        return container;
-    }
-
-    private static String getImage(DC_ActiveObj el) {
-        String image = el.getImagePath();
-//        if (el.can)
-        return image;
     }
 
     @Override

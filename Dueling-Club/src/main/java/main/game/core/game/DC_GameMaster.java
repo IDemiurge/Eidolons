@@ -17,7 +17,6 @@ import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**
@@ -29,6 +28,9 @@ public class DC_GameMaster extends GameMaster {
     protected DequeImpl<Structure> structures;
     private Map<Coordinates, List<Unit>> unitMap;
     private Map<Coordinates, List<Unit>> unitCache = new HashMap<>();
+    private Map<Coordinates, List<BattleFieldObject>> objCache = new HashMap<>();
+    private Map<Coordinates, List<BattleFieldObject>> noOverlayingCache = new HashMap<>();
+    private Map<Coordinates, List<BattleFieldObject>> overlayingCache   = new HashMap<>();
 
 
     public DC_GameMaster(DC_Game game) {
@@ -86,7 +88,7 @@ public class DC_GameMaster extends GameMaster {
         return list.get(0);
     }
 
-@Deprecated
+    @Deprecated
     public List<Unit> getObjectsOnCoordinate(Coordinates c) {
         // [QUICK FIX] - consider no-reset coordinate changes for AI etc
 //        List<Unit> units = getUnitCache().get(c);
@@ -96,21 +98,23 @@ public class DC_GameMaster extends GameMaster {
 //        units = getObjectsOnCoordinate(null, c, null, true, false);
 //        getUnitCache().put(c, units);
 //        return units;
-    return
-     getUnits().stream().filter(u->u.getCoordinates().equals(c)).collect(Collectors.toList());
-}
+        return new XList<Unit>().addAllCast( getObjectsOnCoordinate(c, null ));
+//        return
+//         getUnits().stream().filter(u -> u.getCoordinates().equals(c)).collect(Collectors.toList());
+    }
 
     public List<BattleFieldObject> getOverlayingObjects(Coordinates c) {
         return getObjectsOnCoordinate(null, c, true, true, false);
 
     }
+
     public List<BattleFieldObject> getObjectsOnCoordinate(Coordinates c,
                                                           Boolean overlayingIncluded) {
         return getObjectsOnCoordinate(null, c, overlayingIncluded, true, false);
     }
 
-        public List<BattleFieldObject> getObjectsOnCoordinate(Integer z, Coordinates c,
-                                             Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
+    public List<BattleFieldObject> getObjectsOnCoordinate(Integer z, Coordinates c,
+                                                          Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
         // TODO auto adding cells won't work!
         if (c == null) {
             return null;
@@ -119,7 +123,27 @@ public class DC_GameMaster extends GameMaster {
         if (z == null) {
             z = getGame().getDungeon().getZ();
         }
-        XList<BattleFieldObject> list = new XList<>();
+
+
+         List<BattleFieldObject> list = null;
+
+
+            if (z == 0)
+
+                    if (getCache(overlayingIncluded) != null)
+                        list = getCache(overlayingIncluded).get(c);
+                    if (list != null) {
+                        if (!passableIncluded)
+                        {
+                            list=     new LinkedList<>(list) ;
+                            list.removeIf(obj-> obj.isPassable());
+                        }
+                        return list;
+                    }
+
+
+        list =
+         new XList<>();
 
         for (BattleFieldObject object : getGame().getBfObjects()) {
             if (overlayingIncluded != null) {
@@ -146,9 +170,14 @@ public class DC_GameMaster extends GameMaster {
                 list.add(object);
             }
         }
-
+        if (overlayingIncluded == null)
+            if (z == 0)
+                if (passableIncluded)
+                    if (getCache(overlayingIncluded) != null)
+                        getCache(overlayingIncluded).put(c, list);
         return list;
     }
+
 
     public void remove(Obj obj) {
         game.getState().removeObject(obj.getId());
@@ -215,7 +244,12 @@ public class DC_GameMaster extends GameMaster {
         getUnits().remove(unit);
     }
 
-    public void clear() {
+    public void clearCaches() {
+        getCache(false).clear();
+        getCache(true).clear();
+        getCache(null ).clear();
+    }
+        public void clear() {
         getUnits().clear();
         getStructures().clear();
     }
@@ -239,7 +273,8 @@ public class DC_GameMaster extends GameMaster {
         }
         return unitMap;
     }
-@Deprecated
+
+    @Deprecated
     public Map<Coordinates, List<Unit>> getUnitCache() {
         return unitCache;
     }
@@ -256,9 +291,11 @@ public class DC_GameMaster extends GameMaster {
             }
         }
     }
-    public Unit getUnitByName(String name, Ref ref){
+
+    public Unit getUnitByName(String name, Ref ref) {
         return getUnitByName(name, ref, null, null, null);
     }
+
     public Unit getUnitByName(String name, Ref ref
      , Boolean ally_or_enemy_only, Boolean distanceSort, Boolean powerSort
     ) {
@@ -280,20 +317,37 @@ public class DC_GameMaster extends GameMaster {
 
         if (matched.size() == 1)
             return matched.get(0);
-if (distanceSort!=null )
-        if (distanceSort) {
-            SortMaster.sortEntitiesByExpression(matched,
-             unit1 -> -PositionMaster.getDistance((Obj) unit1, ref.getSourceObj()));
-            return matched.get(0);
-        }
-        if (powerSort!=null )
-        if (powerSort) {
-            SortMaster.sortEntitiesByExpression(matched,
-             unit1 -> unit1.getIntParam(PARAMS.POWER));
-            return matched.get(0);
-        }
+        if (distanceSort != null)
+            if (distanceSort) {
+                SortMaster.sortEntitiesByExpression(matched,
+                 unit1 -> -PositionMaster.getDistance((Obj) unit1, ref.getSourceObj()));
+                return matched.get(0);
+            }
+        if (powerSort != null)
+            if (powerSort) {
+                SortMaster.sortEntitiesByExpression(matched,
+                 unit1 -> unit1.getIntParam(PARAMS.POWER));
+                return matched.get(0);
+            }
 
         return new RandomWizard<Unit>().getRandomListItem(matched);
 
+    }
+    public Map<Coordinates, List<BattleFieldObject>> getCache(Boolean overlaying) {
+        if (overlaying==null )
+        return objCache;
+        return overlaying? overlayingCache: noOverlayingCache;
+    }
+
+    public Map<Coordinates, List<BattleFieldObject>> getNoOverlayingCache() {
+        return noOverlayingCache;
+    }
+
+    public Map<Coordinates, List<BattleFieldObject>> getOverlayingCache() {
+        return overlayingCache;
+    }
+
+    public Map<Coordinates, List<BattleFieldObject>> getObjCache() {
+        return objCache;
     }
 }

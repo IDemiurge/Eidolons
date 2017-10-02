@@ -28,7 +28,7 @@ public class TextureCache {
     private static boolean altTexturesOn = true;
     private static Texture emptyTexture;
     private static Map<String, TextureRegion> regionCache = new HashMap<>(300);
-    private static final boolean uiAtlasOn=false;
+    private static final boolean uiAtlasOn=true;
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
     private String imagePath;

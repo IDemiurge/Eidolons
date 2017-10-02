@@ -7,7 +7,12 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.GroupAI;
 import main.game.battlecraft.ai.UnitAI;
+import main.game.battlecraft.ai.elements.actions.Action;
+import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
+import main.game.battlecraft.ai.elements.task.Task;
 import main.game.battlecraft.ai.tools.Analyzer;
+import main.game.battlecraft.ai.tools.path.ActionPath;
+import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.BLOCK_TYPE;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.Positioner;
@@ -21,7 +26,7 @@ import main.system.math.PositionMaster;
 import java.util.LinkedList;
 import java.util.List;
 
-public class WanderMaster {
+public class WanderAi extends AiBehavior{
 
     public static List<? extends DC_Obj> getWanderCells(UnitAI ai) {
         DIRECTION d = ai.getGroup().getWanderDirection();
@@ -246,7 +251,7 @@ public class WanderMaster {
     }
 
     public static Coordinates getCoordinates(GOAL_TYPE type, UnitAI ai) {
-        Coordinates targetCoordinates = WanderMaster.getWanderTargetCoordinatesCell(ai, type);
+        Coordinates targetCoordinates = WanderAi.getWanderTargetCoordinatesCell(ai, type);
         Unit unit = ai.getUnit();
         GroupAI group = ai.getGroup();
         boolean adjust = targetCoordinates == null;
@@ -261,7 +266,7 @@ public class WanderMaster {
                 c = Positioner.adjustCoordinate(targetCoordinates, null);
                 if (c == null) {
                     group.getWanderStepCoordinateStack().push(group.getLeader().getCoordinates());
-                    WanderMaster.changeGroupMoveDirection(group, type);
+                    WanderAi.changeGroupMoveDirection(group, type);
                     return null;
                 }
                 if (DirectionMaster.getRelativeDirection(unit.getCoordinates(), c) != group
@@ -276,4 +281,47 @@ public class WanderMaster {
         return targetCoordinates;
     }
 
+    @Override
+    public ActionSequence getOrders(UnitAI ai) {
+        Coordinates c1 = null;
+        try {
+            WanderAi.checkWanderDirectionChange(ai.getGroup(), GOAL_TYPE.WANDER);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            c1 = (WanderAi.getWanderTargetCoordinatesCell(ai, GOAL_TYPE.WANDER));
+        } catch (Exception e) {
+            c1 = (CoordinatesMaster.getRandomAdjacentCoordinate(ai.getUnit().getCoordinates()));
+            e.printStackTrace();
+        }
+        c1 = Positioner.adjustCoordinate(ai.getUnit(), c1, ai.getUnit().getFacing());
+
+        List<Coordinates> c = new LinkedList<>();
+        c.add(c1);
+       getMaster(ai).setUnit(ai.getUnit());
+//        getMaster(ai).getPathBuilder().init(null, null);
+//        TimeLimitMaster.markTimeForAI(ai);
+        List<ActionPath> paths = new LinkedList<>();
+//         getMaster(ai).getPathBuilder().build(c);
+
+        Task task = new Task(ai, GOAL_TYPE.WANDER, null);
+        Action action = null;
+        if (paths.isEmpty()) {
+            if (c.get(0) != null)
+                action = getMaster(ai).getAtomicAi().getAtomicMove(c.get(0), ai.getUnit());
+            else
+                action = getMaster(ai).getAtomicAi().getAtomicActionApproach(ai);
+            if (action!=null )
+            return new ActionSequence(GOAL_TYPE.WANDER, action);
+        } else
+            action = paths.get(0).getActions().get(0);
+        if (action==null )
+            return null;
+        List<ActionSequence> sequences = getMaster(ai).getActionSequenceConstructor().
+         getSequencesFromPaths(paths, task, action);
+        if (sequences.isEmpty())
+            return null;
+        return sequences.get(0);
+    }
 }

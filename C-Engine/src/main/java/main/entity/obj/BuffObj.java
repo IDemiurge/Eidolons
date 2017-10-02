@@ -353,7 +353,9 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     }
 
     public boolean isDisplayed() {
-
+        if (getType().getType()!=null )
+            if (getType().getType().getName().equals("Dummy Buff"))
+            return  false;
         return true;
     }
 }

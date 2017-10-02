@@ -14,9 +14,14 @@ import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.path.ActionPath;
 import main.game.bf.Coordinates;
+import main.game.module.dungeoncrawl.ai.AiBehavior;
+import main.game.module.dungeoncrawl.ai.GuardAi;
 import main.game.module.dungeoncrawl.ai.PatrolMaster;
-import main.game.module.dungeoncrawl.ai.WanderMaster;
+import main.game.module.dungeoncrawl.ai.WanderAi;
 import main.system.auxiliary.data.ListMaster;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class BehaviorMaster extends AiHandler {
     /*
@@ -71,18 +76,47 @@ public class BehaviorMaster extends AiHandler {
         return AiEnums.GOAL_TYPE.MOVE;
     }
 
-    public AI_BEHAVIOR_MODE getBehavior(UnitAI ai) {
+    Map<AI_BEHAVIOR_MODE, AiBehavior> behaviorMap = new HashMap<>();
+
+    public AiBehavior getBehavior(UnitAI ai) {
+        AI_BEHAVIOR_MODE type = AI_BEHAVIOR_MODE.WANDER;
+
+        if (getAnalyzer().getClosestEnemyDistance(ai.getUnit())>5){
+            type = AI_BEHAVIOR_MODE.GUARD;
+        }
+return getBehavior(ai, type);
+
+    }
+
+    private AiBehavior getBehavior(UnitAI ai, AI_BEHAVIOR_MODE type) {
+        AiBehavior behavior = behaviorMap.get(type);
+        if (behavior != null) {
+            return behavior;
+        }
+            switch (type) {
+
+                case WANDER:
+                    behavior= new WanderAi();
+                    break;
+                case AMBUSH:
+                    break;
+                case AGGRO:
+                    break;
+                case STALK:
+                    break;
+                case PATROL:
+                    break;
+                case GUARD:
+                    behavior= new GuardAi();
+                    break;
+            }
+        behaviorMap.put(type, behavior);
         // for (AI_BEHAVIOR_MODE b : ai.getBehaviors()) {
         // // priority? situation? preCheck each...
         // }
-        return ai.getGroup().getBehaviorPref(); // preCheck unit is viable?
-
+        return behavior ; // preCheck unit is viable?
     }
 
-    public Action getBehaviorAction(UnitAI ai) {
-        GOAL_TYPE type = getGoalFromBehavior(getBehavior(ai));
-        return getAction(type, ai);
-    }
 
     private Action getAction(GOAL_TYPE type, UnitAI ai) {
 
@@ -105,7 +139,7 @@ public class BehaviorMaster extends AiHandler {
             case SEARCH: // having already turned on the Mode
             case WANDER:
                 if (ai.isLeader()) {
-                    Boolean change = WanderMaster.checkWanderDirectionChange(group, type);
+                    Boolean change = WanderAi.checkWanderDirectionChange(group, type);
                     if (change == null) {
                         action = getIdleAction(ai, type);
                         change = true;
@@ -116,12 +150,12 @@ public class BehaviorMaster extends AiHandler {
                     if (change) {
                         group.getWanderStepCoordinateStack().push(
                                 group.getLeader().getCoordinates());
-                        WanderMaster.changeGroupMoveDirection(group, type);
+                        WanderAi.changeGroupMoveDirection(group, type);
                     }
                 }
                 boolean wait = false;
                 // ActionSequenceConstructor.getSequence(targetAction, task)
-                Coordinates targetCoordinates = WanderMaster.getCoordinates(type, ai);
+                Coordinates targetCoordinates = WanderAi.getCoordinates(type, ai);
                 if (targetCoordinates == null) {
                     wait = true;
                     // if (!recursion)

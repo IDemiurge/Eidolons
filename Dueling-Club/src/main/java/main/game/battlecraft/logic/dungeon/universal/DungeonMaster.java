@@ -4,6 +4,10 @@ import main.game.battlecraft.logic.battle.universal.*;
 import main.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.game.module.dungeoncrawl.objects.DoorMaster;
+import main.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
+import main.game.module.dungeoncrawl.objects.DungeonObjMaster;
+import main.game.module.dungeoncrawl.objects.LockMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
@@ -25,6 +29,8 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     protected FacingAdjuster<E> facingAdjuster;
     protected DungeonMapGenerator<E> mapGenerator;
     private ExplorationMaster explorationMaster;
+    private   DoorMaster doorMaster;
+    private LockMaster lockMaster;
 
     public DungeonMaster(DC_Game game) {
         this.game = game;
@@ -35,7 +41,10 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         builder = createBuilder();
         mapGenerator = new DungeonMapGenerator<E>(this);
     if (ExplorationMaster.isExplorationSupported(game))
-        explorationMaster = new ExplorationMaster(game);
+    explorationMaster = new ExplorationMaster(game);
+
+        doorMaster=new DoorMaster(this);
+        lockMaster=new LockMaster(this);
     }
 
     protected DungeonBuilder<E> createBuilder() {
@@ -140,4 +149,11 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
 
+    public DungeonObjMaster getDungeonObjMaster(DUNGEON_OBJ_TYPE type) {
+        switch (type) {
+            case DOOR:
+                return doorMaster;
+        }
+        return null;
+    }
 }

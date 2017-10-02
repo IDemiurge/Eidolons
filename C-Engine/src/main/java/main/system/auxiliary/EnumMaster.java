@@ -33,9 +33,9 @@ public class EnumMaster<T> {
     public static Class<?> ALT_CONSTS_CLASS; // set dynamically
     private static Map<Class, Map<String, Object>> enumCache = new HashMap<>();
     private static Map<Class, Map<String, Integer>> enumIndexCache = new HashMap<>();
-    private static List<Class > enumClasses;
+    private static List<Class> enumClasses;
     private static Map<String, Class> enumMap = new HashMap<>();
-    private static List<Class<?>> additionalEnumClasses=    new LinkedList<>() ;
+    private static List<Class<?>> additionalEnumClasses = new LinkedList<>();
 
     // private static final Logger = Logger.getLogger(EnumMaster.class);
     public static Class<?> getEnumClass(String name) {
@@ -70,7 +70,7 @@ public class EnumMaster<T> {
             enumClasses = new LinkedList<>();
             try {
                 enumClasses.addAll(
-                Arrays.asList(ClassFinder.getClasses(ENUM_FOLDER)));
+                 Arrays.asList(ClassFinder.getClasses(ENUM_FOLDER)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -184,14 +184,8 @@ public class EnumMaster<T> {
         if (!CoreEngine.isEnumCachingOn()) {
             return new EnumMaster<>().retrieveEnumConst(class1, name);
         }
-        Map<String, Object> cache = enumCache.get(class1);
-        Object enumConst = null;
-        if (cache == null) {
-            cache = new HashMap<>();
-            enumCache.put(class1, cache);
-        } else {
-            enumConst = cache.get(name);
-        }
+        Map<String, Object> cache = getCache(class1);
+        Object  enumConst = cache.get(name);
         if (enumConst != null) {
             return enumConst;
         }
@@ -307,7 +301,9 @@ public class EnumMaster<T> {
         if (StringUtils.isEmpty(name)) {
             return null;
         }
-
+        Object object = getCache(clazz).get(name);
+        if (object != null)
+            return (T) object;
         T[] array = clazz.getEnumConstants();
         List list;
 
@@ -330,6 +326,7 @@ public class EnumMaster<T> {
         T t = null;
         try {
             t = (T) new SearchMaster<T>().find(name, list);
+            getCache(clazz).put(name, t);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -340,6 +337,7 @@ public class EnumMaster<T> {
         if (findClosest) {
             try {
                 t = (T) new SearchMaster<T>().findClosest(name, list);
+                getCache(clazz).put(name, t);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -348,6 +346,15 @@ public class EnumMaster<T> {
             LogMaster.log(0, "ENUM NOT FOUND: " + name);
         }
         return t;
+    }
+
+    private static Map<String, Object> getCache(Class<?> clazz) {
+        Map<String, Object>   cache = enumCache.get(clazz);
+        if (cache == null ){
+            cache = new HashMap<>();
+            enumCache.put(clazz, cache);
+        }
+        return cache;
     }
 
     public Object getEnum(String content, Object[] enumConstants) {

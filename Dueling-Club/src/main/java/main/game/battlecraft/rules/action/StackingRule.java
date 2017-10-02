@@ -20,7 +20,6 @@ import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.battlecraft.rules.UnitAnalyzer;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
-import main.game.module.dungeoncrawl.special.DoorMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -196,9 +195,9 @@ public class StackingRule implements ActionRule {
                 }
             }
             girth += u.getIntParam(PARAMS.GIRTH);
-            if (DoorMaster.isDoor((BattleFieldObject) u)) {
-
-            }
+//           TODO  if (DoorMaster.isDoor((BattleFieldObject) u)) {
+//
+//            }
             // main.system.auxiliary.LogMaster.log(1, "****************** " +
             // u.getName()
             // + "'s Girth " + u.getIntParam(PARAMS.GIRTH));

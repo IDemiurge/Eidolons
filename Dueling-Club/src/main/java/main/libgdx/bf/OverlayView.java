@@ -2,25 +2,27 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.entity.obj.BattleFieldObject;
 import main.game.bf.Coordinates;
-import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.tooltips.ValueTooltip;
-
-import java.util.Arrays;
 
 public class OverlayView extends BaseView {
     public static final float SCALE = 0.5F;
     private Image image;
     private Coordinates.DIRECTION direction;
 
-    public OverlayView(UnitViewOptions viewOptions) {
+    public OverlayView(UnitViewOptions viewOptions, BattleFieldObject bfObj) {
         super(viewOptions);
         image = new Image(viewOptions.getPortrateTexture());
         addActor(image);
 
-        ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer(viewOptions.getName(), "")));
-         addListener(tooltip.getController());
+//        ValueTooltip tooltip = new ValueTooltip();
+//        tooltip.setUserObject(Arrays.asList(new ValueContainer(viewOptions.getName(), "")));
+//         addListener(tooltip.getController());
+
+        final UnitViewTooltip tooltip = new UnitViewTooltip(this);
+        tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
+        addListener(tooltip.getController());
+        addListener(UnitViewFactory.createListener(bfObj));
     }
 
     @Override

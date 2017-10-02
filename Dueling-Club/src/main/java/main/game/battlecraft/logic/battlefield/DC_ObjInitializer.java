@@ -457,7 +457,9 @@ public class DC_ObjInitializer {
                 if (map == null) {
                     map = new HashMap<>();
                     obj.getGame().getDirectionMap().put(c, map);
+
                 }
+                obj.setDirection(d);
                 map.put(obj, d);
 
             }

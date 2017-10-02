@@ -8,7 +8,7 @@ import main.system.auxiliary.StringMaster;
 public class ActionEnums {
     public enum ACTION_TYPE_GROUPS {
         MOVE, TURN, ATTACK, SPELL, SPECIAL, HIDDEN, MODE, ITEM, ORDER,
-        // security fix...
+        DUNGEON, // security fix...
         STANDARD
 
     }

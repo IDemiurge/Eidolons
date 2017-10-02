@@ -131,7 +131,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
                 }
             }
         }
-        setDead(true);
+
 
         getGame().getManager().unitDies(this, (Obj) killer, leaveCorpse, quietly);
 

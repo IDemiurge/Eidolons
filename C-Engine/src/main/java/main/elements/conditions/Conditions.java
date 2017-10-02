@@ -4,6 +4,7 @@ import main.data.ability.OmittedConstructor;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.system.entity.ConditionMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,7 +16,7 @@ public class Conditions extends Vector<Condition> implements  Condition {
     boolean isTrue;
     boolean or = false;
     private Condition lastCheckedCondition;
-    private boolean fastFailOnCheck;
+    private  boolean fastFailOnCheck= !CoreEngine.isLogicTest();
 
     @OmittedConstructor
     public Conditions(Condition... c) {
@@ -134,7 +135,7 @@ public class Conditions extends Vector<Condition> implements  Condition {
     }
 
     protected boolean isFastFailOnCheck() {
-        return fastFailOnCheck;
+        return false;// fastFailOnCheck;
     }
 
     public void setFastFailOnCheck(boolean fastFailOnCheck) {

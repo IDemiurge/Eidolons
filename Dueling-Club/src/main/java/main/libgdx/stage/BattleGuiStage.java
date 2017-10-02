@@ -54,10 +54,7 @@ public class BattleGuiStage extends Stage {
         menuButton.setPosition(Gdx.graphics.getWidth() - menuButton.getWidth(),
          Gdx.graphics.getHeight() - menuButton.getHeight());
         addActor(menuButton);
-radial=new RadialMenu();
-        addActor(radial);
 
-        addActor(new ToolTipManager(this));
 
         InventoryWithAction inventoryForm = new InventoryWithAction();
         inventoryForm.setPosition(0, Gdx.graphics.getHeight() - inventoryForm.getHeight());
@@ -69,6 +66,9 @@ radial=new RadialMenu();
 
         addActor(new FullLogPanel(100, 200));
 
+        radial = new RadialMenu();
+        addActor(radial);
+        addActor(new ToolTipManager(this));
         bindEvents();
     }
 
@@ -90,7 +90,7 @@ radial=new RadialMenu();
     }
 
     @Override
-    public void act( ) {
+    public void act() {
         super.act();
         if (outcomePanel != null)
             outcomePanel.setZIndex(Integer.MAX_VALUE);
@@ -138,5 +138,9 @@ radial=new RadialMenu();
 
     public ActionPanelController getBottomPanel() {
         return bottomPanel;
+    }
+
+    public RadialMenu getRadial() {
+        return radial;
     }
 }

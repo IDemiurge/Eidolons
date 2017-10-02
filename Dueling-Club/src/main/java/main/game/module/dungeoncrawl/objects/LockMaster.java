@@ -1,49 +1,34 @@
-package main.game.module.dungeoncrawl.special;
+package main.game.module.dungeoncrawl.objects;
 
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.DC_Obj;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.entity.type.ObjType;
+import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.bf.Coordinates;
+import main.game.module.dungeoncrawl.objects.LockMaster.LOCK_ACTIONS;
 import main.system.math.Formula;
 import main.system.math.roll.RollMaster;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class LockMaster {
-    // Map<DC_Obj, List<>> map;
-
-    public static void initLocks(Unit mapObj) {
-//        mapObj.getProperty(PROPS.LOCK_TYPE);
-        mapObj.getIntParam(PARAMS.LOCK_LEVEL);
-        ObjType type;
-//        new LockObj(type, DC_Player.NEUTRAL, mapObj.getGame(), new Ref(mapObj.getGame()));
+public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
+    public LockMaster(DungeonMaster dungeonMaster) {
+        super(dungeonMaster);
     }
 
-    public static boolean isLocked(DC_Obj mapObj) {
-//        List<LockObj> locks = locksMap.getOrCreate(mapObj.getCoordinates());
-//        for (LockObj lock : locks) {
-//            if (lock.isUnlocked())
-//                return true;
-//        }
-
-        return false;
-        // determined whether something is passable?
-        // will add *unlock* action
-    }
-
-    public static boolean tryUnlock(Entity lockedObj, Unit lockPicker) {
+    public   boolean tryUnlock(Entity lockedObj, Unit lockPicker) {
         return tryUnlock(lockedObj, lockPicker, null);
 
     }
 
-    public static boolean tryUnlock(Entity lockedObj, Unit lockPicker, Formula formula) {
+    public   boolean tryUnlock(Entity lockedObj, Unit lockPicker, Formula formula) {
         boolean result = TrapMaster.checkTrapOnLock(lockedObj);
         if (!result) {
             return false;
@@ -62,7 +47,7 @@ public class LockMaster {
         return result;
     }
 
-    public static List<Obj> getObjectsToUnlock(Unit unit) {
+    public   List<Obj> getObjectsToUnlock(Unit unit) {
         List<Obj> list = new LinkedList<>();
         if (unit.getGame().getObjectByCoordinate(unit.getCoordinates(), false) != null) {
             list.add(unit.getGame().getObjectByCoordinate(unit.getCoordinates(), false));
@@ -76,10 +61,29 @@ public class LockMaster {
         return list;
     }
 
-    public static void unlock(Entity lockedObj) {
+    public   void unlock(Entity lockedObj) {
         lockedObj.removeStatus(UnitEnums.STATUS.LOCKED + "");
         lockedObj.addStatus(UnitEnums.STATUS.UNLOCKED + "");
 
     }
 
+    public   void open(BattleFieldObject obj) {
+        obj.removeStatus(UnitEnums.STATUS.LOCKED + "");
+        obj.addStatus(UnitEnums.STATUS.UNLOCKED + "");
+    }
+
+    @Override
+    public List<DC_ActiveObj> getActions(BattleFieldObject obj, Unit unit) {
+        return null;
+    }
+
+    @Override
+    public void open(DungeonObj obj) {
+
+    }
+
+    // Map<DC_Obj, List<>> map;
+    public enum LOCK_ACTIONS implements DUNGEON_OBJ_ACTION {
+
+    }
 }

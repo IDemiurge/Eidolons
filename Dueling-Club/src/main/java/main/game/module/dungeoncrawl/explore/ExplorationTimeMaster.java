@@ -86,7 +86,10 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             processAiChecks();
         }
         if (guiDirtyFlag)
+        {
             GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
+            guiDirtyFlag=false;
+        }
     }
 
     private void processAiChecks() {
@@ -201,5 +204,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     public void unitActivatesMode(Unit unit) {
         unit.getAI().setExplorationTimeOfModeEffect(time);
+    }
+
+    public void setGuiDirtyFlag(boolean guiDirtyFlag) {
+        this.guiDirtyFlag = guiDirtyFlag;
     }
 }

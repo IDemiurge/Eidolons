@@ -146,6 +146,7 @@ public class SelectiveTargeting extends TargetingImpl {
 
     public enum SELECTIVE_TARGETING_TEMPLATES {
         ATTACK,
+        KEY,
         CLAIM,
         SHOT,
         UNOBSTRUCTED_SHOT,

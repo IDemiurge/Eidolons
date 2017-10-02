@@ -10,7 +10,7 @@ import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimMaster3d;
 import main.libgdx.bf.BaseView;
 import main.libgdx.bf.GridUnitView;
-import main.libgdx.bf.UnitView;
+import main.libgdx.bf.OverlayView;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.stage.BattleGuiStage;
 import main.system.GuiEventManager;
@@ -29,6 +29,7 @@ public class ToolTipManager extends TablePanel {
             return;
         }
 
+        guiStage.getRadial().hover(entity);
         //differentiate radial from bottom panel? no matter really ... sync :)
 
 //        guiStage.getBottomPanel().getSpellPanel().getCells();
@@ -38,6 +39,7 @@ public class ToolTipManager extends TablePanel {
         if (entity instanceof DC_UnitAction) {
             AnimMaster3d.hoverOff((DC_UnitAction) entity);
         }
+        guiStage.getRadial().hoverOff(entity);
     }
     public ToolTipManager(BattleGuiStage battleGuiStage) {
         guiStage = battleGuiStage;
@@ -53,24 +55,24 @@ public class ToolTipManager extends TablePanel {
         });
 
         GuiEventManager.bind(UNIT_VIEW_HOVER_ON, (event) -> {
-            UnitView object = (UnitView) event.get();
-//            if (object.getScaleX()== 1)
-//                if (object.getScaleX()== 1)
+            BaseView object = (BaseView) event.get();
+//            if (object.getScaleX()==getDefaultScale(object))
+//                if (object.getScaleX()==getDefaultScale(object))
 
-            float scaleX = 1;
-            if (object.getScaleX() == 1)
-                scaleX = 1.12f;
-            float scaleY = 1;
-            if (object.getScaleY() == 1)
-                scaleY = 1.12f;
+            float scaleX = getDefaultScale(object);
+            if (object.getScaleX() ==getDefaultScale(object))
+                scaleX = getZoomScale(object);
+            float scaleY =getDefaultScale(object);
+            if (object.getScaleY() ==getDefaultScale(object))
+                scaleY =getZoomScale(object);
 
             ActorMaster.
              addScaleActionIfNoActions(object, scaleX, scaleY, 0.35f);
             if (object instanceof GridUnitView) {
-                if (scaleX == 1)
-                    scaleX = 1.12f;
-                if (scaleY == 1)
-                    scaleY = 1.12f;
+                if (scaleX ==getDefaultScale(object))
+                    scaleX = getZoomScale(object);
+                if (scaleY ==getDefaultScale(object))
+                    scaleY = getZoomScale(object);
                 ActorMaster.
                  addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
                   , scaleX, scaleY, 0.35f);
@@ -91,14 +93,14 @@ public class ToolTipManager extends TablePanel {
                 scaleY = object.getScaledHeight();
                 ActorMaster.
                  addScaleAction(object, scaleX, scaleY, 0.35f);
-                scaleX = 1.0f;
-                scaleY = 1.0f;
+                scaleX = getDefaultScale(object);
+                scaleY = getDefaultScale(object);
                 ActorMaster.
                  addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
                   , scaleX, scaleY, 0.35f);
             } else {
-                scaleX = 1.0f;
-                scaleY = 1.0f;
+                scaleX = getDefaultScale(object);
+                scaleY = getDefaultScale(object);
                 ActorMaster.
                  addScaleAction(object, scaleX, scaleY, 0.35f);
             }
@@ -107,6 +109,20 @@ public class ToolTipManager extends TablePanel {
 
         });
         actorCell = addElement(null);
+    }
+
+    private float getZoomScale(BaseView object) {
+        if (object instanceof OverlayView){
+            return 0.61f;
+        }
+        return 1.12f;
+    }
+
+    private float getDefaultScale(BaseView object) {
+        if (object instanceof OverlayView){
+            return OverlayView.SCALE;
+        }
+        return 1;
     }
 
 

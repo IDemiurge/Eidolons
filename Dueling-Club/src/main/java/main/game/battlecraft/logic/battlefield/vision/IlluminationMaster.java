@@ -3,6 +3,7 @@ package main.game.battlecraft.logic.battlefield.vision;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.Ref;
 import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
@@ -76,13 +77,14 @@ public class IlluminationMaster {
         }
         Ref ref = new Ref(source);
         ref.setMatch(target.getId());
-        if (!
-         master.getSightMaster().getClearShotCondition().preCheck(ref)) {
-            cache.put(target, -1);
-            return -1;
-        }
-
-        illumination = target.getIntParam(PARAMS.ILLUMINATION);
+        if (
+         target.getVisibilityLevel() == VISIBILITY_LEVEL.BLOCKED) {
+            //master.getSightMaster().getClearShotCondition().preCheck(ref)
+//            cache.put(target, -1);
+//            return -1;
+            illumination = 0;
+        } else
+            illumination = target.getIntParam(PARAMS.ILLUMINATION);
         Dungeon dungeon = source.getGame().getDungeon();
         illumination += target.getIntParam(PARAMS.LIGHT_EMISSION) / 2;
         if (dungeon != null) {

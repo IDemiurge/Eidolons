@@ -7,11 +7,11 @@ import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
-import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.core.DC_TurnManager;
 import main.game.core.game.DC_Game;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 import main.test.debug.DebugMaster;
@@ -34,7 +34,9 @@ public class OutlineMaster {
                 return null;
             }
         }
-        Unit activeUnit = DC_Game.game.getTurnManager().getActiveUnit(true);
+        Unit activeUnit = ExplorationMaster.isExplorationOn()
+        ? master.getSeeingUnit() :
+         DC_Game.game.getTurnManager().getActiveUnit(true);
         DC_TurnManager.setVisionInitialized(true);
         if (activeUnit == null) {
             return null;
@@ -61,9 +63,9 @@ public class OutlineMaster {
             return null;
         }
         if (unit.isDetectedByPlayer()) {
-            if (unit instanceof DC_Cell) {
-                return null;
-            }
+//            if (unit instanceof DC_Cell) {
+//                return null;
+//            }
             if (unit instanceof Unit) {
                 Unit heroObj = (Unit) unit;
                 if (heroObj.isWall() || heroObj.isLandscape()) {
@@ -89,36 +91,13 @@ public class OutlineMaster {
 
             return OUTLINE_TYPE.THICK_DARKNESS;
         }
-        // LIT_HAZE ?
 
-        // if (unit instanceof DC_Cell)
-        // return null;
-
-        // int effectiveVisibility = (int) (gamma / Math.max(1, 2 *
-        // Math.sqrt(diff)));
-        // first preCheck if there is enough for either... then preCheck which is
-        // relatively greater! Or "Dark Vague Outline?" :)
-        if (unit instanceof DC_Cell) {
-            if (gamma > 50) {
-
-                // [quick fix]
-                if (!new ClearShotCondition().preCheck(ref)) {
-                    // vision type preCheck - x.ray or so TODO
-                    return OUTLINE_TYPE.BLOCKED_OUTLINE;
-                }
-                return null;
-            }
-        }
-        if (gamma > master.getGammaMaster().getGammaForClearSight()) {// ++ dark vision!
-            // flat/blocked?
-
-            // [quick fix]
             if (!new ClearShotCondition().preCheck(ref)) {
                 // vision type preCheck - x.ray or so TODO
                 return OUTLINE_TYPE.BLOCKED_OUTLINE;
             }
-            return null;
-        }
+//            return null;
+
 
 
 
@@ -194,4 +173,5 @@ public class OutlineMaster {
     public static boolean isOutlineModeOn() {
         return OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OUTLINES);
     }
+
 }

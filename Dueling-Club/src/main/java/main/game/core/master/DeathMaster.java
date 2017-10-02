@@ -49,7 +49,9 @@ public class DeathMaster extends Master {
     }
 
     public void unitDies(Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
-
+        if (_killed.isDead())
+            return;
+        _killed.setDead(true);
         BattleFieldObject killed = (BattleFieldObject) _killed;
         BattleFieldObject killer = (BattleFieldObject) _killer;
         Ref ref = Ref.getCopy(killed.getRef());
@@ -98,7 +100,7 @@ public class DeathMaster extends Master {
             REF.setSource(killer.getId());
             if (killed instanceof Unit) {
                 getGame().getRules().getMoraleKillingRule().unitDied((Unit) killed,
-                        killer.getRef().getAnimationActive());
+                 killer.getRef().getAnimationActive());
             }
 
             LogEntryNode node = game.getLogManager().newLogEntryNode(ENTRY_TYPE.DEATH, killed);
@@ -140,7 +142,7 @@ public class DeathMaster extends Master {
 
     public void killAllUnits(boolean retainPlayerParty) {
         killAllUnits(false, retainPlayerParty,
-                true);
+         true);
     }
 
     public void killAllUnits(boolean removeBfObjects, boolean retainPlayerParty, boolean quiet) {

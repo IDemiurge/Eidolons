@@ -1,2 +1,2 @@
-PLAYER_UNITS=Gwyn v3(7-3); 
-,FIRST_DUNGEON=crawl\ravenguard dungeon.xml,
+PLAYER_UNITS=Gwyn v3(1-10); 
+,FIRST_DUNGEON=demo\dungeon.xml,

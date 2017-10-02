@@ -187,7 +187,7 @@ public class DC_GameManager extends GameManager {
             updateGraphics();
             return;
         }
-        getGameMaster().getUnitCache().clear();
+        getGameMaster().clearCaches ();
         FutureBuilder.clearCaches();
         getStateManager().resetAllSynchronized();
         checkForChanges(true);

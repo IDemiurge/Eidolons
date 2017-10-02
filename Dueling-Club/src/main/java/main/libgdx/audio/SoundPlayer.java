@@ -61,7 +61,7 @@ public class SoundPlayer extends Player {
             float distance = soundFx.getOrigin().dst(x, y);
             distance *= dungeonScreen.getController().getZoom();
             float volume =
-             Math.max(10, getVolume() / Math.max(1, (distance) / 200 ));
+             Math.max(10, getVolume() / Math.max(1, (distance) / 200 ))/100;
             soundFx.setVolume(volume);
             }
         });

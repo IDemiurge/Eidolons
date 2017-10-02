@@ -42,10 +42,17 @@ public class ActionAnim extends Anim {
         if (action == null) {
             return;
         }
-        addAction(action);
-        getAction().setTarget(this);
-        AnimMaster.getInstance().addActor(this);
-        LogMaster.log(1, this + " added to stage");
+
+        getActionTarget().addAction(action);
+        getAction().setTarget(getActionTarget());
+        if (getActionTarget() == this) {
+            AnimMaster.getInstance().addActor(this);
+            LogMaster.log(1, this + " added to stage");
+        }
+    }
+
+    protected Actor getActionTarget() {
+        return this;
     }
 
     @Override

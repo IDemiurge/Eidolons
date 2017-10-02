@@ -4,14 +4,20 @@ import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.bf.Coordinates;
 import main.game.bf.SwingBattleField;
 import main.game.core.state.DC_GameState;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 // just a utility wrapped for Grid
 
 public class DC_BattleField extends SwingBattleField {
+
+    private Set<Coordinates> coordinatesSet;
 
     public DC_BattleField(DC_BattleFieldGrid grid) {
         super(grid.getGame().getState());
@@ -36,7 +42,6 @@ public class DC_BattleField extends SwingBattleField {
     }
 
 
-
     @Override
     public void selectActiveObj(Obj obj, boolean b) {
         obj.setActiveSelected(true);
@@ -57,6 +62,7 @@ public class DC_BattleField extends SwingBattleField {
         this.setActiveSelectedObj(null);
         //
     }
+
     // public BattleFieldGrid getGrid() {
     // return getBuilder().getGrid(getState().getGame().getDungeon().getZ());
     // }
@@ -71,16 +77,6 @@ public class DC_BattleField extends SwingBattleField {
     }
 
 
-
-
-
-
-
-
-
-
-
-
     public void centerCameraOn(Obj selected) {
         if (grid == null) {
             return;
@@ -90,4 +86,15 @@ public class DC_BattleField extends SwingBattleField {
 
     }
 
+    public Set<Coordinates> getCoordinatesSet() {
+        if (coordinatesSet == null) {
+            coordinatesSet =
+            getGrid().getGame().getCells().stream().map(c -> c.getCoordinates()).collect(Collectors.toSet());
+        }
+        return coordinatesSet;
+    }
+
+    public void setCoordinatesSet(Set<Coordinates> coordinatesSet) {
+        this.coordinatesSet = coordinatesSet;
+    }
 }

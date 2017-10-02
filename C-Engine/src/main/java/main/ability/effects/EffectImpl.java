@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
 // ABILITIE ARE ABOUT HOW
 public abstract class EffectImpl extends ReferredElement implements Effect {
     private static Map<UUID, Pair<Class, String>[]> constructorMap;
+    private static boolean mappingOn;
     protected Formula formula;
     // protected Obj target_obj;
     // ?Ability ability;
@@ -86,7 +87,8 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             return false;
         if (CoreEngine.isArcaneVault())
             return false;
-        return true;
+
+        return mappingOn;
     }
 
     public static Map<UUID, Pair<Class, String>[]> getConstructorMap() {

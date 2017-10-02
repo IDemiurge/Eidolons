@@ -1,6 +1,7 @@
 package main.game.battlecraft.logic.battlefield.vision;
 
 import main.content.PARAMS;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
@@ -86,6 +87,9 @@ if (VisionManager.isVisionHacked()){
         }
         float alpha = 0;
         float gamma = getGammaForCell(x, y);
+        if ( Eidolons.game.getCellByCoordinate(new Coordinates(x, y)).getVisibilityLevel()==VISIBILITY_LEVEL.BLOCKED){
+            gamma = 0;
+        }
         switch (type) {
 
             case GAMMA_SHADOW:
@@ -102,12 +106,15 @@ if (VisionManager.isVisionHacked()){
                 alpha = gamma - 2;
                 break;
             case LIGHT_EMITTER:
-                List<BattleFieldObject> list = Eidolons.game.getOverlayingObjects(
-                 new Coordinates(x, y));
-                list.addAll(Eidolons.game.getObjectsOnCoordinate(
-                 new Coordinates(x, y)));
+                List<BattleFieldObject> list =
+//                 Eidolons.game.getOverlayingObjects(
+//                 new Coordinates(x, y));
+//                list.addAll(
+                 Eidolons.game.getMaster(). getObjectsOnCoordinate(new Coordinates(x, y), null );
                 list.removeIf(u -> IlluminationRule.getLightEmission(
-                 u) == 0);
+                 u) == 0
+                || u.getVisibilityLevel()!= VISIBILITY_LEVEL.CLEAR_SIGHT
+                );
                 if (!list.isEmpty())
                     alpha = Math.round(LIGHT_EMITTER_ALPHA_FACTOR *
                      list.stream().
@@ -143,8 +150,7 @@ if (VisionManager.isVisionHacked()){
     public float getGammaForCell(int x, int y) {
         Unit unit =  master.getSeeingUnit();
         return CELL_GAMMA_MODIFIER * (float)
-         getGamma(false, unit,
-          Eidolons.game.getCellByCoordinate(new Coordinates(x, y)));
+               Eidolons.game.getCellByCoordinate(new Coordinates(x, y)).getGamma();
 //        return new Random().nextInt(50)/100 + 0.5f;
     }
 }

@@ -272,6 +272,8 @@ public class DC_Game extends MicroGame {
         }
         startGameLoop(first);
 
+        visionMaster.refresh();
+
         Chronos.logTimeElapsedForMark("GAME_START");
     }
 
@@ -383,8 +385,8 @@ public class DC_Game extends MicroGame {
                 initTYPE(TYPE);
             }
         }
-        if (!CoreEngine.isLevelEditor()
-         && (!CoreEngine.isArcaneVault()
+        if (!CoreEngine.isLevelEditor())
+        if ( (!CoreEngine.isArcaneVault()
          ||!XML_Reader.isMacro())
          && !CoreEngine.isItemGenerationOff()
          )
@@ -518,7 +520,7 @@ public class DC_Game extends MicroGame {
     }
 
     public Set<Coordinates> getCoordinates() {
-        return getBattleField().getGrid().getCellCompMap().keySet();
+        return    getBattleField().getCoordinatesSet();
     }
 
     public AI_Manager getAiManager() {

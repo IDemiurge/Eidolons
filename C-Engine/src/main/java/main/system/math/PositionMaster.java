@@ -59,17 +59,24 @@ public class PositionMaster {
         return grid.noObstaclesOnDiagonal(c1, c2, source);
     }
 
+    public static boolean inLine(int x1, int x2, int y1, int y2 ) {
+        if (x1==x2)
+            return true;
+        if (y1==y2)
+            return true;
+        return false;
+    }
     public static boolean inLine(Coordinates coordinates1, Coordinates coordinates2) {
-        return (inYLine(coordinates1, coordinates2) || inXLine(coordinates1, coordinates2));
+        return inLine(coordinates1.x, coordinates2.x, coordinates1.y, coordinates2.y);
 
     }
 
     public static boolean inYLine(Coordinates coordinates1, Coordinates coordinates2) {
-        return coordinates1.getY() == coordinates2.getY();
+        return coordinates1.y == coordinates2.y;
     }
 
     public static boolean inXLine(Coordinates coordinates1, Coordinates coordinates2) {
-        return coordinates1.getX() == coordinates2.getX();
+        return coordinates1.x == coordinates2.x;
     }
 
     public static int getMaxStraightDistance(Coordinates coordinates, Coordinates cell) {
@@ -80,11 +87,11 @@ public class PositionMaster {
     }
 
     public static int getX_Diff(Coordinates coordinates1, Coordinates coordinates2) {
-        return Math.abs(coordinates1.getX() - coordinates2.getX());
+        return Math.abs(coordinates1.x - coordinates2.x);
     }
 
     public static int getY_Diff(Coordinates coordinates1, Coordinates coordinates2) {
-        return Math.abs(coordinates1.getY() - coordinates2.getY());
+        return Math.abs(coordinates1.y - coordinates2.y);
     }
 
     public static int getDistance(Coordinates c1, Coordinates c2) {
@@ -92,29 +99,24 @@ public class PositionMaster {
     }
 
     public static double getExactDistance(Coordinates coordinates1, Coordinates coordinates2) {
-        if (inLine(coordinates1, coordinates2)) {
-            return getMaxStraightDistance(coordinates1, coordinates2);
-        }
-        // diagonal adjacency?!
-
         int x = getX_Diff(coordinates1, coordinates2);
         int y = getY_Diff(coordinates1, coordinates2);
-        if (x == 0) {
-            return y;
+        if (x==0) {
+            return  y;
         }
-        if (y == 0) {
-            return x;
+        if (y==0) {
+            return  x;
         }
 
         return Math.sqrt(x * x + y * y);
     }
 
     public static boolean isToTheLeft(Coordinates coordinates1, Coordinates coordinates2) {
-        return coordinates1.getX() < coordinates2.getX();
+        return coordinates1.x < coordinates2.x;
     }
 
     public static boolean isAbove(Coordinates coordinates1, Coordinates coordinates2) {
-        return coordinates1.getY() < coordinates2.getY();
+        return coordinates1.y < coordinates2.y;
     }
 
     public static boolean inLine(Obj obj1, Obj obj2) {
@@ -137,7 +139,7 @@ public class PositionMaster {
 
     public static int getMaxStraightDistance(Obj obj, Obj cell) {
 
-        int range = Math.max(Math.abs(getX_Diff(obj, cell)), Math.abs(getY_Diff(obj, cell)));
+        int range = Math.max( (getX_Diff(obj, cell)),  (getY_Diff(obj, cell)));
         return range;
     }
 
@@ -188,17 +190,17 @@ public class PositionMaster {
     }
 
     public static Boolean isToTheLeftOr(Coordinates c1, Coordinates c2) {
-        if (c1.getX() == c2.getX()) {
+        if (c1.x == c2.x) {
             return null;
         }
-        return c1.getX() < c2.getX();
+        return c1.x < c2.x;
     }
 
     public static Boolean isAboveOr(Coordinates c1, Coordinates c2) {
-        if (c1.getY() == c2.getY()) {
+        if (c1.y == c2.y) {
             return null;
         }
-        return c1.getY() < c2.getY();
+        return c1.y < c2.y;
     }
 
     public static boolean inLineDiagonally(Coordinates c1, Coordinates c2) {
@@ -271,7 +273,7 @@ public class PositionMaster {
     }
 
     public static float getAngle(Coordinates c, Coordinates c2) {
-        return new Vector2(c.getX(), c.getY()).angle(new Vector2(c2.getX(), c2.getY()));
+        return new Vector2(c.x, c.y).angle(new Vector2(c2.x, c2.y));
 
     }
 

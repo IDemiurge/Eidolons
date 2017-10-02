@@ -2,6 +2,7 @@ package main.game.core.master;
 
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
+import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
@@ -11,8 +12,11 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
+import main.game.module.dungeoncrawl.objects.Door;
+import main.game.module.dungeoncrawl.objects.LockObj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
 import main.system.launch.CoreEngine;
 
 /**
@@ -40,7 +44,7 @@ public class ObjCreator extends Master {
 //       TODO      obj = new Entrance(x, y, type, getGame().getDungeon(), null);
        return null ;
         } else if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
-            obj = new Structure(type, x, y, owner, getGame(), ref);
+            obj = newStructure(type, x, y, owner,   ref);
         } else {
             obj = new Unit(type, x, y, owner, getGame(), ref);
         }
@@ -61,6 +65,22 @@ game.getState().getManager().reset((Unit) obj);
 
         return obj;
 
+    }
+
+    private BattleFieldObject newStructure(ObjType type, int x, int y, Player owner,
+                                             Ref ref) {
+        BF_OBJECT_GROUP group = new EnumMaster<BF_OBJECT_GROUP>().retrieveEnumConst(BF_OBJECT_GROUP.class,
+         type.getProperty(G_PROPS.BF_OBJECT_GROUP));
+       if (group!=null ){
+           switch (group) {
+               case DOOR:
+                   return new Door(type, x, y, owner, getGame(), ref);
+               case LOCK:
+                   return new LockObj(type, x, y, owner, getGame(), ref);
+           }
+       }
+
+        return new Structure(type, x, y, owner, getGame(), ref);
     }
 
 }

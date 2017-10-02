@@ -12,6 +12,7 @@ import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.auxiliary.Loop;
 import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -50,6 +51,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     @Override
     public Thread startInNewThread() {
+        if (DungeonScreen.getInstance()==null )
+            WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY, 2000);
         DungeonScreen.getInstance().setRealTimeGameLoop(this);
         if (realTimeThread == null) {
             realTimeThread = new Thread(() -> {
@@ -68,6 +71,9 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 return false;
         }
         game.getManager().reset();
+        //TODO only for player actions? 
+        VisionManager.refresh();
+        master.getResetter().setResetNeeded(false);
         return false;
     }
 
@@ -132,10 +138,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             game.getMovementManager().cancelAutomove(activeUnit);
             activateAction(playerAction);
             master.getActionHandler().playerActionActivated(playerAction.getAction());
-
+            master.getTimeMaster().setGuiDirtyFlag(true);
             master.getPartyMaster().leaderActionDone(playerAction);
 
-            VisionManager.refresh();
+
             waitForAnimations();
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
         }
@@ -174,42 +180,44 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     @Override
     public void queueActionInput(ActionInput actionInput) {
-        if (actionQueue.size() > 1)
+        if (actionQueue.size() > 0)
             return;
-        if (actionQueue.contains(actionInput))
-            return;
-        if (actionQueue.size() > 0) {
-            new Thread(() -> {
-                Loop loop = new Loop(20);
-                while (loop.continues()) {
-                    WaitMaster.WAIT(100);
-                    if (actionQueue.isEmpty()) {
-                        //check validity
-                        tryAddPlayerActions(actionInput);
-                        break;
-                    }
-                }
-
-            }, "Player ActionInput Thread").start();
-        } else
+//        if (actionQueue.contains(actionInput))
+//            return;
+//        if (actionQueue.size() > 0) {
+//            new Thread(() -> {
+//                Loop loop = new Loop(20);
+//                while (loop.continues()) {
+//                    WaitMaster.WAIT(100);
+//                    if (actionQueue.isEmpty()) {
+//                        //check validity
+//                        tryAddPlayerActions(actionInput);
+//                        break;
+//                    }
+//                }
+//
+//            }, "Player ActionInput Thread").start();
+//        } else
             tryAddPlayerActions(actionInput);
     }
 
     @Override
     public void actionInput(ActionInput actionInput) {
         queueActionInput(actionInput);
-        lock.lock();
-        waiting.signal();
-        lock.unlock();
+       signal();
+
     }
 
     private void tryAddPlayerActions(ActionInput actionInput) {
         actionQueue.add(actionInput);
+    }
+
+    public void signal() {
         lock.lock();
         waiting.signal();
         lock.unlock();
-    }
 
+    }
     @Override
     protected void loopExit() {
 //            if (ExplorationMaster.checkExplorationSupported(game)) {

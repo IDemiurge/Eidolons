@@ -1,4 +1,4 @@
-package main.game.module.dungeoncrawl.special;
+package main.game.module.dungeoncrawl.objects;
 
 import main.entity.obj.unit.Unit;
 

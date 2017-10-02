@@ -4,14 +4,25 @@ import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class XLinkedMap<E, T> extends LinkedHashMap<E, T> {
+    private boolean findClosest;
+
     public XLinkedMap(int i) {
         super(i);
     }
 
+    public XLinkedMap(Map<? extends E, ? extends T> m) {
+        super(m);
+    }
+
     public XLinkedMap() {
         super();
+    }
+
+    public void setFindClosest(boolean findClosest) {
+        this.findClosest = findClosest;
     }
 
     @Override
@@ -35,6 +46,7 @@ public class XLinkedMap<E, T> extends LinkedHashMap<E, T> {
             return null;
         }
         T t = super.get(key);
+        if (findClosest)
         if (t == null) {
             for (E e : keySet()) {
                 if (e != null) {

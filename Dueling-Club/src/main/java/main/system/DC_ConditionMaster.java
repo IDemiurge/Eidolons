@@ -18,6 +18,7 @@ import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODIFIERS;
 import main.content.enums.entity.BfObjEnums;
+import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.UnitEnums;
@@ -321,7 +322,10 @@ public class DC_ConditionMaster extends ConditionMaster {
             case ANY_UNIT:
                 c.add(ConditionMaster.getUnit_CharTypeCondition());
                 break;
-
+            case KEY:
+                c.add(new OrConditions(
+                 new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.LOCK.toString(), true),
+                 new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.DOOR.toString(), true)));
             case ATTACK:
                 c.add(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
 
@@ -348,6 +352,8 @@ public class DC_ConditionMaster extends ConditionMaster {
             case GRAVE_CELL:
                 c.add(new GraveCondition());
                 break;
+
+
             case CLAIM: {
 
                 c.add(new NotCondition(new StatusCheckCondition(UnitEnums.STATUS.CHANNELED)));
@@ -358,6 +364,8 @@ public class DC_ConditionMaster extends ConditionMaster {
 
                 break;
             }
+            case ENEMY_SPELLBOOK:
+                break;
             default:
                 break;
 

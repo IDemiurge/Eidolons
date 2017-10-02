@@ -1,20 +1,24 @@
 package main.libgdx.bf.overlays;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
+import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridMaster;
+import main.libgdx.bf.SuperActor;
+import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager.STD_IMAGES;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,9 +26,10 @@ import java.util.Set;
 /**
  * Created by JustMe on 9/12/2017.
  */
-public class WallMap extends Group {
-    private Map<Coordinates, List<DIRECTION>> wallMap = new XLinkedMap<>();
-    private Map<Coordinates, List<DIRECTION>> diagonalJoints = new XLinkedMap<>();
+public class WallMap extends SuperActor {
+    private static boolean on = true;
+    private Map<Coordinates, List<DIRECTION>> wallMap  ;
+    private Map<Coordinates, List<DIRECTION>> diagonalJoints  ;
     private boolean updateRequired;
 
     public WallMap() {
@@ -45,22 +50,15 @@ public class WallMap extends Group {
 
     }
 
-    private void bindEvents() {
-        GuiEventManager.bind(GuiEventType.UPDATE_WALL_MAP, p -> {
-            wallMap = (Map<Coordinates, List<DIRECTION>>) p.get();
-            updateRequired = true;
-        });
-        GuiEventManager.bind(GuiEventType.UPDATE_DIAGONAL_WALL_MAP, p -> {
-            diagonalJoints = (Map<Coordinates, List<DIRECTION>>) p.get();
-            updateRequired = true;
-        });
+    public static boolean isOn() {
+        return on;
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
+    public static void setOn(boolean on) {
+        WallMap.on = on;
     }
-    private STD_IMAGES getWallImageFromSide(DIRECTION side, String prefix) {
+
+    private static STD_IMAGES getWallImageFromSide(DIRECTION side, String suffix) {
         switch (side) {
             case DOWN_LEFT:
                 return STD_IMAGES.WALL_DIAGONAL_DOWN_LEFT;
@@ -81,10 +79,48 @@ public class WallMap extends Group {
         }
         return null;
     }
+
+    private static String getPath(DIRECTION directions) {
+        return StrPathBuilder.build("ui", "bf", "");
+    }
+
+    private static TextureRegion getRegion(STD_IMAGES images, String suffix) {
+//        images.getPathsuffixedImage(j).g
+        if (!StringMaster.isEmpty(suffix)) {
+            String path = StringMaster.cropFormat(images.getPath());
+            path += suffix + ".png";
+            return TextureCache.getOrCreateR(path);
+        }
+        return TextureCache.getOrCreateR(images.getPath());
+    }
+
+    private void bindEvents() {
+        GuiEventManager.bind(GuiEventType.UPDATE_WALL_MAP, p -> {
+            wallMap =new XLinkedMap<>(
+             (Map<Coordinates, List<DIRECTION>>) p.get());
+            updateRequired = true;
+        });
+        GuiEventManager.bind(GuiEventType.UPDATE_DIAGONAL_WALL_MAP, p -> {
+            diagonalJoints =new XLinkedMap<>(
+             (Map<Coordinates, List<DIRECTION>>) p.get());
+            updateRequired = true;
+        });
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        Set<Coordinates> set = new LinkedHashSet<>(wallMap.keySet());
-        set.forEach(coordinates -> {
+        batch.setColor(new Color(1, 1, 1, 1));
+        if (wallMap==null )
+            return ;
+        Set<Coordinates> set =  wallMap.keySet() ;
+        for (Coordinates coordinates : set) {
+            if (checkCoordinateIgnored(coordinates))
+                continue;
             List<DIRECTION> list = wallMap.get(coordinates);
             boolean hasVertical = false;
             boolean hasHorizontal = false;
@@ -97,13 +133,13 @@ public class WallMap extends Group {
 
             Vector2 v = GridMaster.getVectorForCoordinate(coordinates, false, false);
             v.set(v.x, v.y - 128);
-            boolean darken =false;// obj.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT;
-            String prefix = darken ? "dark" : "";
+            boolean darken = false;// obj.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT;
+            String suffix = darken ? "dark" : null ;
             if (list == null) {
                 diamond = true;
             } else {
                 for (DIRECTION side : list) {
-                    TextureRegion image = getRegion(getWallImageFromSide(side, prefix));
+                    TextureRegion image = getRegion(getWallImageFromSide(side, suffix), suffix);
 
                     if (side.isDiagonal()) {
                         if (list.size() == 1) {
@@ -137,8 +173,8 @@ public class WallMap extends Group {
                         }
                     }
 
-                    
-                    batch.draw(image, v.x,v.y);
+
+                    batch.draw(image, v.x, v.y);
                 }
             }
 
@@ -163,69 +199,107 @@ public class WallMap extends Group {
                                 if (x == side.isGrowX()) {
                                     break;
                                 }
-                                return;
+                                mesh = true;
+                                continue;
+                                //TODO
                             }
                         }
                         y = side.isGrowY();
                         x = side.isGrowX();
                     }
                 }
-                // return;
+
                 if (!mesh) {
-                   TextureRegion image = getRegion(STD_IMAGES.WALL_CORNER_ALMOND_H );
-                    if (vertical) {
-//                        image = STD_IMAGES.WALL_CORNER_ALMOND_V.getPath()
-                    }
+                    TextureRegion image = getRegion(
+                     vertical ? STD_IMAGES.WALL_CORNER_ALMOND_V :
+                      STD_IMAGES.WALL_CORNER_ALMOND_H, suffix);
                     batch.draw(image, v.x
-                     +(128-image.getRegionWidth())/2, v.y
-                     +(128-image.getRegionHeight())/2);
+                     + (128 - image.getRegionWidth()) / 2, v.y
+                     + (128 - image.getRegionHeight()) / 2);
                 }
             }
             if (drawCorner) {
-               TextureRegion image = getRegion(STD_IMAGES.WALL_CORNER,prefix);
+                TextureRegion image = getRegion(STD_IMAGES.WALL_CORNER, suffix);
                 if (diamond) {
-                    image =getRegion(STD_IMAGES.WALL_CORNER_DIAMOND, prefix);
+                    image = getRegion(STD_IMAGES.WALL_CORNER_DIAMOND, suffix);
                 } else if (mesh && hasDiagonal) {
-                    image = getRegion(STD_IMAGES.WALL_CORNER_MESH,prefix);
+                    image = getRegion(STD_IMAGES.WALL_CORNER_MESH, suffix);
                 } else if (round) {
-                    image = getRegion(STD_IMAGES.WALL_CORNER_ROUND,prefix);
+                    image = getRegion(STD_IMAGES.WALL_CORNER_ROUND, suffix);
                 }
                 //
                 batch.draw(image, v.x
-                  +(128-image.getRegionWidth())/2, v.y
-                  +(128-image.getRegionHeight())/2);
+                 + (128 - image.getRegionWidth()) / 2, v.y
+                 + (128 - image.getRegionHeight()) / 2);
 
             }
-        });
-//        diagonalJoints.keySet().forEach(coordinates -> {
-//            x=getX(coordinates);
-//            y=getY(coordinates);
-//            for (DIRECTION direction : diagonalJoints.get(coordinates)) {
-//                batch.draw(getDiagonalRegion(direction), x, y);
-//            }
-//        });
+        }
+        drawDiagonalJoints(batch, set);
         super.draw(batch, parentAlpha);
     }
 
+    private void drawDiagonalJoints(Batch batch, Set<Coordinates> set) {
+        if (diagonalJoints==null )
+            return ;
+        for (Coordinates c : set) {
+            List<Coordinates.DIRECTION> list = diagonalJoints.get(c);
+            if (!ListMaster.isNotEmpty(list))
+                continue;
+            if (checkCoordinateIgnored(c))
+                continue;
+            int h = GridConst.CELL_H;
+            int w = GridConst.CELL_W;
+            for (Coordinates.DIRECTION side : list) {
 
-    private TextureRegion getRegion(STD_IMAGES wallCornerDiamond, String... prefix) {
-        return TextureCache.getOrCreateR(wallCornerDiamond.getPath());
+                Vector2 v = GridMaster.getVectorForCoordinate(c, false, false);
+
+                float x1 = v.x;
+                float y1 = v.y;
+                boolean flipped = false;
+                if (side == Coordinates.DIRECTION.DOWN_LEFT) {
+                    y1 -= h;
+                } else if (side == Coordinates.DIRECTION.DOWN_RIGHT) {
+                    x1 += w;
+                    y1 -= h;
+                    flipped = true;
+                } else if (side == Coordinates.DIRECTION.UP_LEFT) {
+                    flipped = true;
+                } else if (side == Coordinates.DIRECTION.UP_RIGHT) {
+                    x1 += w;
+                }
+
+                String suffix = flipped ? " flipped" : null;
+                TextureRegion image = getRegion(STD_IMAGES.WALL_CORNER_ALMOND, suffix);
+//            if (flipped) {
+//            // TODO      image = ImageTransformer.flipHorizontally(ImageManager.getBufferedImage(image));
+//            }
+
+
+                batch.draw(image, x1 - image.getRegionWidth() / 2, y1 - image.getRegionHeight() / 2);
+            }
+        }
     }
 
-    private TextureRegion getCornerRegion(DIRECTION direction) {
 
-        return null;
-    }
-        private TextureRegion getDiagonalRegion(DIRECTION direction) {
-        return null;
+    private boolean checkCoordinateIgnored(Coordinates coordinates) {
+        Vector2 v = GridMaster.getVectorForCoordinate(coordinates, false, false);
+        v.set(v.x, v.y - 128);
+        float offsetX = v.x;
+        float offsetY = v.y;
+        if (!DungeonScreen.getInstance().getController().
+         isWithinCamera(getX() + offsetX, getY() + offsetY, 128, 128)) {
+            return true;
+        }
+        return false;
     }
 
-    private TextureRegion getRegion(DIRECTION directions) {
-        return TextureCache.getOrCreateR(getPath(directions));
-    }
+    public enum WALL_STYLE {
+        STONE,
+        BRICK,
+        WOOD_PLANKS,
+        IRON_BARS,
+        SKULLS,
 
-    private String getPath(DIRECTION directions) {
-        return StrPathBuilder.build("ui", "bf", "");
     }
 
 }

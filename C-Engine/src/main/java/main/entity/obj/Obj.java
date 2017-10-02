@@ -5,6 +5,7 @@ import main.ability.PassiveAbilityObj;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.AbilityConstructor;

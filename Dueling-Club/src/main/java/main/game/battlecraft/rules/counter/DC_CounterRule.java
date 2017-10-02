@@ -38,7 +38,8 @@ public abstract class DC_CounterRule {
     // BuffObj>();
     protected Unit unit;
     protected Map<Unit, AddBuffEffect> effectCache;
-    Map<BattleFieldObject, Effects> effectsCache = new HashMap<>();
+    protected  Map<BattleFieldObject, Effects> effectsCache = new HashMap<>();
+    protected COUNTER counter;
 
     public DC_CounterRule(DC_Game game) {
         this.game = game;
@@ -49,11 +50,9 @@ public abstract class DC_CounterRule {
     }
 
     public COUNTER getCounter() {
-        COUNTER c = new EnumMaster<COUNTER>().retrieveEnumConst(COUNTER.class, getCounterName());
-        if (c != null) {
-            return c;
-        }
-        return null;
+        if (counter == null )
+            counter = new EnumMaster<COUNTER>().retrieveEnumConst(COUNTER.class, getCounterName());
+        return counter;
     }
 
     public abstract int getCounterNumberReductionPerTurn(Unit unit);
@@ -235,7 +234,10 @@ public abstract class DC_CounterRule {
     }
 
     protected void removeEffects(Unit unit) {
-        Effect effects = getWrappedEffects(unit);
+        Effects effects = effectsCache.get(unit);
+        if (effects == null) {
+            return;
+        }
         effects.remove();
     }
 

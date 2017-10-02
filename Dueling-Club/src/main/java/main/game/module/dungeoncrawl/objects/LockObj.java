@@ -1,17 +1,24 @@
-package main.game.module.dungeoncrawl.special;
+package main.game.module.dungeoncrawl.objects;
 
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
-import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 
-public class LockObj extends Unit {
+public class LockObj extends DungeonObj {
 
 
     public LockObj(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
+    }
+    @Override
+    public DUNGEON_OBJ_TYPE getDungeonObjType() {
+        return DUNGEON_OBJ_TYPE.LOCK;
+    }
+    @Override
+    public LockMaster getDM() {
+        return (LockMaster) super.getDM();
     }
 
     public void unlock() {

@@ -34,6 +34,7 @@ public class ItemEnums {
 
     public enum ITEM_GROUP {
         POTIONS, CONCOCTIONS, COATING
+        , KEY
         // THROWING, TRAP, GEMSTONE
 
     }
@@ -68,7 +69,7 @@ public class ItemEnums {
     }
 
     public enum ITEM_TYPE {
-        ALCHEMY, MAGICAL, THROWING
+        ALCHEMY, MAGICAL, THROWING, SPECIAL_ITEM,
 
     }
 

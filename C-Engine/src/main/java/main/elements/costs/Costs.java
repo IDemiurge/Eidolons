@@ -234,7 +234,7 @@ public class Costs extends CostImpl {
     public String getReason() {
         if (reason == null) {
             if (reasons != null) {
-                if (reasons.size() > 1) {
+                if (reasons.size() > 0) {
                     return reasons.get(0);
                 }
             }
@@ -244,7 +244,7 @@ public class Costs extends CostImpl {
 
     public String getReasonsString() {
         if (getReasonList().size()<2)
-            return reason;
+            return getReason();
         return StringMaster.joinStringList(getReasonList(), ", ");
     }
 

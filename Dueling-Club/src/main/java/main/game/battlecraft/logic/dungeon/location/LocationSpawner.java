@@ -51,7 +51,7 @@ public class LocationSpawner extends Spawner<Location> {
             if (FileManager.isFile(units))
                 return spawnUnitGroup(player.isMe(), units);
         }
-       if (player.isMe() && PresetMaster.getPreset() == null) {
+       if (player.isMe() && PresetMaster.getPreset() == null && getGame().getMetaMaster()!=null ) {
             List<String> list = ListMaster.toNameList(
              getGame().getMetaMaster().getPartyManager()
               .getParty().getMembers());

@@ -79,7 +79,7 @@ public class GenericEnums {
     }
 
     public enum BUFF_TYPE {
-        RULES, SPELL, PASSIVE, STANDARD,
+        RULES, SPELL, PASSIVE, STANDARD, OTHER,
         // buff-debuff into SPELL by default...
     }
 

@@ -122,7 +122,7 @@ public class Ref implements Cloneable, Serializable {
             removeValue(name);
         }
         if (objCache != null)
-        objCache.remove(name.name());
+            objCache.remove(name.name());
     }
 
     public void removeValue(KEYS name) {
@@ -144,8 +144,8 @@ public class Ref implements Cloneable, Serializable {
     public Obj getObj(String string) {
         if (objCache != null) {
             Obj obj = objCache.get(string.toLowerCase());
-            if (obj==null )
-                obj =   game.getObjectById(getId(string));
+            if (obj == null)
+                obj = game.getObjectById(getId(string));
             objCache.put(string.toLowerCase(), obj);
             return obj;
         }
@@ -262,7 +262,11 @@ public class Ref implements Cloneable, Serializable {
         if (s.startsWith("{")) {
             s = StringMaster.replaceFirst(s, "{", "");
         }
-        if (StringMaster.compareByChar(StringMaster.getSegment(0, s, "_"), "EVENT", true)) {
+        String prefix_ =  s.split("_")[0];
+        if (prefix_.isEmpty() || prefix_.equals(s))
+            return null;
+        prefix_ = prefix_.toUpperCase();
+        if (prefix_.equals("EVENT")) {
             // setStr(getStr().replace(EVENT_PREFIX, "")); [OPTIMIZED]
             setStr(StringMaster.cropFirstSegment(getStr(), "_").replace("}", ""));
             return getEvent().getRef();
@@ -273,16 +277,12 @@ public class Ref implements Cloneable, Serializable {
         // setStr(getStr().replace(MATCH_PREFIX, ""));
         // return game.getObjectById(getMatch()).getRef();
         // }
+
         for (KEYS key : REPLACING_KEYS) {
-            String prefix = key.name() + StringMaster.FORMULA_REF_SEPARATOR;
-            if (getStr().contains(prefix)) {
-                setStr(getStr().replace(prefix, ""));
-                try {
-                    return game.getObjectById(Integer.valueOf(getValue(key.name()))).getRef();
-                } catch (Exception e) {
-                    LogMaster.log(1, prefix + " + " + getStr());
-                    e.printStackTrace();
-                }
+//            String prefix = key.name() + StringMaster.FORMULA_REF_SEPARATOR;
+            if (prefix_.equals(key.name())) {
+                setStr(getStr().replace(key.name() + StringMaster.FORMULA_REF_SEPARATOR, ""));
+                return game.getObjectById(Integer.valueOf(getValue(key.name()))).getRef();
             }
         }
         return null;

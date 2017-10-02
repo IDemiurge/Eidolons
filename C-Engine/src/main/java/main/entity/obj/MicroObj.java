@@ -60,9 +60,10 @@ public class MicroObj extends Obj {
     public Coordinates getCoordinates() {
         if (coordinates == null) {
             coordinates = new Coordinates(getX(), getY());
+        } else {
+//            coordinates.setX(getX());
+//            coordinates.setY(getY());
         }
-        coordinates.setX(getX());
-        coordinates.setY(getY());
         // coordinates.setZ(getZ()); better use separately
         return coordinates;
     }
@@ -81,6 +82,7 @@ public class MicroObj extends Obj {
     public void setY(int y) {
         this.y = y;
         setParam(G_PARAMS.POS_Y, y, true);
+        getCoordinates().setY(y);
 
     }
 
@@ -91,12 +93,24 @@ public class MicroObj extends Obj {
     public void setX(int x) {
         this.x = x;
         setParam(G_PARAMS.POS_X, x, true);
+        getCoordinates().setX(x);
+    }
+
+    @Override
+    public void toBase() {
+        super.toBase();
+        int x = getIntParam(G_PARAMS.POS_X);
+        if (this.x!=x)
+            setX(x);
+        int y = getIntParam(G_PARAMS.POS_Y);
+        if (this.y!=y)
+            setY(y);
     }
 
     public boolean isOverlaying() {
         if (overlaying == null) {
             overlaying = checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.OVERLAYING)
-                    || checkProperty(G_PROPS.CLASSIFICATIONS, "" + UnitEnums.CLASSIFICATIONS.ATTACHED);
+             || checkProperty(G_PROPS.CLASSIFICATIONS, "" + UnitEnums.CLASSIFICATIONS.ATTACHED);
         }
         return overlaying;
     }

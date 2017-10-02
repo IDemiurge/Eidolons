@@ -16,7 +16,7 @@ import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.module.dungeoncrawl.special.Trap;
+import main.game.module.dungeoncrawl.objects.Trap;
 import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.TypeInitializer;

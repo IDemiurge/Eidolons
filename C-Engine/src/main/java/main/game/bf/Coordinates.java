@@ -5,8 +5,10 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.math.PositionMaster;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Coordinates {
 
@@ -15,6 +17,10 @@ public class Coordinates {
     private static boolean flipX;
     private static boolean flipY;
     private static boolean rotate;
+    private static Map<Coordinates, Map<DIRECTION, Coordinates>> adjacenctDirectionMap = new HashMap<>();
+    private static Map<Coordinates, List<Coordinates>> adjacenctMap = new HashMap<>();
+    private static Map<Coordinates, List<Coordinates>> adjacenctMapNoDiags = new HashMap<>();
+    private static Map<Coordinates, List<Coordinates>> adjacenctMapDiagsOnly = new HashMap<>();
     public int x;
     public int y;
     protected int z = 0;
@@ -73,7 +79,25 @@ public class Coordinates {
 
     public Coordinates(boolean custom, String s) {
         this(custom, StringMaster.getInteger(splitCoordinateString(s)[0].trim()), StringMaster
-                .getInteger(splitCoordinateString(s)[1].trim()));
+         .getInteger(splitCoordinateString(s)[1].trim()));
+    }
+
+    public static void clearCaches() {
+        adjacenctDirectionMap.clear();
+        adjacenctMap.clear();
+        adjacenctMapNoDiags.clear();
+        adjacenctMapDiagsOnly.clear();
+
+    }
+
+    public static Map<Coordinates, Map<DIRECTION, Coordinates>> getAdjacenctDirectionMap() {
+        return adjacenctDirectionMap;
+    }
+
+    public static Map<Coordinates, List<Coordinates>> getAdjacenctMap(Boolean diags) {
+        if (diags != null)
+            return diags ? adjacenctMap : adjacenctMapNoDiags;
+        return adjacenctMapDiagsOnly;
     }
 
     public static boolean withinBounds(int x, int y) {
@@ -151,8 +175,8 @@ public class Coordinates {
     @Override
     public String toString() {
         return x + StringMaster.getCoordinatesSeparator() + y
-                // + (z != 0 ? "; sublevel (Z): " + z : "")
-                ;
+         // + (z != 0 ? "; sublevel (Z): " + z : "")
+         ;
     }
 
     public Coordinates invert() {
@@ -184,7 +208,17 @@ public class Coordinates {
     }
 
     public Coordinates getAdjacentCoordinate(boolean allowInvalid, DIRECTION direction) {
-
+        Map<DIRECTION, Coordinates> map = getAdjacenctDirectionMap().get(this);
+        Coordinates c = null;
+        if (map == null) {
+            map = new HashMap<>();
+            getAdjacenctDirectionMap().put(this, map);
+        } else {
+            c = map.get(direction);
+            if (c != null) {
+                return c;
+            }
+        }
         int x1 = x;
         int y1 = y;
         switch (direction) {
@@ -225,7 +259,9 @@ public class Coordinates {
                 return null;
             }
         }
-        return new Coordinates(allowInvalid, x1, y1);
+        c = new Coordinates(allowInvalid, x1, y1);
+        map.put(direction, c);
+        return c;
     }
 
     // public boolean isAdjacent(Coordinates coordinates,
@@ -291,7 +327,9 @@ public class Coordinates {
     }
 
     public List<Coordinates> getAdjacentCoordinates(Boolean diagonals_included_not_only) {
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = getAdjacenctMap(diagonals_included_not_only).get(this);
+        if (list != null) return list;
+        list = new LinkedList<>();
 
         if (diagonals_included_not_only != null) {
             if (diagonals_included_not_only) {
@@ -301,7 +339,7 @@ public class Coordinates {
         } else {
             list.addAll(getAdjacentDiagonal());
         }
-
+        getAdjacenctMap(diagonals_included_not_only).put(this, list);
         return list;
 
     }
@@ -388,80 +426,6 @@ public class Coordinates {
 
     public int getXorY(boolean xOrY) {
         return xOrY ? x : y;
-    }
-
-    public enum FACING_DIRECTION {
-        NORTH(DIRECTION.UP, true, true),
-        WEST(DIRECTION.LEFT, false, true),
-        EAST(DIRECTION.RIGHT, false, false),
-        SOUTH(DIRECTION.DOWN, true, false),
-        NONE(null, false, false);
-
-        private DIRECTION direction;
-        private boolean vertical;
-        private boolean closerToZero;
-
-        FACING_DIRECTION(DIRECTION direction, boolean vertical, boolean closerToZero) {
-            this.setDirection(direction);
-            this.vertical = (vertical);
-            this.closerToZero = (closerToZero);
-        }
-
-        public DIRECTION getDirection() {
-            return direction;
-        }
-
-        public void setDirection(DIRECTION direction) {
-            this.direction = direction;
-        }
-
-        public String getName() {
-            return StringMaster.getWellFormattedString(name());
-        }
-
-        public boolean isVertical() {
-            return vertical;
-        }
-
-
-        public boolean isCloserToZero() {
-            return closerToZero;
-        }
-
-        public boolean isMirrored() {
-            return !closerToZero;
-        }
-
-
-        // public FACING_DIRECTION rotate180() {
-        // return
-        // FacingMaster.getFacingFromDirection(DirectionMaster.rotate180(getDirection()));
-        // }
-        //
-        // public DIRECTION flip() {
-        // return DirectionMaster.flip(this);
-        // }
-    }
-
-    public enum UNIT_DIRECTION {
-        AHEAD(0),
-        AHEAD_LEFT(45),
-        AHEAD_RIGHT(-45),
-        LEFT(90),
-        RIGHT(-90),
-        BACKWARDS(180),
-        BACKWARDS_LEFT(135),
-        BACKWARDS_RIGHT(-135),;
-
-        private int degrees;
-
-        UNIT_DIRECTION(int degrees) {
-            this.degrees = degrees;
-        }
-
-        public int getDegrees() {
-            return degrees;
-        }
     }
 
     public enum DIRECTION {
@@ -601,6 +565,80 @@ public class Coordinates {
             return DirectionMaster.flip(this);
         }
 
+    }
+
+    public enum FACING_DIRECTION {
+        NORTH(DIRECTION.UP, true, true),
+        WEST(DIRECTION.LEFT, false, true),
+        EAST(DIRECTION.RIGHT, false, false),
+        SOUTH(DIRECTION.DOWN, true, false),
+        NONE(null, false, false);
+
+        private DIRECTION direction;
+        private boolean vertical;
+        private boolean closerToZero;
+
+        FACING_DIRECTION(DIRECTION direction, boolean vertical, boolean closerToZero) {
+            this.setDirection(direction);
+            this.vertical = (vertical);
+            this.closerToZero = (closerToZero);
+        }
+
+        public DIRECTION getDirection() {
+            return direction;
+        }
+
+        public void setDirection(DIRECTION direction) {
+            this.direction = direction;
+        }
+
+        public String getName() {
+            return StringMaster.getWellFormattedString(name());
+        }
+
+        public boolean isVertical() {
+            return vertical;
+        }
+
+
+        public boolean isCloserToZero() {
+            return closerToZero;
+        }
+
+        public boolean isMirrored() {
+            return !closerToZero;
+        }
+
+
+        // public FACING_DIRECTION rotate180() {
+        // return
+        // FacingMaster.getFacingFromDirection(DirectionMaster.rotate180(getDirection()));
+        // }
+        //
+        // public DIRECTION flip() {
+        // return DirectionMaster.flip(this);
+        // }
+    }
+
+    public enum UNIT_DIRECTION {
+        AHEAD(0),
+        AHEAD_LEFT(45),
+        AHEAD_RIGHT(-45),
+        LEFT(90),
+        RIGHT(-90),
+        BACKWARDS(180),
+        BACKWARDS_LEFT(135),
+        BACKWARDS_RIGHT(-135),;
+
+        private int degrees;
+
+        UNIT_DIRECTION(int degrees) {
+            this.degrees = degrees;
+        }
+
+        public int getDegrees() {
+            return degrees;
+        }
     }
 
 }

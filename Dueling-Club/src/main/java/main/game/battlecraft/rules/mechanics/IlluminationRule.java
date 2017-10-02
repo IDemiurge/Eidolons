@@ -23,14 +23,15 @@ public class IlluminationRule {
     static Map<Obj, LightEmittingEffect> effectCache = new HashMap<>();
 
     public static void resetIllumination(DC_Game game) {
-        game.getCells() . forEach(cell->{
+        game.getCells().forEach(cell -> {
             cell.setParam(PARAMS.ILLUMINATION, 0);
         });
-        game.getBfObjects() . forEach(unit->{
+        game.getBfObjects().forEach(unit -> {
             unit.setParam(PARAMS.ILLUMINATION, 0);
         });
     }
-        public static void initLightEmission(DC_Game game) {
+
+    public static void initLightEmission(DC_Game game) {
         List<Effect> effects = new LinkedList<>();
         for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
             LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
@@ -57,26 +58,28 @@ public class IlluminationRule {
         // Twilight Rule!
 
         LightEmittingEffect effect = effectCache.get(source);
-         if (effect == null) {
-             int value = getLightEmission(source);
-             if (value <= 0) {
-                 return null;
-             }
-        Boolean circular = true;
-        if (source.checkBool(GenericEnums.STD_BOOLS.SPECTRUM_LIGHT)) {
-            circular = false;
-        } else if (EntityCheckMaster.isOverlaying(source)) {
-            BattleFieldObject dc_Obj = (BattleFieldObject) source;
-            if (dc_Obj.getDirection() != null) {
-                circular = false;
+        if (effect == null) {
+            int value = getLightEmission(source);
+            if (value <= 0) {
+                return null;
             }
-        }
-        effect = new LightEmittingEffect(("" + value), circular);
-        effect.setRef(new Ref(source));
-        effectCache.put(source, effect);
-         } else
-             effect.getEffect().getEffects().setFormula(new Formula("" +
-              getLightEmission(source)));
+            Boolean circular = true;
+            if (source instanceof Unit)
+                circular = false;
+            else if (source.checkBool(GenericEnums.STD_BOOLS.SPECTRUM_LIGHT)) {
+                circular = false;
+            } else if (EntityCheckMaster.isOverlaying(source)) {
+                BattleFieldObject dc_Obj = (BattleFieldObject) source;
+                if (dc_Obj.getDirection() != null) {
+                    circular = false;
+                }
+            }
+            effect = new LightEmittingEffect(("" + value), circular);
+            effect.setRef(new Ref(source));
+            effectCache.put(source, effect);
+        } else
+            effect.getEffect().getEffects().setFormula(new Formula("" +
+             getLightEmission(source)));
         return effect;
 
     }
@@ -91,9 +94,10 @@ public class IlluminationRule {
 //          getIlluminationMaster().getIllumination(source);
          source.getIntParam(PARAMS.LIGHT_EMISSION);
         if (source instanceof Unit) {
-            if (source.getGame().getVisionMaster().
-             getIlluminationMaster().getIllumination(source) < 50)
-                value += ((Unit) source).isHero() ? 20 : 10;
+            if (((Unit) source).isHero())
+                if (source.getGame().getVisionMaster().
+                 getIlluminationMaster().getIllumination(source) < 50)
+                    value += 25;
         }
         Integer mod = source.getGame().getVisionMaster().getIlluminationMaster().
          getLightEmissionModifier();

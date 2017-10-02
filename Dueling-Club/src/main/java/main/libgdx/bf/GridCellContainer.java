@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.game.bf.Coordinates;
 import main.libgdx.bf.datasource.GridCellDataSource;
 import main.libgdx.screens.DungeonScreen;
-import main.system.graphics.MigMaster;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 
@@ -166,81 +165,12 @@ public class GridCellContainer extends GridCell {
     }
 
     public void popupUnitView(BaseView uv) {
-        uv.setZIndex(getChildren().size - overlayCount);
+        uv.setZIndex(getChildren().size  );
         recalcImagesPos();
         graveyard.setZIndex(Integer.MAX_VALUE);
     }
 
-    public void setOverlays(List<OverlayView> overlays) {
-        if (overlays.size() == 0) {
-            return;
-        }
 
-        final int width = (int) (getWidth()* OverlayView.SCALE);
-        final int height = (int) (getHeight()* OverlayView.SCALE);
-        overlays.forEach(view -> {
-            Coordinates.DIRECTION direction = view.getDirection();
-            int calcXOffset = 0;
-            int calcYOffset = 0;
-            if (direction == null) {
-                calcXOffset+= (getWidth()-width)* OverlayView.SCALE;
-                calcYOffset+= (getHeight()-height)* OverlayView.SCALE;
-            } else {
-                int size = width;
-                int x = MigMaster.getCenteredPosition((int) getWidth(), size);
-                if (direction != null) {
-                    if (direction.isGrowX() == null) {
-                        x = MigMaster.getCenteredPosition((int)getWidth(), size);
-                    } else {
-                        x = (direction.isGrowX()) ? (int)getWidth() - size : 0;
-                    }
-                }
-
-                int y = MigMaster.getCenteredPosition((int)getHeight(), size);
-                if (direction != null) {
-                    if (direction.isGrowY() == null) {
-                        y = MigMaster.getCenteredPosition((int)getHeight(), size);
-                    } else {
-                        y = (direction.isGrowY()) ? (int)getHeight() - size : 0;
-                    }
-                }
-                calcXOffset = x;
-                  calcYOffset = y;
-//                switch (direction) {
-//                    case UP:
-//                        calcXOffset += (getWidth()-width)* OverlayView.SCALE;
-//                        calcYOffset += height * 2;
-//                        break;
-//                    case DOWN:
-//                        calcXOffset += (getWidth()-width)* OverlayView.SCALE;
-//                        break;
-//                    case LEFT:
-//                        calcYOffset += height;
-//                        break;
-//                    case RIGHT:
-//                        calcXOffset += width * 2;
-//                        calcYOffset += height;
-//                        break;
-//                    case UP_LEFT:
-//                        calcYOffset += height * 2;
-//                        break;
-//                    case UP_RIGHT:
-//                        calcXOffset += width * 2;
-//                        calcYOffset += height * 2;
-//                        break;
-//                    case DOWN_RIGHT:
-//                        calcXOffset += width * 2;
-//                        break;
-//                    case DOWN_LEFT:
-//                        break;
-//                }
-            }
-
-            view.setBounds(calcXOffset, calcYOffset, width, height);
-            addActor(view);
-            overlayCount++;
-        });
-    }
 
     public void updateGraveyard() {
         graveyard.updateGraveyard();

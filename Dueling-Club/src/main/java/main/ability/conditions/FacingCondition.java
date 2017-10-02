@@ -9,10 +9,12 @@ import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroSlotItem;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.BfObj;
-import main.entity.obj.Obj;
+import main.entity.obj.DC_Obj;
 import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.DC_UnitModel;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
 
 import java.util.Arrays;
@@ -37,22 +39,32 @@ public class FacingCondition extends ConditionImpl {
             return false;
         }
         BattleFieldObject obj1 = (BattleFieldObject) ref.getSourceObj();
-        Obj obj2;
+        DC_Obj obj2;
 
         if (!(ref.getObj(KEYS.MATCH) instanceof BfObj)) {
             if (!(ref.getObj(KEYS.MATCH) instanceof DC_HeroSlotItem)) {
                 return false;
             }
-            obj2 = (Obj) ((DC_HeroAttachedObj) ref.getObj(KEYS.MATCH)).getOwnerObj();
+            obj2 =   ((DC_HeroAttachedObj) ref.getObj(KEYS.MATCH)).getOwnerObj();
 
         } else {
-            obj2 = (Obj) ref.getObj(KEYS.MATCH);
+            obj2 = (DC_Obj) ref.getObj(KEYS.MATCH);
         }
 
         boolean result = false;
 
         if (getTemplate() != null) {
-            FACING_SINGLE facing = FacingMaster.getSingleFacing(obj1, (BfObj) obj2);
+            Coordinates c = obj2.getCoordinates();
+            if (obj2.isOverlaying())  if (obj2 instanceof BattleFieldObject)
+            {
+                DIRECTION d = ((BattleFieldObject) obj2).getDirection();
+                if (d != null) {
+                    c = c.getAdjacentCoordinate(d.rotate180(),2);
+                }
+
+            }
+            FACING_SINGLE facing = FacingMaster.getSingleFacing(obj1.getFacing(),
+             obj1.getCoordinates (), c);
             result = Arrays.asList(templates).contains(facing);
             if (facing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
                 if (result) {

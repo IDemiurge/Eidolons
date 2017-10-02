@@ -3,6 +3,7 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -33,7 +34,6 @@ import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.bf.mouse.BattleClickListener;
 import main.libgdx.bf.overlays.WallMap;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
-import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureCache;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallback;
@@ -43,6 +43,7 @@ import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.graphics.MigMaster;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
@@ -86,6 +87,8 @@ public class GridPanel extends Group {
     private boolean fpsDebug = false;
     private TextureRegion cornerRegion;
     private WallMap wallMap;
+    private List<OverlayView> overlays = new LinkedList<>();
+    private GridUnitView hoverObj;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -135,7 +138,7 @@ public class GridPanel extends Group {
             addActor(image);
             image.setPosition(posX + i * GridConst.CELL_W + (20 - 20 * i)//+40
              , posY
-              //+ i * 35
+             //+ i * 35
             );
         }
         if (vert != null) {
@@ -148,7 +151,7 @@ public class GridPanel extends Group {
             addActor(image);
             image.setPosition(posX //+ i * 35
              , posY
-             + i * GridConst.CELL_H + (20 - 20 * i));//+40
+              + i * GridConst.CELL_H + (20 - 20 * i));//+40
         }
 
         if (hor != null)
@@ -257,7 +260,6 @@ public class GridPanel extends Group {
         GuiEventManager.bind(UNIT_STARTS_MOVING, obj -> {
             detachUnitView((BattleFieldObject) obj.get());
         });
-
 
 
         GuiEventManager.bind(UNIT_MOVED, obj -> {
@@ -493,18 +495,20 @@ public class GridPanel extends Group {
                 } else {
                     final OverlayView overlay = UnitViewFactory.createOverlay(object);
                     unitMap.put(object, overlay);
-                    overlays.add(overlay);
+                    Vector2 v = GridMaster.getVectorForCoordinate(
+                     object.getCoordinates(), false, false, this);
+                    overlay.setPosition(v.x,v.y-GridConst.CELL_H);
+                    addOverlay(overlay);
                 }
             }
 
             final GridCellContainer gridCellContainer = cells[coordinates.getX()][rows - 1 - coordinates.getY()];
             views.forEach(gridCellContainer::addActor);
-            gridCellContainer.setOverlays(overlays);
         }
 
         shadowMap = new ShadowMap(this);
         wallMap = new WallMap();
-            addActor(wallMap);
+        addActor(wallMap);
 
         GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
             Unit unit = (Unit) obj.get();
@@ -610,14 +614,29 @@ public class GridPanel extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
+        if (checkResetZRequired()) {
+            resetZIndices();
+        }
+
+    }
+
+    private boolean checkResetZRequired() {
+        if (hoverObj == null) return true;
+        return !hoverObj.isHovered();
+    }
+
+    private void resetZIndices() {
+        wallMap.setVisible(WallMap.isOn());
+        wallMap.setZIndex(Integer.MAX_VALUE);
+        overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
         if (ShadowMap.isOn())
             for (int x = 0; x < cols; x++) {
                 for (int y = 0; y < rows; y++) {
-                    if (!DungeonScreen.getInstance().getController().isCellWithinCamera(x, y)) {
-                        continue;
-                    }
-                    for (SHADE_LIGHT sub : SHADE_LIGHT.values()) {
-                        sub.getCells()[x][y].setZIndex(Integer.MAX_VALUE - 1);
+                    for (SHADE_LIGHT sub : ShadowMap.SHADE_LIGHT_VALUES) {
+                        if (sub.getCells()[x][y].isIgnored()) { //!DungeonScreen.getInstance().getController().isCellWithinCamera(x, y)) {
+                            break;
+                        }
+                        sub.getCells()[x][y].setZIndex(Integer.MAX_VALUE);
                     }
                 }
             }
@@ -630,18 +649,53 @@ public class GridPanel extends Group {
 
                 for (GridUnitView sub : views) {
                     if (sub.isHovered()) {
-                        cell.setZIndex(Integer.MAX_VALUE - 1);
-                        break loop;
+                        hoverObj = sub;
+                        cell.setZIndex(Integer.MAX_VALUE);
+                        break;
                     }
 //                    else
 //                        cell.setZIndex(100+x*rows+y);
                 }
             }
         }
-//        shadowMap.setZIndex(Integer.MAX_VALUE - 2);
-        animMaster.setZIndex(Integer.MAX_VALUE - 1);
+
+        animMaster.setZIndex(Integer.MAX_VALUE);
         if (fpsLabel != null)
-            fpsLabel.setZIndex(Integer.MAX_VALUE - 1);
+            fpsLabel.setZIndex(Integer.MAX_VALUE);
+    }
+
+    public void addOverlay(OverlayView view) {
+        float w = GridConst.CELL_W;
+        float h = GridConst.CELL_H;
+        final int width = (int) (w * OverlayView.SCALE);
+        final int height = (int) (h * OverlayView.SCALE);
+        Coordinates.DIRECTION direction = view.getDirection();
+        float calcXOffset = view.getX();
+        float calcYOffset = view.getY();
+        if (direction == null) {
+            calcXOffset += (w - width) * OverlayView.SCALE;
+            calcYOffset += (h - height) * OverlayView.SCALE;
+        } else {
+            int size = width;
+            int x = MigMaster.getCenteredPosition((int) w, size);
+            if (direction != null) {
+                if (direction.isGrowX() != null)
+                    x = (direction.isGrowX()) ? (int) w - size : 0;
+            }
+
+            int y = MigMaster.getCenteredPosition((int) h, size);
+            if (direction != null) {
+                if (direction.isGrowY() != null)
+                    y = (!direction.isGrowY()) ? (int) h - size : 0;
+
+            }
+            calcXOffset += x;
+            calcYOffset += y;
+        }
+
+        view.setBounds(calcXOffset, calcYOffset, width, height);
+        addActor(view);
+        overlays.add(view);
     }
 
     public Map<BattleFieldObject, BaseView> getUnitMap() {

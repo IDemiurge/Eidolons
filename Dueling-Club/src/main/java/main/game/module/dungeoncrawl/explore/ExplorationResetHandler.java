@@ -23,6 +23,7 @@ public class ExplorationResetHandler extends ExplorationHandler {
     }
 
     public void resetAll() {
+       master.getGame(). getMaster(). clearCaches();
         if (!resetNeeded)
             return;
 //        master.getGame().getStateManager().checkTriggers();

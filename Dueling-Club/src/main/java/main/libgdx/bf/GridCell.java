@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.entity.active.DefaultActionHandler;
+import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import main.game.bf.Coordinates;
@@ -75,14 +76,14 @@ public class GridCell extends Group implements Borderable {
                 if (button == Input.Buttons.LEFT) {
                     event.handle();
 
-                    if (isAlt() ||isShift() ||isControl()
+                    if (isAlt() || isShift() || isControl()
                         //|| ExplorationMaster.isExplorationOn()
                      )
                         try {
                             if (DefaultActionHandler.
                              leftClickCell(isShift(), isControl(), getGridX(), getGridY()))
                                 return;
-                             } catch (Exception e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, GridCell.this);
@@ -129,9 +130,15 @@ public class GridCell extends Group implements Borderable {
                 cordsText.setVisible(true);
             }
             if (GammaMaster.DEBUG_MODE) {
+                DC_Cell cell = DC_Game.game.getCellByCoordinate(new Coordinates(gridX, gridY));
                 cordsText.setText(getGridX() + ":" + getGridY() + ", gamma="
                   + DC_Game.game.getVisionMaster().getGammaMaster().
-                  getGammaForCell(getGridX(), getGridY())
+                  getGammaForCell(getGridX(), getGridY()
+                  ) + "\n" + cell.getVisibilityLevel()
+                   +cell.getOutlineType()==null ? "" : ("\n" + cell.getOutlineType())
+                  + cell.getActivePlayerVisionStatus()==null ? "" :("\n" + cell.getActivePlayerVisionStatus())
+
+
 //                 +"\n gamma="
 //                 + DC_Game.game.getVisionMaster().getGammaMaster().
 //                 getGammaForCell(getGridX(), getGridY())+"\n Illumination="
@@ -151,15 +158,6 @@ public class GridCell extends Group implements Borderable {
                 cordsText.setVisible(false);
             }
         }
-//        if (DC_Game.game!=null )
-//            if (DC_Game.game.isStarted())
-//        if (!VisionManager.isVisionHacked()){
-//            gamma = DC_Game.game.getVisionMaster().getGammaMaster().getGammaForCell(getGridX(), getGridX());
-//        if (gamma !=0)
-//            setColor(gamma, gamma, gamma, 1);
-//        else
-//            setColor(0.1f, 0.1f, 0.1f, 1);
-//        }
     }
 
 

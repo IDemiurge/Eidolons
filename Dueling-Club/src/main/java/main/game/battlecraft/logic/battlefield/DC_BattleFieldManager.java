@@ -133,6 +133,8 @@ public class DC_BattleFieldManager extends BattleFieldManager {
                 }
             }
             if (!list.isEmpty()) {
+                if (coordinate==null )
+                    continue;
                 wallMap.put(coordinate, list);
             }
         }
@@ -143,7 +145,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
                 if (s.isDiagonal()) {
                     // for (Coordinates c :
                     // o.getCoordinates().getAdjacentCoordinates(null)) {
-                    // if (wallObjects.getOrCreate(c) != null) {
+                    // if (wallObjects.get(c) != null) {
                     // if (containsAdjacentDiagonal in X direction
                     // }
                     // }
@@ -152,21 +154,21 @@ public class DC_BattleFieldManager extends BattleFieldManager {
                         list = new LinkedList<>();
                     }
                     diagonalJoints.put(c, list);
-                    // if (list.size() == 1) {
-                    // DIRECTION d = list.getOrCreate(0);
-                    // if (s.isGrowX())
-                    // if (!d.isGrowX())
-                    // continue;
-                    // else if (d.isGrowX())
-                    // continue;
-                    // if (s.isGrowY())
-                    // if (!d.isGrowY())
-                    // continue;
-                    // else if (d.isGrowY())
-                    // continue;
-                    // }
+                     if (list.size() == 1) {
+                     DIRECTION d = list.get(0);
+                     if (s.isGrowX())
+                     if (!d.isGrowX())
+                     continue;
+                     else if (d.isGrowX())
+                     continue;
+                     if (s.isGrowY())
+                     if (!d.isGrowY())
+                     continue;
+                     else if (d.isGrowY())
+                     continue;
+                     }
                     list.add(s);
-                    // continue loop;
+                     continue loop;
                 }
             }
         }

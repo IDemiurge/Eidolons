@@ -355,7 +355,7 @@ public class FloatingTextMaster {
         };
         public boolean atOrigin;
         private Producer<Event, Object[]> argProducer;
-
+        String name = StringMaster.getWellFormattedString(name());
 
         TEXT_CASES() {
 
@@ -367,7 +367,7 @@ public class FloatingTextMaster {
         }
 
         public String getText() {
-            return StringMaster.getWellFormattedString(name());
+            return name;
         }
 
         public Object[] getArgs(Event e) {

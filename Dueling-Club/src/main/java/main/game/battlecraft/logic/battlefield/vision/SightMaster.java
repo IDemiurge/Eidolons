@@ -10,6 +10,7 @@ import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISION_MODE;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -139,7 +140,7 @@ public class SightMaster {
         // return;
         Collection<Coordinates> removeList = new LinkedList<>();
         for (Coordinates c : list) {
-            List<Unit> objs = source.getGame().getObjectsOnCoordinate(c);
+            List<BattleFieldObject> objs = source.getGame().getMaster(). getObjectsOnCoordinate(c, false);
             if (objs.isEmpty()) continue;
             Obj obj  = (Obj) FuncMaster.getGreatestEntity(objs, unit -> unit.getIntParam(PARAMS.HEIGHT));
 //            = source.getGame().getObjectByCoordinate(c); //getBattleField().getGrid().getObjOrCell(c);

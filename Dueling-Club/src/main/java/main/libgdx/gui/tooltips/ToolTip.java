@@ -47,6 +47,7 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
 
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 //        updateRequired = true;
+        showing=true;
         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, this);
     }
 

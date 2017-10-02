@@ -20,13 +20,13 @@ public class ActorMaster {
 
     public static void addAfter(Actor actor, Action action) {
         AfterAction aa = (AfterAction) getAction(AfterAction.class);
-        action.setTarget(actor);
         aa.setAction(action);
         actor.addAction(aa);
+        action.setTarget(actor);
         aa.setTarget(actor);
     }
 
-    private static Action getAction(Class<? extends Action> aClass) {
+    public static Action getAction(Class<? extends Action> aClass) {
         ActionPool pool = poolMap.get(aClass);
         if (pool == null) {
             pool = new ActionPool(aClass);

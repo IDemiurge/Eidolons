@@ -28,9 +28,14 @@ public class GridMaster {
     public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,
                                                  boolean center,
                                                  boolean camera) {
+        return getVectorForCoordinate(sourceCoordinates, center, camera,DungeonScreen.getInstance().getGridPanel());
+    }
+        public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,
+        boolean center,
+        boolean camera, GridPanel gridPanel) {
 //        InputController controller = DungeonScreen.getInstance().getController();
         float x = sourceCoordinates.getX() * GridConst.CELL_W  ;
-        float y = (DungeonScreen.getInstance().getGridPanel().getRows()
+        float y = (gridPanel.getRows()
          - sourceCoordinates.getY()) * GridConst.CELL_H  ;
         if (camera) {
 //            x -= controller.getXCamPos();
@@ -63,5 +68,9 @@ public class GridMaster {
         float xDiff = (float) (ratio * v.x) - v.x;
         float yDiff = (float) (ratio * v.y) - v.y;
         v.add(xDiff, yDiff);
+    }
+
+    public static Vector2 getVectorForCoordinate(Coordinates coordinates) {
+        return getVectorForCoordinate(coordinates, false, false);
     }
 }

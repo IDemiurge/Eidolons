@@ -199,7 +199,7 @@ public class PatrolMaster {
                     .getCoordinates(), prefLessMoreMiddle);
         } else {
             if (distance == null) {
-                distance = WanderMaster.getMaxWanderTotalDistance(patrol.getGroup(),
+                distance = WanderAi.getMaxWanderTotalDistance(patrol.getGroup(),
                         AiEnums.GOAL_TYPE.PATROL);
                 patrol.setDistance(distance);
             }

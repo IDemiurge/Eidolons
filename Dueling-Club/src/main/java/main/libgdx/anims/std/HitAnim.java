@@ -2,22 +2,36 @@ package main.libgdx.anims.std;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import main.ability.effects.oneshot.move.MoveEffect;
 import main.content.PARAMS;
 import main.data.filesys.PathFinder;
 import main.entity.active.DC_ActiveObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
+import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.battlecraft.rules.combat.damage.Damage;
 import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.DirectionMaster;
 import main.libgdx.GdxColorMaster;
+import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
+import main.libgdx.anims.actions.MoveByActionLimited;
 import main.libgdx.anims.text.FloatingText;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import main.libgdx.bf.BaseView;
+import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.images.ImageManager;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
 import main.system.options.OptionsMaster;
@@ -89,20 +103,55 @@ public class HitAnim extends ActionAnim {
     }
 
     @Override
+    protected Action getAction() {
+
+        DIRECTION d = DirectionMaster.getRelativeDirection(getRef().getSourceObj(), getRef().getTargetObj());
+
+        int x =d.isVertical() ? 5:  30;
+        int y =!d.isVertical() ? 5:  30;
+        if (BooleanMaster.isTrue(d.isGrowX())) {
+            x = -x;
+        }
+        if (BooleanMaster.isTrue(d.isGrowY())) {
+            y = -y;
+        }
+
+        MoveByActionLimited move = (MoveByActionLimited) ActorMaster.getAction(MoveByActionLimited.class);
+        move.setAmount(x, y);
+        move.setDuration(getDuration()/2);
+        MoveByActionLimited moveBack = (MoveByActionLimited) ActorMaster.getAction(MoveByActionLimited.class);
+        moveBack.setAmount(-x, -y);
+        moveBack.setDuration(getDuration()/2);
+        return new SequenceAction(move, moveBack);
+    }
+
+    @Override
     public void start() {
         super.start();
-        if (textSupplier!=null )
-        floatingText.setText(textSupplier.get());
-        floatingText.init(destination, 0, 128, getDuration()*0.3f*
+        if (textSupplier != null)
+            floatingText.setText(textSupplier.get());
+        floatingText.init(destination, 0, 128, getDuration() * 0.3f *
          OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.TEXT_DURATION)
         );
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);
         Damage damage = getActive().getDamageDealt();
         FloatingTextMaster.getInstance().initFloatTextForDamage(damage, this);
+        add();
+    }
+
+    @Override
+    protected Actor getActionTarget() {
+        BattleFieldObject BattleFieldObject = (BattleFieldObject) getRef().getSourceObj();
+        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
+         MoveEffect.class)))
+            BattleFieldObject = (BattleFieldObject) getRef().getTargetObj();
+        BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
+         .get(BattleFieldObject);
+        return actor;
     }
 
     private String getTargetSuffix(Obj targetObj) {
-//       DC_HeroObj unit = (DC_HeroObj) targetObj;
+//       DC_HeroObj BattleFieldObject = (DC_HeroObj) targetObj;
         //dark, green, ...
         return "";
     }

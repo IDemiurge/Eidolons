@@ -5,6 +5,7 @@ import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.values.properties.G_PROPS;
 import main.entity.active.DC_ActiveObj;
+import main.entity.obj.ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.core.Eidolons;
@@ -33,8 +34,14 @@ public class ExploreCleaner extends ExplorationHandler {
          unit -> {
              unit.resetDynamicParam(PARAMS.C_N_OF_ACTIONS);
              removeMode(unit);
-
+cleanUpActions(unit);
          });
+    }
+
+    private void cleanUpActions(Unit unit) {
+        for (ActiveObj activeObj : unit.getActives()) {
+            activeObj.setParam(PARAMS.C_COOLDOWN, activeObj.getIntParam(PARAMS.COOLDOWN, false));
+        }
     }
 
     private void removeMode(Unit unit) {

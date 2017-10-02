@@ -38,7 +38,12 @@ public class AggroMaster {
          List<Unit> list =
           new LinkedList<>(DC_Game.game.getUnits());
 //        Analyzer.getEnemies(hero, false, false, false);
-            list.removeIf(unit -> !unit.canActNow());
+//            if (ExplorationMaster.isExplorationOn())
+            list.removeIf(unit -> !unit.canAct());
+//            boolean engaged;
+//            if (sub.getAI().isEngaged())
+//                engaged = true; //could just check mode!
+
             list.removeIf(unit -> !unit.isEnemyTo(DC_Game.game.getPlayer(true)));
         list.removeIf(unit->
           !checkAggro(unit, hero, AGGRO_RANGE)

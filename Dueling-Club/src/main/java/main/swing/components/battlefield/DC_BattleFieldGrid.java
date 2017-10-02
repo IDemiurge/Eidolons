@@ -377,8 +377,9 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 break;
             }
             Coordinates c = new Coordinates(X, Y);
-            List<Unit> objects = game.getObjectsOnCoordinate(c);
-            for (Unit obj : objects) {
+            List<BattleFieldObject> objects = game.getMaster().
+             getObjectsOnCoordinate(c, false );
+            for (BattleFieldObject obj : objects) {
                 if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
                     return false;
                 }
@@ -399,8 +400,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         }
         for (int i = min + 1; i < max; i++) {
             Coordinates c = (x_y) ? new Coordinates(xy, i) : new Coordinates(i, xy);
-            List<Unit> objects = game.getObjectsOnCoordinate(c);
-            for (Unit obj : objects) {
+            List<BattleFieldObject> objects = game.getMaster(). getObjectsOnCoordinate(getZ(), c, false, false, false);
+            for (BattleFieldObject obj : objects) {
                 if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
                     return false;
                 }

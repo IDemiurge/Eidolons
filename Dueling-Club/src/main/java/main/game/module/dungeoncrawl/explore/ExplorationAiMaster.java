@@ -7,18 +7,11 @@ import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.AiActionFactory;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
-import main.game.battlecraft.ai.elements.task.Task;
-import main.game.battlecraft.ai.tools.path.ActionPath;
-import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import main.game.battlecraft.logic.dungeon.universal.Positioner;
-import main.game.bf.Coordinates;
 import main.game.core.ActionInput;
 import main.game.logic.action.context.Context;
-import main.game.module.dungeoncrawl.ai.WanderMaster;
+import main.game.module.dungeoncrawl.ai.AiBehavior;
 import main.system.datatypes.DequeImpl;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,8 +51,8 @@ public class ExplorationAiMaster extends ExplorationHandler {
 //        master.getGame().getAiManager().getBehaviorMaster().
         activeUnitAIs.forEach(ai -> ai.setExplorationTimePassed(
          master.getTimeMaster().getTime() - ai.getExplorationTimeOfLastAction()));
-        if (isAiActs())
-            return;
+//        if (isAiActs())
+//            return;
         boolean isAiActs = false;
         for (UnitAI ai : activeUnitAIs) {
             if (ai.getExplorationTimePassed() <= ExplorationTimeMaster.secondsPerAP)
@@ -73,7 +66,10 @@ public class ExplorationAiMaster extends ExplorationHandler {
 
         }
         if (isAiActs)
+        {
             aiActs = true;
+            master.getLoop().signal();
+        }
     }
 
     private boolean tryMoveAi(UnitAI ai) {
@@ -138,64 +134,31 @@ public class ExplorationAiMaster extends ExplorationHandler {
         if (ai.getUnit().isMine()) //TODO
             if (master.getPartyMaster().isFollowOn(ai.getUnit())) { //isFollow
                 Action move = master.getPartyMaster().getFollowMove(ai.getUnit());
-
-
-
                 if (move == null) {
-                    return new ActionSequence(GOAL_TYPE.IDLE, AiActionFactory.newAction("Cower", ai));
+                    return getIdleOrders(ai);
                 } else {
                     return new ActionSequence(GOAL_TYPE.MOVE, move);
                 }
             }
         //get orders?
-
-        try {
-            return getWanderOrders(ai);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ActionSequence(GOAL_TYPE.IDLE, AiActionFactory.newAction("Cower", ai));
+        AiBehavior behavior = getAiBehavior(ai);
+        ActionSequence orders = behavior.getOrders(ai);
+        if (orders == null) {
+            orders= getIdleOrders(ai);
         }
+        return orders;
     }
 
-    private ActionSequence getWanderOrders(UnitAI ai) {
-        Coordinates c1 = null;
-        try {
-            WanderMaster.checkWanderDirectionChange(ai.getGroup(), GOAL_TYPE.WANDER);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            c1 = (WanderMaster.getWanderTargetCoordinatesCell(ai, GOAL_TYPE.WANDER));
-        } catch (Exception e) {
-            c1 = (CoordinatesMaster.getRandomAdjacentCoordinate(ai.getUnit().getCoordinates()));
-            e.printStackTrace();
-        }
-        c1 = Positioner.adjustCoordinate(ai.getUnit(), c1, ai.getUnit().getFacing());
-
-        List<Coordinates> c = new LinkedList<>();
-        c.add(c1);
-        master.getGame().getAiManager().setUnit(ai.getUnit());
-//        master.getGame().getAiManager().getPathBuilder().init(null, null);
-//        TimeLimitMaster.markTimeForAI(ai);
-        List<ActionPath> paths = new LinkedList<>();
-//         master.getGame().getAiManager().getPathBuilder().build(c);
-
-        Task task = new Task(ai, GOAL_TYPE.WANDER, null);
-        Action action = null;
-        if (paths.isEmpty()) {
-            if (c.get(0) != null)
-                action = master.getGame().getAiManager().getAtomicAi().getAtomicMove(c.get(0), ai.getUnit());
-            else
-                action = master.getGame().getAiManager().getAtomicAi().getAtomicActionApproach(ai);
-
-            return new ActionSequence(GOAL_TYPE.WANDER, action);
-        } else
-            action = paths.get(0).getActions().get(0);
-
-        List<ActionSequence> sequences = master.getGame().getAiManager().getActionSequenceConstructor().
-         getSequencesFromPaths(paths, task, action);
-        return sequences.get(0);
+    private AiBehavior getAiBehavior(UnitAI ai) {
+        //set as field?
+        return master.getGame().getAiManager().getBehaviorMaster().getBehavior(ai);
     }
+
+    private ActionSequence getIdleOrders(UnitAI ai) {
+        return new ActionSequence(GOAL_TYPE.IDLE, AiActionFactory.newAction("Idle", ai));
+    }
+
+
 
     public DequeImpl<UnitAI> getActiveUnitAIs() {
         return getActiveUnitAIs(false);

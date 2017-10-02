@@ -138,8 +138,11 @@ public class OptionsMaster {
                     break;
                 case AMBIENCE_MOVE_SUPPORTED:
                     ParticleManager.setAmbienceMoveOn(
-                     bool
-                    );
+                     bool);
+                    break;
+                case OPTIMIZATION_ON:
+                    SuperActor.setCullingOff(!bool);
+                    break;
             }
         }
     }

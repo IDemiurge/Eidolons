@@ -31,6 +31,7 @@ public class XML_Formatter {
     static String replaced = "~?[]><!@#$%^&*()-=\\/;+',\"`";
     static CharsetEncoder asciiEncoder = Charset.forName("US-ASCII").newEncoder();
     private static Map<String, String> xmlFormatReplacements = new HashMap<>();
+    private static Map<String, String>  cache=new HashMap<>();
 
     // or "ISO-8859-1" for ISO Latin 1
 
@@ -155,6 +156,10 @@ public class XML_Formatter {
         if (s == null) {
             return "";
         }
+
+        String name = cache.get(s);
+        if (name !=null )
+            return name;
         if (!Character.isAlphabetic(s.charAt(0))) {
             s = FIRST_CHAR + s;
         }
@@ -163,7 +168,8 @@ public class XML_Formatter {
             s = s.replace(x, xmlFormatReplacements.get(x));
             s = s.replace(Pattern.quote(x), xmlFormatReplacements.get(x));
         }
-        return encodeNonASCII(s.replace(" ", "_"));
+          name = encodeNonASCII(s.replace(" ", "_"));
+        cache.put(s, name);   return name;
         // if (s.contains("'"))
         // main.system.auxiliary.LogMaster.log(1, s);
         // return s.replace(",", COMMA_CODE).replace("'", "_").replace(":",

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import main.entity.Entity;
 import main.entity.obj.DC_Obj;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.panels.dc.ValueContainer;
@@ -64,11 +65,11 @@ public class RadialMenu extends Group {
     public void close() {
         if (isAnimated()) {
             ActorMaster.addFadeOutAction(this, getAnimationDuration());
-            ActorMaster.addHideAfter(this);
             currentNode.getChildNodes().forEach(child -> {
                 ActorMaster.addMoveToAction(child, currentNode.getX(), currentNode.getY(), 0.5f);
             });
             ActorMaster.addRotateByAction(closeButton, 90);
+            ActorMaster.addHideAfter(this);
         } else
             setVisible(false);
         SoundController.playCustomEventSound(SOUND_EVENT.RADIAL_CLOSED);
@@ -116,10 +117,10 @@ public class RadialMenu extends Group {
         setVisible(true);
         updatePosition();
         setColor(new Color(1, 1, 1, 0));
-//        ActorMaster.addChained
+//  TODO fade out the old nodes       ActorMaster.addChained
 //         (this, ActorMaster.addFadeOutAction(this, getAnimationDuration()/2),
         ActorMaster.addFadeInAction(this, getAnimationDuration()
-//           /2)
+
         );
         ActorMaster.addRotateByAction(closeButton, -90);
     }
@@ -220,5 +221,13 @@ public class RadialMenu extends Group {
             }
         }
         return actor;
+    }
+
+    public void hover(Entity entity) {
+//        for (Actor sub : getChildren()) {
+//        }
+    }
+
+    public void hoverOff(Entity entity) {
     }
 }

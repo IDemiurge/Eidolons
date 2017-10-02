@@ -10,12 +10,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import main.libgdx.DialogScenario;
+import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.bf.BFDataCreatedEvent;
 import main.libgdx.bf.GridConst;
@@ -35,9 +37,7 @@ import main.system.options.OptionsMaster;
 import java.util.List;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
-import static main.system.GuiEventType.DIALOG_SHOW;
-import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
-import static main.system.GuiEventType.UPDATE_GUI;
+import static main.system.GuiEventType.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -81,8 +81,7 @@ public class DungeonScreen extends ScreenWithLoader {
 
         gridStage = new Stage(viewPort, getBatch());
 
-        guiStage = new BattleGuiStage(null , getBatch());
-
+        guiStage = new BattleGuiStage(null, getBatch());
 
 
         GL30 gl = Gdx.graphics.getGL30();
@@ -132,8 +131,8 @@ public class DungeonScreen extends ScreenWithLoader {
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
         gridStage.addActor(gridPanel);
-        particleManager = new ParticleManager( );
-        gridStage. addActor(particleManager.getEmitterMap());
+        particleManager = new ParticleManager();
+        gridStage.addActor(particleManager.getEmitterMap());
 //        GuiEventManager.bind(GuiEventType.BF_CREATED, p -> {
         try {
             controller.setDefaultPos();
@@ -155,10 +154,16 @@ public class DungeonScreen extends ScreenWithLoader {
             Gdx.app.log("DungeonScreen::afterLoad()", "-- End!");
         }
         try {
+
+            Unit unit = null;
+            if (Eidolons.game.getMetaMaster() == null) {
+                unit = Eidolons.game.getMetaMaster().
+                 getPartyManager().getParty().getLeader();
+            } else
+                unit = (Unit) Eidolons.game.getPlayer(true).getHeroObj();
             Vector2 unitPosition =
              GridMaster.getCenteredPos(
-              Eidolons.game.getMetaMaster().
-               getPartyManager().getParty().getLeader().getCoordinates());
+              unit.getCoordinates());
 
             cameraPan(unitPosition);
         } catch (Exception e) {
@@ -233,6 +238,9 @@ public class DungeonScreen extends ScreenWithLoader {
                     TextureManager.drawFromSpriteCache(TextureManager.getBackgroundId());
                 } else {
                     guiStage.getBatch().begin();
+                    float colorBits = GdxColorMaster.WHITE.toFloatBits();
+                    if (guiStage.getBatch().getColor().toFloatBits() != colorBits)
+                        guiStage.getBatch().setColor(colorBits); //damned alpha...
                     guiStage.getBatch().draw(backTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                     guiStage.getBatch().end();
                 }

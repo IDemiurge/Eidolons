@@ -24,7 +24,7 @@ public class LE_InfoEditPanel extends EditViewPanel {
     // maybe TREE is not necessary for now?
 
     public LE_InfoEditPanel() {
-        super();
+//        super();
         twoTableMode = false;
     }
 
@@ -36,7 +36,7 @@ public class LE_InfoEditPanel extends EditViewPanel {
     }
 
     protected void initTable(boolean second) {
-        super.initTable(second);
+//        super.initTable(second);
         table.setTableHeader(null);
         table.setIgnoreRepaint(true);
         // scrollPane

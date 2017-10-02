@@ -7,13 +7,13 @@ import main.content.PARAMS;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_Obj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
+import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
@@ -35,6 +35,8 @@ public class SpectrumEffect extends DC_Effect {
     private boolean vision;
     private Condition filterConditions;
     private String reductionForDistanceModifier;
+    private BattleFieldObject bfObj;
+    private FACING_DIRECTION previousFacing;
 
     public SpectrumEffect(Effect effects, String rangeFormula, Boolean circular) {
         this.effects = new Effects(effects);
@@ -62,6 +64,11 @@ public class SpectrumEffect extends DC_Effect {
 
     }
 
+    @Override
+    public String toString() {
+        return ref.getSourceObj() + "'s Spectrum effect with " + effects;
+    }
+
     public boolean applyThis() {
         Integer range = new Formula(rangeFormula).getInt(ref);
         Integer backwardRange = 0;
@@ -71,18 +78,31 @@ public class SpectrumEffect extends DC_Effect {
         }
         if (vision) {
             range = new Formula(StringMaster.getValueRef(KEYS.SOURCE, PARAMS.SIGHT_RANGE))
-                    .getInt(ref);
+             .getInt(ref);
             backwardRange = null; // TODO
             sidePenalty = null;
         }
 
-        FACING_DIRECTION d = null;
-        Chronos.mark(source + "'s " + toString());
+        if (ref.getObj(source) instanceof BattleFieldObject)
+            bfObj = ((BattleFieldObject) ref.getObj(source));
+        else {
+            //TODO
+        }
+
+        FACING_DIRECTION facing = bfObj.getFacing();
+        Boolean clockwise = null;
+        if (previousFacing != null)
+            clockwise = facing.getDirection().getDegrees() < previousFacing.getDirection().getDegrees();
+        if (clockwise != null)
+            facing = FacingMaster.rotate(facing, clockwise);
         List<Coordinates> coordinates = new LinkedList<>(getGame().getVisionMaster().getSightMaster()
-                .getSpectrumCoordinates(
-                        range, sidePenalty, backwardRange, (DC_Obj) ref.getObj(source),
-                        vision, d));
-        Chronos.logTimeElapsedForMark(source + "'s " + toString());// TODO
+         .getSpectrumCoordinates(
+          range, sidePenalty, backwardRange, bfObj,
+          vision, facing));
+
+        previousFacing = facing;
+
+        main.system.auxiliary.log.LogMaster.log(1, this + " applied on " + coordinates);
         // boolean x-ray ++ tall/short/etc
         if (effects == null) {
             initEffects();
@@ -96,7 +116,7 @@ public class SpectrumEffect extends DC_Effect {
             // DC_Cell))
             // continue;
             DequeImpl<? extends Obj> objects = new DequeImpl<>(getGame().getObjectsOnCoordinate(
-                    getGame().getDungeon().getZ(), c, null, true, applyThrough));
+             getGame().getDungeon().getZ(), c, null, true, applyThrough));
 
             if (applyThrough) {
                 objects.addCast(getGame().getCellByCoordinate(c));
@@ -127,13 +147,13 @@ public class SpectrumEffect extends DC_Effect {
                         // to set original
                         effect.resetOriginalFormula();
                         String reduction = reductionForDistance;
-                        if (reductionForDistanceModifier!=null )
-                            reduction+=(reductionForDistanceModifier);
+                        if (reductionForDistanceModifier != null)
+                            reduction += (reductionForDistanceModifier);
 
                         Formula effectFormula = effect.getFormula();
                         reduction = reduction.replace(X, effectFormula.toString());
                         int distance = PositionMaster.getDistance(REF.getSourceObj(), REF
-                                .getTargetObj());
+                         .getTargetObj());
                         reduction = reduction.replace("distance", distance + "");
                         effectFormula.append(reduction);
                         //TODO
