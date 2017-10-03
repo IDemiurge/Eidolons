@@ -65,6 +65,7 @@ public class DrawMaster {
     private int topObjY;
     private BufferedImage infoObjImage;
     private Map<Obj, Point> offsetMap;
+    public static boolean wallOverlaysOff=true;
 
     public boolean isStackedPaintZoom() {
         return zoom >= 50;
@@ -870,6 +871,8 @@ public class DrawMaster {
     }
 
     private void drawWallOverlays(BattleFieldObject obj, Graphics g, Coordinates coordinates) {
+        if (wallOverlaysOff)
+            return ;
         if (cellComp.getGame().getVisionMaster().getVisibilityMaster().isZeroVisibility(obj)) {
             if (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN) {
                 return;

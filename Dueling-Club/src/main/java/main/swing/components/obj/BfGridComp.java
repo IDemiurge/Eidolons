@@ -11,11 +11,13 @@ import main.game.core.game.DC_Game;
 import main.swing.XLine;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.DrawHelper;
+import main.swing.components.obj.drawing.DrawMaster;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.generic.components.G_Panel;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
+import main.system.math.MathMaster;
 
 import java.awt.*;
 import java.awt.event.MouseListener;
@@ -330,17 +332,19 @@ public class BfGridComp {
             getUnderlayMap().clear();
             getOverlayMap().clear();
             Map<Coordinates, BattleFieldObject> wallMap = new HashMap<>();
-
-            for (Obj c : game.getCells()) {
-                for (BattleFieldObject obj : game.getStructures()) {
-                    if (obj.getCoordinates().equals(c.getCoordinates())) {
-                        if (obj.isWall()) {
-                            wallMap.put(c.getCoordinates(), obj);
+            if (!DrawMaster.wallOverlaysOff)
+                for (Obj c : game.getCells()) {
+                    for (BattleFieldObject obj : game.getStructures()) {
+                        if (obj.getCoordinates().equals(c.getCoordinates())) {
+                            if (obj.isWall()) {
+                                wallMap.put(c.getCoordinates(), obj);
+                            }
                         }
                     }
-                }
 
-            }
+                }
+//            if ()
+            if (!DrawMaster.wallOverlaysOff)
             game.getBattleFieldManager().resetWallMap(wallMap);
         }
 
@@ -364,14 +368,20 @@ public class BfGridComp {
     private void repaintToBuffer() {
         Graphics2D g = (Graphics2D) bufferImage.getGraphics();
         // TODO imageManager update
-        for (int i = 0; i < getDisplayedCellsX(); i++) {
-            for (int j = 0; j < getDisplayedCellsY(); j++) {
-                if (i + getOffsetX() >= cells.length) {
+        for (   int i = 0; i < getDisplayedCellsX(); i++) {
+            for (  int j = 0; j < getDisplayedCellsY(); j++) {
+                if (getOffsetX()<0)
+                    if (i< -getOffsetX())
+                        continue;
+                if (i + Math.max(0,getOffsetX()) >= cells.length ) {
                     return;
                 }
-                if (j + getOffsetY() >= cells[0].length) {
+                if (j + Math.max(0, getOffsetY()) >= cells[0].length  ) {
                     continue;
                 }
+                if (getOffsetY()<0)
+                    if (j< -getOffsetY())
+                        continue;
                 CellComp cellComp = cells[i + getOffsetX()][j + getOffsetY()];
                 if (editMode) {
                     Coordinates c = new Coordinates(i + getOffsetX(), j + getOffsetY());
@@ -419,24 +429,23 @@ public class BfGridComp {
         } else {
             if (x) {
                 offsetX += offset;
-                if (offsetX < 0) {
-                    offsetX = 0;
-                }
-                if (offsetX > getCellsX() - getDisplayedCellsX()) {
-                    offsetX = getCellsX() - getDisplayedCellsX();
-                }
+//                if (offsetX < 0) {
+//                    offsetX = 0;
+//                }
+//                if (offsetX > getCellsX() - getDisplayedCellsX()) {
+//                    offsetX = getCellsX() - getDisplayedCellsX();
+//                }
             } else {
                 offsetY += offset;
-                if (offsetY < 0) {
-                    offsetY = 0;
-                }
-                if (offsetY > getCellsY() - getDisplayedCellsY()) {
-                    offsetY = getCellsY() - getDisplayedCellsY();
-                }
+//                if (offsetY < 0) {
+//                    offsetY = 0;
+//                }
+//                if (offsetY > getCellsY() - getDisplayedCellsY()) {
+//                    offsetY = getCellsY() - getDisplayedCellsY();
+//                }
 
             }
-            refresh();
-            panel.repaint();
+
         }
 
     }
@@ -597,7 +606,7 @@ public class BfGridComp {
     }
 
     public void zoom(int wheelRotation) {
-        int zoomPerRotation = 5;
+        int zoomPerRotation = MathMaster.getMinMax( Math.round(5 * zoom / 100), 1, 6);
         zoom += wheelRotation * zoomPerRotation;
         refresh();
         panel.repaint();

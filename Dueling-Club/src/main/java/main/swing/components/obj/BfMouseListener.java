@@ -439,6 +439,8 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
             SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
             gridComp.offset(xOffset, true);
             gridComp.offset(yOffset, false);
+            gridComp. refresh();
+            gridComp.getPanel().repaint();
         }
 
     }

@@ -35,6 +35,7 @@ public class LE_ObjMaster {
 
     private static Map<Level, Stack<Map<Coordinates, List<BattleFieldObject>>>> cacheMap = new HashMap<>();
     private static boolean cachingOff;
+    private boolean checkBlocked;
 
     public static Map<ObjType, BattleFieldObject> getObjCache() {
         return LevelEditor.getCurrentLevel().getObjCache();
@@ -89,9 +90,9 @@ public class LE_ObjMaster {
 
     public static void removeObj(Coordinates coordinates) {
         cache();
-         LevelEditor.getCurrentLevel().removeObj(coordinates);
+        LevelEditor.getCurrentLevel().removeObj(coordinates);
 //        LevelEditor.getSimulation().getUnitMap().remove(coordinates);
-        LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates).forEach(obj->{
+        LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates).forEach(obj -> {
             LevelEditor.getSimulation().getMaster().remove(obj);
         });
     }
@@ -116,7 +117,7 @@ public class LE_ObjMaster {
     public static boolean fillAreaCustomFiller() {
 
         MAP_FILL_TEMPLATE template = new EnumMaster<MAP_FILL_TEMPLATE>().retrieveEnumConst(
-                MAP_FILL_TEMPLATE.class, ListChooser.chooseEnum(MAP_FILL_TEMPLATE.class));
+         MAP_FILL_TEMPLATE.class, ListChooser.chooseEnum(MAP_FILL_TEMPLATE.class));
         if (template == null) {
             return false;
         }
@@ -130,17 +131,17 @@ public class LE_ObjMaster {
                     i++;
                 } else {
                     if (data.contains(LevelEditor.getCurrentLevel().getDungeon().getGame()
-                            .getObjectByCoordinate(c, true).getName())) {
+                     .getObjectByCoordinate(c, true).getName())) {
                         i++;
                     }
                 }
             }
             if (i >= c.getAdjacentCoordinates().size() / 2) {
                 type = RandomWizard.getObjTypeByWeight(template.getCenterObjects(),
-                        DC_TYPE.BF_OBJ);
+                 DC_TYPE.BF_OBJ);
             } else {
                 type = RandomWizard.getObjTypeByWeight(template.getCenterObjects(),
-                        DC_TYPE.BF_OBJ);
+                 DC_TYPE.BF_OBJ);
             }
             LevelEditor.getObjMaster().addObj(type, c);
         }
@@ -161,7 +162,7 @@ public class LE_ObjMaster {
         ObjType type2 = ArcaneVault.getSelectedType();
         if (type2 == type) {
             type2 = DataManager.getType(ListChooser.chooseType(type.getOBJ_TYPE_ENUM()), type
-                    .getOBJ_TYPE_ENUM());
+             .getOBJ_TYPE_ENUM());
         }
         replace(type, type2, coordinates);
 
@@ -170,7 +171,7 @@ public class LE_ObjMaster {
     public static void replace(ObjType type, ObjType type2, List<Coordinates> coordinates) {
         cache();
         for (Coordinates coordinate : coordinates) {
-            List<BattleFieldObject> objects = LevelEditor.getSimulation().getBfObjectsOnCoordinate(  coordinate);
+            List<BattleFieldObject> objects = LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinate);
             // LevelEditor.getGrid().getCells()[coordinate.x][coordinate.y]
             // .getObjects();
             if (objects != null) {
@@ -228,7 +229,8 @@ public class LE_ObjMaster {
         }
         LevelEditor.getMainPanel().getMapViewComp().getGrid().refresh();
     }
-// for undo? I can do better...
+
+    // for undo? I can do better...
     private static void cache() {
         if (cachingOff) {
             return;
@@ -243,7 +245,7 @@ public class LE_ObjMaster {
 
     private static Stack<Map<Coordinates, List<BattleFieldObject>>> getCache() {
         Stack<Map<Coordinates, List<BattleFieldObject>>> cache = cacheMap.get(LevelEditor
-                .getCurrentLevel());
+         .getCurrentLevel());
         if (cache == null) {
             cache = new Stack<>();
             cacheMap.put(LevelEditor.getCurrentLevel(), cache);
@@ -257,7 +259,7 @@ public class LE_ObjMaster {
             return;
         }
 //        LevelEditor.getSimulation().setUnitMap(getCache().pop());TODO
-        for (MapBlock b : LevelEditor.getCurrentLevel().getBlocks() ) {
+        for (MapBlock b : LevelEditor.getCurrentLevel().getBlocks()) {
             b.resetObjects();
         }
         LevelEditor.refreshGrid();
@@ -303,7 +305,7 @@ public class LE_ObjMaster {
         for (int x = 0; x <= width; x++) {
             for (int y = 0; y <= height; y++) {
                 List<BattleFieldObject> objects = LevelEditor.getSimulation().getBfObjectsOnCoordinate(
-                        new Coordinates(x + baseCoordinate.x, baseCoordinate.y + y));
+                 new Coordinates(x + baseCoordinate.x, baseCoordinate.y + y));
                 // filter out bf?
                 for (BattleFieldObject obj : objects) {
                     list.add(new ObjAtCoordinate(obj.getType(), new Coordinates(x, y)));
@@ -327,9 +329,9 @@ public class LE_ObjMaster {
 //        getObjCache().put(type, obj);
         obj = (BattleFieldObject) LevelEditor.getSimulation().getObjectByCoordinate(c);
 
-        if (obj!=null )
+        if (obj != null)
             if (obj.getType().equals(type))
-            return obj;
+                return obj;
 
         obj = (BattleFieldObject) LevelEditor.getSimulation().createUnit(type, c, DC_Player.NEUTRAL);
         return obj;
@@ -372,7 +374,7 @@ public class LE_ObjMaster {
             map = new HashMap<>();
             obj.getGame().getDirectionMap().put(c, map);
         }
-        map.put(  obj, d);
+        map.put(obj, d);
 
     }
 
@@ -396,7 +398,7 @@ public class LE_ObjMaster {
         BattleFieldObject obj = null;
         for (Coordinates c : coordinates) {
             List<BattleFieldObject> list = LevelEditor.getSimulation().getBfObjectsOnCoordinate(c);
-
+        if (checkBlocked || !LevelEditor.getCurrentLevel().isInitialized())
             if (!StackingRule.checkCanPlace(c, type, list)) {
                 // replace cases? if 1 coordinate, prompt...
                 if (LevelEditor.getCurrentLevel().isInitialized()) {
@@ -409,8 +411,8 @@ public class LE_ObjMaster {
             }
 
             obj = getObject(type, c);
-            LevelEditor.getSimulation().getMaster(). checkAddUnit(obj);
-         List<BattleFieldObject> objects = LevelEditor.getSimulation().getUnitMap().get(c);
+            LevelEditor.getSimulation().getMaster().checkAddUnit(obj);
+            List<BattleFieldObject> objects = LevelEditor.getSimulation().getUnitMap().get(c);
             if (objects == null) {
                 objects = new LinkedList<>();
                 LevelEditor.getSimulation().getUnitMap().put(c, objects);
@@ -424,14 +426,12 @@ public class LE_ObjMaster {
                 if (LE_MapViewComp.isMinimapMode()) {
                     LevelEditor.getMainPanel().getMiniGrid().refreshComp(null, c);
                 } else {
-                    SwingUtilities.invokeLater(new Runnable() {
-
-                        @Override
-                        public void run() {
+                    if (LevelEditor.getGrid().isDirty()) {
+                        if (SwingUtilities.isEventDispatchThread())
                             LevelEditor.getGrid().refresh();
-
-                        }
-                    });
+                        else
+                            SwingUtilities.invokeLater(() -> LevelEditor.getGrid().refresh());
+                    }
                 }
                 // LevelEditor.getGrid().repaintComp(c);
             } catch (Exception e) {

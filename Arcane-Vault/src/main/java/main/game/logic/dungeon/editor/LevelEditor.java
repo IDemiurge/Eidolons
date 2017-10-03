@@ -16,6 +16,7 @@ import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
+import main.system.sound.Player;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -109,6 +110,7 @@ public class LevelEditor {
     }
 
     public static void main(String[] args) {
+        Player.setSwitcher(false);
         DC_Engine.jarInit();
         SwingMaster.DEBUG_ON = false;
         DC_Engine.systemInit();

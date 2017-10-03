@@ -14,7 +14,6 @@ import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_LAYOUT;
 import main.game.battlecraft.logic.dungeon.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.building.BuildHelper.BUILD_PARAMS;
-import main.game.battlecraft.logic.dungeon.building.BuildHelper.BuildParameters;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;

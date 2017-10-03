@@ -8,17 +8,13 @@ import main.content.enums.DungeonEnums.MAP_FILL_TEMPLATE;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.game.battlecraft.logic.dungeon.building.*;
+import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
-import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
-import main.game.battlecraft.logic.dungeon.building.BuildHelper.BuildParameters;
-import main.game.battlecraft.logic.dungeon.building.DungeonBuilder;
-import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
-import main.game.battlecraft.logic.dungeon.building.DungeonPlan;
-import main.game.battlecraft.logic.dungeon.building.MapBlock;
-import main.game.battlecraft.logic.dungeon.building.MapZone;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
@@ -77,14 +73,20 @@ public class DungeonMapGenerator {
     }
 
     public DC_Map generateMap(Dungeon dungeon) {
+        return generateMap(null, dungeon);
+    }
+
+    public DC_Map generateMap(BuildParameters buildParameters, Dungeon dungeon) {
         map = new DC_Map();
         this.dungeon = dungeon;
+        if (buildParameters != null)
+            params = buildParameters;
 
         if (dungeon.getPlan() == null) {
             try {
                 if (dungeon.checkProperty(PROPS.DUNGEON_PLAN)) {
                     this.plan = new DungeonBuilder(params).loadDungeonMap(dungeon
-                            .getProperty(PROPS.DUNGEON_PLAN));
+                     .getProperty(PROPS.DUNGEON_PLAN));
                 } else {
                     this.plan = new DungeonBuilder(params).buildDungeonPlan(dungeon);
                 }
@@ -92,13 +94,14 @@ public class DungeonMapGenerator {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
         } else {
             plan = dungeon.getPlan();
         }
         template = new EnumMaster<DUNGEON_MAP_TEMPLATE>().retrieveEnumConst(
-                DUNGEON_MAP_TEMPLATE.class, dungeon.getProperty(PROPS.DUNGEON_MAP_TEMPLATE));
+         DUNGEON_MAP_TEMPLATE.class, dungeon.getProperty(PROPS.DUNGEON_MAP_TEMPLATE));
         mod = new EnumMaster<DUNGEON_MAP_MODIFIER>().retrieveEnumConst(DUNGEON_MAP_MODIFIER.class,
-                dungeon.getProperty(PROPS.DUNGEON_MAP_MODIFIER));
+         dungeon.getProperty(PROPS.DUNGEON_MAP_MODIFIER));
 
 		/*
          * mod should have a preset initComps option as well.
@@ -140,7 +143,7 @@ public class DungeonMapGenerator {
         for (String s : StringMaster.openContainer(dungeon.getProperty(PROPS.MAP_PRESET_OBJECTS))) {
             try {
                 ObjType objType = DataManager.getType(VariableManager.removeVarPart(s),
-                        DC_TYPE.BF_OBJ);
+                 DC_TYPE.BF_OBJ);
                 Coordinates coordinates = new Coordinates(VariableManager.getVarPart(s));
                 if (objType != null) {
                     objMap.put(coordinates, objType);
@@ -177,7 +180,7 @@ public class DungeonMapGenerator {
         for (String s : objects) {
             String objTypeName = VariableManager.removeVarPart(s);
             Integer max = StringMaster.getInteger(StringMaster.cropParenthesises(VariableManager
-                    .getVarPart(s)));
+             .getVarPart(s)));
 
             if (sizeMod != null) {
                 max = max * sizeMod / 100;
@@ -196,7 +199,7 @@ public class DungeonMapGenerator {
                 linkCells.addAll(list);
                 for (Coordinates c : list) {
                     checkLinkCellObj(c, b, new MapMaster<MapBlock, List<Coordinates>>()
-                            .getKeyForValue(b.getConnectedBlocks(), list));
+                     .getKeyForValue(b.getConnectedBlocks(), list));
                 }
             }
             // b.getZone().getFillerType();
@@ -253,31 +256,31 @@ public class DungeonMapGenerator {
         ObjType type = DataManager.getType(fillerType, DC_TYPE.BF_OBJ);
         if (type == null) {
             MAP_FILL_TEMPLATE leTemplate = new EnumMaster<MAP_FILL_TEMPLATE>().retrieveEnumConst(
-                    MAP_FILL_TEMPLATE.class, fillerType);
+             MAP_FILL_TEMPLATE.class, fillerType);
             if (leTemplate != null) {
                 int i = 0;
                 for (Coordinates adj : c.getAdjacentCoordinates()) {
                     ObjType objType = objMap.get(adj);
                     if (objType != null) {
                         if ((leTemplate.getPeripheryObjects() + leTemplate.getCenterObjects())
-                                .contains(objType.getName())) {
+                         .contains(objType.getName())) {
                             i++;
                         }
                     }
                 }
                 if (i >= c.getAdjacentCoordinates().size() * 2 / 5) {
                     type = RandomWizard.getObjTypeByWeight(leTemplate.getCenterObjects(),
-                            DC_TYPE.BF_OBJ);
+                     DC_TYPE.BF_OBJ);
                     objMap.put(c, type);
                     return;
                 }
 
                 type = RandomWizard.getObjTypeByWeight(leTemplate.getPeripheryObjects(),
-                        DC_TYPE.BF_OBJ);
+                 DC_TYPE.BF_OBJ);
             } else {
                 // other random groups
                 DUNGEON_MAP_TEMPLATE template = new EnumMaster<DUNGEON_MAP_TEMPLATE>()
-                        .retrieveEnumConst(DUNGEON_MAP_TEMPLATE.class, fillerType);
+                 .retrieveEnumConst(DUNGEON_MAP_TEMPLATE.class, fillerType);
                 if (template != null) {
                     type = RandomWizard.getObjTypeByWeight(template.getObjects(), DC_TYPE.BF_OBJ);
                 }
@@ -289,7 +292,7 @@ public class DungeonMapGenerator {
     private Integer getSizeMod(Dungeon dungeon) {
         int mod = 100;
         mod = mod * dungeon.getCellsY() / GuiManager.getBF_CompDisplayedCellsY()
-                * dungeon.getCellsX() / GuiManager.getBF_CompDisplayedCellsX();
+         * dungeon.getCellsX() / GuiManager.getBF_CompDisplayedCellsX();
         if (mod == 100) {
             return null;
         }
@@ -343,7 +346,7 @@ public class DungeonMapGenerator {
 
     private Coordinates getRandomCoordinate() {
         return new Coordinates(RandomWizard.getRandomInt(getWidth()), RandomWizard
-                .getRandomInt(getHeight()));
+         .getRandomInt(getHeight()));
     }
 
     private int getHeight() {
@@ -457,6 +460,7 @@ public class DungeonMapGenerator {
         }
         return z.getCoordinates();
     }
+
 
     // randomization could be done via weight-string with these constants
     // as per map template or obj type

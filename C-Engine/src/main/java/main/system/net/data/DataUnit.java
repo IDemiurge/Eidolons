@@ -183,8 +183,13 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public String getDataMapFormat() {
+        return getDataMapFormat(null);
+    }
+        public String getDataMapFormat(Collection<String> values) {
+        if (values==null )
+            values = getValues().keySet();
         String data = "";
-        for (String p : getValues().keySet()) {
+        for (String p : values) {
             data += p + StringMaster.wrapInParenthesis(getValue(p)) + StringMaster.getSeparator();
         }
         return data;

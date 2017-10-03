@@ -20,7 +20,7 @@ import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_POINT_TEMPLATE;
-import main.game.battlecraft.logic.dungeon.building.BuildHelper.BuildParameters;
+import main.game.battlecraft.logic.dungeon.building.BuildParameters;
 import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.DUNGEON_TEMPLATES;
 import main.game.battlecraft.logic.dungeon.building.DungeonPlan;
 import main.game.module.dungeoncrawl.dungeon.minimap.Minimap;

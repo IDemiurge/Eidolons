@@ -39,7 +39,8 @@ public class LE_ControlPanel extends G_Panel {
                 LE_DataMaster.removeSelected();
                 break;
             case GENERATE:
-                LE_MapMaster.generateNew(LevelEditor.getCurrentMission(), LevelEditor
+                LE_MapMaster.generateNew(LevelEditor.getCurrentMission(),
+                 LevelEditor
                         .getCurrentLevel(), !alt);
                 break;
             case LOAD_LEVEL:

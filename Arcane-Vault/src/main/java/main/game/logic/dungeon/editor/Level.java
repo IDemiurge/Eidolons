@@ -23,7 +23,7 @@ import main.game.battlecraft.logic.battlefield.map.DungeonMapGenerator;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
-import main.game.battlecraft.logic.dungeon.building.BuildHelper.BuildParameters;
+import main.game.battlecraft.logic.dungeon.building.BuildParameters;
 import main.game.battlecraft.logic.dungeon.building.DungeonBuilder;
 import main.game.battlecraft.logic.dungeon.building.DungeonPlan;
 import main.game.battlecraft.logic.dungeon.building.MapBlock;
@@ -445,8 +445,8 @@ public class Level {
                     LE_MapViewComp comp = LevelEditor.getMainPanel().getMapViewComp();
                     comp.getGrid().getCompForObject(obj).refresh();
                     comp.getGrid().refresh();
-                    comp.getGrid().getCompForObject(obj).refresh();
-                    comp.getGrid().getPanel().repaint();
+//                    comp.getGrid().getCompForObject(obj).refresh();
+//                    comp.getGrid().getPanel().repaint();
                 }
             }
         }

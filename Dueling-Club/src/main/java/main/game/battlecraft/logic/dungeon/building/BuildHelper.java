@@ -15,11 +15,9 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.DC_PositionMaster;
 import main.system.math.MathMaster;
-import main.system.net.data.DataUnit;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class BuildHelper {
     /*
@@ -95,8 +93,8 @@ public class BuildHelper {
     }
 
     public XDimension getRoomSize(ROOM_TYPE room) {
-        int width = plan.getBorderX() * room.getWidthMod() / 100;
-        int height = plan.getBorderY() * room.getHeightMod() / 100;
+        int width = dungeon.getCellsX() * room.getWidthMod() / 100;
+        int height = dungeon.getCellsY() * room.getHeightMod() / 100;
         // apply size mod to min/max?
         if (room.getMaxX() != 0) {
             if (width > room.getMaxX()) {
@@ -413,9 +411,9 @@ public class BuildHelper {
             return new RandomWizard<Coordinates>().getRandomListItem(edgeCoordinatesFromSquare);
         }
         Boolean prefLessMoreMiddle = null;
-        if (block.getRoomType() != ROOM_TYPE.THRONE_ROOM) {
+//        if (block.getRoomType() != ROOM_TYPE.THRONE_ROOM) {
             prefLessMoreMiddle = BooleanMaster.random();
-        }
+//        }
         Coordinates coord = CoordinatesMaster.getFarmostCoordinateInDirection(direction.getDirection(),
                 block.getCoordinates(), prefLessMoreMiddle);
 
@@ -424,6 +422,10 @@ public class BuildHelper {
         }
 
         return coord;
+    }
+
+    public void setPlan(DungeonPlan plan) {
+        this.plan = plan;
     }
 
     public enum BUILD_PARAMS {
@@ -442,74 +444,10 @@ public class BuildHelper {
         SIZE_MOD,
         RANDOM_ROOMS,
         CORRIDORS,
-        FILLER_TYPE
+        FILLER_TYPE;
+        private DungeonPlan plan;
     }
 
-    public class BuildParameters extends DataUnit<BUILD_PARAMS> {
-        public int CORRIDOR_OFFSET_CHANCE = 35;
-        public int CUL_DE_SACS = 1;
-        public int WALL_WIDTH = 1;
-        public int TURN_CHANCE = 33;
-        public int FILL_PERCENTAGE = 80;
-        public int PREFERRED_FILL_PERCENTAGE = 80;
-
-        public BuildParameters() {
-            this(false);
-        }
-
-        public BuildParameters(boolean empty) {
-            // setValue(BUILD_PARAMS.MAIN_ROOMS, value)
-            // DungeonBuilder.
-
-            setValue(BUILD_PARAMS.CORRIDOR_OFFSET_CHANCE, "" + CORRIDOR_OFFSET_CHANCE);
-            setValue(BUILD_PARAMS.WALL_WIDTH, "" + WALL_WIDTH);
-            setValue(BUILD_PARAMS.CORRIDOR_OFFSET_CHANCE, "" + CORRIDOR_OFFSET_CHANCE);
-            setValue(BUILD_PARAMS.CUL_DE_SACS, "" + CUL_DE_SACS);
-            setValue(BUILD_PARAMS.TURN_CHANCE, "" + TURN_CHANCE);
-            setValue(BUILD_PARAMS.FILL_PERCENTAGE, "" + FILL_PERCENTAGE);
-            setValue(BUILD_PARAMS.RANDOM_ROOMS, "def");
-            setValue(BUILD_PARAMS.CORRIDORS, "def");
-            setValue(BUILD_PARAMS.MAIN_ROOMS, "");
-            setValue(BUILD_PARAMS.FILLER_TYPE, "Stone Wall");
-            if (empty) {
-                setValue(BUILD_PARAMS.FILLER_TYPE, "");
-            }
-
-            // setValue(BUILD_PARAMS.PREFERRED_FILL_PERCENTAGE, "" +
-            // PREFERRED_FILL_PERCENTAGE);
-
-        }
-
-        public BuildParameters(String data) {
-            this(new RandomWizard<BUILD_PARAMS>()
-                    .constructStringWeightMap(data, BUILD_PARAMS.class));
-        }
-
-        public BuildParameters(Map<BUILD_PARAMS, String> map) {
-            getValues().clear();
-            for (BUILD_PARAMS p : map.keySet()) {
-                setValue(p, map.get(p));
-            }
-        }
-
-        @Override
-        public String getValue(BUILD_PARAMS t) {
-            String value = super.getValue(t);
-            if (value == null) {
-                return "";
-            }
-            return value;
-        }
-
-        public boolean isNoRandomRooms() {
-            return getValue(BUILD_PARAMS.RANDOM_ROOMS).isEmpty();
-        }
-
-        public boolean isNoCorridors() {
-            return getValue(BUILD_PARAMS.CORRIDORS).isEmpty();
-        }
-
-    }
     // public Coordinates getBaseCoordinate(MapZone startZone, MapZone
     // targetZone,
     // BLOCK_TYPE b, DungeonPlan map) {

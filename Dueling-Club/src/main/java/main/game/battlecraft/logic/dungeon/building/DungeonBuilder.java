@@ -24,7 +24,6 @@ import main.game.battlecraft.logic.battle.player.DC_Player;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.dungeon.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.building.BuildHelper.BUILD_PARAMS;
-import main.game.battlecraft.logic.dungeon.building.BuildHelper.BuildParameters;
 import main.swing.XDimension;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
@@ -249,6 +248,7 @@ public class DungeonBuilder {
         Map<ObjType, Coordinates> objMap = null;
         plan = new DungeonPlan(template, dungeon);
         dungeon.setPlan(plan);
+        helper.setPlan(plan);
         plan.setBlocks(blocks);
         plan.setObjMap(objMap);
         plan.setZones(createMapZones());
@@ -263,9 +263,11 @@ public class DungeonBuilder {
         // if (!dungeon.isIgnoreRotate())
         plan.setRotated(dungeon.isRotated());
 
-        plan.setFlippedX(dungeon.isFlippedX());
-        plan.setFlippedY(dungeon.isFlippedY());
-
+//        plan.setFlippedX(dungeon.isFlippedX());
+//        plan.setFlippedY(dungeon.isFlippedY());
+        plan.setFlippedX(RandomWizard.random());
+        plan.setFlippedY(RandomWizard.random());
+        plan.setRotated(RandomWizard.random());
         placeMainRooms();
         if (!dungeon.isSurface()) {
             placeCulDeSacs();
@@ -685,7 +687,7 @@ public class DungeonBuilder {
 
     public enum ROOM_TYPE {
         TREASURE_ROOM(25, 15, 3, 7, 2, 6),
-        THRONE_ROOM(60, 45, 3, 0, 4, 0),
+        THRONE_ROOM(60, 45, 3, 10, 4, 12),
         DEATH_ROOM(30, 15, 2, 4, 3, 5),
         GUARD_ROOM(25, 25, 3, 6, 2, 4),
         COMMON_ROOM(25, 25),
@@ -763,7 +765,8 @@ public class DungeonBuilder {
     // how to support more loose building for, say, natural caverns?
 
     public enum DUNGEON_TEMPLATES {
-        GREAT_ROOM, STAR, RING, CROSS, LABYRINTH, PROMENADE, SERPENT, CLASSIC, PRISON_CELLS,
+        GREAT_ROOM, STAR, RING, CROSS, LABYRINTH,
+        PROMENADE, SERPENT, CLASSIC, PRISON_CELLS,
     }
 
     // public void initBlockSpecials() {

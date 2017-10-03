@@ -11,6 +11,7 @@ import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.ActiveObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -125,7 +126,7 @@ public class StackingRule implements ActionRule {
 
         //get all units on the cell
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
-        for (Unit u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
+        for (BattleFieldObject u : game.getBfObjectsOnCoordinate(  c, false )) {
             if (!units.contains(u)) {
                 units.addCast(u.getType());
             }

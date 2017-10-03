@@ -9,25 +9,24 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import main.game.bf.DirectionMaster;
 import main.game.battlecraft.logic.battlefield.map.DungeonMapGenerator;
 import main.game.battlecraft.logic.dungeon.Dungeon;
 import main.game.battlecraft.logic.dungeon.building.*;
 import main.game.battlecraft.logic.dungeon.building.BuildHelper.BUILD_PARAMS;
-import main.game.battlecraft.logic.dungeon.building.BuildHelper.BuildParameters;
 import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.BLOCK_TYPE;
 import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.DUNGEON_TEMPLATES;
 import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
+import main.game.bf.Coordinates;
+import main.game.bf.DirectionMaster;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.TextEditor;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.GuiManager;
-import main.system.auxiliary.StringMaster;
 import main.system.math.DC_PositionMaster;
 import main.system.math.PositionMaster;
 import main.system.sound.SoundMaster;
@@ -60,13 +59,12 @@ public class LE_MapMaster {
         // ++ size, fills, zone prefs ++ BUILD PARAMS
         dungeon.setTemplate(template);
 
-        initBuildParams(alt, dungeon);
 
         LevelEditor.getSimulation().getUnits().clear();
-        level.setMap(new DungeonMapGenerator().generateMap(dungeon));
+        level.setMap(new DungeonMapGenerator().generateMap(initBuildParams(true, alt, dungeon), dungeon));
         level.init();
-        dungeon.getMinimap().init();
-        dungeon.getMinimap().getGrid().refresh();
+//        dungeon.getMinimap().init();
+//        dungeon.getMinimap().getGrid().refresh();
     }
 
     public static void transform() {
@@ -98,7 +96,10 @@ public class LE_MapMaster {
     }
 
     public static BuildParameters initBuildParams(boolean empty, Dungeon dungeon) {
-        BuildParameters params = new BuildHelper(dungeon).new BuildParameters(empty);
+        return initBuildParams(false, empty, dungeon);
+    }
+        public static BuildParameters initBuildParams(boolean generate,boolean empty, Dungeon dungeon) {
+        BuildParameters params = new BuildParameters( empty).init(generate);
         params.setValue(BUILD_PARAMS.WIDTH, "" + dungeon.getCellsX());
         params.setValue(BUILD_PARAMS.HEIGHT, "" + dungeon.getCellsY());
         if (dungeon.getPlan() != null) {
@@ -111,7 +112,7 @@ public class LE_MapMaster {
         data = TextEditor.inputTextLargeField("Alter build parameters...", data);
         if (data != null) {
 
-            params = new BuildHelper(dungeon).new BuildParameters(data);
+            params = new BuildParameters( data).init(generate);
             dungeon.setParam(PARAMS.BF_WIDTH, params.getIntValue(BUILD_PARAMS.WIDTH));
             dungeon.setParam(PARAMS.BF_HEIGHT, params.getIntValue(BUILD_PARAMS.HEIGHT));
             dungeon.setProperty(PROPS.FILLER_TYPE, params.getValue(BUILD_PARAMS.FILLER_TYPE));

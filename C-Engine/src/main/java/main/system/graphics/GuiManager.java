@@ -26,8 +26,8 @@ public class GuiManager {
     // depends on font!
     private static int infoNamesColumnMinWidth = 100;
     private static int infoNamesColumnMaxWidth = 200;
-    private static int battleFieldCellsX = 9;
-    private static int battleFieldCellsY = 7;
+    private static int battleFieldCellsX = 19;
+    private static int battleFieldCellsY = 12;
     private static boolean fullscreen;
     private static KeyListener keyListener;
     private static DISPLAY_MODE displayMode;
