@@ -71,7 +71,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 return false;
         }
         game.getManager().reset();
-        //TODO only for player actions? 
+        //TODO only for player actions?
         VisionManager.refresh();
         master.getResetter().setResetNeeded(false);
         return false;
