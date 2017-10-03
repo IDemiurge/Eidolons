@@ -347,7 +347,9 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
         } else {
             gridComp.getGame().getManager().objClicked(objClicked);
         }
-
+        if (CoreEngine.isLevelEditor()) {
+                return;
+        }
         boolean debugMode = gridComp.getGame().isDebugMode();
         if (debugMode) {
             gridComp.getGame().getDebugMaster().setArg(objClicked);

@@ -66,7 +66,7 @@ public class DataManager {
                 continue;
             }
             lists.add(getFilteredTypeNameList(criterion, ContentManager.getOBJ_TYPE(type),
-                    filterValue));
+             filterValue));
         }
 
         return lists;
@@ -190,12 +190,12 @@ public class DataManager {
         if (!recursion) {
             for (String s : map.keySet()) {
                 if (StringMaster
-                        .compareByChar(s.replace(" ", ""), typeName.replace(" ", ""), false)) {
+                 .compareByChar(s.replace(" ", ""), typeName.replace(" ", ""), false)) {
                     return map.get(s);
                 }
             }
             LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
-                    + ":" + typeName);
+             + ":" + typeName);
             return null;
         }
         if (typeName.endsWith(";")) {
@@ -219,7 +219,7 @@ public class DataManager {
             }
         }
         LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
-                + ":" + typeName);
+         + ":" + typeName);
         return type;
     }
 
@@ -233,7 +233,7 @@ public class DataManager {
             }
         }
         LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
-                + ":" + typeName);
+         + ":" + typeName);
         return type;
     }
 
@@ -250,7 +250,7 @@ public class DataManager {
         List<String> parts = StringMaster.openContainer(typeName, " ");
         String qualityName = parts.get(0);
         QUALITY_LEVEL q = new EnumMaster<QUALITY_LEVEL>().retrieveEnumConst(QUALITY_LEVEL.class,
-                qualityName);
+         qualityName);
         if (q == null) {
             q = ItemEnums.QUALITY_LEVEL.NORMAL;
         } else {
@@ -483,7 +483,7 @@ public class DataManager {
         // return list;
 
         List<String> groupsList = EnumMaster.findEnumConstantNames(TYPE.getSubGroupingKey()
-                .toString());
+         .toString());
         // TODO preCheck TYPES!
         if (groupsList.isEmpty()) {
             if (DC_TYPE.isOBJ_TYPE(subgroup)) {
@@ -547,7 +547,7 @@ public class DataManager {
                     list.add(objName);
                 }
             } else if (StringMaster.compare(objName.getValue(filterValue),
-                    filter, true)) {
+             filter, true)) {
                 list.add(objName);
             }
         }
@@ -580,7 +580,7 @@ public class DataManager {
         if (list.isEmpty()) {
             for (ObjType type : set) {
                 if (StringMaster.compareByChar(type.getProperty(TYPE.getSubGroupingKey()), group,
-                        true)) {
+                 true)) {
                     list.add(type);
                 }
             }
@@ -635,7 +635,7 @@ public class DataManager {
                 continue;
             }
             if (StringMaster.compare(type.getProperty(ContentManager.getPROP(RES_LEVEL_PROP)),
-                    res_level)) {
+             res_level)) {
                 list.add(name);
             }
         }
@@ -707,7 +707,7 @@ public class DataManager {
             typesSubGroups = new HashMap<>();
             for (String sub : XML_Reader.getXmlMap().keySet()) {
                 typesSubGroups.put(ContentManager.getOBJ_TYPE(sub),
-                        new HashMap<>());
+                 new HashMap<>());
             }
         }
         return typesSubGroups;
@@ -778,7 +778,7 @@ public class DataManager {
     }
 
 
-    private static List<String> getSubGroupsForTYPE(OBJ_TYPE TYPE, String group) {
+    public static List<String> getSubGroupsForTYPE(OBJ_TYPE TYPE, String group) {
         if (TYPE instanceof C_OBJ_TYPE) {
             for (DC_TYPE T : ((C_OBJ_TYPE) TYPE).getTypes()) {
                 List<String> list = getSubGroupsForTYPE(T, group);
@@ -787,22 +787,19 @@ public class DataManager {
                 }
             }
         }
-        // if (subGroupsMaps.get(TYPE).get(group) != null)
-        // return (subGroupsMaps.get(TYPE).get(group));
+        if (subGroupsMaps.get(TYPE).get(group) != null)
+            return (subGroupsMaps.get(TYPE).get(group));
 
-        Set<String> fullList = (XML_Reader.getTreeSubGroupMap().get(group));
-        Set<String> allGroupsForType = XML_Reader.getTreeSubGroupMap().get(group); // TODO
-
-        List<String> filteredSubGroups = new LinkedList<>();
-
-        for (String subgroup : fullList) {
-            if (allGroupsForType.contains(subgroup)) {
-                filteredSubGroups.add(subgroup);
+        List<String> fullList = new LinkedList<>();
+        if (StringMaster.isEmpty(group)) {
+            for (String sub : getTabsGroup(TYPE)) {
+                fullList.addAll(XML_Reader.getTreeSubGroupMap().get(sub));
             }
-        }
-        subGroupsMaps.get(TYPE).put(group, filteredSubGroups);
+        } else
+            fullList.addAll(XML_Reader.getTreeSubGroupMap().get(group));
+        subGroupsMaps.get(TYPE).put(group, fullList);
 
-        return filteredSubGroups;
+        return fullList;
     }
 
     public static boolean isIdSorted(OBJ_TYPE TYPE) {

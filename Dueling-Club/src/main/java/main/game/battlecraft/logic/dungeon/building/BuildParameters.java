@@ -136,6 +136,16 @@ public class BuildParameters extends DataUnit<BUILD_PARAMS> {
         return value;
     }
 
+    @Override
+    public String getValue(String name) {
+        return super.getValue(name);
+    }
+
+    @Override
+    public int getIntValue(String value) {
+        return super.getIntValue(value);
+    }
+
     public boolean isNoRandomRooms() {
         return getValue(BUILD_PARAMS.RANDOM_ROOMS).isEmpty();
     }

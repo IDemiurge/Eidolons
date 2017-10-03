@@ -123,7 +123,7 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
         coordinateListeningMode = true;
         // comp.refresh();
         SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ACTIVATE);
-        boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CUSTOM_SELECT);
+        Boolean result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CUSTOM_SELECT, 3000);
         coordinateListeningMode = false;
         if (!result) {
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);

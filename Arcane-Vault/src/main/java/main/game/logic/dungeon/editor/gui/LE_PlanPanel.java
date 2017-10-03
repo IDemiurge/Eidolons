@@ -671,7 +671,7 @@ public class LE_PlanPanel extends G_Panel {
                         public void run() {
                             handleControl(c, true);
                         }
-                    }).start();
+                    }, "alt click handle threat").start();
                 }
 
                 public void handleClick() {
@@ -679,7 +679,7 @@ public class LE_PlanPanel extends G_Panel {
                         public void run() {
                             handleControl(c, false);
                         }
-                    }).start();
+                    }, "click handle threat").start();
                 }
             };
         }

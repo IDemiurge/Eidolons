@@ -110,12 +110,12 @@ public class LevelEditor {
     }
 
     public static void main(String[] args) {
-        Player.setSwitcher(false);
         DC_Engine.jarInit();
         SwingMaster.DEBUG_ON = false;
         DC_Engine.systemInit();
         initFullData();
         DC_Engine.microInitialization( );
+        Player.setSwitcher(false);
         // WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.READING_DONE);
         // XML_Reader.readTypes(true);
         CoreEngine.setLevelEditor(true);

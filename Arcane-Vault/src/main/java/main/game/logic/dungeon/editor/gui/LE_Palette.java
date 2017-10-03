@@ -452,7 +452,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         // Units(OBJ_TYPES.UNITS, G_PROPS.DEITY,
         // DC_ContentManager.getStandardDeitiesString(", ")),
 
-        Units(DC_TYPE.UNITS, G_PROPS.ASPECT, "Neutral",
+        Units(DC_TYPE.UNITS, G_PROPS.ASPECT, "",
          G_PROPS.UNIT_GROUP,
          "Humans, Knights, Bandits, Greenskins, Dwarves, Undead, Dark, Demons, Animals, "
                 + "Light, Constructs, Magi, North, Critters, Dungeon"),
@@ -470,7 +470,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         public String filterValue;
         public OBJ_TYPE[] TYPES;
         public boolean upper;
-        DC_TYPE TYPE = DC_TYPE.BF_OBJ;
+        DC_TYPE TYPE ;
 
         UPPER_PALETTE(PROPERTY filterProp, String filterValue, PROPERTY prop, String subPalettes) {
             this(DC_TYPE.BF_OBJ, filterProp, filterValue, prop, subPalettes);

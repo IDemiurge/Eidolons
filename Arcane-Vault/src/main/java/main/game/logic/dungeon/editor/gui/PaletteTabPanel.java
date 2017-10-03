@@ -3,14 +3,15 @@ package main.game.logic.dungeon.editor.gui;
 import main.client.cc.gui.neo.tabs.HC_Tab;
 import main.client.cc.gui.neo.tabs.HC_TabComp;
 import main.client.cc.gui.neo.tabs.HC_TabPanel;
+import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.logic.dungeon.editor.gui.LE_Palette.UPPER_PALETTE;
 import main.swing.generic.components.ComponentVisuals;
-import main.system.entity.FilterMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.entity.FilterMaster;
 import main.utilities.workspace.Workspace;
 
 import java.awt.*;
@@ -36,18 +37,30 @@ public class PaletteTabPanel extends HC_TabPanel {
                 deque.addAll(types);
             } else {
                 deque.addAllCast(FilterMaster.filterByProp(new LinkedList<>(types), p.filterProp
-                        .getName(), p.filterValue));
+                 .getName(), p.filterValue));
             }
-
-            for (String s : StringMaster.openContainer(p.subPalettes, ", ")) {
+            List<String> subTabs = StringMaster.openContainer(p.subPalettes, ", ");
+            if (!p.upper)
+                for (String sub : DataManager.getSubGroupsForTYPE(p.TYPE, p.filterValue)) {
+                    sub = StringMaster.getWellFormattedString(sub);
+                    if (!subTabs.contains(sub)) {
+                        subTabs.add(sub);
+                        if (p.TYPE == DC_TYPE.UNITS) {
+                            subTabs.contains(sub);
+                        }
+                    }
+                }
+            for (String s : subTabs) {
                 List<ObjType> typeList = p.upper ? DataManager.getTypesGroup(type, StringMaster
-                        .getWellFormattedString(s)) : DataManager.getTypesSubGroup(type,
-                        StringMaster.getWellFormattedString(s));
+                 .getWellFormattedString(s)) : DataManager.getTypesSubGroup(type,
+                 StringMaster.getWellFormattedString(s));
                 if (typeList.isEmpty()) {
                     DequeImpl<ObjType> subdeque = new DequeImpl<>();
                     String name = p.groupProp.getName();
                     Collection<?> list = FilterMaster
-                            .filterByProp(new LinkedList<>(deque), name, s);
+                     .filterByProp(new LinkedList<>(deque), name, s);
+                    if (list.isEmpty())
+                        continue;
                     subdeque.addAllCast(list);
                     typeList = new LinkedList<>(subdeque);
                 }
