@@ -2,7 +2,6 @@ package main.entity.obj;
 
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.*;
-import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.values.parameters.G_PARAMS;
@@ -43,13 +42,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     }
 
     public Boolean isLandscape() {
-        return getType().checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.LANDSCAPE.toString());
+        return false;
 
     }
 
     public boolean isWall() {
-        return getType().checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WALL.toString());
-
+        return false;
     }
 
     @Override

@@ -54,7 +54,7 @@ public class ToolTipManager extends TablePanel {
 
         });
 
-        GuiEventManager.bind(UNIT_VIEW_HOVER_ON, (event) -> {
+        GuiEventManager.bind(GRID_OBJ_HOVER_ON, (event) -> {
             BaseView object = (BaseView) event.get();
 //            if (object.getScaleX()==getDefaultScale(object))
 //                if (object.getScaleX()==getDefaultScale(object))
@@ -82,7 +82,7 @@ public class ToolTipManager extends TablePanel {
 //           DungeonScreen.getInstance().getGridPanel().getbo
             object.setHovered(true);
         });
-        GuiEventManager.bind(UNIT_VIEW_HOVER_OFF, (event) -> {
+        GuiEventManager.bind(GRID_OBJ_HOVER_OFF, (event) -> {
             BaseView object = (BaseView) event.get();
 
             float scaleX;

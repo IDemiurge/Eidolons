@@ -13,6 +13,7 @@ import main.entity.obj.unit.Unit;
 import main.game.core.DC_TurnManager;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.system.math.PositionMaster;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 import main.test.debug.DebugMaster;
@@ -78,13 +79,8 @@ public class OutlineMaster {
         Ref ref = new Ref(activeUnit);
         ref.setMatch(unit.getId());
         // [quick fix]
-        if (unit.getX() == 7 && unit.getY() == 9) {
-            if (!new ClearShotCondition().preCheck(ref)) {
-                // vision type preCheck - x.ray or so TODO
-                unit.setGamma(0);
-                return OUTLINE_TYPE.BLOCKED_OUTLINE;
-            }
-        }
+        if (PositionMaster.getExactDistance(
+         unit.getCoordinates(), activeUnit.getCoordinates())<6.0)
         if (!new ClearShotCondition().preCheck(ref)) {
             // vision type preCheck - x.ray or so TODO
             unit.setGamma(0);

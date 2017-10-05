@@ -1,5 +1,6 @@
 package main.entity.obj;
 
+import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
@@ -20,6 +21,9 @@ import main.game.logic.battle.player.Player;
 public class Structure extends BattleFieldObject {
 
 
+    private Boolean wall;
+    private Boolean landscape;
+
     public Structure(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
     }
@@ -27,6 +31,18 @@ public class Structure extends BattleFieldObject {
     public Structure(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         this(type, owner, game, ref);
         setCoordinates(new Coordinates(x, y));
+    }
+    public boolean isWall() {
+        if (wall==null )
+            wall = getType().checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WALL.toString());
+        return wall;
+    }
+
+    @Override
+    public Boolean isLandscape() {
+        if (landscape==null )
+            landscape = getType().checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.LANDSCAPE.toString());
+        return landscape;
     }
 
     @Override

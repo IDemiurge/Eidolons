@@ -2,7 +2,6 @@ package main.libgdx.gui.panels.dc;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -70,15 +69,17 @@ public class InitiativePanel extends Group {
                 resetZIndices();
             }
         });
-        GuiEventManager.bind(GuiEventType.UNIT_VIEW_HOVER_ON, obj -> {
+        GuiEventManager.bind(GuiEventType.GRID_OBJ_HOVER_ON, obj -> {
             if (!isRealTime()) {
+                if (!(obj.get() instanceof UnitView))
+                    return ;
                 UnitView p = (UnitView) obj.get();
                 ImageContainer view = getIfExists(p.getCurId());
                 if (view != null)
                     view.setZIndex(Integer.MAX_VALUE - 1);
             }
         });
-        GuiEventManager.bind(GuiEventType.UNIT_VIEW_HOVER_OFF, obj -> {
+        GuiEventManager.bind(GuiEventType.GRID_OBJ_HOVER_OFF, obj -> {
             if (!isRealTime()) {
                 resetZIndices();
             }

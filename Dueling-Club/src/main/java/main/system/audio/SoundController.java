@@ -34,8 +34,8 @@ public class SoundController {
 //        GuiEventManager.bind(GuiEventType.GAME_RESUMED, p->playGuiSound(p,GAME_RESUMED));
 //        GuiEventManager.bind(GuiEventType.SHOW_BLUE_BORDERS, p->playGuiSound(p,SHOW_BLUE_BORDERS));
 //        GuiEventManager.bind(GuiEventType.CALL_BLUE_BORDER_ACTION, p->playGuiSound(p,CALL_BLUE_BORDER_ACTION));
-//        GuiEventManager.bind(GuiEventType.UNIT_VIEW_HOVER_OFF, p->playGuiSound(p,UNIT_VIEW_HOVER_OFF));
-//        GuiEventManager.bind(GuiEventType.UNIT_VIEW_HOVER_ON, p->playGuiSound(p,UNIT_VIEW_HOVER_ON));
+//        GuiEventManager.bind(GuiEventType.GRID_OBJ_HOVER_OFF, p->playGuiSound(p,GRID_OBJ_HOVER_OFF));
+//        GuiEventManager.bind(GuiEventType.GRID_OBJ_HOVER_ON, p->playGuiSound(p,GRID_OBJ_HOVER_ON));
     }
 
     public static void playCustomEventSound(SOUND_EVENT e) {
@@ -79,9 +79,9 @@ public class SoundController {
                 return STD_SOUNDS.CLICK_ACTIVATE.getPath();
             case CALL_BLUE_BORDER_ACTION:
                 return STD_SOUNDS.CLICK_TARGET_SELECTED.getPath();
-            case UNIT_VIEW_HOVER_OFF:
+            case GRID_OBJ_HOVER_OFF:
                 return STD_SOUNDS.CLICK_TARGET_SELECTED.getPath();
-            case UNIT_VIEW_HOVER_ON:
+            case GRID_OBJ_HOVER_ON:
                 return STD_SOUNDS.HERO.getPath();
         }
         return null;

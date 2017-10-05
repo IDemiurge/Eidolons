@@ -117,7 +117,10 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void act(float delta) {
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
+        if (gridX == 0)
+            if (gridY == 0)
+                gridX=0;
+        if (!SuperActor.isCullingOff())
             if (!DungeonScreen.getInstance().getController().isWithinCamera(
 //             getX(), getY(),
 //             2*getWidth(), 2*getHeight())

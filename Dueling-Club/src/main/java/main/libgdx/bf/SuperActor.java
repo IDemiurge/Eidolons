@@ -29,6 +29,10 @@ public abstract class SuperActor extends Group implements Borderable {
     protected boolean active;
     private static boolean cullingOff;
 
+    public static boolean isCullingOff() {
+        return cullingOff;
+    }
+
     @Override
     public TextureRegion getBorder() {
         return borderTexture;
@@ -69,7 +73,7 @@ public abstract class SuperActor extends Group implements Borderable {
     protected boolean isIgnored() {
         if (getColor().a == 0)
             return true;
-        if (cullingOff)
+        if (isCullingOff())
             return false;
             if (!DungeonScreen.getInstance().getController().
              isWithinCamera(

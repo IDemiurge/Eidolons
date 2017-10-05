@@ -20,12 +20,12 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -54,20 +54,29 @@ public class Crawler {
               parts = StringMaster.openContainer(data);
             index = 1;
         }
-        BattleSceneLauncher.main(null);
-        DC_Engine.mainMenuInit();
 if (index ==2){
 //    random  = true;
 //    parts = Collections.nCopies(2, "");
 } else if (index == 3){
     FAST_DC.main(new String[]{
-     "" + EnumMaster.getEnumConstIndex(LAUNCH.class, LAUNCH.EXPLORATION)
+     "" +
+     (Arrays.asList(
+       PresetLauncher.LAUNCH_OPTIONS)).
+       indexOf(StringMaster.getWellFormattedString(LAUNCH.EXPLORATION.toString()))
     });
-}else if (index == 3){
+
+    return ;
+}else if (index == 4){
     FAST_DC.main(new String[]{
-     "" + EnumMaster.getEnumConstIndex(LAUNCH.class, LAUNCH.EXPLORATION_TEST)
+     "" +
+      (Arrays.asList(
+       PresetLauncher.LAUNCH_OPTIONS)).
+       indexOf(StringMaster.getWellFormattedString(LAUNCH.EXPLORATION_TEST.toString()))
     });
+    return ;
 }
+        BattleSceneLauncher.main(null);
+        DC_Engine.mainMenuInit();
         String dungeon =parts==null ? "crawl"+new FileChooser(PathFinder.getDungeonLevelFolder() + "crawl").launch("", "")
          : parts.get(0);
         launchData+= dungeon;

@@ -258,7 +258,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     }
 
     public boolean isWithinCamera(Actor actor) {
-        return isWithinCamera(actor.getX()+actor.getWidth(), actor.getY()+actor.getHeight(), 2*actor.getWidth(), 2*actor.getHeight());
+        return isWithinCamera(actor.getX()+2*actor.getWidth(), actor.getY()+actor.getHeight(), 2*actor.getWidth(), 2*actor.getHeight());
 }
         public boolean isWithinCamera(float x, float y, float width, float height) {
 //            width = width / getZoom();

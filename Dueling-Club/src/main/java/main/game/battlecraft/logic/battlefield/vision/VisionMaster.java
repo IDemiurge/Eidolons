@@ -1,5 +1,6 @@
 package main.game.battlecraft.logic.battlefield.vision;
 
+import main.ability.conditions.special.ClearShotCondition;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
@@ -63,6 +64,7 @@ public class VisionMaster implements GenericVisionManager {
 
 
     public void resetVisibilityStatuses() {
+        ClearShotCondition.clearCache();
         getGammaMaster().clearCache();
         getIlluminationMaster().clearCache();
 //        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);

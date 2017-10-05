@@ -30,7 +30,9 @@ public class DC_GameMaster extends GameMaster {
     private Map<Coordinates, List<Unit>> unitCache = new HashMap<>();
     private Map<Coordinates, List<BattleFieldObject>> objCache = new HashMap<>();
     private Map<Coordinates, List<BattleFieldObject>> noOverlayingCache = new HashMap<>();
-    private Map<Coordinates, List<BattleFieldObject>> overlayingCache   = new HashMap<>();
+    private Map<Coordinates, List<BattleFieldObject>> overlayingCache = new HashMap<>();
+    private BattleFieldObject[] unitsArray;
+    private BattleFieldObject[] structuresArray;
 
 
     public DC_GameMaster(DC_Game game) {
@@ -98,7 +100,7 @@ public class DC_GameMaster extends GameMaster {
 //        units = getObjectsOnCoordinate(null, c, null, true, false);
 //        getUnitCache().put(c, units);
 //        return units;
-        return new XList<Unit>().addAllCast( getObjectsOnCoordinate(c, null ));
+        return new XList<Unit>().addAllCast(getObjectsOnCoordinate(c, null));
 //        return
 //         getUnits().stream().filter(u -> u.getCoordinates().equals(c)).collect(Collectors.toList());
     }
@@ -125,21 +127,20 @@ public class DC_GameMaster extends GameMaster {
         }
 
 
-         List<BattleFieldObject> list = null;
+        List<BattleFieldObject> list = null;
 
 
-            if (z == 0)
+        if (z == 0)
 
-                    if (getCache(overlayingIncluded) != null)
-                        list = getCache(overlayingIncluded).get(c);
-                    if (list != null) {
-                        if (!passableIncluded)
-                        {
-                            list=     new LinkedList<>(list) ;
-                            list.removeIf(obj-> obj.isPassable());
-                        }
-                        return list;
-                    }
+            if (getCache(overlayingIncluded) != null)
+                list = getCache(overlayingIncluded).get(c);
+        if (list != null) {
+            if (!passableIncluded) {
+                list = new LinkedList<>(list);
+                list.removeIf(obj -> obj.isPassable());
+            }
+            return list;
+        }
 
 
         list =
@@ -247,9 +248,12 @@ public class DC_GameMaster extends GameMaster {
     public void clearCaches() {
         getCache(false).clear();
         getCache(true).clear();
-        getCache(null ).clear();
+        getCache(null).clear();
+        unitsArray=null ;
+        structuresArray=null ;
     }
-        public void clear() {
+
+    public void clear() {
         getUnits().clear();
         getStructures().clear();
     }
@@ -333,10 +337,11 @@ public class DC_GameMaster extends GameMaster {
         return new RandomWizard<Unit>().getRandomListItem(matched);
 
     }
+
     public Map<Coordinates, List<BattleFieldObject>> getCache(Boolean overlaying) {
-        if (overlaying==null )
-        return objCache;
-        return overlaying? overlayingCache: noOverlayingCache;
+        if (overlaying == null)
+            return objCache;
+        return overlaying ? overlayingCache : noOverlayingCache;
     }
 
     public Map<Coordinates, List<BattleFieldObject>> getNoOverlayingCache() {
@@ -349,5 +354,17 @@ public class DC_GameMaster extends GameMaster {
 
     public Map<Coordinates, List<BattleFieldObject>> getObjCache() {
         return objCache;
+    }
+
+    public BattleFieldObject[] getUnitsArray() {
+        if (unitsArray == null)
+            unitsArray = getUnits().toArray(new BattleFieldObject[getUnits().size()]);
+        return unitsArray;
+    }
+
+    public BattleFieldObject[] getStructuresArray() {
+        if (structuresArray == null)
+            structuresArray = getStructures().toArray(new BattleFieldObject[getStructures().size()]);
+        return structuresArray;
     }
 }

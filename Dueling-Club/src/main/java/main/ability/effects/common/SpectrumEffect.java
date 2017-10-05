@@ -9,7 +9,6 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
@@ -74,14 +73,11 @@ public class SpectrumEffect extends DC_Effect {
         Integer range = new Formula(rangeFormula).getInt(ref);
         Integer backwardRange = 0;
         Integer sidePenalty = 0;
-        if (circular) {
-            backwardRange = range;
-        }
         if (vision) {
             range = new Formula(StringMaster.getValueRef(KEYS.SOURCE, PARAMS.SIGHT_RANGE))
              .getInt(ref);
             backwardRange = null; // TODO
-            sidePenalty = null;
+            sidePenalty = null; //will be taken from unit
         }
 
         if (ref.getObj(source) instanceof BattleFieldObject)
@@ -89,24 +85,21 @@ public class SpectrumEffect extends DC_Effect {
         else {
             //TODO
         }
-        if (bfObj instanceof Unit)
-            bfObj = bfObj;
         FACING_DIRECTION facing = bfObj.getFacing();
-//        Boolean clockwise = null;
-//        if (previousFacing != null)
-//            clockwise = facing.getDirection().getDegrees() < previousFacing.getDirection().getDegrees();
-//        if (clockwise != null)
-//        {
-//            facing = FacingMaster.rotate(facing, clockwise);
-//        }
+
+        if (circular) {
+            backwardRange = range;
+            facing = FACING_DIRECTION.NORTH;
+        }else {
+            sidePenalty=1;
+        }
         List<Coordinates> coordinates = new LinkedList<>(getGame().getVisionMaster().getSightMaster()
          .getSpectrumCoordinates(
           range, sidePenalty, backwardRange, bfObj,
           vision, facing));
 
-//        previousFacing = facing;
 
-        main.system.auxiliary.log.LogMaster.log(1, this + " applied on " + coordinates);
+//        main.system.auxiliary.log.LogMaster.log(1, this + " applied on " + coordinates);
         // boolean x-ray ++ tall/short/etc
         if (effects == null) {
             initEffects();

@@ -8,20 +8,20 @@ import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.entity.DataModel;
 import main.entity.obj.Structure;
 import main.game.core.Eidolons;
+import main.libgdx.bf.GridConst;
+import main.libgdx.bf.SuperActor;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.RandomWizard;
-import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import main.system.options.OptionsMaster;
 
 /**
  * Created by JustMe on 8/28/2017.
  */
 public class ShadeLightCell extends SuperContainer {
 
-    private static final Color DEFAULT_COLOR =new Color(1, 0.9f, 0.7f, 1) ;
+    private static final Color DEFAULT_COLOR = new Color(1, 0.9f, 0.7f, 1);
     private static boolean alphaFluctuation = true;
     private int x;
     private int y;
@@ -63,7 +63,7 @@ public class ShadeLightCell extends SuperContainer {
     public void setBaseAlpha(float baseAlpha) {
         this.baseAlpha = baseAlpha;
         if (isColored())
-        teamColor = initTeamColor();
+            teamColor = initTeamColor();
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ShadeLightCell extends SuperContainer {
     }
 
     @Override
-     public boolean isIgnored() {
+    public boolean isIgnored() {
         return super.isIgnored();
     }
 
@@ -105,7 +105,7 @@ public class ShadeLightCell extends SuperContainer {
 //        IlluminationRule.
 
         DataModel obj = null;
-        if (type==SHADE_LIGHT.GAMMA_LIGHT || !Eidolons.game.isStarted())
+        if (type == SHADE_LIGHT.GAMMA_LIGHT || !Eidolons.game.isStarted())
             obj = Eidolons.game.getDungeon();
         else {
             obj = Eidolons.game.getDungeon();
@@ -116,28 +116,28 @@ public class ShadeLightCell extends SuperContainer {
                 }
             }
         }
-        if (obj==null )
+        if (obj == null)
             return DEFAULT_COLOR;
-        COLOR_THEME color = null ;
+        COLOR_THEME color = null;
 //        new EnumMaster<COLOR_THEME>().
 //         retrieveEnumConst(COLOR_THEME.class, obj.getProperty(PROPS.COLOR_THEME, true));
         if (color != null)
-        switch (color) {
-            case BLUE:
-                return new Color(0.7f, 0.8f, 1f, 1);
-            case GREEN:
-                return new Color(0.7f, 0.9f, 0.7f, 1);
-            case RED:
-                return  new Color(1f, 0.7f, 0.7f, 1);
-            case DARK:
-                return new Color(0.6f, 0.5f, 0.7f, 1);
-            case LIGHT:
-                return new Color(1f, 1f, 1f, 1);
-            case YELLOW:
-                return new Color(1, 0.9f, 0.7f, 1);
-            case PURPLE:
-                return   new Color(0.8f, 0.7f, 0.9f, 1);
-        }
+            switch (color) {
+                case BLUE:
+                    return new Color(0.7f, 0.8f, 1f, 1);
+                case GREEN:
+                    return new Color(0.7f, 0.9f, 0.7f, 1);
+                case RED:
+                    return new Color(1f, 0.7f, 0.7f, 1);
+                case DARK:
+                    return new Color(0.6f, 0.5f, 0.7f, 1);
+                case LIGHT:
+                    return new Color(1f, 1f, 1f, 1);
+                case YELLOW:
+                    return new Color(1, 0.9f, 0.7f, 1);
+                case PURPLE:
+                    return new Color(0.8f, 0.7f, 0.9f, 1);
+            }
 
         return DEFAULT_COLOR;
     }
@@ -169,12 +169,19 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     public void act(float delta) {
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
+        if (x == 3)
+            if (y == 5)
+                x = x;
+        if (!SuperActor.isCullingOff())
             if (!DungeonScreen.getInstance().getController().
-             isWithinCamera(getX() + getWidth(), getY() + getHeight(), 2 * getWidth(), 2 * getHeight())) {
+             isWithinCamera(
+
+              getX() +3*GridConst.CELL_W, getY() + getHeight(), 2 * getWidth(), 2 * getHeight()
+             )) {
                 return;
             }
 
         super.act(delta);
     }
+
 }

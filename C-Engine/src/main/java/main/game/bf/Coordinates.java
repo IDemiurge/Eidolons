@@ -328,7 +328,8 @@ public class Coordinates {
 
     public List<Coordinates> getAdjacentCoordinates(Boolean diagonals_included_not_only) {
         List<Coordinates> list = getAdjacenctMap(diagonals_included_not_only).get(this);
-        if (list != null) return list;
+        if (list != null)
+            return list;
         list = new LinkedList<>();
 
         if (diagonals_included_not_only != null) {

@@ -50,7 +50,7 @@ public class PresetLauncher {
     };
     public static final int OPTION_NEW = 4;
     public final static String[] LAUNCH_OPTIONS = {
-    "AI", "Gui", "Last", "Recent", "New", "Anims", "Load", "Exploration", "Exploration_Test",
+    "AI", "Gui", "Last", "Recent", "New", "Anims", "Load", "Exploration", "Exploration Test",
 //           "Usability", "Emitters","Light",     "Standoff Test", "Standoff Preset", "Standoff",
      "Profiling"
 

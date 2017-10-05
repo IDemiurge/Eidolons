@@ -23,11 +23,13 @@ import main.game.bf.DirectionMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.math.FuncMaster;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Created by JustMe on 2/22/2017.
@@ -140,18 +142,19 @@ public class SightMaster {
         // return;
         Collection<Coordinates> removeList = new LinkedList<>();
         for (Coordinates c : list) {
-            List<BattleFieldObject> objs = source.getGame().getMaster(). getObjectsOnCoordinate(c, false);
-            if (objs.isEmpty()) continue;
-            Obj obj  = (Obj) FuncMaster.getGreatestEntity(objs, unit -> unit.getIntParam(PARAMS.HEIGHT));
-//            = source.getGame().getObjectByCoordinate(c); //getBattleField().getGrid().getObjOrCell(c);
-            if (obj != null) {
+//            List<BattleFieldObject> objs = source.getGame().getMaster().
+//             getObjectsOnCoordinate(c, false);
+//            if (objs.isEmpty()) continue;
+//            Obj obj  =objs.get(0); if (objs.size()>1) obj= (Obj) FuncMaster.getGreatestEntity(objs, unit -> unit.getIntParam(PARAMS.HEIGHT));
+////            = source.getGame().getObjectByCoordinate(c); //getBattleField().getGrid().getObjOrCell(c);
+//            if (obj != null) {
                 Ref ref = new Ref(source);
-                ref.setMatch(obj.getId());
+                ref.setMatch(source.getGame().getCellByCoordinate(c).getId());
                 boolean clearShot = getClearShotCondition().preCheck(ref);
                 if (!clearShot) {
                     removeList.add(c);
                 }
-            }
+//            }
         }
         list.removeAll(removeList);
     }
