@@ -17,6 +17,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.tools.future.FutureBuilder;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.rules.action.ActionRule;
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.bf.Coordinates;
@@ -27,6 +28,7 @@ import main.game.core.state.DC_StateManager;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.bf.TargetRunnable;
 import main.swing.components.obj.drawing.DrawMasterStatic;
@@ -205,13 +207,16 @@ public class DC_GameManager extends GameManager {
         for (Obj u : getGame().getCells()) {
             ((DC_Obj) u).setOutlineType(null);
         }
+if (ExplorationMaster.isExplorationOn())
+    VisionManager.refresh();
 
         updateGraphics();
     }
 
     private void updateGraphics() {
-        GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_LIGHT, null);
+        //set dirty flag?
+        GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_EMITTERS, null);
     }

@@ -5,6 +5,7 @@ import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
@@ -77,8 +78,22 @@ public class OutlineMaster {
         Ref ref = new Ref(activeUnit);
         ref.setMatch(unit.getId());
         // [quick fix]
+        if (unit.getX() == 7 && unit.getY() == 9) {
+            if (!new ClearShotCondition().preCheck(ref)) {
+                // vision type preCheck - x.ray or so TODO
+                unit.setGamma(0);
+                return OUTLINE_TYPE.BLOCKED_OUTLINE;
+            }
+        }
+        if (!new ClearShotCondition().preCheck(ref)) {
+            // vision type preCheck - x.ray or so TODO
+            unit.setGamma(0);
+            return OUTLINE_TYPE.BLOCKED_OUTLINE;
+        } else
+            unit.setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
 
         int gamma = master.getGammaMaster().getGamma(true, activeUnit, unit);
+
         if (gamma == Integer.MIN_VALUE) {
             return OUTLINE_TYPE.VAGUE_LIGHT;
         } else if (gamma >= master.getGammaMaster().getGammaForBlindingLight()) {
@@ -92,10 +107,7 @@ public class OutlineMaster {
             return OUTLINE_TYPE.THICK_DARKNESS;
         }
 
-            if (!new ClearShotCondition().preCheck(ref)) {
-                // vision type preCheck - x.ray or so TODO
-                return OUTLINE_TYPE.BLOCKED_OUTLINE;
-            }
+
 //            return null;
 
 

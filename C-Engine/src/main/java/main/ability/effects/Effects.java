@@ -231,6 +231,13 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
     }
 
     @Override
+    public void  setOriginalFormula(Formula formula) {
+        for (Effect e : this.effects) {
+            e. setOriginalFormula(formula);
+        }
+    }
+
+    @Override
     public Effect getCopy() {
         if (!isCopied()) {
             setCopied(true);

@@ -113,8 +113,8 @@ public class UnitResetter extends EntityResetter<Unit> {
 //            return;
 //        }
         if (getEntity().isMine()) {
-if (CoreEngine.isLogicTest())
-            TestMasterContent.addTestGroupSpells(getEntity());
+            if (CoreEngine.isLogicTest())
+                TestMasterContent.addTestGroupSpells(getEntity());
 
             if (CoreEngine.isAnimationTestMode()) {
                 TestMasterContent.addANIM_TEST_Spells(getEntity());
@@ -133,7 +133,7 @@ if (CoreEngine.isLogicTest())
         // Chronos.logTimeElapsedForMark(toString() + "to base (values)");
 
         // Chronos.mark(toString() + "to base (init objects)");
-            getInitializer().initHeroObjects();
+        getInitializer().initHeroObjects();
         // Chronos.logTimeElapsedForMark(toString() + "to base (init objects)");
         // if (mainHero)
         if (!CoreEngine.isArcaneVault()) {

@@ -104,13 +104,8 @@ public class UnitViewTooltipFactory {
                         hintsContainer.setValueAlignment(Align.right);
                         values.add(hintsContainer);
 
-//                    hero.getUnitVisionStatus();
-//                    hero.getOutlineTypeForPlayer;
-//                    hero.getGame().getVisionMaster().getOutlineMaster().get
-//                    final ValueContainer outlineContainer =
-//                     new ValueContainer(StringMaster.getWellFormattedString(hero.getOutlineTypeForPlayer().name()), "");
-//                    outlineContainer.setNameAlignment(Align.left);
-//                    values.add(outlineContainer);
+
+
 
                         return values;
                     }
@@ -201,6 +196,21 @@ if (info_level!=null )
 //                    addKeyAndValue("Gamma", ""+hero.getGame().getVisionMaster().
 //                     getGammaMaster().
 //                     getGamma(false, hero.getGame().getManager().getActiveObj(), hero), values);
+            }
+            if ( hero.getGame().isDebugMode())
+            {
+
+                final ValueContainer outlineContainer =
+                 new ValueContainer(StringMaster.getWellFormattedString
+                  (hero.getOutlineTypeForPlayer()+""), "");
+                outlineContainer.setNameAlignment(Align.left);
+                values.add(outlineContainer);
+
+                final ValueContainer outlineContainer2 =
+                 new ValueContainer(StringMaster.getWellFormattedString
+                  (hero.getVisibilityLevel()+""), "");
+                outlineContainer.setNameAlignment(Align.left);
+                values.add(outlineContainer);
             }
             return values;
         };

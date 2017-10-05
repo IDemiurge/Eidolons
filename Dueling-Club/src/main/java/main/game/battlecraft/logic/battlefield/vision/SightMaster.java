@@ -56,10 +56,10 @@ public class SightMaster {
                                                          FACING_DIRECTION facing,
                                                          boolean extended) {
         DequeImpl<Coordinates> list = new DequeImpl<>();
-        Unit unit = null;
+        BattleFieldObject unit = null;
         Coordinates orig = source.getCoordinates();
-        if (source instanceof Unit) {
-            unit = (Unit) source;
+        if (source instanceof BattleFieldObject) {
+            unit = (BattleFieldObject) source;
         }
         if (facing == null) {
             if (unit != null) {
@@ -114,13 +114,13 @@ public class SightMaster {
             // removeConcealed(list, unit, facing);
             // addIlluminated(list, unit, facing);
             addSpecial(list, unit, facing);
-            unit.setSightSpectrumCoordinates(list, extended);
+//            unit.setSightSpectrumCoordinates(list, extended);
         }
         list.add(source.getCoordinates());
         return list;
     }
 
-    private void addSpecial(DequeImpl<Coordinates> list, Unit source,
+    private void addSpecial(DequeImpl<Coordinates> list, BattleFieldObject source,
                             FACING_DIRECTION facing) {
         for (Obj obj : source.getGame().getObjects(C_OBJ_TYPE.BF)) {
             if (FacingMaster.getSingleFacing(source, (BfObj) obj) == UnitEnums.FACING_SINGLE.IN_FRONT) {

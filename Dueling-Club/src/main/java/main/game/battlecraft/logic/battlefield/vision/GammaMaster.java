@@ -55,7 +55,7 @@ public class GammaMaster {
             source = target.getGame().getManager().getActiveObj();
         }
         if (!dirty)
-            if (target.getGamma()!=null )
+            if (target.getGamma() != null)
                 if (source == target.getGame().getManager().getActiveObj())
                     return target.getGamma();
 
@@ -78,18 +78,19 @@ public class GammaMaster {
     }
 
     public float getAlphaForShadowMapCell(int x, int y, SHADE_LIGHT type) {
-if (VisionManager.isVisionHacked()){
-    return 0;
-}
+        if (VisionManager.isVisionHacked()) {
+            return 0;
+        }
         Unit unit = Eidolons.game.getManager().getMainHero();
         if (unit == null) {
             unit = Eidolons.game.getManager().getActiveObj();
         }
         float alpha = 0;
         float gamma = getGammaForCell(x, y);
-        if ( Eidolons.game.getCellByCoordinate(new Coordinates(x, y)).getVisibilityLevel()==VISIBILITY_LEVEL.BLOCKED){
-            gamma = 0;
-        }
+//        if (Eidolons.game.getCellByCoordinate(new Coordinates(x, y)).getVisibilityLevel() == VISIBILITY_LEVEL.BLOCKED) {
+//            gamma = 0;
+//        }
+
         switch (type) {
 
             case GAMMA_SHADOW:
@@ -101,6 +102,9 @@ if (VisionManager.isVisionHacked()){
                     alpha = 1 - gamma;
                 break;
             case GAMMA_LIGHT:
+                if (x == 7 && y == 9) {
+                    x = 1;
+                }
                 if (gamma < 2)
                     return 0;
                 alpha = gamma - 2;
@@ -110,10 +114,10 @@ if (VisionManager.isVisionHacked()){
 //                 Eidolons.game.getOverlayingObjects(
 //                 new Coordinates(x, y));
 //                list.addAll(
-                 Eidolons.game.getMaster(). getObjectsOnCoordinate(new Coordinates(x, y), null );
+                 Eidolons.game.getMaster().getObjectsOnCoordinate(new Coordinates(x, y), null);
                 list.removeIf(u -> IlluminationRule.getLightEmission(
                  u) == 0
-                || u.getVisibilityLevel()!= VISIBILITY_LEVEL.CLEAR_SIGHT
+                 || u.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT
                 );
                 if (!list.isEmpty())
                     alpha = Math.round(LIGHT_EMITTER_ALPHA_FACTOR *
@@ -148,9 +152,9 @@ if (VisionManager.isVisionHacked()){
     }
 
     public float getGammaForCell(int x, int y) {
-        Unit unit =  master.getSeeingUnit();
+//        Unit unit =  master.getSeeingUnit();
         return CELL_GAMMA_MODIFIER * (float)
-               Eidolons.game.getCellByCoordinate(new Coordinates(x, y)).getGamma();
+         Eidolons.game.getCellByCoordinate(new Coordinates(x, y)).getGamma();
 //        return new Random().nextInt(50)/100 + 0.5f;
     }
 }

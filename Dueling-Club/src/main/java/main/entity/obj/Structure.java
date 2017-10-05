@@ -7,7 +7,9 @@ import main.entity.tools.EntityMaster;
 import main.entity.tools.bf.structure.StructureMaster;
 import main.entity.tools.bf.structure.StructureResetter;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
@@ -47,6 +49,17 @@ public class Structure extends BattleFieldObject {
 
     public void resetFacing() {
 //        getResetter().setFacing();
+        if (getDirection()!=null ){
+            setFacing(  FacingMaster.getFacingFromDirection(getDirection()));
+        } else {
+            setFacing( FACING_DIRECTION.NONE);
+        }
+    }
+
+    @Override
+    public FACING_DIRECTION getFacing() {
+        resetFacing();
+        return super.getFacing();
     }
 
     public boolean isLightEmitter() {

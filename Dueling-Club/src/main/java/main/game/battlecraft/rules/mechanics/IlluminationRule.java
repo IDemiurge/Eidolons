@@ -1,6 +1,5 @@
 package main.game.battlecraft.rules.mechanics;
 
-import main.ability.effects.Effect;
 import main.ability.effects.common.LightEmittingEffect;
 import main.content.C_OBJ_TYPE;
 import main.content.PARAMS;
@@ -15,8 +14,6 @@ import main.game.core.game.DC_Game;
 import main.system.math.Formula;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class IlluminationRule {
@@ -32,21 +29,21 @@ public class IlluminationRule {
     }
 
     public static void initLightEmission(DC_Game game) {
-        List<Effect> effects = new LinkedList<>();
+//        List<Effect> effects = new LinkedList<>();
         for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
             LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
             if (effect != null) {
 //                effect.setFormula(new Formula(getLightEmission((DC_Obj) obj) + ""));
-                effects.add(effect);
+                effect.apply();
             }
         }
-        if (effects.isEmpty()) {
-            return;
-        }
-        for (Effect effect : effects) {
-            effect.apply();
-
-        }
+//        if (effects.isEmpty()) {
+//            return;
+//        }
+//        for (Effect effect : effects) {
+//            effect.apply();
+//
+//        }
     }
 
     public static LightEmittingEffect getLightEmissionEffect(DC_Obj source) {
@@ -78,7 +75,7 @@ public class IlluminationRule {
             effect.setRef(new Ref(source));
             effectCache.put(source, effect);
         } else
-            effect.getEffect().getEffects().setFormula(new Formula("" +
+            effect.getEffects().setFormula(new Formula("" +
              getLightEmission(source)));
         return effect;
 
@@ -95,9 +92,9 @@ public class IlluminationRule {
          source.getIntParam(PARAMS.LIGHT_EMISSION);
         if (source instanceof Unit) {
             if (((Unit) source).isHero())
-                if (source.getGame().getVisionMaster().
-                 getIlluminationMaster().getIllumination(source) < 50)
-                    value += 25;
+//                if (source.getGame().getVisionMaster().
+//                 getIlluminationMaster().getIllumination(source) < 50)
+                    value += 40;
         }
         Integer mod = source.getGame().getVisionMaster().getIlluminationMaster().
          getLightEmissionModifier();

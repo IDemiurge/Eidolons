@@ -9,8 +9,8 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
-import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.StringMaster;
@@ -22,24 +22,25 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class SpectrumEffect extends DC_Effect {
-    private static final String X = "x";
+    protected static final String X = "x";
+    protected String paramString;
+    protected Effects effects;
+    protected boolean applyThrough = true;
+    protected boolean circular;
+    protected boolean vision;
+    protected Condition filterConditions;
+    protected String reductionForDistanceModifier;
+    protected BattleFieldObject bfObj;
+    protected FACING_DIRECTION previousFacing;
     String rangeFormula;
     KEYS source = KEYS.SOURCE;
     int defaultSidePenalty = 1;
     // String reductionForDistance = "(x)/distance+sqrt(x)";
     String reductionForDistance = "-(x)/10*(2+distance*sqrt(distance))"; // *sqrt(x)
-    private String paramString;
-    private Effects effects;
-    private boolean applyThrough = true;
-    private boolean circular;
-    private boolean vision;
-    private Condition filterConditions;
-    private String reductionForDistanceModifier;
-    private BattleFieldObject bfObj;
-    private FACING_DIRECTION previousFacing;
 
     public SpectrumEffect(Effect effects, String rangeFormula, Boolean circular) {
-        this.effects = new Effects(effects);
+        if (effects != null)
+            this.effects = new Effects(effects);
         this.rangeFormula = rangeFormula;
         this.circular = circular;
     }
@@ -88,19 +89,22 @@ public class SpectrumEffect extends DC_Effect {
         else {
             //TODO
         }
-
+        if (bfObj instanceof Unit)
+            bfObj = bfObj;
         FACING_DIRECTION facing = bfObj.getFacing();
-        Boolean clockwise = null;
-        if (previousFacing != null)
-            clockwise = facing.getDirection().getDegrees() < previousFacing.getDirection().getDegrees();
-        if (clockwise != null)
-            facing = FacingMaster.rotate(facing, clockwise);
+//        Boolean clockwise = null;
+//        if (previousFacing != null)
+//            clockwise = facing.getDirection().getDegrees() < previousFacing.getDirection().getDegrees();
+//        if (clockwise != null)
+//        {
+//            facing = FacingMaster.rotate(facing, clockwise);
+//        }
         List<Coordinates> coordinates = new LinkedList<>(getGame().getVisionMaster().getSightMaster()
          .getSpectrumCoordinates(
           range, sidePenalty, backwardRange, bfObj,
           vision, facing));
 
-        previousFacing = facing;
+//        previousFacing = facing;
 
         main.system.auxiliary.log.LogMaster.log(1, this + " applied on " + coordinates);
         // boolean x-ray ++ tall/short/etc
@@ -157,7 +161,11 @@ public class SpectrumEffect extends DC_Effect {
                         reduction = reduction.replace("distance", distance + "");
                         effectFormula.append(reduction);
                         //TODO
-                        effect.setAmount(effectFormula.getInt(ref));
+                        Integer amount = effectFormula.getInt(ref);
+                        if (amount < 0) {
+                            effect.setAmount(amount);
+                        }
+                        effect.setAmount(amount);
                     }
                     effect.apply(REF);
                 }
@@ -170,7 +178,7 @@ public class SpectrumEffect extends DC_Effect {
     // // TODO Auto-generated method stub
     // return null;
     // }
-    private void initEffects() {
+    protected void initEffects() {
         ref.setID(KEYS.INFO, ref.getId(KEYS.ACTIVE));
         effects = EffectFinder.initParamModEffects(paramString, ref);
     }

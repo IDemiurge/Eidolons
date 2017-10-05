@@ -30,7 +30,7 @@ public class Showcase {
     public static final String[] missions_showcase =
      "Prison Break;The Demon Shrine;The Escape;Into the Woods;On a Pirate Ship;Ledwraith Castle".split(";");
     public static   String launchData = "";
-    public static final  String launchDataPath = PathFinder.getXML_PATH()+"last.txt";
+    public static final  String launchDataPath = PathFinder.getXML_PATH()+"showcase last.txt";
     public static final String[] launch_options = {
      "Mission","Last Custom",  "Custom",
 //     "Tutorial",
@@ -96,6 +96,11 @@ if (index>2){
             FAST_DC.main(new String[]{
             });
         }
+        new Showcase().write();
+
+    }
+
+    protected void write() {
         if (!StringMaster.isEmpty(launchData) ) {
             FileManager.write(launchData, launchDataPath);
 

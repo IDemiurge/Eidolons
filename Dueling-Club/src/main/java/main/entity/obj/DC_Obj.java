@@ -535,11 +535,6 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public void setGamma(Integer gamma) {
-        if (gamma>0){
-            if (getVisibilityLevel()==VISIBILITY_LEVEL.BLOCKED){
-                return ;
-            }
-        }
         this.gamma = gamma;
     }
 

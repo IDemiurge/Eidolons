@@ -1,28 +1,57 @@
 package main.ability.effects.common;
 
-import main.ability.effects.DC_Effect;
+import main.ability.effects.Effect;
 import main.ability.effects.EffectImpl;
+import main.ability.effects.Effects;
 import main.content.PARAMS;
-import main.entity.Ref;
-import main.entity.obj.BattleFieldObject;
-import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
 
-public class LightEmittingEffect extends DC_Effect {
-    boolean debug;
+public class LightEmittingEffect extends SpectrumEffect {
+    boolean debug ;
     private static final int REFLECTION_BONUS_PER_ADJACENT_WALL = 15;
-    private static final String REDUCTION_FOR_DISTANCE_MODIFIER = "/3";//"*2";
-    String reduction_for_distance_modifier = REDUCTION_FOR_DISTANCE_MODIFIER;
-    boolean circular;
-    private String rangeFormula = "3";
-    private SpectrumEffect effect;
-    private Obj lastTarget;
+    private static final String REDUCTION_FOR_DISTANCE_MODIFIER = "/2";//"*2";
+    private Coordinates lastCoordinates;
 
     public LightEmittingEffect(String formula, Boolean circular) {
+        super(null );
         this.formula = new Formula(formula);
         this.circular = circular;
+        rangeFormula = "5";
+        vision=false;
+        this.effects=new Effects(createEffect());
+        reductionForDistance+= REDUCTION_FOR_DISTANCE_MODIFIER;
+         setApplyThrough(true);
+        this.effects.setFormula(this.formula);
+        this.effects.setOriginalFormula(this.formula);
+         setQuietMode(true);
+        lastCoordinates = new Coordinates(0, 0);
+    }
+
+    private   Effect createEffect() {
+        return new EffectImpl() {
+            @Override
+            public boolean applyThis() {
+                if (getAmount()==0 ||
+                  PositionMaster.getDistance(lastCoordinates, ref.getSourceObj().getCoordinates()
+                  )!=(PositionMaster.getDistance(ref.getTargetObj().getCoordinates(),
+                   ref.getSourceObj().getCoordinates()))) {
+                    setAmount(getFormula().getInt(ref));
+                }
+                ref.getTargetObj().modifyParameter(PARAMS.ILLUMINATION, getAmount(), true);
+             if (debug)
+                 main.system.auxiliary.log.LogMaster.log(1, ref.getTargetObj()+"'s ILLUMINATION: +" + getAmount()
+                  + "="+ ref.getTargetObj().getIntParam(PARAMS.ILLUMINATION));
+                lastCoordinates =ref.getTargetObj().getCoordinates();
+                return true;//addLight(ref);
+            }
+
+            @Override
+            public boolean isQuietMode() {
+                return true;
+            }
+        };
     }
 
     public LightEmittingEffect(String formula) {
@@ -33,76 +62,22 @@ public class LightEmittingEffect extends DC_Effect {
     public boolean applyThis() {
         // packaged into PassiveAbil
         // on self?
-        int reflectionMod = 0;
-        for (Coordinates c : ref.getSourceObj().getCoordinates().getAdjacentCoordinates()) {
-            for (BattleFieldObject obj : getGame().getMaster().getObjectsOnCoordinate(c,
-             false)) {
-                if (obj.isWall()) {
-                    reflectionMod += REFLECTION_BONUS_PER_ADJACENT_WALL;
-                    break;
-                }
-            }
-        }
-        if (reflectionMod > 0) {
+//        int reflectionMod = 0;
+//        for (Coordinates c : ref.getSourceObj().getCoordinates().getAdjacentCoordinates()) {
+//            for (BattleFieldObject obj : getGame().getMaster().getObjectsOnCoordinate(c,
+//             false)) {
+//                if (obj.isWall()) {
+//                    reflectionMod += REFLECTION_BONUS_PER_ADJACENT_WALL;
+//                    break;
+//                }
+//            }
+//        }
+//        if (reflectionMod > 0) {
 //            reduction_for_distance_modifier  += ("+" + reflectionMod);
-        }
-        return getEffect().apply(ref);
+//        } 11-10, 11-9, 11-8, 11-11, 11-12, 10-10, 10-11, 9-10, 12-9, 12-8, 12-7, 12-11, 12-12, 12-13, 12-10]
+        return super.applyThis();
     }
 
-    private boolean addLight(Ref ref) {
-        if (
-         getAmount()==0 ||
-         PositionMaster.getDistance(lastTarget.getCoordinates(), ref.getSourceObj().getCoordinates()
-        )!=(PositionMaster.getDistance(ref.getTargetObj().getCoordinates(),
-         ref.getSourceObj().getCoordinates()))) {
-            setAmount(getFormula().getInt(ref));
-        }
 
-        ref.getTargetObj().modifyParameter(PARAMS.ILLUMINATION, getAmount(), true);
-        lastTarget=ref.getTargetObj();
-//       if (debug)
-//           main.system.auxiliary.log.LogMaster.log(1,ref.getTargetObj()+
-//         " gets illumination: " +getAmount()+
-//         " ; total illumination: " +lastTarget.getIntParam(PARAMS.ILLUMINATION)+
-//         " ; Source: " +ref.getSourceObj());
 
-        return true;
-    }
-
-    public SpectrumEffect getEffect() {
-        if (effect == null) {
-            effect =
-             // SpectrumEffect
-             new SpectrumEffect(
-              new EffectImpl() {
-                  @Override
-                  public boolean applyThis() {
-                      return addLight(ref);
-                  }
-
-                  @Override
-                  public boolean isQuietMode() {
-                      return true;
-                  }
-              }
-//            new Effects(
-//               new ModifyValueEffect(PARAMS.ILLUMINATION,
-//                MOD.MODIFY_BY_PERCENT, "-66"),
-//               new ModifyValueEffect(PARAMS.ILLUMINATION,
-//                MOD.MODIFY_BY_CONST, formula.toString()))
-            , rangeFormula, circular);
-
-            if (reduction_for_distance_modifier != null)
-                effect.setReductionForDistanceModifier(reduction_for_distance_modifier);
-            effect.setApplyThrough(true);
-
-            effect.setQuietMode(true);
-        }
-
-        return effect;
-    }
-
-    public void setEffect(SpectrumEffect effect) {
-        this.effect = effect;
-    }
 }

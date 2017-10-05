@@ -387,9 +387,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         if (facing == null) {
             return;
         }
-        if (facing == FACING_DIRECTION.NONE) {
-            return;
-        }
         this.facing = facing;
     }
 

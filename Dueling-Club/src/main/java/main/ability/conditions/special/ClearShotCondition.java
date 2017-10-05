@@ -13,13 +13,13 @@ import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
 import main.swing.XLine;
 import main.system.auxiliary.data.ArrayMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.DC_PositionMaster;
 import main.system.math.PositionMaster;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ClearShotCondition extends MicroCondition {
@@ -149,14 +149,14 @@ public class ClearShotCondition extends MicroCondition {
                 if (!result)
                     return false;
 
-                List<Coordinates> list = new ListMaster<Coordinates>().getList(target
-                 .getCoordinates());
+                List<Coordinates> list =    new LinkedList<>() ;
                 if (!c2.isAdjacent(source.getCoordinates())) {
                     DIRECTION direction = DirectionMaster.getRelativeDirection(source, target);
                     list = (DC_PositionMaster.getLine(false, direction, source.getCoordinates(),
                      Math.abs(source.getX() - target.getX())));// PositionMaster.getDistance(source,
-                    // target)
-                    // ));
+                }
+                else {
+                    list.add(target.getCoordinates());
                 }
                 for (Coordinates c : list) {
                     if (checkWallObstruction(source, target, c))
@@ -206,11 +206,11 @@ public class ClearShotCondition extends MicroCondition {
 	 * 
 	 * Return meaning: True for "is in clear shot".
 	 *                                   <><><><><> 
-	 * 1) getOrCreate slope factor (rectangle)
-	 * 2) getOrCreate base y (intersect vector with y axis)
+	 * 1) get slope factor (rectangle)
+	 * 2) get base y (intersect vector with y axis)
 	 * 3) run for each X cell : project intersection with  verticals , IFF 2 integers - big circle (2 blocks requires) 
 	 * 
-	 * getOrCreate rectangle -> transform it ->
+	 * get rectangle -> transform it ->
 	 * 
 	 * 
 	 */
@@ -288,27 +288,7 @@ public class ClearShotCondition extends MicroCondition {
 
         for (Coordinates c : coordinates.getAdjacentCoordinates()) { // c
 
-            if (coordinates.equals(target.getCoordinates())
-             || !target.getCoordinates().isAdjacent(source.getCoordinates(), false)
-                // && !coordinates.equals(target.getCoordinates())
-                // && target.getCoordinates().isAdjacent(source.getCoordinates())
-             ) {
-//                if (PositionMaster.getDistance(c, target.getCoordinates()) >= PositionMaster
-//                 .getDistance(source.getCoordinates(), target.getCoordinates())) {
-//                    continue;
-//                }
-                //can determine this with relative facing!
-                //avoid checking diag. walls outside the source-target line
-                int d = PositionMaster
-                 .getDistance(source.getCoordinates(), target.getCoordinates());
-                if (PositionMaster.getDistance(c, source.getCoordinates()) > d) {
-                    continue;
-                }
-                if (PositionMaster.getDistance(coordinates, target.getCoordinates()) > d) {
-                    continue;
-                }
 
-            }
             DIRECTION relativeDirection = c.isAdjacent(source.getCoordinates()) ? DirectionMaster
              .getRelativeDirection(c, coordinates) : DirectionMaster.getRelativeDirection(
              coordinates, c);
@@ -321,8 +301,26 @@ public class ClearShotCondition extends MicroCondition {
             double distance = PositionMaster.getDistanceToLine(new XLine(source.getCoordinates(),
              target.getCoordinates()), c);
             if (distance > 1) {
-
                 continue;
+            }
+            if (coordinates.equals(target.getCoordinates())
+             || !target.getCoordinates().isAdjacent(source.getCoordinates(), false)
+                // && !coordinates.equals(target.getCoordinates())
+                // && target.getCoordinates().isAdjacent(source.getCoordinates())
+             ) {
+                double d = PositionMaster
+                 .getExactDistance(source.getCoordinates(), target.getCoordinates())
+                 - PositionMaster.getExactDistance(c, source.getCoordinates());
+                if ((d) <=  0.0) {
+                    continue; //must not be beyond target
+                }
+                d = PositionMaster
+                 .getExactDistance(source.getCoordinates(), target.getCoordinates())
+                 - PositionMaster.getExactDistance(coordinates, target.getCoordinates());
+                if ((d) <= 0.0) {
+                    continue; //must not be behind source
+                }
+
             }
 //            DIRECTION d1 = DirectionMaster.getRelativeDirection(source.getCoordinates(), c);
 //            DIRECTION d2 = DirectionMaster.getRelativeDirection(target.getCoordinates(), c);
@@ -474,10 +472,10 @@ public class ClearShotCondition extends MicroCondition {
     }
 
     private void log(String str) {
-        if (showVisuals || game.isDebugMode())
-            if (!isVision()) {
-                LogMaster.log(log_priority, str);
-            }
+//        if (showVisuals || game.isDebugMode())
+//            if (!isVision()) {
+//                LogMaster.log(log_priority, str);
+//            }
     }
 
     public void setShowVisuals(boolean showVisuals) {

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import main.content.PARAMS;
 import main.entity.active.DefaultActionHandler;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
@@ -131,12 +132,15 @@ public class GridCell extends Group implements Borderable {
             }
             if (GammaMaster.DEBUG_MODE) {
                 DC_Cell cell = DC_Game.game.getCellByCoordinate(new Coordinates(gridX, gridY));
-                cordsText.setText(getGridX() + ":" + getGridY() + ", gamma="
+                cordsText.setText(getGridX() + ":" + getGridY() + "\n gamma="
                   + DC_Game.game.getVisionMaster().getGammaMaster().
-                  getGammaForCell(getGridX(), getGridY()
-                  ) + "\n" + cell.getVisibilityLevel()
-                   +cell.getOutlineType()==null ? "" : ("\n" + cell.getOutlineType())
-                  + cell.getActivePlayerVisionStatus()==null ? "" :("\n" + cell.getActivePlayerVisionStatus())
+                  getGammaForCell(getGridX(), getGridY())
+                 + "\n illumination="
+                 + cell.getIntParam(PARAMS.ILLUMINATION)
+//                  + "\n" + cell.getVisibilityLevel()
+//                   +cell.getOutlineType()==null ? "" : ("\n" + cell.getOutlineType())
+//                  + cell.getActivePlayerVisionStatus()==null ? "" :("\n" +
+//                  cell.getActivePlayerVisionStatus())
 
 
 //                 +"\n gamma="

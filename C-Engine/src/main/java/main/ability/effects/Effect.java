@@ -103,6 +103,7 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
 
     void remove();
 
+    void setOriginalFormula(Formula formula);
 
 
     enum UPKEEP_FAIL_ACTION {

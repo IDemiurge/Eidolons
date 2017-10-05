@@ -562,4 +562,8 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     public Boolean isForceStaticParse() {
         return forceStaticParse;
     }
+
+    public void setOriginalFormula(Formula originalFormula) {
+        this.originalFormula = originalFormula;
+    }
 }

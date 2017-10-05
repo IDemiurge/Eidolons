@@ -1,8 +1,6 @@
 package main.game.module.dungeoncrawl.explore;
 
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 /**
  * Created by JustMe on 9/10/2017.
@@ -24,22 +22,21 @@ public class ExplorationResetHandler extends ExplorationHandler {
 
     public void resetAll() {
        master.getGame(). getMaster(). clearCaches();
-        if (!resetNeeded)
-            return;
+
 //        master.getGame().getStateManager().checkTriggers();
 
         //position-based effects?
         IlluminationRule.resetIllumination(master.game);
-        IlluminationRule.initLightEmission(master.game);
+//        IlluminationRule.initLightEmission(master.game);
 
 //        checkCounterRules();
-        master.getGame().getManager().checkForChanges(true);
+//        master.getGame().getManager().checkForChanges(true);
 
         //reset once after *all* ai moves?
 
 
         resetNeeded = false;
-        GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
+//        GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
         //check time triggers!
     }
 }

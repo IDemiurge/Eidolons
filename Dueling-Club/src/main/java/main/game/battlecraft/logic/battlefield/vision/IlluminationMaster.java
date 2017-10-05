@@ -93,15 +93,16 @@ public class IlluminationMaster {
         }
 //universal
         illumination += globalIllumination;
-
-        Integer ilMod = 100;
+if (illumination<=0)
+    return illumination;
+        Integer ilMod  ;
         int distance = PositionMaster.getDistance(source, target);
         // from 200 to 25 on diff of 8 to -5
         // def sight range of 5, I'd say
         Integer sight = source.getIntParam(PARAMS.SIGHT_RANGE);
         FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(source, (BfObj) target);
         if (singleFacing == UnitEnums.FACING_SINGLE.BEHIND) {
-            sight = 1 + source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
+            sight =   source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
         } else if (singleFacing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
             sight -= source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
         }
@@ -109,11 +110,11 @@ public class IlluminationMaster {
         int diff = sight - distance;
 
         if (diff < 0) {
-            ilMod = 100 + (diff * 12
+            ilMod = 100 + (diff * 20
              - diff * diff * 2
             );
         } else {
-            ilMod = (100 + (int) (diff * 8 + Math.sqrt(diff * 65)));
+            ilMod = (100 +   (diff * 12)); // + Math.sqrt(diff * 65)));
         }
 
         ilMod = Math.min(ilMod, 300);
