@@ -84,12 +84,12 @@ public class Analyzer extends AiHandler {
     }
 
     public static List<Unit> getVisibleEnemies(UnitAI ai) {
-        Boolean unconscious=isTargetingUnconscious(ai);
-        List<Unit> enemies = getUnits(ai, false, true, true, false,false, unconscious);
+        Boolean unconscious = isTargetingUnconscious(ai);
+        List<Unit> enemies = getUnits(ai, false, true, true, false, false, unconscious);
         if (enemies.isEmpty())
-            if (unconscious!=null ){
-            if (!unconscious)
-                enemies = getUnits(ai, false, true, true, false, false, true);
+            if (unconscious != null) {
+                if (!unconscious)
+                    enemies = getUnits(ai, false, true, true, false, false, true);
             }
         return enemies;
     }
@@ -285,13 +285,18 @@ public class Analyzer extends AiHandler {
     private static List<Unit> getUnits(Unit unit, Boolean enemy_or_ally_only, boolean checkAct, boolean checkAttack, Collection<Coordinates> coordinatesToCheck) {
 
         List<Unit> list = new LinkedList<>();
-        for (Coordinates coordinates : coordinatesToCheck)
-            for (Unit obj : unit.getGame().getUnitsForCoordinates(coordinates)) {
-                if (obj == null) {
-                    continue;
-                }
-                list.add(obj);
-            }
+        for (BattleFieldObject sub : unit.getGame().getMaster().getUnitsArray()) {
+            for (Coordinates coordinates : coordinatesToCheck)
+                if (sub.getCoordinates().equals(coordinates))
+                    list.add((Unit) sub);
+        }
+//        for (Coordinates coordinates : coordinatesToCheck)
+//            for (Unit obj : unit.getGame().getUnitsForCoordinates(coordinates)) {
+//                if (obj == null) {
+//                    continue;
+//                }
+//                list.add(obj);
+//            }
         if (enemy_or_ally_only != null) {
             if (enemy_or_ally_only)
                 list.removeIf(e -> e.getOwner().equals(unit.getOwner()));
@@ -474,17 +479,17 @@ public class Analyzer extends AiHandler {
                 cells.addAll(getCells(e, true, false, true));
             }
         }
-cells.removeIf(cell->{
-    boolean result = true;
-    if (ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates()) instanceof
-     BattleFieldObject){
-        if (
-        ((BattleFieldObject)
-         ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates())).isWall())
-result = false;
-    }
-   return result ;
-});
+        cells.removeIf(cell -> {
+            boolean result = true;
+            if (ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates()) instanceof
+             BattleFieldObject) {
+                if (
+                 ((BattleFieldObject)
+                  ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates())).isWall())
+                    result = false;
+            }
+            return result;
+        });
         return cells;
     }
 

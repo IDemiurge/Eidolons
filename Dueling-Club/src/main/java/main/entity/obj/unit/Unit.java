@@ -287,8 +287,14 @@ public class Unit extends DC_UnitModel {
 
     @Override
     public void afterEffects() {
+
         getResetter().afterEffectsApplied();
 
+    }
+
+    @Override
+    public boolean isOutsideCombat() {
+        return getAI().isOutsideCombat();
     }
 
     public List<DC_QuickItemAction> getQuickItemActives() {

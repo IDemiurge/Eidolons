@@ -6,18 +6,6 @@ import main.system.auxiliary.StringMaster;
  * Created by JustMe on 2/14/2017.
  */
 public class ActionEnums {
-    public enum ACTION_TYPE_GROUPS {
-        MOVE, TURN, ATTACK, SPELL, SPECIAL, HIDDEN, MODE, ITEM, ORDER,
-        DUNGEON, // security fix...
-        STANDARD
-
-    }
-
-    public static enum CUSTOM_HERO_GROUP {
-        PLAYTEST, ERSIDRIS, EDALAR, TEST,
-
-    }
-
     public enum ACTION_TAGS {
         FLYING,
         DUAL,
@@ -35,8 +23,12 @@ public class ActionEnums {
         INSTANT_ATTACK,
         RESTORATION, TOP_DOWN;
 
+        private String string;
+
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            if (string == null)
+                string = StringMaster.getWellFormattedString(name());
+            return string;
         }
 
     }
@@ -50,6 +42,18 @@ public class ActionEnums {
         SPECIAL_ACTION,
         HIDDEN,
         ADDITIONAL_MOVE,
+    }
+
+    public enum ACTION_TYPE_GROUPS {
+        MOVE, TURN, ATTACK, SPELL, SPECIAL, HIDDEN, MODE, ITEM, ORDER,
+        DUNGEON, // security fix...
+        STANDARD
+
+    }
+
+    public static enum CUSTOM_HERO_GROUP {
+        PLAYTEST, ERSIDRIS, EDALAR, TEST,
+
     }
 
     public enum STANDARD_ACTION_PASSIVES {

@@ -71,6 +71,8 @@ public abstract class SuperActor extends Group implements Borderable {
     }
 
     protected boolean isIgnored() {
+        if (!isVisible())
+            return true;
         if (getColor().a == 0)
             return true;
         if (isCullingOff())

@@ -84,6 +84,8 @@ public class GridCellContainer extends GridCell {
     }
 
     protected boolean checkIgnored() {
+        if (!isVisible())
+            return true;
         if (SuperActor.isCullingOff())
             return false;
         if (Eidolons.game==null )

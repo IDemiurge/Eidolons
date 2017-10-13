@@ -81,6 +81,7 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     public boolean isIgnored() {
+        // check cell is visible TODO
         return super.isIgnored();
     }
 

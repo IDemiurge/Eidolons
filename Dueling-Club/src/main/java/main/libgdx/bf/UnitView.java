@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import main.game.core.game.DC_Game;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
@@ -156,23 +155,25 @@ public class UnitView extends BaseView {
     }
 
 
-
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        ShaderProgram shader=null ;
+        ShaderProgram shader = null;
         if (greyedOut) {
             shader = batch.getShader();
             batch.setShader(GrayscaleShader.getGrayscaleShader());
             if (SuperActor.alphaFluctuationOn)
-            ActorMaster.addFadeInOrOutIfNoActions(this, 5);
+                ActorMaster.addFadeInOrOutIfNoActions(this, 5);
         }
-        super.draw(batch, parentAlpha);
-        if (DC_Game.game.isDebugMode())
-            if (outline != null)
-                batch.draw(outline, 0, 0);
-
-        if (batch.getShader()==GrayscaleShader.getGrayscaleShader() )
+        while (true) {
+//            if (DC_Game.game.isDebugMode())
+                if (outline != null) {
+                    batch.draw(outline, 0, 0);
+                    break;
+                }
+            super.draw(batch, parentAlpha);
+            break;
+        }
+        if (batch.getShader() == GrayscaleShader.getGrayscaleShader())
             batch.setShader(shader);
     }
 

@@ -28,7 +28,6 @@ import main.game.core.state.DC_StateManager;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.bf.TargetRunnable;
 import main.swing.components.obj.drawing.DrawMasterStatic;
@@ -207,7 +206,7 @@ public class DC_GameManager extends GameManager {
         for (Obj u : getGame().getCells()) {
             ((DC_Obj) u).setOutlineType(null);
         }
-if (ExplorationMaster.isExplorationOn())
+//if (ExplorationMaster.isExplorationOn())
     VisionManager.refresh();
 
         updateGraphics();

@@ -58,7 +58,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     @Override
     public String getToolTip() {
-        if (OutlineMaster.isOutlineModeOn()){
+        if (OutlineMaster.isOutlinesOn()){
              if (getOutlineTypeForPlayer()!=null )
                  return getOutlineTypeForPlayer().getName();
 //         if (!isDetected())

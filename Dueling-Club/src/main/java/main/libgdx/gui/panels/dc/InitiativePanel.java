@@ -39,7 +39,7 @@ public class InitiativePanel extends Group {
     Label timeLabel;
     private ImageContainer[] queue;
     private WidgetGroup queueGroup;
-    private boolean cleanUpOn = false;
+    private boolean cleanUpOn = true;
     private ValueContainer panelImage;
     private Container<WidgetGroup> container;
     private float queueOffsetY = 15;

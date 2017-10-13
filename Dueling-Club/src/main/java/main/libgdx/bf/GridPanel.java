@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.mode.STD_MODES;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -17,6 +18,7 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
@@ -89,6 +91,7 @@ public class GridPanel extends Group {
     private WallMap wallMap;
     private List<OverlayView> overlays = new LinkedList<>();
     private GridUnitView hoverObj;
+    private boolean resetVisibleRequired;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -267,9 +270,10 @@ public class GridPanel extends Group {
         });
         GuiEventManager.bind(UPDATE_GUI, obj -> {
             if (!VisionManager.isVisionHacked())
-                if (Eidolons.game.getVisionMaster().getVisibilityMaster().isOutlinesOn()) {
+                if (OutlineMaster.isOutlinesOn() ) {
                     updateOutlines();
                 }
+            resetVisibleRequired=true;
         });
 
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
@@ -613,11 +617,29 @@ public class GridPanel extends Group {
 
     @Override
     public void act(float delta) {
+        if (checkResetVisibleRequired()) {
+            resetVisible();
+        }
         super.act(delta);
         if (checkResetZRequired()) {
             resetZIndices();
         }
 
+    }
+
+    private boolean checkResetVisibleRequired() {
+        return resetVisibleRequired;
+    }
+
+    private void resetVisible() {
+        for (BattleFieldObject sub : unitMap.keySet()) {
+            BaseView view = unitMap.get(sub);
+            view.setVisible(true);
+            if (sub.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.UNKNOWN) {
+                view.setVisible(false);
+            }
+        }
+        resetVisibleRequired=false;
     }
 
     private boolean checkResetZRequired() {

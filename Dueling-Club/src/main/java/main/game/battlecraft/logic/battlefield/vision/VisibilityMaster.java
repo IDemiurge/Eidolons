@@ -7,11 +7,10 @@ import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.system.images.ImageManager;
-import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import main.system.options.OptionsMaster;
 
 import java.awt.*;
 
@@ -157,10 +156,13 @@ public class VisibilityMaster {
     }
 
     public void resetVisibilityLevels() {
-        for (Unit unit : DC_Game.game.getUnits()) {
+        for (Unit unit : DC_Game.game.getUnits ()) {
             resetOutlineAndVisibilityLevel(unit);
         }
 
+        for (Structure structure : DC_Game.game.getStructures()) {
+            resetOutlineAndVisibilityLevel(structure);
+        }
         for (Obj cell : DC_Game.game.getCells()) {
             resetOutlineAndVisibilityLevel((DC_Obj) cell);
         }
@@ -182,16 +184,5 @@ public class VisibilityMaster {
         return visibilityLevel;
     }
 
-    public boolean isOutlinesOn() {
-        try {
-            return OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OUTLINES);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return outlinesOn;
-    }
 
-    public void setOutlinesOn(boolean outlinesOn) {
-        this.outlinesOn = outlinesOn;
-    }
 }

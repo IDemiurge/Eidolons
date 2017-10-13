@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import main.ability.effects.oneshot.move.MoveEffect;
 import main.content.PARAMS;
@@ -107,20 +108,23 @@ public class HitAnim extends ActionAnim {
 
         DIRECTION d = DirectionMaster.getRelativeDirection(getRef().getSourceObj(), getRef().getTargetObj());
 
-        int x =d.isVertical() ? 5:  30;
-        int y =!d.isVertical() ? 5:  30;
+        int dx =d.isVertical() ? 5:  30;
+        int dy =!d.isVertical() ? 5:  30;
         if (BooleanMaster.isTrue(d.isGrowX())) {
-            x = -x;
+            dx = -dx;
         }
         if (BooleanMaster.isTrue(d.isGrowY())) {
-            y = -y;
+            dy = -dy;
         }
 
+        float  x =getActor().getX();
+        float  y =getActor().getY();
+
         MoveByActionLimited move = (MoveByActionLimited) ActorMaster.getAction(MoveByActionLimited.class);
-        move.setAmount(x, y);
+        move.setAmount(dx, dy);
         move.setDuration(getDuration()/2);
-        MoveByActionLimited moveBack = (MoveByActionLimited) ActorMaster.getAction(MoveByActionLimited.class);
-        moveBack.setAmount(-x, -y);
+        MoveToAction moveBack = (MoveToAction) ActorMaster.getAction(MoveToAction.class);
+        moveBack.setPosition(x, y);
         moveBack.setDuration(getDuration()/2);
         return new SequenceAction(move, moveBack);
     }

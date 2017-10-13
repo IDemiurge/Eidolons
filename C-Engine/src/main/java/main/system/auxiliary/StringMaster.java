@@ -125,16 +125,12 @@ public class StringMaster {
     }
 
     public static String capitalizeFirstLetter(String string) {
-        if (!Character.isAlphabetic(string.charAt(0))) {
+        char c = string.charAt(0);
+        if (!Character.isAlphabetic(c)) {
             return string;
         }
-        try {
-            String first = String.valueOf(string.charAt(0));
-            return string.replaceFirst(first, first.toUpperCase());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return string;
-        }
+        return    Character.toUpperCase(c)+  string.substring(1);
+
     }
 
     public static boolean checkContainer(String container, String string) {

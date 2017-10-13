@@ -98,10 +98,12 @@ public abstract class StateManager {
                         continue;
                     }
                 }
+              if (LOG_CHANNELS.EFFECT_DEBUG.isOn())
                 LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, layer
                  + " Layer, applying effect : " + state.effects);
                 if (!effect.apply()) {
-                    LogMaster.log(LogMaster.EFFECT_DEBUG, layer
+                    if (LOG_CHANNELS.EFFECT_DEBUG.isOn())
+                        LogMaster.log(LogMaster.EFFECT_DEBUG, layer
                      + " Layer, effect failed: " + state.effects);
                 }
             }
@@ -117,6 +119,7 @@ public abstract class StateManager {
         // at
         // last!!!
         state.getEffects().add(effect);
+        if (LogMaster.EFFECT_DEBUG_ON)
         LogMaster.log(LogMaster.EFFECT_DEBUG, effect.getClass()
          .getSimpleName()
          + " effect added : " + state.getEffects().size() + state.effects);

@@ -46,7 +46,7 @@ public class DC_BattleField extends SwingBattleField {
     public void selectActiveObj(Obj obj, boolean b) {
         obj.setActiveSelected(true);
         this.setActiveSelectedObj(obj);
-        getState().getGame().getVisionMaster().refresh();
+//        getState().getGame().getVisionMaster().refresh();
 
         if (VisionManager.checkVisible((DC_Obj) obj)) {
             centerCameraOn(obj); // TODO [QUICK FIX]

@@ -83,7 +83,11 @@ public class BaseSlotPanel extends TablePanel {
     }
 
     private void setActivePage(PagesMod page) {
-        modTableMap.get(activePage).setVisible(false);
+        TablePanel view = modTableMap.get(activePage);
+        if (view == null) {
+            return ;
+        }
+        view.setVisible(false);
         activePage = page;
         modTableMap.get(activePage).setVisible(true);
     }

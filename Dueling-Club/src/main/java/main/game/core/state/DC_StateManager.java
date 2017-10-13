@@ -167,13 +167,18 @@ if (getGame().isStarted() && ExplorationMaster.isExplorationOn()){
                 continue;
             }
             if (!obj.isDead()) {
+                if (obj instanceof DC_Obj) {
+                    if ( ((DC_Obj) obj).isOutsideCombat())
+                    continue;
+                }
+            }
                 try {
                     obj.toBase();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }
+
 
         // TODO Auto-generated method stub
 
@@ -187,7 +192,12 @@ if (getGame().isStarted() && ExplorationMaster.isExplorationOn()){
 
     public void afterEffects() {
         for (Obj obj : getGame().getBfObjects()) {
-            if (!obj.isDead()) {
+            if (!obj.isDead())
+                if (obj instanceof Unit){
+                if (((Unit) obj).getAI().isOutsideCombat())
+                    continue;
+                }
+                {
                 try {
                     obj.afterEffects();
                 } catch (Exception e) {
@@ -233,7 +243,8 @@ if (getGame().isStarted() && ExplorationMaster.isExplorationOn()){
 
     public void resetUnitObjects() {
         for (Unit unit : getGame().getUnits()) {
-            if (!unit.isDead()) {
+            if (!unit.isDead())
+                if (!unit.getAI().isOutsideCombat()) {
                 unit.resetObjects();
             }
         }

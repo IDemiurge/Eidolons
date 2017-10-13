@@ -35,7 +35,7 @@ public class SpectrumEffect extends DC_Effect {
     KEYS source = KEYS.SOURCE;
     int defaultSidePenalty = 1;
     // String reductionForDistance = "(x)/distance+sqrt(x)";
-    String reductionForDistance = "-(x)/10*(2+distance*sqrt(distance))"; // *sqrt(x)
+    String reductionForDistance = "-(x)/10*(2+distance*1.5)"; // *sqrt(distance)
 
     public SpectrumEffect(Effect effects, String rangeFormula, Boolean circular) {
         if (effects != null)

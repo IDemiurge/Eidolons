@@ -617,7 +617,9 @@ public abstract class DataModel {
                 return true;
             }
         }
-        Number amount = new Formula(amountString).evaluate(ref);
+        Number amount =StringMaster.getDouble(amountString);
+        if (amount.equals(0.0))
+            amount= new Formula(amountString).evaluate(ref);
 
         LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
          + param.getName() + " by " + amount);

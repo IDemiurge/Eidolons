@@ -31,8 +31,9 @@ public class ActionGenerator {
 
     public static void generateOffhandActions(ACTION_TYPE action_type) {
         for (ObjType type : DataManager.getTypesGroup(DC_TYPE.ACTIONS, "" + action_type)) {
-            if (StringMaster.compare(type.getProperty(G_PROPS.ACTION_TAGS), ActionEnums.ACTION_TAGS.MAIN_HAND
-                    + "", false)) {
+            if (StringMaster.contains(type.getProperty(G_PROPS.ACTION_TAGS),
+             ActionEnums.ACTION_TAGS.MAIN_HAND
+                    + "" )) {
                 ActionType offHandType = new ActionType(type);
                 offHandType.addProperty(G_PROPS.ACTION_TAGS, StringMaster
                         .getWellFormattedString(ActionEnums.ACTION_TAGS.OFF_HAND + ""));

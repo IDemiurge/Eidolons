@@ -7,8 +7,10 @@ import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 import main.system.math.PositionMaster;
 
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class AggroMaster {
     public static final float AGGRO_RANGE = 2.5f;
@@ -19,37 +21,38 @@ public class AggroMaster {
 
     public static List<Unit> getAggroGroup() {
 //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
-         List<Unit> list = new LinkedList<>();
+        List<Unit> list = new LinkedList<>();
         for (Unit ally : DC_Game.game.getPlayer(true).getControlledUnits_()) {
-            if (sightRequiredForAggro){
-                if (!VisionManager.checkDetected(ally)){
-                   continue;
+            if (sightRequiredForAggro) {
+                if (!VisionManager.checkDetected(ally)) {
+                    continue;
                 }
             }
-            for (Unit unit :   getAggroGroup(ally)) {
+            for (Unit unit : getAggroGroup(ally)) {
                 if (!list.contains(unit))
-                list.add (unit);
+                    list.add(unit);
             }
         }
 
         return list;
     }
-        public static List<Unit> getAggroGroup( Unit hero ) {
-         List<Unit> list =
-          new LinkedList<>(DC_Game.game.getUnits());
+
+    public static Set<Unit> getAggroGroup(Unit hero) {
+        List<Unit> list =
+         new LinkedList<>(DC_Game.game.getUnits());
 //        Analyzer.getEnemies(hero, false, false, false);
 //            if (ExplorationMaster.isExplorationOn())
-            list.removeIf(unit -> !unit.canAct());
+        list.removeIf(unit -> !unit.canAct());
 //            boolean engaged;
 //            if (sub.getAI().isEngaged())
 //                engaged = true; //could just check mode!
 
-            list.removeIf(unit -> !unit.isEnemyTo(DC_Game.game.getPlayer(true)));
-        list.removeIf(unit->
-          !checkAggro(unit, hero, AGGRO_RANGE)
-         );
+        list.removeIf(unit -> !unit.isEnemyTo(DC_Game.game.getPlayer(true)));
+        list.removeIf(unit ->
+         !checkAggro(unit, hero, AGGRO_RANGE)
+        );
 
-        List<Unit> aggroGroup = new LinkedList<>();
+        Set<Unit> aggroGroup = new LinkedHashSet<>();
         for (Unit sub : list) {
             List<Unit> aggroed = new LinkedList<>(DC_Game.game.getUnits());
             aggroed.removeIf(unit ->
@@ -57,15 +60,17 @@ public class AggroMaster {
               !unit.isEnemyTo(DC_Game.game.getPlayer(true)) ||
               aggroGroup.contains(sub) ||
               !checkAggro(unit, hero, AGGRO_GROUP_RANGE));
-
-            aggroGroup.addAll(aggroed);
+            aggroed.forEach(unit -> {
+                aggroGroup.addAll(unit.getAI().getGroup().getMembers());
+            });
         }
+
         return aggroGroup;
     }
 
     private static boolean checkAggro(Unit unit, Unit hero, double range) {
         return PositionMaster.getExactDistance(
-         hero.getCoordinates(), unit.getCoordinates())<=range;
+         hero.getCoordinates(), unit.getCoordinates()) <= range;
     }
 
     public static boolean isAiTestOn() {

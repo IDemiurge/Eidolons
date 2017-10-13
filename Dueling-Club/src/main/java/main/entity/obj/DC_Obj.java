@@ -582,5 +582,7 @@ public abstract class DC_Obj extends MicroObj {
         this.animation = animation;
     }
 
-
+    public boolean isOutsideCombat() {
+        return false;
+    }
 }

@@ -14,8 +14,6 @@ import main.game.core.DC_TurnManager;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.math.PositionMaster;
-import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import main.system.options.OptionsMaster;
 import main.test.debug.DebugMaster;
 
 /**
@@ -25,9 +23,18 @@ public class OutlineMaster {
 
 
     protected VisionMaster master;
+    private static boolean outlinesOn;
 
     public OutlineMaster(VisionMaster visionMaster) {
         master = visionMaster;
+    }
+
+    public static void setOutlinesOn(boolean outlinesOn) {
+        OutlineMaster.outlinesOn = outlinesOn;
+    }
+
+    public static boolean isOutlinesOn() {
+        return outlinesOn;
     }
 
     public OUTLINE_TYPE getOutlineType(DC_Obj unit) {
@@ -99,20 +106,12 @@ public class OutlineMaster {
         }
         // TODO LIGHT_EMISSION !
         if (gamma <= master.getGammaMaster().getGammaForThickDarkness()) {
-
             return OUTLINE_TYPE.THICK_DARKNESS;
         }
-
-
-//            return null;
-
-
-
-
         if (gamma < master.getGammaMaster().getGammaForDarkOutline()  ) {
             return OUTLINE_TYPE.DARK_OUTLINE;
         }
-        return OUTLINE_TYPE.VAGUE_OUTLINE;
+        return null ;
     }
 
     protected OUTLINE_IMAGE getImageVague(Unit unit) {
@@ -178,8 +177,5 @@ public class OutlineMaster {
         return OUTLINE_IMAGE.UNKNOWN;
     }
 
-    public static boolean isOutlineModeOn() {
-        return OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OUTLINES);
-    }
 
 }

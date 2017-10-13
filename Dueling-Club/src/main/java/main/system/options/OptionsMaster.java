@@ -3,6 +3,7 @@ package main.system.options;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.libgdx.anims.particles.ParticleManager;
@@ -142,6 +143,9 @@ public class OptionsMaster {
                     break;
                 case OPTIMIZATION_ON:
                     SuperActor.setCullingOff(!bool);
+                    break;
+                case OUTLINES:
+                    OutlineMaster.setOutlinesOn(bool);
                     break;
             }
         }

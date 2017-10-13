@@ -221,9 +221,9 @@ public class AnimationConstructor {
     }
 
     public void preconstruct(DC_ActiveObj active) {
-        new Thread(() -> {
+//        new Thread(() -> {
             getOrCreate(active);
-        }, active + " anim preconstruct thread").start();
+//        }, active + " anim preconstruct thread").start();
     }
 
     private CompositeAnim construct(DC_ActiveObj active) {

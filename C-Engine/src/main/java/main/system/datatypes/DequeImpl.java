@@ -66,7 +66,7 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
             e.printStackTrace();
         }
 
-        size = size();
+//        size = size();
         return result;
     }
 
@@ -88,14 +88,14 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
     @Override
     public boolean add(E e) {
         boolean add = super.add(e);
-        size = size();
+//        size = size();
         return add;
     }
 
     @Override
     public boolean remove(Object o) {
         boolean remove = super.remove(o);
-        size = size();
+//        size = size();
         return remove;
     }
 

@@ -9,8 +9,10 @@ import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.StringMaster;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by JustMe on 2/22/2017.
@@ -18,12 +20,15 @@ import java.util.List;
 public class HintMaster {
 
     private VisionMaster master;
+    Map<BattleFieldObject, Map<OUTLINE_IMAGE, String>> cache=new HashMap<>();
 
     public HintMaster(VisionMaster visionMaster) {
         master = visionMaster;
     }
 
     private List<OUTLINE_HINT> getHints(BattleFieldObject unit, OUTLINE_IMAGE image) {
+
+
         List<OUTLINE_HINT> list = new LinkedList<>();
         if (unit.isSmall()) {
             list.add(OUTLINE_HINT.SMALL);
@@ -111,7 +116,7 @@ public class HintMaster {
     public String getTooltipForUnit(Unit unit) {
         String hintString = getHintsString(unit);
         String tooltip = StringMaster.getWellFormattedString(unit.getOutlineType().toString()) + " of something "
-                + hintString;
+         + hintString;
         Unit activeUnit = DC_Game.game.getManager().getActiveObj();
         if (unit.getOwner().equals(activeUnit.getOwner())) {
             return unit.getToolTip();
@@ -122,12 +127,23 @@ public class HintMaster {
     }
 
     public String getHintsString(BattleFieldObject unit) {
+        OUTLINE_IMAGE img = master.getOutlineMaster().getImageDark(unit);
+        Map<OUTLINE_IMAGE, String> map = cache.get(unit);
+        if (map == null) {
+            map = new HashMap<>();
+            cache.put(unit, map);
+        }
+
+        String hintString = map.get(img);
+        if (hintString!=null )
+            return hintString;
+        hintString = "";
         List<OUTLINE_HINT> hints =
-         getHints(unit, master.getOutlineMaster().getImageDark(unit));
-        String hintString = "";
+         getHints(unit, img);
         for (OUTLINE_HINT hint : hints) {
             hintString += StringMaster.getWellFormattedString(hint.toString()) + " ";
         }
+        map.put(img, hintString);
         return hintString;
     }
 
