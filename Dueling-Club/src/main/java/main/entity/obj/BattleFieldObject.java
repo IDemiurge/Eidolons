@@ -165,12 +165,16 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         if (obj == null) {
             return false;
         }
-        if (isBfObj()) {
-            if (isWall()) {
+//        if (isBfObj()) {
+//            if (isWall()) {
                 // if (WindowRule.checkWindowOpening(this, obj, target))
                 // return false;
-            }
+//            }
+//        }
+        if ( !isObstructing()) {
+            return false;
         }
+
         if (checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
             return false;
         }

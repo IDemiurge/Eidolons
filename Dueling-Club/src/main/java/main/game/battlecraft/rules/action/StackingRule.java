@@ -3,8 +3,6 @@ package main.game.battlecraft.rules.action;
 import main.client.cc.logic.HeroCreator;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
-import main.content.enums.entity.UnitEnums;
-import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.EntityCheckMaster;
@@ -20,6 +18,8 @@ import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.battlecraft.rules.UnitAnalyzer;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
+import main.game.module.dungeoncrawl.objects.Door;
+import main.game.module.dungeoncrawl.objects.DoorMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -183,16 +183,18 @@ public class StackingRule implements ActionRule {
             if (u == unit) {
                 continue;
             }
-            if (UnitAnalyzer.isDoor(u)) {
-                if (!u.checkProperty(G_PROPS.STATUS, "" + UnitEnums.STATUS.UNLOCKED)) {
+            if (DoorMaster.isDoor((BattleFieldObject) u)) {
+                Door door = (Door) u;
+                if (!DoorMaster.isOpen(door))
+//                if (!u.checkProperty(G_PROPS.STATUS, "" + UnitEnums.STATUS.UNLOCKED)) {
                     return false;
-                }
+//                }
             }
             if (UnitAnalyzer.isWall(u)) {
                 // not flying
-                if (!UnitAnalyzer.isFlying(unit)) {
+//                if (!UnitAnalyzer.isFlying(unit)) {
                     return false;
-                }
+//                }
             }
             girth += u.getIntParam(PARAMS.GIRTH);
 //           TODO  if (DoorMaster.isDoor((BattleFieldObject) u)) {

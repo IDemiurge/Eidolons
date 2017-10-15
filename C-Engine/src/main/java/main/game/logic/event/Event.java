@@ -205,7 +205,9 @@ public class Event implements Referred {
 
         PASSIVE_REMOVED,
         PASSIVE_BEING_REMOVED,
-
+        //DUNGEON
+        DOOR_CLOSES,
+        DOOR_OPENS,
         // DAMAGE
         UNIT_IS_BEING_DEALT_DAMAGE,
         UNIT_IS_BEING_DEALT_SPELL_DAMAGE,

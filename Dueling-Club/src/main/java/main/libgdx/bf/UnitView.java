@@ -164,15 +164,11 @@ public class UnitView extends BaseView {
             if (SuperActor.alphaFluctuationOn)
                 ActorMaster.addFadeInOrOutIfNoActions(this, 5);
         }
-        while (true) {
-//            if (DC_Game.game.isDebugMode())
-                if (outline != null) {
-                    batch.draw(outline, 0, 0);
-                    break;
-                }
-            super.draw(batch, parentAlpha);
-            break;
+        if (outline != null) {
+            batch.draw(outline, 0, 0);
         }
+        super.draw(batch, parentAlpha);
+
         if (batch.getShader() == GrayscaleShader.getGrayscaleShader())
             batch.setShader(shader);
     }

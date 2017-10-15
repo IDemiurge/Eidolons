@@ -12,6 +12,7 @@ import static main.system.GuiEventType.CALL_BLUE_BORDER_ACTION;
 
 public class BaseView extends SuperActor {
     protected Image portrait;
+    private Image altPortrait;
 
     public BaseView(UnitViewOptions o) {
         this(o.getPortrateTexture());
@@ -47,6 +48,13 @@ public class BaseView extends SuperActor {
         });
     }
 
+    public Image getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(Image portrait) {
+        this.portrait = portrait;
+    }
 
     @Override
     protected void sizeChanged() {
@@ -55,4 +63,11 @@ public class BaseView extends SuperActor {
 
     }
 
+    public void setAltPortrait(Image altPortrait) {
+        this.altPortrait = altPortrait;
+    }
+
+    public Image getAltPortrait() {
+        return altPortrait;
+    }
 }

@@ -27,7 +27,7 @@ public class LockEffect extends DC_Effect {
             //try
         }
 
-        obj.getDM().open(obj);
+        obj.getDM().open(obj,ref );
 
         return true;
     }

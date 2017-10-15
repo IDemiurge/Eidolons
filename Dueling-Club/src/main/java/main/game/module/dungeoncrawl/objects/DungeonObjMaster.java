@@ -1,5 +1,6 @@
 package main.game.module.dungeoncrawl.objects;
 
+import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
@@ -27,7 +28,7 @@ public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
 
     public abstract List<DC_ActiveObj> getActions(BattleFieldObject obj, Unit unit);
 
-    public abstract void open(DungeonObj obj);
+    public abstract void open(DungeonObj obj, Ref ref);
 
     public enum DUNGEON_ITEM_ACTION {
         TAKE,

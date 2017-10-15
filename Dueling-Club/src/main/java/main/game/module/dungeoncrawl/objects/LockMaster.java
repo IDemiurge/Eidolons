@@ -78,7 +78,7 @@ public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
     }
 
     @Override
-    public void open(DungeonObj obj) {
+    public void open(DungeonObj obj, Ref ref) {
 
     }
 

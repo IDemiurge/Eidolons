@@ -101,7 +101,9 @@ public class GridPanel extends Group {
     public void updateOutlines() {
 
         unitMap.keySet().forEach(obj -> {
-            if (!obj.isOverlaying()) {
+            if (!obj.isOverlaying())
+            if (!obj.isWall())
+            {
                 OUTLINE_TYPE outline = obj.getOutlineType();
                 GridUnitView uv = (GridUnitView) unitMap.get(obj);
 

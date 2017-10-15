@@ -18,6 +18,9 @@ public class EventAnimCreator {
                     return new DeathAnim(e);
                 case UNIT_HAS_USED_QUICK_ITEM:
                     return new QuickItemAnim(e);
+                case DOOR_CLOSES:
+                case DOOR_OPENS:
+                    return new DoorAnimation(e);
             }
 
         }

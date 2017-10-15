@@ -180,6 +180,8 @@ public class AnimMaster extends Group {
 
          }
         );
+
+
     }
 
     private void mouseHover(Unit unit) {
