@@ -1,0 +1,13 @@
+<Level><Custom_Props><Party_Spawn_Coordinates>5-4;</Party_Spawn_Coordinates>
+<Name>Tutorial Demon Shrine</Name>
+<Displayed_Name>Tutorial Demon Shrine</Displayed_Name>
+<Workspace_Group>IMPLEMENT</Workspace_Group>
+<Dungeon_Main_Entrances>Stairs(5-5);Stairs(5-5)</Dungeon_Main_Entrances>
+<Dungeon_Subfolder>demo</Dungeon_Subfolder>
+</Custom_Props><Custom_Params><Bf_Width>9</Bf_Width>
+<Bf_Height>7</Bf_Height>
+</Custom_Params><Wall_Objects></Wall_Objects>
+<Direction_Map>0-2=Burning Skull(RIGHT);3-5=Burning Skull(UP);7-2=Burning Skull(LEFT);4-1=Burning Skull(DOWN);</Direction_Map>
+<Plan><Dungeon_Type>Demon Shrine</Dungeon_Type>
+<Zones><Zone_UNICODE35CODEEND0UNICODE44CODEEND_X0UNICODE45CODEEND9UNICODE59CODEEND_Y0UNICODE45CODEEND7><Blocks><RoomUNICODE45CODEEND0><Block_Type>Room</Block_Type>
+<Coordinates>8-6;8-5;8-4;8-3;8-2;8-1;8-0;7-6;7-5;7-4;7-3;7-2;7-1;7-0;6-6;6-5;6-4;6-3;6-2;6-1;6-0;5-6;5-5;5-4;5-3;5-2;5-1;5-0;4-6;4-5;4-4;4-3;4-2;4-1;4-0;3-6;3-5;3-4;3-3;3-2;3-1;3-0;2-6;2-5;2-4;2-3;2-2;2-1;2-0;1-6;1-5;1-4;1-3;1-2;1-1;1-0;0-6;0-5;0-4;0-3;0-2;0-1;0-0;</Coordinates><Objects>6-5=Witchfire Brazier,6-6=Wall of Skulls,0-2=Wall of Skulls,0-2=Burning Skull,0-3=Wall of Skulls,7-0=Wall of Skulls,7-2=Wall of Skulls,7-2=Burning Skull,7-4=Wall of Skulls,7-5=Wall of Skulls,1-1=Wall of Skulls,1-2=Demon Gorger,1-4=Wall of Skulls,1-5=Wall of Skulls,8-1=Wall of Skulls,8-3=Wall of Skulls,2-0=Wall of Skulls,2-1=Abyssal Gate,2-3=Imp,2-4=Demon Brute,2-6=Wall of Skulls,3-0=Wall of Skulls,3-1=Skull Pile,3-2=Possessed,3-3=Hellguard,3-5=Wall of Skulls,3-5=Burning Skull,4-1=Wall of Skulls,4-1=Burning Skull,4-2=Familiar,4-5=Charred Remains,4-6=Wall of Skulls,5-0=Wall of Skulls,5-1=Fiend,5-5=Stairs,5-6=Wall of Skulls,6-0=Wall of Skulls,</Objects></RoomUNICODE45CODEEND0></Blocks></Zone_UNICODE35CODEEND0UNICODE44CODEEND_X0UNICODE45CODEEND9UNICODE59CODEEND_Y0UNICODE45CODEEND7></Zones><Entrances>Center</Entrances><Exits>Center</Exits></Plan></Level>
