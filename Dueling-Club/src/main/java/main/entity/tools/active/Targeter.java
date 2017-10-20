@@ -156,6 +156,9 @@ public class Targeter extends ActiveHandler {
     }
 
     public boolean canBeTargeted(Integer id) {
+        return canBeTargeted(id, CoreEngine.isTargetingResultCachingOn());
+    }
+        public boolean canBeTargeted(Integer id, boolean caching) {
 
         Targeting targeting = getTargeting();
             Map<FACING_DIRECTION, Map<Integer, Boolean>> map = getTargetingCache().get(
@@ -169,10 +172,11 @@ public class Targeter extends ActiveHandler {
         if (map2 == null) {
             map2 = new HashMap<>();
             map.put(getOwnerObj().getFacing(), map2);
-        } Boolean result = map2.get(id); //TODO for ai?
-        if (CoreEngine.isTargetingResultCachingOn()) {
+        }
+        Boolean result = map2.get(id); //TODO for ai?
+        if (caching) {
          if (result != null)
-         return result;
+            return result;
         }
         if (targeting == null) {
             // TODO ??
@@ -202,7 +206,8 @@ public class Targeter extends ActiveHandler {
                     return true;
                 }
             }
-        }getEntity(). getRef().getSourceObj().getRef() .setInfoEntity(getEntity());
+        }
+        getEntity(). getRef().getSourceObj().getRef() .setInfoEntity(getEntity());
         result = targeting.getFilter().getConditions().preCheck(REF);
         map2.put(id, result);
         return result;

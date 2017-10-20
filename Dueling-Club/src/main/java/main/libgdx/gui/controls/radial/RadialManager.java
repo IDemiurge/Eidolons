@@ -96,7 +96,7 @@ public class RadialManager {
             return false;
         }
 
-        if (!action.canBeTargeted(target.getId())) {
+        if (!action.canBeTargeted(target.getId(), false)) {
             return false;
         }
         return true;
@@ -111,9 +111,9 @@ public class RadialManager {
 
     public static List<RadialValueContainer> getOrCreateRadialMenu(DC_Obj target) {
         List<RadialValueContainer> nodes = cache.get(target);
-        if (!ListMaster.isNotEmpty(nodes)) {
+        if (!ListMaster.isNotEmpty(nodes))
             nodes = createNew(target);
-        }
+
         cache.put(target, nodes);
         return nodes;
     }
@@ -247,7 +247,7 @@ public class RadialManager {
 
     private static List<? extends ActiveObj> getActions(Unit sourceUnit, DC_Obj target) {
 
-        List<ActiveObj> actives = sourceUnit.getActives();
+        List<ActiveObj> actives = new LinkedList<>(sourceUnit.getActives());
 //        actives.addAll(sourceUnit.getSpells());
         sourceUnit.getQuickItems().forEach(item -> {
             if (isQuickItemShown(item, target)) {
@@ -255,7 +255,10 @@ public class RadialManager {
             }
         });
         if (target instanceof DungeonObj) {
-            ((DungeonObj) target).getDM().getActions((BattleFieldObject) target, sourceUnit);
+             (((DungeonObj) target).getDM().
+              getActions((DungeonObj) target, sourceUnit)).forEach(a->{
+                 actives.add(0, (ActiveObj) a);
+             });
 //            if (DoorMaster.isDoor((BattleFieldObject) target)) {
 //                actives.addAll(DoorMaster.getActions((BattleFieldObject) target, sourceUnit));
 //            }

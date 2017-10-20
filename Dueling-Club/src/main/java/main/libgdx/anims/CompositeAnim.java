@@ -89,10 +89,10 @@ public class CompositeAnim implements Animation {
             triggerFinishEvents();
             playAttached();
             if (map.size() <= index) {
-                if (!checkAfterEffects()){
-                finished();
-                return false;
-            }
+                if (!checkAfterEffects()) {
+                    finished();
+                    return false;
+                }
             }
             initPartAnim();
             currentAnim.start(getRef());
@@ -104,6 +104,8 @@ public class CompositeAnim implements Animation {
 
     @Override
     public void start(Ref ref) {
+        if (isRunning())
+            return;
         setRef(ref);
         start();
     }
@@ -111,7 +113,7 @@ public class CompositeAnim implements Animation {
     private boolean checkAfterEffects() {
         if (attached.containsKey(ANIM_PART.AFTEREFFECT))
 //        if (OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION. GENERATE_AFTER_EFFECTS))
-         {
+        {
             if (timeAttachedAnims.get(ANIM_PART.AFTEREFFECT) != null) {
                 timeAttachedAnims.get(ANIM_PART.AFTEREFFECT).forEach(a -> {
                     a.start(getRef());
@@ -125,14 +127,13 @@ public class CompositeAnim implements Animation {
 //                    AnimMaster.getInstance().addAttached(a);
 //                });
 //            }
-            if (attached.get(ANIM_PART.AFTEREFFECT).isEmpty())
-            {
+            if (attached.get(ANIM_PART.AFTEREFFECT).isEmpty()) {
                 return false;
             }
-             if (map.containsKey(ANIM_PART.AFTEREFFECT)){
-                 index--;
-             }
-            for (Animation sub:    new LinkedList<>( attached.get(ANIM_PART.AFTEREFFECT))){
+            if (map.containsKey(ANIM_PART.AFTEREFFECT)) {
+                index--;
+            }
+            for (Animation sub : new LinkedList<>(attached.get(ANIM_PART.AFTEREFFECT))) {
                 map.put(ANIM_PART.AFTEREFFECT, (Anim) sub);
                 attached.get(ANIM_PART.AFTEREFFECT).remove(sub);
                 break;
@@ -140,7 +141,7 @@ public class CompositeAnim implements Animation {
 
 //            part = ANIM_PART.AFTEREFFECT; //TODO rework this!
 //            triggerFinishEvents();
-       return true;
+            return true;
         }
 
         return false;
@@ -209,19 +210,19 @@ public class CompositeAnim implements Animation {
     private void triggerStartEvents() {
         if (currentAnim != null)
             if (currentAnim.getEventsOnStart() != null) {
-            currentAnim.getEventsOnStart().forEach(e -> {
-                GuiEventManager.trigger(e.getKey(), e.getValue());
-            });
-        }
+                currentAnim.getEventsOnStart().forEach(e -> {
+                    GuiEventManager.trigger(e.getKey(), e.getValue());
+                });
+            }
     }
 
     private void triggerFinishEvents() {
         if (currentAnim != null)
-        if (currentAnim.getEventsOnFinish() != null) {
-            currentAnim.getEventsOnFinish().forEach(e -> {
-                GuiEventManager.trigger(e.getKey(), e.getValue());
-            });
-        }
+            if (currentAnim.getEventsOnFinish() != null) {
+                currentAnim.getEventsOnFinish().forEach(e -> {
+                    GuiEventManager.trigger(e.getKey(), e.getValue());
+                });
+            }
     }
 
     public void add(ANIM_PART part, Anim anim) {
@@ -261,7 +262,8 @@ public class CompositeAnim implements Animation {
     }
 
     public void start() {
-
+        if (isRunning())
+            return;
         time = 0;
         index = 0;
         initPartAnim();
@@ -304,10 +306,16 @@ public class CompositeAnim implements Animation {
 
     private void initPartAnim() {
         if (map.isEmpty()) {
-            return;
+            if (attached.isEmpty())
+                return;
         }
-        part = (ANIM_PART) MapMaster.get(map, index);
-        currentAnim = map.get(part);
+        if (map.isEmpty()) {
+            part = (ANIM_PART) MapMaster.get(attached, index);
+            currentAnim = (Anim) attached.get(part).remove(0);
+        } else {
+            part = (ANIM_PART) MapMaster.get(map, index);
+            currentAnim = map.get(part);
+        }
     }
 
     public void addEffectAnim(Animation anim, Effect effect) {
@@ -334,15 +342,16 @@ public class CompositeAnim implements Animation {
     }
 
     private void attach(Animation anim, ANIM_PART partToAddAt, float delay) {
-        if (delay != 0) {
-            anim.setDelay(delay);
-            attachDelayed(anim, partToAddAt);
-        } else {
-            attach(anim, partToAddAt);
-        }
+            if (delay != 0) {
+                anim.setDelay(delay);
+                attachDelayed(anim, partToAddAt);
+            } else {
+                attach(anim, partToAddAt);
+            }
         if (anim instanceof Anim) {
             addEvents(partToAddAt, (Anim) anim);
         }
+
     }
 
     public void attachDelayed(Animation anim, ANIM_PART part) {
@@ -478,17 +487,27 @@ public class CompositeAnim implements Animation {
     public DC_ActiveObj getActive_() {
         return (DC_ActiveObj) getActive();
     }
-        public Entity getActive() {
+
+    public Entity getActive() {
         if (getCurrentAnim() == null)
             return null;
         return getCurrentAnim().getActive();
+    }
+
+    public Anim getContinuous() {
+        return continuous;
     }
 
     public void setContinuous(Anim continuous) {
         this.continuous = continuous;
     }
 
-    public Anim getContinuous() {
-        return continuous;
+    public boolean isEventAnim() {
+        if (map.isEmpty())
+            if (!attached.isEmpty())
+        return true;
+        return false;
     }
+
+
 }

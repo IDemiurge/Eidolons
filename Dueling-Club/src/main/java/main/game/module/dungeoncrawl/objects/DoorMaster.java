@@ -1,12 +1,9 @@
 package main.game.module.dungeoncrawl.objects;
 
-import main.ability.Abilities;
-import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.values.properties.G_PROPS;
-import main.elements.targeting.FixedTargeting;
+import main.elements.conditions.DistanceCondition;
 import main.entity.Ref;
-import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.BattleFieldObject;
@@ -28,38 +25,24 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         super(dungeonMaster);
     }
 
-    private static DC_UnitAction getAction(DOOR_ACTION sub, Unit unit, BattleFieldObject door) {
-        String typeName = StringMaster.getWellFormattedString(sub.name()) + " Door";
-        DC_UnitAction action =
-         unit.getGame().getActionManager().getOrCreateAction(typeName, unit);
-        action.setTargeting(new FixedTargeting(KEYS.TARGET));
-        action.setActionTypeGroup(ACTION_TYPE_GROUPS.STANDARD);
-        action.setAbilities(new Abilities() {
-            @Override
-            public boolean activatedOn(Ref ref) {
-                if (!actionActivated(sub, unit, (Door) ref.getTargetObj()))
-                    return false;
-                return super.activatedOn(ref);
-            }
 
-            @Override
-            public boolean activate() {
-                return super.activate();
-            }
-        });
-        return action;
-    }
-
-    private static boolean actionActivated(DOOR_ACTION sub,
-                                           Unit unit, Door door) {
-        if (sub == DOOR_ACTION.UNLOCK) {
+@Override
+    protected    boolean actionActivated(DOOR_ACTION sub,
+                                           Unit unit, DungeonObj obj) {
+    Door door= (Door) obj;
+    if (sub == DOOR_ACTION.UNLOCK) {
             if (!tryPickLock(door))
                 return true;
         }
         switch (sub) {
             case OPEN:
-                openDoor(door);
+                open(door, unit.getRef().getTargetingRef(obj));
                 return true;
+            case CLOSE:
+                obj.getGame().fireEvent(
+                 new Event(STANDARD_EVENT_TYPE.DOOR_CLOSES,
+                  unit.getRef().getTargetingRef(obj)));
+                break;
         }
         DOOR_STATE state = getState(sub);
         door.setState(state);
@@ -104,11 +87,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
 
     }
 
-    public static boolean openDoor(Door door) {
-//        door.addStatus(value);
-        return true;
 
-    }
 
     public static boolean tryPickLock(Door door) {
 
@@ -120,7 +99,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
 
     }
 
-    public List<DC_ActiveObj> getActions(BattleFieldObject door, Unit unit) {
+    public List<DC_ActiveObj> getActions(DungeonObj door, Unit unit) {
         if (!(door instanceof Door))
             return new LinkedList<>();
         //check intelligence, mastery
@@ -128,7 +107,10 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         DC_UnitAction action = null;
         for (DOOR_ACTION sub : DOOR_ACTION.values()) {
             if (checkAction(unit, (Door) door, sub)) {
-                action = getAction(sub, unit, door);
+                String name = StringMaster.getWellFormattedString(sub.name()) + " Door";
+                action = createAction(sub, unit, name, door);
+                action.getTargeting().getConditions().add(new DistanceCondition("1", true));
+
                 if (action != null) {
                     list.add(action);
 

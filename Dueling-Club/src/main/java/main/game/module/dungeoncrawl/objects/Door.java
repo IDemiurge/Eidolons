@@ -19,7 +19,7 @@ public class Door extends DungeonObj {
 
     public DOOR_STATE getState() {
         if (state == null) {
-
+            state = DOOR_STATE.CLOSED;
         }
         return state;
     }
@@ -35,16 +35,15 @@ public class Door extends DungeonObj {
 
     @Override
     public boolean isWall() {
-        if (state == DOOR_STATE.LOCKED)
+        if (getState() == DOOR_STATE.OPEN)
+            return false;
+
             return true;
-        if (state == DOOR_STATE.SEALED)
-            return true;
-        return false;
     }
 
     @Override
     public boolean isObstructing() {
-        if (state == DOOR_STATE.OPEN)
+        if (getState() == DOOR_STATE.OPEN)
             return false;
         return true;
     }

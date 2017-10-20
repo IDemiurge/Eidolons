@@ -93,6 +93,14 @@
         </profile>
     </profiles>
 
+    <repositories>
+        <repository>
+            <id>sonatype</id>
+            <name>sonatype snapshots</name>
+            <url> https://oss.sonatype.org/content/repositories/snapshots/</url>
+
+        </repository>
+    </repositories>
     <dependencies>
 
         <dependency>
@@ -190,8 +198,18 @@
             <version>1.4.10</version>
         </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>es.e-ucm.com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-video</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>es.e-ucm.com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-video-desktop</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
+    </dependencies>
     <build>
         <plugins>
             <plugin>

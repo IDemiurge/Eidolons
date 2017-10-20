@@ -61,10 +61,17 @@ public class AbilityConstructor {
     public static Abilities constructAbilities(Node node) {
         Abilities abilities = new Abilities();
         List<Node> nodeList = XML_Converter.getNodeList(node);
-        while (nodeList.size() < 2 //
-         && nodeList.get(0).getNodeName().equals(Mapper.ABILITIES)) {
-            nodeList = XML_Converter.getNodeList(nodeList.get(0));
+        if (nodeList.isEmpty())
+            return abilities;
+        Node unwrappedNode = nodeList.get(0);
+        while (nodeList.size() < 2 //?!
+         && unwrappedNode.getNodeName().equals(Mapper.ABILITIES)) {
+            nodeList = XML_Converter.getNodeList(unwrappedNode);
+            if (nodeList.isEmpty())
+                return abilities;
+            unwrappedNode = nodeList.get(0);
         }
+
         for (Node NODE : nodeList) {
             Ability abil = constructAbility(NODE);
             abilities.add(abil); // return Abilities

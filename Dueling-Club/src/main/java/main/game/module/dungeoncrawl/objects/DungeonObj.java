@@ -3,6 +3,8 @@ package main.game.module.dungeoncrawl.objects;
 import main.entity.Ref;
 import main.entity.obj.Structure;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
+import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 
@@ -16,10 +18,12 @@ public abstract class DungeonObj extends Structure {
     }
     protected DungeonObjMaster DM;
     public DungeonObj(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
-
         super(type,x, y, owner, game, ref);
     }
 
+    public DungeonObj(ObjType type, int x, int y ) {
+        super(type,x, y, DC_Player.NEUTRAL, Eidolons.game, new Ref());
+    }
     public boolean isLocked() {
         return false;
     }

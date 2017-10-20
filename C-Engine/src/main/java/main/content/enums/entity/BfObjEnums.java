@@ -28,6 +28,7 @@ public class BfObjEnums {
         LANDSCAPE,
         OVERLAYING,
         WATER,
+        ITEM,
         HUGE,
         LARGE
     }

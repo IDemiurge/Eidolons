@@ -35,7 +35,7 @@ public class DoorAnimation extends Anim {
         ActorMaster.addFadeInOrOut(actor.getPortrait(), getDuration());
         if (open) {
             String path = door.getImagePath();
-            path = StringMaster.cropFormat(path) + " open" + ".png";
+            path = StringMaster.cropFormat(path) + "_open" + ".png";
             if (newImage == null)
                 newImage = new Image(TextureCache.getOrCreateR(path));
         } else {

@@ -705,6 +705,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean canBeTargeted(Integer id) {
         return getTargeter().canBeTargeted(id);
     }
+        public boolean canBeTargeted(Integer id, boolean caching) {
+        return getTargeter().canBeTargeted(id, caching);
+    }
 
     //Activator
 

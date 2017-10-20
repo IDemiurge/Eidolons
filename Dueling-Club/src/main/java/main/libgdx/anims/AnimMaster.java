@@ -201,12 +201,16 @@ public class AnimMaster extends Group {
             LogMaster.log(LogMaster.ANIM_DEBUG, "NULL ANIM FOR " + activeObj);
             return;
         }
+        if (animation.isEventAnim())
+            return ;
+        if (animation.isRunning())
+            return;
         animation.reset();
         if (leadAnimation == null) {
             leadAnimation = animation;
             leadAnimation.start(activeObj.getRef());
         } else {
-            leadQueue.add(animation);
+           add(animation);
             if (OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING)) {
                 animation.start(activeObj.getRef());
             }
@@ -248,8 +252,12 @@ public class AnimMaster extends Group {
              " event anim created for: " + parentAnim);
             parentAnim.addEventAnim(anim, event); //TODO}
         }
-        if (!parentAnim.isRunning()) {// preCheck new TODO
-            add(parentAnim);
+        if (parentAnim.getMap().isEmpty()){
+
+        }
+        if (parentAnim!= leadAnimation)
+            if (!parentAnim.isRunning()) {// preCheck new TODO
+                add(parentAnim);
         }
     }
 
@@ -373,7 +381,7 @@ public class AnimMaster extends Group {
 
         //TODO Stack: counter atk will animated first - last in first out :(
 
-        leadAnimation = leadQueue.removeLast();
+        leadAnimation = leadQueue.removeFirst();
         return leadAnimation;
     }
 

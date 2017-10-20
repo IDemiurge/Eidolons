@@ -10,7 +10,6 @@ import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimMaster3d;
 import main.libgdx.bf.BaseView;
 import main.libgdx.bf.GridUnitView;
-import main.libgdx.bf.OverlayView;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.stage.BattleGuiStage;
 import main.system.GuiEventManager;
@@ -112,16 +111,16 @@ public class ToolTipManager extends TablePanel {
     }
 
     private float getZoomScale(BaseView object) {
-        if (object instanceof OverlayView){
-            return 0.61f;
-        }
+//        if (object instanceof OverlayView){
+//            return 0.61f;
+//        } gridPanel handles this by setBounds()!
         return 1.12f;
     }
 
     private float getDefaultScale(BaseView object) {
-        if (object instanceof OverlayView){
-            return OverlayView.SCALE;
-        }
+//        if (object instanceof OverlayView){
+//            return OverlayView.SCALE;
+//        } gridPanel handles this by setBounds()!
         return 1;
     }
 

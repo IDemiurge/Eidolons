@@ -17,6 +17,17 @@ public class DistanceCondition extends NumericCondition {
         this.setDistance(greater);
     }
 
+    public DistanceCondition(String distance, Boolean equal_less ) {
+        this(distance, KEYS.SOURCE.toString(), KEYS.MATCH.toString());
+        if (equal_less)
+        setEqual(equal);
+        else {
+            Formula buffer = getComparedValue();
+            setComparedValue(getComparingValue());
+            setComparingValue(buffer);
+        }
+    }
+
     public DistanceCondition(String distance) {
         this(distance, KEYS.SOURCE.toString(), KEYS.MATCH.toString());
     }

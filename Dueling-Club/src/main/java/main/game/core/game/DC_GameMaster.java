@@ -15,6 +15,8 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.*;
 
@@ -366,5 +368,16 @@ public class DC_GameMaster extends GameMaster {
         if (structuresArray == null)
             structuresArray = getStructures().toArray(new BattleFieldObject[getStructures().size()]);
         return structuresArray;
+    }
+
+    public void nextLevel() {
+       getGame().getGameLoop().setSkippingToNext(true);
+        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
+         null  );
+        WaitMaster.WAIT(100);
+        WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED,
+         true);
+        //pan camera to main hero
+        // zoom?
     }
 }

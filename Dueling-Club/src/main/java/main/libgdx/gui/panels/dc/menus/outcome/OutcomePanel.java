@@ -147,14 +147,8 @@ public class OutcomePanel extends TablePanel implements EventListener {
 //                @Override
 //                public boolean act(float delta) {
                     if (exit_continue_next == null ) {
-                        Eidolons.getGame().getGameLoop().setSkippingToNext(true);
-                        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-                         null  );
-                        WaitMaster.WAIT(100);
-                        WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED,
-                         true);
-                        //pan camera to main hero
-                        // zoom?
+                        Eidolons.getGame().getMaster().nextLevel();
+
                     } else if (exit_continue_next) {
 //                        if (DialogMaster.confirm("Must you really go?.."))
                         Gdx.app.exit();

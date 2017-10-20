@@ -18,8 +18,6 @@ import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.battlecraft.rules.UnitAnalyzer;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
-import main.game.module.dungeoncrawl.objects.Door;
-import main.game.module.dungeoncrawl.objects.DoorMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -183,13 +181,13 @@ public class StackingRule implements ActionRule {
             if (u == unit) {
                 continue;
             }
-            if (DoorMaster.isDoor((BattleFieldObject) u)) {
-                Door door = (Door) u;
-                if (!DoorMaster.isOpen(door))
-//                if (!u.checkProperty(G_PROPS.STATUS, "" + UnitEnums.STATUS.UNLOCKED)) {
-                    return false;
-//                }
-            }
+//            if (DoorMaster.isDoor((BattleFieldObject) u)) {
+//                Door door = (Door) u;
+//                if (!DoorMaster.isOpen(door))
+////                if (!u.checkProperty(G_PROPS.STATUS, "" + UnitEnums.STATUS.UNLOCKED)) {
+//                    return false;
+////                }
+//            }
             if (UnitAnalyzer.isWall(u)) {
                 // not flying
 //                if (!UnitAnalyzer.isFlying(unit)) {

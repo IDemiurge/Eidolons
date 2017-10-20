@@ -10,6 +10,7 @@ import main.data.ability.construct.VariableManager;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
@@ -25,6 +26,7 @@ import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.ZCoordinates;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
+import main.game.module.dungeoncrawl.objects.HungItemMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -191,7 +193,12 @@ public class DC_ObjInitializer {
 
 
             }
-            try {
+            Coordinates c = null;
+            if (item.contains("(") || item.contains("-")) {
+                if (!item.contains("null=")) {
+                        c = getCoordinatesFromObjString(item, alt);
+                }
+            }
                 String typeName = getNameFromObjString(item, alt);
                 i++;
                 if (i == items.length) {
@@ -205,7 +212,12 @@ public class DC_ObjInitializer {
                 }
                 ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.BF_OBJ);
                if (type == null )
-                   continue;
+               {
+                   type = DataManager.getType(typeName, C_OBJ_TYPE.ITEMS);
+                   if (type != null )
+                       createItem(type, c);
+                       continue;
+               }
                 if (type.getOBJ_TYPE_ENUM()== DC_TYPE.BF_OBJ)
                     owner = DC_Player.NEUTRAL;
                     else
@@ -227,17 +239,6 @@ public class DC_ObjInitializer {
                }
                 if (level != 0) {
                     type = new UnitLevelManager().getLeveledType(type, level);
-                }
-
-                Coordinates c = null;
-                if (item.contains("(") || item.contains("-")) {
-                    if (!item.contains("null=")) {
-                        try {
-                            c = getCoordinatesFromObjString(item, alt);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
                 }
 
                 int height = UnitGroupMaster.getGroupSizeY(owner);// UnitGroupMaster.getCurrentGroupHeight();
@@ -357,13 +358,14 @@ public class DC_ObjInitializer {
                         UnitTrainingMaster.train((Unit) unit);
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         // if (creeps)
         // PartyManager.addCreepParty(DataManager.convertToTypeList(list));
         return map;
+    }
+
+    private static Structure createItem(ObjType type, Coordinates coordinates) {
+        return HungItemMaster.createBfObjForItem(type, coordinates);
     }
 
     public static List<MicroObj> createUnits(Player player, String data) {

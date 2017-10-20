@@ -23,6 +23,16 @@ public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
         super(dungeonMaster);
     }
 
+    @Override
+    protected boolean actionActivated(LOCK_ACTIONS sub, Unit unit, DungeonObj door) {
+        return false;
+    }
+
+    @Override
+    public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
+        return null;
+    }
+
     public   boolean tryUnlock(Entity lockedObj, Unit lockPicker) {
         return tryUnlock(lockedObj, lockPicker, null);
 
@@ -72,10 +82,6 @@ public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
         obj.addStatus(UnitEnums.STATUS.UNLOCKED + "");
     }
 
-    @Override
-    public List<DC_ActiveObj> getActions(BattleFieldObject obj, Unit unit) {
-        return null;
-    }
 
     @Override
     public void open(DungeonObj obj, Ref ref) {

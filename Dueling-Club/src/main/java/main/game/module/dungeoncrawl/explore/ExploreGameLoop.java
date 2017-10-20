@@ -2,7 +2,8 @@ package main.game.module.dungeoncrawl.explore;
 
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.battlecraft.logic.dungeon.location.Location;
+import main.game.bf.Coordinates;
 import main.game.core.ActionInput;
 import main.game.core.Eidolons;
 import main.game.core.GameLoop;
@@ -51,7 +52,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     @Override
     public Thread startInNewThread() {
-        if (DungeonScreen.getInstance()==null )
+        if (DungeonScreen.getInstance() == null)
             WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY, 2000);
         DungeonScreen.getInstance().setRealTimeGameLoop(this);
         if (realTimeThread == null) {
@@ -72,8 +73,23 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         }
         game.getManager().reset();
         //TODO only for player actions?
+        if (skippingToNext)
+            return true;
+        if (checkNextLevel()) {
+            return true;
+        }
 
         master.getResetter().setResetNeeded(false);
+        return false;
+    }
+
+    private boolean checkNextLevel() {
+        Coordinates c = game.getPlayer(true).getHeroObj().getCoordinates();
+        Location location = (Location) game.getDungeonMaster().getDungeonWrapper();
+    if (location.getMainExit().getCoordinates() .equals(c)){
+    //check party
+        return true;
+        }
         return false;
     }
 
@@ -198,13 +214,13 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 //
 //            }, "Player ActionInput Thread").start();
 //        } else
-            tryAddPlayerActions(actionInput);
+        tryAddPlayerActions(actionInput);
     }
 
     @Override
     public void actionInput(ActionInput actionInput) {
         queueActionInput(actionInput);
-       signal();
+        signal();
 
     }
 
@@ -218,11 +234,14 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         lock.unlock();
 
     }
+
     @Override
     protected void loopExit() {
 //            if (ExplorationMaster.checkExplorationSupported(game)) {
 //                WaitMaster.receiveInput(WAIT_OPERATIONS.BATTLE_FINISHED, false);
-        master.switchExplorationMode(false);
+//        master.switchExplorationMode(false);
+        Eidolons.getGame().getBattleMaster().getOutcomeManager().next();
+
     }
 
     @Override

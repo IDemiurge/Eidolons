@@ -7,13 +7,14 @@ import main.game.bf.Coordinates;
 
 public class OverlayView extends BaseView {
     public static final float SCALE = 0.5F;
-    private Image image;
     private Coordinates.DIRECTION direction;
 
     public OverlayView(UnitViewOptions viewOptions, BattleFieldObject bfObj) {
         super(viewOptions);
-        image = new Image(viewOptions.getPortrateTexture());
-        addActor(image);
+        if (portrait != null)
+        portrait.remove();
+        portrait = new Image(viewOptions.getPortrateTexture());
+        addActor(portrait);
 
 //        ValueTooltip tooltip = new ValueTooltip();
 //        tooltip.setUserObject(Arrays.asList(new ValueContainer(viewOptions.getName(), "")));
