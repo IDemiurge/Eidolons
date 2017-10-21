@@ -49,14 +49,14 @@ public class ExplorationMaster {
     }
 
     public static boolean isExplorationSupported(DC_Game game) {
-        if (testMode)
-            return true;
+//        if (testMode)
+//            return true;
 //        if (game.getGameMode() == GAME_MODES.ARENA)
 //            return false;
 //            return true;
 //        }
 //TODO only if disabled by <?>>
-        return false;
+        return true;
     }
 
     public   void switchExplorationMode(boolean on) {

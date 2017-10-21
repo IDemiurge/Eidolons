@@ -1,9 +1,10 @@
 <Level><Custom_Props><Displayed_Name>Ironhelm Tunnel</Displayed_Name>
-<Dungeon_Subfolder>CRAWL</Dungeon_Subfolder>
 <Workspace_Group>IMPLEMENT</Workspace_Group>
-<Dungeon_Main_Entrances>Stairs(7-0);Cave Entrance(7-12)</Dungeon_Main_Entrances>
 <Map_Background>main\background\Ironhelm Tunnel.png</Map_Background>
+<Dungeon_Subfolder>crawl</Dungeon_Subfolder>
+<Dungeon_Main_Entrances>Cave Entrance(7-12);Stairs(7-0)</Dungeon_Main_Entrances>
 <Name>Ironhelm Tunnel</Name>
+<Party_Spawn_Coordinates>7-1;</Party_Spawn_Coordinates>
 </Custom_Props><Custom_Params><Bf_Width>17</Bf_Width>
 <Bf_Height>13</Bf_Height>
 </Custom_Params><Wall_Objects></Wall_Objects>

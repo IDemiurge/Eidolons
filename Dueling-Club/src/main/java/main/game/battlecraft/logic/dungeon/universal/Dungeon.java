@@ -11,6 +11,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
 import main.entity.LightweightEntity;
+import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battlefield.vision.IlluminationMaster;
 import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
@@ -45,21 +46,10 @@ public class Dungeon extends LightweightEntity {
     }
 
     public Dungeon(ObjType type, boolean sublevel) {
-        super(type );
-
+        super(type);
+        setRef(new Ref());
     }
 
-    public String toXml() {
-        String xml=XML_Converter.wrap("Name",getType().getName());;
-//        xml += XML_Converter.wrap(PARAMS.BF_WIDTH.getName(), getCellsX() + "");
-//        xml += XML_Converter.wrap(PARAMS.BF_HEIGHT.getName(), getCellsY() + "");
-        xml +=
-       TypeBuilder.getAlteredValuesXml(this, getType());
-
-if (levelFilePath!=null )
-        xml += XML_Converter.wrap("LevelFilePath", levelFilePath);
-        return XML_Converter.wrap("Dungeon", xml);
-    }
     /*
         dimensions
         dungeon type (non-changeable)
@@ -71,10 +61,22 @@ if (levelFilePath!=null )
         this(DataManager.getType(typeName, DC_TYPE.DUNGEONS), sublevel);
     }
 
+    public String toXml() {
+        String xml = XML_Converter.wrap("Name", getType().getName());
+        ;
+//        xml += XML_Converter.wrap(PARAMS.BF_WIDTH.getName(), getCellsX() + "");
+//        xml += XML_Converter.wrap(PARAMS.BF_HEIGHT.getName(), getCellsY() + "");
+        xml +=
+         TypeBuilder.getAlteredValuesXml(this, getType());
+
+        if (levelFilePath != null)
+            xml += XML_Converter.wrap("LevelFilePath", levelFilePath);
+        return XML_Converter.wrap("Dungeon", xml);
+    }
+
 //    public void init() {
 //        toBase();
 //    }
-
 
     public String getMapBackground() {
         return type.getProperty(PROPS.MAP_BACKGROUND);
@@ -111,7 +113,7 @@ if (levelFilePath!=null )
     public Integer getWidth() {
 
         if (getIntParam(PARAMS.BF_WIDTH) == 0)
-            setParam(PARAMS.BF_WIDTH,   getGame().getDungeonMaster().getBuilder().getDefaultWidth());
+            setParam(PARAMS.BF_WIDTH, getGame().getDungeonMaster().getBuilder().getDefaultWidth());
         return getIntParam(PARAMS.BF_WIDTH);
     }
 
@@ -121,7 +123,7 @@ if (levelFilePath!=null )
 
     public Integer getHeight() {
         if (getIntParam(PARAMS.BF_HEIGHT) == 0)
-            setParam(PARAMS.BF_HEIGHT,   getGame().getDungeonMaster().getBuilder().
+            setParam(PARAMS.BF_HEIGHT, getGame().getDungeonMaster().getBuilder().
              getDefaultHeight());
 
         return getIntParam(PARAMS.BF_HEIGHT);
@@ -175,9 +177,11 @@ if (levelFilePath!=null )
     public boolean isSurface() {
         return checkProperty(PROPS.DUNGEON_TAGS, DungeonEnums.DUNGEON_TAGS.SURFACE + "");
     }
+
     public boolean isNight() {
         return checkProperty(PROPS.DUNGEON_TAGS, DUNGEON_TAGS.NIGHT + "");
     }
+
     public boolean isPermanentDusk() {
         return checkProperty(PROPS.DUNGEON_TAGS, DUNGEON_TAGS.PERMA_DUSK + "");
     }
@@ -201,10 +205,10 @@ if (levelFilePath!=null )
                 return getIntParam(PARAMS.GLOBAL_ILLUMINATION);
             }// day/night
             else {
-                if ( isPermanentDusk())
+                if (isPermanentDusk())
                     return (IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_DAY
-                     +IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_NIGHT)/2;
-                    if ( isDaytime())
+                     + IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_NIGHT) / 2;
+                if (isDaytime())
                     return IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_DAY;
                 return IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_NIGHT;
             }
@@ -215,22 +219,22 @@ if (levelFilePath!=null )
     }
 
     public Coordinates getPoint(Integer index) {
-        return getPoint(""+(index + 1));
+        return getPoint("" + (index + 1));
     }
-        public Coordinates getPoint(String arg) {
-        Coordinates c=null ;
+
+    public Coordinates getPoint(String arg) {
+        Coordinates c = null;
         if (arg.contains(ScriptSyntax.SPAWN_POINT) || StringMaster.isInteger(arg)) {
             arg = arg.replace(ScriptSyntax.SPAWN_POINT, "");
             Integer i = StringMaster.getInteger(arg) - 1;
             List<String> spawnPoints = StringMaster.openContainer(
              getProperty(PROPS.COORDINATE_POINTS));
             c = new Coordinates(spawnPoints.get(i));
-        }
-        else {
-            Map<String,String >  map = new DataUnitFactory(true).
+        } else {
+            Map<String, String> map = new DataUnitFactory(true).
              deconstructDataString(getProperty(PROPS.NAMED_COORDINATE_POINTS));
             String string = map.get(arg);
-            if (string==null ){
+            if (string == null) {
                 //find
                 Object key = new SearchMaster<>().findClosest(arg, map.keySet());
                 string = map.get(key);
@@ -241,12 +245,6 @@ if (levelFilePath!=null )
 //        getProperty(PROPS.ENCOUNTER_SPAWN_POINTS)
     }
 
-    public enum POINTS{
-        CENTER_SPAWN,
-        REAR_SPAWN,
-        SCOUTS_SPAWN,
-
-    }
     private boolean isDaytime() {
         if (isNight()) return false;
         return true;
@@ -264,6 +262,13 @@ if (levelFilePath!=null )
 
     public void setLevelFilePath(String levelFilePath) {
         this.levelFilePath = levelFilePath;
+    }
+
+    public enum POINTS {
+        CENTER_SPAWN,
+        REAR_SPAWN,
+        SCOUTS_SPAWN,
+
     }
 
 }

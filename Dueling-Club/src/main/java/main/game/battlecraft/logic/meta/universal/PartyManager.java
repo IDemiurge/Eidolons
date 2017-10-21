@@ -61,6 +61,9 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
     }
 
     private String chooseMainHero() {
+        if (party.getMembers().size()==1){
+            return party.getLeader().getName();
+        }
         if (!WaitMaster.isComplete(WAIT_OPERATIONS.GUI_READY)){
             Object result = WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY, 4000);
             if (result==null )

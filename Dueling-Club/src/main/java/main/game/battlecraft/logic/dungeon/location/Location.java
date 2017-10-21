@@ -1,9 +1,11 @@
 package main.game.battlecraft.logic.dungeon.location;
 
+import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.content.enums.DungeonEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.G_PROPS;
+import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
 import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
@@ -44,7 +46,7 @@ public class Location extends DungeonWrapper {
         if (!sublevel) {
             generateSublevels();
         }
-        initEntrances();
+//        initEntrances();
     }
 
     public List<Entrance> getEntrances() {
@@ -97,16 +99,16 @@ public class Location extends DungeonWrapper {
         nextZ = null;
     }
 
-    private void initEntrances() {
+    public void initEntrances() {
         if (StringMaster.isEmpty(entranceData)) {
-            entranceData = getProperty(PROPS.DUNGEON_MAIN_ENTRANCES);
+            entranceData = getProperty(PROPS.DUNGEON_MAIN_ENTRANCES, true);
         }
         if (StringMaster.isEmpty(entranceData)) {
             return;
         }
         String enterData = entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR)[0];
         String name = VariableManager.removeVarPart(enterData);
-        Coordinates c = new Coordinates(VariableManager.getVarPart(enterData));
+        Coordinates c = new Coordinates(VariableManager.getVar(enterData));
 
         for (Entrance e : getEntrances()) {
             if (e.getCoordinates().equals(c)) {
@@ -114,6 +116,10 @@ public class Location extends DungeonWrapper {
                     setMainEntrance(e);
                 }
             }
+        }
+        if (getMainEntrance()==null ){
+            setMainEntrance(new Entrance(c.x, c.y, DataManager.getType(name, DC_TYPE.BF_OBJ),
+             getDungeon(), getDungeon()));
         }
         if (entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR).length < 2) {
             return;
@@ -127,6 +133,11 @@ public class Location extends DungeonWrapper {
                     setMainExit(e);
                 }
             }
+        }
+
+        if (getMainExit()==null ){
+            setMainExit(new Entrance(c.x, c.y, DataManager.getType(name, DC_TYPE.BF_OBJ),
+             getDungeon(), getDungeon()));
         }
     }
 

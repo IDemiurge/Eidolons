@@ -1,5 +1,6 @@
 package main.game.module.dungeoncrawl.dungeon;
 
+import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
@@ -14,7 +15,7 @@ public class Entrance extends Unit { //ScenarioUnit
     public Entrance(int x, int y, ObjType type, Dungeon dungeon,
                     Dungeon sublevel) {
         super(type, x, y, DC_Player.NEUTRAL, dungeon.getGame(),
-                dungeon.getRef().getCopy());
+                new Ref());
         this.dungeon = dungeon;
         this.sublevel = sublevel;
         // door/trap can be on both sides... enter() will affect Z but not

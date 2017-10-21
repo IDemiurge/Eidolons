@@ -158,6 +158,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             processNode(n, getDungeon(), plan);
 
         }
+        location.initEntrances();
         plan.setStringData(data);
         initDynamicObjData(location, plan);
 
