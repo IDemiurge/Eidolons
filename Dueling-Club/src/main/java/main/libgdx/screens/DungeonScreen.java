@@ -48,7 +48,7 @@ import static main.system.GuiEventType.*;
 public class DungeonScreen extends ScreenWithLoader {
     public static OrthographicCamera camera;
     private static DungeonScreen instance;
-    private static boolean cameraAutoCenteringOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
+    private static boolean cameraAutoCenteringOn =  OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
     private Stage gridStage;
     private BattleGuiStage guiStage;
     private GridPanel gridPanel;
@@ -218,7 +218,8 @@ public class DungeonScreen extends ScreenWithLoader {
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+        if (DC_Game.game != null)
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
             DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
         }
         super.render(delta);
@@ -230,8 +231,11 @@ public class DungeonScreen extends ScreenWithLoader {
         cameraShift();
         //cam.update();
         if (canShowScreen()) {
-            if (realTimeGameLoop != null)
-                realTimeGameLoop.act(delta);
+            if (DC_Game.game != null)
+            if (DC_Game.game.getGameLoop() instanceof  RealTimeGameLoop) {
+//              if (realTimeGameLoop != null)        realTimeGameLoop.act(delta);
+                ((RealTimeGameLoop) Eidolons.game.getGameLoop()).act(delta);
+            }
 
             if (backTexture != null) {
                 if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
@@ -276,16 +280,18 @@ public class DungeonScreen extends ScreenWithLoader {
     }
 
     private void cameraShift() {
-//        Gdx.app.log("DungeonScreen::cameraShift()", "-- Start! cam:" + cam + " velocity:" + velocity);
         if (cameraDestination != null)
             if (cam != null && velocity != null && !velocity.isZero()) {
                 try {
-                    cam.position.add(velocity.x * Gdx.graphics.getDeltaTime(), velocity.y * Gdx.graphics.getDeltaTime(), 0f);
-//                Coordinates coordinatesActiveObj = getCenteredCoordinates();
-//                Vector2 cameraDestination = new Vector2(coordinatesActiveObj.x * GridConst.CELL_W + GridConst.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridConst.CELL_H - GridConst.CELL_H / 2);
+                    float x =velocity.x>0
+                     ? Math.min( cameraDestination.x, cam.position.x+velocity.x * Gdx.graphics.getDeltaTime())
+                     : Math.max( cameraDestination.x, cam.position.x+velocity.x * Gdx.graphics.getDeltaTime());
+                    float y =velocity.y>0
+                     ? Math.min( cameraDestination.y, cam.position.y+velocity.y * Gdx.graphics.getDeltaTime())
+                     : Math.max( cameraDestination.y, cam.position.y+velocity.y * Gdx.graphics.getDeltaTime());
+                    cam.position.set(x, y, 0f);
                     float dest = cam.position.dst(cameraDestination.x, cameraDestination.y, 0f) / getCameraDistanceFactor();
                     Vector2 velocityNow = new Vector2(cameraDestination.x - cam.position.x, cameraDestination.y - cam.position.y).nor().scl(Math.min(cam.position.dst(cameraDestination.x, cameraDestination.y, 0f), dest));
-//                if(Intersector.overlaps(new Circle(new Vector2(cam.position.x, cam.position.y), 1f), new Circle(unitPosition, 1f))) {
                     if (CoreEngine.isGraphicTestMode()) {
                         Gdx.app.log("DungeonScreen::cameraShift()", "-- velocity:" + velocity);
                         Gdx.app.log("DungeonScreen::cameraShift()", "-- velocityNow:" + velocityNow);
@@ -300,7 +306,6 @@ public class DungeonScreen extends ScreenWithLoader {
                 }
                 cam.update();
             }
-//        Gdx.app.log("DungeonScreen::cameraShift()", "-- End!");
     }
 
     public void cameraStop() {

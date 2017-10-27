@@ -27,7 +27,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.config.ConfigMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -80,16 +79,16 @@ public class DC_StateManager extends StateManager {
     }
 
     private void resetAll() {
-        if (getGame().getDungeonMaster().getExplorationMaster()!=null ){
+        if (getGame().getDungeonMaster().getExplorationMaster() != null) {
             getGame().getDungeonMaster().getExplorationMaster()
              .getCrawler().checkStatusUpdate();
         }
-if (getGame().isStarted() && ExplorationMaster.isExplorationOn()){
-    // we will need full reset: after traps or other spec. effects; for Cells/Illumination
+        if (getGame().isStarted() && ExplorationMaster.isExplorationOn()) {
+            // we will need full reset: after traps or other spec. effects; for Cells/Illumination
 
-    getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
-    return;
-}
+            getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
+            return;
+        }
         super.resetAllSynchronized();
         if (getGame().isStarted()) {
             try {
@@ -166,18 +165,21 @@ if (getGame().isStarted() && ExplorationMaster.isExplorationOn()){
             if (Arrays.asList(toBaseIgnoredTypes).contains(obj.getOBJ_TYPE_ENUM())) {
                 continue;
             }
-            if (!obj.isDead()) {
-                if (obj instanceof DC_Obj) {
-                    if ( ((DC_Obj) obj).isOutsideCombat())
-                    continue;
-                }
-            }
-                try {
-                    obj.toBase();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+//            if (!obj.isDead()) {
+//                if (obj instanceof DC_Obj) {
+//                    if (((DC_Obj) obj).isOutsideCombat())
+//                    {
+//                        ((DC_Obj) obj).outsideCombatReset();
+//                        continue;
+//                    }
+//                }
+//            }
+//            try {
+                obj.toBase();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+        }
 
 
         // TODO Auto-generated method stub
@@ -193,11 +195,11 @@ if (getGame().isStarted() && ExplorationMaster.isExplorationOn()){
     public void afterEffects() {
         for (Obj obj : getGame().getBfObjects()) {
             if (!obj.isDead())
-                if (obj instanceof Unit){
-                if (((Unit) obj).getAI().isOutsideCombat())
-                    continue;
+                if (obj instanceof Unit) {
+                    if (((Unit) obj).getAI().isOutsideCombat())
+                        continue;
                 }
-                {
+            {
                 try {
                     obj.afterEffects();
                 } catch (Exception e) {
@@ -245,8 +247,8 @@ if (getGame().isStarted() && ExplorationMaster.isExplorationOn()){
         for (Unit unit : getGame().getUnits()) {
             if (!unit.isDead())
                 if (!unit.getAI().isOutsideCombat()) {
-                unit.resetObjects();
-            }
+                    unit.resetObjects();
+                }
         }
     }
 
@@ -327,35 +329,32 @@ if (getGame().isStarted() && ExplorationMaster.isExplorationOn()){
     }
 
     public void newRound() {
-        getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, state.getRound());
+//        getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, state.getRound());
 
         game.getLogManager().log("            >>>Round #" + (state.getRound() + 1) + "<<<"
         );
-        main.system.auxiliary.log.LogMaster.log(1,"Units= " +
-         getGame().getUnits() );
+        main.system.auxiliary.log.LogMaster.log(1, "Units= " +
+         getGame().getUnits());
         newTurnTick();
         Ref ref = new Ref(getGame());
         ref.setAmount(state.getRound());
         boolean started = game.isStarted();
-        game.setStarted(true);
         getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.NEW_ROUND, ref));
-
-
-
 
         if (started) {
             getGameManager().reset();
             getGameManager().resetValues();
-            IlluminationRule.initLightEmission(getGame());
+//            IlluminationRule.initLightEmission(getGame());
             game.getTurnManager().newRound();
         } else {
 
             resetAllSynchronized();
-            try {
+            game.setStarted(true);
+//            try {
                 IlluminationRule.initLightEmission(getGame());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
             game.getTurnManager().newRound();
             GuiEventManager.trigger(GuiEventType.UPDATE_LIGHT, null);
@@ -438,5 +437,11 @@ if (getGame().isStarted() && ExplorationMaster.isExplorationOn()){
 
     }
 
-
+    @Override
+    public void clear() {
+        state.getEffects().clear();
+        state.getTriggers().clear();
+        state.getObjects().clear();
+        state.getEffects().clear();
+    }
 }

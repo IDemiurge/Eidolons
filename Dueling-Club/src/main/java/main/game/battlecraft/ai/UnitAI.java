@@ -67,6 +67,7 @@ public class UnitAI {
     private float explorationTimeOfModeEffect;
     private float explorationTimeOfRegenEffects;
     private boolean attached;
+    private int engagementDuration;
 //    private CHARACTER_TYPE characterType;
 //    private INCLINATION_TYPE characterType;
 //    private IMPULSE_TYPE impulseType;
@@ -535,6 +536,14 @@ public class UnitAI {
 
     public void setAttached(boolean attached) {
         this.attached = attached;
+    }
+
+    public void setEngagementDuration(int engagementDuration) {
+        this.engagementDuration = engagementDuration;
+    }
+
+    public int getEngagementDuration() {
+        return engagementDuration;
     }
 
 

@@ -1,7 +1,6 @@
 package main.game.module.dungeoncrawl.explore;
 
 import main.client.cc.logic.party.PartyObj;
-import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 
 /**
@@ -79,10 +78,11 @@ public class ExplorationMaster {
         if (isExplorationOn()){
             //TODO quick-fix
           cleaner.cleanUpAfterBattle();
-
-        }
-        Eidolons.game.startGameLoop();
-        Eidolons.game.getManager().reset();
+            game.getLogManager().logBattleEnds();
+        } else
+        game.getLogManager().logBattleStarts();
+        game.startGameLoop();
+        game.getManager().reset();
         //exceptions: triggers, scripts,
 
     }

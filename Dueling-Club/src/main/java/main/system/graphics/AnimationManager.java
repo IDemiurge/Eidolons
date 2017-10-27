@@ -549,6 +549,7 @@ public class AnimationManager {
             case MODE:
                 return ANIM_TYPE.BUFF;
             case ITEM:
+            case ADDITIONAL:
             case SPECIAL:
             case TURN:
             case HIDDEN:

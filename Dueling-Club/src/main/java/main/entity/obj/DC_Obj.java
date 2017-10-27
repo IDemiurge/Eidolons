@@ -7,6 +7,7 @@ import main.ability.effects.Effects;
 import main.ability.effects.common.ModifyValueEffect;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.DC_ContentManager;
+import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -49,7 +50,7 @@ import java.util.Map;
 public abstract class DC_Obj extends MicroObj {
 
     protected Map<SPECIAL_EFFECTS_CASE, Effect> specialEffects;
-    protected Map<DAMAGE_CASE,  List<Damage>> bonusDamage;
+    protected Map<DAMAGE_CASE, List<Damage>> bonusDamage;
     protected UNIT_TO_PLAYER_VISION activeVisionStatus;
     protected UNIT_TO_UNIT_VISION activeUnitVisionStatus;
     protected PERCEPTION_STATUS_PLAYER playerPerceptionStatus;
@@ -61,8 +62,8 @@ public abstract class DC_Obj extends MicroObj {
     protected OUTLINE_TYPE outlineType;
     protected Integer gamma;
     protected OUTLINE_TYPE outlineTypeForPlayer;
-    protected VISIBILITY_LEVEL visibilityLevelForPlayer;
-    protected UNIT_TO_PLAYER_VISION playerVisionStatus;
+    protected VISIBILITY_LEVEL visibilityLevelForPlayer=VISIBILITY_LEVEL.UNSEEN;
+    protected UNIT_TO_PLAYER_VISION playerVisionStatus=UNIT_TO_PLAYER_VISION.UNKNOWN;
     protected DIRECTION blockingWallDirection;
     protected boolean blockingDiagonalSide;
     protected Coordinates blockingWallCoordinate;
@@ -77,7 +78,7 @@ public abstract class DC_Obj extends MicroObj {
             if ((this instanceof DC_Cell) || (this instanceof Unit)) {
                 playerVisionStatus = VisionEnums.UNIT_TO_PLAYER_VISION.CONCEALED;
                 outlineTypeForPlayer = (this instanceof DC_Cell) ? VisionEnums.OUTLINE_TYPE.THICK_DARKNESS
-                        : VisionEnums.OUTLINE_TYPE.DARK_OUTLINE;
+                 : VisionEnums.OUTLINE_TYPE.DARK_OUTLINE;
                 visibilityLevelForPlayer = VISIBILITY_LEVEL.CONCEALED;
             }
         }
@@ -110,11 +111,13 @@ public abstract class DC_Obj extends MicroObj {
     public Integer getCounter(COUNTER c) {
         return getCounter(c.getName());
     }
+
     @Override
     public void init() {
         super.init();
         addDefaultValues();
     }
+
     protected void addDefaultValues() {
         if (CoreEngine.isDefaultValuesAddedDynamically())
             DC_ContentManager.addDefaultValues(this);
@@ -136,7 +139,6 @@ public abstract class DC_Obj extends MicroObj {
     public boolean checkInSightForUnit(Unit unit) {
         return getGame().getVisionMaster().getUnitVisibilityStatus(this, unit) == VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
     }
-
 
 
     @Override
@@ -215,7 +217,7 @@ public abstract class DC_Obj extends MicroObj {
             dmg_type = new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class, name);
         }
 
-        if (dmg_type == null) dmg_type=DAMAGE_TYPE.PHYSICAL;
+        if (dmg_type == null) dmg_type = DAMAGE_TYPE.PHYSICAL;
         return dmg_type;
     }
 
@@ -239,7 +241,7 @@ public abstract class DC_Obj extends MicroObj {
         this.specialEffects = specialEffects;
     }
 
-    public  void addBonusDamage(DAMAGE_CASE c, Damage d) {
+    public void addBonusDamage(DAMAGE_CASE c, Damage d) {
         MapMaster.addToListMap(getBonusDamage(), c, d);
     }
 
@@ -284,7 +286,7 @@ public abstract class DC_Obj extends MicroObj {
         }
         if (getSpecialEffects().get(case_type) != null) {
             getSpecialEffects().put(case_type,
-                    new Effects(getSpecialEffects().get(case_type), effects));
+             new Effects(getSpecialEffects().get(case_type), effects));
         } else {
             getSpecialEffects().put(case_type, effects);
         }
@@ -306,10 +308,9 @@ public abstract class DC_Obj extends MicroObj {
     public void setVisibilityLevel(VISIBILITY_LEVEL visibilityLevel) {
         if (getGame().getManager().getActiveObj() != null) {
             if (getGame().getManager().getActiveObj().isMine())
-                if (getGame().getManager().getActiveObj().isMainHero())
-            {
-                setVisibilityLevelForPlayer(visibilityLevel);
-            }
+                if (getGame().getManager().getActiveObj().isMainHero()) {
+                    setVisibilityLevelForPlayer(visibilityLevel);
+                }
         }
         this.visibilityLevel = visibilityLevel;
     }
@@ -328,7 +329,9 @@ public abstract class DC_Obj extends MicroObj {
 
     public VISIBILITY_LEVEL getVisibilityLevelForPlayer() {
         if (visibilityLevelForPlayer == null) {
-            return VISIBILITY_LEVEL.CONCEALED;
+            if (game.isDebugMode())
+             return VISIBILITY_LEVEL.CLEAR_SIGHT;
+            return VISIBILITY_LEVEL.UNSEEN;
         }
         if (isDisplayEnemyVisibility()) {
             return visibilityLevel;
@@ -416,7 +419,7 @@ public abstract class DC_Obj extends MicroObj {
             if (getGame().getManager().getActiveObj() != null) {
                 if (!getGame().getManager().getActiveObj().isMine()) {
                     LogMaster.log(1, "outlineTypeForPlayer set to "
-                            + outlineTypeForPlayer);
+                     + outlineTypeForPlayer);
                 }
             }
         }
@@ -435,7 +438,7 @@ public abstract class DC_Obj extends MicroObj {
         if (activeUnitVisionStatus == null) {
             try {
                 activeUnitVisionStatus = getGame().getVisionMaster()
-                        .getUnitVisibilityStatus(this);
+                 .getUnitVisibilityStatus(this);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -475,8 +478,11 @@ public abstract class DC_Obj extends MicroObj {
                 this.playerVisionStatus = playerVisionStatus;
             }
         }
-
-        this.activeVisionStatus = playerVisionStatus;
+        if (this instanceof Unit)
+            if (playerVisionStatus == UNIT_TO_PLAYER_VISION.UNKNOWN) {
+                this.activeVisionStatus = playerVisionStatus;
+            } else
+                this.activeVisionStatus = playerVisionStatus;
         if (playerVisionStatus != null) {
             setProperty(PROPS.DETECTION_STATUS, playerVisionStatus.toString());
         }
@@ -584,5 +590,10 @@ public abstract class DC_Obj extends MicroObj {
 
     public boolean isOutsideCombat() {
         return false;
+    }
+
+    public void outsideCombatReset() {
+        setParam(PARAMS.ILLUMINATION, 0);
+
     }
 }

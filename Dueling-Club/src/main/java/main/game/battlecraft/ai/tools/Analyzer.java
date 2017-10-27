@@ -5,11 +5,10 @@ import main.ability.effects.oneshot.unit.RaiseEffect;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.data.XList;
-import main.entity.active.DC_ActionManager;
-import main.entity.active.DC_ActionManager.STD_SPEC_ACTIONS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.active.DC_UnitAction;
@@ -31,7 +30,6 @@ import main.game.core.Eidolons;
 import main.game.logic.battle.player.Player;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
@@ -137,7 +135,7 @@ public class Analyzer extends AiHandler {
                 }
             }
             if (vision_no_vision) {
-                if (!VisionManager.checkVisible(unit)) {
+                if (!VisionManager.checkVisible(unit, true)) {
                     continue;
                 }
             }
@@ -158,18 +156,23 @@ public class Analyzer extends AiHandler {
     }
 
     public static boolean hasSpecialActions(Unit unit) {
-        DequeImpl<DC_UnitAction> actions = new DequeImpl<>((unit.getActionMap().get(
+        DequeImpl<DC_UnitAction> actions =  ((unit.getActionMap().get(
          ACTION_TYPE.SPECIAL_ACTION)));
         if (!ListMaster.isNotEmpty(actions))
             return false;
-        for (STD_SPEC_ACTIONS action : DC_ActionManager.STD_SPEC_ACTIONS.values()) {
-            actions.remove(unit.getAction(
-             StringMaster.getWellFormattedString(
-              action.toString())));
+        for (DC_UnitAction sub : actions) {
+            if (sub.getActionGroup()== ACTION_TYPE_GROUPS.SPECIAL){
+                return true;
+            }
         }
-        if (!ListMaster.isNotEmpty(actions))
-            return false;
-        return true;
+//        for (STD_SPEC_ACTIONS action : DC_ActionManager.STD_SPEC_ACTIONS.values()) {
+//            actions.remove(unit.getAction(
+//             StringMaster.getWellFormattedString(
+//              action.toString())));
+//        }
+//        if (!ListMaster.isNotEmpty(actions))
+//            return false;
+        return false;
     }
 
     public static boolean hasAnySpecialActions(Unit unit) {

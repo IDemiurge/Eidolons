@@ -19,7 +19,7 @@ public class HungItem extends DungeonObj {
 
     @Override
     public DUNGEON_OBJ_TYPE getDungeonObjType() {
-        return null;
+        return DUNGEON_OBJ_TYPE.ITEM;
     }
 
     public DC_HeroItemObj getItem() {

@@ -68,7 +68,7 @@ public class DC_GameManager extends GameManager {
         Manager.init(game, state, this);
 
         stateManager = new DC_StateManager(state);
-        gameMaster = new DC_GameMaster(game);
+        gameMaster =game.getMaster();// new DC_GameMaster(game);
         Eidolons.stateManager = getStateManager();
         Eidolons.gameMaster = getGameMaster();
         Eidolons.game = game;
@@ -528,9 +528,11 @@ public class DC_GameManager extends GameManager {
 
 
     public Unit getActiveObj() {
+//       return  getGame().getLoop().getActiveUnit();
         if (game.isStarted()) {
             if (selectedActiveObj == null) {
                 //it's ticking madness!
+                selectedActiveObj = getGame().getLoop().getActiveUnit();
 //                return DC_PagedPriorityPanel.getClockUnit();
             }
         }

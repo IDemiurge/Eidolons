@@ -26,7 +26,6 @@ import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import main.game.battlecraft.logic.battlefield.vision.StealthRule;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.module.dungeoncrawl.ai.AggroMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -87,7 +86,6 @@ public class ActionManager extends AiHandler {
             getCellPrioritizer().reset();
         } else {
         }
-        ai.setEngaged(AggroMaster.checkEngaged(ai));
 
         checkDeactivate();
 
@@ -136,7 +134,12 @@ public class ActionManager extends AiHandler {
 
         if (chosenSequence == null) {
             if (isAtomicAiOn())
-                action = getAtomicAi().getAtomicAction(ai);
+                try {
+                    action = getAtomicAi().getAtomicAction(ai);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                    action = getAtomicAi().getAtomicWait(ai.getUnit());
+                }
             if (action == null) {
                 action = getForcedAction(ai);
             }

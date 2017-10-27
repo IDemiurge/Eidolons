@@ -7,6 +7,8 @@ import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import main.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory;
+import main.game.bf.Coordinates;
+import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.system.GuiEventManager;
 
@@ -71,7 +73,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     public void init() {
 //        shopManager.init();
 //        metaDataManager.init();
-        game = createGame();
+        game = Eidolons.game;
+        if (game == null)
+            game = createGame();
         metaGame = initializer.initMetaGame(data);
         preStart();
         partyManager.initPlayerParty();
@@ -144,6 +148,16 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public void next(Boolean outcome) {
         gameExited();
+        game.reinit();
+        //or selective clear() - removeIf() ...
+//        for (Unit hero : getPartyManager().getParty().getMembers()) {
+//            for (ActiveObj activeObj : hero.getActives()) {
+//                game.getState().addObject((Obj) activeObj);
+//            }
+//            for (ActiveObj activeObj : hero.getstattaiteActives()) {
+//            }
+//        }
+
     }
 
     private void gameExited() {
@@ -152,10 +166,15 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+        //TODO !!!
+
+//        game.getMaster().clear();
+//        game.getStateManager().clear();
         try {
             GuiEventManager.cleanUp();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Coordinates.clearCaches();
     }
 }

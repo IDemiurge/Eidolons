@@ -40,6 +40,7 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
     }
 
     public void initializePlayers() {
+        players = new LinkedList<>();
         if (getMaster().getGame().getDataKeeper().getPlayerData() != null) {
             // TODO init data from preset
         }

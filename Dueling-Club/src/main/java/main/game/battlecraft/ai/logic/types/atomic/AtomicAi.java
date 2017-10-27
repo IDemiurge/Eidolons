@@ -8,6 +8,7 @@ import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.entity.Ref;
 import main.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
+import main.entity.active.DC_ActionManager.STD_SPEC_ACTIONS;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
@@ -89,6 +90,10 @@ public class AtomicAi extends AiHandler {
         return null;
     }
 
+    public Action getAtomicWait(Unit unit) {
+        return AiActionFactory.newAction(unit.getAction(
+         STD_SPEC_ACTIONS.Wait.toString()), Ref.getSelfTargetingRefCopy(unit)) ;
+    }
     private Action getReloadAction(UnitAI ai) {
         DC_QuickItemObj ammo = null;
         Integer maxCost = 0;
@@ -135,6 +140,8 @@ public class AtomicAi extends AiHandler {
           units
           , t -> getThreatAnalyzer().getThreat(ai, (Unit) t)
          );
+        if (facing == null)
+            return null;
         Coordinates c = getUnit().getCoordinates().getAdjacentCoordinate(facing.getDirection());
         return Positioner.adjustCoordinate(ai.getUnit(), c, ai.getUnit().getFacing());
 
@@ -148,12 +155,12 @@ public class AtomicAi extends AiHandler {
         } else {
             pick = getApproachCoordinate(ai);
         }
+        if (pick == null)
+            pick = b ? getApproachCoordinate(ai)
+             : getHotZoneCell(ai, approach_retreat_search);
+        if (pick == null)
+            return null  ;
         Action a = getAtomicMove(pick, ai.getUnit());
-        if (a == null) {
-            return getAtomicMove(b ? getApproachCoordinate(ai)
-             : getHotZoneCell(ai, approach_retreat_search),
-             ai.getUnit());
-        }
         return a;
     }
 
@@ -252,7 +259,7 @@ public class AtomicAi extends AiHandler {
 
     public boolean checkAtomicActionRequired(UnitAI ai) {
 
-        return checkAtomicActionCaseAny(ai);
+        return checkAtomicActionCaseAny(ai); //also check power, danger, distance
     }
 
     public boolean checkAtomicActionCaseAny(UnitAI ai) {
@@ -337,9 +344,10 @@ public class AtomicAi extends AiHandler {
             }
         }
         List<PARAMS> params = getParamAnalyzer().getRelevantParams(ai.getUnit());
-        for (PARAMS p : params) {
+        for (PARAMS p : params) { //only if critical
             if (getParamAnalyzer().checkStatus(false, ai.getUnit(), p)) {
-                return true;
+                if (getSituationAnalyzer().getDangerFactor(ai.getUnit()) < 50)
+                    return true;
             }
         }
         return false;
@@ -418,6 +426,7 @@ public class AtomicAi extends AiHandler {
     public void setOn(boolean on) {
         this.on = on;
     }
+
 
     public enum ATOMIC_LOGIC {
         GEN_AGGRO, GROUP_AGGRO, RETREAT, PROTECT, FORMATION,

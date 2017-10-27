@@ -11,11 +11,13 @@ import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.system.images.ImageManager;
+import main.system.math.PositionMaster;
 
 import java.awt.*;
 
 public class VisibilityMaster {
 
+    public static final float SIGHT_RANGE_FACTOR = 2.5f;
     private final String TARGET = " t";
     private final String INFO = " s";
     private VisionMaster master;
@@ -27,20 +29,9 @@ public class VisibilityMaster {
 
     }
 
-    public VISIBILITY_LEVEL getVisibilityLevel(Unit source, DC_Obj target) {
-        return getVisibilityLevel(source, target, null);
-    }
 
-    public VISIBILITY_LEVEL getVisibilityLevel(Unit source, DC_Obj target, Boolean status) {
-//        int value = getGamma(source, target, status);
-        VISIBILITY_LEVEL vLevel = null;
-        for (VISIBILITY_LEVEL vLvl : VISIBILITY_LEVEL.values()) {
-            vLevel = vLvl;
-            // if (value > vLvl.getIlluminationBarrier())
-            // break;
-        }
-        return vLevel;
-    }
+
+
 
 
     public Image getDisplayImageForUnit(DC_Obj obj) {
@@ -120,15 +111,6 @@ public class VisibilityMaster {
     }
 
 
-    public void resetOutlineAndVisibilityLevel(DC_Obj unit) {
-        OUTLINE_TYPE type = master.getOutlineMaster().getOutlineType(unit);
-        if (master.getActiveUnit().isMainHero())
-            unit.setOutlineType(type);
-        unit.setVisibilityLevel(getVisibility(type));
-        // if (unit.getPlayerVisionStatus() == UNIT_TO_PLAYER_VISION.DETECTED)
-        // return null; //
-        // return type;
-    }
 
     private VISIBILITY_LEVEL getVisibility(OUTLINE_TYPE type) {
         VISIBILITY_LEVEL visibilityLevel = VISIBILITY_LEVEL.CLEAR_SIGHT;
@@ -156,7 +138,7 @@ public class VisibilityMaster {
     }
 
     public void resetVisibilityLevels() {
-        for (Unit unit : DC_Game.game.getUnits ()) {
+        for (Unit unit : DC_Game.game.getUnits()) {
             resetOutlineAndVisibilityLevel(unit);
         }
 
@@ -174,14 +156,39 @@ public class VisibilityMaster {
 
     public boolean isZeroVisibility(DC_Obj obj, boolean active) {
         return obj.getVisibilityLevel(active) == VISIBILITY_LEVEL.BLOCKED
-         || obj.getVisibilityLevel(active) == VISIBILITY_LEVEL.CONCEALED;
+//         || obj.getVisibilityLevel(active) == VISIBILITY_LEVEL.CONCEALED
+         || obj.getVisibilityLevel(active) == VISIBILITY_LEVEL.UNSEEN;
     }
 
 
-    public VISIBILITY_LEVEL getUnitVisibilityLevel(DC_Obj target, Unit source) {
-        VISIBILITY_LEVEL visibilityLevel = getVisibility(master.getOutlineMaster().
-         getOutlineType(target, source));
+    public void resetOutlineAndVisibilityLevel(DC_Obj unit) {
+        unit.setVisibilityLevel( getUnitVisibilityLevel(master.getActiveUnit(),unit));
+    }
+    public VISIBILITY_LEVEL getUnitVisibilityLevel(Unit source , DC_Obj target ) {
+//        Ref ref= source.getRef().getTargetingRef(target);
+//        ref.setMatch(target.getId());
+//        if (!master.getSightMaster().getClearShotCondition().preCheck(ref)) {
+//            return VISIBILITY_LEVEL.BLOCKED;
+//        }
+        OUTLINE_TYPE outline = master.getOutlineMaster().
+         getOutlineType(target, source);
+        if (outline==OUTLINE_TYPE.THICK_DARKNESS){
+            if (checkUnseen(source, target)){
+                return VISIBILITY_LEVEL.UNSEEN;
+            }
+        }
+        if (source.isMainHero())
+            target.setOutlineType(outline);
+        //check stealth-invisible?
+        VISIBILITY_LEVEL visibilityLevel = getVisibility(outline);
         return visibilityLevel;
+    }
+
+    private boolean checkUnseen(Unit source, DC_Obj target) {
+if (PositionMaster.getExactDistance(source.getCoordinates(), target.getCoordinates()) >
+ source.getSightRangeTowards(target)*SIGHT_RANGE_FACTOR)
+    return true;
+        return false;
     }
 
 

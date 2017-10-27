@@ -258,7 +258,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     }
 
     public boolean isWithinCamera(Actor actor) {
-        return isWithinCamera(actor.getX()+2*actor.getWidth(), actor.getY()+actor.getHeight(), 2*actor.getWidth(), 2*actor.getHeight());
+        return isWithinCamera(actor.getX()+actor.getWidth(), actor.getY()+actor.getHeight(), actor.getWidth(), actor.getHeight());
 }
         public boolean isWithinCamera(float x, float y, float width, float height) {
 //            width = width / getZoom();
@@ -269,9 +269,12 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 //        float x1 =   x/getZoom();
 //        if (camera.position.x - x1 <width ||camera.position.x - x1 >2*Gdx.graphics.getWidth())
 //            return false;
-        if (Math.abs(camera.position.x - x)-width > Gdx.graphics.getWidth() * getZoom() / 2)
+
+            float xPos = Math.abs(camera.position.x - x)-width;
+        if (xPos > Gdx.graphics.getWidth() * getZoom() / 2)
             return false;
-        if (Math.abs(camera.position.y - y)-height >  Gdx.graphics.getHeight() * getZoom() / 2)
+            float yPos = Math.abs(camera.position.y - y)-height;
+        if (yPos >  Gdx.graphics.getHeight() * getZoom() / 2)
 //        if (y1-camera.position.y   <height ||y1-camera.position.y   >2*Gdx.graphics.getHeight())
             return false;
 

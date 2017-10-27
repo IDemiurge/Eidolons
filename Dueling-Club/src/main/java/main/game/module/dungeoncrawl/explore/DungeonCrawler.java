@@ -38,7 +38,8 @@ public class DungeonCrawler extends ExplorationHandler {
             for (Unit sub : master.getGame().getUnits()) {
                 sub.getAI().setOutsideCombat(false);
                 if (!aggroGroup.contains(sub))
-                    if (!master.getAiMaster().getAllies().contains(sub))
+                    if (!sub.isMine())
+//                    if (!master.getAiMaster().getAllies().contains(sub))
                         sub.getAI().setOutsideCombat(true);
             }
 //            aggroGroup.forEach(unit -> unit.getAI().setEngaged(true));

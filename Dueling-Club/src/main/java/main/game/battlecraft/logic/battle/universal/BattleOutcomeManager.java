@@ -3,6 +3,7 @@ package main.game.battlecraft.logic.battle.universal;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.logic.battle.player.Player;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.audio.MusicMaster;
@@ -122,6 +123,8 @@ public enum OUTCOME{
     }
 
     protected boolean checkVictory() {
+        if (ExplorationMaster.isExplorationOn())
+            return false;
         return checkNoEnemiesLeft();
     }
 

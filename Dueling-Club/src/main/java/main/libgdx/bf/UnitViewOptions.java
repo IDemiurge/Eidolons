@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.entity.obj.BattleFieldObject;
+import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
+import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.data.FileManager;
@@ -33,6 +35,7 @@ public class UnitViewOptions {
     private Color teamColor;
     private boolean mainHero;
     private String name;
+    public boolean cellBackground;
 
 
     public UnitViewOptions(BattleFieldObject obj) {
@@ -88,7 +91,20 @@ public class UnitViewOptions {
         this.name =  obj.getName() ;
         this.mainHero =  obj.isMainHero() ;
 
+        if (obj instanceof Structure) {
+            if (obj.isLandscape()) {
+                cellBackground = true;
+            }
+            if (obj.isWall()) {
+                cellBackground = true;
+            }
+            if (obj instanceof Entrance) {
+                cellBackground = true;
+            }
 
+
+
+        }else
         if (obj instanceof Unit) {
             this.directionValue = obj.getFacing().getDirection().getDegrees();
             this.directionPointerTexture = getOrCreateR("/UI/DIRECTION POINTER.png");

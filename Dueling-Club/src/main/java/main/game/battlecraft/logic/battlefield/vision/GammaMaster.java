@@ -3,6 +3,7 @@ package main.game.battlecraft.logic.battlefield.vision;
 import main.content.PARAMS;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.obj.BattleFieldObject;
+import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
@@ -43,7 +44,7 @@ public class GammaMaster {
     }
 
     public static int getGammaForBlindingLight() {
-        return 300;
+        return 500;
     }
 
     public static int getGammaForClearSight() {
@@ -152,9 +153,16 @@ public class GammaMaster {
     }
 
     public float getGammaForCell(int x, int y) {
+        DC_Cell cell = Eidolons.game.getCellByCoordinate(new Coordinates(x, y));
+        if (cell==null ){
+            return 0;
+        }
+        if ( cell.getGamma()==null ){
+            return 0;
+        }
 //        Unit unit =  master.getSeeingUnit();
         return CELL_GAMMA_MODIFIER * (float)
-         Eidolons.game.getCellByCoordinate(new Coordinates(x, y)).getGamma();
+        cell.getGamma();
 //        return new Random().nextInt(50)/100 + 0.5f;
     }
 }

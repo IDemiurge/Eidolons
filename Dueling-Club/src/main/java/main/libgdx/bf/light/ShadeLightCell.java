@@ -86,6 +86,15 @@ public class ShadeLightCell extends SuperContainer {
     }
 
     @Override
+    public float getHeight() {
+        return GridConst.CELL_H;
+    }
+    @Override
+    public float getWidth() {
+        return GridConst.CELL_W;
+    }
+
+    @Override
     public boolean isAlphaFluctuationOn() {
         if (!alphaFluctuationOn)
             return false;

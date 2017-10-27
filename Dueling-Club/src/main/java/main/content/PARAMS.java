@@ -631,11 +631,11 @@ public enum PARAMS implements PARAMETER {
     CP_PENALTY(null, "", false, 0, "skills", "armor", "weapons", "chars", "units"),
 
     EXTRA_ATTACKS_POINT_COST_MOD(true, "Extra Attacks Cost Mod", "", false, 50, "chars", "units"),
-    INSTANT_STAMINA_PENALTY(null, "", false, 0, "skills", "armor", "weapons", "chars", "units"),
+    INSTANT_STAMINA_PENALTY(null, "", false, -50, "skills", "armor", "weapons", "chars", "units"),
     INSTANT_CP_PENALTY(null, "", false, 0, "skills", "armor", "weapons", "chars", "units"),
-    AOO_STAMINA_PENALTY(null, "", false, 0, "skills", "armor", "weapons", "chars", "units"),
+    AOO_STAMINA_PENALTY(null, "", false, -50, "skills", "armor", "weapons", "chars", "units"),
     AOO_CP_PENALTY(null, "", false, 0, "skills", "armor", "weapons", "chars", "units"),
-    COUNTER_STAMINA_PENALTY(null, "", false, 0, "skills", "armor", "weapons", "chars", "units"),
+    COUNTER_STAMINA_PENALTY(null, "", false, -50, "skills", "armor", "weapons", "chars", "units"),
     COUNTER_CP_PENALTY(null, "", false, 0, "skills", "armor", "weapons", "chars", "units"),
 
     SPELL_STA_PENALTY("Spell STA pen.", "", false, 0, "skills", "armor", "weapons", "chars", "units"),

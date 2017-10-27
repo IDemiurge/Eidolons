@@ -494,7 +494,7 @@ public class HeroManager {
     }
 
     public boolean addItem(Unit hero, Entity type, OBJ_TYPE TYPE, PROPERTY PROP, boolean free) {
-        return addItem(hero, type, TYPE, PROP, free, true);
+        return addItem(hero, type, TYPE, PROP, free, !trainer);
     }
 
     public boolean tryIncrementRank(Unit hero, ObjType type) {
@@ -687,7 +687,7 @@ public class HeroManager {
 
     public int subtractCost(Unit hero, Entity type, OBJ_TYPE TYPE, PROPERTY p) {
         int cost = modifyCostParam(hero, type, TYPE, false, p);
-        update(hero);
+//        update(hero);
         return cost;
     }
 
@@ -885,8 +885,7 @@ public class HeroManager {
                     return false;
                 }
             }
-            return addItem(hero, type, DC_TYPE.SPELLS, PROPS.MEMORIZED_SPELLS, true
-                    // , game.isSimulation()
+            return addItem(hero, type, DC_TYPE.SPELLS, PROPS.MEMORIZED_SPELLS, !trainer
             );
         } else {
             // TODO alarm

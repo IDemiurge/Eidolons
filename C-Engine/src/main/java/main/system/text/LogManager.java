@@ -57,6 +57,10 @@ public abstract class LogManager {
         }
     }
 
+    public Game getGame() {
+        return game;
+    }
+
     public static boolean isDirty() {
         return dirty;
     }

@@ -15,7 +15,6 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.Game;
@@ -62,7 +61,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
              if (getOutlineTypeForPlayer()!=null )
                  return getOutlineTypeForPlayer().getName();
 //         if (!isDetected())
-             if (!VisionManager.checkDetected(this)) {
+             if (!getGame().getVisionMaster().getDetectionMaster().checkKnown(this)){
                  return "Unknown";
              }
         }
@@ -157,6 +156,15 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 //if (player.getGame().getBattleMaster().getPlayerManager().)
 //        return false;
     }
+
+    @Override
+    public boolean isObstructing() {
+        if ( checkPassive(UnitEnums.STANDARD_PASSIVES.NON_OBSTRUCTING)) {
+            return false;
+        }
+        return true;
+    }
+
     public boolean isObstructing(Obj obj, DC_Obj target) {
 
         if (target == null) {
@@ -184,9 +192,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         // targetTall = (((DC_HeroObj) target).isTall());
         // targetShort = (((DC_HeroObj) target).isShort());
         // }
-        if (checkPassive(UnitEnums.STANDARD_PASSIVES.NON_OBSTRUCTING)) {
-            return false;
-        }
+
         if (obj instanceof BattleFieldObject) {
             int height = getIntParam(PARAMS.HEIGHT);
             if (height > 200) {
@@ -199,9 +205,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
             if (target_height > height) {
                 return false;
             }
-            if (source.isAgile() && !isHuge()) {
-                return false;
-            }
+//            if (source.isAgile() && !isHuge()) {
+//                return false;
+//            }
             if (source_height < height)
             // if (!source.isFlying()) //add height TODO
             {

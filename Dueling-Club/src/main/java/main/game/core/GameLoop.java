@@ -34,7 +34,9 @@ public class GameLoop {
     protected boolean aiFailNotified;
     protected boolean aftermath;
     protected boolean skippingToNext;
+    protected boolean exited;
     protected DequeImpl<ActionInput> actionQueue = new DequeImpl<>();
+    private Thread thread;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -64,30 +66,36 @@ public class GameLoop {
         if (AiTrainingRunner.running) {
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, false);
         } else {
-           if (ExplorationMaster.isExplorationOn())
-                return ;
-
-            Boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_FINISHED);
-            if (result) {
-                Eidolons.getGame().getBattleMaster().getOutcomeManager().next();
-            } else {
-                aftermath = true;
-                start();
-            }
+//            if (ExplorationMaster.isExplorationOn())
+//                return;
+//
+//            Boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_FINISHED);
+//            if (result) {
+//                Eidolons.getGame().getBattleMaster().getOutcomeManager().next();
+//            } else {
+//                aftermath = true;
+//                start();
+//            }
 
         }
 
-        LogMaster.log(1, "Game Loop exit ");
+        LogMaster.log(1, "Game Loop exit "+ this);
     }
 
     public Thread startInNewThread() {
-        Thread thread = new Thread(() -> {
+        if (thread==null )
+            thread = new Thread(() -> {
             start();
-        }, "Game Loop");
+        }, getThreadName());
         ;
         thread.start();
 
+        LogMaster.log(1, "Game Loop started " + this);
         return thread;
+    }
+
+    protected String getThreadName() {
+        return "Game Loop";
     }
 
     protected boolean roundLoop() {
@@ -108,7 +116,7 @@ public class GameLoop {
                 break;
             }
             result = makeAction();
-            if (ExplorationMaster.isExplorationOn())
+            if (exited || ExplorationMaster.isExplorationOn())
                 return false;
             if (!aftermath)
                 if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
@@ -135,7 +143,6 @@ public class GameLoop {
     }
 
 
-
     public DC_Game getGame() {
         return game;
     }
@@ -144,13 +151,12 @@ public class GameLoop {
      * @return true if round must end, null if active unit is to be retained
      */
     protected Boolean makeAction() {
-
+        if (exited)
+            return true;
         Boolean result = null;
-        if (!actionQueue.isEmpty()){
+        if (!actionQueue.isEmpty()) {
             result = activateAction(actionQueue.removeLast());
-        }
-        else
-        if (activeUnit.getHandler().getChannelingSpellData() != null) {
+        } else if (activeUnit.getHandler().getChannelingSpellData() != null) {
             ActionInput data = activeUnit.getHandler().getChannelingSpellData();
             ChannelingRule.channelingResolves(activeUnit);
             result = activateAction(data);
@@ -174,6 +180,8 @@ public class GameLoop {
 //        if ()
         waitForPause();
         waitForAnimations();
+        if (exited)
+            return true;
         return result;
     }
 
@@ -257,7 +265,7 @@ public class GameLoop {
     }
 
     public void setPaused(boolean paused) {
-       game.getLogManager().log(paused? "Game paused": "Game resumed"  );
+        game.getLogManager().log(paused ? "Game paused" : "Game resumed");
         this.paused = paused;
         SuperActor.setAlphaFluctuationOn(!paused);
         if (!paused)
@@ -275,7 +283,21 @@ public class GameLoop {
     public void queueActionInput(ActionInput actionInput) {
         actionQueue.add(actionInput);
     }
-        public void actionInput(ActionInput actionInput) {
+
+    public void actionInput(ActionInput actionInput) {
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, actionInput);
+    }
+
+    public Unit getActiveUnit() {
+        return activeUnit;
+    }
+
+    public void setExited(boolean exited) {
+        this.exited = exited;
+        try {
+            game.getGameLoopThread().interrupt();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 }

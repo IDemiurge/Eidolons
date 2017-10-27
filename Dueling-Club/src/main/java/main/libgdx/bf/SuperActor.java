@@ -73,8 +73,8 @@ public abstract class SuperActor extends Group implements Borderable {
     protected boolean isIgnored() {
         if (!isVisible())
             return true;
-        if (getColor().a == 0)
-            return true;
+//        if (getColor().a == 0)
+//            return true; TODO why was this here?.. not to draw?
         if (isCullingOff())
             return false;
             if (!DungeonScreen.getInstance().getController().
@@ -87,6 +87,8 @@ public abstract class SuperActor extends Group implements Borderable {
 
     @Override
     public void act(float delta) {
+        if (isIgnored())
+            return;
         if (isTransform()) {
             if (isTransformDisabled())
                 setTransform(false);

@@ -20,7 +20,7 @@ public class VisionManager {
     }
 
     public static boolean checkVisible(DC_Obj obj) {
-        return master.checkVisible(obj);
+        return master.checkVisible(obj, true);
     }
 
     public static boolean checkVisible(DC_Obj obj, boolean active) {
@@ -40,7 +40,10 @@ public class VisionManager {
     }
 
     public static boolean checkDetected(DC_Obj dc_obj) {
-        return master.getDetectionMaster().checkDetected(dc_obj);
+        return checkDetected(dc_obj, false);
     }
 
+    public static boolean checkDetected(DC_Obj dc_obj, boolean enemy) {
+        return master.getDetectionMaster().checkDetected(dc_obj, enemy);
+    }
 }

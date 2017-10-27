@@ -1446,6 +1446,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         int modifier = 0; // how important/good is it now
         switch (mode) {
             case MEDITATION:
+                if (ParamAnalyzer.isEssenceIgnore(unit))
+                    return 0;
                 base = getSituationAnalyzer().getCastingPriority(unit);
             case CONCENTRATION:
             case RESTING:

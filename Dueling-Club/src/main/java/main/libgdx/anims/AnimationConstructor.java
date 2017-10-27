@@ -5,6 +5,7 @@ import main.ability.effects.common.ModifyValueEffect;
 import main.ability.effects.oneshot.DealDamageEffect;
 import main.content.*;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -191,6 +192,8 @@ public class AnimationConstructor {
         if (active == null) {
             return null;
         }
+        if (!checkAnimationSupported((DC_ActiveObj)active))
+            return null ;
         CompositeAnim anim = map.get(active);
         if (!isReconstruct()) {
             if (anim != null) {
@@ -204,6 +207,13 @@ public class AnimationConstructor {
             e.printStackTrace();
         }
         return anim;
+    }
+
+    private boolean checkAnimationSupported(DC_ActiveObj active) {
+        if (active.getActionGroup()== ACTION_TYPE_GROUPS.TURN)
+            return false;
+        //hidden?
+        return true;
     }
 
     public void preconstructSpells(Unit unit) {

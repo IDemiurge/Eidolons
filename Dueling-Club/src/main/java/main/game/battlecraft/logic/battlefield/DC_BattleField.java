@@ -1,9 +1,7 @@
 package main.game.battlecraft.logic.battlefield;
 
 import main.entity.obj.BfObj;
-import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.Coordinates;
 import main.game.bf.SwingBattleField;
 import main.game.core.state.DC_GameState;
@@ -48,9 +46,9 @@ public class DC_BattleField extends SwingBattleField {
         this.setActiveSelectedObj(obj);
 //        getState().getGame().getVisionMaster().refresh();
 
-        if (VisionManager.checkVisible((DC_Obj) obj)) {
-            centerCameraOn(obj); // TODO [QUICK FIX]
-        }
+//        if (VisionManager.checkVisible((DC_Obj) obj)) {
+//            centerCameraOn(obj); // TODO [QUICK FIX]
+//        }
         if (obj.isMine()) {
             refresh();
         }

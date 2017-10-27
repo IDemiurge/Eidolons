@@ -147,7 +147,7 @@ public class StealthRule implements ActionRule {
             }
 
             if (checkHidden(u)) {
-                if (game.getVisionMaster().getVisibilityMaster().getVisibilityLevel(source, u) != VISIBILITY_LEVEL.CONCEALED) {
+                if (game.getVisionMaster().getVisibilityMaster().getUnitVisibilityLevel(source, u) != VISIBILITY_LEVEL.CONCEALED) {
                     rollSpotted(source, u);
                 }
             }

@@ -77,6 +77,10 @@ public class RadialMenu extends Group {
 
     @Override
     public void act(float delta) {
+        //TODO fix
+        if ( getColor().a==0)
+          setVisible(false);
+        else setVisible(true);
         super.act(delta);
     }
 

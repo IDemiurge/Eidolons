@@ -75,9 +75,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         //TODO only for player actions?
         if (skippingToNext)
             return true;
-        if (checkNextLevel()) {
-            return true;
-        }
 
         master.getResetter().setResetNeeded(false);
         return false;
@@ -86,22 +83,31 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     private boolean checkNextLevel() {
         Coordinates c = game.getPlayer(true).getHeroObj().getCoordinates();
         Location location = (Location) game.getDungeonMaster().getDungeonWrapper();
-    if (location.getMainExit().getCoordinates() .equals(c)){
-    //check party
-        return true;
+        if (location.getMainExit().getCoordinates().equals(c)) {
+            //check party
+            return true;
+        }
+
+        if (location.getMainEntrance().getCoordinates().equals(c)) {
+//test
+            return true;
         }
         return false;
     }
 
     @Override
-    protected Boolean makeAction() {
-        //time to wait?
-        //need another thread...
+    public void setExited(boolean exited) {
+        super.setExited(exited);
+        signal();
+    }
 
+    @Override
+    protected Boolean makeAction() {
+        if (exited)
+            return true;
         if (actionQueue.isEmpty()) {
             if (!master.getAiMaster().isAiActs()) {
                 lock.lock();
-//                processing = false;
                 try {
                     waiting.await();
                 } catch (Exception e1) {
@@ -111,8 +117,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 }
             }
         }
-//processing = true;
-        //check ai pending actions!
+
         if (master.getAiMaster().isAiActs()) {
 
             while (!master.getAiMaster().getAiActionQueue().isEmpty()) {
@@ -128,6 +133,15 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 //                        master.getEnemyPartyMaster().setGroupAI();
                         master.getEnemyPartyMaster().leaderActionDone(input);
                     }
+
+                    if (master.getResetter().isAggroCheckNeeded(input)) {
+                        getGame().getDungeonMaster().getExplorationMaster()
+                         .getCrawler().checkStatusUpdate();
+                        if (!ExplorationMaster.isExplorationOn()){
+                            return true;
+                        }
+                        game.getManager().reset();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -142,7 +156,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 //        }
         if (actionQueue.isEmpty()) {
             game.getMovementManager().promptContinuePath(activeUnit);
-            return false;
+            return null;
         }
 
 
@@ -162,6 +176,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
         }
         waitForPause();
+        if (exited)
+            return true;
         return false; //check unit!
     }
 
@@ -219,6 +235,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     @Override
     public void actionInput(ActionInput actionInput) {
+        if (isPaused())
+            return;
         queueActionInput(actionInput);
         signal();
 
@@ -240,23 +258,36 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 //            if (ExplorationMaster.checkExplorationSupported(game)) {
 //                WaitMaster.receiveInput(WAIT_OPERATIONS.BATTLE_FINISHED, false);
 //        master.switchExplorationMode(false);
-        Eidolons.getGame().getBattleMaster().getOutcomeManager().next();
+
 
     }
 
     @Override
     protected boolean roundLoop() {
-        activeUnit = (Unit) game.getPlayer(true).getHeroObj();
-        game.getManager().setSelectedActiveObj(activeUnit);
-        GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
-
         while (true) {
+            if (activeUnit == null) {
+                activeUnit = (Unit) game.getPlayer(true).getHeroObj();
+                game.getManager().setSelectedActiveObj(activeUnit);
+                GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
+            }
             Boolean result = makeAction();
-            if (result) {
-                break;
+            if (exited)
+                return false;
+            if (result != null) {
+                if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
+                    return false;
+                }
+                if (checkNextLevel()) {
+                   game.getBattleMaster().getOutcomeManager().next();
+                   game.getVisionMaster().refresh();
+                    return false;
+                }
+                if (result) {
+                    break;
+                }
             }
             if (!ExplorationMaster.isExplorationOn())
-                return false;
+                return true;
         }
         return true;
     }

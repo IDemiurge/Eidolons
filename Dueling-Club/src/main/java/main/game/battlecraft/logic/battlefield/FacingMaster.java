@@ -17,6 +17,7 @@ import main.system.math.PositionMaster;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.function.Function;
 
 public class FacingMaster {
@@ -232,7 +233,7 @@ public class FacingMaster {
      Coordinates c,Collection<? extends Obj> units
     ,  Function<Entity, Integer> function
     ) {
-        HashMap<FACING_DIRECTION, Double> map = new HashMap<>();
+        HashMap<FACING_DIRECTION, Double> map = new LinkedHashMap<>();
         for (Obj member : units) { // [QUICK
             // FIX]
             // getGame().getParty().getMembers()

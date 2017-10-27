@@ -1,6 +1,7 @@
 package main.game.module.dungeoncrawl.dungeon;
 
 import main.entity.Ref;
+import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
@@ -9,7 +10,7 @@ import main.game.bf.Coordinates;
 import main.game.core.game.ScenarioGame;
 
 //can be a door, a tunnel, a staircase, a portal... possibly trapped
-public class Entrance extends Unit { //ScenarioUnit
+public class Entrance extends Structure { //ScenarioUnit
     Dungeon dungeon, sublevel;
 
     public Entrance(int x, int y, ObjType type, Dungeon dungeon,

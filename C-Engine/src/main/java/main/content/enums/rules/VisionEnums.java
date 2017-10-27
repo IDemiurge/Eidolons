@@ -65,7 +65,7 @@ public class VisionEnums {
 
     public enum VISIBILITY_LEVEL {
         // Distance based - Outline?
-        CLEAR_SIGHT(), OUTLINE(), VAGUE_OUTLINE(), CONCEALED(), BLOCKED;
+        CLEAR_SIGHT(), OUTLINE(), VAGUE_OUTLINE(), CONCEALED(), BLOCKED, UNSEEN;
         // for info-panel, objComp... as an addition to UNIT_VISIBILITY?
         // what is the default? is this linked to Perception?
         // DETECTED vs KNOWN

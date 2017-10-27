@@ -58,6 +58,7 @@ public class InitiativePanel extends Group {
             if (!isRealTime()) {
                 UnitView p = (UnitView) obj.get();
                 addOrUpdate(p);
+                cleanUp();
                 resetZIndices();
 
             }
@@ -65,7 +66,7 @@ public class InitiativePanel extends Group {
 
         GuiEventManager.bind(GuiEventType.UPDATE_GUI, obj -> {
             if (!isRealTime()) {
-                cleanUp();
+//                cleanUp();
                 resetZIndices();
             }
         });
@@ -196,6 +197,13 @@ public class InitiativePanel extends Group {
             UnitView view = (UnitView) DungeonScreen.getInstance().getGridPanel().getUnitMap().get(unit);
             views.put(view.getCurId(), view);
         });
+        /*
+        if unit is unknown/unseen?
+        >>
+        if unit is unable to act?
+
+        proper cleanup is not done on death(), right?
+         */
         for (ImageContainer sub : queue) {
             if (sub == null)
                 continue;
@@ -281,6 +289,7 @@ public class InitiativePanel extends Group {
         main.system.auxiliary.log.LogMaster.log(1,
          container.getY() + " = y; queue toggled; h= " + container.getHeight() + " " + visible);
 
+        cleanUp();
         float x = container.getX();
         float y = !visible ? container.getHeight() : queueOffsetY;
         ActorMaster.addMoveToAction(container, x, y, 1);
@@ -320,7 +329,7 @@ public class InitiativePanel extends Group {
                     queue[i] = null;
                     queue[ip1] = cur;
                 } else {
-                    if (cur.initiative > next.initiative) {
+                    if (cur.initiative >=  next.initiative) {
                         queue[ip1] = cur;
                         queue[i] = next;
                         for (int y = i; y > 0; y--) {
@@ -378,7 +387,7 @@ public class InitiativePanel extends Group {
                 if (container.getX() != pixPos) {
                     MoveToAction a = new MoveToAction();
                     a.setX(pixPos);
-                    a.setDuration(1.5f);
+                    a.setDuration(Math.abs(container.getX()-pixPos)/400 );
                     a.setTarget(container);
                     container.addAction(a);
                 }

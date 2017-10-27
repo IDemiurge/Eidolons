@@ -1,8 +1,6 @@
 package main.ability.conditions.special;
 
 import main.content.DC_TYPE;
-import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
-import main.content.values.properties.G_PROPS;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -102,15 +100,16 @@ public class ClearShotCondition extends MicroCondition {
         Coordinates c2 = target.getCoordinates();
         if (c2 == null)
             return false;
-        DC_Obj source = (DC_Obj) game.getObjectById(ref.getId(str1));
+        BattleFieldObject source = (BattleFieldObject) game.getObjectById(ref.getId(str1));
         if (source == null)
             return false;
         if (c2.equals(source.getCoordinates()))
             return true;
         // if (c2.isAdjacent(source.getCoordinates()))
         // toc
-        if (source.checkProperty(G_PROPS.STANDARD_PASSIVES, STANDARD_PASSIVES.FLYING.getName()))
-            return true;
+//        if (source.getGame().getDungeon().isSurface() )
+//        if (source.checkProperty(G_PROPS.STANDARD_PASSIVES, STANDARD_PASSIVES.FLYING.getName()))
+//            return true; //TODO use lift height instead!!
 
         if (target.isOverlaying()) {
             if (target instanceof BattleFieldObject) {

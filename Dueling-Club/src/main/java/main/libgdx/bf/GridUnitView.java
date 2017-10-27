@@ -21,11 +21,12 @@ public class GridUnitView extends UnitView {
     private float alpha = 1f;
 
     private UnitView initiativeQueueUnitView;
+    private boolean cellBackground;
 
     public GridUnitView(UnitViewOptions o) {
         super(o);
         init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getIconTexture(), o.getEmblem());
-
+        cellBackground= o.cellBackground;
         initQueueView(o);
     }
 
@@ -136,11 +137,13 @@ public class GridUnitView extends UnitView {
     }
     @Override
     public void act(float delta) {
+        if (isIgnored())
+            return;
         if (emblemLighting != null)
-            if (isActive() || isHovered())
+//            if (isActive() || isHovered())
                 alphaFluctuation(emblemLighting, delta);
-            else
-                emblemLighting.setColor(getTeamColor());
+//            else
+//                emblemLighting.setColor(getTeamColor());
         super.act(delta);
     }
 
@@ -234,4 +237,10 @@ public class GridUnitView extends UnitView {
     public int getId() {
         return curId;
     }
+
+    public boolean isCellBackground() {
+        return cellBackground;
+    }
+
+
 }

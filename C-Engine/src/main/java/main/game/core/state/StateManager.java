@@ -181,4 +181,6 @@ public abstract class StateManager {
     }
 
     public abstract void checkRules(Event e);
+
+    public abstract void clear();
 }

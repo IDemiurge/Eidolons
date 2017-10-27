@@ -61,6 +61,7 @@ public class GraveyardView extends TablePanel {
         });
 
         graveTables.setVisible(false);
+        setVisible(false);
         graveyardButton.setChecked(false);
     }
 

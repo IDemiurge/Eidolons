@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class AutoAttackEffect extends DC_Effect  implements OneshotEffect {
-    private boolean isManualOn;
+    private boolean manual;
 
     // boolean offhand; auto!
 
@@ -65,13 +65,15 @@ public class AutoAttackEffect extends DC_Effect  implements OneshotEffect {
         if (getUnit().isAiControlled() || isPickAutomaticallyOn()) {
             return pickAutomatically(subActions);
         }
-        DC_ActiveObj pick;
+        DC_ActiveObj pick = null;
+        if (manual)
         try {
             pick = pickManually(subActions);
         } catch (Exception e) {
             e.printStackTrace();
-            pick = pickAutomatically(subActions);
         }
+        if (pick == null)
+        pick = pickAutomatically(subActions);
         if (pick != null) {
             return pick;
         }
@@ -84,7 +86,7 @@ public class AutoAttackEffect extends DC_Effect  implements OneshotEffect {
     }
 
     private DC_ActiveObj pickManually(List<DC_ActiveObj> subActions) {
-        if (!isManualOn) {
+        if (!manual) {
             throw new RuntimeException();
         }
 //        AttackChoicePanel dialog = new AttackChoicePanel(subActions, getTarget());

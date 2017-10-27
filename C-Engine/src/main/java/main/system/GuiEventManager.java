@@ -37,6 +37,7 @@ public class GuiEventManager {
         else {
             GuiEventManagerVertx.cleanUp();
         }
+
     }
     public static void bindSound(GuiEventType type, final EventCallback event) {
 

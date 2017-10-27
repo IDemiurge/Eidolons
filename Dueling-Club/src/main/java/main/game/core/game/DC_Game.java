@@ -175,7 +175,11 @@ public class DC_Game extends MicroGame {
         if (!CoreEngine.isCombatGame())
             return;
         musicMaster = MusicMaster.getInstance();
-        musicMaster.startLoop();
+        if (musicMaster.isRunning()) {
+            musicMaster.resume();
+        } else {
+            musicMaster.startLoop();
+        }
     }
 
     protected CombatMaster createCombatMaster() {
@@ -266,7 +270,7 @@ public class DC_Game extends MicroGame {
         battleMaster.startGame();
         dungeonMaster.gameStarted();
 
-        if (dungeonMaster.getExplorationMaster()!=null ){
+        if (dungeonMaster.getExplorationMaster() != null) {
             dungeonMaster.getExplorationMaster().init();
 
         }
@@ -287,8 +291,13 @@ public class DC_Game extends MicroGame {
         if (getMetaMaster() != null)
             getMetaMaster().gameStarted();
         GuiEventManager.trigger(UPDATE_LIGHT, null);
-
+        if (loop != null)
+            loop.setExited(true);
         loop = createGameLoop();
+        if (ExplorationMaster.isExplorationOn()) {
+            getStateManager().newRound(); //newRound?
+            getVisionMaster().refresh();
+        }
         setGameLoopThread(loop.startInNewThread());
         setRunning(true);
         setStarted(true);
@@ -386,13 +395,13 @@ public class DC_Game extends MicroGame {
             }
         }
         if (!CoreEngine.isLevelEditor())
-        if ( (!CoreEngine.isArcaneVault()
-         ||!XML_Reader.isMacro())
-         && !CoreEngine.isItemGenerationOff()
-         )
+            if ((!CoreEngine.isArcaneVault()
+             || !XML_Reader.isMacro())
+             && !CoreEngine.isItemGenerationOff()
+             )
 //
-            itemGenerator = new ItemGenerator(true);
-            itemGenerator.init();
+                itemGenerator = new ItemGenerator(true);
+        itemGenerator.init();
 
     }
 
@@ -520,7 +529,7 @@ public class DC_Game extends MicroGame {
     }
 
     public Set<Coordinates> getCoordinates() {
-        return    getBattleField().getCoordinatesSet();
+        return getBattleField().getCoordinatesSet();
     }
 
     public AI_Manager getAiManager() {
@@ -752,6 +761,30 @@ public class DC_Game extends MicroGame {
 
     public GameLoop getGameLoop() {
         return loop;
+    }
+
+    public void reinit() {
+        master = new DC_GameMaster(this);
+        List<Obj> cachedObjects = new LinkedList<>();
+        for (Obj sub : getState().getObjects().values()) {
+            if (sub == null)
+                continue;
+            if (sub instanceof Unit)
+                continue;
+            if (sub.getRef() == null)
+                continue;
+            if (sub.getRef().getSourceObj() == null)
+                continue;
+            if (sub.getRef().getSourceObj().isMine()) {
+                cachedObjects.add(sub);
+            }
+        }
+        this.setState(new DC_GameState(this));
+        this.setManager(new DC_GameManager(this.getState(), this));
+        this.getManager().init();
+        for (Obj sub : cachedObjects) {
+            getState().addObject(sub);
+        }
     }
 
     public enum GAME_MODES {

@@ -30,7 +30,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.logic.dungeon.editor.gui.LE_MapViewComp;
 import main.game.logic.dungeon.editor.logic.AiGroupData;
-import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.game.module.dungeoncrawl.dungeon.minimap.MiniGrid;
 import main.game.module.dungeoncrawl.dungeon.minimap.Minimap;
@@ -500,22 +499,22 @@ public class Level extends DungeonWrapper<Location> {
         // if (!obj.isOverlaying())
         // getTopObjMap().put(c, obj);
 
-        if (obj instanceof Entrance) {
-            if (location.getMainEntrance() == null) {
-                location.setMainEntrance((Entrance) obj);
-                location.getPlan().setEntranceLayout(
-                        DungeonLevelMaster.getLayout(location.getPlan(), c));
-                LogMaster.log(1, "Main Entrance: " + obj + "; initComps = "
-                        + location.getPlan().getEntranceLayout());
-            } else if (location.getMainExit() == null) {
-                location.setMainExit((Entrance) obj);
-                location.getPlan().setExitLayout(DungeonLevelMaster.getLayout(location.getPlan(), c));
-                LogMaster.log(1, "Main Exit: " + obj + "; initComps = "
-                        + location.getPlan().getExitLayout());
-            }
-            location.getEntrances().add((Entrance) obj);
-
-        }
+//        if (obj instanceof Entrance) {
+//            if (location.getMainEntrance() == null) {
+//                location.setMainEntrance((Entrance) obj);
+//                location.getPlan().setEntranceLayout(
+//                        DungeonLevelMaster.getLayout(location.getPlan(), c));
+//                LogMaster.log(1, "Main Entrance: " + obj + "; initComps = "
+//                        + location.getPlan().getEntranceLayout());
+//            } else if (location.getMainExit() == null) {
+//                location.setMainExit((Entrance) obj);
+//                location.getPlan().setExitLayout(DungeonLevelMaster.getLayout(location.getPlan(), c));
+//                LogMaster.log(1, "Main Exit: " + obj + "; initComps = "
+//                        + location.getPlan().getExitLayout());
+//            }
+//            location.getEntrances().add((Entrance) obj);
+//
+//        }
         cache();
         // overwrite
         if (!obj.isOverlaying() && !stack && initialized) {

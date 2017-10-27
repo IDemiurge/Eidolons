@@ -40,7 +40,7 @@ public class LightEmittingEffect extends SpectrumEffect {
                     setAmount(getFormula().getInt(ref));
                 }
                 ref.getTargetObj().modifyParameter(PARAMS.ILLUMINATION, getAmount(), true);
-             if (debug)
+             if (game.isDebugMode())
                  main.system.auxiliary.log.LogMaster.log(1, ref.getTargetObj()+"'s ILLUMINATION: +" + getAmount()
                   + "="+ ref.getTargetObj().getIntParam(PARAMS.ILLUMINATION));
                 lastCoordinates =ref.getTargetObj().getCoordinates();

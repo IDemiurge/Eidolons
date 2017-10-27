@@ -91,7 +91,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     public static void playMoveSound(Unit unit) {
         String type = "soft";
-         setPositionFor(unit.getCoordinates());
+        setPositionFor(unit.getCoordinates());
 //        unit.getGame().getDungeon().isSurface()
         getPlayer().playRandomSoundFromFolder(
          "effects\\movement\\" + type
@@ -125,8 +125,12 @@ public class DC_SoundMaster extends SoundMaster {
 
     private static void setPositionFor(Coordinates c) {
         if (getSoundPlayer() != null)
-            getSoundPlayer().setPosition(
-             GridMaster.getPosWithOffset(c));
+            try {
+                getSoundPlayer().setPosition(
+                 GridMaster.getPosWithOffset(c));
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
     }
 
     public static void playBlockedSound(Obj attacker, Obj attacked, DC_WeaponObj shield,

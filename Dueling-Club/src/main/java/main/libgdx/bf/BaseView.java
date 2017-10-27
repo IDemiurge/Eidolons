@@ -63,6 +63,15 @@ public class BaseView extends SuperActor {
 
     }
 
+    @Override
+    public void setVisible(boolean visible) {
+        if (!isVisible())
+            if (visible){
+                super.setVisible(visible);
+            }
+        super.setVisible(visible);
+    }
+
     public void setAltPortrait(Image altPortrait) {
         this.altPortrait = altPortrait;
     }

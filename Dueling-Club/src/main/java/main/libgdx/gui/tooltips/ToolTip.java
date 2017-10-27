@@ -27,11 +27,13 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+
                 onMouseEnter(event, x, y, pointer, fromActor);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+
                 onMouseExit(event, x, y, pointer, toActor);
             }
         };

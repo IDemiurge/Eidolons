@@ -2,9 +2,12 @@ package main.entity.active;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
+import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.elements.actions.Action;
@@ -79,6 +82,11 @@ public class DefaultActionHandler {
             Ref ref = new Ref(source);
             ref.setMatch(source.getGame().getCellByCoordinate(c).getId());
             source.getGame().getVisionMaster().getSightMaster().getClearShotCondition().preCheck(ref);
+         DC_Obj target = (DC_Obj) source.getGame().getCellByCoordinate(c);
+            target.getGame().getVisionMaster().getGammaMaster().clearCache();
+            target.getGame().getVisionMaster().getIlluminationMaster().clearCache();
+            int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(true, source, target);
+          return false ;
         }
         if (c.x - source.getX() > 1) {
             return false;
@@ -164,6 +172,15 @@ public class DefaultActionHandler {
          (GAMEPLAY_OPTION.DEFAULT_ACTIONS))
             return false;
         Unit source = Eidolons.getGame().getManager().getActiveObj();
+
+        if (source.getGame().isDebugMode()) {
+            OUTLINE_TYPE outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target,source);
+            VISIBILITY_LEVEL vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);
+            target.getPlayerVisionStatus(true);
+            target.getGamma();
+            source.getGame().getVisionMaster().getIlluminationMaster().getIllumination(target);
+
+        }
         DC_ActiveObj action = getPreferredAttackAction(
          source, target);
         if (action == null)

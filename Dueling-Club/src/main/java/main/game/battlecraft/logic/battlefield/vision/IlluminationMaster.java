@@ -2,13 +2,10 @@ package main.game.battlecraft.logic.battlefield.vision;
 
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.Ref;
-import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.system.math.PositionMaster;
 
@@ -95,24 +92,17 @@ public class IlluminationMaster {
         illumination += globalIllumination;
 if (illumination<=0)
     return illumination;
-        Integer ilMod  ;
-        int distance = PositionMaster.getDistance(source, target);
+        double ilMod  ;
+        double distance = PositionMaster.getExactDistance(source.getCoordinates(), target.getCoordinates());
         // from 200 to 25 on diff of 8 to -5
         // def sight range of 5, I'd say
-        Integer sight = source.getIntParam(PARAMS.SIGHT_RANGE);
-        FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(source, (BfObj) target);
-        if (singleFacing == UnitEnums.FACING_SINGLE.BEHIND) {
-            sight =   source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
-        } else if (singleFacing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
-            sight -= source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
-        }
+        Integer sight = source.getSightRangeTowards(target);
 //        sight*=2; //TODO NEW
-        int diff = sight - distance;
+        double diff = sight - distance;
 
         if (diff < 0) {
-            ilMod = 100 + (diff * 20
-             - diff * diff * 2
-            );
+            ilMod = 100 + diff * 100 / VisibilityMaster.SIGHT_RANGE_FACTOR;
+//             - diff * diff * 2
         } else {
             ilMod = (100 +   (diff * 12)); // + Math.sqrt(diff * 65)));
         }
@@ -121,7 +111,7 @@ if (illumination<=0)
         ilMod = Math.max(ilMod, 1);
 
         // TODO DISTANCE FACTOR?
-        illumination = illumination * ilMod / 100;
+        illumination =(int) Math.round(illumination * ilMod / 100);
         cache.put(target, illumination);
         return illumination;
     }

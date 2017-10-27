@@ -43,16 +43,16 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 
     }
 
-    public void setUnitGroup(DequeImpl<Unit> unitGroup) {
-        this.unitGroup = unitGroup;
-    }
-
     public static boolean isVisionInitialized() {
         return visionInitialized;
     }
 
     public static void setVisionInitialized(boolean visionInitialized) {
         DC_TurnManager.visionInitialized = visionInitialized;
+    }
+
+    public void setUnitGroup(DequeImpl<Unit> unitGroup) {
+        this.unitGroup = unitGroup;
     }
 
     public void init() {
@@ -110,13 +110,13 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     }
 
     public DequeImpl<Unit> getUnits() {
-        if (unitGroup!=null )
+        if (unitGroup != null)
             return unitGroup;
         return game.getUnits();
     }
 
     public void resetInitiative(boolean first) {
-        for (Unit unit :getUnits()) {
+        for (Unit unit : getUnits()) {
             if (unit.getAI().isOutsideCombat())
                 continue;
             resetInitiative(unit, first);
@@ -161,7 +161,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
             e.printStackTrace();
         }
 
-        for (Unit unit :  getUnits()) {
+        for (Unit unit : getUnits()) {
 //                if (game.getMainHero() != null) {
 //                    if (game.getMainHero().getZ() != unit.getZ()) {
 //                        continue;
@@ -169,19 +169,16 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 //                }
 
 
-            final boolean actNow =unit.getAI().isOutsideCombat()? false : unit.canActNow();
+            final boolean actNow = unit.getAI().isOutsideCombat() ? false : unit.canActNow();
             if (actNow) {
-                if (getGame().isDummyMode() &&getGame().isDummyPlus() && !unit.isMine())
-                {
-                   //?
-                }
-                else
-                {
+                if (getGame().isDummyMode() && getGame().isDummyPlus() && !unit.isMine()) {
+                    //?
+                } else {
                     unitQueue.add(unit);
                 }
             }
             if (!unit.getAI().isOutsideCombat())
-            GuiEventManager.trigger(UPDATE_UNIT_ACT_STATE, new ImmutablePair<>(unit, actNow));
+                GuiEventManager.trigger(UPDATE_UNIT_ACT_STATE, new ImmutablePair<>(unit, actNow));
         }
 
         ArrayList<Unit> list = new ArrayList<>(getUnitQueue());
@@ -203,11 +200,12 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 
     private boolean chooseUnit() {
         setActiveUnit(unitQueue.peek());
-        for (Unit sub : unitQueue) { if (sub!= getActiveUnit())
-            if (sub.getIntParam(PARAMS.C_INITIATIVE) == getActiveUnit().getIntParam(PARAMS.C_INITIATIVE)) {
-                getActiveUnit().modifyParameter(PARAMS.C_INITIATIVE, 1, null, true);
+        for (Unit sub : unitQueue) {
+            if (sub != getActiveUnit())
+                if (sub.getIntParam(PARAMS.C_INITIATIVE) == getActiveUnit().getIntParam(PARAMS.C_INITIATIVE)) {
+                    getActiveUnit().modifyParameter(PARAMS.C_INITIATIVE, 1, null, true);
 
-            }
+                }
             break;
         }
         try {
@@ -235,14 +233,19 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     }
 
     public void newRound() {
-
         resetInitiative(true);
 //        resetQueue();
         game.getRules().getTimeRule().newRound();
-        if (game.isStarted()) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.DEATH);
-        } else {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.FIGHT);
+        for (Unit sub : getGame().getUnits()) {
+            if (!sub.isMine())
+                if (sub.getAI().getEngagementDuration() > 0)
+                    sub.getAI().setEngagementDuration(sub.getAI().getEngagementDuration() - 1);
+
+            if (game.isStarted()) {
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.DEATH);
+            } else {
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.FIGHT);
+            }
         }
 //        if (isStarted()) {
 //            if (!playerHasActiveUnits()) {

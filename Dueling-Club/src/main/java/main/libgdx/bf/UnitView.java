@@ -133,6 +133,8 @@ public class UnitView extends BaseView {
 
     @Override
     public void act(float delta) {
+        if (isIgnored())
+            return;
         super.act(delta);
 
         if (mainHeroLabel != null) {
@@ -158,32 +160,36 @@ public class UnitView extends BaseView {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         ShaderProgram shader = null;
-        if (greyedOut) {
-            shader = batch.getShader();
-            batch.setShader(GrayscaleShader.getGrayscaleShader());
-            if (SuperActor.alphaFluctuationOn)
-                ActorMaster.addFadeInOrOutIfNoActions(this, 5);
-        }
-        if (outline != null) {
-            batch.draw(outline, 0, 0);
+
+        if (isVisible()) {
+            if (greyedOut) {
+                shader = batch.getShader();
+                batch.setShader(GrayscaleShader.getGrayscaleShader());
+            }
+            if (flickering)
+                if (SuperActor.alphaFluctuationOn) //TODO fix
+                    ActorMaster.addFadeInOrOutIfNoActions(this, 5);
         }
         super.draw(batch, parentAlpha);
 
+        if (outline != null) {
+            batch.draw(outline, 0, 0);
+        }
         if (batch.getShader() == GrayscaleShader.getGrayscaleShader())
             batch.setShader(shader);
     }
 
     public void setFlickering(boolean flickering) {
         this.flickering = flickering;
+        if (!flickering)
+            getColor().a = 1;
     }
 
     public void setGreyedOut(boolean greyedOut) {
         this.greyedOut = greyedOut;
+
     }
 
-    public void toggleGreyedOut() {
-        this.greyedOut = !greyedOut;
-    }
 
     public int getCurId() {
         return curId;

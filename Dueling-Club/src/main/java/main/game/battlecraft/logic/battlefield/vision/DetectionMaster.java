@@ -1,6 +1,7 @@
 package main.game.battlecraft.logic.battlefield.vision;
 
 import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.entity.obj.DC_Obj;
 
 /**
@@ -13,8 +14,8 @@ public class DetectionMaster {
         master = visionManager;
     }
 
-    public boolean checkKnown(DC_Obj infoObj) {
-        return false;
+    public boolean checkKnown(DC_Obj obj) {
+        return obj.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.KNOWN || obj.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.DETECTED;
     }
 
     public boolean checkDetectedForPlayer(DC_Obj obj) {

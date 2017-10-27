@@ -1,5 +1,6 @@
 package main.game.module.dungeoncrawl.ai;
 
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
@@ -17,55 +18,78 @@ public class AggroMaster {
     public static final float AGGRO_GROUP_RANGE = 1.5f;
     private static boolean aiTestOn = true;
     private static boolean sightRequiredForAggro = true;
+    private static List<Unit> lastAggroGroup;
 
 
     public static List<Unit> getAggroGroup() {
 //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
         List<Unit> list = new LinkedList<>();
         for (Unit ally : DC_Game.game.getPlayer(true).getControlledUnits_()) {
-            if (sightRequiredForAggro) {
-                if (!VisionManager.checkDetected(ally)) {
-                    continue;
-                }
-            }
+//            if (sightRequiredForAggro) {
+//                if (!VisionManager.checkDetected(ally, true)) {
+//                    continue;
+//                }
+//            }
             for (Unit unit : getAggroGroup(ally)) {
                 if (!list.contains(unit))
                     list.add(unit);
             }
         }
-
+        if (!list.isEmpty()) {
+            logAggro(list);
+        }
+        lastAggroGroup = list;
         return list;
     }
 
+    private static void logAggro(List<Unit> list) {
+        if (!list.equals(lastAggroGroup)) {
+            List<Unit> newUnits = new LinkedList<>(list);
+            newUnits.removeIf(unit -> lastAggroGroup.contains(unit));
+            if (!newUnits.isEmpty())
+                list.get(0).getGame().getLogManager().logBattleJoined(newUnits);
+        }
+    }
+
     public static Set<Unit> getAggroGroup(Unit hero) {
-        List<Unit> list =
-         new LinkedList<>(DC_Game.game.getUnits());
+        Set<Unit> set =
+         new LinkedHashSet<>();
 //        Analyzer.getEnemies(hero, false, false, false);
 //            if (ExplorationMaster.isExplorationOn())
-        list.removeIf(unit -> !unit.canAct());
-//            boolean engaged;
-//            if (sub.getAI().isEngaged())
-//                engaged = true; //could just check mode!
 
-        list.removeIf(unit -> !unit.isEnemyTo(DC_Game.game.getPlayer(true)));
-        list.removeIf(unit ->
-         !checkAggro(unit, hero, AGGRO_RANGE)
-        );
+        for (Unit unit : DC_Game.game.getUnits()) {
+            if (unit.isDead())
+                continue;
+            if (unit.isUnconscious())
+                continue;
+            if (!unit.isEnemyTo(DC_Game.game.getPlayer(true)))
+                continue;
+            if (unit.getAI().getEngagementDuration() > 0) {
+                set.add(unit);
+            }
+            VISIBILITY_LEVEL visibility = VisionManager.getMaster().getVisibilityLevel(unit, hero);
+            if (visibility != VISIBILITY_LEVEL.CLEAR_SIGHT)
+                continue;
 
-        Set<Unit> aggroGroup = new LinkedHashSet<>();
-        for (Unit sub : list) {
-            List<Unit> aggroed = new LinkedList<>(DC_Game.game.getUnits());
-            aggroed.removeIf(unit ->
-             !unit.canActNow() ||
-              !unit.isEnemyTo(DC_Game.game.getPlayer(true)) ||
-              aggroGroup.contains(sub) ||
-              !checkAggro(unit, hero, AGGRO_GROUP_RANGE));
-            aggroed.forEach(unit -> {
-                aggroGroup.addAll(unit.getAI().getGroup().getMembers());
-            });
+            if (unit.getVisibilityLevel() == VISIBILITY_LEVEL.UNSEEN)
+                continue; //TODO these units will instead 'surprise attack' you or stalk
+            int duration = 3;
+            unit.getAI().setEngagementDuration(duration);
+            set.add(unit);
+//            }
         }
+        //TODO add whole group of each unit
 
-        return aggroGroup;
+        set.forEach(unit -> {
+            if (unit.getAI().getGroup() != null) {
+                unit.getAI().getGroup().getMembers().forEach(sub -> {
+                    set.add(sub);
+                });
+            }
+        });
+
+
+        return set;
     }
 
     private static boolean checkAggro(Unit unit, Unit hero, double range) {

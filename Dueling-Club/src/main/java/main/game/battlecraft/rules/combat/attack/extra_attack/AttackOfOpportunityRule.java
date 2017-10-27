@@ -270,6 +270,7 @@ public class AttackOfOpportunityRule {
             switch (active.getActionGroup()) {
                 case MOVE:
                     return checkMove(active);
+                case ADDITIONAL:
                 case SPECIAL:
                     return checkSpecial(active);
                 case SPELL:

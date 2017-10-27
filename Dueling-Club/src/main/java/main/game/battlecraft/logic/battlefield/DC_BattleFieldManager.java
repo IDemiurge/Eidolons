@@ -53,7 +53,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
             boolean free = false;
             // getBattlefield().getGrid().getObjCompMap().getOrCreate(c) == null;
             if (!free) {
-                free = !VisionManager.checkVisible((DC_Obj) obj);
+                free = !VisionManager.checkVisible((DC_Obj) obj, false);
             }
             if (!free) {
                 return false;
@@ -71,16 +71,16 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
 
     public void resetWallMap() {
-        Map<Coordinates, BattleFieldObject> wallMap = new HashMap<>();
+        Map<Coordinates, BattleFieldObject> wallObjects = new HashMap<>();
         for (Obj obj : game.getObjects(DC_TYPE.BF_OBJ)) {
             BattleFieldObject bfObj = (BattleFieldObject) obj;
             if (bfObj.getZ() == game.getDungeon().getZ()) {
                 if (bfObj.isWall()) {
-                    wallMap.put(obj.getCoordinates(), bfObj);
+                    wallObjects.put(obj.getCoordinates(), bfObj);
                 }
             }
         }
-        resetWallMap(wallMap);
+        resetWallMap(wallObjects);
         GuiEventManager.trigger(GuiEventType. UPDATE_WALL_MAP, this.wallMap);
         GuiEventManager.trigger(GuiEventType. UPDATE_DIAGONAL_WALL_MAP, this.diagonalJoints);
     }
@@ -93,7 +93,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
             if (wall.isDead()) {
                 continue;
             }
-            if (!VisionManager.checkVisible(wall)) {
+            if (!VisionManager.checkVisible(wall, false)) {
                 continue;
             }
             List<DIRECTION> list = new LinkedList<>();

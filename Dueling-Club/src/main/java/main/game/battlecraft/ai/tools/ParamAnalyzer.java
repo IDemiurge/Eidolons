@@ -135,8 +135,17 @@ public class ParamAnalyzer extends AiHandler {
         if (p == PARAMS.C_MORALE) {
             return isMoraleIgnore(unit);
         }
+        if (p == PARAMS.C_ESSENCE) {
+            return isEssenceIgnore(unit);
+        }
         return false;
 
+    }
+
+    public static boolean isEssenceIgnore(Unit unit) {
+        if (unit.getAI().getType().isCaster())
+            return false;
+        return true;
     }
 
     public static boolean isMoraleIgnore(Unit unit) {

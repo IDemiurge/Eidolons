@@ -49,6 +49,11 @@ public class Location extends DungeonWrapper {
 //        initEntrances();
     }
 
+    public Coordinates getPlayerSpawnCoordinates() {
+       if (getMainEntrance()!=null )
+           return getMainEntrance().getCoordinates();
+        return super.getPlayerSpawnCoordinates();
+    }
     public List<Entrance> getEntrances() {
         if (entrances == null) {
             entrances = new LinkedList<>();
@@ -108,7 +113,7 @@ public class Location extends DungeonWrapper {
         }
         String enterData = entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR)[0];
         String name = VariableManager.removeVarPart(enterData);
-        Coordinates c = new Coordinates(VariableManager.getVar(enterData));
+        Coordinates c = new Coordinates(true, VariableManager.getVar(enterData));
 
         for (Entrance e : getEntrances()) {
             if (e.getCoordinates().equals(c)) {
@@ -126,7 +131,7 @@ public class Location extends DungeonWrapper {
         }
         String exitData = entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR)[1];
         name = VariableManager.removeVarPart(exitData);
-        c = new Coordinates(VariableManager.getVarPart(exitData));
+        c = new Coordinates(true, VariableManager.getVar(exitData));
         for (Entrance e : getEntrances()) {
             if (e.getCoordinates().equals(c)) {
                 if (e.getName().equals(name)) {

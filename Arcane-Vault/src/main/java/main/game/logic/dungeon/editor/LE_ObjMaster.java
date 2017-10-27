@@ -21,7 +21,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
 import main.game.logic.dungeon.editor.gui.LE_MapViewComp;
-import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -314,9 +313,9 @@ public class LE_ObjMaster {
     }
 
     public static Unit getObject(ObjType type, Coordinates c) {
-        Unit obj;
+        Unit obj = null;
         if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.ENTRANCE.toString())) {
-            obj = new Entrance(c.x, c.y, type, LevelEditor.getCurrentLevel().getDungeon(), null);
+//            obj = new Entrance(c.x, c.y, type, LevelEditor.getCurrentLevel().getDungeon(), null);
         } else {
             obj = getObjCache().get(type);
             if (obj == null) {

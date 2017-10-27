@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -22,6 +23,8 @@ public class GuiEventManagerOld {
     private Map<GuiEventType, EventCallback> eventMap = new HashMap<>();
     private List<Runnable> eventQueue = new ArrayList<>();
     private Lock lock = new ReentrantLock();
+    private Condition condition = lock.newCondition();
+
     private Map<GuiEventType, OnDemandCallback> onDemand = new ConcurrentHashMap<>();
 
     public static void cleanUp() {
@@ -70,6 +73,11 @@ public class GuiEventManagerOld {
     }
 
     private void _cleanUp() {
+//        try {
+//            condition.await();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         Map<GuiEventType, EventCallback> cache = new HashMap<>();
         for (GuiEventType eventType : savedBindings) {
             EventCallback saved = eventMap.get(eventType);
@@ -114,15 +122,16 @@ public class GuiEventManagerOld {
     }
 
     public void trigger_(final GuiEventType type, final EventCallbackParam obj) {
-
-        if (eventMap.containsKey(type)) {
+        EventCallback event = eventMap.get(type);
+        if (event!=null ) {
             lock.lock();
             try {
-                eventQueue.add(() -> eventMap.get(type).call(obj));
+                eventQueue.add(() -> event.call(obj));
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 lock.unlock();
+
             }
         } else {
             if (obj instanceof OnDemandCallback) {

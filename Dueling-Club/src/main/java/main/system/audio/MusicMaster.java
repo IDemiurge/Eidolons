@@ -49,6 +49,7 @@ public class MusicMaster {
     private Map<String, Music> musicCache = new XLinkedMap<>();
     private Music playedMusic;
     private boolean stopped;
+    private boolean running;
     // IDEA: map music per scope to resume()
 // TODO AMBIENT SOUNDS -
 
@@ -253,8 +254,9 @@ public class MusicMaster {
                     checkNewMusicToPlay();
                 }
             }
+//        MusicMaster.this.running=false;
         }, "Music Thread").start();
-
+        running=true;
     }
 
     public void resume() {
@@ -344,6 +346,14 @@ public class MusicMaster {
             e.printStackTrace();
         }
 
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 
 

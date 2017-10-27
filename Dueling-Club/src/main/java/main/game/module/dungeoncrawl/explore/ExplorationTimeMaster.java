@@ -106,7 +106,18 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     private void processEndOfRoundEffects() {
         processCounterRules();
+        processCustomRules();
 
+    }
+
+    private void processCustomRules() {
+
+        master.getGame().getUnits().forEach(unit -> {
+           if ( master.getGame().getRules().getUnconsciousRule().checkStatusUpdate(unit)){
+               master.getGame().getRules().getUnconsciousRule().apply(unit);
+               master.getGame().getStateManager().reset(unit);
+           }
+        });
     }
 
     private void processCounterRules() {

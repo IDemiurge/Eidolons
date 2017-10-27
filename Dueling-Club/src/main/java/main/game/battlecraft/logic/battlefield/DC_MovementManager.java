@@ -15,6 +15,7 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -370,9 +371,17 @@ public class DC_MovementManager implements MovementManager {
         if (obj.isDead()) {
             return false;
         }
-        int x = cell.getX();
-        int y = cell.getY();
-        if (!game.getRules().getEngagedRule().unitMoved(obj, x, y)) {
+
+        if (!game.getRules().getStackingRule().canBeMovedOnto(obj, c)) {
+            return false;
+        }
+        if (game.getObjectByCoordinate(c) instanceof BattleFieldObject) {
+            if (((BattleFieldObject) game.getObjectByCoordinate(c)).isWall()) {
+                return false;
+            }
+        }
+
+            if (!game.getRules().getEngagedRule().unitMoved(obj, c.x, c.y)) {
             return false;
         }
         obj.setCoordinates(c);

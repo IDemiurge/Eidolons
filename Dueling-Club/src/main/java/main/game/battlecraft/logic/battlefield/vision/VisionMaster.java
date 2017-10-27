@@ -2,12 +2,10 @@ package main.game.battlecraft.logic.battlefield.vision;
 
 import main.ability.conditions.special.ClearShotCondition;
 import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
-import main.entity.obj.BattleFieldObject;
-import main.entity.obj.DC_Cell;
-import main.entity.obj.DC_Obj;
-import main.entity.obj.Obj;
+import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.bf.GenericVisionManager;
@@ -38,7 +36,6 @@ public class VisionMaster implements GenericVisionManager {
 
 
     private DC_Game game;
-    private Unit activeUnit;
     private boolean fastMode;
 
     public VisionMaster(DC_Game game) {
@@ -68,10 +65,10 @@ public class VisionMaster implements GenericVisionManager {
         getGammaMaster().clearCache();
         getIlluminationMaster().clearCache();
 //        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
-        setActiveUnit(
-         ExplorationMaster.isExplorationOn()
-          ? getSeeingUnit() :
-          game.getTurnManager().getActiveUnit(true));
+//        setActiveUnit(
+//         ExplorationMaster.isExplorationOn()
+//          ? getSeeingUnit() :
+//          game.getTurnManager().getActiveUnit(true));
 
         if (getActiveUnit() == null) {
             LogMaster.log(0, "null active activeUnit for visibility!");
@@ -79,7 +76,7 @@ public class VisionMaster implements GenericVisionManager {
         }
         boolean mine = getActiveUnit().getOwner().isMe();
 
-        setActiveUnit(getActiveUnit());
+
         getActiveUnit().setPlainSightSpectrumCoordinates(new DequeImpl<>());
         getActiveUnit().setSightSpectrumCoordinates(new DequeImpl<>());
 
@@ -95,7 +92,7 @@ public class VisionMaster implements GenericVisionManager {
 
         getVisibilityMaster().resetVisibilityLevels();
 
-        setRelativePlayerVisibility(game.getPlayer(mine), cells);
+//        setRelativePlayerVisibility(game.getPlayer(mine), cells);
         //Chronos.logTimeElapsedForMark("PLAYER for terain cells VISIBILITY REFRESH");
 
         setRelativePlayerVisibility(game.getPlayer(mine), game.getStructures()); // DC_Player.NEUTRAL.getControlledUnits());
@@ -105,14 +102,15 @@ public class VisionMaster implements GenericVisionManager {
 
         getActiveUnit().setUnitVisionStatus(VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT);
         getActiveUnit().setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
-        resetLastKnownCoordinates();
+//        resetLastKnownCoordinates();
         //Chronos.logTimeElapsedForMark("PLAYER VISIBILITY REFRESH");
     }
 
     private void setVisibilityLevel(Set<Obj> controlledUnits) {
         for (Obj obj : controlledUnits) {
             DC_Obj target = (DC_Obj) obj;
-            target.setVisibilityLevel(getVisibilityMaster().getUnitVisibilityLevel(target, getActiveUnit()));
+            target.setVisibilityLevel(getVisibilityMaster().getUnitVisibilityLevel(
+             getActiveUnit() ,  target ));
         }
     }
 
@@ -165,11 +163,24 @@ public class VisionMaster implements GenericVisionManager {
 
         for (Obj obj : units) {
             DC_Obj target = (DC_Obj) obj;
-            target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN);
+            if (target instanceof Unit)
+            {
+                if (ExplorationMaster.isExplorationOn ()||   ((Unit) target).getAI().isOutsideCombat()) {
+                    target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.UNKNOWN);
+                }
+            }
+//            else
+//                target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.UNKNOWN);
+            if (target instanceof Structure)
+            {
+                if (!((Structure) target).isWall() || !target.isDetectedByPlayer()) {
+                    target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.UNKNOWN);
+                }
+            }
             if (DebugMaster.isOmnivisionOn()) {
                 if (player.isMe()) {
                     target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED);
-                    return;
+                    continue;
                 }
             }
             boolean result = false; // detected or not
@@ -183,24 +194,32 @@ public class VisionMaster implements GenericVisionManager {
 
             for (Obj obj1 : player.getControlledUnits()) {
                 if (obj1 != getActiveUnit()) {
-                    continue;
+                    continue; //TODO ideally, should check for all allies?
                 }
                 VISIBILITY_LEVEL status = target.getVisibilityLevel();
+//                if (!ExplorationMaster.isExplorationOn())
+//                    if (status==VISIBILITY_LEVEL.CONCEALED){
+//                        result = false;
+//                    }
                 if (
-                 status == VISIBILITY_LEVEL.CLEAR_SIGHT
-                  || status == VISIBILITY_LEVEL.VAGUE_OUTLINE
-                  || status == VISIBILITY_LEVEL.OUTLINE
-                  || status == null
-                 ) {
-                    target.setDetected(true);
-                    if (player.isMe()) {
-                        target.setDetectedByPlayer(true);
-                    }
-                    if (status == VISIBILITY_LEVEL.CLEAR_SIGHT) {
-                        target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED);
-                    } else {
+                 status != VISIBILITY_LEVEL.BLOCKED
+                  && status != VISIBILITY_LEVEL.UNSEEN
 
-                        target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
+                 ) {
+
+                    if (status == VISIBILITY_LEVEL.CONCEALED) {
+                        target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.CONCEALED);
+                    } else {
+                        target.setDetected(true);
+                        if (player.isMe()) {
+                            target.setDetectedByPlayer(true);
+                        }
+                    if (status == VISIBILITY_LEVEL.CLEAR_SIGHT) {
+                        target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.DETECTED);
+                    }
+                    else {
+                        target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.KNOWN);
+                    }
                     }
                     result = true;
                     break; // TODO set VL to *max* => Identification Level
@@ -213,18 +232,19 @@ public class VisionMaster implements GenericVisionManager {
                 if (target.isDetectedByPlayer()) {
                     if (obj instanceof DC_Cell) {
                         target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
-                    } else {
+                    } else if (target.getVisibilityLevel() != VISIBILITY_LEVEL.BLOCKED){
                         BattleFieldObject unit = (BattleFieldObject) obj;
                         if (unit.isWall() || unit.isLandscape()) {
                             target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
                         }
                     }
+
                 }
-                if (target.getVisibilityLevel() != VISIBILITY_LEVEL.BLOCKED) {
-                    if (player.isMe()) {
-                        if (obj instanceof DC_Cell) {
-                            target.setDetectedByPlayer(true);
-                        }
+//                if (target.getVisibilityLevel() != VISIBILITY_LEVEL.BLOCKED) {
+//                    if (player.isMe()) {
+//                        if (obj instanceof DC_Cell) {
+//                            target.setDetectedByPlayer(true);
+//                        }
 //                    else {
 //                        BattleFieldObject unit = (BattleFieldObject) obj;
 //                        if (unit.isWall() || unit.isLandscape()) {
@@ -232,17 +252,18 @@ public class VisionMaster implements GenericVisionManager {
 //
 //                        }
 //                    }
-                    } else {
+//                    } else
+                        {
                         //TODO  ???
-                        if (target.isDetected()
-                         ) {
-                            target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
-                        } else {
-                            target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN);
-                        }
+//                        if (target.isDetected()
+//                         ) {
+//                            target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
+//                        } else {
+//                            target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN);
+//                        }
                     }
                 }
-            }
+
 
         }
 
@@ -251,22 +272,23 @@ public class VisionMaster implements GenericVisionManager {
 
     public boolean checkVisible(DC_Obj obj) {
         boolean visible = checkVisible(obj, false);
-        if (!visible) {
-            obj.setDetected(false);
-        }
+//        if (!visible) {
+//            obj.setDetected(false);
+//        }
         return visible;
     }
 
     public boolean checkVisible(DC_Obj obj, boolean active) {
-        if (getActiveUnit() == null) {
-            return true;
+        Unit source = active ? getActiveUnit() : getSeeingUnit();
+        if (source == null) {
+            return false;
         }
-        if (getActiveUnit().getZ() != obj.getZ() && !(obj instanceof Entrance)) // dungeon
+        if (source.getZ() != obj.getZ() && !(obj instanceof Entrance)) // dungeon
         // sublevel
         {
             return false;
         }
-        if (getActiveUnit().getOwner().isMe()) {
+        if (source.getOwner().isMe()) {
             if (obj.getOwner().isMe()) {
                 return true;
             }
@@ -309,7 +331,7 @@ public class VisionMaster implements GenericVisionManager {
     }
 
     public VISIBILITY_LEVEL getVisibilityLevel(Unit source, DC_Obj target) {
-        return getVisibilityMaster().getVisibilityLevel(source, target);
+        return getVisibilityMaster().getUnitVisibilityLevel(source, target);
     }
 
     public String getDisplayImagePathForUnit(DC_Obj obj) {
@@ -335,7 +357,7 @@ public class VisionMaster implements GenericVisionManager {
     @Override
     public boolean checkInvisible(Obj obj1) {
         DC_Obj obj = (DC_Obj) obj1;
-        return !checkVisible(obj);
+        return !checkVisible(obj, true);
     }
 
     public boolean isFastMode() {
@@ -371,13 +393,12 @@ public class VisionMaster implements GenericVisionManager {
     }
 
     public Unit getActiveUnit() {
-        if (activeUnit == null)
-            return getGame().getManager().getActiveObj();
-        return activeUnit;
-    }
-
-    public void setActiveUnit(Unit activeUnit) {
-        this.activeUnit = activeUnit;
+//        if (activeUnit == null)
+//            return getGame().getManager().getActiveObj();
+//        return activeUnit;
+       return  ExplorationMaster.isExplorationOn()
+         ? getSeeingUnit() :
+         game.getTurnManager().getActiveUnit(true);
     }
 
     public OutlineMaster getOutlineMaster() {

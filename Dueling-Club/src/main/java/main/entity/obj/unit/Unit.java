@@ -15,6 +15,7 @@ import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
@@ -44,6 +45,7 @@ import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context.IdKey;
@@ -1313,5 +1315,16 @@ public class Unit extends DC_UnitModel {
             return AiEnums.AI_TYPE.NORMAL;
         }
         return ai;
+    }
+
+    public int getSightRangeTowards(DC_Obj target) {
+        int sight =  getIntParam(PARAMS.SIGHT_RANGE);
+        FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(this, (BfObj) target);
+        if (singleFacing == UnitEnums.FACING_SINGLE.BEHIND) {
+            sight =    getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
+        } else if (singleFacing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
+            sight -=  getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
+        }
+        return sight;
     }
 }

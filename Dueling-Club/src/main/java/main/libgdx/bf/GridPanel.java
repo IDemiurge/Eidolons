@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.mode.STD_MODES;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -25,6 +26,7 @@ import main.game.core.Eidolons;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimMaster;
@@ -92,6 +94,7 @@ public class GridPanel extends Group {
     private List<OverlayView> overlays = new LinkedList<>();
     private GridUnitView hoverObj;
     private boolean resetVisibleRequired;
+    private boolean updateRequired;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -257,9 +260,15 @@ public class GridPanel extends Group {
 
     private void bindEvents() {
 
-        GuiEventManager.bind(UNIT_TOGGLE_GREYED_OUT, obj -> {
+        GuiEventManager.bind(UNIT_GREYED_OUT_ON, obj -> {
             UnitView unitView = getUnitView((BattleFieldObject) obj.get());
-            unitView.toggleGreyedOut();
+            unitView.setFlickering(true);
+            unitView.setGreyedOut(true);
+        });
+        GuiEventManager.bind(UNIT_GREYED_OUT_OFF, obj -> {
+            UnitView unitView = getUnitView((BattleFieldObject) obj.get());
+            unitView.setGreyedOut(false);
+            unitView.setFlickering(false);
         });
 
         GuiEventManager.bind(UNIT_STARTS_MOVING, obj -> {
@@ -275,7 +284,9 @@ public class GridPanel extends Group {
                 if (OutlineMaster.isOutlinesOn() ) {
                     updateOutlines();
                 }
+
             resetVisibleRequired=true;
+            updateRequired=true;
         });
 
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
@@ -383,11 +394,12 @@ public class GridPanel extends Group {
                 }
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS
-             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS
              ) {
-                GuiEventManager.trigger(UNIT_TOGGLE_GREYED_OUT, ref.getSourceObj());
+                GuiEventManager.trigger(UNIT_GREYED_OUT_ON, ref.getSourceObj());
+            } else if ( event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS){
+                GuiEventManager.trigger(UNIT_GREYED_OUT_OFF, ref.getSourceObj());
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
-
+                GuiEventManager.trigger(UNIT_GREYED_OUT_OFF, ref.getSourceObj());
                 if (!DeathAnim.isOn() || ref.isDebug()) {
                     GuiEventManager.trigger(DESTROY_UNIT_MODEL, ref.getTargetObj());
                 }
@@ -495,8 +507,7 @@ public class GridPanel extends Group {
             }
             for (BattleFieldObject object : map.get(coordinates)) {
                 if (!object.isOverlaying()) {
-                    final BaseView baseView = UnitViewFactory.create(object);
-                    unitMap.put(object, baseView);
+                    final BaseView baseView = createUnitView(object);
                     views.add(baseView);
                 } else {
                     final OverlayView overlay = UnitViewFactory.createOverlay(object);
@@ -549,6 +560,14 @@ public class GridPanel extends Group {
         WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
     }
 
+    private boolean isVisibleByDefault(BattleFieldObject battleFieldObjectbj) {
+        if (battleFieldObjectbj.isMine())
+            return true;
+        if (battleFieldObjectbj instanceof Entrance)
+            return true;
+        return false;
+    }
+
 
     private void moveUnitView(BattleFieldObject heroObj) {
         int rows1 = rows - 1;
@@ -564,10 +583,19 @@ public class GridPanel extends Group {
         }
     }
 
-    private void addUnitView(BattleFieldObject heroObj) {
-        BaseView uv = UnitViewFactory.create(heroObj);
-        unitMap.put(heroObj, uv);
+    private BaseView createUnitView(BattleFieldObject battleFieldObjectbj) {
+        BaseView uv = UnitViewFactory.create(battleFieldObjectbj);
+        unitMap.put(battleFieldObjectbj, uv);
+        moveUnitView(battleFieldObjectbj);
+        if (!isVisibleByDefault(battleFieldObjectbj))
+            uv.setVisible(false);
+        return uv;
+    }
+        private void addUnitView(BattleFieldObject heroObj) {
+        BaseView uv = createUnitView(heroObj);
         moveUnitView(heroObj);
+        if (!isVisibleByDefault(heroObj))
+        uv.setVisible(false);
     }
 
     public void detachUnitView(BattleFieldObject heroObj) {
@@ -619,26 +647,51 @@ public class GridPanel extends Group {
 
     @Override
     public void act(float delta) {
-        if (checkResetVisibleRequired()) {
+        if (resetVisibleRequired ) {
             resetVisible();
         }
         super.act(delta);
         if (checkResetZRequired()) {
             resetZIndices();
         }
-
+        if (updateRequired ) {
+            update();
+        }
     }
 
-    private boolean checkResetVisibleRequired() {
-        return resetVisibleRequired;
+    private void update() {
+        for (int x = 0; x < cols; x++) {
+            for (int y = 0; y < rows; y++) {
+                GridCellContainer cell = cells[x][y];
+                cell.recalcUnitViewBounds();
+            }
+
+        }
     }
+
 
     private void resetVisible() {
         for (BattleFieldObject sub : unitMap.keySet()) {
             BaseView view = unitMap.get(sub);
             view.setVisible(true);
-            if (sub.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.UNKNOWN) {
+            if ( sub.isDead())
+                if (view .getActions().size==0)
+                {
+                    view.setVisible(false);
+                    continue;
+                }
+
+                if (!sub.isMine()){
+            if (sub.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.UNKNOWN)
                 view.setVisible(false);
+            else if (!sub.isWall()){
+                if (sub.getOutlineTypeForPlayer() == OUTLINE_TYPE.BLOCKED_OUTLINE)
+                    view.setVisible(false);
+                else {
+                    if (sub.getVisibilityLevelForPlayer() == VISIBILITY_LEVEL.UNSEEN)
+                        view.setVisible(false);
+                }
+            }
             }
         }
         resetVisibleRequired=false;

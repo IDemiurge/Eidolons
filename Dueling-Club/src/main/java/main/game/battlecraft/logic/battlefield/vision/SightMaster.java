@@ -49,8 +49,8 @@ public class SightMaster {
                                                          FACING_DIRECTION facing
     ) {
         return getSpectrumCoordinates(range,
-                side_penalty, back_bonus, source, vision,
-                facing, false);
+         side_penalty, back_bonus, source, vision,
+         facing, false);
     }
 
     public DequeImpl<Coordinates> getSpectrumCoordinates(Integer range,
@@ -78,21 +78,21 @@ public class SightMaster {
             range = source.getIntParam(PARAMS.SIGHT_RANGE);
             if (extended) {
                 range = MathMaster.applyModIfNotZero(range, source
-                        .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION));
+                 .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION));
             }
         }
         if (side_penalty == null) {
             side_penalty = source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
             if (extended) {
                 side_penalty = MathMaster.applyModIfNotZero(side_penalty, source
-                        .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION_SIDES));
+                 .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION_SIDES));
             }
         }
         if (back_bonus == null) {
             back_bonus = source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
             if (extended) {
                 back_bonus = MathMaster.applyModIfNotZero(back_bonus, source
-                        .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION_BACKWARD));
+                 .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION_BACKWARD));
             }
         }
 
@@ -148,12 +148,16 @@ public class SightMaster {
 //            Obj obj  =objs.get(0); if (objs.size()>1) obj= (Obj) FuncMaster.getGreatestEntity(objs, unit -> unit.getIntParam(PARAMS.HEIGHT));
 ////            = source.getGame().getObjectByCoordinate(c); //getBattleField().getGrid().getObjOrCell(c);
 //            if (obj != null) {
-                Ref ref = new Ref(source);
+            Ref ref = new Ref(source);
+            try {
                 ref.setMatch(source.getGame().getCellByCoordinate(c).getId());
-                boolean clearShot = getClearShotCondition().preCheck(ref);
-                if (!clearShot) {
-                    removeList.add(c);
-                }
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+            boolean clearShot = getClearShotCondition().preCheck(ref);
+            if (!clearShot) {
+                removeList.add(c);
+            }
 //            }
         }
         list.removeAll(removeList);
@@ -184,7 +188,7 @@ public class SightMaster {
                 if (remove) {
                     list.remove(c);
                     LogMaster.log(LogMaster.VISIBILITY_DEBUG, "Coordinate shadowed from vision: "
-                            + c);
+                     + c);
                 } else {
                     list.add(c);
                 }

@@ -103,6 +103,9 @@ public class PanelActionsDataSource implements
     }
 
     public List<ActionValueContainer> getActions(ACTION_TYPE type) {
+        if (unit.getActionMap().get(type) == null) {
+            return new LinkedList<>();
+        }
         return unit.getActionMap().get(type).stream()
          .map(getActiveObjValueContainerFunction())
          .collect(Collectors.toList());

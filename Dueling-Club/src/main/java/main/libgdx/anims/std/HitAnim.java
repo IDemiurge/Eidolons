@@ -5,15 +5,14 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import main.ability.effects.oneshot.move.MoveEffect;
 import main.content.PARAMS;
 import main.data.filesys.PathFinder;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.BattleFieldObject;
+import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.battlecraft.rules.combat.damage.Damage;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
@@ -23,15 +22,12 @@ import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
-import main.libgdx.anims.actions.MoveByActionLimited;
 import main.libgdx.anims.text.FloatingText;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import main.libgdx.bf.BaseView;
 import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.images.ImageManager;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
@@ -110,7 +106,7 @@ public class HitAnim extends ActionAnim {
 
         int dx =d.isVertical() ? 5:  30;
         int dy =!d.isVertical() ? 5:  30;
-        if (BooleanMaster.isTrue(d.isGrowX())) {
+        if (BooleanMaster.isFalse(d.isGrowX())) {
             dx = -dx;
         }
         if (BooleanMaster.isTrue(d.isGrowY())) {
@@ -120,13 +116,25 @@ public class HitAnim extends ActionAnim {
         float  x =getActor().getX();
         float  y =getActor().getY();
 
-        MoveByActionLimited move = (MoveByActionLimited) ActorMaster.getAction(MoveByActionLimited.class);
+
+        MoveByAction move = (MoveByAction) ActorMaster.getAction(MoveByAction.class);
         move.setAmount(dx, dy);
         move.setDuration(getDuration()/2);
         MoveToAction moveBack = (MoveToAction) ActorMaster.getAction(MoveToAction.class);
+        if (getRef().getSourceObj() instanceof DC_Obj) {
+            if (((DC_Obj) getRef().getSourceObj()).isOverlaying()) {
+                moveBack.setPosition(x, y);
+            }
+        }
         moveBack.setPosition(x, y);
         moveBack.setDuration(getDuration()/2);
         return new SequenceAction(move, moveBack);
+    }
+
+    @Override
+    public Actor getActor() {
+        return DungeonScreen.getInstance().getGridPanel().getUnitMap()
+         .get(getActive().getRef().getTargetObj());
     }
 
     @Override
@@ -145,14 +153,14 @@ public class HitAnim extends ActionAnim {
 
     @Override
     protected Actor getActionTarget() {
-        BattleFieldObject BattleFieldObject = (BattleFieldObject) getRef().getSourceObj();
-        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
-         MoveEffect.class)))
-            BattleFieldObject = (BattleFieldObject) getRef().getTargetObj();
-        BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
-         .get(BattleFieldObject);
-        return actor;
-    }
+//        BattleFieldObject BattleFieldObject = (BattleFieldObject) getRef().getSourceObj();
+//        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
+//         MoveEffect.class)))
+//            BattleFieldObject = (BattleFieldObject) getRef().getTargetObj();
+//        BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
+//         .get(BattleFieldObject);
+//        return actor;
+        return getActor(); }
 
     private String getTargetSuffix(Obj targetObj) {
 //       DC_HeroObj BattleFieldObject = (DC_HeroObj) targetObj;
