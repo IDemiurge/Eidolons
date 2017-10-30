@@ -7,6 +7,7 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.round.UnconsciousRule;
 import main.game.core.game.DC_GameManager;
@@ -50,6 +51,7 @@ public class DamageDealer {
          damage.getTarget()
          , damage.getRef(), damage.getAmount(), isBonusDamage);
 
+
         if (damage instanceof MultiDamage) {
             logOn = false;
             int bonus = dealBonusDamage((MultiDamage) damage, result);
@@ -60,7 +62,7 @@ public class DamageDealer {
         return result;
     }
 
-    public static int dealDamage(Damage damage, Unit target) {
+    public static int dealDamage(Damage damage, BattleFieldObject target) {
         damage.getRef().setTarget(target.getId());
         damage.setTarget(target);
         return dealDamage(damage, false);
@@ -109,7 +111,7 @@ public class DamageDealer {
      * @param amount      total amount of damage to be reduced by Resistance and Armor (unless damage_type==PURE) and dealt as PURE
      * @return actual amount of damage dealt ( max(min(Toughness*(1-DEATH_BARRIER), Toughness dmg),min(Endurance, Endurance dmg))
      */
-    private static int dealDamageOfType(DAMAGE_TYPE damage_type, Unit targetObj, Ref ref,
+    private static int dealDamageOfType(DAMAGE_TYPE damage_type, BattleFieldObject targetObj, Ref ref,
                                         int amount, boolean bonus) {
         Unit attacker = (Unit) ref.getSourceObj();
         // if (global_damage_mod != 0) IDEA - Difficulty modifier
@@ -165,19 +167,20 @@ public class DamageDealer {
         ref = Ref.getCopy(ref);
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
         Unit attacker = (Unit) ref.getSourceObj();
-        Unit attacked = (Unit) ref.getTargetObj();
+        BattleFieldObject attacked = (BattleFieldObject) ref.getTargetObj();
         if (dmg_type == null) {
             dmg_type = active.getEnergyType();
         }
 
 
         int blocked = 0;
+        if (attacked instanceof  Unit)
         if (!DamageCalculator.isUnblockable(ref)) {
             if (ref.getSource() != ref.getTarget()) {
                 if (isAttack(ref)) {
                     blocked = attacked.getGame()
                      .getArmorMaster().getArmorBlockDamage(amount,
-                      attacked, attacker, active);
+                      (Unit) attacked, attacker, active);
                 } else {
                     blocked = attacked.getGame()
                      .getArmorMaster().getArmorBlockForActionDamage(amount, dmg_type,
@@ -286,7 +289,7 @@ public class DamageDealer {
         return (event.fire());
     }
 
-    private static int dealPureDamage(Unit attacked, Unit attacker, Integer endurance_dmg,
+    private static int dealPureDamage(BattleFieldObject attacked, Unit attacker, Integer endurance_dmg,
                                       Integer toughness_dmg, Ref ref) {
         // apply Absorption here?
 

@@ -27,6 +27,7 @@ import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E> {
 
     protected PartyObj party;
+    protected boolean chooseOneHero;
     private int partyLevel;
 
     public PartyManager(MetaGameMaster master) {
@@ -42,8 +43,8 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
     public void gameStarted() {
         DC_Player player = getMaster().getBattleMaster().getPlayerManager().getPlayer(true);
         String name = getParty().getProperty(PROPS.PARTY_MAIN_HERO);
-        if ( Eidolons.getSelectedMainHero()!=null )
-            name =  Eidolons.getSelectedMainHero();
+        if (Eidolons.getSelectedMainHero() != null)
+            name = Eidolons.getSelectedMainHero();
         if (name.isEmpty())
             if (getMaster().getEntity() != null) {
                 //TODO set main hero if created
@@ -51,8 +52,8 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
             }
 //            if (true){
         name = chooseMainHero();
-        if (name==null )
-        name = "Harlen Rolwain";
+        if (name == null)
+            name = "Harlen Rolwain";
 
         Ref ref = new Ref(getParty().getLeader());
         Unit hero = getGame().getMaster().getUnitByName(name, ref, true, null, null);
@@ -61,27 +62,29 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
     }
 
     private String chooseMainHero() {
-        if (party.getMembers().size()==1){
+        if (party.getMembers().size() == 1) {
             return party.getLeader().getName();
         }
-        if (!WaitMaster.isComplete(WAIT_OPERATIONS.GUI_READY)){
+        if (chooseOneHero)
+            return ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
+        if (!WaitMaster.isComplete(WAIT_OPERATIONS.GUI_READY)) {
             Object result = WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY, 4000);
-            if (result==null )
+            if (result == null)
                 return ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
         }
-        Set<Obj> selectingSet= new HashSet<>(party.getMembers());
+        Set<Obj> selectingSet = new HashSet<>(party.getMembers());
         Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
             WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, t);
         });
 
-         party.getMembers().forEach(hero -> {
-             GuiEventManager.trigger(ADD_FLOATING_TEXT,
-              FloatingTextMaster.getInstance().getFloatingText
-               (hero, TEXT_CASES.BATTLE_COMMENT, hero.getName()));
-         }) ;
+        party.getMembers().forEach(hero -> {
+            GuiEventManager.trigger(ADD_FLOATING_TEXT,
+             FloatingTextMaster.getInstance().getFloatingText
+              (hero, TEXT_CASES.BATTLE_COMMENT, hero.getName()));
+        });
         GuiEventManager.trigger(SELECT_MULTI_OBJECTS, p);
         Unit unit = (Unit) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ, 15000);
-        if (unit==null ){
+        if (unit == null) {
 //            List<JButton> pics = party.getMembers().stream().map(hero ->
 //             new JButton(ImageManager.getIcon(hero.getImagePath().replace(" 128", "")))).collect(Collectors.toList());
 //            int i = DialogMaster.optionChoice(pics.toArray(), "Choose a hero to control...");
@@ -96,13 +99,16 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
     }
 
     private void mainHeroSelected(PartyObj party, Unit hero) {
-        party.getMembers().forEach(member->{
-            member.setMainHero(false);
+        party.getMembers().forEach(member -> {
+            if (chooseOneHero)
+                member.kill(member, false, true);
+            else
+                member.setMainHero(false);
         });
         hero.getOwner().setHeroObj(hero);
         hero.setMainHero(true);
         party.setProperty(PROPS.PARTY_MAIN_HERO, hero.getName());
-        Eidolons.setSelectedMainHero(  hero.getName());
+        Eidolons.setSelectedMainHero(hero.getName());
     }
 
     public void preStart() {

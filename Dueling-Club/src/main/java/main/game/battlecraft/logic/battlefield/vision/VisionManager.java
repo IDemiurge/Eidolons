@@ -46,4 +46,10 @@ public class VisionManager {
     public static boolean checkDetected(DC_Obj dc_obj, boolean enemy) {
         return master.getDetectionMaster().checkDetected(dc_obj, enemy);
     }
+    public static boolean checkKnown(DC_Obj dc_obj ) {
+        return master.getDetectionMaster().checkKnown(dc_obj );
+    }
+    public static boolean checkKnownForPlayer(DC_Obj dc_obj ) {
+        return master.getDetectionMaster().checkKnownForPlayer(dc_obj );
+    }
 }

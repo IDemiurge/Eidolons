@@ -12,9 +12,9 @@ import main.elements.conditions.Conditions;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.item.DC_HeroItemObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_FeatObj;
-import main.entity.obj.unit.DC_UnitModel;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
@@ -85,7 +85,7 @@ public class DC_MathManager extends MathMaster {
         return 0;
     }
 
-    public static int getDamageTypeResistance(DC_UnitModel attacked, DAMAGE_TYPE type) {
+    public static int getDamageTypeResistance(BattleFieldObject attacked, DAMAGE_TYPE type) {
 
         if (type == null) {
             return 0;

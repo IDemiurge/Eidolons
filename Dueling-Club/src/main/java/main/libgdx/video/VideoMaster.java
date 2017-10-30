@@ -3,6 +3,7 @@ package main.libgdx.video;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
@@ -29,12 +30,12 @@ public class VideoMaster {
     }
         public VideoPlayer play(String path, int w, int h) {
 
-//        OrthographicCamera cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        cam.position.set(10f, 10f, 0);
-//        cam.lookAt(0, 0, 0);
-//        cam.near = 0.1f;
-//        cam.far = 300f;
-//        cam.update();
+        OrthographicCamera cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        cam.position.set(10f, 10f, 0);
+        cam.lookAt(0, 0, 0);
+        cam.near = 0.1f;
+        cam.far = 300f;
+        cam.update();
 
         MeshBuilder meshBuilder = new MeshBuilder();
         meshBuilder.begin(Usage.Position | Usage.TextureCoordinates, GL20.GL_POINTS);

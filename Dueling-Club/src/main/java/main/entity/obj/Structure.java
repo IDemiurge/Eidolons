@@ -38,6 +38,13 @@ public class Structure extends BattleFieldObject {
         return wall;
     }
 
+    public boolean isOwnedBy(Player player) {
+        if (getOwner() == null) {
+            return player == null;
+        }
+        return getOwner().equals(player);
+    }
+
     @Override
     public Boolean isLandscape() {
         if (landscape==null )

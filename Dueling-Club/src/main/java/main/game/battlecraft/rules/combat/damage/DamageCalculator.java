@@ -36,19 +36,19 @@ import java.util.List;
  */
 public class DamageCalculator {
 
-    protected static int calculateToughnessDamage(Unit attacked, Unit attacker,
+    protected static int calculateToughnessDamage(BattleFieldObject attacked, Unit attacker,
                                                   int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
         return calculateDamage(false, attacked, attacker, base_damage, magical, ref, blocked,
          damage_type);
     }
 
-    protected static int calculateEnduranceDamage(Unit attacked, Unit attacker,
+    protected static int calculateEnduranceDamage(BattleFieldObject attacked, Unit attacker,
                                                   int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
         return calculateDamage(true, attacked, attacker, base_damage, magical, ref, blocked,
          damage_type);
     }
 
-    private static int calculateDamage(boolean endurance, Unit attacked, Unit attacker,
+    private static int calculateDamage(boolean endurance, BattleFieldObject attacked, Unit attacker,
                                        int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
 
         if (!endurance) {
@@ -129,9 +129,11 @@ public class DamageCalculator {
         Damage damage = DamageFactory.getDamageForPrecalculate(ref);
         int amount = damage.getAmount();
         DAMAGE_TYPE damageType = damage.getDmgType();
-        int blocked = sourceObj.getGame().getArmorSimulator().
-         getArmorBlockDamage(damage);
-        amount -= blocked;
+        if (damage.getTarget() instanceof Unit) {
+            int blocked = sourceObj.getGame().getArmorSimulator().
+             getArmorBlockDamage(damage);
+            amount -= blocked;
+        }
         amount -= amount * ResistMaster.getResistanceForDamageType(
          (Unit) ref.getTargetObj(), sourceObj,
          damageType) / 100;

@@ -11,6 +11,7 @@ import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.action.ActionRule;
 import main.game.core.game.DC_Game;
@@ -188,7 +189,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return true;
     }
 
-    public static int getDeathBarrier(Unit attacked) {
+    public static int getDeathBarrier(BattleFieldObject attacked) {
         return MathMaster.applyModIfNotZero(DEFAULT_DEATH_BARRIER,
          attacked.getIntParam(PARAMS.TOUGHNESS_DEATH_BARRIER_MOD));
     }

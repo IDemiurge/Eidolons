@@ -5,6 +5,7 @@ import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;
 
@@ -14,7 +15,7 @@ public class Damage {
     protected boolean spell;
     protected boolean attack;
     protected Integer amount;
-    protected Unit target;
+    protected BattleFieldObject target;
     protected Unit source;
     protected boolean offhand;
     protected DAMAGE_TYPE dmg_type;
@@ -42,7 +43,7 @@ public class Damage {
 
     public void setRef(Ref ref) {
         this.ref = ref;
-        target = (Unit) ref.getTargetObj();
+        target = (BattleFieldObject) ref.getTargetObj();
         source = (Unit) ref.getSourceObj();
     }
 
@@ -84,7 +85,7 @@ return true;// TODO
         this.amount = amount;
     }
 
-    public void setTarget(Unit target) {
+    public void setTarget(BattleFieldObject target) {
         this.target = target;
     }
 
@@ -114,7 +115,7 @@ return true;// TODO
         return amount;
     }
 
-    public Unit getTarget() {
+    public BattleFieldObject getTarget() {
         return target;
     }
 

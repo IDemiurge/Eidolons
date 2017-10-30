@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.combat.attack.Attack;
 import main.game.battlecraft.rules.combat.damage.Damage;
@@ -60,13 +61,14 @@ public class PhaseAnimator extends Group {
          ((DC_ActiveObj) ref.getActive()).getAnimationKey());
     }
 
-    public static PhaseAnimation getAnimation(Ref ref, Unit obj) {
-        PhaseAnimation a = getAttackAnimation(ref, obj);
-        if (a != null) {
-            return a;
-        }
-
-        return getActionAnimation(ref, obj);
+    public static PhaseAnimation getAnimation(Ref ref, BattleFieldObject obj) {
+//        PhaseAnimation a = getAttackAnimation(ref, (Unit) obj);
+//        if (a != null) {
+//            return a;
+//        }
+//
+//        return getActionAnimation(ref, obj);
+        return null;
     }
 @Deprecated
     public static void handleDamageAnimAndLog(Ref ref, Unit attacked, boolean magical, DAMAGE_TYPE dmg_type) {

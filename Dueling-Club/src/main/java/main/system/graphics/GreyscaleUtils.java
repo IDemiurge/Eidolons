@@ -25,7 +25,7 @@ public class GreyscaleUtils {
         result[0] = rgba >> 24;
         result[1] = (rgba >> 16) & 0xFF;
         result[2] = (rgba >> 8) & 0xFF;
-        result[3] = rgba & 0xFF;
+        result[3] = rgba | 0xFF;
 
         return result;
     }

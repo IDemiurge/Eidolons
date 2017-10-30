@@ -6,6 +6,7 @@ import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.RESIST_GRADE;
 import main.content.values.parameters.PARAMETER;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.system.auxiliary.EnumMaster;
 import main.system.math.DC_MathManager;
@@ -34,7 +35,7 @@ public class ResistMaster {
 
     }
 
-    public static int getResistanceForDamageType(Unit attacked,
+    public static int getResistanceForDamageType(BattleFieldObject attacked,
                                                   Unit attacker, DAMAGE_TYPE type) {
         if (type == null) {
             return 0;

@@ -80,14 +80,7 @@ public class DefaultActionHandler {
             return moveToMotion(source, c);
         }
         if (source.getGame().isDebugMode()) {
-            Ref ref = new Ref(source);
-            ref.setMatch(source.getGame().getCellByCoordinate(c).getId());
-            source.getGame().getVisionMaster().getSightMaster().getClearShotCondition().preCheck(ref);
-            DC_Obj target = (DC_Obj) source.getGame().getCellByCoordinate(c);
-            target.getGame().getVisionMaster().getGammaMaster().clearCache();
-            target.getGame().getVisionMaster().getIlluminationMaster().clearCache();
-            int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(true, source, target);
-            return false;
+            return doDebugStuffCell(source, c);
         }
         if (c.x - source.getX() > 1) {
             return false;
@@ -106,6 +99,7 @@ public class DefaultActionHandler {
         return activate(context, action);
 
     }
+
 
     private static boolean activate(Context context, DC_ActiveObj action) {
         if (!action.getActivator().canBeActivated(context, true)) {
@@ -175,18 +169,7 @@ public class DefaultActionHandler {
         Unit source = Eidolons.getGame().getManager().getActiveObj();
 
         if (source.getGame().isDebugMode()) {
-            OUTLINE_TYPE outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target, source);
-            VISIBILITY_LEVEL vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);
-            target.getPlayerVisionStatus(true);
-            target.getGamma();
-            source.getGame().getVisionMaster().getIlluminationMaster().getIllumination(target);
-
-            target.getGame().getVisionMaster().getGammaMaster().clearCache();
-            target.getGame().getVisionMaster().getIlluminationMaster().clearCache();
-            int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(true, source, target);
-            outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target, source);
-            vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);
-            return false;
+            return doDebugStuff(source,target);
         }
         DC_ActiveObj action = null;
         if (target instanceof DungeonObj)
@@ -241,4 +224,30 @@ public class DefaultActionHandler {
         }
         return pick;
     }
+
+    private static boolean doDebugStuffCell(Unit source, Coordinates c) {
+        Ref ref = new Ref(source);
+        ref.setMatch(source.getGame().getCellByCoordinate(c).getId());
+        source.getGame().getVisionMaster().getSightMaster().getClearShotCondition().preCheck(ref);
+        DC_Obj target = (DC_Obj) source.getGame().getCellByCoordinate(c);
+        target.getGame().getVisionMaster().getGammaMaster().clearCache();
+        target.getGame().getVisionMaster().getIlluminationMaster().clearCache();
+        int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(true, source, target);
+        return false;
+    }
+    private static boolean doDebugStuff(Unit source, BattleFieldObject target) {
+        OUTLINE_TYPE outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target, source);
+        VISIBILITY_LEVEL vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);
+        target.getPlayerVisionStatus(true);
+        target.getGamma();
+        source.getGame().getVisionMaster().getIlluminationMaster().getIllumination(target);
+
+        target.getGame().getVisionMaster().getGammaMaster().clearCache();
+        target.getGame().getVisionMaster().getIlluminationMaster().clearCache();
+        int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(true, source, target);
+        outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target, source);
+        vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);
+        return false;
+    }
+
 }
