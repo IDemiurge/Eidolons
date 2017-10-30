@@ -26,9 +26,9 @@ import java.util.List;
 
 public class AI_Manager extends AiMaster {
     private static boolean running;
-    private   GroupAI allyGroup;
-    private   GroupAI enemyGroup;
     private static boolean off;
+    private GroupAI allyGroup;
+    private GroupAI enemyGroup;
     private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
     private List<GroupAI> groups;
 
@@ -36,21 +36,6 @@ public class AI_Manager extends AiMaster {
         super(game);
 //        logic = initLogic();
         priorityManager = DC_PriorityManager.init(this);
-    }
-
-    public   GroupAI getAllyGroup() {
-        if (allyGroup == null) {
-            allyGroup = new GroupAI();
-        }
-        return allyGroup;
-    }
-
-
-    public   GroupAI getEnemyGroup() {
-        if (enemyGroup == null) {
-            enemyGroup = new GroupAI();
-        }
-        return enemyGroup;
     }
 
     public static Unit chooseEnemyToEngage(Unit obj, List<Unit> units) {
@@ -75,20 +60,6 @@ public class AI_Manager extends AiMaster {
         return topPriorityUnit;
     }
 
-    public   GroupAI getCustomUnitGroup(Unit unit) {
-        if (unit.isMine()) {
-            return
-             getAllyGroup();
-        }
-        if (isCustomGroups())
-            return null ;
-        return getEnemyGroup();
-    }
-
-    private   boolean isCustomGroups() {
-        return ExplorationMaster.isExplorationSupported(getGame());
-    }
-
     public static boolean isRunning() {
         return running;
     }
@@ -99,6 +70,34 @@ public class AI_Manager extends AiMaster {
 
     public static void setOff(boolean off) {
         AI_Manager.off = off;
+    }
+
+    public GroupAI getAllyGroup() {
+        if (allyGroup == null) {
+            allyGroup = new GroupAI();
+        }
+        return allyGroup;
+    }
+
+    public GroupAI getEnemyGroup() {
+        if (enemyGroup == null) {
+            enemyGroup = new GroupAI();
+        }
+        return enemyGroup;
+    }
+
+    public GroupAI getCustomUnitGroup(Unit unit) {
+        if (unit.isMine()) {
+            return
+             getAllyGroup();
+        }
+        if (isCustomGroups())
+            return null;
+        return getEnemyGroup();
+    }
+
+    private boolean isCustomGroups() {
+        return ExplorationMaster.isExplorationSupported(getGame());
     }
 
     public void init() {
@@ -211,9 +210,11 @@ public class AI_Manager extends AiMaster {
                     continue;
                 GroupAI group = new GroupAI(unit);
                 for (Unit unit1 : player.getControlledUnits_()) {
-                    if (unit.getAI().getGroup() != null)
+                    if (unit1.getAI().getGroup() != null)
                         continue;
                     if (unit1.equals(unit))
+                        continue;
+                    if (!game.getVisionMaster().getSightMaster().getClearShotCondition().check( unit,unit1))
                         continue;
                     double max_distance = 2.5;
                     if (PositionMaster.getExactDistance(unit1.getCoordinates(),
@@ -227,6 +228,7 @@ public class AI_Manager extends AiMaster {
 
 
         }
-return ;
+        if (!groups.isEmpty())
+            return;
     }
 }

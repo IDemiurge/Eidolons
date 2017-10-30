@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.anims.ActorMaster;
+import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
@@ -44,6 +45,7 @@ public class GridUnitView extends UnitView {
 
     private void initQueueView(UnitViewOptions o) {
         initiativeQueueUnitView = new UnitView(o, curId);
+        initiativeQueueUnitView.setSize(InitiativePanel.imageSize, InitiativePanel.imageSize);
     }
 
     @Override
@@ -137,8 +139,12 @@ public class GridUnitView extends UnitView {
     }
     @Override
     public void act(float delta) {
-        if (isIgnored())
-            return;
+//        if (isIgnored())
+//            return; TODO make it work with actions
+        if (getY()<0)
+            setY(0);
+        if (getX()<0)
+            setX(0);
         if (emblemLighting != null)
 //            if (isActive() || isHovered())
                 alphaFluctuation(emblemLighting, delta);

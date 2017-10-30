@@ -38,6 +38,7 @@ public class Showcase {
     };
     public static String launchData = "";
     private static boolean running;
+    private static String scenarioName="Crawl Levels";//"Crawl Demo";
 
     public static void main(String[] args) {
         running = true;
@@ -45,7 +46,7 @@ public class Showcase {
         FontMaster.init();
         GuiManager.init();
         int index = -1;
-        if (args != null) {
+        if (args .length>0) {
             preset = true;
             index = Integer.valueOf(args[0]);
         } else
@@ -80,7 +81,7 @@ public class Showcase {
             }
             launchData += index + ";";
             String[] args1 = {
-             showcase ? "Crawl Demo"
+             showcase ? scenarioName
               //"Showcase"
               : null, index + ""
             };

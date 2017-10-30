@@ -1,7 +1,7 @@
-package main.libgdx.screens;
+package main.libgdx.gui.menu;
 
 import com.badlogic.gdx.InputMultiplexer;
-import main.libgdx.stage.MainMenuStage;
+import main.libgdx.screens.ScreenWithLoader;
 import main.system.EngineEventManager;
 import main.system.EngineEventType;
 

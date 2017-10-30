@@ -946,7 +946,7 @@ public abstract class DataModel {
 
     }
 
-    protected void resetPercentage(PARAMETER p) {
+    public void resetPercentage(PARAMETER p) {
         p = ContentManager.getBaseParameterFromCurrent(p);
         PARAMETER c_p = ContentManager.getCurrentParam(p);
         PARAMETER c_perc = ContentManager.getPercentageParam(p);
@@ -1110,8 +1110,6 @@ public abstract class DataModel {
     }
 
     protected void putParameter(PARAMETER param, String value) {
-
-
         if (isTypeLinked()) {
             type.getParamMap().put(param, value);
         }

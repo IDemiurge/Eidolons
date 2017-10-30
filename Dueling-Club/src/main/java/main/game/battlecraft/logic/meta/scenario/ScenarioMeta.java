@@ -46,4 +46,11 @@ public class ScenarioMeta extends MetaGame {
     public void setMissionIndex(int missionIndex) {
         this.missionIndex = missionIndex;
     }
+
+    public boolean isPartyRespawn() {
+//        if (getMission().checkProperty(PROPS.MISSION_BRIEFING_DATA))
+        if (getMissionIndex()==0)
+            return true;
+        return false;
+    }
 }

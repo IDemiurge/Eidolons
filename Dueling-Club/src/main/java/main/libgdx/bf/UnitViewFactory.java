@@ -81,6 +81,7 @@ public class UnitViewFactory {
     public static OverlayView createOverlay(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         OverlayView view = new OverlayView(options, bfObj);
+
 //        view.setScale(OverlayView.SCALE, OverlayView.SCALE);
 
         Map<Coordinates, Map<BattleFieldObject, Coordinates.DIRECTION>> directionMap = DC_Game.game.getDirectionMap();

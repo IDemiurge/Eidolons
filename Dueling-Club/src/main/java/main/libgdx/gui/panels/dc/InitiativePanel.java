@@ -34,17 +34,19 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 public class InitiativePanel extends Group {
     private final int maxSize = 25;
     private final int visualSize = 10;
-    private final int imageSize = 104;
+    public final static int imageSize = 104;
     private final int offset = -12;
     Label timeLabel;
     private ImageContainer[] queue;
     private WidgetGroup queueGroup;
-    private boolean cleanUpOn = true;
     private ValueContainer panelImage;
     private Container<WidgetGroup> container;
     private float queueOffsetY = 15;
     private SuperContainer light;
     private SuperContainer clock;
+    private boolean checkPositionsRequired;
+    private float maxMoveAnimDuration=0;
+    private float timePassedSincePosCheck=Integer.MAX_VALUE;
 
     public InitiativePanel() {
         init();
@@ -58,9 +60,11 @@ public class InitiativePanel extends Group {
             if (!isRealTime()) {
                 UnitView p = (UnitView) obj.get();
                 addOrUpdate(p);
-                cleanUp();
-                resetZIndices();
 
+                if (isCleanUpOn())
+                    cleanUp();
+                resetZIndices();
+                checkPositionsRequired=true;
             }
         });
 
@@ -87,11 +91,12 @@ public class InitiativePanel extends Group {
 
         });
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
-            if (!isRealTime()) {
+//            if (!isRealTime()) {
                 UnitView p = (UnitView) obj.get();
                 removeView(p);
                 resetZIndices();
-            }
+                checkPositionsRequired=true;
+//            }
         });
     }
 
@@ -189,9 +194,26 @@ public class InitiativePanel extends Group {
         }
     }
 
-    private void cleanUp() {
-        if (!isCleanUpOn())
-            return;
+    public boolean isCleanUpOn() {
+        return true;
+    }
+    private void checkPositions() {
+
+
+        int n=0;
+        for (ImageContainer sub: queue){
+            if (sub==null )
+                continue;
+            if (sub.getActions().size!=0)
+                continue;
+                sub.setX(relToPixPos(n));
+//            queue[i].getActions().clear();
+            n++;
+        }
+        timePassedSincePosCheck=0;
+        checkPositionsRequired=false;
+    }
+        private void cleanUp() {
         Map<Integer, UnitView> views = new XLinkedMap<>();
         DC_Game.game.getTurnManager().getDisplayedUnitQueue().stream().forEach(unit -> {
             UnitView view = (UnitView) DungeonScreen.getInstance().getGridPanel().getUnitMap().get(unit);
@@ -210,6 +232,8 @@ public class InitiativePanel extends Group {
             if (!views.containsKey(sub.id))
                 removeView((sub.id));
         }
+
+
     }
 
     private void addOrUpdate(UnitView unitView) {
@@ -271,6 +295,7 @@ public class InitiativePanel extends Group {
 
     @Override
     public void act(float delta) {
+        super.act(delta);
         if (isRealTime()) {
             updateTime();
             if (container.isVisible())
@@ -281,13 +306,14 @@ public class InitiativePanel extends Group {
             if (!container.isVisible())
                 if (ActorMaster.getActionsOfClass(container, MoveToAction.class).size() == 0)
                     toggleQueue(true);
-        }
-        super.act(delta);
-    }
+
+        timePassedSincePosCheck+=delta;
+        if (DC_Game.game.isDebugMode() ||
+         checkPositionsRequired&& timePassedSincePosCheck >= maxMoveAnimDuration)
+            checkPositions();
+    }}
 
     private void toggleQueue(boolean visible) {
-        main.system.auxiliary.log.LogMaster.log(1,
-         container.getY() + " = y; queue toggled; h= " + container.getHeight() + " " + visible);
 
         cleanUp();
         float x = container.getX();
@@ -329,7 +355,7 @@ public class InitiativePanel extends Group {
                     queue[i] = null;
                     queue[ip1] = cur;
                 } else {
-                    if (cur.initiative >=  next.initiative) {
+                    if (cur.initiative >  next.initiative || (cur.id >  next.id && cur.initiative ==  next.initiative)) {
                         queue[ip1] = cur;
                         queue[i] = next;
                         for (int y = i; y > 0; y--) {
@@ -380,6 +406,7 @@ public class InitiativePanel extends Group {
     }
 
     private void setupAnim(int from, int to, int rpos) {
+        maxMoveAnimDuration=0;
         for (int i = from; i <= to; i++) {
             ImageContainer container = queue[i];
             int pixPos = relToPixPos(rpos);
@@ -387,7 +414,10 @@ public class InitiativePanel extends Group {
                 if (container.getX() != pixPos) {
                     MoveToAction a = new MoveToAction();
                     a.setX(pixPos);
-                    a.setDuration(Math.abs(container.getX()-pixPos)/400 );
+                    float dur = Math.abs(container.getX() - pixPos) / 400;
+                    if (dur>maxMoveAnimDuration)
+                        maxMoveAnimDuration = dur ;
+                    a.setDuration(dur );
                     a.setTarget(container);
                     container.addAction(a);
                 }
@@ -407,14 +437,6 @@ public class InitiativePanel extends Group {
             }
         }
         return null;
-    }
-
-    public boolean isCleanUpOn() {
-        return cleanUpOn;
-    }
-
-    public void setCleanUpOn(boolean cleanUpOn) {
-        this.cleanUpOn = cleanUpOn;
     }
 
 

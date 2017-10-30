@@ -1,4 +1,4 @@
-package main.libgdx.gui;
+package main.libgdx.gui.menu;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 

@@ -41,6 +41,9 @@ public class ExplorePartyMaster extends ExplorationHandler {
     public void reset() {
         companions = initCompanions();
         mainHero = initMainHero();
+        if (mainHero == null) {
+            return ;
+        }
         lastPosition = mainHero.getCoordinates();
         for (Unit unit : companions) {
             unit.getAI().setAttached(

@@ -102,6 +102,11 @@ public class Requirements implements Condition {
         return getReason() == null;
     }
 
+    @Override
+    public boolean check(Entity source, Entity match) {
+        return false;
+    }
+
     public boolean check(Ref ref, boolean forceFullCheck) {
         boolean buffer = isFullCheck();
         setFullCheck(forceFullCheck);

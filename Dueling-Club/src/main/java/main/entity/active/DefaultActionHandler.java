@@ -20,6 +20,7 @@ import main.game.bf.DirectionMaster;
 import main.game.core.ActionInput;
 import main.game.core.Eidolons;
 import main.game.logic.action.context.Context;
+import main.game.module.dungeoncrawl.objects.DungeonObj;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.OptionsMaster;
 
@@ -82,11 +83,11 @@ public class DefaultActionHandler {
             Ref ref = new Ref(source);
             ref.setMatch(source.getGame().getCellByCoordinate(c).getId());
             source.getGame().getVisionMaster().getSightMaster().getClearShotCondition().preCheck(ref);
-         DC_Obj target = (DC_Obj) source.getGame().getCellByCoordinate(c);
+            DC_Obj target = (DC_Obj) source.getGame().getCellByCoordinate(c);
             target.getGame().getVisionMaster().getGammaMaster().clearCache();
             target.getGame().getVisionMaster().getIlluminationMaster().clearCache();
             int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(true, source, target);
-          return false ;
+            return false;
         }
         if (c.x - source.getX() > 1) {
             return false;
@@ -174,20 +175,33 @@ public class DefaultActionHandler {
         Unit source = Eidolons.getGame().getManager().getActiveObj();
 
         if (source.getGame().isDebugMode()) {
-            OUTLINE_TYPE outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target,source);
+            OUTLINE_TYPE outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target, source);
             VISIBILITY_LEVEL vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);
             target.getPlayerVisionStatus(true);
             target.getGamma();
             source.getGame().getVisionMaster().getIlluminationMaster().getIllumination(target);
 
+            target.getGame().getVisionMaster().getGammaMaster().clearCache();
+            target.getGame().getVisionMaster().getIlluminationMaster().clearCache();
+            int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(true, source, target);
+            outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target, source);
+            vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);
+            return false;
         }
-        DC_ActiveObj action = getPreferredAttackAction(
-         source, target);
+        DC_ActiveObj action = null;
+        if (target instanceof DungeonObj)
+            action =getDungeonObjAction(source, (DungeonObj) target);
+        else
+            action =getPreferredAttackAction(source, target);
         if (action == null)
             return false;
         Context context = new Context(source, target);
         return activate(context, action);
 
+    }
+
+    private static DC_ActiveObj getDungeonObjAction(Unit source, DungeonObj target) {
+        return target.getDM().getDefaultAction(source, target);
     }
 
     private static DC_ActiveObj getPreferredAttackAction(Unit source, BattleFieldObject target) {

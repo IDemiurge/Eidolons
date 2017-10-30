@@ -7,6 +7,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 public class ClearShotCondition extends MicroCondition {
 
+    public static final float SIGHT_RANGE_FACTOR = 2.5f;
     static Map<BattleFieldObject, Map<Obj, Boolean>> cache = new HashMap<>();
     boolean showVisuals;
     private boolean vision;
@@ -48,6 +50,12 @@ public class ClearShotCondition extends MicroCondition {
         return cache;
     }
 
+    public static double getMaxCheckDistance(Unit activeUnit, DC_Obj unit) {
+        return getMaxCheckDistance(activeUnit, unit.getCoordinates());
+    }
+        public static double getMaxCheckDistance(Unit activeUnit, Coordinates coordinates) {
+        return SIGHT_RANGE_FACTOR * activeUnit.getSightRangeTowards(coordinates);
+    }
 
     private boolean isBlocking(DC_Obj source, DC_Obj target,
                                int x_, int y_) {
@@ -88,6 +96,45 @@ public class ClearShotCondition extends MicroCondition {
 
         return false;
     }
+
+	/*
+     *
+	 * I draw a line between centers of "Shooter"(caster, the one watching,
+	 * whatever) and Target.
+	 * 
+	 * The line might be straight or diagonal, this are trivial cases where any
+	 * unit on the line blocks the attack.
+	 * 
+	 * Alternatively the line is drawn as a diagonal to a rectangle: it has long
+	 * side and short side.
+	 * 
+	 * I take Shooter and Target to form this rectangle. According to shooter
+	 * and target sizes I determine which tiles contain something blocking, and
+	 * which do not.
+	 * 
+	 * Now I will rotate and mirror my rectangle to make shooter have
+	 * coordinates 0,0 and target dX,dY, where dX > dY(if not, mirror!).
+	 * 
+	 * I draw a line between centers of Shooter and Target. if a line goes close
+	 * to a border of two cells, I will require that they both be occupied to
+	 * block the target. If the line goes close to the center of the cell, only
+	 * this cell must be checked on this step. Now all cells on the line will be
+	 * checked.
+	 * 
+	 * I implemented the preCheck based on dX, dY and obstructionArray, which
+	 * should containt True if cell contains something blocking, and False if
+	 * not.
+	 * 
+	 * Return meaning: True for "is in clear shot".
+	 *                                   <><><><><> 
+	 * 1) get slope factor (rectangle)
+	 * 2) get base y (intersect vector with y axis)
+	 * 3) run for each X cell : project intersection with  verticals , IFF 2 integers - big circle (2 blocks requires) 
+	 * 
+	 * get rectangle -> transform it ->
+	 * 
+	 * 
+	 */
 
     @Override
     public boolean check(Ref ref) {
@@ -184,45 +231,6 @@ public class ClearShotCondition extends MicroCondition {
         return result;
     }
 
-	/*
-     *
-	 * I draw a line between centers of "Shooter"(caster, the one watching,
-	 * whatever) and Target.
-	 * 
-	 * The line might be straight or diagonal, this are trivial cases where any
-	 * unit on the line blocks the attack.
-	 * 
-	 * Alternatively the line is drawn as a diagonal to a rectangle: it has long
-	 * side and short side.
-	 * 
-	 * I take Shooter and Target to form this rectangle. According to shooter
-	 * and target sizes I determine which tiles contain something blocking, and
-	 * which do not.
-	 * 
-	 * Now I will rotate and mirror my rectangle to make shooter have
-	 * coordinates 0,0 and target dX,dY, where dX > dY(if not, mirror!).
-	 * 
-	 * I draw a line between centers of Shooter and Target. if a line goes close
-	 * to a border of two cells, I will require that they both be occupied to
-	 * block the target. If the line goes close to the center of the cell, only
-	 * this cell must be checked on this step. Now all cells on the line will be
-	 * checked.
-	 * 
-	 * I implemented the preCheck based on dX, dY and obstructionArray, which
-	 * should containt True if cell contains something blocking, and False if
-	 * not.
-	 * 
-	 * Return meaning: True for "is in clear shot".
-	 *                                   <><><><><> 
-	 * 1) get slope factor (rectangle)
-	 * 2) get base y (intersect vector with y axis)
-	 * 3) run for each X cell : project intersection with  verticals , IFF 2 integers - big circle (2 blocks requires) 
-	 * 
-	 * get rectangle -> transform it ->
-	 * 
-	 * 
-	 */
-
     public boolean checkClearShot(DC_Obj source, DC_Obj target,
                                   boolean mirrorRectangle) {
         int x = Math.abs(mirrorRectangle ? source.getX() - target.getX() : source.getY()
@@ -281,7 +289,6 @@ public class ClearShotCondition extends MicroCondition {
 //         + new ArrayMaster<Boolean>().get2dList(array));
         return checkClearShot(x, y, array);
     }
-
 
     private boolean checkWallObstruction(DC_Obj source, DC_Obj target, Coordinates coordinates) {
 

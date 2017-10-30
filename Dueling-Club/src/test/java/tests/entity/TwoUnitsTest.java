@@ -17,7 +17,7 @@ public class TwoUnitsTest extends CreateUnitTest {
     @Before
     public void createSecondEntity() {
         ObjType type = DataManager.getType(typeName2, DC_TYPE.UNITS);
-        entity2 = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
+        entity2 = (Unit) game.getManager().getObjCreator().createUnit(type, 0, 0, game.getPlayer(true), new Ref(game));
 
     }
 }

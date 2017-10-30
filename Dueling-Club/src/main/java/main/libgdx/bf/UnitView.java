@@ -26,15 +26,15 @@ public class UnitView extends BaseView {
     protected Label initiativeLabel;
     protected Label mainHeroLabel;
     protected Image clockImage;
-    protected boolean mobilityState = true;//mobility state, temporary.
-    protected boolean flickering;
     protected Image emblemImage;
     protected Image emblemBorder;
     protected Image modeImage;
+    protected Texture outline;
     protected boolean greyedOut;
     protected boolean mainHero;
     protected boolean emblemBorderOn;
-    protected Texture outline;
+    protected boolean mobilityState = true;//mobility state, temporary.
+    protected boolean flickering;
     protected boolean initialized;
 
 
@@ -133,8 +133,8 @@ public class UnitView extends BaseView {
 
     @Override
     public void act(float delta) {
-        if (isIgnored())
-            return;
+//        if (isIgnored())
+//            return;
         super.act(delta);
 
         if (mainHeroLabel != null) {
@@ -182,7 +182,10 @@ public class UnitView extends BaseView {
     public void setFlickering(boolean flickering) {
         this.flickering = flickering;
         if (!flickering)
+        {
+            getPortrait().getColor().a=1;
             getColor().a = 1;
+        }
     }
 
     public void setGreyedOut(boolean greyedOut) {

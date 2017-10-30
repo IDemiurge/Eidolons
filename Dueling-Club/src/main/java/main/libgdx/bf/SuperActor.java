@@ -65,6 +65,10 @@ public abstract class SuperActor extends Group implements Borderable {
         if (border != null) {
             border.setX(-6);
             border.setY(-6);
+            if (getHeight()==0)
+                return ;
+            if (getWidth()==0)
+                return ;
             border.setHeight(getHeight() + 12);
             border.setWidth(getWidth() + 12);
         }
@@ -87,8 +91,8 @@ public abstract class SuperActor extends Group implements Borderable {
 
     @Override
     public void act(float delta) {
-        if (isIgnored())
-            return;
+//        if (isIgnored())
+//            return;
         if (isTransform()) {
             if (isTransformDisabled())
                 setTransform(false);

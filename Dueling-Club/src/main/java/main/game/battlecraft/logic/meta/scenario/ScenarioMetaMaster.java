@@ -1,12 +1,8 @@
 package main.game.battlecraft.logic.meta.scenario;
 
-import main.content.DC_TYPE;
-import main.content.PROPS;
-import main.data.DataManager;
 import main.entity.DataModel;
 import main.game.battlecraft.logic.battle.mission.MissionBattleMaster;
 import main.game.battlecraft.logic.dungeon.location.LocationMaster;
-import main.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.meta.scenario.hq.HqShopManager;
 import main.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import main.game.battlecraft.logic.meta.universal.*;
@@ -36,11 +32,10 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
     @Override
     public void preStart() {
         getMetaDataManager().initMissionName();
-
-        String levelPath = DataManager.getType(getMissionName(), DC_TYPE.MISSIONS).
-         getProperty(PROPS.MISSION_FILE_PATH);
-        getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,
-         levelPath);
+//        String levelPath = DataManager.getType(getMissionName(), DC_TYPE.MISSIONS).
+//         getProperty(PROPS.MISSION_FILE_PATH);
+//        getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,
+//         levelPath);
 
         super.preStart();
     }

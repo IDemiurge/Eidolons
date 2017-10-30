@@ -75,12 +75,12 @@ public abstract class MicroGame extends Game {
     }
 
     public int getBF_Height() {
-        return battlefield.getGrid().getWidth();
+        return battlefield.getGrid().getHeight();
 
     }
 
     public int getBF_Width() {
-        return battlefield.getGrid().getHeight();
+        return battlefield.getGrid().getWidth();
 
     }
 

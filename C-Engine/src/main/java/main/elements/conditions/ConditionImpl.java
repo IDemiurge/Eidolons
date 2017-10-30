@@ -97,7 +97,14 @@ public abstract class ConditionImpl  implements Condition {
     public boolean check(Entity match) {
         Ref REF = match.getRef().getCopy();
         REF.setMatch(match.getId());
-this.match = match;
+        this.match = match;
+        return preCheck(REF);
+    }
+    @Override
+    public boolean check(Entity source, Entity match) {
+        Ref REF = source.getRef().getCopy();
+        REF.setMatch(match.getId());
+        this.match = match;
         return preCheck(REF);
     }
 

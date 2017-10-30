@@ -28,6 +28,10 @@ public class IlluminationRule {
         });
     }
 
+    public static Map<Obj, LightEmittingEffect> getEffectCache() {
+        return effectCache;
+    }
+
     public static void initLightEmission(DC_Game game) {
 //        List<Effect> effects = new LinkedList<>();
         for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {

@@ -63,25 +63,24 @@ public class GridCellContainer extends GridCell {
         float scaleX = new Float(w) / GridConst.CELL_W;
         float scaleY = new Float(h) / GridConst.CELL_H;
 
-        for (GridUnitView actor :   getUnitViews()) {
-                if (actor.isCellBackground())
-                {
-                    i++;
-                    continue;
-                }
+        for (GridUnitView actor : getUnitViews()) {
+            if (actor.isCellBackground()) {
+                i++;
+                continue;
+            }
 
 //                actor.setBounds(
 //                 perImageOffsetX * i,
 //                 perImageOffsetY * ((unitViewCount - 1) - i)
 //                 , GridConst.CELL_W * scaleX, GridConst.CELL_H * scaleY
 //                );
-                actor.setPosition(perImageOffsetX * i,
-                 perImageOffsetY * ((getUnitViewCount() - 1) - i));
-                actor.setScale(scaleX, scaleY);
-                actor.setScaledHeight(scaleY);
-                actor.setScaledWidth(scaleX);
-                actor.sizeChanged();
-                i++;
+            actor.setPosition(perImageOffsetX * i,
+             perImageOffsetY * ((getUnitViewCount() - 1) - i));
+            actor.setScale(scaleX, scaleY);
+            actor.setScaledHeight(scaleY);
+            actor.setScaledWidth(scaleX);
+            actor.sizeChanged();
+            i++;
         }
 
         if (graveyard != null) {
@@ -114,15 +113,17 @@ public class GridCellContainer extends GridCell {
             return;
         super.act(delta);
         List<GridUnitView> views = getUnitViews();
-        for (GridUnitView actor : views)
-            if (actor.isHovered())
+        for (GridUnitView actor : views) {
+            if (actor.isCellBackground())
+                actor.setZIndex(1); //over cell at least
+            else if (actor.isHovered())
                 actor.setZIndex(Integer.MAX_VALUE);
-        for (GridUnitView actor : views)
-            if (actor.isActive())
+            else if (actor.isActive())
                 actor.setZIndex(Integer.MAX_VALUE);
+        }
         graveyard.setZIndex(Integer.MAX_VALUE);
-        if (views.size()!=unitViewCount) {
-            unitViewCount= views.size();
+        if (views.size() != unitViewCount) {
+            unitViewCount = views.size();
             recalcImagesPos();
         }
     }
@@ -165,11 +166,9 @@ public class GridCellContainer extends GridCell {
         int i = 0;
         final float perImageOffsetX = getSizeDiffX() * getPosDiffFactorX();
         final float perImageOffsetY = getSizeDiffY() * getPosDiffFactorY();
-        for (Actor actor : getChildren()) {
-            if (actor instanceof GridUnitView) {
+        for (GridUnitView actor : getUnitViews()) {
                 actor.setX(perImageOffsetX * i);
                 actor.setY(perImageOffsetY * ((getUnitViewCountEffective() - 1) - i++));
-            }
         }
     }
 

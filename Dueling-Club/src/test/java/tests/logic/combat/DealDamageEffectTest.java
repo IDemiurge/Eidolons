@@ -1,6 +1,7 @@
 package tests.logic.combat;
 
 
+import tests.FastDcTest;
 import tests.init.JUnitDcInitializer;
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.DealDamageEffect;
@@ -28,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by JustMe on 3/6/2017.
  */
-public class DealDamageEffectTest {
+public class DealDamageEffectTest extends FastDcTest{
 
 
     private String typeName = "Pirate";
@@ -46,8 +47,8 @@ public class DealDamageEffectTest {
     public void createEntity() {
         judi = new JUnitDcInitializer();
         ObjType type= DataManager.getType(typeName, DC_TYPE.UNITS);
-        source = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
-        target = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
+        source = (Unit) game.getManager().getObjCreator().createUnit(type, 0, 0, game.getPlayer(true), new Ref(game));
+        target = (Unit) game.getManager().getObjCreator().createUnit(type, 0, 0, game.getPlayer(true), new Ref(game));
 
 
     }

@@ -105,6 +105,7 @@ public class Conditions extends Vector<Condition> implements  Condition {
         return check(ref);
     }
 
+
     @Override
     public String getTooltip() {
         return "Conditions: ...";
@@ -114,6 +115,20 @@ public class Conditions extends Vector<Condition> implements  Condition {
     }
 
 
+    @Override
+    public boolean check(Entity source, Entity match) {
+        for (int i = 0; i < this.size(); i++) {
+            isTrue &= this.get(i).check(source, match);
+            if (isFastFailOnCheck()) {
+                break;
+            }
+            this.setLastCheckedCondition(get(i));
+        }
+        if (negative) {
+            return !isTrue;
+        }
+        return isTrue;
+    }
     @Override
     public boolean check(Ref ref) {
         isTrue = true;

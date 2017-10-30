@@ -10,6 +10,9 @@ import main.system.auxiliary.EnumMaster;
 
 public class CompanionMaster {
 
+    static AI_TYPE[] aiTypes = AI_TYPE.values();
+    private static boolean logged;
+
     /*
          * give orders
          *  * create self-orders
@@ -27,20 +30,22 @@ public class CompanionMaster {
     }
 
     private static AI_TYPE getAiType(Unit hero) {
-        AI_TYPE type =  new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class,
+        AI_TYPE type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class,
          hero.getProperty(PROPS.AI_TYPE));
-        if (type!=null ){
+        if (type != null) {
             main.system.auxiliary.log.LogMaster.log(1, hero.getName() + "'s Ai Type is pre-set: " + type);
             return type;
         }
         int maxWeight = 0;
         int total = 0;
-        for (AI_TYPE v : AI_TYPE.values()) {
+
+        for (AI_TYPE v : aiTypes) {
             int weight = getWeight(v, hero);
 
             total += weight;
-            main.system.auxiliary.log.LogMaster.log(1, v + "-Ai Type has " + weight + " weight for " + hero.getName()
-            );
+            if (logged)
+                main.system.auxiliary.log.LogMaster.log(1, v + "-Ai Type has " + weight + " weight for " + hero.getName()
+                );
             if (weight > maxWeight) {
                 maxWeight = weight;
                 type = v;
@@ -64,7 +69,7 @@ public class CompanionMaster {
                  - hero.getSumOfParams(PARAMS.STEALTH, PARAMS.INTELLIGENCE)
                  ;
             case SNEAK:
-                return   hero.getIntParam(PARAMS.STEALTH);
+                return hero.getIntParam(PARAMS.STEALTH);
             case TANK:
                 return hero.getSumOfParams(PARAMS.VITALITY, PARAMS.VITALITY,
                  PARAMS.WILLPOWER, PARAMS.ARMOR, PARAMS.STRENGTH) / 3

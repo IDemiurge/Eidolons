@@ -1,5 +1,6 @@
 package main.game.battlecraft.logic.battlefield.vision;
 
+import main.ability.conditions.special.ClearShotCondition;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
@@ -90,9 +91,9 @@ public class IlluminationMaster {
         }
 //universal
         illumination += globalIllumination;
-if (illumination<=0)
-    return illumination;
-        double ilMod  ;
+        if (illumination <= 0)
+            return illumination;
+        double ilMod;
         double distance = PositionMaster.getExactDistance(source.getCoordinates(), target.getCoordinates());
         // from 200 to 25 on diff of 8 to -5
         // def sight range of 5, I'd say
@@ -101,17 +102,17 @@ if (illumination<=0)
         double diff = sight - distance;
 
         if (diff < 0) {
-            ilMod = 100 + diff * 100 / VisibilityMaster.SIGHT_RANGE_FACTOR;
+            ilMod = 100 + diff * 100 / ClearShotCondition.SIGHT_RANGE_FACTOR;
 //             - diff * diff * 2
         } else {
-            ilMod = (100 +   (diff * 12)); // + Math.sqrt(diff * 65)));
+            ilMod = (100 + (diff * 12)); // + Math.sqrt(diff * 65)));
         }
 
         ilMod = Math.min(ilMod, 300);
         ilMod = Math.max(ilMod, 1);
 
         // TODO DISTANCE FACTOR?
-        illumination =(int) Math.round(illumination * ilMod / 100);
+        illumination = (int) Math.round(illumination * ilMod / 100);
         cache.put(target, illumination);
         return illumination;
     }

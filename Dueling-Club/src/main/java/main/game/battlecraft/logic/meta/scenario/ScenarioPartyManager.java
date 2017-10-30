@@ -52,6 +52,8 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     @Override
     public PartyObj initPlayerParty() {
+        if (!getMaster().getMetaGame().isPartyRespawn())
+            return null ;
         //preset
         //choice
         //already as Unit?

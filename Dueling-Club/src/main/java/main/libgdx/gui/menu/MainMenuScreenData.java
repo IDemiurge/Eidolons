@@ -1,6 +1,8 @@
-package main.libgdx.screens;
+package main.libgdx.gui.menu;
 
 import main.libgdx.DialogScenario;
+import main.libgdx.screens.ScreenData;
+import main.libgdx.screens.ScreenType;
 
 import java.util.List;
 import java.util.function.Supplier;

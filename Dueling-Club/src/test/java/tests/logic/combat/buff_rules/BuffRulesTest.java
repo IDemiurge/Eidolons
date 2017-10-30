@@ -74,7 +74,7 @@ public class BuffRulesTest extends CreateUnitTest {
             Integer initial = entity.getIntParam(reduced_params[i]);
             entity.setParam(root_param,
              new Formula(value_low[i]).getInt(new Ref(entity)));
-            judi.game.getStateManager().reset(entity);
+            game.getStateManager().reset(entity);
             Integer reduced = entity.getIntParam(reduced_params[i]);
 
             if (isReductionOn(root_param)) {
@@ -90,7 +90,7 @@ public class BuffRulesTest extends CreateUnitTest {
             }
             entity.setParam(root_param, new Formula(value_high[i]).getInt(new Ref(entity))
             );
-            judi.game.getStateManager().reset(entity);
+            game.getStateManager().reset(entity);
             Integer increased = entity.getIntParam(increased_params[i]);
             printingAsserts.assertGreaterThanAndLog(increased, initial, root_param + " rule");
             i++;

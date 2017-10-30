@@ -53,9 +53,10 @@ public class TestLauncher //extends MetaGameMaster
     public int PARTY_CODE = CODE.CHOOSE;
     public boolean VISION_HACK = false;
     public boolean LEADER_MOVES_FIRST = false;
-    public String ENEMY_PARTY = "Pirate";
+    public String ENEMY_PARTY = ""; //Pirate
     public String PLAYER_PARTY =
-     "Luwien Tulanir v3,Blauri Kinter v2"
+     "Luwien Tulanir v3"
+     // +",Blauri Kinter v2"
 //            "Nelia Valrith;"
      // +"Grufirant Grossklotz;Orthaelion Enloth;Belia Haevril"
 //      ";Anfina Ilarfis;Amaltha Soamdath;Belia Haevril"

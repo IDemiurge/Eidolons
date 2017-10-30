@@ -12,6 +12,7 @@ import main.libgdx.anims.AnimMaster;
 import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.auxiliary.Loop;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -52,9 +53,11 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     @Override
     public Thread startInNewThread() {
+        if (!CoreEngine.isGraphicsOff()) {
         if (DungeonScreen.getInstance() == null)
             WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY, 2000);
         DungeonScreen.getInstance().setRealTimeGameLoop(this);
+        }
         if (realTimeThread == null) {
             realTimeThread = new Thread(() -> {
                 startRealTimeLogic();
@@ -83,15 +86,17 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     private boolean checkNextLevel() {
         Coordinates c = game.getPlayer(true).getHeroObj().getCoordinates();
         Location location = (Location) game.getDungeonMaster().getDungeonWrapper();
-        if (location.getMainExit().getCoordinates().equals(c)) {
-            //check party
-            return true;
-        }
+        if (location.getMainExit() != null)
+            if (location.getMainExit().getCoordinates().equals(c)) {
+                //check party
+                return true;
+            }
 
-        if (location.getMainEntrance().getCoordinates().equals(c)) {
+        if (location.getMainEntrance() != null)
+            if (location.getMainEntrance().getCoordinates().equals(c)) {
 //test
-            return true;
-        }
+                return true;
+            }
         return false;
     }
 
@@ -137,7 +142,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                     if (master.getResetter().isAggroCheckNeeded(input)) {
                         getGame().getDungeonMaster().getExplorationMaster()
                          .getCrawler().checkStatusUpdate();
-                        if (!ExplorationMaster.isExplorationOn()){
+                        if (!ExplorationMaster.isExplorationOn()) {
                             return true;
                         }
                         game.getManager().reset();
@@ -173,7 +178,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
 
             waitForAnimations();
-            GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
+
         }
         waitForPause();
         if (exited)
@@ -268,8 +273,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             if (activeUnit == null) {
                 activeUnit = (Unit) game.getPlayer(true).getHeroObj();
                 game.getManager().setSelectedActiveObj(activeUnit);
-                GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
             }
+            GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
             Boolean result = makeAction();
             if (exited)
                 return false;
@@ -278,8 +283,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                     return false;
                 }
                 if (checkNextLevel()) {
-                   game.getBattleMaster().getOutcomeManager().next();
-                   game.getVisionMaster().refresh();
+                    game.getBattleMaster().getOutcomeManager().next();
+                    game.getVisionMaster().refresh();
                     return false;
                 }
                 if (result) {

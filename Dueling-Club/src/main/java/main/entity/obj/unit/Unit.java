@@ -1318,8 +1318,12 @@ public class Unit extends DC_UnitModel {
     }
 
     public int getSightRangeTowards(DC_Obj target) {
+        return getSightRangeTowards(target.getCoordinates());
+    }
+        public int getSightRangeTowards(Coordinates coordinates) {
         int sight =  getIntParam(PARAMS.SIGHT_RANGE);
-        FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(this, (BfObj) target);
+        FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(this.getFacing(), this.getCoordinates(),
+         coordinates);
         if (singleFacing == UnitEnums.FACING_SINGLE.BEHIND) {
             sight =    getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
         } else if (singleFacing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {

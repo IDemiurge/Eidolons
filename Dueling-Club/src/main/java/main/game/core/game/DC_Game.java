@@ -77,7 +77,6 @@ import main.test.frontend.FAST_DC;
 import java.util.*;
 
 import static main.system.GuiEventType.MUSIC_START;
-import static main.system.GuiEventType.UPDATE_LIGHT;
 
 /**
  * contains references to everything that may be needed in scope of a single game
@@ -290,7 +289,7 @@ public class DC_Game extends MicroGame {
         getState().gameStarted(first);
         if (getMetaMaster() != null)
             getMetaMaster().gameStarted();
-        GuiEventManager.trigger(UPDATE_LIGHT, null);
+
         if (loop != null)
             loop.setExited(true);
         loop = createGameLoop();
@@ -668,10 +667,14 @@ public class DC_Game extends MicroGame {
         return list;
     }
 
+    public List<BattleFieldObject> getObjectsAt(Coordinates c) {
+        return getMaster().getObjectsOnCoordinate(getDungeon().getZ(), c, null , true, false);
+    }
     public DC_InventoryManager getInventoryManager() {
         return inventoryManager;
     }
 
+    @Deprecated
     @Override
     public List<Unit> getObjectsOnCoordinate(Coordinates c) {
         return getMaster().getObjectsOnCoordinate(c);

@@ -42,6 +42,7 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import main.test.frontend.Showcase;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -68,7 +69,7 @@ public class DC_GameManager extends GameManager {
         Manager.init(game, state, this);
 
         stateManager = new DC_StateManager(state);
-        gameMaster =game.getMaster();// new DC_GameMaster(game);
+        gameMaster = game.getMaster();// new DC_GameMaster(game);
         Eidolons.stateManager = getStateManager();
         Eidolons.gameMaster = getGameMaster();
         Eidolons.game = game;
@@ -188,40 +189,37 @@ public class DC_GameManager extends GameManager {
             updateGraphics();
             return;
         }
-        getGameMaster().clearCaches ();
+        getGameMaster().clearCaches();
         FutureBuilder.clearCaches();
         getStateManager().resetAllSynchronized();
         checkForChanges(true);
 
         resetWallMap();
-        try {
-            IlluminationRule.initLightEmission(getGame());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        DrawMasterStatic.getObjImageCache().clear();
+
+        IlluminationRule.initLightEmission(getGame());
+
+//        DrawMasterStatic.getObjImageCache().clear();
         for (Unit u : getGame().getUnits()) {
             u.setOutlineType(null);
         }
         for (Obj u : getGame().getCells()) {
             ((DC_Obj) u).setOutlineType(null);
         }
-//if (ExplorationMaster.isExplorationOn())
-    VisionManager.refresh();
+
+        VisionManager.refresh();
 
         updateGraphics();
     }
 
     private void updateGraphics() {
-        GuiEventManager.trigger(GuiEventType.UPDATE_LIGHT, null);
         //set dirty flag?
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
-        GuiEventManager.trigger(GuiEventType.UPDATE_EMITTERS, null);
     }
 
     public void resetWallMap() {
         getGame().getBattleFieldManager().resetWallMap();
+
     }
 
     @Override
@@ -517,7 +515,7 @@ public class DC_GameManager extends GameManager {
 
         getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.ROUND_ENDS, state.getRound());
         state.setRound(state.getRound() + 1); // TODO why not on start?
-        if (getGame().getBattleMaster().getOutcomeManager().checkTimedOutcome()!=null ){
+        if (getGame().getBattleMaster().getOutcomeManager().checkTimedOutcome() != null) {
             getGame().getLogManager().doneLogEntryNode();
             return false;
         }
@@ -584,9 +582,16 @@ public class DC_GameManager extends GameManager {
         if (getGame().getDebugMaster() != null) {
             event.getRef().setDebug(getGame().getDebugMaster().isDebugFunctionRunning());
         }
-if (AnimMaster.isOn()){
-            AnimMaster.getInstance().getConstructor().preconstruct(event);
-}
+        if (AnimMaster.isOn()) {
+            if (!Showcase.isRunning())
+                AnimMaster.getInstance().getConstructor().preconstruct(event);
+            else
+                try {
+                    AnimMaster.getInstance().getConstructor().preconstruct(event);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+        }
         return super.handleEvent(event);
     }
 

@@ -1,5 +1,6 @@
 package main.game.module.dungeoncrawl.ai;
 
+import io.vertx.core.impl.ConcurrentHashSet;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
@@ -8,7 +9,6 @@ import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 import main.system.math.PositionMaster;
 
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +53,7 @@ public class AggroMaster {
 
     public static Set<Unit> getAggroGroup(Unit hero) {
         Set<Unit> set =
-         new LinkedHashSet<>();
+         new ConcurrentHashSet<>();
 //        Analyzer.getEnemies(hero, false, false, false);
 //            if (ExplorationMaster.isExplorationOn())
 
@@ -82,9 +82,9 @@ public class AggroMaster {
 
         set.forEach(unit -> {
             if (unit.getAI().getGroup() != null) {
-                unit.getAI().getGroup().getMembers().forEach(sub -> {
+                for (Unit sub:  unit.getAI().getGroup().getMembers()){
                     set.add(sub);
-                });
+                }
             }
         });
 

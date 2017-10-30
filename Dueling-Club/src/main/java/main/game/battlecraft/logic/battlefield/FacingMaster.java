@@ -21,6 +21,13 @@ import java.util.LinkedHashMap;
 import java.util.function.Function;
 
 public class FacingMaster {
+    public static final FACING_DIRECTION[] FACING_DIRECTIONS = {
+     FACING_DIRECTION.NORTH,
+     FACING_DIRECTION.WEST,
+     FACING_DIRECTION.EAST,
+     FACING_DIRECTION.SOUTH
+    };
+
     public static FACING_DIRECTION rotate(FACING_DIRECTION oldDirection, boolean clockwise) {
         switch (oldDirection) {
             case EAST:

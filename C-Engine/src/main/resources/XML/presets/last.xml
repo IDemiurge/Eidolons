@@ -1,2 +1,1 @@
-PLAYER_UNITS=Gwyn v3(1-10); 
-,FIRST_DUNGEON=demo\dungeon.xml,
+ENEMY_PARTY=,PLAYER_PARTY=,PLAYER_UNITS=,FIRST_DUNGEON=test\clearshot test diagonal.xml,DUNGEONS=,ENEMIES=,

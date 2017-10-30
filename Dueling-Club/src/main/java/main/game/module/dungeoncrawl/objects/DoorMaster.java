@@ -65,10 +65,10 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         return null;
     }
 
-    private static boolean checkAction(Unit unit, Door door, DOOR_ACTION sub) {
+    protected boolean checkAction(Unit unit, Door door, DOOR_ACTION sub) {
         switch (sub) {
             case OPEN:
-            case LOCK:
+//            case LOCK: //TODO
                 return !isOpen(door);
             case CLOSE:
                 return isOpen(door);
@@ -99,6 +99,24 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
 
     }
 
+    @Override
+    public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
+
+        for (DOOR_ACTION sub : DOOR_ACTION.values()) {
+            if (checkAction(source, (Door) target, sub)){
+                return createAction(sub, source, target);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public DC_UnitAction createAction(DOOR_ACTION sub, Unit unit, DungeonObj obj) {
+        return super.createAction(sub, unit,
+         StringMaster.getWellFormattedString(sub.name()) + " Door",
+         obj);
+    }
+
     public List<DC_ActiveObj> getActions(DungeonObj door, Unit unit) {
         if (!(door instanceof Door))
             return new LinkedList<>();
@@ -106,9 +124,9 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         List<DC_ActiveObj> list = new LinkedList<>();
         DC_UnitAction action = null;
         for (DOOR_ACTION sub : DOOR_ACTION.values()) {
+
             if (checkAction(unit, (Door) door, sub)) {
-                String name = StringMaster.getWellFormattedString(sub.name()) + " Door";
-                action = createAction(sub, unit, name, door);
+                action = createAction(sub, unit,   door);
                 action.getTargeting().getConditions().add(new DistanceCondition("1", true));
 
                 if (action != null) {
@@ -129,6 +147,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
          new Event(STANDARD_EVENT_TYPE.DOOR_OPENS,
           ref));
     }
+
 
     public enum DOOR_ACTION implements DUNGEON_OBJ_ACTION {
         OPEN,

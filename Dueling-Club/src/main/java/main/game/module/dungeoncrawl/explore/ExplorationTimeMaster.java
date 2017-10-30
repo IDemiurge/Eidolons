@@ -157,7 +157,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
              unit.getParamFloat(ContentManager.getRegenParam(param)) / 5
             );
             if (value > 0) {
-                unit.modifyParameter(param, value, true);
+                unit.modifyParameter(ContentManager.getCurrentParam(param), value);
                 unit.getAI().setExplorationTimeOfRegenEffects(time);
             }
         }
@@ -189,6 +189,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         value = MathMaster.getMinMax(value, min, max);
         if (value > 0) {
             unit.modifyParameter(param, value, max, true);
+            unit.resetPercentage(param);
             unit.getAI().setExplorationTimeOfModeEffect(time);
             guiDirtyFlag = true;
         }

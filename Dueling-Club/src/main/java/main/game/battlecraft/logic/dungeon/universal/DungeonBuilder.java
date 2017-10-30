@@ -8,7 +8,6 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
@@ -154,7 +153,7 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         }
 
         for (Obj obj : plan.getWallObjects()) {
-            Unit unit = (Unit) obj;
+            BattleFieldObject unit = (BattleFieldObject) obj;
 
             if (z != 0) {
                 unit.setZ(z);

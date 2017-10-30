@@ -23,8 +23,6 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.Rule;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.config.ConfigMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -357,7 +355,6 @@ public class DC_StateManager extends StateManager {
 //            }
 
             game.getTurnManager().newRound();
-            GuiEventManager.trigger(GuiEventType.UPDATE_LIGHT, null);
 //            getGameManager().refreshAll();
         }
 //        getGameManager().reset();

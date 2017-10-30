@@ -42,8 +42,13 @@ public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
 
     public abstract void open(DungeonObj obj, Ref ref);
 
-    protected DC_UnitAction createAction(T sub, Unit unit,  String typeName,
-                                       DungeonObj obj) {
+    public DC_UnitAction createAction(T sub, Unit unit,
+                                      DungeonObj obj) {
+        return createAction(sub, unit, sub.toString(), obj);
+    }
+        public DC_UnitAction createAction(T sub, Unit unit,  String typeName,
+         DungeonObj obj) {
+        //TODO CACHE
         DC_UnitAction action =
          unit.getGame().getActionManager().getOrCreateAction(typeName, unit);
         action.setTargeting(new FixedTargeting(KEYS.SOURCE));
@@ -65,6 +70,8 @@ public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
         action.setActionTypeGroup(ACTION_TYPE_GROUPS.DUNGEON);
         return action;
     }
+
+    public abstract DC_ActiveObj getDefaultAction(Unit source, DungeonObj target);
 
     //     public abstract boolean isVisible(BattleFieldObject obj);
 //    isObstructing

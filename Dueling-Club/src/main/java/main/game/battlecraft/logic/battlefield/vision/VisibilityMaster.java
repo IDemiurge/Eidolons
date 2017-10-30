@@ -1,5 +1,6 @@
 package main.game.battlecraft.logic.battlefield.vision;
 
+import main.ability.conditions.special.ClearShotCondition;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
@@ -17,7 +18,6 @@ import java.awt.*;
 
 public class VisibilityMaster {
 
-    public static final float SIGHT_RANGE_FACTOR = 2.5f;
     private final String TARGET = " t";
     private final String INFO = " s";
     private VisionMaster master;
@@ -28,10 +28,6 @@ public class VisibilityMaster {
 //        outlinesOn = !visionMaster.getGame().isDummyPlus() && !VisionManager.isVisionHacked();
 
     }
-
-
-
-
 
 
     public Image getDisplayImageForUnit(DC_Obj obj) {
@@ -111,7 +107,6 @@ public class VisibilityMaster {
     }
 
 
-
     private VISIBILITY_LEVEL getVisibility(OUTLINE_TYPE type) {
         VISIBILITY_LEVEL visibilityLevel = VISIBILITY_LEVEL.CLEAR_SIGHT;
         if (type != null) {
@@ -162,9 +157,10 @@ public class VisibilityMaster {
 
 
     public void resetOutlineAndVisibilityLevel(DC_Obj unit) {
-        unit.setVisibilityLevel( getUnitVisibilityLevel(master.getActiveUnit(),unit));
+        unit.setVisibilityLevel(getUnitVisibilityLevel(master.getActiveUnit(), unit));
     }
-    public VISIBILITY_LEVEL getUnitVisibilityLevel(Unit source , DC_Obj target ) {
+
+    public VISIBILITY_LEVEL getUnitVisibilityLevel(Unit source, DC_Obj target) {
 //        Ref ref= source.getRef().getTargetingRef(target);
 //        ref.setMatch(target.getId());
 //        if (!master.getSightMaster().getClearShotCondition().preCheck(ref)) {
@@ -172,8 +168,8 @@ public class VisibilityMaster {
 //        }
         OUTLINE_TYPE outline = master.getOutlineMaster().
          getOutlineType(target, source);
-        if (outline==OUTLINE_TYPE.THICK_DARKNESS){
-            if (checkUnseen(source, target)){
+        if (outline == OUTLINE_TYPE.THICK_DARKNESS) {
+            if (checkUnseen(source, target)) {
                 return VISIBILITY_LEVEL.UNSEEN;
             }
         }
@@ -185,9 +181,10 @@ public class VisibilityMaster {
     }
 
     private boolean checkUnseen(Unit source, DC_Obj target) {
-if (PositionMaster.getExactDistance(source.getCoordinates(), target.getCoordinates()) >
- source.getSightRangeTowards(target)*SIGHT_RANGE_FACTOR)
-    return true;
+        if (PositionMaster.getExactDistance(source.getCoordinates(), target.getCoordinates()) >
+         ClearShotCondition.getMaxCheckDistance(source, target)) {
+            return true;
+        }
         return false;
     }
 

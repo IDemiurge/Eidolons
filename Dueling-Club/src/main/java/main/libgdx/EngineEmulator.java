@@ -1,6 +1,6 @@
 package main.libgdx;
 
-import main.libgdx.screens.MainMenuScreenData;
+import main.libgdx.gui.menu.MainMenuScreenData;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
 import main.system.EngineEventManager;

@@ -9,6 +9,8 @@ public interface Condition extends   Serializable  {
 
     boolean preCheck(Ref ref);
 
+    boolean check(Entity source, Entity match);
+
     boolean check(Ref ref);
 
     String getTooltip();

@@ -407,9 +407,7 @@ public class GridPanel extends Group {
 //                AnimMaster.getInstance(). onDone(event,portrait ->
 //                GuiEventManager.trigger(DESTROY_UNIT_MODEL,
 //                 new EventCallbackParam(r.getTargetObj())
-//                )
-//                ,  new EventCallbackParam(r.getTargetObj())
-//                );
+//                )                ,  new EventCallbackParam(r.getTargetObj()));
 
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
@@ -511,6 +509,8 @@ public class GridPanel extends Group {
                     views.add(baseView);
                 } else {
                     final OverlayView overlay = UnitViewFactory.createOverlay(object);
+                    if (!isVisibleByDefault(object)  )
+                        overlay.setVisible(false);
                     unitMap.put(object, overlay);
                     Vector2 v = GridMaster.getVectorForCoordinate(
                      object.getCoordinates(), false, false, this);
@@ -660,13 +660,14 @@ public class GridPanel extends Group {
     }
 
     private void update() {
-        for (int x = 0; x < cols; x++) {
-            for (int y = 0; y < rows; y++) {
-                GridCellContainer cell = cells[x][y];
-                cell.recalcUnitViewBounds();
-            }
-
-        }
+        shadowMap.update();
+//        for (int x = 0; x < cols; x++) {
+//            for (int y = 0; y < rows; y++) {
+//                GridCellContainer cell = cells[x][y];
+//                cell.recalcUnitViewBounds();
+//            }
+//        }
+        updateRequired=false;
     }
 
 
@@ -703,20 +704,16 @@ public class GridPanel extends Group {
     }
 
     private void resetZIndices() {
+        if (ShadowMap.isOn())
+            shadowMap.setZtoMax(SHADE_LIGHT.LIGHT_EMITTER);
         wallMap.setVisible(WallMap.isOn());
         wallMap.setZIndex(Integer.MAX_VALUE);
         overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
         if (ShadowMap.isOn())
-            for (int x = 0; x < cols; x++) {
-                for (int y = 0; y < rows; y++) {
-                    for (SHADE_LIGHT sub : ShadowMap.SHADE_LIGHT_VALUES) {
-                        if (sub.getCells()[x][y].isIgnored()) { //!DungeonScreen.getInstance().getController().isCellWithinCamera(x, y)) {
-                            break;
-                        }
-                        sub.getCells()[x][y].setZIndex(Integer.MAX_VALUE);
-                    }
-                }
-            }
+        for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
+//            if (sub!=SHADE_LIGHT.LIGHT_EMITTER)
+                shadowMap.setZtoMax(sub);
+        }
         loop:
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {

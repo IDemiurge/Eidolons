@@ -1,6 +1,5 @@
 package tests.entity;
 
-import tests.init.JUnitDcInitializer;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.values.properties.G_PROPS;
@@ -24,9 +23,8 @@ public class WeaponSkillTest extends CreateUnitTest {
 
     @Before
     public void createEntity() {
-        judi = new JUnitDcInitializer();
 //        ObjType type = DataManager.getType(typeName, DC_TYPE.UNITS);
-//        entity = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
+//        entity = (Unit) game.getManager().getObjCreator().createUnit(type, 0, 0, game.getPlayer(true), new Ref(game));
         skill = new DC_FeatObj(DataManager.getType(skillName, DC_TYPE.SKILLS), entity.getRef());
         dagger = new DC_WeaponObj(DataManager.getType(itemName, DC_TYPE.WEAPONS), entity);
 
@@ -38,7 +36,7 @@ public class WeaponSkillTest extends CreateUnitTest {
         int temp = entity.getIntParam(PARAMS.TOUGHNESS);
         assert (!entity.getSkills().contains(skill));
         entity.getSkills().add(skill);
-        entity.fullReset(judi.game);
+        entity.fullReset(game);
         assertTrue(entity.getSkills().contains(skill));
         System.out.println(temp);
         System.out.println(entity.getIntParam(PARAMS.TOUGHNESS));

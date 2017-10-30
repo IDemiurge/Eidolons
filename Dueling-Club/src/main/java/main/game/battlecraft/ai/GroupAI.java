@@ -14,13 +14,14 @@ import main.game.bf.Coordinates.DIRECTION;
 import main.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
 import main.game.module.dungeoncrawl.ai.Patrol;
 import main.system.auxiliary.data.ListMaster;
+import main.system.datatypes.DequeImpl;
 
 import java.util.*;
 
 public class GroupAI {
     private ENCOUNTER_TYPE encounterType;
     private Unit leader;
-    private List<Unit> members= new LinkedList<>();
+    private DequeImpl<Unit> members= new DequeImpl<>();
     private PartyObj party;
     private Wave creepGroup;
     private ENGAGEMENT_LEVEL engagementLevel;
@@ -121,7 +122,7 @@ public class GroupAI {
         return wanderStepCoordinateStack;
     }
 
-    public List<Unit> getMembers() {
+    public DequeImpl<Unit> getMembers() {
         return members;
     }
 

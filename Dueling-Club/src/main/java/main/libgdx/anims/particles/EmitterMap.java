@@ -75,6 +75,9 @@ public class EmitterMap extends Group{
         if (!isAmbienceOn()) {
             return;
         }
+        if (             DC_Game.game.getPlayer(true).getHeroObj()==null ) {
+            return;
+        }
         if (fogMap.isEmpty())
             initFog();
         for (Coordinates c1 : fogMap.keySet()) {

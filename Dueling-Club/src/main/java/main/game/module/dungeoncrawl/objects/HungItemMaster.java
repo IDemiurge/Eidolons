@@ -152,4 +152,9 @@ potions
     public void open(DungeonObj obj, Ref ref) {
 
     }
+
+    @Override
+    public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
+        return null;
+    }
 }

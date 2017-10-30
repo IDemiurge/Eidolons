@@ -2,7 +2,6 @@ package main.swing.components.obj;
 
 import main.data.XLinkedMap;
 import main.entity.Ref;
-import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -347,19 +346,7 @@ public class BfGridComp {
         if (isLevelEditor()) {
             getUnderlayMap().clear();
             getOverlayMap().clear();
-            Map<Coordinates, BattleFieldObject> wallMap = new HashMap<>();
-
-            for (Coordinates c : game.getUnitMap().keySet()) {
-                for (BattleFieldObject obj : game.getStructures()) {
-                    if (obj.getCoordinates().equals(c)) {
-                        if (obj.isWall()) {
-                            wallMap.put(c, obj);
-                        }
-                    }
-                }
-
-            }
-            game.getBattleFieldManager().resetWallMap(wallMap);
+            game.getBattleFieldManager().resetWallMap( );
         }
 
         if (!panel.requestFocusInWindow()) {

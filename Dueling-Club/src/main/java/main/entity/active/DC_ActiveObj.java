@@ -410,6 +410,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public synchronized Unit getOwnerObj() {
+        if (ownerObj==null )
+            return null ;
         return ownerObj;
     }
 

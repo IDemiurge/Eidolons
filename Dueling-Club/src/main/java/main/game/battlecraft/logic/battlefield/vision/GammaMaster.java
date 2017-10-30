@@ -1,10 +1,10 @@
 package main.game.battlecraft.logic.battlefield.vision;
 
 import main.content.PARAMS;
-import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
-import main.entity.obj.BattleFieldObject;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.bf.Coordinates;
@@ -13,9 +13,7 @@ import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.system.math.MathMaster;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 2/22/2017.
@@ -25,7 +23,7 @@ public class GammaMaster {
     public static final boolean DEBUG_MODE = true;
     private static final Float CELL_GAMMA_MODIFIER = 0.01F;
     private static final Float UNIT_GAMMA_MODIFIER = 5F;
-    private static final Float LIGHT_EMITTER_ALPHA_FACTOR = 0.01f;
+    private static final Float LIGHT_EMITTER_ALPHA_FACTOR = 0.02f;
     private static final Float CONCEALMENT_ALPHA_FACTOR = 0.02f;
     private VisionMaster master;
     private Map<DC_Obj, Integer> cache = new HashMap<>();
@@ -103,30 +101,24 @@ public class GammaMaster {
                     alpha = 1 - gamma;
                 break;
             case GAMMA_LIGHT:
-                if (x == 7 && y == 9) {
-                    x = 1;
-                }
                 if (gamma < 2)
                     return 0;
                 alpha = gamma - 2;
                 break;
             case LIGHT_EMITTER:
-                List<BattleFieldObject> list =
-//                 Eidolons.game.getOverlayingObjects(
-//                 new Coordinates(x, y));
-//                list.addAll(
-                 Eidolons.game.getMaster().getObjectsOnCoordinate(new Coordinates(x, y), null);
-                list.removeIf(u -> IlluminationRule.getLightEmission(
-                 u) == 0
-                 || u.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT
-                );
-                if (!list.isEmpty())
-                    alpha = Math.round(LIGHT_EMITTER_ALPHA_FACTOR *
-                     list.stream().
-                      collect(
-                       Collectors.summingInt(obj ->
-                        IlluminationRule.getLightEmission(
-                         obj))));
+                for (Obj sub : IlluminationRule.getEffectCache().keySet()) {
+                    if (sub instanceof Unit)
+                        continue; //TODO illuminate some other way for units...
+                    if (sub.getCoordinates().x==x)
+                        if (sub.getCoordinates().y==y)
+                            if (((DC_Obj)sub).getPlayerVisionStatus(false)==
+                             UNIT_TO_PLAYER_VISION.DETECTED)
+                        {
+                            alpha += LIGHT_EMITTER_ALPHA_FACTOR * IlluminationRule
+                             .getLightEmission((DC_Obj) sub);
+                        }
+                }
+
                 if (alpha > 0) {
                     break;
                 }
@@ -159,6 +151,11 @@ public class GammaMaster {
         }
         if ( cell.getGamma()==null ){
             return 0;
+        }
+        if (cell.getGame().isDebugMode())
+        if ( cell.getGamma()==0 ){
+//            if ( cell.getIntParam("illumination")!=0 )
+            return getGamma(true,master.getSeeingUnit(), cell);
         }
 //        Unit unit =  master.getSeeingUnit();
         return CELL_GAMMA_MODIFIER * (float)

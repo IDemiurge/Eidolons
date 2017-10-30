@@ -70,7 +70,7 @@ public class DC_GameMaster extends GameMaster {
     }
 
     public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded) {
-        return getObjectByCoordinate(null, c, cellsIncluded, true, true);
+        return getObjectByCoordinate(null, c, cellsIncluded, true, null);
     }
 
     public Obj getObjectByCoordinate(Integer z, Coordinates c, boolean cellsIncluded) {
@@ -78,11 +78,11 @@ public class DC_GameMaster extends GameMaster {
     }
 
     public Obj getObjectByCoordinate(Integer z, Coordinates c, boolean cellsIncluded,
-                                     boolean passableIncluded, boolean overlayingIncluded) {
+                                     boolean passableIncluded, Boolean overlayingIncluded) {
         if (c == null) {
             return null;
         }
-        List<Unit> list = getObjectsOnCoordinate(c);
+        List<BattleFieldObject> list = getObjectsOnCoordinate(z, c, overlayingIncluded, passableIncluded, cellsIncluded);
         if (list.isEmpty()) {
             if (cellsIncluded) {
                 return getCellByCoordinate(c);
@@ -132,7 +132,7 @@ public class DC_GameMaster extends GameMaster {
         List<BattleFieldObject> list = null;
 
 
-        if (z == 0)
+        if (z == 0) //TODO support multi-z?
 
             if (getCache(overlayingIncluded) != null)
                 list = getCache(overlayingIncluded).get(c);
@@ -173,11 +173,12 @@ public class DC_GameMaster extends GameMaster {
                 list.add(object);
             }
         }
-        if (overlayingIncluded == null)
-            if (z == 0)
-                if (passableIncluded)
-                    if (getCache(overlayingIncluded) != null)
+//        if (overlayingIncluded == null)
+        if (z == 0)
+            if (passableIncluded)
+                if (getCache(overlayingIncluded) != null) {
                         getCache(overlayingIncluded).put(c, list);
+                }
         return list;
     }
 
@@ -251,8 +252,8 @@ public class DC_GameMaster extends GameMaster {
         getCache(false).clear();
         getCache(true).clear();
         getCache(null).clear();
-        unitsArray=null ;
-        structuresArray=null ;
+        unitsArray = null;
+        structuresArray = null;
     }
 
     public void clear() {
@@ -371,9 +372,9 @@ public class DC_GameMaster extends GameMaster {
     }
 
     public void nextLevel() {
-       getGame().getGameLoop().setSkippingToNext(true);
+        getGame().getGameLoop().setSkippingToNext(true);
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-         null  );
+         null);
         WaitMaster.WAIT(100);
         WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED,
          true);

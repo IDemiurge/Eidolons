@@ -2,6 +2,7 @@ package main.test.frontend;
 
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.Launcher;
+import main.data.ability.construct.VariableManager;
 import main.game.battlecraft.DC_Engine;
 import main.game.core.game.DC_Game;
 import main.game.core.launch.PresetLauncher;
@@ -38,6 +39,7 @@ public class FAST_DC {
     public static boolean SUPER_FAST_MODE;
     public static String exceptions = "";
     public static boolean forceRunGT = false;
+    public static boolean TEST_MODE;
     private static boolean MINIMAP_TEST_ON = false;
     private static boolean VISION_HACK = false;
     private static boolean fullscreen = false;
@@ -46,7 +48,6 @@ public class FAST_DC {
     private static int unitGroupLevel;
     private static TestLauncher launcher;
     private static GdxLauncher guiLauncher;
-    public static boolean TEST_MODE;
 
     public static boolean isRunning() {
         return running;
@@ -74,7 +75,7 @@ public class FAST_DC {
 
         List<String> arglist = new LinkedList<>(Arrays.asList(args));
         if (args != null) {
-            if (args == SKIP_CHOICE_ARGS || (arglist.contains(PRESET_OPTION_ARG) ||
+            if (args[0].contains(PRESET_OPTION_ARG) ||args == SKIP_CHOICE_ARGS || (arglist.contains(PRESET_OPTION_ARG) ||
              (arglist.contains(PRESET_ARG)))) {
                 skipChoice = true;
 
@@ -83,7 +84,7 @@ public class FAST_DC {
 
         launcher =
 //         (TEST_MODE)?
-          new TestLauncher(game, FAST_MODE, SUPER_FAST_MODE)
+         new TestLauncher(game, FAST_MODE, SUPER_FAST_MODE)
 //          : new GameLauncher(GAME_SUBCLASS.SCENARIO)
         ;
         if (PLAYER_PARTY != null) {
@@ -96,19 +97,22 @@ public class FAST_DC {
         }
         if (skipChoice) {
             if (args[0] == PRESET_OPTION_ARG) {
-                PresetLauncher.PRESET_OPTION = StringMaster.getInteger(args[1]);
+                PresetLauncher.PRESET_OPTION = StringMaster.getInteger(
+                 VariableManager.getVar(args[0]));
                 FAST_MODE = PresetLauncher.chooseLaunchOption();
                 CoreEngine.setExe(true);
-            } else if (arglist.contains(PRESET_ARG)) {
-                if (arglist.size() > 1) {
+            }
+            if (arglist.size() > 1) {
+                if (arglist.get(1) != null)
                     launcher.PLAYER_PARTY = arglist.get(1);
-                }
-                if (arglist.size() > 2) {
+            }
+            if (arglist.size() > 2) {
+                if (arglist.get(2) != null)
                     launcher.ENEMY_PARTY = arglist.get(2);
-                }
-                if (arglist.size() > 3) {
+            }
+            if (arglist.size() > 3) {
+                if (arglist.get(3) != null)
                     DEFAULT_DUNGEON = arglist.get(3);
-                }
 
             }
             launcher.ENEMY_CODE = CODE.PRESET;
@@ -180,7 +184,7 @@ public class FAST_DC {
 //        }
 
         if (!Saver.TEST_MODE)
-            return ;
+            return;
         Chronos.mark("custom save");
         String x = Saver.save("test");
         System.out.println(x);

@@ -81,16 +81,18 @@ public class OutlineMaster {
         ref.setMatch(unit.getId());
         // [quick fix] must be the distance on which nothing is visible anyway...
         if (PositionMaster.getExactDistance(         unit.getCoordinates(), activeUnit.getCoordinates())<
-         VisibilityMaster.SIGHT_RANGE_FACTOR * activeUnit.getSightRangeTowards(unit)         ) {
+       ClearShotCondition.getMaxCheckDistance(activeUnit, unit)        ) {
             //it is assumed that if a unit is farther away than that, it cannot have anything but Concealed status for activeUnit
             if (!new ClearShotCondition().preCheck(ref)) {
                 // vision type preCheck - x.ray or so TODO
-                unit.setGamma(0);
+                if (activeUnit.isMine()) // TODO fix this !!! some other way to darken blocked stuff!
+                    unit.setGamma(0);
                 return OUTLINE_TYPE.BLOCKED_OUTLINE;
             } else
                 unit.setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
         } else {
-            unit.setGamma(0);
+            if (activeUnit.isMine()) //TODO fix this
+                unit.setGamma(0);
             return OUTLINE_TYPE.THICK_DARKNESS;
         }
         int gamma = master.getGammaMaster().getGamma(true, activeUnit, unit);

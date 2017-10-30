@@ -37,7 +37,10 @@ public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
         return tryUnlock(lockedObj, lockPicker, null);
 
     }
-
+    @Override
+    public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
+        return null;
+    }
     public   boolean tryUnlock(Entity lockedObj, Unit lockPicker, Formula formula) {
         boolean result = TrapMaster.checkTrapOnLock(lockedObj);
         if (!result) {

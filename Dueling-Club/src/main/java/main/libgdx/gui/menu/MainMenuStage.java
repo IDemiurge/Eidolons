@@ -1,12 +1,12 @@
-package main.libgdx.stage;
+package main.libgdx.gui.menu;
 
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.mainmenu.GameLoadingPanel;
 import main.libgdx.gui.panels.mainmenu.NewGamePanel;
 import main.libgdx.gui.panels.mainmenu.OptionsPanel;
 import main.libgdx.gui.panels.mainmenu.StartMenuPanel;
-import main.libgdx.screens.MainMenuScreenData;
 import main.libgdx.screens.ScreenData;
+import main.libgdx.stage.DataStage;
 
 import java.util.function.Consumer;
 

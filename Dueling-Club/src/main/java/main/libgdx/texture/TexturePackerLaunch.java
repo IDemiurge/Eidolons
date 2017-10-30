@@ -10,7 +10,7 @@ import main.data.filesys.PathFinder;
  */
 public class TexturePackerLaunch {
     public static final String ATLAS_EXTENSION = ".txt";
-    public static final boolean TRIM =true ;
+    public static final boolean TRIM =false ;
     static String packs[] = {
 //     "long swords",
 //     "hammers",
