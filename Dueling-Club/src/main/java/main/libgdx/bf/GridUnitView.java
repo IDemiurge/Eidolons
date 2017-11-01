@@ -27,7 +27,7 @@ public class GridUnitView extends UnitView {
     public GridUnitView(UnitViewOptions o) {
         super(o);
         init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getIconTexture(), o.getEmblem());
-        cellBackground= o.cellBackground;
+        cellBackground = o.cellBackground;
         initQueueView(o);
     }
 
@@ -137,17 +137,18 @@ public class GridUnitView extends UnitView {
         }
         super.draw(batch, parentAlpha);
     }
+
     @Override
     public void act(float delta) {
 //        if (isIgnored())
 //            return; TODO make it work with actions
-        if (getY()<0)
+        if (getY() < 0)
             setY(0);
-        if (getX()<0)
+        if (getX() < 0)
             setX(0);
         if (emblemLighting != null)
 //            if (isActive() || isHovered())
-                alphaFluctuation(emblemLighting, delta);
+            alphaFluctuation(emblemLighting, delta);
 //            else
 //                emblemLighting.setColor(getTeamColor());
         super.act(delta);
@@ -163,12 +164,30 @@ public class GridUnitView extends UnitView {
     public void updateRotation(int val) {
         if (arrow != null) {
 
-            ActorMaster.addRotateByAction(arrow, arrowRotation, val%360 + 90);
+            ActorMaster.addRotateByAction(arrow, arrowRotation, val % 360 + 90);
 
 
             arrowRotation = val + 90;
 //            arrow.setRotation(arrowRotation);
 
+        }
+    }
+
+    protected void updateVisible() {
+        if (outline != null) {
+            if (emblemImage != null)
+                emblemImage.setVisible(false);
+            if (modeImage != null)
+                modeImage.setVisible(false);
+            if (arrow != null)
+                arrow.setVisible(false);
+        } else {
+            if (emblemImage != null)
+                emblemImage.setVisible(true);
+            if (modeImage != null)
+                modeImage.setVisible(true);
+            if (arrow != null)
+                arrow.setVisible(true);
         }
     }
 

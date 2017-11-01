@@ -185,6 +185,7 @@ public class GameLoop {
         return result;
     }
 
+
     protected void waitForPause() {
         if (paused) {
             WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE);

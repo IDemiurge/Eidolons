@@ -201,14 +201,20 @@ public class AI_Manager extends AiMaster {
 
     private void resetGroups() {
         //by proximity... not all mobs will be part of a group
+
+//        if (groups!=null ){
+//            if (!groups.isEmpty()) {
+//            }
+//        }
+        if (groups==null )
         groups = new LinkedList<>();
 
         for (Object sub : game.getBattleMaster().getPlayerManager().getPlayers()) {
             DC_Player player = (DC_Player) sub;
             for (Unit unit : player.getControlledUnits_()) {
-                if (unit.getAI().getGroup() != null)
-                    continue;
-                GroupAI group = new GroupAI(unit);
+                GroupAI group =unit.getAI().getGroup();
+                if (group == null)
+                    group =new GroupAI(unit);
                 for (Unit unit1 : player.getControlledUnits_()) {
                     if (unit1.getAI().getGroup() != null)
                         continue;
@@ -223,12 +229,15 @@ public class AI_Manager extends AiMaster {
                     group.add(unit1);
 
                 }
-                groups.add(group);
+                if (!groups.contains(group))
+                 groups.add(group);
             }
 
 
         }
         if (!groups.isEmpty())
+            return;
+        else
             return;
     }
 }

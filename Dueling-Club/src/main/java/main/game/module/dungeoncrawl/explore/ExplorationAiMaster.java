@@ -55,6 +55,8 @@ public class ExplorationAiMaster extends ExplorationHandler {
 //            return;
         boolean isAiActs = false;
         for (UnitAI ai : activeUnitAIs) {
+            if (!ExplorationMaster.isExplorationOn())
+                return;
             if (ai.getExplorationTimePassed() <= ExplorationTimeMaster.secondsPerAP)
                 continue;
             try {
@@ -68,7 +70,8 @@ public class ExplorationAiMaster extends ExplorationHandler {
         if (isAiActs)
         {
             aiActs = true;
-            master.getLoop().signal();
+            if (ExplorationMaster.isExplorationOn())
+                master.getLoop().signal();
         }
     }
 

@@ -28,6 +28,7 @@ import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
 import main.game.core.Eidolons;
 import main.game.logic.battle.player.Player;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
@@ -58,6 +59,10 @@ public class Analyzer extends AiHandler {
                 continue;
             }
             if (unit.isDead()) {
+                continue;
+            }
+            if (!ExplorationMaster.isExplorationOn())
+            if (unit.getAI().isOutsideCombat()) {
                 continue;
             }
             list.add(unit);
@@ -412,13 +417,15 @@ public class Analyzer extends AiHandler {
             }
 
             if (free) {
-                Unit unit = targetUnit.getGame().getUnitByCoordinate(
-                 cell.getCoordinates());
-                if (unit != null) {
-                    if (VisionManager.checkVisible(unit)) {
-                        continue;
-                    }
-                }
+                if (!StackingRule.checkCanPlace(cell.getCoordinates(),targetUnit, null ))
+                    continue;
+//                Unit unit = targetUnit.getGame().getUnitByCoordinate(
+//                 cell.getCoordinates());
+//                if (unit != null) {
+//                    if (VisionManager.checkVisible(unit)) {
+//                        continue;
+//                    }
+//                }
             }
             if (detected) // TODO in sight etc
             {

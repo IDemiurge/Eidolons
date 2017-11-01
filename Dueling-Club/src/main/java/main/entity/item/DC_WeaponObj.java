@@ -23,6 +23,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
+import main.libgdx.anims.AnimMaster3d;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -415,6 +416,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
             ref.removeValue(KEYS.AMMO);
         } else {
             ref.setID(KEYS.AMMO, ammo.getId());
+            AnimMaster3d.preloadAtlas( ammo.getWrappedWeapon());
         }
         if (ammo!=null )
             lastAmmo = ammo;

@@ -11,6 +11,7 @@ import main.system.GuiEventManager;
 import static main.system.GuiEventType.CALL_BLUE_BORDER_ACTION;
 
 public class BaseView extends SuperActor {
+    protected final TextureRegion originalTexture;
     protected Image portrait;
     private Image altPortrait;
 
@@ -21,6 +22,7 @@ public class BaseView extends SuperActor {
 
     public BaseView(TextureRegion portraitTexture) {
         portrait = new Image(portraitTexture);
+        originalTexture = portraitTexture;
         addActor(portrait);
 
         addListener(new BattleClickListener() {

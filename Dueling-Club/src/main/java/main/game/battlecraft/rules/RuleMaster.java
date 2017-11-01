@@ -168,18 +168,18 @@ public class RuleMaster implements Controller {
             case BASIC:
                 switch (feature) {
 
-                    case WATCH:
-                    case USE_INVENTORY:
                     case ORDERS:
+                    case WATCH:
+//                    case USE_INVENTORY:
                     case DUAL_ATTACKS:
-                    case VISIBILITY:
+//                    case VISIBILITY:
                         return false;
                 }
                 break;
             case FULL:
                 switch (feature) {
                     case ORDERS:
-                    case DUAL_ATTACKS:
+//                    case DUAL_ATTACKS:
                         return false;
                 }
                 break;
@@ -372,7 +372,7 @@ BLEEDING, BLAZE, FREEZE, POISON, DISEASE,
         VISIBILITY(RULE_SCOPE.FULL),
         CLEAR_SHOT(RULE_SCOPE.BASIC),
         PARRYING(RULE_SCOPE.FULL),
-        STEALTH(RULE_SCOPE.TEST),
+        STEALTH(RULE_SCOPE.BASIC),
         // C
         DURABILITY,
         UNCONSCIOUS,

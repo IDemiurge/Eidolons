@@ -58,7 +58,7 @@ public class AnimMaster extends Group {
     private boolean drawingPlayer;
 
     //animations will use emitters, light, sprites, text and icons
-    public AnimMaster() {
+    private AnimMaster() {
         instance = this;
         spriteCache = new SpriteCache();
 //        spriteCache.add();
@@ -70,7 +70,7 @@ public class AnimMaster extends Group {
         on = true;
         constructor = new AnimationConstructor();
         controller = new AnimController();
-        bindEvents();
+//        bindEvents(); now in GridPanel.bindEvents()
 
     }
 
@@ -83,6 +83,8 @@ public class AnimMaster extends Group {
     }
 
     public static AnimMaster getInstance() {
+        if (instance==null )
+            instance = new AnimMaster();
         return instance;
     }
 
@@ -97,7 +99,7 @@ public class AnimMaster extends Group {
         return drawing;
     }
 
-    private void bindEvents() {
+    public void bindEvents() {
         DC_SoundMaster.bindEvents();
         GuiEventManager.bind(GuiEventType.ADD_FLOATING_TEXT, p -> {
             FloatingText floatingText = (FloatingText) p.get();

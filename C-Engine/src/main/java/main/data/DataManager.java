@@ -104,7 +104,7 @@ public class DataManager {
                     return Game.game.getItemGenerator().getOrCreateItemType(typeName, obj_type);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    return null ;
+                    return null;
                 }
         }
         return type;
@@ -189,10 +189,6 @@ public class DataManager {
         ObjType type = map.get(typeName);
         if (type == null) {
             // typeName = typeName.replace(";", " "); never needed???
-            type = map.get(typeName);
-        }
-        if (type == null) {
-            // typeName = typeName.replace(" ", "_");
             type = map.get(typeName);
         }
 
@@ -914,8 +910,12 @@ public class DataManager {
         return getChildren(getParent(type), data);
     }
 
-    public static ObjType getWeaponItem(QUALITY_LEVEL quality, MATERIAL material, ObjType type) {
-        return DataManager.getItemMaps().get(quality).get(material).get(type);
+    public static ObjType getItem(QUALITY_LEVEL quality, MATERIAL material, ObjType type) {
+        ObjType itemType = DataManager.getItemMaps().get(quality).get(material).get(type);
+        if (itemType != null)
+            return itemType;
+        boolean weapon = type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS;
+        return Game.game.getItemGenerator().generateItem(weapon, quality, material, type);
     }
 
     public static ObjType getParent(ObjType type) {
@@ -956,4 +956,10 @@ public class DataManager {
         return list.get(RandomWizard.getRandomListIndex(list));
     }
 
+    public static List<ObjType> getUpgradedTypes(ObjType baseType) {
+             List<ObjType> list = new LinkedList<>(
+        getTypesSubGroup(baseType.getOBJ_TYPE_ENUM(), baseType.getSubGroupingKey()));
+        list.removeIf(type -> type.getProperty(G_PROPS.BASE_TYPE).equalsIgnoreCase(baseType.getName()));
+        return list;
+    }
 }

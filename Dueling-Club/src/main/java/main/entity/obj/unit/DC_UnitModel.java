@@ -1,6 +1,7 @@
 package main.entity.obj.unit;
 
 import main.content.DC_ContentManager;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.enums.GenericEnums;
@@ -312,7 +313,6 @@ else
     public DC_UnitAction getAttack() {
         return getAction(DC_ActionManager.ATTACK);
     }
-
     @Override
     public void setRef(Ref ref) {
         ref.setSource(id);
@@ -326,7 +326,7 @@ else
     }
 
     public void initDeity() {
-        if (DataManager.isTypeName(getProperty(G_PROPS.DEITY))) {
+        if (DataManager.isTypeName(getProperty(G_PROPS.DEITY), DC_TYPE.DEITIES)) {
             this.setDeity(DC_ContentManager.getDeity(this));
         }
 
@@ -433,7 +433,7 @@ else
         if (action instanceof DC_UnitAction) {
             return (DC_UnitAction) action;
         }
-        return getAction(name, false);
+        return getAction(name, true); //TODO was non-strict required??
     }
 
     public DC_UnitAction getAction(String action, boolean strict) {

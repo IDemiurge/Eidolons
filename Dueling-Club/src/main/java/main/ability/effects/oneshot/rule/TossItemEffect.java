@@ -1,9 +1,9 @@
 package main.ability.effects.oneshot.rule;
 
-import main.ability.ItemMaster;
 import main.ability.conditions.special.CanActCondition;
 import main.ability.effects.DC_Effect;
 import main.ability.effects.OneshotEffect;
+import main.client.cc.logic.items.ItemMaster;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.elements.conditions.*;

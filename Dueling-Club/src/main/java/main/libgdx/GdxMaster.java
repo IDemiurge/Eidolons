@@ -29,4 +29,7 @@ public class GdxMaster {
          unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
     }
 
+    public static boolean isLwjglThread() {
+        return Thread.currentThread().getName().equalsIgnoreCase("LWJGL Application");
+    }
 }

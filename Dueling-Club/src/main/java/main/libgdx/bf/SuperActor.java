@@ -13,7 +13,7 @@ import main.system.math.MathMaster;
  * Created by JustMe on 8/17/2017.
  */
 public abstract class SuperActor extends Group implements Borderable {
-    protected static final float DEFAULT_ALPHA_FLUCTUATION = 0.6f;
+    protected static final float DEFAULT_ALPHA_FLUCTUATION = 0.4f;
     protected static final float DEFAULT_ALPHA_MIN = 0.2f;
     protected static final float DEFAULT_ALPHA_MAX = 1f;
     protected static boolean alphaFluctuationOn;

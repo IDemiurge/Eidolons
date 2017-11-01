@@ -38,7 +38,6 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static main.libgdx.texture.TextureCache.getOrCreateGrayscaleR;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.GAME_FINISHED;
 
@@ -47,10 +46,10 @@ public class RadialManager {
     private static Map<DC_Obj, List<RadialValueContainer>> cache = new HashMap<>();
 
     public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
-        Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
-        return !obj.canBeActivated(ref) ?
-         getOrCreateGrayscaleR(obj.getImagePath())
-         : getOrCreateR(obj.getImagePath());
+//        Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
+//        return !obj.canBeActivated(ref) ?
+//         getOrCreateGrayscaleR(obj.getImagePath()):
+      return   getOrCreateR(obj.getImagePath());
     }
 
     private static boolean isActionShown(ActiveObj el, DC_Obj target) {
@@ -339,9 +338,15 @@ public class RadialManager {
         if (el.getTargeting() instanceof SelectiveTargeting) {
             return configureSelectiveTargetedNode(el, target);
         }
-        RadialValueContainer valueContainer = new RadialValueContainer(new TextureRegion(getTextureForActive(el, target)), getRunnable(target, el));
+        RadialValueContainer valueContainer = new RadialValueContainer(
+         new TextureRegion(getTextureForActive(el, target)), getRunnable(target, el), checkValid(el, target));
         addSimpleTooltip(valueContainer, el.getName());
         return valueContainer;
+    }
+
+    private static boolean checkValid(DC_ActiveObj activeObj, DC_Obj target) {
+        Ref ref = activeObj.getOwnerObj().getRef().getTargetingRef(target);
+        return  activeObj.canBeActivated(ref);
     }
 
     private static RadialValueContainer
@@ -362,9 +367,11 @@ public class RadialManager {
             wasValid = active.canBeManuallyActivated();
         final boolean valid = wasValid;
 
-        TextureRegion textureRegion = valid ?
-         getOrCreateR(active.getImagePath()) :
-         getOrCreateGrayscaleR(active.getImagePath());
+        TextureRegion textureRegion =
+         getOrCreateR(active.getImagePath());
+//         valid ? now via Shader!
+//         getOrCreateR(active.getImagePath()) :
+//         getOrCreateGrayscaleR(active.getImagePath());
         Runnable runnable = () -> {
             if (valid) {
                 Context context = new Context(active.getOwnerObj().getRef());
@@ -379,7 +386,7 @@ public class RadialManager {
             }
 
         };
-        return new RadialValueContainer(textureRegion, runnable);
+        return new RadialValueContainer(textureRegion, runnable, valid);
     }
 
     private static RadialValueContainer configureAttackParentNode(
@@ -396,7 +403,7 @@ public class RadialManager {
         }
 
         RadialValueContainer valueContainer =
-         new RadialValueContainer(new TextureRegion(getTextureForActive(parent, target)), null);
+         new RadialValueContainer(new TextureRegion(getTextureForActive(parent, target)), null,  checkValid(parent, target));
         addSimpleTooltip(valueContainer, parentNode.getName());
         valueContainer.setChildNodes(list);
 
@@ -420,19 +427,20 @@ public class RadialManager {
     }
 
     private static RadialValueContainer configureMoveNode(DC_Obj target,
-                                                          DC_ActiveObj dcActiveObj) {
+                                                          DC_ActiveObj activeObj) {
         RadialValueContainer result;
 
-        if (target == dcActiveObj.getOwnerObj()) {
-            result = configureSelectiveTargetedNode(dcActiveObj);
+        if (target == activeObj.getOwnerObj()) {
+            result = configureSelectiveTargetedNode(activeObj);
         } else {
-            if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
-                result = new RadialValueContainer(getOrCreateR(dcActiveObj.getImagePath()), getRunnable(target, dcActiveObj));
+            if (activeObj.getTargeting() instanceof SelectiveTargeting) {
+                result = new RadialValueContainer(getOrCreateR(activeObj.getImagePath()), getRunnable(target, activeObj));
             } else {
-                result = new RadialValueContainer(new TextureRegion(getTextureForActive(dcActiveObj, target)), getRunnable(target, dcActiveObj));
+                result = new RadialValueContainer(new TextureRegion(
+                 getTextureForActive(activeObj, target)), getRunnable(target, activeObj) ,  checkValid(activeObj, target));
             }
         }
-        addSimpleTooltip(result, dcActiveObj.getName());
+        addSimpleTooltip(result, activeObj.getName());
 
         return result;
     }

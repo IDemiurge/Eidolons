@@ -348,11 +348,8 @@ public class DC_StateManager extends StateManager {
 
             resetAllSynchronized();
             game.setStarted(true);
-//            try {
+                IlluminationRule.resetIllumination(getGame());
                 IlluminationRule.initLightEmission(getGame());
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
 
             game.getTurnManager().newRound();
 //            getGameManager().refreshAll();

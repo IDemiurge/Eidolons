@@ -3,6 +3,7 @@ package main.game.module.adventure.town;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.lists.ShopListsPanel;
 import main.client.cc.logic.items.ItemGenerator;
+import main.client.cc.logic.items.ItemMaster;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;
@@ -146,7 +147,7 @@ public class Shop extends TownPlace implements ShopInterface{
         for (MATERIAL material : ItemEnums.MATERIAL.values()) {
             if (ShopMaster.checkMaterialAllowed(this, material)) {
                 for (ObjType t : pool) {
-                    if (!ItemGenerator.checkMaterial(t, material.getGroup())) {
+                    if (!ItemMaster.checkMaterial(t, material.getGroup())) {
                         continue;
                     }
                     for (QUALITY_LEVEL q : ShopMaster.getQualityLevels(this)) {

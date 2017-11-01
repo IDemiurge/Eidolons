@@ -1,6 +1,5 @@
 package main.libgdx.bf;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -105,18 +104,21 @@ public class GridPanel extends Group {
 
         unitMap.keySet().forEach(obj -> {
             if (!obj.isOverlaying())
-            if (!obj.isWall())
-            {
-                OUTLINE_TYPE outline = obj.getOutlineType();
-                GridUnitView uv = (GridUnitView) unitMap.get(obj);
+                if (!obj.isMine())
+                    if (!obj.isWall()) {
+                        OUTLINE_TYPE outline = obj.getOutlineType();
+                        GridUnitView uv = (GridUnitView) unitMap.get(obj);
 
-                Texture texture = null;
-                if (outline != null) {
-                    texture = TextureCache.getOrCreate(
-                     Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
-                    uv.setOutline(texture);
-                } else uv.setOutline(null);
-            }
+                        TextureRegion texture = null;
+                        if (outline != null) {
+                            texture = TextureCache.getOrCreateR(
+                             Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
+                            uv.setOutline(texture);
+                        } else {
+                            uv.setOutline(null);
+//                    uv.setAltPortrait();
+                        }
+                    }
         });
     }
 
@@ -234,7 +236,8 @@ public class GridPanel extends Group {
             }
         });
 
-        animMaster = new AnimMaster();
+        animMaster = AnimMaster.getInstance();
+        animMaster.bindEvents();
         addActor(animMaster);
 
         if (fpsDebug) {
@@ -259,7 +262,6 @@ public class GridPanel extends Group {
     }
 
     private void bindEvents() {
-
         GuiEventManager.bind(UNIT_GREYED_OUT_ON, obj -> {
             UnitView unitView = getUnitView((BattleFieldObject) obj.get());
             unitView.setFlickering(true);
@@ -281,12 +283,12 @@ public class GridPanel extends Group {
         });
         GuiEventManager.bind(UPDATE_GUI, obj -> {
             if (!VisionManager.isVisionHacked())
-                if (OutlineMaster.isOutlinesOn() ) {
+                if (OutlineMaster.isOutlinesOn()) {
                     updateOutlines();
                 }
 
-            resetVisibleRequired=true;
-            updateRequired=true;
+            resetVisibleRequired = true;
+            updateRequired = true;
         });
 
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
@@ -396,7 +398,7 @@ public class GridPanel extends Group {
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS
              ) {
                 GuiEventManager.trigger(UNIT_GREYED_OUT_ON, ref.getSourceObj());
-            } else if ( event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS){
+            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS) {
                 GuiEventManager.trigger(UNIT_GREYED_OUT_OFF, ref.getSourceObj());
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
                 GuiEventManager.trigger(UNIT_GREYED_OUT_OFF, ref.getSourceObj());
@@ -509,12 +511,12 @@ public class GridPanel extends Group {
                     views.add(baseView);
                 } else {
                     final OverlayView overlay = UnitViewFactory.createOverlay(object);
-                    if (!isVisibleByDefault(object)  )
+                    if (!isVisibleByDefault(object))
                         overlay.setVisible(false);
                     unitMap.put(object, overlay);
                     Vector2 v = GridMaster.getVectorForCoordinate(
                      object.getCoordinates(), false, false, this);
-                    overlay.setPosition(v.x,v.y-GridConst.CELL_H);
+                    overlay.setPosition(v.x, v.y - GridConst.CELL_H);
                     addOverlay(overlay);
                 }
             }
@@ -529,6 +531,7 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
             Unit unit = (Unit) obj.get();
+            if (unit.isDead()) return;
             UnitView view = (UnitView) unitMap.get(unit);
             if (view != null) {
                 if (unit.getModeFinal() == null || unit.getModeFinal() == STD_MODES.NORMAL)
@@ -591,11 +594,12 @@ public class GridPanel extends Group {
             uv.setVisible(false);
         return uv;
     }
-        private void addUnitView(BattleFieldObject heroObj) {
+
+    private void addUnitView(BattleFieldObject heroObj) {
         BaseView uv = createUnitView(heroObj);
         moveUnitView(heroObj);
         if (!isVisibleByDefault(heroObj))
-        uv.setVisible(false);
+            uv.setVisible(false);
     }
 
     public void detachUnitView(BattleFieldObject heroObj) {
@@ -647,14 +651,14 @@ public class GridPanel extends Group {
 
     @Override
     public void act(float delta) {
-        if (resetVisibleRequired ) {
+        if (resetVisibleRequired) {
             resetVisible();
         }
         super.act(delta);
         if (checkResetZRequired()) {
             resetZIndices();
         }
-        if (updateRequired ) {
+        if (updateRequired) {
             update();
         }
     }
@@ -667,35 +671,47 @@ public class GridPanel extends Group {
 //                cell.recalcUnitViewBounds();
 //            }
 //        }
-        updateRequired=false;
+
+        updateRequired = false;
+
     }
 
+    protected void checkGraphicsUpdates() {
+
+    }
 
     private void resetVisible() {
         for (BattleFieldObject sub : unitMap.keySet()) {
             BaseView view = unitMap.get(sub);
             view.setVisible(true);
-            if ( sub.isDead())
-                if (view .getActions().size==0)
-                {
+            if (sub.isDead())
+                if (view.getActions().size == 0) {
                     view.setVisible(false);
                     continue;
                 }
 
-                if (!sub.isMine()){
-            if (sub.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.UNKNOWN)
-                view.setVisible(false);
-            else if (!sub.isWall()){
-                if (sub.getOutlineTypeForPlayer() == OUTLINE_TYPE.BLOCKED_OUTLINE)
+            if (!sub.isMine()) {
+                if (sub.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.UNKNOWN)
                     view.setVisible(false);
-                else {
-                    if (sub.getVisibilityLevelForPlayer() == VISIBILITY_LEVEL.UNSEEN)
+                else if (sub.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.INVISIBLE)
+                    view.setVisible(false);
+                else if (!sub.isWall()) {
+                    if (sub.getOutlineTypeForPlayer() == OUTLINE_TYPE.BLOCKED_OUTLINE)
                         view.setVisible(false);
+                    else {
+                        if (sub.getVisibilityLevelForPlayer() == VISIBILITY_LEVEL.UNSEEN)
+                            view.setVisible(false);
+                        else if (view instanceof UnitView) {
+                            if (((UnitView) view).getOutline() != null)
+                                if (((UnitView) view).getOutline().getTexture().getTextureData().toString().contains("locked")) {
+                                    view.setVisible(false);
+                                }
+                        }
+                    }
                 }
             }
-            }
         }
-        resetVisibleRequired=false;
+        resetVisibleRequired = false;
     }
 
     private boolean checkResetZRequired() {
@@ -710,10 +726,10 @@ public class GridPanel extends Group {
         wallMap.setZIndex(Integer.MAX_VALUE);
         overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
         if (ShadowMap.isOn())
-        for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
+            for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
 //            if (sub!=SHADE_LIGHT.LIGHT_EMITTER)
                 shadowMap.setZtoMax(sub);
-        }
+            }
         loop:
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {

@@ -4,11 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
-import main.game.bf.Coordinates;
 import main.libgdx.anims.particles.EmitterActor;
-import main.libgdx.bf.GridMaster;
 import main.system.auxiliary.ClassMaster;
-import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
 
@@ -68,23 +65,7 @@ public class ActorMaster {
         return action;
     }
 
-    public static MoveToAction getMoveToAction(
-     Coordinates destination, EmitterActor actor, int pixelsPerSecond) {
 
-        MoveToAction action = (MoveToAction) getAction(MoveToAction.class); //new MoveToAction();
-        Vector2 v = GridMaster.
-         getCenteredPos(destination);
-        action.setPosition(v.x, v.y);
-        Float duration = (float) (Math.sqrt(v.x * v.x + v.y * v.y) / pixelsPerSecond);
-        action.setDuration(
-         duration);
-        LogMaster.log(1, "MoveTo " +
-         v +
-         " duration: " + duration);
-        actor.addAction(action);
-        action.setTarget(actor);
-        return action;
-    }
 
     public static AlphaAction addFadeInOrOut(Actor actor, float duration) {
         float alpha = actor.getColor().a;
@@ -148,6 +129,12 @@ public class ActorMaster {
         action.setDuration(v);
         actor.addAction(action);
         action.setTarget(actor);
+    }
+    public static MoveToAction getMoveToAction( float x, float y, float v) {
+        MoveToAction action = (MoveToAction) getAction(MoveToAction.class);// new MoveToAction();
+        action.setPosition(x, y);
+        action.setDuration(v);
+        return action;
     }
 
     public static void addScaleAction(Actor actor, float scaleX, float scaleY, float v) {

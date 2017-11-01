@@ -1,5 +1,6 @@
 package main.libgdx.anims;
 
+import com.badlogic.gdx.Gdx;
 import main.ability.effects.Effect;
 import main.ability.effects.common.ModifyValueEffect;
 import main.ability.effects.oneshot.DealDamageEffect;
@@ -23,6 +24,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
+import main.libgdx.GdxMaster;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
@@ -192,8 +194,8 @@ public class AnimationConstructor {
         if (active == null) {
             return null;
         }
-        if (!checkAnimationSupported((DC_ActiveObj)active))
-            return null ;
+        if (!checkAnimationSupported((DC_ActiveObj) active))
+            return null;
         CompositeAnim anim = map.get(active);
         if (!isReconstruct()) {
             if (anim != null) {
@@ -210,30 +212,39 @@ public class AnimationConstructor {
     }
 
     private boolean checkAnimationSupported(DC_ActiveObj active) {
-        if (active.getActionGroup()== ACTION_TYPE_GROUPS.TURN)
+        if (active.getActionGroup() == ACTION_TYPE_GROUPS.TURN)
             return false;
         //hidden?
         return true;
     }
 
     public void preconstructSpells(Unit unit) {
-        if (ListMaster.isNotEmpty(unit.getSpells())) {
-            new Thread(() -> {
+        if (ListMaster.isNotEmpty(unit.getSpells()))
+        if (GdxMaster.isLwjglThread()) {
+            unit.getSpells().forEach(spell -> getOrCreate(spell));
+        } else
+            Gdx.app.postRunnable((() -> {
                 unit.getSpells().forEach(spell -> getOrCreate(spell));
-            }, unit + " Spell anim preconstruct thread").start();
-        }
+            }));
     }
 
     public void preconstructAll(Unit unit) {
-        new Thread(() -> {
+        if (GdxMaster.isLwjglThread()) {
             unit.getActives().forEach(spell -> getOrCreate(spell));
-        }, unit + "   anim preconstruct thread").start();
+        } else
+            Gdx.app.postRunnable((() -> {
+                unit.getActives().forEach(spell -> getOrCreate(spell));
+            }));
     }
 
     public void preconstruct(DC_ActiveObj active) {
-//        new Thread(() -> {
+
+        if (GdxMaster.isLwjglThread()) {
             getOrCreate(active);
-//        }, active + " anim preconstruct thread").start();
+        } else
+            Gdx.app.postRunnable((() -> {
+                getOrCreate(active);
+            }));
     }
 
     private CompositeAnim construct(DC_ActiveObj active) {
@@ -673,8 +684,11 @@ public class AnimationConstructor {
     }
 
     public void preconstruct(Event event) {
-        Anim anim = EventAnimCreator.getAnim(event);
-        CompositeAnim parentAnim = AnimMaster.getInstance().getParentAnim(event.getRef());
+        Gdx.app.postRunnable(() -> {
+            EventAnimCreator.getAnim(event);
+            AnimMaster.getInstance().getParentAnim(event.getRef());
+
+        });
     }
 
     public enum ANIM_PART {

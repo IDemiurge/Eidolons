@@ -88,6 +88,11 @@ public class GridCellContainer extends GridCell {
         }
     }
 
+    @Override
+    public boolean isEmpty() {
+        return getUnitViewCount()==0;
+    }
+
     protected boolean checkIgnored() {
         if (!isVisible())
             return true;

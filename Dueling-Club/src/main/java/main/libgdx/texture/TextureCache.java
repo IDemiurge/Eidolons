@@ -2,6 +2,7 @@ package main.libgdx.texture;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -22,13 +23,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextureCache {
+    private static final boolean uiAtlasOn = true;
     private static TextureCache textureCache;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);
     private static boolean altTexturesOn = true;
     private static Texture emptyTexture;
     private static Map<String, TextureRegion> regionCache = new HashMap<>(300);
-    private static final boolean uiAtlasOn=true;
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
     private String imagePath;
@@ -41,17 +42,17 @@ public class TextureCache {
         this.cache = new HashMap<>();
         this.greyscaleCache = new HashMap<>();
         if (uiAtlasOn)
-        textureAtlas = new TextureAtlas(imagePath + "/ui//ui.txt") {
-            @Override
-            public AtlasRegion addRegion(String name, TextureRegion textureRegion) {
-                return super.addRegion(name.toLowerCase(), textureRegion);
-            }
+            textureAtlas = new TextureAtlas(imagePath + "/ui//ui.txt") {
+                @Override
+                public AtlasRegion addRegion(String name, TextureRegion textureRegion) {
+                    return super.addRegion(name.toLowerCase(), textureRegion);
+                }
 
-            @Override
-            public AtlasRegion addRegion(String name, Texture texture, int x, int y, int width, int height) {
-                return super.addRegion(name.toLowerCase(), texture, x, y, width, height);
-            }
-        };
+                @Override
+                public AtlasRegion addRegion(String name, Texture texture, int x, int y, int width, int height) {
+                    return super.addRegion(name.toLowerCase(), texture, x, y, width, height);
+                }
+            };
 
         pattern = Pattern.compile("^.*[/\\\\]([a-z _\\-0-9]*)\\..*$");
     }
@@ -105,7 +106,7 @@ public class TextureCache {
             name = name.substring(0, name.length() - 1);
 
             if (uiAtlasOn)
-            region = textureCache.textureAtlas.findRegion(name);
+                region = textureCache.textureAtlas.findRegion(name);
             if (region != null) {
                 regionCache.put(path, region);
                 counter.incrementAndGet();
@@ -168,14 +169,17 @@ public class TextureCache {
             if (!normal.getTextureData().isPrepared()) {
                 normal.getTextureData().prepare();
             }
-
-            Pixmap pixmap2 = new Pixmap(normal.getWidth(), normal.getHeight(), normal.getTextureData().getFormat());
+//            Gdx2DPixmap. GDX2D_FORMAT_RGBA8888
+            Pixmap pixmap2 = new Pixmap(normal.getWidth(), normal.getHeight(), Format.RGBA8888);
             Pixmap pixmap = normal.getTextureData().consumePixmap();
 
             for (int i = 0; i < normal.getWidth(); i++) {
                 for (int j = 0; j < normal.getHeight(); j++) {
-                    int c = pixmap.getPixel(i, j);
-                    pixmap2.drawPixel(i, j, GreyscaleUtils.luminosity(c));
+                    int rgba = pixmap.getPixel(i, j);
+
+                    if (rgba == 0)
+                        continue;
+                    pixmap2.drawPixel(i, j, GreyscaleUtils.luminosity(rgba));
                 }
             }
 

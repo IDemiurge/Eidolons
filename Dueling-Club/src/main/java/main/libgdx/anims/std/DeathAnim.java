@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.unit.Unit;
+import main.entity.obj.BattleFieldObject;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.libgdx.anims.ActorMaster;
@@ -33,13 +33,13 @@ import static main.system.GuiEventType.DESTROY_UNIT_MODEL;
  */
 public class DeathAnim extends ActionAnim {
     private static boolean on = true;
-    Unit unit;
+    BattleFieldObject unit;
     DEATH_ANIM template;
     private Image skull;
 
     public DeathAnim(Event e) {
         super(e.getRef().getObj(KEYS.ACTIVE), getDeathAnimData(e));
-        unit = (Unit) e.getRef().getTargetObj();
+        unit = (BattleFieldObject) e.getRef().getTargetObj();
         template = getTemplate(getActive(), unit);
         setDuration( 2);
     }
@@ -116,7 +116,7 @@ public class DeathAnim extends ActionAnim {
 //        return null;
     }
 
-    private DEATH_ANIM getTemplate(DC_ActiveObj active, Unit unit) {
+    private DEATH_ANIM getTemplate(DC_ActiveObj active, BattleFieldObject unit) {
 //        getRef().getEvent().getRef().getDamageType();
         return DEATH_ANIM.FADE;
     }

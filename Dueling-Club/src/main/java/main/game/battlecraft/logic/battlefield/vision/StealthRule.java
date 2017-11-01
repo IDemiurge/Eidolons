@@ -5,6 +5,7 @@ import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
@@ -129,30 +130,42 @@ public class StealthRule implements ActionRule {
 
     public void actionComplete(ActiveObj active) {
         if (!isOn())
-            return ;
+            return;
         DC_ActiveObj action = (DC_ActiveObj) active; // perhaps only moves?
         Unit source = action.getOwnerObj();
         if (VisionManager.isVisionHacked()) {
             return;
         }
+        if (source.getPlayerVisionStatus(true) != UNIT_TO_PLAYER_VISION.INVISIBLE)
+            return ;
+
         for (Unit u : game.getUnits()) {
             if (checkHidden(source)) {
-                if (!game.getVisionMaster().getVisibilityMaster().isZeroVisibility(source, true)) {
-                    // if (ConcealmentRule.getVisibilityLevel(u, source,
-                    // source.checkInSightForUnit(u)) !=
-                    // VISIBILITY_LEVEL.CONCEALED) {
-                    rollSpotted(u, source);
-                    rollSpotted(u, source, true);
-                }
+//                if (!game.getVisionMaster().getVisibilityMaster().isZeroVisibility(source, true)) {
+                // if (ConcealmentRule.getVisibilityLevel(u, source,
+                // source.checkInSightForUnit(u)) !=
+                // VISIBILITY_LEVEL.CONCEALED) {
+                checkSpotRoll(u, source);
+//                    rollSpotted(u, source, true);
+//                }
             }
 
             if (checkHidden(u)) {
-                if (game.getVisionMaster().getVisibilityMaster().getUnitVisibilityLevel(source, u) != VISIBILITY_LEVEL.CONCEALED) {
-                    rollSpotted(source, u);
-                }
+                checkSpotRoll(source, u);
             }
         }
 
+    }
+
+    private void checkSpotRoll(Unit spotter, Unit unit) {
+        VISIBILITY_LEVEL vl = game.getVisionMaster().getVisibilityMaster().
+         getUnitVisibilityLevel(spotter, unit);
+        if (vl != VISIBILITY_LEVEL.BLOCKED)
+            if (vl != VISIBILITY_LEVEL.UNSEEN)
+//                if (vl != VISIBILITY_LEVEL.CONCEALED)
+                {
+                    rollSpotted(spotter, unit);
+                }
     }
 
     private boolean isOn() {

@@ -76,7 +76,7 @@ public class GridCell extends Group implements Borderable {
 
                 if (button == Input.Buttons.LEFT) {
                     event.handle();
-
+                    if (isEmpty())
                     if (isAlt() || isShift() || isControl()
                         //|| ExplorationMaster.isExplorationOn()
                      )
@@ -96,6 +96,9 @@ public class GridCell extends Group implements Borderable {
         return this;
     }
 
+    public boolean isEmpty(){
+        return true;
+    }
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))

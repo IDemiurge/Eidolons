@@ -1,12 +1,11 @@
 package main.libgdx.anims;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
-import main.content.enums.entity.ItemEnums.WEAPON_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -17,6 +16,7 @@ import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.libgdx.GdxMaster;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.sprite.SpriteAnimationFactory;
 import main.libgdx.anims.weapons.Ready3dAnim;
@@ -58,23 +58,45 @@ public class AnimMaster3d {
         });
     }
 
+    public static boolean is3dAnim(DC_ActiveObj active) {
+        DC_WeaponObj weapon = active.getActiveWeapon();
+        if (getOrCreateAtlas(weapon) == null)
+            return false;
+        if (weapon.getAmmo() != null) {
+            if (getOrCreateAtlas(weapon.getAmmo().getWrappedWeapon()) == null)
+                return false;
+        }
+//        if (active.isRanged())
+//            return true;
+//        if (active.getName().contains("Sword Swing"))
+//            return true;
+//        if (active.getName().contains("Slash"))
+//            return true;
+//        if (active.getName().contains("Thrust"))
+//            return true;
+//        if (active.getActiveWeapon().getWeaponType() == WEAPON_TYPE.BLUNT)
+//            return true;
+//        if (active.getActiveWeapon().getWeaponGroup() == WEAPON_GROUP.FISTS)
+        return true;
+    }
+
 
     public static void preloadAtlases(Unit unit) {
         DC_WeaponObj weapon = unit.getWeapon(false);
         if (weapon != null)
-            getAtlas(weapon);
+            preloadAtlas(weapon);
         weapon = unit.getWeapon(true);
         if (weapon != null)
-            getAtlas(weapon);
+            preloadAtlas(weapon);
         weapon = unit.getNaturalWeapon(false);
         if (weapon != null)
-            getAtlas(weapon);
+            preloadAtlas(weapon);
         weapon = unit.getNaturalWeapon(true);
         if (weapon != null)
-            getAtlas(weapon);
+            preloadAtlas(weapon);
         for (DC_QuickItemObj sub : unit.getQuickItems()) {
             if (sub.isAmmo()) {
-                getAtlas(sub.getWrappedWeapon());
+                preloadAtlas(sub.getWrappedWeapon());
             }
         }
     }
@@ -90,7 +112,7 @@ public class AnimMaster3d {
         s.append(
          StringMaster.join(SEPARATOR,
           weaponName,
-          actionName, ANIM,projection
+          actionName, ANIM, projection
          ));
 
         if (BooleanMaster.isTrue(offhand))
@@ -105,12 +127,12 @@ public class AnimMaster3d {
                                                   DC_ActiveObj activeObj, WEAPON_ANIM_CASE aCase) {
         DC_WeaponObj weapon = activeObj.getActiveWeapon();
         String actionName = null;
-        String projectionString = "to" ;
+        String projectionString = "to";
 
-       if (aCase!= WEAPON_ANIM_CASE.RELOAD){
-           projectionString =(projection == null ? "hor" :
-            (projection ? "from" : "to"));
-       }
+        if (aCase != WEAPON_ANIM_CASE.RELOAD) {
+            projectionString = (projection == null ? "hor" :
+             (projection ? "from" : "to"));
+        }
         if (aCase.isMissile()) {
             if (weapon.getLastAmmo() == null)
                 return null;
@@ -203,8 +225,9 @@ public class AnimMaster3d {
         if (regions.size == 0) {
             regions = findAtlasRegions(atlas, projection, activeObj, true);
         }
-        if (regions.size == 0) { if (activeObj.getParentAction()!=null )
-            regions = findAtlasRegions(atlas, projection, activeObj, false);
+        if (regions.size == 0) {
+            if (activeObj.getParentAction() != null)
+                regions = findAtlasRegions(atlas, projection, activeObj, false);
         }
         if (regions.size == 0)
             main.system.auxiliary.log.LogMaster.log(
@@ -253,8 +276,8 @@ public class AnimMaster3d {
         List<Entity> types = null;
         if (searchOtherWeaponOrAction) {
             types = new LinkedList<>(DataManager.getBaseWeaponTypes()).stream().
-         filter(type -> type.getProperty(G_PROPS.WEAPON_GROUP).equals(
-          activeObj.getActiveWeapon().getProperty(G_PROPS.WEAPON_GROUP))).collect(Collectors.toList());
+             filter(type -> type.getProperty(G_PROPS.WEAPON_GROUP).equals(
+              activeObj.getActiveWeapon().getProperty(G_PROPS.WEAPON_GROUP))).collect(Collectors.toList());
         } else {
             types = new LinkedList<>(
              activeObj.getParentAction().getSubActions());
@@ -280,35 +303,30 @@ public class AnimMaster3d {
                 return null;
             weapon = weapon.getLastAmmo().getWrappedWeapon();
         }
-        return getAtlas(weapon);
+        return getOrCreateAtlas(weapon);
     }
 
-    private static TextureAtlas getAtlas(DC_WeaponObj weapon) {
+    public static void preloadAtlas(DC_WeaponObj weapon) {
+        if (GdxMaster.isLwjglThread())
+            getOrCreateAtlas(weapon);
+        else
+            Gdx.app.postRunnable(() -> getOrCreateAtlas(weapon));
+    }
 
-        String path = getAtlasPath(weapon);
-        TextureAtlas atlas = atlasMap.get(path);
-        if (atlas == null) {
-            atlas = new TextureAtlas(path);
+    public static TextureAtlas getOrCreateAtlas(DC_WeaponObj weapon) {
+        try {
+            String path = getAtlasPath(weapon);
+            TextureAtlas atlas = atlasMap.get(path);
+            if (atlas == null) {
+                atlas = new TextureAtlas(path);
+            }
             atlasMap.put(path, atlas);
+            return atlas;
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            return null;
         }
-        return atlas;
-    }
 
-
-    public static boolean is3dAnim(DC_ActiveObj active) {
-        if (active.isRanged())
-            return true;
-        if (active.getName().contains("Sword Swing"))
-            return true;
-        if (active.getName().contains("Slash"))
-            return true;
-        if (active.getName().contains("Thrust"))
-            return true;
-        if (active.getActiveWeapon().getWeaponType() == WEAPON_TYPE.BLUNT)
-            return true;
-        if (active.getActiveWeapon().getWeaponGroup() == WEAPON_GROUP.FISTS)
-            return true;
-        return false;
     }
 
 

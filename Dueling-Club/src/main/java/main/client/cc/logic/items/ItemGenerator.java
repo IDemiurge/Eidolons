@@ -2,12 +2,10 @@ package main.client.cc.logic.items;
 
 import main.content.*;
 import main.content.DC_CONSTS.*;
-import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_MATERIAL_GROUP;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
-import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.ConcurrentMap;
@@ -50,6 +48,8 @@ public class ItemGenerator implements GenericItemGenerator {
     public static final MATERIAL[] DEFAULT_MATERIALS_BONES = {ItemEnums.MATERIAL.IVORY, ItemEnums.MATERIAL.BLACK_BONE,
      ItemEnums.MATERIAL.MAN_BONE, ItemEnums.MATERIAL.DRAGON_BONE};
     public static final MATERIAL[] BASIC_MATERIALS_BONES = {ItemEnums.MATERIAL.IVORY, ItemEnums.MATERIAL.BLACK_BONE,};
+
+
     public static final MATERIAL[] DEFAULT_MATERIALS_NATURAL = {ItemEnums.MATERIAL.PUNY, ItemEnums.MATERIAL.PETTY,
      ItemEnums.MATERIAL.AVERAGE, ItemEnums.MATERIAL.SIZABLE, ItemEnums.MATERIAL.DIRE, ItemEnums.MATERIAL.FEARSOME,
      ItemEnums.MATERIAL.MONSTROUS};
@@ -58,7 +58,7 @@ public class ItemGenerator implements GenericItemGenerator {
     public static final MATERIAL[] DEFAULT_MATERIALS_SKINS = {ItemEnums.MATERIAL.THIN_LEATHER,
      ItemEnums.MATERIAL.TOUGH_LEATHER, ItemEnums.MATERIAL.THICK_LEATHER, ItemEnums.MATERIAL.LIZARD_SKIN,
      ItemEnums.MATERIAL.DRAGONHIDE, ItemEnums.MATERIAL.TROLL_SKIN, ItemEnums.MATERIAL.FUR};
-    public static final MATERIAL[] BASIC_MATERIALS_SKINS = {ItemEnums.MATERIAL.THIN_LEATHER,
+    public static final MATERIAL[] BASIC_MATERIALS_LEATHER = {ItemEnums.MATERIAL.THIN_LEATHER,
      ItemEnums.MATERIAL.TOUGH_LEATHER, ItemEnums.MATERIAL.THICK_LEATHER,};
     public static final PARAMS[] WEAPON_PARAMS = {PARAMS.DAMAGE_BONUS, PARAMS.DIE_SIZE,
      PARAMS.DURABILITY};
@@ -103,7 +103,7 @@ public class ItemGenerator implements GenericItemGenerator {
 
     public ItemGenerator(boolean basic) {
         this.basic = basic;
-
+        defaultGenerator = this;
     }
 
     public static boolean isBasicMode() {
@@ -158,10 +158,6 @@ public class ItemGenerator implements GenericItemGenerator {
              .getCost(), lvl.getQuality());
             newType.setParam(PARAMS.ENERGY, lvl.getMod());
         }
-    }
-
-    private static boolean isRing(ObjType type) {
-        return type.checkProperty(G_PROPS.JEWELRY_TYPE, ItemEnums.JEWELRY_TYPE.RING + "");
     }
 
     private static MATERIAL[] getJewelryMaterials(String materialGroup) {
@@ -277,7 +273,7 @@ public class ItemGenerator implements GenericItemGenerator {
                                       ObjType type, PARAMETER p) {
         String name = type.getName();
         int amount = trait.getIntegers()[level.getInt()];
-        if (!isRing(type) && trait.isDoubleAmulet()) {
+        if (!ItemMaster.isRing(type) && trait.isDoubleAmulet()) {
             amount *= 2;
         }
         name = level.toString() + " " + name + " of " + p.getName()
@@ -292,23 +288,16 @@ public class ItemGenerator implements GenericItemGenerator {
         return name;
     }
 
-    public static ObjType generateItem(boolean weapon, QUALITY_LEVEL quality,
-                                       MATERIAL material, ObjType type) {
-        ObjType newType = generateItem(quality, material, type,
-         (weapon) ? WEAPON_PARAMS : ARMOR_PARAMS, (weapon) ? WEAPON_MOD_PARAMS
-          : ARMOR_MOD_PARAMS);
-//        LogMaster.log(LOG_CHANNELS.GENERATION, "Generated: "
-//         + newType);
-        DataManager.addType(newType.getName(), (weapon) ? DC_TYPE.WEAPONS
-         : DC_TYPE.ARMOR, newType);
-        return newType;
+    public static ObjType generateItem_(boolean weapon, QUALITY_LEVEL quality,
+                                        MATERIAL material, ObjType type) {
+        return defaultGenerator.generateItem(weapon, quality, material, type);
     }
 
     private static void generateItemTypes(boolean weapon, QUALITY_LEVEL[] qualityLevels,
                                           MATERIAL[] materials, ITEM_MATERIAL_GROUP group) {
         List<ObjType> types = DataManager.getTypes((weapon) ? DC_TYPE.WEAPONS : DC_TYPE.ARMOR);
         for (ObjType type : types) {
-            if (checkSpecialType(type)) {
+            if (ItemMaster.checkSpecialType(type)) {
                 initSpecialItem(type);
                 continue;
             }
@@ -318,10 +307,10 @@ public class ItemGenerator implements GenericItemGenerator {
                     if (type.isGenerated()) {
                         continue;
                     }
-                    if (!checkMaterial(type, group)) {
+                    if (!ItemMaster.checkMaterial(type, group)) {
                         continue;
                     }
-                    generateItem(weapon, quality, material, type);
+                    generateItem_(weapon, quality, material, type);
 
                 }
             }
@@ -335,16 +324,6 @@ public class ItemGenerator implements GenericItemGenerator {
 
         // init traits/enchantments?
 
-    }
-
-    private static boolean checkSpecialType(ObjType type) {
-
-        return type.checkBool(GenericEnums.STD_BOOLS.SPECIAL_ITEM);
-    }
-
-    public static boolean checkMaterial(ObjType type, ITEM_MATERIAL_GROUP group) {
-        return StringMaster.compare(group.toString(),
-         type.getProperty(G_PROPS.ITEM_MATERIAL_GROUP), true);
     }
 
     public static ObjType getNewType(ObjType type) {
@@ -510,11 +489,11 @@ public class ItemGenerator implements GenericItemGenerator {
 
         newType.setParameter(PARAMS.HARDNESS, material.getHardness());
 
-        if (new EnumMaster<WEAPON_GROUP>().retrieveEnumConst(WEAPON_GROUP.class, newType
-         .getProperty(G_PROPS.WEAPON_GROUP)) == ItemEnums.WEAPON_GROUP.SHIELDS) {
-            newType.setParam(PARAMS.ARMOR, newType.getIntParam(PARAMS.DAMAGE_BONUS));
-            ContentGenerator.generateArmorPerDamageType(newType, material);
-        }
+//        if (new EnumMaster<WEAPON_GROUP>().retrieveEnumConst(WEAPON_GROUP.class, newType
+//         .getProperty(G_PROPS.WEAPON_GROUP)) == ItemEnums.WEAPON_GROUP.SHIELDS) {
+//            newType.setParam(PARAMS.ARMOR, newType.getIntParam(PARAMS.DAMAGE_BONUS));
+//      TODO       ContentGenerator.generateArmorPerDamageType(newType, material);
+//        }
 
         mod = quality.getDurabilityMod();
         if (mod > 0 && mod != 100) {
@@ -606,15 +585,27 @@ public class ItemGenerator implements GenericItemGenerator {
         return list;
     }
 
+    @Override
+    public ObjType generateItem(boolean weapon, QUALITY_LEVEL quality,
+                                MATERIAL material, ObjType type) {
+        ObjType newType = generateItem(quality, material, type,
+         (weapon) ? WEAPON_PARAMS : ARMOR_PARAMS, (weapon) ? WEAPON_MOD_PARAMS
+          : ARMOR_MOD_PARAMS);
+//        LogMaster.log(LOG_CHANNELS.GENERATION, "Generated: "
+//         + newType);
+        DataManager.addType(newType.getName(), (weapon) ? DC_TYPE.WEAPONS
+         : DC_TYPE.ARMOR, newType);
+        DataManager.getItemMaps().get(quality).get(material).put(type, newType);
+        return newType;
+    }
+
     public void init() {
         if (!isGenerationOn()) {
             return;
         }
-        if (defaultGenerator != null) {
-            return;
-        }
-    if (!basicMode)
-        ContentGenerator.initMaterials();
+
+        if (!basicMode)
+            ContentGenerator.initMaterials();
 
         for (QUALITY_LEVEL q : ItemEnums.QUALITY_LEVEL.values()) {
             ConcurrentMap qMap = new ConcurrentMap<>();
@@ -656,8 +647,8 @@ public class ItemGenerator implements GenericItemGenerator {
         QUALITY_LEVEL quality =
          new EnumMaster<QUALITY_LEVEL>().retrieveEnumConst(
           QUALITY_LEVEL.class, name);
-        if (quality!=null )
-        typeName = typeName.replace(quality.toString(), "").trim();
+        if (quality != null)
+            typeName = typeName.replace(quality.toString(), "").trim();
         else quality = QUALITY_LEVEL.NORMAL;
         name = StringMaster.getFirstItem(typeName, " ");
         MATERIAL material =
@@ -670,13 +661,13 @@ public class ItemGenerator implements GenericItemGenerator {
               MATERIAL.class, name);
         }
         if (material == null) {
-            return null ;
+            return null;
         }
         typeName = typeName.replace(material.toString(), "").trim();
 
         ObjType baseType = DataManager.getType(typeName, type, true);
-        if (baseType==null )
-            return null ;
+        if (baseType == null)
+            return null;
         return generateItem(weapon, quality, material, baseType);
 
     }
@@ -698,11 +689,11 @@ public class ItemGenerator implements GenericItemGenerator {
             generateWeapons();
         }
         if (!basicMode)
-        try {
-            generateJewelry();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            try {
+                generateJewelry();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         // try {
         // generateGarments();
         // } catch (Exception e) {
@@ -733,7 +724,7 @@ public class ItemGenerator implements GenericItemGenerator {
          .getTypesSubGroup(DC_TYPE.GARMENT, ItemEnums.GARMENT_TYPE.BOOTS + "")) {
             for (QUALITY_LEVEL q : ItemEnums.QUALITY_LEVEL.values()) {
                 for (MATERIAL m : materials) {
-                    // generateItem(quality, material, type)
+                    // generateItem_(quality, material, type)
 
                 }
             }
@@ -763,7 +754,7 @@ public class ItemGenerator implements GenericItemGenerator {
          : DEFAULT_MATERIALS_METALS, ItemEnums.ITEM_MATERIAL_GROUP.METAL);
         generateItemTypes(false, defaultQualityLevels, DEFAULT_MATERIALS_CLOTH,
          ItemEnums.ITEM_MATERIAL_GROUP.CLOTH);
-        generateItemTypes(false, defaultQualityLevels, basic ? BASIC_MATERIALS_SKINS
+        generateItemTypes(false, defaultQualityLevels, basic ? BASIC_MATERIALS_LEATHER
          : DEFAULT_MATERIALS_SKINS, ItemEnums.ITEM_MATERIAL_GROUP.LEATHER);
     }
 
@@ -808,7 +799,7 @@ public class ItemGenerator implements GenericItemGenerator {
 
     public void generateJewelry() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.JEWELRY)) {
-            boolean ring = isRing(type);
+            boolean ring = ItemMaster.isRing(type);
             for (MATERIAL material : getJewelryMaterials(type
              .getProperty(G_PROPS.ITEM_MATERIAL_GROUP))) {
                 ObjType newType = generateEmptyJewelryItem(ring, type, material);
@@ -827,7 +818,7 @@ public class ItemGenerator implements GenericItemGenerator {
                 if (type.isGenerated()) {
                     continue;
                 }
-                boolean ring = isRing(type);
+                boolean ring = ItemMaster.isRing(type);
                 if (ring) {
                     if (!ench.isRing()) {
                         continue;
@@ -858,7 +849,7 @@ public class ItemGenerator implements GenericItemGenerator {
                     continue;
                 }
                 for (MAGICAL_ITEM_LEVEL level : MAGICAL_ITEM_LEVEL.values()) {
-                    boolean ring = isRing(type);
+                    boolean ring = ItemMaster.isRing(type);
                     generateJewelryItem(ring, type, trait, level);
 
                 }
@@ -892,7 +883,7 @@ public class ItemGenerator implements GenericItemGenerator {
 
     public DC_HeroItemObj createItem(ObjType type, Ref ref, boolean addMaterialParams) {
         // if (addMaterialParams)//if building from blueprint type
-        // type = generateItem(quality, material, type, params, mod_params);
+        // type = generateItem_(quality, material, type, params, mod_params);
         MicroGame game = (MicroGame) ref.getGame();
         DC_HeroItemObj item = (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) ? new DC_WeaponObj(
          type, ref.getPlayer(), game, ref) : new DC_ArmorObj(type, ref.getPlayer(), game,

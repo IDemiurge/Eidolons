@@ -30,7 +30,7 @@ public class OrbsPanel extends TablePanel {
         tooltip.setUserObject(Arrays.asList(new ValueContainer(el.getIconRegion(), name, val)));
         el.addListener(tooltip.getController());
     }
-
+//TODO smooth update?
     @Override
     public void updateAct(float delta) {
         super.updateAct(delta);

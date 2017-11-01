@@ -69,10 +69,9 @@ public class OutlineMaster {
 //            if (unit instanceof DC_Cell) {
 //                return null;
 //            }
-            if (unit instanceof Unit) {
-                Unit heroObj = (Unit) unit;
-                if (heroObj.isWall() || heroObj.isLandscape()) {
-
+            if (unit instanceof BattleFieldObject) {
+                BattleFieldObject battleFieldObject = (BattleFieldObject) unit;
+                if (battleFieldObject.isWall() || battleFieldObject.isLandscape()) {
                     return null;
                 }
             }

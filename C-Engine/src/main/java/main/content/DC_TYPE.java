@@ -296,4 +296,5 @@ public enum DC_TYPE implements OBJ_TYPE {
         this.upgradeRequirementProp = upgradeRequirementProp;
     }
 
+
 }

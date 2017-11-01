@@ -10,7 +10,6 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.system.images.ImageManager;
 import main.system.math.PositionMaster;
 
@@ -133,14 +132,14 @@ public class VisibilityMaster {
     }
 
     public void resetVisibilityLevels() {
-        for (Unit unit : DC_Game.game.getUnits()) {
+        for (Unit unit :    master.getGame().getUnits()) {
             resetOutlineAndVisibilityLevel(unit);
         }
 
-        for (Structure structure : DC_Game.game.getStructures()) {
+        for (Structure structure : master.getGame().getStructures()) {
             resetOutlineAndVisibilityLevel(structure);
         }
-        for (Obj cell : DC_Game.game.getCells()) {
+        for (Obj cell : master.getGame().getCells()) {
             resetOutlineAndVisibilityLevel((DC_Obj) cell);
         }
     }

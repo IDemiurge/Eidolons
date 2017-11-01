@@ -867,11 +867,11 @@ public class DC_ActionManager implements ActionManager {
             return null;
         }
         List<DC_UnitAction> subActions = getOrCreateWeaponActions(unit.getWeapon(offhand));
-        action.setSubActions(new LinkedList<>(subActions));
         subActions.addAll(getOrCreateWeaponActions(unit.getNaturalWeapon(offhand)));
-        if (action.getSubActions().isEmpty()) {
-            action.setSubActions(new LinkedList<>(subActions));
-        }
+        action.setSubActions(new LinkedList<>(subActions));
+//      ???  if (action.getSubActions().isEmpty()) {
+//            action.setSubActions(new LinkedList<>(subActions));
+//        }
         return subActions;
     }
 

@@ -1,6 +1,7 @@
 package main.game.module.dungeoncrawl.ai;
 
 import io.vertx.core.impl.ConcurrentHashSet;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
@@ -42,6 +43,10 @@ public class AggroMaster {
         return list;
     }
 
+    public static List<Unit> getLastAggroGroup() {
+        return lastAggroGroup;
+    }
+
     private static void logAggro(List<Unit> list) {
         if (!list.equals(lastAggroGroup)) {
             List<Unit> newUnits = new LinkedList<>(list);
@@ -71,6 +76,8 @@ public class AggroMaster {
             if (visibility != VISIBILITY_LEVEL.CLEAR_SIGHT)
                 continue;
 
+            if (unit.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.INVISIBLE)
+                continue;
             if (unit.getVisibilityLevel() == VISIBILITY_LEVEL.UNSEEN)
                 continue; //TODO these units will instead 'surprise attack' you or stalk
             int duration = 3;

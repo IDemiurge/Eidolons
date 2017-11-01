@@ -139,7 +139,10 @@ public class ClearShotCondition extends MicroCondition {
     @Override
     public boolean check(Ref ref) {
         // consider flying/non-obstructing!
-
+        Obj obj = game.getObjectById(ref.getId(str2));
+if (!(obj instanceof DC_Obj)){
+    return false;
+}
         DC_Obj target = (DC_Obj) game.getObjectById(ref.getId(str2));
         if (target == null) {
             return false;

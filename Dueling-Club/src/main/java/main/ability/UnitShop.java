@@ -1,9 +1,12 @@
 package main.ability;
 
 import main.client.cc.HeroManager;
+import main.client.cc.logic.items.ItemGenerator;
+import main.client.cc.logic.items.ItemMaster;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.*;
 import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.ITEM_MATERIAL_GROUP;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
@@ -20,6 +23,7 @@ import main.game.core.game.DC_Game;
 import main.game.module.adventure.town.ShopMaster;
 import main.system.DC_Formulas;
 import main.system.SortMaster;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -29,6 +33,7 @@ import main.system.math.Formula;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -60,6 +65,7 @@ public class UnitShop {
         goldOriginalAmount = gold;
     }
 
+
     public static void buyItemsForUnit(Unit shopper) {
         unit = shopper;
         awardGold(unit);
@@ -87,16 +93,16 @@ public class UnitShop {
         if (StringMaster.isEmpty(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE))) {
             generateWeaponRepertoire(shopper, false);
         }
-        if (!buy(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.MAIN_HAND,
+        if (!buyNew(true, unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.MAIN_HAND,
          DC_TYPE.WEAPONS)) { // make sure main
             // hand item is
             // bought, maybe not
             // for tanks...
             goldPercentageToSpend = 100 - armorGoldPercentage;
-            if (!buy(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.MAIN_HAND,
+            if (!buyNew(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.MAIN_HAND,
              DC_TYPE.WEAPONS)) {
                 goldPercentageToSpend = 100;
-                buy(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.MAIN_HAND,
+                buyNew(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.MAIN_HAND,
                  DC_TYPE.WEAPONS);
                 return;
             }
@@ -106,13 +112,14 @@ public class UnitShop {
         if (StringMaster.isEmpty(unit.getProperty(PROPS.ARMOR_REPERTOIRE))) {
             generateArmorRepertoire(shopper);
         }
-        buy(unit.getProperty(PROPS.ARMOR_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.ARMOR, DC_TYPE.ARMOR);
+        buyNew(unit.getProperty(PROPS.ARMOR_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.ARMOR, DC_TYPE.ARMOR);
 
         goldPercentageToSpend = 100;
         if (StringMaster.isEmpty(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE))) {
             generateWeaponRepertoire(shopper, true);
         }
-        buy(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.OFF_HAND,
+        if (!StringMaster.isEmpty(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE)))
+        buyNew(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.OFF_HAND,
          DC_TYPE.WEAPONS);
     }
 
@@ -143,7 +150,7 @@ public class UnitShop {
             if (unit.getRemainingQuickSlots() <= 0) {
                 break;
             }
-            if (!buy(unit.getProperty(PROPS.QUICK_ITEM_REPERTOIRE), unit, null, C_OBJ_TYPE.ITEMS)) {
+            if (!buyNew(unit.getProperty(PROPS.QUICK_ITEM_REPERTOIRE), unit, null, C_OBJ_TYPE.ITEMS)) {
                 break;
             }
         }
@@ -201,6 +208,139 @@ public class UnitShop {
                 }
             }
         }
+    }
+
+    public static boolean buyNew(String repertoire, Unit unit, ITEM_SLOT slot,
+                                 OBJ_TYPE OBJ_TYPE_ENUM) {
+        int costLimit = unit.getIntParam(PARAMS.GOLD) * goldPercentageToSpend / 100;
+        boolean canExceed = false;
+        return buyNew(repertoire, unit, slot, costLimit, canExceed, OBJ_TYPE_ENUM);
+    }
+
+    public static boolean buyNew(boolean canExceed, String repertoire, Unit unit, ITEM_SLOT slot,
+                                 OBJ_TYPE OBJ_TYPE_ENUM) {
+        int costLimit = unit.getIntParam(PARAMS.GOLD) * goldPercentageToSpend / 100;
+        return buyNew(repertoire, unit, slot, costLimit, canExceed, OBJ_TYPE_ENUM);
+    }
+
+    public static boolean buyNew(String repertoire, Unit unit, ITEM_SLOT slot,
+                                 int costLimit, boolean canExceed, OBJ_TYPE OBJ_TYPE_ENUM) {
+//choose instead of stumble
+
+        WeightMap<ObjType> map = new WeightMap<>(new RandomWizard<ObjType>()
+         .constructWeightMap(repertoire, ObjType.class, OBJ_TYPE_ENUM));
+        //choose material/quality appropriate to the cost?
+//TODO preconstruct more item types?
+        if (map.isEmpty()) {
+            return false;
+        }
+        ObjType baseType = getItem(map);
+        MATERIAL materialType = chooseMaterialType(costLimit, unit, baseType, canExceed);
+        ObjType itemType = null;
+        if (materialType != null) {
+            itemType = chooseQualityForItem(materialType, costLimit, unit, baseType, canExceed);
+        } else {
+            if (baseType.getOBJ_TYPE_ENUM() != DC_TYPE.ITEMS)
+                return false;
+            List<ObjType> types = DataManager.getUpgradedTypes(baseType);
+//            types = (List<ObjType>) SortMaster.sortByValue(types, PARAMS.GOLD_COST, true);
+            SortMaster.sortEntitiesByExpression(types,
+             (type) -> -type.getIntParam(PARAMS.GOLD_COST));
+            for (ObjType type : types) {
+                if (!checkCost(type, unit)) {
+                    continue;
+                }
+                itemType = type;
+                break;
+            }
+        }
+        if (itemType == null) {
+//            return buy(repertoire, unit, slot, OBJ_TYPE_ENUM);
+            return false;
+        }
+        DC_HeroItemObj item = buy(itemType, unit);
+        equip(unit, item, slot);
+        return true;
+    }
+
+    private static MATERIAL chooseMaterialType(int costLimit, Unit unit, ObjType baseType, boolean canExceed) {
+        if (baseType  == null  )
+            return null;
+        if (baseType.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY)
+            return null;
+        if (baseType.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS)
+            return null;
+        QUALITY_LEVEL qualityLevel = QUALITY_LEVEL.DAMAGED;
+        String property = unit.getProperty(PROPS.ALLOWED_MATERIAL);
+        List<MATERIAL> list =
+         property.isEmpty() ? getMaterialsFOrUnit(unit, baseType, costLimit, canExceed)
+          : new EnumMaster<MATERIAL>().getEnumList(MATERIAL.class, property);
+        list.removeIf(material -> !ItemMaster.checkMaterial(baseType, material));
+        Collections.shuffle(list);
+        List<MATERIAL> materials = new LinkedList<>();
+        for (MATERIAL sub : list) {
+            ObjType type = DataManager.getItem(qualityLevel, sub, baseType);// map .get(sub).get(baseType);
+            if (type.getIntParam(PARAMS.GOLD_COST) <= costLimit)
+                return sub;
+            else if (canExceed)
+                materials.add(sub);
+        }
+        if (!canExceed)
+            return null;
+        SortMaster.sortByExpression(materials,
+         (type) -> -((MATERIAL) type).getCost());
+        return materials.get(0);
+    }
+
+    private static List<MATERIAL> getMaterialsFOrUnit(Unit unit, ObjType baseType, int costLimit, boolean canExceed) {
+        ITEM_MATERIAL_GROUP group = new EnumMaster<ITEM_MATERIAL_GROUP>().retrieveEnumConst(ITEM_MATERIAL_GROUP.class,
+         baseType.getProperty(G_PROPS.ITEM_MATERIAL_GROUP));
+        //TODO
+        switch (group) {
+            case METAL:
+                return Arrays.asList(ItemGenerator.BASIC_MATERIALS_METALS);
+            case WOOD:
+                return Arrays.asList(ItemGenerator.BASIC_MATERIALS_WOOD);
+            case LEATHER:
+                return Arrays.asList(ItemGenerator.BASIC_MATERIALS_LEATHER);
+            case CLOTH:
+                return Arrays.asList(ItemGenerator.DEFAULT_MATERIALS_CLOTH);
+            case BONE:
+                return Arrays.asList(ItemGenerator.BASIC_MATERIALS_BONES);
+            case STONE:
+                return Arrays.asList(ItemGenerator.BASIC_MATERIALS_STONE);
+            case NATURAL:
+                return Arrays.asList(ItemGenerator.BASIC_MATERIALS_NATURAL);
+            case CRYSTAL:
+                break;
+        }
+        return null;
+    }
+
+    private static ObjType chooseQualityForItem(MATERIAL materialType, int costLimit, Unit unit, ObjType baseType, boolean canExceed) {
+        String allowed = unit.getProperty(PROPS.QUALITY_LEVEL_RANGE);
+        int minIndex = 0;
+        int maxIndex = 999;
+        if (allowed.contains(";")) {
+            minIndex = EnumMaster.getEnumConstIndex(QUALITY_LEVEL.class, allowed.split(";")[0]);
+            maxIndex = EnumMaster.getEnumConstIndex(QUALITY_LEVEL.class, allowed.split(";")[1]);
+        }
+        List<ObjType> types = new LinkedList<>();
+        for (QUALITY_LEVEL sub : DataManager.getItemMaps().keySet()) {
+            int index = EnumMaster.getEnumConstIndex(QUALITY_LEVEL.class, sub);
+            if (index > maxIndex) continue;
+            if (index < minIndex) continue;
+            ObjType type = DataManager.getItem(sub, materialType, baseType);
+            if (type.getIntParam(PARAMS.GOLD_COST) <= costLimit) {
+                return type;
+            } else if (canExceed)
+                types.add(type);
+        }
+        if (!canExceed)
+            return null;
+        SortMaster.sortEntitiesByExpression(types,
+         (type) -> -type.getIntParam(PARAMS.GOLD_COST));
+        return types.get(0);
     }
 
     private static boolean buy(String repertoire, Unit unit, ITEM_SLOT slot,
@@ -342,6 +482,9 @@ public class UnitShop {
 
     private static DC_HeroItemObj buy(ObjType type, Unit unit) {
         unit.modifyParameter(PARAMS.GOLD, -type.getIntParam(PARAMS.GOLD_COST));
+        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>> " + unit + " buys " + type
+         + " gold remains: " +
+         unit.getIntParam(PARAMS.GOLD));
         return ItemFactory.createItemObj(type, unit.getOwner(), unit.getGame(), unit.getRef(),
          false);
 

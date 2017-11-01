@@ -107,7 +107,7 @@ public class DefaultActionHandler {
             return false;
         }
         if (context.getTargetObj() != null)
-            if (!action.canBeTargeted(context.getTarget()))
+            if (!action.canBeTargeted(context.getTarget(), false))
                 return false;
         Eidolons.getGame().getGameLoop().actionInput(
          new ActionInput(action, context));

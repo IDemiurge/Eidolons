@@ -2,6 +2,9 @@ package main.game.module.dungeoncrawl.explore;
 
 import main.client.cc.logic.party.PartyObj;
 import main.game.core.game.DC_Game;
+import main.game.module.dungeoncrawl.ai.AggroMaster;
+import main.libgdx.anims.AnimMaster;
+import main.libgdx.anims.AnimMaster3d;
 
 /**
  * Created by JustMe on 8/2/2017.
@@ -80,7 +83,13 @@ public class ExplorationMaster {
           cleaner.cleanUpAfterBattle();
             game.getLogManager().logBattleEnds();
         } else
-        game.getLogManager().logBattleStarts();
+        {
+            game.getLogManager().logBattleStarts();
+            AggroMaster.getLastAggroGroup().forEach(unit -> {
+                AnimMaster.getInstance().getConstructor().preconstructAll(unit);
+                AnimMaster3d.preloadAtlases(unit);
+            });
+        }
         game.startGameLoop();
         game.getManager().reset();
         //exceptions: triggers, scripts,

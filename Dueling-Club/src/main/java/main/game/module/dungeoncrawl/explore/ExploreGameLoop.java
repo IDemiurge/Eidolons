@@ -1,5 +1,6 @@
 package main.game.module.dungeoncrawl.explore;
 
+import com.badlogic.gdx.Gdx;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.dungeon.location.Location;
@@ -9,6 +10,7 @@ import main.game.core.Eidolons;
 import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
 import main.libgdx.anims.AnimMaster;
+import main.libgdx.anims.AnimMaster3d;
 import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.auxiliary.Loop;
@@ -41,22 +43,38 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     protected static void startRealTimeLogic() {
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
+        Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().getAllies().forEach(unit -> {
+            Gdx.app.postRunnable(() ->
+             {
+                 AnimMaster3d.preloadAtlases(unit);
+                 try {
+                     AnimMaster.getInstance().getConstructor().preconstructAll(unit);
+                 } catch (Exception e) {
+                     main.system.ExceptionMaster.printStackTrace(e);
+                 }
+             }
+            );
+        });
 
         while (true) {
             WaitMaster.WAIT(REAL_TIME_LOGIC_PERIOD);
             if (Eidolons.getGame().isPaused()) continue;
             if (!ExplorationMaster.isExplorationOn()) continue;
-            Eidolons.getGame().getDungeonMaster().getExplorationMaster().
-             getTimeMaster().checkTimedEvents();
+            try {
+                Eidolons.getGame().getDungeonMaster().getExplorationMaster().
+                 getTimeMaster().checkTimedEvents();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
     }
 
     @Override
     public Thread startInNewThread() {
         if (!CoreEngine.isGraphicsOff()) {
-        if (DungeonScreen.getInstance() == null)
-            WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY, 2000);
-        DungeonScreen.getInstance().setRealTimeGameLoop(this);
+            if (DungeonScreen.getInstance() == null)
+                WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY, 2000);
+            DungeonScreen.getInstance().setRealTimeGameLoop(this);
         }
         if (realTimeThread == null) {
             realTimeThread = new Thread(() -> {

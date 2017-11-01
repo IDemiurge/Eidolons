@@ -1,11 +1,11 @@
 package main.libgdx.bf;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
@@ -29,7 +29,7 @@ public class UnitView extends BaseView {
     protected Image emblemImage;
     protected Image emblemBorder;
     protected Image modeImage;
-    protected Texture outline;
+    protected TextureRegion outline;
     protected boolean greyedOut;
     protected boolean mainHero;
     protected boolean emblemBorderOn;
@@ -93,7 +93,9 @@ public class UnitView extends BaseView {
     }
 
 
-    protected void updateModeImage(String pathToImage) {
+    protected void updateVisible() {
+    }
+        protected void updateModeImage(String pathToImage) {
         removeActor(modeImage);
         if (pathToImage == null)
             return;
@@ -136,7 +138,7 @@ public class UnitView extends BaseView {
 //        if (isIgnored())
 //            return;
         super.act(delta);
-
+        updateVisible();
         if (mainHeroLabel != null) {
             if (!isActive()) {
 //                new MapMaster<>()
@@ -170,20 +172,24 @@ public class UnitView extends BaseView {
                 if (SuperActor.alphaFluctuationOn) //TODO fix
                     ActorMaster.addFadeInOrOutIfNoActions(this, 5);
         }
-        super.draw(batch, parentAlpha);
-
-        if (outline != null) {
-            batch.draw(outline, 0, 0);
+        if (outline != null)
+        {
+//            batch.draw(outline, getX(), getY());
+            getPortrait().setDrawable(new TextureRegionDrawable(outline));
         }
+       else {
+            getPortrait().setDrawable(new TextureRegionDrawable(originalTexture));
+        }
+            super.draw(batch, parentAlpha);
+
         if (batch.getShader() == GrayscaleShader.getGrayscaleShader())
             batch.setShader(shader);
     }
 
     public void setFlickering(boolean flickering) {
         this.flickering = flickering;
-        if (!flickering)
-        {
-            getPortrait().getColor().a=1;
+        if (!flickering) {
+            getPortrait().getColor().a = 1;
             getColor().a = 1;
         }
     }
@@ -219,11 +225,11 @@ public class UnitView extends BaseView {
         this.emblemBorderOn = emblemBorderOn;
     }
 
-    public Texture getOutline() {
+    public TextureRegion getOutline() {
         return outline;
     }
 
-    public void setOutline(Texture outline) {
+    public void setOutline(TextureRegion outline) {
         this.outline = outline;
     }
 

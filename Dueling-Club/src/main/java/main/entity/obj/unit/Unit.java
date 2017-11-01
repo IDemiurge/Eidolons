@@ -51,6 +51,8 @@ import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
 import main.game.module.adventure.entity.MacroActionManager.MACRO_MODES;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.libgdx.anims.AnimMaster3d;
 import main.system.DC_Constants;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
@@ -117,7 +119,6 @@ public class Unit extends DC_UnitModel {
     public Unit(ObjType type, DC_Game game) {
         this(type, 0, 0, DC_Player.NEUTRAL, game, new Ref(game));
     }
-
 
 
     @Override
@@ -602,6 +603,10 @@ public class Unit extends DC_UnitModel {
         if (prevItem != null) {
             addItemToInventory(prevItem);
         }
+        if (game.isStarted())
+        if (!ExplorationMaster.isExplorationOn()) //only in combat!
+            if (item instanceof DC_WeaponObj)
+                AnimMaster3d.preloadAtlas((DC_WeaponObj) item);
         // preCheck weight and prompt drop if too heavy?
         return true;
     }
@@ -1320,14 +1325,15 @@ public class Unit extends DC_UnitModel {
     public int getSightRangeTowards(DC_Obj target) {
         return getSightRangeTowards(target.getCoordinates());
     }
-        public int getSightRangeTowards(Coordinates coordinates) {
-        int sight =  getIntParam(PARAMS.SIGHT_RANGE);
+
+    public int getSightRangeTowards(Coordinates coordinates) {
+        int sight = getIntParam(PARAMS.SIGHT_RANGE);
         FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(this.getFacing(), this.getCoordinates(),
          coordinates);
         if (singleFacing == UnitEnums.FACING_SINGLE.BEHIND) {
-            sight =    getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
+            sight = getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
         } else if (singleFacing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
-            sight -=  getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
+            sight -= getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
         }
         return sight;
     }

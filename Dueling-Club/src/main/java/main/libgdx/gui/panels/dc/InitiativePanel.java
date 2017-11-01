@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -32,9 +33,9 @@ import java.util.Map;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class InitiativePanel extends Group {
+    public final static int imageSize = 104;
     private final int maxSize = 25;
     private final int visualSize = 10;
-    public final static int imageSize = 104;
     private final int offset = -12;
     Label timeLabel;
     private ImageContainer[] queue;
@@ -45,8 +46,8 @@ public class InitiativePanel extends Group {
     private SuperContainer light;
     private SuperContainer clock;
     private boolean checkPositionsRequired;
-    private float maxMoveAnimDuration=0;
-    private float timePassedSincePosCheck=Integer.MAX_VALUE;
+    private float maxMoveAnimDuration = 0;
+    private float timePassedSincePosCheck = Integer.MAX_VALUE;
 
     public InitiativePanel() {
         init();
@@ -64,20 +65,24 @@ public class InitiativePanel extends Group {
                 if (isCleanUpOn())
                     cleanUp();
                 resetZIndices();
-                checkPositionsRequired=true;
             }
         });
 
-        GuiEventManager.bind(GuiEventType.UPDATE_GUI, obj -> {
+        GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, obj -> {
+            if (!isRealTime())
+                checkPositions();
+        });
+            GuiEventManager.bind(GuiEventType.UPDATE_GUI, obj -> {
             if (!isRealTime()) {
 //                cleanUp();
                 resetZIndices();
             }
+            checkPositionsRequired = true;
         });
         GuiEventManager.bind(GuiEventType.GRID_OBJ_HOVER_ON, obj -> {
             if (!isRealTime()) {
                 if (!(obj.get() instanceof UnitView))
-                    return ;
+                    return;
                 UnitView p = (UnitView) obj.get();
                 ImageContainer view = getIfExists(p.getCurId());
                 if (view != null)
@@ -92,10 +97,10 @@ public class InitiativePanel extends Group {
         });
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
 //            if (!isRealTime()) {
-                UnitView p = (UnitView) obj.get();
-                removeView(p);
-                resetZIndices();
-                checkPositionsRequired=true;
+            UnitView p = (UnitView) obj.get();
+            removeView(p);
+            resetZIndices();
+//                checkPositionsRequired=true;
 //            }
         });
     }
@@ -139,7 +144,7 @@ public class InitiativePanel extends Group {
         clock = new SuperContainer(
          new Image(TextureCache.getOrCreateR(StrPathBuilder.build("UI",
           "components", "2017", "panels", "initiativepanel",
-          "clock.png"))), true){
+          "clock.png"))), true) {
             @Override
             protected float getAlphaFluctuationMin() {
                 return 0.6f;
@@ -147,7 +152,7 @@ public class InitiativePanel extends Group {
 
             @Override
             protected float getAlphaFluctuationPerDelta() {
-                return super.getAlphaFluctuationPerDelta()/3;
+                return super.getAlphaFluctuationPerDelta() / 3;
             }
         };
 
@@ -197,23 +202,33 @@ public class InitiativePanel extends Group {
     public boolean isCleanUpOn() {
         return true;
     }
+
     private void checkPositions() {
 
 
-        int n=0;
-        for (ImageContainer sub: queue){
-            if (sub==null )
+        int n = 0;
+        for (ImageContainer sub : queue) {
+            if (sub == null)
                 continue;
-            if (sub.getActions().size!=0)
-                continue;
-                sub.setX(relToPixPos(n));
-//            queue[i].getActions().clear();
+//            if (sub.getActions().size != 0)
+//                continue;
+            float x = relToPixPos(n);
             n++;
+            if (sub.getX()==x )
+                continue;
+            sub.getActions().clear();
+            AfterAction a = new AfterAction();
+            a.setAction(ActorMaster.getMoveToAction(x, sub.getY(), 1));
+            sub.addAction(a);
+            a.setTarget(sub);
+//            sub.setX(relToPixPos(n));
+//            queue[i].getActions().clear();
         }
-        timePassedSincePosCheck=0;
-        checkPositionsRequired=false;
+        timePassedSincePosCheck = 0;
+        checkPositionsRequired = false;
     }
-        private void cleanUp() {
+
+    private void cleanUp() {
         Map<Integer, UnitView> views = new XLinkedMap<>();
         DC_Game.game.getTurnManager().getDisplayedUnitQueue().stream().forEach(unit -> {
             UnitView view = (UnitView) DungeonScreen.getInstance().getGridPanel().getUnitMap().get(unit);
@@ -230,7 +245,14 @@ public class InitiativePanel extends Group {
             if (sub == null)
                 continue;
             if (!views.containsKey(sub.id))
+            {
+                ImageContainer view = getIfExists(sub.id);
+                if (((UnitView)view.getActor()).getOutline() != null) {
+                    view.setActor(new Image(((UnitView)view.getActor()).getOutline()));
+                    //is active?
+                } else
                 removeView((sub.id));
+            }
         }
 
 
@@ -307,11 +329,13 @@ public class InitiativePanel extends Group {
                 if (ActorMaster.getActionsOfClass(container, MoveToAction.class).size() == 0)
                     toggleQueue(true);
 
-        timePassedSincePosCheck+=delta;
-        if (DC_Game.game.isDebugMode() ||
-         checkPositionsRequired&& timePassedSincePosCheck >= maxMoveAnimDuration)
-            checkPositions();
-    }}
+            timePassedSincePosCheck += delta;
+            if (DC_Game.game.isDebugMode() ||
+             timePassedSincePosCheck>2 ||
+             (checkPositionsRequired && timePassedSincePosCheck >= maxMoveAnimDuration))
+                checkPositions();
+        }
+    }
 
     private void toggleQueue(boolean visible) {
 
@@ -355,7 +379,7 @@ public class InitiativePanel extends Group {
                     queue[i] = null;
                     queue[ip1] = cur;
                 } else {
-                    if (cur.initiative >  next.initiative || (cur.id >  next.id && cur.initiative ==  next.initiative)) {
+                    if (cur.initiative > next.initiative || (cur.id > next.id && cur.initiative == next.initiative)) {
                         queue[ip1] = cur;
                         queue[i] = next;
                         for (int y = i; y > 0; y--) {
@@ -390,7 +414,7 @@ public class InitiativePanel extends Group {
                 }
             }
         }
-        applyImageMove();
+//        applyImageMove();
     }
 
     private void applyImageMove() {
@@ -406,18 +430,21 @@ public class InitiativePanel extends Group {
     }
 
     private void setupAnim(int from, int to, int rpos) {
-        maxMoveAnimDuration=0;
+        if (from <= to)
+            return;
+        maxMoveAnimDuration = 0;
+        timePassedSincePosCheck = 0;
         for (int i = from; i <= to; i++) {
             ImageContainer container = queue[i];
-            int pixPos = relToPixPos(rpos);
+            float pixPos = relToPixPos(rpos);
             if (container != null) {
                 if (container.getX() != pixPos) {
                     MoveToAction a = new MoveToAction();
                     a.setX(pixPos);
                     float dur = Math.abs(container.getX() - pixPos) / 400;
-                    if (dur>maxMoveAnimDuration)
-                        maxMoveAnimDuration = dur ;
-                    a.setDuration(dur );
+                    if (dur > maxMoveAnimDuration)
+                        maxMoveAnimDuration = dur;
+                    a.setDuration(dur);
                     a.setTarget(container);
                     container.addAction(a);
                 }
@@ -426,7 +453,7 @@ public class InitiativePanel extends Group {
         }
     }
 
-    private int relToPixPos(int pos) {
+    private float relToPixPos(int pos) {
         return pos * imageSize + pos * offset;
     }
 
@@ -440,7 +467,7 @@ public class InitiativePanel extends Group {
     }
 
 
-    private class ImageContainer extends Container<UnitView> {
+    private class ImageContainer extends Container<Actor> {
         public int initiative;
         public int id;
         public boolean mobilityState;

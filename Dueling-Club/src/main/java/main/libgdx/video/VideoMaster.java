@@ -68,7 +68,7 @@ public class VideoMaster {
     }
 
     public String getTestPath() {
-        return   "C:\\Eidolons\\art materials\\video\\moneda.ogg";
+        return   "C:\\Eidolons\\art materials\\video\\Main_Menu.ogv"; //moneda.ogg
     }
 
     public CameraInputController getInputController() {

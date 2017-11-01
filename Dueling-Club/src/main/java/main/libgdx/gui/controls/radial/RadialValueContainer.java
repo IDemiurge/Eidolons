@@ -1,12 +1,15 @@
 package main.libgdx.gui.controls.radial;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.bf.mouse.BattleClickListener;
 import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import main.libgdx.gui.tooltips.ToolTip;
+import main.libgdx.shaders.GrayscaleShader;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ public class RadialValueContainer extends ActionValueContainer {
     private RadialValueContainer parent;
     private Supplier<ToolTip> tooltipSupplier;
     private ToolTip tooltip;
+    private boolean valid;
 
     public RadialValueContainer(TextureRegion texture, String name, String value, Runnable action) {
         super(texture, name, value, action);
@@ -63,6 +67,23 @@ public class RadialValueContainer extends ActionValueContainer {
                 super.exit(event, x, y, pointer, toActor);
             }
         });
+    }
+
+    public RadialValueContainer(TextureRegion textureRegion, Runnable runnable, boolean valid) {
+        this(textureRegion, runnable);
+        this.valid = valid;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        ShaderProgram shader = null;
+            if (!valid) {
+                shader = batch.getShader();
+                batch.setShader(GrayscaleShader.getGrayscaleShader());
+            }
+        super.draw(batch, parentAlpha);
+        if (batch.getShader() == GrayscaleShader.getGrayscaleShader())
+            batch.setShader(shader);
     }
 
     public List<RadialValueContainer> getChildNodes() {

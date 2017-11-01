@@ -38,7 +38,7 @@ public class Showcase {
     };
     public static String launchData = "";
     private static boolean running;
-    private static String scenarioName="Crawl Levels";//"Crawl Demo";
+    private static String scenarioName="Mini Release Pack";//"Crawl Levels";//"Crawl Demo";
 
     public static void main(String[] args) {
         running = true;
