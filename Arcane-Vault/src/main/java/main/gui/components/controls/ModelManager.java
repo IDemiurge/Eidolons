@@ -476,7 +476,7 @@ public class ModelManager {
     private static void autoAdjustClass(ObjType type) {
 
         // String passives = type.getProperty(G_PROPS.PASSIVES);
-        // for (String passive : StringMaster.openContainer(passives)) {
+        // for (String passive : StringMaster.open(passives)) {
         // if (passive.contains("paramBonus")) {
         // //shouldn't overlap, really, nevermind...
         //
@@ -569,7 +569,7 @@ public class ModelManager {
         String altBases = type.getProperty(PROPS.ALT_BASE_LINKS);
         if (!altBases.isEmpty()) {
             String altBaseNames = "";
-            for (String s : StringMaster.openContainer(altBases)) {
+            for (String s : StringMaster.open(altBases)) {
                 altBaseNames += VariableManager.removeVarPart(s) + ";";
             }
             type.setProperty(PROPS.ALT_BASE_TYPES, "" + altBaseNames);
@@ -593,7 +593,7 @@ public class ModelManager {
         String reqs = type.getProperty(PROPS.REQUIREMENTS);
         if (reqs.contains("Principles")) {
             String cleanedReqs = reqs;
-            for (String sub : StringMaster.openContainer(reqs)) {
+            for (String sub : StringMaster.open(reqs)) {
                 if (!sub.contains("Principles")) {
                     continue;
                 }

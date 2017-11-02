@@ -249,7 +249,7 @@ public class Launcher {
     }
 
     private static void initPreset() {
-        for (String typeName : StringMaster.openContainer(preset)) {
+        for (String typeName : StringMaster.open(preset)) {
             ObjType presetHero = DataManager.getType(typeName, DC_TYPE.CHARS);
             if (getView() != VIEWS.CHOICE) {
                 getMainManager().getSequenceMaster().chooseNewMember(PartyHelper.getParty());

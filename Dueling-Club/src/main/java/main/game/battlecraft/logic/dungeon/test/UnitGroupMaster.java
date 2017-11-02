@@ -415,7 +415,7 @@ public class UnitGroupMaster {
     private static Map<ObjType, Integer> initPool(ObjType factionType) {
         Map<ObjType, Integer> map = new XLinkedMap<>();
         addUnits(factionType, map, factionType);
-        for (String f : StringMaster.openContainer(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
+        for (String f : StringMaster.open(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
             ObjType allyFactionType = DataManager.getType(f.toString(), DC_TYPE.FACTIONS);
             addUnits(factionType, map, allyFactionType);
         }
@@ -424,7 +424,7 @@ public class UnitGroupMaster {
 
     private static void addUnits(ObjType factionType, Map<ObjType, Integer> map,
                                  ObjType allyFactionType) {
-        for (String unit : StringMaster.openContainer(allyFactionType.getProperty(PROPS.UNIT_POOL))) {
+        for (String unit : StringMaster.open(allyFactionType.getProperty(PROPS.UNIT_POOL))) {
             ObjType type = DataManager.getType(unit, DC_TYPE.UNITS);
             map.put(type, getUnitCost(type, factionType));
         }

@@ -45,6 +45,18 @@ public class SoundPlayer extends Player {
     }
 
     public void doPlayback(float delta) {
+        playing.forEach(soundFx -> {
+            if (dungeonScreen != null)
+                if (soundFx.getOrigin() != null) {
+                    float x = dungeonScreen .getController().getXCamPos();
+                    float y = dungeonScreen.getController().getYCamPos();
+                    float distance = soundFx.getOrigin().dst(x, y);
+                    distance *= dungeonScreen.getController().getZoom();
+                    float volume =
+                     Math.max(10, getVolume() / Math.max(1, (distance) / 200 ))/100;
+                    soundFx.setVolume(volume);
+                }
+        });
             if (!playQueue.isEmpty()) {
                 SoundFx sound = playQueue.pop();
                 playing.add(sound);
@@ -53,18 +65,6 @@ public class SoundPlayer extends Player {
                 playNow(sound.getSound());
             }
             //fade in or out?
-        playing.forEach(soundFx -> {
-            if (dungeonScreen != null)
-                if (soundFx.getOrigin() != null) {
-            float x = dungeonScreen .getController().getXCamPos();
-            float y = dungeonScreen.getController().getYCamPos();
-            float distance = soundFx.getOrigin().dst(x, y);
-            distance *= dungeonScreen.getController().getZoom();
-            float volume =
-             Math.max(10, getVolume() / Math.max(1, (distance) / 200 ))/100;
-            soundFx.setVolume(volume);
-            }
-        });
             //pause sounds
     }
 

@@ -458,7 +458,7 @@ if (!ListMaster.isNotEmpty(coordinates))
 
     public static List<Coordinates> getCoordinatesFromString(String textContent) {
         List<Coordinates> list = new LinkedList<>();
-        for (String s : StringMaster.openContainer(textContent)) {
+        for (String s : StringMaster.open(textContent)) {
             list.add(new Coordinates(true, s));
         }
         return list;

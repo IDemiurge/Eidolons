@@ -155,7 +155,7 @@ public class EncounterMaster {
     private static Map<Wave, Integer> getWaveSequence(Encounter e) {
         Map<Wave, Integer> waves = new XLinkedMap<>();
         int i = 0;
-        for (String typeName : StringMaster.openContainer(e.getTypeNames())) {
+        for (String typeName : StringMaster.open(e.getTypeNames())) {
             ObjType waveType = DataManager.getType(typeName, DC_TYPE.ENCOUNTERS);
             Wave wave = new Wave(waveType, DC_Game.game, new Ref(), DC_Game.game.getPlayer(false));
             wave.initUnitMap(); // TODO is the field ready for coordinates?
@@ -250,7 +250,7 @@ public class EncounterMaster {
         // String string="It appears you have been ambushed!";
         String string = "It appears you have run into hostiles...";
         String enemies = " Among the spotted enemies: \n";
-        for (String wave : StringMaster.openContainer(e.getTypeNames())) {
+        for (String wave : StringMaster.open(e.getTypeNames())) {
             enemies += wave + ", ";
         }
         enemies = StringMaster.cropLast(enemies, 2);

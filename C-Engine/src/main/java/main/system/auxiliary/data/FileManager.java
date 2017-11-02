@@ -427,7 +427,7 @@ public class FileManager {
 
     public static boolean isMusicFile(File sub) {
         String format = StringMaster.getFormat(sub.getName()).replace(".", "");
-        for (String f : StringMaster.openContainer(SoundMaster.STD_FORMATS)) {
+        for (String f : StringMaster.open(SoundMaster.STD_FORMATS)) {
             if (format.equalsIgnoreCase(f)) {
                 return true;
             }

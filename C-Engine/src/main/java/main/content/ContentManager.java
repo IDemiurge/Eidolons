@@ -15,6 +15,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
@@ -46,15 +47,15 @@ public class ContentManager {
     private static List<String> sprops;
     private static List<String> sparams;
     private static Map<String, List<String>> spropListsMap = new ConcurrentMap<>(
-            400, 0.75f);
+     400, 0.75f);
     private static Map<String, List<String>> sparamListsMap = new ConcurrentMap<>(
-            400, 0.75f);
+     400, 0.75f);
 
     private static Map<String, List<String>> spropListsMapAV = new ConcurrentMap<>();
     private static Map<String, List<String>> sparamListsMapAV = new ConcurrentMap<>();
 
     private static Map<String, List<PROPERTY>> propListsMap = new ConcurrentMap<>(
-            400, 0.75f);
+     400, 0.75f);
     private static Map<String, List<PARAMETER>> paramListsMap = new ConcurrentMap<>(400, 0.75f);
     private static Map<String, List<VALUE>> valueListsMap = new ConcurrentMap<>();
     private static Map<String, List<VALUE>> valueListsMapAV = new ConcurrentMap<>();
@@ -85,8 +86,13 @@ public class ContentManager {
     private static Set<VALUE> excludedValueSet;
     private static TypeMaster typeMaster;
     private static ContentManager instance;
+    private static Map<PARAMETER, PARAMETER> currentCache = new HashMap<>();
+    private static Map<PARAMETER, PARAMETER> regenCache = new HashMap<>();
+    private static Map<PARAMETER, PARAMETER> percCache = new HashMap<>();
     private Map<String, VALUE> commons;
+    ;
     private Map<String, Map<String, VALUE>> maps;
+    ;
 
     public ContentManager() {
         instance = this;
@@ -99,7 +105,7 @@ public class ContentManager {
         sparams = new ArrayList<>(params.size());
         sprops = new ArrayList<>(props.size());
 
-        propCache = new HashMap<>(props.size()*3/2);
+        propCache = new HashMap<>(props.size() * 3 / 2);
         for (PROPERTY p : props) {
             String name = p.getName();
             sprops.add(name);
@@ -110,7 +116,7 @@ public class ContentManager {
 
 
         }
-        paramCache = new HashMap<>(params.size()*3/2);
+        paramCache = new HashMap<>(params.size() * 3 / 2);
         for (PARAMETER p : params) {
             String name = p.getName();
             sparams.add(name);
@@ -142,18 +148,50 @@ public class ContentManager {
         return p.toString().contains(StringMaster.PER_LEVEL);
     }
 
-    public static PARAMETER getCurrentParam(PARAMETER p) {
-        if (p.name().startsWith(StringMaster.CURRENT)) {
-            return p;
+    public static PARAMETER getCurrentParam(PARAMETER param) {
+        PARAMETER cParam = currentCache.get(param);
+        if (cParam != null) {
+            return cParam;
         }
-        return getPARAM(StringMaster.CURRENT + p.getName(), true);
+        if (param.name().startsWith(StringMaster.CURRENT))
+            return param;
+        cParam = getPARAM(StringMaster.CURRENT + param.getName(), true);
+        currentCache.put(param, cParam);
+        return cParam;
     }
 
+
     public static PARAMETER getBaseParameterFromCurrent(PARAMETER param) {
+        PARAMETER baseParam = new MapMaster<PARAMETER, PARAMETER>().
+         getKeyForValue(currentCache, param);
+        if (baseParam != null) {
+            return baseParam;
+        }
         if (!param.name().startsWith(StringMaster.CURRENT)) {
             return param;
         }
-        return getPARAM(param.getFullName().replace(StringMaster.CURRENT, ""), true);
+        baseParam = getPARAM(param.getFullName().replace(StringMaster.CURRENT, ""), true);
+        currentCache.put(baseParam, param);
+        return baseParam;
+    }
+//  TODO refactor?
+//  public static PARAMETER getParameterVersion(PARAMETER param, String versionId) {
+//        Map<PARAMETER, PARAMETER> cache = getCache(versionId);
+//    }
+
+    public static PARAMETER getPercentageParam(PARAMETER param) {
+        if (param.isDynamic() && param.name().startsWith(StringMaster.CURRENT)) {
+            param = getBaseParameterFromCurrent(param);
+        }
+        PARAMETER percParam = percCache.get(param);
+        if (percParam != null) {
+            return percParam;
+        }
+        if (param.name().startsWith(StringMaster.CURRENT))
+            return param;
+        percParam = getPARAM(param.getName() + StringMaster.PERCENTAGE);
+        percCache.put(param, percParam);
+        return percParam;
     }
 
     public static PARAMETER getReqParam(PARAMETER p) {
@@ -170,8 +208,14 @@ public class ContentManager {
     }
 
 
-    public static PARAMETER getRegenParam(PARAMETER p) {
-        return getPARAM(p.getName() + StringMaster.REGEN, true);
+    public static PARAMETER getRegenParam(PARAMETER param) {
+        PARAMETER regenParam =  regenCache.get(param);
+        if (regenParam != null) {
+            return regenParam;
+        }
+        regenParam = getPARAM(param.getName() + StringMaster.REGEN, true);
+        regenCache.put(param, regenParam );
+        return regenParam;
     }
 
     public static PARAMETER getRandomUnitParameter() {
@@ -234,12 +278,6 @@ public class ContentManager {
         }
     }
 
-    public static PARAMETER getPercentageParam(PARAMETER p) {
-        if (p.isDynamic() && p.name().startsWith(StringMaster.CURRENT)) {
-            p = getBaseParameterFromCurrent(p);
-        }
-        return getPARAM(p.getName() + StringMaster.PERCENTAGE);
-    }
 
     public static PARAMETER getPARAM(String valueName) {
         if (StringMaster.isEmpty(valueName)) {
@@ -263,7 +301,7 @@ public class ContentManager {
 
         if (param == null) {
             LogMaster.log(LogMaster.CORE_DEBUG, "PARAM NOT FOUND: "
-                    + valueName + "!");
+             + valueName + "!");
             param = G_PARAMS.EMPTY_PARAMETER;
         }
 
@@ -392,7 +430,7 @@ public class ContentManager {
 
         {
             LogMaster.log(LogMaster.CORE_DEBUG, "PROPERTY NOT FOUND: "
-                    + valueName + "!");
+             + valueName + "!");
         }
 
         if (property == null) {
@@ -418,7 +456,7 @@ public class ContentManager {
             return null;
         }
         if (LOWER_CASE_CACHED)
-             valueName = valueName.toLowerCase();
+            valueName = valueName.toLowerCase();
         VALUE v = propCache.get(valueName);
         if (v != null) {
             if (!checkExcluded(v)) {
@@ -433,9 +471,9 @@ public class ContentManager {
             }
         }
 
-        v = getPROP(valueName, true );
+        v = getPROP(valueName, true);
         if (v == null) {
-            v = getPARAM(valueName, true );
+            v = getPARAM(valueName, true);
         }
         if (v == null) {
             if (extensiveSearch) {
@@ -448,7 +486,7 @@ public class ContentManager {
                 PARAMETER param = findPARAM(valueName);
                 if (prop != null && param != null) {
                     v = StringMaster.compareSimilar(prop.toString(), valueName) >= StringMaster
-                            .compareSimilar(param.toString(), valueName) ? prop : param;
+                     .compareSimilar(param.toString(), valueName) ? prop : param;
                 } else if (prop != null) {
                     v = prop;
                 } else {
@@ -459,7 +497,7 @@ public class ContentManager {
             }
             if (v == null) {
                 LogMaster.log(LogMaster.CORE_DEBUG, "VALUE NOT FOUND: "
-                        + valueName);
+                 + valueName);
             }
 
         }
@@ -530,7 +568,7 @@ public class ContentManager {
 
     public static List<PARAMETER> getParamsForType(String entity, boolean dynamic) {
         List<PARAMETER> paramList = (dynamic) ? paramListsMap.get(entity) : paramListsMapAV
-                .get(entity);
+         .get(entity);
         if (paramList != null) {
             return paramList;
         }
@@ -555,7 +593,7 @@ public class ContentManager {
 
     public static List<String> getParamNames(String entity, boolean dynamic) {
         List<String> paramList = (dynamic) ? sparamListsMap.get(entity) : sparamListsMapAV
-                .get(entity);
+         .get(entity);
         if (paramList != null) {
             return paramList;
         }
@@ -653,7 +691,7 @@ public class ContentManager {
             return Collections.EMPTY_LIST;
         }
         List<String> valueNames = (av) ? getValueNamesMapAV().get(objType) : getValueNamesMap()
-                .get(objType);
+         .get(objType);
         if (valueNames != null) {
             return valueNames;
         }
@@ -1005,7 +1043,7 @@ public class ContentManager {
 
     public static String getCurrentOutOfTotal(PARAMETER value, Entity obj) {
         return obj.getValue(value) +
-                "/" + obj.getValue(getBaseParameterFromCurrent(value));
+         "/" + obj.getValue(getBaseParameterFromCurrent(value));
     }
 
     public void init() {

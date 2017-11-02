@@ -257,7 +257,7 @@ public class DrawMaster {
                     drawImageCentered(g, img);
                 }
             }
-            for (String substring : StringMaster.openContainer(dungeon
+            for (String substring : StringMaster.open(dungeon
                     .getProperty(PROPS.ENCOUNTER_SPAWN_POINTS))) {
                 if (!cellComp.getCoordinates().equals(new Coordinates(substring))) {
                     continue;
@@ -266,7 +266,7 @@ public class DrawMaster {
                 drawImageCentered(g, img);
                 // TODO OR STRING/CHAR
             }
-            for (String substring : StringMaster.openContainer(dungeon
+            for (String substring : StringMaster.open(dungeon
                     .getProperty(PROPS.ENCOUNTER_BOSS_SPAWN_POINTS))) {
                 if (!cellComp.getCoordinates().equals(new Coordinates(substring))) {
                     continue;

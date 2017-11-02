@@ -438,7 +438,7 @@ public class RollMaster {
         if (!or) {
             separator = StringMaster.AND;
         }
-        for (String s : StringMaster.openContainer(rollString, separator)) {
+        for (String s : StringMaster.open(rollString, separator)) {
             String varPart = VariableManager.getVarPart(s);
             if (StringMaster.isEmpty(varPart)) {
                 rolls.add(new Roll(new EnumMaster<ROLL_TYPES>().retrieveEnumConst(ROLL_TYPES.class,

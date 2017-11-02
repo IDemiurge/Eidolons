@@ -59,7 +59,7 @@ public class SceneFactory  implements Supplier<List<DialogScenario>> {
         Speech speech;
 //        speech.getFormattedText()
         List<DialogScenario> list = new LinkedList<>();
-//        for (String substring : StringMaster.openContainer(data)) {
+//        for (String substring : StringMaster.open(data)) {
         TextureRegion backTexture = null;
         for (SpeechData data : fullData) {
             TextureRegion portraitTexture = null;

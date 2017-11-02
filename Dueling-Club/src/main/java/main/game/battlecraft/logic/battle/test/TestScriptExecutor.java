@@ -84,7 +84,7 @@ public class TestScriptExecutor extends ScriptManager<TestBattle, TEST_SCRIPT> {
              }
          };
         text=genericScriptsExecutor.readScriptsFile();
-        for (String script : StringMaster.openContainer(text,
+        for (String script : StringMaster.open(text,
          ScriptSyntax.SCRIPTS_SEPARATOR)) {
             addTrigger(ScriptParser.parseScript(
              script,

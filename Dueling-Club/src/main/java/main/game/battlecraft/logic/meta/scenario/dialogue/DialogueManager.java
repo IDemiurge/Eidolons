@@ -30,7 +30,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     }
 
     public void startDialogues(String data) {
-        for (String substring : StringMaster.openContainer(data)) {
+        for (String substring : StringMaster.open(data)) {
 //            GameDialogue dialogue=  getDialogueFactory().getDialogue(substring, (ScenarioMetaMaster) master);
 //            startDialogue(dialogue);
         }

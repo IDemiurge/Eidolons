@@ -1,6 +1,5 @@
 package main.libgdx.stage;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import main.libgdx.DialogScenario;
+import main.libgdx.GdxMaster;
 
 import java.util.Iterator;
 import java.util.List;
@@ -27,8 +27,8 @@ public class ChainedStage extends Stage {
 
     public ChainedStage(ScreenViewport viewport, Batch batch, List<DialogScenario> list) {
         super(viewport==null ?
-         new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(),
-         Gdx.graphics.getHeight(), new OrthographicCamera()) : viewport,
+         new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
+         GdxMaster.getHeight(), new OrthographicCamera()) : viewport,
          batch == null ?  new SpriteBatch() :
          batch);
         current = new Container<>();
@@ -88,7 +88,7 @@ public class ChainedStage extends Stage {
 
         if (!root.isVisible()) return;
 
-        combined.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        combined.setToOrtho2D(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
 
         Batch batch = this.getBatch();
         batch.setProjectionMatrix(combined);

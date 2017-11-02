@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
@@ -30,6 +32,7 @@ public class TextureCache {
     private static boolean altTexturesOn = true;
     private static Texture emptyTexture;
     private static Map<String, TextureRegion> regionCache = new HashMap<>(300);
+    private static Map<TextureRegion, Drawable> drawableMap = new HashMap<>(300);
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
     private String imagePath;
@@ -243,6 +246,17 @@ public class TextureCache {
 
             }
         return t;
+    }
+
+    public static Drawable getOrCreateTextureRegionDrawable(TextureRegion originalTexture) {
+        Drawable  drawable = drawableMap.get(originalTexture);
+        if (drawable == null)
+        {
+            drawable= new TextureRegionDrawable(originalTexture) ;
+            drawableMap.put(originalTexture,drawable);
+        }
+
+        return drawable;
     }
 }
 

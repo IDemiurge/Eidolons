@@ -63,7 +63,7 @@ public class Deity extends Entity {
         if (enemyDeities == null) {
             enemyDeities = new LinkedList<>();
         }
-        for (String type : StringMaster.openContainer(getProperty(PROPS.ENEMY_DEITIES))) {
+        for (String type : StringMaster.open(getProperty(PROPS.ENEMY_DEITIES))) {
             Deity deity = DC_ContentManager.getDeity(ref, type);
             if (deity != null) {
                 enemyDeities.add(deity);
@@ -97,7 +97,7 @@ public class Deity extends Entity {
         if (friendDeities == null) {
             friendDeities = new LinkedList<>();
         }
-        for (String type : StringMaster.openContainer(getProperty(PROPS.FRIEND_DEITIES))) {
+        for (String type : StringMaster.open(getProperty(PROPS.FRIEND_DEITIES))) {
             Deity deity = DC_ContentManager.getDeity(ref, type);
             if (deity != null) {
                 friendDeities.add(deity);
@@ -110,7 +110,7 @@ public class Deity extends Entity {
         if (alliedDeities == null) {
             alliedDeities = new LinkedList<>();
         }
-        for (String type : StringMaster.openContainer(getProperty(PROPS.ALLIED_DEITIES))) {
+        for (String type : StringMaster.open(getProperty(PROPS.ALLIED_DEITIES))) {
             Deity deity = DC_ContentManager.getDeity(ref, type);
             if (deity != null) {
                 alliedDeities.add(deity);

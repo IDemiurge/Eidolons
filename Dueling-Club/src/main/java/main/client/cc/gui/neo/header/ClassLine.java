@@ -42,7 +42,7 @@ public class ClassLine extends G_Panel {
         int x = 0;
         int y = 0;
         // TODO empty items?
-        for (String string : StringMaster.openContainer(hero.getProperty(PROPS.CLASSES))) {
+        for (String string : StringMaster.open(hero.getProperty(PROPS.CLASSES))) {
             string = VariableManager.removeVarPart(string);
             ObjType type = DataManager.getType(string, DC_TYPE.CLASSES);
 
@@ -102,13 +102,13 @@ public class ClassLine extends G_Panel {
         String typeName = StringMaster.getSubString(property, "(", ")", false);
         ObjType multiclassType = DataManager.getType(typeName);
 
-        for (String className : StringMaster.openContainer(multiclassType
+        for (String className : StringMaster.open(multiclassType
                 .getProperty(PROPS.BASE_CLASSES_ONE))) {
             if (type.getName().equalsIgnoreCase(className)) {
                 return true;
             }
         }
-        for (String className : StringMaster.openContainer(multiclassType
+        for (String className : StringMaster.open(multiclassType
                 .getProperty(PROPS.BASE_CLASSES_TWO))) {
             if (type.getName().equalsIgnoreCase(className)) {
                 return true;

@@ -6,6 +6,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import main.libgdx.GdxMaster;
 
 /**
  * Created by PC on 13.11.2016.
@@ -115,7 +116,7 @@ public class MeshScreenTest implements ApplicationListener {
         int vertexCount = (idx / NUM_COMPONENTS);
 
         //update the camera with our Y-up coordiantes
-        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        cam.setToOrtho(false, GdxMaster.getWidth(), GdxMaster.getHeight());
 
         //start the shader before setting any uniforms
         shader.begin();

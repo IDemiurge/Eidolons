@@ -160,7 +160,13 @@ public class DefaultActionHandler {
     }
 
 
-    public static boolean leftClickUnit(BattleFieldObject target) {
+    public static boolean leftClickUnit(boolean shift, boolean control, BattleFieldObject target) {
+       if (shift){
+           return leftClickCell(true, false, target.getX(), target.getY());
+       }
+        if (control){
+            return leftClickCell(false, true,  target.getX(), target.getY());
+        }
         if (target.isMine())
             return false;
         if (!OptionsMaster.getGameplayOptions().getBooleanValue

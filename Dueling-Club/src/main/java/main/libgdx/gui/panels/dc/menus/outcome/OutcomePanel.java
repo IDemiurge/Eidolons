@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import main.game.core.Eidolons;
+import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.panels.dc.TabbedPanel;
@@ -137,7 +138,7 @@ public class OutcomePanel extends TablePanel implements EventListener {
         if (getActions().size>0)            return true;        Actor actor = event.getTarget();
         if (actor instanceof Label) {
             if (actor.getParent() instanceof TextButton) {
-                ActorMaster.addMoveToAction(this, getX(), Gdx.graphics.getHeight(), 1.5f);
+                ActorMaster.addMoveToAction(this, getX(), GdxMaster.getHeight(), 1.5f);
 //                ActorMaster.addRemoveAfter(this);
                 final Boolean exit_continue_next =
                  doneButton.getActor().getLabel() == actor ? null :

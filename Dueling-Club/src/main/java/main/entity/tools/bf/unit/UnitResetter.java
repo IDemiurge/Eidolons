@@ -296,7 +296,7 @@ public class UnitResetter extends EntityResetter<Unit> {
 
     public void resetRanks(DequeImpl<DC_FeatObj> container, PROPERTY property) {
         List<DC_FeatObj> list = new LinkedList<>(container);
-        for (String feat : StringMaster.openContainer(getProperty(property))) {
+        for (String feat : StringMaster.open(getProperty(property))) {
             Integer rank = StringMaster.getInteger(VariableManager.getVarPart(feat));
             if (rank == 0) {
                 continue;

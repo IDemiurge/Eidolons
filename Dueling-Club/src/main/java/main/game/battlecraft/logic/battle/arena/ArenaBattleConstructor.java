@@ -242,7 +242,7 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
         int minDistance = Integer.MAX_VALUE;
         int maxDistance = 0;
         Map<Coordinates, Point> map = new HashMap<>();
-        for (String substring : StringMaster.openContainer(getDungeon().getProperty(
+        for (String substring : StringMaster.open(getDungeon().getProperty(
                 PROPS.ENCOUNTER_SPAWN_POINTS))) {
             Coordinates coordinates = new Coordinates(substring);
             if (usedSpawnCoordinates.contains(coordinates)) {

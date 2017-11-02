@@ -222,7 +222,7 @@ public class AddBuffEffect extends MultiEffect  implements OneshotEffect, Resist
             return;
         }
         String prop = ref.getActive().getProperty(PROPS.RETAIN_CONDITIONS, false);
-        for (String s : StringMaster.openContainer(prop)) {
+        for (String s : StringMaster.open(prop)) {
             RETAIN_CONDITIONS template = new EnumMaster<RETAIN_CONDITIONS>().retrieveEnumConst(
                     RETAIN_CONDITIONS.class, s);
             Condition condition;

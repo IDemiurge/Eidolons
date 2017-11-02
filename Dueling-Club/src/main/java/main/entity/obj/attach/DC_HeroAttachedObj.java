@@ -122,21 +122,21 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
         if (ref == null) {
             return;
         }
-        for (String prop : StringMaster.openContainer(getProperty(G_PROPS.STANDARD_PASSIVES))) {
+        for (String prop : StringMaster.open(getProperty(G_PROPS.STANDARD_PASSIVES))) {
             if (!new ListMaster<String>().contains(STD_PASSIVES_EXCEPTIONS, (prop), true)) {
                 getHero().addProperty(G_PROPS.STANDARD_PASSIVES, prop);
             }
         }
-        for (String prop : StringMaster.openContainer(getProperty(G_PROPS.IMMUNITIES))) {
+        for (String prop : StringMaster.open(getProperty(G_PROPS.IMMUNITIES))) {
             getHero().addProperty(G_PROPS.IMMUNITIES, prop);
         }
 
-        for (String prop : StringMaster.openContainer(getProperty(G_PROPS.ACTIVES))) {
+        for (String prop : StringMaster.open(getProperty(G_PROPS.ACTIVES))) {
             getHero().addProperty(G_PROPS.ACTIVES, prop); // TODO
             // auto-requirement
         }
         if (!isActivatePassives()) {
-            for (String prop : StringMaster.openContainer(getProperty(G_PROPS.PASSIVES))) {
+            for (String prop : StringMaster.open(getProperty(G_PROPS.PASSIVES))) {
                 getHero().addProperty(G_PROPS.PASSIVES, prop);
             }
             getHero().setConstructed(false);

@@ -109,14 +109,13 @@ public class GammaMaster {
                 for (Obj sub : IlluminationRule.getEffectCache().keySet()) {
                     if (sub instanceof Unit)
                         continue; //TODO illuminate some other way for units...
-                    if (sub.getCoordinates().x==x)
-                        if (sub.getCoordinates().y==y)
-                            if (((DC_Obj)sub).getPlayerVisionStatus(false)==
-                             UNIT_TO_PLAYER_VISION.DETECTED)
-                        {
-                            alpha += LIGHT_EMITTER_ALPHA_FACTOR * IlluminationRule
-                             .getLightEmission((DC_Obj) sub);
-                        }
+                    if (sub.getCoordinates().x == x)
+                        if (sub.getCoordinates().y == y)
+                            if (((DC_Obj) sub).getPlayerVisionStatus(false) ==
+                             UNIT_TO_PLAYER_VISION.DETECTED) {
+                                alpha += LIGHT_EMITTER_ALPHA_FACTOR * IlluminationRule
+                                 .getLightEmission((DC_Obj) sub);
+                            }
                 }
 
                 if (alpha > 0) {
@@ -146,20 +145,25 @@ public class GammaMaster {
 
     public float getGammaForCell(int x, int y) {
         DC_Cell cell = Eidolons.game.getCellByCoordinate(new Coordinates(x, y));
-        if (cell==null ){
+        if (cell == null) {
             return 0;
         }
-        if ( cell.getGamma()==null ){
+        if (cell.getGamma() == null) {
             return 0;
         }
         if (cell.getGame().isDebugMode())
-        if ( cell.getGamma()==0 ){
+            if (cell.getGamma() == 0) {
 //            if ( cell.getIntParam("illumination")!=0 )
-            return getGamma(true,master.getSeeingUnit(), cell);
-        }
+                try {
+                    return getGamma(true, master.getSeeingUnit(), cell);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+
+            }
 //        Unit unit =  master.getSeeingUnit();
         return CELL_GAMMA_MODIFIER * (float)
-        cell.getGamma();
+         cell.getGamma();
 //        return new Random().nextInt(50)/100 + 0.5f;
     }
 }

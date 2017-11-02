@@ -1,8 +1,8 @@
 package main.libgdx.bf;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import main.game.bf.Coordinates;
+import main.libgdx.GdxMaster;
 import main.libgdx.gui.CursorPosVector2;
 import main.libgdx.screens.DungeonScreen;
 
@@ -40,8 +40,8 @@ public class GridMaster {
         if (camera) {
 //            x -= controller.getXCamPos();
 //            y -= controller.getYCamPos();
-            x -= Gdx.graphics.getWidth()/2;
-            y -= Gdx.graphics.getHeight()/2;
+            x -= GdxMaster.getWidth()/2;
+            y -= GdxMaster.getHeight()/2;
         }
         if (center) {
             x += GridConst.CELL_W  / 2;

@@ -52,7 +52,7 @@ public class ObjectiveMaster {
     }
 
     public static void initObjectives(String types, String data, Location location) {
-        for (String s : StringMaster.openContainer(types)) {
+        for (String s : StringMaster.open(types)) {
             // main objective - victory?
             OBJECTIVE_TYPE type = new EnumMaster<OBJECTIVE_TYPE>().retrieveEnumConst(
                     OBJECTIVE_TYPE.class, s);

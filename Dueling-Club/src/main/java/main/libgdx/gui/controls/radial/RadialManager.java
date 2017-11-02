@@ -403,7 +403,8 @@ public class RadialManager {
         }
 
         RadialValueContainer valueContainer =
-         new RadialValueContainer(new TextureRegion(getTextureForActive(parent, target)), null,  checkValid(parent, target));
+         new RadialValueContainer(new TextureRegion(getTextureForActive(parent, target)), null,
+          checkValid(parent, target));
         addSimpleTooltip(valueContainer, parentNode.getName());
         valueContainer.setChildNodes(list);
 

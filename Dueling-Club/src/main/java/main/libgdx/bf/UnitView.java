@@ -36,6 +36,7 @@ public class UnitView extends BaseView {
     protected boolean mobilityState = true;//mobility state, temporary.
     protected boolean flickering;
     protected boolean initialized;
+    protected boolean stealth;
 
 
     public UnitView(UnitViewOptions o) {
@@ -95,7 +96,8 @@ public class UnitView extends BaseView {
 
     protected void updateVisible() {
     }
-        protected void updateModeImage(String pathToImage) {
+
+    protected void updateModeImage(String pathToImage) {
         removeActor(modeImage);
         if (pathToImage == null)
             return;
@@ -164,6 +166,7 @@ public class UnitView extends BaseView {
         ShaderProgram shader = null;
 
         if (isVisible()) {
+
             if (greyedOut) {
                 shader = batch.getShader();
                 batch.setShader(GrayscaleShader.getGrayscaleShader());
@@ -172,15 +175,22 @@ public class UnitView extends BaseView {
                 if (SuperActor.alphaFluctuationOn) //TODO fix
                     ActorMaster.addFadeInOrOutIfNoActions(this, 5);
         }
-        if (outline != null)
-        {
+        if (outline != null) {
 //            batch.draw(outline, getX(), getY());
             getPortrait().setDrawable(new TextureRegionDrawable(outline));
+        } else {
+            if (originalTextureAlt != null)
+            {
+                getPortrait().setDrawable(TextureCache.getOrCreateTextureRegionDrawable(originalTextureAlt));
+            }
+            else
+            {
+                {
+                    getPortrait().setDrawable(TextureCache.getOrCreateTextureRegionDrawable(originalTexture));
+                }
+            }
         }
-       else {
-            getPortrait().setDrawable(new TextureRegionDrawable(originalTexture));
-        }
-            super.draw(batch, parentAlpha);
+        super.draw(batch, parentAlpha);
 
         if (batch.getShader() == GrayscaleShader.getGrayscaleShader())
             batch.setShader(shader);
@@ -196,6 +206,8 @@ public class UnitView extends BaseView {
 
     public void setGreyedOut(boolean greyedOut) {
         this.greyedOut = greyedOut;
+        getPortrait().getColor().a = 1;
+        getColor().a = 1;
 
     }
 

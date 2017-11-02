@@ -56,9 +56,16 @@ public class LocationSpawner extends Spawner<Location> {
              getGame().getMetaMaster().getPartyManager()
               .getParty().getMembers());
             getPositioner().setMaxSpacePercentageTaken(50);
-            Iterator<Coordinates> iterator = getPositioner().getPlayerPartyCoordinates(list).iterator();
+           List<Coordinates> coords = getPositioner().getPlayerPartyCoordinates(list);
+            Iterator<Coordinates> iterator = coords.iterator();
 
             for (Unit member : getGame().getMetaMaster().getPartyManager().getParty().getMembers()) {
+if (!iterator.hasNext())
+{
+    main.system.auxiliary.log.LogMaster.log(1,"Spawn failed: Coordinates: " +coords +
+     "; Units" +list);
+    break;
+}
                 member.setCoordinates(iterator.next());
                 member.setConstructed(false);
                 getGame().getState().addObject(member);
@@ -117,7 +124,7 @@ public class LocationSpawner extends Spawner<Location> {
     public void spawnDungeonCreeps(Location dungeon) {
         String info = dungeon.getProperty(PROPS.ENCOUNTER_INFO);
         Map<Coordinates, Integer> delayMap = new HashMap<>();
-        for (String substring : StringMaster.openContainer(info)) {
+        for (String substring : StringMaster.open(info)) {
             Coordinates c = new Coordinates(substring.split("")[0]);
             int round = StringMaster.getInteger(substring.split("=")[1]);
             delayMap.put(c, round);

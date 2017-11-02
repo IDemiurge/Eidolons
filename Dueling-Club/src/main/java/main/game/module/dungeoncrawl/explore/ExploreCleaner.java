@@ -6,8 +6,10 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.values.properties.G_PROPS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.ActiveObj;
+import main.entity.obj.BuffObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
+import main.game.battlecraft.logic.battlefield.vision.StealthRule;
 import main.game.core.Eidolons;
 
 /**
@@ -22,9 +24,9 @@ public class ExploreCleaner extends ExplorationHandler {
     public void cleanUpAfterAction(DC_ActiveObj activeObj, Unit unit) {
         if (activeObj.getActionGroup() == ACTION_TYPE_GROUPS.MODE) {
             ModeEffect e = (ModeEffect) EffectFinder.getFirstEffectOfClass(activeObj, ModeEffect.class);
-            if (e!= null )
-                if (e.getMode()== unit.getMode())
-                    return ;
+            if (e != null)
+                if (e.getMode() == unit.getMode())
+                    return;
         }
         removeMode(unit);
     }
@@ -34,7 +36,10 @@ public class ExploreCleaner extends ExplorationHandler {
          unit -> {
              unit.resetDynamicParam(PARAMS.C_N_OF_ACTIONS);
              removeMode(unit);
-cleanUpActions(unit);
+             BuffObj buff = unit.getBuff(StealthRule.SPOTTED);
+             if (buff != null)
+                 buff.remove();
+             cleanUpActions(unit);
          });
     }
 
@@ -48,8 +53,8 @@ cleanUpActions(unit);
         if (unit.getMode() != null)
             if (unit.getBuff(unit.getMode().getBuffName()) != null)
                 unit.getBuff(unit.getMode().getBuffName()).remove();
-                unit.setProperty(G_PROPS.MODE, "");
-                unit.getMode(); //to reset
+        unit.setProperty(G_PROPS.MODE, "");
+        unit.getMode(); //to reset
 //             for (BuffObj buff : unit.getBuffs()) {
 //                 if (checkBuffRemoved(buff))
 //                     buff.remove();

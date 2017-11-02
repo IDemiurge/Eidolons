@@ -68,7 +68,7 @@ public class PrincipleMaster {
         String prop = type.getProperty(G_PROPS.PRINCIPLES);
         prop = prop.replaceAll("3", "2");
         prop = prop.replaceAll("4", "2");
-        for (String substring : StringMaster.openContainer(prop)) {
+        for (String substring : StringMaster.open(prop)) {
             if (prop.contains("(0)")) {
                 prop = prop.replace(substring + ";", "");
             }
@@ -157,7 +157,7 @@ public class PrincipleMaster {
 
         String newValue = "";
         int i = Math.min(3, StringMaster.openContainer(prop).size());
-        for (String substring : StringMaster.openContainer(prop)) {
+        for (String substring : StringMaster.open(prop)) {
             newValue += substring + StringMaster.wrapInParenthesis(i + "") + ";";
             PRINCIPLES principle = new EnumMaster<PRINCIPLES>().retrieveEnumConst(PRINCIPLES.class,
                     substring);

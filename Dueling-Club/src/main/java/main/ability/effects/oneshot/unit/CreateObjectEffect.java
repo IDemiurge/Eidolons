@@ -37,7 +37,7 @@ public class CreateObjectEffect extends SummonEffect {
 
     private void applyParamBuff() {
         Effects param_effects = new Effects();
-        for (String s : StringMaster.openContainer(param_mods)) {
+        for (String s : StringMaster.open(param_mods)) {
             String varPart = VariableManager.getVarPart(s);
             String valueName = s.replace(varPart, "");
             String formula = StringMaster.cropParenthesises(varPart)

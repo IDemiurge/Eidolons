@@ -328,7 +328,7 @@ public class PresetLauncher {
     }
 
     private static void initOptions(String value) {
-        for (String optionString : StringMaster.openContainer(value)) {
+        for (String optionString : StringMaster.open(value)) {
             PRESET_OPTION option = new EnumMaster<PRESET_OPTION>().retrieveEnumConst(
              PRESET_OPTION.class, optionString);
             switch (option) {
@@ -391,7 +391,7 @@ public class PresetLauncher {
 //    }
 
     private static void initDungeonsList(String value) {
-        for (String name : StringMaster.openContainer(value)) {
+        for (String name : StringMaster.open(value)) {
             // else TODO
             // DungeonMaster.getPendingDungeons().add(name);
 

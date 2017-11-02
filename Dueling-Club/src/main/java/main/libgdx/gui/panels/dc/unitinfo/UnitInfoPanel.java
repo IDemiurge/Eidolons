@@ -1,6 +1,5 @@
 package main.libgdx.gui.panels.dc.unitinfo;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import main.libgdx.GdxMaster;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
@@ -23,10 +23,10 @@ public class UnitInfoPanel extends Container<TablePanel> {
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         background(drawable);
         setWidth(textureRegion.getRegionWidth());
-        setHeight(Gdx.graphics.getHeight());
+        setHeight(GdxMaster.getHeight());
 
         outside = new Actor();
-        outside.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        outside.setBounds(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
         outside.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

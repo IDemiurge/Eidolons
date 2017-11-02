@@ -134,7 +134,7 @@ public class HitAnim extends ActionAnim {
     @Override
     public Actor getActor() {
         return DungeonScreen.getInstance().getGridPanel().getUnitMap()
-         .get(getActive().getRef().getTargetObj());
+         .get(getRef().getTargetObj());
     }
 
     @Override

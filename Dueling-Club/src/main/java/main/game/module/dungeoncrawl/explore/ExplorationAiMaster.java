@@ -8,9 +8,11 @@ import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.AiActionFactory;
 import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import main.game.core.ActionInput;
+import main.game.core.Eidolons;
 import main.game.logic.action.context.Context;
 import main.game.module.dungeoncrawl.ai.AiBehavior;
 import main.system.datatypes.DequeImpl;
+import main.system.math.PositionMaster;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -59,6 +61,10 @@ public class ExplorationAiMaster extends ExplorationHandler {
                 return;
             if (ai.getExplorationTimePassed() <= ExplorationTimeMaster.secondsPerAP)
                 continue;
+            double distance = PositionMaster.getExactDistance(ai.getUnit().getCoordinates(),
+             Eidolons.getMainHero().getCoordinates());
+            if (distance>getMaxDistance(ai))
+                continue;
             try {
                 if (tryMoveAi(ai))
                     isAiActs = true;
@@ -75,9 +81,16 @@ public class ExplorationAiMaster extends ExplorationHandler {
         }
     }
 
+    private double getMaxDistance(UnitAI ai) {
+        return 6;
+    }
+
     private boolean tryMoveAi(UnitAI ai) {
         if (ai.getStandingOrders() == null) {
             ai.setStandingOrders(getOrders(ai));
+        }
+        if (ai.getStandingOrders() == null) {
+            return false;
         }
         Double cost = ai.getStandingOrders().getCurrentAction().getActive().
          getParamDouble(PARAMS.AP_COST);
@@ -102,6 +115,9 @@ public class ExplorationAiMaster extends ExplorationHandler {
     private boolean tryMoveAiTurnBased(UnitAI ai, float timePercentage) {
         if (ai.getStandingOrders() == null) {
             ai.setStandingOrders(getOrders(ai));
+        }
+        if (ai.getStandingOrders() == null) {
+            return false;
         }
         Double cost = ai.getStandingOrders().getCurrentAction().getActive().
          getParamDouble(PARAMS.AP_COST) / ai.getUnit().getIntParam(PARAMS.N_OF_ACTIONS);
@@ -138,7 +154,8 @@ public class ExplorationAiMaster extends ExplorationHandler {
             if (master.getPartyMaster().isFollowOn(ai.getUnit())) { //isFollow
                 Action move = master.getPartyMaster().getFollowMove(ai.getUnit());
                 if (move == null) {
-                    return getIdleOrders(ai);
+                    return null;
+//                    return getIdleOrders(ai);
                 } else {
                     return new ActionSequence(GOAL_TYPE.MOVE, move);
                 }
@@ -147,7 +164,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
         AiBehavior behavior = getAiBehavior(ai);
         ActionSequence orders = behavior.getOrders(ai);
         if (orders == null) {
-            orders= getIdleOrders(ai);
+//            orders= getIdleOrders(ai);
         }
         return orders;
     }

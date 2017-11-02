@@ -33,7 +33,7 @@ public class AutoTest {
         this.master = master;
         this.type = type;
         this.testType = testType;
-        for (String a : StringMaster.openContainer(args)) {
+        for (String a : StringMaster.open(args)) {
             TEST_ARGS argType = new EnumMaster<TEST_ARGS>().retrieveEnumConst(TEST_ARGS.class, a
                     .split(StringMaster.PAIR_SEPARATOR)[0]);
             a = a.substring(a.indexOf(StringMaster.PAIR_SEPARATOR) + 1);
@@ -78,7 +78,7 @@ public class AutoTest {
     }
 
     public void generateConstraints() {
-        for (String s : StringMaster.openContainer(getEntity().getProperty(
+        for (String s : StringMaster.open(getEntity().getProperty(
                 PROPS.AUTO_TEST_CONSTRAINTS))) {
 //			constraints.add(new Constraint(s, getEntity()));
         }

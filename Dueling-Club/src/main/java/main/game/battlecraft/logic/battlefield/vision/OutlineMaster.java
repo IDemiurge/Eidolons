@@ -12,6 +12,7 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.core.DC_TurnManager;
 import main.game.core.game.DC_Game;
+import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.math.PositionMaster;
 import main.test.debug.DebugMaster;
@@ -63,6 +64,9 @@ public class OutlineMaster {
           if (activeUnit.isMine())  return null;
         }
         if (unit.getGame().isSimulation()) {
+            return null;
+        }
+        if (unit instanceof Entrance) {
             return null;
         }
         if (unit.isDetectedByPlayer()) {

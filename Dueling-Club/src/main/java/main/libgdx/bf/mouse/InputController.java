@@ -1,6 +1,5 @@
 package main.libgdx.bf.mouse;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
+import main.libgdx.GdxMaster;
 import main.libgdx.anims.particles.lighting.FireLightProt;
 import main.libgdx.anims.particles.lighting.LightMap;
 import main.libgdx.anims.particles.lighting.LightingManager;
@@ -263,19 +263,19 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
         public boolean isWithinCamera(float x, float y, float width, float height) {
 //            width = width / getZoom();
 //            height = height / getZoom();
-//            float minY = camera.position.y - Gdx.graphics.getHeight()/2;
-//            float maxY = camera.position.y + Gdx.graphics.getHeight()/2;
+//            float minY = camera.position.y - GdxMaster.getHeight()/2;
+//            float maxY = camera.position.y + GdxMaster.getHeight()/2;
 //
 //        float x1 =   x/getZoom();
-//        if (camera.position.x - x1 <width ||camera.position.x - x1 >2*Gdx.graphics.getWidth())
+//        if (camera.position.x - x1 <width ||camera.position.x - x1 >2*GdxMaster.getWidth())
 //            return false;
 
             float xPos = Math.abs(camera.position.x - x)-width;
-        if (xPos > Gdx.graphics.getWidth() * getZoom() / 2)
+        if (xPos > GdxMaster.getWidth() * getZoom() / 2)
             return false;
             float yPos = Math.abs(camera.position.y - y)-height;
-        if (yPos >  Gdx.graphics.getHeight() * getZoom() / 2)
-//        if (y1-camera.position.y   <height ||y1-camera.position.y   >2*Gdx.graphics.getHeight())
+        if (yPos >  GdxMaster.getHeight() * getZoom() / 2)
+//        if (y1-camera.position.y   <height ||y1-camera.position.y   >2*GdxMaster.getHeight())
             return false;
 
         return true;

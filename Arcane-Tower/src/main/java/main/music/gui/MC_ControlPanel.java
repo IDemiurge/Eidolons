@@ -99,7 +99,7 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
         btnPanel = new G_Panel("flowy");
         add(btnPanel, "x 100");
         int i = 0;
-        for (String cmd : StringMaster.openContainer(commands)) {
+        for (String cmd : StringMaster.open(commands)) {
             boolean wrap = false;
             if (cmd.contains("@")) {
                 wrap = true;

@@ -13,10 +13,10 @@ public class TexturePackerLaunch {
     public static final boolean TRIM =false ;
     static String packs[] = {
 //     "long swords",
-//     "hammers",
+     "hammers",
 //     "daggers",
 //     "fists",
-     "short swords",
+//     "short swords",
 //     "test",
 //     "crossbows",
 //     "bows",

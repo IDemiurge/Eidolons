@@ -68,7 +68,7 @@ public class ScenarioPrecombatMaster {
                         String leaderName = prop.split(";")[0];
                         Unit leader = Launcher.getMainManager().initSelectedHero(leaderName);
                         // prop = prop.replace(leaderName, "");
-                        // for (String s : StringMaster.openContainer(prop)) {
+                        // for (String s : StringMaster.open(prop)) {
                         // }
                         heroes.add(leader);
                         PartyHelper.newParty(leader);

@@ -246,16 +246,16 @@ public class TestMasterContent {
     public static void addTestActives(Boolean full, ObjType type, boolean last) {
         addTestSpells(type, last);
 
-        // for (String s : StringMaster.openContainer(getFOCUS_LIST()))
+        // for (String s : StringMaster.open(getFOCUS_LIST()))
         // if (checkHeroForTestSpell(type, s, last))
         // type.addProperty(G_PROPS.ACTIVES, s, true);
-        // for (String s : StringMaster.openContainer(TestMaster.getFIX_LIST()))
+        // for (String s : StringMaster.open(TestMaster.getFIX_LIST()))
         // if (checkHeroForTestSpell(type, s, last))
         // type.addProperty(G_PROPS.ACTIVES, s, true);
-        // for (String s : StringMaster.openContainer(getTEST_LIST()))
+        // for (String s : StringMaster.open(getTEST_LIST()))
         // if (checkHeroForTestSpell(type, s, last))
         // type.addProperty(G_PROPS.ACTIVES, s, true);
-        // for (String s : StringMaster.openContainer(getPOLISH_LIST()))
+        // for (String s : StringMaster.open(getPOLISH_LIST()))
         // if (checkHeroForTestSpell(type, s, last))
         // type.addProperty(G_PROPS.ACTIVES, s, true);
 
@@ -286,7 +286,7 @@ public class TestMasterContent {
     }
 
     public static void addSpells(Entity type, String list) {
-        for (String s : StringMaster.openContainer(list)) {
+        for (String s : StringMaster.open(list)) {
             type.addProperty(PROPS.VERBATIM_SPELLS, s
              , true);
         }
@@ -298,7 +298,7 @@ public class TestMasterContent {
     }
 
     public static void addGRAPHICS_TEST_Spells(Entity type) {
-        for (String s : StringMaster.openContainer(GRAPHICS_TEST_LIST)) {
+        for (String s : StringMaster.open(GRAPHICS_TEST_LIST)) {
             type.addProperty(PROPS.VERBATIM_SPELLS, s
              , true);
         }
@@ -306,7 +306,7 @@ public class TestMasterContent {
 
     public static void addTestGroupSpells(Entity type) {
         if (testGroups != null) {
-            for (String substring : StringMaster.openContainer(testGroups)) {
+            for (String substring : StringMaster.open(testGroups)) {
                 String prop = G_PROPS.SPELL_GROUP.getName();
                 String spells = "";
                 try {
@@ -338,22 +338,22 @@ public class TestMasterContent {
             return ;
         }
 
-        for (String s : StringMaster.openContainer(getFOCUS_LIST())) {
+        for (String s : StringMaster.open(getFOCUS_LIST())) {
             if (checkHeroForTestSpell(type, s, last)) {
                 type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
             }
         }
-        for (String s : StringMaster.openContainer(TestMasterContent.getFIX_LIST())) {
+        for (String s : StringMaster.open(TestMasterContent.getFIX_LIST())) {
             if (checkHeroForTestSpell(type, s, last)) {
                 type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
             }
         }
-        for (String s : StringMaster.openContainer(getTEST_LIST())) {
+        for (String s : StringMaster.open(getTEST_LIST())) {
             if (checkHeroForTestSpell(type, s, last)) {
                 type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
             }
         }
-        for (String s : StringMaster.openContainer(getPOLISH_LIST())) {
+        for (String s : StringMaster.open(getPOLISH_LIST())) {
             if (checkHeroForTestSpell(type, s, last)) {
                 type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
             }

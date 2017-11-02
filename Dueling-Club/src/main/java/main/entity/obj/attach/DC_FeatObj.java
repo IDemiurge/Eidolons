@@ -106,7 +106,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
             return true;
         }
 
-        for (String s : StringMaster.openContainer(getProperty(PROPS.APPLY_REQS))) {
+        for (String s : StringMaster.open(getProperty(PROPS.APPLY_REQS))) {
             Condition condition = ConditionMaster.toConditions(s);
             if (!condition.preCheck(ref)) {
                 return false;
@@ -122,7 +122,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
             prop = prop + ";";
         }
         prop = prop + getProperty(PROPS.ATTRIBUTE_BONUSES);
-        for (String substring : StringMaster.openContainer(prop)) {
+        for (String substring : StringMaster.open(prop)) {
             // String[] array = substring.split(" ");
             String bonus = // array[array.length - 1];
              VariableManager.getVar(substring);

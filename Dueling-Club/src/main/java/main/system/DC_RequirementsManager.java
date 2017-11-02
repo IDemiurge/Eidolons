@@ -189,7 +189,7 @@ public class DC_RequirementsManager implements RequirementsManager {
         String altBases = type.getProperty(PROPS.ALT_BASE_TYPES);
         if (!altBases.isEmpty()) {
             OrConditions orCondition = new OrConditions(condition);
-            for (String s : StringMaster.openContainer(altBases)) {
+            for (String s : StringMaster.open(altBases)) {
                 orCondition.add(new PropCondition(PROPS.ALT_BASE_TYPES, s, false));
             }
             condition = orCondition;
@@ -202,7 +202,7 @@ public class DC_RequirementsManager implements RequirementsManager {
 
     private Requirements toRequirements(String string) {
         Requirements requirements = new Requirements();
-        for (String subString : StringMaster.openContainer(string)) {
+        for (String subString : StringMaster.open(string)) {
 
             subString = subString.trim();
             if (StringMaster.isEmpty(subString)) {
@@ -348,7 +348,7 @@ public class DC_RequirementsManager implements RequirementsManager {
         String str1 = "";
         if (valRef.contains(StringMaster.VAR_SEPARATOR)) {
             params = new LinkedList<>();
-            for (String s : StringMaster.openContainer(valRef, StringMaster.VAR_SEPARATOR)) {
+            for (String s : StringMaster.open(valRef, StringMaster.VAR_SEPARATOR)) {
 
                 PARAMETER p = ContentManager.getPARAM(s);
                 if (p == null) {

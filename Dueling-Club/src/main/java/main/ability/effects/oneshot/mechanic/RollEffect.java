@@ -153,7 +153,7 @@ public class RollEffect extends MicroEffect  implements OneshotEffect, Container
         if (elseAbilityName != null) {
             elseEffect = new Effects();
         }
-        for (String s : StringMaster.openContainer(elseAbilityName,
+        for (String s : StringMaster.open(elseAbilityName,
                 StringMaster.AND_SEPARATOR)) {
             ((Effects) effect).addAll(EffectFinder
                     .getEffectsFromAbilityType(VariableManager.getVarType(s,
@@ -168,7 +168,7 @@ public class RollEffect extends MicroEffect  implements OneshotEffect, Container
     public Effect getEffect() {
         if (effect == null) {
             effect = new Effects();
-            for (String s : StringMaster.openContainer(abilityName,
+            for (String s : StringMaster.open(abilityName,
                     StringMaster.AND_SEPARATOR)) {
                 ((Effects) effect).addAll(EffectFinder
                         .getEffectsFromAbilityType(VariableManager.getVarType(

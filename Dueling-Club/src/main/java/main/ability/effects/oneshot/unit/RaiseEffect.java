@@ -117,7 +117,7 @@ public class RaiseEffect extends SummonEffect {
         // TODO gotta make sure that the corpse is *RESET* well and has
         // *ACTUAL* values!
 
-        for (String s : StringMaster.openContainer(getModifiedParam())) {
+        for (String s : StringMaster.open(getModifiedParam())) {
             String varPart = VariableManager.getVarPart(s);
             String valueName = s.replace(varPart, "");
             String formula = StringMaster.cropParenthesises(varPart) + "*"

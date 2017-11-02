@@ -110,7 +110,7 @@ public class InfoMaster {
         }
 
         String string = "";
-        for (String s : StringMaster.openContainer(value)) {
+        for (String s : StringMaster.open(value)) {
             string += s + OR;
         }
         string = string.substring(0, string.length() - OR.length());

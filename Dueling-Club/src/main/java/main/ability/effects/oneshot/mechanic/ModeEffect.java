@@ -190,7 +190,7 @@ divination?
             string = "";
         }
         // "Custom Parameters" of old...
-        for (String s : StringMaster.openContainer(ref.getSourceObj().getProperty(
+        for (String s : StringMaster.open(ref.getSourceObj().getProperty(
          G_PROPS.CUSTOM_PROPS))) {
             if (StringMaster.contains(s, mode.getBuffName(), true, false)) {
                 if (StringMaster.contains(s, mod ? PARAM_MOD : PARAM_BONUS, true, false)) {

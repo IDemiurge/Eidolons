@@ -76,7 +76,7 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
         }
         MAP_ZONES zone = null;
         for (MAP_ZONES z : MAP_ZONES.values()) {
-            for (String s : StringMaster.openContainer(z.getCoordinates(), ",")) {
+            for (String s : StringMaster.open(z.getCoordinates(), ",")) {
                 if (c.toString().equals(s)) {
                     zone = z;
                     break;

@@ -98,7 +98,7 @@ public class AutoTargeting extends TargetingImpl {
         filter.setTYPE(TYPE);
         if (TYPES != null) {
             LinkedList<OBJ_TYPE> types = new LinkedList<>();
-            for (String s : StringMaster.openContainer(TYPES)) {
+            for (String s : StringMaster.open(TYPES)) {
                 types.add(ContentManager.getOBJ_TYPE(s));
             }
             filter.setTYPES(types);

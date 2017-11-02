@@ -2,6 +2,7 @@ package main.game.battlecraft.logic.battlefield.vision;
 
 import main.ability.conditions.special.ClearShotCondition;
 import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
@@ -13,11 +14,15 @@ import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.test.debug.DebugMaster;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -64,6 +69,7 @@ public class VisionMaster implements GenericVisionManager {
         ClearShotCondition.clearCache();
         getGammaMaster().clearCache();
         getIlluminationMaster().clearCache();
+        getSightMaster().clearCaches();
 //        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
 //        setActiveUnit(
 //         ExplorationMaster.isExplorationOn()
@@ -99,18 +105,59 @@ public class VisionMaster implements GenericVisionManager {
 
         setRelativePlayerVisibility(game.getPlayer(mine), game.getPlayer(!mine)
          .getControlledUnits());
+        setRelativePlayerVisibility(game.getPlayer(!mine), game.getPlayer(mine)
+         .getControlledUnits());
 
         getActiveUnit().setUnitVisionStatus(VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT);
         getActiveUnit().setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
 //        resetLastKnownCoordinates();
+        triggerGuiEvents();
         //Chronos.logTimeElapsedForMark("PLAYER VISIBILITY REFRESH");
+    }
+
+    public void triggerGuiEvents() {
+        List<BattleFieldObject> visibleList = new LinkedList<>();
+        List<BattleFieldObject> invisibleList = new LinkedList<>();
+        for (BattleFieldObject sub : game.getBfObjects()) {
+            if (sub.isDead())
+                continue;
+            if (isVisibleOnGrid(sub))
+                visibleList.add(sub);
+            else invisibleList.add(sub);
+        }
+        GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_OFF, invisibleList);
+        GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, visibleList);
+    }
+
+    private boolean isVisibleOnGrid(BattleFieldObject sub) {
+//        if (sub.isDead())
+//            if (view.getActions().size == 0) {
+//                return false;
+//            }
+//sub instanceof Unit && !((Unit)sub).getAI().isOutsideCombat()
+
+        if (sub.isMine())
+            return true;
+        if (sub.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.UNKNOWN)
+            return false;
+        else if (sub.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.INVISIBLE) {
+//            if (ExplorationMaster.isExplorationOn())
+
+            return false;
+        } else if (!sub.isWall())
+            if (sub.getOutlineTypeForPlayer() == OUTLINE_TYPE.BLOCKED_OUTLINE)
+                return false;
+            else if (sub.getVisibilityLevelForPlayer() == VISIBILITY_LEVEL.UNSEEN)
+                return false;
+
+        return true;
     }
 
     private void setVisibilityLevel(Set<Obj> controlledUnits) {
         for (Obj obj : controlledUnits) {
             DC_Obj target = (DC_Obj) obj;
             target.setVisibilityLevel(getVisibilityMaster().getUnitVisibilityLevel(
-             getActiveUnit() ,  target ));
+             getActiveUnit(), target));
         }
     }
 
@@ -161,18 +208,17 @@ public class VisionMaster implements GenericVisionManager {
 
     private void setRelativePlayerVisibility(DC_Player player, Collection<? extends Obj> units) {
 
+        boolean invisible=false;
         for (Obj obj : units) {
             DC_Obj target = (DC_Obj) obj;
-            if (target instanceof Unit)
-            {
-                if (ExplorationMaster.isExplorationOn ()||   ((Unit) target).getAI().isOutsideCombat()) {
+            if (target instanceof Unit) {
+                if (ExplorationMaster.isExplorationOn() || ((Unit) target).getAI().isOutsideCombat()) {
                     target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.UNKNOWN);
                 }
             }
 //            else
 //                target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.UNKNOWN);
-            if (target instanceof Structure)
-            {
+            if (target instanceof Structure) {
                 if (!((Structure) target).isWall() || !target.isDetectedByPlayer()) {
                     target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.UNKNOWN);
                 }
@@ -184,12 +230,19 @@ public class VisionMaster implements GenericVisionManager {
                 }
             }
             boolean result = false; // detected or not
-            if (checkInvisible(target)) {
-                if (target.getActivePlayerVisionStatus() != VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE) {
-                    player.getLastSeenCache().put(target, target.getCoordinates());
+            if (target instanceof Unit) {
+                 if (checkInvisible(target)) {
+                    if (target.getActivePlayerVisionStatus() != UNIT_TO_PLAYER_VISION.INVISIBLE) {
+                        player.getLastSeenCache().put(target, target.getCoordinates());
+                    }
+                    target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.INVISIBLE);
+                    invisible = true;
+//                     if (!Analyzer.getVisibleEnemies(((Unit) target).getAI()).isEmpty()) {
+//                         ((Unit) target).setUsingStealth(true);
+//                     } else
+//                         ((Unit) target).setUsingStealth(false);
+                     continue;
                 }
-                target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE);
-                continue;
             }
 
             for (Obj obj1 : player.getControlledUnits()) {
@@ -208,25 +261,23 @@ public class VisionMaster implements GenericVisionManager {
                  ) {
 
                     if (status == VISIBILITY_LEVEL.CONCEALED) {
-                        if (target instanceof BattleFieldObject)
-                        {
+                        if (target instanceof BattleFieldObject) {
                             if (!((BattleFieldObject) target).isWall()
                              || !target.isDetectedByPlayer()) {
                                 target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.UNKNOWN);
                             }
                         } else
-                        target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.CONCEALED);
+                            target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.CONCEALED);
                     } else {
                         target.setDetected(true);
                         if (player.isMe()) {
                             target.setDetectedByPlayer(true);
                         }
-                    if (status == VISIBILITY_LEVEL.CLEAR_SIGHT) {
-                        target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.DETECTED);
-                    }
-                    else {
-                        target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.KNOWN);
-                    }
+                        if (status == VISIBILITY_LEVEL.CLEAR_SIGHT) {
+                            target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.DETECTED);
+                        } else {
+                            target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.KNOWN);
+                        }
                     }
                     result = true;
                     break; // TODO set VL to *max* => Identification Level
@@ -239,7 +290,7 @@ public class VisionMaster implements GenericVisionManager {
                 if (target.isDetectedByPlayer()) {
                     if (obj instanceof DC_Cell) {
                         target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
-                    } else if (target.getVisibilityLevel() != VISIBILITY_LEVEL.BLOCKED){
+                    } else if (target.getVisibilityLevel() != VISIBILITY_LEVEL.BLOCKED) {
                         BattleFieldObject unit = (BattleFieldObject) obj;
                         if (unit.isWall() || unit.isLandscape()) {
                             target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
@@ -247,6 +298,13 @@ public class VisionMaster implements GenericVisionManager {
                     }
 
                 }
+            }
+
+
+        }
+        if (invisible){
+
+        }
 //                if (target.getVisibilityLevel() != VISIBILITY_LEVEL.BLOCKED) {
 //                    if (player.isMe()) {
 //                        if (obj instanceof DC_Cell) {
@@ -260,19 +318,14 @@ public class VisionMaster implements GenericVisionManager {
 //                        }
 //                    }
 //                    } else
-                        {
-                        //TODO  ???
+        //TODO  ???
 //                        if (target.isDetected()
 //                         ) {
 //                            target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
 //                        } else {
 //                            target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN);
 //                        }
-                    }
-                }
 
-
-        }
 
     }
 
@@ -403,7 +456,7 @@ public class VisionMaster implements GenericVisionManager {
 //        if (activeUnit == null)
 //            return getGame().getManager().getActiveObj();
 //        return activeUnit;
-       return  ExplorationMaster.isExplorationOn()
+        return ExplorationMaster.isExplorationOn()
          ? getSeeingUnit() :
          game.getTurnManager().getActiveUnit(true);
     }

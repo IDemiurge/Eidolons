@@ -65,8 +65,8 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         if (party.getMembers().size() == 1) {
             return party.getLeader().getName();
         }
-        if (chooseOneHero)
-            return ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
+//        if (chooseOneHero)
+//            return ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
         if (!WaitMaster.isComplete(WAIT_OPERATIONS.GUI_READY)) {
             Object result = WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY, 4000);
             if (result == null)
@@ -101,7 +101,10 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
     private void mainHeroSelected(PartyObj party, Unit hero) {
         party.getMembers().forEach(member -> {
             if (chooseOneHero)
-                member.kill(member, false, true);
+            {
+                if (member!=hero)
+                    member.kill(member, false, true);
+            }
             else
                 member.setMainHero(false);
         });
@@ -109,6 +112,7 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         hero.setMainHero(true);
         party.setProperty(PROPS.PARTY_MAIN_HERO, hero.getName());
         Eidolons.setSelectedMainHero(hero.getName());
+        Eidolons.setMainHero(hero);
     }
 
     public void preStart() {

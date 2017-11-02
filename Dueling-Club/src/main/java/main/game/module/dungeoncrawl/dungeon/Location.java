@@ -131,7 +131,7 @@ public class Location {
             // new RandomWizard<>().constructStringWeightMapInversed(scenario
             // .getProperty(MACRO_PROPS.RANDOM_SUBLEVELS), SUBDUNGEON_TYPE)
             List<String> list = new LinkedList<>();
-            for (String stretch : StringMaster.openContainer(scenario
+            for (String stretch : StringMaster.open(scenario
                     .getProperty(MACRO_PROPS.RANDOM_SUBLEVELS))) {
                 int i = 0;
                 if (StringMaster.isInteger(stretch)) {
@@ -158,7 +158,7 @@ public class Location {
 
             }
             Dungeon dungeon = root;
-            for (String stretch : StringMaster.openContainer(scenario.getProperty(PROPS.SUBLEVELS))) {
+            for (String stretch : StringMaster.open(scenario.getProperty(PROPS.SUBLEVELS))) {
 
                 // create a map for random sublevels... lvlN=dngType(n)
                 // inverse... find... generate... link
@@ -219,7 +219,7 @@ public class Location {
     }
 
     // TODO FILTER BY CHOSEN SUBDUNGEON TYPE!
-    // for (String group : StringMaster.openContainer(place
+    // for (String group : StringMaster.open(place
     // .getProperty(MACRO_PROPS.SUBLEVEL_GROUP_POOL))) {
     // typePool.addAll(DataManager.getTypesSubGroup(OBJ_TYPES.DUNGEONS,
     // group));

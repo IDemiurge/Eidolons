@@ -9,19 +9,23 @@ import main.libgdx.screens.DungeonScreen;
  * Created by JustMe on 8/30/2017.
  */
 public class GdxMaster {
+    private static int width;
+    private static int height;
+
     public static float centerWidth(Actor actor) {
-        return Gdx.graphics.getWidth() / 2 - actor.getWidth()/2;
+        return GdxMaster.getWidth() / 2 - actor.getWidth()/2;
     }
     public static float centerHeight(Actor actor) {
-        return Gdx.graphics.getHeight() / 2 - actor.getHeight()/2;
+        return GdxMaster.getHeight() / 2 - actor.getHeight()/2;
     }
     public static float top(Actor actor) {
         if (actor.getParent()!=null )
             return actor.getParent().getHeight()   - actor.getHeight() ;
-        return Gdx.graphics.getHeight()   - actor.getHeight() ;
+        return GdxMaster.getHeight()   - actor.getHeight() ;
     }
+
     public static float right(Actor actor) {
-        return Gdx.graphics.getWidth()   - actor.getWidth() ;
+        return GdxMaster.getWidth()   - actor.getWidth() ;
     }
 
     public static Vector3 getCursorPosition() {
@@ -32,4 +36,18 @@ public class GdxMaster {
     public static boolean isLwjglThread() {
         return Thread.currentThread().getName().equalsIgnoreCase("LWJGL Application");
     }
+
+    public static int getWidth() {
+        if (width==0)
+            width = Gdx.graphics.getWidth();
+        return width;
+    }
+
+
+    public static int getHeight() {
+        if (height==0)
+            height = Gdx.graphics.getHeight();
+        return height;
+    }
+
 }

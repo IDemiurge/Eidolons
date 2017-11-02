@@ -129,7 +129,7 @@ public class StringMaster {
         if (!Character.isAlphabetic(c)) {
             return string;
         }
-        return    Character.toUpperCase(c)+  string.substring(1);
+        return Character.toUpperCase(c) + string.substring(1);
 
     }
 
@@ -138,7 +138,7 @@ public class StringMaster {
     }
 
     public static boolean checkContainer(String container, String string, boolean strict) {
-        for (String s1 : StringMaster.openContainer(container)) {
+        for (String s1 : StringMaster.open(container)) {
             if (compareByChar(s1, string, strict)) {
                 return true;
             }
@@ -297,8 +297,8 @@ public class StringMaster {
 
     public static boolean compareContainers(String val1, String val2, boolean strictContents,
                                             String delimiter) {
-        for (String s1 : StringMaster.openContainer(val1, delimiter)) {
-            for (String s : StringMaster.openContainer(val2, delimiter)) {
+        for (String s1 : StringMaster.open(val1, delimiter)) {
+            for (String s : StringMaster.open(val2, delimiter)) {
                 if (StringMaster.compareByChar(s1, s, strictContents)) {
                     return true;
                 }
@@ -515,7 +515,7 @@ public class StringMaster {
             }
         }
         List<String> list = new LinkedList<>(Arrays
- .asList(containerString.split(Pattern.quote(delimiter))));
+         .asList(containerString.split(Pattern.quote(delimiter))));
         list.removeIf(s -> isEmpty(s));
         return list;
     }
@@ -526,6 +526,32 @@ public class StringMaster {
 
     public static List<String> openFormattedContainer(String containerString) {
         return split(containerString, getFormattedContainerSeparator());
+    }
+
+    public static String[] open(String containerString) {
+        return open(containerString, getSeparator());
+    }
+
+    public static String[] open(String containerString, String separator) {
+        if (containerString == null)
+            return new String[]{""};
+
+        String[] array = containerString.split(Pattern.quote(separator));
+        int n = 0;
+        for (String sub : array) {
+            if (!sub.isEmpty())
+                n++;
+        }
+        String[] result = new String[n];
+        n = 0;
+        for (String sub : array) {
+            if (!sub.isEmpty()) {
+                result[n] = sub;
+                n++;
+            }
+        }
+
+        return result;
     }
 
     public static List<String> openContainer(String containerString) {
@@ -689,12 +715,13 @@ public class StringMaster {
     public static Integer getInteger(String value) {
         return getInteger(value, null);
     }
-        public static Integer getInteger(String value, Ref ref) {
-        if (value ==null)
+
+    public static Integer getInteger(String value, Ref ref) {
+        if (value == null)
             return 0;
         if (!isInteger(value)) {
             try {
-                return new Formula(value).getInt(ref==null  ? new Ref(): ref);
+                return new Formula(value).getInt(ref == null ? new Ref() : ref);
             } catch (Exception e2) {
                 e2.printStackTrace();
             }
@@ -870,31 +897,35 @@ public class StringMaster {
         StringBuilder builder = new StringBuilder();
 
         for (String str : list) {
-            if (str!=null )
-            builder.append(str + divider);
+            if (str != null)
+                builder.append(str + divider);
         }
         String result = builder.toString();
         return (cropLastDivider) ? result.substring(0, result.lastIndexOf(divider)) : result;
     }
 
     public static String join(String s, String... parts) {
-       return  joinStringList( new LinkedList<>(Arrays.asList(parts)), s, true);
+        return joinStringList(new LinkedList<>(Arrays.asList(parts)), s, true);
     }
-    public static String joinList(List  list ) {
+
+    public static String joinList(List list) {
         return joinList(list, SEPARATOR);
     }
-        public static String joinList(List  list, String divider) {
-        return joinStringList(  convertToStringList(list), divider  );
+
+    public static String joinList(List list, String divider) {
+        return joinStringList(convertToStringList(list), divider);
     }
-        public static String joinStringList(List<String> list, String divider) {
+
+    public static String joinStringList(List<String> list, String divider) {
         return joinStringList(list, divider, true);
     }
 
     public static String getValueRefs(KEYS objRef, VALUE... valRef) {
-       return  build(Arrays.stream(valRef).map(val -> getValueRef(objRef, val))
+        return build(Arrays.stream(valRef).map(val -> getValueRef(objRef, val))
          .collect(Collectors.toList()));
     }
-        public static String getValueRef(KEYS objRef, VALUE valRef) {
+
+    public static String getValueRef(KEYS objRef, VALUE valRef) {
         return getValueRef(objRef + "", valRef + "");
     }
 
@@ -1150,7 +1181,8 @@ public class StringMaster {
         return replaceLast(path, getLastPart(path, separator), "");
 
     }
-        public static String cropLastPathSegment(String path) {
+
+    public static String cropLastPathSegment(String path) {
         return replaceLast(path, getLastPathSegment(path), "");
     }
 
@@ -1258,21 +1290,23 @@ public class StringMaster {
     }
 
 
-        public static String build(String... strings) {
+    public static String build(String... strings) {
 
         return build(false, strings);
     }
-    public static String build(  List<String> list) {
+
+    public static String build(List<String> list) {
         return build(list.toArray(new String[list.size()]));
     }
-        public static String build(boolean whitespaces, String... strings) {
-            StringBuilder builder = new StringBuilder();
-            Arrays.stream(strings).forEach(s -> {
-                builder.append(s);
-                if (whitespaces)
-                    builder.append(" ");
-            });
-            return builder.toString();
+
+    public static String build(boolean whitespaces, String... strings) {
+        StringBuilder builder = new StringBuilder();
+        Arrays.stream(strings).forEach(s -> {
+            builder.append(s);
+            if (whitespaces)
+                builder.append(" ");
+        });
+        return builder.toString();
     }
 
     public static String cropLast(String str1, int i, String suffix) {
@@ -1488,6 +1522,7 @@ public class StringMaster {
         }
         return 0.0;
     }
+
     public static Float getFloat(String floatParam) {
         floatParam = floatParam.replace("(", "").replace(")", "");
         try {
@@ -1534,7 +1569,7 @@ public class StringMaster {
 
     public static String getFirstConsonants(String name, int n) {
         String string = "";
-        for (String sub : StringMaster.openContainer(name, " ")) {
+        for (String sub : StringMaster.open(name, " ")) {
             string += ("" + sub.charAt(0));
         }
         return string.toUpperCase();
@@ -1548,7 +1583,7 @@ public class StringMaster {
 
     public static String getAbbreviation(String name) {
         String string = "";
-        for (String sub : StringMaster.openContainer(name, " ")) {
+        for (String sub : StringMaster.open(name, " ")) {
             string += ("" + sub.charAt(0));
         }
         return string.toUpperCase();
@@ -1570,9 +1605,10 @@ public class StringMaster {
     }
 
     public static String getFirstItem(String string) {
-        return getFirstItem(string , SEPARATOR);
+        return getFirstItem(string, SEPARATOR);
     }
-        public static String getFirstItem(String string, String separator) {
+
+    public static String getFirstItem(String string, String separator) {
         if (isEmpty(string)) {
             return "";
         }
@@ -1582,7 +1618,6 @@ public class StringMaster {
     public static String formatComparedProperty(String property) {
         return property.replace(";", "");
     }
-
 
 
     public static String removePreviousPathSegments(String string, String path) {
@@ -1666,7 +1701,7 @@ public class StringMaster {
         if (!text.contains(separator))
             return text;
         String[] array = text.split(separator);
-        if (array.length<=i){
+        if (array.length <= i) {
             return "";
         }
         return array[i];

@@ -1,5 +1,6 @@
 package main.libgdx.anims.std;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
@@ -37,7 +38,11 @@ public class DoorAnimation extends Anim {
             String path = door.getImagePath();
             path = StringMaster.cropFormat(path) + "_open" + ".png";
             if (newImage == null)
-                newImage = new Image(TextureCache.getOrCreateR(path));
+            {
+                TextureRegion r = TextureCache.getOrCreateR(path);
+                actor.setOriginalTextureAlt(r);
+                newImage = new Image(r);
+            }
         } else {
             newImage = actor.getAltPortrait();
         }

@@ -820,7 +820,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         boolean valid = false;
         for (Effect e : effects) {
             ModifyValueEffect valueEffect = (ModifyValueEffect) e;
-            for (String sparam : StringMaster.openContainer(valueEffect.getParamString())) {
+            for (String sparam : StringMaster.open(valueEffect.getParamString())) {
                 for (PARAMETER param : DC_ContentManager.getParams(sparam)) {
                     //TODO apply generic fix!
                     if (param == PARAMS.C_INITIATIVE_BONUS)

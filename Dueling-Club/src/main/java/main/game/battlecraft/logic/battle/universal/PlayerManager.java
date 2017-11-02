@@ -50,7 +50,7 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
         unusedPlayerColorsList = new ListMaster<FLAG_COLOR>()
          .getList(playerColors);
         int i = 0;
-        for (String substring : StringMaster.openContainer(data)) {
+        for (String substring : StringMaster.open(data)) {
             DC_Player player = initPlayerFromString(substring);
             if (player.getAllegiance() == ALLEGIENCE.NEUTRAL)
                 Player.NEUTRAL = player;

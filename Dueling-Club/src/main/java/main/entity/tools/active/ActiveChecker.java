@@ -211,5 +211,14 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
         return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.DUAL.toString());
     }
 
-    
+
+    public boolean isPotentiallyHostile() {
+        if (getActionGroup()== ACTION_TYPE_GROUPS.MOVE)
+            return false;
+        if (getActionGroup()== ACTION_TYPE_GROUPS.MODE)
+            return false;
+        if (getActionGroup()== ACTION_TYPE_GROUPS.TURN)
+            return false;
+        return true;
+    }
 }

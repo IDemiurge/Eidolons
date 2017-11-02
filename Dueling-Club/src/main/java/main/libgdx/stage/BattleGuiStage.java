@@ -1,6 +1,5 @@
 package main.libgdx.stage;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.game.core.game.DC_Game;
+import main.libgdx.GdxMaster;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.controls.radial.RadialMenu;
 import main.libgdx.gui.panels.dc.ButtonStyled;
@@ -38,12 +38,12 @@ public class BattleGuiStage extends Stage {
 
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
         super(viewport == null ?
-          new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(),
-           Gdx.graphics.getHeight(), new OrthographicCamera()) : viewport,
+          new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
+           GdxMaster.getHeight(), new OrthographicCamera()) : viewport,
          batch == null ? new SpriteBatch() :
           batch);
         initiativePanel = new InitiativePanel();
-        initiativePanel.setPosition(0, Gdx.graphics.getHeight() - initiativePanel.getHeight());
+        initiativePanel.setPosition(0, GdxMaster.getHeight() - initiativePanel.getHeight());
         addActor(initiativePanel);
         bottomPanel = new ActionPanelController(0, 0);
         addActor(bottomPanel);
@@ -51,17 +51,17 @@ public class BattleGuiStage extends Stage {
         addActor(new UnitInfoPanel(0, 0));
 
         ButtonStyled menuButton = new ButtonStyled(STD_BUTTON.OPTIONS, () -> OptionsMaster.openMenu());
-        menuButton.setPosition(Gdx.graphics.getWidth() - menuButton.getWidth(),
-         Gdx.graphics.getHeight() - menuButton.getHeight());
+        menuButton.setPosition(GdxMaster.getWidth() - menuButton.getWidth(),
+         GdxMaster.getHeight() - menuButton.getHeight());
         addActor(menuButton);
 
 
         InventoryWithAction inventoryForm = new InventoryWithAction();
-        inventoryForm.setPosition(0, Gdx.graphics.getHeight() - inventoryForm.getHeight());
+        inventoryForm.setPosition(0, GdxMaster.getHeight() - inventoryForm.getHeight());
         this.addActor(inventoryForm);
 
         SimpleLogPanel log = new SimpleLogPanel();
-        log.setPosition(Gdx.graphics.getWidth() - log.getWidth(), 0);
+        log.setPosition(GdxMaster.getWidth() - log.getWidth(), 0);
         addActor(log);
 
         addActor(new FullLogPanel(100, 200));
@@ -81,9 +81,9 @@ public class BattleGuiStage extends Stage {
             outcomePanel.setZIndex(getActors().size);
 //            outcomePanel.setColor(new Color(1, 1, 1, 0));
 //            ActorMaster.addFadeInOrOut(outcomePanel, 2.5f);
-            float y = Gdx.graphics.getHeight() -
-             (Gdx.graphics.getHeight() - outcomePanel.getHeight() / 2);
-            float x = (Gdx.graphics.getWidth() - outcomePanel.getWidth()) / 2;
+            float y = GdxMaster.getHeight() -
+             (GdxMaster.getHeight() - outcomePanel.getHeight() / 2);
+            float x = (GdxMaster.getWidth() - outcomePanel.getWidth()) / 2;
             outcomePanel.setPosition(x, y + outcomePanel.getHeight());
             ActorMaster.addMoveToAction(outcomePanel, x, y, 2.5f);
         });
@@ -123,7 +123,7 @@ public class BattleGuiStage extends Stage {
 
         if (!root.isVisible()) return;
 
-        combined.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        combined.setToOrtho2D(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
 
         Batch batch = this.getBatch();
         batch.setProjectionMatrix(combined);

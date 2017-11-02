@@ -9,6 +9,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.rules.counter.DC_CounterRule;
+import main.game.battlecraft.rules.round.RoundRule;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
@@ -18,7 +19,7 @@ import main.system.math.MathMaster;
  * Created by JustMe on 9/9/2017.
  */
 public class ExplorationTimeMaster extends ExplorationHandler {
-    public static final float secondsPerAP = 3f;
+    public static final float secondsPerAP = 5f;
     private float time = 0;
     private float lastTimeChecked;
     private float round_delta = 0;
@@ -60,6 +61,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     public void checkTimedEvents() {
         delta = time - lastTimeChecked;
+        lastTimeChecked= time;
         round_delta += delta;
         ai_delta = +delta;
         master.getAiMaster().checkAiActs();
@@ -111,13 +113,18 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private void processCustomRules() {
+// List<RoundRule> list = new LinkedList<>();
+        for (RoundRule sub : master.getGame().getRules().getRoundRules()) {
+            master.getGame().getUnits().forEach(unit -> {
 
-        master.getGame().getUnits().forEach(unit -> {
-           if ( master.getGame().getRules().getUnconsciousRule().checkStatusUpdate(unit)){
-               master.getGame().getRules().getUnconsciousRule().apply(unit);
-               master.getGame().getStateManager().reset(unit);
-           }
-        });
+//                if (master.getGame().getRules().getUnconsciousRule().checkStatusUpdate(unit)) {
+                if (sub.check(unit)) {
+                    sub.apply(unit);
+                    if (sub == master.getGame().getRules().getUnconsciousRule())
+                        master.getGame().getStateManager().reset(unit);
+                }
+            });
+        }
     }
 
     private void processCounterRules() {

@@ -87,15 +87,14 @@ public class DC_Rules implements GameRules {
         stackingRule = new StackingRule(getGame());
         ensnareRule = new EnsnaredRule(getGame());
         stealthRule = new StealthRule(getGame());
-        waterRule = new WaterRule(getGame());
         stackingRule = new StackingRule(getGame());
         actionRules.add(unconsciousRule);
         actionRules.add(watchRule);
-        actionRules.add(waterRule);
         actionRules.add(stealthRule);
         actionRules.add(ensnareRule);
         actionRules.add(stackingRule);
         actionRules.add(engagedRule);
+//        actionRules.add(waterRule= new WaterRule(getGame()));
 
         cleaveRule = new CleaveRule(getGame());
 
@@ -107,7 +106,6 @@ public class DC_Rules implements GameRules {
         roundRules.add(moraleRule);
         roundRules.add(upkeepRule);
         roundRules.add(scoutingRule);
-        roundRules.add(waterRule);
         roundRules.add(unconsciousRule);
 
         moraleKillingRule = new MoraleKillingRule(getGame());

@@ -3,6 +3,7 @@ package main.game.core;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import main.client.cc.CharacterCreator;
+import main.entity.obj.unit.Unit;
 import main.game.EidolonsGame;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.core.game.DC_Game;
@@ -25,6 +26,7 @@ public class Eidolons {
     public static Application gdxApplication;
     private static LwjglApplication application;
     private static String selectedMainHero;
+    private static Unit mainHero;
 
     public static void initScenario(ScenarioMetaMaster master){
         mainGame = new EidolonsGame();
@@ -59,5 +61,13 @@ public class Eidolons {
 
     public static void setSelectedMainHero(String selectedMainHero) {
         Eidolons.selectedMainHero = selectedMainHero;
+    }
+
+    public static void setMainHero(Unit mainHero) {
+        Eidolons.mainHero = mainHero;
+    }
+
+    public static Unit getMainHero() {
+        return mainHero;
     }
 }

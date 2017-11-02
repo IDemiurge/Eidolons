@@ -33,8 +33,8 @@ public class DC_GameMaster extends GameMaster {
     private Map<Coordinates, List<BattleFieldObject>> objCache = new HashMap<>();
     private Map<Coordinates, List<BattleFieldObject>> noOverlayingCache = new HashMap<>();
     private Map<Coordinates, List<BattleFieldObject>> overlayingCache = new HashMap<>();
-    private BattleFieldObject[] unitsArray;
-    private BattleFieldObject[] structuresArray;
+    private Unit[] unitsArray;
+    private Structure[] structuresArray;
 
 
     public DC_GameMaster(DC_Game game) {
@@ -359,15 +359,15 @@ public class DC_GameMaster extends GameMaster {
         return objCache;
     }
 
-    public BattleFieldObject[] getUnitsArray() {
+    public Unit[] getUnitsArray() {
         if (unitsArray == null)
-            unitsArray = getUnits().toArray(new BattleFieldObject[getUnits().size()]);
+            unitsArray = getUnits().toArray(new Unit[getUnits().size()]);
         return unitsArray;
     }
 
-    public BattleFieldObject[] getStructuresArray() {
+    public Structure[] getStructuresArray() {
         if (structuresArray == null)
-            structuresArray = getStructures().toArray(new BattleFieldObject[getStructures().size()]);
+            structuresArray = getStructures().toArray(new Structure[getStructures().size()]);
         return structuresArray;
     }
 

@@ -220,12 +220,12 @@ public class AnimationConstructor {
 
     public void preconstructSpells(Unit unit) {
         if (ListMaster.isNotEmpty(unit.getSpells()))
-        if (GdxMaster.isLwjglThread()) {
-            unit.getSpells().forEach(spell -> getOrCreate(spell));
-        } else
-            Gdx.app.postRunnable((() -> {
+            if (GdxMaster.isLwjglThread()) {
                 unit.getSpells().forEach(spell -> getOrCreate(spell));
-            }));
+            } else
+                Gdx.app.postRunnable((() -> {
+                    unit.getSpells().forEach(spell -> getOrCreate(spell));
+                }));
     }
 
     public void preconstructAll(Unit unit) {
@@ -685,9 +685,12 @@ public class AnimationConstructor {
 
     public void preconstruct(Event event) {
         Gdx.app.postRunnable(() -> {
-            EventAnimCreator.getAnim(event);
-            AnimMaster.getInstance().getParentAnim(event.getRef());
-
+            try {
+                EventAnimCreator.getAnim(event);
+                AnimMaster.getInstance().getParentAnim(event.getRef());
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         });
     }
 

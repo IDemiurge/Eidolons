@@ -60,7 +60,7 @@ public class ContentGenerator {
 
     public static void generateWaveUnitTypes(ObjType t) {
         List<String> list = new LinkedList<>();
-        for (String u : StringMaster.openContainer(t.getProperty(PROPS.SHRUNK_PRESET_GROUP))) {
+        for (String u : StringMaster.open(t.getProperty(PROPS.SHRUNK_PRESET_GROUP))) {
             if (!list.contains(u)) {
                 list.add(u);
             }
@@ -74,7 +74,7 @@ public class ContentGenerator {
     }
 
     public static void convertSkillStrings(ObjType type) {
-        for (String s : StringMaster.openContainer(type.getProp("passives"))) {
+        for (String s : StringMaster.open(type.getProp("passives"))) {
             switch (s) {
                 case "ParamBonus":
                     type.addProperty(PROPS.PARAMETER_BONUSES, s);

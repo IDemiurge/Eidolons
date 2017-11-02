@@ -179,7 +179,7 @@ public class UnitShop {
         // ++ attr jewelry ++ passive enchantment
         // quality level range?
 
-        for (String trait : StringMaster.openContainer(prop)) {
+        for (String trait : StringMaster.open(prop)) {
             // DataManager.getTypesSubGroup(OBJ_TYPES.JEWELRY, subgroup);
             ObjType type = DataManager.findType(VariableManager.removeVarPart(trait),
              DC_TYPE.JEWELRY);

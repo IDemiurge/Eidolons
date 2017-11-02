@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import main.entity.Entity;
 import main.entity.active.DC_UnitAction;
+import main.libgdx.GdxMaster;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimMaster3d;
 import main.libgdx.bf.BaseView;
@@ -152,7 +153,7 @@ public class ToolTipManager extends TablePanel {
             if ((v2.y - toolTip.getPrefHeight()) < 0) {
                 actorCell.bottom();
             }
-            if (v2.y + toolTip.getPrefHeight() > Gdx.graphics.getHeight()) {
+            if (v2.y + toolTip.getPrefHeight() > GdxMaster.getHeight()) {
                 actorCell.top();
             }
 
@@ -160,7 +161,7 @@ public class ToolTipManager extends TablePanel {
                 actorCell.left();
             }
 
-            if (v2.x + toolTip.getPrefWidth() > Gdx.graphics.getWidth()) {
+            if (v2.x + toolTip.getPrefWidth() > GdxMaster.getWidth()) {
                 actorCell.right();
             }
 

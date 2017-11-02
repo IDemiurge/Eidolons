@@ -22,7 +22,7 @@ public class RadialValueContainer extends ActionValueContainer {
     private RadialValueContainer parent;
     private Supplier<ToolTip> tooltipSupplier;
     private ToolTip tooltip;
-    private boolean valid;
+    private boolean valid=true;
 
     public RadialValueContainer(TextureRegion texture, String name, String value, Runnable action) {
         super(texture, name, value, action);

@@ -468,7 +468,7 @@ public class DC_ObjInitializer {
 
     public static String convertVarStringToObjCoordinates(String partyData) {
         String reformatted = "";
-        for (String subString : StringMaster.openContainer(partyData)) {
+        for (String subString : StringMaster.open(partyData)) {
             Coordinates c = new Coordinates(VariableManager.getVar(subString));
             if (c == null) {
                 LogMaster.log(1, subString + " coordinate BLAST!!!");

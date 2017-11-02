@@ -317,7 +317,7 @@ public class TextMaster {
         if (beforeNumeralsAndSymbols.isEmpty()) {
             return false;
         }
-        for (String substring : StringMaster.openContainer(stdFileNames, ",")) {
+        for (String substring : StringMaster.open(stdFileNames, ",")) {
             if (beforeNumeralsAndSymbols.equalsIgnoreCase(substring)) {
                 return false;
             }

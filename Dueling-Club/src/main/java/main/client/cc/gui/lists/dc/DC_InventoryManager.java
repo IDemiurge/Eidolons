@@ -66,7 +66,7 @@ public class DC_InventoryManager {
     }
 
     public void processOperationCommand(String string) {
-        for (String substring : StringMaster.openContainer(string)) {
+        for (String substring : StringMaster.open(string)) {
             OPERATIONS operation = new EnumMaster<OPERATIONS>().retrieveEnumConst(OPERATIONS.class,
              substring.split(StringMaster.PAIR_SEPARATOR)[0]);
             String typeName = (substring.split(StringMaster.PAIR_SEPARATOR)[1]);

@@ -18,7 +18,7 @@ public class RandomWizard<E> {
     private LinkedHashMap<Integer, E> invertedMap;
     private static boolean averaged;
     public static boolean isWeightMap(String property) {
-        for (String string : StringMaster.openContainer(property)) {
+        for (String string : StringMaster.open(property)) {
             try {
                 if (StringMaster.getWeight(string) > 1) {
                     return true;
@@ -246,7 +246,7 @@ public class RandomWizard<E> {
     public LinkedHashMap<String, E> constructStringWeightMapInversed(String property,
                                                                      Class<? extends E> CLASS) {
         LinkedHashMap<String, E> map = new LinkedHashMap<>();
-        for (String string : StringMaster.openContainer(property)) {
+        for (String string : StringMaster.open(property)) {
             String value = "";
             try {
                 value = StringMaster.cropParenthesises(VariableManager.getVarPartLast(string));
@@ -265,7 +265,7 @@ public class RandomWizard<E> {
 
     public Map<E, String> constructStringWeightMap(String property, Class<? extends E> CLASS) {
         LinkedHashMap<E, String> map = new LinkedHashMap<>();
-        for (String string : StringMaster.openContainer(property)) {
+        for (String string : StringMaster.open(property)) {
 
             String value = "";
             try {
@@ -293,7 +293,7 @@ public class RandomWizard<E> {
         if (inverse) {
             invertedMap = new LinkedHashMap<>();
         }
-        for (String string : StringMaster.openContainer(property)) {
+        for (String string : StringMaster.open(property)) {
             Integer value = 0;
             try {
                 value = StringMaster.getWeight(string, inverse);

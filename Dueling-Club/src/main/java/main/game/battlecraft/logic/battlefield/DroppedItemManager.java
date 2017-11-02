@@ -97,7 +97,7 @@ public class DroppedItemManager {
 
     public Collection<? extends Obj> getDroppedItems(Obj cell) {
         Collection<Obj> list = new LinkedList<>();
-        for (String id : StringMaster.openContainer(cell.getProperty(PROPS.DROPPED_ITEMS))) {
+        for (String id : StringMaster.open(cell.getProperty(PROPS.DROPPED_ITEMS))) {
             Obj item = game.getObjectById(StringMaster.getInteger(id));
             if (item != null) {
                 list.add(item);

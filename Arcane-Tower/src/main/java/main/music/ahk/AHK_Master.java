@@ -116,7 +116,7 @@ public class AHK_Master {
             script = PATH + script;
         }
         Map<String, List<String>> map = new XLinkedMap<>();
-        for (String chars : StringMaster.openContainer(AHK_Master.qwerty, " ")) {
+        for (String chars : StringMaster.open(AHK_Master.qwerty, " ")) {
             map.put(chars, new LinkedList<>());
         }
         for (String line : FileManager.readFileLines(script)) {
@@ -124,7 +124,7 @@ public class AHK_Master {
                 continue;
             }
             // line = processComments(line);
-            for (String chars : StringMaster.openContainer(AHK_Master.qwerty, " ")) {
+            for (String chars : StringMaster.open(AHK_Master.qwerty, " ")) {
                 if (chars.contains("" + AHK_Master.getLetter(line))) {
                     map.get(chars).add(line);
                 }
@@ -147,7 +147,7 @@ public class AHK_Master {
 
     private static int getY(char letter) {
         int y = 50;
-        for (String chars : StringMaster.openContainer(qwerty, " ")) {
+        for (String chars : StringMaster.open(qwerty, " ")) {
             if (chars.contains("" + letter)) {
                 return y;
             }
@@ -158,7 +158,7 @@ public class AHK_Master {
 
     private static int getX(char letter) {
         int x = 40;
-        for (String chars : StringMaster.openContainer(qwerty, " ")) {
+        for (String chars : StringMaster.open(qwerty, " ")) {
             x = 0;
             for (char c : chars.toCharArray()) {
                 if (c == letter) {
@@ -252,7 +252,7 @@ public class AHK_Master {
     // String contents = FileManager.readFile(
     //
     // new File(CORE_PATH), StringMaster.NEW_LINE);
-    // for (String line : StringMaster.openContainer(contents,
+    // for (String line : StringMaster.open(contents,
     // StringMaster.NEW_LINE)) {
     // if (!line.contains(lineIdentifier))
     // continue;
@@ -290,7 +290,7 @@ public class AHK_Master {
     // list = new LinkedList<>();
     // groupMap.put(getKeyPart(line), list);
     // }
-    // for(String substring: StringMaster.openContainer( tags )){
+    // for(String substring: StringMaster.open( tags )){
     //
     // list.add(tag);
     // }

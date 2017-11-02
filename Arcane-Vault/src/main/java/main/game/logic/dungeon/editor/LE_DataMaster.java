@@ -58,7 +58,7 @@ public class LE_DataMaster {
         if (!data.contains(";")) {
             return;
         }
-        for (String missionName : StringMaster.openContainer(data)) {
+        for (String missionName : StringMaster.open(data)) {
             loadMission(getDungeonMissionFolder() + missionName);
         }
     }
@@ -71,7 +71,7 @@ public class LE_DataMaster {
         if (!data.contains(";")) {
             return levels;
         }
-        for (String missionPath : StringMaster.openContainer(data)) {
+        for (String missionPath : StringMaster.open(data)) {
             levels.add(new Level(missionPath, null, data));
         }
         return levels;

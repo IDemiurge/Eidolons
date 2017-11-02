@@ -128,7 +128,7 @@ public class UnitLibrary {
     private static void initPool(LEARN_CASE lc) {
         LibraryManager.initSpellbook(unit);
         spellPool = new XLinkedMap<>();
-        for (String substring : StringMaster.openContainer(unit.getProperty(getSourceProp(lc)))) {
+        for (String substring : StringMaster.open(unit.getProperty(getSourceProp(lc)))) {
             ObjType type = DataManager.getType(VariableManager.removeVarPart(substring),
                     DC_TYPE.SPELLS);
             if (checkCanLearnSpell(type, lc)) {

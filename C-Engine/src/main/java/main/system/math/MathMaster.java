@@ -136,7 +136,7 @@ public abstract class MathMaster {
 
     public static int getMaxCoordinateFromUnitGroupData(boolean x_y, String data) {
         int max = 0; // x-y=name;
-        for (String substring : StringMaster.openContainer(data, ",")) {
+        for (String substring : StringMaster.open(data, ",")) {
             Integer c = StringMaster.getInteger(substring.split("=")[x_y ? 0 : 1]);
             if (c > max) {
                 max = c;

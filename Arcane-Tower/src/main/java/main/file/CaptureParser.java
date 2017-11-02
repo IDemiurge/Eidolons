@@ -149,7 +149,7 @@ public class CaptureParser {
 
     public static ObjType parse(String data, AT_OBJ_TYPE scope) {
         if (scope == AT_OBJ_TYPE.DIRECTION) {
-            for (String part : StringMaster.openContainer(data, SUPER_HEADER)) {
+            for (String part : StringMaster.open(data, SUPER_HEADER)) {
                 if (part.isEmpty()) {
                     continue;
                 }
@@ -166,7 +166,7 @@ public class CaptureParser {
             return type;
         }
         if (data.contains(HEADER)) {
-            for (String block : StringMaster.openContainer(data, HEADER)) {
+            for (String block : StringMaster.open(data, HEADER)) {
                 if (block.isEmpty()) {
                     continue;
                 }

@@ -79,10 +79,6 @@ public class DC_ContentManager extends ContentManager {
     private static final Class<?>[] PARAM_ENUM_CLASSES = {G_PARAMS.class, PARAMS.class};
     private static final Class<?>[] PROP_ENUM_CLASSES = {G_PROPS.class, PROPS.class};
     private static final String DEFAULT_DEITY = "Faithless";
-    private static final List<VALUE> DEFAULTED_VALUES = new LinkedList<>(Arrays
-     .asList(
-
-      PARAMS.COUNTER_MOD));
     private static final String DEFAULT_WEAPON = "Petty Fist";
     public static PARAMETER[] REGEN_PARAMS = {
      PARAMS.ENDURANCE, PARAMS.FOCUS,
@@ -479,7 +475,14 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static void addDefaultValues(Entity entity, boolean dynamic) {
-        for (VALUE VAL : ContentManager.getValueList()) {
+        addDefaultValues(entity, dynamic,
+
+         ContentManager.getValueList()
+        );
+    }
+        public static void addDefaultValues(Entity entity, boolean dynamic,
+                                            Collection<VALUE> vals) {
+        for (VALUE VAL : vals) {
             if (!ContentManager.isValueForOBJ_TYPE(entity.getOBJ_TYPE_ENUM(), VAL)) {
                 continue;
             }
@@ -500,7 +503,7 @@ public class DC_ContentManager extends ContentManager {
             }
             boolean unit = C_OBJ_TYPE.UNITS_CHARS.equals(entity.getOBJ_TYPE_ENUM());
 
-            if (DEFAULTED_VALUES.contains(VAL)
+            if (getDefaultValuesToReset().contains(VAL)
              || (!unit && StringMaster.isEmpty(entity.getValue(VAL)) && !StringMaster
              .isEmpty(value))) {
                 if (entity instanceof Obj) {
@@ -515,6 +518,15 @@ public class DC_ContentManager extends ContentManager {
 
         }
         entity.setDefaultValuesInitialized(true);
+    }
+
+    private static List<VALUE> getDefaultValuesToReset() {
+        return new LinkedList<>(Arrays
+         .asList(
+          PARAMS.COUNTER_STAMINA_PENALTY,
+          PARAMS.AOO_STAMINA_PENALTY,
+          PARAMS.INSTANT_STAMINA_PENALTY,
+          PARAMS.COUNTER_MOD));
     }
 
     private static String getDefaultValueSpecial(Entity entity, VALUE v) {

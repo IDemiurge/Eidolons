@@ -60,13 +60,13 @@ public class WorkspaceManager {
     public void newWorkspaceForParty() {
         ObjType party = ArcaneVault.getSelectedType();
         Set<ObjType> set = new HashSet<>();
-        for (String sub : StringMaster.openContainer(party.getProperty(PROPS.MEMBERS))) {
+        for (String sub : StringMaster.open(party.getProperty(PROPS.MEMBERS))) {
             ObjType type = DataManager.getType(sub, DC_TYPE.CHARS);
 
-            for (String item : StringMaster.openContainer(type.getProperty(PROPS.SKILLS))) {
+            for (String item : StringMaster.open(type.getProperty(PROPS.SKILLS))) {
                 set.add(DataManager.getType(item, DC_TYPE.SKILLS));
             }
-            for (String item : StringMaster.openContainer(type.getProperty(PROPS.CLASSES))) {
+            for (String item : StringMaster.open(type.getProperty(PROPS.CLASSES))) {
                 set.add(DataManager.getType(item, DC_TYPE.CLASSES));
             }
 

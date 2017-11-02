@@ -82,8 +82,8 @@ public class SneakCondition extends MicroCondition {
                 if (attacker.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN
                         || !VisionManager.checkVisible(attacker)) {
                     return true;
-                } else {
-                    return FacingMaster.getSingleFacing(attacker, attacked) == UnitEnums.FACING_SINGLE.BEHIND;
+                } else { //TODO allow sneak in front for specialists
+                    return FacingMaster.getSingleFacing(attacked, attacker) == UnitEnums.FACING_SINGLE.BEHIND;
                 }
             }
         }

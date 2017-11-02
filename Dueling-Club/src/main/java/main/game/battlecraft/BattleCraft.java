@@ -49,7 +49,7 @@ public class BattleCraft {
         } else if (!weapon_magic_misc) {
             tip = " had studied... ";
         }
-        for (String item : StringMaster.openContainer(hero.getProperty(prop))) {
+        for (String item : StringMaster.open(hero.getProperty(prop))) {
             if (item.contains(StringMaster.OR)) {
                 String[] options = item.split(StringMaster.OR);
                 int index = DialogMaster.askOptionsAndWait(hero.getName() + tip, false, options);

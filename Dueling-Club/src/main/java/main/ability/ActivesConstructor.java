@@ -60,7 +60,7 @@ public class ActivesConstructor {
         // TODO
         LinkedList<ROLL_TYPES> rolls = new LinkedList<>();
         LinkedList<String> vars = new LinkedList<>();
-        for (String roll : StringMaster.openContainer(saveRoll, StringMaster.AND_SEPARATOR)) {
+        for (String roll : StringMaster.open(saveRoll, StringMaster.AND_SEPARATOR)) {
             String varArgs = VariableManager.getVarPart(roll);
             roll = roll.replace(varArgs, "");
             rolls.add(new EnumMaster<ROLL_TYPES>().retrieveEnumConst(ROLL_TYPES.class, roll));
@@ -338,7 +338,7 @@ public class ActivesConstructor {
             return;
         }
 
-        for (String mod : StringMaster.openContainer(property)) {
+        for (String mod : StringMaster.open(property)) {
             Condition targetingModConditions;
             TARGETING_MODIFIERS MOD = new EnumMaster<TARGETING_MODIFIERS>().retrieveEnumConst(
                     TARGETING_MODIFIERS.class, mod);

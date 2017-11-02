@@ -1,6 +1,5 @@
 package main.libgdx.stage;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
@@ -66,7 +65,7 @@ public class LoadingStage extends Stage {
             final TextureRegion logoTexture =
              getOrCreateR("UI/logo.png");
             logoImage = new SuperContainer(new Image(logoTexture));
-            logoImage.setPosition(0, Gdx.graphics.getHeight() - loadingImage.getHeight());
+            logoImage.setPosition(0, GdxMaster.getHeight() - loadingImage.getHeight());
             if (fogOn)
                 addActor(ParticleManager.addFogOn(new Vector2(logoImage.getX() , logoImage.getY() ), fogList));
             addActor(logoImage);
@@ -101,8 +100,8 @@ public class LoadingStage extends Stage {
             loadingImage = new Image(loadingTexture);
             loadingImage.setOrigin(Align.center);
             loadingImage.setPosition(
-             Gdx.graphics.getWidth() / 2 - loadingImage.getWidth() / 2,
-             Gdx.graphics.getHeight() / 2 - loadingImage.getHeight() / 2);
+             GdxMaster.getWidth() / 2 - loadingImage.getWidth() / 2,
+             GdxMaster.getHeight() / 2 - loadingImage.getHeight() / 2);
             //loadingTexture.getTexture();
             addActor(loadingImage);
         }
@@ -148,7 +147,7 @@ public class LoadingStage extends Stage {
 
         if (!root.isVisible()) return;
 
-        combined.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        combined.setToOrtho2D(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
 
         Batch batch = this.getBatch();
         batch.setProjectionMatrix(combined);

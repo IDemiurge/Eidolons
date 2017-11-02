@@ -30,7 +30,7 @@ public class ScriptGenerator {
         for (ObjType scenario : DataManager.getTypes(DC_TYPE.SCENARIOS)) {
             String root = StringMaster.buildPath(
              PathFinder.getScenariosPath(), scenario.getName());
-            for (String sub : StringMaster.openContainer(scenario.getProperty(PROPS.SCENARIO_MISSIONS))) {
+            for (String sub : StringMaster.open(scenario.getProperty(PROPS.SCENARIO_MISSIONS))) {
                 String path = StringMaster.buildPath(root, sub, SCRIPTS_FILE_NAME);
                 File scriptFile = FileManager.getFile(PathFinder.getEnginePath()+path);
                 if (scriptFile.exists()) {

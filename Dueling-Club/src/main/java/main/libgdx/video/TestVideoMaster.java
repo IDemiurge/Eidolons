@@ -23,6 +23,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.video.VideoPlayer;
 import com.badlogic.gdx.video.VideoPlayerCreator;
 import main.client.dc.Launcher;
+import main.libgdx.GdxMaster;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 
@@ -69,7 +70,7 @@ public class TestVideoMaster extends ApplicationAdapter implements InputProcesso
 //        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, .4f, .4f, .4f, 1f));
 //        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
-        cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        cam = new OrthographicCamera(GdxMaster.getWidth(), GdxMaster.getHeight());
         cam.position.set(10f, 10f, 0);
         cam.lookAt(0, 0, 0);
         cam.near = 0.1f;
@@ -80,7 +81,7 @@ public class TestVideoMaster extends ApplicationAdapter implements InputProcesso
         meshBuilder.begin(Usage.Position | Usage.TextureCoordinates, GL20.GL_POINTS);
         // @formatter:off
         try {
-            meshBuilder.rect((short) 0, (short) 0, (short) Gdx.graphics.getWidth(), (short) Gdx.graphics.getHeight());
+            meshBuilder.rect((short) 0, (short) 0, (short) GdxMaster.getWidth(), (short) GdxMaster.getHeight());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }      // @formatter:on
@@ -105,7 +106,7 @@ public class TestVideoMaster extends ApplicationAdapter implements InputProcesso
     public void render() {
         inputController.update();
 
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 //        final float delta = Gdx.graphics.getDeltaTime();

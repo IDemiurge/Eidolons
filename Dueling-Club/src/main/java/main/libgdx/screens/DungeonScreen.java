@@ -2,6 +2,7 @@ package main.libgdx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
@@ -18,6 +19,7 @@ import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import main.libgdx.DialogScenario;
 import main.libgdx.GdxColorMaster;
+import main.libgdx.GdxMaster;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.bf.BFDataCreatedEvent;
 import main.libgdx.bf.GridConst;
@@ -106,9 +108,7 @@ public class DungeonScreen extends ScreenWithLoader {
 
         });
 
-        GuiEventManager.bind(UPDATE_GUI, obj -> {
-            checkGraphicsUpdates();
-        });
+
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
             DialogueHandler handler = (DialogueHandler) obj.get();
             final List<DialogScenario> list = handler.getList();
@@ -161,16 +161,7 @@ public class DungeonScreen extends ScreenWithLoader {
             e.printStackTrace();
         }
 //        });
-        GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, p -> {
-            if (isCameraAutoCenteringOn()) {
-                Coordinates coordinatesActiveObj = DC_Game.game.getManager().getActiveObj().getCoordinates();
-                Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridConst.CELL_W + GridConst.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridConst.CELL_H - GridConst.CELL_H / 2);
-                cameraPan(unitPosition);
-            }
-        });
-        GuiEventManager.bind(UPDATE_GUI, obj -> {
-            updateGui();
-        });
+        bindEvents();
         if (CoreEngine.isGraphicTestMode()) {
             Gdx.app.log("DungeonScreen::afterLoad()", "-- End!");
         }
@@ -191,6 +182,20 @@ public class DungeonScreen extends ScreenWithLoader {
             e.printStackTrace();
         }
 
+    }
+
+    private void bindEvents() {
+        GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, p -> {
+            if (isCameraAutoCenteringOn()) {
+                Coordinates coordinatesActiveObj = DC_Game.game.getManager().getActiveObj().getCoordinates();
+                Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridConst.CELL_W + GridConst.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridConst.CELL_H - GridConst.CELL_H / 2);
+                cameraPan(unitPosition);
+            }
+        });
+        GuiEventManager.bind(UPDATE_GUI, obj -> {
+            updateGui();
+            checkGraphicsUpdates();
+        });
     }
 
     private void updateGui() {
@@ -239,66 +244,72 @@ public class DungeonScreen extends ScreenWithLoader {
 
     @Override
     public void render(float delta) {
-        if (DC_Game.game != null)
+        if (DC_Game.game != null) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
                 DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
-            }
-        super.render(delta);
-        if (!hideLoader)
-            return;
-        guiStage.act(delta);
-        gridStage.act(delta);
+            } else {
+                if (Gdx.input.isKeyJustPressed(Keys.CONTROL_RIGHT)) {
+                    DC_Game.game.getVisionMaster().refresh();
+                    GuiEventManager.trigger(UPDATE_GUI);
+                }
+        }
+                super.render(delta);
+                if (!hideLoader)
+                    return;
+                guiStage.act(delta);
+                gridStage.act(delta);
 
-        cameraShift();
-        //cam.update();
-        if (canShowScreen()) {
-            if (DC_Game.game != null)
-                if (DC_Game.game.getGameLoop() instanceof RealTimeGameLoop) {
+                cameraShift();
+                //cam.update();
+                if (canShowScreen()) {
+                    if (DC_Game.game != null)
+                        if (DC_Game.game.getGameLoop() instanceof RealTimeGameLoop) {
 //              if (realTimeGameLoop != null)        realTimeGameLoop.act(delta);
-                    ((RealTimeGameLoop) Eidolons.game.getGameLoop()).act(delta);
+                            ((RealTimeGameLoop) Eidolons.game.getGameLoop()).act(delta);
+                        }
+
+                    if (backTexture != null) {
+                        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
+                            TextureManager.drawFromSpriteCache(TextureManager.getBackgroundId());
+                        } else {
+                            guiStage.getBatch().begin();
+                            float colorBits = GdxColorMaster.WHITE.toFloatBits();
+                            if (guiStage.getBatch().getColor().toFloatBits() != colorBits)
+                                guiStage.getBatch().setColor(colorBits); //damned alpha...
+                            guiStage.getBatch().draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
+                            guiStage.getBatch().end();
+                        }
+                    }
+
+                    gridStage.draw();
+
+
+                    guiStage.draw();
+
+                    if (dialogsStage != null) {
+                        dialogsStage.act(delta);
+                        if (dialogsStage.isDone()) {
+                            final ChainedStage dialogsStage = this.dialogsStage;
+                            this.dialogsStage = null;
+                            dialogsStage.dispose();
+                            updateInputController();
+                        } else {
+                            dialogsStage.draw();
+                        }
+                    }
+
+                    if (gridPanel.getFpsLabel() != null)
+                        if (gridPanel != null)
+                            gridPanel.getFpsLabel().setText(new Float(1 / delta) + "");
+
+                    try {
+                        soundMaster.doPlayback(delta);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-
-            if (backTexture != null) {
-                if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
-                    TextureManager.drawFromSpriteCache(TextureManager.getBackgroundId());
-                } else {
-                    guiStage.getBatch().begin();
-                    float colorBits = GdxColorMaster.WHITE.toFloatBits();
-                    if (guiStage.getBatch().getColor().toFloatBits() != colorBits)
-                        guiStage.getBatch().setColor(colorBits); //damned alpha...
-                    guiStage.getBatch().draw(backTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                    guiStage.getBatch().end();
-                }
-            }
-
-            gridStage.draw();
-
-
-            guiStage.draw();
-
-            if (dialogsStage != null) {
-                dialogsStage.act(delta);
-                if (dialogsStage.isDone()) {
-                    final ChainedStage dialogsStage = this.dialogsStage;
-                    this.dialogsStage = null;
-                    dialogsStage.dispose();
-                    updateInputController();
-                } else {
-                    dialogsStage.draw();
-                }
-            }
-
-            if (gridPanel.getFpsLabel() != null)
-                if (gridPanel != null)
-                    gridPanel.getFpsLabel().setText(new Float(1 / delta) + "");
-
-            try {
-                soundMaster.doPlayback(delta);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
-    }
 
     private void cameraShift() {
         if (cameraDestination != null)

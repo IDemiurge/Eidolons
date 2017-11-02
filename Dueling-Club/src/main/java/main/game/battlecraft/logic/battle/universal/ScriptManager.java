@@ -21,7 +21,7 @@ public abstract class ScriptManager<T extends Battle, E> extends BattleHandler<T
     public void parseScripts(String scripts) {
 
         //syntax: new_round->equals({amount}, 2)->spawn(Vampires,5-5);
-        for (String script : StringMaster.openContainer(scripts,
+        for (String script : StringMaster.open(scripts,
          ScriptSyntax.SCRIPTS_SEPARATOR)) {
             addTrigger(ScriptParser.parseScript(script, getMaster().getGame(), this,
              getFunctionClass()));

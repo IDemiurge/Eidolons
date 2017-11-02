@@ -181,7 +181,7 @@ public class NameMaster {
         boolean female = EntityCheckMaster.getGender(hero) == HeroEnums.GENDER.FEMALE;
         String name = null;
 
-        for (String nameGroup : StringMaster.openContainer(backgroundNameGroups, " ")) {
+        for (String nameGroup : StringMaster.open(backgroundNameGroups, " ")) {
             while (true) {
                 if (name != null) {
                     break;
@@ -364,7 +364,7 @@ public class NameMaster {
         }
         List<String> names = new ArrayList<>();
         for (String s : pool) {
-            for (String newname : StringMaster.openContainer(s, " ")) {
+            for (String newname : StringMaster.open(s, " ")) {
                 if (!newname.isEmpty()) {
                     if (!usedNames.contains(newname)) {
                         names.add(newname);

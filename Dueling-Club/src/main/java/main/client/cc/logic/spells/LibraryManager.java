@@ -93,7 +93,7 @@ public class LibraryManager {
     }
 
     public static void checkNewAutoVerbatim(Unit hero) {
-        for (String spell : StringMaster.openContainer(hero.getProperty(PROPS.LEARNED_SPELLS))) {
+        for (String spell : StringMaster.open(hero.getProperty(PROPS.LEARNED_SPELLS))) {
             boolean result = false;
             ObjType type = DataManager.getType(spell, DC_TYPE.SPELLS);
 if (type==null ) {

@@ -67,9 +67,9 @@ public class UnitViewFactory {
                     event.stop();
                 } else {
                     if (event.getButton() == Buttons.LEFT)
-                        if (isAlt())
+                        if (isAlt()|| isShift()|| isControl())
                             try {
-                                DefaultActionHandler.leftClickUnit(bfObj);
+                                DefaultActionHandler.leftClickUnit(isShift(), isControl(),  bfObj);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

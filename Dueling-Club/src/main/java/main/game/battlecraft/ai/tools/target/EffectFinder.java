@@ -312,7 +312,7 @@ public class EffectFinder {
         if (!abilName.contains(separator)) {
             separator = StringMaster.AND_SEPARATOR;
         }
-        for (String s : StringMaster.openContainer(abilName, separator)) {
+        for (String s : StringMaster.open(abilName, separator)) {
             effects.addAll(EffectFinder.getEffectsFromAbilityType(s, ref));
         }
         return effects;

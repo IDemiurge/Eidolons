@@ -237,6 +237,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 //        resetQueue();
         game.getRules().getTimeRule().newRound();
         for (Unit sub : getGame().getUnits()) {
+            if (getGame().getState().getRound()>0)
             if (!sub.isMine())
                 if (sub.getAI().getEngagementDuration() > 0)
                     sub.getAI().setEngagementDuration(sub.getAI().getEngagementDuration() - 1);

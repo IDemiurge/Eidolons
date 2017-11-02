@@ -1,6 +1,5 @@
 package main.libgdx.video;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.video.VideoPlayer;
 import com.badlogic.gdx.video.VideoPlayerCreator;
+import main.libgdx.GdxMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.io.FileNotFoundException;
@@ -30,7 +30,7 @@ public class VideoMaster {
     }
         public VideoPlayer play(String path, int w, int h) {
 
-        OrthographicCamera cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        OrthographicCamera cam = new OrthographicCamera(GdxMaster.getWidth(), GdxMaster.getHeight());
         cam.position.set(10f, 10f, 0);
         cam.lookAt(0, 0, 0);
         cam.near = 0.1f;
@@ -41,7 +41,7 @@ public class VideoMaster {
         meshBuilder.begin(Usage.Position | Usage.TextureCoordinates, GL20.GL_POINTS);
         // @formatter:off
         try {
-            meshBuilder.rect((short) 0, (short) 0, (short) Gdx.graphics.getWidth(), (short) Gdx.graphics.getHeight());
+            meshBuilder.rect((short) 0, (short) 0, (short) GdxMaster.getWidth(), (short) GdxMaster.getHeight());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -64,7 +64,7 @@ public class VideoMaster {
     }
 
     public void playTestVideo() {
-        play(getTestPath(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        play(getTestPath(), GdxMaster.getWidth(), GdxMaster.getHeight());
     }
 
     public String getTestPath() {

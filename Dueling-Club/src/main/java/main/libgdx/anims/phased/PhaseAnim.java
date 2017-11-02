@@ -1,10 +1,10 @@
 package main.libgdx.anims.phased;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.libgdx.GdxMaster;
 import main.libgdx.texture.Texture2D;
 import main.system.graphics.PhaseAnimation;
 
@@ -17,8 +17,8 @@ public class PhaseAnim extends Group {
 
 
     protected PhaseAnimation anim;
-    protected int w = Gdx.graphics.getWidth(); // GuiManager.getScreenWidthInt();
-    protected int h = Gdx.graphics.getHeight(); // GuiManager.getScreenHeightInt();
+    protected int w = GdxMaster.getWidth(); // GuiManager.getScreenWidthInt();
+    protected int h = GdxMaster.getHeight(); // GuiManager.getScreenHeightInt();
     protected Texture2D texture;
     protected Image image;
     protected boolean dirty;

@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
+import main.content.enums.entity.ItemEnums.WEAPON_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -51,6 +53,7 @@ public class AnimMaster3d {
      256, 320, 384, 448, 512,
     };
     private static Map<String, TextureAtlas> atlasMap = new HashMap<>();
+    private static  List<DC_WeaponObj> broken = new LinkedList<>();
 
     public AnimMaster3d() {
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
@@ -60,23 +63,26 @@ public class AnimMaster3d {
 
     public static boolean is3dAnim(DC_ActiveObj active) {
         DC_WeaponObj weapon = active.getActiveWeapon();
+        if (!is3dSupported(weapon))
+            return false;
         if (getOrCreateAtlas(weapon) == null)
             return false;
         if (weapon.getAmmo() != null) {
             if (getOrCreateAtlas(weapon.getAmmo().getWrappedWeapon()) == null)
                 return false;
         }
-//        if (active.isRanged())
-//            return true;
-//        if (active.getName().contains("Sword Swing"))
-//            return true;
-//        if (active.getName().contains("Slash"))
-//            return true;
-//        if (active.getName().contains("Thrust"))
-//            return true;
-//        if (active.getActiveWeapon().getWeaponType() == WEAPON_TYPE.BLUNT)
-//            return true;
-//        if (active.getActiveWeapon().getWeaponGroup() == WEAPON_GROUP.FISTS)
+        return true;
+    }
+
+    private static boolean is3dSupported(DC_WeaponObj weapon) {
+        if (weapon.getWeaponType() == WEAPON_TYPE.POLE_ARM)
+            return false;
+        if (weapon.getWeaponType() == WEAPON_TYPE.AXE)
+            return false;
+        if (weapon.getWeaponType() == WEAPON_TYPE.NATURAL)
+            if (weapon.getWeaponGroup() != WEAPON_GROUP.FISTS)
+                return false;
+
         return true;
     }
 
@@ -310,12 +316,18 @@ public class AnimMaster3d {
         if (GdxMaster.isLwjglThread())
             getOrCreateAtlas(weapon);
         else
-            Gdx.app.postRunnable(() -> getOrCreateAtlas(weapon));
+            Gdx.app.postRunnable(() -> {
+            if (is3dSupported(weapon))
+                getOrCreateAtlas(weapon);
+            });
     }
 
     public static TextureAtlas getOrCreateAtlas(DC_WeaponObj weapon) {
+        if (broken.contains(weapon))
+            return null;
         try {
             String path = getAtlasPath(weapon);
+
             TextureAtlas atlas = atlasMap.get(path);
             if (atlas == null) {
                 atlas = new TextureAtlas(path);
@@ -324,6 +336,7 @@ public class AnimMaster3d {
             return atlas;
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
+            broken.add(weapon);
             return null;
         }
 

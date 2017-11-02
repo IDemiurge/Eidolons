@@ -129,10 +129,10 @@ public class AutoTestFactory {
             }
 
             searchLoop:
-            for (String part : StringMaster.openContainer(testType
+            for (String part : StringMaster.open(testType
                     .getProperty(G_PROPS.PASSIVES))) {
                 if (part.contains("ActionMod(")) {
-                    for (String s : StringMaster.openContainer(StringMaster.getSubString(false,
+                    for (String s : StringMaster.open(StringMaster.getSubString(false,
                             part, "ActionMod(", ",", null), StringMaster.AND_SEPARATOR)) {
                         actionNames += s + ";";
                     }
@@ -140,7 +140,7 @@ public class AutoTestFactory {
                     // ALT: find base specialization?
                     loop:
                     for (ObjType t : DataManager.getTypes(DC_TYPE.WEAPONS)) {
-                        for (String s : StringMaster.openContainer(actionNames)) {
+                        for (String s : StringMaster.open(actionNames)) {
 
                             String actions = t.getProperty(PROPS.WEAPON_ATTACKS);
                             if (!actions.contains(s)) {

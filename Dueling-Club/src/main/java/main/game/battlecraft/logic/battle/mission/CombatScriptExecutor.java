@@ -254,7 +254,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         unitString = VariableManager.removeVarPart(unitString);
         ObjType wave = DataManager.getType(unitString, DC_TYPE.ENCOUNTERS);
         if (wave != null) {
-            for (String sub : StringMaster.openContainer(
+            for (String sub : StringMaster.open(
              wave.getProperty(PROPS.PRESET_GROUP))) {
                 if (level > 0)
                     units.add(UnitLevelManager.getLeveledTypeName(level, sub));

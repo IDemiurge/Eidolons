@@ -70,7 +70,7 @@ public class Mission {
     }
 
     public void initLevels() {
-        for (String levelPath : StringMaster.openContainer(obj
+        for (String levelPath : StringMaster.open(obj
                 .getProperty(MACRO_PROPS.DUNGEON_LEVELS))) {
             LE_DataMaster.loadLevel(PathFinder.getDungeonLevelFolder() + levelPath);
         }

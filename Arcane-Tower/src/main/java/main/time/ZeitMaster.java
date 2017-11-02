@@ -106,7 +106,7 @@ public class ZeitMaster {
         boolean open = false;
         int time = 0;
         long mark = 0;
-        for (String substring : StringMaster.openContainer(string)) {
+        for (String substring : StringMaster.open(string)) {
             if (!substring.contains(key)) {
                 if (open) {
                     time += getTimeFromMark(substring) - mark;

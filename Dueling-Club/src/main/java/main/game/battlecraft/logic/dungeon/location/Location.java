@@ -67,7 +67,7 @@ public class Location extends DungeonWrapper {
             setProperty(PROPS.SUBLEVELS, DungeonLevelMaster.TEST_ENTRANCE_DATA, true);
         }
         subLevels = new LinkedList<>();
-        for (String sublevel : StringMaster.openContainer(getProperty(PROPS.SUBLEVELS))) {
+        for (String sublevel : StringMaster.open(getProperty(PROPS.SUBLEVELS))) {
             Dungeon dungeon = new Dungeon(VariableManager.removeVarPart(sublevel), true);
 //            getMaster().getDungeons().add(dungeon);
             addSublevel(sublevel, dungeon);

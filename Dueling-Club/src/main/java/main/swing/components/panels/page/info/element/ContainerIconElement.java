@@ -105,7 +105,7 @@ public class ContainerIconElement extends G_PagePanel<SmallItem> implements Enti
             pageSize = PAGE_SIZE_SMALL;
             Collection<SmallItem> fullList = new LinkedList<>();
 
-            for (String subString : StringMaster.openContainer(entity
+            for (String subString : StringMaster.open(entity
                     .getProperty(G_PROPS.CLASSIFICATIONS))) {
                 CLASSIFICATIONS classif = new EnumMaster<CLASSIFICATIONS>().retrieveEnumConst(
                         CLASSIFICATIONS.class, subString);
@@ -117,7 +117,7 @@ public class ContainerIconElement extends G_PagePanel<SmallItem> implements Enti
                 }
             }
 
-            for (String subString : StringMaster.openContainer(entity
+            for (String subString : StringMaster.open(entity
                     .getProperty(G_PROPS.STANDARD_PASSIVES))) {
                 STANDARD_PASSIVES std_pas = new EnumMaster<STANDARD_PASSIVES>().retrieveEnumConst(
                         STANDARD_PASSIVES.class, subString);

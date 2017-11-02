@@ -8,7 +8,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import main.libgdx.GdxMaster;
+import main.libgdx.StyleHolder;
 import main.libgdx.stage.ChainedStage;
 import main.libgdx.stage.LoadingStage;
 import main.libgdx.video.VideoMaster;
@@ -24,10 +27,16 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     VideoMaster video ;
     private boolean waitingForInput;
     private EventCallbackParam param;
+    Label waitingLabel ;
+    private float timeWaited;
 
     public ScreenWithLoader() {
         //TODO loader here, but need data!
         video = new VideoMaster();
+        waitingLabel= new Label("Press any key to Continue...", StyleHolder.getDefaultLabelStyle());
+        waitingLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
+        50);
+
     }
 
     public Batch getBatch() {
@@ -107,6 +116,8 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         }
     }
 
+
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -119,11 +130,20 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             else
             if (!video.getPlayer().isPlaying())
                 video.playTestVideo();
-            Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
             if (!video.getPlayer().render()) {
                 video.playTestVideo();
+            }
+            if (waitingForInput){
+                timeWaited +=delta;
+                batch.begin();
+                float alpha = (timeWaited/3) % 1;
+                alpha =(alpha>=0.5f)?  1.5f-(alpha)
+                 : alpha*2+0.15f;
+                waitingLabel.draw(batch, alpha);
+                batch.end();
             }
            return ;
         }

@@ -3,6 +3,7 @@ package main.libgdx.anims.particles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
+import main.libgdx.GdxMaster;
 import main.libgdx.screens.DungeonScreen;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.ReflectionMaster;
@@ -87,7 +88,7 @@ public class Emitter extends ParticleEmitter {
         Arrays.stream(getParticles()).forEach(p -> {
             if (p != null) {
 //                GridMaster.getMouseCoordinates;
-                Vector2 v = new Vector2(Gdx.input.getX(), (Gdx.graphics.getHeight() - Gdx.input.getY()));
+                Vector2 v = new Vector2(Gdx.input.getX(), (GdxMaster.getHeight() - Gdx.input.getY()));
                 Vector2 pos = DungeonScreen.getInstance().getGridStage().screenToStageCoordinates(v);
                 float xDiff = pos.x
                         - DungeonScreen.getInstance().getController().getXCamPos()

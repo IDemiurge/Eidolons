@@ -200,7 +200,7 @@ public class AbilityConstructor {
             String abilName = VariableManager.removeVarPart(s);
             // TODO WHAT IF THERE ARE SOME NON-PARAMETER ARGUMENTS OR JUST 2+ OF
             // THEM?
-            for (String s1 : StringMaster.openContainer(prop.replaceFirst(abilName, ""))) {
+            for (String s1 : StringMaster.open(prop.replaceFirst(abilName, ""))) {
                 if (!VariableManager.removeVarPart(s1).equalsIgnoreCase(abilName)) {
                     continue;
                 }
@@ -249,7 +249,7 @@ public class AbilityConstructor {
         Chronos.mark("construct passives for " + entity.getName());
         List<AbilityObj> passives = new LinkedList<>();
 
-        for (String passive : StringMaster.openContainer(entity.getProperty(G_PROPS.PASSIVES))) {
+        for (String passive : StringMaster.open(entity.getProperty(G_PROPS.PASSIVES))) {
             AbilityObj abil = getPassive(passive, entity);
             if (abil != null) {
                 passives.add(abil);
@@ -299,7 +299,7 @@ public class AbilityConstructor {
         }
         List<ActiveObj> list = new LinkedList<>();
 
-        for (String abilTypeName : StringMaster.openContainer(entity.getProperty(prop))) {
+        for (String abilTypeName : StringMaster.open(entity.getProperty(prop))) {
             if (abilTypeName.isEmpty()) continue;
             ActiveObj ability;
             ability = newAbility(abilTypeName, entity, passive);
@@ -313,7 +313,7 @@ public class AbilityConstructor {
 
     public static Abilities getAbilities (String data, Ref ref) {
         Abilities a = new Abilities();
-        for (String abilTypeName : StringMaster.openContainer(
+        for (String abilTypeName : StringMaster.open(
          data)) {
             a.add(new AbilityObj(VariableManager.getVarType(abilTypeName), ref));
         }

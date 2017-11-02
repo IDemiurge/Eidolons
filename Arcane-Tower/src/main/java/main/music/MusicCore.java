@@ -186,7 +186,7 @@ public class MusicCore {
 
     public static String convertTracksToM3U(String contents) {
         String newContents = M3U_PREFIX;
-        for (String substring : StringMaster.openContainer(contents)) {
+        for (String substring : StringMaster.open(contents)) {
             // ObjType type = DataManager.getType(substring, AT_OBJ_TYPE.TRACK);
             Track track = getTrack(substring);
 
@@ -253,7 +253,7 @@ public class MusicCore {
         MusicListPanel panel = new MusicListPanel(name, map);
         int maxSize = 0;
         int i = 0;
-        for (String substring : StringMaster.openContainer(filterVal)) {
+        for (String substring : StringMaster.open(filterVal)) {
             List<String> list = new LinkedList<>();
             for (ObjType type : DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST)) {
                 if (type.checkProperty(filterProp, substring)) {
@@ -329,7 +329,7 @@ public class MusicCore {
                 if (type.checkProperty(filterProp, g)) {
                     if (filterProp.isContainer()) {
                         containerLoop:
-                        for (String sub : StringMaster.openContainer(type
+                        for (String sub : StringMaster.open(type
                                 .getProperty(filterProp))) {
                             for (String c : musicConsts) {
                                 if (StringMaster.compare(c, sub)) {

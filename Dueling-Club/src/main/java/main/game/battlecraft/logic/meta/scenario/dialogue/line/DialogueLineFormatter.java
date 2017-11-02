@@ -96,9 +96,9 @@ public class DialogueLineFormatter {
 ...
  */
     public static void parseDialogueFile(String contents) {
-        for (String dialogueContents : StringMaster.openContainer(contents, DIALOGUE_SEPARATOR)) {
+        for (String dialogueContents : StringMaster.open(contents, DIALOGUE_SEPARATOR)) {
             boolean dialogue = true;
-            for (String lineText : StringMaster.openContainer(dialogueContents, LINE_SEPARATOR)) {
+            for (String lineText : StringMaster.open(dialogueContents, LINE_SEPARATOR)) {
                 boolean intro = lineText.contains(INTRO_IDENTIFIER);
                 if (dialogue) {
                     //TODO check intro!

@@ -1,6 +1,5 @@
 package main.libgdx.anims.phased;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -14,6 +13,7 @@ import main.game.battlecraft.rules.combat.attack.Attack;
 import main.game.battlecraft.rules.combat.damage.Damage;
 import main.game.battlecraft.rules.combat.damage.DamageCalculator;
 import main.game.core.game.DC_Game;
+import main.libgdx.GdxMaster;
 import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
@@ -40,8 +40,8 @@ public class PhaseAnimator extends Group {
 //                FAST_DC.getGameLauncher().FAST_MODE || FAST_DC.getGameLauncher().SUPER_FAST_MODE;
 
         stage.addActor(this);
-        setBounds(0, 0, (float) Gdx.graphics.getWidth(), (float)
-                Gdx.graphics.getHeight());
+        setBounds(0, 0, (float) GdxMaster.getWidth(), (float)
+                GdxMaster.getHeight());
         setVisible(true);
         instance = this;
         init();
@@ -121,8 +121,8 @@ public class PhaseAnimator extends Group {
             return;
         }
         removeAnims();
-        setBounds(0, 0, (float) Gdx.graphics.getWidth(), (float)
-                Gdx.graphics.getHeight());
+        setBounds(0, 0, (float) GdxMaster.getWidth(), (float)
+                GdxMaster.getHeight());
 
         DC_Game.game.getAnimationManager().getAnimations().forEach(a -> {
             if (a.getPhaseAnim() == null) {

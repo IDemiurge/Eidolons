@@ -5,7 +5,7 @@ import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
@@ -15,6 +15,7 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_UnitModel;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.ai.tools.Analyzer;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.FEATURE;
@@ -25,6 +26,8 @@ import main.game.core.master.BuffMaster;
 import main.system.math.PositionMaster;
 import main.system.math.roll.RollMaster;
 
+import java.util.List;
+
 public class StealthRule implements ActionRule {
     /*
      * After each action by the stealthy unit or the spotter
@@ -32,6 +35,7 @@ public class StealthRule implements ActionRule {
 
     public static final String SPOTTED = "Spotted";
     private static final Integer DETECTION_FACTOR = 3;
+    private static final int DETECTION_BONUS_MAIN_HERO = 12;
     protected DC_Game game;
 
     public StealthRule(DC_Game g) {
@@ -39,14 +43,7 @@ public class StealthRule implements ActionRule {
     }
 
     public static boolean checkHidden(Unit u) {
-        // if (u.getPlayerVisionStatus() == UNIT_TO_PLAYER_VISION.INVISIBLE)
-        // return true;
-        if (checkInvisible(u)) // SET STATUS
-        {
-            u.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE);
-            return true;
-        }
-        return false;
+        return u.getPlayerVisionStatus(true) == VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE;
     }
 
     public static void applySpotted(Unit target) {
@@ -90,12 +87,16 @@ public class StealthRule implements ActionRule {
             boolean result = true;
             int stealth = unit.getIntParam(PARAMS.STEALTH);
 
-            for (Obj obj : unit.getGame().getPlayer(!unit.getOwner().isMe()).getControlledUnits()) {
+            for (Unit obj : unit.getGame().getPlayer(!unit.getOwner().isMe()).getControlledUnits_()) {
 
                 // if (checkInSight((DC_UnitObj) obj, unit))
                 // continue; TODO Used to be like this? If within sight range,
                 // no stealth possible?
                 int detection = getDetection(unit, obj);
+                if (obj.isMine()) {
+                    if (obj.isMainHero())
+                        detection += DETECTION_BONUS_MAIN_HERO;
+                }
                 if (detection >= stealth) { // detected
                     result = false;
                     break;
@@ -133,24 +134,31 @@ public class StealthRule implements ActionRule {
             return;
         DC_ActiveObj action = (DC_ActiveObj) active; // perhaps only moves?
         Unit source = action.getOwnerObj();
-        if (VisionManager.isVisionHacked()) {
-            return;
-        }
-        if (source.getPlayerVisionStatus(true) != UNIT_TO_PLAYER_VISION.INVISIBLE)
-            return ;
-
-        for (Unit u : game.getUnits()) {
+//        if (VisionManager.isVisionHacked()) {
+//            return;
+//        }
+//        if (source.getPlayerVisionStatus(true) != UNIT_TO_PLAYER_VISION.INVISIBLE)
+//            return ;
+        List<? extends DC_Obj> list = Analyzer.getEnemies(source, false, false, false);
+        for (DC_Obj sub : list) {
+            Unit u = (Unit) sub;
             if (checkHidden(source)) {
 //                if (!game.getVisionMaster().getVisibilityMaster().isZeroVisibility(source, true)) {
                 // if (ConcealmentRule.getVisibilityLevel(u, source,
                 // source.checkInSightForUnit(u)) !=
                 // VISIBILITY_LEVEL.CONCEALED) {
+                if (u.isUnconscious())
+                    continue;
+                if (source.getOutlineType()== OUTLINE_TYPE.BLOCKED_OUTLINE)
+                    continue;
                 checkSpotRoll(u, source);
 //                    rollSpotted(u, source, true);
 //                }
             }
 
             if (checkHidden(u)) {
+                if (u.getOutlineType()== OUTLINE_TYPE.BLOCKED_OUTLINE)
+                    continue;
                 checkSpotRoll(source, u);
             }
         }

@@ -69,7 +69,7 @@ public class NewsParser {
             if (Character.UnicodeBlock.of(sub).equals(Character.UnicodeBlock.CYRILLIC))
                 return true;
         }
-//        for (String blocked : StringMaster.openContainer(blockedWebsites)) {
+//        for (String blocked : StringMaster.open(blockedWebsites)) {
 //            if (StringMaster.contains(link, blocked))
 //                return false;
 //        }

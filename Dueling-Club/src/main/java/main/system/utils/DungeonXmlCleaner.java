@@ -49,7 +49,7 @@ public class DungeonXmlCleaner {
         String objectsNode = content.substring(begin, finish);
         String cleanedObjectsNode = objectsNode;
         List<String> list = new LinkedList<>();
-        for (String substring : StringMaster.openContainer(cleanedObjectsNode, ",")) {
+        for (String substring : StringMaster.open(cleanedObjectsNode, ",")) {
 
             if (list.contains(substring)) {
                 cleanedObjectsNode = cleanedObjectsNode.replaceFirst(substring + ",", "");

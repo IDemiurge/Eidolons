@@ -363,7 +363,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
             list.add(tab.getName());
         }
         String string = new ListChooser(SELECTION_MODE.MULTIPLE, list, false).choose();
-        for (String ws : StringMaster.openContainer(string)) {
+        for (String ws : StringMaster.open(string)) {
             int i = list.indexOf(ws);
             paletteTabs.removeTab(i);
             if (removeFile) {

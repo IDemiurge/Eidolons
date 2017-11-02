@@ -142,7 +142,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 //                return;
 //            }
 //        }
-//        for (String s : StringMaster.openContainer(dungeon.getProperty(PROPS.MAP_PRESET_OBJECTS))) {
+//        for (String s : StringMaster.open(dungeon.getProperty(PROPS.MAP_PRESET_OBJECTS))) {
 //            try {
 //                ObjType objType = DataManager.getType(VariableManager.removeVarPart(s),
 //                        DC_TYPE.BF_OBJ);
@@ -516,7 +516,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
     // String entranceData = sublevel.getEntranceData();
     // // if (DungeonLevelMaster.isSublevelTestOn())
     // // entranceData = DungeonLevelMaster.TEST_ENTRANCE_DATA;
-    // for (String string : StringMaster.openContainer(entranceData)) {
+    // for (String string : StringMaster.open(entranceData)) {
     // ObjType bfObjType = new ObjType(DataManager.getType(string
     // .split(StringMaster.ALT_PAIR_SEPARATOR)[0], OBJ_TYPES.BF_OBJ));
     // List<ENTRANCE_POINT_TEMPLATE> templates = new

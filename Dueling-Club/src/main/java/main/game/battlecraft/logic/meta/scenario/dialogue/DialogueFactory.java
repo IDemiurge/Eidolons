@@ -30,7 +30,7 @@ public class DialogueFactory {
     public void constructDialogues
      (String path) {
         String data = FileManager.readFile(path);
-        for (String contents : StringMaster.openContainer(
+        for (String contents : StringMaster.open(
          data, DIALOGUE_SEPARATOR)) {
             String[] array = contents.split(ID_SEPARATOR);
             String name = array[0];
@@ -73,7 +73,7 @@ public class DialogueFactory {
      (String name, String idSequence) {
         Speech parent = null;
         Speech root = null;
-        for (String ID : StringMaster.openContainer(idSequence)) {
+        for (String ID : StringMaster.open(idSequence)) {
             Speech speech = getSpeech(StringMaster.getInteger(ID));
 
             String pathRoot = getFileRootPath();

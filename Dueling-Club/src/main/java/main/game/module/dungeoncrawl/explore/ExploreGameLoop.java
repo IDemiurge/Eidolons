@@ -28,7 +28,7 @@ import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
  * Created by JustMe on 9/9/2017.
  */
 public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
-    private static final int REAL_TIME_LOGIC_PERIOD = 150;
+    private static final int REAL_TIME_LOGIC_PERIOD = 350;
     private static Thread realTimeThread;
     Lock lock = new ReentrantLock();
     Condition waiting = lock.newCondition();
@@ -109,7 +109,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 //check party
                 return true;
             }
-
+if (game.isDebugMode())
         if (location.getMainEntrance() != null)
             if (location.getMainEntrance().getCoordinates().equals(c)) {
 //test

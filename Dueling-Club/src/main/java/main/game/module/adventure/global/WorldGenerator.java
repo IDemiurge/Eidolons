@@ -43,7 +43,7 @@ public class WorldGenerator {
 
     public static List<Region> generateRegions(MacroRef ref) {
         List<Region> regions = new LinkedList<>();
-        for (String s : StringMaster.openContainer(world
+        for (String s : StringMaster.open(world
                 .getProperty(MACRO_PROPS.REGIONS))) {
             ObjType type = DataManager.getType(s, MACRO_OBJ_TYPES.REGION);
             region = createRegion(type, ref);
@@ -63,18 +63,18 @@ public class WorldGenerator {
 
         region = new Region(game, type, ref);
         // init default towns/places ; then add randomized
-        for (String s : StringMaster.openContainer(region
+        for (String s : StringMaster.open(region
                 .getProperty(MACRO_PROPS.AREAS))) {
             type = DataManager.getType(s, MACRO_OBJ_TYPES.AREA);
             Area area = new Area(ref.getGame(), type, ref);
             region.getAreas().add(area);
         }
-        for (String s : StringMaster.openContainer(region
+        for (String s : StringMaster.open(region
                 .getProperty(MACRO_PROPS.PLACES))) {
             Place place = createPlace(ref, s);
             region.addPlace(place);
         }
-        for (String s : StringMaster.openContainer(region
+        for (String s : StringMaster.open(region
                 .getProperty(MACRO_PROPS.TOWNS))) {
             Town town = createTown(ref, s);
             region.addTown(town);
@@ -94,7 +94,7 @@ public class WorldGenerator {
     private static void generateRoutes() {
         // TODO external routes
         String property = region.getProperty(MACRO_PROPS.INTERNAL_ROUTES);
-        for (String routeTypeName : StringMaster.openContainer(property)) {
+        for (String routeTypeName : StringMaster.open(property)) {
             ObjType routeType = DataManager.getType(routeTypeName,
                     MACRO_OBJ_TYPES.ROUTE);
             Route r;
@@ -159,15 +159,15 @@ public class WorldGenerator {
         // // }
         // }
         for (Route r : region.getRoutes()) {
-            for (String p : StringMaster.openContainer(r
+            for (String p : StringMaster.open(r
                     .getProperty(MACRO_PROPS.LINKED_PLACES))) {
                 r.addLinkedPlace(region.getPlace(p));
             }
-            for (String p : StringMaster.openContainer(r
+            for (String p : StringMaster.open(r
                     .getProperty(MACRO_PROPS.LINKED_TOWNS))) {
                 r.addLinkedTown(region.getTown(p));
             }
-            for (String p : StringMaster.openContainer(r
+            for (String p : StringMaster.open(r
                     .getProperty(MACRO_PROPS.LINKED_ROUTES))) {
                 r.addLinkedRoute(region.getRoute(p));
             }

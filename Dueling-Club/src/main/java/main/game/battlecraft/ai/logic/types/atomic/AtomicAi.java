@@ -49,6 +49,7 @@ public class AtomicAi extends AiHandler {
         Action action = null;
         if (ai.getType() == AI_TYPE.ARCHER) {
             action = getReloadAction(ai);
+            if (action != null)
             action.setTaskDescription("Ammo Reload");
         }
         if (action != null)
@@ -57,9 +58,11 @@ public class AtomicAi extends AiHandler {
         if (action == null) {
             if (checkAtomicActionTurn(ai)) {
                 action = getAtomicActionTurn(ai);
+                if (action != null)
                 action.setTaskDescription("Facing Adjustment");
             } else {
                 action = getAtomicActionApproach(ai);
+                if (action != null)
                 action.setTaskDescription("Approach");
             }
         } else {

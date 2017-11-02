@@ -637,6 +637,8 @@ public class DC_GameManager extends GameManager {
     }
 
     public Unit getMainHero() {
-        return (Unit) getGame().getPlayer(true).getHeroObj();
+//         getGame().getMetaMaster().getPartyManager().getParty().getLeader();
+//        return (Unit) getGame().getPlayer(true).getHeroObj();
+        return Eidolons.getMainHero();
     }
 }

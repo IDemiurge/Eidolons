@@ -333,13 +333,13 @@ public class MacroManager {
     // private static void initCopyTypes() {
     // copyTypes = new DequeImpl<>();
     // String typeMapContent = null;
-    // for (String part : StringMaster.openContainer(typeMapContent,
+    // for (String part : StringMaster.open(typeMapContent,
     // StringMaster.AND_PROPERTY_SEPARATOR)) {
     // String parentTypeName = VariableManager.removeVarPart(part);
     // ObjType parentType = DataManager.getType(parentTypeName);
     // if (parentType == null)
     // parentType = getCustomType(parentTypeName);
-    // for (String name : StringMaster.openContainer(VariableManager
+    // for (String name : StringMaster.open(VariableManager
     // .getVars(part))) {
     // // TODO perhaps value-mods could be added to name?
     // ObjType copyType = new ObjType(parentType);

@@ -39,7 +39,7 @@ public class PaletteTabPanel extends HC_TabPanel {
                         .getName(), p.filterValue));
             }
 
-            for (String s : StringMaster.openContainer(p.subPalettes, ", ")) {
+            for (String s : StringMaster.open(p.subPalettes, ", ")) {
                 List<ObjType> typeList = p.upper ? DataManager.getTypesGroup(type, StringMaster
                         .getWellFormattedString(s)) : DataManager.getTypesSubGroup(type,
                         StringMaster.getWellFormattedString(s));

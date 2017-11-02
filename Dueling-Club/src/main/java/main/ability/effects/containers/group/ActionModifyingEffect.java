@@ -25,7 +25,7 @@ public class ActionModifyingEffect extends HeroObjectModifyingEffect {
         Unit hero = (Unit) ref.getSourceObj();
         if (objName.contains(StringMaster.AND_SEPARATOR)) {
             List<Obj> list = new LinkedList<>();
-            for (String sub : StringMaster.openContainer(objName)) {
+            for (String sub : StringMaster.open(objName)) {
                 list.add(hero.getAction(sub));
             }
             return list;

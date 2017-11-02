@@ -36,7 +36,7 @@ public class M3uMaster {
             }
             if (p != null) {
                 if (p.isContainer()) {
-                    for (String sub : StringMaster.openContainer(type.getProperty(p))) {
+                    for (String sub : StringMaster.open(type.getProperty(p))) {
                         FileManager.write(content, path + sub + "\\" + type.getName() + ".m3u");
                     }
                     continue;

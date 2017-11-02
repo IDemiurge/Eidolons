@@ -347,7 +347,7 @@ public class DC_ActionManager implements ActionManager {
 
     private List<DC_ActiveObj> getSpecialModesFromUnit(Unit unit) {
         List<DC_ActiveObj> subActions = new LinkedList<>();
-        for (String mode : StringMaster.openContainer(unit.getProperty(PROPS.SPECIAL_ACTION_MODES))) {
+        for (String mode : StringMaster.open(unit.getProperty(PROPS.SPECIAL_ACTION_MODES))) {
             DC_UnitAction baseAction = unit.getAction(VariableManager.getVar(mode));
             DC_UnitAction subAction;
             if (DataManager.getType(VariableManager.removeVarPart(mode), DC_TYPE.ACTIONS) != null) {
@@ -522,7 +522,7 @@ public class DC_ActionManager implements ActionManager {
         }
 
         String activesProp = entity.getProperty(ACTIVES);
-        for (String typeName : StringMaster.openContainer(activesProp)) {
+        for (String typeName : StringMaster.open(activesProp)) {
             ObjType type = DataManager.getType(typeName, DC_TYPE.ACTIONS);
             DC_UnitAction action;
             if (type == null) {
@@ -592,7 +592,7 @@ public class DC_ActionManager implements ActionManager {
             return new LinkedList<>(list);
         }
         list = new LinkedList<>();
-        for (String typeName : StringMaster.openContainer(weapon.getProperty(PROPS.WEAPON_ATTACKS))) {
+        for (String typeName : StringMaster.open(weapon.getProperty(PROPS.WEAPON_ATTACKS))) {
             if (!weapon.isMainHand()) {
                 typeName = ActionGenerator.getOffhandActionName(typeName);
             }

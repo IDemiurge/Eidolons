@@ -59,7 +59,7 @@ public class TownInitializer {
         if (min == 0) {
             min = default_shop_min;
         }
-        for (String shopTypeName : StringMaster.openContainer(town
+        for (String shopTypeName : StringMaster.open(town
                 .getProperty(MACRO_PROPS.SHOPS))) {
             i++;
             if (i > max) {

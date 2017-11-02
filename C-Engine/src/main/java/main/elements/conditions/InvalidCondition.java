@@ -13,13 +13,13 @@ import main.system.auxiliary.StringMaster;
 public class InvalidCondition extends MicroCondition {
     @Override
     public boolean check(Ref ref) {
-        for (String substring : StringMaster.openContainer(
+        for (String substring : StringMaster.open(
          ref.getMatchObj().getProperty(G_PROPS.ACTIVES))) {
             substring = VariableManager.removeVarPart(substring);
             if (DataManager.isTypeName(substring, DC_TYPE.ABILS))
                 return true;
         }
-        for (String substring : StringMaster.openContainer(
+        for (String substring : StringMaster.open(
          ref.getMatchObj().getProperty(G_PROPS.PASSIVES))) {
             substring = VariableManager.removeVarPart(substring);
             if (DataManager.isTypeName(substring, DC_TYPE.ABILS))

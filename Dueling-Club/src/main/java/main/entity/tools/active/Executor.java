@@ -10,6 +10,8 @@ import main.entity.active.DC_QuickItemAction;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.Active;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.unit.Unit;
+import main.game.battlecraft.ai.GroupAI;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_GROUP;
 import main.game.battlecraft.rules.action.StackingRule;
@@ -344,8 +346,7 @@ public class Executor extends ActiveHandler {
             getGame().getDungeonMaster().getExplorationMaster().getActionHandler().payCosts(getEntity());
             getGame().getDungeonMaster().getExplorationMaster().getCleaner().cleanUpAfterAction(
              getEntity(), getOwnerObj());
-        } else
-        {
+        } else {
             addCooldown();
         }
 
@@ -377,8 +378,6 @@ public class Executor extends ActiveHandler {
 
     public void actionComplete() {
         getAnimator().initAnimData();
-        getAction().setTargetGroup(null);
-        getAction().setTargetObj(null);
         getGame().getManager().setActivatingAction(null);
         if (isResult()) {
             log(getAction() + " done", false);
@@ -399,8 +398,35 @@ public class Executor extends ActiveHandler {
             e.printStackTrace();
         }
 
+        if (result) {
+            if (getAction().getChecker().isPotentiallyHostile())
+                if (ExplorationMaster.isExplorationOn())
+                    if (getAction().getTargetObj() instanceof Unit)
+                        if (getAction().getTargetObj().getOwner() !=
+                         getAction().getOwner()) {
+                            if (getAction().getTargetObj().isMine()) {
+                                getAction().getOwnerObj().
+                                 getAI().setEngagementDuration(2);
+                            }
+                            else
+                            {
+                                GroupAI g = ((Unit) getAction().getTargetObj()).getAI().getGroup();
+                                //TODO
+                                if (g == null) {
+                                    ((Unit) getAction().getTargetObj()).getAI().setEngagementDuration(2);
+                                } else  g.
+                                 getMembers().forEach(
+                                 unit->unit.getAI(). setEngagementDuration(2)
+                                );
+                            }
+
+
+                        }
+        }
 //        getAnimator().waitForAnimation();
 
+        getAction().setTargetGroup(null);
+        getAction().setTargetObj(null);
     }
 
     public Activator getActivator() {

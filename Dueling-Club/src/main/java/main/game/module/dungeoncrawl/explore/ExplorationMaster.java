@@ -82,6 +82,7 @@ public class ExplorationMaster {
             //TODO quick-fix
           cleaner.cleanUpAfterBattle();
             game.getLogManager().logBattleEnds();
+            getResetter().setFirstResetDone(false);
         } else
         {
             game.getLogManager().logBattleStarts();
@@ -89,7 +90,9 @@ public class ExplorationMaster {
                 AnimMaster.getInstance().getConstructor().preconstructAll(unit);
                 AnimMaster3d.preloadAtlases(unit);
             });
+            getResetter().setFirstResetDone(false);
         }
+        getResetter().setFirstResetDone(false);
         game.startGameLoop();
         game.getManager().reset();
         //exceptions: triggers, scripts,

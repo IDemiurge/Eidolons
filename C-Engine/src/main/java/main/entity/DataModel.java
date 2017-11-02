@@ -102,7 +102,7 @@ public abstract class DataModel {
     public String getCustomProperty(String value_ref) {
         if (!StringMaster.isEmpty(getProperty(G_PROPS.CUSTOM_PROPS))) {
             // this must be custom container!
-            for (String subString : StringMaster.openContainer(getProperty(G_PROPS.CUSTOM_PROPS))) {
+            for (String subString : StringMaster.open(getProperty(G_PROPS.CUSTOM_PROPS))) {
 
             }
         }
@@ -490,7 +490,7 @@ public abstract class DataModel {
         }
 
         for (String sub : list) {
-            for (String item : StringMaster.openContainer(getProperty(PROP))) {
+            for (String item : StringMaster.open(getProperty(PROP))) {
                 String variable = VariableManager.getVar(item);
                 if (StringMaster.isInteger(variable)) {
                     item = VariableManager.removeVarPart(item);
@@ -1059,7 +1059,7 @@ public abstract class DataModel {
          + getName() + "'s " + prop.getName());
 
         if (value.contains(StringMaster.AND_PROPERTY_SEPARATOR)) {
-            for (String s : StringMaster.openContainer(value, StringMaster.AND_PROPERTY_SEPARATOR)) {
+            for (String s : StringMaster.open(value, StringMaster.AND_PROPERTY_SEPARATOR)) {
                 addProperty(prop, s, noDuplicates);
             }
             return true;

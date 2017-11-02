@@ -3,7 +3,6 @@ package main.libgdx.anims.particles.lighting;
 import box2dLight.ConeLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -14,6 +13,7 @@ import main.entity.obj.MicroObj;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.libgdx.GdxColorMaster;
+import main.libgdx.GdxMaster;
 import main.libgdx.bf.GridConst;
 import main.libgdx.screens.DungeonScreen;
 import main.system.auxiliary.log.LogMaster;
@@ -76,10 +76,10 @@ public class LightMap {
         mouseLight.setPosition(x, y);
         boolean checkoutX;
         boolean checkoutY;
-        float x_distance_from_the_border = Math.abs(x - Gdx.graphics.getWidth());
-        float y_distance_from_the_border = Math.abs(y - Gdx.graphics.getHeight());
-        checkoutX = !(x_distance_from_the_border < LightingManager.mouse_light_distance_to_turn_off || x_distance_from_the_border > Gdx.graphics.getWidth() - LightingManager.mouse_light_distance_to_turn_off);
-        checkoutY = !(y_distance_from_the_border < LightingManager.mouse_light_distance_to_turn_off || y_distance_from_the_border > Gdx.graphics.getWidth() - LightingManager.mouse_light_distance_to_turn_off);
+        float x_distance_from_the_border = Math.abs(x - GdxMaster.getWidth());
+        float y_distance_from_the_border = Math.abs(y - GdxMaster.getHeight());
+        checkoutX = !(x_distance_from_the_border < LightingManager.mouse_light_distance_to_turn_off || x_distance_from_the_border > GdxMaster.getWidth() - LightingManager.mouse_light_distance_to_turn_off);
+        checkoutY = !(y_distance_from_the_border < LightingManager.mouse_light_distance_to_turn_off || y_distance_from_the_border > GdxMaster.getWidth() - LightingManager.mouse_light_distance_to_turn_off);
         if (checkoutX & checkoutY) {
             mouseLight.setDistance(LightingManager.mouse_light_distance);
         } else {

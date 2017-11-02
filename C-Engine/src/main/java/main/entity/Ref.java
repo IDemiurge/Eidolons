@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Stores all the relevant ID's. Used to find proper Entities with getObj(KEYS key).
@@ -28,21 +29,20 @@ import java.util.Map;
  * To activate on a given object, set ref’s {target} key, otherwise Active's Targeting will select()
  */
 public class Ref implements Cloneable, Serializable {
-    protected static final long serialVersionUID = 1L; //why was it necessary? => deep clone...
-    protected static final String MULTI_TARGET = KEYS.TARGET.name() + "#";
-
     public final static KEYS[] REPLACING_KEYS = {
      KEYS.BUFF, KEYS.TARGET, KEYS.SOURCE, KEYS.MATCH, KEYS.BASIS, KEYS.EVENT, KEYS.
      SUMMONER, KEYS.ACTIVE, KEYS.SPELL, KEYS.WEAPON, KEYS.ARMOR,
     };
-     /*
-       TARGET_WEAPON example
-     ref replacement is there exactly to avoid putting the whole thing into map!
-      */
-    protected String str; //buffer field for cases when we're replacing keyword, e.g. *event_source* => event's ref's *source*
-
+    protected static final long serialVersionUID = 1L; //why was it necessary? => deep clone...
+    protected static final String MULTI_TARGET = KEYS.TARGET.name() + "#";
     public Game game; //reference to the game object
     public Event event; //reference to the event associated with this ref branch/stack
+    public boolean base; // affects calculations - all entity params will be taken from base type
+    /*
+      TARGET_WEAPON example
+    ref replacement is there exactly to avoid putting the whole thing into map!
+     */
+    protected String str; //buffer field for cases when we're replacing keyword, e.g. *event_source* => event's ref's *source*
     protected ActiveObj animationActive; //reference to the game object
     protected Entity infoEntity; //reference to the game object
     protected Map<KEYS, String> values = new XLinkedMap<>(); //main value map
@@ -50,14 +50,12 @@ public class Ref implements Cloneable, Serializable {
     protected Map<String, Obj> objCache = new HashMap<>(); //cache for performance
     protected Obj source; //utility reference to the source object
     protected GroupImpl group; //reference to the group object (so far don't need >1)
-
     protected Player player; //reference to the player who owns the original source object of this branch
     protected Effect effect; //reference to the effect object that originated this branch
     protected boolean quiet; // things activate with quiet ref won't throw events
     protected boolean debug; // some things may work differently when ref debug is on
     protected boolean triggered; // signifies that this branch/stack comes from a trigger
     protected boolean animationDisabled; // outdated phase anim flag...
-    public boolean base; // affects calculations - all entity params will be taken from base type
 
     public Ref() {
         this.game = Game.game;
@@ -261,7 +259,7 @@ public class Ref implements Cloneable, Serializable {
         if (s.startsWith("{")) {
             s = StringMaster.replaceFirst(s, "{", "");
         }
-        String prefix_ =  s.split("_")[0];
+        String prefix_ = s.split("_")[0];
         if (prefix_.isEmpty() || prefix_.equals(s))
             return null;
         prefix_ = prefix_.toUpperCase();
@@ -311,7 +309,9 @@ public class Ref implements Cloneable, Serializable {
 
         String value = ((ref == null) ? this : ref).getValue(getStr());
         if (StringMaster.isInteger(value)) {
-            return Integer.valueOf(value.replace(".0", ""));
+            if (value.contains("."))
+                return Integer.valueOf(value.split(Pattern.quote("."))[0]);
+            return Integer.valueOf(value);
         }
 
         if (StringMaster.contains(getStr(), MULTI_TARGET)) {

@@ -243,7 +243,7 @@ public class VariableManager {
                                                               List<Object> varTypes) {
         String varPart = "(";
         int i = 0;
-        for (String var : StringMaster.openContainer(variables)) {
+        for (String var : StringMaster.open(variables)) {
             String value;
             if (varTypes == null) {
                 value = promptStringInput(var);

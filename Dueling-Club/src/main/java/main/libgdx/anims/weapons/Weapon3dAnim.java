@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimMaster3d;
 import main.libgdx.anims.AnimMaster3d.PROJECTION;
@@ -105,9 +106,21 @@ public class Weapon3dAnim extends ActionAnim {
         return WEAPON_ANIM_CASE.NORMAL;
     }
 
+    private PROJECTION getProjectionByFacing(FACING_DIRECTION facing) {
+        if (!facing.isVertical())
+            return PROJECTION.HOR;
+        return facing == FACING_DIRECTION.NORTH ? PROJECTION.TO : PROJECTION.FROM;
+    }
+
     protected PROJECTION getProjection() {
+        if (getRef()==null )
+            return  getProjectionByFacing(getActive().getOwnerObj().getFacing())  ;
+        if (getRef().getSourceObj()==null )
+            return  getProjectionByFacing(getActive().getOwnerObj().getFacing())  ;
+        if (getRef().getTargetObj()==null )
+            return  getProjectionByFacing(getActive().getOwnerObj().getFacing())  ;
         Boolean b =
-         PositionMaster.isAboveOr(getActive().getOwnerObj(),   ref.getTargetObj());
+         PositionMaster.isAboveOr(getRef().getSourceObj(),   ref.getTargetObj());
         if (getActive().getOwnerObj().getCoordinates().equals(  ref.getTargetObj().getCoordinates()))
             b = getActive().getOwnerObj().isMine();
         PROJECTION   projection= PROJECTION.HOR;
@@ -115,7 +128,6 @@ public class Weapon3dAnim extends ActionAnim {
             projection = b ? PROJECTION.FROM : PROJECTION.TO;
         return projection;
     }
-
 
 
     @Override

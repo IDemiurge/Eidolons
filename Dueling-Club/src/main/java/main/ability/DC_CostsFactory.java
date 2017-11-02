@@ -91,7 +91,7 @@ public class DC_CostsFactory {
             return;
         }
 
-        for (String subString : StringMaster.openContainer(spell
+        for (String subString : StringMaster.open(spell
                 .getSpecialRequirements())) {
             Requirement req = DC_ConditionMaster
                     .getSpecialReq(subString, spell);

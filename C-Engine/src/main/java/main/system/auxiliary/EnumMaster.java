@@ -389,7 +389,7 @@ public class EnumMaster<T> {
 
     public List<T> getEnumList(Class<T> CLASS, String property, String separator) {
         List<T> list = new LinkedList<>();
-        for (String subString : StringMaster.openContainer(property, separator)) {
+        for (String subString : StringMaster.open(property, separator)) {
             T ENUM = retrieveEnumConst(CLASS, subString);
             if (ENUM != null) {
                 list.add(ENUM);

@@ -38,8 +38,8 @@ public class StringContainersComparison extends StringComparison {
         boolean result = !negative & !strictContents;
         // result = StringMaster.compareContainers(val1, val2, strictContents);
 
-        for (String s1 : StringMaster.openContainer(val1)) {
-            for (String s : StringMaster.openContainer(val2)) {
+        for (String s1 : StringMaster.open(val1)) {
+            for (String s : StringMaster.open(val2)) {
                 result = negative;
                 if (strictContents) {
                     if (StringMaster.compareByChar(s1, s, strictContents)) {

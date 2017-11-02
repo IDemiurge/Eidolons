@@ -72,12 +72,12 @@ public class AggroMaster {
             if (unit.getAI().getEngagementDuration() > 0) {
                 set.add(unit);
             }
+            if (hero.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.INVISIBLE)
+                continue;
             VISIBILITY_LEVEL visibility = VisionManager.getMaster().getVisibilityLevel(unit, hero);
             if (visibility != VISIBILITY_LEVEL.CLEAR_SIGHT)
                 continue;
 
-            if (unit.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.INVISIBLE)
-                continue;
             if (unit.getVisibilityLevel() == VISIBILITY_LEVEL.UNSEEN)
                 continue; //TODO these units will instead 'surprise attack' you or stalk
             int duration = 3;

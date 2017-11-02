@@ -58,7 +58,7 @@ public class SkillTabNew extends HeroItemTab {
     protected void initData() {
         data = new LinkedList<>();
         String property = hero.getProperty(getPROP());
-        for (String skill : StringMaster.openContainer(property)) {
+        for (String skill : StringMaster.open(property)) {
             skill = VariableManager.removeVarPart(skill);
             data.add(DataManager.getType(skill, getTYPE()));
         }

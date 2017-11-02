@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import main.libgdx.GdxMaster;
 import main.system.images.ImageManager;
 
 import java.awt.*;
@@ -44,8 +45,8 @@ public class Java2DTest implements ApplicationListener {
             throw new GdxRuntimeException("this demo only works on desktop with Java2D");
         }
 
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
+        float w = GdxMaster.getWidth();
+        float h = GdxMaster.getHeight();
 
         camera = new OrthographicCamera(w, h);
         camera.setToOrtho(false);

@@ -1,5 +1,6 @@
 package main.game.battlecraft.ai;
 
+import main.client.dc.Launcher;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.entity.obj.unit.Unit;
@@ -134,6 +135,7 @@ public class AI_Manager extends AiMaster {
             try {
                 getMessageBuilder().append("Task: " + action.getTaskDescription());
                 if (!CoreEngine.isGraphicsOff()) {
+                    if (game.isDebugMode() || Launcher.DEV_MODE)
                     FloatingTextMaster.getInstance().
                      createFloatingText(TEXT_CASES.BATTLE_COMMENT,
                       getMessageBuilder().toString(), getUnit());

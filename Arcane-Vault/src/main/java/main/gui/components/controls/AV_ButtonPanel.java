@@ -177,7 +177,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 String toAdd = ListChooser.chooseEnum(ENUM_CLASS,
                  SELECTION_MODE.MULTIPLE);
 
-                for (String sub : StringMaster.openContainer(toAdd)) {
+                for (String sub : StringMaster.open(toAdd)) {
                     ArcaneVault.getMainBuilder().getTabBuilder().addTab(
                      ENUM_CLASS, sub);
                 }
@@ -326,9 +326,9 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 if (input == null) {
                     break;
                 }
-                for (String typeName : StringMaster.openContainer(input)) {
+                for (String typeName : StringMaster.open(input)) {
                     DC_TYPE TYPE = DC_TYPE.getType(typeName);
-                    for (String valName : StringMaster.openContainer(values)) {
+                    for (String valName : StringMaster.open(values)) {
                         VALUE val = ContentManager.getValue(valName);
                         boolean emptyOnly = JOptionPane.showConfirmDialog(null, "Empty only?") == JOptionPane.YES_OPTION;
                         XML_Transformer.removeValue(val, XML_Reader.getFile(TYPE), true, emptyOnly);

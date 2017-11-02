@@ -160,7 +160,7 @@ public class Loader {
                 Ref ref = new Ref(game);
                 Node refNode = XML_Converter.findNode(sub, Saver.OBJ_NODE);
                 if (refNode != null)
-                    for (String substring : StringMaster.openContainer(
+                    for (String substring : StringMaster.open(
                      refNode.getTextContent())) {
                         ref.setValue(KEYS.valueOf(
                          substring.split("=")[0].toUpperCase()),

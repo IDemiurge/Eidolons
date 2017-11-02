@@ -82,13 +82,13 @@ public class HC_Master {
 
     public static List<ObjType> getRequiredSkills(ObjType selectedType, boolean or) {
         List<ObjType> list = new LinkedList<>();
-        for (String s : StringMaster.openContainer(selectedType
+        for (String s : StringMaster.open(selectedType
                 .getProperty(PROPS.SKILL_REQUIREMENTS))) {
             if (s.contains(StringMaster.OR)) {
                 if (!or) {
                     continue;
                 } else {
-                    for (String s1 : StringMaster.openContainer(s, StringMaster.OR)) {
+                    for (String s1 : StringMaster.open(s, StringMaster.OR)) {
                         list.add(DataManager.getType(s1, DC_TYPE.SKILLS));
                     }
                 }

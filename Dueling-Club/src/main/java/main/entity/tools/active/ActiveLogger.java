@@ -22,13 +22,10 @@ import main.system.text.LogEntryNode;
  */
 public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
 
-    private Unit ownerObj;
     private LogEntryNode entry;
 
     public ActiveLogger(DC_ActiveObj entity, EntityMaster<DC_ActiveObj> entityMaster) {
         super(entity, entityMaster);
-        ownerObj = entity.getOwnerObj();
-
     }
 
     public LogEntryNode getEntry() {
@@ -45,9 +42,9 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
                 }
             }
             if (targetObj == null) {
-                game.getLogManager().doneLogEntryNode(ENTRY_TYPE.ATTACK, ownerObj.getNameIfKnown());
+                game.getLogManager().doneLogEntryNode(ENTRY_TYPE.ATTACK, getOwnerObj().getNameIfKnown());
             } else {
-                game.getLogManager().doneLogEntryNode(ENTRY_TYPE.ATTACK, ownerObj.getNameIfKnown(),
+                game.getLogManager().doneLogEntryNode(ENTRY_TYPE.ATTACK, getOwnerObj().getNameIfKnown(),
                  // lastSubaction.getName()
                  targetObj.getNameIfKnown());
             }
@@ -61,11 +58,11 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
 
     public ENTRY_TYPE log() {
         // TODO *player's* detection, not AI's!
-        String string = ownerObj.getNameIfKnown() + " is activating "
+        String string = getOwnerObj().getNameIfKnown() + " is activating "
          + getEntity().getDisplayedName();
         LogMaster.gameInfo(StringMaster.getStringXTimes(80 - string.length(), ">") + string);
 
-        boolean logAction = ownerObj.getVisibilityLevel() == VISIBILITY_LEVEL.CLEAR_SIGHT
+        boolean logAction = getOwnerObj().getVisibilityLevel() == VISIBILITY_LEVEL.CLEAR_SIGHT
          && !getMaster().getChecker().isAttackAny();
         entry = null;
         ENTRY_TYPE entryType = ENTRY_TYPE.ACTION;
@@ -74,14 +71,14 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
             logAction = true;
         }
         if (!getMaster().getChecker().isAttackAny()) {
-            entry = game.getLogManager().newLogEntryNode(entryType, ownerObj, this);
+            entry = game.getLogManager().newLogEntryNode(entryType, getOwnerObj(), this);
         }
 
         if (logAction) {
             game.getLogManager().log(">> " + string);
-        } else if (VisionManager.checkVisible(ownerObj, false) && !getMaster().getChecker().isAttackAny()) {
+        } else if (VisionManager.checkVisible(getOwnerObj(), false) && !getMaster().getChecker().isAttackAny()) {
             String text = " performs an action... ";
-            game.getLogManager().log(">> " + ownerObj.getNameIfKnown() + text);
+            game.getLogManager().log(">> " + getOwnerObj().getNameIfKnown() + text);
         }
         return entryType;
     }
@@ -139,4 +136,9 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
         return true;
 
     }
+
+    public Unit getOwnerObj() {
+        return getEntity().getOwnerObj();
+    }
+
 }

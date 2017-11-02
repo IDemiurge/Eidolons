@@ -19,6 +19,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
+import main.libgdx.GdxMaster;
 
 import java.util.ArrayList;
 
@@ -133,7 +134,7 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
         Gdx.input.setInputProcessor(this);
 
         normalProjection.setToOrtho2D(
-                0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
 
         /** BOX2D LIGHT STUFF BEGIN */
         RayHandler.setGammaCorrection(true);
@@ -206,35 +207,35 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
 
             font.draw(batch,
                     "F1 - PointLight",
-                    0, Gdx.graphics.getHeight());
+                    0, GdxMaster.getHeight());
             font.draw(batch,
                     "F2 - ConeLight",
-                    0, Gdx.graphics.getHeight() - 15);
+                    0, GdxMaster.getHeight() - 15);
             font.draw(batch,
                     "F3 - ChainLight",
-                    0, Gdx.graphics.getHeight() - 30);
+                    0, GdxMaster.getHeight() - 30);
             font.draw(batch,
                     "F4 - DirectionalLight",
-                    0, Gdx.graphics.getHeight() - 45);
+                    0, GdxMaster.getHeight() - 45);
             font.draw(batch,
                     "F5 - random lights colors",
-                    0, Gdx.graphics.getHeight() - 75);
+                    0, GdxMaster.getHeight() - 75);
             font.draw(batch,
                     "F6 - random lights distance",
-                    0, Gdx.graphics.getHeight() - 90);
+                    0, GdxMaster.getHeight() - 90);
             font.draw(batch,
                     "F9 - default blending (1.3)",
-                    0, Gdx.graphics.getHeight() - 120);
+                    0, GdxMaster.getHeight() - 120);
             font.draw(batch,
                     "F10 - over-burn blending (default in 1.2)",
-                    0, Gdx.graphics.getHeight() - 135);
+                    0, GdxMaster.getHeight() - 135);
             font.draw(batch,
                     "F11 - some other blending",
-                    0, Gdx.graphics.getHeight() - 150);
+                    0, GdxMaster.getHeight() - 150);
 
             font.draw(batch,
                     "F12 - toggle help text",
-                    0, Gdx.graphics.getHeight() - 180);
+                    0, GdxMaster.getHeight() - 180);
 
             font.draw(batch,
                     Integer.toString(Gdx.graphics.getFramesPerSecond())

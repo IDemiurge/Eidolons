@@ -84,8 +84,12 @@ public class DC_StateManager extends StateManager {
         if (getGame().isStarted() && ExplorationMaster.isExplorationOn()) {
             // we will need full reset: after traps or other spec. effects; for Cells/Illumination
 
+
             getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
-            return;
+            if (getGame().getDungeonMaster().getExplorationMaster().getResetter().isFirstResetDone())
+                return;
+            else getGame().getDungeonMaster().getExplorationMaster().getResetter().setFirstResetDone(true);
+
         }
         super.resetAllSynchronized();
         if (getGame().isStarted()) {
@@ -173,7 +177,7 @@ public class DC_StateManager extends StateManager {
 //                }
 //            }
 //            try {
-                obj.toBase();
+            obj.toBase();
 //            } catch (Exception e) {
 //                e.printStackTrace();
 //            }
@@ -192,11 +196,14 @@ public class DC_StateManager extends StateManager {
 
     public void afterEffects() {
         for (Obj obj : getGame().getBfObjects()) {
-            if (!obj.isDead())
+            if (obj.isDead())
+                continue;
+            if (!ExplorationMaster.isExplorationOn()) {
                 if (obj instanceof Unit) {
                     if (((Unit) obj).getAI().isOutsideCombat())
-                        continue;
+                       continue;
                 }
+            }
             {
                 try {
                     obj.afterEffects();
@@ -243,10 +250,12 @@ public class DC_StateManager extends StateManager {
 
     public void resetUnitObjects() {
         for (Unit unit : getGame().getUnits()) {
-            if (!unit.isDead())
-                if (!unit.getAI().isOutsideCombat()) {
-                    unit.resetObjects();
-                }
+            if (unit.isDead())
+                continue;
+            if (!ExplorationMaster.isExplorationOn())
+                if (unit.getAI().isOutsideCombat())
+                    continue;
+            unit.resetObjects();
         }
     }
 
@@ -348,8 +357,8 @@ public class DC_StateManager extends StateManager {
 
             resetAllSynchronized();
             game.setStarted(true);
-                IlluminationRule.resetIllumination(getGame());
-                IlluminationRule.initLightEmission(getGame());
+            IlluminationRule.resetIllumination(getGame());
+            IlluminationRule.initLightEmission(getGame());
 
             game.getTurnManager().newRound();
 //            getGameManager().refreshAll();
@@ -371,6 +380,7 @@ public class DC_StateManager extends StateManager {
     }
 
     private void newTurnTick() {
+        if (getState().getRound()>0)
         for (Attachment attachment : state.getAttachments()) {
             attachment.tick();
         }

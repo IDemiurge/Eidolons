@@ -98,6 +98,7 @@ public class Unit extends DC_UnitModel {
     private Unit engagementTarget;
     private DC_WeaponObj rangedWeapon;
     private boolean leader;
+    private boolean usingStealth;
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
@@ -439,7 +440,7 @@ public class Unit extends DC_UnitModel {
                                   boolean potential, OBJ_TYPE TYPE) {
         // at least one item with NAME as PROP
 
-        for (String item : StringMaster.openContainer(getProperty(prop))) {
+        for (String item : StringMaster.open(getProperty(prop))) {
 
             ObjType type = DataManager.getType(item, TYPE);
             if (type == null) {
@@ -1336,5 +1337,13 @@ public class Unit extends DC_UnitModel {
             sight -= getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
         }
         return sight;
+    }
+
+    public void setUsingStealth(boolean usingStealth) {
+        this.usingStealth = usingStealth;
+    }
+
+    public boolean isUsingStealth() {
+        return usingStealth;
     }
 }

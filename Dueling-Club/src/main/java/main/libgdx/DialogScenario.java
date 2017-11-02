@@ -33,8 +33,8 @@ public class DialogScenario extends Group {
             final float width = back.getWidth();
             final float height = back.getHeight();
 
-            final int screenW = Gdx.graphics.getWidth();
-            final int screenH = Gdx.graphics.getHeight();
+            final int screenW = GdxMaster.getWidth();
+            final int screenH = GdxMaster.getHeight();
 
             float x, y;
 
@@ -60,7 +60,7 @@ public class DialogScenario extends Group {
             valueContainer.setPosition(30, 30);
             valueContainer.setImageAlign(Align.topLeft);
             valueContainer.setValueAlignment(Align.bottomLeft);
-            valueContainer.setWidth(Gdx.graphics.getWidth() - 60);
+            valueContainer.setWidth(GdxMaster.getWidth() - 60);
             if (portraitTexture != null) {
                 valueContainer.setHeight(portraitTexture.getRegionHeight());
             }

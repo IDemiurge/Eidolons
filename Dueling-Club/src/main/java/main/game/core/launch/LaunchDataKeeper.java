@@ -118,7 +118,7 @@ public class LaunchDataKeeper {
         String coordinates = "";
         String data = "";
 
-        for (String substring : StringMaster.openContainer(dataString)) {
+        for (String substring : StringMaster.open(dataString)) {
             if (dataString.contains("=")) {
                 coordinates += substring.split("=")[0] + StringMaster.SEPARATOR;
                 units += substring.split("=")[1] + StringMaster.SEPARATOR;

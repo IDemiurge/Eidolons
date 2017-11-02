@@ -106,7 +106,7 @@ public class SpellUpgradeMaster {
 
     public static List<SPELL_UPGRADE> getUpgradesFromSpell(Entity spell, boolean active) {
         List<SPELL_UPGRADE> list = new LinkedList<>();
-        for (String s : StringMaster.openContainer(spell
+        for (String s : StringMaster.open(spell
                 .getProperty(((active ? PROPS.SPELL_UPGRADES : PROPS.SPELL_UPGRADE_GROUPS))))) {
 
             SPELL_UPGRADE su = new EnumMaster<SPELL_UPGRADE>().retrieveEnumConst(

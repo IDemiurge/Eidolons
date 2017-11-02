@@ -87,7 +87,7 @@ public class MapMaster<E, T> {
         values.put(name, val);
     }
 
-    public E getKeyForValue(Map<E, T> itemMap, T value) {
+        public E getKeyForValue(Map<E, T> itemMap, T value) {
         for (Entry<E, T> e : itemMap.entrySet()) {
             if (itemMap.get(e.getKey()).equals(value)) {
                 return e.getKey();

@@ -17,8 +17,8 @@ public class PrinciplesCondition extends StringComparison {
     public boolean check(Ref ref) {
         super.check(ref);
 
-        for (String s : StringMaster.openContainer(val1)) {
-            for (String s2 : StringMaster.openContainer(val2)) {
+        for (String s : StringMaster.open(val1)) {
+            for (String s2 : StringMaster.open(val2)) {
                 PRINCIPLES p1 = new EnumMaster<PRINCIPLES>().retrieveEnumConst(
                         PRINCIPLES.class, s);
                 PRINCIPLES p2 = new EnumMaster<PRINCIPLES>().retrieveEnumConst(

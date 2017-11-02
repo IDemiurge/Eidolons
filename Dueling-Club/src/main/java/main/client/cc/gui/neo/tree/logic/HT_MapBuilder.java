@@ -307,7 +307,7 @@ public class HT_MapBuilder {
             return;
         }
         StaticTreeLink link = getStaticLink(type);
-        for (String s : StringMaster.openContainer(prop)) {
+        for (String s : StringMaster.open(prop)) {
             addAltBaseLink(link, s, type, point);
         }
 
@@ -320,7 +320,7 @@ public class HT_MapBuilder {
                 continue;
             }
 
-            for (String s : StringMaster.openContainer(prop)) {
+            for (String s : StringMaster.open(prop)) {
                 String typeName = VariableManager.removeVarPart(s);
                 String vars = VariableManager.getVar(s);
                 LINK_VARIANT variant = new EnumMaster<LINK_VARIANT>().retrieveEnumConst(

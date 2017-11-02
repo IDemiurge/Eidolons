@@ -9,6 +9,7 @@ import main.game.core.ActionInput;
  */
 public class ExplorationResetHandler extends ExplorationHandler {
     private boolean resetNeeded;
+    private boolean firstResetDone;
 
     public ExplorationResetHandler(ExplorationMaster master) {
         super(master);
@@ -47,5 +48,13 @@ public class ExplorationResetHandler extends ExplorationHandler {
             return true;
         }
         return false;
+    }
+
+    public boolean isFirstResetDone() {
+        return firstResetDone;
+    }
+
+    public void setFirstResetDone(boolean firstResetDone) {
+        this.firstResetDone = firstResetDone;
     }
 }

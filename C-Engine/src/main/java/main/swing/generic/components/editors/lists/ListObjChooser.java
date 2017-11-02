@@ -42,7 +42,7 @@ public class ListObjChooser<T> {
         // }
         // }
         LinkedList<T> items = new LinkedList<>(list);
-        for (String substring : StringMaster.openContainer(result)) {
+        for (String substring : StringMaster.open(result)) {
             for (T item : new LinkedList<>(items)) {
                 if (StringMaster.compare(substring, item.toString(), true)) {
                     selection.add(item);

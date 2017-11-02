@@ -44,7 +44,7 @@ public class DialogueSyntax {
 
     private static Effects getParamModEffects(String text) {
         Effects e = new Effects();
-        for (String substring : StringMaster.openContainer(text, item_separator)) {
+        for (String substring : StringMaster.open(text, item_separator)) {
             //TODO permanent for non-dynamic? base?
             MOD mod = MOD.MODIFY_BY_CONST;
             String param = text.split(pair_separator)[0];

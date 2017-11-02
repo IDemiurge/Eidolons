@@ -75,6 +75,7 @@ public class DemoLauncher extends Game {
         conf.title = "Eidolons: Battlecraft v" + Launcher.VERSION;
 //        if (Gdx.graphics.isGL30Available())
         conf.useGL30 = true;
+        conf.resizable = false;
         OptionsMaster.init();
 
         conf.fullscreen = //false;
@@ -116,7 +117,6 @@ public class DemoLauncher extends Game {
             e.printStackTrace();
         }
 
-        conf.resizable = true;
         try {
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo32.png", FileType.Absolute);
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo64.png", FileType.Absolute);
