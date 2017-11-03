@@ -249,10 +249,6 @@ public class SightMaster {
 
     public DequeImpl<Coordinates> getVisibleCoordinatesNormalSight(Unit source,
                                                                    boolean extended) {
-        DequeImpl<Coordinates> coordinates = source.getSightSpectrumCoordinates(extended);
-        if (!coordinates.isEmpty()) {
-            return coordinates;
-        }
         return getSpectrumCoordinates(null, null, null, source, true, null, extended);
     }
 

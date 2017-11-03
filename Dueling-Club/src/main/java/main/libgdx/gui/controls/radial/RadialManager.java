@@ -32,11 +32,9 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
-import main.system.launch.CoreEngine;
 
 import java.util.*;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.GAME_FINISHED;
@@ -357,13 +355,13 @@ public class RadialManager {
     private static RadialValueContainer configureSelectiveTargetedNode(
      DC_ActiveObj active, DC_Obj target) {
         boolean wasValid;
-        if (target == null|| target.equals(active.getOwnerObj())){
-            Set<Obj> objSet = CoreEngine.isActionTargetingFiltersOff() ?
-             DC_Game.game.getUnits().parallelStream().distinct().collect(Collectors.toSet())
-             : getFilter(active).getObjects();
-            wasValid = objSet.size() > 0 &&
-             active.canBeManuallyActivated();
-        } else
+//        if (target == null|| target.equals(active.getOwnerObj())){
+//            Set<Obj> objSet = CoreEngine.isActionTargetingFiltersOff() ?
+//             DC_Game.game.getUnits().parallelStream().distinct().collect(Collectors.toSet())
+//             : getFilter(active).getObjects();
+//            wasValid = objSet.size() > 0 &&
+//             active.canBeManuallyActivated();
+//        } else
             wasValid = active.canBeManuallyActivated();
         final boolean valid = wasValid;
 

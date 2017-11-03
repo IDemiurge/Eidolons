@@ -160,7 +160,7 @@ public class GameLoop {
             ActionInput data = activeUnit.getHandler().getChannelingSpellData();
             ChannelingRule.channelingResolves(activeUnit);
             result = activateAction(data);
-        } else if (game.getManager().getActiveObj().isAiControlled()) {
+        } else if (activeUnit.isAiControlled()) {
             //SHOWCASE SECURITY
             try {
                 result = activateAction(waitForAI());
@@ -174,7 +174,7 @@ public class GameLoop {
                 e.printStackTrace();
             }
         }
-        if (result == null) {
+          else {
             result = activateAction(waitForPlayerInput());
         }
 //        if ()

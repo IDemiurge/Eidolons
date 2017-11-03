@@ -162,6 +162,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         if ( checkPassive(UnitEnums.STANDARD_PASSIVES.NON_OBSTRUCTING)) {
             return false;
         }
+        if (isOverlaying())
+            return false;
         return true;
     }
 

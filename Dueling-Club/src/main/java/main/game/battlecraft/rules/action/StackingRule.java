@@ -129,6 +129,8 @@ public class StackingRule implements ActionRule {
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
         for (BattleFieldObject u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
             if (!units.contains(u)) {
+//                if (!u.isDead())
+//                    continue;
                 units.addCast(u.getType());
                 if (u.isWall())
                     return false;
@@ -206,7 +208,10 @@ public class StackingRule implements ActionRule {
         if (unit.getIntParam(PARAMS.GIRTH) == 0) {
             girth += StringMaster.getInteger(PARAMS.GIRTH.getDefaultValue());
         } else {
-            girth += unit.getIntParam(PARAMS.GIRTH);
+            if (!unit.isDead())
+                girth += unit.getIntParam(PARAMS.GIRTH)/3;
+          else
+              girth += unit.getIntParam(PARAMS.GIRTH);
         }
         // main.system.auxiliary.LogMaster.log(1, "****************** " + space
         // + " Space vs " + girth

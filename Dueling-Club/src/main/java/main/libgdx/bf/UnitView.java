@@ -174,6 +174,9 @@ public class UnitView extends BaseView {
             if (flickering)
                 if (SuperActor.alphaFluctuationOn) //TODO fix
                     ActorMaster.addFadeInOrOutIfNoActions(this, 5);
+            else
+                if (getColor().a ==0)
+                    getColor().a =1;
         }
         if (outline != null) {
 //            batch.draw(outline, getX(), getY());
@@ -198,15 +201,15 @@ public class UnitView extends BaseView {
 
     public void setFlickering(boolean flickering) {
         this.flickering = flickering;
-        if (!flickering) {
+//        if (!flickering) {
             getPortrait().getColor().a = 1;
             getColor().a = 1;
-        }
     }
 
     public void setGreyedOut(boolean greyedOut) {
         this.greyedOut = greyedOut;
         getPortrait().getColor().a = 1;
+//        if (getColor().a ==0)
         getColor().a = 1;
 
     }

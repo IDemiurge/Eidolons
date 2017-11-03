@@ -219,20 +219,20 @@ public class DrawMaster {
             }
         }
         if (isSightVisualsOn()) {
-            Unit obj = cellComp.getGame().getManager().getActiveObj();
-            // if (!obj.isMine()) return ;
-            boolean extended = !obj.getSightSpectrumCoordinates(false).contains(
-                    cellComp.getCoordinates());
-            if (!extended) {
-                extended = obj.getSightSpectrumCoordinates(true)
-                        .contains(cellComp.getCoordinates());
-                if (!extended) {
-                    return;
-                }
-            }
-
-            drawSightVisualsOnCell((Graphics2D) compGraphics, extended, cellComp.getObjects().size() > 0);
-            drawSightBlockInfo(cellComp, compGraphics, zoom);
+//            Unit obj = cellComp.getGame().getManager().getActiveObj();
+//            // if (!obj.isMine()) return ;
+//            boolean extended = !obj.getSightSpectrumCoordinates(false).contains(
+//                    cellComp.getCoordinates());
+//            if (!extended) {
+//                extended = obj.getSightSpectrumCoordinates(true)
+//                        .contains(cellComp.getCoordinates());
+//                if (!extended) {
+//                    return;
+//                }
+//            }
+//
+//            drawSightVisualsOnCell((Graphics2D) compGraphics, extended, cellComp.getObjects().size() > 0);
+//            drawSightBlockInfo(cellComp, compGraphics, zoom);
         }
 
         drawSpecialOverlays(cellComp, compGraphics, zoom);

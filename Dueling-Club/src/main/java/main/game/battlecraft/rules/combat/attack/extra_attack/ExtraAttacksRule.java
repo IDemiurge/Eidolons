@@ -55,7 +55,7 @@ public class ExtraAttacksRule {
         }
         for (DC_UnitAction a : unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK)) {
             // offhand?
-            if (a.isMelee())
+            if (a.isMelee() && !a.isAttackGeneric())
             // auto-atk range?
             {
                 list.add(a);

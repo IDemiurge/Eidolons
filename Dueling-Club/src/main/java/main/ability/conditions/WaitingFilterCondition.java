@@ -3,14 +3,17 @@ package main.ability.conditions;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_UnitModel;
+import main.entity.obj.unit.Unit;
 
 public class WaitingFilterCondition extends MicroCondition {
     public WaitingFilterCondition() {
 
     }
 
-    public static boolean canBeWaitedUpon(Obj waiter, DC_UnitModel unit) {
+    public static boolean canBeWaitedUpon(Obj waiter, Unit unit) {
+        if (unit.getAI().isOutsideCombat()) {
+           return false;
+        }
         return unit.canActNow() && (unit.checkInSight() || waiter.getOwner() == unit.getOwner());
     }
 
@@ -23,8 +26,8 @@ public class WaitingFilterCondition extends MicroCondition {
         }
         // if (obj.getOwner() == Player.NEUTRAL)
         // return false;
-        if (obj instanceof DC_UnitModel) {
-            DC_UnitModel unit = (DC_UnitModel) obj;
+        if (obj instanceof Unit) {
+            Unit unit = (Unit) obj;
             if (canBeWaitedUpon(ref.getSourceObj(), unit)) {
                 return true;
             }

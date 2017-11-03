@@ -77,6 +77,7 @@ public class Analyzer extends AiHandler {
             if (unit.equals(ai.getUnit())) {
                 continue;
             }
+
             if (!WaitingFilterCondition.canBeWaitedUpon(ai.getUnit(), unit)) {
                 continue;
             }

@@ -4,6 +4,7 @@ import main.ability.effects.common.AddStatusEffect;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
@@ -68,6 +69,8 @@ public class StealthRule implements ActionRule {
         {
             return false;
         }
+        if (unit.checkStatus(STATUS.UNCONSCIOUS))
+            return false;
         if (unit.checkStatus(UnitEnums.STATUS.INVISIBLE))
         // TODO mind-affecting preCheck?
         {
@@ -149,7 +152,7 @@ public class StealthRule implements ActionRule {
                 // VISIBILITY_LEVEL.CONCEALED) {
                 if (u.isUnconscious())
                     continue;
-                if (source.getOutlineType()== OUTLINE_TYPE.BLOCKED_OUTLINE)
+                if (source.getOutlineType() == OUTLINE_TYPE.BLOCKED_OUTLINE)
                     continue;
                 checkSpotRoll(u, source);
 //                    rollSpotted(u, source, true);
@@ -157,7 +160,7 @@ public class StealthRule implements ActionRule {
             }
 
             if (checkHidden(u)) {
-                if (u.getOutlineType()== OUTLINE_TYPE.BLOCKED_OUTLINE)
+                if (u.getOutlineType() == OUTLINE_TYPE.BLOCKED_OUTLINE)
                     continue;
                 checkSpotRoll(source, u);
             }
@@ -171,9 +174,9 @@ public class StealthRule implements ActionRule {
         if (vl != VISIBILITY_LEVEL.BLOCKED)
             if (vl != VISIBILITY_LEVEL.UNSEEN)
 //                if (vl != VISIBILITY_LEVEL.CONCEALED)
-                {
-                    rollSpotted(spotter, unit);
-                }
+            {
+                rollSpotted(spotter, unit);
+            }
     }
 
     private boolean isOn() {

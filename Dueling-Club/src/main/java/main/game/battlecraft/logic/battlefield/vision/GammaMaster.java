@@ -9,6 +9,7 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
+import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.system.math.MathMaster;
 
@@ -34,11 +35,11 @@ public class GammaMaster {
     }
 
     public static int getGammaForThickDarkness() {
-        return 15;
+        return 10;
     }
 
     public static int getGammaForDarkOutline() {
-        return 30;
+        return 25;
     }
 
     public static int getGammaForBlindingLight() {
@@ -50,6 +51,8 @@ public class GammaMaster {
     }
 
     public int getGamma(boolean minusForVagueLight, Unit source, DC_Obj target) {
+        if (target instanceof Entrance)
+            return 200;
         if (source == null) {
             source = target.getGame().getManager().getActiveObj();
         }

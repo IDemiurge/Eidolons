@@ -17,7 +17,6 @@ import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
-import main.system.datatypes.DequeImpl;
 import main.test.debug.DebugMaster;
 
 import java.util.Collection;
@@ -81,11 +80,6 @@ public class VisionMaster implements GenericVisionManager {
             return;
         }
         boolean mine = getActiveUnit().getOwner().isMe();
-
-
-        getActiveUnit().setPlainSightSpectrumCoordinates(new DequeImpl<>());
-        getActiveUnit().setSightSpectrumCoordinates(new DequeImpl<>());
-
 
         setRelativeActiveUnitVisibility(getActiveUnit(), game.getStructures());
         setRelativeActiveUnitVisibility(getActiveUnit(), game.getPlayer(!mine).getControlledUnits());

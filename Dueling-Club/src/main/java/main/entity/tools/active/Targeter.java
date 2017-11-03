@@ -2,9 +2,11 @@ package main.entity.tools.active;
 
 import main.ability.Ability;
 import main.ability.ActivesConstructor;
+import main.ability.targeting.TemplateSelectiveTargeting;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.values.properties.G_PROPS;
+import main.elements.conditions.Conditions;
 import main.elements.targeting.AutoTargeting;
 import main.elements.targeting.MultiTargeting;
 import main.elements.targeting.SelectiveTargeting;
@@ -42,8 +44,8 @@ public class Targeter extends ActiveHandler {
     public void initTarget() {
 
         if (presetTarget != null) { //TODO figure out when to get source's ref and when not!!!
-             getRef().setTarget(presetTarget.getId());
-            presetTarget=null ;
+            getRef().setTarget(presetTarget.getId());
+            presetTarget = null;
         } else {
             if (getEntity().getTargeting() != null) {
                 if (!isForcePresetTarget()) {
@@ -62,6 +64,7 @@ public class Targeter extends ActiveHandler {
         }
 
     }
+
     public Ref getRef() {
         return getEntity().getRef();
     }
@@ -95,9 +98,9 @@ public class Targeter extends ActiveHandler {
             getHandler().setCancelled(true);
         }
         if (result) {
-    getAction().setTargetObj(getRef().getTargetObj());
-    getAction().setTargetGroup(getRef().getGroup());
-}
+            getAction().setTargetObj(getRef().getTargetObj());
+            getAction().setTargetGroup(getRef().getGroup());
+        }
 
         return result;
 
@@ -108,20 +111,20 @@ public class Targeter extends ActiveHandler {
     }
 
     protected void initTargetingMode() {
-       if (!getGame().isDebugMode())
-           if (targetingInitialized) {
-            return;
-        }
+        if (!getGame().isDebugMode())
+            if (targetingInitialized) {
+                return;
+            }
         if (targetingMode == null) {
             targetingMode = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(
-                    TARGETING_MODE.class, getType().getProperty(G_PROPS.TARGETING_MODE));
+             TARGETING_MODE.class, getType().getProperty(G_PROPS.TARGETING_MODE));
         }
 
         if (targetingMode == null) {
             targetingMode = AbilityEnums.TARGETING_MODE.MULTI;
         }
         ActivesConstructor.constructActive(targetingMode, getEntity());
-        targetingInitialized=true;
+        targetingInitialized = true;
 //        if (targeting == null) {
 //            LogMaster.log(LOG_CHANNELS.CONSTRUCTION_DEBUG,
 //             "null targeting for " + getName() + targetingMode + abilities);
@@ -141,7 +144,7 @@ public class Targeter extends ActiveHandler {
             return true;
         }
         Map<FACING_DIRECTION, Boolean> map = getTargetingAnyCache().get(
-                getOwnerObj().getCoordinates());
+         getOwnerObj().getCoordinates());
         if (map == null) {
             map = new HashMap<>();
             targetingAnyCache.put(getOwnerObj().getCoordinates(), map);
@@ -158,11 +161,12 @@ public class Targeter extends ActiveHandler {
     public boolean canBeTargeted(Integer id) {
         return canBeTargeted(id, CoreEngine.isTargetingResultCachingOn());
     }
-        public boolean canBeTargeted(Integer id, boolean caching) {
+
+    public boolean canBeTargeted(Integer id, boolean caching) {
 
         Targeting targeting = getTargeting();
-            Map<FACING_DIRECTION, Map<Integer, Boolean>> map = getTargetingCache().get(
-             getOwnerObj().getCoordinates());
+        Map<FACING_DIRECTION, Map<Integer, Boolean>> map = getTargetingCache().get(
+         getOwnerObj().getCoordinates());
 
         if (map == null) {
             map = new HashMap<>();
@@ -175,8 +179,8 @@ public class Targeter extends ActiveHandler {
         }
         Boolean result = map2.get(id); //TODO for ai?
         if (caching) {
-         if (result != null)
-            return result;
+            if (result != null)
+                return result;
         }
         if (targeting == null) {
             // TODO ??
@@ -190,25 +194,30 @@ public class Targeter extends ActiveHandler {
             }
             return false;
         }
-        Ref REF =getEntity(). getRef().getCopy();
+        Ref REF = getEntity().getRef().getCopy();
         REF.setMatch(id);
         if (targeting instanceof MultiTargeting) {
             // TODO ??
         }
+        Conditions conditions = targeting.getFilter().getConditions();
         if (result != null) {
             if (result) {
-                if (!targeting.getFilter().getConditions().preCheck(REF)) {
+                if (!conditions.preCheck(REF)) {
                     return false;
                 }
             }
             if (!result) {
-                if (targeting.getFilter().getConditions().preCheck(REF)) {
+                if (conditions.preCheck(REF)) {
                     return true;
                 }
             }
         }
-        getEntity(). getRef().getSourceObj().getRef() .setInfoEntity(getEntity());
-        result = targeting.getFilter().getConditions().preCheck(REF);
+        if (conditions.isEmpty())
+            if (targeting instanceof TemplateSelectiveTargeting)
+                ((TemplateSelectiveTargeting) targeting).initTargeting();
+
+            getEntity().getRef().getSourceObj().getRef().setInfoEntity(getEntity());
+            result = conditions.preCheck(REF);
         map2.put(id, result);
         return result;
 

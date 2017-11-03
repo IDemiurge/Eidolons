@@ -525,13 +525,17 @@ public class DC_GameManager extends GameManager {
     }
 
 
-    public Unit getActiveObj() {
-//       return  getGame().getLoop().getActiveUnit();
+    public Unit getControlledObj() {
+        Unit unit = getActiveObj();
+        if (unit == null) {
+            unit = getMainHero();
+        }
+        return unit;
+    }
+        public Unit getActiveObj() {
         if (game.isStarted()) {
             if (selectedActiveObj == null) {
-                //it's ticking madness!
                 selectedActiveObj = getGame().getLoop().getActiveUnit();
-//                return DC_PagedPriorityPanel.getClockUnit();
             }
         }
         return (Unit) selectedActiveObj;

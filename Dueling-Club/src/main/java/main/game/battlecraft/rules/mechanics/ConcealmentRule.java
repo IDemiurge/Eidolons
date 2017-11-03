@@ -65,9 +65,9 @@ public class ConcealmentRule {
         }
         chance -= source.getIntParam(PARAMS.ILLUMINATION);
         if (chance < 0) {
-            chance += 100;
+            chance += 500;
             if (chance < 0)
-                return Math.abs(chance);
+                return -(chance)/2;
             else
                 return 0;
         }

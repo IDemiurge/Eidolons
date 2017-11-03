@@ -6,7 +6,6 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimData;
 import main.libgdx.bf.BaseView;
@@ -33,24 +32,25 @@ public class DoorAnimation extends Anim {
         Obj door = getRef().getTargetObj();
         BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap().get(
          door);
-        ActorMaster.addFadeInOrOut(actor.getPortrait(), getDuration());
+//        ActorMaster.addFadeInOrOut(actor.getPortrait(), getDuration());
         if (open) {
             String path = door.getImagePath();
             path = StringMaster.cropFormat(path) + "_open" + ".png";
-            if (newImage == null)
-            {
+//            if (newImage == null)
+            { //TODO as an afterAction!
                 TextureRegion r = TextureCache.getOrCreateR(path);
                 actor.setOriginalTextureAlt(r);
-                newImage = new Image(r);
+//                newImage = new Image(r);
             }
         } else {
-            newImage = actor.getAltPortrait();
+            actor.setOriginalTextureAlt(null );
+//            newImage = actor.getAltPortrait();
         }
-        newImage.setColor(1, 1, 1, 0);
-        actor.setAltPortrait(actor.getPortrait());
-        actor.setPortrait(newImage);
-        actor.addActor(newImage);
-        ActorMaster.addFadeInOrOut(actor.getPortrait(), getDuration());
+//        newImage.setColor(1, 1, 1, 0);
+//        actor.setAltPortrait(actor.getPortrait());
+//        actor.setPortrait(newImage);
+//        actor.addActor(newImage);
+//        ActorMaster.addFadeInOrOut(actor.getPortrait(), getDuration());
         super.start();
     }
 

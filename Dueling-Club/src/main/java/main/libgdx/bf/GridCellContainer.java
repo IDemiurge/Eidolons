@@ -15,6 +15,7 @@ public class GridCellContainer extends GridCell {
     private int overlayCount = 0;
 
     private GraveyardView graveyard;
+    private boolean hasBackground;
 
 
     public GridCellContainer(TextureRegion backTexture, int gridX, int gridY) {
@@ -52,30 +53,27 @@ public class GridCellContainer extends GridCell {
     }
 
     public void recalcUnitViewBounds() {
-        if (getUnitViewCountEffective() == 0) {
+        if (getUnitViewCount() == 0) {
             return;
         }
-        final int perImageOffsetX = getSizeDiffX();
-        final int perImageOffsetY = getSizeDiffY();
-        final int w = GridConst.CELL_W - perImageOffsetX * (getUnitViewCountEffective() - 1);
-        final int h = GridConst.CELL_H - perImageOffsetY * (getUnitViewCountEffective() - 1);
+        hasBackground =false;
         int i = 0;
-        float scaleX = new Float(w) / GridConst.CELL_W;
-        float scaleY = new Float(h) / GridConst.CELL_H;
 
         for (GridUnitView actor : getUnitViews()) {
             if (actor.isCellBackground()) {
                 i++;
+                hasBackground =true;
                 continue;
             }
+            int perImageOffsetX = getSizeDiffX();
+            int perImageOffsetY = getSizeDiffY();
+            int w = GridConst.CELL_W - perImageOffsetX * (getUnitViewCount() - 1);
+            int h = GridConst.CELL_H - perImageOffsetY * (getUnitViewCount() - 1);
+            float scaleX = new Float(w) / GridConst.CELL_W;
+            float scaleY = new Float(h) / GridConst.CELL_H;
 
-//                actor.setBounds(
-//                 perImageOffsetX * i,
-//                 perImageOffsetY * ((unitViewCount - 1) - i)
-//                 , GridConst.CELL_W * scaleX, GridConst.CELL_H * scaleY
-//                );
             actor.setPosition(perImageOffsetX * i,
-             perImageOffsetY * ((getUnitViewCount() - 1) - i));
+             perImageOffsetY * ((getUnitViewCountEffective() - 1) - i));
             actor.setScale(scaleX, scaleY);
             actor.setScaledHeight(scaleY);
             actor.setScaledWidth(scaleX);
@@ -202,6 +200,6 @@ public class GridCellContainer extends GridCell {
     }
 
     public int getUnitViewCountEffective() {
-        return unitViewCount;//-graveyard.getGraveCount() ;
+        return hasBackground?unitViewCount-1 : unitViewCount;//-graveyard.getGraveCount() ;
     }
 }

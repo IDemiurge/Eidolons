@@ -154,6 +154,7 @@ public class ParamAnalyzer extends AiHandler {
 
     public static boolean isStaminaIgnore(Unit unit) {
         return !unit.getGame().getRules().getStaminaRule().check(unit);
+
     }
 
     public static boolean isFocusIgnore(Unit unit) {

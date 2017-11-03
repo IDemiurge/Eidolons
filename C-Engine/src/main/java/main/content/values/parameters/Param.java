@@ -109,10 +109,7 @@ public class Param implements PARAMETER {
 
     @Override
     public String name() {
-        if (name != null) {
-            return name;
-        }
-        return null;
+        return parameter.name();
     }
 
     @Override

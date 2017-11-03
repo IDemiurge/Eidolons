@@ -5,6 +5,7 @@ import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.ai.AggroMaster;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.AnimMaster3d;
+import main.libgdx.anims.AnimationConstructor;
 
 /**
  * Created by JustMe on 8/2/2017.
@@ -86,6 +87,7 @@ public class ExplorationMaster {
         } else
         {
             game.getLogManager().logBattleStarts();
+            if (AnimationConstructor. isPreconstructEnemiesOnCombatStart())
             AggroMaster.getLastAggroGroup().forEach(unit -> {
                 AnimMaster.getInstance().getConstructor().preconstructAll(unit);
                 AnimMaster3d.preloadAtlases(unit);

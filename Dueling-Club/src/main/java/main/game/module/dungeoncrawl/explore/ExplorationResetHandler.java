@@ -1,8 +1,10 @@
 package main.game.module.dungeoncrawl.explore;
 
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
+import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.core.ActionInput;
+import main.system.math.PositionMaster;
 
 /**
  * Created by JustMe on 9/10/2017.
@@ -44,7 +46,22 @@ public class ExplorationResetHandler extends ExplorationHandler {
     }
 
     public boolean isAggroCheckNeeded(ActionInput input) {
+        Unit unit = input.getAction().getOwnerObj();
+        Unit enemy = input.getAction().getGame().getAiManager().getAnalyzer().
+         getClosestEnemy(unit);
+        if (enemy==null )
+            return false;
+        double distance = PositionMaster.getExactDistance(enemy.getCoordinates(),
+         input.getAction().getOwnerObj().getCoordinates());
+        //TODO visible?
+        //stealth: when is *that* check made?
+        if (distance > unit.getSightRangeTowards(enemy)) {
+            return false;
+        }
         if (input.getAction().getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
+            return true;
+        }
+        if (input.getAction().getActionGroup() == ACTION_TYPE_GROUPS.TURN) {
             return true;
         }
         return false;

@@ -31,6 +31,8 @@ import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.anims.std.MoveAnimation;
+import main.libgdx.anims.text.FloatingTextMaster;
+import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.bf.light.ShadowMap;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.bf.mouse.BattleClickListener;
@@ -278,6 +280,12 @@ public class GridPanel extends Group {
         });
 
 
+        GuiEventManager.bind(GRID_OBJ_HOVER_ON, (event) -> {
+            resetZIndices();
+        });
+        GuiEventManager.bind(GRID_OBJ_HOVER_OFF, (event) -> {
+            resetZIndices();
+        });
         GuiEventManager.bind(UNIT_MOVED, obj -> {
             moveUnitView((BattleFieldObject) obj.get());
         });
@@ -294,7 +302,14 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p = (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
+            if (p.getLeft().isEmpty()) {
+                FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.REQUIREMENT,
+                 "No targets available!",
+                 Eidolons.getGame().getManager().getControlledObj());
+                return;
+            }
             Map<Borderable, Runnable> map = new HashMap<>();
+
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = unitMap.get(obj1);
                 if (b == null) {
@@ -565,13 +580,13 @@ public class GridPanel extends Group {
                 if (unit.getModeFinal() == null || unit.getModeFinal() == STD_MODES.NORMAL) {
                     view.updateModeImage(null);
                 } else {
-                    if (unit.getModeFinal()!=null )
-                        if (unit.getBuff(unit.getModeFinal().getBuffName())!=null )
-                    try {
-                        view.updateModeImage(unit.getBuff(unit.getModeFinal().getBuffName()).getImagePath());
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace( e);
-                    }
+                    if (unit.getModeFinal() != null)
+                        if (unit.getBuff(unit.getModeFinal().getBuffName()) != null)
+                            try {
+                                view.updateModeImage(unit.getBuff(unit.getModeFinal().getBuffName()).getImagePath());
+                            } catch (Exception e) {
+                                main.system.ExceptionMaster.printStackTrace(e);
+                            }
                 }
             }
         });
@@ -647,10 +662,9 @@ public class GridPanel extends Group {
 
     private BaseView removeUnitView(BattleFieldObject obj) {
         BaseView uv = unitMap.get(obj);
-        if (uv == null)
-        {
+        if (uv == null) {
             LogMaster.log(1, obj + " IS NOT ON UNIT MAP!");
-            return null ;
+            return null;
         }
         GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
         if (gridCellContainer == null) {
@@ -691,10 +705,11 @@ public class GridPanel extends Group {
             resetVisible();
         }
         super.act(delta);
-        if (checkResetZRequired()) {
-            resetZIndices();
-        }
+//        if (checkResetZRequired()) {
+
+//        }
         if (updateRequired) {
+            resetZIndices();
             update();
         }
     }
@@ -778,16 +793,6 @@ public class GridPanel extends Group {
     }
 
     private void resetZIndices() {
-        if (ShadowMap.isOn())
-            shadowMap.setZtoMax(SHADE_LIGHT.LIGHT_EMITTER);
-        wallMap.setVisible(WallMap.isOn());
-        wallMap.setZIndex(Integer.MAX_VALUE);
-        overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
-        if (ShadowMap.isOn())
-            for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
-//            if (sub!=SHADE_LIGHT.LIGHT_EMITTER)
-                shadowMap.setZtoMax(sub);
-            }
         loop:
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
@@ -806,6 +811,17 @@ public class GridPanel extends Group {
                 }
             }
         }
+        if (ShadowMap.isOn())
+            shadowMap.setZtoMax(SHADE_LIGHT.LIGHT_EMITTER);
+        wallMap.setVisible(WallMap.isOn());
+        wallMap.setZIndex(Integer.MAX_VALUE);
+        overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
+        if (ShadowMap.isOn())
+            for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
+//            if (sub!=SHADE_LIGHT.LIGHT_EMITTER)
+                shadowMap.setZtoMax(sub);
+            }
+
 
         animMaster.setZIndex(Integer.MAX_VALUE);
         if (fpsLabel != null)

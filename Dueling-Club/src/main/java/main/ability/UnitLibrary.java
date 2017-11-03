@@ -221,7 +221,7 @@ public class UnitLibrary {
                 + spellType.getName() + " (" + lc.toString() + "), remaining xp: "
                 + unit.getIntParam(PARAMS.XP));
 
-        getHeroManager().update(unit);
+//        getHeroManager().update(unit);
         return true;
     }
 

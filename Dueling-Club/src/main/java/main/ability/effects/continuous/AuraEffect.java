@@ -33,6 +33,7 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
     private Boolean continuous;
     private Condition additionalConditions;
     private AddBuffEffect auraEffect;
+    private boolean on;
 
 	/*
      * let's reconsider this effect:
@@ -85,6 +86,9 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
      * "Damage Aura"? Property Aura, e.g. demonic! :)
      */
     public boolean applyThis() {
+        if (!on){
+            return true;
+        }
         if (game.isSimulation()) {
             return false;
         }

@@ -55,7 +55,7 @@ public class TemplateSelectiveTargeting extends SelectiveTargeting {
         return super.getConditions();
     }
 
-    private void initTargeting() {
+    public void initTargeting() {
         Conditions conditions = DC_ConditionMaster
                 .getSelectiveTargetingTemplateConditions(template);
         Condition c = filter.getConditions(); // TODO ?

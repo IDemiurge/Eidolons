@@ -31,7 +31,6 @@ import main.entity.tools.bf.unit.UnitInitializer;
 import main.entity.tools.bf.unit.UnitResetter;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.UnitAI;
-import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
@@ -59,7 +58,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     protected VISION_MODE vision_mode;
 
-    protected DequeImpl<Coordinates> visibleCoordinates;
     protected MODE mode;
     protected Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> actionMap;
 
@@ -71,7 +69,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     private DC_ActiveObj preferredCounterAttack;
     private DC_ActiveObj preferredAttackOfOpportunity;
     private DC_ActiveObj preferredAttackAction;
-    private DequeImpl<Coordinates> sightSpectrumCoordinates;
 
     public DC_UnitModel(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -364,43 +361,8 @@ else
         setProperty(G_PROPS.DEITY, deity.getName(), true);
     }
 
-    public DequeImpl<Coordinates> getPlainSightSpectrumCoordinates() {
-        if (visibleCoordinates == null) {
-            visibleCoordinates = new DequeImpl<>();
-        }
-        return visibleCoordinates;
-    }
 
-    public void setPlainSightSpectrumCoordinates(DequeImpl<Coordinates> list) {
-        this.visibleCoordinates = list;
-    }
 
-    public void setSightSpectrumCoordinates(DequeImpl<Coordinates> list, boolean extended) {
-        if (extended) {
-            this.sightSpectrumCoordinates = list;
-        } else {
-            setPlainSightSpectrumCoordinates(list);
-        }
-    }
-
-    public DequeImpl<Coordinates> getSightSpectrumCoordinates(boolean extended) {
-        if (extended) {
-            return getSightSpectrumCoordinates();
-        } else {
-            return getPlainSightSpectrumCoordinates();
-        }
-    }
-
-    public DequeImpl<Coordinates> getSightSpectrumCoordinates() {
-        if (sightSpectrumCoordinates == null) {
-            sightSpectrumCoordinates = new DequeImpl<>();
-        }
-        return sightSpectrumCoordinates;
-    }
-
-    public void setSightSpectrumCoordinates(DequeImpl<Coordinates> list) {
-        this.sightSpectrumCoordinates = list;
-    }
 
     @Override
     public void setDirty(boolean dirty) {

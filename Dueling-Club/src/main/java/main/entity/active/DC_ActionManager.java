@@ -132,6 +132,7 @@ public class DC_ActionManager implements ActionManager {
 
             hiddenActions.add(type);
         }
+        ActionGenerator.generateOffhandActions();
     }
 
     public static List<DC_ActiveObj> filterActionsByCanBePaid(List<DC_ActiveObj> actions) {
@@ -215,7 +216,7 @@ public class DC_ActionManager implements ActionManager {
         return action;
     }
 
-    public boolean activateAction(Obj target, Obj source, Active action) {
+    public boolean   activateAction(Obj target, Obj source, Active action) {
         Ref ref = source.getRef().getCopy();
         ref.setTarget(target.getId());
         ref.setTriggered(true);
@@ -633,7 +634,7 @@ public class DC_ActionManager implements ActionManager {
         }
         if (UnitAnalyzer.checkOffhand(unit)) {
             actives.add(getOrCreateAction(OFFHAND_ATTACK, unit));
-            ActionGenerator.generateOffhandActions();
+
             addOffhandActions(unit.getActionMap().get(ACTION_TYPE.STANDARD_ATTACK), unit);
             addOffhandActions(unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK), unit);
         }

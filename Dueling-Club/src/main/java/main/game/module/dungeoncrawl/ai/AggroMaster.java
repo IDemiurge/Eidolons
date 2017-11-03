@@ -17,6 +17,7 @@ import java.util.Set;
 public class AggroMaster {
     public static final float AGGRO_RANGE = 2.5f;
     public static final float AGGRO_GROUP_RANGE = 1.5f;
+    private static final int DEFAULT_ENGAGEMENT_DURATION = 3;
     private static boolean aiTestOn = true;
     private static boolean sightRequiredForAggro = true;
     private static List<Unit> lastAggroGroup;
@@ -62,6 +63,7 @@ public class AggroMaster {
 //        Analyzer.getEnemies(hero, false, false, false);
 //            if (ExplorationMaster.isExplorationOn())
 
+        boolean newAggro=false;
         for (Unit unit : DC_Game.game.getUnits()) {
             if (unit.isDead())
                 continue;
@@ -79,24 +81,35 @@ public class AggroMaster {
                 continue;
 
             if (unit.getVisibilityLevel() == VISIBILITY_LEVEL.UNSEEN)
-                continue; //TODO these units will instead 'surprise attack' you or stalk
-            int duration = 3;
+                continue;
+            //TODO these units will instead 'surprise attack' you or stalk
+
+            newAggro = true;
+            int duration = getEngagementDuration(unit.getAI());
             unit.getAI().setEngagementDuration(duration);
             set.add(unit);
 //            }
         }
         //TODO add whole group of each unit
 
-        set.forEach(unit -> {
+        for (Unit unit: set) {
             if (unit.getAI().getGroup() != null) {
-                for (Unit sub:  unit.getAI().getGroup().getMembers()){
+                for (Unit sub : unit.getAI().getGroup().getMembers()) {
                     set.add(sub);
+                    if (newAggro) {
+                        int duration = getEngagementDuration(unit.getAI());
+                        unit.getAI().setEngagementDuration(duration);
+                    }
                 }
             }
-        });
+        }
 
 
         return set;
+    }
+
+    private static int getEngagementDuration(UnitAI ai) {
+        return DEFAULT_ENGAGEMENT_DURATION;
     }
 
     private static boolean checkAggro(Unit unit, Unit hero, double range) {

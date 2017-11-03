@@ -100,12 +100,10 @@ public class DC_Rules implements GameRules {
 
         focusRule = new FocusRule(getGame());
         moraleRule = new MoraleRule(getGame());
-        upkeepRule = new UpkeepRule(getGame());
-        scoutingRule = new ScoutingRule(getGame());
         roundRules.add(focusRule);
         roundRules.add(moraleRule);
-        roundRules.add(upkeepRule);
-        roundRules.add(scoutingRule);
+//        roundRules.add( upkeepRule = new UpkeepRule(getGame()) );
+//        roundRules.add( scoutingRule = new ScoutingRule(getGame()));
         roundRules.add(unconsciousRule);
 
         moraleKillingRule = new MoraleKillingRule(getGame());

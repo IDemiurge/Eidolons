@@ -694,6 +694,10 @@ public class AnimationConstructor {
         });
     }
 
+    public static boolean isPreconstructEnemiesOnCombatStart() {
+        return false;
+    }
+
     public enum ANIM_PART {
         PRECAST(2F), //channeling
         CAST(2.5f),

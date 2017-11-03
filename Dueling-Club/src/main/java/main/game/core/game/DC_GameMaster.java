@@ -137,10 +137,6 @@ public class DC_GameMaster extends GameMaster {
             if (getCache(overlayingIncluded) != null)
                 list = getCache(overlayingIncluded).get(c);
         if (list != null) {
-            if (!passableIncluded) {
-                list = new LinkedList<>(list);
-                list.removeIf(obj -> obj.isPassable());
-            }
             return list;
         }
 
@@ -161,11 +157,7 @@ public class DC_GameMaster extends GameMaster {
                 }
             }
 
-            if (!passableIncluded) {
-                if (object.isPassable()) {
-                    continue;
-                }
-            }
+
             if (object.getZ() != z) {
                 continue;
             }
@@ -175,7 +167,7 @@ public class DC_GameMaster extends GameMaster {
         }
 //        if (overlayingIncluded == null)
         if (z == 0)
-            if (passableIncluded)
+
                 if (getCache(overlayingIncluded) != null) {
                         getCache(overlayingIncluded).put(c, list);
                 }

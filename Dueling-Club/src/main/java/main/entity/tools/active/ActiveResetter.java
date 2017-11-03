@@ -8,6 +8,7 @@ import main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.AbilityConstructor;
+import main.elements.costs.Costs;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
@@ -117,7 +118,8 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
         }
     }
 
-    protected void applyPenalties() {
+
+        protected void applyPenalties() {
         Unit ownerObj = getOwnerObj();
         Integer sta = ownerObj.getIntParam(PARAMS.STAMINA_PENALTY);
         Integer ap = ownerObj.getIntParam(PARAMS.AP_PENALTY);

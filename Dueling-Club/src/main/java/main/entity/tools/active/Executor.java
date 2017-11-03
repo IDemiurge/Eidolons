@@ -407,16 +407,14 @@ public class Executor extends ActiveHandler {
                             if (getAction().getTargetObj().isMine()) {
                                 getAction().getOwnerObj().
                                  getAI().setEngagementDuration(2);
-                            }
-                            else
-                            {
+                            } else {
                                 GroupAI g = ((Unit) getAction().getTargetObj()).getAI().getGroup();
                                 //TODO
                                 if (g == null) {
                                     ((Unit) getAction().getTargetObj()).getAI().setEngagementDuration(2);
-                                } else  g.
+                                } else g.
                                  getMembers().forEach(
-                                 unit->unit.getAI(). setEngagementDuration(2)
+                                 unit -> unit.getAI().setEngagementDuration(2)
                                 );
                             }
 
