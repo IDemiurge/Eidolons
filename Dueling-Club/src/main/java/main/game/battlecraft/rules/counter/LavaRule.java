@@ -55,6 +55,10 @@ public class LavaRule extends DamageCounterRule {
     }
 
     @Override
+    public COUNTER getCounter() {
+        return COUNTER.Lava;
+    }
+    @Override
     public DAMAGE_TYPE getDamageType() {
         return GenericEnums.DAMAGE_TYPE.FIRE;
     }
@@ -70,11 +74,6 @@ public class LavaRule extends DamageCounterRule {
     }
 
 
-    @Override
-    public String getCounterName() {
-        return COUNTER.Lava.getName();
-
-    }
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         return REDUCTION;

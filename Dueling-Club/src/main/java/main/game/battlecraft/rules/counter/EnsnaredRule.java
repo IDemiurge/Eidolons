@@ -1,4 +1,4 @@
-package main.game.battlecraft.rules.action;
+package main.game.battlecraft.rules.counter;
 
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
@@ -15,6 +15,7 @@ import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.rules.action.ActionRule;
 import main.game.battlecraft.rules.counter.DC_CounterRule;
 import main.game.core.game.DC_Game;
 import main.system.math.MathMaster;
@@ -58,6 +59,11 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
     @Override
     public String getCounterName() {
         return COUNTER.Ensnared.getName();
+    }
+
+    @Override
+    public COUNTER getCounter() {
+        return COUNTER.Ensnared;
     }
 
     @Override

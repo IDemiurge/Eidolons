@@ -4,6 +4,7 @@ import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.entity.Ref;
@@ -308,13 +309,23 @@ public class AtomicAi extends AiHandler {
          || ai.getType() == AI_TYPE.TANK
          || ai.getType() == AI_TYPE.ARCHER
          || ai.getType() == AI_TYPE.SNEAK
+         || ai.getType() == AI_TYPE.NORMAL
          ) {
 //          FacingMaster.getOptimalFacingTowardsUnits()
-            for (BattleFieldObject enemy : Analyzer.getVisibleEnemies(ai))
-                if (FacingMaster.getSingleFacing(enemy, ai.getUnit()) == FACING_SINGLE.IN_FRONT) {
-                    return false;
-                }
-            return true;
+            BattleFieldObject enemy=getAnalyzer().getClosestEnemy(ai.getUnit());
+//            for (BattleFieldObject enemy : Analyzer.getVisibleEnemies(ai))
+
+            FACING_SINGLE relative = FacingMaster.getSingleFacing(enemy, ai.getUnit());
+            if (relative == FACING_SINGLE.BEHIND)
+            {
+                return true;
+            }
+            if (relative == FACING_SINGLE.TO_THE_SIDE)
+            {
+                if (!ai.getUnit().checkPassive(STANDARD_PASSIVES.BROAD_REACH))
+                    return true;
+            }
+            return false;
         }
 
         return false;

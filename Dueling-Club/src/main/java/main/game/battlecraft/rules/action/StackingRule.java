@@ -82,18 +82,20 @@ public class StackingRule implements ActionRule {
             return ;
         Ref ref = action.getRef();
         Obj target = ref.getTargetObj();
-        List<Unit> units = action.getGame().getObjectsOnCoordinate(
+        List<BattleFieldObject> units = action.getGame().getObjectsAt(
                 action.getOwnerObj().getCoordinates());
+        units.addAll(action.getGame().getObjectsAt(
+         target.getCoordinates()));
         units.remove(action.getOwnerObj());
         units.remove(target);
         if (units.isEmpty()) {
             return;
         }
-        Map<Unit, Integer> map = new HashMap<>();
-        for (Unit unit : units) {
+        Map<BattleFieldObject, Integer> map = new HashMap<>();
+        for (BattleFieldObject unit : units) {
             map.put(unit, unit.getIntParam(PARAMS.GIRTH));
         }
-        Unit randomTarget = new RandomWizard<Unit>().getObjectByWeight(map);
+        BattleFieldObject randomTarget = new RandomWizard<BattleFieldObject>().getObjectByWeight(map);
         ref.setTarget(randomTarget.getId());
         // action.addProperty(G_PROPS.DYNAMIC_BOOLS,
         // DYNAMIC_BOOLS.MISSED_ALREADY); //NO RESTRAINTS! :)
@@ -130,8 +132,8 @@ public class StackingRule implements ActionRule {
         for (BattleFieldObject u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
             if (!units.contains(u)) {
 //                if (!u.isDead())
-//                    continue;
-                units.addCast(u.getType());
+//                    continue; TODO why was Type necessary?
+                units.addCast(!u.isDead()? u.getType() : u);
                 if (u.isWall())
                     return false;
             }
@@ -196,6 +198,9 @@ public class StackingRule implements ActionRule {
                     return false;
 //                }
             }
+            if (unit.isDead())
+                girth += u.getIntParam(PARAMS.GIRTH)/3;
+            else
             girth += u.getIntParam(PARAMS.GIRTH);
 //           TODO  if (DoorMaster.isDoor((BattleFieldObject) u)) {
 //
@@ -208,9 +213,6 @@ public class StackingRule implements ActionRule {
         if (unit.getIntParam(PARAMS.GIRTH) == 0) {
             girth += StringMaster.getInteger(PARAMS.GIRTH.getDefaultValue());
         } else {
-            if (!unit.isDead())
-                girth += unit.getIntParam(PARAMS.GIRTH)/3;
-          else
               girth += unit.getIntParam(PARAMS.GIRTH);
         }
         // main.system.auxiliary.LogMaster.log(1, "****************** " + space

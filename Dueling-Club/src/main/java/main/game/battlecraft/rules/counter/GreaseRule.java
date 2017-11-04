@@ -25,11 +25,11 @@ public class GreaseRule extends  DC_CounterRule {
         super(game);
     }
 
-    @Override
-    public String getCounterName() {
-        return COUNTER.Grease.getName();
-    }
 
+    @Override
+    public COUNTER getCounter() {
+        return COUNTER.Grease;
+    }
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         return 1; // %-BASED?

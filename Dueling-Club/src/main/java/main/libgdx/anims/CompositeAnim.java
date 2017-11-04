@@ -95,6 +95,8 @@ public class CompositeAnim implements Animation {
                 }
             }
             initPartAnim();
+            if (currentAnim==null )
+                return false;
             currentAnim.start(getRef());
             triggerStartEvents();
         }
@@ -246,6 +248,8 @@ public class CompositeAnim implements Animation {
             addEvents(anim.getPart(), anim);
         });
         finished = false;
+        if (getActive() != null)
+            setRef(getActive().getRef());
     }
 
     public Ref getRef() {
@@ -311,6 +315,8 @@ public class CompositeAnim implements Animation {
         }
         if (map.isEmpty()) {
             part = (ANIM_PART) MapMaster.get(attached, index);
+            if (attached.get(part).isEmpty())
+                return;
             currentAnim = (Anim) attached.get(part).remove(0);
         } else {
             part = (ANIM_PART) MapMaster.get(map, index);
@@ -342,12 +348,12 @@ public class CompositeAnim implements Animation {
     }
 
     private void attach(Animation anim, ANIM_PART partToAddAt, float delay) {
-            if (delay != 0) {
-                anim.setDelay(delay);
-                attachDelayed(anim, partToAddAt);
-            } else {
-                attach(anim, partToAddAt);
-            }
+        if (delay != 0) {
+            anim.setDelay(delay);
+            attachDelayed(anim, partToAddAt);
+        } else {
+            attach(anim, partToAddAt);
+        }
         if (anim instanceof Anim) {
             addEvents(partToAddAt, (Anim) anim);
         }
@@ -505,9 +511,13 @@ public class CompositeAnim implements Animation {
     public boolean isEventAnim() {
         if (map.isEmpty())
             if (!attached.isEmpty())
-        return true;
+                return true;
         return false;
     }
 
 
+    public void resetRef() {
+        if (getActive() != null)
+            setRef(getActive().getRef());
+    }
 }

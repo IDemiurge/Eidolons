@@ -639,8 +639,28 @@ public class ItemGenerator implements GenericItemGenerator {
 
     }
 
+    private ObjType getOrCreateJewelry(String typeName) {
+        String string = StringMaster.getFirstItem(typeName, " ");
+        MAGICAL_ITEM_LEVEL itemLevel =
+         new EnumMaster<MAGICAL_ITEM_LEVEL>().
+          retrieveEnumConst(MAGICAL_ITEM_LEVEL.class, string);
+        ObjType objType=null ;
+        for (ObjType type : baseJewelryTypes) {
+            if (typeName.contains(type.getName())) {
+                objType = type;
+                typeName.replaceFirst(type.getName(), "");
+                break;
+            }
+        }
+        ObjType newType = objType;
+        return newType;
+    }
+
     @Override
     public ObjType getOrCreateItemType(String typeName, OBJ_TYPE type) {
+        if (type.equals(DC_TYPE.JEWELRY)) {
+            return getOrCreateJewelry(typeName);
+        }
         boolean weapon = type == DC_TYPE.WEAPONS;
 //        String baseTypeName = typeName;
         String name = StringMaster.getFirstItem(typeName, " ");
@@ -671,6 +691,7 @@ public class ItemGenerator implements GenericItemGenerator {
         return generateItem(weapon, quality, material, baseType);
 
     }
+
 
     public void generateItemObjTypes() {
         generateItemObjTypes(defaultQualityLevels, DEFAULT_MATERIALS_METALS);
@@ -815,6 +836,7 @@ public class ItemGenerator implements GenericItemGenerator {
              // (leveled) ? PAS_LEVEL_JEWELRY:
              ench.getItemTypes(), DC_TYPE.JEWELRY);
             for (ObjType type : types) {
+//           TODO      ObjType newType = generateJewelryPassiveEnchantment(ench, type, level);
                 if (type.isGenerated()) {
                     continue;
                 }
@@ -893,4 +915,7 @@ public class ItemGenerator implements GenericItemGenerator {
     }
 
 
+    public static boolean isJewelryOn() {
+        return false;
+    }
 }

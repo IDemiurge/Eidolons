@@ -22,9 +22,10 @@ public class BleedingDamageRule extends DamageCounterRule {
     }
 
     @Override
-    public String getCounterName() {
-        return COUNTER.Bleeding.toString();
+    public COUNTER getCounter() {
+        return COUNTER.Bleeding;
     }
+
 
     @Override
     public DAMAGE_TYPE getDamageType() {

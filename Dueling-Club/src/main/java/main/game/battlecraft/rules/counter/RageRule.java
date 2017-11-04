@@ -10,6 +10,7 @@ import main.ability.effects.container.ConditionalEffect;
 import main.ability.effects.continuous.BehaviorModeEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.MetaEnums;
@@ -21,9 +22,6 @@ import main.game.core.game.DC_Game;
 public class RageRule extends DC_CounterRule {
     // can
     // calculate!
-    public static final String COUNTER_NAME =
-            // STD_COUNTERS.RAGE_COUNTER;
-            "Rage Counter";
     // TODO ++ override morale killing rule!!! add Rage counters instead of
     // modifying morale!
     private static final String DAMAGE_PER_COUNTER = "5";
@@ -38,6 +36,10 @@ public class RageRule extends DC_CounterRule {
         super(game);
     }
 
+    @Override
+    public COUNTER getCounter() {
+        return COUNTER.Rage;
+    }
     @Override
     protected Effect getEffect() {
         return new Effects(
@@ -63,10 +65,6 @@ public class RageRule extends DC_CounterRule {
         );
     }
 
-    @Override
-    public String getCounterName() {
-        return COUNTER_NAME;
-    }
 
     @Override
     public String getBuffName() {

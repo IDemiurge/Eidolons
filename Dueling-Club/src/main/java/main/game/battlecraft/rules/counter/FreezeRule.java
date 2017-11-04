@@ -77,10 +77,6 @@ new Effects( new ModifyValueEffect(RESISTANCES_REDUCED,
 
 
 
-    @Override
-    public String getCounterName() {
-        return COUNTER.Freeze.getName();
-    }
 
     @Override
     public String getBuffName() {
@@ -91,6 +87,10 @@ new Effects( new ModifyValueEffect(RESISTANCES_REDUCED,
     public void initEffects() {
         super.initEffects();
 
+    }
+    @Override
+    public COUNTER getCounter() {
+        return COUNTER.Freeze;
     }
 
     @Override

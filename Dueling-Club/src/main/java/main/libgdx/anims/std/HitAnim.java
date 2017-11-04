@@ -101,11 +101,16 @@ public class HitAnim extends ActionAnim {
 
     @Override
     protected Action getAction() {
-
+        if (getRef() == null)
+            return null;
+        if (getRef().getSourceObj() == null)
+            return null;
+        if (getRef().getTargetObj() == null)
+            return null;
         DIRECTION d = DirectionMaster.getRelativeDirection(getRef().getSourceObj(), getRef().getTargetObj());
 
-        int dx =d.isVertical() ? 5:  30;
-        int dy =!d.isVertical() ? 5:  30;
+        int dx = d.isVertical() ? 5 : 30;
+        int dy = !d.isVertical() ? 5 : 30;
         if (BooleanMaster.isFalse(d.isGrowX())) {
             dx = -dx;
         }
@@ -113,13 +118,13 @@ public class HitAnim extends ActionAnim {
             dy = -dy;
         }
 
-        float  x =getActor().getX();
-        float  y =getActor().getY();
+        float x = getActor().getX();
+        float y = getActor().getY();
 
 
         MoveByAction move = (MoveByAction) ActorMaster.getAction(MoveByAction.class);
         move.setAmount(dx, dy);
-        move.setDuration(getDuration()/2);
+        move.setDuration(getDuration() / 2);
         MoveToAction moveBack = (MoveToAction) ActorMaster.getAction(MoveToAction.class);
         if (getRef().getSourceObj() instanceof DC_Obj) {
             if (((DC_Obj) getRef().getSourceObj()).isOverlaying()) {
@@ -127,7 +132,7 @@ public class HitAnim extends ActionAnim {
             }
         }
         moveBack.setPosition(x, y);
-        moveBack.setDuration(getDuration()/2);
+        moveBack.setDuration(getDuration() / 2);
         return new SequenceAction(move, moveBack);
     }
 
@@ -160,7 +165,8 @@ public class HitAnim extends ActionAnim {
 //        BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
 //         .get(BattleFieldObject);
 //        return actor;
-        return getActor(); }
+        return getActor();
+    }
 
     private String getTargetSuffix(Obj targetObj) {
 //       DC_HeroObj BattleFieldObject = (DC_HeroObj) targetObj;

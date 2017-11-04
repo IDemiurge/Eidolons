@@ -28,16 +28,16 @@ public class BlightRule extends DC_CounterRule {
         super(game);
     }
 
-    @Override
-    public String getCounterName() {
-        return COUNTER.Blight.getName();
-    }
 
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         return 0;
     }
 
+    @Override
+    public COUNTER getCounter() {
+        return COUNTER.Blight;
+    }
     @Override
     public String getBuffName() {
         return "Blighted";

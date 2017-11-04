@@ -68,11 +68,12 @@ public class PoisonRule extends DamageCounterRule {
         return true;
     }
 
-    @Override
-    public String getCounterName() {
-        return COUNTER.Poison.toString();
-    }
 
+
+    @Override
+    public COUNTER getCounter() {
+        return COUNTER.Poison;
+    }
     @Override
     public String getBuffName() {
         if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.WEAKENING_POISON)) {

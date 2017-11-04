@@ -222,11 +222,11 @@ public class AI_Manager extends AiMaster {
                         continue;
                     if (unit1.equals(unit))
                         continue;
-                    if (!game.getVisionMaster().getSightMaster().getClearShotCondition().check( unit,unit1))
-                        continue;
                     double max_distance = 2.5;
                     if (PositionMaster.getExactDistance(unit1.getCoordinates(),
                      unit.getCoordinates()) >= max_distance)
+                        continue;
+                    if (!game.getVisionMaster().getSightMaster().getClearShotCondition().check( unit,unit1))
                         continue;
                     group.add(unit1);
 

@@ -6,6 +6,7 @@ import main.data.xml.XML_Converter;
 import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
+import main.game.core.Eidolons;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.bf.SuperActor;
 import main.libgdx.bf.light.ShadeLightCell;
@@ -58,6 +59,9 @@ public class OptionsMaster {
                           ));
                         break;
                     case GAME_DIFFICULTY:
+                        if (Eidolons.game!=null )
+                            if (Eidolons.game.getBattleMaster()!=null )
+                        Eidolons.game.getBattleMaster().getOptionManager().difficultySet(value);
                         break;
                     case DEFAULT_ACTIONS:
                         break;

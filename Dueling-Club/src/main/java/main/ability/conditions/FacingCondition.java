@@ -61,8 +61,12 @@ public class FacingCondition extends ConditionImpl {
                 if (d != null) {
                     c = c.getAdjacentCoordinate(d.rotate180(),2);
                 }
-
+//the coordinate to which unit must be facing in order to face the overlaying obj on the other side
             }
+            if (obj1== null )
+                return false;
+            if (c== null )
+                return false;
             FACING_SINGLE facing = FacingMaster.getSingleFacing(obj1.getFacing(),
              obj1.getCoordinates (), c);
             result = Arrays.asList(templates).contains(facing);

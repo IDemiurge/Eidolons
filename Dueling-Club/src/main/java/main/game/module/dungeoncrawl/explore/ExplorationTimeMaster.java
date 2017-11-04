@@ -61,7 +61,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     public void checkTimedEvents() {
         delta = time - lastTimeChecked;
-        lastTimeChecked= time;
+        lastTimeChecked = time;
         round_delta += delta;
         ai_delta = +delta;
         master.getAiMaster().checkAiActs();
@@ -80,17 +80,18 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         });
 
         if (round_delta >= getRoundEffectPeriod()) {
-            round_delta -= getRoundEffectPeriod();
+//            round_delta -= getRoundEffectPeriod();
+            round_delta = 0;
             processEndOfRoundEffects();
         }
         if (ai_delta >= getAiCheckPeriod()) {
-            ai_delta -= getAiCheckPeriod();
+//            ai_delta -= getAiCheckPeriod();
+            ai_delta = 0;
             processAiChecks();
         }
-        if (guiDirtyFlag)
-        {
+        if (guiDirtyFlag) {
             GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
-            guiDirtyFlag=false;
+            guiDirtyFlag = false;
         }
     }
 
@@ -128,11 +129,15 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private void processCounterRules() {
-        master.getGame().getRules().getCounterRules().forEach(rule -> {
+        master.getGame().getRules().getDamageRules().forEach(rule -> {
             rule.newTurn();
+        });
+        master.getGame().getRules().getCounterRules().forEach(rule -> {
+            rule.newTurn(); // ???
             master.getGame().getUnits().forEach(unit -> {
                 if (checkCounterRuleApplies(unit, rule)) {
                     if (rule.checkApplies(unit)) {
+                        //TODO reset unit?
                     }
 
                 }
@@ -183,7 +188,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         int value = getParamRestoration(delta,
          base, 1);
         int max =
-         base == PARAMS.FOCUS ? unit.getIntParam(PARAMS.STARTING_FOCUS)*3/2 :
+         base == PARAMS.FOCUS ? unit.getIntParam(PARAMS.STARTING_FOCUS) * 3 / 2 :
           unit.getIntParam(base);
 
         if (base == PARAMS.FOCUS)

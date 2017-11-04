@@ -167,15 +167,15 @@ public class DC_StateManager extends StateManager {
             if (Arrays.asList(toBaseIgnoredTypes).contains(obj.getOBJ_TYPE_ENUM())) {
                 continue;
             }
-//            if (!obj.isDead()) {
-//                if (obj instanceof DC_Obj) {
-//                    if (((DC_Obj) obj).isOutsideCombat())
-//                    {
-//                        ((DC_Obj) obj).outsideCombatReset();
-//                        continue;
-//                    }
-//                }
-//            }
+            if (!obj.isDead()) {
+                if (obj instanceof DC_Obj) {
+                    if (((DC_Obj) obj).isOutsideCombat())
+                    {
+                        ((DC_Obj) obj).outsideCombatReset();
+                        continue;
+                    }
+                }
+            }
 //            try {
             obj.toBase();
 //            } catch (Exception e) {

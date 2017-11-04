@@ -24,11 +24,11 @@ public class EncaseRule extends  DC_CounterRule {
         super(game);
     }
 
-    @Override
-    public String getCounterName() {
-        return COUNTER.Encase.getName();
-    }
 
+    @Override
+    public COUNTER getCounter() {
+        return COUNTER.Encase;
+    }
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         return 3; // %-BASED?

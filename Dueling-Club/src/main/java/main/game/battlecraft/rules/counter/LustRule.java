@@ -19,6 +19,11 @@ public class LustRule extends DC_CounterRule {
     }
 
     @Override
+    public COUNTER getCounter() {
+        return COUNTER.Lust;
+    }
+
+    @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         // TODO Auto-generated method stub
         return unit.getIntParam(PARAMS.SPIRIT);

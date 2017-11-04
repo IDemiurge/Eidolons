@@ -66,11 +66,11 @@ public class MoistRule extends DC_CounterRule {
 
 
 
-    @Override
-    public String getCounterName() {
-        return COUNTER.Moist.getName();
-    }
 
+    @Override
+    public COUNTER getCounter() {
+        return COUNTER.Moist;
+    }
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.SMALL)) {

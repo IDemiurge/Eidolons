@@ -205,6 +205,10 @@ public class VisionMaster implements GenericVisionManager {
         boolean invisible=false;
         for (Obj obj : units) {
             DC_Obj target = (DC_Obj) obj;
+            if (target instanceof Entrance) {
+                target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED);
+                continue;
+            }
             if (target instanceof Unit) {
                 if (ExplorationMaster.isExplorationOn() || ((Unit) target).getAI().isOutsideCombat()) {
                     target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.UNKNOWN);

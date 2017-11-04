@@ -1,6 +1,7 @@
 package main.entity.tools.bf.unit;
 
 import com.graphbuilder.math.ExpressionParseException;
+import main.client.cc.logic.items.ItemGenerator;
 import main.client.cc.logic.spells.LibraryManager;
 import main.client.cc.logic.spells.SpellUpgradeMaster;
 import main.content.*;
@@ -242,6 +243,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             e.printStackTrace();
             LogMaster.log(1, "failed to initInventory");
         }
+        if (ItemGenerator.isJewelryOn())
         try {
             initJewelry();
         } catch (ExpressionParseException e) {

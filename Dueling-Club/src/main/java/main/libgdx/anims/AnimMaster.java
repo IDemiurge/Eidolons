@@ -384,6 +384,7 @@ public class AnimMaster extends Group {
         //TODO Stack: counter atk will animated first - last in first out :(
 
         leadAnimation = leadQueue.removeFirst();
+        leadAnimation.resetRef();
         return leadAnimation;
     }
 

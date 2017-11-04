@@ -83,6 +83,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public void preStart() {
         partyManager.preStart();
+        getBattleMaster().getOptionManager().selectDifficulty();
 //        getGame().getDataKeeper().setDungeonData(new DungeonData(getMetaGame()));
 
     }

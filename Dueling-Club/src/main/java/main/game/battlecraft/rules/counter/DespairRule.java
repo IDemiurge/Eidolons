@@ -27,10 +27,6 @@ public class DespairRule extends DC_CounterRule {
         super(game);
     }
 
-    @Override
-    public String getCounterName() {
-        return COUNTER.Despair.getName();
-    }
 
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
@@ -51,6 +47,10 @@ public class DespairRule extends DC_CounterRule {
         return "Despair";
     }
 
+    @Override
+    public COUNTER getCounter() {
+        return COUNTER.Despair;
+    }
     @Override
     protected Effect getEffect() {
         return new Effects(new ModifyValueEffect(PARAMS.SPIRIT,

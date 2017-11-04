@@ -22,10 +22,6 @@ public class ClayRule extends  DC_CounterRule {
         super(game);
     }
 
-    @Override
-    public String getCounterName() {
-        return COUNTER.Clay.getName();
-    }
 
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
@@ -37,6 +33,10 @@ public class ClayRule extends  DC_CounterRule {
         return null;
     }
 
+    @Override
+    public COUNTER getCounter() {
+        return COUNTER.Clay;
+    }
     @Override
     protected Effect getEffect() {
         return new Effects(new ModifyValueEffect(PARAMS.WEIGHT,

@@ -442,7 +442,7 @@ public class UnitResetter extends EntityResetter<Unit> {
 
     }
 
-    public void resetToughness() {
+    public void regenerateToughness() {
         Integer amount = getIntParam(PARAMS.TOUGHNESS_RECOVERY) * getIntParam(PARAMS.TOUGHNESS)
          / 100;
         // setParam(PARAMS.C_TOUGHNESS, amount);

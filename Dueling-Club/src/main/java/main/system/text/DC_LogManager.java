@@ -1,6 +1,7 @@
 package main.system.text;
 
 import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.entity.Ref;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
@@ -78,7 +79,7 @@ public class DC_LogManager extends LogManager {
                 if (!unit.getAI().isOutsideCombat())
                     if (
                      (!start && unit.isDead()) ||
-                      (start && unit.isDetected()))
+                      (start && unit.getPlayerVisionStatus(false)!= UNIT_TO_PLAYER_VISION.INVISIBLE))
             {
                 String name = unit.getNameIfKnown();
                 if (map.containsKey(name))

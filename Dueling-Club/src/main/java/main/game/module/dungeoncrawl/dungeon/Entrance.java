@@ -1,5 +1,6 @@
 package main.game.module.dungeoncrawl.dungeon;
 
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.entity.Ref;
 import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
@@ -27,6 +28,11 @@ public class Entrance extends Structure { //ScenarioUnit
         // OBJ_TYPES.BF_OBJ);
         // int trapLevel;
         // bfObjType.setImage(sublevel.getImagePath()); // default
+    }
+
+    @Override
+    public UNIT_TO_PLAYER_VISION getPlayerVisionStatus(boolean active) {
+        return UNIT_TO_PLAYER_VISION.DETECTED;
     }
 
     @Override

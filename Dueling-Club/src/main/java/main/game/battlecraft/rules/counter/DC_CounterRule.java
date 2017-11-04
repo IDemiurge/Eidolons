@@ -18,7 +18,6 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.magic.ImmunityRule;
 import main.game.core.game.DC_Game;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
 
 import java.util.HashMap;
@@ -49,11 +48,7 @@ public abstract class DC_CounterRule {
         return getCounter().getName();
     }
 
-    public COUNTER getCounter() {
-        if (counter == null )
-            counter = new EnumMaster<COUNTER>().retrieveEnumConst(COUNTER.class, getCounterName());
-        return counter;
-    }
+    public abstract COUNTER getCounter();
 
     public abstract int getCounterNumberReductionPerTurn(Unit unit);
 

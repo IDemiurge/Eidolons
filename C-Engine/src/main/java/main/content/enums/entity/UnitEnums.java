@@ -350,7 +350,8 @@ public class UnitEnums {
         private COUNTER down;
         private COUNTER up;
         private String imagePath;
-        private String name=StringMaster.getWellFormattedString(name());
+        private String name=
+         StringMaster.getWellFormattedString(name()) + StringMaster.COUNTER;
 
         public boolean isNegativeAllowed(){
             return false;

@@ -56,6 +56,10 @@ public class BlazeRule extends DamageCounterRule {
     }
 
     @Override
+    public COUNTER getCounter() {
+        return COUNTER.Blaze;
+    }
+    @Override
     public boolean isEnduranceOnly() {
 //        if (getNumberOfCounters(unit) <= THRESHOLD) {
 //            return true;
@@ -64,11 +68,6 @@ public class BlazeRule extends DamageCounterRule {
     }
 
 
-    @Override
-    public String getCounterName() {
-        return COUNTER.Blaze.getName();
-
-    }
 
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {

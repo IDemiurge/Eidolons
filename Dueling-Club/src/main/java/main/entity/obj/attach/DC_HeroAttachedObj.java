@@ -71,6 +71,8 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
 
     @Override
     public boolean isOutsideCombat() {
+        if (getHero()==null )
+            return true;
         return getHero().isOutsideCombat();
     }
 

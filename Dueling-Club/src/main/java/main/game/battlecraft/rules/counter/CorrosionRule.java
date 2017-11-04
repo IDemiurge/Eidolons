@@ -27,10 +27,6 @@ public class CorrosionRule extends DC_CounterRule {
         super(game);
     }
 
-    @Override
-    public String getCounterName() {
-        return COUNTER.Corrosion.getName();
-    }
 
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
@@ -51,6 +47,10 @@ public class CorrosionRule extends DC_CounterRule {
         return effects;
     }
 
+    @Override
+    public COUNTER getCounter() {
+        return COUNTER.Corrosion;
+    }
     @Override
     public String getBuffName() {
         return "Corroding";

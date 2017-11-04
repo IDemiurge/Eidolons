@@ -5,8 +5,6 @@ import main.libgdx.screens.DungeonScreen;
 import main.system.sound.Player;
 import main.system.sound.SoundFx;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Stack;
 
 /**
@@ -14,7 +12,7 @@ import java.util.Stack;
  */
 public class SoundPlayer extends Player {
     Stack<SoundFx> playQueue = new Stack();
-    List<SoundFx> playing = new LinkedList<>();
+//    List<SoundFx> playing = new LinkedList<>();
 
     DungeonScreen dungeonScreen;
     private Vector2 position;
@@ -45,24 +43,22 @@ public class SoundPlayer extends Player {
     }
 
     public void doPlayback(float delta) {
-        playing.forEach(soundFx -> {
-            if (dungeonScreen != null)
-                if (soundFx.getOrigin() != null) {
-                    float x = dungeonScreen .getController().getXCamPos();
-                    float y = dungeonScreen.getController().getYCamPos();
-                    float distance = soundFx.getOrigin().dst(x, y);
-                    distance *= dungeonScreen.getController().getZoom();
-                    float volume =
-                     Math.max(10, getVolume() / Math.max(1, (distance) / 200 ))/100;
-                    soundFx.setVolume(volume);
-                }
-        });
             if (!playQueue.isEmpty()) {
-                SoundFx sound = playQueue.pop();
-                playing.add(sound);
+                SoundFx soundFx = playQueue.pop();
+//                playing.add(sound);
 //                if (sound.getDelay()!=0)
 //                    sound.setDelay( - delta);
-                playNow(sound.getSound());
+                if (dungeonScreen != null)
+                    if (soundFx.getOrigin() != null) {
+                        float x = dungeonScreen .getController().getXCamPos();
+                        float y = dungeonScreen.getController().getYCamPos();
+                        float distance = soundFx.getOrigin().dst(x, y);
+                        distance *= dungeonScreen.getController().getZoom();
+                        float volume =
+                         Math.max(10, getVolume() / Math.max(1, (distance) / 200 ))/100;
+                        soundFx.setVolume(volume);
+                    }
+                playNow(soundFx.getSound());
             }
             //fade in or out?
             //pause sounds

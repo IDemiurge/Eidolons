@@ -36,10 +36,9 @@ public class SuffocationRule extends DamageCounterRule {
     }
 
     @Override
-    public String getCounterName() {
-        return COUNTER.Suffocation.getName();
+    public COUNTER getCounter() {
+        return COUNTER.Suffocation;
     }
-
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         return 3;

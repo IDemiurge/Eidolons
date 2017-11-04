@@ -186,8 +186,8 @@ else
             return;
         }
         // setMode(STD_MODES.NORMAL); just don't.
-
-        getResetter().resetToughness();
+    if (game.getState().getRound()>0)
+        getResetter().regenerateToughness();
         // resetPercentages(); => toBase()
         getResetter().resetActions();
 
@@ -314,7 +314,7 @@ else
     public void setRef(Ref ref) {
         ref.setSource(id);
         super.setRef(ref);
-        this.ref.setTarget(null);
+//        this.ref.setTarget(null);
     }
 
 

@@ -76,10 +76,6 @@ public class DiseaseRule extends DamageCounterRule {
         return true;
     }
 
-    @Override
-    public String getCounterName() {
-        return COUNTER.Disease.getName();
-    }
 
     // @Override
     // public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
@@ -97,6 +93,10 @@ public class DiseaseRule extends DamageCounterRule {
         return n;
     }
 
+    @Override
+    public COUNTER getCounter() {
+        return COUNTER.Disease;
+    }
     private boolean checkVirulent(Unit unit) {
         return unit.checkStatus(UnitEnums.STATUS.VIRULENT);
     }

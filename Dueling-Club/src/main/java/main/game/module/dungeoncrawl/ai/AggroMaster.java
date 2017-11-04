@@ -8,6 +8,7 @@ import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedList;
@@ -37,8 +38,13 @@ public class AggroMaster {
                     list.add(unit);
             }
         }
-        if (!list.isEmpty()) {
+        main.system.auxiliary.log.LogMaster.log(1,"Aggro group: " +list+"; last: " + lastAggroGroup);
+     if (!ExplorationMaster.isExplorationOn())   if (!list.isEmpty()) {
             logAggro(list);
+        }
+        if (lastAggroGroup!=null )
+        if (lastAggroGroup.size() > list.size()){
+            main.system.auxiliary.log.LogMaster.log(1,"Aggro group reduced: " +lastAggroGroup+" last vs new: " + list);
         }
         lastAggroGroup = list;
         return list;
@@ -74,6 +80,11 @@ public class AggroMaster {
             if (unit.getAI().getEngagementDuration() > 0) {
                 set.add(unit);
             }
+            if (unit.getAI().isEngaged()) {
+                set.add(unit);
+                newAggro=true;
+                unit.getAI().setEngaged(false);
+            }
             if (hero.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.INVISIBLE)
                 continue;
             VISIBILITY_LEVEL visibility = VisionManager.getMaster().getVisibilityLevel(unit, hero);
@@ -85,8 +96,6 @@ public class AggroMaster {
             //TODO these units will instead 'surprise attack' you or stalk
 
             newAggro = true;
-            int duration = getEngagementDuration(unit.getAI());
-            unit.getAI().setEngagementDuration(duration);
             set.add(unit);
 //            }
         }
@@ -97,14 +106,18 @@ public class AggroMaster {
                 for (Unit sub : unit.getAI().getGroup().getMembers()) {
                     set.add(sub);
                     if (newAggro) {
-                        int duration = getEngagementDuration(unit.getAI());
-                        unit.getAI().setEngagementDuration(duration);
+                        int duration = getEngagementDuration(sub.getAI());
+                        sub.getAI().setEngagementDuration(duration);
                     }
                 }
             }
         }
 
 
+        for (Unit unit: set) {
+            if (unit.getAI().getEngagementDuration()<=1)
+                return set;
+        }
         return set;
     }
 

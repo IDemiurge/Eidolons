@@ -280,12 +280,12 @@ public class GridPanel extends Group {
         });
 
 
-        GuiEventManager.bind(GRID_OBJ_HOVER_ON, (event) -> {
-            resetZIndices();
-        });
-        GuiEventManager.bind(GRID_OBJ_HOVER_OFF, (event) -> {
-            resetZIndices();
-        });
+//        GuiEventManager.bind(GRID_OBJ_HOVER_ON, (event) -> {
+//            resetZIndices();
+//        });
+//        GuiEventManager.bind(GRID_OBJ_HOVER_OFF, (event) -> {
+//            resetZIndices();
+//        });
         GuiEventManager.bind(UNIT_MOVED, obj -> {
             moveUnitView((BattleFieldObject) obj.get());
         });
@@ -722,18 +722,14 @@ public class GridPanel extends Group {
 //                cell.recalcUnitViewBounds();
 //            }
 //        }
-
         updateRequired = false;
-
-    }
-
-    protected void checkGraphicsUpdates() {
 
     }
 
     private void resetVisible() {
         for (BattleFieldObject sub : unitMap.keySet()) {
             BaseView view = unitMap.get(sub);
+            //TODO STEALTH VISUALS
 //            Map<GridUnitView, Boolean> units = new HashMap<>();
 //            if (view instanceof GridUnitView) {
 //                boolean stealth = false;
@@ -792,7 +788,7 @@ public class GridPanel extends Group {
         return !hoverObj.isHovered();
     }
 
-    private void resetZIndices() {
+    public void resetZIndices() {
         loop:
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {

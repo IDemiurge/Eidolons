@@ -17,7 +17,6 @@ import main.entity.tools.EntityInitializer;
 import main.entity.tools.EntityMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.math.MathMaster;
 
 import java.util.LinkedList;
 
@@ -103,31 +102,34 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
         costs.setActiveId(getId());
 
         if (getEntity().isAttackAny())
-            applyDynamicCostMods(costs);
+            if (getEntity().isExtraAttackMode())
+                applyDynamicCostMods(costs);
         getEntity().setCosts(costs);
     }
 
 
     public void applyDynamicCostMods(Costs costs) {
         Unit ownerObj =getEntity(). getOwnerObj();
-        Integer sta = ownerObj.getIntParam(PARAMS.STAMINA_PENALTY);
-        Integer ap = ownerObj.getIntParam(PARAMS.AP_PENALTY);
+        Integer sta = 0;
+        Integer ap = 0;
         if (getHandler().isCounterMode()) {
-            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.COUNTER_CP_PENALTY));
-            sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.COUNTER_STAMINA_PENALTY));
+            ap =  ownerObj.getIntParam(PARAMS.COUNTER_CP_PENALTY);
+            sta =  ownerObj
+             .getIntParam(PARAMS.COUNTER_STAMINA_PENALTY);
         }
         if (getHandler().isInstantMode()) {
-            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.INSTANT_CP_PENALTY));
-            sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.INSTANT_STAMINA_PENALTY));
+            ap =  ownerObj.getIntParam(PARAMS.INSTANT_CP_PENALTY);
+            sta =  ownerObj
+             .getIntParam(PARAMS.INSTANT_STAMINA_PENALTY);
         }
         if (getHandler().isAttackOfOpportunityMode()) {
-            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.AOO_CP_PENALTY));
-            sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.AOO_STAMINA_PENALTY));
+            ap =  ownerObj.getIntParam(PARAMS.AOO_CP_PENALTY);
+            sta =  ownerObj
+             .getIntParam(PARAMS.AOO_STAMINA_PENALTY);
         }
+        if (ap!=0)
         costs.getCost(PARAMS.AP_COST).getPayment().getAmountFormula().getAppendedByModifier(ap);
+        if (ap!=0)
         costs.getCost(PARAMS.STA_COST).getPayment().getAmountFormula().getAppendedByModifier(sta);
 
     }

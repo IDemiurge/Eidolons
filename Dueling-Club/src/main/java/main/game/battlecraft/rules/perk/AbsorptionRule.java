@@ -29,6 +29,11 @@ public class AbsorptionRule extends DC_CounterRule {
     }
 
     @Override
+    public COUNTER getCounter() {
+        return null;
+    }
+
+    @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         return 0;
     }

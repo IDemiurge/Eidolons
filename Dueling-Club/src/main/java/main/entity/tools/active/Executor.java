@@ -11,7 +11,6 @@ import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.Active;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.ai.GroupAI;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_GROUP;
 import main.game.battlecraft.rules.action.StackingRule;
@@ -406,16 +405,17 @@ public class Executor extends ActiveHandler {
                          getAction().getOwner()) {
                             if (getAction().getTargetObj().isMine()) {
                                 getAction().getOwnerObj().
-                                 getAI().setEngagementDuration(2);
+                                 getAI().setEngaged(true);
                             } else {
-                                GroupAI g = ((Unit) getAction().getTargetObj()).getAI().getGroup();
-                                //TODO
-                                if (g == null) {
-                                    ((Unit) getAction().getTargetObj()).getAI().setEngagementDuration(2);
-                                } else g.
-                                 getMembers().forEach(
-                                 unit -> unit.getAI().setEngagementDuration(2)
-                                );
+                                ((Unit) getAction().getTargetObj()).getAI().setEngaged(true);
+//                                GroupAI g = ((Unit) getAction().getTargetObj()).getAI().getGroup();
+//                                //TODO
+//                                if (g == null) {
+//                                    ((Unit) getAction().getTargetObj()).getAI().setEngagementDuration(2);
+//                                } else g.
+//                                 getMembers().forEach(
+//                                 unit -> unit.getAI().setEngagementDuration(2)
+//                                );
                             }
 
 
@@ -473,7 +473,6 @@ public class Executor extends ActiveHandler {
             REF.setTarget(getAction().getOwnerObj().getId());
             attack.activatedOn(REF);
         }
-
     }
 
     protected boolean checkExtraAttacksDoNotInterrupt(ENTRY_TYPE entryType) {

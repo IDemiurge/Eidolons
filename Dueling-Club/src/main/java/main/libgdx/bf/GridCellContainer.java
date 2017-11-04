@@ -80,7 +80,7 @@ public class GridCellContainer extends GridCell {
             actor.sizeChanged();
             i++;
         }
-
+//        recalcImagesPos();
         if (graveyard != null) {
             graveyard.setZIndex(Integer.MAX_VALUE);
         }
@@ -142,7 +142,9 @@ public class GridCellContainer extends GridCell {
     }
 
     private float getSizeFactorPerView() {
-        return 2.4f;
+        if (hasBackground)
+            return 4.0f;
+        return 3.0f;
     }
 
     public void addActor(Actor actor) {
@@ -170,6 +172,9 @@ public class GridCellContainer extends GridCell {
         final float perImageOffsetX = getSizeDiffX() * getPosDiffFactorX();
         final float perImageOffsetY = getSizeDiffY() * getPosDiffFactorY();
         for (GridUnitView actor : getUnitViews()) {
+            if (actor.isCellBackground()){
+                continue;
+            }
                 actor.setX(perImageOffsetX * i);
                 actor.setY(perImageOffsetY * ((getUnitViewCountEffective() - 1) - i++));
         }

@@ -16,12 +16,15 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
 
     BattleOptions options;
     DIFFICULTY defaultDifficulty = DIFFICULTY.NOVICE;
+    DIFFICULTY difficulty;
 
     public BattleOptionManager(BattleMaster<E> master) {
         super(master);
         try {
             defaultDifficulty =
-             new EnumMaster<DIFFICULTY>().retrieveEnumConst(DIFFICULTY.class,OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
+             new EnumMaster<DIFFICULTY>().retrieveEnumConst(
+              DIFFICULTY.class, OptionsMaster.getGameplayOptions().
+               getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -29,8 +32,29 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
         options.setValue(ARENA_GAME_OPTIONS.DIFFICULTY, defaultDifficulty.name());
     }
 
+    public void difficultySet(String value) {
+        DIFFICULTY newDifficulty = new EnumMaster<DIFFICULTY>().retrieveEnumConst(
+         DIFFICULTY.class, value);
+        if (newDifficulty == difficulty)
+            return;
+        difficulty = newDifficulty;
+        getGame().getManager().reset();
+    }
+
+    public void selectDifficulty() {
+
+    }
+
     public DIFFICULTY getDifficulty() {
-        return   new EnumMaster<DIFFICULTY>().retrieveEnumConst(DIFFICULTY.class,OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
+        if (difficulty == null) {
+            difficulty = new EnumMaster<DIFFICULTY>().retrieveEnumConst(
+             DIFFICULTY.class, OptionsMaster.getGameplayOptions().
+              getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
+        }
+        return difficulty;
+//        return   new EnumMaster<DIFFICULTY>().retrieveEnumConst(
+//         DIFFICULTY.class,OptionsMaster.getGameplayOptions().
+//          getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
     }
 //        battleLevel = 0;
 //
@@ -77,16 +101,17 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
         int mod = 100;
         if (ally_enemy_neutral) {
             if (unit.isMainHero()) {
-                mod =  getDifficulty().getHealthPercentageMainHero();
+                mod = getDifficulty().getHealthPercentageMainHero();
             } else {
-                mod =  getDifficulty().getHealthPercentageAlly();
+                mod = getDifficulty().getHealthPercentageAlly();
             }
         } else
-            mod = getOptions().getDifficulty().getHealthPercentageEnemy();
+            mod = getDifficulty().getHealthPercentageEnemy();
         mod -= 100;
         unit.modifyParamByPercent(PARAMS.ENDURANCE, mod);
         unit.modifyParamByPercent(PARAMS.TOUGHNESS, mod);
 
-        unit.modifyParamByPercent(PARAMS.N_OF_ACTIONS, mod/4);
+        unit.modifyParamByPercent(PARAMS.N_OF_ACTIONS, mod / 4);
     }
+
 }

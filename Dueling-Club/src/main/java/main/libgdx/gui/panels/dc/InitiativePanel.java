@@ -88,11 +88,13 @@ public class InitiativePanel extends Group {
                 if (view != null)
                     view.setZIndex(Integer.MAX_VALUE - 1);
             }
+            DungeonScreen.getInstance().getGridPanel().resetZIndices();
         });
         GuiEventManager.bind(GuiEventType.GRID_OBJ_HOVER_OFF, obj -> {
             if (!isRealTime()) {
                 resetZIndices();
             }
+            DungeonScreen.getInstance().getGridPanel().resetZIndices();
 
         });
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
