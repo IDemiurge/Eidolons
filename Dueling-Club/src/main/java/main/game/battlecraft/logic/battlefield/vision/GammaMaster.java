@@ -1,11 +1,13 @@
 package main.game.battlecraft.logic.battlefield.vision;
 
 import main.content.PARAMS;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.dungeon.location.Location;
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
@@ -80,8 +82,12 @@ public class GammaMaster {
     }
 
     public float getAlphaForShadowMapCell(int x, int y, SHADE_LIGHT type) {
-        if (VisionManager.isVisionHacked()) {
-            return 0;
+
+        if (type == SHADE_LIGHT.BLACKOUT){
+            return getBlackoutAlpha(x, y);
+        }
+        if (type == SHADE_LIGHT.HIGLIGHT){
+            return getHiglightAlpha(x, y);
         }
         Unit unit = Eidolons.game.getManager().getMainHero();
         if (unit == null) {
@@ -96,6 +102,9 @@ public class GammaMaster {
         switch (type) {
 
             case GAMMA_SHADOW:
+                if (VisionManager.isVisionHacked()) {
+                    return 0;
+                }
                 if (gamma >= 1)
                     return 0;
                 if (gamma < 0)
@@ -106,7 +115,7 @@ public class GammaMaster {
             case GAMMA_LIGHT:
                 if (gamma < 2)
                     return 0;
-                alpha = gamma - 2;
+                alpha = gamma - 1;
                 break;
             case LIGHT_EMITTER:
                 for (Obj sub : IlluminationRule.getEffectCache().keySet()) {
@@ -140,6 +149,24 @@ public class GammaMaster {
         return MathMaster.minMax(alpha, 0, 1);
     }
 
+    private float getHiglightAlpha(int x, int y) {
+        //tutorial info
+        if (master.getGame().getDungeonMaster().getDungeonWrapper() instanceof Location) {
+            Entrance exit = ((Location) master.getGame().getDungeonMaster().
+             getDungeonWrapper()).getMainExit();
+            if (exit != null) {
+                if (exit.getX()==x)
+                    if (exit.getY()==y)
+                        return 1;
+            }
+        }
+        return 0;
+    }
+
+    private float getBlackoutAlpha(int x, int y) {
+        return 0;
+    }
+
 
     public void clearCache() {
         cache.clear();
@@ -164,6 +191,11 @@ public class GammaMaster {
                 }
 
             }
+        if (cell.getOutlineType()== OUTLINE_TYPE.BLOCKED_OUTLINE)
+            return 0;
+        if (cell.getOutlineType()== OUTLINE_TYPE.BLOCKED_OUTLINE)
+            return 0;
+
 //        Unit unit =  master.getSeeingUnit();
         return CELL_GAMMA_MODIFIER * (float)
          cell.getGamma();

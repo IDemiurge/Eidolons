@@ -120,7 +120,7 @@ public abstract class DC_CounterRule {
 
     public void newTurn() {
         for (Unit unit : game.getUnits()) {
-            if (getNumberOfCounters(unit) <= 0) {
+        if (unit.isDead()) continue;    if (getNumberOfCounters(unit) <= 0) {
                 continue;
             }
             applyCountersInteractions(unit);

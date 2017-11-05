@@ -18,6 +18,7 @@ import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -213,13 +214,6 @@ public class AnimMaster3d {
         // loops,
 
         //TODO who is displayed above on the cell?
-        boolean offhand = activeObj.isOffhand();
-        Boolean flipHor = null;
-        if (projection == null) {
-            flipHor = PositionMaster.isToTheLeft(activeObj.getOwnerObj(), targetObj);
-        } else {
-            flipHor = offhand;
-        }
 //modify texture? coloring, sizing,
         float angle = PositionMaster.getAngle(activeObj.getOwnerObj(), targetObj);
 //float baseAngle =
@@ -258,7 +252,6 @@ public class AnimMaster3d {
         SpriteAnimation sprite = SpriteAnimationFactory.
          getSpriteAnimation(regions, frameDuration, loops);
 //        sprite.setRotation(rotation);
-        sprite.setFlipX(flipHor);
         return sprite;
     }
 

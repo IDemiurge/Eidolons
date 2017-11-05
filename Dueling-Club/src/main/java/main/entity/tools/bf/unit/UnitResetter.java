@@ -52,7 +52,8 @@ public class UnitResetter extends EntityResetter<Unit> {
     public UnitCalculator getCalculator() {
         return (UnitCalculator) super.getCalculator();
     }
-//addDefault
+
+    //addDefault
     @Override
     public UnitInitializer getInitializer() {
         return (UnitInitializer) super.getInitializer();
@@ -330,13 +331,14 @@ public class UnitResetter extends EntityResetter<Unit> {
             setParam(PARAMS.C_N_OF_ACTIONS, 0);
             return;
         }
-        int carryOverFactor = DC_Constants.CARRY_OVER_FACTOR;
+        float carryOverFactor = DC_Constants.CARRY_OVER_FACTOR;
         if (getIntParam(PARAMS.C_N_OF_ACTIONS) < 0) {
             carryOverFactor = DC_Constants.CARRY_OVER_FACTOR_NEGATIVE;
         }
-
-        int actions = getIntParam(PARAMS.N_OF_ACTIONS) + getIntParam(PARAMS.C_N_OF_ACTIONS)
-         / carryOverFactor;
+        if (getGame().getState().getRound() == 0)
+            carryOverFactor = 0;
+        int actions = (int) (getIntParam(PARAMS.N_OF_ACTIONS) + getIntParam(PARAMS.C_N_OF_ACTIONS)
+         * carryOverFactor);
 
         setParam(PARAMS.C_N_OF_ACTIONS, actions);
 

@@ -25,6 +25,16 @@ public  class SuperContainer extends SuperActor {
     }
 
     @Override
+    public float getWidth() {
+        return  getContent().getWidth();
+    }
+
+    @Override
+    public float getHeight() {
+        return  getContent().getHeight();
+    }
+
+    @Override
     protected void alphaFluctuation(Actor image, float delta) {
         super.alphaFluctuation(image, delta);
     }

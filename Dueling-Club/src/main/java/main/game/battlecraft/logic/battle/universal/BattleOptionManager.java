@@ -107,9 +107,10 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
             }
         } else
             mod = getDifficulty().getHealthPercentageEnemy();
-        mod -= 100;
-        unit.modifyParamByPercent(PARAMS.ENDURANCE, mod);
-        unit.modifyParamByPercent(PARAMS.TOUGHNESS, mod);
+
+        unit.multiplyParamByPercent(PARAMS.ENDURANCE, mod, false);
+        unit.multiplyParamByPercent(PARAMS.TOUGHNESS, mod, false);
+        unit.multiplyParamByPercent(PARAMS.STAMINA, mod/2, false);
 
         unit.modifyParamByPercent(PARAMS.N_OF_ACTIONS, mod / 4);
     }

@@ -16,14 +16,11 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
-import main.system.util.Refactor;
 import main.test.debug.DebugMaster;
 
 public class DC_Cell extends DC_Obj implements Cell {
 
     private static ObjType EMPTY_CELL_TYPE;
-    @Refactor
-    private Dungeon dungeon;
 
     // private DequeImpl<DC_HeroItemObj> droppedItems;
     // private DequeImpl<DC_HeroObj> corpses;
@@ -33,7 +30,6 @@ public class DC_Cell extends DC_Obj implements Cell {
         this.x = i;
         this.y = j;
 
-        this.dungeon = dungeon;
         if (dungeon != null) {
             setZ(dungeon.getZ());
         }

@@ -60,8 +60,19 @@ public class Weapon3dAnim extends ActionAnim {
         sprite = get3dSprite();
         if (sprite==null )
             return ;
+
+        boolean offhand = getActive().isOffhand();
+        Boolean flipHor = null;
+        if (getProjection() == PROJECTION.HOR) {
+            flipHor =getActive().getOwnerObj().getFacing()== FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerObj(), targetObj);
+        } else {
+            flipHor = offhand;
+        }
+        sprite.setFlipX(flipHor);
         getSprites().clear();
         getSprites().add(sprite);
+        if (sprite.getRegions().size==0)
+            return ;
         int w = new FuncMaster<AtlasRegion>().getGreatest_(  (Arrays.asList(sprite.getRegions().toArray())),
          r -> r.getRegionWidth()).getRegionWidth();
         int h = new FuncMaster<AtlasRegion>().getGreatest_((Arrays.asList(sprite.getRegions().toArray())),

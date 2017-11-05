@@ -456,11 +456,12 @@ public class GridPanel extends Group {
 
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
-                if (!MoveAnimation.isOn())
+                if (!MoveAnimation.isOn()|| AnimMaster.isAnimationOffFor(ref.getSourceObj(),                 unitMap.get(ref.getSourceObj())))
                     removeUnitView((BattleFieldObject) ref.getSourceObj());
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
-                if (!MoveAnimation.isOn())
+                if (!MoveAnimation.isOn() || AnimMaster.isAnimationOffFor(ref.getSourceObj(),
+                 unitMap.get(ref.getSourceObj())))
                     moveUnitView((BattleFieldObject) ref.getSourceObj());
                 caught = true;
             }

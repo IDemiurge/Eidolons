@@ -50,4 +50,7 @@ public class GdxMaster {
         return height;
     }
 
+    public static boolean isGuiReady() {
+        return DungeonScreen.getInstance()!=null ;
+    }
 }

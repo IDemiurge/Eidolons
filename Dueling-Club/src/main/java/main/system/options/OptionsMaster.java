@@ -1,5 +1,6 @@
 package main.system.options;
 
+import com.badlogic.gdx.Gdx;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
@@ -7,6 +8,8 @@ import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.game.core.Eidolons;
+import main.libgdx.GdxMaster;
+import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.bf.SuperActor;
 import main.libgdx.bf.light.ShadeLightCell;
@@ -41,6 +44,40 @@ public class OptionsMaster {
     private static Map<OPTIONS_GROUP, Options> cachedMap;
     private static OptionsPanel optionsPanel;
     private static boolean initialized;
+    private static void applyAnimOptions(AnimationOptions animOptions) {
+
+        for (Object sub : animOptions.getValues().keySet()) {
+            new EnumMaster<ANIMATION_OPTION>().
+             retrieveEnumConst(ANIMATION_OPTION.class,
+              animOptions.getValues().get(sub).toString());
+            ANIMATION_OPTION key = animOptions.getKey((sub.toString()));
+            String value = animOptions.getValue(key);
+            if (!StringMaster.isInteger(value)) {
+                switch (key) {
+                    case WAIT_FOR_ANIM:
+                        break;
+                    case MAX_ANIM_WAIT_TIME:
+                        break;
+                    case PARALLEL_DRAWING:
+                        AnimMaster.getInstance(). setParallelDrawing(  Boolean.valueOf(value));
+                        break;
+                    case SPEED:
+                        break;
+                    case TEXT_DURATION:
+                        break;
+                    case PRECAST_ANIMATIONS:
+                        break;
+                    case CAST_ANIMATIONS:
+                        break;
+                    case AFTER_EFFECTS_ANIMATIONS:
+                        break;
+                }
+
+            }
+
+
+        }
+        }
 
     private static void applyGameplayOptions(GameplayOptions gameplayOptions) {
         for (Object sub : gameplayOptions.getValues().keySet()) {
@@ -214,6 +251,15 @@ public class OptionsMaster {
         applyGraphicsOptions(getGraphicsOptions());
         applySoundOptions(getSoundOptions());
         applyGameplayOptions(getGameplayOptions());
+
+        if (!GdxMaster.isGuiReady())
+            return ;
+        if (AnimMaster.getInstance()==null )
+            return ;
+        if (GdxMaster.isLwjglThread()) {
+            Gdx.app.postRunnable(()->
+             applyAnimOptions(getAnimOptions()));
+        }
     }
 
 

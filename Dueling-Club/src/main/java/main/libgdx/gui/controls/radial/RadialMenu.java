@@ -35,7 +35,7 @@ public class RadialMenu extends Group {
     public RadialMenu() {
         final TextureRegion t = TextureCache.getOrCreateR(getEmptyNodePath());
         closeButton = new RadialValueContainer(new TextureRegion(t), this::close);
-        closeButton.setX(-getOffsetX());
+        closeButton.setX(-getOffsetX() );
 //        closeButton.setWidth(80);
 //        closeButton.setHeight(80);
         ValueTooltip tooltip = new ValueTooltip();
@@ -104,7 +104,7 @@ public class RadialMenu extends Group {
     }
 
     private float getOffsetX() {
-        return -20;
+        return -30;
     }
 
     private void setParents(RadialValueContainer el, RadialValueContainer parent) {

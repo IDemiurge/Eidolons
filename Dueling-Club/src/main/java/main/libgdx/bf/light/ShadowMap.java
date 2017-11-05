@@ -3,6 +3,7 @@ package main.libgdx.bf.light;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import main.game.core.game.DC_Game;
+import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridPanel;
 import main.system.auxiliary.StrPathBuilder;
 
@@ -38,14 +39,18 @@ public class ShadowMap {
             getCells().put(type, new ShadeLightCell[grid.getCols()][grid.getRows()]);
             for (int x = 0; x < grid.getCols(); x++) {
                 for (int y = 0; y < grid.getRows(); y++) {
-                    getCells(type)[x][y] = new ShadeLightCell(type, x, y);
-                    grid.addActor(getCells(type)[x][y]);
-                    getCells(type)[x][y].setPosition(
-                     grid.getCells()[x][grid.getRows() - 1 - y].getX(),
-                     grid.getCells()[x][grid.getRows() - 1 - y].getY());
+                    ShadeLightCell cell = new ShadeLightCell(type, x, y);
+                    getCells(type)[x][y] = cell;
+                    grid.addActor(cell);
+                    float offsetX= (GridConst.CELL_W-cell.getWidth())/2;
+                    float offsetY=  (GridConst.CELL_H-cell.getHeight())/2;
 
-                    getCells(type)[x][y].setColor(1, 1, 1, type.defaultAlpha);
-                    getCells(type)[x][y].addListener(new EventListener() {
+                    cell.setPosition(
+                     grid.getCells()[x][grid.getRows() - 1 - y].getX()+offsetX,
+                     grid.getCells()[x][grid.getRows() - 1 - y].getY()+offsetY);
+
+                    cell.setColor(1, 1, 1, type.defaultAlpha);
+                    cell.addListener(new EventListener() {
                         @Override
                         public boolean handle(Event event) {
                             return true;
@@ -115,7 +120,14 @@ public class ShadowMap {
         GAMMA_SHADOW(0.75f, StrPathBuilder.build("UI", "outlines", "shadows", "shadow.png")),
         GAMMA_LIGHT(0, StrPathBuilder.build("UI", "outlines", "shadows", "light.png")),
         LIGHT_EMITTER(0, StrPathBuilder.build("UI", "outlines", "shadows", "light emitter.png")),
-        CONCEALMENT(0.5f, StrPathBuilder.build("UI", "outlines", "shadows", "concealment.png")),;
+        CONCEALMENT(0.5f, StrPathBuilder.build("UI", "outlines", "shadows", "concealment.png")),
+        BLACKOUT(0 , StrPathBuilder.build("UI", "outlines", "shadows", "blackout.png")),
+        HIGLIGHT(0 , StrPathBuilder.build("UI", "outlines", "shadows", "highlight.png")),
+
+
+
+
+        ;
         public float defaultAlpha;
         private String texturePath;
 

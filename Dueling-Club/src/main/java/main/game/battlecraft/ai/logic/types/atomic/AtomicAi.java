@@ -14,6 +14,7 @@ import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
+import main.game.battlecraft.ai.advanced.machine.AiConst;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.AiActionFactory;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
@@ -302,20 +303,15 @@ public class AtomicAi extends AiHandler {
     }
 
     private boolean checkAtomicActionTurn(UnitAI ai) {
-        FACING_DIRECTION facing = ai.getUnit().getFacing();
         //check that only enemy actions are needed
-
-        if (ai.getType() == AI_TYPE.BRUTE
-         || ai.getType() == AI_TYPE.TANK
-         || ai.getType() == AI_TYPE.ARCHER
-         || ai.getType() == AI_TYPE.SNEAK
-         || ai.getType() == AI_TYPE.NORMAL
+        if (!ai.getType().isCaster()
          ) {
 //          FacingMaster.getOptimalFacingTowardsUnits()
             BattleFieldObject enemy=getAnalyzer().getClosestEnemy(ai.getUnit());
 //            for (BattleFieldObject enemy : Analyzer.getVisibleEnemies(ai))
 
-            FACING_SINGLE relative = FacingMaster.getSingleFacing(enemy, ai.getUnit());
+            FACING_DIRECTION facing = ai.getUnit().getFacing();
+            FACING_SINGLE relative = FacingMaster.getSingleFacing(facing, ai.getUnit(), enemy);
             if (relative == FACING_SINGLE.BEHIND)
             {
                 return true;
@@ -377,7 +373,9 @@ public class AtomicAi extends AiHandler {
                     return new FuncMaster().getGreatestValueEntity(ai.getUnit().getRangedWeapon()
                      .getOrCreateAttackActions(), PARAMS.RANGE).getIntParam(PARAMS.RANGE);
         }
-        int maxDistance = 3;
+        int maxDistance = getConstInt(AiConst.ATOMIC_APPROACH_DEFAULT_DISTANCE);
+//if only one enemy
+        // if unit is weak
 
         if (!ai.getUnit().getActionMap().get(ACTION_TYPE.SPECIAL_MOVE).isEmpty()) {
             maxDistance--;
@@ -398,6 +396,7 @@ public class AtomicAi extends AiHandler {
             if (ai.getCurrentOrder().getStrictPriority() != ORDER_PRIORITY_MODS.ATTACK
              && ai.getCurrentOrder().getStrictPriority() != ORDER_PRIORITY_MODS.APPROACH)
                 return false;
+
         int maxDistance = getDistanceForAtomicApproach(ai);
 
         int distance = getAnalyzer().getClosestEnemyDistance(ai.getUnit());
@@ -405,7 +404,12 @@ public class AtomicAi extends AiHandler {
         if (distance > maxDistance && distance < 999) {
             return true;
         }
-        if (distance <= 2) return false;
+
+
+        if (Analyzer.getVisibleEnemies(ai).size()>1)
+        if (distance <= 2)
+            return false;
+
         if (ai.getGroup() != null) {
             if (ai.getGroup().getMembers().size() > 8) {
                 return true;

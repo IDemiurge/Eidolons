@@ -1,14 +1,16 @@
 package main.libgdx.anims;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import main.ability.effects.Effect;
 import main.data.ConcurrentMap;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BuffObj;
+import main.entity.obj.DC_Obj;
+import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -19,6 +21,7 @@ import main.libgdx.anims.std.BuffAnim;
 import main.libgdx.anims.std.EventAnimCreator;
 import main.libgdx.anims.text.FloatingText;
 import main.libgdx.anims.text.FloatingTextMaster;
+import main.libgdx.bf.BaseView;
 import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -40,9 +43,9 @@ import java.util.List;
 public class AnimMaster extends Group {
 // Animation does not support ZOOM!
 
-    static private boolean on;
+    static private boolean off;
     private static AnimMaster instance;
-    private final SpriteCache spriteCache;
+//    private   SpriteCache spriteCache;
     DequeImpl<CompositeAnim> leadQueue = new DequeImpl<>(); //if more Action Stacks have been created before leadAnimation is finished
     CompositeAnim leadAnimation; // wait for it to finish before popping more from the queue
 
@@ -56,18 +59,19 @@ public class AnimMaster extends Group {
     private Integer showBuffAnimsOnHoverLength = 3; //continuous
     private boolean drawing;
     private boolean drawingPlayer;
+    private Boolean parallelDrawing;
 
     //animations will use emitters, light, sprites, text and icons
     private AnimMaster() {
         instance = this;
-        spriteCache = new SpriteCache();
+//        spriteCache = new SpriteCache();
 //        spriteCache.add();
         floatingTextMaster = new FloatingTextMaster();
         continuousAnimsOn =
          false;
 //         FAST_DC.getGameLauncher().FAST_MODE ||
 //          FAST_DC.getGameLauncher().SUPER_FAST_MODE;
-        on = true;
+
         constructor = new AnimationConstructor();
         controller = new AnimController();
 //        bindEvents(); now in GridPanel.bindEvents()
@@ -75,15 +79,15 @@ public class AnimMaster extends Group {
     }
 
     public static boolean isOn() {
-        return on;
+        return !off;
     }
 
-    public void setOn(boolean on) {
-        this.on = on;
+    public void setOff(boolean off) {
+        this.off = off;
     }
 
     public static AnimMaster getInstance() {
-        if (instance==null )
+        if (instance == null)
             instance = new AnimMaster();
         return instance;
     }
@@ -95,6 +99,32 @@ public class AnimMaster extends Group {
 
     }
 
+    public static boolean isAnimationOffFor(Obj sourceObj, BaseView baseView) {
+        if (true )
+            return false;
+        if (!ExplorationMaster.isExplorationOn())
+            return false;
+        if (baseView != null)
+            if (!baseView.isVisible())
+                return true;
+        if (sourceObj instanceof DC_Obj)
+            if (!sourceObj.isMine())
+        if (!VisionManager.checkVisible((DC_Obj) sourceObj, false))
+            return true;
+
+        return false;
+    }
+
+    public Boolean getParallelDrawing() {
+        if (parallelDrawing == null)
+            parallelDrawing = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING);
+        return parallelDrawing;
+    }
+
+    public void setParallelDrawing(Boolean parallelDrawing) {
+        this.parallelDrawing = parallelDrawing;
+    }
+
     public boolean isDrawing() {
         return drawing;
     }
@@ -103,8 +133,8 @@ public class AnimMaster extends Group {
         DC_SoundMaster.bindEvents();
         GuiEventManager.bind(GuiEventType.ADD_FLOATING_TEXT, p -> {
             FloatingText floatingText = (FloatingText) p.get();
-            if (!floatingText.isInitialized())
-                floatingText.init();
+//            if (!floatingText.isInitialized())
+            floatingText.init();
             addActor(floatingText);
 
         });
@@ -198,13 +228,16 @@ public class AnimMaster extends Group {
     }
 
     private void initActionAnimation(DC_ActiveObj activeObj) {
+        if (isAnimationOffFor(activeObj.getOwnerObj(), null)) {
+            return;
+        }
         CompositeAnim animation = constructor.getOrCreate(activeObj);
         if (animation == null) {
             LogMaster.log(LogMaster.ANIM_DEBUG, "NULL ANIM FOR " + activeObj);
             return;
         }
         if (animation.isEventAnim())
-            return ;
+            return;
         if (animation.isRunning())
             return;
         animation.reset();
@@ -212,8 +245,8 @@ public class AnimMaster extends Group {
             leadAnimation = animation;
             leadAnimation.start(activeObj.getRef());
         } else {
-           add(animation);
-            if (OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING)) {
+            add(animation);
+            if (getParallelDrawing()) {
                 animation.start(activeObj.getRef());
             }
             controller.store(animation);
@@ -254,13 +287,13 @@ public class AnimMaster extends Group {
              " event anim created for: " + parentAnim);
             parentAnim.addEventAnim(anim, event); //TODO}
         }
-        if (parentAnim.getMap().isEmpty()){
+        if (parentAnim.getMap().isEmpty()) {
 
         }
-        if (parentAnim!= leadAnimation)
+        if (parentAnim != leadAnimation)
             if (!parentAnim.isRunning()) {// preCheck new TODO
                 add(parentAnim);
-        }
+            }
     }
 
     private void initEffectAnimation(Effect effect) {
@@ -422,7 +455,7 @@ public class AnimMaster extends Group {
             }
         }
         // not turned on
-        if (OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING)) {
+        if (getParallelDrawing()) {
             leadQueue.forEach(a -> {
                 tryDrawAnimation(batch, a);
             });
@@ -473,6 +506,5 @@ public class AnimMaster extends Group {
     public void setDrawingPlayer(boolean drawingPlayer) {
         this.drawingPlayer = drawingPlayer;
     }
-
 
 }

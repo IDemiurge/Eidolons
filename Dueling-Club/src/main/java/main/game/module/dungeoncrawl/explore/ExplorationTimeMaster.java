@@ -115,8 +115,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     private void processCustomRules() {
 // List<RoundRule> list = new LinkedList<>();
+
+        master.getGame().getUnits().forEach(unit -> {
+            unit.getResetter(). regenerateToughness();
         for (RoundRule sub : master.getGame().getRules().getRoundRules()) {
-            master.getGame().getUnits().forEach(unit -> {
+
 
 //                if (master.getGame().getRules().getUnconsciousRule().checkStatusUpdate(unit)) {
                 if (sub.check(unit)) {
@@ -124,8 +127,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
                     if (sub == master.getGame().getRules().getUnconsciousRule())
                         master.getGame().getStateManager().reset(unit);
                 }
-            });
-        }
+            }
+        });
     }
 
     private void processCounterRules() {

@@ -58,7 +58,7 @@ public class SoundPlayer extends Player {
                          Math.max(10, getVolume() / Math.max(1, (distance) / 200 ))/100;
                         soundFx.setVolume(volume);
                     }
-                playNow(soundFx.getSound());
+                playNow(soundFx);
             }
             //fade in or out?
             //pause sounds

@@ -1346,4 +1346,14 @@ public class Unit extends DC_UnitModel {
     public boolean isUsingStealth() {
         return usingStealth;
     }
+
+    @Override
+    protected void putParameter(PARAMETER param, String value) {
+    if (param== PARAMS.TOUGHNESS||param== PARAMS.ENDURANCE){
+        if (StringMaster.getInteger(value) == 0) {
+            return ;
+        }
+    }
+        super.putParameter(param, value);
+    }
 }

@@ -135,7 +135,8 @@ public class StackingRule implements ActionRule {
 //                    continue; TODO why was Type necessary?
                 units.addCast(!u.isDead()? u.getType() : u);
                 if (u.isWall())
-                    return false;
+                    if (!u.isDead())
+                        return false;
             }
         }
         //check if '1 unit per cell' is on
