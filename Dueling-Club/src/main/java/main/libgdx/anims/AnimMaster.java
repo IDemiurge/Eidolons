@@ -100,8 +100,8 @@ public class AnimMaster extends Group {
     }
 
     public static boolean isAnimationOffFor(Obj sourceObj, BaseView baseView) {
-        if (true )
-            return false;
+//        if (true )
+//            return false;
         if (!ExplorationMaster.isExplorationOn())
             return false;
         if (baseView != null)

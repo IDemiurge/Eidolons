@@ -43,6 +43,7 @@ import main.game.battlecraft.logic.battle.arena.ArenaBattleMaster;
 import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
@@ -1310,6 +1311,15 @@ public class DebugMaster {
 
     public void setArg(Obj arg) {
         this.arg = arg;
+    }
+
+    public void debugModeToggled(boolean debugMode) {
+        if (debugMode) {
+//            main.system.auxiliary.log.LogMaster.log(1," " +
+//             game.getLogManager().getCombatActionLogBuilder().toString());
+            game.getLogManager().logCombatLog();
+        }
+        VisionManager.setVisionHacked(debugMode);
     }
 
     public enum AI_PARAM {

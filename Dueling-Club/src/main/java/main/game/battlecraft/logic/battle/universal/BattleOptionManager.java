@@ -110,7 +110,8 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
 
         unit.multiplyParamByPercent(PARAMS.ENDURANCE, mod, false);
         unit.multiplyParamByPercent(PARAMS.TOUGHNESS, mod, false);
-        unit.multiplyParamByPercent(PARAMS.STAMINA, mod/2, false);
+        if (unit.isMine())
+            unit.multiplyParamByPercent(PARAMS.STAMINA, mod/2, false);
 
         unit.modifyParamByPercent(PARAMS.N_OF_ACTIONS, mod / 4);
     }

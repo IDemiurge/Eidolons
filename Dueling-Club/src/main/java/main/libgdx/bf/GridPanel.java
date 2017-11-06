@@ -265,12 +265,18 @@ public class GridPanel extends Group {
 
     private void bindEvents() {
         GuiEventManager.bind(UNIT_GREYED_OUT_ON, obj -> {
-            UnitView unitView = getUnitView((BattleFieldObject) obj.get());
+            BattleFieldObject bfObj = (BattleFieldObject) obj.get();
+            if (bfObj.isOverlaying())
+                return;
+            UnitView unitView = getUnitView(bfObj);
             unitView.setFlickering(true);
             unitView.setGreyedOut(true);
         });
         GuiEventManager.bind(UNIT_GREYED_OUT_OFF, obj -> {
-            UnitView unitView = getUnitView((BattleFieldObject) obj.get());
+            BattleFieldObject bfObj = (BattleFieldObject) obj.get();
+            if (bfObj.isOverlaying())
+                return;
+            UnitView unitView = getUnitView(bfObj);
             unitView.setGreyedOut(false);
             unitView.setFlickering(false);
         });
@@ -456,7 +462,7 @@ public class GridPanel extends Group {
 
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
-                if (!MoveAnimation.isOn()|| AnimMaster.isAnimationOffFor(ref.getSourceObj(),                 unitMap.get(ref.getSourceObj())))
+                if (!MoveAnimation.isOn() || AnimMaster.isAnimationOffFor(ref.getSourceObj(), unitMap.get(ref.getSourceObj())))
                     removeUnitView((BattleFieldObject) ref.getSourceObj());
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
@@ -751,11 +757,16 @@ public class GridPanel extends Group {
 //                ((UnitView) view).setFlickering(units.get(v));
 
 
-            if (sub.isDead())
-                if (view.getActions().size == 0) {
+            if (view.getActions().size == 0) {
+                if (sub.isDead())
                     view.setVisible(false);
-                    continue;
+                GridCellContainer cellContainer =
+                 cells[sub.getCoordinates().x][rows - sub.getCoordinates().y-1];
+                if (view.getParent() != cellContainer) {
+                   view.remove();
+                   cellContainer.addActor(view);
                 }
+            }
         }
         resetVisibleRequired = false;
 //sub instanceof Unit && !((Unit)sub).getAI().isOutsideCombat()

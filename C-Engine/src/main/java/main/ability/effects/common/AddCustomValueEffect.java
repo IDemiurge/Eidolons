@@ -23,7 +23,7 @@ public class AddCustomValueEffect extends MicroEffect {
     @Override
     public boolean applyThis() {
         if (param) {
-            ref.getTargetObj().addCustomParameter(name, value);
+            ref.getTargetObj().addCounter(name, value);
         } else {
             ref.getTargetObj().addCustomProperty(name, value);
         }

@@ -102,7 +102,7 @@ public class RangedAttackAnim extends AttackAnim {
 
 
     @Override
-    public int getPixelsPerSecond() {
+    public float getPixelsPerSecond() {
         return 750;
     }
 

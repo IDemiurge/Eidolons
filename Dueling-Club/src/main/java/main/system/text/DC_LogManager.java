@@ -2,6 +2,7 @@ package main.system.text;
 
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.data.filesys.PathFinder;
 import main.entity.Ref;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
@@ -12,6 +13,8 @@ import main.game.core.game.Game;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.TimeMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
@@ -22,6 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 public class DC_LogManager extends LogManager {
+
+
+    private StringBuilder combatActionLogBuilder;
 
     public DC_LogManager(Game game) {
         super(game);
@@ -58,6 +64,17 @@ public class DC_LogManager extends LogManager {
         return true;
     }
 
+    @Override
+    public void combatActionLog(String string) {
+         getCombatActionLogBuilder().append(string+"\n");
+    }
+
+    public void combatEndLog(String string) {
+        getCombatActionLogBuilder().append( string+"\n" );
+    }
+    public void combatStartLog(String string) {
+        getCombatActionLogBuilder().append("\n" +string);
+    }
     public void logBattleEnds() {
         logBattle(false);
     }
@@ -126,4 +143,22 @@ public class DC_LogManager extends LogManager {
         return super.log(log, entry, enclosingEntryType);
     }
 
+
+    public StringBuilder getCombatActionLogBuilder() {
+        if (combatActionLogBuilder == null) {
+            combatActionLogBuilder = new StringBuilder();
+        }
+        return combatActionLogBuilder;
+    }
+
+    public void logCombatLog() {
+        game.getLogManager().log(getCombatActionLogBuilder().toString());
+
+        FileManager.write(getCombatActionLogBuilder().toString(),
+         PathFinder.getLogPath()+"combat log from"  +
+          TimeMaster.getFormattedDate(true) +
+          " " +
+          TimeMaster.getFormattedTime(false, true) +
+          ".txt");
+    }
 }

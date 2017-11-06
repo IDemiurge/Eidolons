@@ -145,7 +145,7 @@ public class DamageCalculator {
 
     public static boolean isDead(BattleFieldObject unit) {
         if (unit instanceof Unit) {
-            return UnconsciousRule.checkUnitDies((Unit) unit);
+            return UnconsciousRule.checkUnitDies((Unit) unit, null , !unit.isDead());
         }
         if (0 >= unit.getIntParam(PARAMS.C_ENDURANCE)) {
             return true;

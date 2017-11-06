@@ -24,7 +24,7 @@ public class Missile3dAnim extends Weapon3dAnim {
     }
 
     @Override
-    public int getPixelsPerSecond() {
+    public float getPixelsPerSecond() {
         return 400;
     }
 

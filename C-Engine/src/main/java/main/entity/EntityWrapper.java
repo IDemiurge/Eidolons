@@ -648,45 +648,6 @@ public class EntityWrapper<E extends DataModel> {
         return entity.checkBool(bool);
     }
 
-    public boolean checkCustomProp(String name) {
-        return entity.checkCustomProp(name);
-    }
-
-    public Map<String, String> getCustomPropMap() {
-        return entity.getCustomPropMap();
-    }
-
-    public void setCustomPropMap(Map<String, String> customPropMap) {
-        entity.setCustomPropMap(customPropMap);
-    }
-
-    public void addCustomProperty(String name, String value) {
-        entity.addCustomProperty(name, value);
-    }
-
-    public void addCustomParameter(String name, String value) {
-        entity.addCustomParameter(name, value);
-    }
-
-    public Map<String, String> getCustomParamMap() {
-        return entity.getCustomParamMap();
-    }
-
-    public void setCustomParamMap(Map<String, String> customParamMap) {
-        entity.setCustomParamMap(customParamMap);
-    }
-
-    public boolean replaceContainerPropItem(PROPERTY prop, String replacing, String replaced) {
-        return entity.replaceContainerPropItem(prop, replacing, replaced);
-    }
-
-    public void copyValue(VALUE param, Entity entity) {
-        this.entity.copyValue(param, entity);
-    }
-
-    public void setModifierKey(String modifierKey) {
-        entity.setModifierKey(modifierKey);
-    }
 
     public void removed() {
         entity.removed();

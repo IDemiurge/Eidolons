@@ -13,10 +13,17 @@ public abstract class RoundRule {
 
     public void newTurn() {
         for (Unit hero : game.getUnits()) {
+            if (isOutsideCombatIgnored())
+                if (game.getState().getManager().checkUnitIgnoresReset(hero))
+                    continue;
             if (check(hero)) {
                 apply(hero);
             }
         }
+    }
+
+    protected boolean isOutsideCombatIgnored() {
+        return true;
     }
 
     public abstract boolean check(Unit unit);

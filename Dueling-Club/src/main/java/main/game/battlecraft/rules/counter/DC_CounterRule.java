@@ -37,7 +37,7 @@ public abstract class DC_CounterRule {
     // BuffObj>();
     protected Unit unit;
     protected Map<Unit, AddBuffEffect> effectCache;
-    protected  Map<BattleFieldObject, Effects> effectsCache = new HashMap<>();
+    protected Map<BattleFieldObject, Effects> effectsCache = new HashMap<>();
     protected COUNTER counter;
 
     public DC_CounterRule(DC_Game game) {
@@ -120,7 +120,11 @@ public abstract class DC_CounterRule {
 
     public void newTurn() {
         for (Unit unit : game.getUnits()) {
-        if (unit.isDead()) continue;    if (getNumberOfCounters(unit) <= 0) {
+            if (unit.isDead()) continue;
+            if (isOutsideCombatIgnored())
+                if (game.getState().getManager().checkUnitIgnoresReset(unit))
+                    continue;
+            if (getNumberOfCounters(unit) <= 0) {
                 continue;
             }
             applyCountersInteractions(unit);
@@ -137,6 +141,10 @@ public abstract class DC_CounterRule {
                 oneshotEffects.apply(Ref.getSelfTargetingRefCopy(unit));
             }
         }
+    }
+
+    protected boolean isOutsideCombatIgnored() {
+        return true;
     }
 
     public boolean checkApplies(Unit unit) {
@@ -239,7 +247,7 @@ public abstract class DC_CounterRule {
     protected void applyEffects(Unit unit) {
         Effect effects = getWrappedEffects(unit);
         effects.apply(Ref.getSelfTargetingRefCopy(unit));
-        if (effects instanceof AddBuffEffect){
+        if (effects instanceof AddBuffEffect) {
             ((AddBuffEffect) effects).getBuff().setCounterRef(getCounterName());
         }
         //TODO animation?
@@ -250,8 +258,8 @@ public abstract class DC_CounterRule {
     }
 
     private Effect getWrappedEffects(Unit unit) {
-        if (getEffect()==null )
-            return new Effects() ;
+        if (getEffect() == null)
+            return new Effects();
         if (getBuffName() != null) {
             return getBuffEffect();
         }

@@ -2,6 +2,7 @@ package main.entity.tools.bf;
 
 import main.content.enums.rules.VisionEnums;
 import main.entity.obj.BattleFieldObject;
+import main.entity.obj.Structure;
 import main.entity.tools.EntityInitializer;
 import main.entity.tools.EntityMaster;
 import main.game.battlecraft.logic.battlefield.DC_MovementManager;
@@ -28,7 +29,8 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
         super.init();
 
         addDefaultValues();
-        addDynamicValues();
+        if (getEntity() instanceof Structure)
+            addDynamicValues();
 
     }
 

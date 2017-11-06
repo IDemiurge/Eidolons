@@ -1,4 +1,6 @@
-<Level><Custom_Props><Dungeon_Main_Entrances>Dark Winding Upward Stairs(16-14);Dark Winding Downward Stairs(29-1)</Dungeon_Main_Entrances>
+<Level><Custom_Props>
+<Dungeon_Tags></Dungeon_Tags>
+<Dungeon_Main_Entrances>Dark Winding Upward Stairs(16-14);Dark Winding Downward Stairs(29-1)</Dungeon_Main_Entrances>
 <Dungeon_Subfolder>CRAWL</Dungeon_Subfolder>
 <Workspace_Group>IMPLEMENT</Workspace_Group>
 <Displayed_Name>Guild Dungeon</Displayed_Name>

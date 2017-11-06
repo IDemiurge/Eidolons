@@ -110,7 +110,16 @@ public class ActionManager extends AiHandler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        if (!atomic) {
+        if (!atomic)
+        if (isAtomicAiOn())
+            try {
+                action = getAtomicAi().getAtomicAction(ai);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                action = getAtomicAi().getAtomicWait(ai.getUnit());
+            }
+            if (action==null )
+        {
             List<ActionSequence> actions = new LinkedList<>();
             try {
                 List<ActionSequence> sequences = getActionSequenceConstructor().createActionSequences(ai);
@@ -133,13 +142,7 @@ public class ActionManager extends AiHandler {
         }
 
         if (chosenSequence == null) {
-            if (isAtomicAiOn())
-                try {
-                    action = getAtomicAi().getAtomicAction(ai);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                    action = getAtomicAi().getAtomicWait(ai.getUnit());
-                }
+
             if (action == null) {
                 action = getForcedAction(ai);
             }

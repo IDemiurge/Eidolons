@@ -153,8 +153,12 @@ public class Executor extends ActiveHandler {
             } else if (getAction().getTargetGroup() != null) {
                 targets = getAction().getTargetGroup().toString();
             }
-        log(getAction().getOwnerObj().getNameIfKnown() + " activates "
-         + getAction().getNameIfKnown() + " " + targets, gameLog);
+        log(getAction().getOwnerObj().getNameAndCoordinate() + " activates "
+         + getAction().getName() + " " + targets, false);
+        if (gameLog)
+            log(getAction().getOwnerObj().getNameIfKnown() + " activates "
+             + getAction().getNameIfKnown() + " " + targets, false);
+
         beingActivated();
         if (isInterrupted()) {
             return interrupted();
@@ -181,6 +185,13 @@ public class Executor extends ActiveHandler {
 
         actionComplete();
         return isResult();
+    }
+
+    @Override
+    protected void log(String string, boolean gameLog) {
+        super.log(string, gameLog);
+        if (!ExplorationMaster.isExplorationOn())
+            game.getLogManager().combatActionLog(string);
     }
 
     private void syncActionRefWithSource() {

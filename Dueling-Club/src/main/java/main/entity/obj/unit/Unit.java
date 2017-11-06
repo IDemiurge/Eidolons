@@ -605,9 +605,9 @@ public class Unit extends DC_UnitModel {
             addItemToInventory(prevItem);
         }
         if (game.isStarted())
-        if (!ExplorationMaster.isExplorationOn()) //only in combat!
-            if (item instanceof DC_WeaponObj)
-                AnimMaster3d.preloadAtlas((DC_WeaponObj) item);
+            if (!ExplorationMaster.isExplorationOn()) //only in combat!
+                if (item instanceof DC_WeaponObj)
+                    AnimMaster3d.preloadAtlas((DC_WeaponObj) item);
         // preCheck weight and prompt drop if too heavy?
         return true;
     }
@@ -1339,21 +1339,19 @@ public class Unit extends DC_UnitModel {
         return sight;
     }
 
-    public void setUsingStealth(boolean usingStealth) {
-        this.usingStealth = usingStealth;
-    }
-
     public boolean isUsingStealth() {
         return usingStealth;
     }
 
-    @Override
-    protected void putParameter(PARAMETER param, String value) {
-    if (param== PARAMS.TOUGHNESS||param== PARAMS.ENDURANCE){
-        if (StringMaster.getInteger(value) == 0) {
-            return ;
-        }
+    public void setUsingStealth(boolean usingStealth) {
+        this.usingStealth = usingStealth;
     }
-        super.putParameter(param, value);
+
+    @Override
+    public void toBase() {
+        if (getAI().isOutsideCombat()) {
+            return;
+        }
+        super.toBase();
     }
 }

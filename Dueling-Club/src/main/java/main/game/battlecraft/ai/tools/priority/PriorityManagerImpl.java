@@ -1441,9 +1441,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         Integer percentage = unit.getIntParam(ContentManager.getPercentageParam(new Param(
          ContentManager.getBaseParameterFromCurrent(p))))
          / MathMaster.MULTIPLIER;
-        int base = getParamAnalyzer().getParamPriority(p, unit); // how important/good it is for
+        int base = 100 - percentage; // how important/good it is for
         // this unit
-        int modifier = 0; // how important/good is it now
+        int paramModifier = getParamAnalyzer().getParamPriority(p, unit); // how important/good is it now
+        int dangerModifier =100;
         switch (mode) {
             case MEDITATION:
                 if (ParamAnalyzer.isEssenceIgnore(unit))
@@ -1451,22 +1452,23 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 base = getSituationAnalyzer().getCastingPriority(unit);
             case CONCENTRATION:
             case RESTING:
-                modifier -= getSituationAnalyzer().getMeleeDangerFactor(unit, false, true);
-                modifier -= getSituationAnalyzer().getRangedDangerFactor(unit);
+                dangerModifier  = getSituationAnalyzer().getMeleeDangerFactor(unit, false, true);
+                dangerModifier -= getSituationAnalyzer().getRangedDangerFactor(unit);
+                addMultiplier(base, "param percentage missing");
                 base = base * getRestorationPriorityMod(unit) / 100;
                 break;
             default:
                 return 0;
         }
-        priority = base;
-        applyMultiplier(100 - percentage, "param percentage missing");
-        // ++ Life factor?
-        addMultiplier(modifier, "danger factor");
-        modifier = 50 + getSituationAnalyzer().getTimeModifier()
-         - getUnit().getParamPercentage(PARAMS.N_OF_ACTIONS);
-        addMultiplier(modifier, "time");
 
-        return priority;
+//        addMultiplier(base, "param percentage missing");
+        // ++ Life factor?
+        int timeModifier = 100 + getSituationAnalyzer().getTimeModifier()
+         - getUnit().getParamPercentage(PARAMS.N_OF_ACTIONS);
+        addMultiplier(timeModifier, "time");
+        applyMultiplier(paramModifier, "param Modifier");
+        applyMultiplier(dangerModifier , "danger factor");
+        return base;
         // modifier * (DEFAULT_PRIORITY - percentage) / factor;
     }
 

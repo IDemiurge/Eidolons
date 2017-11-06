@@ -287,7 +287,7 @@ public class DC_Game extends MicroGame {
     public void startGameLoop(boolean first) {
         GuiEventManager.trigger(MUSIC_START, null);
         getState().gameStarted(first);
-      if (first)  if (getMetaMaster() != null)
+        if (first) if (getMetaMaster() != null)
             getMetaMaster().gameStarted();
 
         if (loop != null)
@@ -496,6 +496,19 @@ public class DC_Game extends MicroGame {
         return debugMaster;
     }
 
+
+    @Override
+    public void setDebugMode(boolean debugMode) {
+        if (debugMode != this.debugMode) {
+            try {
+                getDebugMaster().debugModeToggled(debugMode);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
+        super.setDebugMode(debugMode);
+    }
+
     public DC_Rules getRules() {
         return rules;
     }
@@ -668,8 +681,9 @@ public class DC_Game extends MicroGame {
     }
 
     public List<BattleFieldObject> getObjectsAt(Coordinates c) {
-        return getMaster().getObjectsOnCoordinate(getDungeon().getZ(), c, null , true, false);
+        return getMaster().getObjectsOnCoordinate(getDungeon().getZ(), c, null, true, false);
     }
+
     public DC_InventoryManager getInventoryManager() {
         return inventoryManager;
     }

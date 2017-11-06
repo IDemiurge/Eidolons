@@ -63,7 +63,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
                 continue;
             double distance = PositionMaster.getExactDistance(ai.getUnit().getCoordinates(),
              Eidolons.getMainHero().getCoordinates());
-            if (distance>getMaxDistance(ai))
+            if (distance>getMaxDistance(ai) )
                 continue;
             try {
                 if (tryMoveAi(ai))
@@ -82,7 +82,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
     }
 
     private double getMaxDistance(UnitAI ai) {
-        return 6;
+        return 5;
     }
 
     private boolean tryMoveAi(UnitAI ai) {

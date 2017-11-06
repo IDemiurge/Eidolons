@@ -37,6 +37,7 @@ public class Obj extends Entity {
     private boolean activeSelected;
     private boolean targetHighlighted;
     private Boolean passable;
+    private boolean annihilated;
 
     public Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type
@@ -74,7 +75,9 @@ public class Obj extends Entity {
         return null;
 
     }
-
+    public boolean isOutsideCombat() {
+        return false;
+    }
     @Override
     public void construct() {
         if (!added) {
@@ -419,4 +422,11 @@ public class Obj extends Entity {
     }
 
 
+    public void setAnnihilated(boolean annihilated) {
+        this.annihilated = annihilated;
+    }
+
+    public boolean isAnnihilated() {
+        return annihilated;
+    }
 }

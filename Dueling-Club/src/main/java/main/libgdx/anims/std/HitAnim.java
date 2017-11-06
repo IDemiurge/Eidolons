@@ -92,11 +92,13 @@ public class HitAnim extends ActionAnim {
         if (forcedDestination != null) {
             return forcedDestination;
         }
-        if (getRef().getTargetObj() != null) {
-            return getRef().getTargetObj().getCoordinates();
-        }
+        return getDestinationCoordinates();
 
-        return super.getOriginCoordinates();
+//        if (getRef().getTargetObj() != null) {
+//            return getRef().getTargetObj().getCoordinates();
+//        }
+//
+//        return super.getOriginCoordinates();
     }
 
     @Override
@@ -154,6 +156,7 @@ public class HitAnim extends ActionAnim {
         Damage damage = getActive().getDamageDealt();
         FloatingTextMaster.getInstance().initFloatTextForDamage(damage, this);
         add();
+        main.system.auxiliary.log.LogMaster.log(1,"HIT ANIM STARTED WITH REF: " +getRef());
     }
 
     @Override

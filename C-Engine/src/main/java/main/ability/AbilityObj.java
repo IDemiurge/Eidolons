@@ -41,7 +41,10 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
         this(type, ref, Player.NEUTRAL, ref.game);
     }
 
-
+    @Override
+    public boolean isOutsideCombat() {
+        return true;
+    }
 
     @Override
     public AbilityType getType() {

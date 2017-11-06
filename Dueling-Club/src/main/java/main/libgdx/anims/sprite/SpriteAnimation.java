@@ -100,6 +100,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public boolean draw(Batch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
+        if (frameNumber==0)
+            return false;
         updateSpeed();
         boolean looping = this.looping || loops > cycles || loops == 0;
         TextureRegion currentFrame = getKeyFrame(stateTime, looping);

@@ -21,6 +21,9 @@ public class CounterAttackRule {
     }
 
     public static boolean canCounter(Unit attacked, DC_ActiveObj active) {
+        if (!attacked.canActNow()) {
+            return false;
+        }
         if (!attacked.canCounter()) {
             return false;
         }

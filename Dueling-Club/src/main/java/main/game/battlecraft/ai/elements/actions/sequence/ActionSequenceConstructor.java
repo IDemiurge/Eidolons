@@ -108,13 +108,13 @@ public class ActionSequenceConstructor extends AiHandler {
                 if (obj != null) {
                     string = obj.getName();
                 }
-                Chronos.mark(getChronosPrefix() + string);
                 try {
+//                    Chronos.mark(getChronosPrefix() + string);
                     actionSequences.addAll(getSequences(task, action));
+//                    Chronos.logTimeElapsedForMark(getChronosPrefix() + string);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Chronos.logTimeElapsedForMark(getChronosPrefix() + string);
             }
             Chronos.logTimeElapsedForMark(getChronosPrefix() + action);
         }

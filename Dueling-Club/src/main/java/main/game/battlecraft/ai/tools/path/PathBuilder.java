@@ -19,6 +19,7 @@ import main.game.battlecraft.ai.tools.time.TimeLimitMaster.METRIC;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
@@ -132,6 +133,10 @@ public class PathBuilder extends AiHandler {
         } finally {
             resetUnit();
         }
+        main.system.auxiliary.log.LogMaster.log(1,
+         targetAction.getActive().getOwnerObj().getNameAndCoordinate()
+         + "'s Paths: " + StringMaster.joinList(paths, StringMaster.NEW_LINE));
+
         try {
             filterPaths();
         } catch (Exception e) {
@@ -139,6 +144,9 @@ public class PathBuilder extends AiHandler {
         }
         if (filteredPaths.isEmpty()) {
             filteredPaths = paths;
+        }
+        if (filteredPaths.get(0).getActions().size()>7){
+            return filteredPaths;
         }
         return filteredPaths;
     }
@@ -341,11 +349,11 @@ public class PathBuilder extends AiHandler {
     private Integer getPathPriority() {
         Costs cost = getPathCosts(path);
         int result = DC_PriorityManager.getCostFactor(cost, unit);
-        try {
+//        try {
             // result += getAoOPenalty(); TODO instant atks preCheck !
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         path.setPriority(result);
         // int size = path.getActions()
         // .size();
@@ -372,13 +380,20 @@ public class PathBuilder extends AiHandler {
 
     private void filterPaths() {
         filteredPaths = new LinkedList<>();
+        main.system.auxiliary.log.LogMaster.log(1," Filtering against "
+         + bestResult);
         for (ActionPath p : paths) {
             int priority = p.getPriority();
+            main.system.auxiliary.log.LogMaster.log(1,p + " paths priority = "
+             + priority);
+
             if (bestResult - priority >= FILTER_THRESHOLD) {
                 continue;
             }
             filteredPaths.add(p);
         }
+        main.system.auxiliary.log.LogMaster.log(1,targetAction + "'s Filtered Paths: " +
+         StringMaster.joinList(filteredPaths, StringMaster.NEW_LINE));
 
     }
 

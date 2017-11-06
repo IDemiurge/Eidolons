@@ -378,9 +378,9 @@ public class AnimationConstructor {
             if (path.isEmpty()) {
                 continue;
             }
-            Chronos.mark("sprite " + path);
+//            Chronos.mark("sprite " + path);
             sprites.add(SpriteAnimationFactory.getSpriteAnimation(path));
-            Chronos.logTimeElapsedForMark("sprite " + path);
+//            Chronos.logTimeElapsedForMark("sprite " + path);
             exists = true;
         }
         List<EmitterActor> list = new LinkedList<>();

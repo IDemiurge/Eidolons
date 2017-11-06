@@ -199,7 +199,7 @@ public class StackingRule implements ActionRule {
                     return false;
 //                }
             }
-            if (unit.isDead())
+            if (u.isDead())
                 girth += u.getIntParam(PARAMS.GIRTH)/3;
             else
             girth += u.getIntParam(PARAMS.GIRTH);

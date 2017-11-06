@@ -61,6 +61,8 @@ public abstract class StateManager {
 
     protected abstract void afterBuffRuleEffects();
 
+    public abstract boolean checkObjIgnoresToBase(Obj obj);
+
     protected abstract void resetCurrentValues();
 
     protected abstract void allToBase();
@@ -82,12 +84,11 @@ public abstract class StateManager {
     }
 
 
-
-
-    public void applyEffects(int layer ) {
-        applyEffects(layer, null );
+    public void applyEffects(int layer) {
+        applyEffects(layer, null);
     }
-        public void applyEffects(int layer, Obj unit) {
+
+    public void applyEffects(int layer, Obj unit) {
         if (state.getEffects().size() == 0) {
             return;
         }
@@ -98,17 +99,23 @@ public abstract class StateManager {
                         continue;
                     }
                 }
-              if (LOG_CHANNELS.EFFECT_DEBUG.isOn())
-                LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, layer
-                 + " Layer, applying effect : " + state.effects);
+                Obj target = effect.getRef().getTargetObj();
+                if (checkObjIgnoresToBase(target))
+                    continue;
+
+                if (LOG_CHANNELS.EFFECT_DEBUG.isOn())
+                    LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, layer
+                     + " Layer, applying effect : " + state.effects);
+
                 if (!effect.apply()) {
                     if (LOG_CHANNELS.EFFECT_DEBUG.isOn())
                         LogMaster.log(LogMaster.EFFECT_DEBUG, layer
-                     + " Layer, effect failed: " + state.effects);
+                         + " Layer, effect failed: " + state.effects);
                 }
             }
         }
     }
+
     public void addTrigger(Trigger t) {
         this.state.getTriggers().add(t);
     }
@@ -120,9 +127,9 @@ public abstract class StateManager {
         // last!!!
         state.getEffects().add(effect);
         if (LogMaster.EFFECT_DEBUG_ON)
-        LogMaster.log(LogMaster.EFFECT_DEBUG, effect.getClass()
-         .getSimpleName()
-         + " effect added : " + state.getEffects().size() + state.effects);
+            LogMaster.log(LogMaster.EFFECT_DEBUG, effect.getClass()
+             .getSimpleName()
+             + " effect added : " + state.getEffects().size() + state.effects);
         // if (game.isStarted())
         // resetAllSynchronized();
     }
@@ -132,17 +139,17 @@ public abstract class StateManager {
 
         state.objMap.put(obj.getId(), obj);
 
-            OBJ_TYPE TYPE = obj.getOBJ_TYPE_ENUM();
-            if (TYPE == null) {
-                LogMaster.log(1, obj.toString() + " has no TYPE!");
-                return;
-            }
-            Map<Integer, Obj> map = state.getObjMaps().get(TYPE);
-            if (map == null) {
-                return;
-            }
-            // if (!map.containsValue(obj))
-            map.put(obj.getId(), obj);
+        OBJ_TYPE TYPE = obj.getOBJ_TYPE_ENUM();
+        if (TYPE == null) {
+            LogMaster.log(1, obj.toString() + " has no TYPE!");
+            return;
+        }
+        Map<Integer, Obj> map = state.getObjMaps().get(TYPE);
+        if (map == null) {
+            return;
+        }
+        // if (!map.containsValue(obj))
+        map.put(obj.getId(), obj);
 
     }
 

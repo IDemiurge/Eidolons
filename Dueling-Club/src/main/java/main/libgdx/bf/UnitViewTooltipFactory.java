@@ -171,7 +171,7 @@ if (info_level!=null )
 
             if (hero.getCustomParamMap() != null) {
                 hero.getCustomParamMap().keySet().forEach(counter -> {
-                    final String name = counter;
+                    final String name =  StringMaster.getWellFormattedString(counter);
                     String img = CounterMaster.getImagePath(counter);
                     if (img != null) {
 

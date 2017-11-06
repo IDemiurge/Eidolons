@@ -114,7 +114,7 @@ public class DC_AttackMaster {
         if (!extraAttack) {
             Unit guard = (Unit) GuardRule.checkTargetChanged(attack.getAction());
             if (guard != null) {
-                game.getLogManager().log(guard.getNameIfKnown()+" intercepts "+attack.toLogString());
+                game.getLogManager().log(guard.getNameIfKnown() + " intercepts " + attack.toLogString());
                 ref.setTarget(guard.getId());
                 attack.setRef(ref);
                 attack.setAttacked(guard);
@@ -243,22 +243,23 @@ public class DC_AttackMaster {
             dodged = true;
         }
 
-
-        if (!dodged) {
-            boolean parried = parryRule.tryParry(attack);
-            if (parried) {
-                if (
-                 EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_DODGED, ref)) {
-                    attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_PARRY, attacker, ref);
-                    attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_PARRY_SELF, attacked, ref);
+        if (!attacked.isDead())
+            if (!dodged) {
+                boolean parried = parryRule.tryParry(attack);
+                if (parried) {
+                    if (
+                     EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_DODGED, ref)) {
+                        attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_PARRY, attacker, ref);
+                        attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_PARRY_SELF, attacked, ref);
+                    }
+                    return true;
                 }
-                return true;
+                dodged = DefenseVsAttackRule.checkDodgedOrCrit(attack);
             }
-            dodged = DefenseVsAttackRule.checkDodgedOrCrit(attack);
-        }
 
         // BEFORE_ATTACK,
         // BEFORE_HIT
+        if (!attacked.isDead())
         if (dodged == null) {
             if (!new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_HIT, ref).fire()) {
                 return false;
@@ -303,15 +304,8 @@ public class DC_AttackMaster {
             }
         }
         attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.BEFORE_HIT, attacker, ref);
-        if (attacked.isDead()) {
-//         !checkDeathEffects(attacked, attacker, onKill, ref, SPECIAL_EFFECTS_CASE.ON_DEATH)) {
-            return true;
-        }
+
         attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.BEFORE_ATTACK, attacked, ref);
-        if (attacked.isDead()) {
-            //!checkDeathEffects(attacker, attacked, onKill, ref, SPECIAL_EFFECTS_CASE.ON_DEATH)) {
-            return true;
-        }
         Integer final_amount = attack.getDamage();
 
         //TODO REAL CALC How to calc damage w/o crit (for parry)?
@@ -365,30 +359,31 @@ public class DC_AttackMaster {
         if (attacked instanceof Unit) {
             attackedUnit = (Unit) attacked;
         }
-        if (attackedUnit != null)
-            if (attackedUnit.getSecondWeapon() != null) {
-                if (attackedUnit.getSecondWeapon().isShield()) {
-                    if (!attack.isSneak() && !isCounter) {
-                        int blocked = game.getArmorMaster().getShieldDamageBlocked(final_amount, attackedUnit,
-                         attacker, action, getAttackWeapon(ref, attack.isOffhand()),
-                         attack.getDamageType());
-                        final_amount -= blocked;
-                        if (blocked > 0) {
-                            Ref REF = ref.getCopy();
-                            REF.setAmount(blocked);
-                            if (checkEffectsInterrupt(attackedUnit, attacker, SPECIAL_EFFECTS_CASE.ON_SHIELD_BLOCK,
-                             REF, offhand)) {
-                                return true;
+        if (!attacked.isDead())
+            if (attackedUnit != null)
+                if (attackedUnit.getSecondWeapon() != null) {
+                    if (attackedUnit.getSecondWeapon().isShield()) {
+                        if (!attack.isSneak() && !isCounter) {
+                            int blocked = game.getArmorMaster().getShieldDamageBlocked(final_amount, attackedUnit,
+                             attacker, action, getAttackWeapon(ref, attack.isOffhand()),
+                             attack.getDamageType());
+                            final_amount -= blocked;
+                            if (blocked > 0) {
+                                Ref REF = ref.getCopy();
+                                REF.setAmount(blocked);
+                                if (checkEffectsInterrupt(attackedUnit, attacker, SPECIAL_EFFECTS_CASE.ON_SHIELD_BLOCK,
+                                 REF, offhand)) {
+                                    return true;
+                                }
+                                if (checkEffectsInterrupt(attacker, attackedUnit,
+                                 SPECIAL_EFFECTS_CASE.ON_SHIELD_BLOCK_SELF, REF, offhand)) {
+                                    return true;
+                                }
                             }
-                            if (checkEffectsInterrupt(attacker, attackedUnit,
-                             SPECIAL_EFFECTS_CASE.ON_SHIELD_BLOCK_SELF, REF, offhand)) {
-                                return true;
-                            }
-                        }
 
+                        }
                     }
                 }
-            }
         // armor penetration?
         attack.setDamage(final_amount);
         if (checkAttackEventsInterrupt(attack, ref)) {

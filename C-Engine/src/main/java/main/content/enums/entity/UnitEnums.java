@@ -351,7 +351,7 @@ public class UnitEnums {
         private COUNTER up;
         private String imagePath;
         private String name=
-         StringMaster.getWellFormattedString(name()) + StringMaster.COUNTER;
+         StringMaster.getWellFormattedString(name())+ StringMaster.COUNTER ;
 
         public boolean isNegativeAllowed(){
             return false;
@@ -361,12 +361,8 @@ public class UnitEnums {
             imagePath= ImageManager.getValueIconsPath()+"counters\\"+ toString()+".jpg";
         }
 
-        public String toString() {
-            return name;
-        }
-
         public String getName() {
-            return toString()+" Counter";
+            return name;
         }
 
         public void isNegative() {

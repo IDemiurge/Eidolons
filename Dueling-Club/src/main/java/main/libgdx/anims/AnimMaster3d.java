@@ -18,7 +18,6 @@ import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -223,7 +222,8 @@ public class AnimMaster3d {
         TextureAtlas atlas = getAtlas(activeObj, aCase);
         Array<AtlasRegion> regions = atlas.findRegions(name);
         if (regions.size == 0) {
-            regions = findAtlasRegions(atlas, projection, activeObj, true);
+            if (isSearchAtlasRegions(activeObj))
+                regions = findAtlasRegions(atlas, projection, activeObj, true);
         }
         if (regions.size == 0) {
             if (activeObj.getParentAction() != null)
@@ -253,6 +253,10 @@ public class AnimMaster3d {
          getSpriteAnimation(regions, frameDuration, loops);
 //        sprite.setRotation(rotation);
         return sprite;
+    }
+
+    private static boolean isSearchAtlasRegions(DC_ActiveObj activeObj) {
+        return false;
     }
 
     private static int getWidth(DC_ActiveObj activeObj) {

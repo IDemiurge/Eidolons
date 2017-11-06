@@ -45,8 +45,9 @@ public class Weapon3dAnim extends ActionAnim {
         return new AnimData();
     }
 
+
     @Override
-    public int getPixelsPerSecond() {
+    public float getDefaultSpeed() {
         return AnimMaster3d.getWeaponActionSpeed(getActive());
 
     }

@@ -447,6 +447,11 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public void setUnitVisionStatus(UNIT_TO_UNIT_VISION unitVisionStatus) {
+        LogMaster.log(1, "setUnitVisionStatus " + getNameAndCoordinate()   +
+         " from " +
+         this.activeUnitVisionStatus +
+         " to "
+         + unitVisionStatus.toString());
 
         this.activeUnitVisionStatus = unitVisionStatus;
         if (unitVisionStatus != null) {
@@ -475,13 +480,19 @@ public abstract class DC_Obj extends MicroObj {
     public void setPlayerVisionStatus(UNIT_TO_PLAYER_VISION playerVisionStatus) {
         if (getGame().getManager().getActiveObj() != null) {
             if (getGame().getManager().getActiveObj().isMine()) {
+                LogMaster.log(1, "set PlayerVisionStatus " + getNameAndCoordinate()   +
+                 " from " +
+                 this.playerVisionStatus +
+                 " to "
+                 + playerVisionStatus.toString());
                 this.playerVisionStatus = playerVisionStatus;
             }
         }
-        if (this instanceof Unit)
-            if (playerVisionStatus == UNIT_TO_PLAYER_VISION.UNKNOWN) {
-                this.activeVisionStatus = playerVisionStatus;
-            } else
+        LogMaster.log(1, "set activeVisionStatus " + getNameAndCoordinate()   +
+         " from " +
+         this.activeVisionStatus +
+         " to "
+         + playerVisionStatus.toString());
                 this.activeVisionStatus = playerVisionStatus;
         if (playerVisionStatus != null) {
             setProperty(PROPS.DETECTION_STATUS, playerVisionStatus.toString());
@@ -588,9 +599,7 @@ public abstract class DC_Obj extends MicroObj {
         this.animation = animation;
     }
 
-    public boolean isOutsideCombat() {
-        return false;
-    }
+
 
     public void outsideCombatReset() {
         setParam(PARAMS.ILLUMINATION, 0);

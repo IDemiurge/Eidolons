@@ -55,4 +55,9 @@ public class Journal extends LogManager {
     public boolean logMovement(Ref ref) {
         return false;
     }
+
+    @Override
+    public void combatActionLog(String string) {
+
+    }
 }

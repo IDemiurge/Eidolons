@@ -65,7 +65,10 @@ public class Anim extends Group implements Animation {
     protected Float speedX;
     protected Float speedY;
     protected int loops;
-    protected int pixelsPerSecond = 500;
+    protected float pixelsPerSecond ;
+
+
+
     protected int cycles;
     protected float lifecycle; //0 to 1f
     protected float lifecycleDuration;
@@ -348,13 +351,12 @@ public class Anim extends Group implements Animation {
         if (origin.equals(destination)) {
             return;
         }
-        if (data.getIntValue(ANIM_VALUES.MISSILE_SPEED) != 0) {
-            pixelsPerSecond = data.getIntValue(ANIM_VALUES.MISSILE_SPEED);
-        } else
-            pixelsPerSecond = getPixelsPerSecond();
+
+          float  pixelsPerSecond = getPixelsPerSecond();
         if (pixelsPerSecond == 0) {
             return;
         }
+
         float x = destination.x - origin.x;
         float y = destination.y - origin.y;
 
@@ -362,7 +364,7 @@ public class Anim extends Group implements Animation {
         if (distance == 0) {
             return;
         }
-        setDuration((float) distance / pixelsPerSecond);
+       this.duration=((float) distance / pixelsPerSecond);
 
         speedX = x / duration;
         speedY = y / duration;
@@ -695,17 +697,27 @@ public class Anim extends Group implements Animation {
     }
 
     public void setDuration(float duration) {
-        if (OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED) > 0)
-            this.duration = duration * OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)
-             / 100;
+        float mod =101/ (1+OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED));
+        if (mod > 0)
+            this.duration = duration * mod;
         else {
-
             this.duration = duration;
         }
     }
+    public float getPixelsPerSecond() {
+        if (data.getIntValue(ANIM_VALUES.MISSILE_SPEED) != 0) {
+            pixelsPerSecond = data.getIntValue(ANIM_VALUES.MISSILE_SPEED);
+        } else
+            pixelsPerSecond= getDefaultSpeed();
+        float mod =new Float( OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)) /100;
+        if (mod > 0)
+            return  pixelsPerSecond * mod;
+        return pixelsPerSecond;
+    }
 
-
-
+    protected float getDefaultSpeed() {
+        return 700;
+    }
     public AnimData getData() {
         return data;
     }
@@ -752,9 +764,7 @@ public class Anim extends Group implements Animation {
         return running;
     }
 
-    public int getPixelsPerSecond() {
-        return pixelsPerSecond;
-    }
+
 
     public boolean isEmittersWaitingDone() {
         return emittersWaitingDone;

@@ -20,7 +20,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.bf.DirectionMaster;
-import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.MathMaster;
@@ -109,9 +108,7 @@ public class SightMaster {
             }
         }
 
-        Chronos.mark("Clear shot preCheck for " + source.getNameAndCoordinate());
         removeShadowed(list, source, facing);
-        Chronos.logTimeElapsedForMark("Clear shot preCheck for " + source.getNameAndCoordinate());
         if (vision) {
             // removeConcealed(list, unit, facing);
             // addIlluminated(list, unit, facing);

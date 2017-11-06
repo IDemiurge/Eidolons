@@ -162,7 +162,7 @@ public abstract class DataModel {
         if (newValue <= 0) {
             removeCounter(name);
         } else {
-            getCustomParamMap().put(name, newValue + "");
+            addCounter(name, newValue + "");
             LogMaster.log(1, name + " value set: " + newValue);
         }
         return true;
@@ -1415,8 +1415,8 @@ public abstract class DataModel {
         getCustomPropMap().put(name, value);
     }
 
-    public void addCustomParameter(String name, String value) {
-        getCustomParamMap().put(name, value);
+    public void addCounter(String name, String value) {
+        getCustomParamMap().put(name.toUpperCase(), value);
     }
 
     public Map<String, String> getCustomParamMap() {

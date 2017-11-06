@@ -45,7 +45,7 @@ public class VisibilityCondition extends ConditionImpl {
         DC_Obj match = (DC_Obj) ref.getObj(KEYS.MATCH);
         boolean result = false;
         if (this.match == null && this.source == null) {
-            if (match.getActivePlayerVisionStatus() == p_vision) {
+        if (p_vision!=null )    if (match.getActivePlayerVisionStatus() == p_vision) {
                 return true;
             }
             if (match.getUnitVisionStatus().isSufficient(u_vision)) {

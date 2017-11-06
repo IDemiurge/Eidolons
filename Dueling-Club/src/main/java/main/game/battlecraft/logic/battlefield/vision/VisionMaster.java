@@ -184,8 +184,8 @@ public class VisionMaster implements GenericVisionManager {
 
             UNIT_TO_UNIT_VISION status = getSightMaster().getUnitVisionStatusPrivate(unit, activeUnit);
 
-            LogMaster.log(LogMaster.VISIBILITY_DEBUG, "Setting visibility for " + activeUnit + " to "
-             + status.toString());
+
+
 
             unit.setUnitVisionStatus(status);
         }

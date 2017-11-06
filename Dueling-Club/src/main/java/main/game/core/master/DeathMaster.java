@@ -42,6 +42,7 @@ public class DeathMaster extends Master {
 
     public void unitAnnihilated(Obj _killed, Obj _killer) {
         getGame().getGraveyardManager().removeCorpse(_killed);
+        _killed.setAnnihilated(true);
         getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ANNIHILATED,
          new Context(_killer, _killed)));
 //	TODO 	getGame().getDroppedItemManager().remove((DC_HeroObj) _killed, item);

@@ -182,6 +182,7 @@ public class TimeMaster {
         return getFormattedDate(date, time, ".");
     }
 
+
     public static String getFormattedDate(Date date, boolean time, String delimiter) {
         @SuppressWarnings("deprecation")
         String string = (date.getDate()) + delimiter + (date.getMonth() + 1);

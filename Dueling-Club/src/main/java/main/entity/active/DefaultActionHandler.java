@@ -167,8 +167,6 @@ public class DefaultActionHandler {
         if (control){
             return leftClickCell(false, true,  target.getX(), target.getY());
         }
-        if (target.isMine())
-            return false;
         if (!OptionsMaster.getGameplayOptions().getBooleanValue
          (GAMEPLAY_OPTION.DEFAULT_ACTIONS))
             return false;
@@ -177,6 +175,9 @@ public class DefaultActionHandler {
         if (source.getGame().isDebugMode()) {
             return doDebugStuff(source,target);
         }
+
+        if (target.isMine())
+            return false;
         DC_ActiveObj action = null;
         if (target instanceof DungeonObj)
             action =getDungeonObjAction(source, (DungeonObj) target);

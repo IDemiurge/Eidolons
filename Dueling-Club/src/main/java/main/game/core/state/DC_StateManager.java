@@ -167,64 +167,50 @@ public class DC_StateManager extends StateManager {
             if (Arrays.asList(toBaseIgnoredTypes).contains(obj.getOBJ_TYPE_ENUM())) {
                 continue;
             }
-            if (!obj.isDead()) {
-                if (obj instanceof DC_Obj) {
-                    if (((DC_Obj) obj).isOutsideCombat())
-                    {
-                        ((DC_Obj) obj).outsideCombatReset();
-                        continue;
-                    }
-                }
+
+            if ( checkObjIgnoresToBase(obj)){
+                if (obj instanceof DC_Obj)
+                    ((DC_Obj) obj).outsideCombatReset();
+                continue;
             }
-//            try {
+
             obj.toBase();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
         }
 
-
-        // TODO Auto-generated method stub
-
+    }
+@Override
+    public boolean checkObjIgnoresToBase(Obj obj) {
+    if (obj.isDead())
+        return true;
+            if (obj instanceof DC_Obj) {
+                if (((DC_Obj) obj).isOutsideCombat())
+                {
+                    return true;
+                }
+            }
+        return false;
     }
 
     protected void resetCurrentValues() {
-        for (Obj obj : getGame().getUnits()) {
-            obj.resetCurrentValues();
+        for (Unit unit : getGame().getUnits()) {
+            if (!checkUnitIgnoresReset(unit))
+                unit.resetCurrentValues();
         }
     }
 
     public void afterEffects() {
-        for (Obj obj : getGame().getBfObjects()) {
-            if (obj.isDead())
-                continue;
-            if (!ExplorationMaster.isExplorationOn()) {
-                if (obj instanceof Unit) {
-                    if (((Unit) obj).getAI().isOutsideCombat())
-                       continue;
-                }
-            }
+        for (BattleFieldObject obj : getGame().getBfObjects()) {
+           if (!checkUnitIgnoresReset(obj))
             {
-                try {
                     obj.afterEffects();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
             }
         }
         if (PartyHelper.getParty() != null) {
-            try {
                 PartyHelper.getParty().afterEffects();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         for (Obj obj : PartyHelper.getParties()) {
-            try {
                 obj.afterEffects();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -250,11 +236,7 @@ public class DC_StateManager extends StateManager {
 
     public void resetUnitObjects() {
         for (Unit unit : getGame().getUnits()) {
-            if (unit.isDead())
-                continue;
-            if (!ExplorationMaster.isExplorationOn())
-                if (unit.getAI().isOutsideCombat())
-                    continue;
+           if (!checkUnitIgnoresReset(unit))
             unit.resetObjects();
         }
     }
@@ -288,8 +270,21 @@ public class DC_StateManager extends StateManager {
 
     protected void afterBuffRuleEffects() {
         for (Unit unit : getGame().getUnits()) {
+            if (!checkUnitIgnoresReset(unit))
             unit.afterBuffRuleEffects();
         }
+    }
+
+    public boolean checkUnitIgnoresReset(BattleFieldObject obj) {
+        if (obj.isDead())
+            return true;
+        if (!ExplorationMaster.isExplorationOn()) {
+            if (obj instanceof Unit) {
+                if (((Unit) obj).getAI().isOutsideCombat())
+                    return true;
+            }
+        }
+        return false;
     }
 
     private void checkCellBuffs() {

@@ -244,7 +244,7 @@ public class AnimMultiplicator implements Runnable {
     private void createAndAddEmitterActions(EmitterActor actor, Coordinates c) {
 //        MoveToAction action = ActorMaster.getMoveToAction(c, actor, pixelsPerSecond);
         Vector2 v = getCenteredPos(c);
-        int speed = getPixelsPerSecond();
+        float speed = getPixelsPerSecond();
         if (template != null) {
             GridMaster.offset(
                     getOrigin(),
@@ -255,7 +255,7 @@ public class AnimMultiplicator implements Runnable {
             speed = template.speed;
         }
         MoveByAction action =
-                ActorMaster.getMoveByAction(getOrigin(), v, actor, speed);
+                ActorMaster.getMoveByAction(getOrigin(), v, actor, (int) speed);
 
 
         if (action.getDuration() > this.duration) {
@@ -316,7 +316,7 @@ public class AnimMultiplicator implements Runnable {
         return anim.getRef();
     }
 
-    public int getPixelsPerSecond() {
+    public float getPixelsPerSecond() {
         return
                 anim.getPixelsPerSecond();
     }

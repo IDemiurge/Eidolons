@@ -125,7 +125,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
          (unit, getDeathBarrier(unit), true);
     }
 
-    public static boolean checkUnitDies(Unit unit, int barrier, boolean unconscious) {
+    public static boolean checkUnitDies(Unit unit, Integer barrier, boolean unconscious) {
         return checkUnitDies(unit.getIntParam(PARAMS.C_TOUGHNESS),
          unit.getIntParam(PARAMS.C_ENDURANCE),
          unit, barrier, unconscious
@@ -136,7 +136,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
                                         Integer barrier,
                                         boolean unconscious //false if checking Annihilation
     ) {
-        if (unit.isDead()){
+        if (unit.isDead() == unconscious){
             return false;
         }
         if (0 >= endurance) {
@@ -199,7 +199,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     //returns true if unit Recovers
     public boolean checkStatusUpdate(Unit unit) {
-        if (unit.isDead()) {
+        if (unit.isDead() && !unit.isAnnihilated()) {
             if (checkUnitDies(unit, DEFAULT_ANNIHILATION_BARRIER, false)) {
                 unit.getGame().getManager().getDeathMaster().unitAnnihilated(unit, unit);
 

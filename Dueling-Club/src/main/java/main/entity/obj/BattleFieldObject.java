@@ -61,7 +61,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
              if (getOutlineTypeForPlayer()!=null )
                  return getOutlineTypeForPlayer().getName();
 //         if (!isDetected())
-             if (!getGame().getVisionMaster().getDetectionMaster().checkKnown(this)){
+             if (!getGame().getVisionMaster().getDetectionMaster().checkKnownForPlayer(this)){
                  return "Unknown";
              }
         }

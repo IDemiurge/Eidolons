@@ -40,6 +40,7 @@ public class EntityHandler<E extends Entity> {
         } else {
             main.system.auxiliary.log.LogMaster.log(getLogChannel(), string);
         }
+
     }
 
     protected int getLogChannel() {

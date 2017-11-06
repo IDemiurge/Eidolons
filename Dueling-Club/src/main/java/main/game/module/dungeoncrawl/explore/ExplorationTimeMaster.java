@@ -61,6 +61,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     public void checkTimedEvents() {
         delta = time - lastTimeChecked;
+        if (delta == 0) return;
         lastTimeChecked = time;
         round_delta += delta;
         ai_delta = +delta;
@@ -117,8 +118,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 // List<RoundRule> list = new LinkedList<>();
 
         master.getGame().getUnits().forEach(unit -> {
-            unit.getResetter(). regenerateToughness();
-        for (RoundRule sub : master.getGame().getRules().getRoundRules()) {
+            unit.getResetter().regenerateToughness();
+            for (RoundRule sub : master.getGame().getRules().getRoundRules()) {
 
 
 //                if (master.getGame().getRules().getUnconsciousRule().checkStatusUpdate(unit)) {
@@ -169,10 +170,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         float delta = time - last;
         for (PARAMETER param : DC_ContentManager.REGEN_PARAMS) {
             int value = getParamRestoration(delta, param,
-             unit.getParamFloat(ContentManager.getRegenParam(param)) / 5
+             unit.getParamFloat(ContentManager.getRegenParam(param))
             );
             if (value > 0) {
-                unit.modifyParameter(ContentManager.getCurrentParam(param), value);
+                unit.modifyParameter(ContentManager.getCurrentParam(param), value,
+                 unit.getIntParam(param), true);
                 unit.getAI().setExplorationTimeOfRegenEffects(time);
             }
         }
@@ -211,18 +213,25 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private int getParamRestoration(float delta, PARAMETER param, float modifier) {
+        return Math.round(modifier * delta * getRegenModifier() * getRegenModifier(param));
+    }
+
+    private float getRegenModifier() {
+        return 0.2f;
+    }
+
+    private float getRegenModifier(PARAMETER param) {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
                 case STAMINA:
-                    return Math.round(modifier * delta / 2);
+                    return 0.5f;
                 case FOCUS:
-                    return Math.round(modifier * delta / 3);
+                    return 0.33f;
                 case ESSENCE:
-                    return Math.round(modifier * delta / 4);
+                    return 0.25f;
             }
-
         }
-        return 0;
+        return 1f;
     }
 
     public float getTime() {

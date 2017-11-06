@@ -110,6 +110,9 @@ public class PositionMaster {
 
         return Math.sqrt(x * x + y * y);
     }
+    public static double getExactDistance(Obj obj, Obj obj1) {
+        return getExactDistance(obj.getCoordinates(), obj1.getCoordinates());
+    }
 
     public static boolean isToTheLeft(Coordinates coordinates1, Coordinates coordinates2) {
         return coordinates1.x < coordinates2.x;
