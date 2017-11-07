@@ -11,7 +11,9 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import main.game.core.ActionInput;
 import main.game.core.game.DC_Game;
+import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -29,6 +31,7 @@ import main.system.GuiEventType;
 import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
@@ -79,6 +82,8 @@ public class AnimMaster extends Group {
     }
 
     public static boolean isOn() {
+        if (CoreEngine.isGraphicsOff())
+            return false;
         return !off;
     }
 
@@ -171,8 +176,9 @@ public class AnimMaster extends Group {
             if (!isOn()) {
                 return;
             }
+           ActionInput input = (ActionInput) p.get();
             try {
-                initActionAnimation((DC_ActiveObj) p.get());
+                initActionAnimation(input.getAction(), input.getContext());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -227,7 +233,7 @@ public class AnimMaster extends Group {
         });
     }
 
-    private void initActionAnimation(DC_ActiveObj activeObj) {
+    private void initActionAnimation(DC_ActiveObj activeObj, Context context) {
         if (isAnimationOffFor(activeObj.getOwnerObj(), null)) {
             return;
         }
@@ -243,11 +249,11 @@ public class AnimMaster extends Group {
         animation.reset();
         if (leadAnimation == null) {
             leadAnimation = animation;
-            leadAnimation.start(activeObj.getRef());
+            leadAnimation.start(context);
         } else {
             add(animation);
             if (getParallelDrawing()) {
-                animation.start(activeObj.getRef());
+                animation.start(context);
             }
             controller.store(animation);
         }
@@ -294,6 +300,7 @@ public class AnimMaster extends Group {
             if (!parentAnim.isRunning()) {// preCheck new TODO
                 add(parentAnim);
             }
+            parentAnim.setRef(event.getRef());
     }
 
     private void initEffectAnimation(Effect effect) {
@@ -439,7 +446,7 @@ public class AnimMaster extends Group {
         });
         attachedAnims.removeIf((Animation a) -> !a.isRunning());
         attachedAnims.forEach(a -> {
-            a.draw(batch);
+            a.tryDraw(batch);
         });
 
         if (leadAnimation == null) {
@@ -477,7 +484,7 @@ public class AnimMaster extends Group {
                         drawingPlayer = true;
 
         try {
-            result = anim.draw(batch);
+            result = anim.tryDraw(batch);
         } catch (Exception e) {
             e.printStackTrace();
         }

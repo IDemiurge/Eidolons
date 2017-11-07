@@ -153,6 +153,9 @@ public class Anim extends Group implements Animation {
 
 
     }
+    public boolean tryDraw(Batch batch) {
+        return draw(batch);
+    }
 
     @Override
     public boolean draw(Batch batch) {
@@ -741,7 +744,8 @@ public class Anim extends Group implements Animation {
     }
 
     public void setRef(Ref ref) {
-        this.ref = ref;
+        this.ref = Ref.getCopy(ref);
+        main.system.auxiliary.log.LogMaster.log(1,this + " started with ref: " +ref);
     }
 
     public float getDelay() {

@@ -98,6 +98,7 @@ public class MicroObj extends Obj {
 
     @Override
     public void toBase() {
+        coordinates=null ;
         super.toBase();
         int x = getIntParam(G_PARAMS.POS_X);
         if (this.x!=x)

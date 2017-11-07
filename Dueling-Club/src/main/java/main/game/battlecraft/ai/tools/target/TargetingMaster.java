@@ -107,20 +107,18 @@ public class TargetingMaster extends AiHandler {
          .canMoveOnto(targetAction.getSource(), c);
     }
 
-    public static boolean canBeTargeted(Action action) {
-        return canBeTargeted(action, true);
-    }
 
     public static boolean canBeTargeted(Action action, boolean ignoreFacing) {
-        try {
-            if (action.canBeTargeted(action.getTarget().getId())) {
-                return true;
-            }
-        } catch (Exception e) {
-            return false;
+        return canBeTargeted(action, false, ignoreFacing);
+    }
+
+    public static boolean canBeTargeted(Action action, boolean ignoreVisibility, boolean ignoreFacing) {
+
+        if (action.canBeTargeted(action.getTarget().getId())) {
+            return true;
         }
 
-        if (!ignoreFacing) {
+        if (!ignoreFacing && !ignoreVisibility) {
             return false;
         }
         List<FILTER_REASON> reasons = ReasonMaster.getReasonsCannotTarget(action);

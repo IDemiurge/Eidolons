@@ -64,6 +64,16 @@ public class CompositeAnim implements Animation {
         this(new XLinkedMap<>());
     }
 
+    public boolean tryDraw(Batch batch) {
+        try {
+            return draw(batch);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            setRunning(false);
+        }
+        return false;
+    }
+
     public boolean draw(Batch batch) {
 //        if (currentAnim != null)
 //            try{ //TODO attached phaseAnims?
@@ -95,7 +105,7 @@ public class CompositeAnim implements Animation {
                 }
             }
             initPartAnim();
-            if (currentAnim==null )
+            if (currentAnim == null)
                 return false;
             currentAnim.start(getRef());
             triggerStartEvents();
@@ -175,7 +185,7 @@ public class CompositeAnim implements Animation {
             if (!anim.isRunning()) {
                 anim.start(getRef());
             }
-            anim.draw(batch);
+            anim.tryDraw(batch);
 
         });
     }
@@ -194,7 +204,7 @@ public class CompositeAnim implements Animation {
         index = 0;
         part = null;
         finished = true;
-        running = false;
+        setRunning(false);
 
         resetMaps();
         GuiEventManager.trigger(GuiEventType.COMPOSITE_ANIMATION_DONE, this);
@@ -207,7 +217,6 @@ public class CompositeAnim implements Animation {
         timeAttachedAnims = new XLinkedMap<>();
 
     }
-
 
     private void triggerStartEvents() {
         if (currentAnim != null)
@@ -256,8 +265,9 @@ public class CompositeAnim implements Animation {
         if (ref == null)
             if (getActive() == null)
                 return null;
-            else
-                return getActive().getRef();
+            else {
+                ref = Ref.getCopy(getActive().getRef());
+            }
         return ref;
     }
 
@@ -459,6 +469,10 @@ public class CompositeAnim implements Animation {
     @Override
     public boolean isRunning() {
         return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 
     public void addTextEvent(Event event) {

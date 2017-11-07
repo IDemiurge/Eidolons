@@ -35,6 +35,7 @@ import main.system.sound.SoundMaster;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +45,8 @@ public class OptionsMaster {
     private static Map<OPTIONS_GROUP, Options> cachedMap;
     private static OptionsPanel optionsPanel;
     private static boolean initialized;
+    private static JFrame optionsPanelFrame;
+
     private static void applyAnimOptions(AnimationOptions animOptions) {
 
         for (Object sub : animOptions.getValues().keySet()) {
@@ -291,13 +294,13 @@ public class OptionsMaster {
     }
 
     public static void openMenu() {
-//        if (optionsPanel == null) {
-//           optionsPanel = new OptionsPanel(optionsMap);
-        GuiManager.inNewWindow(new OptionsPanel(optionsMap),
-         "Options", new Dimension(800, 600));
-//        } else { TODO won't reset!
-//            optionsPanel.setVisible(true);
-//        }
+        if (optionsPanelFrame != null) {
+            optionsPanelFrame.setVisible(false);
+        }
+            optionsPanel  = new OptionsPanel(optionsMap);
+            optionsPanelFrame = GuiManager.inNewWindow(optionsPanel,
+             "Options", new Dimension(800, 600));
+
 
     }
 

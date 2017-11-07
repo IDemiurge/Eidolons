@@ -43,6 +43,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     protected static void startRealTimeLogic() {
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
+        if (!CoreEngine.isGraphicsOff())
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().getAllies().forEach(unit -> {
             Gdx.app.postRunnable(() ->
              {
@@ -60,6 +61,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             WaitMaster.WAIT(REAL_TIME_LOGIC_PERIOD);
             if (Eidolons.getGame().isPaused()) continue;
             if (!ExplorationMaster.isExplorationOn()) continue;
+            if (ExplorationMaster.isRealTimePaused()) continue;
             try {
                 Eidolons.getGame().getDungeonMaster().getExplorationMaster().
                  getTimeMaster().checkTimedEvents();

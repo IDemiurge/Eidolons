@@ -103,6 +103,8 @@ public class RuleMaster implements Controller {
             case ATTACK_OF_OPPORTUNITY:
             case INSTANT_ATTACK:
                 return RULE_SCOPE.FULL;
+            case TRAMPLE:
+            return RULE_SCOPE.ADVANCED;
 
         }
         return RULE_SCOPE.BASIC;
@@ -385,7 +387,7 @@ BLEEDING, BLAZE, FREEZE, POISON, DISEASE,
         WEIGHT,
         INJURY(RULE_SCOPE.FULL),
         CRITICAL_ATTACK(),
-        DODGE(), GUARD(), MISSED_ATTACK_REDIRECTION(RULE_SCOPE.ADVANCED);
+        DODGE(), GUARD(), MISSED_ATTACK_REDIRECTION(RULE_SCOPE.ADVANCED), TRAMPLE();
 
         String tooltip;
         RULE_SCOPE scope;

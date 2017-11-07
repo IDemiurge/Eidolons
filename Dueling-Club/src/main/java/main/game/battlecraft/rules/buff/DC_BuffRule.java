@@ -112,7 +112,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     }
 
     protected ENTRY_TYPE getEntryType() {
-        switch (getRuleEnum()) {
+        switch (getCombatRuleEnum()) {
             case BLEEDING:
                 return ENTRY_TYPE.BLEEDING_RULE;
             case FOCUS:
@@ -157,11 +157,11 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     }
 
     protected String getLogText(Obj obj, Integer level) {
-        return obj.getNameIfKnown() + RuleMaster.getRuleLogText(getRuleEnum(), level);
+        return obj.getNameIfKnown() + RuleMaster.getRuleLogText(getCombatRuleEnum(), level);
         // return getBuffTypeName() + " applied to " + obj.getName();
     }
 
-    protected abstract COMBAT_RULES getRuleEnum();
+    protected abstract COMBAT_RULES getCombatRuleEnum();
 
     protected String getEffectFormula() {
         return getEffectFormula(level);

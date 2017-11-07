@@ -28,6 +28,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.PositionMaster;
 
@@ -53,7 +54,7 @@ public class AnimMaster3d {
      256, 320, 384, 448, 512,
     };
     private static Map<String, TextureAtlas> atlasMap = new HashMap<>();
-    private static  List<DC_WeaponObj> broken = new LinkedList<>();
+    private static List<DC_WeaponObj> broken = new LinkedList<>();
 
     public AnimMaster3d() {
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
@@ -125,8 +126,9 @@ public class AnimMaster3d {
             s.append(SEPARATOR + "l");
         if (BooleanMaster.isFalse(offhand))
             s.append(SEPARATOR + "r");
-
-        return s.toString().toLowerCase().replace(" ", SEPARATOR);
+        String string = s.toString();
+        string = string.toLowerCase().replace("offhand ", "").replace("off hand ", "").replace(" ", SEPARATOR);
+        return string;
     }
 
     public static String getAtlasFileKeyForAction(Boolean projection,
@@ -214,9 +216,9 @@ public class AnimMaster3d {
 
         //TODO who is displayed above on the cell?
 //modify texture? coloring, sizing,
-        float angle = PositionMaster.getAngle(activeObj.getOwnerObj(), targetObj);
+//        float angle = PositionMaster.getAngle(activeObj.getOwnerObj(), targetObj);
 //float baseAngle =
-        float rotation = angle * 2 / 3;
+//        float rotation = angle * 2 / 3;
         String name = getAtlasFileKeyForAction(projection, activeObj, aCase);
 
         TextureAtlas atlas = getAtlas(activeObj, aCase);
@@ -314,8 +316,8 @@ public class AnimMaster3d {
             getOrCreateAtlas(weapon);
         else
             Gdx.app.postRunnable(() -> {
-            if (is3dSupported(weapon))
-                getOrCreateAtlas(weapon);
+                if (is3dSupported(weapon))
+                    getOrCreateAtlas(weapon);
             });
     }
 
@@ -324,7 +326,8 @@ public class AnimMaster3d {
             return null;
         try {
             String path = getAtlasPath(weapon);
-
+            if (!FileManager.isFile(path))
+                return null;
             TextureAtlas atlas = atlasMap.get(path);
             if (atlas == null) {
                 atlas = new TextureAtlas(path);
@@ -344,8 +347,8 @@ public class AnimMaster3d {
         if (active.isRanged())
             return 400;
         if (active.getActiveWeapon().isTwoHanded())
-            return 40;
-        return 50;
+            return 80;
+        return 110;
     }
 
     public static void hoverOff(DC_UnitAction entity) {

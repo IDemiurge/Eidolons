@@ -3,6 +3,8 @@ package main.game.battlecraft.rules;
 import main.ability.effects.Effect;
 import main.elements.conditions.Conditions;
 import main.entity.Ref;
+import main.game.battlecraft.rules.RuleMaster.RULE;
+import main.game.core.game.DC_Game;
 import main.game.core.game.MicroGame;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
@@ -57,6 +59,8 @@ public abstract class DC_RuleImpl implements Rule {
 
     @Override
     public boolean check(Event event) {
+        if (isOn())
+            return false;
         if (event_types != null) {
             if (!Arrays.asList(event_types).contains(event.getType())) {
                 return false;
@@ -87,10 +91,22 @@ public abstract class DC_RuleImpl implements Rule {
 
     @Override
     public boolean isOn() {
-        return on;
+        if (getRuleEnum() == null) {
+            return on;
+        }
+       return  RuleMaster.isRuleOn(getRuleEnum());
+
+    }
+
+    protected RULE getRuleEnum() {
+        return null;
     }
 
     public void setOn(boolean on) {
         this.on = on;
+    }
+
+    public DC_Game getGame() {
+        return (DC_Game) game;
     }
 }

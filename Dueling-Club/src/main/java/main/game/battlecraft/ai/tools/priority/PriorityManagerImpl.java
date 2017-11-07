@@ -41,10 +41,7 @@ import main.entity.Ref.KEYS;
 import main.entity.active.*;
 import main.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import main.entity.item.DC_WeaponObj;
-import main.entity.obj.BattleFieldObject;
-import main.entity.obj.DC_Cell;
-import main.entity.obj.DC_Obj;
-import main.entity.obj.Obj;
+import main.entity.obj.*;
 import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
@@ -1059,7 +1056,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 if ((damage_priority != getLethalDamagePriority()
                  && damage_priority != getUnconsciousDamagePriority())
                  || targetObj.checkPassive(UnitEnums.STANDARD_PASSIVES.FIRST_STRIKE)) {
-                    counter_penalty = getCounterPenalty((Unit) targetObj);
+                    counter_penalty = getCounterPenalty(active, (Unit) targetObj);
                 }
             }
         }
@@ -1187,10 +1184,13 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
 
     @Override
-    public int getCounterPenalty(Unit targetObj) {
-        // TODO free?
-
-        return Math.round(-getDamagePriority(targetObj.getAction(DC_ActionManager.COUNTER_ATTACK), getUnit())
+    public int getCounterPenalty(DC_ActiveObj active, Unit targetObj) {
+        // TODO cache!
+        Active action = game.getActionManager().getCounterAttackAction(getUnit(), targetObj, active);
+      if (action==null )
+          return 0;
+      return Math.round(-getDamagePriority(
+         (DC_ActiveObj) action, getUnit())
          * getConstInt(AiConst.COUNTER_FACTOR));
     }
 
@@ -1283,7 +1283,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public int getUnitPriority(UnitAI unit_ai, Obj targetObj, Boolean less_or_more_for_health) {
-        Unit target_unit = (Unit) targetObj;
+        BattleFieldObject target_unit = (BattleFieldObject) targetObj;
         if (targetObj instanceof DC_HeroAttachedObj) {
             DC_HeroAttachedObj attachedObj = (DC_HeroAttachedObj) targetObj;
             targetObj = attachedObj.getOwnerObj();
@@ -1303,7 +1303,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         if (less_or_more_for_health != null) {
             healthMod = getHealthFactor(targetObj, less_or_more_for_health);
         } else {
-            if (target_unit.isUnconscious()) {
+            if (targetObj instanceof Unit)
+            if ( ((Unit) targetObj).isUnconscious()) {
                 return Math.round(
                  basePriority * getConstValue(AiConst.UNCONSCIOUS_UNIT_PRIORITY_MOD)); // [QUICK FIX] - more subtle?
             }

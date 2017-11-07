@@ -104,7 +104,7 @@ public interface PriorityManager {
 
     int getAttackOfOpportunityPenalty(DC_ActiveObj action, Unit targetObj);
 
-    int getCounterPenalty(Unit targetObj);
+    int getCounterPenalty(DC_ActiveObj active, Unit targetObj);
 
     int getDamagePriority(DC_ActiveObj action, Obj targetObj);
 

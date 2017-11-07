@@ -1,9 +1,12 @@
 package main.game.battlecraft.rules.combat.attack.extra_attack;
 
+import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.ai.tools.future.FutureBuilder;
+import main.system.SortMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -61,6 +64,10 @@ public class ExtraAttacksRule {
                 list.add(a);
             }
         }
+        SortMaster.sortEntitiesByExpression(list, action->
+         FutureBuilder.precalculateDamage((DC_ActiveObj) action, triggeringAction.getOwnerObj(), true)
+         *(action.getIntParam(PARAMS.COUNTER_MOD) +
+         action.getIntParam(PARAMS.COUNTER_ATTACK_MOD)));
         return list;
     }
 

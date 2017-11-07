@@ -29,7 +29,7 @@ import java.util.List;
 
 public class PathBuilder extends AiHandler {
     private static final int FILTER_THRESHOLD = 10;
-    private static final int MAX_PATH_SIZE = 15;
+    private static final int MAX_PATH_SIZE = 8;
     private static PathBuilder instance;
     protected Coordinates targetCoordinate;
     private Unit unit;
@@ -145,7 +145,8 @@ public class PathBuilder extends AiHandler {
         if (filteredPaths.isEmpty()) {
             filteredPaths = paths;
         }
-        if (filteredPaths.get(0).getActions().size()>7){
+        if (!filteredPaths.isEmpty())
+        if (filteredPaths.get(0).getActions().size()>=MAX_PATH_SIZE){
             return filteredPaths;
         }
         return filteredPaths;

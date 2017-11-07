@@ -129,9 +129,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         sprite.setPosition(x + offsetX - currentFrame.getRegionWidth() / 2, y
                 + offsetY
                 - currentFrame.getRegionHeight() / 2);
+        sprite.setFlip(flipX, flipY);
         sprite.draw(batch);
 
-    sprite.setFlip(flipX, flipY);
         return true;
     }
 

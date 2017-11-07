@@ -161,14 +161,10 @@ public class DC_Rules implements GameRules {
         woundsRule = new WoundsBuffRule(getGame());
         this.buffRules.add(woundsRule);
 
-        trampleRule = new TrampleRule(getGame());
-        durabilityRule = new DurabilityRule(getGame());
-        bleedingTriggerRule = new BleedingRule(game);
-        ashAnnihilationRule = new AshAnnihilationRule(game);
-         getTriggerRules().add(trampleRule);
-        getTriggerRules().add(durabilityRule);
-        getTriggerRules().add(bleedingTriggerRule);
-        getTriggerRules().add(ashAnnihilationRule);
+         getTriggerRules().add(trampleRule = new TrampleRule(getGame()));
+        getTriggerRules().add(durabilityRule = new DurabilityRule(getGame()));
+        getTriggerRules().add(bleedingTriggerRule = new BleedingRule(game));
+        getTriggerRules().add( ashAnnihilationRule = new AshAnnihilationRule(game));
 
         CounterMasterAdvanced.defineInteractions();
 

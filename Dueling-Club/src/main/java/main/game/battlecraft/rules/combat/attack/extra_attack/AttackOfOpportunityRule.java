@@ -12,7 +12,6 @@ import main.content.values.properties.G_PROPS;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.entity.Ref.KEYS;
-import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.active.DC_UnitAction;
@@ -149,7 +148,7 @@ public class AttackOfOpportunityRule {
     public static Boolean checkAttack(Unit unit, DC_ActiveObj active) {
         return checkAttack(unit, active, false, false);
     }
-
+@Deprecated
     public static Boolean checkAttack(Unit unit, DC_ActiveObj active, boolean stealthAoO,
                                       boolean force) {
         // if (!getConditions().preCheck(unit)) return;
@@ -198,7 +197,7 @@ public class AttackOfOpportunityRule {
             result = true;
         } else if (unit.getMode().equals(STD_MODES.ALERT)) {
             free = false;
-            result = unit.checkActionCanBeActivated(DC_ActionManager.ATTACK_OF_OPPORTUNITY);
+//            result = unit.checkActionCanBeActivated(DC_ActionManager.ATTACK_OF_OPPORTUNITY);
         }
 
         if (!result) {
@@ -234,8 +233,9 @@ public class AttackOfOpportunityRule {
     }
 
     private static DC_ActiveObj getAoO(Unit unit, boolean free) {
-        return unit.getAction(free ? DC_ActionManager.FREE_ATTACK_OF_OPPORTUNITY
-                : DC_ActionManager.ATTACK_OF_OPPORTUNITY);
+        return null ;
+//   TODO      return unit.getAction(free ? DC_ActionManager.FREE_ATTACK_OF_OPPORTUNITY
+//                : DC_ActionManager.ATTACK_OF_OPPORTUNITY);
     }
 
     public static List<DC_ActiveObj> getMoveAoOs(Coordinates prevCoordinates,

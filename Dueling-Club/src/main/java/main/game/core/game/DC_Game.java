@@ -499,7 +499,8 @@ public class DC_Game extends MicroGame {
 
     @Override
     public void setDebugMode(boolean debugMode) {
-        if (debugMode != this.debugMode) {
+        if (getDebugMaster() != null )
+            if (debugMode != this.debugMode) {
             try {
                 getDebugMaster().debugModeToggled(debugMode);
             } catch (Exception e) {

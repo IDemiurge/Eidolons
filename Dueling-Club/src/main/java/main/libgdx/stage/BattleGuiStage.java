@@ -1,5 +1,6 @@
 package main.libgdx.stage;
 
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -26,6 +27,9 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.options.OptionsMaster;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by JustMe on 3/31/2017.
  */
@@ -35,6 +39,9 @@ public class BattleGuiStage extends Stage {
     private final ActionPanelController bottomPanel;
     private final RadialMenu radial;
     private OutcomePanel outcomePanel;
+
+    private List<String> charsUp = new LinkedList<>();
+    private char lastTyped;
 
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
         super(viewport == null ?
@@ -102,7 +109,26 @@ public class BattleGuiStage extends Stage {
     }
 
     @Override
+    public boolean keyUp(int keyCode) {
+        String c = Keys.toString(keyCode) ;
+
+        if (!charsUp.contains(c)) {
+            charsUp.add(c);
+        }
+        return super.keyUp(keyCode);
+    }
+
+    @Override
     public boolean keyTyped(char character) {
+        String str = String.valueOf(character).toUpperCase() ;
+        if (character == lastTyped) {
+            if (!charsUp.contains(str)) {
+                return false;
+            }
+        }
+        charsUp.remove(str);
+        lastTyped = character;
+
         boolean result = false;
         try {
             result = DC_Game.game.getKeyManager().handleKeyTyped(0, character);

@@ -41,6 +41,8 @@ import java.util.function.Supplier;
 public class HitAnim extends ActionAnim {
     private Supplier<String> textSupplier;
     private FloatingText floatingText;
+    private float originalActorX;
+    private float originalActorY;
 //    AttackAnim atkAnim;
 //    private DC_WeaponObj weapon;
 
@@ -92,13 +94,15 @@ public class HitAnim extends ActionAnim {
         if (forcedDestination != null) {
             return forcedDestination;
         }
-        return getDestinationCoordinates();
-
-//        if (getRef().getTargetObj() != null) {
-//            return getRef().getTargetObj().getCoordinates();
-//        }
+        if (getRef().getTargetObj() != null) {
+            return getRef().getTargetObj().getCoordinates();
+        }
+        if (getRef().getActive() != null) {
+            return getRef().getActive().getRef().getTargetObj().getCoordinates();
+        }
 //
 //        return super.getOriginCoordinates();
+        return getDestinationCoordinates();
     }
 
     @Override
@@ -120,9 +124,10 @@ public class HitAnim extends ActionAnim {
             dy = -dy;
         }
 
-        float x = getActor().getX();
-        float y = getActor().getY();
-
+        originalActorX = getActor().getX();
+        originalActorY = getActor().getY();
+        float x = originalActorX;
+        float y = originalActorY;
 
         MoveByAction move = (MoveByAction) ActorMaster.getAction(MoveByAction.class);
         move.setAmount(dx, dy);
@@ -147,16 +152,19 @@ public class HitAnim extends ActionAnim {
     @Override
     public void start() {
         super.start();
-        if (textSupplier != null)
-            floatingText.setText(textSupplier.get());
+//        if (textSupplier != null)
+//            floatingText.setText(textSupplier.get());
+        Damage damage = getActive().getDamageDealt();
+        floatingText.setText(damage.getAmount() + "");
         floatingText.init(destination, 0, 128, getDuration() * 0.3f *
          OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.TEXT_DURATION)
         );
+
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);
-        Damage damage = getActive().getDamageDealt();
+
         FloatingTextMaster.getInstance().initFloatTextForDamage(damage, this);
         add();
-        main.system.auxiliary.log.LogMaster.log(1,"HIT ANIM STARTED WITH REF: " +getRef());
+        main.system.auxiliary.log.LogMaster.log(1, "HIT ANIM STARTED WITH REF: " + getRef());
     }
 
     @Override
@@ -175,6 +183,13 @@ public class HitAnim extends ActionAnim {
 //       DC_HeroObj BattleFieldObject = (DC_HeroObj) targetObj;
         //dark, green, ...
         return "";
+    }
+
+    @Override
+    public void finished() {
+        super.finished();
+        getActionTarget().setX(originalActorX);
+        getActionTarget().setX(originalActorY);
     }
 
     @Override

@@ -163,7 +163,7 @@ public class PathSequenceConstructor extends AiHandler {
                     }
                     getUnit().setCoordinates(c); // TODO causes visuals!
 
-                    if (TargetingMaster.canBeTargeted(targetAction)) {
+                    if (TargetingMaster.canBeTargeted(targetAction,true, true)) {
                         list.add(c);
                     }
                 }

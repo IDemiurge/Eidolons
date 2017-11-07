@@ -39,7 +39,7 @@ public class MusicMaster {
     private static boolean on = true;
     Stack<String> playList;
     Stack<String> cachedPlayList;
-    MUSIC_SCOPE scope;
+    MUSIC_SCOPE scope=MUSIC_SCOPE.MENU;
     MUSIC_VARIANT variant;
     MUSIC_THEME theme;
     AMBIENCE ambience = AMBIENCE.FOREST_NIGHT;
@@ -50,6 +50,8 @@ public class MusicMaster {
     private Music playedMusic;
     private boolean stopped;
     private boolean running;
+
+    private Map<MUSIC_SCOPE, Music> trackCache = new XLinkedMap<>();
     // IDEA: map music per scope to resume()
 // TODO AMBIENT SOUNDS -
 

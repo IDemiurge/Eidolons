@@ -110,7 +110,7 @@ public class ActionManager extends AiHandler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        if (!atomic)
+        if (atomic)
         if (isAtomicAiOn())
             try {
                 action = getAtomicAi().getAtomicAction(ai);

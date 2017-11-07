@@ -54,22 +54,12 @@ import java.util.*;
 
 public class DC_ActionManager implements ActionManager {
 
-    public static final int STD_ACTION_N = 5;
-    public static final int MODES_N = 5;
     public static final String OFFHAND_ATTACK = StringMaster
      .getWellFormattedString(STD_SPEC_ACTIONS.OFFHAND_ATTACK.name());
     public static final String DUAL_ATTACK = StringMaster
      .getWellFormattedString(STD_SPEC_ACTIONS.DUAL_ATTACK.name());
-    public static final String ATTACK_OF_OPPORTUNITY = StringMaster
-     .getWellFormattedString(HIDDEN_ACTIONS.Attack_of_Opportunity.name());
-    public static final String FREE_ATTACK_OF_OPPORTUNITY = StringMaster
-     .getWellFormattedString(HIDDEN_ACTIONS.Free_Attack_of_Opportunity.name());
-    public static final String COUNTER_ATTACK = StringMaster
-     .getWellFormattedString(HIDDEN_ACTIONS.Counter_Attack.name());
-    public static final String FREE_COUNTER_ATTACK = StringMaster
-     .getWellFormattedString(HIDDEN_ACTIONS.Free_Counter_Attack.name());
     public static final G_PROPS ACTIVES = G_PROPS.ACTIVES;
-    public static final String ATTACK = StringMaster.getWellFormattedString(STD_ACTIONS.Attack
+    public static final String ATTACK =  (STD_ACTIONS.Attack
      .name());
     public static final String RELOAD = "Reload";
     public static final String THROW = "Throw";
@@ -96,6 +86,7 @@ public class DC_ActionManager implements ActionManager {
     private static LinkedList<ActionType> orderActionTypes;
     private MicroGame game;
     private HashMap<Entity, Map<String, ActiveObj>> actionsCache = new HashMap<>();
+    private boolean offhandInit;
 
     public DC_ActionManager(MicroGame game) {
         this.game = game;
@@ -132,7 +123,6 @@ public class DC_ActionManager implements ActionManager {
 
             hiddenActions.add(type);
         }
-        ActionGenerator.generateOffhandActions();
     }
 
     public static List<DC_ActiveObj> filterActionsByCanBePaid(List<DC_ActiveObj> actions) {
@@ -257,7 +247,7 @@ public class DC_ActionManager implements ActionManager {
         return counter;
     }
 
-    private Active getCounterAttackAction(Unit countered, Unit countering,
+    public Active getCounterAttackAction(Unit countered, Unit countering,
                                           DC_ActiveObj active) {
         DC_ActiveObj counterAttack = countering.getPreferredCounterAttack();
         if (counterAttack != null) {
@@ -800,6 +790,11 @@ public class DC_ActionManager implements ActionManager {
     }
 
     private void addOffhandActions(DequeImpl<DC_UnitAction> actives, Unit unit) {
+        if (!offhandInit)
+        {
+            ActionGenerator.generateOffhandActions();
+            offhandInit=true;
+        }
         if (actives != null)
             for (ActiveObj attack : actives) {
                 ObjType offhand = (DataManager.getType(ActionGenerator.getOffhandActionName(attack
@@ -960,10 +955,6 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public enum HIDDEN_ACTIONS {
-        Counter_Attack,
-        Attack_of_Opportunity,
-        Free_Counter_Attack,
-        Free_Attack_of_Opportunity,
         Cower,
         Rage,
         Idle,

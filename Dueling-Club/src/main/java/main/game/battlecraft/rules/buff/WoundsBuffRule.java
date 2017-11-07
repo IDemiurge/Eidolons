@@ -77,7 +77,7 @@ public class WoundsBuffRule extends DC_BuffRule {
     }
 
     @Override
-    protected COMBAT_RULES getRuleEnum() {
+    protected COMBAT_RULES getCombatRuleEnum() {
         return COMBAT_RULES.WOUNDS;
     }
 

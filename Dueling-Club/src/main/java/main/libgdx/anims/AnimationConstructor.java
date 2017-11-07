@@ -42,7 +42,6 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
@@ -54,7 +53,7 @@ import java.util.*;
  * Created by JustMe on 1/11/2017.
  */
 public class AnimationConstructor {
-    private final boolean preconstructOn = false; //TODO
+    private final boolean preconstructOn = CoreEngine.isExe(); //TODO
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
     private boolean autoconstruct = false;
     private VALUE[] anim_vals = {
@@ -695,7 +694,7 @@ public class AnimationConstructor {
     }
 
     public static boolean isPreconstructEnemiesOnCombatStart() {
-        return false;
+        return CoreEngine.isExe();
     }
 
     public enum ANIM_PART {

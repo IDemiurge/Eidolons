@@ -88,7 +88,10 @@ public class AtomicAi extends AiHandler {
                 if (ai.getUnit().getRangedWeapon().getAmmo() == null) {
                     Action action = getReloadAction(ai);
                     if (action != null)
+                    {
                         action.setTaskDescription("Ammo Reload");
+                        return action;
+                    }
                 }
         if (ai.getType() == AI_TYPE.CASTER) {
             return AiActionFactory.newAction(STD_MODE_ACTIONS.Meditate.toString(), ai);

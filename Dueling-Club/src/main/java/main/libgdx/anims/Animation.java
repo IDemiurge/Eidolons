@@ -15,6 +15,8 @@ public interface Animation {
 
     void finished();
 
+    boolean tryDraw(Batch batch);
+
     boolean draw(Batch batch);
 
     void start(Ref ref);

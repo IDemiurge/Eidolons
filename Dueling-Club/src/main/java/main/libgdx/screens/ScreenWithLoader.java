@@ -16,6 +16,7 @@ import main.libgdx.stage.ChainedStage;
 import main.libgdx.stage.LoadingStage;
 import main.libgdx.video.VideoMaster;
 import main.system.EventCallbackParam;
+import main.system.audio.MusicMaster;
 
 public abstract class ScreenWithLoader extends ScreenAdapter {
     protected   LoadingStage loadingStage;
@@ -47,6 +48,8 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected void preLoad() {
+        MusicMaster.getInstance().startLoop();
+
         if (data.getDialogScenarios().size() > 0) {
             introStage = new ChainedStage(viewPort, getBatch(), data.getDialogScenarios());
             introStage.setOnDoneCallback(() -> {

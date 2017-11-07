@@ -522,11 +522,7 @@ public class Ref implements Cloneable, Serializable {
         }
         if (obj instanceof ActiveObj) // TODO QUICK ITEM INTERFACE
         {
-            try {
                 return (ActiveObj) obj;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return null;
     }

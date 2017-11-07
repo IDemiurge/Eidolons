@@ -1,6 +1,7 @@
 package main.test.debug;
 
 import main.game.core.Eidolons;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.controls.Controller;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
@@ -29,6 +30,9 @@ public class DebugController implements Controller {
     @Override
     public boolean charTyped(char c) {
         switch (c) {
+            case 'R':
+                ExplorationMaster.setRealTimePaused(!ExplorationMaster.isRealTimePaused());
+                return true;
             case 'D':
                 getDebugMaster().showDebugWindow();
                 return true;

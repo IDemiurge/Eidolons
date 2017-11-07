@@ -6,6 +6,8 @@ import main.game.module.dungeoncrawl.ai.AggroMaster;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.AnimMaster3d;
 import main.libgdx.anims.AnimationConstructor;
+import main.system.audio.MusicMaster;
+import main.system.audio.MusicMaster.MUSIC_SCOPE;
 
 /**
  * Created by JustMe on 8/2/2017.
@@ -22,6 +24,7 @@ public class ExplorationMaster {
     private ExplorationResetHandler resetter;
     private DungeonCrawler crawler;
     private ExplorationActionHandler actionHandler;
+    private static boolean realTimePaused;
 
     public ExplorationMaster(DC_Game game) {
         this.game = game;
@@ -37,6 +40,14 @@ public class ExplorationMaster {
 
     public static void setTestMode(boolean testMode) {
         ExplorationMaster.testMode = testMode;
+    }
+
+    public static boolean isRealTimePaused() {
+        return realTimePaused;
+    }
+
+    public static void setRealTimePaused(boolean realTimePaused) {
+        ExplorationMaster.realTimePaused = realTimePaused;
     }
 
     public ExplorePartyMaster getPartyMaster() {
@@ -84,6 +95,8 @@ public class ExplorationMaster {
           cleaner.cleanUpAfterBattle();
             game.getLogManager().logBattleEnds();
             getResetter().setFirstResetDone(false);
+
+            MusicMaster.getInstance().setScope(MUSIC_SCOPE.ATMO);
         } else
         {
             game.getLogManager().logBattleStarts();
@@ -93,6 +106,7 @@ public class ExplorationMaster {
                 AnimMaster3d.preloadAtlases(unit);
             });
             getResetter().setFirstResetDone(false);
+            MusicMaster.getInstance().setScope(MUSIC_SCOPE.BATTLE);
         }
         getResetter().setFirstResetDone(false);
         game.startGameLoop();

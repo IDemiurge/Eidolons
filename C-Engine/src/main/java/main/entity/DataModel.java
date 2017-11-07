@@ -124,12 +124,11 @@ public abstract class DataModel {
             return 0;
         }
 
-        String string = getCustomParamMap().get(value_ref);
+        String string = getCustomParamMap().get(value_ref.toUpperCase());
         if (string == null) {
             return 0;
         }
-        LogMaster.log(LogMaster.CORE_DEBUG, value_ref + " - custom param: "
-         + string);
+
         return new Formula(string).getInt(ref);
     }
 
@@ -183,6 +182,8 @@ public abstract class DataModel {
     }
 
     public boolean modifyCounter(String name, int modValue, boolean strict) {
+      if (modValue==0)
+          return false;
         String realName = new MapMaster<String, String>().getKeyForValue(getCustomParamMap(),
          getCustomParamMap().get(name));
         if (realName == null) {

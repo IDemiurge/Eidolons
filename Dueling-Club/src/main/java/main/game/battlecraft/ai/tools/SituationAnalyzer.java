@@ -103,6 +103,7 @@ public class SituationAnalyzer extends AiHandler {
         for (ActiveObj a : ai.getUnit().getActives()) {
             DC_ActiveObj action = (DC_ActiveObj) a;
             if (action.isAttackAny())
+                if (!action.isAttackGeneric())
                 for (DC_Obj enemy : getAnalyzer().getEnemies(ai.getUnit(), false, false,
                  action.isMelee())) {
                     if (action.canBeActivated())

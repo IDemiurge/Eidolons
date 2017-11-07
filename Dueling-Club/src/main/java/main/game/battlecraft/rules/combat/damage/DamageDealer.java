@@ -16,6 +16,7 @@ import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
+import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.system.auxiliary.StringMaster;
@@ -45,6 +46,8 @@ public class DamageDealer {
 
     private static int dealDamage(Damage damage, boolean isBonusDamage) {
         logOn = true;
+        if (checkDamageImmune(damage))
+            return 0;
 //       damage.getRef().getGame().
 //        damage.getSource().getGame().getBattleMaster().getOptionManager().applyDifficulty(damage);
         int result = dealDamageOfType(damage.getDmgType(),
@@ -60,6 +63,14 @@ public class DamageDealer {
 
         logOn = true;
         return result;
+    }
+
+    private static boolean checkDamageImmune(Damage damage) {
+        if (damage.getTarget() instanceof Entrance)
+            return true;
+        if (damage.getTarget().isWall())
+            return true;
+        return false;
     }
 
     public static int dealDamage(Damage damage, BattleFieldObject target) {

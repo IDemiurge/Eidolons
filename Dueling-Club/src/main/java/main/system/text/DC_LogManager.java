@@ -1,5 +1,6 @@
 package main.system.text;
 
+import com.badlogic.gdx.utils.StringBuilder;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.data.filesys.PathFinder;
@@ -26,8 +27,10 @@ import java.util.Map;
 
 public class DC_LogManager extends LogManager {
 
-
-    private StringBuilder combatActionLogBuilder;
+    private StringBuilder combatActionLogBuilder= new StringBuilder();
+    private StringBuilder aiLogBuilder= new StringBuilder();
+    private StringBuilder visibilityLogBuilder= new StringBuilder();
+    private StringBuilder inputLogBuilder= new StringBuilder();
 
     public DC_LogManager(Game game) {
         super(game);
@@ -69,12 +72,77 @@ public class DC_LogManager extends LogManager {
          getCombatActionLogBuilder().append(string+"\n");
     }
 
+    public StringBuilder getAiLogBuilder() {
+        return aiLogBuilder;
+    }
+
+
+    public StringBuilder getVisibilityLogBuilder() {
+        return visibilityLogBuilder;
+    }
+
+    public StringBuilder getInputLogBuilder() {
+        return inputLogBuilder;
+    }
+
+
+    public enum SPECIAL_LOG{
+        AI,
+    VISIBILITY,
+    COMBAT,
+    INPUT,
+
+}
+    public void appendSpecialLog(SPECIAL_LOG log, String string) {
+        getBuilder(log).append(string+ "\n");
+    }
+    public void writeSpecialLog(SPECIAL_LOG log ) {
+        Object builder = getBuilder(log) ;
+        log(builder.toString());
+
+        FileManager.write(builder.toString(),
+         PathFinder.getLogPath()+log+StringMaster.getPathSeparator() +
+          log +
+          " log from"  +
+          TimeMaster.getFormattedDate(true) +
+          " " +
+          TimeMaster.getFormattedTime(false, true) +
+          ".txt");
+
+    }
+
+    private StringBuilder getBuilder(SPECIAL_LOG log) {
+        switch (log) {
+            case AI:
+                return getAiLogBuilder();
+            case VISIBILITY:
+                return getVisibilityLogBuilder();
+            case COMBAT:
+                return getCombatActionLogBuilder();
+            case INPUT:
+                return getInputLogBuilder();
+        }
+        return null;
+    }
+
     public void combatEndLog(String string) {
         getCombatActionLogBuilder().append( string+"\n" );
     }
     public void combatStartLog(String string) {
         getCombatActionLogBuilder().append("\n" +string);
     }
+
+    public StringBuilder getCombatActionLogBuilder() {
+        if (combatActionLogBuilder == null) {
+            combatActionLogBuilder = new StringBuilder();
+        }
+        return combatActionLogBuilder;
+    }
+
+    public void logCombatLog() {
+        writeSpecialLog(SPECIAL_LOG.COMBAT);
+    }
+
     public void logBattleEnds() {
         logBattle(false);
     }
@@ -144,21 +212,4 @@ public class DC_LogManager extends LogManager {
     }
 
 
-    public StringBuilder getCombatActionLogBuilder() {
-        if (combatActionLogBuilder == null) {
-            combatActionLogBuilder = new StringBuilder();
-        }
-        return combatActionLogBuilder;
-    }
-
-    public void logCombatLog() {
-        game.getLogManager().log(getCombatActionLogBuilder().toString());
-
-        FileManager.write(getCombatActionLogBuilder().toString(),
-         PathFinder.getLogPath()+"combat log from"  +
-          TimeMaster.getFormattedDate(true) +
-          " " +
-          TimeMaster.getFormattedTime(false, true) +
-          ".txt");
-    }
 }

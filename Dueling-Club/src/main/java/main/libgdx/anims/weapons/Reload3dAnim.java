@@ -15,4 +15,9 @@ public class Reload3dAnim extends Weapon3dAnim {
     protected WEAPON_ANIM_CASE getCase() {
         return WEAPON_ANIM_CASE.RELOAD;
     }
+
+    @Override
+    protected void resetSprites() {
+        super.resetSprites();
+    }
 }

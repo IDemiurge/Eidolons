@@ -157,7 +157,7 @@ public class Executor extends ActiveHandler {
          + getAction().getName() + " " + targets, false);
         if (gameLog)
             log(getAction().getOwnerObj().getNameIfKnown() + " activates "
-             + getAction().getNameIfKnown() + " " + targets, false);
+             + getAction().getNameIfKnown() + " " + targets, true);
 
         beingActivated();
         if (isInterrupted()) {
@@ -181,7 +181,9 @@ public class Executor extends ActiveHandler {
             if (!AnimMaster.getInstance().getConstructor().isReconstruct())
                 AnimMaster.getInstance().getConstructor().preconstruct(getAction());
 
-        GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, getAction());
+        GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES,
+         new ActionInput(getAction(), new Context(getAction().getRef()))
+        );
 
         actionComplete();
         return isResult();
@@ -190,6 +192,7 @@ public class Executor extends ActiveHandler {
     @Override
     protected void log(String string, boolean gameLog) {
         super.log(string, gameLog);
+        if (!gameLog)
         if (!ExplorationMaster.isExplorationOn())
             game.getLogManager().combatActionLog(string);
     }

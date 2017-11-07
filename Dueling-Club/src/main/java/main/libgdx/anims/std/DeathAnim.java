@@ -58,7 +58,7 @@ public class DeathAnim extends ActionAnim {
     }
 
     @Override
-    public boolean draw(Batch batch) {
+    public boolean tryDraw(Batch batch) {
         return super.draw(batch);
     }
 
@@ -131,6 +131,12 @@ public class DeathAnim extends ActionAnim {
         //skull / grave?
         super.start();
         add();
+    }
+
+    @Override
+    public void finished() {
+        super.finished();
+        getActionTarget().setVisible(false);
     }
 
     public enum DEATH_ANIM {

@@ -126,7 +126,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
                 if (sub.check(unit)) {
                     sub.apply(unit);
                     if (sub == master.getGame().getRules().getUnconsciousRule())
-                        master.getGame().getStateManager().reset(unit);
+                  if (!unit.isAnnihilated())
+                      master.getGame().getStateManager().reset(unit);
                 }
             }
         });

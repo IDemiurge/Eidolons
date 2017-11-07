@@ -507,11 +507,12 @@ public abstract class LogManager {
 
     public void logCounterModified(DataModel entity, String name, int modValue) {
         Integer value = entity.getCounter(name);
-        if (value > 0) {
+        if (modValue > 0) {
             logInfo(modValue + " " + name + "s applied to " + entity.getNameIfKnown() + ", total "
                     + name + "s: " + value);
         } else {
-            logInfo(modValue + " " + name + "s removed from " + entity.getNameIfKnown());
+            logInfo(modValue + " " + name + "s removed from " + entity.getNameIfKnown()+ ", total "
+             + name + "s: " + value);
         }
 
     }

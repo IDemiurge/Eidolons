@@ -104,7 +104,7 @@ public class StaminaBuffRule extends DC_BuffRule {
     }
 
     @Override
-    protected COMBAT_RULES getRuleEnum() {
+    protected COMBAT_RULES getCombatRuleEnum() {
         // TODO Auto-generated method stub
         return COMBAT_RULES.STAMINA;
     }

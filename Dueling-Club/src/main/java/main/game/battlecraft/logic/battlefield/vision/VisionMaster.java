@@ -80,7 +80,7 @@ public class VisionMaster implements GenericVisionManager {
             return;
         }
         boolean mine = getActiveUnit().getOwner().isMe();
-
+        getActiveUnit().setUnitVisionStatus(UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT);
         setRelativeActiveUnitVisibility(getActiveUnit(), game.getStructures());
         setRelativeActiveUnitVisibility(getActiveUnit(), game.getPlayer(!mine).getControlledUnits());
 
