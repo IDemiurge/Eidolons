@@ -3,6 +3,7 @@ package main.game.battlecraft.ai;
 import main.client.dc.Launcher;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.battlecraft.ai.elements.actions.ActionManager;
@@ -32,6 +33,7 @@ public class AI_Manager extends AiMaster {
     private GroupAI enemyGroup;
     private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
     private List<GroupAI> groups;
+    private static List<DC_ActiveObj> brokenActions=    new LinkedList<>() ;
 
     public AI_Manager(DC_Game game) {
         super(game);
@@ -71,6 +73,14 @@ public class AI_Manager extends AiMaster {
 
     public static void setOff(boolean off) {
         AI_Manager.off = off;
+    }
+
+    public static List<DC_ActiveObj> getBrokenActions() {
+        return brokenActions;
+    }
+
+    public static void setBrokenActions(List<DC_ActiveObj> brokenActions) {
+        AI_Manager.brokenActions = brokenActions;
     }
 
     public GroupAI getAllyGroup() {

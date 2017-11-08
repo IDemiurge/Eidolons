@@ -166,18 +166,17 @@ public class UnitView extends BaseView {
         ShaderProgram shader = null;
 
         if (isVisible()) {
-
             if (greyedOut) {
                 shader = batch.getShader();
                 batch.setShader(GrayscaleShader.getGrayscaleShader());
             }
-            if (flickering)
-                if (SuperActor.alphaFluctuationOn) //TODO fix
-                    ActorMaster.addFadeInOrOutIfNoActions(this, 5);
-            else
-                if (getColor().a ==0)
-                    getColor().a =1;
         }
+        if (flickering)
+            if (SuperActor.alphaFluctuationOn) //TODO fix
+                ActorMaster.addFadeInOrOutIfNoActions(this, 5);
+            else
+            if (getColor().a ==0)
+                getColor().a =1;
         if (outline != null) {
 //            batch.draw(outline, getX(), getY());
             getPortrait().setDrawable(new TextureRegionDrawable(outline));

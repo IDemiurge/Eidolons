@@ -7,8 +7,13 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.battlecraft.logic.meta.universal.PartyManager;
+import main.swing.generic.components.editors.lists.ListChooser;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 import main.system.text.NameMaster;
+
+import java.util.List;
 
 /**
  * Created by JustMe on 5/14/2017.
@@ -58,12 +63,26 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         //choice
         //already as Unit?
         ObjType type = getMetaGame().getScenario().getPartyType();
-        chooseOneHero= true;
+        chooseOneHero= !CoreEngine.isExe();
+        randomOneHero= CoreEngine.isExe();
         if (type == null) {
             String string = getMetaGame().getScenario().getProperty(PROPS.SCENARIO_PARTY);
             type = new ObjType("dummy", DC_TYPE.PARTY);
             type.setProperty(PROPS.MEMBERS, string);
             //new ? choice?
+        }
+        if (getGame().getMetaMaster().getPartyManager().isRandomOneHero()||
+         getGame().getMetaMaster().getPartyManager().isChooseOneHero()) {
+            List<String> members =  StringMaster.openContainer(type.getProperty(PROPS.MEMBERS));
+            if (getGame().getMetaMaster().getPartyManager().isRandomOneHero()) {
+                String hero = new RandomWizard<String>().getRandomListItem(
+                 members);
+                type.setProperty(PROPS.MEMBERS , hero);
+            } else {
+                String hero = ListChooser.chooseType(
+                 members, DC_TYPE.CHARS);
+                type.setProperty(PROPS.MEMBERS , hero);
+            }
         }
         party = new PartyObj(type);
 

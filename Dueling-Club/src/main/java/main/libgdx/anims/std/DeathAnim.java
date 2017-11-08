@@ -136,7 +136,7 @@ public class DeathAnim extends ActionAnim {
     @Override
     public void finished() {
         super.finished();
-        getActionTarget().setVisible(false);
+        getActor().setVisible(false);
     }
 
     public enum DEATH_ANIM {

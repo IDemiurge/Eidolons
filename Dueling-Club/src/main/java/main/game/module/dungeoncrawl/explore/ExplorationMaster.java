@@ -14,17 +14,17 @@ import main.system.audio.MusicMaster.MUSIC_SCOPE;
  */
 public class ExplorationMaster {
     static boolean explorationOn;
-    private static boolean testMode   ;
-    private   ExploreEnemyPartyMaster enemyPartyMaster;
-    private   ExplorePartyMaster partyMaster;
-    private   ExploreCleaner cleaner;
+    private static boolean testMode;
+    private static boolean realTimePaused;
     DC_Game game;
     ExplorationAiMaster aiMaster;
     ExplorationTimeMaster timeMaster;
+    private ExploreEnemyPartyMaster enemyPartyMaster;
+    private ExplorePartyMaster partyMaster;
+    private ExploreCleaner cleaner;
     private ExplorationResetHandler resetter;
     private DungeonCrawler crawler;
     private ExplorationActionHandler actionHandler;
-    private static boolean realTimePaused;
 
     public ExplorationMaster(DC_Game game) {
         this.game = game;
@@ -32,14 +32,10 @@ public class ExplorationMaster {
         timeMaster = new ExplorationTimeMaster(this);
         resetter = new ExplorationResetHandler(this);
         crawler = new DungeonCrawler(this);
-        cleaner =new ExploreCleaner(this);
+        cleaner = new ExploreCleaner(this);
         actionHandler = new ExplorationActionHandler(this);
         partyMaster = new ExplorePartyMaster(this);
         enemyPartyMaster = new ExploreEnemyPartyMaster(this);
-    }
-
-    public static void setTestMode(boolean testMode) {
-        ExplorationMaster.testMode = testMode;
     }
 
     public static boolean isRealTimePaused() {
@@ -50,16 +46,12 @@ public class ExplorationMaster {
         ExplorationMaster.realTimePaused = realTimePaused;
     }
 
-    public ExplorePartyMaster getPartyMaster() {
-        return partyMaster;
-    }
-
-    public ExploreEnemyPartyMaster getEnemyPartyMaster() {
-        return enemyPartyMaster;
-    }
-
     public static boolean isTestMode() {
         return testMode;
+    }
+
+    public static void setTestMode(boolean testMode) {
+        ExplorationMaster.testMode = testMode;
     }
 
     public static boolean isExplorationSupported(DC_Game game) {
@@ -73,51 +65,60 @@ public class ExplorationMaster {
         return true;
     }
 
-    public   void switchExplorationMode(boolean on) {
+    public static boolean isExplorationOn() {
+        return explorationOn;
+    }
+
+    public ExplorePartyMaster getPartyMaster() {
+        return partyMaster;
+    }
+
+    public ExploreEnemyPartyMaster getEnemyPartyMaster() {
+        return enemyPartyMaster;
+    }
+
+    public void switchExplorationMode(boolean on) {
         if (explorationOn == on)
             return;
         explorationOn = on;
         explorationToggled();
     }
 
-    private   ExplorerUnit createExplorerUnit(PartyObj partyObj) {
+    private ExplorerUnit createExplorerUnit(PartyObj partyObj) {
         ExplorerUnit e = new ExplorerUnit(null);
 
         return e;
     }
 
-
-    private   void explorationToggled() {
+    private void explorationToggled() {
         //speed up resets?
         //cache unit state?
-        if (isExplorationOn()){
+        if (isExplorationOn()) {
             //TODO quick-fix
-          cleaner.cleanUpAfterBattle();
+            cleaner.cleanUpAfterBattle();
             game.getLogManager().logBattleEnds();
             getResetter().setFirstResetDone(false);
 
             MusicMaster.getInstance().setScope(MUSIC_SCOPE.ATMO);
-        } else
-        {
+        } else {
             game.getLogManager().logBattleStarts();
-            if (AnimationConstructor. isPreconstructEnemiesOnCombatStart())
-            AggroMaster.getLastAggroGroup().forEach(unit -> {
-                AnimMaster.getInstance().getConstructor().preconstructAll(unit);
-                AnimMaster3d.preloadAtlases(unit);
-            });
+            if (AnimationConstructor.isPreconstructEnemiesOnCombatStart())
+                AggroMaster.getLastAggroGroup().forEach(unit -> {
+                    AnimMaster.getInstance().getConstructor().preconstructAll(unit);
+                    AnimMaster3d.preloadAtlases(unit);
+                });
             getResetter().setFirstResetDone(false);
-            MusicMaster.getInstance().setScope(MUSIC_SCOPE.BATTLE);
+            try {
+                MusicMaster.getInstance().setScope(MUSIC_SCOPE.BATTLE);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
         getResetter().setFirstResetDone(false);
         game.startGameLoop();
 //        game.getManager().reset();
         //exceptions: triggers, scripts,
 
-    }
-
-
-    public static boolean isExplorationOn() {
-        return explorationOn;
     }
 
     public DC_Game getGame() {
@@ -154,7 +155,7 @@ public class ExplorationMaster {
 
     public ExploreGameLoop getLoop() {
         if (!explorationOn)
-            return null ;
+            return null;
         return (ExploreGameLoop) game.getLoop();
     }
 }

@@ -47,6 +47,11 @@ public class StealthRule implements ActionRule {
         return u.getPlayerVisionStatus(true) == VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE;
     }
 
+    @Override
+    public boolean isAppliedOnExploreAction(DC_ActiveObj action) {
+        return true;
+    }
+
     public static void applySpotted(Unit target) {
         BuffMaster.applyBuff(SPOTTED, new AddStatusEffect(UnitEnums.STATUS.SPOTTED), target, 1); // TODO
         // also negate concealment? // dispel

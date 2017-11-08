@@ -123,8 +123,8 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public void removeValue(KEYS name) {
-        values.remove(name);
-        getRemovedValues().put(name, values.get(name));
+        getRemovedValues().put(name, values.remove(name));
+        objCache.remove(name.name().toLowerCase());
     }
 
     public Map<KEYS, String> getRemovedValues() {

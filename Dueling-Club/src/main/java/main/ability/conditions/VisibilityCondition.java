@@ -42,13 +42,31 @@ public class VisibilityCondition extends ConditionImpl {
         if (!(ref.getObj(KEYS.MATCH) instanceof BfObj)) {
             return false;
         }
+
         DC_Obj match = (DC_Obj) ref.getObj(KEYS.MATCH);
+
         boolean result = false;
         if (this.match == null && this.source == null) {
-        if (p_vision!=null )    if (match.getActivePlayerVisionStatus() == p_vision) {
-                return true;
+            if (p_vision != null) {
+                UNIT_TO_PLAYER_VISION playerVision = match.getActivePlayerVisionStatus();
+                if (game.getManager().getActiveObj().isMine() !=
+                 ref.getSourceObj().isMine()) {
+                    if (ref.getSourceObj().isMine()) {
+                        playerVision= match.getPlayerVisionStatus(false);
+                    } else {
+                        //TODO for enemy unit on player's unit...
+                    }
+                }
+                if (playerVision == p_vision) {
+                    return true;
+                }
             }
-            if (match.getUnitVisionStatus().isSufficient(u_vision)) {
+            UNIT_TO_UNIT_VISION visionStatus = match.getUnitVisionStatus();
+            if (!ref.getSourceObj().isActiveSelected()){
+                visionStatus =match.getGame().getVisionMaster().getSightMaster().
+                 getUnitVisibilityStatus(match, (Unit) ref.getSourceObj());
+            }
+            if (visionStatus.isSufficient(u_vision)) {
                 return true;
             }
             return false;

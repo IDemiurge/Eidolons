@@ -356,7 +356,7 @@ public class DC_SoundMaster extends SoundMaster {
             if (file != null) {
                 String corePath = StringMaster.cropFormat(StrPathBuilder.build(path, file));
                 try {
-                    file = FileManager.getRandomFilePathVariant(corePath, StringMaster.getFormat(file), true);
+                    file = FileManager.getRandomFilePathVariant(corePath, StringMaster.getFormat(file), false);
                 } catch (Exception e) {
 //            e.printStackTrace();
                 }

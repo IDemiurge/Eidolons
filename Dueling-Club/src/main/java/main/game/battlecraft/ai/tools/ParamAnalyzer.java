@@ -27,7 +27,7 @@ public class ParamAnalyzer extends AiHandler {
             // //min
             // max!
             "100-sqrt({AMOUNT}*5)-{AMOUNT}/20 ";
-    public final String ACTION_FORMULA = "1000/(({AMOUNT}+1)*10/2)";
+    public final String ACTION_FORMULA = "1000/(({AMOUNT}+1)*5)";
     // "100/ {AMOUNT}*{AMOUNT}  x^2-bX = 100 " ;
     // "sqrt({AMOUNT}*10) -100/(100-{AMOUNT})"; TODO perhaps I should have a
     // separate formula for each cost param!
@@ -237,6 +237,9 @@ public class ParamAnalyzer extends AiHandler {
         return MathMaster.calculateFormula(getCOST_PENALTY_FORMULA(), penalty);
     }
 
+    public int getActionNumberFactor(int size) {
+        return MathMaster.calculateFormula(ACTION_FORMULA, size);
+    }
     public int getParamPriority(PARAMETER p, Unit unit) {
         // int percentage = DC_MathManager.getParamPercentage(unit, portrait);
         // if (percentage == 0) {
@@ -285,4 +288,5 @@ public class ParamAnalyzer extends AiHandler {
         }
         return list;
     }
+
 }

@@ -4,8 +4,6 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.StringMaster;
 
-import java.util.Arrays;
-
 public class C_OBJ_TYPE implements OBJ_TYPE {
 
     public static final C_OBJ_TYPE ALL = new C_OBJ_TYPE(DC_TYPE.values());
@@ -57,9 +55,15 @@ public class C_OBJ_TYPE implements OBJ_TYPE {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof C_OBJ_TYPE) {
-            return super.equals(obj);
+            for (DC_TYPE sub: getTypes())
+                if (obj.equals(sub))
+                    return true;
         }
-        return Arrays.asList(getTypes()).contains(obj);
+
+        for (DC_TYPE sub: getTypes())
+            if (sub.equals(obj))
+                return true;
+        return false;
     }
 
     @Override

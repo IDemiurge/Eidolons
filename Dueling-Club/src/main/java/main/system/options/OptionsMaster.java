@@ -37,6 +37,7 @@ import org.w3c.dom.Node;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,17 +56,23 @@ public class OptionsMaster {
               animOptions.getValues().get(sub).toString());
             ANIMATION_OPTION key = animOptions.getKey((sub.toString()));
             String value = animOptions.getValue(key);
-            if (!StringMaster.isInteger(value)) {
+            if (StringMaster.isInteger(value)) {
+                Integer intValue = StringMaster.getInteger(value);
+                switch (key) {
+                    case SPEED:
+                        AnimMaster.getInstance().setAnimationSpeedFactor(
+                         new Float(intValue) / 100);
+                }
+            } else {
                 switch (key) {
                     case WAIT_FOR_ANIM:
                         break;
                     case MAX_ANIM_WAIT_TIME:
                         break;
                     case PARALLEL_DRAWING:
-                        AnimMaster.getInstance(). setParallelDrawing(  Boolean.valueOf(value));
+                        AnimMaster.getInstance().setParallelDrawing(Boolean.valueOf(value));
                         break;
-                    case SPEED:
-                        break;
+
                     case TEXT_DURATION:
                         break;
                     case PRECAST_ANIMATIONS:
@@ -80,7 +87,7 @@ public class OptionsMaster {
 
 
         }
-        }
+    }
 
     private static void applyGameplayOptions(GameplayOptions gameplayOptions) {
         for (Object sub : gameplayOptions.getValues().keySet()) {
@@ -99,9 +106,9 @@ public class OptionsMaster {
                           ));
                         break;
                     case GAME_DIFFICULTY:
-                        if (Eidolons.game!=null )
-                            if (Eidolons.game.getBattleMaster()!=null )
-                        Eidolons.game.getBattleMaster().getOptionManager().difficultySet(value);
+                        if (Eidolons.game != null)
+                            if (Eidolons.game.getBattleMaster() != null)
+                                Eidolons.game.getBattleMaster().getOptionManager().difficultySet(value);
                         break;
                     case DEFAULT_ACTIONS:
                         break;
@@ -113,7 +120,8 @@ public class OptionsMaster {
                         break;
                 }
             }
-        }}
+        }
+    }
 
     private static void applySoundOptions(SoundOptions soundOptions) {
         for (Object sub : soundOptions.getValues().keySet()) {
@@ -138,19 +146,19 @@ public class OptionsMaster {
                         break;
                 }
             } else {
-            Integer integer = Integer.valueOf(value.toLowerCase());
-            Float v = new Float(integer) / 100;
-            switch (key) {
-                case MASTER_VOLUME:
-                    SoundMaster.setMasterVolume(integer);
-                    MusicMaster.resetVolume();
-                    break;
-                case MUSIC_VOLUME:
-                    MusicMaster.resetVolume();
-                    //auto
-                    break;
+                Integer integer = Integer.valueOf(value.toLowerCase());
+                Float v = new Float(integer) / 100;
+                switch (key) {
+                    case MASTER_VOLUME:
+                        SoundMaster.setMasterVolume(integer);
+                        MusicMaster.resetVolume();
+                        break;
+                    case MUSIC_VOLUME:
+                        MusicMaster.resetVolume();
+                        //auto
+                        break;
+                }
             }
-        }
         }
     }
 
@@ -256,13 +264,14 @@ public class OptionsMaster {
         applyGameplayOptions(getGameplayOptions());
 
         if (!GdxMaster.isGuiReady())
-            return ;
-        if (AnimMaster.getInstance()==null )
-            return ;
+            return;
+        if (AnimMaster.getInstance() == null)
+            return;
         if (GdxMaster.isLwjglThread()) {
-            Gdx.app.postRunnable(()->
+            applyAnimOptions(getAnimOptions());
+        } else
+            Gdx.app.postRunnable(() ->
              applyAnimOptions(getAnimOptions()));
-        }
     }
 
 
@@ -295,11 +304,13 @@ public class OptionsMaster {
 
     public static void openMenu() {
         if (optionsPanelFrame != null) {
-            optionsPanelFrame.setVisible(false);
+//            optionsPanelFrame.setVisible(false);
+            optionsPanelFrame.dispatchEvent(new WindowEvent(optionsPanelFrame, WindowEvent.WINDOW_CLOSING));
+
         }
-            optionsPanel  = new OptionsPanel(optionsMap);
-            optionsPanelFrame = GuiManager.inNewWindow(optionsPanel,
-             "Options", new Dimension(800, 600));
+        optionsPanel = new OptionsPanel(optionsMap);
+        optionsPanelFrame = GuiManager.inNewWindow(optionsPanel,
+         "Options", new Dimension(800, 600));
 
 
     }
@@ -327,7 +338,7 @@ public class OptionsMaster {
 
     public static void init() {
         if (initialized)
-            return ;
+            return;
         String data = FileManager.readFile(getOptionsPath());
         if (data.isEmpty()) {
             optionsMap = initDefaults();

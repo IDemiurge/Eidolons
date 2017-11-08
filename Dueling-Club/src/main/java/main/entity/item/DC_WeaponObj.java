@@ -413,6 +413,9 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     public void setAmmo(DC_QuickItemObj ammo) {
         this.ammo = ammo;
         if (ammo == null) {
+            getHero().getRef().removeValue(KEYS.AMMO);
+            if (getHero().getRef().getActive() != null)
+            getHero().getRef().getActive().getRef(). removeValue(KEYS.AMMO);
             ref.removeValue(KEYS.AMMO);
         } else {
             ref.setID(KEYS.AMMO, ammo.getId());

@@ -118,7 +118,7 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     public void toBase() {
         super.toBase();
-        name = super.getName()
+        name = getProp("Name")
          + StringMaster.wrapInParenthesis(StringMaster
          .getWellFormattedString(getProperty(PROPS.VISIBILITY_STATUS)));
     }

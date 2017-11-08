@@ -202,6 +202,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
              * max / 100;
 
         int min = 0;
+        if (unit.getGame().isDebugMode())
+            if (base != PARAMS.FOCUS)
+        {
+            min = unit.getIntParam(base);
+        }
 //                    max = unit.getIntParam(PARAMS.BASE_FOCUS);//*3/2;
 ////                    unit.getIntParam(PARAMS.FOCUS_RETAINMENT) ;
         value = MathMaster.getMinMax(value, min, max);

@@ -28,6 +28,7 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
 
     protected PartyObj party;
     protected boolean chooseOneHero;
+    protected boolean randomOneHero;
     private int partyLevel;
 
     public PartyManager(MetaGameMaster master) {
@@ -117,6 +118,22 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
 
     public void preStart() {
 
+    }
+
+    public boolean isChooseOneHero() {
+        return chooseOneHero;
+    }
+
+    public void setChooseOneHero(boolean chooseOneHero) {
+        this.chooseOneHero = chooseOneHero;
+    }
+
+    public boolean isRandomOneHero() {
+        return randomOneHero;
+    }
+
+    public void setRandomOneHero(boolean randomOneHero) {
+        this.randomOneHero = randomOneHero;
     }
 
     public String checkLeveledHeroVersionNeeded(String heroName) {

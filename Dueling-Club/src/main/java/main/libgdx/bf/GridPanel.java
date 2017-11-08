@@ -16,6 +16,7 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.Coordinates;
@@ -264,6 +265,10 @@ public class GridPanel extends Group {
     }
 
     private void bindEvents() {
+
+        GuiEventManager.bind(GuiEventType.ANIMATION_QUEUE_FINISHED, (p)->{
+            resetVisible();
+        });
         GuiEventManager.bind(UNIT_GREYED_OUT_ON, obj -> {
             BattleFieldObject bfObj = (BattleFieldObject) obj.get();
             if (bfObj.isOverlaying())
@@ -271,6 +276,7 @@ public class GridPanel extends Group {
             UnitView unitView = getUnitView(bfObj);
             unitView.setFlickering(true);
             unitView.setGreyedOut(true);
+//            unitView.setVisible(true);
         });
         GuiEventManager.bind(UNIT_GREYED_OUT_OFF, obj -> {
             BattleFieldObject bfObj = (BattleFieldObject) obj.get();
@@ -279,6 +285,9 @@ public class GridPanel extends Group {
             UnitView unitView = getUnitView(bfObj);
             unitView.setGreyedOut(false);
             unitView.setFlickering(false);
+//            ActorMaster.getActionsOfClass(unitView, AlphaAction.class);
+            unitView.getActions().clear();
+//            unitView.setVisible(true);
         });
 
         GuiEventManager.bind(UNIT_STARTS_MOVING, obj -> {
@@ -760,12 +769,16 @@ public class GridPanel extends Group {
             if (view.getActions().size == 0) {
                 if (sub.isDead())
                     view.setVisible(false);
-                GridCellContainer cellContainer =
-                 cells[sub.getCoordinates().x][rows - sub.getCoordinates().y-1];
-                if (view.getParent() != cellContainer) {
-                   view.remove();
-                   cellContainer.addActor(view);
-                }
+                if (!AI_Manager.isRunning())
+                    if (!sub.isOverlaying()) {
+                        GridCellContainer cellContainer =
+                         cells[sub.getCoordinates().x][rows - sub.getCoordinates().y - 1];
+                        {
+                            if (view.getParent() != cellContainer)
+                                view.remove();
+                            cellContainer.addActor(view);
+                        }
+                    }
             }
         }
         resetVisibleRequired = false;

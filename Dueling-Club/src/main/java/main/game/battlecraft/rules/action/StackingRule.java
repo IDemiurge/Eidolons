@@ -131,7 +131,7 @@ public class StackingRule implements ActionRule {
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
         for (BattleFieldObject u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
             if (!units.contains(u)) {
-//                if (!u.isDead())
+                if (!u.isAnnihilated())
 //                    continue; TODO why was Type necessary?
                 units.addCast(!u.isDead()? u.getType() : u);
                 if (u.isWall())

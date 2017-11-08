@@ -147,10 +147,9 @@ public class CompositeAnim implements Animation {
             }
             for (Animation sub : new LinkedList<>(attached.get(ANIM_PART.AFTEREFFECT))) {
                 map.put(ANIM_PART.AFTEREFFECT, (Anim) sub);
-                attached.get(ANIM_PART.AFTEREFFECT).remove(sub);
-                break;
-            }
 
+            }
+            attached.remove(ANIM_PART.AFTEREFFECT);
 //            part = ANIM_PART.AFTEREFFECT; //TODO rework this!
 //            triggerFinishEvents();
             return true;

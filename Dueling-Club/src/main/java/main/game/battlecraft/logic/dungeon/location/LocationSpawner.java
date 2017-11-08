@@ -1,5 +1,6 @@
 package main.game.battlecraft.logic.dungeon.location;
 
+import main.client.cc.logic.party.PartyObj;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
@@ -51,21 +52,21 @@ public class LocationSpawner extends Spawner<Location> {
             if (FileManager.isFile(units))
                 return spawnUnitGroup(player.isMe(), units);
         }
-       if (player.isMe() && PresetMaster.getPreset() == null && getGame().getMetaMaster()!=null ) {
+        if (player.isMe() && PresetMaster.getPreset() == null && getGame().getMetaMaster() != null) {
+            PartyObj party = getGame().getMetaMaster().getPartyManager()
+             .getParty();
             List<String> list = ListMaster.toNameList(
-             getGame().getMetaMaster().getPartyManager()
-              .getParty().getMembers());
+             party.getMembers());
             getPositioner().setMaxSpacePercentageTaken(50);
-           List<Coordinates> coords = getPositioner().getPlayerPartyCoordinates(list);
+            List<Coordinates> coords = getPositioner().getPlayerPartyCoordinates(list);
             Iterator<Coordinates> iterator = coords.iterator();
 
-            for (Unit member : getGame().getMetaMaster().getPartyManager().getParty().getMembers()) {
-if (!iterator.hasNext())
-{
-    main.system.auxiliary.log.LogMaster.log(1,"Spawn failed: Coordinates: " +coords +
-     "; Units" +list);
-    break;
-}
+            for (Unit member : party.getMembers()) {
+                if (!iterator.hasNext()) {
+                    main.system.auxiliary.log.LogMaster.log(1, "Spawn failed: Coordinates: " + coords +
+                     "; Units" + list);
+                    break;
+                }
                 member.setCoordinates(iterator.next());
                 member.setConstructed(false);
                 getGame().getState().addObject(member);

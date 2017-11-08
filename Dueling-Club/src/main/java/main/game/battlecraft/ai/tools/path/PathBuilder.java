@@ -355,11 +355,10 @@ public class PathBuilder extends AiHandler {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+         int size = path.getActions().size();
+         result = result
+         * getParamAnalyzer().getActionNumberFactor(size) / 100;
         path.setPriority(result);
-        // int size = path.getActions()
-        // .size();
-        // result = result
-        // * PriorityManager.getActionNumberFactor(size) / 100;
         return result;
     }
 

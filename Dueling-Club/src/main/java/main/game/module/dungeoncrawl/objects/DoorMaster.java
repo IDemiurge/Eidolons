@@ -25,12 +25,42 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         super(dungeonMaster);
     }
 
+    private static DOOR_STATE getState(DOOR_ACTION sub) {
+        switch (sub) {
+            case OPEN:
+                return DOOR_STATE.OPEN;
+            case CLOSE:
+                return DOOR_STATE.CLOSED;
+            case LOCK:
+                return DOOR_STATE.LOCKED;
+            case UNLOCK:
+                return DOOR_STATE.CLOSED;
+            case UNSEAL:
+                return DOOR_STATE.OPEN;
+        }
+        return null;
+    }
 
-@Override
-    protected    boolean actionActivated(DOOR_ACTION sub,
-                                           Unit unit, DungeonObj obj) {
-    Door door= (Door) obj;
-    if (sub == DOOR_ACTION.UNLOCK) {
+    public static boolean isDoor(BattleFieldObject door) {
+        return door.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase(BF_OBJECT_GROUP.DOOR.toString());
+
+    }
+
+    public static boolean tryPickLock(Door door) {
+
+        return false;
+    }
+
+    public static boolean isOpen(Door door) {
+        return door.getState() == DOOR_STATE.OPEN;
+
+    }
+
+    @Override
+    protected boolean actionActivated(DOOR_ACTION sub,
+                                      Unit unit, DungeonObj obj) {
+        Door door = (Door) obj;
+        if (sub == DOOR_ACTION.UNLOCK) {
             if (!tryPickLock(door))
                 return true;
         }
@@ -49,26 +79,13 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         return true;
     }
 
-    private static DOOR_STATE getState(DOOR_ACTION sub) {
-        switch (sub) {
-            case OPEN:
-                return DOOR_STATE.OPEN;
-            case CLOSE:
-                return DOOR_STATE.CLOSED;
-            case LOCK:
-                return DOOR_STATE.LOCKED;
-            case UNLOCK:
-                return DOOR_STATE.CLOSED;
-            case UNSEAL:
-                return DOOR_STATE.OPEN;
-        }
-        return null;
-    }
-
     protected boolean checkAction(Unit unit, Door door, DOOR_ACTION sub) {
         switch (sub) {
             case OPEN:
 //            case LOCK: //TODO
+                if (door.getGame().getUnitsForCoordinates(door.getCoordinates()).size() > 1) {
+                    return false;
+                }
                 return !isOpen(door);
             case CLOSE:
                 return isOpen(door);
@@ -81,29 +98,11 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         return false;
     }
 
-
-    public static boolean isDoor(BattleFieldObject door) {
-        return door.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase(BF_OBJECT_GROUP.DOOR.toString());
-
-    }
-
-
-
-    public static boolean tryPickLock(Door door) {
-
-        return false;
-    }
-
-    public static boolean isOpen(Door door) {
-        return door.getState() == DOOR_STATE.OPEN;
-
-    }
-
     @Override
     public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
 
         for (DOOR_ACTION sub : DOOR_ACTION.values()) {
-            if (checkAction(source, (Door) target, sub)){
+            if (checkAction(source, (Door) target, sub)) {
                 return createAction(sub, source, target);
             }
         }
@@ -126,7 +125,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         for (DOOR_ACTION sub : DOOR_ACTION.values()) {
 
             if (checkAction(unit, (Door) door, sub)) {
-                action = createAction(sub, unit,   door);
+                action = createAction(sub, unit, door);
                 action.getTargeting().getConditions().add(new DistanceCondition("1", true));
 
                 if (action != null) {

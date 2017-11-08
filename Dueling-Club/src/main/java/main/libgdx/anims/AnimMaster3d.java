@@ -23,14 +23,11 @@ import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.sprite.SpriteAnimationFactory;
 import main.libgdx.anims.weapons.Ready3dAnim;
 import main.libgdx.texture.TexturePackerLaunch;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.BooleanMaster;
-import main.system.math.PositionMaster;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -53,16 +50,50 @@ public class AnimMaster3d {
     private static final int[] width_for_size = {
      256, 320, 384, 448, 512,
     };
+    private static final String[][] substitutesWeapons = {
+     {"orcish arrows", "arrows"},
+     {"elven arrows", "arrows"},
+
+     {"heavy bolts", "bolts"},
+     {"longbow", "short bow"},
+     {"dagger", "stiletto"},
+     {"dirk", "stiletto"},
+     {"knife", "stiletto"},
+     {"kriss", "stiletto"},
+
+     {"mace", "war hammer"},
+     {"club", "war hammer"},
+     {"battle hammer", "war hammer"},
+     {"maul", "war hammer"},
+
+     {"great sword", "long sword"},
+     {"flamberg", "long sword"},
+     {"claymore", "long sword"},
+     {"broad sword", "long sword"},
+
+     {"falchion", "scimitar"},
+
+    };
+    private static final String[][] substitutesActions = {
+     {"fist swing", "punch"},
+     {"aimed shot", "quick shot"}
+    };
     private static Map<String, TextureAtlas> atlasMap = new HashMap<>();
     private static List<DC_WeaponObj> broken = new LinkedList<>();
+    private static Map<String, String> substituteMap;
 
-    public AnimMaster3d() {
-        GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
-
-        });
+    public static void init() {
+        substituteMap = new HashMap<>();
+        for (String[] sub : substitutesWeapons) {
+            substituteMap.put(sub[0], sub[1]);
+        }
+        for (String[] sub : substitutesActions) {
+            substituteMap.put(sub[0], sub[1]);
+        }
     }
 
     public static boolean is3dAnim(DC_ActiveObj active) {
+        if (!active.isAttackAny()) return false;
         DC_WeaponObj weapon = active.getActiveWeapon();
         if (!is3dSupported(weapon))
             return false;
@@ -147,7 +178,7 @@ public class AnimMaster3d {
             weapon = weapon.getLastAmmo().getWrappedWeapon();
 
         }
-        if (aCase.isMiss()) {
+        if (aCase.isMiss() && isMissSupported()) {
             actionName = "miss";
         } else
             switch (aCase) {
@@ -168,15 +199,38 @@ public class AnimMaster3d {
                     actionName = "blocked";
                     break;
                 default:
-                    actionName = activeObj.getName().replace("Offhand ", "");
+                    actionName = getActionAtlasKey(activeObj);
             }
         Boolean offhand = null;
         if (isAssymetric(weapon.getProperty(G_PROPS.BASE_TYPE)))
             offhand = (activeObj.isOffhand());
 
         return getAtlasFileKeyForAction(projectionString,
-         weapon.getProperty(G_PROPS.BASE_TYPE),
+         getWeaponAtlasKey(weapon),
          actionName, offhand);
+    }
+
+    private static boolean isMissSupported() {
+        return false;
+    }
+
+    private static String getActionAtlasKey(DC_ActiveObj activeObj) {
+        String name = activeObj
+         .getName().replace("Off Hand ", "");
+        String substitute = substituteMap.get(name.toLowerCase());
+        if (substitute != null) {
+            return substitute;
+        }
+        return name;
+    }
+
+    private static String getWeaponAtlasKey(DC_WeaponObj weapon) {
+        String name = weapon.getProperty(G_PROPS.BASE_TYPE);
+        String substitute = substituteMap.get(name.toLowerCase());
+        if (substitute != null) {
+            return substitute;
+        }
+        return name;
     }
 
     public static String getAtlasPath(DC_WeaponObj weapon) {
@@ -229,6 +283,7 @@ public class AnimMaster3d {
         }
         if (regions.size == 0) {
             if (activeObj.getParentAction() != null)
+                if (isSearchAtlasRegions(activeObj))
                 regions = findAtlasRegions(atlas, projection, activeObj, false);
         }
         if (regions.size == 0)
@@ -245,8 +300,7 @@ public class AnimMaster3d {
         float frameDuration = duration / regions.size;
         int loops = 0;
         if (aCase.isMissile()) {
-            loops = Math.max(0,
-             PositionMaster.getDistance(activeObj.getOwnerObj(), targetObj) - 1);
+//            loops = Math.max(0,PositionMaster.getDistance(activeObj.getOwnerObj(), targetObj) - 1);
         }
         if (loops != 0)
             frameDuration /= loops;
@@ -371,7 +425,8 @@ public class AnimMaster3d {
     }
 
     private static boolean isReadyAnimSupported(DC_UnitAction entity) {
-        return entity.getActiveWeapon().getName().contains("Short Sword");
+        return is3dAnim(entity);
+//        return entity.getActiveWeapon().getName().contains("Short Sword");
     }
 
     private static Anim getReadyAnim(DC_UnitAction entity) {

@@ -101,7 +101,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return e;
     }
 
-    private static void fallUnconscious(Unit unit) {
+    public static void fallUnconscious(Unit unit) {
         if (unit.getAI().isOutsideCombat()){
             unit.getAI().isOutsideCombat();
         }
@@ -149,16 +149,15 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
             if (!canBeAnnihilated(unit)) {
                 return false;
             }
-        } else
+        } else {
             if (!canFallUnconscious(unit)) {
-            return toughness <= 0;
-        }
-            if (checkFallsUnconscious(unit))
-            {
+                return toughness <= 0;
+            }
+            if (checkFallsUnconscious(unit)) {
                 fallUnconscious(unit);
                 return false;
             }
-
+        }
         Integer max_toughness = unit.getIntParam(PARAMS.TOUGHNESS);
         if (barrier == null) {//  TODO some attacks may reduce the barrier...
             barrier = getDeathBarrier(unit);   // TODO + PARAMS.DEATH_BARRIER_MOD
@@ -199,8 +198,9 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     //returns true if unit Recovers
     public boolean checkStatusUpdate(Unit unit) {
-        if (unit.isDead() && !unit.isAnnihilated()) {
-            if (checkUnitDies(unit, DEFAULT_ANNIHILATION_BARRIER, false)) {
+        if (unit.isDead())  {
+            if (unit.isAnnihilated())
+                if (checkUnitAnnihilated(unit)) {
                 unit.getGame().getManager().getDeathMaster().unitAnnihilated(unit, unit);
 
             }
@@ -216,6 +216,10 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         }
 
         return false;
+    }
+
+    public boolean checkUnitAnnihilated(Unit unit) {
+        return checkUnitDies(unit, DEFAULT_ANNIHILATION_BARRIER, false);
     }
 
     @Override

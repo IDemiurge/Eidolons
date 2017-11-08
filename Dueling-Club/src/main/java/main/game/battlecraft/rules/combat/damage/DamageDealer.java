@@ -17,12 +17,9 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
-import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.PhaseAnimation;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 /**
@@ -378,25 +375,35 @@ public class DamageDealer {
         int damageDealt = Math.max(actual_e_damage, actual_t_damage);
 
         boolean dead = DamageCalculator.isDead(attacked);
-        try {
-            PhaseAnimation animation = PhaseAnimator.getAnimation(ref, attacked);
-            if (animation != null) {
-                animation.addPhaseArgs(PHASE_TYPE.DAMAGE_DEALT, toughness_dmg, endurance_dmg, ref
-                 .getDamageType());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        boolean annihilated = attacked instanceof Unit?
+         attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked)
+         : false;
+        boolean unconscious = attacked instanceof Unit?
+         attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked)
+         : false;
+
         if (dead) {
             // will start new entry... a good preCheck
             try {
-                attacked.kill(attacker, true, false);
+                attacked.kill(attacker, !annihilated, false);
+                if  (annihilated) {
+                    attacked.getGame().getManager().getDeathMaster().
+                     unitAnnihilated(attacked, attacker);
+
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
             ref.setAmount(damageDealt);
             // if (DC_GameManager.checkInterrupted(ref))
             // return 0; ???
+        }
+        else {
+            if (unconscious) {
+                attacked.getGame().getRules().getUnconsciousRule().
+                 fallUnconscious((Unit) attacked);
+            }
         }
         if (toughness_dmg < 0 || endurance_dmg < 0) {
             LogMaster.log(1, toughness_dmg + "rogue damage " + endurance_dmg);

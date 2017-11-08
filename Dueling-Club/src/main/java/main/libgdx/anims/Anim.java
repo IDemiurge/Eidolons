@@ -29,8 +29,6 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
-import main.system.options.AnimationOptions.ANIMATION_OPTION;
-import main.system.options.OptionsMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
@@ -700,7 +698,7 @@ public class Anim extends Group implements Animation {
     }
 
     public void setDuration(float duration) {
-        float mod =101/ (1+OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED));
+        float mod = 1/ ( AnimMaster.getInstance().getAnimationSpeedFactor());
         if (mod > 0)
             this.duration = duration * mod;
         else {
@@ -712,7 +710,7 @@ public class Anim extends Group implements Animation {
             pixelsPerSecond = data.getIntValue(ANIM_VALUES.MISSILE_SPEED);
         } else
             pixelsPerSecond= getDefaultSpeed();
-        float mod =new Float( OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)) /100;
+        float mod =new Float(AnimMaster.getInstance().getAnimationSpeedFactor())  ;
         if (mod > 0)
             return  pixelsPerSecond * mod;
         return pixelsPerSecond;
@@ -746,6 +744,16 @@ public class Anim extends Group implements Animation {
     public void setRef(Ref ref) {
         this.ref = Ref.getCopy(ref);
         main.system.auxiliary.log.LogMaster.log(1,this + " started with ref: " +ref);
+        if (ref.getTargetObj()==null ){
+            main.system.auxiliary.log.LogMaster.log(1,this + " HAS NULL TARGET!");
+            if (ref.getActive()!=null ){
+                ref.setTarget(ref.getActive().getRef().getTarget());
+                if (ref.getTargetObj()!=null ){
+                    main.system.auxiliary.log.LogMaster.log(1,ref.getActive() + " HAD TARGET! " +
+                     ref.getTargetObj());
+                }
+            }
+        }
     }
 
     public float getDelay() {

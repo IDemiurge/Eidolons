@@ -573,7 +573,7 @@ public class DC_GameManager extends GameManager {
     public void applyActionRules(DC_ActiveObj action) {
         if (action != null) {
             for (ActionRule a : getGame().getRules().getActionRules()) {
-                try {
+          if (a.isAppliedOnExploreAction(action))      try {
                     a.actionComplete(action);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -588,6 +588,7 @@ public class DC_GameManager extends GameManager {
         if (getGame().getDebugMaster() != null) {
             event.getRef().setDebug(getGame().getDebugMaster().isDebugFunctionRunning());
         }
+        if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null ))
         if (AnimMaster.isOn()) {
             if (!Showcase.isRunning())
                 AnimMaster.getInstance().getConstructor().preconstruct(event);

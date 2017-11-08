@@ -30,6 +30,9 @@ import java.util.List;
 
 public class MusicMaster {
     public static final int PERIOD = 3500;
+    public static final String MASTER_PATH = PathFinder.getMusicPath()+"\\main\\";
+    public static final boolean MASTER_MODE = true;
+
     public static final String MOMENT_PATH = "\\music\\moments\\";
     public static final String ATMO_PATH = "\\music\\atmo\\";
     public static final String MUSIC_PATH = "\\music\\";
@@ -52,6 +55,8 @@ public class MusicMaster {
     private boolean running;
 
     private Map<MUSIC_SCOPE, Music> trackCache = new XLinkedMap<>();
+    private Thread thread;
+    private boolean interruptOnSet;
     // IDEA: map music per scope to resume()
 // TODO AMBIENT SOUNDS -
 
@@ -170,6 +175,10 @@ public class MusicMaster {
     }
 
     private void checkNewMusicToPlay() {
+        if (!interruptOnSet)
+            if (playedMusic!=null )
+                if (playedMusic.isPlaying())
+            return ;
         if (ListMaster.isNotEmpty(playList)) {
             playMusic(playList.pop());
             return;
@@ -216,7 +225,14 @@ public class MusicMaster {
     }
 
     private String getMusicFolder() {
-
+if (MASTER_MODE)
+{
+    if (scope==MUSIC_SCOPE.BATTLE)
+        return  MASTER_PATH+"battle";
+    if (scope==MUSIC_SCOPE.MENU)
+        return  MASTER_PATH+"menu";
+    return MASTER_PATH;
+}
         StrPathBuilder builder = new StrPathBuilder(PathFinder.getMusicPath());
         if (scope != null)
             builder.append(StringMaster.getWellFormattedString(
@@ -238,6 +254,13 @@ public class MusicMaster {
     }
 
     public void startLoop() {
+        if (thread!=null )
+        {
+            resume();
+            checkNewMusicToPlay();
+            return ;
+        }
+        thread =
         new Thread(() -> {
             while (true) {
                 try {
@@ -257,7 +280,8 @@ public class MusicMaster {
                 }
             }
 //        MusicMaster.this.running=false;
-        }, "Music Thread").start();
+        }, "Music Thread");
+        thread.start();
         running=true;
     }
 
@@ -305,6 +329,7 @@ public class MusicMaster {
     public void setScope(MUSIC_SCOPE scope) {
         if (scope!=this.scope) {
             this.scope = scope;
+            if (interruptOnSet)
             musicReset();
         }
     }
@@ -312,12 +337,14 @@ public class MusicMaster {
     public void setVariant(MUSIC_VARIANT variant) {
         if (variant!=this.variant){
         this.variant = variant;
+            if (interruptOnSet)
         musicReset();
         }
     }
 
     public void setTheme(MUSIC_THEME theme) {
         this.theme = theme;
+        if (interruptOnSet)
         musicReset();
     }
 

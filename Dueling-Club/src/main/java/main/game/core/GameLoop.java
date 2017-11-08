@@ -168,8 +168,9 @@ public class GameLoop {
             } catch (Exception e) {
                 AI_Manager.setOff(true);
                 if (!aiFailNotified) {
-                    Err.error("Sorry, autopilot failed, you gotta take control now or we're dead!");
+                    Err.error("Sorry, AI failed, but you can control their units now...");
                     aiFailNotified = true;
+                    result = activateAction(waitForPlayerInput());
                 }
                 e.printStackTrace();
             }
@@ -250,6 +251,13 @@ public class GameLoop {
     protected ActionInput waitForAI() {
         Action aiAction =
          game.getAiManager().getAction(game.getManager().getActiveObj());
+        if (!aiAction.getActive().isChanneling())
+        if (!aiAction.canBeTargeted()){
+            {
+                AI_Manager.getBrokenActions().add(aiAction.getActive());
+                return null ;
+            }
+        }
         return new ActionInput(aiAction.getActive(), new Context(aiAction.getRef()));
     }
 

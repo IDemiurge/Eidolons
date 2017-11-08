@@ -104,9 +104,7 @@ public class DC_PriorityManager {
     }
 
 
-    //    public int getActionNumberFactor(int n) {
-//        return MathMaster.calculateFormula(ACTION_FORMULA, n);
-//    }
+
 
 
 }

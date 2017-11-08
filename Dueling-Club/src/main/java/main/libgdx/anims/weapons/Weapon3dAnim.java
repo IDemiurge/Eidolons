@@ -62,14 +62,7 @@ public class Weapon3dAnim extends ActionAnim {
         if (sprite==null )
             return ;
 
-        boolean offhand = getActive().isOffhand();
-        Boolean flipHor = null;
-        if (getProjection() == PROJECTION.HOR) {
-            flipHor =getActive().getOwnerObj().getFacing()== FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerObj(), targetObj);
-        } else {
-            flipHor = offhand;
-        }
-        sprite.setFlipX(flipHor);
+        sprite.setFlipX(checkFlipHorizontally());
         getSprites().clear();
         getSprites().add(sprite);
         if (sprite.getRegions().size==0)
@@ -79,6 +72,17 @@ public class Weapon3dAnim extends ActionAnim {
         int h = new FuncMaster<AtlasRegion>().getGreatest_((Arrays.asList(sprite.getRegions().toArray())),
          r -> r.getRegionHeight()).getRegionHeight();
         setSize(w, h);
+    }
+
+    protected boolean checkFlipHorizontally() {
+        boolean offhand = getActive().isOffhand();
+        boolean flipHor = false;
+        if (getProjection() == PROJECTION.HOR) {
+            flipHor =getActive().getOwnerObj().getFacing()== FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerObj(), targetObj);
+        } else {
+            flipHor = offhand;
+        }
+        return flipHor;
     }
 
     protected SpriteAnimation get3dSprite() {

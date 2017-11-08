@@ -4,7 +4,6 @@ import main.entity.DataModel;
 import main.game.battlecraft.logic.battle.mission.MissionBattleMaster;
 import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.battlecraft.logic.meta.scenario.hq.HqShopManager;
-import main.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import main.game.battlecraft.logic.meta.universal.*;
 import main.game.core.Eidolons;
 import main.game.core.game.ScenarioGame;
@@ -48,15 +47,20 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
         }
         super.next(outcome);
         if (outcome) {
+            if (getMetaGame().isFinalLevel()) {
+                getBattleMaster().getOutcomeManager().victory();
+                return;
+            }
+
             ScenarioLauncher.missionIndex++;
-//        no need    getMetaDataManager().setMissionName(null );
+
         }
-        if (ScenarioLauncher.missionIndex >= 6) {
-            ScreenData data = new ScreenData(ScreenType.BATTLE, getMissionName(),
-             new SceneFactory("Test"));
-            GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
-            return;
-        }
+//        if (ScenarioLauncher.missionIndex >= 6) {
+//            ScreenData data = new ScreenData(ScreenType.BATTLE, getMissionName(),
+//             new SceneFactory("Test"));
+//            GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
+//            return;
+//        }
 //   TODO       getDialogueManager().getDialogueForMission(getMissionName());
         getMetaDataManager().setMissionName(null);
         getMetaDataManager().initMissionName();

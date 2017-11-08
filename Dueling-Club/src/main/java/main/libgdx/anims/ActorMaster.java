@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
+import main.libgdx.anims.actions.RotateByActionLimited;
 import main.libgdx.anims.particles.EmitterActor;
 import main.system.auxiliary.ClassMaster;
 
@@ -111,12 +112,12 @@ public class ActorMaster {
             });
             actor.setRotation(from);
         }
-        RotateByAction action = (RotateByAction) getAction(RotateByAction.class);// new RotateByAction();
+        RotateByActionLimited  action = (RotateByActionLimited) getAction(RotateByActionLimited.class);// new RotateByAction();
         action.setAmount(to - from);
         if (Math.abs(action.getAmount()) >= 270)
             action.setAmount((action.getAmount() + 360) % 360);
 
-        float speed = 360; //* options
+        float speed = 360*AnimMaster.getInstance().getAnimationSpeedFactor(); //* options
         float duration = Math.abs(from - to) / speed;
         action.setDuration(duration);
         actor.addAction(action);

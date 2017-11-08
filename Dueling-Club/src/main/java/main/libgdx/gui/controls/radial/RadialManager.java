@@ -246,7 +246,8 @@ public class RadialManager {
 
         List<ActiveObj> actives = new LinkedList<>(sourceUnit.getActives());
 //        actives.addAll(sourceUnit.getSpells());
-        sourceUnit.getQuickItems().forEach(item -> {
+        if (sourceUnit.getQuickItems() != null)
+            sourceUnit.getQuickItems().forEach(item -> {
             if (isQuickItemShown(item, target)) {
                 actives.add(item.getActive());
             }

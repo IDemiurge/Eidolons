@@ -51,24 +51,19 @@ public class JUnitClearshotTest extends FastDcTest {
     }
 
     protected void checkObj(DC_Obj sub, boolean hero_inside, boolean inside) {
-        OUTLINE_TYPE outline = OUTLINE_TYPE.BLOCKED_OUTLINE;
+        OUTLINE_TYPE outline = sub.getOutlineType();
         boolean blocked = hero_inside != inside;
+
         if (blocked)
-            if (sub.getOutlineType() == outline)
-                assertTrue(true);
-            else
+            if (OUTLINE_TYPE.BLOCKED_OUTLINE != outline)
                 assertTrue(game.getVisionMaster().getSightMaster().getClearShotCondition().check(getHero(), sub));
-        else if (sub.getOutlineType() != outline)
-            assertTrue(true);
-        else
+        else if (OUTLINE_TYPE.BLOCKED_OUTLINE == outline)
             assertTrue(false);
 
         if (sub instanceof BattleFieldObject)
             if (!sub.isMine())
                 if (sub.getVisibilityLevelForPlayer() != VISIBILITY_LEVEL.UNSEEN)
                     assertTrue(false);
-                else
-                    assertTrue(true);
     }
 
 
@@ -179,12 +174,17 @@ public class JUnitClearshotTest extends FastDcTest {
 
     @Test
     public void makeChecks() {
-        checkClearshots();
+
+
+        checkClearshots(false);
+        checkClearshots(true);
         diagonal = true;
-        checkClearshots();
+        checkClearshots(false);
+        checkClearshots(true);
     }
 
-    public void checkClearshots() {
+    public void checkClearshots(boolean breakMode) {
+        ClearShotCondition.setUnitTestBreakMode(breakMode);
         for (int x = 0; x < game.getBF_Width(); x++)
             for (int y = 0; y < game.getBF_Height(); y++) {
                 Coordinates c = new Coordinates((x), y);

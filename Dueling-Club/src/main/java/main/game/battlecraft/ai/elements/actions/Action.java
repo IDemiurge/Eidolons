@@ -96,6 +96,8 @@ public class Action {
     }
 
     public boolean canBeTargeted() {
+        if (getTarget() == null)
+            return true;
         return canBeTargeted(getTarget().getId());
     }
 

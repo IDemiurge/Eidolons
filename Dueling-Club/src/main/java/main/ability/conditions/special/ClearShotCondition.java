@@ -31,6 +31,7 @@ public class ClearShotCondition extends MicroCondition {
     private String str1;
     private String str2;
     private int log_priority = 1;
+    private static boolean unitTestBreakMode;
 
     public ClearShotCondition() {
         this(KEYS.SOURCE.toString(), KEYS.MATCH.toString());
@@ -294,7 +295,9 @@ if (!(obj instanceof DC_Obj)){
     }
 
     private boolean checkWallObstruction(DC_Obj source, DC_Obj target, Coordinates coordinates) {
-
+        if (isUnitTestBreakMode()) {
+            return false;
+        }
         DIRECTION direction = DirectionMaster.getRelativeDirection(source, target);
         target.setBlockingCoordinate(coordinates);
         float angle = getAngle(source.getCoordinates(), target.getCoordinates());
@@ -507,7 +510,15 @@ if (!(obj instanceof DC_Obj)){
     public void setVision(boolean vision) {
         this.vision = vision;
     }
-// if there are 2 cells adjacent with diagonal
+
+    public static boolean isUnitTestBreakMode() {
+        return unitTestBreakMode;
+    }
+
+    public static void setUnitTestBreakMode(boolean unitTestBreakMode) {
+        ClearShotCondition.unitTestBreakMode = unitTestBreakMode;
+    }
+    // if there are 2 cells adjacent with diagonal
     // walls, we're blocked
 
     // TODO just preCheck that it goes the right way!

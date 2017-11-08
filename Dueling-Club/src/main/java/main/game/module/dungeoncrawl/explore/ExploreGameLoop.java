@@ -210,7 +210,8 @@ if (game.isDebugMode())
         if (!playerAction.getAction().canBeActivated(playerAction.getContext(), true))
             return false;
         if (playerAction.getAction().getTargeting() instanceof SelectiveTargeting)
-            if (!playerAction.getAction().canBeTargeted(playerAction.getContext().getTarget()))
+            if (playerAction.getContext().getTarget()!=null )
+                if (!playerAction.getAction().canBeTargeted(playerAction.getContext().getTarget()))
                 return false;
         return true;
     }

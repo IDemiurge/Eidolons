@@ -104,7 +104,7 @@ public class RadialMenu extends Group {
     }
 
     private float getOffsetX() {
-        return -30;
+        return -20;
     }
 
     private void setParents(RadialValueContainer el, RadialValueContainer parent) {

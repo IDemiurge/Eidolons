@@ -11,4 +11,5 @@ public class MissionOutcomeManager extends BattleOutcomeManager<MissionBattle> {
     public MissionOutcomeManager(BattleMaster<MissionBattle> master) {
         super(master);
     }
+
 }

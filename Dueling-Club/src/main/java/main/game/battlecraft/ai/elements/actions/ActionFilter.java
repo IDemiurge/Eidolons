@@ -3,6 +3,7 @@ package main.game.battlecraft.ai.elements.actions;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.tools.target.AI_SpellMaster;
 
 import java.util.Collection;
@@ -25,6 +26,8 @@ public class ActionFilter {
     }
 
     private static boolean checkException(DC_ActiveObj a) {
+        if (AI_Manager.getBrokenActions().contains(a))
+            return true;
         if (a.isRanged()) {
             if (!a.isThrow()) {
                 return true;

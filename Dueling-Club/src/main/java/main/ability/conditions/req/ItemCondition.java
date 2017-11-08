@@ -51,19 +51,20 @@ public class ItemCondition extends MicroCondition {
         }
         if (slot == null) {
             slot = (weapon) ? ItemEnums.ITEM_SLOT.MAIN_HAND.toString() : ItemEnums.ITEM_SLOT.ARMOR
-                    .toString();
+             .toString();
         }
         Entity item;
         Unit unit = (Unit) ref.getObj(obj_ref);
+        if (unit == null) {
+            return false;
+        }
         if (slot.equalsIgnoreCase(KEYS.RANGED.toString())) {
             item = unit.getRef().getObj(KEYS.RANGED);
         } else {
-            ITEM_SLOT slotConst = new EnumMaster<ITEM_SLOT>()
-                    .retrieveEnumConst(ITEM_SLOT.class, slot, true);
-            if (unit == null) {
-                return false;
-            }
-            item = unit.getItem(slotConst);
+            if (slot.equalsIgnoreCase("weapon"))
+                item = unit.getItem(!ref.getActive().isOffhand() ? ITEM_SLOT.MAIN_HAND : ITEM_SLOT.OFF_HAND);
+            else item = unit.getItem(new EnumMaster<ITEM_SLOT>()
+             .retrieveEnumConst(ITEM_SLOT.class, slot, true));
         }
 
         if (item == null) {

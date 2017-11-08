@@ -63,6 +63,7 @@ public class AnimMaster extends Group {
     private boolean drawing;
     private boolean drawingPlayer;
     private Boolean parallelDrawing;
+    private Float animationSpeedFactor;
 
     //animations will use emitters, light, sprites, text and icons
     private AnimMaster() {
@@ -77,6 +78,7 @@ public class AnimMaster extends Group {
 
         constructor = new AnimationConstructor();
         controller = new AnimController();
+        AnimMaster3d.init();
 //        bindEvents(); now in GridPanel.bindEvents()
 
     }
@@ -415,7 +417,9 @@ public class AnimMaster extends Group {
             leadAnimation = null;
             if (drawing) {
                 drawing = false;
+                main.system.auxiliary.log.LogMaster.log(1,"ANIMATION_QUEUE_FINISHED" );
                 WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, true);
+//                GuiEventManager.trigger(GuiEventType.ANIMATION_QUEUE_FINISHED);
             }
             drawingPlayer = false;
             return null;
@@ -514,4 +518,14 @@ public class AnimMaster extends Group {
         this.drawingPlayer = drawingPlayer;
     }
 
+    public float getAnimationSpeedFactor() {
+        if (animationSpeedFactor == null) {
+            animationSpeedFactor=new Float( OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED))/100;
+        }
+        return animationSpeedFactor;
+    }
+
+    public void setAnimationSpeedFactor(float animationSpeedFactor) {
+        this.animationSpeedFactor = animationSpeedFactor;
+    }
 }

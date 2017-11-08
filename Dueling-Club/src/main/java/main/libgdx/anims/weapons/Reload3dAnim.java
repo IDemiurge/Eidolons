@@ -1,6 +1,7 @@
 package main.libgdx.anims.weapons;
 
 import main.entity.active.DC_ActiveObj;
+import main.libgdx.anims.AnimMaster3d.PROJECTION;
 import main.libgdx.anims.AnimMaster3d.WEAPON_ANIM_CASE;
 
 /**
@@ -19,5 +20,10 @@ public class Reload3dAnim extends Weapon3dAnim {
     @Override
     protected void resetSprites() {
         super.resetSprites();
+    }
+
+    @Override
+    protected PROJECTION getProjection() {
+        return PROJECTION.HOR;
     }
 }

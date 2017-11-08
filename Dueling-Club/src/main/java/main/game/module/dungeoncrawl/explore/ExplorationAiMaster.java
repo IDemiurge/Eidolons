@@ -211,11 +211,12 @@ public class ExplorationAiMaster extends ExplorationHandler {
     }
 
     public DequeImpl<UnitAI> getAlliesAndActiveUnitAIs(boolean outOfBattleOnly) {
+
         DequeImpl<UnitAI> deque = new DequeImpl<>(allies.stream().map
          (unit -> unit.getAI()).collect(Collectors.toList()), getActiveUnitAIs());
-        if (outOfBattleOnly) {
-            deque.removeIf(ai -> !ai.isOutsideCombat());
-        }
+
+            deque.removeIf(ai -> ai.getUnit().isAnnihilated()||
+             (outOfBattleOnly&&!ai.isOutsideCombat()) );
         return deque;
     }
 

@@ -462,6 +462,8 @@ public class TestMasterContent {
         if (weapon.isShield()) {
             return false;
         }
+        if (weapon.getOwnerObj().getLevel()<4)
+            return false;
         return weapon.isMelee();
     }
 

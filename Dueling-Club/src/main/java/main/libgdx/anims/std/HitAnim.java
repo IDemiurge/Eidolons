@@ -98,6 +98,7 @@ public class HitAnim extends ActionAnim {
             return getRef().getTargetObj().getCoordinates();
         }
         if (getRef().getActive() != null) {
+            if (getRef().getActive().getRef().getTargetObj() != null)
             return getRef().getActive().getRef().getTargetObj().getCoordinates();
         }
 //
