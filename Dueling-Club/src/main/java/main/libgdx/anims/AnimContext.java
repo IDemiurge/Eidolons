@@ -1,6 +1,7 @@
 package main.libgdx.anims;
 
 import main.ability.effects.Effect;
+import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context;
@@ -25,9 +26,15 @@ public class AnimContext extends Context {
         this.effect = effect;
     }
 
+    public AnimContext(Ref ref) {
+        super(ref);
+    }
+
     public AnimContext(Obj source, Obj target) {
         super(source, target);
-        this.sourceCoordinate = source.getCoordinates();
+        if (source != null)
+            this.sourceCoordinate = source.getCoordinates();
+        if (target != null)
         this.targetCoordinate = target.getCoordinates();
     }
 }

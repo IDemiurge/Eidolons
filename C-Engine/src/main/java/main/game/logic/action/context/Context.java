@@ -39,6 +39,18 @@ public class Context extends Ref {
         source = getSourceObj();
     }
 
+    public void setSource(Obj source) {
+        this.source = source;
+        if (source != null)
+        setTarget(source.getId());
+    }
+
+    public void setTarget(Obj target) {
+        this.target = target;
+        if (target != null)
+        setTarget(target.getId());
+    }
+
     @Override
     public Obj getTargetObj() {
         if (target == null) {

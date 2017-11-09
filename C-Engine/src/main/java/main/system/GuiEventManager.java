@@ -1,5 +1,6 @@
 package main.system;
 
+import main.game.logic.event.Event;
 import main.system.launch.CoreEngine;
 
 /**
@@ -71,4 +72,7 @@ public class GuiEventManager {
         }
     }
 
+    public static boolean checkEventIsGuiHandled(Event event) {
+        return true;
+    }
 }

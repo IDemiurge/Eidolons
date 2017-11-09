@@ -20,6 +20,7 @@ import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.controls.AnimController;
 import main.libgdx.anims.std.BuffAnim;
+import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.anims.std.EventAnimCreator;
 import main.libgdx.anims.text.FloatingText;
 import main.libgdx.anims.text.FloatingTextMaster;
@@ -253,6 +254,7 @@ public class AnimMaster extends Group {
             leadAnimation = animation;
             leadAnimation.start(context);
         } else {
+            animation.setRef(context);
             add(animation);
             if (getParallelDrawing()) {
                 animation.start(context);
@@ -289,11 +291,17 @@ public class AnimMaster extends Group {
         if (anim == null) {
             return;
         }
-        parentAnim = getParentAnim(event.getRef());
-        if (parentAnim != null) {
+        parentAnim = getEventAttachAnim(event, anim);
+        if (parentAnim != null)
+           {
+
             LogMaster.log(LogMaster.ANIM_DEBUG, anim +
              " event anim created for: " + parentAnim);
-            parentAnim.addEventAnim(anim, event); //TODO}
+
+               if (parentAnim.getMap().isEmpty())
+                   parentAnim.add(anim.getPart(), anim);
+               else
+               parentAnim.addEventAnim(anim, event); //TODO}
         }
         if (parentAnim.getMap().isEmpty()) {
 
@@ -303,6 +311,27 @@ public class AnimMaster extends Group {
                 add(parentAnim);
             }
             parentAnim.setRef(event.getRef());
+    }
+
+    private CompositeAnim getEventAttachAnim(Event event, Anim anim) {
+        DC_ActiveObj active = (DC_ActiveObj) event.getRef().getActive();
+        if (active!= null) {
+            if (event.getType() instanceof STANDARD_EVENT_TYPE) {
+//                switch (((STANDARD_EVENT_TYPE) event.getType())) {
+                if (event.getType() == DeathAnim.EVENT_TYPE) {
+                    if (active.getRef().getTargetObj() != active.getOwnerObj())
+                    if (active.getChecker().isPotentiallyHostile()) {
+                        return getParentAnim(active.getRef());
+                    }
+                }
+            }
+
+        }
+        if (leadAnimation!=null )
+//            if (leadAnimation.getActive()!=active)
+        return leadAnimation;
+
+        return new CompositeAnim();
     }
 
     private void initEffectAnimation(Effect effect) {
@@ -428,7 +457,7 @@ public class AnimMaster extends Group {
         //TODO Stack: counter atk will animated first - last in first out :(
 
         leadAnimation = leadQueue.removeFirst();
-        leadAnimation.resetRef();
+//        leadAnimation.resetRef();
         return leadAnimation;
     }
 

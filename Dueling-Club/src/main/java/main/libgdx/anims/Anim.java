@@ -94,7 +94,7 @@ public class Anim extends Group implements Animation {
             ref = new Ref();
         }
         this.ref = active.getRef()
-//         .getCopy()
+         .getCopy()
         ;
         textureSupplier = () -> getTexture();
         reset();

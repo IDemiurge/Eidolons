@@ -225,6 +225,7 @@ public abstract class GameManager implements GenericGameManager {
                 return true;
             }
         }
+        if (GuiEventManager.checkEventIsGuiHandled(event))
         GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
         if (!game.isStarted()) {
             return true;

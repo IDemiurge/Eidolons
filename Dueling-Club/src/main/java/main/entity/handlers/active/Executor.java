@@ -10,6 +10,7 @@ import main.entity.active.DC_QuickItemAction;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.Active;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_GROUP;
@@ -25,6 +26,7 @@ import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.libgdx.anims.AnimContext;
 import main.libgdx.anims.AnimMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -141,11 +143,14 @@ public class Executor extends ActiveHandler {
         if (isInterrupted()) {
             return interrupted();
         }
+        Obj target = getAction().getTargetObj();
+        AnimContext animContext= new AnimContext(getAction().getRef());
+        animContext.setTarget(target);
 
         boolean gameLog = getAction().getLogger().isActivationLogged();
         String targets = " ";
         if (getAction().getLogger().isTargetLogged())
-            if (getAction().getTargetObj() != null) {
+            if (target != null) {
                 if (game.isDebugMode())
                     targets = getAction().getTargetObj().getNameAndCoordinate();
                 else
@@ -182,7 +187,7 @@ public class Executor extends ActiveHandler {
                 AnimMaster.getInstance().getConstructor().preconstruct(getAction());
 
         GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES,
-         new ActionInput(getAction(), new Context(getAction().getRef()))
+         new ActionInput(getAction(), animContext)
         );
 
         actionComplete();

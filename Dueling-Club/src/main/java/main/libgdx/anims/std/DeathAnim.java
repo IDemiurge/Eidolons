@@ -11,6 +11,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BattleFieldObject;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
@@ -32,6 +33,7 @@ import static main.system.GuiEventType.DESTROY_UNIT_MODEL;
  * Created by JustMe on 1/16/2017.
  */
 public class DeathAnim extends ActionAnim {
+    public static final STANDARD_EVENT_TYPE EVENT_TYPE = STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED;
     private static boolean on = true;
     BattleFieldObject unit;
     DEATH_ANIM template;

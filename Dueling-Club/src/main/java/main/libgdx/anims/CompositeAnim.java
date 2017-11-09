@@ -528,9 +528,5 @@ public class CompositeAnim implements Animation {
         return false;
     }
 
-
-    public void resetRef() {
-        if (getActive() != null)
-            setRef(getActive().getRef());
-    }
+ 
 }
