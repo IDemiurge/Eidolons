@@ -134,6 +134,7 @@ public class FloatingText extends Group {
 
     public String getText() {
         if (textSupplier != null) {
+            if (textSupplier.get()!=null )
             text = textSupplier.get();
         }
         return text;

@@ -156,7 +156,7 @@ public class DC_StateManager extends StateManager {
         }
     }
 
-    private void applyEndOfTurnDamage() {
+    public void applyEndOfTurnDamage() {
         if (getGame().getRules().getDamageRules() != null) {
             for (Unit unit : getGame().getUnits()) {
                 for (DamageCounterRule rule : getGame().getRules().getDamageRules()) {
@@ -216,7 +216,7 @@ public class DC_StateManager extends StateManager {
         }
     }
 
-    private void applyEndOfTurnRules() {
+    public void applyEndOfTurnRules() {
 
         for (RoundRule rule : getGame().getRules().getRoundRules()) {
             try {

@@ -13,14 +13,12 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.core.ActionInput;
 import main.game.core.game.DC_Game;
-import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.controls.AnimController;
 import main.libgdx.anims.std.BuffAnim;
-import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.anims.std.EventAnimCreator;
 import main.libgdx.anims.text.FloatingText;
 import main.libgdx.anims.text.FloatingTextMaster;
@@ -181,7 +179,7 @@ public class AnimMaster extends Group {
             }
            ActionInput input = (ActionInput) p.get();
             try {
-                initActionAnimation(input.getAction(), input.getContext());
+                initActionAnimation(input.getAction(), (AnimContext) input.getContext());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -236,10 +234,11 @@ public class AnimMaster extends Group {
         });
     }
 
-    private void initActionAnimation(DC_ActiveObj activeObj, Context context) {
+    private void initActionAnimation(DC_ActiveObj activeObj, AnimContext context) {
         if (isAnimationOffFor(activeObj.getOwnerObj(), null)) {
             return;
         }
+        boolean attachToNext =context.isAttachToNext();
         CompositeAnim animation = constructor.getOrCreate(activeObj);
         if (animation == null) {
             LogMaster.log(LogMaster.ANIM_DEBUG, "NULL ANIM FOR " + activeObj);
@@ -250,7 +249,7 @@ public class AnimMaster extends Group {
         if (animation.isRunning())
             return;
         animation.reset();
-        if (leadAnimation == null) {
+        if (leadAnimation == null && !attachToNext) {
             leadAnimation = animation;
             leadAnimation.start(context);
         } else {
@@ -299,7 +298,7 @@ public class AnimMaster extends Group {
              " event anim created for: " + parentAnim);
 
                if (parentAnim.getMap().isEmpty())
-                   parentAnim.add(anim.getPart(), anim);
+                   parentAnim.add(ANIM_PART.AFTEREFFECT, anim);
                else
                parentAnim.addEventAnim(anim, event); //TODO}
         }
@@ -315,21 +314,21 @@ public class AnimMaster extends Group {
 
     private CompositeAnim getEventAttachAnim(Event event, Anim anim) {
         DC_ActiveObj active = (DC_ActiveObj) event.getRef().getActive();
-        if (active!= null) {
-            if (event.getType() instanceof STANDARD_EVENT_TYPE) {
-//                switch (((STANDARD_EVENT_TYPE) event.getType())) {
-                if (event.getType() == DeathAnim.EVENT_TYPE) {
-                    if (active.getRef().getTargetObj() != active.getOwnerObj())
-                    if (active.getChecker().isPotentiallyHostile()) {
-                        return getParentAnim(active.getRef());
-                    }
-                }
-            }
-
-        }
-        if (leadAnimation!=null )
+//        if (active!= null) {
+//            if (event.getType() instanceof STANDARD_EVENT_TYPE) {
+////                switch (((STANDARD_EVENT_TYPE) event.getType())) {
+//                if (event.getType() == DeathAnim.EVENT_TYPE) {
+//                    if (active.getRef().getTargetObj() != active.getOwnerObj())
+//                    if (active.getChecker().isPotentiallyHostile()) {
+//                        return getParentAnim(active.getRef());
+//                    }
+//                }
+//            }
+//
+//        }
+//        if (leadAnimation!=null )
 //            if (leadAnimation.getActive()!=active)
-        return leadAnimation;
+//        return leadAnimation;
 
         return new CompositeAnim();
     }

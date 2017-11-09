@@ -5,15 +5,16 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
-import main.entity.DataModel;
+import main.content.PROPS;
 import main.entity.obj.Structure;
+import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.core.Eidolons;
-import main.libgdx.bf.GridConst;
 import main.libgdx.bf.SuperActor;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureCache;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 
 /**
@@ -106,23 +107,24 @@ public class ShadeLightCell extends SuperContainer {
 //        Eidolons.getGame().getMaster().getObjCache()
 //        IlluminationRule.
 
-        DataModel obj = null;
-        if (type == SHADE_LIGHT.GAMMA_LIGHT || !Eidolons.game.isStarted())
-            obj = Eidolons.game.getDungeon();
-        else {
-            obj = Eidolons.game.getDungeon();
+
+        COLOR_THEME color = null;
+        if (type == SHADE_LIGHT.LIGHT_EMITTER) {
             for (Structure sub : Eidolons.game.getStructures()) {
                 if (sub.isLightEmitter()) {
-                    obj = sub;
-                    break;
+                    color = new EnumMaster<COLOR_THEME>().
+                     retrieveEnumConst(COLOR_THEME.class, sub.getProperty(PROPS.COLOR_THEME, true));
+                    if (color != null)
+                        break;
                 }
             }
         }
-        if (obj == null)
-            return DEFAULT_COLOR;
-        COLOR_THEME color = null;
-//        new EnumMaster<COLOR_THEME>().
-//         retrieveEnumConst(COLOR_THEME.class, obj.getProperty(PROPS.COLOR_THEME, true));
+        if (color == null) {
+            Dungeon obj = Eidolons.game.getDungeon();
+            color = new EnumMaster<COLOR_THEME>().
+             retrieveEnumConst(COLOR_THEME.class, obj.getProperty(PROPS.COLOR_THEME, true));
+        }
+
         if (color != null)
             switch (color) {
                 case BLUE:
@@ -171,14 +173,11 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     public void act(float delta) {
-        if (x == 3)
-            if (y == 5)
-                x = x;
         if (!SuperActor.isCullingOff())
             if (!DungeonScreen.getInstance().getController().
              isWithinCamera(
-
-              getX() +3*GridConst.CELL_W, getY() + getHeight(), 2 * getWidth(), 2 * getHeight()
+              this
+//              getX() +3*GridConst.CELL_W, getY() + getHeight(), 2 * getWidth(), 2 * getHeight()
              )) {
                 return;
             }

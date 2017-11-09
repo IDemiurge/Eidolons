@@ -215,7 +215,7 @@ public class AttackCalculator {
         int mod = CriticalAttackRule.
          getCriticalDamagePercentage(action, attacked);
 
-        int bonus = MathMaster.applyMod(amount, mod)  ;
+        int bonus = MathMaster.applyMod(amount, mod);
         if (!precalc) {
             if (attack.getAnimation() != null) {
                 attack.getAnimation().addPhase(
@@ -303,13 +303,15 @@ public class AttackCalculator {
         if (modMap.get(MOD_IDENTIFIER.EXTRA_ATTACK) != null) {
             totalMod += modMap.get(MOD_IDENTIFIER.EXTRA_ATTACK);
         }
-        bonus =0;
+        bonus =bonusMap.get(MOD_IDENTIFIER.AMMO);
+        if (bonus != null)
+            totalBonus += bonus;
 
-            bonus += getAttackDefenseDamageBonus(attack, totalBonus, attacker, attacked, action,
-             offhand);
-            bonusMap.put(MOD_IDENTIFIER.ATK_DEF, bonus);
+        bonus = getAttackDefenseDamageBonus(attack, totalBonus, attacker, attacked, action,
+         offhand);
+        bonusMap.put(MOD_IDENTIFIER.ATK_DEF, bonus);
         if (critical) {
-            bonus/=3*2;
+            bonus /= 3 * 2;
             bonus += getCriticalDamageBonus(attack, totalBonus, attacker, attacked, action, offhand);
             bonusMap.put(MOD_IDENTIFIER.CRIT, bonus);
         }
@@ -355,13 +357,13 @@ public class AttackCalculator {
          MOD_IDENTIFIER.DIE_NUMBER, dieNumber);
 
         Integer result = null;
-            if (max) {
-                result = dieSize * dieNumber;
-            } else if (min) {
-                result = dieNumber;
-            }
+        if (max) {
+            result = dieSize * dieNumber;
+        } else if (min) {
+            result = dieNumber;
+        }
         if (result == null) result =
-        RandomWizard.initDice(dieNumber, dieSize, dieList, precalc);
+         RandomWizard.initDice(dieNumber, dieSize, dieList, precalc);
 
         new MapMaster<MOD_IDENTIFIER, Integer>().addToIntegerMap(randomMap,
          MOD_IDENTIFIER.DIE_RESULT, result);
@@ -390,7 +392,7 @@ public class AttackCalculator {
             if (ranged == null) {
                 return; //TODO ??
             }
-            DC_Obj ammo = ((DC_WeaponObj) ranged).getAmmo() ;
+            DC_Obj ammo = ((DC_WeaponObj) ranged).getAmmo();
             if (ammo != null) {
                 action.modifyParameter(PARAMS.IMPACT_AREA, ammo.getIntParam(PARAMS.IMPACT_AREA));
                 // weapon. //IN DC_WEAPONOBJ
@@ -739,6 +741,14 @@ public class AttackCalculator {
         return dmg_mod;
     }
 
+    public void setMin(boolean min) {
+        this.min = min;
+    }
+
+    public void setMax(boolean max) {
+        this.max = max;
+    }
+
     public enum MOD_IDENTIFIER {
         ATK_DEF,
         CRIT("ui\\value icons\\identifiers\\CRIT.jpg"),
@@ -799,13 +809,5 @@ public class AttackCalculator {
             return StringMaster.getWellFormattedString(name());
         }
 
-    }
-
-    public void setMin(boolean min) {
-        this.min = min;
-    }
-
-    public void setMax(boolean max) {
-        this.max = max;
     }
 }

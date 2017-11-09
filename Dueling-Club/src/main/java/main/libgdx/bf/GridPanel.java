@@ -344,7 +344,6 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
             BattleFieldObject unit = (BattleFieldObject) param.get();
-            GridUnitView view = (GridUnitView) unitMap.get(unit);
             removeUnitView(unit);
         });
 
@@ -833,10 +832,10 @@ public class GridPanel extends Group {
                 }
             }
         }
-        if (ShadowMap.isOn())
-            shadowMap.setZtoMax(SHADE_LIGHT.LIGHT_EMITTER);
         wallMap.setVisible(WallMap.isOn());
         wallMap.setZIndex(Integer.MAX_VALUE);
+//        if (ShadowMap.isOn())
+//            shadowMap.setZtoMax(SHADE_LIGHT.LIGHT_EMITTER);
         overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
         if (ShadowMap.isOn())
             for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {

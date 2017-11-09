@@ -116,7 +116,6 @@ public class Analyzer extends AiHandler {
     }
 
 
-
     public static boolean hasSpecialActions(Unit unit) {
         DequeImpl<DC_UnitAction> actions = ((unit.getActionMap().get(
          ACTION_TYPE.SPECIAL_ACTION)));
@@ -180,10 +179,13 @@ public class Analyzer extends AiHandler {
     }
 
     public static boolean checkRangedThreat(Unit target) {
-        if (!hasAnySpecialActions(target)) {
-            return false;
+        if (target.getRangedWeapon() != null) {
+            return true;
         }
-        return canCast(target);
+        if (canCast(target)  ) {
+            return true;
+        }
+        return hasAnySpecialActions(target) ;
 
     }
 
@@ -282,6 +284,7 @@ public class Analyzer extends AiHandler {
             list.removeIf(u -> u.getAI().isOutsideCombat());
         return list;
     }
+
     public static List<Unit> getUnits(UnitAI ai, Boolean ally,
                                       Boolean enemy, Boolean vision_no_vision, Boolean dead,
                                       Boolean neutral, Boolean unconscious) {

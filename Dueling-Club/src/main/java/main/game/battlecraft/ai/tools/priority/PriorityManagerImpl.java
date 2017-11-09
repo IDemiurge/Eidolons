@@ -1049,7 +1049,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             // }
 
         } else {
-            if (targetObj.canCounter() &&
+            if (!active.isRanged() &&targetObj.canCounter() &&
              !getUnit().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)
              && !active.checkProperty(G_PROPS.STANDARD_PASSIVES,
              UnitEnums.STANDARD_PASSIVES.NO_RETALIATION.getName())) {
@@ -1393,9 +1393,9 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             if (getSituationAnalyzer().getMeleeDangerFactor(getUnit()) != 0) {
                 return 0;
             }
-            if (!Analyzer.checkRangedThreat(target)) {
+            if ( Analyzer.checkRangedThreat(target)) {
                 return 0;
-            }
+            } //TODO check if engaged alone!
             if (getUnit().checkInSightForUnit(target)) {
                 return 0;
             }

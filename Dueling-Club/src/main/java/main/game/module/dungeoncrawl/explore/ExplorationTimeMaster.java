@@ -110,8 +110,10 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private void processEndOfRoundEffects() {
-        processCounterRules();
-        processCustomRules();
+//        processCounterRules();
+     master.getGame().getStateManager().applyEndOfTurnRules();
+        master.getGame().getStateManager().applyEndOfTurnDamage();
+     processCustomRules();
 
     }
 

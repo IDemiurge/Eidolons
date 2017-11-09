@@ -18,6 +18,7 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.magic.ImmunityRule;
 import main.game.core.game.DC_Game;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
 
 import java.util.HashMap;
@@ -121,6 +122,7 @@ public abstract class DC_CounterRule {
     public void newTurn() {
         for (Unit unit : game.getUnits()) {
             if (unit.isDead()) continue;
+        if (!ExplorationMaster.isExplorationOn())
             if (isOutsideCombatIgnored())
                 if (game.getState().getManager().checkUnitIgnoresReset(unit))
                     continue;

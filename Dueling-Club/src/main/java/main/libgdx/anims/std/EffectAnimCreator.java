@@ -88,8 +88,8 @@ public class EffectAnimCreator {
 
                         active, getModValAnimData(modEffect)
                         , false, GdxColorMaster.getParamColor(modEffect.getParam()),
-                        () -> modEffect.getLastModValue(),
-                        () -> ImageManager.getValueIconPath(modEffect.getParam())
+                         modEffect.getLastModValue(),
+                          ImageManager.getValueIconPath(modEffect.getParam())
                 );
 
             case "Raise":

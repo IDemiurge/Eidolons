@@ -73,7 +73,7 @@ NEXT_MISSION(null,false, "missions"),
       ),
     MAP_PRESET_OBJECTS(null, true//, "dungeons"
     ),
-    COLOR_THEME(null, false, "dungeons", "route", "place"),
+    COLOR_THEME(null, false, "bf obj","dungeons", "route", "place"),
     ALT_COLOR_THEME(null, false//, "dungeons"
      ),
     LOOT_GROUPS(null, true//, "dungeons"

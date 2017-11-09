@@ -1,6 +1,7 @@
 package main.system;
 
 import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.launch.CoreEngine;
 
 /**
@@ -23,26 +24,26 @@ public class GuiEventManager {
     public static void bind(GuiEventType type, final EventCallback event) {
         if (CoreEngine.isGraphicsOff())
             return;
-        if (!vertx){
+        if (!vertx) {
             GuiEventManagerOld.bind(type, event);
-        }
-        else {
+        } else {
             GuiEventManagerVertx.bind(type, event);
         }
     }
 
     public static void cleanUp() {
-        if (!vertx){
+        if (!vertx) {
             GuiEventManagerOld.cleanUp();
-        }
-        else {
+        } else {
             GuiEventManagerVertx.cleanUp();
         }
 
     }
+
     public static void bindSound(GuiEventType type, final EventCallback event) {
 
     }
+
     private static void checkSoundEvent(GuiEventType type, Object obj) {
 
     }
@@ -53,26 +54,39 @@ public class GuiEventManager {
 
     public static void trigger(final GuiEventType type, Object obj) {
         if (CoreEngine.isGraphicsOff())
-            return   ;
+            return;
         checkSoundEvent(type, obj);
-        if (!vertx){
+        if (!vertx) {
             GuiEventManagerOld.trigger(type, obj);
-        }
-        else {
+        } else {
             GuiEventManagerVertx.trigger(type, obj);
         }
     }
 
     public static void processEvents() {
-        if (!vertx){
+        if (!vertx) {
             GuiEventManagerOld.processEvents();
-        }
-        else {
+        } else {
             GuiEventManagerVertx.processEvents();
         }
     }
 
     public static boolean checkEventIsGuiHandled(Event event) {
-        return true;
+        if (event.getType() instanceof STANDARD_EVENT_TYPE) {
+            switch ((STANDARD_EVENT_TYPE) event.getType()) {
+                case EFFECT_HAS_BEEN_APPLIED:
+                case UNIT_HAS_CHANGED_FACING:
+                case UNIT_HAS_TURNED_CLOCKWISE:
+                case UNIT_HAS_TURNED_ANTICLOCKWISE:
+                case UNIT_HAS_FALLEN_UNCONSCIOUS:
+                case UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS:
+                case UNIT_HAS_BEEN_KILLED:
+                case UNIT_BEING_MOVED:
+                case UNIT_FINISHED_MOVING:
+                    return true;
+            }
+
+        }
+        return false;
     }
 }

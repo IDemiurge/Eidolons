@@ -256,17 +256,15 @@ public class CompositeAnim implements Animation {
             addEvents(anim.getPart(), anim);
         });
         finished = false;
-        if (getActive() != null)
-            setRef(getActive().getRef());
     }
 
     public Ref getRef() {
-        if (ref == null)
-            if (getActive() == null)
-                return null;
-            else {
-                ref = Ref.getCopy(getActive().getRef());
-            }
+//        if (ref == null)
+//            if (getActive() == null)
+//                return null;
+//            else {
+//                ref = Ref.getCopy(getActive().getRef());
+//            }
         return ref;
     }
 
@@ -528,5 +526,5 @@ public class CompositeAnim implements Animation {
         return false;
     }
 
- 
+
 }

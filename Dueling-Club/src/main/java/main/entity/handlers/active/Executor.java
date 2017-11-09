@@ -144,7 +144,7 @@ public class Executor extends ActiveHandler {
             return interrupted();
         }
         Obj target = getAction().getTargetObj();
-        AnimContext animContext= new AnimContext(getAction().getRef());
+        AnimContext animContext= new AnimContext(getAction());
         animContext.setTarget(target);
 
         boolean gameLog = getAction().getLogger().isActivationLogged();
