@@ -73,7 +73,8 @@ public class Showcase {
             FAST_DC.ENEMY_PARTY = parts.get(2);
 
         }
-        if (index == 4 || index == 0) {
+        if ( index == 4 ||
+         index == 0) {
             boolean showcase = index == 4;
             String[] options = !showcase ? missions : missions_showcase;
             if (preset) index = 0;

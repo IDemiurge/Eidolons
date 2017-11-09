@@ -230,9 +230,11 @@ public class AnimationConstructor {
     public void preconstructAll(Unit unit) {
         if (GdxMaster.isLwjglThread()) {
             unit.getActives().forEach(spell -> getOrCreate(spell));
+            AnimMaster3d.preloadAtlases(unit);
         } else
             Gdx.app.postRunnable((() -> {
                 unit.getActives().forEach(spell -> getOrCreate(spell));
+                AnimMaster3d.preloadAtlases(unit);
             }));
     }
 
@@ -693,6 +695,9 @@ public class AnimationConstructor {
         });
     }
 
+    public static boolean isPreconstructAllOnGameInit() {
+        return CoreEngine.isExe();
+    }
     public static boolean isPreconstructEnemiesOnCombatStart() {
         return CoreEngine.isExe();
     }

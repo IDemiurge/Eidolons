@@ -24,6 +24,7 @@ public class Reload3dAnim extends Weapon3dAnim {
 
     @Override
     protected PROJECTION getProjection() {
-        return PROJECTION.HOR;
+        return super.getProjection();
+//        return PROJECTION.HOR;
     }
 }

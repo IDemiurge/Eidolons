@@ -10,6 +10,7 @@ import main.ability.effects.oneshot.rule.UnconsciousFallEffect;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
@@ -201,6 +202,9 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     //returns true if unit Recovers
     public boolean checkStatusUpdate(Unit unit) {
+        return checkStatusUpdate(unit, null );
+    }
+        public boolean checkStatusUpdate(Unit unit, DC_ActiveObj activeObj) {
         if (unit.isDead())  {
             if (unit.isAnnihilated())
                 if (checkUnitAnnihilated(unit)) {
@@ -211,7 +215,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         }
         else
         if (checkUnitDies(unit, getDeathBarrier(unit), true)) {
-            unit.getGame().getManager().unitDies(unit, unit, true, false);
+            unit.getGame().getManager().unitDies(activeObj, unit, unit, true, false);
             return false;
         }
         if (unit.isUnconscious()) {

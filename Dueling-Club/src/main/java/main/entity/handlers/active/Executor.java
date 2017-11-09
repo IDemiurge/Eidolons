@@ -25,6 +25,7 @@ import main.game.core.Eidolons;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.module.dungeoncrawl.ai.AggroMaster;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.AnimContext;
 import main.libgdx.anims.AnimMaster;
@@ -417,28 +418,13 @@ public class Executor extends ActiveHandler {
         }
 
         if (result) {
+            if (getAction().getTargetObj() instanceof Unit)
             if (getAction().getChecker().isPotentiallyHostile())
-                if (ExplorationMaster.isExplorationOn())
-                    if (getAction().getTargetObj() instanceof Unit)
-                        if (getAction().getTargetObj().getOwner() !=
-                         getAction().getOwner()) {
-                            if (getAction().getTargetObj().isMine()) {
-                                getAction().getOwnerObj().
-                                 getAI().setEngaged(true);
-                            } else {
-                                ((Unit) getAction().getTargetObj()).getAI().setEngaged(true);
-//                                GroupAI g = ((Unit) getAction().getTargetObj()).getAI().getGroup();
-//                                //TODO
-//                                if (g == null) {
-//                                    ((Unit) getAction().getTargetObj()).getAI().setEngagementDuration(2);
-//                                } else g.
-//                                 getMembers().forEach(
-//                                 unit -> unit.getAI().setEngagementDuration(2)
-//                                );
-                            }
+                if (getAction().getTargetObj().getOwner() !=
+             getAction().getOwner()) {
+                    AggroMaster.unitAttacked(getAction(), getAction().getTargetObj());
 
-
-                        }
+                }
         }
 //        getAnimator().waitForAnimation();
 

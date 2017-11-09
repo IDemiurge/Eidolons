@@ -47,7 +47,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().getAllies().forEach(unit -> {
             Gdx.app.postRunnable(() ->
              {
-                 AnimMaster3d.preloadAtlases(unit);
+
                  try {
                      AnimMaster.getInstance().getConstructor().preconstructAll(unit);
                  } catch (Exception e) {

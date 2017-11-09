@@ -416,7 +416,10 @@ public class DC_GameManager extends GameManager {
 
 
     public void unitDies(Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
-        deathMaster.unitDies(_killed, _killer, leaveCorpse, quietly);
+         unitDies(null , _killed, _killer, leaveCorpse, quietly);
+    }
+    public void unitDies(DC_ActiveObj activeObj,Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
+        deathMaster.unitDies(  activeObj,_killed, _killer, leaveCorpse, quietly);
     }
 
     @Override
@@ -648,4 +651,5 @@ public class DC_GameManager extends GameManager {
 //        return (Unit) getGame().getPlayer(true).getHeroObj();
         return Eidolons.getMainHero();
     }
+
 }

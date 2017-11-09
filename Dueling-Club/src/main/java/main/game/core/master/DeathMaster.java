@@ -4,6 +4,8 @@ import main.ability.AbilityObj;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.entity.Ref;
+import main.entity.Ref.KEYS;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Attachment;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
@@ -49,7 +51,7 @@ public class DeathMaster extends Master {
 
     }
 
-    public void unitDies(Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
+    public void unitDies(DC_ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
         if (_killed.isDead())
             return;
         _killed.setDead(true);
@@ -99,6 +101,8 @@ public class DeathMaster extends Master {
             Ref REF = Ref.getCopy(killer.getRef());
             REF.setTarget(killed.getId());
             REF.setSource(killer.getId());
+            if (activeObj!=null )
+            REF.setObj( KEYS.ACTIVE, activeObj);
             if (killed instanceof Unit) {
                 getGame().getRules().getMoraleKillingRule().unitDied((Unit) killed,
                  killer.getRef().getAnimationActive());

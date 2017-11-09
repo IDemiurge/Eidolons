@@ -112,7 +112,7 @@ public class ActorMaster {
             });
             actor.setRotation(from);
         }
-        RotateByActionLimited  action = (RotateByActionLimited) getAction(RotateByActionLimited.class);// new RotateByAction();
+        RotateByActionLimited action = new RotateByActionLimited();// (RotateByActionLimited) getAction(RotateByActionLimited.class);// new RotateByAction();
         action.setAmount(to - from);
         if (Math.abs(action.getAmount()) >= 270)
             action.setAmount((action.getAmount() + 360) % 360);

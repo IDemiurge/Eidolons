@@ -380,7 +380,7 @@ public class DamageDealer {
          attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked)
          : false;
         boolean unconscious = attacked instanceof Unit?
-         attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked)
+         attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate( (Unit) attacked, (DC_ActiveObj) ref.getActive())
          : false;
 
         if (dead) {

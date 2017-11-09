@@ -109,8 +109,8 @@ public class AnimMaster3d {
     }
 
     private static boolean is3dSupported(DC_WeaponObj weapon) {
-        if (weapon.getWeaponType() == WEAPON_TYPE.POLE_ARM)
-            return false;
+//        if (weapon.getWeaponType() == WEAPON_TYPE.POLE_ARM)
+//            return false;
         if (weapon.getWeaponType() == WEAPON_TYPE.AXE)
             return false;
         if (weapon.getWeaponType() == WEAPON_TYPE.NATURAL)
@@ -156,9 +156,9 @@ public class AnimMaster3d {
          ));
 
         if (BooleanMaster.isTrue(offhand))
-            s.append(SEPARATOR + "l");
+            s.append(SEPARATOR + "_l");
         if (BooleanMaster.isFalse(offhand))
-            s.append(SEPARATOR + "r");
+            s.append(SEPARATOR + "_r");
         String string = s.toString();
         string = string.toLowerCase().replace("offhand ", "").replace("off hand ", "").replace(" ", SEPARATOR);
         return string;
@@ -170,10 +170,10 @@ public class AnimMaster3d {
         String actionName = null;
         String projectionString = "to";
 
-        if (aCase != WEAPON_ANIM_CASE.RELOAD) {
+//        if (aCase != WEAPON_ANIM_CASE.RELOAD) {
             projectionString = (projection == null ? "hor" :
              (projection ? "from" : "to"));
-        }
+//        }
         if (aCase.isMissile()) {
             if (weapon.getLastAmmo() == null)
                 return null;
@@ -204,7 +204,8 @@ public class AnimMaster3d {
                     actionName = getActionAtlasKey(activeObj);
             }
         Boolean offhand = null;
-        if (isAssymetric(weapon.getProperty(G_PROPS.BASE_TYPE)))
+        if (projection!=null )
+            if (isAssymetric(weapon.getProperty(G_PROPS.BASE_TYPE)))
             offhand = (activeObj.isOffhand());
 
         return getAtlasFileKeyForAction(projectionString,

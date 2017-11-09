@@ -4,7 +4,6 @@ import main.client.cc.logic.party.PartyObj;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.ai.AggroMaster;
 import main.libgdx.anims.AnimMaster;
-import main.libgdx.anims.AnimMaster3d;
 import main.libgdx.anims.AnimationConstructor;
 import main.system.audio.MusicMaster;
 import main.system.audio.MusicMaster.MUSIC_SCOPE;
@@ -105,7 +104,6 @@ public class ExplorationMaster {
             if (AnimationConstructor.isPreconstructEnemiesOnCombatStart())
                 AggroMaster.getLastAggroGroup().forEach(unit -> {
                     AnimMaster.getInstance().getConstructor().preconstructAll(unit);
-                    AnimMaster3d.preloadAtlases(unit);
                 });
             getResetter().setFirstResetDone(false);
             try {

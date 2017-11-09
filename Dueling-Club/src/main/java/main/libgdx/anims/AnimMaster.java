@@ -314,18 +314,18 @@ public class AnimMaster extends Group {
 
     private CompositeAnim getEventAttachAnim(Event event, Anim anim) {
         DC_ActiveObj active = (DC_ActiveObj) event.getRef().getActive();
-//        if (active!= null) {
+        if (active!= null) {
 //            if (event.getType() instanceof STANDARD_EVENT_TYPE) {
 ////                switch (((STANDARD_EVENT_TYPE) event.getType())) {
 //                if (event.getType() == DeathAnim.EVENT_TYPE) {
 //                    if (active.getRef().getTargetObj() != active.getOwnerObj())
 //                    if (active.getChecker().isPotentiallyHostile()) {
-//                        return getParentAnim(active.getRef());
+                        return getParentAnim(active.getRef());
 //                    }
 //                }
 //            }
 //
-//        }
+        }
 //        if (leadAnimation!=null )
 //            if (leadAnimation.getActive()!=active)
 //        return leadAnimation;

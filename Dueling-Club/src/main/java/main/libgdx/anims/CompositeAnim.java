@@ -118,6 +118,7 @@ public class CompositeAnim implements Animation {
     public void start(Ref ref) {
         if (isRunning())
             return;
+        main.system.auxiliary.log.LogMaster.log(1,this+" started " );
         setRef(ref);
         start();
     }
@@ -307,7 +308,8 @@ public class CompositeAnim implements Animation {
     @Override
     public String toString() {
 
-        return getClass().getSimpleName() + map;
+        return getClass().getSimpleName()+" for " + getActive()+ ": " + map
+         + "; attached: " + attached;
     }
 
     private void queueGraphicEvents() {

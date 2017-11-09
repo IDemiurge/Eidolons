@@ -3,6 +3,8 @@ package main.game.module.dungeoncrawl.ai;
 import io.vertx.core.impl.ConcurrentHashSet;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
@@ -187,6 +189,31 @@ public class AggroMaster {
         }
 
         return list;
+    }
+
+    public static void unitAttacked(DC_ActiveObj action, Obj targetObj) {
+//        if (!ExplorationMaster.isExplorationOn()) {
+//
+//
+//        } else {
+
+            if (targetObj.isMine()) {
+                action.getOwnerObj().
+                 getAI().setEngaged(true);
+            } else {
+                ((Unit) action.getTargetObj()).getAI().setEngaged(true);
+//                                GroupAI g = ((Unit) getAction().getTargetObj()).getAI().getGroup();
+//                                //TODO
+//                                if (g == null) {
+//                                    ((Unit) getAction().getTargetObj()).getAI().setEngagementDuration(2);
+//                                } else g.
+//                                 getMembers().forEach(
+//                                 unit -> unit.getAI().setEngagementDuration(2)
+//                                );
+            }
+
+
+//        }
     }
 
 

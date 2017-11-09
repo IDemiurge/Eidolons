@@ -29,6 +29,7 @@ import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimMaster;
+import main.libgdx.anims.AnimationConstructor;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.anims.std.MoveAnimation;
@@ -191,7 +192,6 @@ public class GridPanel extends Group {
     }
 
     public GridPanel init(DequeImpl<BattleFieldObject> units) {
-
         this.unitMap = new HashMap<>();
         emptyImage = TextureCache.getOrCreateR(getCellImagePath());
         hiddenImage = TextureCache.getOrCreateR(hiddenCellPath);
@@ -242,6 +242,13 @@ public class GridPanel extends Group {
         animMaster = AnimMaster.getInstance();
         animMaster.bindEvents();
         addActor(animMaster);
+
+        if (AnimationConstructor.isPreconstructAllOnGameInit())
+            units.forEach(unit ->
+            {
+                if (unit instanceof Unit)
+                    animMaster.getConstructor().preconstructAll((Unit) unit);
+            });
 
         if (fpsDebug) {
             fpsLabel = new Label("0", StyleHolder.getDefaultLabelStyle());
@@ -434,7 +441,7 @@ public class GridPanel extends Group {
 
             boolean caught = false;
             if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED) {
-                GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED, event.getRef() );
+                GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED, event.getRef());
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING
              || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE

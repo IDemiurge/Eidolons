@@ -129,10 +129,6 @@ public class Weapon3dAnim extends ActionAnim {
     }
 
     protected PROJECTION getProjection() {
-        if (getRef()==null )
-            return  getProjectionByFacing(getActive().getOwnerObj().getFacing())  ;
-        if (getRef().getSourceObj()==null )
-            return  getProjectionByFacing(getActive().getOwnerObj().getFacing())  ;
         if (getRef().getTargetObj()==null )
             return  getProjectionByFacing(getActive().getOwnerObj().getFacing())  ;
         Boolean b =
