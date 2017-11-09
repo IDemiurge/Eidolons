@@ -38,8 +38,8 @@ import main.entity.obj.*;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.hero.DC_Attributes;
 import main.entity.obj.hero.DC_Masteries;
-import main.entity.tools.EntityMaster;
-import main.entity.tools.bf.unit.*;
+import main.entity.handlers.EntityMaster;
+import main.entity.handlers.bf.unit.*;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.UnitAI;
@@ -291,7 +291,12 @@ public class Unit extends DC_UnitModel {
 
     @Override
     public void afterEffects() {
-
+if (ExplorationMaster.isExplorationOn())
+{
+        if (!isDirty()) {
+        return ;
+    }
+}
         getResetter().afterEffectsApplied();
 
     }
@@ -1353,5 +1358,22 @@ public class Unit extends DC_UnitModel {
             return;
         }
         super.toBase();
+    }
+
+    @Override
+    protected void putParameter(PARAMETER param, String value) {
+       if (!isMine()){ if (param == PARAMS.C_TOUGHNESS){
+            int v = StringMaster.getInteger(value);
+            if (v > getIntParam(PARAMS.TOUGHNESS)) {
+                return ;
+            }
+        }
+        if (param == PARAMS.C_ENDURANCE){
+            int v = StringMaster.getInteger(value);
+            if (v > getIntParam(PARAMS.ENDURANCE)) {
+                return ;
+            }
+        }}
+        super.putParameter(param, value);
     }
 }

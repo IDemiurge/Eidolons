@@ -295,7 +295,8 @@ public class DC_Game extends MicroGame {
         loop = createGameLoop();
         if (ExplorationMaster.isExplorationOn()) {
             getStateManager().newRound(); //newRound?
-            getVisionMaster().refresh();
+         if (!first)
+             getVisionMaster().refresh();
         }
         setGameLoopThread(loop.startInNewThread());
         setRunning(true);

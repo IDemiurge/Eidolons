@@ -5,6 +5,7 @@ import main.content.values.parameters.PARAMETER;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,8 +17,11 @@ public class AiPriorityConstantMaster extends AiHandler {
     AiConst[] techConsts = {
 
     };
+    private HashMap<String, AiConst> aiConstMap;
+
     public AiPriorityConstantMaster(AiMaster master) {
         super(master);
+        initMap();
     }
 
     public float getParamPriority(PARAMETER p) {
@@ -42,7 +46,8 @@ public class AiPriorityConstantMaster extends AiHandler {
 
     public AiConst getConst(String s) {
         //TODO improve!
-        return AiConst.valueOf(s.toUpperCase());
+        return aiConstMap.get(s.toUpperCase());
+//        return AiConst.valueOf(s.toUpperCase());
     }
 
     public float[] convertParameters(Map<AiConst, Float> map) {
@@ -50,6 +55,12 @@ public class AiPriorityConstantMaster extends AiHandler {
         return new float[0];
     }
 
+    public void initMap (){
+        aiConstMap = new HashMap<>();
+        for (AiConst sub : AiConst.values()) {
+            aiConstMap.put(sub.name(), sub);
+        }
+    }
 
     public void generate (){
 for (PARAMS sub: PARAMS.values()){

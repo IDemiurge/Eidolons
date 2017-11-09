@@ -63,8 +63,8 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         //choice
         //already as Unit?
         ObjType type = getMetaGame().getScenario().getPartyType();
-        chooseOneHero= !CoreEngine.isExe();
-        randomOneHero= CoreEngine.isExe();
+        chooseOneHero= CoreEngine.isExe();
+        randomOneHero= !CoreEngine.isExe();
         if (type == null) {
             String string = getMetaGame().getScenario().getProperty(PROPS.SCENARIO_PARTY);
             type = new ObjType("dummy", DC_TYPE.PARTY);

@@ -166,13 +166,16 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return toughness < -max_toughness * barrier / 100;
 
     }
+    public static boolean checkFallsUnconscious(Unit unit  ) {
+        return checkFallsUnconscious( unit , unit.getIntParam(PARAMS.C_TOUGHNESS));
+    }
 
-    public static boolean checkFallsUnconscious(Unit unit) {
+    public static boolean checkFallsUnconscious(Unit unit, int toughness) {
         if ( unit.isUnconscious())
             return false;
         if (!canFallUnconscious(unit))
             return false;
-        return unit.getIntParam(PARAMS.C_TOUGHNESS) <=0;
+        return toughness <=0;
     }
 
     private static boolean canBeAnnihilated(Unit unit) {

@@ -276,7 +276,10 @@ public class PathFinder {
         init();
         return getImagePath() +
          "main"+StringMaster.getPathSeparator()+"sprites"+StringMaster.getPathSeparator() ;
+    }
 
-
+    public static String getVideoPath() {
+        return StrPathBuilder.build(getEnginePathPlusNewResourceProject(),
+         "video") + StringMaster.getPathSeparator();
     }
 }

@@ -7,7 +7,7 @@ import main.content.values.parameters.PARAMETER;
 import main.game.battlecraft.rules.combat.damage.ResistMaster;
 import main.system.math.Formula;
 
-public class DrainEffect extends ModifyValueEffect  implements OneshotEffect {
+public class    DrainEffect extends ModifyValueEffect  implements OneshotEffect {
     boolean resistanceApplies;
     boolean armorApplies;
     boolean alwaysRestoreFull = false;

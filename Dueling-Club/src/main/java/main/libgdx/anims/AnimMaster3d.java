@@ -55,6 +55,8 @@ public class AnimMaster3d {
      {"elven arrows", "arrows"},
 
      {"heavy bolts", "bolts"},
+     {"heavy crossbow", "crossbow"},
+     {"hand crossbow", "crossbow"},
      {"longbow", "short bow"},
      {"dagger", "stiletto"},
      {"dirk", "stiletto"},

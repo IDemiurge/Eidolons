@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * Created by JustMe on 5/7/2017.
@@ -43,7 +44,16 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         return adjustCoordinate(null, c, facing);
     }
 
-    public static Coordinates adjustCoordinate(Entity entity, Coordinates c, FACING_DIRECTION facing) {
+    public static Coordinates adjustCoordinate(Entity entity,
+                                               Coordinates c, FACING_DIRECTION facing
+
+    ) {
+        return adjustCoordinate(entity, c, facing, null);
+    }
+    public static Coordinates adjustCoordinate(Entity entity,
+                                               Coordinates c, FACING_DIRECTION facing
+    ,Predicate<Coordinates> filterPredicate
+    ) {
         if (c == null) {
             return null;
         }
@@ -54,6 +64,10 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
             DIRECTION direction = ArenaPositioner.getRandomSpawnAdjustDirection();
             coordinate = c.getAdjacentCoordinate(direction);
             if (coordinate != null) {
+                if (filterPredicate!=null )
+                if (!filterPredicate.test(coordinate))
+                    continue;
+
                 if (!DC_Game.game.isSimulation()) {
                     if (DC_Game.game.getBattleFieldManager().canMoveOnto(entity, coordinate)) {
                         break;

@@ -11,7 +11,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.tools.*;
+import main.entity.handlers.*;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;

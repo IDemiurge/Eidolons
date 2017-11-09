@@ -115,7 +115,7 @@ public class GammaMaster {
             case GAMMA_LIGHT:
 //                if (gamma < 2)
 //                    return 0;
-                alpha = gamma /3;
+                alpha = gamma /2;
                 break;
             case LIGHT_EMITTER:
                 for (Obj sub : IlluminationRule.getEffectCache().keySet()) {

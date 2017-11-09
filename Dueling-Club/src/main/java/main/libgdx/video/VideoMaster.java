@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.video.VideoPlayer;
 import com.badlogic.gdx.video.VideoPlayerCreator;
+import main.data.filesys.PathFinder;
 import main.libgdx.GdxMaster;
 import main.system.auxiliary.data.FileManager;
 
@@ -68,7 +69,7 @@ public class VideoMaster {
     }
 
     public String getTestPath() {
-        return   "C:\\Eidolons\\art materials\\video\\Main_Menu.ogv"; //moneda.ogg
+        return PathFinder.getVideoPath()+ "Main_Menu.ogv"; //moneda.ogg
     }
 
     public CameraInputController getInputController() {

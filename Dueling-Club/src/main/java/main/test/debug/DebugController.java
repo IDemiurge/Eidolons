@@ -2,6 +2,7 @@ package main.test.debug;
 
 import main.game.core.Eidolons;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.libgdx.screens.DungeonScreen;
 import main.system.controls.Controller;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
@@ -37,7 +38,10 @@ public class DebugController implements Controller {
                 getDebugMaster().showDebugWindow();
                 return true;
             case ' ':
-                getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.PAUSE);
+                if (DungeonScreen.getInstance() == null)
+                    return false;
+                if (!DungeonScreen.getInstance().isWaitingForInput())
+                    getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.PAUSE);
                 return true;
             case 'A':
                 getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.TOGGLE_ALT_AI);

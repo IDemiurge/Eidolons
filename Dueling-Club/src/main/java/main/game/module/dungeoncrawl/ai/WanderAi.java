@@ -18,13 +18,16 @@ import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.Positioner;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.bf.DirectionMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class WanderAi extends AiBehavior{
 
@@ -290,12 +293,21 @@ public class WanderAi extends AiBehavior{
             e.printStackTrace();
         }
         try {
-            c1 = (WanderAi.getWanderTargetCoordinatesCell(ai, GOAL_TYPE.WANDER));
+            c1 = (getWanderTargetCoordinatesCell(ai, GOAL_TYPE.WANDER));
         } catch (Exception e) {
             c1 = (CoordinatesMaster.getRandomAdjacentCoordinate(ai.getUnit().getCoordinates()));
             e.printStackTrace();
         }
-        c1 = Positioner.adjustCoordinate(ai.getUnit(), c1, ai.getUnit().getFacing());
+        c1 = Positioner.adjustCoordinate(ai.getUnit(), c1, ai.getUnit().getFacing()
+        , getWanderPredicate(ai.getUnit(),ai.getUnit().getFacing(), c1 ));
+
+        Task task = new Task(ai, GOAL_TYPE.WANDER, null);
+
+        List<Action> turnSequence = getMaster(ai).
+         getTurnSequenceConstructor().getTurnSequence(ai.getUnit(), c1);
+        if (ListMaster.isNotEmpty(turnSequence )){
+            return new ActionSequence(turnSequence, task, ai);
+        }
 
         List<Coordinates> c = new LinkedList<>();
         c.add(c1);
@@ -305,7 +317,6 @@ public class WanderAi extends AiBehavior{
         List<ActionPath> paths = new LinkedList<>();
 //         getMaster(ai).getPathBuilder().build(c);
 
-        Task task = new Task(ai, GOAL_TYPE.WANDER, null);
         Action action = null;
         if (paths.isEmpty()) {
             if (c.get(0) != null)
@@ -324,4 +335,38 @@ public class WanderAi extends AiBehavior{
             return null;
         return sequences.get(0);
     }
+
+    private Predicate<Coordinates> getWanderPredicate(Unit unit,
+                                                      FACING_DIRECTION facing,
+                                                      Coordinates c1) {
+        return new Predicate<Coordinates>() {
+            @Override
+            public boolean test(Coordinates coordinates) {
+                int wallCount =0;
+                for (Coordinates sub : c1.getAdjacentCoordinates()) {
+                    if (unit.getGame().getBattleFieldManager().getWallMap().get(sub)!=null ){
+                        wallCount++;
+                    }
+                }
+                if (unit.getAI().getType().isRanged()) {
+                    return wallCount>=4;
+                }
+                if (unit.getAI().getType().isCaster()) {
+                    return wallCount>=4;
+                }
+
+                return wallCount>=3;
+            }
+        };
+    }
 }
+
+
+
+
+
+
+
+
+
+

@@ -56,7 +56,10 @@ public abstract class StateManager {
         checkContinuousRules();
         afterBuffRuleEffects();
         resetCurrentValues();
+        makeSnapshotsOfUnitStates();
     }
+
+    protected abstract void makeSnapshotsOfUnitStates();
 
 
     protected abstract void afterBuffRuleEffects();

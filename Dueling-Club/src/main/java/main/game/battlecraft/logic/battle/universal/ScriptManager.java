@@ -13,18 +13,25 @@ public abstract class ScriptManager<T extends Battle, E> extends BattleHandler<T
     public ScriptManager(BattleMaster<T> master) {
         super(master);
     }
+
     public abstract void init();
 
     protected String readScriptsFile() {
         return "";
     }
+
     public void parseScripts(String scripts) {
 
         //syntax: new_round->equals({amount}, 2)->spawn(Vampires,5-5);
         for (String script : StringMaster.open(scripts,
          ScriptSyntax.SCRIPTS_SEPARATOR)) {
-            addTrigger(ScriptParser.parseScript(script, getMaster().getGame(), this,
-             getFunctionClass()));
+            try {
+                addTrigger(ScriptParser.parseScript(script, getMaster().getGame(), this,
+                 getFunctionClass()));
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+
         }
     }
 

@@ -31,6 +31,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     Label waitingLabel ;
     private float timeWaited;
 
+
     public ScreenWithLoader() {
         //TODO loader here, but need data!
         video = new VideoMaster();
@@ -89,8 +90,11 @@ try{        MusicMaster.getInstance().startLoop();}catch(Exception e){main.syste
         afterLoad();
         updateInputController();
         initCursor();
+        triggerInitialEvents();
     }
 
+    protected void triggerInitialEvents() {
+    }
     private void initCursor() {
         Gdx.graphics.setSystemCursor(SystemCursor.Ibeam);
     }
@@ -160,6 +164,14 @@ try{        MusicMaster.getInstance().startLoop();}catch(Exception e){main.syste
         }
     }
 
+    public boolean isWaitingForInput() {
+        return waitingForInput;
+    }
+
+    public float getTimeWaited() {
+        return timeWaited;
+    }
+
     protected boolean canShowScreen() {
         boolean isIntroFinished = true;
         if (introStage != null && !introStage.isDone()) {
@@ -197,4 +209,7 @@ try{        MusicMaster.getInstance().startLoop();}catch(Exception e){main.syste
         initLoadingCursor();
     }
 
+    public boolean isLoadingDone() {
+        return hideLoader;
+    }
 }

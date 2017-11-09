@@ -87,7 +87,7 @@ public class GameLoop {
             thread = new Thread(() -> {
             start();
         }, getThreadName());
-        ;
+
         thread.start();
 
         LogMaster.log(1, "Game Loop started " + this);

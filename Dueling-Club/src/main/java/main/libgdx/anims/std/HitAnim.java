@@ -189,7 +189,10 @@ public class HitAnim extends ActionAnim {
     @Override
     public void finished() {
         super.finished();
-        getActionTarget().setX(originalActorX);
+        if (getActionTarget() == null) {
+            return ;
+        }
+         getActionTarget().setX(originalActorX);
         getActionTarget().setX(originalActorY);
     }
 

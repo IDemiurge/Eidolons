@@ -210,6 +210,33 @@ public class AI_Manager extends AiMaster {
     public void setGroups(List<GroupAI> groups) {
         this.groups = groups;
     }
+    private void updateGroups() {
+        double join_distance = 1;
+        double leave_distance = 5;
+        for (GroupAI group :     new LinkedList<>(groups))
+            for (Unit unit: group.getMembers()) {
+                double distance = PositionMaster.getExactDistance(
+                 group.getLeader().getCoordinates(),
+                 unit.getCoordinates());
+                if (distance > leave_distance) {
+                    group.remove(unit);
+                    unit.getAI(). setGroupAI(new GroupAI(unit));
+                    groups.add(unit.getAI().getGroup());
+                    //wait until clear that they're unassigned?
+                }
+        }
+// join
+        for (GroupAI group : groups)
+            for (Unit unit: group.getMembers()) {
+                double distance = PositionMaster.getExactDistance(
+                 group.getLeader().getCoordinates(),
+                 unit.getCoordinates());
+                if (distance > leave_distance) {
+                    group.remove(unit);
+                    unit.getAI(). setGroupAI(new GroupAI(unit));
+                }
+            }
+    }
 
     private void resetGroups() {
         //by proximity... not all mobs will be part of a group
@@ -218,17 +245,17 @@ public class AI_Manager extends AiMaster {
 //            if (!groups.isEmpty()) {
 //            }
 //        }
-        if (groups==null )
+        if (groups==null  )
         groups = new LinkedList<>();
 
         for (Object sub : game.getBattleMaster().getPlayerManager().getPlayers()) {
             DC_Player player = (DC_Player) sub;
             for (Unit unit : player.getControlledUnits_()) {
                 GroupAI group =unit.getAI().getGroup();
-                if (group == null)
+                if (group == null  )
                     group =new GroupAI(unit);
                 for (Unit unit1 : player.getControlledUnits_()) {
-                    if (unit1.getAI().getGroup() != null)
+                    if (unit1.getAI().getGroup() != null )
                         continue;
                     if (unit1.equals(unit))
                         continue;
@@ -252,4 +279,5 @@ public class AI_Manager extends AiMaster {
         else
             return;
     }
+
 }

@@ -99,6 +99,10 @@ public class TurnSequenceConstructor extends AiHandler {
         return getTurnSequence(template, source, target.getCoordinates());
 
     }
+    public List<Action> getTurnSequence( Unit source,
+                                        Coordinates target) {
+        return getTurnSequence(FACING_SINGLE.IN_FRONT, source, target);
+    }
 
     public List<Action> getTurnSequence(FACING_SINGLE template, Unit source,
                                         Coordinates target) {
@@ -151,36 +155,36 @@ public class TurnSequenceConstructor extends AiHandler {
     }
 
 
-    @Deprecated
-    public List<Action> getTurnSequence(Unit unit, Coordinates targetCoordinates) {
-        List<Action> list = new ArrayList<>();
-        // this will only work if there are no obstacles to the sides
-        // in reality, we need to preCheck from which *empty* *adjacent* cell the
-        // enemy is closer
-        FACING_DIRECTION facing = unit.getFacing();
-        boolean clockwise = RandomWizard.random();
-        list.add(getTurnAction(clockwise, unit));
-        facing = FacingMaster.rotate(facing, clockwise);
-        // action.getActive().getTargeting().getFilter()
-        if (FacingMaster.getSingleFacing(FacingMaster.rotate(facing, clockwise), unit
-                .getCoordinates(), targetCoordinates) == UnitEnums.FACING_SINGLE.IN_FRONT) {
-            return list;
-        }
-
-        clockwise = !clockwise;
-        facing = unit.getFacing();
-        list.clear();
-
-        list.add(getTurnAction(clockwise, unit));
-        facing = FacingMaster.rotate(facing, clockwise);
-        if (FacingMaster.getSingleFacing(FacingMaster.rotate(facing, clockwise), unit
-                .getCoordinates(), targetCoordinates) == UnitEnums.FACING_SINGLE.IN_FRONT) {
-            return list;
-        }
-        list.add(getTurnAction(clockwise, unit));
-        facing = FacingMaster.rotate(facing, clockwise);
-
-        return list;
-
-    }
+//    @Deprecated
+//    public List<Action> getTurnSequence(Unit unit, Coordinates targetCoordinates) {
+//        List<Action> list = new ArrayList<>();
+//        // this will only work if there are no obstacles to the sides
+//        // in reality, we need to preCheck from which *empty* *adjacent* cell the
+//        // enemy is closer
+//        FACING_DIRECTION facing = unit.getFacing();
+//        boolean clockwise = RandomWizard.random();
+//        list.add(getTurnAction(clockwise, unit));
+//        facing = FacingMaster.rotate(facing, clockwise);
+//        // action.getActive().getTargeting().getFilter()
+//        if (FacingMaster.getSingleFacing(FacingMaster.rotate(facing, clockwise), unit
+//                .getCoordinates(), targetCoordinates) == UnitEnums.FACING_SINGLE.IN_FRONT) {
+//            return list;
+//        }
+//
+//        clockwise = !clockwise;
+//        facing = unit.getFacing();
+//        list.clear();
+//
+//        list.add(getTurnAction(clockwise, unit));
+//        facing = FacingMaster.rotate(facing, clockwise);
+//        if (FacingMaster.getSingleFacing(FacingMaster.rotate(facing, clockwise), unit
+//                .getCoordinates(), targetCoordinates) == UnitEnums.FACING_SINGLE.IN_FRONT) {
+//            return list;
+//        }
+//        list.add(getTurnAction(clockwise, unit));
+//        facing = FacingMaster.rotate(facing, clockwise);
+//
+//        return list;
+//
+//    }
 }

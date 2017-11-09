@@ -239,7 +239,11 @@ public class StackingRule implements ActionRule {
     @Override
     public void actionComplete(ActiveObj activeObj) {
         clearCache();
+    }
 
+    @Override
+    public boolean isAppliedOnExploreAction(DC_ActiveObj action) {
+        return true;
     }
 
     public void clearCache() {

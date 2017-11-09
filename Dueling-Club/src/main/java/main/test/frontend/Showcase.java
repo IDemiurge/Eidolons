@@ -11,6 +11,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
+import main.system.launch.CoreEngine;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class Showcase {
      "Test", "Showcase",
      "Hero Creator",
     };
+    private static final int DEFAULT_EXE_INDEX = 4;
     public static String launchData = "";
     private static boolean running;
     private static String scenarioName="Mini Release Pack";//"Crawl Levels";//"Crawl Demo";
@@ -46,8 +48,11 @@ public class Showcase {
         FontMaster.init();
         GuiManager.init();
         int index = -1;
-        if (args .length>0) {
+        if (args .length>0 || CoreEngine.isExe()) {
             preset = true;
+            if (CoreEngine.isExe()) {
+                index = DEFAULT_EXE_INDEX;
+            }else
             index = Integer.valueOf(args[0]);
         } else
             index = DialogMaster.optionChoice(launch_options,

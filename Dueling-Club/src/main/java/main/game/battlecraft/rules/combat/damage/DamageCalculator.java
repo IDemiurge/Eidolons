@@ -197,7 +197,9 @@ public class DamageCalculator {
         } //annihilation!
         if (targetObj instanceof Unit){
             return
-             unconscious ? UnconsciousRule.checkFallsUnconscious((Unit) targetObj)
+             unconscious ?
+              UnconsciousRule.checkFallsUnconscious((Unit) targetObj ,
+               targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage)
               : UnconsciousRule.checkUnitDies(
               targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage,
               targetObj.getIntParam(PARAMS.C_ENDURANCE) - damage, (Unit) targetObj,

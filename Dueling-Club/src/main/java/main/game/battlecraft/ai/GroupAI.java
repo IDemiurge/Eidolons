@@ -21,7 +21,7 @@ import java.util.*;
 public class GroupAI {
     private ENCOUNTER_TYPE encounterType;
     private Unit leader;
-    private DequeImpl<Unit> members= new DequeImpl<>();
+    private DequeImpl<Unit> members = new DequeImpl<>();
     private PartyObj party;
     private Wave creepGroup;
     private ENGAGEMENT_LEVEL engagementLevel;
@@ -40,13 +40,15 @@ public class GroupAI {
     private boolean backAndForth;
     private Patrol patrol;
 
-    public GroupAI( ) {
+    public GroupAI() {
 
     }
+
     public GroupAI(Unit leader) {
         setLeader(leader);
         add(leader);
     }
+
     public GroupAI(Wave creepGroup) {
         this.creepGroup = creepGroup;
         if (creepGroup != null) {
@@ -70,7 +72,13 @@ public class GroupAI {
     @Override
     public String toString() {
         return "AI_Group: " + ListMaster.toNameList(new LinkedList<>(getMembers())) + "; leader: "
-                + leader;
+         + leader;
+    }
+
+    public void remove(Unit unit) {
+        UnitAI unitAI = unit.getUnitAI();
+        members.remove(unit);
+        unitAI.setGroupAI(null);
     }
 
     public void add(MicroObj obj) {
@@ -246,7 +254,7 @@ public class GroupAI {
     }
 
     public void setSuspectedEnemyCoordinatesMap(
-            Map<Unit, List<Coordinates>> suspectedEnemyCoordinatesMap) {
+     Map<Unit, List<Coordinates>> suspectedEnemyCoordinatesMap) {
         this.suspectedEnemyCoordinatesMap = suspectedEnemyCoordinatesMap;
     }
 

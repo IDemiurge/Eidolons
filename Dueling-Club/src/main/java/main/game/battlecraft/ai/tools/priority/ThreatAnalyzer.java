@@ -1,7 +1,6 @@
 package main.game.battlecraft.ai.tools.priority;
 
 import main.content.PARAMS;
-import main.content.enums.system.AiEnums.AI_TYPE;
 import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
@@ -59,7 +58,7 @@ public class ThreatAnalyzer extends AiHandler {
     }
 
     public int getRangedThreat(Unit target, Unit unit) {
-        if (unit.getAI().getType() != AI_TYPE.ARCHER)
+        if (unit.getAI().getType().isCaster())
             return new FuncMaster().total(unit.getSpells(), s -> {
                 DC_SpellObj spell = (DC_SpellObj) s;
 //            if (spell.isDamageSpell())

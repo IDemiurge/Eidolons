@@ -363,7 +363,7 @@ public class DC_AttackMaster {
             if (attackedUnit != null)
                 if (attackedUnit.getSecondWeapon() != null) {
                     if (attackedUnit.getSecondWeapon().isShield()) {
-                        if (!attack.isSneak() && !isCounter) {
+                        if (!attack.isSneak()){// && !isCounter) {
                             int blocked = game.getArmorMaster().getShieldDamageBlocked(final_amount, attackedUnit,
                              attacker, action, getAttackWeapon(ref, attack.isOffhand()),
                              attack.getDamageType());

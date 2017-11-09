@@ -71,6 +71,9 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     private OPERATIONS getOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick,
                                     boolean altClick, Entity cellContents) {
+        if (cell_type == null) {
+            return null;
+        }
         if (cellContents == null) {
             return null;
         }

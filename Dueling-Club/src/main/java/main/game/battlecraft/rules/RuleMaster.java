@@ -173,7 +173,7 @@ public class RuleMaster implements Controller {
                     case ORDERS:
                     case WATCH:
 //                    case USE_INVENTORY:
-                    case DUAL_ATTACKS:
+//                    case DUAL_ATTACKS:
 //                    case VISIBILITY:
                         return false;
                 }

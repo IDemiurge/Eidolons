@@ -658,10 +658,10 @@ public class ItemGenerator implements GenericItemGenerator {
 
     @Override
     public ObjType getOrCreateItemType(String typeName, OBJ_TYPE type) {
-        if (type.equals(DC_TYPE.JEWELRY)) {
+        if (type==(DC_TYPE.JEWELRY)) {
             return getOrCreateJewelry(typeName);
         }
-        boolean weapon = type == DC_TYPE.WEAPONS;
+        boolean weapon = type .equals( DC_TYPE.WEAPONS); //TODO generic C_TYPE for armor?
 //        String baseTypeName = typeName;
         String name = StringMaster.getFirstItem(typeName, " ");
         QUALITY_LEVEL quality =

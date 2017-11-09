@@ -5,7 +5,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.tools.EntityMaster;
+import main.entity.handlers.EntityMaster;
 import main.game.core.game.Game;
 
 import javax.swing.*;

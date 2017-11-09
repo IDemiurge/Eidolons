@@ -119,7 +119,7 @@ public class Ref implements Cloneable, Serializable {
             removeValue(name);
         }
         if (objCache != null)
-            objCache.remove(name.name());
+            objCache.remove(name.name().toLowerCase());
     }
 
     public void removeValue(KEYS name) {

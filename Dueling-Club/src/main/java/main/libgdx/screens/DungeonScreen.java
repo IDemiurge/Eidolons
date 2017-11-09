@@ -241,7 +241,10 @@ public class DungeonScreen extends ScreenWithLoader {
 
         return current;
     }
-
+    protected void triggerInitialEvents() {
+        DC_Game.game.getVisionMaster().triggerGuiEvents();
+        GuiEventManager.trigger(UPDATE_GUI);
+    }
     @Override
     public void render(float delta) {
         if (DC_Game.game != null) {

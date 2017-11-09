@@ -20,6 +20,7 @@ import main.system.math.MathMaster;
  */
 public class ExplorationTimeMaster extends ExplorationHandler {
     public static final float secondsPerAP = 5f;
+    private static final float REGEN_MODIFIER = 0.2f;
     private float time = 0;
     private float lastTimeChecked;
     private float round_delta = 0;
@@ -223,18 +224,18 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private float getRegenModifier() {
-        return 0.2f;
+        return REGEN_MODIFIER;
     }
 
     private float getRegenModifier(PARAMETER param) {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
                 case STAMINA:
-                    return 0.5f;
+                    return 1f;
                 case FOCUS:
-                    return 0.33f;
+                    return 1.5f;
                 case ESSENCE:
-                    return 0.25f;
+                    return 1f;
             }
         }
         return 1f;

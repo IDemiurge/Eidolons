@@ -266,7 +266,7 @@ public class GridPanel extends Group {
 
     private void bindEvents() {
 
-        GuiEventManager.bind(GuiEventType.ANIMATION_QUEUE_FINISHED, (p)->{
+        GuiEventManager.bind(GuiEventType.ANIMATION_QUEUE_FINISHED, (p) -> {
             resetVisible();
         });
         GuiEventManager.bind(UNIT_GREYED_OUT_ON, obj -> {
@@ -421,6 +421,7 @@ public class GridPanel extends Group {
 
 
     }
+
 
     private void setVisible(BattleFieldObject sub, boolean b) {
         unitMap.get(sub).setVisible(b);
