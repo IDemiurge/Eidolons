@@ -4,6 +4,8 @@ import main.ability.effects.DC_Effect;
 import main.ability.effects.OneshotEffect;
 import main.data.ability.AE_ConstrArgs;
 import main.entity.active.DC_ActiveObj;
+import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.battlecraft.rules.combat.mechanics.ForceRule;
 import main.system.math.Formula;
 
@@ -21,7 +23,7 @@ public class ForceEffect extends DC_Effect implements OneshotEffect{
     }
 
     @Override
-    public boolean applyThis() {
+    public boolean applyThis() { if (!RuleMaster.isRuleOn(RULE.FORCE)) return false;
         int force = getFormula().getInt(ref);
         ForceRule.applyForceEffects(force, (DC_ActiveObj) ref.getActive());
         Boolean result = null;

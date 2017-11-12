@@ -35,14 +35,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public MetaGameMaster(String data) {
         this.data = data;
-        partyManager = createPartyManager();
-        initializer = createMetaInitializer();
-        shopManager = createShopManager();
-        metaDataManager = createMetaDataManager();
-        dialogueFactory = createDialogueFactory();
-        introFactory = createIntroFactory();
-        dialogueManager = new DialogueManager(this);
-        dialogueActorMaster = new DialogueActorMaster(this);
+        initHandlers();
+
+
     }
 
     protected IntroFactory createIntroFactory() {
@@ -69,6 +64,16 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     protected abstract MetaInitializer<E> createMetaInitializer();
 
+    public void initHandlers() {
+        partyManager = createPartyManager();
+        initializer = createMetaInitializer();
+        shopManager = createShopManager();
+        metaDataManager = createMetaDataManager();
+        dialogueFactory = createDialogueFactory();
+        introFactory = createIntroFactory();
+        dialogueManager = new DialogueManager(this);
+        dialogueActorMaster = new DialogueActorMaster(this);
+    }
 
     public void init() {
 //        shopManager.init();
@@ -149,7 +154,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public void next(Boolean outcome) {
         gameExited();
-        game.reinit();
+        game.reinit(outcome==null );
         //or selective clear() - removeIf() ...
 //        for (Unit hero : getPartyManager().getParty().getMembers()) {
 //            for (ActiveObj activeObj : hero.getActives()) {

@@ -140,7 +140,7 @@ try{        MusicMaster.getInstance().startLoop();}catch(Exception e){main.syste
             Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-            if (!video.getPlayer().render()) {
+            if (!video.getPlayer(). render()) {
                 video.playTestVideo();
             }
             if (waitingForInput){
@@ -149,7 +149,7 @@ try{        MusicMaster.getInstance().startLoop();}catch(Exception e){main.syste
                 float alpha = (timeWaited/3) % 1;
                 alpha =(alpha>=0.5f)?  1.5f-(alpha)
                  : alpha*2+0.15f;
-                waitingLabel.draw(batch, alpha);
+                waitingLabel.draw(batch, alpha% 1);
                 batch.end();
             }
            return ;

@@ -97,12 +97,12 @@ public class RuleMaster implements Controller {
             return r.scope;
         }
         switch (r) {
-            case FORCE:
             case INJURY:
                 return RULE_SCOPE.TEST;
             case ATTACK_OF_OPPORTUNITY:
             case INSTANT_ATTACK:
                 return RULE_SCOPE.FULL;
+            case FORCE:
             case TRAMPLE:
             return RULE_SCOPE.ADVANCED;
 
@@ -365,7 +365,7 @@ BLEEDING, BLAZE, FREEZE, POISON, DISEASE,
     }
 
     public enum RULE {
-        FORCE(RULE_SCOPE.ADVANCED),
+        FORCE(RULE_SCOPE.FULL),
         CHANNELING(RULE_SCOPE.TEST),
         ATTACK_OF_OPPORTUNITY(RULE_SCOPE.FULL),
         INSTANT_ATTACK(RULE_SCOPE.FULL),

@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import main.game.core.Eidolons;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
@@ -21,6 +22,7 @@ import main.libgdx.gui.panels.dc.TabbedPanel;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
+import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.graphics.MigMaster;
 import main.system.threading.WaitMaster;
@@ -148,7 +150,15 @@ public class OutcomePanel extends TablePanel implements EventListener {
 //                @Override
 //                public boolean act(float delta) {
                     if (exit_continue_next == null ) {
+                        if (!ExplorationMaster.isExplorationOn())
                         Eidolons.getGame().getMaster().nextLevel();
+
+                        if (!BooleanMaster.isTrue(outcome))
+                        Eidolons.getGame().getMetaMaster().getBattleMaster().
+                         getOutcomeManager().restart();
+                        else
+                            Eidolons.getGame().getMetaMaster().getBattleMaster().
+                             getOutcomeManager().next();
 
                     } else if (exit_continue_next) {
 //                        if (DialogMaster.confirm("Must you really go?.."))

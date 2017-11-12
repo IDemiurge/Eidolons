@@ -201,7 +201,7 @@ public class AggroMaster {
                 action.getOwnerObj().
                  getAI().setEngaged(true);
             } else {
-                ((Unit) action.getTargetObj()).getAI().setEngaged(true);
+                ((Unit)targetObj).getAI().setEngaged(true);
 //                                GroupAI g = ((Unit) getAction().getTargetObj()).getAI().getGroup();
 //                                //TODO
 //                                if (g == null) {

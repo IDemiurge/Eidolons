@@ -35,6 +35,7 @@ import main.system.audio.DC_SoundMaster;
 import main.system.launch.CoreEngine;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
+import main.test.frontend.DemoLauncher;
 
 import java.util.List;
 
@@ -63,6 +64,7 @@ public class DungeonScreen extends ScreenWithLoader {
     private Vector2 cameraDestination;
     private RealTimeGameLoop realTimeGameLoop;
     private ParticleManager particleManager;
+    private static final float FRAMERATE_DELTA_CONTROL=new Float(1)/DemoLauncher.FRAMERATE *3;
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -151,7 +153,7 @@ public class DungeonScreen extends ScreenWithLoader {
         soundMaster = new DC_SoundMaster(this);
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
-        gridStage.addActor(gridPanel);
+    gridStage.addActor(gridPanel);
         particleManager = new ParticleManager();
         gridStage.addActor(particleManager.getEmitterMap());
 //        GuiEventManager.bind(GuiEventType.BF_CREATED, p -> {
@@ -181,6 +183,7 @@ public class DungeonScreen extends ScreenWithLoader {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
     }
 
@@ -247,6 +250,15 @@ public class DungeonScreen extends ScreenWithLoader {
     }
     @Override
     public void render(float delta) {
+        if (delta>   FRAMERATE_DELTA_CONTROL )
+        {
+            try {
+                Thread.sleep((long) (delta - FRAMERATE_DELTA_CONTROL));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            delta = FRAMERATE_DELTA_CONTROL;
+        }
         if (DC_Game.game != null) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
                 DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());

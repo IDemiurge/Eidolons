@@ -26,6 +26,7 @@ public class GameplayOptions extends  Options<GAMEPLAY_OPTION,GAMEPLAY_OPTION>{
         DEFAULT_ACTIONS(true),
 //        ALT_DEFAULT_ACTIONS,
 
+        RANDOM_HERO(true),
         MANUAL_CONTROL(false),
         DEBUG_MODE(false),
 

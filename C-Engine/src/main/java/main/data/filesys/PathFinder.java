@@ -14,6 +14,7 @@ public class PathFinder {
 
     private static final String BG_PATH = "big"+StringMaster.getPathSeparator();
     private static final String PRESENTATION = "presentation"+StringMaster.getPathSeparator();
+    private static final String RES_FOLDER_NAME = "resources";
     public static String MICRO_MODULE_NAME = "duel-club";
     private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + "//templates";
     private static String MACRO_MODULE_NAME = "macro";
@@ -68,7 +69,7 @@ public class PathFinder {
 
         }
 
-        RES_PATH = "resource" + File.separator;
+        RES_PATH = RES_FOLDER_NAME + File.separator;
         IMG_PATH = ENGINE_PATH + RES_PATH + "img"+StringMaster.getPathSeparator();
 
         SND_PATH = ENGINE_PATH + RES_PATH + "sound"+StringMaster.getPathSeparator();
@@ -183,7 +184,7 @@ public class PathFinder {
     }
     public static String getEnginePathPlusNewResourceProject() {
         init();
-        return ENGINE_PATH  +StringMaster.getPathSeparator()+"resource"+StringMaster.getPathSeparator();
+        return ENGINE_PATH  +StringMaster.getPathSeparator()+RES_FOLDER_NAME+StringMaster.getPathSeparator();
     }
 
     public static String getThemedBgPicsPath() {

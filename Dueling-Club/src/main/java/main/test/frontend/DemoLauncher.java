@@ -30,6 +30,7 @@ import static main.system.GuiEventType.SCREEN_LOADED;
 import static main.system.GuiEventType.SWITCH_SCREEN;
 
 public class DemoLauncher extends Game {
+    public static final int FRAMERATE = 60;
     private static Nitrite db;
     private static String quickTypes =
      "units;bf obj;terrain;missions;places;scenarios;party;";
@@ -75,14 +76,14 @@ public class DemoLauncher extends Game {
         conf.title = "Eidolons: Battlecraft v" + Launcher.VERSION;
 //        if (Gdx.graphics.isGL30Available())
         conf.useGL30 = true;
-        conf.resizable = false;
+        conf.resizable = true;
         OptionsMaster.init();
 
         conf.fullscreen = //false;
          OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
 
-        conf.foregroundFPS=50;
-        conf.backgroundFPS=-1;
+        conf.foregroundFPS=FRAMERATE;
+        conf.backgroundFPS=isStopOnInactive()? -1 : FRAMERATE;
         conf.width = 1600;
         conf.height = 900;
 
@@ -124,6 +125,10 @@ public class DemoLauncher extends Game {
             e.printStackTrace();
         }
         return conf;
+    }
+
+    private static boolean isStopOnInactive() {
+        return true;
     }
 
     @Override

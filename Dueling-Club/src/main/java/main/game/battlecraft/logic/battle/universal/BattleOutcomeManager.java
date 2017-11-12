@@ -26,7 +26,12 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
         return outcome;
     }
 
-public enum OUTCOME{
+    public void restart() {
+        outcome = null;
+        next();
+    }
+
+    public enum OUTCOME{
         SURRENDER,
         DEFEAT,
     VICTORY,
@@ -76,7 +81,7 @@ public enum OUTCOME{
     }
 
     public void next() {
-        getGame().getMetaMaster().next(outcome);
+        getGame().getMetaMaster().next(true);
     }
 
     public void setRoundLimit(Integer roundLimit) {

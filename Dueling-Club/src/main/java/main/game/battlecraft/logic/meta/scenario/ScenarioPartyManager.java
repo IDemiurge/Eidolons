@@ -10,7 +10,8 @@ import main.game.battlecraft.logic.meta.universal.PartyManager;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import main.system.options.OptionsMaster;
 import main.system.text.NameMaster;
 
 import java.util.List;
@@ -63,8 +64,8 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         //choice
         //already as Unit?
         ObjType type = getMetaGame().getScenario().getPartyType();
-        chooseOneHero= !CoreEngine.isExe();
-        randomOneHero= CoreEngine.isExe();
+        randomOneHero= OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.RANDOM_HERO);
+        chooseOneHero= !randomOneHero;
         if (type == null) {
             String string = getMetaGame().getScenario().getProperty(PROPS.SCENARIO_PARTY);
             type = new ObjType("dummy", DC_TYPE.PARTY);

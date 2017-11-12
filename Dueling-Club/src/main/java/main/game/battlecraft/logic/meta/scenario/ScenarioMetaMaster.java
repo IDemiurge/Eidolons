@@ -20,6 +20,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
     public ScenarioMetaMaster(String data) {
         super(data);
+
     }
 
     /*
@@ -41,11 +42,12 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
     @Override
     public void next(Boolean outcome) {
+        boolean restart=false;
         if (outcome == null) {
-            outcome = true;
-//            return ;//TODO exit? credits?
+          restart = true;
         }
         super.next(outcome);
+        if (outcome!=null)
         if (outcome) {
             if (getMetaGame().isFinalLevel()) {
                 getBattleMaster().getOutcomeManager().victory();
@@ -64,13 +66,15 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 //   TODO       getDialogueManager().getDialogueForMission(getMissionName());
         getMetaDataManager().setMissionName(null);
         getMetaDataManager().initMissionName();
-
         ScreenData data = new ScreenData(ScreenType.BATTLE, getMissionName());
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
 
         Eidolons.initScenario(
          new ScenarioMetaMaster(getData()));
 
+        if (restart){
+            Eidolons.mainGame.getMetaMaster().init();
+        }
         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
         Eidolons.mainGame.getMetaMaster().getGame().start(true);

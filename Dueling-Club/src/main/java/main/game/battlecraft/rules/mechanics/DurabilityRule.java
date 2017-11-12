@@ -45,7 +45,7 @@ public class DurabilityRule extends DC_RuleImpl {
                 armor_amount);
         durabilityReductionEffect.setSimulation(simulation);
         Ref ref = Ref.getSelfTargetingRefCopy(armor);
-        ref.setID(KEYS.WEAPON, weapon.getId());
+        ref.setID(KEYS.WEAPON, weapon.getId()); if (armor_amount>0)
         durabilityReductionEffect.apply(ref);
 
         self_damage_mod = weapon.getIntParam(DC_ContentManager

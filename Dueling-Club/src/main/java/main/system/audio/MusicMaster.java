@@ -6,6 +6,8 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
+import main.game.core.Eidolons;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
@@ -30,7 +32,7 @@ import java.util.List;
 
 public class MusicMaster {
     public static final int PERIOD = 3500;
-    public static final String MASTER_PATH = PathFinder.getMusicPath()+"\\main\\";
+    public static final String MASTER_PATH = PathFinder.getMusicPath() + "\\main\\";
     public static final boolean MASTER_MODE = true;
 
     public static final String MOMENT_PATH = "\\music\\moments\\";
@@ -42,7 +44,7 @@ public class MusicMaster {
     private static boolean on = true;
     Stack<String> playList;
     Stack<String> cachedPlayList;
-    MUSIC_SCOPE scope=MUSIC_SCOPE.MENU;
+    MUSIC_SCOPE scope = MUSIC_SCOPE.MENU;
     MUSIC_VARIANT variant;
     MUSIC_THEME theme;
     AMBIENCE ambience = AMBIENCE.FOREST_NIGHT;
@@ -57,6 +59,7 @@ public class MusicMaster {
     private Map<MUSIC_SCOPE, Music> trackCache = new XLinkedMap<>();
     private Thread thread;
     private boolean interruptOnSet;
+    private boolean mainThemePlayed;
     // IDEA: map music per scope to resume()
 // TODO AMBIENT SOUNDS -
 
@@ -176,9 +179,9 @@ public class MusicMaster {
 
     private void checkNewMusicToPlay() {
         if (!interruptOnSet)
-            if (playedMusic!=null )
+            if (playedMusic != null)
                 if (playedMusic.isPlaying())
-            return ;
+                    return;
         if (ListMaster.isNotEmpty(playList)) {
             playMusic(playList.pop());
             return;
@@ -225,14 +228,17 @@ public class MusicMaster {
     }
 
     private String getMusicFolder() {
-if (MASTER_MODE)
-{
-    if (scope==MUSIC_SCOPE.BATTLE)
-        return  MASTER_PATH+"battle";
-    if (scope==MUSIC_SCOPE.MENU)
-        return  MASTER_PATH+"menu";
-    return MASTER_PATH;
-}
+        if (MASTER_MODE) {
+            if (Eidolons.game.isStarted())
+                if (!ExplorationMaster.isExplorationOn())
+//        if (scope==MUSIC_SCOPE.BATTLE)
+                return MASTER_PATH + "battle";
+            if (!mainThemePlayed || scope == MUSIC_SCOPE.MENU) {
+                mainThemePlayed = true;
+                return MASTER_PATH + "menu";
+            }
+            return MASTER_PATH;
+        }
         StrPathBuilder builder = new StrPathBuilder(PathFinder.getMusicPath());
         if (scope != null)
             builder.append(StringMaster.getWellFormattedString(
@@ -254,35 +260,34 @@ if (MASTER_MODE)
     }
 
     public void startLoop() {
-        if (thread!=null )
-        {
+        if (thread != null) {
             resume();
             checkNewMusicToPlay();
-            return ;
+            return;
         }
         thread =
-        new Thread(() -> {
-            while (true) {
-                try {
-                    WaitMaster.WAIT(PERIOD);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                checkAmbience();
-                if (stopped)
-                    continue;
-                if (playedMusic != null) {
-                    if (!playedMusic.isPlaying()) {
-                        checkNewMusicToPlay();
-                    }
-                } else {
-                    checkNewMusicToPlay();
-                }
-            }
+         new Thread(() -> {
+             while (true) {
+                 try {
+                     WaitMaster.WAIT(PERIOD);
+                 } catch (Exception e) {
+                     e.printStackTrace();
+                 }
+                 checkAmbience();
+                 if (stopped)
+                     continue;
+                 if (playedMusic != null) {
+                     if (!playedMusic.isPlaying()) {
+                         checkNewMusicToPlay();
+                     }
+                 } else {
+                     checkNewMusicToPlay();
+                 }
+             }
 //        MusicMaster.this.running=false;
-        }, "Music Thread");
+         }, "Music Thread");
         thread.start();
-        running=true;
+        running = true;
     }
 
     public void resume() {
@@ -327,25 +332,25 @@ if (MASTER_MODE)
     }
 
     public void setScope(MUSIC_SCOPE scope) {
-        if (scope!=this.scope) {
+        if (scope != this.scope) {
             this.scope = scope;
             if (interruptOnSet)
-            musicReset();
+                musicReset();
         }
     }
 
     public void setVariant(MUSIC_VARIANT variant) {
-        if (variant!=this.variant){
-        this.variant = variant;
+        if (variant != this.variant) {
+            this.variant = variant;
             if (interruptOnSet)
-        musicReset();
+                musicReset();
         }
     }
 
     public void setTheme(MUSIC_THEME theme) {
         this.theme = theme;
         if (interruptOnSet)
-        musicReset();
+            musicReset();
     }
 
     public void setShuffle(boolean shuffle) {
