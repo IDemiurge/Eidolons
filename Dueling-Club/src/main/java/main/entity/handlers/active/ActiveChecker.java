@@ -178,8 +178,11 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
         return getEntity().isRangedTouch();
     }
 
-    public boolean isAttackAny() {
-        return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK || isAttackGeneric() || isStandardAttack();
+    public boolean isAttack () {
+        return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
+    }
+        public boolean isAttackAny() {
+            return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK || isAttackGeneric() || isStandardAttack();
     }
 
 

@@ -1,7 +1,6 @@
 package main.libgdx.anims.weapons;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
@@ -12,10 +11,8 @@ import main.libgdx.anims.AnimMaster3d.PROJECTION;
 import main.libgdx.anims.AnimMaster3d.WEAPON_ANIM_CASE;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.std.ActionAnim;
-import main.system.math.FuncMaster;
 import main.system.math.PositionMaster;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,11 +64,11 @@ public class Weapon3dAnim extends ActionAnim {
         getSprites().add(sprite);
         if (sprite.getRegions().size==0)
             return ;
-        int w = new FuncMaster<AtlasRegion>().getGreatest_(  (Arrays.asList(sprite.getRegions().toArray())),
-         r -> r.getRegionWidth()).getRegionWidth();
-        int h = new FuncMaster<AtlasRegion>().getGreatest_((Arrays.asList(sprite.getRegions().toArray())),
-         r -> r.getRegionHeight()).getRegionHeight();
-        setSize(w, h);
+//        int w = new FuncMaster<AtlasRegion>().getGreatest_(  (Arrays.asList(sprite.getRegions().toArray())),
+//         r -> r.getRegionWidth()).getRegionWidth();
+//        int h = new FuncMaster<AtlasRegion>().getGreatest_((Arrays.asList(sprite.getRegions().toArray())),
+//         r -> r.getRegionHeight()).getRegionHeight();
+//        setSize(w, h);
     }
 
     protected boolean checkFlipHorizontally() {

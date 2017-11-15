@@ -127,14 +127,20 @@ public class HeroManager {
     public static boolean isQuickSlotWeapon(Entity type) {
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) {
             if (type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.SMALL + "")
-                    || type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.TINY + "")
-                    || type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
+             || type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.TINY + "")
+             || type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
                 return true;
             }
         }
         return false;
     }
 
+    public static boolean isQuickSlotOnly (Entity type) {
+        if (   type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
+                return true;
+            }
+        return false;
+    }
     public void removeHero(Unit hero) {
         typeStacks.remove(hero);
     }

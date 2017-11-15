@@ -24,6 +24,7 @@ import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
+import main.libgdx.gui.panels.dc.logpanel.text.TextPanel;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
@@ -122,7 +123,13 @@ public class RadialManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        List<RadialValueContainer> list = new LinkedList<>();
+        if (TextPanel.TEST_MODE)
+            try {
+//                GuiEventManager.trigger(SHOW_TEXT_CENTERED, "Hey\nyo\nman!");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            List<RadialValueContainer> list = new LinkedList<>();
         if (target instanceof Unit) {
             list.add(getExamineNode(target));
         }
@@ -338,7 +345,7 @@ public class RadialManager {
             return configureSelectiveTargetedNode(el, target);
         }
         RadialValueContainer valueContainer = new RadialValueContainer(
-         new TextureRegion(getTextureForActive(el, target)), getRunnable(target, el), checkValid(el, target));
+         new TextureRegion(getTextureForActive(el, target)), getRunnable(target, el), checkValid(el, target),el, target);
         addSimpleTooltip(valueContainer, el.getName());
         return valueContainer;
     }
@@ -385,7 +392,7 @@ public class RadialManager {
             }
 
         };
-        return new RadialValueContainer(textureRegion, runnable, valid);
+        return new RadialValueContainer(textureRegion, runnable, valid, active, target);
     }
 
     private static RadialValueContainer configureAttackParentNode(
@@ -403,7 +410,7 @@ public class RadialManager {
 
         RadialValueContainer valueContainer =
          new RadialValueContainer(new TextureRegion(getTextureForActive(parent, target)), null,
-          checkValid(parent, target));
+          checkValid(parent, target), parent, target);
         addSimpleTooltip(valueContainer, parentNode.getName());
         valueContainer.setChildNodes(list);
 
@@ -437,7 +444,7 @@ public class RadialManager {
                 result = new RadialValueContainer(getOrCreateR(activeObj.getImagePath()), getRunnable(target, activeObj));
             } else {
                 result = new RadialValueContainer(new TextureRegion(
-                 getTextureForActive(activeObj, target)), getRunnable(target, activeObj) ,  checkValid(activeObj, target));
+                 getTextureForActive(activeObj, target)), getRunnable(target, activeObj) ,  checkValid(activeObj, target), activeObj, target);
             }
         }
         addSimpleTooltip(result, activeObj.getName());
@@ -489,6 +496,29 @@ public class RadialManager {
     private List<RadialValueContainer> getChildNodes(RADIAL_PARENT_NODE type, DC_ActiveObj activeObj, DC_Obj target) {
         List<RadialValueContainer> list = new LinkedList<>();
         return list;
+    }
+
+    public static Supplier<String> getInfoTextSupplier(boolean valid, DC_ActiveObj activeObj, DC_Obj target) {
+        if (!valid) {
+            return () -> activeObj.getCosts().getReasonsString();
+        }
+        if (activeObj.isAttackAny()) {
+            int chance = activeObj.getCalculator().getCritOrDodgeChance(target);
+            if (chance == 0)
+                return null ;
+            return () -> {
+                String string = null;
+                if (chance > 0) {
+                    string =chance+ "% to crit";
+                } else
+                    string =chance+ "% to miss";
+                return string;
+            };
+        }
+        if (activeObj.isSpell()) {
+
+        }
+        return null;
     }
 
     public enum RADIAL_PARENT_NODE {

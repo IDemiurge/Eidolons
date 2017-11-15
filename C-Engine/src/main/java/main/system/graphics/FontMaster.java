@@ -240,6 +240,7 @@ public class FontMaster {
         SC( "/Starcraft.ttf"),
         DARK( "/Dark.ttf"),
         NYALA( "/nyala.ttf"),
+        RU( "/Philosopher-Regular.ttf"),
         MAIN( "/main.otf"),
         ;
         public Font font;

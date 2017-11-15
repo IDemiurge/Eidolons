@@ -10,7 +10,6 @@ import main.game.core.Eidolons;
 import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
 import main.libgdx.anims.AnimMaster;
-import main.libgdx.anims.AnimMaster3d;
 import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.auxiliary.Loop;
@@ -75,7 +74,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     public Thread startInNewThread() {
         if (!CoreEngine.isGraphicsOff()) {
             if (DungeonScreen.getInstance() == null)
-                WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY, 2000);
+                WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);//, 2000);
             DungeonScreen.getInstance().setRealTimeGameLoop(this);
         }
         if (realTimeThread == null) {

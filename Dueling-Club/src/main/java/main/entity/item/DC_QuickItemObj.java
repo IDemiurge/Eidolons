@@ -23,7 +23,8 @@ import main.system.launch.TypeInitializer;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
-    private static final VALUE[] TRANSLATED_VALUES = {G_PROPS.STD_BOOLS};
+    private static final VALUE[] TRANSLATED_VALUES = {G_PROPS.STD_BOOLS,
+    PARAMS.FORMULA, G_PROPS.DESCRIPTION, };
     // or aggregation?
     private DC_QuickItemAction active;
     private boolean wrapped;

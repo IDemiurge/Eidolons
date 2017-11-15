@@ -38,6 +38,7 @@ import main.system.math.Formula;
 import main.system.math.FormulaFactory;
 import main.system.math.FormulaMaster;
 import main.system.math.MathMaster;
+import main.system.text.TextParser;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -85,7 +86,7 @@ public abstract class DataModel {
     }
 
     public String getDescription() {
-        return getProperty(G_PROPS.DESCRIPTION);
+      return    TextParser.parse(getProperty(G_PROPS.DESCRIPTION), getRef(), TextParser.ACTIVE_PARSING_CODE);
     }
 
     public String getCustomValue(String value_ref) {
@@ -182,8 +183,8 @@ public abstract class DataModel {
     }
 
     public boolean modifyCounter(String name, int modValue, boolean strict) {
-      if (modValue==0)
-          return false;
+        if (modValue == 0)
+            return false;
         String realName = new MapMaster<String, String>().getKeyForValue(getCustomParamMap(),
          getCustomParamMap().get(name));
         if (realName == null) {
@@ -618,9 +619,9 @@ public abstract class DataModel {
                 return true;
             }
         }
-        Number amount =StringMaster.getDouble(amountString);
+        Number amount = StringMaster.getDouble(amountString);
         if (amount.equals(0.0))
-            amount= new Formula(amountString).evaluate(ref);
+            amount = new Formula(amountString).evaluate(ref);
 
         LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
          + param.getName() + " by " + amount);

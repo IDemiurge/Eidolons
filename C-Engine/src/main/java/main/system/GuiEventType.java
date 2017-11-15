@@ -36,6 +36,7 @@ public enum GuiEventType {
     UPDATE_UNIT_ACT_STATE,
 
 
+    SHOW_TEXT_CENTERED,
     SHOW_GREEN_BORDER,
     SHOW_RED_BORDER,
     SHOW_BLUE_BORDERS,

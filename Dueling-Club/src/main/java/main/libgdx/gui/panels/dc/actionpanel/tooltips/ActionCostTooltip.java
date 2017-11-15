@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.entity.active.DC_ActiveObj;
 import main.libgdx.gui.NinePathFactory;
+import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltip;
@@ -51,7 +52,8 @@ public class ActionCostTooltip extends ActionTooltip {
             @Override
             public boolean act(float delta) {
                 if (getActor() instanceof Group) {
-                    ((Group) getActor()).addActor(description);
+                    ((TablePanel) getActor()).row();
+                     ((TablePanel) getActor()).addElement(description);
                 }
                 return true;
             }
@@ -59,7 +61,7 @@ public class ActionCostTooltip extends ActionTooltip {
         //TODO add move up action!
         add.setActor(this);
         addAfter.setAction(add);
-        addAfter.setDuration(2);
+        addAfter.setDuration(1);
         addAfter.setTarget(this);
         return addAfter;
     }

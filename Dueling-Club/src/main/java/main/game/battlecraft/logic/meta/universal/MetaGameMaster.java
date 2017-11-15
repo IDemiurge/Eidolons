@@ -10,6 +10,7 @@ import main.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
+import main.libgdx.anims.AnimMaster;
 import main.system.GuiEventManager;
 
 /**
@@ -181,6 +182,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        AnimMaster.getInstance().cleanUp();
         Coordinates.clearCaches();
     }
 }

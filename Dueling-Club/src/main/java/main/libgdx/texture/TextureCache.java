@@ -45,17 +45,7 @@ public class TextureCache {
         this.cache = new HashMap<>();
         this.greyscaleCache = new HashMap<>();
         if (uiAtlasOn)
-            textureAtlas = new TextureAtlas(imagePath + "/ui//ui.txt") {
-                @Override
-                public AtlasRegion addRegion(String name, TextureRegion textureRegion) {
-                    return super.addRegion(name.toLowerCase(), textureRegion);
-                }
-
-                @Override
-                public AtlasRegion addRegion(String name, Texture texture, int x, int y, int width, int height) {
-                    return super.addRegion(name.toLowerCase(), texture, x, y, width, height);
-                }
-            };
+            textureAtlas = new SmartTextureAtlas(imagePath + "/ui//ui.txt");
 
         pattern = Pattern.compile("^.*[/\\\\]([a-z _\\-0-9]*)\\..*$");
     }

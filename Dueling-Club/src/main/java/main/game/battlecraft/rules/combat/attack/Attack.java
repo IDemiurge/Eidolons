@@ -272,7 +272,7 @@ public class Attack {
         return attacked;
     }
 
-    public void setAttacked(Unit attacked) {
+    public void setAttacked(BattleFieldObject attacked) {
         this.attacked = attacked;
         ref.setTarget(attacked.getId());
         action.setTargetObj(attacked);

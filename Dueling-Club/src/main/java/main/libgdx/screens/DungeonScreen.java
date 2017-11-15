@@ -199,6 +199,7 @@ public class DungeonScreen extends ScreenWithLoader {
             updateGui();
             checkGraphicsUpdates();
         });
+
     }
 
     private void updateGui() {

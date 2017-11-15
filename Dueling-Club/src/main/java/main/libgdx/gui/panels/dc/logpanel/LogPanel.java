@@ -3,8 +3,8 @@ package main.libgdx.gui.panels.dc.logpanel;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import main.libgdx.gui.dialog.LogMessage;
-import main.libgdx.gui.dialog.LogMessageBuilder;
+import main.libgdx.GdxMaster;
+import main.libgdx.gui.panels.dc.logpanel.text.Message;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -20,11 +20,11 @@ public class LogPanel extends Group {
     public final static String bgPath = path +
             "background.png";
 
-    private static final String loremIpsum = "[#FF0000FF]Lorem ipsum[] dolor sit amet, [#00FF00FF]consectetur adipiscing elit[]. [#0000FFFF]Vestibulum faucibus[], augue sit amet porttitor rutrum, nulla eros finibus mauris, nec sagittis mauris nulla et urna. Sed ac orci nec urna ornare aliquam a sit amet neque. Nulla condimentum iaculis dolor, et porttitor dui sollicitudin vel. Fusce convallis fringilla dolor eu mollis. Nam porta augue nec ullamcorper ultricies. Morbi bibendum libero efficitur metus accumsan viverra at ut metus. Duis congue pulvinar ligula, sed maximus tellus lacinia eu.";
+    protected static final String loremIpsum = "[#FF0000FF]Lorem ipsum[] dolor sit amet, [#00FF00FF]consectetur adipiscing elit[]. [#0000FFFF]Vestibulum faucibus[], augue sit amet porttitor rutrum, nulla eros finibus mauris, nec sagittis mauris nulla et urna. Sed ac orci nec urna ornare aliquam a sit amet neque. Nulla condimentum iaculis dolor, et porttitor dui sollicitudin vel. Fusce convallis fringilla dolor eu mollis. Nam porta augue nec ullamcorper ultricies. Morbi bibendum libero efficitur metus accumsan viverra at ut metus. Duis congue pulvinar ligula, sed maximus tellus lacinia eu.";
 
     protected boolean updatePos = false;
-    private float offsetX = 20;
-    private ScrollPanel<LogMessage> scrollPanel;
+    protected float offsetX = 20;
+    protected ScrollPanel<Message> scrollPanel;
 
     public LogPanel() {
         setDefaultSize();
@@ -44,7 +44,7 @@ public class LogPanel extends Group {
     }
 
     protected void setDefaultSize() {
-        setSize(400, 250);
+        setSize(400* GdxMaster.getFontSizeMod(), 250* GdxMaster.getFontSizeMod());
     }
 
     protected GuiEventType getCallbackEvent() {
@@ -78,7 +78,7 @@ public class LogPanel extends Group {
         scrollPanel.setBounds(10, 10, getWidth() - 20, getHeight() - 20);
     }
 
-    private LogMessage getTestMessage() {
+    protected LogMessage getTestMessage() {
         return LogMessageBuilder.createNew()
                 .addString("Lorem ipsum", "FF0000FF")
                 .addString(" dolor sit amet, ")

@@ -39,6 +39,11 @@ public class DC_QuickItemAction extends DC_ActiveObj {
     }
 
     @Override
+    public String getDescription() {
+        return item.getDescription();
+    }
+
+    @Override
     public boolean activate() {
         return super.activate();
     }

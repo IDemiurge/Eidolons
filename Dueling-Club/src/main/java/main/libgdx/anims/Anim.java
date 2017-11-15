@@ -126,6 +126,7 @@ public class Anim extends Group implements Animation {
         sprites.forEach(s -> s.setOffsetY(0));
         sprites.forEach(s -> s.setLoops(loops));
         sprites.forEach(s -> s.reset());
+        sprites.forEach(s -> s.start());
         if (frameDuration != null) {
             sprites.forEach(s -> s.setFrameDuration(frameDuration));
         }

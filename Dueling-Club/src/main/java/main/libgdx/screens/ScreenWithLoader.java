@@ -19,37 +19,46 @@ import main.system.EventCallbackParam;
 import main.system.audio.MusicMaster;
 
 public abstract class ScreenWithLoader extends ScreenAdapter {
-    protected   LoadingStage loadingStage;
+    protected LoadingStage loadingStage;
     protected boolean hideLoader = false;
     protected ScreenData data;
     protected ScreenViewport viewPort;
     protected ChainedStage introStage;
     Batch batch;
-    VideoMaster video ;
+    VideoMaster video;
+    Label waitingLabel;
     private boolean waitingForInput;
     private EventCallbackParam param;
-    Label waitingLabel ;
     private float timeWaited;
 
 
     public ScreenWithLoader() {
         //TODO loader here, but need data!
-        video = new VideoMaster();
-        waitingLabel= new Label("Press any key to Continue...", StyleHolder.getDefaultLabelStyle());
+        if (isVideoEnabled())
+            video = new VideoMaster();
+        waitingLabel = new Label("Press any key to Continue...", StyleHolder.getDefaultLabelStyle());
         waitingLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
-        50);
+         50);
 
     }
 
+    protected boolean isVideoEnabled() {
+        return true;
+    }
+
     public Batch getBatch() {
-        if (batch==null ){
+        if (batch == null) {
             batch = new SpriteBatch();
         }
         return batch;
     }
 
     protected void preLoad() {
-try{        MusicMaster.getInstance().startLoop();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
+        try {
+            MusicMaster.getInstance().startLoop();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
 
         if (data.getDialogScenarios().size() > 0) {
             introStage = new ChainedStage(viewPort, getBatch(), data.getDialogScenarios());
@@ -62,9 +71,9 @@ try{        MusicMaster.getInstance().startLoop();}catch(Exception e){main.syste
     }
 
     public void loadDone(EventCallbackParam param) {
-        if (isWaitForInput()){
+        if (isWaitForInput()) {
             waitingForInput = true;
-            this.param=param;
+            this.param = param;
             updateInputController();
         } else done(param);
     }
@@ -74,14 +83,14 @@ try{        MusicMaster.getInstance().startLoop();}catch(Exception e){main.syste
     }
 
     private InputMultiplexer getWaitForInputController(EventCallbackParam param) {
-    return new InputMultiplexer() {
-        @Override
-        public boolean keyTyped(char character) {
-        done(param);
-            waitingForInput = false;
-            return super.keyTyped(character);
-        }
-    };
+        return new InputMultiplexer() {
+            @Override
+            public boolean keyTyped(char character) {
+                done(param);
+                waitingForInput = false;
+                return super.keyTyped(character);
+            }
+        };
     }
 
     private void done(EventCallbackParam param) {
@@ -95,6 +104,7 @@ try{        MusicMaster.getInstance().startLoop();}catch(Exception e){main.syste
 
     protected void triggerInitialEvents() {
     }
+
     private void initCursor() {
         Gdx.graphics.setSystemCursor(SystemCursor.Ibeam);
     }
@@ -106,23 +116,26 @@ try{        MusicMaster.getInstance().startLoop();}catch(Exception e){main.syste
         Gdx.graphics.setSystemCursor(SystemCursor.Crosshair);
 //        cursor.dispose();
     }
+
     protected abstract void afterLoad();
 
     protected void hideLoader() {
         this.hideLoader = true;
         loadingStage.done();
-        if (introStage!=null )
-        if (introStage.isDone()) {
-            updateInputController();
-        }
-        if (video!=null )
-        {
-            video.stop();
-            video.getPlayer().dispose();
-            video = null ;
+        if (introStage != null)
+            if (introStage.isDone()) {
+                updateInputController();
+            }
+        if (video != null) {
+            try {
+                video.stop();
+                video.getPlayer().dispose();
+                video = null;
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
     }
-
 
 
     @Override
@@ -132,35 +145,40 @@ try{        MusicMaster.getInstance().startLoop();}catch(Exception e){main.syste
 
         if (video != null) {
 
-            if ( video.getPlayer()==null )
+            if (video.getPlayer() == null)
                 video.playTestVideo();
-            else
-            if (!video.getPlayer().isPlaying())
+            else if (!video.getPlayer().isPlaying())
                 video.playTestVideo();
             Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-            if (!video.getPlayer(). render()) {
-                video.playTestVideo();
+            try {
+                if (!video.getPlayer().render()) {
+                    video.playTestVideo();
+                }
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
             }
-            if (waitingForInput){
-                timeWaited +=delta;
-                batch.begin();
-                float alpha = (timeWaited/3) % 1;
-                alpha =(alpha>=0.5f)?  1.5f-(alpha)
-                 : alpha*2+0.15f;
-                waitingLabel.draw(batch, alpha% 1);
-                batch.end();
-            }
-           return ;
-        }
 
+
+        }
+else {
         if (introStage != null && !introStage.isDone()) {
             introStage.act(delta);
             introStage.draw();
         } else if (!hideLoader) {
             loadingStage.act(delta);
             loadingStage.draw();
+        }
+        }
+        if (waitingForInput) {
+            timeWaited += delta;
+            batch.begin();
+            float alpha = (timeWaited / 3) % 1;
+            alpha = (alpha >= 0.5f) ? 1.5f - (alpha)
+             : alpha * 2 + 0.15f;
+            waitingLabel.draw(batch, alpha % 1);
+            batch.end();
         }
     }
 
@@ -194,10 +212,10 @@ try{        MusicMaster.getInstance().startLoop();}catch(Exception e){main.syste
 
     protected InputMultiplexer getInputController() {
         if (waitingForInput)
-            return  getWaitForInputController(param) ;
+            return getWaitForInputController(param);
         return introStage != null ?
-                new InputMultiplexer(loadingStage, introStage) :
-                new InputMultiplexer(loadingStage);
+         new InputMultiplexer(loadingStage, introStage) :
+         new InputMultiplexer(loadingStage);
     }
 
     protected void updateInputController() {
@@ -205,7 +223,7 @@ try{        MusicMaster.getInstance().startLoop();}catch(Exception e){main.syste
     }
 
     public void initLoadingStage(ScreenData meta) {
-        this.loadingStage = new LoadingStage(meta );
+        this.loadingStage = new LoadingStage(meta);
         initLoadingCursor();
     }
 

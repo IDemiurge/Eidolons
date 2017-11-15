@@ -9,8 +9,11 @@ import main.libgdx.screens.DungeonScreen;
  * Created by JustMe on 8/30/2017.
  */
 public class GdxMaster {
+    private static final int DEFAULT_WIDTH = 1600;
+    private static final int DEFAULT_HEIGHT = 900;
     private static int width;
     private static int height;
+    private static Float fontSizeMod;
 
     public static float centerWidth(Actor actor) {
         return GdxMaster.getWidth() / 2 - actor.getWidth()/2;
@@ -53,4 +56,14 @@ public class GdxMaster {
     public static boolean isGuiReady() {
         return DungeonScreen.getInstance()!=null ;
     }
+
+    public static float getFontSizeMod() {
+        if (fontSizeMod == null)
+            fontSizeMod= new Float( getWidth()*getHeight())/GdxMaster.DEFAULT_WIDTH/GdxMaster.DEFAULT_HEIGHT;
+        if (fontSizeMod < 0) {
+            fontSizeMod= Float.valueOf(1);
+        }
+        return fontSizeMod;
+    }
+
 }

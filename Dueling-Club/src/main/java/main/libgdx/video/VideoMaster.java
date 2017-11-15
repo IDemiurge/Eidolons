@@ -1,5 +1,6 @@
 package main.libgdx.video;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -21,6 +22,7 @@ public class VideoMaster {
 
     private VideoPlayer player;
     private CameraInputController inputController;
+    private Music audio;
 
     public VideoPlayer getPlayer() {
         return player;
@@ -29,7 +31,8 @@ public class VideoMaster {
     public void stop() {
         player.stop();
     }
-        public VideoPlayer play(String path, int w, int h) {
+
+    public VideoPlayer play(String path, int w, int h) {
 
         OrthographicCamera cam = new OrthographicCamera(GdxMaster.getWidth(), GdxMaster.getHeight());
         cam.position.set(10f, 10f, 0);
@@ -47,7 +50,7 @@ public class VideoMaster {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
-         player = VideoPlayerCreator.createVideoPlayer();
+        player = VideoPlayerCreator.createVideoPlayer();
         player.resize(w, h);
         FileHandle file = new FileHandle(FileManager.getFile(path));
         try {
@@ -55,7 +58,6 @@ public class VideoMaster {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
 //            Gdx.input.setInputProcessor(new InputMultiplexer(
 //             inputController = new CameraInputController(cam)));
 //            Gdx.gl.glEnable(GL20.GL_CULL_FACE);
@@ -69,7 +71,7 @@ public class VideoMaster {
     }
 
     public String getTestPath() {
-        return PathFinder.getVideoPath()+ "Main_Menu.ogv"; //moneda.ogg
+        return PathFinder.getVideoPath() + "Main_Menu_slow_original_size.ogv"; //moneda.ogg
     }
 
     public CameraInputController getInputController() {

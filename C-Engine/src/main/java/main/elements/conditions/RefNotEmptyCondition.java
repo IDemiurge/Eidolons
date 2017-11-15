@@ -13,6 +13,9 @@ public class RefNotEmptyCondition extends MicroCondition {
 
     }
 
+    public RefNotEmptyCondition(String ref1, String ref2, Boolean negative) {
+
+    }
     @Override
     public String toString() {
         return super.toString() + ": " + obj + "'s " + key;

@@ -262,7 +262,7 @@ public class TextParser {
             }
             boolean containerFormula = false;
 
-            if (entity.getParam("FORMULA").contains(";")) {
+            if (!entity.getParam("FORMULA").isEmpty()) {
                 // StringMaster.compare(varProp.replace(";", ""), "FORMULA",
                 // true)) {
                 varProp = entity.getParam("FORMULA");

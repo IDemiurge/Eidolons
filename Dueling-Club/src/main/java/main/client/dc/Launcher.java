@@ -535,7 +535,7 @@ public class Launcher {
             BattleSceneLauncher.main(new String[]{});
             ScreenData data = new ScreenData(ScreenType.BATTLE, "Loading...");
             GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
-//        Eidolons.mainGame.getMetaMaster().getGame().init( );
+        Eidolons.mainGame.getMetaMaster().getGame().init( );
             try {
                 Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
             } catch (Exception e) {
@@ -568,6 +568,7 @@ public class Launcher {
             e.printStackTrace();
             game.setSimulation(true);
         }
+        setView(VIEWS.DC);
     }
 
     public static boolean isInMenu() {
@@ -610,15 +611,18 @@ public class Launcher {
             case CHOICE:
                 break;
             case DC:
+                frame.setVisible(false);
                 break;
             case DIALOGUE:
                 break;
             case HC:
+                frame.setVisible(true);
                 break;
             case MAP:
                 setView(MacroManager.getMacroViewComponent(), VIEWS.MAP);
                 break;
             case MENU:
+                frame.setVisible(true);
 
                 break;
             case TOWN:

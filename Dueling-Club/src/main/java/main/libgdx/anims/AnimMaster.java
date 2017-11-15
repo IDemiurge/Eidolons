@@ -556,4 +556,14 @@ public class AnimMaster extends Group {
     public void setAnimationSpeedFactor(float animationSpeedFactor) {
         this.animationSpeedFactor = animationSpeedFactor;
     }
+
+    public void cleanUp() {
+        if (leadAnimation == null)
+        leadAnimation.finished();
+        leadQueue.forEach(a->{
+            a.finished();
+        });
+        leadAnimation=null ;
+        leadQueue.clear();
+    }
 }

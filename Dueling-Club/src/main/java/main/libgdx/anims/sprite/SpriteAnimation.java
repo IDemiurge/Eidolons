@@ -72,6 +72,11 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         this.frameNumber = re.size;
     }
 
+
+
+    public void start() {
+        getSprite().flip(flipX, flipY);
+    }
     public void reset() {
         stateTime = 0;
         cycles = 0;
@@ -129,7 +134,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         sprite.setPosition(x + offsetX - currentFrame.getRegionWidth() / 2, y
                 + offsetY
                 - currentFrame.getRegionHeight() / 2);
-        sprite.setFlip(flipX, flipY);
+
         sprite.draw(batch);
 
         return true;
@@ -275,6 +280,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     public Sprite getSprite() {
         return sprite;
     }
+
 
     public enum SPRITE_BEHAVIOR {
         FREEZE_WHEN_LOOPS_DONE,

@@ -207,7 +207,7 @@ public class CompositeAnim implements Animation {
         setRunning(false);
 
         resetMaps();
-        GuiEventManager.trigger(GuiEventType.COMPOSITE_ANIMATION_DONE, this);
+//        GuiEventManager.trigger(GuiEventType.COMPOSITE_ANIMATION_DONE, this);
     }
 
     private void resetMaps() {

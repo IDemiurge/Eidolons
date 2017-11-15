@@ -19,6 +19,7 @@ import main.libgdx.gui.panels.dc.actionpanel.ActionPanelController;
 import main.libgdx.gui.panels.dc.inventory.InventoryWithAction;
 import main.libgdx.gui.panels.dc.logpanel.FullLogPanel;
 import main.libgdx.gui.panels.dc.logpanel.SimpleLogPanel;
+import main.libgdx.gui.panels.dc.logpanel.text.TextPanel;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
@@ -30,6 +31,8 @@ import main.system.options.OptionsMaster;
 import java.util.LinkedList;
 import java.util.List;
 
+import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
+
 /**
  * Created by JustMe on 3/31/2017.
  */
@@ -38,8 +41,8 @@ public class BattleGuiStage extends Stage {
     private final InitiativePanel initiativePanel;
     private final ActionPanelController bottomPanel;
     private final RadialMenu radial;
+    TextPanel textPanel;
     private OutcomePanel outcomePanel;
-
     private List<String> charsUp = new LinkedList<>();
     private char lastTyped;
 
@@ -57,7 +60,8 @@ public class BattleGuiStage extends Stage {
 
         addActor(new UnitInfoPanel(0, 0));
 
-        ButtonStyled menuButton = new ButtonStyled(STD_BUTTON.OPTIONS, () -> OptionsMaster.openMenu());
+        ButtonStyled menuButton = new ButtonStyled(STD_BUTTON.OPTIONS, () ->
+         OptionsMaster.openMenu());
         menuButton.setPosition(GdxMaster.getWidth() - menuButton.getWidth(),
          GdxMaster.getHeight() - menuButton.getHeight());
         addActor(menuButton);
@@ -76,6 +80,12 @@ public class BattleGuiStage extends Stage {
         radial = new RadialMenu();
         addActor(radial);
         addActor(new ToolTipManager(this));
+
+        textPanel = new TextPanel();
+        addActor(textPanel);
+        textPanel.setPosition(GdxMaster.centerWidth(textPanel),
+         GdxMaster.centerHeight(textPanel));
+        textPanel.setVisible(false);
         bindEvents();
     }
 
@@ -94,6 +104,19 @@ public class BattleGuiStage extends Stage {
             outcomePanel.setPosition(x, y + outcomePanel.getHeight());
             ActorMaster.addMoveToAction(outcomePanel, x, y, 2.5f);
         });
+
+        GuiEventManager.bind(SHOW_TEXT_CENTERED, p -> {
+            showText((String) p.get());
+        });
+    }
+
+    private void showText(String s) {
+        if (s == null) {
+            textPanel.setVisible(false);
+            return;
+        }
+        textPanel.setText(s);
+        textPanel.setVisible(true);
     }
 
     @Override
@@ -110,7 +133,7 @@ public class BattleGuiStage extends Stage {
 
     @Override
     public boolean keyUp(int keyCode) {
-        String c = Keys.toString(keyCode) ;
+        String c = Keys.toString(keyCode);
 
         if (!charsUp.contains(c)) {
             charsUp.add(c);
@@ -120,7 +143,7 @@ public class BattleGuiStage extends Stage {
 
     @Override
     public boolean keyTyped(char character) {
-        String str = String.valueOf(character).toUpperCase() ;
+        String str = String.valueOf(character).toUpperCase();
         if (character == lastTyped) {
             if (!charsUp.contains(str)) {
                 return false;

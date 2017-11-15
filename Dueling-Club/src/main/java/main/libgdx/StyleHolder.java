@@ -20,39 +20,52 @@ import java.util.Map;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class StyleHolder {
+    public static final FONT DEFAULT_FONT = FONT.MAIN;
+    public static final FONT ALT_FONT = FONT.NYALA;
     private static final String DISABLED = "_disabled";
     private static final String OVER = "_over";
     private static final String DOWN = "_down";
     private static final String UP = "_up";
     private static final String CHECKED = "_down";
-    public static final FONT DEFAULT_FONT = FONT.MAIN;
-    public static final FONT ALT_FONT = FONT.NYALA;
     private static final int DEFAULT_SIZE = 14;
+    private static final Color DEFAULT_COLOR = new Color(ColorManager.GOLDEN_WHITE.getRGB());
     private static Label.LabelStyle defaultLabelStyle;
     private static Label.LabelStyle avqLabelStyle;
-    private static final Color DEFAULT_COLOR = new Color(ColorManager.GOLDEN_WHITE.getRGB());
     private static TextButton.TextButtonStyle defaultTextButtonStyle;
     private static Map<Color, Label.LabelStyle> colorLabelStyleMap = new HashMap<>();
     private static Map<Integer, Label.LabelStyle> sizeLabelStyleMap = new HashMap<>();
-    private static Map<Pair<Integer,Color>, Label.LabelStyle> sizeColorLabelStyleMap = new HashMap<>();
-
+    private static Map<Pair<Integer, Color>, Label.LabelStyle> sizeColorLabelStyleMap = new HashMap<>();
+//    private static String FONT_CHARS = "";
+//
+//    static {
+//
+//        for (int i = 0x20; i < 0x7B; i++) FONT_CHARS += (char) i;
+//        for (int i = 0x401; i < 0x452; i++) FONT_CHARS += (char) i;
+//    }
+    final static String FONT_CHARS = "абвгдежзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";
     public static Label.LabelStyle getStyledLabelStyle(Label.LabelStyle style, boolean italic, boolean bold) {
         //TODO
         return null;
     }
+
     public static Label.LabelStyle getSizedLabelStyle(FONT fontStyle, Integer size) {
         return getSizedColoredLabelStyle(fontStyle, size, DEFAULT_COLOR);
     }
-        public static Label.LabelStyle getSizedColoredLabelStyle(FONT fontStyle, Integer size, Color color) {
-            ImmutablePair<Integer, Color> pair = new ImmutablePair<>(size, color);
+
+    public static Label.LabelStyle getSizedColoredLabelStyle(FONT fontStyle, Integer size, Color color) {
+        if (GdxMaster.getFontSizeMod() != 1) {
+            size = Math.round(size * GdxMaster.getFontSizeMod());
+        }
+        ImmutablePair<Integer, Color> pair = new ImmutablePair<>(size, color);
         if (!sizeColorLabelStyleMap.containsKey(pair)) {
             Label.LabelStyle style = new Label.LabelStyle
-             (getFont(fontStyle, color, size ), color);
+             (getFont(fontStyle, color, size), color);
             style.font.getData().markupEnabled = true;
             sizeColorLabelStyleMap.put(pair, style);
         }
         return sizeColorLabelStyleMap.get(pair);
     }
+
     public static Label.LabelStyle getDefaultLabelStyle(Color color) {
         return getLabelStyle(DEFAULT_FONT, color);
     }
@@ -60,27 +73,35 @@ public class StyleHolder {
     public static Label.LabelStyle getAltLabelStyle(Color color) {
         return getLabelStyle(ALT_FONT, color);
     }
-        public static Label.LabelStyle getLabelStyle(FONT font, Color color) {
+
+    public static Label.LabelStyle getLabelStyle(FONT font, Color color) {
         if (!colorLabelStyleMap.containsKey(color)) {
             Label.LabelStyle style = new Label.LabelStyle
-             (getFont(font, DEFAULT_COLOR, DEFAULT_SIZE ), color);
+             (getFont(font, DEFAULT_COLOR, getDefaultSize()), color);
             style.font.getData().markupEnabled = true;
             colorLabelStyleMap.put(color, style);
         }
         return colorLabelStyleMap.get(color);
     }
-    private static BitmapFont getFont(FONT  font, Color color, int size) {
+
+    public static int getDefaultSize() {
+
+        return Math.round(DEFAULT_SIZE * GdxMaster.getFontSizeMod());
+    }
+
+    private static BitmapFont getFont(FONT font, Color color, int size) {
         return getFont(font.path, color, size);
     }
 
-        private static BitmapFont getFont(String fontpath, Color color, int size) {
-        final String path = PathFinder.getFontPath() +fontpath;
+    private static BitmapFont getFont(String fontpath, Color color, int size) {
+        final String path = PathFinder.getFontPath() + fontpath;
 
         final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(new FileHandle(path));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter =
          new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.color = color;
         parameter.size = size;
+        parameter.characters = FONT_CHARS;
         final BitmapFont bitmapFont = generator.generateFont(parameter);
         generator.dispose();
         return bitmapFont;
@@ -91,7 +112,7 @@ public class StyleHolder {
     }
 
     public static Label.LabelStyle getAVQLabelStyle() {
-       return  getLabelStyle(FONT.AVQ, DEFAULT_COLOR);
+        return getLabelStyle(FONT.AVQ, DEFAULT_COLOR);
 //        if (avqLabelStyle == null) {
 //            avqLabelStyle = new Label.LabelStyle(new BitmapFont(
 //             new FileHandle(
@@ -104,13 +125,14 @@ public class StyleHolder {
     }
 
     public static TextButton.TextButtonStyle getDefaultTextButtonStyle() {
-        return getTextButtonStyle(FONT.AVQ, DEFAULT_COLOR, 18 );
+        return getTextButtonStyle(FONT.AVQ, DEFAULT_COLOR, 18);
     }
-        public static TextButton.TextButtonStyle getTextButtonStyle(
-         FONT FONT, Color color, int size) {
+
+    public static TextButton.TextButtonStyle getTextButtonStyle(
+     FONT FONT, Color color, int size) {
         if (defaultTextButtonStyle == null) {
             defaultTextButtonStyle = new TextButton.TextButtonStyle();
-            defaultTextButtonStyle.font =getFont(FONT, color, size);// new BitmapFont();
+            defaultTextButtonStyle.font = getFont(FONT, color, size);// new BitmapFont();
             defaultTextButtonStyle.fontColor = DEFAULT_COLOR;
             defaultTextButtonStyle.overFontColor = new Color(DEFAULT_COLOR).add(50, 50, 50, 0);
             defaultTextButtonStyle.checkedFontColor = new Color(0xFF_00_00_FF);

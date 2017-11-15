@@ -117,6 +117,8 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                     return OPERATIONS.DROP;
                 }
                 if (clickCount > 1) {
+                    if (HeroManager.isQuickSlotOnly(cellContents))
+                        return OPERATIONS.EQUIP_QUICK_SLOT;
                     return OPERATIONS.EQUIP;
                 }
         }

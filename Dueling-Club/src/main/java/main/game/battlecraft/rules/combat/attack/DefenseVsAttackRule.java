@@ -235,4 +235,11 @@ public class DefenseVsAttackRule {
         return chance;
     }
 
+    public static int getCritOrDodgeChance(DC_ActiveObj entity, BattleFieldObject target) {
+        Attack attack = DC_AttackMaster.getAttackFromAction(entity);
+        attack.setAttacked( target);
+        int atk = getAttackValue(attack);
+        int def = getDefenseValue(attack);
+        return atk < def ? -getMissChance(atk, def, entity) : getCritChance(atk, def, entity);
+    }
 }

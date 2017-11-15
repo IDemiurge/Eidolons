@@ -1,16 +1,22 @@
 package main.libgdx.gui.controls.radial;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.DC_Obj;
+import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.bf.mouse.BattleClickListener;
 import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.shaders.GrayscaleShader;
 import main.system.auxiliary.data.ListMaster;
+import main.system.graphics.FontMaster.FONT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +29,12 @@ public class RadialValueContainer extends ActionValueContainer {
     private Supplier<ToolTip> tooltipSupplier;
     private ToolTip tooltip;
     private boolean valid=true;
+    Label infoLabel;
+    Supplier<String> infoTextSupplier;
+
+    public void setInfoTextSupplier(Supplier<String> infoTextSupplier) {
+        this.infoTextSupplier = infoTextSupplier;
+    }
 
     public RadialValueContainer(TextureRegion texture, String name, String value, Runnable action) {
         super(texture, name, value, action);
@@ -69,9 +81,10 @@ public class RadialValueContainer extends ActionValueContainer {
         });
     }
 
-    public RadialValueContainer(TextureRegion textureRegion, Runnable runnable, boolean valid) {
+    public RadialValueContainer(TextureRegion textureRegion, Runnable runnable, boolean valid, DC_ActiveObj activeObj, DC_Obj target) {
         this(textureRegion, runnable);
         this.valid = valid;
+        infoTextSupplier=RadialManager.getInfoTextSupplier(valid, activeObj, target);
     }
 
     @Override
@@ -108,13 +121,28 @@ public class RadialValueContainer extends ActionValueContainer {
 
     public void setChildVisible(boolean visible) {
         childNodes.forEach(el -> el.setVisible(visible));
-
     }
 
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
-        if (visible)
+        if (visible) {
+            if (infoTextSupplier != null) {
+                if (infoLabel == null)
+                {
+                    infoLabel = new Label(infoTextSupplier.get(), StyleHolder.getSizedLabelStyle(FONT.RU, 18));
+                    addActor(infoLabel);
+                }
+                else
+                {
+                    infoLabel.setText(infoTextSupplier.get());
+                }
+                infoLabel.setColor(valid ? new Color (1,1,1,1): new Color(1,0.2f,0.3f, 1));
+
+                infoLabel.setPosition((64-infoLabel.getWidth())/2,
+                 (imageContainer.getActor().getImageHeight()+infoLabel.getHeight())/2);
+            }
+
             if (tooltip == null)
                 if (getTooltipSupplier() != null) {
                     try {
@@ -123,9 +151,10 @@ public class RadialValueContainer extends ActionValueContainer {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
                     if (tooltip != null)
-                    addListener(tooltip.getController());
+                        addListener(tooltip.getController());
 
                 }
+        }
     }
 
     public Supplier<ToolTip> getTooltipSupplier() {

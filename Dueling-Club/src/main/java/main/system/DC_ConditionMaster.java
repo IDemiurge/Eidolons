@@ -167,8 +167,13 @@ public class DC_ConditionMaster extends ConditionMaster {
                 break;
             case REF_NOT_EMPTY: {
                 condition = new RefNotEmptyCondition(variables[0].toString(), variables[1]
-                        .toString());
-
+                 .toString());
+                break;
+            }
+            case REF_EMPTY: {
+                condition = new NotCondition(
+                 new RefNotEmptyCondition(variables[0].toString(), variables[1]
+                  .toString()));
                 break;
             }
             case FREE_CELL_RANGE:

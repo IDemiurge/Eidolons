@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import main.data.filesys.PathFinder;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -26,6 +26,7 @@ import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.images.ImageManager;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
@@ -218,18 +219,24 @@ public class HitAnim extends ActionAnim {
     }
 
     private HIT getHitType(DC_ActiveObj active) {
+        DAMAGE_TYPE damageType = active.getDamageType();
+        if (damageType == DAMAGE_TYPE.SLASHING)
+            return HIT.SLICE;
 //        active.get
         return HIT.SPLASH;
     }
 
     public enum HIT {
-        SLICE("blood 4 4"),
+        SLICE("slice 8 1"),
         SPLASH("blood splatter 3 3"),;
 
         String spritePath;
 
         HIT(String fileNameNoFormat) {
-            spritePath = PathFinder.getSpritesPath() + "blood\\" + fileNameNoFormat;
+            spritePath = StrPathBuilder.build("main",
+             "sprites",
+             "hit",
+             "blood", fileNameNoFormat)  ;
         }
     }
 

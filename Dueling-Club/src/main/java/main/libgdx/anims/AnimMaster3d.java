@@ -22,6 +22,7 @@ import main.libgdx.GdxMaster;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.sprite.SpriteAnimationFactory;
 import main.libgdx.anims.weapons.Ready3dAnim;
+import main.libgdx.texture.SmartTextureAtlas;
 import main.libgdx.texture.TexturePackerLaunch;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
@@ -51,6 +52,13 @@ public class AnimMaster3d {
      256, 320, 384, 448, 512,
     };
     private static final String[][] substitutesWeapons = {
+     {"war axe", "axe"},
+     {"great axe", "axe"},
+     {"battle axe", "axe"},
+     {"hand axe", "axe"},
+     {"pollaxe", "axe"},
+//     {"halbert", "axe"},
+
      {"orcish arrows", "arrows"},
      {"elven arrows", "arrows"},
 
@@ -111,8 +119,7 @@ public class AnimMaster3d {
     private static boolean is3dSupported(DC_WeaponObj weapon) {
 //        if (weapon.getWeaponType() == WEAPON_TYPE.POLE_ARM)
 //            return false;
-        if (weapon.getWeaponType() == WEAPON_TYPE.AXE)
-            return false;
+
         if (weapon.getWeaponType() == WEAPON_TYPE.NATURAL)
             if (weapon.getWeaponGroup() != WEAPON_GROUP.FISTS)
                 return false;
@@ -292,14 +299,14 @@ public class AnimMaster3d {
         if (regions.size == 0)
             main.system.auxiliary.log.LogMaster.log(
              1, activeObj + ": " + aCase + " no 3d sprites: " + name + atlas);
-        if (TexturePackerLaunch.TRIM) {
-            regions.forEach(region -> {
+//        if (TexturePackerLaunch.TRIM) {
+//            regions.forEach(region -> {
 //                region.setRegionHeight(getHeight(activeObj));
 //                region.setRegionWidth(getWidth(activeObj));
-                region.setRegionWidth(region.originalWidth);
-                region.setRegionHeight(region.originalHeight);
-            });
-        }
+//                region.setRegionWidth(region.originalWidth);
+//                region.setRegionHeight(region.originalHeight);
+//            });
+//        }
         float frameDuration = duration / regions.size;
         int loops = 0;
         if (aCase.isMissile()) {
@@ -387,7 +394,7 @@ public class AnimMaster3d {
                 return null;
             TextureAtlas atlas = atlasMap.get(path);
             if (atlas == null) {
-                atlas = new TextureAtlas(path);
+                atlas = new SmartTextureAtlas(path);
             }
             atlasMap.put(path, atlas);
             return atlas;
@@ -428,7 +435,8 @@ public class AnimMaster3d {
     }
 
     private static boolean isReadyAnimSupported(DC_UnitAction entity) {
-        return is3dAnim(entity);
+        return false;
+//        return is3dAnim(entity);
 //        return entity.getActiveWeapon().getName().contains("Short Sword");
     }
 

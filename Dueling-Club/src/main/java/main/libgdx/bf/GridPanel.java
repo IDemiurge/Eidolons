@@ -386,6 +386,7 @@ public class GridPanel extends Group {
             if (!firstUpdateDone) {
                 DC_Game.game.getVisionMaster().triggerGuiEvents();
                 GuiEventManager.trigger(UPDATE_GUI, null);
+                GuiEventManager.trigger(SHOW_TEXT_CENTERED, "Hey\nyo\nman!");
             }
         });
 
@@ -628,6 +629,8 @@ public class GridPanel extends Group {
             addUnitView((BattleFieldObject) p.get());
         });
 
+
+
         WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
     }
@@ -644,6 +647,9 @@ public class GridPanel extends Group {
     private void moveUnitView(BattleFieldObject heroObj) {
         int rows1 = rows - 1;
         BaseView uv = unitMap.get(heroObj);
+        if (uv == null) {
+            return ;
+        }
         Coordinates c = heroObj.getCoordinates();
 
 //        uv.setVisible(true);

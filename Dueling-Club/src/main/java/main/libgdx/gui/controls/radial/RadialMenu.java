@@ -35,7 +35,7 @@ public class RadialMenu extends Group {
     public RadialMenu() {
         final TextureRegion t = TextureCache.getOrCreateR(getEmptyNodePath());
         closeButton = new RadialValueContainer(new TextureRegion(t), this::close);
-        closeButton.setX(-getOffsetX() );
+//        closeButton.setX(-getOffsetX() );
 //        closeButton.setWidth(80);
 //        closeButton.setHeight(80);
         ValueTooltip tooltip = new ValueTooltip();
@@ -91,7 +91,10 @@ public class RadialMenu extends Group {
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setPosition(v2.x+getOffsetX(), v2.y);
-        closeButton.setChildNodes(nodes);
+//        closeButton.
+//         setX(closeButton.getX()+getOffsetX() );
+
+         closeButton.setChildNodes(nodes);
 
         setParents(closeButton, null);
         if (closeButton.getChildren().size < 1) {
