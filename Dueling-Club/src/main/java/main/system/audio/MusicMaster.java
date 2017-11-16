@@ -316,14 +316,22 @@ public class MusicMaster {
 
         playedMusic = musicCache.get(path);
         if (playedMusic == null) {
-            FileHandle file = Gdx.files.getFileHandle(path, FileType.Absolute);
-            playedMusic = Gdx.audio.newMusic(file);
+            if (isMusicPreloadOn()) {
+                playedMusic = new PreloadedMusic(path);
+            } else {
+                FileHandle file = Gdx.files.getFileHandle(path, FileType.Absolute);
+                playedMusic = Gdx.audio.newMusic(file);
+            }
             musicCache.put(path, playedMusic);
         }
         Float volume =
          getVolume();
         playedMusic.setVolume(volume);
         playedMusic.play();
+    }
+
+    private boolean isMusicPreloadOn() {
+        return !mainThemePlayed;
     }
 
     private Float getVolume() {

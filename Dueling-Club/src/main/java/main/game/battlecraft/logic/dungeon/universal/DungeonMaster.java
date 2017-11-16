@@ -4,6 +4,7 @@ import main.game.battlecraft.logic.battle.universal.*;
 import main.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.game.module.dungeoncrawl.objects.ContainerMaster;
 import main.game.module.dungeoncrawl.objects.DoorMaster;
 import main.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import main.game.module.dungeoncrawl.objects.DungeonObjMaster;
@@ -31,6 +32,8 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private ExplorationMaster explorationMaster;
     private   DoorMaster doorMaster;
     private LockMaster lockMaster;
+    private   ContainerMaster containerMaster;
+
 
     public DungeonMaster(DC_Game game) {
         this.game = game;
@@ -45,6 +48,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
         doorMaster=new DoorMaster(this);
         lockMaster=new LockMaster(this);
+        containerMaster=new ContainerMaster(this);
     }
 
     protected DungeonBuilder<E> createBuilder() {
@@ -153,6 +157,10 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         switch (type) {
             case DOOR:
                 return doorMaster;
+            case LOCK:
+                return lockMaster;
+            case CONTAINER:
+                return containerMaster;
         }
         return null;
     }

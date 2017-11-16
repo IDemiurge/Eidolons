@@ -4,7 +4,10 @@ import com.graphbuilder.math.ExpressionParseException;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.cc.logic.spells.LibraryManager;
 import main.client.cc.logic.spells.SpellUpgradeMaster;
-import main.content.*;
+import main.content.DC_ContentManager;
+import main.content.DC_TYPE;
+import main.content.PARAMS;
+import main.content.PROPS;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
@@ -17,13 +20,13 @@ import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.VariableManager;
+import main.entity.handlers.EntityMaster;
+import main.entity.handlers.bf.BfObjInitializer;
 import main.entity.item.*;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.hero.DC_Attributes;
 import main.entity.obj.hero.DC_Masteries;
 import main.entity.obj.unit.Unit;
-import main.entity.handlers.EntityMaster;
-import main.entity.handlers.bf.BfObjInitializer;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.EnumMaster;
@@ -34,8 +37,6 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -168,66 +169,6 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
 
-    public DequeImpl<? extends DC_HeroItemObj> initContainedItems(PROPS prop,
-                                                                  DequeImpl<? extends DC_HeroItemObj> list, boolean quick) {
-        if (StringMaster.isEmpty(getProperty(prop))) {
-            if (list == null) {
-                return new DequeImpl<>();
-            }
-            if (list.isEmpty() || game.isSimulation()) {
-                return new DequeImpl<>();
-            }
-        }
-        if (list == null || (!game.isSimulation() && getEntity().isItemsInitialized())) {
-            setProperty(prop, StringMaster.constructContainer(StringMaster.convertToIdList(list)));
-
-        } else {
-            List<String> idList = new LinkedList<>();
-            Collection<DC_HeroItemObj> items = new LinkedList<>();
-            for (String subString : StringMaster.open(getProperty(prop))) {
-                ObjType type = DataManager.getType(subString, DC_ContentManager.getTypeForProperty(prop));
-//|| !StringMaster.isInteger(subString)
-                DC_HeroItemObj item = null;
-                if (game.isSimulation() ) {
-                    item = (DC_HeroItemObj) getGame().getSimulationObj(getEntity(), type, prop);
-                }
-                if (item == null) {
-                    if (type == null) {
-                        item = (DC_HeroItemObj) game.getObjectById(StringMaster
-                         .getInteger(subString));
-                    } else {
-                        item = ItemFactory.createItemObj(type, getEntity().getOriginalOwner(), getGame(), getRef(),
-                         quick);
-                    }
-                    if (item != null) {
-                        if (!game.isSimulation()) {
-                            idList.add(item.getId() + "");
-                        } else {
-                            getGame().addSimulationObj(getEntity(), type, item, prop);
-                        }
-                    }
-                }
-                if (item == null) {
-                    LogMaster.log(1, getName()
-                     + " has null items in item container " + prop);
-                } else {
-                    items.add(item);
-                }
-
-            }
-            list = new DequeImpl<>(items);
-            if (!game.isSimulation())
-
-            {
-                setProperty(prop, StringMaster.constructContainer(idList));
-            }
-        }
-        if (list == null) {
-            return new DequeImpl<>();
-        }
-        return list;
-
-    }
 
     public void initItems() {
         if (CoreEngine.isItemGenerationOff()) {
@@ -440,10 +381,6 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
 
-    @Override
-    public DC_Game getGame() {
-        return (DC_Game) super.getGame();
-    }
 
     public void initIntegrityAlignments() {
         Map<PRINCIPLES, Integer> map = new RandomWizard<PRINCIPLES>().constructWeightMap(

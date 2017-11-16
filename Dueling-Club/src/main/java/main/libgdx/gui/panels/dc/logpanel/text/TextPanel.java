@@ -16,7 +16,7 @@ import main.system.auxiliary.data.FileManager;
  */
 public class TextPanel extends LogPanel {
 
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
     private final Actor outside;
 
     public TextPanel() {

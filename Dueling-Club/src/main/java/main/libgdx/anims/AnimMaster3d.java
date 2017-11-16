@@ -243,12 +243,13 @@ public class AnimMaster3d {
         return name;
     }
 
-    public static String getAtlasPath(DC_WeaponObj weapon) {
+    public static String getAtlasPath(DC_WeaponObj weapon, String name) {
+String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
 
         StrPathBuilder s = new StrPathBuilder(
          PathFinder.getWeaponAnimPath(), "atlas",
          weapon.getWeaponType().toString().replace("_", " ")
-         , weapon.getWeaponGroup().toString().replace("_", " ")
+         , groupName, name
          + TexturePackerLaunch.ATLAS_EXTENSION);
         return s.toString();
     }
@@ -285,7 +286,7 @@ public class AnimMaster3d {
 //        float rotation = angle * 2 / 3;
         String name = getAtlasFileKeyForAction(projection, activeObj, aCase);
 
-        TextureAtlas atlas = getAtlas(activeObj, aCase);
+        TextureAtlas atlas = getAtlas(activeObj, aCase );
         Array<AtlasRegion> regions = atlas.findRegions(name);
         if (regions.size == 0) {
             if (isSearchAtlasRegions(activeObj))
@@ -365,14 +366,15 @@ public class AnimMaster3d {
 
     }
 
-    private static TextureAtlas getAtlas(DC_ActiveObj activeObj, WEAPON_ANIM_CASE aCase) {
+    private static TextureAtlas getAtlas(DC_ActiveObj activeObj, WEAPON_ANIM_CASE aCase
+      ) {
         DC_WeaponObj weapon = activeObj.getActiveWeapon();
         if (aCase.isMissile()) {
             if (weapon.getLastAmmo() == null)
                 return null;
             weapon = weapon.getLastAmmo().getWrappedWeapon();
         }
-        return getOrCreateAtlas(weapon);
+        return getOrCreateAtlas(weapon );
     }
 
     public static void preloadAtlas(DC_WeaponObj weapon) {
@@ -389,7 +391,7 @@ public class AnimMaster3d {
         if (broken.contains(weapon))
             return null;
         try {
-            String path = getAtlasPath(weapon);
+            String path = getAtlasPath(weapon, getWeaponAtlasKey(weapon));
             if (!FileManager.isFile(path))
                 return null;
             TextureAtlas atlas = atlasMap.get(path);

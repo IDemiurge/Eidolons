@@ -17,6 +17,7 @@ import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.actionpanel.ActionPanelController;
 import main.libgdx.gui.panels.dc.inventory.InventoryWithAction;
+import main.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
 import main.libgdx.gui.panels.dc.logpanel.FullLogPanel;
 import main.libgdx.gui.panels.dc.logpanel.SimpleLogPanel;
 import main.libgdx.gui.panels.dc.logpanel.text.TextPanel;
@@ -41,6 +42,7 @@ public class BattleGuiStage extends Stage {
     private final InitiativePanel initiativePanel;
     private final ActionPanelController bottomPanel;
     private final RadialMenu radial;
+    private final ContainerPanel containerPanel;
     TextPanel textPanel;
     private OutcomePanel outcomePanel;
     private List<String> charsUp = new LinkedList<>();
@@ -86,6 +88,12 @@ public class BattleGuiStage extends Stage {
         textPanel.setPosition(GdxMaster.centerWidth(textPanel),
          GdxMaster.centerHeight(textPanel));
         textPanel.setVisible(false);
+
+         containerPanel = new ContainerPanel();
+        addActor(containerPanel);
+        containerPanel.setPosition(GdxMaster.centerWidth(containerPanel),
+         GdxMaster.centerHeight(containerPanel));
+        containerPanel.setVisible(false);
         bindEvents();
     }
 

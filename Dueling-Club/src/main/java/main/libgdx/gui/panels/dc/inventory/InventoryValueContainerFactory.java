@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.entity.Entity;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import main.libgdx.texture.TextureCache;
-import main.system.datatypes.DequeImpl;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class InventoryValueContainerFactory {
         return  TextureCache.getOrCreateR(  cellType.getSlotImagePath());
     }
 
-    public List<InventoryValueContainer> getList(DequeImpl<? extends Entity> items,
+    public List<InventoryValueContainer> getList(Collection<? extends Entity> items,
                                                  CELL_TYPE type) {
         List<InventoryValueContainer> list = new LinkedList<>();
        items.forEach(item -> list.add(

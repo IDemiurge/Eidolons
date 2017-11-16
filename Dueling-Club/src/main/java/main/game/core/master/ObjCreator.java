@@ -12,6 +12,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
+import main.game.module.dungeoncrawl.objects.ContainerObj;
 import main.game.module.dungeoncrawl.objects.Door;
 import main.game.module.dungeoncrawl.objects.LockObj;
 import main.system.GuiEventManager;
@@ -77,6 +78,8 @@ game.getState().getManager().reset((Unit) obj);
                    return new Door(type, x, y, owner, getGame(), ref);
                case LOCK:
                    return new LockObj(type, x, y, owner, getGame(), ref);
+               case CONTAINER:
+                   return new ContainerObj(type, x, y );
            }
        }
 

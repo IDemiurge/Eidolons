@@ -3,14 +3,19 @@ package main.libgdx.gui.panels.dc;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import main.ability.conditions.special.RestCondition;
 import main.data.XLinkedMap;
+import main.entity.Ref;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -113,7 +118,8 @@ public class InitiativePanel extends Group {
         queueGroup = new WidgetGroup();
         queueGroup.setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
         container = new Container<>(queueGroup);
-        container.setBounds(imageSize - offset, queueOffsetY, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
+        container.setBounds(imageSize - offset, queueOffsetY, imageSize * visualSize + 
+         (offset - 1) * visualSize, imageSize);
         container.left().bottom();
         if (ExplorationMaster.isExplorationOn()) {
             container.setY(imageSize);
@@ -157,6 +163,7 @@ public class InitiativePanel extends Group {
                 return super.getAlphaFluctuationPerDelta() / 3;
             }
         };
+        clock.addListener(getClockListener());
 
         addActor(light);
         light.setPosition(-15, -14);
@@ -167,6 +174,24 @@ public class InitiativePanel extends Group {
         timeLabel = new Label("Time", StyleHolder.getSizedLabelStyle(FONT.NYALA, 22));
         addActor(timeLabel);
         timeLabel.setPosition(15, 100);
+    }
+
+    private EventListener getClockListener() {
+        return new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (ExplorationMaster.isExplorationOn()) {
+                    if (!new RestCondition().check(new Ref())){
+                        return true;
+                    }
+                    int time = 15; //pick, auto-limit
+                   DC_Game.game.getDungeonMaster().
+                    getExplorationMaster().
+                    getTimeMaster().playerWaits(time);
+                }
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        };
     }
 
     private void resetPositions() {
@@ -206,10 +231,9 @@ public class InitiativePanel extends Group {
     }
 
     private void checkPositions() {
-
-
         int n = 0;
-        for (ImageContainer sub : queue) {
+        for (int i = queue.length-1; i >=0; i--) {
+            ImageContainer sub = queue[isLeftToRight()? i : queue.length-1-i];
             if (sub == null)
                 continue;
 //            if (sub.getActions().size != 0)
@@ -228,6 +252,10 @@ public class InitiativePanel extends Group {
         }
         timePassedSincePosCheck = 0;
         checkPositionsRequired = false;
+    }
+
+    private boolean isLeftToRight() {
+        return true;
     }
 
     private void cleanUp() {

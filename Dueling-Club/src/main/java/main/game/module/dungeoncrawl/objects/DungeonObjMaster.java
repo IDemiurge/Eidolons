@@ -36,7 +36,7 @@ public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
     }
 
     protected abstract boolean actionActivated(T sub,
-                                               Unit unit, DungeonObj door);
+                                               Unit unit, DungeonObj obj);
 
     public abstract List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit);
 

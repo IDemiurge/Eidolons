@@ -2,6 +2,7 @@ package main.ability;
 
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
+import main.content.enums.entity.AbilityEnums.ABILITY_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.AbilityConstructor;
 import main.elements.targeting.Targeting;
@@ -12,6 +13,7 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ANIM;
 import main.system.text.TextParser;
@@ -27,6 +29,7 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
     private boolean forcePresetTarget;
     private Obj targetObj;
     private GroupImpl targetGroup;
+    private ABILITY_GROUP abilityGroup;
 
     public AbilityObj(AbilityType type, Ref ref, Player player, Game game) {
         super(type, player, game, ref); // entity/obj?
@@ -356,7 +359,20 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
     }
 
     public boolean isDisplayed() {
-        return false;
+        if (getAbilityGroup() == ABILITY_GROUP.TEMPLATE_PASSIVE) {
+            return false;
+        }
+        if (getAbilityGroup() == ABILITY_GROUP.VALUE_MOD) {
+            return false;
+        }
+        return true;
 
+    }
+
+    public ABILITY_GROUP getAbilityGroup() {
+        if (abilityGroup == null) {
+            abilityGroup = new EnumMaster<ABILITY_GROUP>().retrieveEnumConst(ABILITY_GROUP.class, getProperty(G_PROPS.ABILITY_GROUP));
+        }
+        return abilityGroup;
     }
 }

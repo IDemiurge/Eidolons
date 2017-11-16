@@ -25,6 +25,7 @@ static {
 //        GAMMA(),
 
         AMBIENCE(false),
+        VIDEO(false),
         ANIMATED_UI(false),
         SHADOWMAP(false),
         AMBIENCE_MOVE_SUPPORTED(false),

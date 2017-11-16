@@ -14,6 +14,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
+import main.system.threading.WaitMaster;
 
 /**
  * Created by JustMe on 9/9/2017.
@@ -60,7 +61,20 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         time += delta;
     }
 
-    public void checkTimedEvents() {
+    public void playerWaits(float timeInSeconds) {
+        float wakeUpTime = time+timeInSeconds;
+        float speedFactor = 20;
+        int period = 100;
+        float actPeriod = period*speedFactor/1000;
+        while(true){
+             if (time>=wakeUpTime)
+                 break;
+            WaitMaster.WAIT(period);
+            act(actPeriod );
+            checkTimedEvents();
+        }
+    }
+        public void checkTimedEvents() {
         delta = time - lastTimeChecked;
         if (delta == 0) return;
         lastTimeChecked = time;

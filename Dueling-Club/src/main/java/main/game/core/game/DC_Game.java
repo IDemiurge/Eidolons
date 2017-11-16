@@ -125,7 +125,7 @@ public class DC_Game extends MicroGame {
     private GameLoop loop;
     private LaunchDataKeeper dataKeeper;
     @Refactor
-    private Map<Unit, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
+    private Map<BattleFieldObject, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
     private MusicMaster musicMaster;
 
     public DC_Game() {
@@ -733,7 +733,7 @@ public class DC_Game extends MicroGame {
 
     //how should these be called properly?
     @Refactor
-    public DC_HeroAttachedObj getSimulationObj(Unit dc_HeroObj, ObjType type, PROPERTY prop) {
+    public DC_HeroAttachedObj getSimulationObj(BattleFieldObject dc_HeroObj, ObjType type, PROPERTY prop) {
         try {
             return getSimulationCache().get(dc_HeroObj).get(type.getName() + prop.getShortName());
         } catch (Exception e) {
@@ -742,7 +742,7 @@ public class DC_Game extends MicroGame {
     }
 
     @Refactor
-    public void addSimulationObj(Unit dc_HeroObj, ObjType type, DC_HeroAttachedObj item,
+    public void addSimulationObj(BattleFieldObject dc_HeroObj, ObjType type, DC_HeroAttachedObj item,
                                  PROPERTY prop) {
 
         Map<String, DC_HeroAttachedObj> cache = getSimulationCache().get(dc_HeroObj);
@@ -754,7 +754,7 @@ public class DC_Game extends MicroGame {
 
     }
 
-    public Map<Unit, Map<String, DC_HeroAttachedObj>> getSimulationCache() {
+    public Map<BattleFieldObject, Map<String, DC_HeroAttachedObj>> getSimulationCache() {
         if (simulationCache == null) {
             simulationCache = new XLinkedMap<>();
         }

@@ -24,7 +24,7 @@ public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
     }
 
     @Override
-    protected boolean actionActivated(LOCK_ACTIONS sub, Unit unit, DungeonObj door) {
+    protected boolean actionActivated(LOCK_ACTIONS sub, Unit unit, DungeonObj obj) {
         return false;
     }
 

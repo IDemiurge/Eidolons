@@ -49,6 +49,7 @@ import static main.system.GuiEventType.*;
  * To change this template use File | Settings | File Templates.
  */
 public class DungeonScreen extends ScreenWithLoader {
+    private static final float FRAMERATE_DELTA_CONTROL = new Float(1) / DemoLauncher.FRAMERATE * 3;
     public static OrthographicCamera camera;
     private static DungeonScreen instance;
     private static boolean cameraAutoCenteringOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
@@ -64,7 +65,6 @@ public class DungeonScreen extends ScreenWithLoader {
     private Vector2 cameraDestination;
     private RealTimeGameLoop realTimeGameLoop;
     private ParticleManager particleManager;
-    private static final float FRAMERATE_DELTA_CONTROL=new Float(1)/DemoLauncher.FRAMERATE *3;
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -133,7 +133,7 @@ public class DungeonScreen extends ScreenWithLoader {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-           }
+        }
 //        TODO Unit obj = DC_Game.game.getManager().getActiveObj();
 //        if (obj.isMine()) {
 //            if (guiStage.getBottomPanel().getY()< ){
@@ -153,7 +153,7 @@ public class DungeonScreen extends ScreenWithLoader {
         soundMaster = new DC_SoundMaster(this);
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
-    gridStage.addActor(gridPanel);
+        gridStage.addActor(gridPanel);
         particleManager = new ParticleManager();
         gridStage.addActor(particleManager.getEmitterMap());
 //        GuiEventManager.bind(GuiEventType.BF_CREATED, p -> {
@@ -245,14 +245,17 @@ public class DungeonScreen extends ScreenWithLoader {
 
         return current;
     }
+
     protected void triggerInitialEvents() {
         DC_Game.game.getVisionMaster().triggerGuiEvents();
         GuiEventManager.trigger(UPDATE_GUI);
     }
+
     @Override
     public void render(float delta) {
-        if (delta>   FRAMERATE_DELTA_CONTROL )
-        {
+
+
+        if (delta > FRAMERATE_DELTA_CONTROL) {
             try {
                 Thread.sleep((long) (delta - FRAMERATE_DELTA_CONTROL));
             } catch (InterruptedException e) {
@@ -268,64 +271,74 @@ public class DungeonScreen extends ScreenWithLoader {
                     DC_Game.game.getVisionMaster().refresh();
                     GuiEventManager.trigger(UPDATE_GUI);
                 }
-        }
-                super.render(delta);
-                if (!hideLoader)
-                    return;
-                guiStage.act(delta);
-                gridStage.act(delta);
+            }
+            checkShader();
+            super.render(delta);
+            if (isBlocked())
+                return;
+            if (!hideLoader)
+                return;
+            guiStage.act(delta);
+            gridStage.act(delta);
 
-                cameraShift();
-                //cam.update();
-                if (canShowScreen()) {
-                    if (DC_Game.game != null)
-                        if (DC_Game.game.getGameLoop() instanceof RealTimeGameLoop) {
+            cameraShift();
+            //cam.update();
+            if (canShowScreen()) {
+                if (DC_Game.game != null)
+                    if (DC_Game.game.getGameLoop() instanceof RealTimeGameLoop) {
 //              if (realTimeGameLoop != null)        realTimeGameLoop.act(delta);
-                            ((RealTimeGameLoop) Eidolons.game.getGameLoop()).act(delta);
-                        }
-
-                    if (backTexture != null) {
-                        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
-                            TextureManager.drawFromSpriteCache(TextureManager.getBackgroundId());
-                        } else {
-                            guiStage.getBatch().begin();
-                            float colorBits = GdxColorMaster.WHITE.toFloatBits();
-                            if (guiStage.getBatch().getColor().toFloatBits() != colorBits)
-                                guiStage.getBatch().setColor(colorBits); //damned alpha...
-                            guiStage.getBatch().draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
-                            guiStage.getBatch().end();
-                        }
+                        ((RealTimeGameLoop) Eidolons.game.getGameLoop()).act(delta);
                     }
 
-                    gridStage.draw();
-
-
-                    guiStage.draw();
-
-                    if (dialogsStage != null) {
-                        dialogsStage.act(delta);
-                        if (dialogsStage.isDone()) {
-                            final ChainedStage dialogsStage = this.dialogsStage;
-                            this.dialogsStage = null;
-                            dialogsStage.dispose();
-                            updateInputController();
-                        } else {
-                            dialogsStage.draw();
-                        }
+                if (backTexture != null) {
+                    if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
+                        TextureManager.drawFromSpriteCache(TextureManager.getBackgroundId());
+                    } else {
+                        guiStage.getBatch().begin();
+                        float colorBits = GdxColorMaster.WHITE.toFloatBits();
+                        if (guiStage.getBatch().getColor().toFloatBits() != colorBits)
+                            guiStage.getBatch().setColor(colorBits); //damned alpha...
+                        guiStage.getBatch().draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
+                        guiStage.getBatch().end();
                     }
+                }
 
-                    if (gridPanel.getFpsLabel() != null)
-                        if (gridPanel != null)
-                            gridPanel.getFpsLabel().setText(new Float(1 / delta) + "");
+                gridStage.draw();
 
-                    try {
-                        soundMaster.doPlayback(delta);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                guiStage.draw();
+
+                if (dialogsStage != null) {
+                    dialogsStage.act(delta);
+                    if (dialogsStage.isDone()) {
+                        final ChainedStage dialogsStage = this.dialogsStage;
+                        this.dialogsStage = null;
+                        dialogsStage.dispose();
+                        updateInputController();
+                    } else {
+                        dialogsStage.draw();
                     }
+                }
+
+                if (gridPanel.getFpsLabel() != null)
+                    if (gridPanel != null)
+                        gridPanel.getFpsLabel().setText(new Float(1 / delta) + "");
+
+                try {
+                    soundMaster.doPlayback(delta);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
+    }
+
+    private void checkShader() {
+    }
+
+    private boolean isBlocked() {
+        return OptionsMaster.isMenuOpen();
+    }
 
     private void cameraShift() {
         if (cameraDestination != null)

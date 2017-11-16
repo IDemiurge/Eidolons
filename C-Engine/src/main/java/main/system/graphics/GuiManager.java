@@ -212,6 +212,16 @@ public class GuiManager {
         return inNewWindow(false, comp, title, SIZE);
     }
 
+    public static JDialog inModalWindow(  JComponent comp, String title,
+                                     Dimension SIZE) {
+        final JDialog frame = new JDialog(   );
+        frame.setTitle(title);
+        frame.setSize(SIZE);
+         frame.getContentPane().add(comp);
+        frame.pack();
+        frame.setVisible(true);
+        return frame;
+    }
     public static JFrame inNewWindow(boolean undecorated, JComponent comp, String title,
                                      Dimension SIZE) {
         JFrame window = new JFrame(title);

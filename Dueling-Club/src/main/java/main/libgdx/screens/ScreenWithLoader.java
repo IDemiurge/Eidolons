@@ -17,6 +17,8 @@ import main.libgdx.stage.LoadingStage;
 import main.libgdx.video.VideoMaster;
 import main.system.EventCallbackParam;
 import main.system.audio.MusicMaster;
+import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import main.system.options.OptionsMaster;
 
 public abstract class ScreenWithLoader extends ScreenAdapter {
     protected LoadingStage loadingStage;
@@ -43,7 +45,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected boolean isVideoEnabled() {
-        return true;
+        return OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VIDEO);
     }
 
     public Batch getBatch() {

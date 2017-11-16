@@ -18,6 +18,8 @@ import main.test.frontend.ScenarioLauncher;
  */
 public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
+    ScenarioData data;
+
     public ScenarioMetaMaster(String data) {
         super(data);
 

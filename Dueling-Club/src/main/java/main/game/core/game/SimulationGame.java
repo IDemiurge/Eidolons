@@ -2,6 +2,7 @@ package main.game.core.game;
 
 import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
@@ -13,7 +14,7 @@ import java.util.Map;
  */
 public class SimulationGame extends DC_Game {
 
-    private Map<Unit, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
+    private Map<BattleFieldObject, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
 
 
     //how should these be called properly?
@@ -37,7 +38,7 @@ public class SimulationGame extends DC_Game {
 
     }
 
-    public Map<Unit, Map<String, DC_HeroAttachedObj>> getSimulationCache() {
+    public Map<BattleFieldObject, Map<String, DC_HeroAttachedObj>> getSimulationCache() {
         if (simulationCache == null) {
             simulationCache = new XLinkedMap<>();
         }

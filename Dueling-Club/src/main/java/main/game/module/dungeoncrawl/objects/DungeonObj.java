@@ -13,8 +13,6 @@ import main.game.logic.battle.player.Player;
  */
 public abstract class DungeonObj extends Structure {
 
-    protected DungeonObjMaster DM;
-
     public DungeonObj(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
     }
@@ -28,20 +26,12 @@ public abstract class DungeonObj extends Structure {
     }
 
     public DungeonObjMaster getDM() {
-        return DM;
+        return getGame().getDungeonMaster().getDungeonObjMaster(getDungeonObjType());
     }
 
     public abstract DUNGEON_OBJ_TYPE getDungeonObjType();
 
-    @Override
-    public void construct() {
-        super.construct();
-        try {
-            this.DM = getGame().getDungeonMaster().getDungeonObjMaster(getDungeonObjType());
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-    }
+
 
     public enum DUNGEON_OBJ_TYPE {
         DOOR, TRAP, LOCK, ENTRANCE, CONTAINER, INTERACTIVE, ITEM,

@@ -37,7 +37,6 @@ import org.w3c.dom.Node;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +46,7 @@ public class OptionsMaster {
     private static OptionsPanel optionsPanel;
     private static boolean initialized;
     private static JFrame optionsPanelFrame;
+    private static JDialog modalOptionsPanelFrame;
 
     private static void applyAnimOptions(AnimationOptions animOptions) {
 
@@ -303,18 +303,24 @@ public class OptionsMaster {
     }
 
     public static void openMenu() {
-        if (optionsPanelFrame != null) {
+        if (modalOptionsPanelFrame != null) {
 //            optionsPanelFrame.setVisible(false);
-            optionsPanelFrame.dispatchEvent(new WindowEvent(optionsPanelFrame, WindowEvent.WINDOW_CLOSING));
-
+//            optionsPanelFrame.dispatchEvent(new WindowEvent(optionsPanelFrame, WindowEvent.WINDOW_CLOSING));
+            modalOptionsPanelFrame.setVisible(false);
         }
         optionsPanel = new OptionsPanel(optionsMap);
-        optionsPanelFrame = GuiManager.inNewWindow(optionsPanel,
+//        optionsPanelFrame = GuiManager.inNewWindow(optionsPanel,
+//         "Options", new Dimension(800, 600));
+        modalOptionsPanelFrame = GuiManager.inModalWindow(optionsPanel,
          "Options", new Dimension(800, 600));
-
 
     }
 
+    public static boolean isMenuOpen() {
+        if (modalOptionsPanelFrame!=null )
+            return modalOptionsPanelFrame.isVisible();
+        return false;
+    }
     public static Map<OPTIONS_GROUP, Options> readOptions(String data) {
         Document doc = XML_Converter.getDoc(data);
         Map<OPTIONS_GROUP, Options> optionsMap = new XLinkedMap<>();

@@ -19,7 +19,7 @@ public enum STD_MODES implements MODE {
     HIDE(true, false, true),
     GUARDING(false, false, false, "Defense(25);", "Ap penalty(50)", "Status(Guarding)"),
     STEALTH(false, false, false, "Stealth(50);", "Ap penalty(50)", ""),
-    SEARCH(false, false, false, "Detection(50);", "Ap penalty(50)", ""),
+    SEARCH(false, false, false, "Detection(50);", "Detection(5);Ap penalty(50)", ""),
 
     PRAYER(true, true, true, "C_MORALE", "(max(100, {SOURCE_PRAYER_MOD})/100*("
             + Formulas.PRAYER_CONST + "+{SOURCE_PRAYER_BONUS})"), // {ACTIVE_something}

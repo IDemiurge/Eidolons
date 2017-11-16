@@ -5,6 +5,7 @@ import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
+import main.entity.handlers.bf.BfObjInitializer;
 import main.entity.handlers.bf.structure.StructureMaster;
 import main.entity.handlers.bf.structure.StructureResetter;
 import main.entity.type.ObjType;
@@ -43,6 +44,11 @@ public class Structure extends BattleFieldObject {
             return player == null;
         }
         return getOwner().equals(player);
+    }
+
+    @Override
+    public BfObjInitializer getInitializer() {
+        return (BfObjInitializer) super.getInitializer();
     }
 
     @Override

@@ -9,13 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.libgdx.GdxMaster;
-import main.libgdx.anims.particles.lighting.FireLightProt;
-import main.libgdx.anims.particles.lighting.LightMap;
-import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.bf.GridConst;
 import main.libgdx.screens.DungeonScreen;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import main.system.options.OptionsMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,8 +24,6 @@ import static com.badlogic.gdx.Input.Keys.CONTROL_LEFT;
  * Created by PC on 25.10.2016.
  */
 public class InputController implements InputProcessor, GestureDetector.GestureListener {
-
-
     private static final float MARGIN = 300;
     private float xCamPos;
     private float yCamPos;
@@ -47,6 +41,8 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean keyDown(int i) {
+        if (isBlocked())
+            return true;
         if (i == ALT_LEFT) {
             alt = true;
         }
@@ -54,20 +50,28 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
             ctrl = true;
         }
 
-        if (i == 54) {
-            LightMap.resizeFBOa();
-        }
-        if (i == 52) {
-            LightMap.resizeFBOb();
-        }
+//        if (i == 54) {
+//            LightMap.resizeFBOa();
+//        }
+//        if (i == 52) {
+//            LightMap.resizeFBOb();
+//        }
 
         return false;
         // alt = 57, crtl = 129
     }
 
+    private boolean isBlocked() {
+        if (OptionsMaster.isMenuOpen())
+            return true;
+        return false;
+    }
+
 
     @Override
     public boolean keyUp(int i) {
+        if (isBlocked())
+            return true;
         switch (i) {
             case ALT_LEFT:
                 alt = false;
@@ -90,6 +94,8 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean keyTyped(char c) {
+        if (isBlocked())
+            return true;
 //        if (keyMap.get(c))
         String str = String.valueOf(c).toUpperCase();
         if (c == lastTyped) {
@@ -106,6 +112,8 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
+        if (isBlocked())
+            return true;
         if (button == LEFT) {
             xCamPos = screenX;
             yCamPos = screenY;
@@ -117,6 +125,8 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean touchUp(int i, int i1, int i2, int i3) {
+        if (isBlocked())
+            return true;
         isLeftClick = false;
 
         return false;
@@ -125,6 +135,8 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 
+        if (isBlocked())
+            return true;
         if (isLeftClick) {
             tryPullCameraX(screenX);
             tryPullCameraY(screenY);
@@ -155,12 +167,6 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
         }
     }
 
-    private boolean checkCameraPosLimitX(float x) {
-        float max = MARGIN +
-         DungeonScreen.getInstance().getGridPanel().getCols() * GridConst.CELL_W * camera.zoom;
-        float min = -MARGIN;
-        return (x > max || x < min);
-    }
 
     private boolean checkCameraPosLimitY(float y) {
         float max = MARGIN +
@@ -182,61 +188,15 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean mouseMoved(int i, int i1) {
-
-        if (LightingManager.isMouse_light()) {
-            LightMap.mouseMouseMove((camera.position.x - (camera.viewportWidth / 2) * camera.zoom + (i) * camera.zoom), (camera.position.y + (camera.viewportHeight / 2) * camera.zoom - i1 * camera.zoom), camera.zoom);
-            float x_light = (camera.position.x - (camera.viewportWidth / 2) * camera.zoom + (i) * camera.zoom);
-            float y_light = (camera.position.y + (camera.viewportHeight / 2) * camera.zoom - i1 * camera.zoom);
-            boolean by_X;
-            boolean by_Y;
-            by_X = !(x_light < camera.position.x - (camera.viewportWidth / 2) * camera.zoom + LightingManager.mouse_light_distance_to_turn_off || x_light > camera.position.x + (camera.viewportWidth / 2) * camera.zoom - LightingManager.mouse_light_distance_to_turn_off);
-            by_Y = !(y_light < camera.position.y - (camera.viewportHeight / 2) * camera.zoom + LightingManager.mouse_light_distance_to_turn_off || y_light > camera.position.y + (camera.viewportHeight / 2) * camera.zoom - LightingManager.mouse_light_distance_to_turn_off);
-            if (by_X & by_Y) {
-                LightMap.mouseLightDistance(LightingManager.mouse_light_distance);
-            } else {
-                LightMap.mouseLightDistance(0);
-            }
-        }
         return false;
 
     }
 
     @Override
     public boolean scrolled(int i) {
-
-//        if (DialogDisplay.isDisplaying() )
-//            return false;
-//
-        if (alt && !ctrl) {
-            if (i == 1) {
-                FireLightProt.setSmallerAlpha(FireLightProt.getAlphaSmaller() + 0.05f);
-            }
-            if (i == -1) {
-                FireLightProt.setSmallerAlpha(FireLightProt.getAlphaSmaller() - 0.05f);
-            }
-
-        }
-        if (!alt && ctrl) {
-            if (i == 1) {
-                FireLightProt.setBiggerAlpha(FireLightProt.getAlphaBigger() + 0.05f);
-            }
-            if (i == -1) {
-                FireLightProt.setBiggerAlpha(FireLightProt.getAlphaBigger() - 0.05f);
-            }
-
-        }
-        if (alt && ctrl) {
-            if (i == 1) {
-                LightMap.setAmbient(LightMap.getAmbient() + 0.02f);
-            }
-            if (i == -1) {
-                LightMap.setAmbient(LightMap.getAmbient() - 0.02f);
-            }
-
-        }
+        if (isBlocked())
+            return true;
         zoom(i);
-
-//        System.out.println(camera.zoom);
         return false;
     }
 
@@ -253,29 +213,17 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
         }
     }
 
-    public boolean isCellWithinCamera(int x, int y) {
-        return isWithinCamera(GridConst.CELL_W * x, GridConst.CELL_H * y, GridConst.CELL_W, GridConst.CELL_H);
-    }
 
     public boolean isWithinCamera(Actor actor) {
-        return isWithinCamera(actor.getX()+actor.getWidth(), actor.getY()+actor.getHeight(), actor.getWidth(), actor.getHeight());
-}
-        public boolean isWithinCamera(float x, float y, float width, float height) {
-//            width = width / getZoom();
-//            height = height / getZoom();
-//            float minY = camera.position.y - GdxMaster.getHeight()/2;
-//            float maxY = camera.position.y + GdxMaster.getHeight()/2;
-//
-//        float x1 =   x/getZoom();
-//        if (camera.position.x - x1 <width ||camera.position.x - x1 >2*GdxMaster.getWidth())
-//            return false;
+        return isWithinCamera(actor.getX() + actor.getWidth(), actor.getY() + actor.getHeight(), actor.getWidth(), actor.getHeight());
+    }
 
-            float xPos = Math.abs(camera.position.x - x)-width;
+    public boolean isWithinCamera(float x, float y, float width, float height) {
+        float xPos = Math.abs(camera.position.x - x) - width;
         if (xPos > GdxMaster.getWidth() * getZoom() / 2)
             return false;
-            float yPos = Math.abs(camera.position.y - y)-height;
-        if (yPos >  GdxMaster.getHeight() * getZoom() / 2)
-//        if (y1-camera.position.y   <height ||y1-camera.position.y   >2*GdxMaster.getHeight())
+        float yPos = Math.abs(camera.position.y - y) - height;
+        if (yPos > GdxMaster.getHeight() * getZoom() / 2)
             return false;
 
         return true;
@@ -295,7 +243,6 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean touchDown(float v, float v1, int i, int i1) {
-        GuiEventManager.trigger(GuiEventType.ADD_LIGHT, new Vector2(v, v1));
         return false;
     }
 

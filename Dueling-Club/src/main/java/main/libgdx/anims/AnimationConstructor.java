@@ -211,6 +211,8 @@ public class AnimationConstructor {
     }
 
     private boolean checkAnimationSupported(DC_ActiveObj active) {
+        if (active.getActionGroup() == ACTION_TYPE_GROUPS.HIDDEN)
+            return false;
         if (active.getActionGroup() == ACTION_TYPE_GROUPS.TURN)
             return false;
         //hidden?

@@ -75,7 +75,6 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
 
     public void start() {
-        getSprite().flip(flipX, flipY);
     }
     public void reset() {
         stateTime = 0;
@@ -125,6 +124,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
         if (sprite == null) {
             sprite = new Sprite(currentFrame);
+            sprite.flip(flipX, flipY);
         } else {
             sprite.setRegion(currentFrame);
         }

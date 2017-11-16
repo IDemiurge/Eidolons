@@ -36,6 +36,7 @@ import main.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.Decorator;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
+import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.audio.DC_SoundMaster;
@@ -490,7 +491,7 @@ public class UnitGroupMaster {
 
     public static String chooseGroup(Entity faction, int level) {
         File groupFile = ListChooser.chooseFile(getFactionPath(faction), StringMaster
-                .wrapInBraces("" + level));
+                .wrapInBraces("" + level), SELECTION_MODE.SINGLE);
         if (groupFile != null) {
             return groupFile.getPath();
         }

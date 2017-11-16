@@ -149,12 +149,19 @@ public class ListChooser extends GenericListChooser<String> {
     }
 
     public static File chooseFile(String path) {
-        return chooseFile(path, null);
+        return chooseFile(path, null, SELECTION_MODE.SINGLE);
     }
 
-    public static File chooseFile(String path, String filter) {
-        List<String> data = FileManager
-                .getFileNames(FileManager.getFilesFromDirectory(path, false));
+    public static String chooseFiles(String path, String filter) {
+        return chooseFile(path, filter, SELECTION_MODE.MULTIPLE, true);
+    }
+    public static File chooseFile(String path, String filter, SELECTION_MODE mode) {
+        return FileManager.getFile(path + "\\" +  chooseFile(path,filter,mode, false));
+    }
+
+        public static String chooseFile(String path, String filter, SELECTION_MODE mode, boolean dirs) {
+            List<String> data = FileManager
+                .getFileNames(FileManager.getFilesFromDirectory(path, dirs));
         if (filter != null) {
             for (String str : new LinkedList<>(data)) {
                 if (!str.contains(filter)) {
@@ -162,11 +169,11 @@ public class ListChooser extends GenericListChooser<String> {
                 }
             }
         }
-        String name = new ListChooser(SELECTION_MODE.SINGLE, data, false).choose();
+        String name = new ListChooser(mode, data, false).choose();
         if (name == null) {
             return null;
         }
-        return FileManager.getFile(path + "\\" + name);
+        return   name ;
     }
 
     public static String chooseStrings(List<String> stringList) {

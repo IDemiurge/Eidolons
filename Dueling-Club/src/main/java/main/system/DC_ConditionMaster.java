@@ -81,9 +81,9 @@ public class DC_ConditionMaster extends ConditionMaster {
             case FACING:
                 return new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT);
             case VISION:
-                return new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT);
+                return new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_SIGHT);
             case NO_VISION:
-                return new NotCondition(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
+                return new NotCondition(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_SIGHT));
             case SNEAKY:
                 return new SneakCondition();
             case ONLY_LIVING:
@@ -332,7 +332,7 @@ public class DC_ConditionMaster extends ConditionMaster {
                  new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.LOCK.toString(), true),
                  new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.DOOR.toString(), true)));
             case ATTACK:
-                c.add(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
+                c.add(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_SIGHT));
 
                 List<FACING_SINGLE> list = new LinkedList<>();
                 list.add(UnitEnums.FACING_SINGLE.IN_FRONT);

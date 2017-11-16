@@ -558,7 +558,7 @@ public class AnimMaster extends Group {
     }
 
     public void cleanUp() {
-        if (leadAnimation == null)
+        if (leadAnimation != null)
         leadAnimation.finished();
         leadQueue.forEach(a->{
             a.finished();

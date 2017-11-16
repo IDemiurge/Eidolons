@@ -405,4 +405,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     public boolean isMainHero() {
         return false;
     }
+
+    public boolean isItemsInitialized() {
+        return false;
+    }
 }
