@@ -23,11 +23,13 @@ public class RestCondition extends DC_Condition {
         boolean hasFood = false;
         for (Unit sub : allies) {
             int distance = getGame().getAiManager().getAnalyzer().getClosestEnemyDistance(sub);
-            if (distance < minDistance)
-                return false;
+//            if (distance < minDistance)
+//                return false;
             if (new SearchMaster<DC_HeroItemObj>().find(FOOD_ITEM, sub.getInventory(), true) != null)
                 hasFood = true;
         }
+        if (true)
+            return true;
         return hasFood;
     }
 }

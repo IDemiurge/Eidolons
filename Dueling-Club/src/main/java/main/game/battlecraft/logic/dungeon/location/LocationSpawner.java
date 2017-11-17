@@ -74,6 +74,8 @@ public class LocationSpawner extends Spawner<Location> {
                 member.setOwner(player);
                 member.setFacing(
                  getFacingAdjuster().getPartyMemberFacing(member.getCoordinates()));
+
+                applyStartBonuses(member);
                 //what else should be done to *spawn*?
             }
         } else {
@@ -88,6 +90,10 @@ public class LocationSpawner extends Spawner<Location> {
         //TODO
 
         return null;
+    }
+
+    private void applyStartBonuses(Unit member) {
+         member.addProperty(PROPS.INVENTORY, "Food");
     }
 
     //        if (respawn)

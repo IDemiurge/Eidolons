@@ -15,6 +15,7 @@ public class ExplorationMaster {
     static boolean explorationOn;
     private static boolean testMode;
     private static boolean realTimePaused;
+    private static boolean waiting;
     DC_Game game;
     ExplorationAiMaster aiMaster;
     ExplorationTimeMaster timeMaster;
@@ -35,6 +36,14 @@ public class ExplorationMaster {
         actionHandler = new ExplorationActionHandler(this);
         partyMaster = new ExplorePartyMaster(this);
         enemyPartyMaster = new ExploreEnemyPartyMaster(this);
+    }
+
+    public static boolean isWaiting() {
+        return waiting;
+    }
+
+    public static void setWaiting(boolean waiting) {
+        ExplorationMaster.waiting = waiting;
     }
 
     public static boolean isRealTimePaused() {

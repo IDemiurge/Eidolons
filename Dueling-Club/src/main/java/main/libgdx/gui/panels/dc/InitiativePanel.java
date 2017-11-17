@@ -77,7 +77,7 @@ public class InitiativePanel extends Group {
             if (!isRealTime())
                 checkPositions();
         });
-            GuiEventManager.bind(GuiEventType.UPDATE_GUI, obj -> {
+        GuiEventManager.bind(GuiEventType.UPDATE_GUI, obj -> {
             if (!isRealTime()) {
 //                cleanUp();
                 resetZIndices();
@@ -118,7 +118,7 @@ public class InitiativePanel extends Group {
         queueGroup = new WidgetGroup();
         queueGroup.setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
         container = new Container<>(queueGroup);
-        container.setBounds(imageSize - offset, queueOffsetY, imageSize * visualSize + 
+        container.setBounds(imageSize - offset, queueOffsetY, imageSize * visualSize +
          (offset - 1) * visualSize, imageSize);
         container.left().bottom();
         if (ExplorationMaster.isExplorationOn()) {
@@ -177,18 +177,21 @@ public class InitiativePanel extends Group {
     }
 
     private EventListener getClockListener() {
-        return new ClickListener(){
+        return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (ExplorationMaster.isExplorationOn()) {
-                    if (!new RestCondition().check(new Ref())){
-                        return true;
+                new Thread(new Runnable() {
+                    public void run() {
+                        if (ExplorationMaster.isExplorationOn()) {
+                            if (!new RestCondition().preCheck(new Ref())) {
+                                return;
+                            } //pick, auto-limit
+                        }
+                        DC_Game.game.getDungeonMaster().
+                         getExplorationMaster().
+                         getTimeMaster().playerWaits(150);
                     }
-                    int time = 15; //pick, auto-limit
-                   DC_Game.game.getDungeonMaster().
-                    getExplorationMaster().
-                    getTimeMaster().playerWaits(time);
-                }
+                }, " thread").start();
                 return super.touchDown(event, x, y, pointer, button);
             }
         };
@@ -232,15 +235,15 @@ public class InitiativePanel extends Group {
 
     private void checkPositions() {
         int n = 0;
-        for (int i = queue.length-1; i >=0; i--) {
-            ImageContainer sub = queue[isLeftToRight()? i : queue.length-1-i];
+        for (int i = queue.length - 1; i >= 0; i--) {
+            ImageContainer sub = queue[isLeftToRight() ? i : queue.length - 1 - i];
             if (sub == null)
                 continue;
 //            if (sub.getActions().size != 0)
 //                continue;
             float x = relToPixPos(n);
             n++;
-            if (sub.getX()==x )
+            if (sub.getX() == x)
                 continue;
             sub.getActions().clear();
             AfterAction a = new AfterAction();
@@ -254,7 +257,7 @@ public class InitiativePanel extends Group {
         checkPositionsRequired = false;
     }
 
-    private boolean isLeftToRight() {
+    public static boolean isLeftToRight() {
         return true;
     }
 
@@ -274,14 +277,13 @@ public class InitiativePanel extends Group {
         for (ImageContainer sub : queue) {
             if (sub == null)
                 continue;
-            if (!views.containsKey(sub.id))
-            {
+            if (!views.containsKey(sub.id)) {
                 ImageContainer view = getIfExists(sub.id);
-                if (((UnitView)view.getActor()).getOutline() != null) {
-                    view.setActor(new Image(((UnitView)view.getActor()).getOutline()));
+                if (((UnitView) view.getActor()).getOutline() != null) {
+                    view.setActor(new Image(((UnitView) view.getActor()).getOutline()));
                     //is active?
                 } else
-                removeView((sub.id));
+                    removeView((sub.id));
             }
         }
 
@@ -361,7 +363,7 @@ public class InitiativePanel extends Group {
 
             timePassedSincePosCheck += delta;
             if (DC_Game.game.isDebugMode() ||
-             timePassedSincePosCheck>2 ||
+             timePassedSincePosCheck > 2 ||
              (checkPositionsRequired && timePassedSincePosCheck >= maxMoveAnimDuration))
                 checkPositions();
         }

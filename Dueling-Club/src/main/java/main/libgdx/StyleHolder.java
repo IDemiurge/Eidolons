@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.data.filesys.PathFinder;
@@ -32,9 +33,9 @@ public class StyleHolder {
     private static Label.LabelStyle defaultLabelStyle;
     private static Label.LabelStyle avqLabelStyle;
     private static TextButton.TextButtonStyle defaultTextButtonStyle;
-    private static Map<Color, Label.LabelStyle> colorLabelStyleMap = new HashMap<>();
-    private static Map<Integer, Label.LabelStyle> sizeLabelStyleMap = new HashMap<>();
-    private static Map<Pair<Integer, Color>, Label.LabelStyle> sizeColorLabelStyleMap = new HashMap<>();
+    private static Map<FONT, Map<Color, Label.LabelStyle>> colorLabelStyleMap = new HashMap<>();
+    private static Map<FONT, Map<Integer, Label.LabelStyle>> sizeLabelStyleMap = new HashMap<>();
+    private static Map<FONT, Map<Pair<Integer, Color>, Label.LabelStyle>> sizeColorLabelStyleMap = new HashMap<>();
 //    private static String FONT_CHARS = "";
 //
 //    static {
@@ -51,19 +52,33 @@ public class StyleHolder {
     public static Label.LabelStyle getSizedLabelStyle(FONT fontStyle, Integer size) {
         return getSizedColoredLabelStyle(fontStyle, size, DEFAULT_COLOR);
     }
-
-    public static Label.LabelStyle getSizedColoredLabelStyle(FONT fontStyle, Integer size, Color color) {
+    public static Label.LabelStyle getSizedColoredLabelStyle(FONT fontStyle,
+                                                             Integer size, Color color) {
         if (GdxMaster.getFontSizeMod() != 1) {
             size = Math.round(size * GdxMaster.getFontSizeMod());
         }
+        Map<Pair<Integer, Color>, LabelStyle> map = getSizedColoredLabelStyleMap(fontStyle, size, color);
+
         ImmutablePair<Integer, Color> pair = new ImmutablePair<>(size, color);
-        if (!sizeColorLabelStyleMap.containsKey(pair)) {
+
+        if (!map.containsKey(pair)) {
             Label.LabelStyle style = new Label.LabelStyle
              (getFont(fontStyle, color, size), color);
             style.font.getData().markupEnabled = true;
-            sizeColorLabelStyleMap.put(pair, style);
+            map.put(pair, style);
         }
-        return sizeColorLabelStyleMap.get(pair);
+
+        return map.get(pair);
+    }
+
+        private static Map<Pair<Integer, Color>, LabelStyle> getSizedColoredLabelStyleMap(FONT fontStyle, Integer size, Color color) {
+
+        if (!sizeColorLabelStyleMap.containsKey(fontStyle)) {
+            Map<Pair<Integer, Color>, LabelStyle> map = new HashMap<>();
+             sizeColorLabelStyleMap.put(fontStyle, map);
+            return map;
+        }
+        return sizeColorLabelStyleMap.get(fontStyle);
     }
 
     public static Label.LabelStyle getDefaultLabelStyle(Color color) {
@@ -75,13 +90,22 @@ public class StyleHolder {
     }
 
     public static Label.LabelStyle getLabelStyle(FONT font, Color color) {
-        if (!colorLabelStyleMap.containsKey(color)) {
+        Map<Color, LabelStyle> map = getLabelStyleMap(font, color);
+        if (!map.containsKey(color)) {
             Label.LabelStyle style = new Label.LabelStyle
              (getFont(font, DEFAULT_COLOR, getDefaultSize()), color);
             style.font.getData().markupEnabled = true;
-            colorLabelStyleMap.put(color, style);
+            map.put(color, style);
         }
-        return colorLabelStyleMap.get(color);
+        return  map.get(color);
+    }
+        private static Map<Color, LabelStyle> getLabelStyleMap(FONT font, Color color) {
+        if (!colorLabelStyleMap.containsKey(font)) {
+            Map<Color, LabelStyle> map = new HashMap<>();
+            colorLabelStyleMap.put(font, map);
+            return map;
+        }
+        return colorLabelStyleMap.get(font);
     }
 
     public static int getDefaultSize() {

@@ -105,8 +105,8 @@ public class ActorMaster {
     }
 
     public static void addRotateByAction(Actor actor, float from, float to) {
-        if (!getActionsOfClass(actor, RotateByAction.class).isEmpty()) {
-            getActionsOfClass(actor, RotateByAction.class).forEach(action -> {
+        if (!getActionsOfClass(actor, RotateByActionLimited.class).isEmpty()) {
+            getActionsOfClass(actor, RotateByActionLimited.class).forEach(action -> {
                 if (action instanceof Action)
                     actor.removeAction((Action) action);
             });
@@ -117,6 +117,7 @@ public class ActorMaster {
         if (Math.abs(action.getAmount()) >= 270)
             action.setAmount((action.getAmount() + 360) % 360);
 
+        main.system.auxiliary.log.LogMaster.log(1,from+ "from; to: " +to + "; amount = " + action.getAmount());
         float speed = 360*AnimMaster.getInstance().getAnimationSpeedFactor(); //* options
         float duration = Math.abs(from - to) / speed;
         action.setDuration(duration);

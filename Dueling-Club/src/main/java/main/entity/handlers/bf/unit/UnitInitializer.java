@@ -28,7 +28,6 @@ import main.entity.obj.hero.DC_Attributes;
 import main.entity.obj.hero.DC_Masteries;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;

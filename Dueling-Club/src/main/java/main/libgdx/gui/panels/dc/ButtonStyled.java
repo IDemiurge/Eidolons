@@ -57,7 +57,13 @@ public class ButtonStyled extends Image implements EventListener {
         OK("UI/components/small/ok.png"),
         CANCEL("UI/components/small/no.png"),
         UNDO("UI/components/small/back2.png"),
-        OPTIONS(VISUALS.GEARS.getImgPath()){
+        HELP(VISUALS.QUESTION.getImgPath()){
+            @Override
+            public boolean isVersioned() {
+                return false;
+            }
+        },
+        OPTIONS(VISUALS.MENU_BUTTON.getImgPath()){
             @Override
             public boolean isVersioned() {
                 return false;

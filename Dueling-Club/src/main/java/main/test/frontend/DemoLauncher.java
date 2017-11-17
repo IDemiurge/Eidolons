@@ -70,7 +70,7 @@ public class DemoLauncher extends Game {
 
     }
 
-    protected static LwjglApplicationConfiguration getConf() {
+    public static LwjglApplicationConfiguration getConf() {
 //        Eidolons. getApplication().getGraphics().setFullscreenMode();
         LwjglApplicationConfiguration conf = new LwjglApplicationConfiguration();
         conf.title = "Eidolons: Battlecraft v" + Launcher.VERSION;

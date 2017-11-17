@@ -27,8 +27,8 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     }
 
     public void restart() {
-        outcome = null;
-        next();
+
+        getGame().getMetaMaster().next(null  );
     }
 
     public enum OUTCOME{

@@ -502,6 +502,7 @@ public class RadialManager {
         if (!valid) {
             return () -> activeObj.getCosts().getReasonsString();
         }
+        if (!activeObj.isAttackGeneric())
         if (activeObj.isAttackAny()) {
             int chance = activeObj.getCalculator().getCritOrDodgeChance(target);
             if (chance == 0)

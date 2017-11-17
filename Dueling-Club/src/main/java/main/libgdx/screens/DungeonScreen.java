@@ -8,14 +8,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import main.libgdx.DialogScenario;
 import main.libgdx.GdxColorMaster;
@@ -26,15 +29,17 @@ import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridMaster;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.mouse.InputController;
+import main.libgdx.shaders.DarkShader;
 import main.libgdx.stage.BattleGuiStage;
 import main.libgdx.stage.ChainedStage;
 import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.audio.DC_SoundMaster;
 import main.system.launch.CoreEngine;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.frontend.DemoLauncher;
 
 import java.util.List;
@@ -65,6 +70,8 @@ public class DungeonScreen extends ScreenWithLoader {
     private Vector2 cameraDestination;
     private RealTimeGameLoop realTimeGameLoop;
     private ParticleManager particleManager;
+    private ShaderProgram bufferedShader;
+    private Float speed;
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -81,6 +88,7 @@ public class DungeonScreen extends ScreenWithLoader {
     @Override
     protected void preLoad() {
         instance = this;
+        WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GUI_READY);
         super.preLoad();
 
         gridStage = new Stage(viewPort, getBatch());
@@ -188,24 +196,14 @@ public class DungeonScreen extends ScreenWithLoader {
     }
 
     private void bindEvents() {
-        GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, p -> {
-            if (isCameraAutoCenteringOn()) {
-                Coordinates coordinatesActiveObj = DC_Game.game.getManager().getActiveObj().getCoordinates();
-                Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridConst.CELL_W + GridConst.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridConst.CELL_H - GridConst.CELL_H / 2);
-                cameraPan(unitPosition);
-            }
-        });
-        GuiEventManager.bind(UPDATE_GUI, obj -> {
-            updateGui();
-            checkGraphicsUpdates();
-        });
+
 
     }
 
-    private void updateGui() {
+    public void updateGui() {
 //        gridPanel.updateGui();
         guiStage.getBottomPanel().update();
-
+        checkGraphicsUpdates();
     }
 
     private void cameraPan(Vector2 unitPosition) {
@@ -263,6 +261,9 @@ public class DungeonScreen extends ScreenWithLoader {
             }
             delta = FRAMERATE_DELTA_CONTROL;
         }
+        if (speed != null) {
+            delta = delta * speed;
+        }
         if (DC_Game.game != null) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
                 DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
@@ -274,12 +275,11 @@ public class DungeonScreen extends ScreenWithLoader {
             }
             checkShader();
             super.render(delta);
-            if (isBlocked())
-                return;
             if (!hideLoader)
                 return;
             guiStage.act(delta);
             gridStage.act(delta);
+
 
             cameraShift();
             //cam.update();
@@ -331,12 +331,24 @@ public class DungeonScreen extends ScreenWithLoader {
                 }
             }
         }
+        checkShaderReset();
+    }
+
+    private void checkShaderReset() {
+        if (batch.getShader() == DarkShader.getShader())
+            batch.setShader(bufferedShader);
     }
 
     private void checkShader() {
+
+        if (isBlocked() || ExplorationMaster.isWaiting()) {
+            bufferedShader = batch.getShader();
+            batch.setShader(DarkShader.getShader());
+        }
+
     }
 
-    private boolean isBlocked() {
+    public boolean isBlocked() {
         return OptionsMaster.isMenuOpen();
     }
 
@@ -387,6 +399,10 @@ public class DungeonScreen extends ScreenWithLoader {
         return gridPanel;
     }
 
+    public BattleGuiStage getGuiStage() {
+        return guiStage;
+    }
+
     public InputController getController() {
         return controller;
     }
@@ -395,6 +411,13 @@ public class DungeonScreen extends ScreenWithLoader {
         return gridStage;
     }
 
+    public Float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Float speed) {
+        this.speed = speed;
+    }
 
     public RealTimeGameLoop getRealTimeGameLoop() {
         return realTimeGameLoop;
@@ -402,5 +425,14 @@ public class DungeonScreen extends ScreenWithLoader {
 
     public void setRealTimeGameLoop(RealTimeGameLoop realTimeGameLoop) {
         this.realTimeGameLoop = realTimeGameLoop;
+    }
+
+    public void activeUnitSelected(BattleFieldObject hero) {
+        if (isCameraAutoCenteringOn()) {
+            Coordinates coordinatesActiveObj =
+             hero.getCoordinates();
+            Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridConst.CELL_W + GridConst.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridConst.CELL_H - GridConst.CELL_H / 2);
+            cameraPan(unitPosition);
+        }
     }
 }

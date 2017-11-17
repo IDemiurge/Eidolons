@@ -16,6 +16,7 @@ import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
@@ -43,6 +44,9 @@ public class GameLoop {
     }
 
     public void start() {
+        if (!CoreEngine.isGraphicsOff()) {
+            WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
+        }
         while (true) {
             if (!AiTrainingRunner.running) {
                 if (!roundLoop())

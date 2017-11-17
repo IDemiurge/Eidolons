@@ -1,5 +1,6 @@
 package main.client.dc;
 
+import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
 import main.client.cc.CharacterCreator;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.MainPanel;
@@ -13,6 +14,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
+import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
@@ -41,6 +43,8 @@ import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.test.frontend.BattleSceneLauncher;
+import main.test.frontend.DemoLauncher;
+import main.test.frontend.ScenarioLauncher;
 import main.test.frontend.Showcase;
 import net.miginfocom.swing.MigLayout;
 
@@ -535,7 +539,9 @@ public class Launcher {
             BattleSceneLauncher.main(new String[]{});
             ScreenData data = new ScreenData(ScreenType.BATTLE, "Loading...");
             GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
-        Eidolons.mainGame.getMetaMaster().getGame().init( );
+            Eidolons.initScenario(new ScenarioMetaMaster(ScenarioLauncher.CRAWL));
+//        Eidolons.mainGame.getMetaMaster().getGame().init( );
+
             try {
                 Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
             } catch (Exception e) {
@@ -568,9 +574,20 @@ public class Launcher {
             e.printStackTrace();
             game.setSimulation(true);
         }
-        setView(VIEWS.DC);
-    }
 
+//        setView(VIEWS.DC);
+        try{
+            createGame();
+
+        }catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
+    }
+    public static void createGame( )
+    {
+        LwjglCanvas canvas = new LwjglCanvas(Eidolons.getApplication().getApplicationListener(), DemoLauncher.getConf());
+        SwingUtilities.invokeLater(
+//        Gdx.app.postRunnable(
+         () -> frame.add(canvas.getCanvas()));
+    }
     public static boolean isInMenu() {
         return getView() == VIEWS.MENU;
     }

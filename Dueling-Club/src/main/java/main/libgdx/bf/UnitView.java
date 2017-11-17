@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
+import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.shaders.GrayscaleShader;
 import main.libgdx.texture.TextureCache;
@@ -82,6 +83,8 @@ public class UnitView extends BaseView {
                 clockImage = new Image(clockTexture);
                 addActor(clockImage);
                 addActor(initiativeLabel);
+                if (InitiativePanel.isLeftToRight())
+                    clockImage.setPosition(GdxMaster.right(clockImage), 0);
             }
 
         if (!(this instanceof GridUnitView))

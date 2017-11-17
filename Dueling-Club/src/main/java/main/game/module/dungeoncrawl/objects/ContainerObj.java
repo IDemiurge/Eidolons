@@ -32,7 +32,8 @@ public class ContainerObj extends DungeonObj {
         RandomWizard<CONTAINER_CONTENTS> wizard = new RandomWizard< >();
         String prop = getProperty(PROPS.CONTAINER_CONTENTS);
         if (test_mode)
-            prop = "Potions(10);";
+//            prop = "Potions(10);";
+        prop = "Food(10);";
         Map<CONTAINER_CONTENTS, Integer> map =
         wizard.
           constructWeightMap(prop, CONTAINER_CONTENTS.class);

@@ -313,7 +313,7 @@ public class OptionsMaster {
 //         "Options", new Dimension(800, 600));
         modalOptionsPanelFrame = GuiManager.inModalWindow(optionsPanel,
          "Options", new Dimension(800, 600));
-
+        modalOptionsPanelFrame.setAlwaysOnTop(true);
     }
 
     public static boolean isMenuOpen() {

@@ -4,12 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import main.data.filesys.PathFinder;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.libgdx.GdxMaster;
 import main.libgdx.gui.panels.dc.logpanel.LogPanel;
-import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.FileManager;
 
 /**
  * Created by JustMe on 11/14/2017.
@@ -17,24 +16,25 @@ import main.system.auxiliary.data.FileManager;
 public class TextPanel extends LogPanel {
 
     public static final boolean TEST_MODE = false;
-    private final Actor outside;
+    private   Actor outside;
 
     public TextPanel() {
-        outside = new Actor();
-        outside.setBounds(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
-        outside.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                TextPanel.this.setVisible(false);
-                outside.setTouchable(Touchable.disabled);
-                return false;
-            }
-
-
-        });
-        addActor(outside);
+//        outside = new Actor();
+//        outside.setBounds(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
+//        outside.addListener(new InputListener() {
+//            @Override
+//            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+//                TextPanel.this.setVisible(false);
+//                outside.setTouchable(Touchable.disabled);
+//                return false;
+//            }
+//
+//
+//        });
+//        addActor(outside);
 
         setTouchable(Touchable.enabled);
+        initListeners();
     }
 
     @Override
@@ -48,18 +48,39 @@ public class TextPanel extends LogPanel {
     }
 
     public void setText(String text) {
-        text = FileManager.readFile(
-         StrPathBuilder.build(PathFinder.getTextPath(),
-          "russian", "info", "manual.txt"));
-//        scrollPanel.clear();
+
+        scrollPanel.getInnerScrollContainer().getActor().  clear();
         //TODO split?!
         for (String substring : StringMaster.openContainer(text, StringMaster.NEW_LINE)) {
-            scrollPanel.addElement(TextBuilder.createNew().addString(substring).build(getWidth()));
+            Message message=TextBuilder.createNew().addString(substring).build(getWidth());
+            for (Actor sub : message.getChildren()) {
+                if (sub instanceof Label) {
+                    ((Label) sub).setStyle(TextBuilder.createNew().getDefaultLabelStyle());
+                }
+            }
+            scrollPanel.addElement(message);
         }
-        outside.setTouchable(Touchable.enabled);
-        initListeners();
+//        outside.setTouchable(Touchable.enabled);
     }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
+    @Override
+    protected void initScrollPanel() {
+        super.initScrollPanel();
+        scrollPanel.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+    }
+
     private void initListeners() {
+
         addListener(new InputListener() {
             @Override
             public boolean scrolled(InputEvent event, float x, float y, int amount) {

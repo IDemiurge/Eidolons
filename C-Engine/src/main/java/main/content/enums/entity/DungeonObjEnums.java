@@ -9,7 +9,7 @@ public class DungeonObjEnums {
 
     }
     public enum CONTAINER_CONTENTS{
-AMMO, POTIONS, WEAPONS, FOOD, MISC,
+AMMO, POTIONS, WEAPONS, FOOD, MISC, TOOLS,
 
     }
 }

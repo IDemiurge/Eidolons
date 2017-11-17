@@ -14,6 +14,7 @@ import main.system.auxiliary.StringMaster;
  */
 public class ScenarioLauncher {
     public static final String DEFAULT = "Pride and Treachery";
+    public static final String CRAWL = "Mini Release Pack";
     public static int missionIndex = 0;
     public static boolean running;
     private static ScenarioMetaMaster master;

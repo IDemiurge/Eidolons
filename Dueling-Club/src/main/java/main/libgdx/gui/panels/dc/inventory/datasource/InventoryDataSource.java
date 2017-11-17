@@ -9,8 +9,8 @@ import main.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import main.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
 import main.libgdx.gui.panels.dc.inventory.InventoryValueContainerFactory;
 import main.system.auxiliary.data.ListMaster;
+import main.system.datatypes.DequeImpl;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class InventoryDataSource implements QuickSlotDataSource,
@@ -71,7 +71,8 @@ public class InventoryDataSource implements QuickSlotDataSource,
 
     @Override
     public List<InventoryValueContainer> getInventorySlots() {
-        List<InventoryValueContainer> list = new LinkedList<>(factory.getList(unit.getInventory(), CELL_TYPE.INVENTORY));
+        List<InventoryValueContainer> list = (factory.getList(new DequeImpl<>(
+         unit.getInventory()), CELL_TYPE.INVENTORY));
         ListMaster.fillWithNullElements(list
                 , InventorySlotsPanel.SIZE);
         return list;

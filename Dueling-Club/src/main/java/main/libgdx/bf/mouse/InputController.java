@@ -119,7 +119,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
             yCamPos = screenY;
             isLeftClick = true;
         }
-
+DungeonScreen.getInstance().getGuiStage().outsideClick();
         return false;
     }
 

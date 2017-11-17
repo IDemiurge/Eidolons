@@ -24,7 +24,7 @@ public class TextBuilder   {
     }
 
     public Message build(float w) {
-        Label l = new Label(sb.toString(),getDefaultLabelStyle()
+        Label l = new Label(sb.toString(), getDefaultLabelStyle()
          );
         l.setWrap(true);
         l.setAlignment(Align.left);

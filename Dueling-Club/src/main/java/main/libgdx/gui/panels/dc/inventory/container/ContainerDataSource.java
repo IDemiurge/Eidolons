@@ -2,8 +2,8 @@ package main.libgdx.gui.panels.dc.inventory.container;
 
 import main.entity.Entity;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.unit.Unit;
 import main.game.module.dungeoncrawl.objects.ContainerObj;
-import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import main.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import main.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
@@ -22,12 +22,16 @@ public class ContainerDataSource implements InventoryTableDataSource {
 
     private InventoryValueContainerFactory factory;
     private DC_Obj obj;
-    private InventoryClickHandler handler;
+    private ContainerClickHandler handler;
 
-    public ContainerDataSource(DC_Obj obj) {
+    public ContainerDataSource(DC_Obj obj, Unit unit) {
         this.obj = obj;
-        handler = obj.getGame().getInventoryManager().getClickHandler();
+        handler =new ContainerClickHandler((ContainerObj) obj, unit);// obj.getGame().getInventoryManager().getClickHandler();
         factory = new InventoryValueContainerFactory(handler);
+    }
+
+    public ContainerClickHandler getHandler() {
+        return handler;
     }
 
     @Override

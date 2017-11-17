@@ -22,6 +22,10 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         init();
     }
 
+    public InnerScrollContainer<Table> getInnerScrollContainer() {
+        return innerScrollContainer;
+    }
+
     @Override
     @Deprecated
     public Container getActor() {

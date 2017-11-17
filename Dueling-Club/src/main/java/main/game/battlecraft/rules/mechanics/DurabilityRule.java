@@ -14,6 +14,8 @@ import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroSlotItem;
 import main.entity.item.DC_WeaponObj;
 import main.game.battlecraft.rules.DC_RuleImpl;
+import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.core.game.MicroGame;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -32,7 +34,11 @@ public class DurabilityRule extends DC_RuleImpl {
                                      DC_HeroSlotItem armor, DC_WeaponObj weapon, boolean simulation) {
         int self_damage_mod = armor.getIntParam(DC_ContentManager
                 .getArmorSelfDamageParamForDmgType(damage_type));
-
+if (!RuleMaster.isRuleOn(RULE.DURABILITY))
+    self_damage_mod= 0;
+else 
+    if (self_damage_mod==0)
+        self_damage_mod=100;
         // new EnumMaster<ENUM>().retrieveEnumConst(ENUM.class, )
 
         MATERIAL m1 = armor.getMaterial();

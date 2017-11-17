@@ -1,5 +1,6 @@
 package main.game.module.dungeoncrawl.objects;
 
+import main.ability.InventoryTransactionManager;
 import main.client.cc.CharacterCreator;
 import main.content.DC_TYPE;
 import main.content.enums.entity.DungeonObjEnums.CONTAINER_CONTENTS;
@@ -14,6 +15,7 @@ import main.libgdx.gui.panels.dc.inventory.container.ContainerDataSource;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -34,7 +36,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             case WEAPONS:
                 break;
             case FOOD:
-                break;
+                return DataManager.getType("Food", DC_TYPE.ITEMS);
             case MISC:
                 break;
         }
@@ -60,10 +62,10 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         CharacterCreator.getHeroManager().addHero(unit);
 
         Pair<InventoryDataSource, ContainerDataSource> param =
-         new ImmutablePair<>(new InventoryDataSource(unit), new ContainerDataSource(obj));
+         new ImmutablePair<>(new InventoryDataSource(unit), new ContainerDataSource(obj, unit));
         GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL, param);
-        return true;
-//        return (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
+//        return true;
+        return (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
     }
 
     @Override

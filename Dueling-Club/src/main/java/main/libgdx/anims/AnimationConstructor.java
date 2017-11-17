@@ -36,8 +36,6 @@ import main.libgdx.anims.weapons.Missile3dAnim;
 import main.libgdx.anims.weapons.Ranged3dAnim;
 import main.libgdx.anims.weapons.Reload3dAnim;
 import main.libgdx.anims.weapons.Weapon3dAnim;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -102,14 +100,15 @@ public class AnimationConstructor {
     private boolean findClosestResource;
 
     public AnimationConstructor() {
-        if (preconstructOn)
-            GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, p -> {
-                if (isPreconstructOn((Unit) p.get()))
-                    preconstructSpells((Unit) p.get());
-            });
+
     }
 
-    public static void preconstructAllForAV() {
+    public   void tryPreconstruct(Unit unit) {
+        if (preconstructOn)
+                if (isPreconstructOn(unit))
+                    preconstructSpells(unit);
+    }
+        public static void preconstructAllForAV() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             DC_SpellObj active = new DC_SpellObj(type, Player.NEUTRAL, DC_Game.game, new Ref());
             AnimData data = null;

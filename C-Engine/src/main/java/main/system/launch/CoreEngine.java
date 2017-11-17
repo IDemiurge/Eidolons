@@ -229,7 +229,6 @@ public class CoreEngine {
         if (graphicsOff) {
 
             WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
-            WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
         }
     }
 

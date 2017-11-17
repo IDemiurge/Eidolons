@@ -28,6 +28,7 @@ import main.libgdx.gui.tooltips.ToolTipManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.options.OptionsMaster;
+import main.system.text.HelpMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -67,6 +68,11 @@ public class BattleGuiStage extends Stage {
         menuButton.setPosition(GdxMaster.getWidth() - menuButton.getWidth(),
          GdxMaster.getHeight() - menuButton.getHeight());
         addActor(menuButton);
+        ButtonStyled helpButton = new ButtonStyled(STD_BUTTON.HELP, () ->
+         GuiEventManager.trigger(SHOW_TEXT_CENTERED, HelpMaster.getHelpText()));
+        helpButton.setPosition(menuButton.getX() - helpButton.getWidth(),
+         GdxMaster.getHeight() - helpButton.getHeight());
+        addActor(helpButton);
 
 
         InventoryWithAction inventoryForm = new InventoryWithAction();
@@ -152,12 +158,15 @@ public class BattleGuiStage extends Stage {
     @Override
     public boolean keyTyped(char character) {
         String str = String.valueOf(character).toUpperCase();
-        if (character == lastTyped) {
-            if (!charsUp.contains(str)) {
-                return false;
+        if (Character.isAlphabetic(character)) {
+            if (character == lastTyped) {
+                if (!charsUp.contains(str)) {
+                    return false;
+                }
             }
+            charsUp.remove(str);
         }
-        charsUp.remove(str);
+
         lastTyped = character;
 
         boolean result = false;
@@ -199,5 +208,14 @@ public class BattleGuiStage extends Stage {
 
     public RadialMenu getRadial() {
         return radial;
+    }
+
+    public void outsideClick() {
+        if (textPanel.isVisible()){
+            textPanel.setVisible(false);
+        }
+        if (containerPanel.isVisible()){
+            containerPanel.close();
+        }
     }
 }

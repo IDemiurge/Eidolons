@@ -10,11 +10,13 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.battlecraft.rules.counter.DC_CounterRule;
 import main.game.battlecraft.rules.round.RoundRule;
+import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
 import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 /**
  * Created by JustMe on 9/9/2017.
@@ -61,20 +63,54 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         time += delta;
     }
 
-    public void playerWaits(float timeInSeconds) {
-        float wakeUpTime = time+timeInSeconds;
-        float speedFactor = 20;
-        int period = 100;
-        float actPeriod = period*speedFactor/1000;
-        while(true){
-             if (time>=wakeUpTime)
-                 break;
-            WaitMaster.WAIT(period);
-            act(actPeriod );
-            checkTimedEvents();
-        }
+    public Boolean playerRests(float timeInSeconds) {
+      return   playerWaits(timeInSeconds, true);
     }
-        public void checkTimedEvents() {
+
+    public void playerWaits(float timeInSeconds ) {
+        playerWaits(timeInSeconds, false);
+    }
+        public Boolean playerWaits(float timeInSeconds, boolean rest) {
+        float wakeUpTime = time + timeInSeconds;
+        float speedFactor =rest? 25 :10;
+        int period = 100;
+        float actPeriod = period * speedFactor / 1000;
+        ExplorationMaster.setWaiting(true);
+        Boolean   result =true;
+        try {
+            DungeonScreen.getInstance().setSpeed(speedFactor);
+            while (true) {
+                if (time >= wakeUpTime)
+                    break;
+                WaitMaster.WAIT(period);
+//                DungeonScreen.getInstance().render(actPeriod);
+//            act(actPeriod );
+//                checkTimedEvents();
+                if (!ExplorationMaster.isWaiting()){
+                    if (rest){
+                        ExplorationMaster.setWaiting(true);
+                    } else {
+                        //interrupted
+                        break;
+                    }
+                }
+                master.getCrawler().checkStatusUpdate();
+                if (!ExplorationMaster.isExplorationOn())
+                {
+                    result = false;
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        DungeonScreen.getInstance().setSpeed(null );
+        ExplorationMaster.setWaiting(false);
+         WaitMaster.receiveInput(WAIT_OPERATIONS.WAIT_COMPLETE,result);
+         return result;
+    }
+
+    public void checkTimedEvents() {
         delta = time - lastTimeChecked;
         if (delta == 0) return;
         lastTimeChecked = time;
@@ -88,8 +124,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private void processTimedEffects() {
         guiDirtyFlag = false;
         master.getAiMaster().getAlliesAndActiveUnitAIs(false).forEach(ai -> {
-            if (ai.getUnit().getMode() != null) {
-                processModeEffect(ai.getUnit(), ai.getUnit().getMode());
+            if (ai.getUnit().getModeFinal() != null) {
+                processModeEffect(ai.getUnit(), ai.getUnit().getModeFinal());
             } //modes could increase regen...
             //bleeding? blaze?
             processRegen(ai.getUnit());
@@ -125,9 +161,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     private void processEndOfRoundEffects() {
 //        processCounterRules();
-     master.getGame().getStateManager().applyEndOfTurnRules();
+        master.getGame().getStateManager().applyEndOfTurnRules();
         master.getGame().getStateManager().applyEndOfTurnDamage();
-     processCustomRules();
+        processCustomRules();
 
     }
 
@@ -143,8 +179,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
                 if (sub.check(unit)) {
                     sub.apply(unit);
                     if (sub == master.getGame().getRules().getUnconsciousRule())
-                  if (!unit.isAnnihilated())
-                      master.getGame().getStateManager().reset(unit);
+                        if (!unit.isAnnihilated())
+                            master.getGame().getStateManager().reset(unit);
                 }
             }
         });
@@ -220,10 +256,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
         int min = 0;
         if (unit.getGame().isDebugMode())
-            if (base != PARAMS.FOCUS)
-        {
-            min = unit.getIntParam(base);
-        }
+            if (base != PARAMS.FOCUS) {
+                min = unit.getIntParam(base);
+            }
 //                    max = unit.getIntParam(PARAMS.BASE_FOCUS);//*3/2;
 ////                    unit.getIntParam(PARAMS.FOCUS_RETAINMENT) ;
         value = MathMaster.getMinMax(value, min, max);

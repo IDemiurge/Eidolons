@@ -43,18 +43,18 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
         if (!CoreEngine.isGraphicsOff())
-        Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().getAllies().forEach(unit -> {
-            Gdx.app.postRunnable(() ->
-             {
+            Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().getAllies().forEach(unit -> {
+                Gdx.app.postRunnable(() ->
+                 {
 
-                 try {
-                     AnimMaster.getInstance().getConstructor().preconstructAll(unit);
-                 } catch (Exception e) {
-                     main.system.ExceptionMaster.printStackTrace(e);
+                     try {
+                         AnimMaster.getInstance().getConstructor().preconstructAll(unit);
+                     } catch (Exception e) {
+                         main.system.ExceptionMaster.printStackTrace(e);
+                     }
                  }
-             }
-            );
-        });
+                );
+            });
 
         while (true) {
             WaitMaster.WAIT(REAL_TIME_LOGIC_PERIOD);
@@ -110,12 +110,12 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 //check party
                 return true;
             }
-if (game.isDebugMode())
-        if (location.getMainEntrance() != null)
-            if (location.getMainEntrance().getCoordinates().equals(c)) {
+        if (game.isDebugMode())
+            if (location.getMainEntrance() != null)
+                if (location.getMainEntrance().getCoordinates().equals(c)) {
 //test
-                return true;
-            }
+                    return true;
+                }
         return false;
     }
 
@@ -209,9 +209,9 @@ if (game.isDebugMode())
         if (!playerAction.getAction().canBeActivated(playerAction.getContext(), true))
             return false;
         if (playerAction.getAction().getTargeting() instanceof SelectiveTargeting)
-            if (playerAction.getContext().getTarget()!=null )
+            if (playerAction.getContext().getTarget() != null)
                 if (!playerAction.getAction().canBeTargeted(playerAction.getContext().getTarget()))
-                return false;
+                    return false;
         return true;
     }
 
@@ -262,6 +262,10 @@ if (game.isDebugMode())
     public void actionInput(ActionInput actionInput) {
         if (isPaused())
             return;
+        if (ExplorationMaster.isWaiting()) {
+            ExplorationMaster.setWaiting(false);
+            return;
+        }
         queueActionInput(actionInput);
         signal();
 
@@ -294,6 +298,7 @@ if (game.isDebugMode())
                 activeUnit = (Unit) game.getPlayer(true).getHeroObj();
                 game.getManager().setSelectedActiveObj(activeUnit);
             }
+
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
             Boolean result = makeAction();
             if (exited)

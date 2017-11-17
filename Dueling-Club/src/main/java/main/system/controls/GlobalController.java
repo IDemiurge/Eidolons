@@ -8,13 +8,21 @@ import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
  * Created by JustMe on 3/2/2017.
  */
 public class GlobalController implements Controller {
-    /*
-    toggle dummy?
+    private boolean active;
 
-     */
+    /*
+        toggle dummy?
+
+         */
     @Override
     public boolean charTyped(char c) {
+        if (active) {
+            active = true;
+            return true;
+        }
 
+        if ( DungeonScreen.getInstance().isBlocked())
+            return true;
         switch (c) {
             case ' ':
                 if (DungeonScreen.getInstance() == null)

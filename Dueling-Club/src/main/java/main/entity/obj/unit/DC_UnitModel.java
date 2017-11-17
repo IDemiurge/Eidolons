@@ -23,12 +23,12 @@ import main.entity.Ref;
 import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
-import main.entity.obj.ActiveObj;
-import main.entity.obj.BattleFieldObject;
 import main.entity.handlers.bf.unit.UnitCalculator;
 import main.entity.handlers.bf.unit.UnitChecker;
 import main.entity.handlers.bf.unit.UnitInitializer;
 import main.entity.handlers.bf.unit.UnitResetter;
+import main.entity.obj.ActiveObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.bf.Coordinates.FACING_DIRECTION;
@@ -90,7 +90,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             return getName();
         }
 
-        if (getVisibilityLevel()!= VISIBILITY_LEVEL.CLEAR_SIGHT) //!VisionManager.checkVisible(this)) {
+        if (getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) //!VisionManager.checkVisible(this)) {
             return StringMaster.getWellFormattedString(getVisibilityLevel().toString()); //"Someone or something";
 
         if (getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN) {
@@ -116,9 +116,8 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     @Override
     public String getToolTip() {
         if (!game.isSimulation())
-        return super.getToolTip();
-else
-    {
+            return super.getToolTip();
+        else {
             if (checkSelectHighlighted()) {
                 String actionTargetingTooltip = "";
                 DC_ActiveObj action = (DC_ActiveObj) getGame().getManager().getActivatingAction();
@@ -186,8 +185,8 @@ else
             return;
         }
         // setMode(STD_MODES.NORMAL); just don't.
-    if (game.getState().getRound()>0)
-        getResetter().regenerateToughness();
+        if (game.getState().getRound() > 0)
+            getResetter().regenerateToughness();
         // resetPercentages(); => toBase()
         getResetter().resetActions();
 
@@ -297,6 +296,7 @@ else
     }
 
     public void setMode(MODE mode) {
+        if (this.mode == mode) return;
         this.mode = mode;
         if (mode == null) {
             removeProperty(G_PROPS.MODE, "");
@@ -310,6 +310,7 @@ else
     public DC_UnitAction getAttack() {
         return getAction(DC_ActionManager.ATTACK);
     }
+
     @Override
     public void setRef(Ref ref) {
         ref.setSource(id);
@@ -360,8 +361,6 @@ else
         this.deity = deity;
         setProperty(G_PROPS.DEITY, deity.getName(), true);
     }
-
-
 
 
     @Override
@@ -556,9 +555,6 @@ else
     }
 
 
-
-
-
     public DC_ActiveObj getDummyAction() {
         DC_UnitAction action = getAction("Dummy Action");
         if (action == null) {
@@ -595,7 +591,7 @@ else
         hidden = b;
     }
 
-    public  MODE  getModeFinal() {
+    public MODE getModeFinal() {
         return mode;
     }
 }

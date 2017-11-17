@@ -19,9 +19,9 @@ import main.system.threading.WaitMaster;
 public class InventoryClickHandlerImpl implements InventoryClickHandler {
     //IDEA: FOR NON-COMBAT, DROP == SELL!
 
-    Unit unit;
-    ObjType buffer;
-    boolean dirty;
+    protected Unit unit;
+    protected ObjType buffer;
+    protected boolean dirty;
 
     public InventoryClickHandlerImpl(Unit unit) {
         this.unit = unit;
@@ -69,8 +69,8 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     }
 
 
-    private OPERATIONS getOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick,
-                                    boolean altClick, Entity cellContents) {
+    protected OPERATIONS getOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick,
+                                      boolean altClick, Entity cellContents) {
         if (cell_type == null) {
             return null;
         }
@@ -193,7 +193,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         return true;
     }
 
-    private String getArg(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
+    protected String getArg(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
         return cellContents.getName();
     }
 

@@ -7,10 +7,7 @@ import main.ability.conditions.req.ItemCondition;
 import main.ability.conditions.shortcut.RangeCondition;
 import main.ability.conditions.shortcut.SpaceCondition;
 import main.ability.conditions.shortcut.StdPassiveCondition;
-import main.ability.conditions.special.ClearShotCondition;
-import main.ability.conditions.special.GraveCondition;
-import main.ability.conditions.special.SneakCondition;
-import main.ability.conditions.special.SpellCondition;
+import main.ability.conditions.special.*;
 import main.ability.conditions.special.SpellCondition.SPELL_CHECK;
 import main.content.CONTENT_CONSTS.RETAIN_CONDITIONS;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
@@ -164,6 +161,9 @@ public class DC_ConditionMaster extends ConditionMaster {
             case NOT_ITEM:
                 condition = new NotCondition(getItemCondition(variables[0].toString(), variables[1]
                         .toString(), variables[2].toString(), KEYS.SOURCE.toString()));
+                break;
+            case REST:
+                condition = new RestCondition();
                 break;
             case REF_NOT_EMPTY: {
                 condition = new RefNotEmptyCondition(variables[0].toString(), variables[1]

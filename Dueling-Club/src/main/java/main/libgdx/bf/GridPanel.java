@@ -40,6 +40,7 @@ import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.bf.mouse.BattleClickListener;
 import main.libgdx.bf.overlays.WallMap;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
+import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureCache;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallback;
@@ -52,6 +53,7 @@ import main.system.datatypes.DequeImpl;
 import main.system.graphics.MigMaster;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
+import main.system.text.HelpMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
@@ -98,6 +100,7 @@ public class GridPanel extends Group {
     private boolean resetVisibleRequired;
     private boolean updateRequired;
     private boolean firstUpdateDone;
+    private boolean welcomeInfoShown;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -320,6 +323,9 @@ public class GridPanel extends Group {
             firstUpdateDone = true;
             resetVisibleRequired = true;
             updateRequired = true;
+
+            DungeonScreen.getInstance().updateGui();
+
         });
 
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
@@ -364,6 +370,9 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             BattleFieldObject hero = (BattleFieldObject) obj.get();
+            DungeonScreen.getInstance().activeUnitSelected(hero);
+            if (hero instanceof Unit)
+                animMaster.getConstructor().tryPreconstruct((Unit) hero);
             BaseView view = unitMap.get(hero);
             if (view == null) {
                 System.out.println("unitMap not initiatilized at ACTIVE_UNIT_SELECTED!");
@@ -386,8 +395,16 @@ public class GridPanel extends Group {
             if (!firstUpdateDone) {
                 DC_Game.game.getVisionMaster().triggerGuiEvents();
                 GuiEventManager.trigger(UPDATE_GUI, null);
-                GuiEventManager.trigger(SHOW_TEXT_CENTERED, "Hey\nyo\nman!");
+
             }
+            if (HelpMaster.isDefaultTextOn())
+                if (!welcomeInfoShown) {
+                    new Thread(() -> {
+                        WaitMaster.WAIT(2000);
+                        GuiEventManager.trigger(SHOW_TEXT_CENTERED, HelpMaster.getWelcomeText());
+                    }, " thread").start();
+                    welcomeInfoShown = true;
+                }
         });
 
 //        GuiEventManager.bind(UPDATE_UNIT_VISIBLE, obj -> {
@@ -630,7 +647,6 @@ public class GridPanel extends Group {
         });
 
 
-
         WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
     }
@@ -648,7 +664,7 @@ public class GridPanel extends Group {
         int rows1 = rows - 1;
         BaseView uv = unitMap.get(heroObj);
         if (uv == null) {
-            return ;
+            return;
         }
         Coordinates c = heroObj.getCoordinates();
 

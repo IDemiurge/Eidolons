@@ -75,7 +75,8 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
          new ScenarioMetaMaster(getData()));
 
         if (restart){
-            Eidolons.mainGame.getMetaMaster().init();
+            Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(true);
+             Eidolons.mainGame.getMetaMaster(). init();
         }
         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
         Eidolons.mainGame.getMetaMaster().getGame().battleInit();

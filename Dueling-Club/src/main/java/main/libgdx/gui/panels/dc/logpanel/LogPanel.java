@@ -34,13 +34,20 @@ public class LogPanel extends Group {
 
         updatePos = true;
 
+        initScrollPanel();
+        bind();
+    }
+
+    protected void initScrollPanel() {
+        if (scrollPanel != null) {
+            scrollPanel.remove();
+        }
         scrollPanel = new ScrollPanel<>();
 
         scrollPanel.pad(1, 10, 1, 10);
         scrollPanel.fill();
 
         addActor(scrollPanel);
-        bind();
     }
 
     protected void setDefaultSize() {

@@ -12,6 +12,7 @@ import main.system.auxiliary.StringMaster;
 public class ScenarioMeta extends MetaGame {
     private Scenario scenario;
     private int missionIndex;
+    private boolean restarted;
 
     public ScenarioMeta(Scenario scenario, MetaGameMaster<ScenarioMeta> master) {
         super(master);
@@ -57,6 +58,19 @@ public class ScenarioMeta extends MetaGame {
 //        if (getMission().checkProperty(PROPS.MISSION_BRIEFING_DATA))
         if (getMissionIndex() == 0)
             return true;
+        if (isRestarted())
+        {
+            setRestarted(false);
+            return true;
+        }
         return false;
+    }
+
+    public boolean isRestarted() {
+        return restarted;
+    }
+
+    public void setRestarted(boolean restarted) {
+        this.restarted = restarted;
     }
 }
