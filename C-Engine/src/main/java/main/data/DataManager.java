@@ -44,12 +44,13 @@ public class DataManager {
     private static List<ObjType> overwrittenTypes;
     private static Map<OBJ_TYPE, Map<String, List<String>>> subGroupsMaps;
     private static Map<C_OBJ_TYPE, List<ObjType>> customObjTypeCache;
-    private static Collection<ObjType> baseWeaponTypes = new ArrayList<>();
-    private static Collection<ObjType> baseJewelryTypes = new ArrayList<>();
-    private static Collection<ObjType> baseItemTypes = new ArrayList<>();
-    private static Collection<ObjType> baseArmorTypes = new ArrayList<>();
-    private static Collection<ObjType> baseGarmentTypes = new ArrayList<>();
+    private static ObjType[] baseWeaponTypes;
+    private static ObjType[] baseJewelryTypes;
+    private static ObjType[] baseItemTypes;
+    private static ObjType[] baseArmorTypes;
+    private static ObjType[] baseGarmentTypes;
     private static Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
+    private static int log=0;
 
     public static void init() {
         subGroupsMaps = new HashMap<>();
@@ -101,7 +102,7 @@ public class DataManager {
         if (type == null) {
             if (C_OBJ_TYPE.ITEMS.equals(obj_type))
                 try {
-                    return Game.game.getItemGenerator().getOrCreateItemType(typeName, obj_type);
+                    return Game.game.getItemGenerator().generateItemType(typeName, obj_type);
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -183,7 +184,7 @@ public class DataManager {
 
         Map<String, ObjType> map = getTypeMap(TYPE);
         if (map == null) {
-            //main.system.auxiliary.log.LogMaster.log(1,"NO TYPE MAP: "+obj_type );
+            //main.system.auxiliary.log.LogMaster.log(log,"NO TYPE MAP: "+obj_type );
             return null;
         }
         ObjType type = map.get(typeName);
@@ -196,27 +197,37 @@ public class DataManager {
             return type;
         }
 
-        if (!recursion) {
-            for (String s : map.keySet()) {
-                if (StringMaster
-                 .compareByChar(s.replace(" ", ""), typeName.replace(" ", ""), false)) {
-                    return map.get(s);
-                }
-            }
-            //LogMaster.log(1, "Type not found: " + obj_type
+//        if (!recursion) {
+//            for (String s : map.keySet()) {
+//                if (StringMaster
+//                 .compareByChar(s.replace(" ", ""), typeName.replace(" ", ""), false)) {
+//                    return map.get(s);
+//                }
+//            }
+        //LogMaster.log(log, "Type not found: " + obj_type
 //                    + ":" + typeName);
+//            return null;
+//        }
+        if (!recursion) {
+            LogMaster.log(log, "Type not found: " + TYPE
+             + ":" + typeName);
             return null;
         }
         if (typeName.endsWith(";")) {
+            LogMaster.log(log, "endsWith(\";\"): " + TYPE
+             + ":" + typeName);
             typeName = StringMaster.getFormattedTypeName(typeName);
+            type = getType(typeName, TYPE, false);
+            if (type != null) {
+                return type;
+            }
         }
-        // String formattedTypeName =
-        // StringMaster.getFormattedTypeName(typeName);
-        type = getType(typeName, TYPE, false);
-        if (type != null) {
-            return type;
-        }
+//        if (typeName.contains(" ")) {
+        LogMaster.log(log, "Type getWellFormattedString: " + TYPE
+         + ":" + typeName);
         return getType(StringMaster.getWellFormattedString(typeName), TYPE, false);
+//        }
+
     }
 
     private static ObjType getConstructedMacroType(String typeName, C_MACRO_OBJ_TYPE obj_type) {
@@ -253,7 +264,7 @@ public class DataManager {
         }
 
         if (obj_type.equals(DC_TYPE.JEWELRY)) {
-            //main.system.auxiliary.log.LogMaster.log(1,"NO JEWELRY!  "  );
+            //main.system.auxiliary.log.LogMaster.log(log,"NO JEWELRY!  "  );
             return null;
         }
         int i = 0;
@@ -303,7 +314,7 @@ public class DataManager {
     }
 
     private static ObjType getBaseItemType(String string, OBJ_TYPE obj_type) {
-        Collection<ObjType> list = null;
+        ObjType[] list = null;
         if (obj_type.equals(DC_TYPE.ARMOR)) {
             list = (baseArmorTypes);
         }
@@ -355,7 +366,7 @@ public class DataManager {
     public static void displayData() {
         for (Map<String, ObjType> m : XML_Reader.getTypeMaps().values()) {
             for (Entry<String, ObjType> t : m.entrySet()) {
-                //LogMaster.log(1, t.getKey() + " " + t.getValue().toString());
+                //LogMaster.log(log, t.getKey() + " " + t.getValue().toString());
             }
         }
     }
@@ -429,6 +440,10 @@ public class DataManager {
     }
 
     public static List<ObjType> getTypes(OBJ_TYPE key) {
+        return getTypes(key, false);
+    }
+
+    public static List<ObjType> getTypes(OBJ_TYPE key, boolean shuffled) {
         if (key instanceof C_OBJ_TYPE) {
 
             List<ObjType> group = getCustomObjTypeCache().get(key);
@@ -446,7 +461,10 @@ public class DataManager {
         if (map == null) {
             return new LinkedList<>();
         }
-        return new LinkedList<>(map.values());
+        List<ObjType> list = new LinkedList<>(map.values());
+        if (shuffled)
+            Collections.shuffle(list);
+        return list;
     }
 
     public static List<String> getTypeNames(OBJ_TYPE TYPE) {
@@ -580,6 +598,11 @@ public class DataManager {
             return getTypes(TYPE);
         }
         List<ObjType> list = new LinkedList<>();
+        if (TYPE instanceof C_OBJ_TYPE) {
+            for (DC_TYPE T : ((C_OBJ_TYPE) TYPE).getTypes())
+                list.addAll(getTypesGroup(T, group));
+            return list;
+        }
         Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
         Collection<ObjType> set = map.get(TYPE.toString()).values();
         for (ObjType type : set) {
@@ -835,52 +858,12 @@ public class DataManager {
         return customObjTypeCache;
     }
 
-    public static Collection<ObjType> getBaseWeaponTypes() {
-        return baseWeaponTypes;
-    }
-
-    public static void setBaseWeaponTypes(Collection<ObjType> baseWeaponTypes) {
-        DataManager.baseWeaponTypes = baseWeaponTypes;
-    }
-
-    public static Collection<ObjType> getBaseJewelryTypes() {
-        return baseJewelryTypes;
-    }
-
-    public static void setBaseJewelryTypes(Collection<ObjType> baseJewelryTypes) {
-        DataManager.baseJewelryTypes = baseJewelryTypes;
-    }
-
-    public static Collection<ObjType> getBaseItemTypes() {
-        return baseItemTypes;
-    }
-
-    public static void setBaseItemTypes(Collection<ObjType> baseItemTypes) {
-        DataManager.baseItemTypes = baseItemTypes;
-    }
-
-    public static Collection<ObjType> getBaseArmorTypes() {
-        return baseArmorTypes;
-    }
-
-    public static void setBaseArmorTypes(Collection<ObjType> baseArmorTypes) {
-        DataManager.baseArmorTypes = baseArmorTypes;
-    }
-
     public static Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> getItemMaps() {
         return itemMaps;
     }
 
     public static void setItemMaps(Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps) {
         DataManager.itemMaps = itemMaps;
-    }
-
-    public static Collection<ObjType> getBaseGarmentTypes() {
-        return baseGarmentTypes;
-    }
-
-    public static void setBaseGarmentTypes(Collection<ObjType> baseGarmentTypes) {
-        DataManager.baseGarmentTypes = baseGarmentTypes;
     }
 
     public static List<ObjType> getRootTypes(List<ObjType> data) {
@@ -957,9 +940,50 @@ public class DataManager {
     }
 
     public static List<ObjType> getUpgradedTypes(ObjType baseType) {
-             List<ObjType> list = new LinkedList<>(
-        getTypesSubGroup(baseType.getOBJ_TYPE_ENUM(), baseType.getSubGroupingKey()));
+        List<ObjType> list = new LinkedList<>(
+         getTypesSubGroup(baseType.getOBJ_TYPE_ENUM(), baseType.getSubGroupingKey()));
         list.removeIf(type -> type.getProperty(G_PROPS.BASE_TYPE).equalsIgnoreCase(baseType.getName()));
         return list;
+    }
+
+    public static ObjType[] getBaseJewelryTypes() {
+        return baseJewelryTypes;
+    }
+
+    public static void setBaseJewelryTypes(ObjType[] baseJewelryTypes) {
+        DataManager.baseJewelryTypes = baseJewelryTypes;
+    }
+
+    public static ObjType[] getBaseItemTypes() {
+        return baseItemTypes;
+    }
+
+    public static void setBaseItemTypes(ObjType[] baseItemTypes) {
+        DataManager.baseItemTypes = baseItemTypes;
+    }
+
+    public static ObjType[] getBaseArmorTypes() {
+        return baseArmorTypes;
+    }
+
+    public static void setBaseArmorTypes(ObjType[] baseArmorTypes) {
+        DataManager.baseArmorTypes = baseArmorTypes;
+    }
+
+    public static ObjType[] getBaseGarmentTypes() {
+        return baseGarmentTypes;
+    }
+
+    public static void setBaseGarmentTypes(ObjType[] baseGarmentTypes) {
+        DataManager.baseGarmentTypes = baseGarmentTypes;
+    }
+
+    public static ObjType[] getBaseWeaponTypes() {
+        return baseWeaponTypes;
+
+    }
+
+    public static void setBaseWeaponTypes(ObjType[] baseWeaponTypes) {
+        DataManager.baseWeaponTypes = baseWeaponTypes;
     }
 }

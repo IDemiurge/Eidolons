@@ -82,7 +82,9 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             // DungeonMaster.getDungeonBackgroundFolder()
     };
     public static final String[] VAR_MULTI_ENUM_LIST_IDS = {
-            G_PROPS.PRINCIPLES.name(),
+      PROPS.CONTAINER_CONTENT_VALUE.name(),
+      PROPS.CONTAINER_CONTENTS.name(),
+     G_PROPS.PRINCIPLES.name(),
             "Encounter Subgroup", // contains()? otherwise overshadows
             G_PROPS.SPECIAL_REQUIREMENTS.getName(), PROPS.FAVORED_SPELL_GROUPS.getName(),
             PROPS.ATTRIBUTE_PROGRESSION.getName(), PROPS.MASTERY_PROGRESSION.getName(),
@@ -94,6 +96,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
     };
     public static final String[] SINGLE_ENUM_LIST_IDS = {
 
+     PROPS.ITEM_RARITY.name(),
      PROPS.WEAPON_ATTACKS.name(),
             G_PROPS.UNIT_GROUP.name(), G_PROPS.CUSTOM_HERO_GROUP.name(),
             PROPS.BF_OBJ_MATERIAL.name(), PROPS.BF_OBJECT_SIZE.name(), PROPS.LINK_VARIANT.name(),

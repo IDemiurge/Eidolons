@@ -134,7 +134,7 @@ public enum PARAMS implements PARAMETER {
 
     XP_COST("Xp cost", "Experience cost", false, 0, "skills", "spells", "classes", "actions"),
     TOTAL_XP("Experience", "Experience points", false, 100, "chars", "units", "mission"),
-    POWER("Power", "Power points", false, 10, "chars", "units"),
+    POWER("Power", "Power points", false, 10, "chars", "units", "bf obj"),
     XP("Experience remaining", "Experience remaining", true, 100, "chars", "units"),
 
     // XP_TOTAL("Experience", "Experience points", false, 0, "chars", "unit"),
@@ -281,7 +281,7 @@ public enum PARAMS implements PARAMETER {
 
     GOLD_COST(null, "Cost in Gold", false, 50, C_OBJ_TYPE.ITEMS),
     GOLD(null, " Gold", true, 0, "chars", "shop"),
-    GOLD_TOTAL(null, " Gold", false, 0, "chars", "mission", "shop"),
+    GOLD_TOTAL(null, " Gold", false, 0, "chars", "mission", "shop", "bf obj"),
     GOLD_MOD(true, null, "Gold mod", false, 100, "chars", "units",  "shop"),
     GOLD_PER_LEVEL(null, "Gold per level", false, 100, "chars", "units"),
     GOLD_COST_REDUCTION(null, "Gold cost REDUCTION", false, 0, "chars", "units"),

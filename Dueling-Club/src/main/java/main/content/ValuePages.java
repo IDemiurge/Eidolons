@@ -45,7 +45,7 @@ public class ValuePages {
      G_PROPS.BF_OBJECT_TAGS, // destructible, passible, summoned
      G_PROPS.STATUS, // can also be set ablaze!
      G_PROPS.STANDARD_PASSIVES, // non-obstructing, transparent,
-    };
+     GOLD_TOTAL , PROPS.CONTAINER_CONTENTS,PROPS.CONTAINER_CONTENT_VALUE, };
     public static final VALUE[] GENERIC_DC_HEADER = {
      // G_PROPS.ASPECT,
      // LEVEL,

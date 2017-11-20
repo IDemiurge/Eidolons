@@ -78,7 +78,12 @@ game.getState().getManager().reset((Unit) obj);
                    return new Door(type, x, y, owner, getGame(), ref);
                case LOCK:
                    return new LockObj(type, x, y, owner, getGame(), ref);
+               case TREASURE:
                case CONTAINER:
+                   return new ContainerObj(type, x, y );
+               case GRAVES:
+               case REMAINS:
+               case INTERIOR:
                    return new ContainerObj(type, x, y );
            }
        }

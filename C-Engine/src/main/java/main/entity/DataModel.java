@@ -508,14 +508,15 @@ public abstract class DataModel {
     }
 
     public boolean checkSubGroup(String string) {
-        return checkSingleProp(getSubGroupingKey(), string);
+        return checkSingleProp(TYPE_ENUM.getSubGroupingKey(), string);
     }
 
     public boolean checkProperty(PROPERTY p) {
         return !StringMaster.isEmpty(getProperty(p));
     }
 
-    public boolean checkGroup(String string) {
+
+        public boolean checkGroup(String string) {
         return checkSingleProp(G_PROPS.GROUP, string);
     }
 
@@ -901,9 +902,9 @@ public abstract class DataModel {
     }
 
     public boolean setParam(PARAMETER param, String value, boolean quiety) {
-        if (param == null) {
-            return false;
-        }
+//        if (param == null) {
+//            return false;
+//        }
         if (!quiety) {
             if (getGame() == null) {
                 return false;
@@ -915,7 +916,7 @@ public abstract class DataModel {
             }
         }
         // if (isParamSetLogged())
-        LogMaster.log(0, "==========> " + getName() + "'s " + param + "  is set to" + value);
+//        LogMaster.log(0, "==========> " + getName() + "'s " + param + "  is set to" + value);
 
         putParameter(param, value);
         getIntegerMap(false).remove(param);

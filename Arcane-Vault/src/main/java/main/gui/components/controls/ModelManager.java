@@ -10,6 +10,7 @@ import main.content.*;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.RACE;
+import main.content.enums.entity.ItemEnums.ITEM_RARITY;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
@@ -280,7 +281,8 @@ public class ModelManager {
                 }
             }
 
-            if (obj_type == DC_TYPE.CHARS) {
+
+                if (obj_type == DC_TYPE.CHARS) {
                 for (ObjType type : DataManager.getTypes(obj_type)) {
                     // ContentGenerator.generateArmorPerDamageType(type, null);
                     if (type.getGroup().equals("Background")) {
@@ -357,14 +359,16 @@ public class ModelManager {
         if (obj_type == DC_TYPE.BF_OBJ) {
             generateBfObjProps();
         }
-        if (obj_type.isTreeEditType() || obj_type == DC_TYPE.CHARS || obj_type == DC_TYPE.UNITS) {
+        if ( obj_type.isTreeEditType() || obj_type == DC_TYPE.CHARS || obj_type == DC_TYPE.UNITS) {
 
             if (obj_type == DC_TYPE.CHARS) {
                 // XML_Reader.checkHeroesAdded();
             }
 
             for (ObjType type : DataManager.getTypes(obj_type)) {
-
+//                if (C_OBJ_TYPE.ITEMS.equals(obj_type)) {
+//                    initRarity(type);
+//                }
                 if (obj_type == DC_TYPE.CHARS) {
                     if (!type.isInitialized()) {
                         Game.game.initType(type);
@@ -434,6 +438,13 @@ public class ModelManager {
 
         }
     }
+
+    private static void initRarity(ObjType type) {
+        if (type.getProperty(PROPS.ITEM_RARITY).isEmpty()){
+            type.setProperty(PROPS.ITEM_RARITY,  StringMaster.getWellFormattedString(ITEM_RARITY.COMMON.name()));
+        }
+    }
+
 
     private static void setDefaults(ObjType type) {
         // TODO Auto-generated method stub

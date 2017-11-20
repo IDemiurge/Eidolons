@@ -200,52 +200,52 @@ public class ItemGenerator implements GenericItemGenerator {
 
     }
 
-    private static void generateJewelryItem(boolean ring, ObjType type, JEWELRY_ITEM_TRAIT trait,
-                                            MAGICAL_ITEM_LEVEL level) {
+    private static ObjType generateJewelryItem(ObjType type, JEWELRY_ITEM_TRAIT trait,
+                                               MAGICAL_ITEM_LEVEL level) {
+        boolean ring = ItemMaster.isRing(type);
         PARAMETER[] params = trait.getParams();
-        for (PARAMETER p : params) {
-            ObjType newType = generateEmptyJewelryItem(ring, type, null);
-            int amount = trait.getIntegers()[level.getInt()]; // double for
-            // amulets?
-            if (!ring && trait.isDoubleAmulet()) {
-                amount = amount * 2;
-            }
-            newType.setParam(p, amount);
+        PARAMETER p = params[0];
+        ObjType newType = generateEmptyJewelryItem(ring, type, null);
+        int amount = trait.getIntegers()[level.getInt()]; // double for
+        // amulets?
+        if (!ring && trait.isDoubleAmulet()) {
+            amount = amount * 2;
+        }
+        newType.setParam(p, amount);
 
-            type.getGame().initType(newType);
-            newType.setGenerated(true);
-            String name = generateName(trait, level, type, p);
-            newType.setProperty(G_PROPS.NAME, name);
-            DataManager.addType(newType.getName(), DC_TYPE.JEWELRY, newType);
+        type.getGame().initType(newType);
+        newType.setGenerated(true);
+        String name = generateName(trait, level, type);
+        newType.setProperty(G_PROPS.NAME, name);
+        DataManager.addType(newType.getName(), DC_TYPE.JEWELRY, newType);
 
-            // String img = type.getProperty(prop) + suffix + format;
-            // newType.setProperty(G_PROPS.IMAGE, name);
-            newType.setProperty(PROPS.MAGICAL_ITEM_TRAIT, trait.toString());
-            newType.setProperty(PROPS.MAGICAL_ITEM_LEVEL, level.toString());
-            int costMod = trait.getCostBase() * level.getCostFactor();
-            if (!ring && trait.isDoubleAmulet()) {
-                costMod = costMod * 5 / 2;
-            }
-
-            newType.modifyParameter(PARAMS.GOLD_COST, costMod);
-            newType.modifyParamByPercent(PARAMS.GOLD_COST, JEWELRY_COST_MODIFIER);
-
-            String group = DataManager.MISC;
-            if (trait == JEWELRY_ITEM_TRAIT.ATTRIBUTE_BONUS) {
-                group = DataManager.ATTR;
-            }
-
-            newType.setProperty(G_PROPS.JEWELRY_GROUP, group);
-
-            String code = "" + (level.getInt());
-            if (level.getInt() > 0) {
-                String img = generateImgPath(code, type);
-                if (ImageManager.isImage(img)) {
-                    newType.setProperty(G_PROPS.IMAGE, img);
-                }
-            }
+        // String img = type.getProperty(prop) + suffix + format;
+        // newType.setProperty(G_PROPS.IMAGE, name);
+        newType.setProperty(PROPS.MAGICAL_ITEM_TRAIT, trait.toString());
+        newType.setProperty(PROPS.MAGICAL_ITEM_LEVEL, level.toString());
+        int costMod = trait.getCostBase() * level.getCostFactor();
+        if (!ring && trait.isDoubleAmulet()) {
+            costMod = costMod * 5 / 2;
         }
 
+        newType.modifyParameter(PARAMS.GOLD_COST, costMod);
+        newType.modifyParamByPercent(PARAMS.GOLD_COST, JEWELRY_COST_MODIFIER);
+
+        String group = DataManager.MISC;
+        if (trait == JEWELRY_ITEM_TRAIT.ATTRIBUTE_BONUS) {
+            group = DataManager.ATTR;
+        }
+
+        newType.setProperty(G_PROPS.JEWELRY_GROUP, group);
+
+        String code = "" + (level.getInt());
+        if (level.getInt() > 0) {
+            String img = generateImgPath(code, type);
+            if (ImageManager.isImage(img)) {
+                newType.setProperty(G_PROPS.IMAGE, img);
+            }
+        }
+        return newType;
     }
 
     private static ObjType generateEmptyJewelryItem(boolean ring, ObjType type, MATERIAL material) {
@@ -270,7 +270,8 @@ public class ItemGenerator implements GenericItemGenerator {
     }
 
     public static String generateName(JEWELRY_ITEM_TRAIT trait, MAGICAL_ITEM_LEVEL level,
-                                      ObjType type, PARAMETER p) {
+                                      ObjType type) {
+        PARAMETER p = trait.getParams()[0];
         String name = type.getName();
         int amount = trait.getIntegers()[level.getInt()];
         if (!ItemMaster.isRing(type) && trait.isDoubleAmulet()) {
@@ -585,14 +586,63 @@ public class ItemGenerator implements GenericItemGenerator {
         return list;
     }
 
+    public static ObjType generateWeapon(QUALITY_LEVEL quality,
+                                         MATERIAL material, ObjType type) {
+        return defaultGenerator.generateItem(true, quality, material, type);
+    }
+
+    public static ObjType generateArmor(QUALITY_LEVEL quality,
+                                        MATERIAL material, ObjType type) {
+        return defaultGenerator.generateItem(false, quality, material, type);
+    }
+
+    public static boolean isJewelryOn() {
+        return true;
+    }
+
+    public ObjType getOrCreateJewelry(ObjType baseType, JEWELRY_ITEM_TRAIT trait,
+                                      MAGICAL_ITEM_LEVEL level) {
+        String name = generateName(trait, level, baseType);
+        ObjType type = DataManager.getType(name, DC_TYPE.JEWELRY);
+        if (type != null) {
+            return type;
+        }
+        return generateJewelryItem(baseType, trait, level);
+    }
+
+    public ObjType generateJewelry(String typeName) {
+        String string = StringMaster.getFirstItem(typeName, " ");
+        MAGICAL_ITEM_LEVEL itemLevel =
+         new EnumMaster<MAGICAL_ITEM_LEVEL>().
+          retrieveEnumConst(MAGICAL_ITEM_LEVEL.class, string);
+
+        typeName = typeName.replaceFirst(string + " ", "");
+
+        ObjType objType = null;
+        for (ObjType type : baseJewelryTypes) {
+            if (typeName.contains(type.getName())) {
+                objType = type;
+                typeName = typeName.replaceFirst(type.getName(), "");
+                break;
+            }
+        }
+        JEWELRY_ITEM_TRAIT trait =
+         new EnumMaster<JEWELRY_ITEM_TRAIT>().
+          retrieveEnumConst(JEWELRY_ITEM_TRAIT.class, typeName);
+
+        return generateJewelryItem(objType, trait, itemLevel);
+    }
+
     @Override
     public ObjType generateItem(boolean weapon, QUALITY_LEVEL quality,
                                 MATERIAL material, ObjType type) {
+
         ObjType newType = generateItem(quality, material, type,
          (weapon) ? WEAPON_PARAMS : ARMOR_PARAMS, (weapon) ? WEAPON_MOD_PARAMS
           : ARMOR_MOD_PARAMS);
-//        LogMaster.log(LOG_CHANNELS.GENERATION, "Generated: "
-//         + newType);
+        if (newType == null) {
+            return null;
+        }
         DataManager.addType(newType.getName(), (weapon) ? DC_TYPE.WEAPONS
          : DC_TYPE.ARMOR, newType);
         DataManager.getItemMaps().get(quality).get(material).put(type, newType);
@@ -620,11 +670,11 @@ public class ItemGenerator implements GenericItemGenerator {
         baseItemTypes.addAll(DataManager.getTypes(DC_TYPE.ITEMS));
         // baseGarmentTypes.addAll(DataManager.getTypes(OBJ_TYPES.GARMENT));
 
-        DataManager.setBaseGarmentTypes(baseGarmentTypes);
-        DataManager.setBaseWeaponTypes(baseWeaponTypes);
-        DataManager.setBaseArmorTypes(baseArmorTypes);
-        DataManager.setBaseJewelryTypes(baseJewelryTypes);
-        DataManager.setBaseItemTypes(baseItemTypes);
+        DataManager.setBaseGarmentTypes(baseGarmentTypes.toArray(new ObjType[baseGarmentTypes.size()]));
+        DataManager.setBaseWeaponTypes(baseWeaponTypes.toArray(new ObjType[baseWeaponTypes.size()]));
+        DataManager.setBaseArmorTypes(baseArmorTypes.toArray(new ObjType[baseArmorTypes.size()]));
+        DataManager.setBaseJewelryTypes(baseJewelryTypes.toArray(new ObjType[baseJewelryTypes.size()]));
+        DataManager.setBaseItemTypes(baseItemTypes.toArray(new ObjType[baseItemTypes.size()]));
 
 //        defaultGenerator = new ItemGenerator(false);
 //        basicGenerator = new ItemGenerator(true);
@@ -639,29 +689,17 @@ public class ItemGenerator implements GenericItemGenerator {
 
     }
 
-    private ObjType getOrCreateJewelry(String typeName) {
-        String string = StringMaster.getFirstItem(typeName, " ");
-        MAGICAL_ITEM_LEVEL itemLevel =
-         new EnumMaster<MAGICAL_ITEM_LEVEL>().
-          retrieveEnumConst(MAGICAL_ITEM_LEVEL.class, string);
-        ObjType objType=null ;
-        for (ObjType type : baseJewelryTypes) {
-            if (typeName.contains(type.getName())) {
-                objType = type;
-                typeName.replaceFirst(type.getName(), "");
-                break;
-            }
-        }
-        ObjType newType = objType;
-        return newType;
-    }
-
     @Override
-    public ObjType getOrCreateItemType(String typeName, OBJ_TYPE type) {
-        if (type==(DC_TYPE.JEWELRY)) {
-            return getOrCreateJewelry(typeName);
+    public ObjType generateItemType(String typeName, OBJ_TYPE type) {
+        if (type == (DC_TYPE.JEWELRY)) {
+            if (ItemGenerator.isJewelryOn())
+                return generateJewelry(typeName);
+            return null;
         }
-        boolean weapon = type .equals( DC_TYPE.WEAPONS); //TODO generic C_TYPE for armor?
+        if (type == (DC_TYPE.ITEMS)) {
+//            return getOrCreateItem(typeName);
+        }
+        boolean weapon = type.equals(DC_TYPE.WEAPONS); //TODO generic C_TYPE for armor?
 //        String baseTypeName = typeName;
         String name = StringMaster.getFirstItem(typeName, " ");
         QUALITY_LEVEL quality =
@@ -673,7 +711,7 @@ public class ItemGenerator implements GenericItemGenerator {
         name = StringMaster.getFirstItem(typeName, " ");
         MATERIAL material =
          new EnumMaster<MATERIAL>().retrieveEnumConst(
-          MATERIAL.class, name);
+          MATERIAL.class, name, true, false);
         if (material == null) {
             name = name + StringMaster.getFirstItem(typeName.replace(name, "").trim(), " ");
             material =
@@ -691,7 +729,6 @@ public class ItemGenerator implements GenericItemGenerator {
         return generateItem(weapon, quality, material, baseType);
 
     }
-
 
     public void generateItemObjTypes() {
         generateItemObjTypes(defaultQualityLevels, DEFAULT_MATERIALS_METALS);
@@ -872,7 +909,7 @@ public class ItemGenerator implements GenericItemGenerator {
                 }
                 for (MAGICAL_ITEM_LEVEL level : MAGICAL_ITEM_LEVEL.values()) {
                     boolean ring = ItemMaster.isRing(type);
-                    generateJewelryItem(ring, type, trait, level);
+                    generateJewelryItem(type, trait, level);
 
                 }
             }
@@ -912,10 +949,5 @@ public class ItemGenerator implements GenericItemGenerator {
          ref);
 
         return item;
-    }
-
-
-    public static boolean isJewelryOn() {
-        return false;
     }
 }

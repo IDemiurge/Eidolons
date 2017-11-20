@@ -24,8 +24,7 @@ import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.controls.Controller.CONTROLLER;
 import main.system.data.DataUnit;
 import main.system.launch.CoreEngine;
@@ -87,12 +86,12 @@ public class PresetLauncher {
 
         LAUNCH.Anims.visionHacked = true;
         LAUNCH.AI.visionHacked = true;
-        LAUNCH.Anims.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
-         LOG_CHANNELS.ANIM_DEBUG
+        LAUNCH.Anims.logChannelsOn = new LOG_CHANNEL[]{
+         LOG_CHANNEL.ANIM_DEBUG
         };
-        LAUNCH.AI.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
-         LOG_CHANNELS.AI_DEBUG,
-         LOG_CHANNELS.AI_DEBUG2,
+        LAUNCH.AI.logChannelsOn = new LOG_CHANNEL[]{
+         LOG_CHANNEL.AI_DEBUG,
+         LOG_CHANNEL.AI_DEBUG2,
         };
 
         LAUNCH.JUnit.graphicsOff = true;
@@ -450,8 +449,8 @@ static{
         public boolean freeActions;
         public boolean itemGenerationOff;
         public boolean deterministicUnitTraining;
-        public LOG_CHANNELS[] logChannelsOn;
-        public LOG_CHANNELS[] logChannelsOff;
+        public LOG_CHANNEL[] logChannelsOn;
+        public LOG_CHANNEL[] logChannelsOff;
         public boolean graphicsOff;
         public boolean logicTest;
         public int ENEMY_CODE;

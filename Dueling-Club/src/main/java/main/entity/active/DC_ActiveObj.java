@@ -880,4 +880,16 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         this.targetGroup = targetGroup;
         getRef().setGroup(targetGroup);
     }
+
+    @Override
+    protected void putParameter(PARAMETER param, String value) {
+        if (param == PARAMS.AP_COST){
+            int v = StringMaster.getInteger(value);
+            if (v > type.getIntParam(param)*2) {
+                return ;
+            }
+        }
+        super.putParameter(param, value);
+    }
 }
+

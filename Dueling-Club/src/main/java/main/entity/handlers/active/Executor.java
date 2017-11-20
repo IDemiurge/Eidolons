@@ -34,6 +34,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
+import main.system.text.SpecialLogger;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -200,7 +201,7 @@ public class Executor extends ActiveHandler {
         super.log(string, gameLog);
         if (!gameLog)
         if (!ExplorationMaster.isExplorationOn())
-            game.getLogManager().combatActionLog(string);
+            SpecialLogger.getInstance().combatActionLog(string);
     }
 
     private void syncActionRefWithSource() {

@@ -42,6 +42,8 @@ import main.system.hotkey.HC_KeyManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.frontend.BattleSceneLauncher;
 import main.test.frontend.DemoLauncher;
 import main.test.frontend.ScenarioLauncher;
@@ -583,6 +585,7 @@ public class Launcher {
     }
     public static void createGame( )
     {
+        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
         LwjglCanvas canvas = new LwjglCanvas(Eidolons.getApplication().getApplicationListener(), DemoLauncher.getConf());
         SwingUtilities.invokeLater(
 //        Gdx.app.postRunnable(

@@ -30,7 +30,7 @@ import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.entity.FilterMaster;
 import main.system.math.MathMaster;
 
@@ -168,7 +168,7 @@ public class Shop extends TownPlace implements ShopInterface{
     public void newTurn() {
         // TODO sell/buy randomly from repertoire
         modifyParameter(PARAMS.GOLD, getIntParam(MACRO_PARAMS.SHOP_INCOME));
-        LogMaster.log(LOG_CHANNELS.MACRO_DYNAMICS, getName() + " now has "
+        LogMaster.log(LOG_CHANNEL.MACRO_DYNAMICS, getName() + " now has "
                 + getIntParam(PARAMS.GOLD) + " " + PARAMS.GOLD.getName());
 
         modifyParameter(MACRO_PARAMS.SHOP_INCOME,

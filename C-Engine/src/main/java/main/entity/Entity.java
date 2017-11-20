@@ -89,7 +89,9 @@ public abstract class Entity extends DataModel implements OBJ {
             init();
         }
     }
-
+    public boolean checkGroupingProperty(String string) {
+        return checkSingleProp(getOBJ_TYPE_ENUM().getGroupingKey(), string);
+    }
     protected EntityMaster initMaster() {
         return new EntityMaster(this) {
             @Override

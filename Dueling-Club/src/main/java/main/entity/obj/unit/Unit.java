@@ -53,6 +53,7 @@ import main.game.logic.battle.player.Player;
 import main.game.module.adventure.entity.MacroActionManager.MACRO_MODES;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.AnimMaster3d;
+import main.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import main.system.DC_Constants;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
@@ -487,7 +488,13 @@ if (ExplorationMaster.isExplorationOn())
         this.skills = skills;
     }
 
-    public boolean isQuickSlotsFull() {
+    public boolean isInventoryFull() {
+        if (getInventory().size() >= InventorySlotsPanel.COLUMNS * InventorySlotsPanel.ROWS) {
+            return true;
+        }
+        return false;
+    }
+        public boolean isQuickSlotsFull() {
         if (game.isSimulation()) {
             return getIntParam(PARAMS.QUICK_SLOTS) <= StringMaster.openContainer(
              getProperty(PROPS.QUICK_ITEMS)).size();
@@ -1362,7 +1369,8 @@ if (ExplorationMaster.isExplorationOn())
 
     @Override
     protected void putParameter(PARAMETER param, String value) {
-       if (!isMine()){ if (param == PARAMS.C_TOUGHNESS){
+       if (!isMine()){
+           if (param == PARAMS.C_TOUGHNESS){
             int v = StringMaster.getInteger(value);
             if (v > getIntParam(PARAMS.TOUGHNESS)) {
                 return ;
@@ -1374,6 +1382,13 @@ if (ExplorationMaster.isExplorationOn())
                 return ;
             }
         }}
+
+        if (param == PARAMS.AP_PENALTY){
+            int v = StringMaster.getInteger(value);
+            if (v > 50) {
+                return ;
+            }
+        }
         super.putParameter(param, value);
     }
 }

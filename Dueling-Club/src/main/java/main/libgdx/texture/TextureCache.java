@@ -248,5 +248,9 @@ public class TextureCache {
 
         return drawable;
     }
+
+    public static Drawable getOrCreateTextureRegionDrawable(String imagePath) {
+        return getOrCreateTextureRegionDrawable(getOrCreateR(imagePath));
+    }
 }
 

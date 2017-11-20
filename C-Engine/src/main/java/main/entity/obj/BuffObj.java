@@ -18,7 +18,7 @@ import main.game.logic.event.MessageManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 
 public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
@@ -255,7 +255,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
         if (retainConditions != null) {
             if (!retainConditions.preCheck(ref)) {
-                LogMaster.log(LOG_CHANNELS.BUFF_DEBUG,
+                LogMaster.log(LOG_CHANNEL.BUFF_DEBUG,
                         "Retain conditions preCheck false for " + getName());
                 kill();
 

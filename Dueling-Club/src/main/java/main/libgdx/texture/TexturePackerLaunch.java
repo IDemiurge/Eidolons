@@ -6,8 +6,10 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
+import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.GuiManager;
+import main.system.launch.CoreEngine;
 
 import java.io.File;
 import java.util.List;
@@ -22,8 +24,11 @@ public class TexturePackerLaunch {
     private static final String OUTPUT_DIR =  PathFinder.getWeaponAnimPath() + "atlas//";
     static String packs[] = {
 //     "long swords",
-//     "hammers",
+     "hammers",
+     "great_swords",
      "daggers",
+     "maces",
+     "axe",
 //     "fists",
 //     "short swords",
 //     "test",
@@ -31,7 +36,6 @@ public class TexturePackerLaunch {
 //     "bows",
 //     "bolts",
 //     "arrows",
-//     "axe",
 //     "pollaxe",
     };
 
@@ -48,11 +52,16 @@ public class TexturePackerLaunch {
     public static void main(String[] args) {
 //        packImages(mainFolders);
         String [] chosen =packs;
-//        if (CoreEngine.isExe() || CoreEngine.isJar())
         GuiManager.init();
+        if (CoreEngine.isExe() || CoreEngine.isJar() )
         chosen =
          ListChooser.chooseFile(WORKSPACE_PATH, null, SELECTION_MODE.MULTIPLE, true )
           .split(";");
+        else if (DialogMaster.confirm("Choose?")) {
+            chosen =
+             ListChooser.chooseFile(WORKSPACE_PATH, null, SELECTION_MODE.MULTIPLE, true )
+              .split(";");
+        }
         packWeaponSprites(chosen);
     }
 

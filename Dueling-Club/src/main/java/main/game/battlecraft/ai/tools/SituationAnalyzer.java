@@ -12,7 +12,7 @@ import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.battlecraft.ai.tools.priority.ParamPriorityAnalyzer;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 
 import java.util.List;
 
@@ -36,16 +36,16 @@ public class SituationAnalyzer extends AiHandler {
             int rangedThreat = getThreatAnalyzer().getRangedThreat(unit,
              enemy);
             factor += rangedThreat;
-            LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Ranged threat " + rangedThreat + " from " + enemy.getName());
+            LogMaster.log(LOG_CHANNEL.AI_DEBUG, "Ranged threat " + rangedThreat + " from " + enemy.getName());
         }
 
         int mod = getConstInt(AiConst.DANGER_RANGED_BASE) - ParamPriorityAnalyzer.getUnitLifeFactor(unit);
-        LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Ranged threat mod " + mod + " for " + unit.getName());
+        LogMaster.log(LOG_CHANNEL.AI_DEBUG, "Ranged threat mod " + mod + " for " + unit.getName());
 
         if (mod != 0) {
             factor = factor * mod / 100;
         }
-        LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Ranged threat factor " + factor + " for " + unit.getName());
+        LogMaster.log(LOG_CHANNEL.AI_DEBUG, "Ranged threat factor " + factor + " for " + unit.getName());
 
         return factor;
     }
@@ -58,17 +58,17 @@ public class SituationAnalyzer extends AiHandler {
             Unit enemy = (Unit) e;
             int meleeThreat =getThreatAnalyzer(). getMeleeThreat(enemy, now);
             factor += meleeThreat;
-            LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Melee threat " + meleeThreat + " from " + enemy.getName());
+            LogMaster.log(LOG_CHANNEL.AI_DEBUG, "Melee threat " + meleeThreat + " from " + enemy.getName());
         }
 
         int mod = getConstInt(AiConst.DANGER_MELEE_BASE)
          - ParamPriorityAnalyzer.getUnitLifeFactor(unit) ;
-        LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Melee threat mod " + mod + " for " + unit.getName());
+        LogMaster.log(LOG_CHANNEL.AI_DEBUG, "Melee threat mod " + mod + " for " + unit.getName());
 
         if (mod != 0) {
             factor = factor * mod / 100;
         }
-        LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Melee threat factor " + factor + " for " + unit.getName());
+        LogMaster.log(LOG_CHANNEL.AI_DEBUG, "Melee threat factor " + factor + " for " + unit.getName());
 
         return factor;
     }

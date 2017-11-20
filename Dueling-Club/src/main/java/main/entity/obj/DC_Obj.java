@@ -41,9 +41,9 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.graphics.PhaseAnimation;
 import main.system.launch.CoreEngine;
-import main.system.text.DC_LogManager.SPECIAL_LOG;
 
 import java.util.List;
 import java.util.Map;
@@ -419,7 +419,7 @@ public abstract class DC_Obj extends MicroObj {
         if (outlineTypeForPlayer == null) {
             if (getGame().getManager().getActiveObj() != null) {
                 if (!getGame().getManager().getActiveObj().isMine()) {
-                    getGame().getLogManager().appendSpecialLog(SPECIAL_LOG.VISIBILITY, "outlineTypeForPlayer set to "
+                  main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "outlineTypeForPlayer set to "
                      + outlineTypeForPlayer);
                 }
             }
@@ -448,7 +448,7 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public void setUnitVisionStatus(UNIT_TO_UNIT_VISION unitVisionStatus) {
-        getGame().getLogManager().appendSpecialLog(SPECIAL_LOG.VISIBILITY, "setUnitVisionStatus " + getNameAndCoordinate()   +
+  main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "setUnitVisionStatus " + getNameAndCoordinate()   +
          " from " +
          this.activeUnitVisionStatus +
          " to "
@@ -481,7 +481,7 @@ public abstract class DC_Obj extends MicroObj {
     public void setPlayerVisionStatus(UNIT_TO_PLAYER_VISION playerVisionStatus) {
         if (getGame().getManager().getActiveObj() != null) {
             if (getGame().getManager().getActiveObj().isMine()) {
-                getGame().getLogManager().appendSpecialLog(SPECIAL_LOG.VISIBILITY, "set PlayerVisionStatus " + getNameAndCoordinate()   +
+              main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "set PlayerVisionStatus " + getNameAndCoordinate()   +
                  " from " +
                  this.playerVisionStatus +
                  " to "
@@ -489,7 +489,7 @@ public abstract class DC_Obj extends MicroObj {
                 this.playerVisionStatus = playerVisionStatus;
             }
         }
-        getGame().getLogManager().appendSpecialLog(SPECIAL_LOG.VISIBILITY, "set activeVisionStatus " + getNameAndCoordinate()   +
+      main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "set activeVisionStatus " + getNameAndCoordinate()   +
          " from " +
          this.activeVisionStatus +
          " to "

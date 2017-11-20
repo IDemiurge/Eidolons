@@ -249,7 +249,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     @Override
     public void setRef(Ref ref) {
-        if (!equipped) { // TODO preCheck ref contains *this* ?
+        if (!equipped ) { // TODO preCheck ref contains *this* ?
             // HC unequip bug?
             equipped(ref);
         }
@@ -277,7 +277,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
         }
         super.setRef(ref);
-        if (isRanged()) {
+        if (isRanged()&& getHero() != null) {
             getHero().setRangedWeapon(this);
         }
     }
@@ -415,13 +415,13 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         if (ammo == null) {
             getHero().getRef().removeValue(KEYS.AMMO);
             if (getHero().getRef().getActive() != null)
-            getHero().getRef().getActive().getRef(). removeValue(KEYS.AMMO);
+                getHero().getRef().getActive().getRef().removeValue(KEYS.AMMO);
             ref.removeValue(KEYS.AMMO);
         } else {
             ref.setID(KEYS.AMMO, ammo.getId());
-            AnimMaster3d.preloadAtlas( ammo.getWrappedWeapon());
+            AnimMaster3d.preloadAtlas(ammo.getWrappedWeapon());
         }
-        if (ammo!=null )
+        if (ammo != null)
             lastAmmo = ammo;
     }
 

@@ -45,6 +45,14 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         offsetY = 10000;
     }
 
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        if (visible) {
+            getStage().setScrollFocus(ScrollPanel.this);
+        }
+    }
+
     private void init() {
         this.setTouchable(Touchable.enabled);
         left().bottom();

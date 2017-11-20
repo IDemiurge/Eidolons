@@ -28,6 +28,8 @@ import main.entity.obj.hero.DC_Attributes;
 import main.entity.obj.hero.DC_Masteries;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.module.dungeoncrawl.objects.ContainerMaster;
+import main.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -162,6 +164,13 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initInventory() {
+        if (ContainerMaster.isGenerateItemsForUnits())
+            if (ContainerMaster.isPregenerateItems()) {
+       ContainerMaster master=
+        (ContainerMaster) getGame().getDungeonMaster().getDungeonObjMaster(DUNGEON_OBJ_TYPE.CONTAINER);
+       master.initContents(getEntity());
+        }
+
         getEntity().setInventory(
          new DequeImpl<>(initContainedItems(PROPS.INVENTORY,
           getEntity().getInventory(), false)));

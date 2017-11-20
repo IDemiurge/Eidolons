@@ -1,14 +1,22 @@
 package main.libgdx.gui.panels.dc.actionpanel.datasource;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
+import main.data.DataManager;
+import main.entity.active.DC_ActionManager.STD_SPEC_ACTIONS;
 import main.entity.active.DC_ActiveObj;
+import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.unit.Unit;
+import main.entity.type.ObjType;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.*;
+import main.libgdx.texture.TextureCache;
+import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.LinkedList;
@@ -86,8 +94,15 @@ public class PanelActionsDataSource implements
              return valueContainer;
          })
          .collect(Collectors.toList());
-
-        for (int i = 0; i < unit.getRemainingQuickSlots(); i++) {
+        ObjType type = DataManager.getType(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()), DC_TYPE.ACTIONS);
+        TextureRegion invTexture = TextureCache.getOrCreateR(type.getImagePath());
+        ActionValueContainer invButton = new ActionValueContainer(invTexture, () -> {
+            DC_UnitAction action = unit.getAction(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()));
+            if (action != null)
+                action.clicked();
+        });
+        list.add(invButton);
+        for (int i = 0; i < unit.getRemainingQuickSlots() - 1; i++) {
             list.add(null);
         }
 

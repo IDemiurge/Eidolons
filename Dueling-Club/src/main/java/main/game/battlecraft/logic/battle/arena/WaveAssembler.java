@@ -25,7 +25,7 @@ import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
 
@@ -149,7 +149,7 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
     }
 
     public void applyGrowth(GROWTH_PRIORITIES priority) {
-        LogMaster.log(LOG_CHANNELS.WAVE_ASSEMBLING, priority + " is being applied" + "; Power = "
+        LogMaster.log(LOG_CHANNEL.WAVE_ASSEMBLING, priority + " is being applied" + "; Power = "
                 + power);
         switch (priority) {
             case EXTEND:
@@ -339,7 +339,7 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
             return false;
         }
         int diff = (getTargetPower() - power) * 100 / getTargetPower();
-        LogMaster.log(LOG_CHANNELS.WAVE_ASSEMBLING, wave.getName() + "' Power = " + power
+        LogMaster.log(LOG_CHANNEL.WAVE_ASSEMBLING, wave.getName() + "' Power = " + power
                 + " vs target of " + getTargetPower() + ", diff = " + diff);
         return diff > POWER_GAP;
 
@@ -357,7 +357,7 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
             return false;
         }
         int diff = (i - getTargetPower()) * 100 / i;
-        LogMaster.log(LOG_CHANNELS.WAVE_ASSEMBLING, i + " vs target of " + getTargetPower()
+        LogMaster.log(LOG_CHANNEL.WAVE_ASSEMBLING, i + " vs target of " + getTargetPower()
                 + ", diff = " + diff);
         return diff > POWER_GAP;
     }

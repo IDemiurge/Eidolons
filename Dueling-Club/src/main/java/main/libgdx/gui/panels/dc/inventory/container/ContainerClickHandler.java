@@ -5,6 +5,8 @@ import main.entity.Entity;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.obj.unit.Unit;
 import main.game.module.dungeoncrawl.objects.ContainerObj;
+import main.libgdx.anims.text.FloatingTextMaster;
+import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.system.GuiEventManager;
@@ -39,6 +41,12 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
              null );
             return false;
         }
+        if (unit.isInventoryFull())
+        {
+            FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
+             "Inventory is full!",unit);
+            return false;
+        }
         DC_HeroItemObj item = (DC_HeroItemObj) cellContents;
         container.getItems().remove(item);
         unit.addItemToInventory(item);
@@ -56,6 +64,12 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
 
     public void takeAllClicked() {
     for (DC_HeroItemObj item:         new LinkedList<>(container.getItems()) ){
+        if (unit.isInventoryFull())
+        {
+            FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
+             "Inventory is full!",unit);
+            return;
+        }
         container.getItems().remove(item);
         unit.addItemToInventory(item);
     }
@@ -71,5 +85,9 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     @Override
     protected String getArg(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
         return super.getArg(cell_type, clickCount, rightClick, altClick, cellContents);
+    }
+
+    public ContainerObj getContainer() {
+        return container;
     }
 }

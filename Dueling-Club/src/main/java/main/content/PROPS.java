@@ -5,6 +5,7 @@ import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.StringMaster;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -194,6 +195,7 @@ NEXT_MISSION(null,false, "missions"),
     BF_OBJ_MATERIAL(null, false, "bf obj"),
     BF_OBJ_QUALITY(null, true, "bf obj"),
     CONTAINER_CONTENTS(null, true, "bf obj"),
+    CONTAINER_CONTENT_VALUE(null, true, "bf obj"),
     DIMENSION(null, false, "bf obj", "units", "chars"),
     PALETTE(null, false, "bf obj", "units", "chars"),
     // IMMUNE(null, true, "units", "chars", "armor"),
@@ -313,7 +315,8 @@ NEXT_MISSION(null,false, "missions"),
     ROLL_TYPES_TO_DISPEL_EACH_TURN(null, true, "spells", "actions"),
     CHANNELING_SOUND(null, false, "spells", "actions"),
     RETAIN_CONDITIONS(null, false, "spells", "actions"),
-    ITEM_SHOP_CATEGORY(null, false, "items", "weapons", "armor"),
+    ITEM_SHOP_CATEGORY(null, false, C_OBJ_TYPE.ITEMS ),
+    ITEM_RARITY(null, false, C_OBJ_TYPE.ITEMS ),
 
     ALT_BASE_LINKS(null, true, "skills", "classes"),
     ALT_BASE_TYPES(null, true, "skills", "classes"),
@@ -516,7 +519,11 @@ NEXT_MISSION(null,false, "missions"),
     private String shortName;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
 
-    PROPS(String shortName, boolean container, String... entityTypes) {
+    PROPS(String shortName, boolean container, C_OBJ_TYPE entityType) {
+        this(shortName, container, Arrays.stream(entityType.getTypes())
+         .map(DC_TYPE::getName).toArray(String[]::new));
+    }
+        PROPS(String shortName, boolean container, String... entityTypes) {
         this(null , shortName, "", false,
          ContentManager.getDefaultEmptyValue(), 0);
         this.entityTypes = entityTypes;

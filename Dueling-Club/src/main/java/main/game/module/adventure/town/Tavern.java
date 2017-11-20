@@ -27,7 +27,7 @@ import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.entity.FilterMaster;
 
 import java.util.LinkedList;
@@ -156,7 +156,7 @@ public class Tavern extends TownPlace {
 
         modifyParameter(MACRO_PARAMS.C_HERO_POWER_POOL,
                 TavernMaster.getXpPerTurn(this));
-        LogMaster.log(LOG_CHANNELS.MACRO_DYNAMICS, getName() + " now has "
+        LogMaster.log(LOG_CHANNEL.MACRO_DYNAMICS, getName() + " now has "
                 + getIntParam(MACRO_PARAMS.C_HERO_POWER_POOL) + " "
                 + MACRO_PARAMS.C_HERO_POWER_POOL.getName());
         checkAddNewHeroes();

@@ -30,7 +30,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
 
@@ -156,7 +156,7 @@ public class ActionManager extends AiHandler {
             if (Launcher.DEV_MODE)
                 game.getLogManager().log(LOG.GAME_INFO, ai.getUnit().getName()
                  + " chooses task: " + chosenSequence.getTask().toShortString());
-            LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Action chosenSequence chosen: "
+            LogMaster.log(LOG_CHANNEL.AI_DEBUG, "Action chosenSequence chosen: "
              + chosenSequence + StringMaster.wrapInParenthesis(chosenSequence.getPriority() + ""));
         }
         //TODO for behaviors? ai-issued-orders?

@@ -32,6 +32,7 @@ public class EnumMaster<T> {
     };
     public static Class<?> ALT_CONSTS_CLASS; // set dynamically
     private static Map<Class, Map<String, Object>> enumCache = new HashMap<>();
+    private static Map<Class, Map<String, Object>> enumCacheStrict = new HashMap<>();
     private static Map<Class, Map<String, Integer>> enumIndexCache = new HashMap<>();
     private static List<Class> enumClasses;
     private static Map<String, Class> enumMap = new HashMap<>();
@@ -184,7 +185,7 @@ public class EnumMaster<T> {
         if (!CoreEngine.isEnumCachingOn()) {
             return new EnumMaster<>().retrieveEnumConst(class1, name);
         }
-        Map<String, Object> cache = getCache(class1);
+        Map<String, Object> cache = getCache(class1, false);
         Object  enumConst = cache.get(name);
         if (enumConst != null) {
             return enumConst;
@@ -295,13 +296,16 @@ public class EnumMaster<T> {
         return retrieveEnumConst(class1, name, false);
     }
 
-    @SuppressWarnings("unchecked")
     public T retrieveEnumConst(Class<? extends T> clazz, String name, boolean findClosest) {
+        return retrieveEnumConst(clazz, name, false, findClosest);
+    }
+    @SuppressWarnings("unchecked")
+    public T retrieveEnumConst(Class<? extends T> clazz, String name, boolean strict, boolean findClosest) {
 
         if (StringUtils.isEmpty(name)) {
             return null;
         }
-        Object object = getCache(clazz).get(name);
+        Object object = getCache(clazz, strict).get(name);
         if (object != null)
             return (T) object;
         T[] array = clazz.getEnumConstants();
@@ -325,8 +329,8 @@ public class EnumMaster<T> {
 
         T t = null;
         try {
-            t = (T) new SearchMaster<T>().find(name, list);
-            getCache(clazz).put(name, t);
+            t = (T) new SearchMaster<T>().find(name, list, strict);
+            getCache(clazz, strict).put(name, t);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -337,7 +341,7 @@ public class EnumMaster<T> {
         if (findClosest) {
             try {
                 t = (T) new SearchMaster<T>().findClosest(name, list);
-                getCache(clazz).put(name, t);
+                getCache(clazz, strict).put(name, t);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -348,11 +352,12 @@ public class EnumMaster<T> {
         return t;
     }
 
-    private static Map<String, Object> getCache(Class<?> clazz) {
-        Map<String, Object>   cache = enumCache.get(clazz);
+    private static Map<String, Object> getCache(Class<?> clazz, boolean strict) {
+        Map<Class, Map<String, Object>> caches =strict? enumCacheStrict  : enumCache;
+        Map<String, Object>   cache = caches.get(clazz);
         if (cache == null ){
             cache = new HashMap<>();
-            enumCache.put(clazz, cache);
+            caches.put(clazz, cache);
         }
         return cache;
     }

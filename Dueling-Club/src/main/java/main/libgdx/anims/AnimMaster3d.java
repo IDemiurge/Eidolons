@@ -30,10 +30,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.BooleanMaster;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -345,7 +342,7 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
         String name = getAtlasFileKeyForAction(projection, activeObj, WEAPON_ANIM_CASE.NORMAL);
         List<Entity> types = null;
         if (searchOtherWeaponOrAction) {
-            types = new LinkedList<>(DataManager.getBaseWeaponTypes()).stream().
+            types = Arrays.stream(DataManager.getBaseWeaponTypes()) .
              filter(type -> type.getProperty(G_PROPS.WEAPON_GROUP).equals(
               activeObj.getActiveWeapon().getProperty(G_PROPS.WEAPON_GROUP))).collect(Collectors.toList());
         } else {

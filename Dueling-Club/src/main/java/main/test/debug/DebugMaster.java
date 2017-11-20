@@ -64,7 +64,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
@@ -72,6 +72,7 @@ import main.system.math.MathMaster;
 import main.system.options.OptionsMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.test.TestMasterContent;
+import main.system.text.SpecialLogger;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.PresetMaster;
@@ -548,7 +549,7 @@ public class DebugMaster {
                     }
                     break;
                 case TOGGLE_LOG: {
-                    String e = ListChooser.chooseEnum(LOG_CHANNELS.class);
+                    String e = ListChooser.chooseEnum(LOG_CHANNEL.class);
                     LogMaster.toggle(e);
                     break;
                 }
@@ -1317,7 +1318,7 @@ public class DebugMaster {
         if (debugMode) {
 //            main.system.auxiliary.log.LogMaster.log(1," " +
 //             game.getLogManager().getCombatActionLogBuilder().toString());
-            game.getLogManager().logCombatLog();
+          SpecialLogger.getInstance().logCombatLog();
         }
         VisionManager.setVisionHacked(debugMode);
     }

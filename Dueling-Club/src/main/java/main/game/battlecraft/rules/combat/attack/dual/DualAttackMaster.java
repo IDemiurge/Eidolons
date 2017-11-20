@@ -76,6 +76,8 @@ public class DualAttackMaster {
          DataManager.getType("Dual Attack", DC_TYPE.ACTIONS));
         for (Cost cost : costs.getCosts()) {
             PARAMETER p = cost.getCostParam();
+            if (p== null )
+                continue;
             newType.setParam(p, cost.getPayment().getAmountFormula().toString());
         }
         DC_UnitAction dual = new DC_UnitAction(newType, main.getOwner(), main.getGame(), new Ref(main.getOwnerObj()));
@@ -109,7 +111,7 @@ public class DualAttackMaster {
             Boolean mode = getMinMaxOrAverage((PARAMS) p);
             Integer value =
              MathMaster.getTotalOrMinMax(mode, value1, value2);
-            list.add(new CostImpl(new Payment(p, value)));
+            list.add(new CostImpl(new Payment(p, value), cost.getCostParam()));
         }
         Costs costsDual = new Costs(list);
         Integer focReq = 25;

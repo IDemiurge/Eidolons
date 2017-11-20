@@ -49,8 +49,8 @@ public class InventoryWithAction extends TablePanel {
 //                .pad(20, 10, 20, 0).size(50, 50);
 
         doneButton = lower.addElement(new ButtonStyled(STD_BUTTON.OK))
-                .fill(false).expand(0, 0).right()
-                .pad(20, 10, 20, 10).size(50, 50);
+         .fill(false).expand(0, 0).right()
+         .pad(20, 10, 20, 10).size(50, 50);
 
         bindListeners();
 
@@ -79,8 +79,25 @@ public class InventoryWithAction extends TablePanel {
             } else {
                 setVisible(true);
                 setUserObject(param);
+                initButtonListeners();
             }
         });
+    }
+
+    private void initButtonListeners() {
+        final InventoryDataSource source = (InventoryDataSource) getUserObject();
+        ButtonStyled button = (ButtonStyled) doneButton.getActor();
+        button.getListeners().clear();
+        button.addListener(source.getDoneHandler());
+//        button.setDisabled(source.isDoneDisabled());
+
+//        button = (ButtonStyled) cancelButton.getActor();
+//        button.addListener(source.getCancelHandler());
+//        button.setDisabled(source.isCancelDisabled());
+
+//        button = (ButtonStyled) undoButton.getActor();
+//        button.addListener(source.getUndoHandler());
+//        button.setDisabled(source.isUndoDisabled());
     }
 
     @Override
@@ -100,17 +117,6 @@ public class InventoryWithAction extends TablePanel {
         final InventoryDataSource source = (InventoryDataSource) getUserObject();
 
         actionPointsText.setActor(new ValueContainer("Actions available:", source.getOperationsString()));
-
-        ButtonStyled button = (ButtonStyled) doneButton.getActor();
-        button.addListener(source.getDoneHandler());
-//        button.setDisabled(source.isDoneDisabled());
-
-//        button = (ButtonStyled) cancelButton.getActor();
-//        button.addListener(source.getCancelHandler());
-//        button.setDisabled(source.isCancelDisabled());
-
-//        button = (ButtonStyled) undoButton.getActor();
-//        button.addListener(source.getUndoHandler());
-//        button.setDisabled(source.isUndoDisabled());
+        initButtonListeners();
     }
 }

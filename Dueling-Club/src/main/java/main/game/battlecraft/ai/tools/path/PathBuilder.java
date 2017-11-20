@@ -22,7 +22,7 @@ import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -325,7 +325,7 @@ public class PathBuilder extends AiHandler {
     }
 
     private void log(int result) {
-        LogMaster.log(LOG_CHANNELS.PATHING_DEBUG, result
+        LogMaster.log(LOG_CHANNEL.PATHING_DEBUG, result
          + " priority for path: " + path);
     }
 

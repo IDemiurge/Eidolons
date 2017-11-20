@@ -9,7 +9,7 @@ import main.game.core.game.Game;
 import main.game.core.game.GameManager;
 import main.game.logic.event.Event;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 
 import java.util.Map;
 
@@ -106,12 +106,12 @@ public abstract class StateManager {
                 if (checkObjIgnoresToBase(target))
                     continue;
 
-                if (LOG_CHANNELS.EFFECT_DEBUG.isOn())
-                    LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, layer
+                if (LOG_CHANNEL.EFFECT_DEBUG.isOn())
+                    LogMaster.log(LOG_CHANNEL.EFFECT_DEBUG, layer
                      + " Layer, applying effect : " + state.effects);
 
                 if (!effect.apply()) {
-                    if (LOG_CHANNELS.EFFECT_DEBUG.isOn())
+                    if (LOG_CHANNEL.EFFECT_DEBUG.isOn())
                         LogMaster.log(LogMaster.EFFECT_DEBUG, layer
                          + " Layer, effect failed: " + state.effects);
                 }

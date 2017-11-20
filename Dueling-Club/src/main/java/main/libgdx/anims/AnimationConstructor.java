@@ -627,7 +627,7 @@ public class AnimationConstructor {
 
 
     public boolean isReconstruct() {
-        return false;
+        return true;
 //        return reconstruct;
     }
 

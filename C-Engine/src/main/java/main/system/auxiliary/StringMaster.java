@@ -10,6 +10,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.Formula;
 
@@ -1705,6 +1706,15 @@ public class StringMaster {
             return "";
         }
         return array[i];
+    }
+
+    public static String getAppendedImageFile(String file, String suffix) {
+        String format= getFormat(file);
+        String newFile = cropFormat(file) + suffix + format;
+        if (FileManager.isImageFile(newFile)) {
+            return newFile;
+        }
+        return file;
     }
 
 

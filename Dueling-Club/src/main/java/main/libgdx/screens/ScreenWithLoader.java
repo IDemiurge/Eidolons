@@ -90,7 +90,14 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             public boolean keyTyped(char character) {
                 done(param);
                 waitingForInput = false;
-                return super.keyTyped(character);
+                return true;
+            }
+
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                done(param);
+                waitingForInput = false;
+                return true;
             }
         };
     }

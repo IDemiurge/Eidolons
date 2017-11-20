@@ -56,8 +56,5 @@ public class Journal extends LogManager {
         return false;
     }
 
-    @Override
-    public void combatActionLog(String string) {
 
-    }
 }

@@ -263,7 +263,7 @@ public class UnitShop {
         return true;
     }
 
-    private static MATERIAL chooseMaterialType(int costLimit, Unit unit, ObjType baseType, boolean canExceed) {
+    public static MATERIAL chooseMaterialType(int costLimit, Unit unit, ObjType baseType, boolean canExceed) {
         if (baseType  == null  )
             return null;
         if (baseType.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY)
@@ -273,7 +273,7 @@ public class UnitShop {
         QUALITY_LEVEL qualityLevel = QUALITY_LEVEL.DAMAGED;
         String property = unit.getProperty(PROPS.ALLOWED_MATERIAL);
         List<MATERIAL> list =
-         property.isEmpty() ? getMaterialsFOrUnit(unit, baseType, costLimit, canExceed)
+         property.isEmpty() ? getMaterialsForUnit(unit, baseType, costLimit, canExceed)
           : new EnumMaster<MATERIAL>().getEnumList(MATERIAL.class, property);
         list.removeIf(material -> !ItemMaster.checkMaterial(baseType, material));
         Collections.shuffle(list);
@@ -292,10 +292,18 @@ public class UnitShop {
         return materials.get(0);
     }
 
-    private static List<MATERIAL> getMaterialsFOrUnit(Unit unit, ObjType baseType, int costLimit, boolean canExceed) {
+    private static List<MATERIAL> getMaterialsForUnit(Unit unit, ObjType baseType, int costLimit, boolean canExceed) {
         ITEM_MATERIAL_GROUP group = new EnumMaster<ITEM_MATERIAL_GROUP>().retrieveEnumConst(ITEM_MATERIAL_GROUP.class,
          baseType.getProperty(G_PROPS.ITEM_MATERIAL_GROUP));
-        //TODO
+
+        if (unit.getLevel() > 6) {
+//TODO
+            switch (group) {
+                case METAL:
+                    return Arrays.asList(ItemGenerator.BASIC_MATERIALS_METALS);
+
+            }
+        }
         switch (group) {
             case METAL:
                 return Arrays.asList(ItemGenerator.BASIC_MATERIALS_METALS);

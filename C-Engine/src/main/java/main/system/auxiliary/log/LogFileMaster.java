@@ -7,7 +7,7 @@ import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.launch.CoreEngine;
 import main.system.threading.TimerTaskMaster;
 
@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class LogFileMaster {
     private static final long WRITE_ALL_PERIOD = 5000;
-    static Map<LOG_CHANNELS, List<String>> channelLogs = new HashMap<>();
+    static Map<LOG_CHANNEL, List<String>> channelLogs = new HashMap<>();
     static Map<Integer, List<String>> priorityLogs = new HashMap<>();
     private static boolean dirty = true;
     private static String gameSubfolder;
@@ -61,7 +61,7 @@ public class LogFileMaster {
 
     }
 
-    public static void checkWriteToFile(LOG_CHANNELS channel, String text, boolean writeNow) {
+    public static void checkWriteToFile(LOG_CHANNEL channel, String text, boolean writeNow) {
         if (!isWritingLogFilesOn()) {
             return;
         }
@@ -133,7 +133,7 @@ public class LogFileMaster {
         return CoreEngine.isWritingLogFilesOn();
     }
 
-    public static void checkWriteToFileNewThread(final LOG_CHANNELS channel, final String text) {
+    public static void checkWriteToFileNewThread(final LOG_CHANNEL channel, final String text) {
         if (!isWritingLogFilesOn()) {
             return;
         }
@@ -186,7 +186,7 @@ public class LogFileMaster {
                 }
             }, " thread").start();
         }
-        for (LOG_CHANNELS channel : channelLogs.keySet()) {
+        for (LOG_CHANNEL channel : channelLogs.keySet()) {
             final List<String> entries = channelLogs.get(channel);
             if (!ListMaster.isNotEmpty(entries)) {
                 continue;

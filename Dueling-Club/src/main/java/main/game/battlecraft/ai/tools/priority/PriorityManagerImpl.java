@@ -73,7 +73,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.math.*;
 import main.system.math.roll.RollMaster;
 import main.system.text.TextParser;
@@ -90,7 +90,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
    private float modifier;
     private int priority;
     private BEHAVIOR_MODE behaviorMode;
-    private LOG_CHANNELS logChannel = LOG_CHANNELS.AI_DEBUG;
+    private LOG_CHANNEL logChannel = LOG_CHANNEL.AI_DEBUG;
     private Map<Effect, RollEffect> rollMap;
 
     public PriorityManagerImpl(AiMaster master) {
@@ -524,10 +524,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             case PREPARE:
             case RESTORE:
             case WAIT:
-                logChannel = LOG_CHANNELS.AI_DEBUG;
+                logChannel = LOG_CHANNEL.AI_DEBUG;
                 break;
             default:
-                logChannel = LOG_CHANNELS.AI_DEBUG2;
+                logChannel = LOG_CHANNEL.AI_DEBUG2;
                 break;
         }
 
@@ -1504,7 +1504,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         }
     }
 
-    private LOG_CHANNELS getLogChannel() {
+    private LOG_CHANNEL getLogChannel() {
         return logChannel;
     }
 

@@ -38,7 +38,23 @@ public class ItemEnums {
         // THROWING, TRAP, GEMSTONE
 
     }
+    public enum ITEM_RARITY{
+        //don't change the order!!!
+        EXCEPTIONAL(5),
+        RARE(15),
+        UNCOMMON(25),
+        COMMON(55),
+        ;
+        int chance;
 
+        public int getChance() {
+            return chance;
+        }
+
+        ITEM_RARITY(int chance) {
+            this.chance = chance;
+        }
+    }
     public enum ITEM_MATERIAL_GROUP {
         METAL, WOOD, LEATHER, CLOTH, BONE, STONE, NATURAL, CRYSTAL
     }
@@ -218,6 +234,7 @@ public class ItemEnums {
             this(modifier, weight, cost, magic, g, dmg_type, code);
             this.durabilityMod = durability;
             this.group = g;
+            magical = dmg_type != null;
         }
 
         MATERIAL(int modifier, double weight, int cost, int magic, ITEM_MATERIAL_GROUP g, int code) {
@@ -230,7 +247,6 @@ public class ItemEnums {
                  DAMAGE_TYPE dmg_type, int code) {
             this(modifier, weight, cost, magic, code);
             this.dmg_type = dmg_type;
-            this.magical = true;
             this.group = g;
         }
 

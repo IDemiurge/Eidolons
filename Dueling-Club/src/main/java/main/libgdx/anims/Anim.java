@@ -306,9 +306,9 @@ public class Anim extends Group implements Animation {
              }
          }
         );
-        emitterList = emitterCache;
-        emitterCache.clear();
-        emitterCache.addAll(emitterList);//= new LinkedList<>(emitterList);
+        emitterList = new LinkedList<>(emitterCache);
+//        emitterCache.clear();
+//        emitterCache.addAll(emitterList);//= new LinkedList<>(emitterList);
         emitterList.forEach(e -> {
             if (!e.isGenerated()) {
                 if (e.isAttached()) {

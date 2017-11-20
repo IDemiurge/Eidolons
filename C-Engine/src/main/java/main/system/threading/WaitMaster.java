@@ -2,7 +2,7 @@ package main.system.threading;
 
 import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.datatypes.DequeImpl;
 
 import java.util.HashMap;
@@ -45,7 +45,7 @@ public class WaitMaster {
         if (getCompleteOperations().contains(operation)) {
             return true;
         }
-        LogMaster.log(LOG_CHANNELS.WAIT_DEBUG,
+        LogMaster.log(LOG_CHANNEL.WAIT_DEBUG,
                 " waiting for " + operation.toString());
         Waiter waiter = waiters.get(operation);
         boolean remove = true;
@@ -74,7 +74,7 @@ public class WaitMaster {
     }
 
     public static boolean receiveInput(WAIT_OPERATIONS operation, Object input, boolean removeWaiter) {
-        LogMaster.log(LOG_CHANNELS.WAIT_DEBUG, " received input for "
+        LogMaster.log(LOG_CHANNEL.WAIT_DEBUG, " received input for "
                 + operation.toString() + ": " + input);
         Waiter waiter = waiters.get(operation);
         if (waiter == null) {

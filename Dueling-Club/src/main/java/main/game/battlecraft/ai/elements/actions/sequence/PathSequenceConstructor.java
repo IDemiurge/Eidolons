@@ -18,7 +18,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.datatypes.XMap;
 import main.system.math.PositionMaster;
 
@@ -65,7 +65,7 @@ public class PathSequenceConstructor extends AiHandler {
                                               List<Coordinates> targetCells) {
         List<ActionPath> paths = pathCache.get(targetCells);
         if (ListMaster.isNotEmpty(paths)) {
-            LogMaster.log(LOG_CHANNELS.PATHING_DEBUG, "path cache success: "
+            LogMaster.log(LOG_CHANNEL.PATHING_DEBUG, "path cache success: "
              + paths);
             return paths;
         }
@@ -177,7 +177,7 @@ public class PathSequenceConstructor extends AiHandler {
             list = getPruneMaster().pruneTargetCells(targetAction, list);
         }
         if (getUnit().getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
-            LogMaster.log(LOG_CHANNELS.AI_DEBUG, "***" + targetAction
+            LogMaster.log(LOG_CHANNEL.AI_DEBUG, "***" + targetAction
              + " has target cells for PB: " + list);
         }
         cellsCache.put(targetAction.getTargeting(), list);

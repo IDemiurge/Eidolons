@@ -44,6 +44,8 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
 
     @Override
     public DC_Player getOwner() {
+        if (getOwnerObj()==null )
+            return DC_Player.NEUTRAL;
         return (DC_Player) getOwnerObj().getOwner();
     }
 
@@ -85,6 +87,8 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
     }
 
     protected boolean isConstructOnInit() {
+        if (getOwnerObj()==null )
+            return false;
         return true;
     }
 

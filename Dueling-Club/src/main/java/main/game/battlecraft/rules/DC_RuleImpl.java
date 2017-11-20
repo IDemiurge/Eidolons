@@ -10,7 +10,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Rule;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 
 import java.util.Arrays;
 
@@ -45,7 +45,7 @@ public abstract class DC_RuleImpl implements Rule {
     @Override
     public void apply(Ref ref) {
         initEffects();
-        LogMaster.log(LOG_CHANNELS.RULES_DEBUG, toString() + " applies! "
+        LogMaster.log(LOG_CHANNEL.RULES_DEBUG, toString() + " applies! "
                 + ref);
         effects.setReconstruct(true);
         // effects.setForcedLayer(Effect.BUFF_RULE);
@@ -77,7 +77,7 @@ public abstract class DC_RuleImpl implements Rule {
         }
         Ref ref = Ref.getCopy(event.getRef());
         ref.setEvent(event);
-        LogMaster.log(LOG_CHANNELS.RULES_DEBUG, toString() + " checked on "
+        LogMaster.log(LOG_CHANNEL.RULES_DEBUG, toString() + " checked on "
                 + ref.getSourceObj());
         return conditions.preCheck(ref);
     }

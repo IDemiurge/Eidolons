@@ -85,7 +85,7 @@ public class LogMaster {
     public static final int GENERATION = -33;
     public static final String AI_TRAINING_PREFIX = "AI_TRAINING: ";
     public static final int AI_TRAINING = -34;
-    public static final LOG_CHANNELS[] specialLogChannels = {
+    public static final LOG_CHANNEL[] specialLogChannels = {
 
     };
     private static final String ERROR_PREFIX = "<!ERROR!>";
@@ -164,10 +164,10 @@ if (!CoreEngine.isExe())
     }
 
     public static void gameInfo(String mes) {
-        log(LOG_CHANNELS.GAME_INFO, mes);
+        log(LOG_CHANNEL.GAME_INFO, mes);
     }
 
-    public static void log(LOG_CHANNELS c, String s) {
+    public static void log(LOG_CHANNEL c, String s) {
         if (c.isOn()) {
             if (isLogInNewThread()) {
                 logInNewThread(c.getPrefix() + s);
@@ -186,7 +186,7 @@ if (!CoreEngine.isExe())
         if (priority < 0) {
             boolean switcher = false;
             String prefix = "";
-            LOG_CHANNELS c = LOG_CHANNELS.getByCode(priority);
+            LOG_CHANNEL c = LOG_CHANNEL.getByCode(priority);
             if (c != null) {
                 switcher = c.isOn();
                 prefix = c.getPrefix();
@@ -403,7 +403,7 @@ if (!CoreEngine.isExe())
         if (e == null) {
             return;
         }
-        LOG_CHANNELS c = new EnumMaster<LOG_CHANNELS>().retrieveEnumConst(LOG_CHANNELS.class, e);
+        LOG_CHANNEL c = new EnumMaster<LOG_CHANNEL>().retrieveEnumConst(LOG_CHANNEL.class, e);
         if (c == null) {
             return;
         }
@@ -423,7 +423,7 @@ if (!CoreEngine.isExe())
         COMBAT_LOG, SYS_LOG, CHAT_LOG
     }
 
-    public enum LOG_CHANNELS {
+    public enum LOG_CHANNEL {
         EFFECT_ACTIVE_DEBUG(LogMaster.EFFECT_SPECIFIC_DEBUG_PREFIX, LogMaster.EFFECT_SPECIFIC_DEBUG_ON, LogMaster.EFFECT_SPECIFIC_DEBUG),
 
         EFFECT_PASSIVE_DEBUG(LogMaster.EFFECT_PASSIVE_DEBUG_PREFIX, LogMaster.EFFECT_PASSIVE_DEBUG_ON, LogMaster.EFFECT_PASSIVE_DEBUG),
@@ -469,20 +469,20 @@ if (!CoreEngine.isExe())
         private int code;
         private LOG log;
 
-        LOG_CHANNELS(LOG log, String prefix, boolean on, int code) {
+        LOG_CHANNEL(LOG log, String prefix, boolean on, int code) {
             this(prefix, on, code);
             this.setLog(log);
         }
 
-        LOG_CHANNELS(String prefix, boolean on, int code) {
+        LOG_CHANNEL(String prefix, boolean on, int code) {
             this.setCode(code);
             this.setOn(on);
             this.setPrefix(prefix);
         }
 
-        public static LOG_CHANNELS getByCode(int priority) {
+        public static LOG_CHANNEL getByCode(int priority) {
 
-            for (LOG_CHANNELS c : LOG_CHANNELS.values()) {
+            for (LOG_CHANNEL c : LOG_CHANNEL.values()) {
                 if (c.getCode() == priority) {
                     return c;
                 }

@@ -602,7 +602,6 @@ public abstract class LogManager {
         return pendingAnimsToLink;
     }
 
-    public abstract void combatActionLog(String string);
 
     public enum CASE_LOG_INFO_LEVEL {
         NONE, BASIC, FULL,

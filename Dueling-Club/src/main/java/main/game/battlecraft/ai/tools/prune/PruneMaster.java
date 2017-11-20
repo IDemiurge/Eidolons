@@ -19,7 +19,7 @@ import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedList;
@@ -196,7 +196,7 @@ public class PruneMaster extends AiHandler {
             // if nobody was pruned, increase limits
             limit++;
         }
-        main.system.auxiliary.log.LogMaster.log(LOG_CHANNELS.AI_DEBUG, "PRUNING FOR " + action + " : " + pruneList);
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.AI_DEBUG, "PRUNING FOR " + action + " : " + pruneList);
         for (DC_Obj t : pruneList) {
             targets.remove(t);
         }
