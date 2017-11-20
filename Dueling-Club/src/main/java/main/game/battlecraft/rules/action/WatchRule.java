@@ -192,7 +192,7 @@ public class WatchRule implements ActionRule {
                 + MathMaster.applyModIfNotZero(DEFENSE_MOD_OTHERS, watcher
                 .getIntParam(PARAMS.WATCH_DEFENSE_OTHERS_MOD)));
         if (list.size() > 1) {
-            mod = mod + mod + "*" + DEFENSE_MOD_OTHERS_PER_ADDITIONAL + "/100*" + (list.size() - 1);
+            mod = mod + "+"+ mod  + "*" + DEFENSE_MOD_OTHERS_PER_ADDITIONAL + "/100*" + (list.size() - 1);
         }
         return mod;
     }
@@ -202,7 +202,7 @@ public class WatchRule implements ActionRule {
                 + MathMaster.applyModIfNotZero(AP_PENALTY, watcher
                 .getIntParam(PARAMS.WATCH_AP_PENALTY_MOD)));
         if (list.size() > 1) {
-            mod = mod + mod + "*" + AP_PENALTY_PER_ADDITIONAL + "/100*" + (list.size() - 1);
+            mod = mod + "+"+ mod  + "*" + AP_PENALTY_PER_ADDITIONAL + "/100*" + (list.size() - 1);
         }
         return mod;
     }
@@ -229,7 +229,7 @@ public class WatchRule implements ActionRule {
                 .getIntParam(PARAMS.WATCH_ATTACK_OTHERS_MOD)));
 
         if (list.size() > 1) {
-            mod = mod + mod + "*" + ATTACK_MOD_OTHERS_PER_ADDITIONAL + "/100*" + (list.size() - 1);
+            mod = mod + "+"+ mod  + "*" + ATTACK_MOD_OTHERS_PER_ADDITIONAL + "/100*" + (list.size() - 1);
         }
         return mod;
     }

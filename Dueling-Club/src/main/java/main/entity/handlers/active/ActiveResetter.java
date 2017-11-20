@@ -42,9 +42,9 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
 
     @Override
     public void toBase() {
-        for (DC_ActiveObj subaction : getEntity().getSubActions()) {
-            subaction.toBase();
-        }
+//        for (DC_ActiveObj subaction : getEntity().getSubActions()) {
+//            subaction.toBase();
+//        }
         super.toBase();
         if (getOwnerObj() == null) {
             return;

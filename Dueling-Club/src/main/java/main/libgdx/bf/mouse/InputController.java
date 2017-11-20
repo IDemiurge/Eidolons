@@ -33,10 +33,18 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     private boolean ctrl = false;
     private char lastTyped;
     private List<String> charsUp = new LinkedList<>();
+    private float width;
+    private float height;
+    float halfWidth;
+    float halfHeight;
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;
 
+        width = GdxMaster.getWidth() * getZoom();
+        height = GdxMaster.getHeight() * getZoom();
+        halfWidth = width/2;
+        halfHeight = height/2;
     }
 
     @Override
@@ -66,7 +74,6 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
             return true;
         return false;
     }
-
 
     @Override
     public boolean keyUp(int i) {
@@ -119,7 +126,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
             yCamPos = screenY;
             isLeftClick = true;
         }
-DungeonScreen.getInstance().getGuiStage().outsideClick();
+        DungeonScreen.getInstance().getGuiStage().outsideClick();
         return false;
     }
 
@@ -167,7 +174,6 @@ DungeonScreen.getInstance().getGuiStage().outsideClick();
         }
     }
 
-
     private boolean checkCameraPosLimitY(float y) {
         float max = MARGIN +
          DungeonScreen.getInstance().getGridPanel().getRows() * GridConst.CELL_H * camera.zoom;
@@ -211,8 +217,11 @@ DungeonScreen.getInstance().getGuiStage().outsideClick();
                 }
             }
         }
+        width = GdxMaster.getWidth() * getZoom();
+        height = GdxMaster.getHeight() * getZoom();
+        halfWidth = width/2;
+        halfHeight = height/2;
     }
-
 
     public boolean isWithinCamera(Actor actor) {
         return isWithinCamera(actor.getX() + actor.getWidth(), actor.getY() + actor.getHeight(), actor.getWidth(), actor.getHeight());
@@ -220,10 +229,10 @@ DungeonScreen.getInstance().getGuiStage().outsideClick();
 
     public boolean isWithinCamera(float x, float y, float width, float height) {
         float xPos = Math.abs(camera.position.x - x) - width;
-        if (xPos > GdxMaster.getWidth() * getZoom() / 2)
+        if (xPos > halfWidth)
             return false;
         float yPos = Math.abs(camera.position.y - y) - height;
-        if (yPos > GdxMaster.getHeight() * getZoom() / 2)
+        if (yPos > halfHeight)
             return false;
 
         return true;

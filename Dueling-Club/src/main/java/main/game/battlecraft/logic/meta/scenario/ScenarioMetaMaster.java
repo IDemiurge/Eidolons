@@ -70,14 +70,15 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
         getMetaDataManager().initMissionName();
         ScreenData data = new ScreenData(ScreenType.BATTLE, getMissionName());
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
-
+        if (restart)
+            Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(true);
         Eidolons.initScenario(
          new ScenarioMetaMaster(getData()));
 
-        if (restart){
-            Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(true);
-             Eidolons.mainGame.getMetaMaster(). init();
-        }
+//        if (restart){
+//            Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(true);
+//             Eidolons.mainGame.getMetaMaster(). init();
+//        }
         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
         Eidolons.mainGame.getMetaMaster().getGame().start(true);

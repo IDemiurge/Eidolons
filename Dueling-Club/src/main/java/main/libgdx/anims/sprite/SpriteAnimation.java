@@ -129,6 +129,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             sprite.setRegion(currentFrame);
         }
         sprite.setAlpha(alpha);
+        sprite.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
 
         sprite.setRotation(rotation);
         sprite.setPosition(x + offsetX - currentFrame.getRegionWidth() / 2, y

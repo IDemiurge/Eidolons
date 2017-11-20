@@ -38,6 +38,7 @@ public class ChainedStage extends Stage {
         }
         setKeyboardFocus(current.getActor());
         addActor(current);
+        setDebugAll(false);
     }
 
     public void play(List<DialogScenario> list) {

@@ -49,13 +49,10 @@ public class AnimMaster3d {
      256, 320, 384, 448, 512,
     };
     private static final String[][] substitutesWeapons = {
-     {"war axe", "axe"},
-     {"great axe", "axe"},
-     {"battle axe", "axe"},
-     {"hand axe", "axe"},
-     {"pollaxe", "axe"},
 //     {"halbert", "axe"},
 
+     {"broad sword", "long sword"},
+     {"falchion", "scimitar"},
      {"orcish arrows", "arrows"},
      {"elven arrows", "arrows"},
 
@@ -63,22 +60,9 @@ public class AnimMaster3d {
      {"heavy crossbow", "crossbow"},
      {"hand crossbow", "crossbow"},
      {"longbow", "short bow"},
-     {"dagger", "stiletto"},
-     {"dirk", "stiletto"},
-     {"knife", "stiletto"},
      {"kriss", "stiletto"},
 
-     {"mace", "war hammer"},
-     {"club", "war hammer"},
-     {"battle hammer", "war hammer"},
-     {"maul", "war hammer"},
 
-     {"great sword", "long sword"},
-     {"flamberg", "long sword"},
-     {"claymore", "long sword"},
-     {"broad sword", "long sword"},
-
-     {"falchion", "scimitar"},
 
     };
     private static final String[][] substitutesActions = {
@@ -160,9 +144,9 @@ public class AnimMaster3d {
          ));
 
         if (BooleanMaster.isTrue(offhand))
-            s.append(SEPARATOR + "_l");
+            s.append(SEPARATOR + "l");
         if (BooleanMaster.isFalse(offhand))
-            s.append(SEPARATOR + "_r");
+            s.append(SEPARATOR + "r");
         String string = s.toString();
         string = string.toLowerCase().replace("offhand ", "").replace("off hand ", "").replace(" ", SEPARATOR);
         return string;
@@ -388,7 +372,7 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
         if (broken.contains(weapon))
             return null;
         try {
-            String path = getAtlasPath(weapon, getWeaponAtlasKey(weapon));
+            String path =PathFinder.getImagePath()+ getAtlasPath(weapon, getWeaponAtlasKey(weapon));
             if (!FileManager.isFile(path))
                 return null;
             TextureAtlas atlas = atlasMap.get(path);
@@ -410,8 +394,8 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
         if (active.isRanged())
             return 400;
         if (active.getActiveWeapon().isTwoHanded())
-            return 80;
-        return 110;
+            return 30;
+        return 50;
     }
 
     public static void hoverOff(DC_UnitAction entity) {

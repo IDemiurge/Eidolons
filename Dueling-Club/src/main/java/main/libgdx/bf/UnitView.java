@@ -83,8 +83,6 @@ public class UnitView extends BaseView {
                 clockImage = new Image(clockTexture);
                 addActor(clockImage);
                 addActor(initiativeLabel);
-                if (InitiativePanel.isLeftToRight())
-                    clockImage.setPosition(GdxMaster.right(clockImage), 0);
             }
 
         if (!(this instanceof GridUnitView))
@@ -115,7 +113,8 @@ public class UnitView extends BaseView {
         super.sizeChanged();
 
         if (initiativeLabel != null) {
-            clockImage.setPosition(0, 0);
+            if (InitiativePanel.isLeftToRight())
+            clockImage.setPosition(GdxMaster.right(clockImage), 0);
             initiativeLabel.setPosition(
              clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()),
              clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));

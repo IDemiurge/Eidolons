@@ -23,6 +23,8 @@ import main.entity.obj.unit.DC_UnitModel;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.tools.ParamAnalyzer;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
+import main.game.battlecraft.rules.RuleMaster;
+import main.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.battlecraft.rules.action.EngagedRule;
 import main.game.battlecraft.rules.combat.damage.ResistMaster;
 import main.game.battlecraft.rules.rpg.IntegrityRule;
@@ -233,10 +235,9 @@ public class UnitResetter extends EntityResetter<Unit> {
     }
 
     public void resetObjects() {
-        if (ExplorationMaster.isExplorationOn())
-        {
-            if (!getEntity(). isDirty()) {
-                return ;
+        if (ExplorationMaster.isExplorationOn()) {
+            if (!getEntity().isDirty()) {
+                return;
             }
         }
         Chronos.mark(toString() + " OBJECTS APPLY");
@@ -491,7 +492,8 @@ public class UnitResetter extends EntityResetter<Unit> {
             if (!getGame().getRules().getWeightRule().apply(getEntity())) {
                 getEntity().setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);
             }
-            getGame().getRules().getWatchRule().updateWatchStatus(getEntity());
+            if (RuleMaster.isRuleOn(RULE.WATCH))
+                getGame().getRules().getWatchRule().updateWatchStatus(getEntity());
             getGame().getRules().getWoundsRule().apply(getEntity());
 
 

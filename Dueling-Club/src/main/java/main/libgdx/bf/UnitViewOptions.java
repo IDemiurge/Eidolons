@@ -121,7 +121,7 @@ public class UnitViewOptions {
             }
             else {
                 emblem =PathFinder.getEmblemAutoFindPath()+
-                 FileManager.findFirstFile(PathFinder.getEmblemAutoFindPath(),
+                 FileManager.findFirstFile(PathFinder.getImagePath()+ PathFinder.getEmblemAutoFindPath(),
                   obj.getSubGroupingKey(), true);
                 if (ImageManager.isImage(emblem))
                     this.emblem = getOrCreateR(emblem);

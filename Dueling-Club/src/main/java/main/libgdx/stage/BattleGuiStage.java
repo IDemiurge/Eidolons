@@ -101,6 +101,7 @@ public class BattleGuiStage extends Stage {
          GdxMaster.centerHeight(containerPanel));
         containerPanel.setVisible(false);
         bindEvents();
+        setDebugAll(false);
     }
 
     private void bindEvents() {

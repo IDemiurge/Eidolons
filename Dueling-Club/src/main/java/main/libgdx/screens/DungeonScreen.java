@@ -302,13 +302,15 @@ public class DungeonScreen extends ScreenWithLoader {
                         guiStage.getBatch().end();
                     }
                 }
-
+                gridStage.setDebugAll(false);
                 gridStage.draw();
 
 
+                guiStage.setDebugAll(false);
                 guiStage.draw();
 
                 if (dialogsStage != null) {
+                    dialogsStage.setDebugAll(false);
                     dialogsStage.act(delta);
                     if (dialogsStage.isDone()) {
                         final ChainedStage dialogsStage = this.dialogsStage;

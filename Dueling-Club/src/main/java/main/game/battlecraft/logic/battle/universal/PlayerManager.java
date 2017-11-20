@@ -58,12 +58,8 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
             players.add(player);
             if (player.isEnemy())
                 player.setAi(true);
+initUnitData(player, i);
 
-            UnitData[] unitData = getMaster().getGame().getDataKeeper().getUnitData();
-            if (unitData != null)
-                if (unitData.length > i) {
-                    player.setUnitData(unitData[i]);
-                }
             FLAG_COLOR color=getRandomColorFlag(player.isEnemy());
             player.setFlagColor(color);
 
@@ -74,6 +70,14 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
             DC_Player.NEUTRAL = (DC_Player) Player.NEUTRAL;
             players.add(DC_Player.NEUTRAL);
         }
+    }
+
+    protected void initUnitData(DC_Player player, int i) {
+        UnitData[] unitData = getMaster().getGame().getDataKeeper().getUnitData();
+        if (unitData != null)
+            if (unitData.length > i) {
+                player.setUnitData(unitData[i]);
+            }
     }
 
 

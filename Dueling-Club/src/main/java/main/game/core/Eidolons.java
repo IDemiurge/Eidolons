@@ -34,7 +34,11 @@ public class Eidolons {
         mainGame.init();
 }
 
-//    public static void init(){
+    public static EidolonsGame getMainGame() {
+        return mainGame;
+    }
+
+    //    public static void init(){
 //
 //    }
     public static DC_Game getGame() {

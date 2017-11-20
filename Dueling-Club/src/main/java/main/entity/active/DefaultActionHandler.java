@@ -205,6 +205,9 @@ public class DefaultActionHandler {
         DC_ActiveObj pick = null;
         int max = 0;
         for (DC_ActiveObj attack : subActions) {
+            if (attack.getActiveWeapon().isNatural())
+                if (attack.getOwnerObj().getWeapon(attack.isOffhand())!=null )
+                    continue;
             if (!attack.canBeActivated(attack.getRef(), true))
                 continue;
             if (!attack.canBeTargeted(target.getId()))

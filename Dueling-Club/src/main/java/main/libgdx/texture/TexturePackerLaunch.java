@@ -19,9 +19,9 @@ import java.util.List;
  */
 public class TexturePackerLaunch {
     public static final String ATLAS_EXTENSION = ".txt";
-    public static final String WORKSPACE_PATH = PathFinder.getWeaponAnimPath() + "workspace//";
+    public static final String WORKSPACE_PATH = PathFinder.getImagePath()+PathFinder.getWeaponAnimPath() + "workspace//";
     public static final boolean TRIM = true;
-    private static final String OUTPUT_DIR =  PathFinder.getWeaponAnimPath() + "atlas//";
+    private static final String OUTPUT_DIR = PathFinder.getImagePath()+ PathFinder.getWeaponAnimPath() + "atlas//";
     static String packs[] = {
 //     "long swords",
      "hammers",
@@ -97,7 +97,7 @@ public class TexturePackerLaunch {
     public static void packWeaponSprites(String[] args) {
         Settings settings = getSetting();
         for (String sub : args) {
-            String dir = PathFinder.getWeaponAnimPath() + "workspace//" + sub;
+            String dir =PathFinder.getImagePath()+ PathFinder.getWeaponAnimPath() + "workspace//" + sub;
             List<File> subFolders = FileManager.getFilesFromDirectory(dir, true);
             boolean processed=false;
             for (File subFolder : subFolders) {

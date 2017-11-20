@@ -18,6 +18,7 @@ public class ContainerObj extends DungeonObj {
     }
 
     private void initInventory() {
+        if ( ContainerMaster.isGenerateItemsForContainers())
         getDM().initContents(this);
         items= getInitializer().initContainedItems(PROPS.INVENTORY, new DequeImpl<>(), false);
         itemsInitialized = true;

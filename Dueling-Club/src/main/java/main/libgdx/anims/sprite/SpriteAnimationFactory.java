@@ -21,7 +21,7 @@ public class SpriteAnimationFactory {
     getSpriteAnimation(String texturePath) {
         if (!ImageManager.isImage(texturePath)) {
             main.system.auxiliary.log.LogMaster.log(1, "*********NO SPRITE FOUND " + texturePath);
-            texturePath = ImageManager.getEmptyItemIconPath(false);
+
             if (Showcase.isRunning()) {
                 main.system.auxiliary.log.LogMaster.log(1, "trying anyway ");
                 try {
@@ -30,7 +30,7 @@ public class SpriteAnimationFactory {
 
                 }
 
-            }
+            } else texturePath = ImageManager.getEmptyItemIconPath(false);
         }
         return new SpriteAnimation(texturePath);
     }
@@ -57,13 +57,13 @@ public class SpriteAnimationFactory {
         if (anim != null)
             return anim;
 //        if (Showcase.isRunning())
-            try {
-                anim = new SpriteAnimation(defaultFrameDuration, false, 1, path, null, singleSprite);
-            } catch (Exception e) {
-                main.system.auxiliary.log.LogMaster.log(1,
-                 "*********NO SPRITE FOUND getSpriteAnimation " + path);
-                return getSpriteAnimation(ImageManager.getEmptyItemIconPath(false), false);
-            }
+        try {
+            anim = new SpriteAnimation(defaultFrameDuration, false, 1, path, null, singleSprite);
+        } catch (Exception e) {
+            main.system.auxiliary.log.LogMaster.log(1,
+             "*********NO SPRITE FOUND getSpriteAnimation " + path);
+            return getSpriteAnimation(ImageManager.getEmptyItemIconPath(false), false);
+        }
         cache.put(path.toLowerCase(), anim);
         return anim;
     }

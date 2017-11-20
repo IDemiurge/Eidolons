@@ -621,7 +621,7 @@ public class ImageManager {
     }
 
     public static String getValueIconsPath() {
-        return PATH + VALUE_ICONS_PATH;
+        return  VALUE_ICONS_PATH;
     }
 
     public static boolean isValidImage(Image img) {

@@ -11,6 +11,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.ConcurrentMap;
 import main.data.DataManager;
 import main.data.GenericItemGenerator;
+import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.item.DC_ArmorObj;
 import main.entity.item.DC_HeroItemObj;
@@ -203,6 +204,8 @@ public class ItemGenerator implements GenericItemGenerator {
     private static ObjType generateJewelryItem(ObjType type, JEWELRY_ITEM_TRAIT trait,
                                                MAGICAL_ITEM_LEVEL level) {
         boolean ring = ItemMaster.isRing(type);
+        if (trait == null)
+            return null;
         PARAMETER[] params = trait.getParams();
         PARAMETER p = params[0];
         ObjType newType = generateEmptyJewelryItem(ring, type, null);
@@ -629,7 +632,12 @@ public class ItemGenerator implements GenericItemGenerator {
         JEWELRY_ITEM_TRAIT trait =
          new EnumMaster<JEWELRY_ITEM_TRAIT>().
           retrieveEnumConst(JEWELRY_ITEM_TRAIT.class, typeName);
-
+        if (trait == null) {
+            typeName = VariableManager.removeVarPart(typeName).replaceFirst("of", "").trim();
+            trait =
+             new EnumMaster<JEWELRY_ITEM_TRAIT>().
+              retrieveEnumConst(JEWELRY_ITEM_TRAIT.class, typeName);
+        }
         return generateJewelryItem(objType, trait, itemLevel);
     }
 

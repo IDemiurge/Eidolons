@@ -5,7 +5,6 @@ import main.content.CONTENT_CONSTS2.SFX;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.VALUE;
-import main.data.filesys.PathFinder;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
@@ -38,11 +37,16 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
         if (!StringMaster.isEmpty(value)) {
             switch (name) {
                 case SPRITES:
-                    value =
-                            StringMaster.addMissingPathSegments(value, PathFinder.getSpritesPath());
+//                    shot in the leg!
+// main.system.auxiliary.log.LogMaster.log(1,">>>>> SPRITES set" +value +
+//                     "=>  " );
+//                    value =
+//                            StringMaster.addMissingPathSegments(value,
+//                             PathFinder.getSpritesPath());
+//                    main.system.auxiliary.log.LogMaster.log(1,value  );
                     break;
                 case PARTICLE_EFFECTS:
-                    value = StringMaster.addMissingPathSegments(value, PathFinder.getSfxPath());
+//                    value = StringMaster.addMissingPathSegments(value, PathFinder.getSfxPath());
                     break;
 
             }

@@ -87,7 +87,7 @@ public class InventoryWithAction extends TablePanel {
     private void initButtonListeners() {
         final InventoryDataSource source = (InventoryDataSource) getUserObject();
         ButtonStyled button = (ButtonStyled) doneButton.getActor();
-        button.getListeners().clear();
+        button.clearListeners() ;
         button.addListener(source.getDoneHandler());
 //        button.setDisabled(source.isDoneDisabled());
 

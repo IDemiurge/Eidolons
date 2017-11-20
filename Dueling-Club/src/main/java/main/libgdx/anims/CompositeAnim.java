@@ -64,7 +64,7 @@ public class CompositeAnim implements Animation {
         this(new XLinkedMap<>());
     }
 
-    public boolean tryDraw(Batch batch) {
+    public boolean tryDraw(Batch batch) { if (isFinished()) return false;
         try {
             return draw(batch);
         } catch (Exception e) {
@@ -348,7 +348,7 @@ public class CompositeAnim implements Animation {
 
     public void addEventAnim(Anim anim, Event event) {
         ANIM_PART partToAddAt = anim.getPart();
-        if (part == null) {
+        if (partToAddAt == null) {
             partToAddAt = EventAnimCreator.getPartToAttachTo(event);
         }
         float delay = EventAnimCreator.getEventAnimDelay(event, anim, partToAddAt);
@@ -356,7 +356,7 @@ public class CompositeAnim implements Animation {
 
     }
 
-    private void attach(Animation anim, ANIM_PART partToAddAt, float delay) {
+    private void attach(Animation anim, ANIM_PART partToAddAt, float delay) { //if (partToAddAt==null ) partToAddAt=anim.getPart();
         if (delay != 0) {
             anim.setDelay(delay);
             attachDelayed(anim, partToAddAt);

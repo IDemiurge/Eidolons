@@ -77,15 +77,16 @@ public class AttackAnim extends ActionAnim {
         if (weapon == null) {
             return "";
         }
+        String path = PathFinder.getImagePath();
         StrPathBuilder builder = new StrPathBuilder(PathFinder.getSpritesPath(), "weapons");
-        String path = "";
+
         builder.append
          (weapon.isNatural() ? "natural"
           : null);
         builder.append(weapon.isRanged() ? "ranged" : null);
         builder.append(weapon.isAmmo() ? "ammo" : null);
         builder.append(TestMasterContent.isArtifact(weapon) ? "artifact" : null);
-        path = builder.toString();
+        path += builder.toString();
 
         String file = findWeaponSprite(path, weapon);
         if (file == null) {

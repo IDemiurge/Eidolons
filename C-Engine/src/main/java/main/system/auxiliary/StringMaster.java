@@ -5,6 +5,7 @@ import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
+import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -1711,7 +1712,7 @@ public class StringMaster {
     public static String getAppendedImageFile(String file, String suffix) {
         String format= getFormat(file);
         String newFile = cropFormat(file) + suffix + format;
-        if (FileManager.isImageFile(newFile)) {
+        if (FileManager.isFile(PathFinder.getImagePath()+ newFile)) {
             return newFile;
         }
         return file;

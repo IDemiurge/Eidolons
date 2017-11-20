@@ -21,7 +21,7 @@ import java.util.function.Supplier;
  */
 public class FloatingText extends Group {
 
-    private static final boolean DEBUG_MODE = true;
+    private static final boolean DEBUG_MODE = false;
     private static final Integer DEFAULT_FONT_SIZE = 18;
     int alphaLoops = 1;
     boolean inverseAlpha;
@@ -108,7 +108,7 @@ public class FloatingText extends Group {
             parallelAction = new ParallelAction(alphaActionSequence, moveByAction);
         }
 
-
+        clear();
         if (imageSupplier != null) {
             if (!StringMaster.isEmpty(imageSupplier.get())) {
                 Image image = new Image(TextureCache.getOrCreateR(imageSupplier.get()));
@@ -124,18 +124,24 @@ public class FloatingText extends Group {
         addActor(label);
 
         setPosition(origin.x, origin.y);
+
+        getActions().clear();
         addAction(parallelAction);
         addAction(afterAction);
         parallelAction.setTarget(this);
-        afterAction.setTarget(this);
+
+//        if (!ActorMaster.getActionsOfClass(this, AfterAction.class).isEmpty()) {
+//            remove();
+//        } else
+            afterAction.setTarget(this);
         setInitialized(true);
         return this;
     }
 
     public String getText() {
         if (textSupplier != null) {
-            if (textSupplier.get()!=null )
-            text = textSupplier.get();
+            if (textSupplier.get() != null)
+                text = textSupplier.get();
         }
         return text;
     }

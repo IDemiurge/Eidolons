@@ -609,11 +609,14 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public static boolean isPregenerateItems() {
-        return true;
+        return false;
     }
 
     public static boolean isGenerateItemsForUnits() {
         return false;
+    }
+    public static boolean isGenerateItemsForContainers() {
+        return true;
     }
 
     public enum CONTAINER_ACTION implements DUNGEON_OBJ_ACTION {

@@ -4,6 +4,7 @@ import main.data.filesys.PathFinder;
 import main.game.core.Eidolons;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
+import main.test.frontend.ScenarioLauncher;
 
 /**
  * Created by JustMe on 11/17/2017.
@@ -29,6 +30,8 @@ public class HelpMaster {
     }
 
     public static boolean isDefaultTextOn() {
+        if (ScenarioLauncher.missionIndex>0)
+            return false;
         return true;
     }
 }

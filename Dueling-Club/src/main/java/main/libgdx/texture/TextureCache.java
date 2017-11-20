@@ -184,11 +184,8 @@ public class TextureCache {
 
     private Texture _getOrCreate(String path) {
 
-//        if (path.contains(imagePath)) {
-//            throw new RuntimeException("fix this path: '" + path + "'");
-//        }
-        path = StringMaster.removePreviousPathSegments(path, imagePath);
-        path = path.replace("\\", "/").toLowerCase();
+            path = path
+             .toLowerCase();
         if (!path.startsWith("/")) {
             path = "/" + path;
         }

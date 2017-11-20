@@ -36,6 +36,7 @@ import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.battlecraft.logic.dungeon.test.TestDungeonMaster;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import main.game.battlecraft.logic.meta.universal.MetaGame;
 import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.game.battlecraft.rules.DC_Rules;
 import main.game.battlecraft.rules.combat.attack.DC_AttackMaster;
@@ -808,6 +809,10 @@ public class DC_Game extends MicroGame {
         for (Obj sub : cachedObjects) {
             getState().addObject(sub);
         }
+    }
+
+    public <E extends MetaGame> void setMetaMaster(MetaGameMaster<E> metaMaster) {
+        this.metaMaster = metaMaster;
     }
 
     public enum GAME_MODES {

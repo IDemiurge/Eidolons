@@ -75,7 +75,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         if (getGame().getMetaMaster().getPartyManager().isRandomOneHero()||
          getGame().getMetaMaster().getPartyManager().isChooseOneHero()) {
             List<String> members =  StringMaster.openContainer(type.getProperty(PROPS.MEMBERS));
-            if (getGame().getMetaMaster().getPartyManager().isRandomOneHero()) {
+            if (getGame().getMetaMaster().getPartyManager().isRandomOneHero() || members.size()==1) {
                 String hero = new RandomWizard<String>().getRandomListItem(
                  members);
                 type.setProperty(PROPS.MEMBERS , hero);

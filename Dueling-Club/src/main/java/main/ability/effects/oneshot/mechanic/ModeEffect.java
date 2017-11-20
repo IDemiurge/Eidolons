@@ -96,6 +96,7 @@ divination?
  Unit unit = (Unit) getRef().getSourceObj();
         unit.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().
          unitActivatesMode(unit);
+        unit.getGame().getStateManager().reset(unit);
         return false;
     }
 

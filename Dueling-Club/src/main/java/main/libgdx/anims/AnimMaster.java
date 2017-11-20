@@ -566,4 +566,8 @@ public class AnimMaster extends Group {
         leadAnimation=null ;
         leadQueue.clear();
     }
+
+    public static boolean isPreconstructEventAnims() {
+        return false;
+    }
 }

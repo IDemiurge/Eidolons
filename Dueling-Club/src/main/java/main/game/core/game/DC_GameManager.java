@@ -592,7 +592,7 @@ public class DC_GameManager extends GameManager {
             event.getRef().setDebug(getGame().getDebugMaster().isDebugFunctionRunning());
         }
         if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null ))
-        if (AnimMaster.isOn()) {
+            if (AnimMaster.isPreconstructEventAnims())    if (AnimMaster.isOn()) {
             if (!Showcase.isRunning())
                 AnimMaster.getInstance().getConstructor().preconstruct(event);
             else

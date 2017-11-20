@@ -103,7 +103,9 @@ public class Unit extends DC_UnitModel {
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
-
+        if (isHero()){
+            main.system.auxiliary.log.LogMaster.log(1,this + " hero created " +getId());
+        }
 
         // getGame().getTestMaster().getTestSpells(); TODO add!
     }
@@ -1369,26 +1371,26 @@ if (ExplorationMaster.isExplorationOn())
 
     @Override
     protected void putParameter(PARAMETER param, String value) {
-       if (!isMine()){
-           if (param == PARAMS.C_TOUGHNESS){
-            int v = StringMaster.getInteger(value);
-            if (v > getIntParam(PARAMS.TOUGHNESS)) {
-                return ;
-            }
-        }
-        if (param == PARAMS.C_ENDURANCE){
-            int v = StringMaster.getInteger(value);
-            if (v > getIntParam(PARAMS.ENDURANCE)) {
-                return ;
-            }
-        }}
+//       if (!isMine()){
+//           if (param == PARAMS.C_TOUGHNESS){
+//            int v = StringMaster.getInteger(value);
+//            if (v > getIntParam(PARAMS.TOUGHNESS)) {
+//                return ;
+//            }
+//        }
+//        if (param == PARAMS.C_ENDURANCE){
+//            int v = StringMaster.getInteger(value);
+//            if (v > getIntParam(PARAMS.ENDURANCE)) {
+//                return ;
+//            }
+//        }}
 
-        if (param == PARAMS.AP_PENALTY){
-            int v = StringMaster.getInteger(value);
-            if (v > 50) {
-                return ;
-            }
-        }
+//        if (param == PARAMS.AP_PENALTY){
+//            int v = StringMaster.getInteger(value);
+//            if (v > 50) {
+//                return ;
+//            }
+//        }
         super.putParameter(param, value);
     }
 }

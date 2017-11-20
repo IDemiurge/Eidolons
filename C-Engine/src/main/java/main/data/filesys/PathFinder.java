@@ -72,6 +72,7 @@ public class PathFinder {
         RES_PATH = RES_FOLDER_NAME + File.separator;
         IMG_PATH = ENGINE_PATH + RES_PATH + "img"+StringMaster.getPathSeparator();
 
+        main.system.auxiliary.log.LogMaster.log(1,"IMG_PATH PATH= "+IMG_PATH   );
         SND_PATH = ENGINE_PATH + RES_PATH + "sound"+StringMaster.getPathSeparator();
 
         FONT_PATH = ENGINE_PATH + RES_PATH + "Fonts"+StringMaster.getPathSeparator();
@@ -234,17 +235,20 @@ public class PathFinder {
 
     public static String getSfxPath() {
         init();
-        return getImagePath() + "mini"+StringMaster.getPathSeparator()+"sfx"+StringMaster.getPathSeparator();
+        return getImagePath() + StringMaster.getPathSeparator()+"mini"+StringMaster.getPathSeparator()+"sfx"+StringMaster.getPathSeparator();
     }
 
     public static String getSpritesPath() {
         init();
-        return getImagePath() +  "mini"+StringMaster.getPathSeparator()+"sprites"+StringMaster.getPathSeparator() ;
+        main.system.auxiliary.log.LogMaster.log(1,"SPRITE PATH= "+getImagePath() +  StringMaster.getPathSeparator()+
+         "mini"+StringMaster.getPathSeparator()+"sprites"+StringMaster.getPathSeparator() );
+        return getImagePath() +  StringMaster.getPathSeparator()+
+         "mini"+StringMaster.getPathSeparator()+"sprites"+StringMaster.getPathSeparator() ;
     }
 
     public static String getParticlePresetPath() {
         init();
-        return getImagePath() + "mini"+StringMaster.getPathSeparator()+"sfx"+StringMaster.getPathSeparator();
+        return getImagePath() + StringMaster.getPathSeparator()+"mini"+StringMaster.getPathSeparator()+"sfx"+StringMaster.getPathSeparator();
     }
 
     public static String getMusicPath() {
@@ -266,7 +270,7 @@ public class PathFinder {
     }
 
     public static String getEmblemAutoFindPath() {
-        return StrPathBuilder.build(getImagePath(), "ui", "emblems", "auto")+StringMaster.getPathSeparator();
+        return StrPathBuilder.build( "ui", "emblems", "auto")+StringMaster.getPathSeparator();
     }
 
     public static String getWeaponAnimPath() {
@@ -275,7 +279,7 @@ public class PathFinder {
 
     private static String getSpritesPathMain() {
         init();
-        return getImagePath() +
+        return
          "main"+StringMaster.getPathSeparator()+"sprites"+StringMaster.getPathSeparator() ;
     }
 

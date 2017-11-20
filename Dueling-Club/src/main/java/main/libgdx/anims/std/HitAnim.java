@@ -164,6 +164,7 @@ public class HitAnim extends ActionAnim {
     @Override
     public void start() {
         super.start();
+        getActions().clear();
         addFadeAnim();
 //        if (textSupplier != null)
 //            floatingText.setText(textSupplier.get());
@@ -194,6 +195,11 @@ public class HitAnim extends ActionAnim {
 //         .get(BattleFieldObject);
 //        return actor;
         return getActor();
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
     }
 
     private String getTargetSuffix(Obj targetObj) {

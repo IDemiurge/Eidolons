@@ -9,6 +9,7 @@ import main.content.PROPS;
 import main.entity.obj.Structure;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.core.Eidolons;
+import main.libgdx.bf.GridConst;
 import main.libgdx.bf.SuperActor;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
@@ -55,6 +56,20 @@ public class ShadeLightCell extends SuperContainer {
                 break;
         }
         return false;
+    }
+
+    @Override
+    public float getWidth() {
+        if (type==SHADE_LIGHT.HIGLIGHT)
+        return super.getWidth();
+        return GridConst.CELL_W;
+    }
+
+    @Override
+    public float getHeight() {
+        if (type==SHADE_LIGHT.HIGLIGHT)
+            return super.getHeight();
+        return GridConst.CELL_H;
     }
 
     public float getBaseAlpha() {

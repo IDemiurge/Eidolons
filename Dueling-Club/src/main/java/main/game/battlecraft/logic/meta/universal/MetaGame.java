@@ -6,6 +6,7 @@ package main.game.battlecraft.logic.meta.universal;
 public abstract class MetaGame<E extends MetaGame > {
 
     MetaGameMaster<E> master ;
+    protected boolean restarted;
 
     public MetaGame(MetaGameMaster<E > master){
         this.master = master;
@@ -13,5 +14,14 @@ public abstract class MetaGame<E extends MetaGame > {
 
     public MetaGameMaster<E> getMaster() {
         return master;
+    }
+
+
+    public boolean isRestarted() {
+        return restarted;
+    }
+
+    public void setRestarted(boolean restarted) {
+        this.restarted = restarted;
     }
 }

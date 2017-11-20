@@ -47,7 +47,9 @@ public class Mapper {
      };
     private static final String TEXT_NODE = "#text";
     private static final String ARG_LIST_SEPARATOR = ": ";
-
+    static Map<String,Map<List<Argument>, AE_Item>> caches = new HashMap<>();
+    
+    
     private static Map<Argument, List<AE_Item>> map = new HashMap<>();
     private static Map<String, AE_Item> itemMap = new HashMap<>();
     private static Map<ARGS, AE_Item> primitiveItems = new HashMap<>();
@@ -59,7 +61,11 @@ public class Mapper {
     }
 
     public static AE_Item getItem(String itemName, List<Argument> argList) {
-        AE_Item item = itemMap.get(itemName);
+        Map<List<Argument>, AE_Item> itemCache = caches.get(itemName);
+        AE_Item item =itemCache==null ? null : itemCache.get(argList);
+        if (item != null)
+            return item;
+        item = itemMap.get(itemName);
         if (item == null) {
             LogMaster.log(1, "*** No item for " + itemName);
             return null;
@@ -71,12 +77,21 @@ public class Mapper {
                 return item;
             }
 
+//subMap = subMaps.get(itemName);
             for (String key : itemMap.keySet()) {
                 if (key.contains(ARG_LIST_SEPARATOR)) {
+
                     String substring = key.substring(0, key.indexOf(ARG_LIST_SEPARATOR));
                     if (StringMaster.compareByChar(substring, itemName, true)) {
+                        item = itemMap.get(key);
                         if (itemMap.get(key).getArgList().equals(argList)) {
-                            return itemMap.get(key);
+                            {
+                                caches.put(itemName, itemCache);
+                                if (itemCache==null )
+                                    itemCache = new HashMap<>();
+                                itemCache.put(argList, item);
+                                return itemMap.get(key);
+                            }
                         }
                     }
                 }
@@ -263,6 +278,15 @@ public class Mapper {
                 }
 
                 AE_Item item = new AE_Item(name, mappedArg, argList, CLASS, container, constr);
+                Map<List<Argument>, AE_Item> itemCache = caches.get(name);
+                if (itemCache==null )
+                {
+                    itemCache = new HashMap<>();
+                    caches.put(name, itemCache);
+                }
+                itemCache.put(argList, item);
+
+
                 if (!itemMap.containsKey(name)) {
                     itemMap.put(name, item);
                 } else {
@@ -295,7 +319,7 @@ public class Mapper {
             }
         }
         Argument arg = translateToArg(key);
-        if (arg!=null )
+        if (arg != null)
             return arg.toString();
 //        Class<?> core = translateToCoreClass(key.getSimpleName());
 //        for (Argument sub : args) {
