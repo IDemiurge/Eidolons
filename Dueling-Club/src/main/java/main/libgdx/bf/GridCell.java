@@ -101,7 +101,6 @@ public class GridCell extends Group implements Borderable {
     }
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
             if (!DungeonScreen.getInstance().getController().isWithinCamera
 //             (getX(), getY(), getWidth(), getHeight()))
  (this)) {

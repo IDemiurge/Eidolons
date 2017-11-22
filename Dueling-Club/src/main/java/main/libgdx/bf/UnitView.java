@@ -9,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
+import main.libgdx.bf.overlays.HpBar;
 import main.libgdx.gui.panels.dc.InitiativePanel;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.shaders.GrayscaleShader;
 import main.libgdx.texture.TextureCache;
@@ -21,9 +23,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class UnitView extends BaseView {
     protected static AtomicInteger lastId = new AtomicInteger(1);
+    private static Boolean hpAlwaysVisible;
     protected final int curId;
     protected int initiativeIntVal;
     protected TextureRegion clockTexture;
+    protected HpBar hpBar;
     protected Label initiativeLabel;
     protected Label mainHeroLabel;
     protected Image clockImage;
@@ -39,7 +43,6 @@ public class UnitView extends BaseView {
     protected boolean initialized;
     protected boolean stealth;
 
-
     public UnitView(UnitViewOptions o) {
         this(o, lastId.getAndIncrement());
     }
@@ -50,6 +53,38 @@ public class UnitView extends BaseView {
         this.curId = curId;
         setTeamColor(o.getTeamColor());
         init(o.getClockTexture(), o.getClockValue());
+    }
+
+    public static Boolean getHpAlwaysVisible() {
+        if (hpAlwaysVisible == null) {
+            hpAlwaysVisible = OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.HP_BARS_ALWAYS_VISIBLE);
+        }
+        return hpAlwaysVisible;
+    }
+
+    public HpBar getHpBar() {
+        return hpBar;
+    }
+
+    public void setHpBar(HpBar hpBar) {
+        if (this.hpBar != null) {
+            this.hpBar.remove();
+        }
+        this.hpBar = hpBar;
+        if (!GridPanel.isHpBarsOnTop() || !(this instanceof GridUnitView)) {
+            addActor(hpBar);
+            hpBar.setPosition(GdxMaster.centerWidth(hpBar), -hpBar.getHeight() / 2);
+        }
+        if ((this instanceof GridUnitView))
+            hpBar.setVisible(false);
+        else
+            hpBar.setQueue(true);
+    }
+
+    @Override
+    public void setHovered(boolean hovered) {
+        super.setHovered(hovered);
+        getHpBar().setLabelsDisplayed(hovered);
     }
 
     public void setToolTip(ToolTip toolTip) {
@@ -94,7 +129,6 @@ public class UnitView extends BaseView {
         setInitialized(true);
     }
 
-
     protected void updateVisible() {
     }
 
@@ -114,11 +148,14 @@ public class UnitView extends BaseView {
 
         if (initiativeLabel != null) {
             if (InitiativePanel.isLeftToRight())
-            clockImage.setPosition(GdxMaster.right(clockImage), 0);
+                clockImage.setPosition(GdxMaster.right(clockImage), 0);
             initiativeLabel.setPosition(
              clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()),
              clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
         }
+        if (!GridPanel.isHpBarsOnTop() || !(this instanceof GridUnitView))
+            if (hpBar != null)
+                hpBar.setPosition(GdxMaster.centerWidth(hpBar), -hpBar.getHeight() / 2);
         if (isInitialized())
             reset();
     }
@@ -160,6 +197,12 @@ public class UnitView extends BaseView {
         }
 //        alphaFluctuation(emblemBorder, delta);
 
+
+    }
+
+
+    protected boolean isHpBarVisible() {
+        return true;
     }
 
 
@@ -176,19 +219,15 @@ public class UnitView extends BaseView {
         if (flickering)
             if (SuperActor.alphaFluctuationOn) //TODO fix
                 ActorMaster.addFadeInOrOutIfNoActions(this, 5);
-            else
-            if (getColor().a ==0)
-                getColor().a =1;
+            else if (getColor().a == 0)
+                getColor().a = 1;
         if (outline != null) {
 //            batch.draw(outline, getX(), getY());
             getPortrait().setDrawable(new TextureRegionDrawable(outline));
         } else {
-            if (originalTextureAlt != null)
-            {
+            if (originalTextureAlt != null) {
                 getPortrait().setDrawable(TextureCache.getOrCreateTextureRegionDrawable(originalTextureAlt));
-            }
-            else
-            {
+            } else {
                 {
                     getPortrait().setDrawable(TextureCache.getOrCreateTextureRegionDrawable(originalTexture));
                 }
@@ -198,13 +237,18 @@ public class UnitView extends BaseView {
 
         if (batch.getShader() == GrayscaleShader.getGrayscaleShader())
             batch.setShader(shader);
+
+        if (!(this instanceof GridUnitView)) {
+//            getHpBar().drawAt(batch, 0, 0);
+            return;
+        }
     }
 
     public void setFlickering(boolean flickering) {
         this.flickering = flickering;
 //        if (!flickering) {
-            getPortrait().getColor().a = 1;
-            getColor().a = 1;
+        getPortrait().getColor().a = 1;
+        getColor().a = 1;
     }
 
     public void setGreyedOut(boolean greyedOut) {
@@ -255,5 +299,18 @@ public class UnitView extends BaseView {
 
     public void setInitialized(boolean initialized) {
         this.initialized = initialized;
+    }
+
+    public void resetHpBar(ResourceSourceImpl resourceSource) {
+        if (getHpBar() == null)
+            hpBar = new HpBar((resourceSource));
+        getHpBar().reset(resourceSource);
+    }
+
+    @Override
+    public void setBorder(TextureRegion texture) {
+        super.setBorder(texture);
+        if (getHpBar() == null)
+            getHpBar().setZIndex(Integer.MAX_VALUE);
     }
 }

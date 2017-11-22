@@ -16,18 +16,19 @@ public abstract class SuperActor extends Group implements Borderable {
     protected static final float DEFAULT_ALPHA_FLUCTUATION = 0.4f;
     protected static final float DEFAULT_ALPHA_MIN = 0.2f;
     protected static final float DEFAULT_ALPHA_MAX = 1f;
-    protected static boolean alphaFluctuationOn;
+    protected static boolean alphaFluctuationOn=true;
     protected Image border = null;
     protected TextureRegion borderTexture;
     protected float fluctuatingAlpha = 1f;
     protected boolean alphaGrowing = false;
     protected boolean teamColorBorder;
     protected Color teamColor;
-    protected float scaledWidth;
-    protected float scaledHeight;
+    protected float scaledWidth=1;
+    protected float scaledHeight=1;
     protected boolean hovered;
     protected boolean active;
     private static boolean cullingOff;
+    private boolean hoverResponsive;
 
     public static boolean isCullingOff() {
         return cullingOff;
@@ -224,5 +225,13 @@ public abstract class SuperActor extends Group implements Borderable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public boolean isHoverResponsive() {
+        return hoverResponsive;
+    }
+
+    public void setHoverResponsive(boolean hoverResponsive) {
+        this.hoverResponsive = hoverResponsive;
     }
 }

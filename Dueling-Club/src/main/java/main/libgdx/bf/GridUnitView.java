@@ -1,11 +1,15 @@
 package main.libgdx.bf;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.libgdx.GdxMaster;
 import main.libgdx.anims.ActorMaster;
+import main.libgdx.bf.overlays.HpBar;
 import main.libgdx.gui.panels.dc.InitiativePanel;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
@@ -43,9 +47,12 @@ public class GridUnitView extends UnitView {
     }
 
     private void initQueueView(UnitViewOptions o) {
+        setHoverResponsive(o.isHoverResponsive());
         initiativeQueueUnitView = new UnitView(o, curId);
         initiativeQueueUnitView.setSize(InitiativePanel.imageSize, InitiativePanel.imageSize);
+        initiativeQueueUnitView.setHoverResponsive(isHoverResponsive());
     }
+
 
     @Override
     public void setBorder(TextureRegion texture) {
@@ -82,6 +89,7 @@ public class GridUnitView extends UnitView {
     }
 
     private void init(TextureRegion arrowTexture, int arrowRotation, Texture iconTexture, TextureRegion emblem) {
+
         if (arrowTexture != null) {
             arrow = new Image(arrowTexture);
             addActor(arrow);
@@ -169,12 +177,21 @@ public class GridUnitView extends UnitView {
         if (arrow != null) {
 
             ActorMaster.addRotateByAction(arrow, arrowRotation, val % 360 + 90);
-
-
             arrowRotation = val + 90;
 //            arrow.setRotation(arrowRotation);
-
         }
+    }
+
+    public boolean isHpBarVisible() {
+        if (!getHpBar().getDataSource().canHpBarBeVisible() )
+            return false;
+        if (getHpAlwaysVisible())
+            return true;
+        if (!getHpBar().getDataSource().isHpBarVisible() )
+            return false;
+
+
+        return true;
     }
 
     protected void updateVisible() {
@@ -185,6 +202,9 @@ public class GridUnitView extends UnitView {
                 modeImage.setVisible(false);
             if (arrow != null)
                 arrow.setVisible(false);
+            if (getHpBar() != null)
+                getHpBar().setVisible(false);
+
         } else {
             if (emblemImage != null)
                 emblemImage.setVisible(true);
@@ -192,6 +212,8 @@ public class GridUnitView extends UnitView {
                 modeImage.setVisible(true);
             if (arrow != null)
                 arrow.setVisible(true);
+            if (getHpBar() != null)
+                getHpBar().setVisible(isHpBarVisible());
         }
     }
 
@@ -271,5 +293,45 @@ public class GridUnitView extends UnitView {
         return cellBackground;
     }
 
+    public void resetHpBar(ResourceSourceImpl resourceSource) {
+        super.resetHpBar(resourceSource);
+        if (initiativeQueueUnitView!=null )
+        initiativeQueueUnitView.resetHpBar(
+         resourceSource  );
+    }
 
+    @Override
+    public void setHpBar(HpBar hpBar) {
+        super.setHpBar(hpBar);
+        hpBar.setPosition(GdxMaster.centerWidth(hpBar),-hpBar.getHeight()/2);
+    }
+
+    @Override
+    public void setTeamColor(Color teamColor) {
+        super.setTeamColor(teamColor);
+        if (initiativeQueueUnitView!=null )
+            initiativeQueueUnitView.setTeamColor(teamColor);
+    }
+
+    @Override
+    public void setTeamColorBorder(boolean teamColorBorder) {
+        super.setTeamColorBorder(teamColorBorder);
+        if (initiativeQueueUnitView!=null )
+            initiativeQueueUnitView.setTeamColorBorder(teamColorBorder);
+    }
+
+    public void createHpBar(ResourceSourceImpl resourceSource) {
+         setHpBar(new HpBar(resourceSource));
+         if (initiativeQueueUnitView!=null )
+        initiativeQueueUnitView.setHpBar(new HpBar(resourceSource));
+    }
+
+    public void animateHpBarChange() {
+        if (!getHpBar().isVisible())
+            return ;
+
+        getHpBar().animateChange();
+        if (initiativeQueueUnitView!=null )
+        initiativeQueueUnitView. getHpBar().animateChange();
+    }
 }

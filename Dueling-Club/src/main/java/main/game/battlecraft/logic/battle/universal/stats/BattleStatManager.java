@@ -4,6 +4,7 @@ import main.content.ContentManager;
 import main.content.values.parameters.PARAMETER;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import main.game.battlecraft.logic.battle.universal.Battle;
 import main.game.battlecraft.logic.battle.universal.BattleHandler;
 import main.game.battlecraft.logic.battle.universal.BattleMaster;
@@ -72,7 +73,9 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
                     break;
                 }
             }
-        } else {
+        } else
+            if (AiTrainingRunner.running)
+            if (event.getRef().getAmount()!=null ){
             if (event.getType() instanceof EventType) {
                 modifyUnitModStat(target.isEnemyTo(source.getOwner()), (event.getType()).getArg()
                  , source, event.getRef().getAmount());

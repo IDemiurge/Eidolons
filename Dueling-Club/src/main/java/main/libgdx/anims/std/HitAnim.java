@@ -4,10 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.actions.*;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
@@ -31,6 +28,8 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.images.ImageManager;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
 import main.system.options.OptionsMaster;
+
+import static main.system.GuiEventType.HP_BAR_UPDATE;
 
 /**
  * Created by JustMe on 1/16/2017.
@@ -78,7 +77,7 @@ public class HitAnim extends ActionAnim {
             }
         }
         this.c = c;
-        duration = 0.55f;
+        duration = 0.85f;
         setLoops(1);
 
 
@@ -104,6 +103,9 @@ public class HitAnim extends ActionAnim {
 
     @Override
     protected Action getAction() {
+        if (!OptionsMaster.getAnimOptions().getBooleanValue(
+         ANIMATION_OPTION.HIT_ANIM_DISPLACEMENT))
+            return null;
         if (getRef() == null)
             return null;
         if (getRef().getSourceObj() == null)
@@ -137,7 +139,17 @@ public class HitAnim extends ActionAnim {
         }
         moveBack.setPosition(x, y);
         moveBack.setDuration(getDuration() / 2);
-        return new SequenceAction(move, moveBack);
+        SequenceAction sequence = new SequenceAction(move, moveBack);
+        if (isDelayed()){
+            DelayAction delayed = new DelayAction(getDuration() / 3);
+            delayed.setAction(sequence);
+            return delayed;
+        }
+        return sequence;
+    }
+
+    private boolean isDelayed() {
+        return true;
     }
 
     public void addFadeAnim() {
@@ -216,6 +228,8 @@ public class HitAnim extends ActionAnim {
         }
         getActionTarget().setX(originalActorX);
         getActionTarget().setX(originalActorY);
+        GuiEventManager.trigger(HP_BAR_UPDATE, getActionTarget());
+        getParentAnim().setHpUpdate(false);
     }
 
     @Override

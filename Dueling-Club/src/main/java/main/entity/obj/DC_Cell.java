@@ -210,4 +210,8 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     }
 
+    @Override
+    public boolean isPlayerDetected() {
+        return isDetectedByPlayer();
+    }
 }

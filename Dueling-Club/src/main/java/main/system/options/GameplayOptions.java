@@ -30,7 +30,9 @@ public class GameplayOptions extends  Options<GAMEPLAY_OPTION,GAMEPLAY_OPTION>{
         MANUAL_CONTROL(false),
         DEBUG_MODE(false),
 
-        INFO_DETAIL_LEVEL(INFO_LEVEL.values());
+        INFO_DETAIL_LEVEL(INFO_LEVEL.values()),
+        DEFAULT_WAIT_TIME(60, 10, 300),
+        HP_BARS_ALWAYS_VISIBLE(true);
      private Boolean exclusive;
      private Integer min;
      private Integer max;

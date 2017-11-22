@@ -5,8 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.libgdx.screens.DungeonScreen;
 import main.system.auxiliary.RandomWizard;
-import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import main.system.options.OptionsMaster;
 
 /**
  * Created by JustMe on 1/10/2017.
@@ -39,7 +37,6 @@ public class Ambience extends EmitterActor {
         }
         if (isCullingOn())
         if ( DungeonScreen.getInstance().getController()!=null )
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
             if (!DungeonScreen.getInstance().getController().
              isWithinCamera(getX(), getY(), getWidth()*2, getHeight()*2)) {
                 return;
@@ -84,7 +81,6 @@ public class Ambience extends EmitterActor {
             return ;
         if (isCullingOn())
         if ( DungeonScreen.getInstance().getController()!=null )
-            if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OPTIMIZATION_ON))
             if (!DungeonScreen.getInstance().getController().
              isWithinCamera(getX(), getY(), getWidth() , getHeight() )) {
                 return;

@@ -221,7 +221,7 @@ public class DungeonScreen extends ScreenWithLoader {
     }
 
     private float getCameraMinCameraPanDist() {
-        return 140;
+        return 220; //TODO if too close to the edge also
     }
 
     private float getCameraDistanceFactor() {

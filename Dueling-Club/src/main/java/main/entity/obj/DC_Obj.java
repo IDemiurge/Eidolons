@@ -533,7 +533,7 @@ public abstract class DC_Obj extends MicroObj {
     public boolean isDetectedByPlayer() {
         if (VisionManager.isVisionHacked()) {
             return true;
-        }
+        } if (isMine()) return true;
         return detectedByPlayer;
     }
 

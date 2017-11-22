@@ -31,7 +31,7 @@ import java.util.Arrays;
 /**
  * Created by JustMe on 2/15/2017.
  */
-public class BattleFieldObject extends DC_Obj implements BfObj {
+public class BattleFieldObject extends DC_Obj implements BfObj  {
 
     protected FACING_DIRECTION facing;
     private DIRECTION direction;
@@ -408,5 +408,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     public boolean isItemsInitialized() {
         return false;
+    }
+
+    @Override
+    public boolean isPlayerDetected() {
+        return isDetectedByPlayer();
     }
 }

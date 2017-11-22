@@ -188,7 +188,7 @@ public class FloatingTextMaster {
             case CANNOT_ACTIVATE:
                 break;
             case HIT:
-                return StyleHolder.getSizedLabelStyle(StyleHolder.DEFAULT_FONT, 20);
+                return StyleHolder.getSizedLabelStyle(StyleHolder.DEFAULT_FONT, 22);
 //                DamageFactory.getDamageFromAttack(
 //                 DC_AttackMaster.getAttackFromAction(
 //                  (DC_ActiveObj) arg))

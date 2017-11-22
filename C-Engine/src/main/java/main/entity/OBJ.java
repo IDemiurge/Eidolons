@@ -63,4 +63,12 @@ public interface OBJ extends Referred, Serializable, Runnable {
     boolean checkProperty(PROPERTY PROP, String value);
 
     boolean modifyParameter(PARAMETER param, int amount, Integer minmax);
+
+    boolean isFull(PARAMETER p);
+
+    String getParam(PARAMETER param);
+
+    Integer getIntParam(PARAMETER param);
+
+    boolean isMine();
 }

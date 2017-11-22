@@ -1,10 +1,12 @@
 package main.game.module.dungeoncrawl.explore;
 
+import main.ability.conditions.special.RestCondition;
 import main.content.ContentManager;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.mode.MODE;
 import main.content.values.parameters.PARAMETER;
+import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.UnitAI;
@@ -15,6 +17,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
+import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -64,50 +68,67 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     public Boolean playerRests(float timeInSeconds) {
-      return   playerWaits(timeInSeconds, true);
+        return playerWaits(timeInSeconds, true);
     }
 
-    public void playerWaits(float timeInSeconds ) {
+    public void playerWaits(float timeInSeconds) {
         playerWaits(timeInSeconds, false);
     }
-        public Boolean playerWaits(float timeInSeconds, boolean rest) {
-        float wakeUpTime = time + timeInSeconds;
-        float speedFactor =rest? 25 :10;
-        int period = 100;
-        float actPeriod = period * speedFactor / 1000;
-        ExplorationMaster.setWaiting(true);
-        Boolean   result =true;
-        try {
-            DungeonScreen.getInstance().setSpeed(speedFactor);
-            while (true) {
-                if (time >= wakeUpTime)
-                    break;
-                WaitMaster.WAIT(period);
+
+    public Boolean playerWaits(float timeInSeconds, boolean rest) {
+        if (wait(timeInSeconds, rest))
+            return false;
+
+        Boolean result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.WAIT_COMPLETE);
+        return result;
+    }
+
+    private boolean wait(float timeInSeconds, boolean rest) {
+        if (!master.isExplorationOn())
+            return false;
+        if (!new RestCondition().preCheck(new Ref())) {
+            return false;
+        }
+        new Thread(new Runnable() {
+            public void run() {
+                float wakeUpTime = time + timeInSeconds;
+                float speedFactor = rest ? 25 : 10;
+                int period = 100;
+                float actPeriod = period * speedFactor / 1000;
+                ExplorationMaster.setWaiting(true);
+                Boolean result = true;
+                try {
+                    DungeonScreen.getInstance().setSpeed(speedFactor);
+                    while (true) {
+                        if (time >= wakeUpTime)
+                            break;
+                        WaitMaster.WAIT(period);
 //                DungeonScreen.getInstance().render(actPeriod);
 //            act(actPeriod );
 //                checkTimedEvents();
-                if (!ExplorationMaster.isWaiting()){
-                    if (rest){
-                        ExplorationMaster.setWaiting(true);
-                    } else {
-                        //interrupted
-                        break;
+                        if (!ExplorationMaster.isWaiting()) {
+                            if (rest) {
+                                ExplorationMaster.setWaiting(true);
+                            } else {
+                                //interrupted
+                                break;
+                            }
+                        }
+                        master.getCrawler().checkStatusUpdate();
+                        if (!ExplorationMaster.isExplorationOn()) {
+                            result = false;
+                            break;
+                        }
                     }
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
-                master.getCrawler().checkStatusUpdate();
-                if (!ExplorationMaster.isExplorationOn())
-                {
-                    result = false;
-                    break;
-                }
+                DungeonScreen.getInstance().setSpeed(null);
+                ExplorationMaster.setWaiting(false);
+                WaitMaster.receiveInput(WAIT_OPERATIONS.WAIT_COMPLETE, result);
             }
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        DungeonScreen.getInstance().setSpeed(null );
-        ExplorationMaster.setWaiting(false);
-         WaitMaster.receiveInput(WAIT_OPERATIONS.WAIT_COMPLETE,result);
-         return result;
+        }, " thread").start();
+        return true;
     }
 
     public void checkTimedEvents() {
@@ -302,5 +323,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     public void setGuiDirtyFlag(boolean guiDirtyFlag) {
         this.guiDirtyFlag = guiDirtyFlag;
+    }
+
+    public void playerWaits() {
+        int defaultWaitTime = OptionsMaster.getGameplayOptions().getIntValue(
+         GAMEPLAY_OPTION.DEFAULT_WAIT_TIME);
+        wait (defaultWaitTime, false);
     }
 }

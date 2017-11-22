@@ -19,23 +19,19 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class UnitViewOptions {
 
+    public boolean cellBackground;
     private Runnable runnable;
-
     private TextureRegion portrateTexture;
-
     private TextureRegion directionPointerTexture;
-
     private Texture iconTexture;
-
     private TextureRegion clockTexture;
     private TextureRegion emblem;
     private int directionValue;
-
     private int clockValue;
     private Color teamColor;
     private boolean mainHero;
     private String name;
-    public boolean cellBackground;
+    private boolean hoverResponsive;
 
 
     public UnitViewOptions(BattleFieldObject obj) {
@@ -88,8 +84,8 @@ public class UnitViewOptions {
 
     public final void createFromGameObject(BattleFieldObject obj) {
         this.portrateTexture = getOrCreateR(obj.getImagePath());
-        this.name =  obj.getName() ;
-        this.mainHero =  obj.isMainHero() ;
+        this.name = obj.getName();
+        this.mainHero = obj.isMainHero();
 
         if (obj instanceof Structure) {
             if (obj.isLandscape()) {
@@ -103,9 +99,7 @@ public class UnitViewOptions {
             }
 
 
-
-        }else
-        if (obj instanceof Unit) {
+        } else if (obj instanceof Unit) {
             this.directionValue = obj.getFacing().getDirection().getDegrees();
             this.directionPointerTexture = getOrCreateR("/UI/DIRECTION POINTER.png");
 
@@ -115,13 +109,11 @@ public class UnitViewOptions {
             );
             String emblem = obj.getProperty(G_PROPS.EMBLEM, true);
 
-            if (ImageManager.isImage(emblem))
-            {
+            if (ImageManager.isImage(emblem)) {
                 this.emblem = getOrCreateR(emblem);
-            }
-            else {
-                emblem =PathFinder.getEmblemAutoFindPath()+
-                 FileManager.findFirstFile(PathFinder.getImagePath()+ PathFinder.getEmblemAutoFindPath(),
+            } else {
+                emblem = PathFinder.getEmblemAutoFindPath() +
+                 FileManager.findFirstFile(PathFinder.getImagePath() + PathFinder.getEmblemAutoFindPath(),
                   obj.getSubGroupingKey(), true);
                 if (ImageManager.isImage(emblem))
                     this.emblem = getOrCreateR(emblem);
@@ -134,12 +126,14 @@ public class UnitViewOptions {
                 this.emblem = TextureCache.getOrCreateR(ImageManager.getEmptyEmblemPath());
 
             this.clockValue = obj.getIntParam(C_INITIATIVE);
+        }
+        if (obj.getOwner() != null)
             this.teamColor =
              GdxColorMaster.getColor(obj.getOwner().getFlagColor());
-            if (teamColor == null) {
-                teamColor = GdxColorMaster.NEUTRAL;
-            }
+        if (this.teamColor == null) {
+            this.teamColor = GdxColorMaster.NEUTRAL;
         }
+        hoverResponsive = !obj.isWall();
     }
 
     public boolean isMainHero() {
@@ -149,4 +143,9 @@ public class UnitViewOptions {
     public String getName() {
         return name;
     }
+
+    public boolean isHoverResponsive() {
+        return hoverResponsive;
+    }
+
 }

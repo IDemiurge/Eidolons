@@ -16,7 +16,7 @@ import java.util.Map;
 public class ShadowMap {
 
     public static final SHADE_LIGHT[] SHADE_LIGHT_VALUES = SHADE_LIGHT.values();
-    private static boolean on;
+    private static boolean on=true;
     private GridPanel grid;
     private Map<SHADE_LIGHT, ShadeLightCell[][]> cells = new LinkedHashMap<>();
 

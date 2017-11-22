@@ -74,6 +74,7 @@ public class GuiEventManager {
     public static boolean checkEventIsGuiHandled(Event event) {
         if (event.getType() instanceof STANDARD_EVENT_TYPE) {
             switch ((STANDARD_EVENT_TYPE) event.getType()) {
+                case UNIT_HAS_BEEN_DEALT_PURE_DAMAGE:
                 case EFFECT_HAS_BEEN_APPLIED:
                 case UNIT_HAS_CHANGED_FACING:
                 case UNIT_HAS_TURNED_CLOCKWISE:
@@ -86,7 +87,25 @@ public class GuiEventManager {
                     return true;
             }
 
+        } else {
+          if (  event.getType().name().startsWith("PARAM_MODIFIED")){
+               return isParamEventAlwaysFired(event.getType().getArg());
+
+            }
+        }
+        return false;
+    }
+
+    public static boolean isParamEventAlwaysFired(String param) {
+        switch (param) {
+            case "Endurance":
+            case "C Endurance":
+            case "Toughness":
+            case "C Toughness":
+            case "Illumination":
+        return true;
         }
         return false;
     }
 }
+

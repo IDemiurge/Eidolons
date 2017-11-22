@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.entity.active.DefaultActionHandler;
 import main.entity.obj.BattleFieldObject;
+import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import main.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
@@ -13,6 +14,7 @@ import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.libgdx.DialogScenario;
 import main.libgdx.bf.mouse.BattleClickListener;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.test.frontend.IntroTestLauncher;
@@ -27,6 +29,12 @@ public class UnitViewFactory {
     public static BaseView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view = new GridUnitView(options);
+        view.createHpBar( (new ResourceSourceImpl(bfObj)));
+        if (bfObj instanceof Unit){
+            view.getInitiativeQueueUnitView(). getHpBar().setTeamColor(options.getTeamColor());
+        }
+        view.getHpBar().setTeamColor(options.getTeamColor());
+
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
         tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
         view.setToolTip(tooltip);

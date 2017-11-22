@@ -17,7 +17,7 @@ public class UnitViewTooltip extends ValueTooltip {
     @Override
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         updateRequired = true;
-        if (view.getTeamColor()!= null || view instanceof OverlayView) //TODO quick fix to ignore bf obj
+        if (view.isHoverResponsive()|| view instanceof OverlayView) //TODO quick fix to ignore bf obj
         GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, view);
         super.onMouseEnter(event, x, y, pointer, fromActor);
 
@@ -27,7 +27,7 @@ public class UnitViewTooltip extends ValueTooltip {
             return;
         }
         super.onMouseMoved(event, x, y);
-        if (view.getTeamColor()!= null|| view instanceof OverlayView) //TODO quick fix to ignore bf obj
+        if (view.isHoverResponsive()|| view instanceof OverlayView) //TODO quick fix to ignore bf obj
         GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, view);
 
     }
@@ -35,7 +35,7 @@ public class UnitViewTooltip extends ValueTooltip {
 
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
         super.onMouseExit(event, x, y, pointer, toActor);
-        if (view.getTeamColor()!= null|| view instanceof OverlayView) //TODO quick fix to ignore bf obj
+        if (view. isHoverResponsive()|| view instanceof OverlayView) //TODO quick fix to ignore bf obj
         GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, view);
     }
 }

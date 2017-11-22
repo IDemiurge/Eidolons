@@ -43,6 +43,7 @@ public class RestEffect extends DC_Effect {
         if (result) {
 //            applyRested();
             for (Unit sub : allies) {
+                sub.removeBuff("Sleeping");
                 Ref REF = sub.getRef().getTargetingRef(sub);
                  getRestedBuffEffect().apply(REF);
                 new ModifyValueEffect(PARAMS.C_MORALE,

@@ -11,6 +11,7 @@ import main.game.core.game.DC_Game;
 import main.libgdx.GdxMaster;
 import main.libgdx.bf.GridConst;
 import main.libgdx.screens.DungeonScreen;
+import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 
 import java.util.LinkedList;
@@ -37,6 +38,8 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     private float height;
     float halfWidth;
     float halfHeight;
+    private float zoomStep= OptionsMaster.getGraphicsOptions().
+     getIntValue(GRAPHIC_OPTION.ZOOM_STEP)/new Float(100);
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;
@@ -45,6 +48,10 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
         height = GdxMaster.getHeight() * getZoom();
         halfWidth = width/2;
         halfHeight = height/2;
+    }
+
+    public void setZoomStep(float zoomStep) {
+        this.zoomStep = zoomStep;
     }
 
     @Override
@@ -209,11 +216,12 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     private void zoom(int i) {
         if (!alt && !ctrl) {
             if (i == 1) {
-                camera.zoom += 0.25f;
+
+                camera.zoom += zoomStep;
             }
             if (i == -1) {
-                if (camera.zoom >= 0.25f) {
-                    camera.zoom -= 0.25f;
+                if (camera.zoom >= zoomStep) {
+                    camera.zoom -= zoomStep;
                 }
             }
         }

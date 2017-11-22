@@ -160,4 +160,19 @@ public class GdxColorMaster {
         }
         return null;
     }
+
+    public static Color darker(Color color, float perc) {
+        perc = 1-perc;
+        return  new Color(color.r*perc,color.g*perc,color.b*perc,1);
+    }
+    public static Color lighter(Color color, float perc) {
+        perc = 1+perc;
+        return  new Color(color.r*perc,color.g*perc,color.b*perc,1);
+    }
+        public static Color darker(Color color) {
+        return  new Color(color.r*0.7f,color.g*0.7f,color.b*0.7f,1);
+    }
+    public static Color lighter(Color color) {
+        return  new Color(color.r*1.2f,color.g*1.2f,color.b*1.2f,1);
+    }
 }

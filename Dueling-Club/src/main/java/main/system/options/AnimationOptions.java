@@ -12,9 +12,9 @@ public class AnimationOptions extends Options<ANIMATION_OPTION,ANIMATION_OPTION>
     // AI_PARAMS,
     public enum ANIMATION_OPTION implements Options.OPTION {
         WAIT_FOR_ANIM(false ),
-        MAX_ANIM_WAIT_TIME(1200, 0, 3500),
-        PARALLEL_DRAWING (true) ,
-        SPEED(100, 1, 300),
+        MAX_ANIM_WAIT_TIME(1000, 0, 3000),
+        PARALLEL_DRAWING (false) ,
+        SPEED(100, 1, 500),
         TEXT_DURATION(100, 0, 300),
 //        INFO_LEVEL(1, 0, 1),
 //        PHASE_TIME(500, 0, 1000),
@@ -26,7 +26,7 @@ public class AnimationOptions extends Options<ANIMATION_OPTION,ANIMATION_OPTION>
 //        MOVE_ANIM(true),
 //        MELEE_ANIMS(true),
 
-        ;
+        HIT_ANIM_DISPLACEMENT(false);
 
         Boolean exclusive;
         Object[] options;

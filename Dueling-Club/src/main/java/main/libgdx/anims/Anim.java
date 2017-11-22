@@ -86,6 +86,7 @@ public class Anim extends Group implements Animation {
     private boolean done;
     private Vector2 offsetOrigin;
     private Vector2 offsetDestination;
+    private CompositeAnim parentAnim;
 
     public Anim(Entity active, AnimData params) {
         data = params;
@@ -860,5 +861,13 @@ if (floatingText.getDelay()==0){
 
     public void setOffsetY(float offsetY) {
         this.offsetY = offsetY;
+    }
+
+    public void setParentAnim(CompositeAnim parentAnim) {
+        this.parentAnim = parentAnim;
+    }
+
+    public CompositeAnim getParentAnim() {
+        return parentAnim;
     }
 }

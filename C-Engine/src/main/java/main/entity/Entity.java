@@ -156,10 +156,12 @@ public abstract class Entity extends DataModel implements OBJ {
 
     public void toBase() {
 
+        setBeingReset(true);
         //TODO DRY!
         if (getMaster() != null) {
             if (getResetter() != null) {
                 getResetter().toBase();
+                setBeingReset(false);
                 return;
             }
         }
@@ -238,6 +240,7 @@ public abstract class Entity extends DataModel implements OBJ {
         }
 //        resetStatus();
         setDirty(false);
+        setBeingReset(false);
 
     }
     public Map<VALUE, String> getValueCache() {
@@ -322,6 +325,7 @@ public abstract class Entity extends DataModel implements OBJ {
     public Game getGame() {
         if (game == null) {
             LogMaster.log(1, "Null game on " + toString());
+            if (Game.game != null)
             if (Game.game.isSimulation()) {
                 game = Game.game;
             }

@@ -16,6 +16,9 @@ public class GdxMaster {
     private static Float fontSizeMod;
 
     public static float centerWidth(Actor actor) {
+        if (actor.getParent() != null)
+            if (actor.getParent().getWidth() != 0)
+            return (actor.getParent().getWidth() - actor.getWidth())/2;
         return GdxMaster.getWidth() / 2 - actor.getWidth() / 2;
     }
 

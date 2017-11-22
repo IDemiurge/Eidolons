@@ -26,15 +26,13 @@ static {
 
         AMBIENCE(false),
         VIDEO(false),
-        ANIMATED_UI(false),
-        SHADOWMAP(false),
         AMBIENCE_MOVE_SUPPORTED(false),
-        OPTIMIZATION_ON(true),
-        SPRITE_CACHE_ON(true),
+//        SPRITE_CACHE_ON(true),
         OUTLINES(false),
 
         AUTO_CAMERA(true),
-        RESOLUTION(main.test.frontend.RESOLUTION.values()), ANIMATED_SHADOWMAP(true);
+        RESOLUTION(main.test.frontend.RESOLUTION.values()), 
+        ZOOM_STEP(10, 1, 50), SPRITE_CACHE_ON(true);
         private Boolean exclusive;
         private Integer min;
         private Integer max;
@@ -54,7 +52,8 @@ static {
             this.options = options;
         }
 
-        GRAPHIC_OPTION(Integer min, Integer max, Object... options) {
+        GRAPHIC_OPTION(Integer defaultValue,Integer min, Integer max ) {
+            this.defaultValue = defaultValue;
             this.min = min;
             this.max = max;
 

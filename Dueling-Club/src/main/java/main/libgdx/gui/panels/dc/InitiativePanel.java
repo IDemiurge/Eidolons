@@ -13,9 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import main.ability.conditions.special.RestCondition;
 import main.data.XLinkedMap;
-import main.entity.Ref;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -180,18 +178,9 @@ public class InitiativePanel extends Group {
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                new Thread(new Runnable() {
-                    public void run() {
-                        if (ExplorationMaster.isExplorationOn()) {
-                            if (!new RestCondition().preCheck(new Ref())) {
-                                return;
-                            } //pick, auto-limit
-                        }
                         DC_Game.game.getDungeonMaster().
                          getExplorationMaster().
-                         getTimeMaster().playerWaits(150);
-                    }
-                }, " thread").start();
+                         getTimeMaster().playerWaits( );
                 return super.touchDown(event, x, y, pointer, button);
             }
         };
@@ -506,13 +495,13 @@ public class InitiativePanel extends Group {
 
         public ImageContainer(UnitView actor) {
             super(actor);
-            Image shadow = new Image(TextureCache.getOrCreateR(
-             StrPathBuilder.build("UI",
-              "components", "2017", "panels",
-              "initiativepanel",
-              "initiativepanel unitview shadow.png")));
-            shadow.setY(-48);
-            actor.addActor(shadow);
+//            Image shadow = new Image(TextureCache.getOrCreateR(
+//             StrPathBuilder.build("UI",
+//              "components", "2017", "panels",
+//              "initiativepanel",
+//              "initiativepanel unitview shadow.png")));
+//            shadow.setY(-48);
+//            actor.addActor(shadow);
 
         }
 

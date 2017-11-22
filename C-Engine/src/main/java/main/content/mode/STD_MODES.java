@@ -18,7 +18,7 @@ public enum STD_MODES implements MODE {
     DIVINATION(true, true, true),
     HIDE(true, false, true),
     SLEEPING(true, true, false, "Defense(-75);",
-     "Endurance Regen(3);Stamina Regen(1);Essence Regen(1);", "Status(Asleep);Status(Prone);"),
+     "Endurance Regen(30);Stamina Regen(10);Essence Regen(10);", "Status(Asleep);Status(Prone);"),
     GUARDING(false, false, false, "Defense(25);", "Ap penalty(50)", "Status(Guarding)"),
     STEALTH(false, false, false, "Stealth(50);", "Ap penalty(50)", ""),
     SEARCH(false, false, false, "Detection(50);", "Detection(5);Ap penalty(50)", ""),

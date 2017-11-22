@@ -26,6 +26,7 @@ import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
+import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -80,13 +81,14 @@ public abstract class DataModel {
     protected boolean activesReady = false;
     private HashMap<PROPERTY, Map<String, Boolean>> propCache;
     private Map<PARAMETER, Integer> integerMap;
+    private boolean beingReset;
 
     public String getToolTip() {
         return getType().getDisplayedName();
     }
 
     public String getDescription() {
-      return    TextParser.parse(getProperty(G_PROPS.DESCRIPTION), getRef(), TextParser.ACTIVE_PARSING_CODE);
+        return TextParser.parse(getProperty(G_PROPS.DESCRIPTION), getRef(), TextParser.ACTIVE_PARSING_CODE);
     }
 
     public String getCustomValue(String value_ref) {
@@ -516,7 +518,7 @@ public abstract class DataModel {
     }
 
 
-        public boolean checkGroup(String string) {
+    public boolean checkGroup(String string) {
         return checkSingleProp(G_PROPS.GROUP, string);
     }
 
@@ -626,7 +628,7 @@ public abstract class DataModel {
 
         LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
          + param.getName() + " by " + amount);
-        if (!quietly)
+        if (!quietly || GuiEventManager.isParamEventAlwaysFired(param.getName()) )
             if (!fireParamEvent(param, String.valueOf(amount),
              CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
                 return true; // false?
@@ -795,7 +797,7 @@ public abstract class DataModel {
     }
 
     protected boolean firePropEvent(CONSTRUCTED_EVENT_TYPE EVENT_TYPE, String val) {
-        if (!isValueEventsOn()) {
+        if (!isValueEventsOn(val)) {
             return true;
         }
 
@@ -804,15 +806,20 @@ public abstract class DataModel {
         return getGame().fireEvent(new Event(EVENT_TYPE, "" + val, REF));
     }
 
-    private boolean isValueEventsOn() {
+    private boolean isValueEventsOn(String param) {
+        if (isBeingReset())
+            return false;
         if (getGame().isSimulation() || this instanceof ObjType) {
             return false;
+        }
+        if (GuiEventManager.isParamEventAlwaysFired(param)) {
+            return true;
         }
         return false;
     }
 
     public boolean fireParamEvent(PARAMETER param, String amount, CONSTRUCTED_EVENT_TYPE event_type) {
-        if (!isValueEventsOn()) {
+        if (!isValueEventsOn(param.getName())) {
             return true;
         }
         if (param.isMastery()) {
@@ -905,7 +912,7 @@ public abstract class DataModel {
 //        if (param == null) {
 //            return false;
 //        }
-        if (!quiety) {
+        if ( Game.game != null)         if (GuiEventManager.isParamEventAlwaysFired(param.getName())||!quiety) {
             if (getGame() == null) {
                 return false;
             }
@@ -1616,8 +1623,24 @@ public abstract class DataModel {
         return getProperty(G_PROPS.IMAGE);
     }
 
+    public boolean isMine() {
+        return false;
+    }
+
+    public boolean isFull(PARAMETER p) {
+        return getIntParam(ContentManager.getCurrentParam(p)) >= getIntParam(p);
+    }
+
 
     public int getParamPercentage(PARAMETER parameter) {
         return getIntParam(ContentManager.getPercentageParam(parameter)) / MathMaster.MULTIPLIER;
+    }
+
+    public boolean isBeingReset() {
+        return beingReset;
+    }
+
+    public void setBeingReset(boolean beingReset) {
+        this.beingReset = beingReset;
     }
 }

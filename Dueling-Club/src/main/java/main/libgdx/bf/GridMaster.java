@@ -20,34 +20,45 @@ public class GridMaster {
     public static Vector2 getPosWithOffset(Coordinates sourceCoordinates) {
         return getVectorForCoordinate(sourceCoordinates, false, true);
     }
-        public static Vector2 getCenteredPos(Coordinates sourceCoordinates) {
+
+    public static Vector2 getCenteredPos(Coordinates sourceCoordinates) {
         return getVectorForCoordinate(sourceCoordinates, true, false);
     }
 
 
     public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,
                                                  boolean center,
-                                                 boolean camera) {
-        return getVectorForCoordinate(sourceCoordinates, center, camera,DungeonScreen.getInstance().getGridPanel());
+                                                 boolean camera
+     , GridPanel gridPanel) {
+        return getVectorForCoordinate(sourceCoordinates, center, camera, false, gridPanel);
     }
-        public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,
-        boolean center,
-        boolean camera, GridPanel gridPanel) {
+
+    public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,
+                                                 boolean center,
+                                                 boolean camera) {
+        return getVectorForCoordinate(sourceCoordinates, center, camera, false,
+         DungeonScreen.getInstance().getGridPanel());
+    }
+
+    public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,
+                                                 boolean center,
+                                                 boolean camera, boolean gdxY, GridPanel gridPanel) {
+
 //        InputController controller = DungeonScreen.getInstance().getController();
-        float x = sourceCoordinates.getX() * GridConst.CELL_W  ;
+        float x = sourceCoordinates.getX() * GridConst.CELL_W;
         float y = (gridPanel.getRows()
-         - sourceCoordinates.getY()) * GridConst.CELL_H  ;
+         - (gdxY? sourceCoordinates.getY()+1 : sourceCoordinates.getY())) * GridConst.CELL_H;
+
         if (camera) {
 //            x -= controller.getXCamPos();
 //            y -= controller.getYCamPos();
-            x -= GdxMaster.getWidth()/2;
-            y -= GdxMaster.getHeight()/2;
+            x -= GdxMaster.getWidth() / 2;
+            y -= GdxMaster.getHeight() / 2;
         }
         if (center) {
-            x += GridConst.CELL_W  / 2;
-            y -= GridConst.CELL_H  / 2;
-        }
-        else {
+            x += GridConst.CELL_W / 2;
+            y -= GridConst.CELL_H / 2;
+        } else {
 
         }
         return new Vector2(x, y);

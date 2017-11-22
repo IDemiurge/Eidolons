@@ -11,9 +11,6 @@ import main.game.core.Eidolons;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.ParticleManager;
-import main.libgdx.bf.SuperActor;
-import main.libgdx.bf.light.ShadeLightCell;
-import main.libgdx.bf.light.ShadowMap;
 import main.libgdx.screens.DungeonScreen;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -180,21 +177,12 @@ public class OptionsMaster {
                 case AMBIENCE:
                     ParticleManager.setAmbienceOn(bool);
                     break;
-                case ANIMATED_UI:
-                    SuperActor.setAlphaFluctuationOn(bool);
-                    break;
-                case ANIMATED_SHADOWMAP:
-                    ShadeLightCell.setAlphaFluctuation(bool);
-                    break;
-                case SHADOWMAP:
-                    ShadowMap.setOn(bool);
-                    break;
+
+
+
                 case AMBIENCE_MOVE_SUPPORTED:
                     ParticleManager.setAmbienceMoveOn(
                      bool);
-                    break;
-                case OPTIMIZATION_ON:
-                    SuperActor.setCullingOff(!bool);
                     break;
                 case OUTLINES:
                     OutlineMaster.setOutlinesOn(bool);
@@ -350,12 +338,34 @@ public class OptionsMaster {
             optionsMap = initDefaults();
         } else {
             optionsMap = readOptions(data);
+            addMissingDefaults(optionsMap);
         }
         try {
             applyOptions();
             initialized = true;
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+    }
+
+    private static void addMissingDefaults(Map<OPTIONS_GROUP, Options> optionsMap) {
+
+        for (OPTIONS_GROUP group : OPTIONS_GROUP.values()) {
+            Options map = optionsMap.get(group);
+            if (map == null) {
+
+                continue;
+            }
+            Options options = generateDefaultOptions(group);
+            for (Object val: options.getValues().keySet()){
+                if (map.getValues().containsKey(val))
+                    continue;
+                map.setValue(val.toString(), options.getValue(val.toString()));
+            }
+//            for (Object sub : getOptionGroupEnumClass(group).getEnumConstants()) {
+//                String value = map.getValue((Enum) sub);
+//            }
         }
 
     }

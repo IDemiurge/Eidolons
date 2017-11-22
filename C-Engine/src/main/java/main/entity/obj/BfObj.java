@@ -23,4 +23,7 @@ public interface BfObj extends OBJ {
 
     UNIT_TO_PLAYER_VISION getActivePlayerVisionStatus();
 
+    boolean isPlayerDetected();
+
+    boolean isDead();
 }

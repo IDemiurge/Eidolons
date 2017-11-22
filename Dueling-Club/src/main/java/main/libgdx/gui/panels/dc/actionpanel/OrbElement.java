@@ -1,5 +1,7 @@
 package main.libgdx.gui.panels.dc.actionpanel;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -115,7 +117,8 @@ public class OrbElement extends SuperActor {
             orbFullness = 62;
         }
         if (!isAlphaFluctuationOn()) {
-            lighting.setColor(1,1,1, 0.5f + new Float(orbFullness)/100 );
+            if (lighting!=null )
+                lighting.setColor(1,1,1, 0.5f + new Float(orbFullness)/100 );
         } else
         fluctuation=MathMaster.getMinMax(
          super.getAlphaFluctuationPerDelta() /(1+orbFullness)*30, 0.4f, 0.7f);
@@ -144,7 +147,7 @@ public class OrbElement extends SuperActor {
 //            }
 
         }
-        if (Eidolons.game.isDebugMode())
+        if (Eidolons.game.isDebugMode() || Gdx.input.isKeyPressed(Keys.ALT_LEFT))
             label.draw(batch, parentAlpha);
 
 //TODO if hover

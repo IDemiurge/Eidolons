@@ -11,6 +11,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.battlecraft.rules.DC_RuleImpl;
 import main.game.battlecraft.rules.counter.DC_CounterRule;
@@ -23,10 +24,14 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.Rule;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.config.ConfigMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -104,9 +109,26 @@ public class DC_StateManager extends StateManager {
                 e.printStackTrace();
             }
         }
+
+        triggerOnResetGuiEvents();
+
         if (savingOn) {
             keeper.save();
         }
+    }
+
+    private void triggerOnResetGuiEvents() {
+        List<BattleFieldObject> list = new LinkedList<>(getGame().getBfObjects());
+        list.removeIf(obj->{
+            if (!VisionManager.checkVisible(obj))
+                return true;
+            if ( (obj).isWall())
+                return true;
+            if ( (obj).isOverlaying())
+                return true;
+            return false;
+        });
+        GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE_MANY, list);
     }
 
     public void reset(Unit unit) {
@@ -178,8 +200,9 @@ public class DC_StateManager extends StateManager {
                     ((DC_Obj) obj).outsideCombatReset();
                 continue;
             }
-
+            obj.setBeingReset(true);
             obj.toBase();
+            obj.setBeingReset(false);
         }
 
     }

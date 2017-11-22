@@ -33,6 +33,10 @@ public class GlobalController implements Controller {
             case 'D':
                 Eidolons.game.getDebugMaster().showDebugWindow();
                 return true;
+            case 'W': //TODO custom hotkeys
+                Eidolons.game.getDungeonMaster().getExplorationMaster().getTimeMaster()
+                 .playerWaits( );
+                return true;
         }
 
         return false;

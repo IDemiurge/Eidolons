@@ -18,6 +18,7 @@ import main.game.bf.Coordinates;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
+import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -164,7 +165,7 @@ public class Obj extends Entity {
 
     @Override
     public boolean setParam(PARAMETER param, String value, boolean quiety) {
-        boolean result = super.setParam(param, value, quiety);
+        boolean result = super.setParam(param, value, quiety); if (GuiEventManager.isParamEventAlwaysFired(param.getName())) quiety=false;
         if (!quiety && game.isStarted()) {
             fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
 
@@ -180,9 +181,6 @@ public class Obj extends Entity {
         return result;
     }
 
-    public boolean isFull(PARAMETER p) {
-        return getIntParam(ContentManager.getCurrentParam(p)) >= getIntParam(p);
-    }
 
     public List<Attachment> getAttachments() {
         return game.getState().getAttachmentsMap().get(this);

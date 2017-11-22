@@ -7,6 +7,7 @@ import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
+import main.entity.obj.BattleFieldObject;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
@@ -46,6 +47,7 @@ public class CompositeAnim implements Animation {
     private List<Event> textEvents;
     private Ref ref;
     private Anim continuous;
+    private boolean hpUpdate=true;
 
 
     public CompositeAnim(Anim... anims) {
@@ -205,9 +207,16 @@ public class CompositeAnim implements Animation {
         part = null;
         finished = true;
         setRunning(false);
+ if (hpUpdate)
+ {
+     if (getRef().getTargetObj() instanceof BattleFieldObject)
+     GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE, getRef().getTargetObj());
+     else
+     if (getRef().getSourceObj() instanceof BattleFieldObject)
+         GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE, getRef().getSourceObj());
+ }
 
         resetMaps();
-//        GuiEventManager.trigger(GuiEventType.COMPOSITE_ANIMATION_DONE, this);
     }
 
     private void resetMaps() {
@@ -276,6 +285,7 @@ public class CompositeAnim implements Animation {
     public void start() {
         if (isRunning())
             return;
+        hpUpdate=true;
         time = 0;
         index = 0;
         initPartAnim();
@@ -331,6 +341,7 @@ public class CompositeAnim implements Animation {
             part = (ANIM_PART) MapMaster.get(map, index);
             currentAnim = map.get(part);
         }
+        currentAnim.setParentAnim(this);
     }
 
     public void addEffectAnim(Animation anim, Effect effect) {
@@ -529,4 +540,11 @@ public class CompositeAnim implements Animation {
     }
 
 
+    public void setHpUpdate(boolean hpUpdate) {
+        this.hpUpdate = hpUpdate;
+    }
+
+    public boolean isHpUpdate() {
+        return hpUpdate;
+    }
 }

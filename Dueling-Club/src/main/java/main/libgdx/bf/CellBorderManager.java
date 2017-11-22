@@ -17,13 +17,13 @@ public class CellBorderManager extends Group {
     public static final String bluePath = "UI\\Borders\\neo\\color flag\\blue 132.png";
     public static final String teamcolorPath = "UI\\Borders\\neo\\color flag\\white 132.png";
     public static final String redPath = "UI\\Borders\\neo\\color flag\\red 132.png";
+    private final TextureRegion teamcolorTexture;
     public TextureRegion singleBorderImageBackup = null;
     protected TextureRegion blueTexture;
     private Borderable unitBorderOwner = null;
     private Map<Borderable, Runnable> teamColorBorderOwners = new HashMap<>();
     private TextureRegion redTexture;
     private TextureRegion greenTexture;
-    private final TextureRegion teamcolorTexture;
 
     public CellBorderManager() {
         greenTexture = TextureCache.getOrCreateR(cyanPath);
@@ -46,35 +46,30 @@ public class CellBorderManager extends Group {
 
     private void bindEvents() {
 
-        GuiEventManager.bind(SHOW_GREEN_BORDER, obj -> {
-            if (obj != null) {
-                Borderable b = (Borderable) obj.get();
-                showBorder(greenTexture, b);
-            }
-        });
-
-        GuiEventManager.bind(SHOW_RED_BORDER, obj -> {
-            if (obj != null) {
-                Borderable b = (Borderable) obj.get();
-                showBorder(redTexture, b);
-            }
-        });
+//        GuiEventManager.bind(SHOW_GREEN_BORDER, obj -> {
+//            if (obj != null) {
+//                Borderable b = (Borderable) obj.get();
+//                showBorder(greenTexture, b);
+//            }
+//        });
+//
+//        GuiEventManager.bind(SHOW_RED_BORDER, obj -> {
+//            if (obj != null) {
+//                Borderable b = (Borderable) obj.get();
+//                showBorder(redTexture, b);
+//            }
+//        });
+        GuiEventManager.bind(SHOW_TEAM_COLOR_BORDER, obj -> {
+            showBorder(teamcolorTexture, (Borderable) obj.get());
+         });
 
         GuiEventManager.bind(SHOW_BLUE_BORDERS, obj -> {
             Map<Borderable, Runnable> map = (Map<Borderable, Runnable>) obj.get();
             clearteamColorBorder();
             if (map != null) {
                 map.entrySet().forEach((Entry<Borderable, Runnable> entry) -> {
-                    if (unitBorderOwner == entry.getKey()) {
-                        singleBorderImageBackup = unitBorderOwner.getBorder();
-                        unitBorderOwner.setBorder(null);// TODO: 12.12.2016 make better
-                        entry.getKey().setTeamColorBorder(false);
-                    }
-                    if (entry.getKey() == null) {
-                        return;
-                    }
-                    entry.getKey().setBorder(teamcolorTexture);
-                    entry.getKey().setTeamColorBorder(true);
+                    setTeamColorBorder(entry.getKey());
+
                 });
 
                 teamColorBorderOwners = map;
@@ -92,7 +87,7 @@ public class CellBorderManager extends Group {
                     // click on non-blue-border cell must still do cell.invokeClicked() (run()) somehow
 
                     if (Eidolons.game.getManager().isSelecting())
-                    Eidolons.game.getManager().selectingStopped(true);
+                        Eidolons.game.getManager().selectingStopped(true);
                 }
                 clearteamColorBorder();
 
@@ -104,12 +99,28 @@ public class CellBorderManager extends Group {
         });
     }
 
+    private void setTeamColorBorder(Borderable entry) {
+        if (unitBorderOwner == entry) {
+            singleBorderImageBackup = unitBorderOwner.getBorder();
+            unitBorderOwner.setBorder(null);// TODO: 12.12.2016 make better
+            entry.setTeamColorBorder(false);
+        }
+        if (entry == null) {
+            return;
+        }
+        entry.setBorder(teamcolorTexture);
+        entry.setTeamColorBorder(true);
+    }
+
     private void showBorder(TextureRegion border, Borderable owner) {
         owner.setBorder(border);
 
         if (unitBorderOwner != null && unitBorderOwner != owner) {
             unitBorderOwner.setBorder(null);
+            unitBorderOwner.setTeamColorBorder(false);
         }
+        owner.setTeamColorBorder(true);
+
         unitBorderOwner = owner;
     }
 }

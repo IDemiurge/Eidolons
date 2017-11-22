@@ -240,6 +240,8 @@ public class UnitResetter extends EntityResetter<Unit> {
                 return;
             }
         }
+
+        getEntity().setBeingReset(true);
         Chronos.mark(toString() + " OBJECTS APPLY");
 
         applyBackground();
@@ -292,6 +294,7 @@ public class UnitResetter extends EntityResetter<Unit> {
         // Chronos.logTimeElapsedForMark(toString() + " activate PASSIVES");
 
         getEntity().setDirty(false);
+        getEntity().setBeingReset(false);
         if (game.isSimulation() || getType().isModel()) {
             // initSpellbook(); //in afterEffect()
             return;
@@ -462,6 +465,7 @@ public class UnitResetter extends EntityResetter<Unit> {
     }
 
     public void afterEffectsApplied() {
+        getEntity().setBeingReset(true);
         resetHeroValues();
         if (game.isSimulation()) {
             getInitializer().initSpellbook();
@@ -514,6 +518,7 @@ public class UnitResetter extends EntityResetter<Unit> {
         resetSpells();
         resetQuickItemActives();
         resetActives();
+        getEntity().setBeingReset(false);
     }
 
     public void afterBuffRuleEffects() {
