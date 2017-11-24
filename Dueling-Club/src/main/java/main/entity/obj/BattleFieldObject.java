@@ -15,6 +15,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
+import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.Game;
@@ -35,6 +36,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
 
     protected FACING_DIRECTION facing;
     private DIRECTION direction;
+    private Coordinates bufferedCoordinates;
 
     public BattleFieldObject(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -354,6 +356,13 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
 
     }
 
+    @Override
+    public void setDirty(boolean dirty) {
+        if (!dirty){
+            setBufferedCoordinates(getCoordinates());
+        }
+        super.setDirty(dirty);
+    }
 
     public DIRECTION getDirection() {
         if (direction == null) {
@@ -413,5 +422,13 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
     @Override
     public boolean isPlayerDetected() {
         return isDetectedByPlayer();
+    }
+
+    public Coordinates getBufferedCoordinates() {
+        return bufferedCoordinates;
+    }
+
+    public void setBufferedCoordinates(Coordinates bufferedCoordinates) {
+        this.bufferedCoordinates = bufferedCoordinates;
     }
 }

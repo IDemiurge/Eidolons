@@ -32,7 +32,7 @@ static {
 
         AUTO_CAMERA(true),
         RESOLUTION(main.test.frontend.RESOLUTION.values()), 
-        ZOOM_STEP(10, 1, 50), SPRITE_CACHE_ON(true);
+        ZOOM_STEP(5, 1, 20), SPRITE_CACHE_ON(true), VSYNC(true);
         private Boolean exclusive;
         private Integer min;
         private Integer max;

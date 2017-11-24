@@ -249,7 +249,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     @Override
     public void setRef(Ref ref) {
-        if (!equipped ) { // TODO preCheck ref contains *this* ?
+        if (!equipped) { // TODO preCheck ref contains *this* ?
             // HC unequip bug?
             equipped(ref);
         }
@@ -277,7 +277,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
         }
         super.setRef(ref);
-        if (isRanged()&& getHero() != null) {
+        if (isRanged() && getHero() != null) {
             getHero().setRangedWeapon(this);
         }
     }
@@ -429,4 +429,18 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         return lastAmmo;
     }
 
+
+    @Override
+    protected void applyDurability() {
+        resetPercentages();
+        Integer durability = getIntParam(PARAMS.DURABILITY_PERCENTAGE);
+        if (isNatural() && durability <= 50 * MathMaster.MULTIPLIER)
+            durability = 50 * MathMaster.MULTIPLIER;
+        else if (durability <= 0) {
+            broken();
+            return;
+        }
+
+        multiplyParamByPercent(getDurabilityParam(), durability, false);
+    }
 }

@@ -29,7 +29,7 @@ import main.libgdx.anims.CompositeAnim;
 import main.libgdx.audio.SoundPlayer;
 import main.libgdx.bf.GridMaster;
 import main.libgdx.screens.DungeonScreen;
-import main.system.ContentGenerator;
+import main.system.content.ContentGenerator;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;

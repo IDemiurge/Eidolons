@@ -91,6 +91,7 @@ public class ShadowMap {
                         getCells(type)[x][y].setColor(1, 1, 1, alpha);
                     }
 
+                    getCells(type)[x][y].adjustPosition(x, y);
                 }
             }
 

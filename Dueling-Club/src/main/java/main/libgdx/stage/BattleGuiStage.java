@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.game.core.game.DC_Game;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.ActorMaster;
+import main.libgdx.bf.menu.GameMenu;
 import main.libgdx.gui.controls.radial.RadialMenu;
 import main.libgdx.gui.panels.dc.ButtonStyled;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
@@ -27,7 +28,6 @@ import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
 import main.libgdx.gui.tooltips.ToolTipManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.options.OptionsMaster;
 import main.system.text.HelpMaster;
 
 import java.util.LinkedList;
@@ -44,6 +44,7 @@ public class BattleGuiStage extends Stage {
     private final ActionPanelController bottomPanel;
     private final RadialMenu radial;
     private final ContainerPanel containerPanel;
+    private final GameMenu gameMenu;
     TextPanel textPanel;
     private OutcomePanel outcomePanel;
     private List<String> charsUp = new LinkedList<>();
@@ -63,8 +64,12 @@ public class BattleGuiStage extends Stage {
 
         addActor(new UnitInfoPanel(0, 0));
 
+        gameMenu = new GameMenu();
+        addActor(gameMenu);
+        gameMenu.setPosition(GdxMaster.centerWidth(gameMenu), GdxMaster.centerHeight(gameMenu));
+
         ButtonStyled menuButton = new ButtonStyled(STD_BUTTON.OPTIONS, () ->
-         OptionsMaster.openMenu());
+         gameMenu.open());
         menuButton.setPosition(GdxMaster.getWidth() - menuButton.getWidth(),
          GdxMaster.getHeight() - menuButton.getHeight());
         addActor(menuButton);
@@ -101,6 +106,9 @@ public class BattleGuiStage extends Stage {
          GdxMaster.centerHeight(containerPanel));
         containerPanel.setVisible(false);
         bindEvents();
+
+        gameMenu.setZIndex(Integer.MAX_VALUE);
+
         setDebugAll(false);
     }
 

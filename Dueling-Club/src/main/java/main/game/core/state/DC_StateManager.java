@@ -97,7 +97,10 @@ public class DC_StateManager extends StateManager {
 
             getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
             if (getGame().getDungeonMaster().getExplorationMaster().getResetter().isFirstResetDone())
+            {
+                getGame().getBfObjects().forEach(obj-> obj.setBufferedCoordinates(obj.getCoordinates()));
                 return;
+            }
             else getGame().getDungeonMaster().getExplorationMaster().getResetter().setFirstResetDone(true);
 
         }
@@ -116,6 +119,8 @@ public class DC_StateManager extends StateManager {
             keeper.save();
         }
     }
+
+
 
     private void triggerOnResetGuiEvents() {
         List<BattleFieldObject> list = new LinkedList<>(getGame().getBfObjects());
@@ -200,9 +205,7 @@ public class DC_StateManager extends StateManager {
                     ((DC_Obj) obj).outsideCombatReset();
                 continue;
             }
-            obj.setBeingReset(true);
             obj.toBase();
-            obj.setBeingReset(false);
         }
 
     }

@@ -12,6 +12,7 @@ import main.entity.type.BuffType;
 import main.entity.type.ObjType;
 import main.game.core.game.GameManager;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.Event;
 import main.game.module.adventure.entity.MacroActionManager;
 import main.game.module.adventure.entity.MacroObj;
 import main.game.module.adventure.global.TimeMaster;
@@ -200,6 +201,11 @@ public class MacroGameManager extends GameManager {
     @Override
     public void reset() {
         // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    protected void checkEventIsGuiHandled(Event event) {
 
     }
 

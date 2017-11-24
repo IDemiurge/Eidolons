@@ -2,9 +2,13 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.math.Vector2;
 import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.DIRECTION;
 import main.libgdx.GdxMaster;
 import main.libgdx.gui.CursorPosVector2;
 import main.libgdx.screens.DungeonScreen;
+import main.system.graphics.MigMaster;
+
+import java.awt.*;
 
 /**
  * Created by JustMe on 1/29/2017.
@@ -83,5 +87,33 @@ public class GridMaster {
 
     public static Vector2 getVectorForCoordinate(Coordinates coordinates) {
         return getVectorForCoordinate(coordinates, false, false);
+    }
+
+    public static Dimension getOffsetsForOverlaying(DIRECTION direction, int width, int height ) {
+        int w = GridConst.CELL_W;
+        int h = GridConst.CELL_H;
+        int calcXOffset = 0;
+        int calcYOffset = 0;
+        if (direction == null) {
+            calcXOffset += (w - width) * OverlayView.SCALE;
+            calcYOffset += (h - height) * OverlayView.SCALE;
+        } else {
+            int size = width;
+            int x = MigMaster.getCenteredPosition(w, size);
+            if (direction != null) {
+                if (direction.isGrowX() != null)
+                    x = (direction.isGrowX()) ? w - size : 0;
+            }
+
+            int y = MigMaster.getCenteredPosition(h, size);
+            if (direction != null) {
+                if (direction.isGrowY() != null)
+                    y = (!direction.isGrowY()) ? h - size : 0;
+
+            }
+            calcXOffset += x;
+            calcYOffset += y;
+        }
+        return new Dimension(calcXOffset, calcYOffset);
     }
 }

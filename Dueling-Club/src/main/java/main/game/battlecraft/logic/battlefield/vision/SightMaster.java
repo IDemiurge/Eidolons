@@ -92,14 +92,14 @@ public class SightMaster {
             if (extended) {
                 back_bonus = MathMaster.applyModIfNotZero(back_bonus, source
                  .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION_BACKWARD));
-            }
+            } else back_bonus--;
         }
 
         addLine(orig.getAdjacentCoordinate(direction), range, list, direction, true);
         addSides(list, orig, direction, range - side_penalty, false);
         DIRECTION backDirection = DirectionMaster.flip(direction);
         Coordinates backCoordinate = orig.getAdjacentCoordinate(backDirection);
-        if (back_bonus > 0) {
+        if (back_bonus > 0 ) {
             if (backCoordinate != null) {
                 addLine(backCoordinate, back_bonus, list, backDirection, true);
                 // if (back_bonus > side_penalty)
@@ -351,7 +351,7 @@ public class SightMaster {
     }
 
     protected Boolean checkInSightSector(Unit source, DC_Obj target) {
-        if (VisionManager.isVisionHacked()) {
+        if (VisionManager.isVisionHacked() && source.isMine()) {
             return true;
         }
         DequeImpl<Coordinates> coordinates = cache.get(source);

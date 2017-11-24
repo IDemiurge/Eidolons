@@ -18,7 +18,7 @@ import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
-import main.system.ContentGenerator;
+import main.system.content.ContentGenerator;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;

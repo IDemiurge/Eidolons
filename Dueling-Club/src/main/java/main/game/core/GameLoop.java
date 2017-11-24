@@ -83,14 +83,14 @@ public class GameLoop {
 
         }
 
-        LogMaster.log(1, "Game Loop exit "+ this);
+        LogMaster.log(1, "Game Loop exit " + this);
     }
 
     public Thread startInNewThread() {
-        if (thread==null )
+        if (thread == null)
             thread = new Thread(() -> {
-            start();
-        }, getThreadName());
+                start();
+            }, getThreadName());
 
         thread.start();
 
@@ -158,33 +158,38 @@ public class GameLoop {
         if (exited)
             return true;
         Boolean result = null;
+        ActionInput action = null;
+        boolean channeling=false;
         if (!actionQueue.isEmpty()) {
-            result = activateAction(actionQueue.removeLast());
+            action = (actionQueue.removeLast());
         } else if (activeUnit.getHandler().getChannelingSpellData() != null) {
-            ActionInput data = activeUnit.getHandler().getChannelingSpellData();
-            ChannelingRule.channelingResolves(activeUnit);
-            result = activateAction(data);
+            action = activeUnit.getHandler().getChannelingSpellData();
+            channeling = true;
         } else if (activeUnit.isAiControlled()) {
             //SHOWCASE SECURITY
             try {
-                result = activateAction(waitForAI());
+                action = (waitForAI());
                 AI_Manager.setOff(false);
             } catch (Exception e) {
                 AI_Manager.setOff(true);
                 if (!aiFailNotified) {
                     Err.error("Sorry, AI failed, but you can control their units now...");
                     aiFailNotified = true;
-                    result = activateAction(waitForPlayerInput());
+                    action = (waitForPlayerInput());
                 }
                 e.printStackTrace();
             }
+        } else {
+            action = (waitForPlayerInput());
         }
-          else {
-            result = activateAction(waitForPlayerInput());
-        }
-//        if ()
-        waitForPause();
+        if (channeling)
+            ChannelingRule.channelingResolves(activeUnit);
+
         waitForAnimations();
+
+        result =
+         activateAction(action);
+        waitForPause();
         if (exited)
             return true;
         return result;
@@ -256,12 +261,12 @@ public class GameLoop {
         Action aiAction =
          game.getAiManager().getAction(game.getManager().getActiveObj());
         if (!aiAction.getActive().isChanneling())
-        if (!aiAction.canBeTargeted()){
-            {
-                AI_Manager.getBrokenActions().add(aiAction.getActive());
-                return null ;
+            if (!aiAction.canBeTargeted()) {
+                {
+                    AI_Manager.getBrokenActions().add(aiAction.getActive());
+                    return null;
+                }
             }
-        }
         return new ActionInput(aiAction.getActive(), new Context(aiAction.getRef()));
     }
 

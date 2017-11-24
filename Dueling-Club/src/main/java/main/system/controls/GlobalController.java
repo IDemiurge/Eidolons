@@ -1,6 +1,14 @@
 package main.system.controls;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
+import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.ScreenUtils;
+import main.data.filesys.PathFinder;
 import main.game.core.Eidolons;
+import main.libgdx.GdxMaster;
 import main.libgdx.screens.DungeonScreen;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
@@ -37,6 +45,11 @@ public class GlobalController implements Controller {
                 Eidolons.game.getDungeonMaster().getExplorationMaster().getTimeMaster()
                  .playerWaits( );
                 return true;
+            case 'S':{
+//                if (!Gdx.input.isKeyPressed(Keys.ALT_LEFT))
+//                    break;
+                GdxMaster.takeScreenShot();
+                }
         }
 
         return false;

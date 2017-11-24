@@ -28,6 +28,7 @@ import main.libgdx.bf.BFDataCreatedEvent;
 import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridMaster;
 import main.libgdx.bf.GridPanel;
+import main.libgdx.bf.menu.GameMenu;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.shaders.DarkShader;
 import main.libgdx.stage.BattleGuiStage;
@@ -351,7 +352,7 @@ public class DungeonScreen extends ScreenWithLoader {
     }
 
     public boolean isBlocked() {
-        return OptionsMaster.isMenuOpen();
+        return OptionsMaster.isMenuOpen() || GameMenu.menuOpen;
     }
 
     private void cameraShift() {

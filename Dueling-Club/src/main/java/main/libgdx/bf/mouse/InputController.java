@@ -10,6 +10,7 @@ import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.libgdx.GdxMaster;
 import main.libgdx.bf.GridConst;
+import main.libgdx.bf.menu.GameMenu;
 import main.libgdx.screens.DungeonScreen;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
@@ -18,8 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static com.badlogic.gdx.Input.Buttons.LEFT;
-import static com.badlogic.gdx.Input.Keys.ALT_LEFT;
-import static com.badlogic.gdx.Input.Keys.CONTROL_LEFT;
+import static com.badlogic.gdx.Input.Keys.*;
 
 /**
  * Created by PC on 25.10.2016.
@@ -38,8 +38,9 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     private float height;
     float halfWidth;
     float halfHeight;
-    private float zoomStep= OptionsMaster.getGraphicsOptions().
+    private static float zoomStep= OptionsMaster.getGraphicsOptions().
      getIntValue(GRAPHIC_OPTION.ZOOM_STEP)/new Float(100);
+    private int mouseButtonPresed;
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;
@@ -50,8 +51,8 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
         halfHeight = height/2;
     }
 
-    public void setZoomStep(float zoomStep) {
-        this.zoomStep = zoomStep;
+    public static void setZoomStep(float zoomStep) {
+        InputController.zoomStep = zoomStep;
     }
 
     @Override
@@ -77,7 +78,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     }
 
     private boolean isBlocked() {
-        if (OptionsMaster.isMenuOpen())
+        if (OptionsMaster.isMenuOpen()|| GameMenu.menuOpen)
             return true;
         return false;
     }
@@ -132,7 +133,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
             xCamPos = screenX;
             yCamPos = screenY;
             isLeftClick = true;
-        }
+        } mouseButtonPresed = button;
         DungeonScreen.getInstance().getGuiStage().outsideClick();
         return false;
     }
@@ -151,7 +152,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
         if (isBlocked())
             return true;
-        if (isLeftClick) {
+        if (mouseButtonPresed == LEFT || mouseButtonPresed== RIGHT) {
             tryPullCameraX(screenX);
             tryPullCameraY(screenY);
             DungeonScreen.getInstance().cameraStop();
@@ -225,8 +226,10 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
                 }
             }
         }
-        width = GdxMaster.getWidth() * getZoom();
-        height = GdxMaster.getHeight() * getZoom();
+        if (camera.zoom <0 )
+            camera.zoom = 1;
+        width = GdxMaster.getWidth() *camera.zoom;
+        height = GdxMaster.getHeight() * camera.zoom;
         halfWidth = width/2;
         halfHeight = height/2;
     }

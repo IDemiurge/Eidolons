@@ -21,6 +21,7 @@ import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.layout.LayoutInfo;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.CollectionsMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.Chronos;
@@ -223,7 +224,7 @@ public class TabBuilder extends Builder implements ChangeListener {
     }
 
     private void addTypeTab(String tabName, Component component) {
-        int code = ContentManager.getTypeCode(tabName);
+        int code = getTabbedPane().getTabCount() ;//ContentManager.getTypeCode(tabName);
 
         ImageIcon icon = ImageManager.getIcon(ContentManager.getTypeImage(tabName));
 
@@ -231,8 +232,9 @@ public class TabBuilder extends Builder implements ChangeListener {
         if (!ImageManager.isValidIcon(icon)) {
             text = ("" + tabName.charAt(0)).toUpperCase();
         }
-        getTabbedPane().insertTab(text, icon, component, tabName,
-                Math.min(code, getTabbedPane().getTabCount() - 1));
+        getTabbedPane().insertTab(text, icon, component, tabName,code
+//                Math.min(code, getTabbedPane().getTabCount() - 1)
+        );
         tabmap.put(tabName, component);
 
     }
@@ -542,13 +544,17 @@ public class TabBuilder extends Builder implements ChangeListener {
             path = PathFinder.getMACRO_TYPES_PATH();
         }
         File file = new File(path + name + ".xml");
-        if (!file.isFile()) {
-            return;
+        List<File> files = new LinkedList<>();
+        if (file.isFile()) {
+            files.add(file);
+        } else {
+            files = FileManager.getFiles(path, name , ".xml");
         }
-        XML_File xmlFile = XML_Reader.readFile(file);
+        for (File sub : files) {
+        XML_File xmlFile = XML_Reader.readFile(sub);
         XML_Reader.loadMap(xmlFile.getType().getName(),
-         xmlFile.   getContents());
-
+         xmlFile.getContents());
+        }
 
         TabBuilder tabBuilder = new TabBuilder(name);
         JComponent tabs = tabBuilder.build();

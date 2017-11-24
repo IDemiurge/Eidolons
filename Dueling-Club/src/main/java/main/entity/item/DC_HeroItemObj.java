@@ -81,9 +81,13 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
         getHero().setDirty(true);
     }
 
-    private void applyDurability() {
+    protected void applyDurability() {
         resetPercentages();
         Integer durability = getIntParam(PARAMS.DURABILITY_PERCENTAGE);
+        if (durability<=0){
+            broken();
+        }
+        else
         multiplyParamByPercent(getDurabilityParam(), durability, false);
     }
 
@@ -115,11 +119,8 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
         modifyParameter(PARAMS.C_DURABILITY, -amount, 0);
 
         if (getIntParam(PARAMS.C_DURABILITY) <= 0) {
-            setProperty(G_PROPS.STATUS, UnitEnums.STATUS.BROKEN.toString());
-            getHero().unequip(this, false);
-            game.getLogManager()
-                    .log(StringMaster.MESSAGE_PREFIX_ALERT + getHero().getName() + "'s " + getName() + " is broken!");
-        } else {
+            broken();
+            } else {
             game.getLogManager().log(StringMaster.MESSAGE_PREFIX_INFO + getName() + " loses " + amount + " durability, "
                     + getIntParam(PARAMS.C_DURABILITY) + " left");
         }
@@ -147,8 +148,12 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     }
 
     public void broken() {
-
+        setProperty(G_PROPS.STATUS, UnitEnums.STATUS.BROKEN.toString());
+        getHero().unequip(this, false);
         kill();
+        game.getLogManager()
+         .log(StringMaster.MESSAGE_PREFIX_ALERT + getHero().getName() + "'s " + getName() + " is broken!");
+
 
     }
 

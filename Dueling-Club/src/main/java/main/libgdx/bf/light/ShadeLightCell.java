@@ -6,10 +6,15 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.PROPS;
+import main.entity.obj.Obj;
 import main.entity.obj.Structure;
+import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
+import main.game.battlecraft.rules.mechanics.IlluminationRule;
+import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.Eidolons;
 import main.libgdx.bf.GridConst;
+import main.libgdx.bf.GridMaster;
 import main.libgdx.bf.SuperActor;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
@@ -17,6 +22,8 @@ import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
+
+import java.awt.*;
 
 /**
  * Created by JustMe on 8/28/2017.
@@ -29,6 +36,8 @@ public class ShadeLightCell extends SuperContainer {
     private int y;
     private SHADE_LIGHT type;
     private float baseAlpha;
+    private Float originalX;
+    private Float originalY;
 
     public ShadeLightCell(SHADE_LIGHT type, int x, int y) {
         super(new Image(TextureCache.getOrCreateR(type.getTexturePath())));
@@ -60,14 +69,14 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     public float getWidth() {
-        if (type==SHADE_LIGHT.HIGLIGHT)
-        return super.getWidth();
+        if (type == SHADE_LIGHT.HIGLIGHT)
+            return super.getWidth();
         return GridConst.CELL_W;
     }
 
     @Override
     public float getHeight() {
-        if (type==SHADE_LIGHT.HIGLIGHT)
+        if (type == SHADE_LIGHT.HIGLIGHT)
             return super.getHeight();
         return GridConst.CELL_H;
     }
@@ -200,4 +209,44 @@ public class ShadeLightCell extends SuperContainer {
         super.act(delta);
     }
 
+    @Override
+    public void setPosition(float x, float y) {
+        if (originalX==null )
+            originalX=x;
+        if (originalY==null)
+            originalY=y;
+        super.setPosition(x, y);
+    }
+
+    public void adjustPosition(int x, int y) {
+        float offsetX= 0;
+        float offsetY= 0;
+        for (Obj sub : IlluminationRule.getEffectCache().keySet()) {
+            if (sub instanceof Unit)
+                continue; //TODO illuminate some other way for units...
+
+            if (sub instanceof Structure) {
+                if (sub.getCoordinates().x == x)
+                    if (sub.getCoordinates().y == y)
+                        if (((Structure) sub).isOverlaying()) {
+                            DIRECTION d = ((Structure) sub).getDirection();
+                            if (d == null )
+                                continue;
+                            Dimension dim = GridMaster.getOffsetsForOverlaying(d,
+                             (int)getWidth(),
+                             (int)getHeight());
+                            if (offsetX==0 && offsetY== 0  ){
+                                offsetX+= dim.width;
+                                offsetY+= dim.height;
+                            }
+                              offsetX+= dim.width;
+                              offsetY+= dim.height;
+                            //so if 2+ overlays, will be centered between them...
+                    }
+            }
+
+        }
+
+        setPosition(originalX+offsetX, originalY+offsetY);
+    }
 }

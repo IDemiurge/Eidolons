@@ -24,7 +24,7 @@ public class HelpMaster {
          StrPathBuilder.build(PathFinder.getTextPath(),
           TextMaster.getLocale(), "info","heroes",name+ ".txt"));
         if (text.isEmpty()) {
-            text = "Sorry, not info on this hero!..";
+            text = "Sorry, no info on this hero!..";
         }
         return text;
     }

@@ -6,6 +6,7 @@ import main.content.values.parameters.G_PARAMS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
@@ -17,6 +18,7 @@ import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.battlecraft.logic.dungeon.location.building.MapZone;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -144,12 +146,15 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
             }
         }
         for (MapZone zone : plan.getZones()) {
-            ObjType type1 = DataManager.getType(zone.getFillerType(), DC_TYPE.BF_OBJ);
+            ObjType wallType = DataManager.getType(zone.getFillerType(), DC_TYPE.BF_OBJ);
             List<Coordinates> list = zone.getCoordinates();
             for (MapBlock b : zone.getBlocks()) {
                 list.removeAll(b.getCoordinates());
             }
-
+            for (Coordinates c : list) {
+            getGame().getManager().getObjCreator().createUnit(wallType, c.x, c.y,
+             Player.NEUTRAL, new Ref(game));
+            }
         }
 
         for (Obj obj : plan.getWallObjects()) {

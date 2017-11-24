@@ -29,6 +29,8 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.AnimMaster;
+import main.libgdx.anims.std.EventAnimCreator;
+import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.bf.TargetRunnable;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.system.GuiEventManager;
@@ -49,6 +51,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.LinkedList;
 import java.util.Set;
 
+import static main.system.GuiEventType.INGAME_EVENT_TRIGGERED;
 import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 
 /**
@@ -603,6 +606,19 @@ public class DC_GameManager extends GameManager {
                 }
         }
         return super.handleEvent(event);
+    }
+
+    @Override
+    protected void checkEventIsGuiHandled(Event event) {
+        if (GuiEventManager.checkEventIsGuiHandled(event))
+            GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
+        else {
+            if (FloatingTextMaster.getInstance().isEventDisplayable(event)) {
+                GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
+            }
+            else if (EventAnimCreator.isEventAnimated(event))
+                GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
+        }
     }
 
     public void freezeUnit(Unit unit) {

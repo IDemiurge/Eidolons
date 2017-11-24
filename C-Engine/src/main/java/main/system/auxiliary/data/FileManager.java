@@ -472,6 +472,20 @@ public class FileManager {
         }
         return list;
     }
+    public static List<File> getFiles(String path, String name, String format) {
+        return getFiles(path, name, format, false, false);
+    }
+        public static List<File> getFiles(String path, String name, String format, boolean dirs, boolean subdirs) {
+        List<File> files = getFilesFromDirectory(path, dirs, subdirs);
+        files.removeIf(file -> {
+            if (!StringMaster.getFormat(file.getName()).equalsIgnoreCase(format))
+                return true;
+            if (!StringMaster.contains(file.getName(), name))
+                return true;
+            return false;
+        });
+        return files;
+    }
 
     public static File getRandomFile(List<File> files) {
         int randomListIndex = RandomWizard.getRandomListIndex(files);

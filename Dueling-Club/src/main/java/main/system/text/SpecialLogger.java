@@ -65,9 +65,7 @@ public class SpecialLogger {
 
     public void startWritingThread() {
         
-        timeStamp = TimeMaster.getFormattedDate(true) +
-         " " +
-         TimeMaster.getFormattedTime(false, true);
+        timeStamp = TimeMaster.getTimeStamp();
         thread = new Thread(() -> {
             WaitMaster.WAIT(WRITE_ALL_PERIOD);
             writeLogs();

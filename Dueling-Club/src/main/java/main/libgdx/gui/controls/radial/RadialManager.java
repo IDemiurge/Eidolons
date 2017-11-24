@@ -48,7 +48,7 @@ public class RadialManager {
 //        Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
 //        return !obj.canBeActivated(ref) ?
 //         getOrCreateGrayscaleR(obj.getImagePath()):
-      return   getOrCreateR(obj.getImagePath());
+        return getOrCreateR(obj.getImagePath());
     }
 
     private static boolean isActionShown(ActiveObj el, DC_Obj target) {
@@ -59,6 +59,8 @@ public class RadialManager {
             return true;
         DC_ActiveObj action = ((DC_ActiveObj) el);
 
+        if (action.getActionGroup() == ACTION_TYPE_GROUPS.DUNGEON)
+            return true; //TODO [quick fix]
 
         if (target != action.getOwnerObj()) {
             if (action.getActionType() == ACTION_TYPE.MODE) {
@@ -129,7 +131,7 @@ public class RadialManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            List<RadialValueContainer> list = new LinkedList<>();
+        List<RadialValueContainer> list = new LinkedList<>();
         if (target instanceof Unit) {
             list.add(getExamineNode(target));
         }
@@ -255,15 +257,15 @@ public class RadialManager {
 //        actives.addAll(sourceUnit.getSpells());
         if (sourceUnit.getQuickItems() != null)
             sourceUnit.getQuickItems().forEach(item -> {
-            if (isQuickItemShown(item, target)) {
-                actives.add(item.getActive());
-            }
-        });
+                if (isQuickItemShown(item, target)) {
+                    actives.add(item.getActive());
+                }
+            });
         if (target instanceof DungeonObj) {
-             (((DungeonObj) target).getDM().
-              getActions((DungeonObj) target, sourceUnit)).forEach(a->{
-                 actives.add(0, (ActiveObj) a);
-             });
+            (((DungeonObj) target).getDM().
+             getActions((DungeonObj) target, sourceUnit)).forEach(a -> {
+                actives.add(0, (ActiveObj) a);
+            });
 //            if (DoorMaster.isDoor((BattleFieldObject) target)) {
 //                actives.addAll(DoorMaster.getActions((BattleFieldObject) target, sourceUnit));
 //            }
@@ -345,14 +347,14 @@ public class RadialManager {
             return configureSelectiveTargetedNode(el, target);
         }
         RadialValueContainer valueContainer = new RadialValueContainer(
-         new TextureRegion(getTextureForActive(el, target)), getRunnable(target, el), checkValid(el, target),el, target);
+         new TextureRegion(getTextureForActive(el, target)), getRunnable(target, el), checkValid(el, target), el, target);
         addSimpleTooltip(valueContainer, el.getName());
         return valueContainer;
     }
 
     private static boolean checkValid(DC_ActiveObj activeObj, DC_Obj target) {
         Ref ref = activeObj.getOwnerObj().getRef().getTargetingRef(target);
-        return  activeObj.canBeActivated(ref);
+        return activeObj.canBeActivated(ref);
     }
 
     private static RadialValueContainer
@@ -370,7 +372,7 @@ public class RadialManager {
 //            wasValid = objSet.size() > 0 &&
 //             active.canBeManuallyActivated();
 //        } else
-            wasValid = active.canBeManuallyActivated();
+        wasValid = active.canBeManuallyActivated();
         final boolean valid = wasValid;
 
         TextureRegion textureRegion =
@@ -444,7 +446,7 @@ public class RadialManager {
                 result = new RadialValueContainer(getOrCreateR(activeObj.getImagePath()), getRunnable(target, activeObj));
             } else {
                 result = new RadialValueContainer(new TextureRegion(
-                 getTextureForActive(activeObj, target)), getRunnable(target, activeObj) ,  checkValid(activeObj, target), activeObj, target);
+                 getTextureForActive(activeObj, target)), getRunnable(target, activeObj), checkValid(activeObj, target), activeObj, target);
             }
         }
         addSimpleTooltip(result, activeObj.getName());
@@ -485,6 +487,30 @@ public class RadialManager {
         cache.clear();
     }
 
+    public static Supplier<String> getInfoTextSupplier(boolean valid, DC_ActiveObj activeObj, DC_Obj target) {
+        if (!valid) {
+            return () -> activeObj.getCosts().getReasonsString();
+        }
+        if (!activeObj.isAttackGeneric())
+            if (activeObj.isAttackAny()) {
+                int chance = activeObj.getCalculator().getCritOrDodgeChance(target);
+                if (chance == 0)
+                    return null;
+                return () -> {
+                    String string = null;
+                    if (chance > 0) {
+                        string = chance + "% to crit";
+                    } else
+                        string = chance + "% to miss";
+                    return string;
+                };
+            }
+        if (activeObj.isSpell()) {
+
+        }
+        return null;
+    }
+
     public Supplier<List<RadialValueContainer>> get(RADIAL_PARENT_NODE type,
                                                     DC_ActiveObj activeObj,
                                                     DC_Obj target) {
@@ -496,30 +522,6 @@ public class RadialManager {
     private List<RadialValueContainer> getChildNodes(RADIAL_PARENT_NODE type, DC_ActiveObj activeObj, DC_Obj target) {
         List<RadialValueContainer> list = new LinkedList<>();
         return list;
-    }
-
-    public static Supplier<String> getInfoTextSupplier(boolean valid, DC_ActiveObj activeObj, DC_Obj target) {
-        if (!valid) {
-            return () -> activeObj.getCosts().getReasonsString();
-        }
-        if (!activeObj.isAttackGeneric())
-        if (activeObj.isAttackAny()) {
-            int chance = activeObj.getCalculator().getCritOrDodgeChance(target);
-            if (chance == 0)
-                return null ;
-            return () -> {
-                String string = null;
-                if (chance > 0) {
-                    string =chance+ "% to crit";
-                } else
-                    string =chance+ "% to miss";
-                return string;
-            };
-        }
-        if (activeObj.isSpell()) {
-
-        }
-        return null;
     }
 
     public enum RADIAL_PARENT_NODE {

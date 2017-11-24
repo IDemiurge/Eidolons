@@ -242,13 +242,21 @@ public class HitAnim extends ActionAnim {
         DAMAGE_TYPE damageType = active.getDamageType();
         if (damageType == DAMAGE_TYPE.SLASHING)
             return HIT.SLICE;
+        if (damageType == DAMAGE_TYPE.PIERCING)
+            return HIT.SMEAR;
+        if (damageType == DAMAGE_TYPE.BLUDGEONING)
+            return HIT.SMASH;
 //        active.get
         return HIT.SPLASH;
     }
 
     public enum HIT {
         SLICE("slice 8 1"),
-        SPLASH("blood splatter 3 3"),;
+        SPLASH("blood splatter 3 3"),
+        SMASH("smash 3 3"),
+        SMEAR("smear 3 3"),
+
+        ;
 
         String spritePath;
 

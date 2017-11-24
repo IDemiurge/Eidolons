@@ -120,6 +120,7 @@ public class AttackCalculator {
         }
         initAllModifiers();
         amount = applyDamageBonuses();
+
         // TODO
         if (CoreEngine.isPhaseAnimsOn())
             if (!precalc || anim != null) {
@@ -130,9 +131,6 @@ public class AttackCalculator {
         return amount;
     }
 
-    public int getCritOrDodgeChance() {
-        return 0;
-    }
 
     private void initAllModifiers() {
         initializeWeaponModifiers();
@@ -171,6 +169,7 @@ public class AttackCalculator {
         // defense mod?!
 
     }
+
 
 
     private Integer getAttackDefenseDamageBonus(Attack attack, Integer amount, Unit attacker,
@@ -327,6 +326,9 @@ public class AttackCalculator {
         // bonus += (amount - bonus) * modMap.getOrCreate(id) / 100;
         // bonusMap.put(id, bonus);
         // }
+for (Integer sub: posMap.values())
+        totalMod += sub;
+
         amount += totalBonus;
         amount += amount * totalMod / 100;
 

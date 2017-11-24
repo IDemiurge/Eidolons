@@ -38,7 +38,8 @@ public class DamageDealer {
      * @return
      */
     public static int dealDamage(Damage damage) {
-        return dealDamage(damage, false);
+        boolean bonus = damage.getRef().isTriggered();
+        return dealDamage(damage, bonus);
     }
 
     private static int dealDamage(Damage damage, boolean isBonusDamage) {
@@ -197,9 +198,9 @@ public class DamageDealer {
             }
         }
 
-        int t_damage = DamageCalculator.calculateToughnessDamage(attacked, attacker, amount, magical, ref, blocked,
+        int t_damage = DamageCalculator.calculateToughnessDamage(attacked, attacker, amount,   ref, blocked,
          dmg_type);
-        int e_damage = DamageCalculator.calculateEnduranceDamage(attacked, attacker, amount, magical, ref, blocked,
+        int e_damage = DamageCalculator.calculateEnduranceDamage(attacked, attacker, amount,   ref, blocked,
          dmg_type);
 //        PhaseAnimator.handleDamageAnimAndLog(ref, attacked, magical, dmg_type);
 

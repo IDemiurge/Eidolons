@@ -604,6 +604,6 @@ public abstract class DC_Obj extends MicroObj {
 
     public void outsideCombatReset() {
         setParam(PARAMS.ILLUMINATION, 0);
-
+        setDirty(false);
     }
 }

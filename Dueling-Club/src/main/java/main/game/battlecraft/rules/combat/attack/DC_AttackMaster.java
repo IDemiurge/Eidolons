@@ -133,12 +133,12 @@ public class DC_AttackMaster {
                 main.system.auxiliary.log.LogMaster.log(1,
                  "Counter attack with first strike against " + attack.getAction());
                 ActiveObj action = counterRule.tryCounter(attack, false);
-                AttackEffect effect = EffectMaster.getAttackEffect(action);
+                if (action != null) {
+                    AttackEffect effect = EffectMaster.getAttackEffect(action);
                 waitForAttackAnimation(effect.getAttack());
                 attackNow(attack, ref, free, false, onHit, onKill, offhand, counter);
-
                 countered = true;
-                result = true;
+                result = true;}
             }
             if ((!countered) || attack.getAttacker().hasDoubleCounter()) {
                 if (canCounter) {

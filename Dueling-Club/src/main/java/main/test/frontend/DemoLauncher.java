@@ -14,16 +14,19 @@ import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.libgdx.EngineEmulator;
 import main.libgdx.gui.menu.MainMenuScreen;
-import main.libgdx.screens.*;
+import main.libgdx.screens.DungeonScreen;
+import main.libgdx.screens.HeadquarterScreen;
+import main.libgdx.screens.ScreenData;
+import main.libgdx.screens.ScreenWithLoader;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 import org.dizitart.no2.Nitrite;
 
+import java.awt.*;
 import java.util.function.Supplier;
 
 import static main.system.GuiEventType.SCREEN_LOADED;
@@ -34,6 +37,7 @@ public class DemoLauncher extends Game {
     private static Nitrite db;
     private static String quickTypes =
      "units;bf obj;terrain;missions;places;scenarios;party;";
+    protected static boolean fullscreen;
     private DC_Game coreGame;
     private EngineEmulator engine;
     private ScreenViewport viewport;
@@ -56,18 +60,11 @@ public class DemoLauncher extends Game {
     }
 
     public static void main(String[] args) {
-/*        db = Nitrite.builder()
-                .compressed()
-                .filePath(PathFinder.getXML_PATH() + "test.db")
-                .openOrCreate("user", "password");
-        final ObjectRepository<LwjglApplicationConfiguration> repository = db.getRepository(LwjglApplicationConfiguration.class);
-        LwjglApplicationConfiguration configuration = repository.find().firstOrDefault();
-        if (configuration == null) {
-            configuration = getConf();
-            repository.insert(configuration);
-        }*/
         Eidolons.setApplication(new LwjglApplication(new DemoLauncher(), getConf()));
-
+        if (fullscreen
+         ) {
+            Eidolons.setFullscreen(true);
+        }
     }
 
     public static LwjglApplicationConfiguration getConf() {
@@ -79,45 +76,46 @@ public class DemoLauncher extends Game {
         conf.resizable = false;
         OptionsMaster.init();
 
-        conf.fullscreen = //false;
-         OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
-
-        conf.foregroundFPS=FRAMERATE;
-        conf.backgroundFPS=isStopOnInactive()? -1 : FRAMERATE;
-        conf.width = 1600;
-        conf.height = 900;
+        conf.fullscreen = false;
+        fullscreen = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
 
 
-//        System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
-//        conf.width   = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
-//        conf.height =   LwjglApplicationConfiguration.getDesktopDisplayMode().height;
-        try {
-            RESOLUTION resolution =
-             new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class,
-              OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
-            if (resolution != null) {
-                String[] parts = resolution.toString().substring(1).
-                 split("x");
-                Integer w =
-                 StringMaster.getInteger(
-                  parts[0]);
-                Integer h =
-                 StringMaster.getInteger(parts[1]);
-                if (!conf.fullscreen){
-                    w=w*95/100;
-                    h=h*90/100;
+        conf.foregroundFPS = FRAMERATE;
+        conf.backgroundFPS = isStopOnInactive() ? -1 : FRAMERATE;
+        conf.vSyncEnabled = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VSYNC);
+
+        if (fullscreen) {
+//            DisplayMode displayMode = LwjglApplicationConfiguration.getDesktopDisplayMode();
+//            conf.setFromDisplayMode(displayMode);
+            System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+            conf.width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
+            conf.height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
+            System.out.println("resolution width " + conf.width);
+            System.out.println("resolution height " + conf.height);
+        } else {
+            conf.width = 1600;
+            conf.height = 900;
+            try {
+                RESOLUTION resolution =
+                 new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class,
+                  OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
+                if (resolution != null) {
+                    Dimension dimension = Eidolons.getResolutionDimensions(resolution, fullscreen);
+                    Integer w = (int)
+                     dimension.getWidth();
+                    Integer h = (int)
+                     dimension.getHeight();
+                    conf.width = w;
+                    conf.height = h;
+                    if (w < 1500)
+                        conf.useGL30 = false;
+                    System.out.println("resolution width " + w);
+                    System.out.println("resolution height " + h);
                 }
-                conf.width = w;
-                conf.height = h;
-                if (w<1500)
-                    conf.useGL30 = false;
-                System.out.println("resolution width "+w );
-                System.out.println("resolution height "+h );
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
         try {
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo32.png", FileType.Absolute);
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo64.png", FileType.Absolute);

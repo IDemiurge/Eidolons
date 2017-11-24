@@ -1,8 +1,14 @@
 package main.libgdx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.ScreenUtils;
+import main.data.filesys.PathFinder;
 import main.libgdx.screens.DungeonScreen;
 
 /**
@@ -73,4 +79,22 @@ public class GdxMaster {
         return fontSizeMod;
     }
 
+    public static void setWidth(int width) {
+        GdxMaster.width = width;
+    }
+    public static void setHeight(int height) {
+        GdxMaster.height = height;
+    }
+
+    public static void takeScreenShot() {
+        byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
+
+        Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(),
+         Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
+        BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
+        PixmapIO.writePNG(
+         new FileHandle( PathFinder.getImagePath()+"big\\screenshots\\" +
+          main.system.auxiliary.TimeMaster.getTimeStamp()+(".png")), pixmap);
+        pixmap.dispose();
+    }
 }

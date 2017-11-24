@@ -98,8 +98,8 @@ public class HpBar extends SuperActor {
     //make sure this isn't called all the time!
     public void reset(ResourceSourceImpl resourceSource) {
         //TODO queue animation?
-        main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar tries to reset " +
-         dataSource +" previousToughnessPerc=" + previousToughnessPerc +" previousEndurancePerc=" + previousEndurancePerc+ " toughnessPerc=" + toughnessPerc +" endurancePerc=" + endurancePerc);
+//        main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar tries to reset " +
+//         dataSource +" previousToughnessPerc=" + previousToughnessPerc +" previousEndurancePerc=" + previousEndurancePerc+ " toughnessPerc=" + toughnessPerc +" endurancePerc=" + endurancePerc);
 
         dataSource = resourceSource;
         toughnessPerc = new Float(dataSource.getIntParam(PARAMS.C_TOUGHNESS))
@@ -111,8 +111,8 @@ public class HpBar extends SuperActor {
          endurancePerc.equals(previousEndurancePerc))
             return;
         dirty = true;
-        main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar reset " +
-         dataSource +" previousToughnessPerc=" + previousToughnessPerc +" previousEndurancePerc=" + previousEndurancePerc+ " toughnessPerc=" + toughnessPerc +" endurancePerc=" + endurancePerc);
+//        main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar reset " +
+//         dataSource +" previousToughnessPerc=" + previousToughnessPerc +" previousEndurancePerc=" + previousEndurancePerc+ " toughnessPerc=" + toughnessPerc +" endurancePerc=" + endurancePerc);
         if (!toughnessPerc.equals(previousToughnessPerc))
             previousToughnessPerc = toughnessPerc;
         if (!endurancePerc.equals(previousEndurancePerc))

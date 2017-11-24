@@ -107,7 +107,7 @@ public class ExplorationMaster {
             game.getLogManager().logBattleEnds();
             getResetter().setFirstResetDone(false);
 
-            MusicMaster.getInstance().setScope(MUSIC_SCOPE.ATMO);
+            MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.ATMO);
         } else {
             game.getLogManager().logBattleStarts();
             if (AnimationConstructor.isPreconstructEnemiesOnCombatStart())
@@ -116,7 +116,7 @@ public class ExplorationMaster {
                 });
             getResetter().setFirstResetDone(false);
             try {
-                MusicMaster.getInstance().setScope(MUSIC_SCOPE.BATTLE);
+                MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.BATTLE);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

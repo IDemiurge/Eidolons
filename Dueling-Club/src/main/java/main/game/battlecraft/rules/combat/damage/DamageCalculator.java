@@ -37,19 +37,19 @@ import java.util.List;
 public class DamageCalculator {
 
     protected static int calculateToughnessDamage(BattleFieldObject attacked, Unit attacker,
-                                                  int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
-        return calculateDamage(false, attacked, attacker, base_damage, magical, ref, blocked,
+                                                  int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
+        return calculateDamage(false, attacked, attacker, base_damage,   ref, blocked,
          damage_type);
     }
 
     protected static int calculateEnduranceDamage(BattleFieldObject attacked, Unit attacker,
-                                                  int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
-        return calculateDamage(true, attacked, attacker, base_damage, magical, ref, blocked,
+                                                  int base_damage,   Ref ref, int blocked, DAMAGE_TYPE damage_type) {
+        return calculateDamage(true, attacked, attacker, base_damage,  ref, blocked,
          damage_type);
     }
 
-    private static int calculateDamage(boolean endurance, BattleFieldObject attacked, Unit attacker,
-                                       int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
+    public static int calculateDamage(boolean endurance, BattleFieldObject attacked, Unit attacker,
+                                       int base_damage,   Ref ref, int blocked, DAMAGE_TYPE damage_type) {
 
         if (!endurance) {
             if (isEnduranceOnly(ref)) {
@@ -105,12 +105,14 @@ public class DamageCalculator {
         if (!(attacked instanceof Unit)) {
             return amount;
         }
-        amount -= // applyAverageShieldReduction
-         attacked.getGame().getArmorSimulator().getShieldDamageBlocked(amount,
-          (Unit) attacked, attacker, attack.getAction(), attack.getWeapon(), attack.getDamageType());
+        int blocked = attacked.getGame().getArmorSimulator().getShieldDamageBlocked(amount,
+         (Unit) attacked, attacker, attack.getAction(), attack.getWeapon(), attack.getDamageType());
 
-        amount -= attacked.getGame()
+        blocked += attacked.getGame()
          .getArmorSimulator().getArmorBlockDamage(amount, (Unit) attacked, attacker, attack.getAction());
+
+        amount=calculateDamage(true, attacked, attacker, amount,
+          null , blocked, attack.getDamageType());
 
         if (attack.getAction().isAttackGeneric()) {
             return amount;

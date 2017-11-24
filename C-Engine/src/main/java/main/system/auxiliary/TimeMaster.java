@@ -209,4 +209,10 @@ public class TimeMaster {
         return new Date(time).getMonth() == getMonth();
     }
 
+    public static String getTimeStamp() {
+        return TimeMaster.getFormattedDate(true) +
+         " " +
+         TimeMaster.getFormattedTime(false, true);
+
+    }
 }

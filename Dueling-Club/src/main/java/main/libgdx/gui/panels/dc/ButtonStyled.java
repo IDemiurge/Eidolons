@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
 
@@ -27,7 +28,7 @@ public class ButtonStyled extends Image implements EventListener {
 //
 //          b.isVersioned() ?
 //           StyleHolder.getCustomButtonStyle(b.path)
-//           : StyleHolder.getDefaultTextButtonStyle()
+//           : StyleHolder.getTextButtonStyle()
         );
     }
 
@@ -57,6 +58,13 @@ public class ButtonStyled extends Image implements EventListener {
         OK("UI/components/small/ok.png"),
         CANCEL("UI/components/small/no.png"),
         UNDO("UI/components/small/back2.png"),
+        GAME_MENU(VISUALS.CONTROL_PANEL_HORIZONTAL.getImgPath()){
+            @Override
+            public boolean isVersioned() {
+                return false;
+            }
+        },
+
         HELP(VISUALS.QUESTION.getImgPath()){
             @Override
             public boolean isVersioned() {
@@ -72,6 +80,7 @@ public class ButtonStyled extends Image implements EventListener {
 //        NEXT, LEVEL_UP,
         ;
         String path;
+        private Drawable texture;
 
         STD_BUTTON(String path) {
             this.path = path;
@@ -79,5 +88,14 @@ public class ButtonStyled extends Image implements EventListener {
 
         public boolean isVersioned() {
             return true;}
+
+        public Drawable getTexture() {
+            if (texture==null ){
+                texture = TextureCache.getOrCreateTextureRegionDrawable(path);
+            }
+            return texture;
+        }
+
+
     }
 }

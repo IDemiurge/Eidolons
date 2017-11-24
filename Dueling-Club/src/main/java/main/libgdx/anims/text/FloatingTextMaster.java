@@ -135,6 +135,16 @@ public class FloatingTextMaster {
                     return TEXT_CASES.ATTACK_CRITICAL;
                 case ATTACK_DODGED:
                     return TEXT_CASES.ATTACK_DODGED;
+                case ATTACK_INSTANT:
+                    return TEXT_CASES.ATTACK_INSTANT;
+                case ATTACK_COUNTER:
+                    return TEXT_CASES.ATTACK_COUNTER;
+                case ATTACK_OF_OPPORTUNITY:
+                    return TEXT_CASES.ATTACK_OF_OPPORTUNITY;
+                case ATTACK_PARRIED:
+                    return TEXT_CASES.ATTACK_PARRIED;
+                case ACTION_MISSED:
+                    return TEXT_CASES.ATTACK_MISSED;
             }
         }
         return null;

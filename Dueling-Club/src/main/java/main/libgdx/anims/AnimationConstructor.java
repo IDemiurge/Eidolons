@@ -629,7 +629,7 @@ public class AnimationConstructor {
     public boolean isReconstruct() {
         if (CoreEngine.isJar())
             return false;
-        return false;
+        return true;
 //        return reconstruct;
     }
 

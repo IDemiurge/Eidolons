@@ -57,11 +57,27 @@ public class MusicMaster {
     private boolean running;
 
     private Map<MUSIC_SCOPE, Music> trackCache = new XLinkedMap<>();
+
     private Thread thread;
     private boolean interruptOnSet;
     private boolean mainThemePlayed;
     // IDEA: map music per scope to resume()
 // TODO AMBIENT SOUNDS -
+
+
+public void scopeChanged(MUSIC_SCOPE scope){
+    trackCache.put(this.scope, playedMusic);
+    playList.clear();
+    setScope(scope);
+    pause();
+    playedMusic = trackCache.get(scope);
+    if (playedMusic==null ){
+        checkNewMusicToPlay();
+    }
+    resume();
+    //fade? :)
+    //
+}
 
     private MusicMaster() {
         init();

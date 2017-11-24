@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.data.filesys.PathFinder;
+import main.libgdx.gui.panels.dc.ButtonStyled;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster.FONT;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -23,20 +25,7 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 public class StyleHolder {
     public static final FONT DEFAULT_FONT = FONT.MAIN;
     public static final FONT ALT_FONT = FONT.NYALA;
-    private static final String DISABLED = "_disabled";
-    private static final String OVER = "_over";
-    private static final String DOWN = "_down";
-    private static final String UP = "_up";
-    private static final String CHECKED = "_down";
-    private static final int DEFAULT_SIZE = 14;
-    private static final Color DEFAULT_COLOR = new Color(ColorManager.GOLDEN_WHITE.getRGB());
-    private static Label.LabelStyle defaultLabelStyle;
-    private static Label.LabelStyle avqLabelStyle;
-    private static TextButton.TextButtonStyle defaultTextButtonStyle;
-    private static Map<FONT, Map<Color, Label.LabelStyle>> colorLabelStyleMap = new HashMap<>();
-    private static Map<FONT, Map<Integer, Label.LabelStyle>> sizeLabelStyleMap = new HashMap<>();
-    private static Map<FONT, Map<Pair<Integer, Color>, Label.LabelStyle>> sizeColorLabelStyleMap = new HashMap<>();
-//    private static String FONT_CHARS = "";
+    //    private static String FONT_CHARS = "";
 //
 //    static {
 //
@@ -44,6 +33,21 @@ public class StyleHolder {
 //        for (int i = 0x401; i < 0x452; i++) FONT_CHARS += (char) i;
 //    }
     final static String FONT_CHARS = "абвгдежзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";
+    private static final String DISABLED = "_disabled";
+    private static final String OVER = "_over";
+    private static final String DOWN = "_down";
+    private static final String UP = "_up";
+    private static final String CHECKED = "_down";
+    private static final int DEFAULT_SIZE = 14;
+    private static final Color DEFAULT_COLOR = new Color(ColorManager.GOLDEN_WHITE.getRGB());
+    static Map<ButtonStyled.STD_BUTTON, Map<LabelStyle, TextButtonStyle>> textButtonStyleMap = new HashMap<>();
+    private static Label.LabelStyle defaultLabelStyle;
+    private static Label.LabelStyle avqLabelStyle;
+    private static TextButton.TextButtonStyle defaultTextButtonStyle;
+    private static Map<FONT, Map<Color, Label.LabelStyle>> colorLabelStyleMap = new HashMap<>();
+    private static Map<FONT, Map<Integer, Label.LabelStyle>> sizeLabelStyleMap = new HashMap<>();
+    private static Map<FONT, Map<Pair<Integer, Color>, Label.LabelStyle>> sizeColorLabelStyleMap = new HashMap<>();
+
     public static Label.LabelStyle getStyledLabelStyle(Label.LabelStyle style, boolean italic, boolean bold) {
         //TODO
         return null;
@@ -52,6 +56,7 @@ public class StyleHolder {
     public static Label.LabelStyle getSizedLabelStyle(FONT fontStyle, Integer size) {
         return getSizedColoredLabelStyle(fontStyle, size, DEFAULT_COLOR);
     }
+
     public static Label.LabelStyle getSizedColoredLabelStyle(FONT fontStyle,
                                                              Integer size, Color color) {
         if (GdxMaster.getFontSizeMod() != 1) {
@@ -71,11 +76,11 @@ public class StyleHolder {
         return map.get(pair);
     }
 
-        private static Map<Pair<Integer, Color>, LabelStyle> getSizedColoredLabelStyleMap(FONT fontStyle, Integer size, Color color) {
+    private static Map<Pair<Integer, Color>, LabelStyle> getSizedColoredLabelStyleMap(FONT fontStyle, Integer size, Color color) {
 
         if (!sizeColorLabelStyleMap.containsKey(fontStyle)) {
             Map<Pair<Integer, Color>, LabelStyle> map = new HashMap<>();
-             sizeColorLabelStyleMap.put(fontStyle, map);
+            sizeColorLabelStyleMap.put(fontStyle, map);
             return map;
         }
         return sizeColorLabelStyleMap.get(fontStyle);
@@ -97,9 +102,10 @@ public class StyleHolder {
             style.font.getData().markupEnabled = true;
             map.put(color, style);
         }
-        return  map.get(color);
+        return map.get(color);
     }
-        private static Map<Color, LabelStyle> getLabelStyleMap(FONT font, Color color) {
+
+    private static Map<Color, LabelStyle> getLabelStyleMap(FONT font, Color color) {
         if (!colorLabelStyleMap.containsKey(font)) {
             Map<Color, LabelStyle> map = new HashMap<>();
             colorLabelStyleMap.put(font, map);
@@ -149,20 +155,45 @@ public class StyleHolder {
     }
 
     public static TextButton.TextButtonStyle getDefaultTextButtonStyle() {
-        return getTextButtonStyle(FONT.AVQ, DEFAULT_COLOR, 18);
+        if (defaultTextButtonStyle == null) {
+            defaultTextButtonStyle = getTextButtonStyle(FONT.AVQ, DEFAULT_COLOR, 18);
+        }
+        return defaultTextButtonStyle;
     }
 
     public static TextButton.TextButtonStyle getTextButtonStyle(
      FONT FONT, Color color, int size) {
-        if (defaultTextButtonStyle == null) {
-            defaultTextButtonStyle = new TextButton.TextButtonStyle();
-            defaultTextButtonStyle.font = getFont(FONT, color, size);// new BitmapFont();
-            defaultTextButtonStyle.fontColor = DEFAULT_COLOR;
-            defaultTextButtonStyle.overFontColor = new Color(DEFAULT_COLOR).add(50, 50, 50, 0);
-            defaultTextButtonStyle.checkedFontColor = new Color(0xFF_00_00_FF);
+        return getTextButtonStyle(null, FONT, color, size);
+    }
+
+    public static TextButton.TextButtonStyle getTextButtonStyle(
+     ButtonStyled.STD_BUTTON button, FONT FONT, Color color, int size) {
+        Map<LabelStyle, TextButtonStyle> map = textButtonStyleMap.get(button);
+        LabelStyle style = getSizedColoredLabelStyle(FONT, size, color);
+        TextButtonStyle textButtonStyle = null;
+        if (map != null) {
+            textButtonStyle = map.get(style);
+        } else {
+            map = new HashMap<>();
+            textButtonStyleMap.put(button, map);
+        }
+        if (textButtonStyle != null)
+            return textButtonStyle;
+
+        textButtonStyle = new TextButtonStyle();
+        if (button != null) {
+            textButtonStyle.up = button.getTexture();
+            textButtonStyle.down = button.getTexture();
+            textButtonStyle.over = button.getTexture();
         }
 
-        return defaultTextButtonStyle;
+        textButtonStyle.font = getFont(FONT, color, size);// new BitmapFont();
+        textButtonStyle.fontColor = DEFAULT_COLOR;
+        textButtonStyle.overFontColor = new Color(DEFAULT_COLOR).add(50, 50, 50, 0);
+        textButtonStyle.checkedFontColor = new Color(0xFF_00_00_FF);
+
+        map.put(style, textButtonStyle);
+        return textButtonStyle;
     }
 
     public static TextButton getMainMenuButton(String text) {

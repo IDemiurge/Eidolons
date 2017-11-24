@@ -11,6 +11,7 @@ import main.game.core.Eidolons;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.ParticleManager;
+import main.libgdx.bf.mouse.InputController;
 import main.libgdx.screens.DungeonScreen;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -177,15 +178,21 @@ public class OptionsMaster {
                 case AMBIENCE:
                     ParticleManager.setAmbienceOn(bool);
                     break;
-
-
-
+                case FULLSCREEN:
+                    Eidolons.setFullscreen(bool);
+                    break;
                 case AMBIENCE_MOVE_SUPPORTED:
                     ParticleManager.setAmbienceMoveOn(
                      bool);
                     break;
                 case OUTLINES:
                     OutlineMaster.setOutlinesOn(bool);
+                    break;
+                case RESOLUTION:
+                     Eidolons.setResolution(value);
+                    break;
+                case ZOOM_STEP:
+                    InputController.setZoomStep(Integer.valueOf(value)/new Float(100));
                     break;
             }
         }
@@ -287,7 +294,16 @@ public class OptionsMaster {
         FontMaster.init();
         GuiManager.init();
         init();
-        openMenu();
+        tryOpenMenu();
+    }
+
+    public static void tryOpenMenu() {
+        try {
+            openMenu();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+
+        }
     }
 
     public static void openMenu() {
@@ -305,10 +321,11 @@ public class OptionsMaster {
     }
 
     public static boolean isMenuOpen() {
-        if (modalOptionsPanelFrame!=null )
+        if (modalOptionsPanelFrame != null)
             return modalOptionsPanelFrame.isVisible();
         return false;
     }
+
     public static Map<OPTIONS_GROUP, Options> readOptions(String data) {
         Document doc = XML_Converter.getDoc(data);
         Map<OPTIONS_GROUP, Options> optionsMap = new XLinkedMap<>();
@@ -358,7 +375,7 @@ public class OptionsMaster {
                 continue;
             }
             Options options = generateDefaultOptions(group);
-            for (Object val: options.getValues().keySet()){
+            for (Object val : options.getValues().keySet()) {
                 if (map.getValues().containsKey(val))
                     continue;
                 map.setValue(val.toString(), options.getValue(val.toString()));

@@ -85,7 +85,10 @@ public class GridCellContainer extends GridCell {
             graveyard.setZIndex(Integer.MAX_VALUE);
         }
     }
-
+    public   float getObjScale() {
+        int size = GridConst.CELL_W - getSizeDiffX() * (getUnitViewCount() - 1);
+        return new Float(size) / GridConst.CELL_W;
+    }
     @Override
     public boolean isEmpty() {
         return getUnitViewCount()==0;
@@ -131,7 +134,8 @@ public class GridCellContainer extends GridCell {
         }
     }
 
-    private int getSizeDiffY() {
+
+        private  int getSizeDiffY() {
         return Math.round(getHeight() /
          (getSizeFactorPerView() * getUnitViewCountEffective()));
     }
@@ -141,7 +145,7 @@ public class GridCellContainer extends GridCell {
          (getSizeFactorPerView() * getUnitViewCountEffective()));
     }
 
-    private float getSizeFactorPerView() {
+    public float getSizeFactorPerView() {
         if (hasBackground)
             return 4.0f;
         return 3.0f;

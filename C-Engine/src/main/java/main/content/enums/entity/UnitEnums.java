@@ -431,4 +431,33 @@ public class UnitEnums {
         }
 
     }
+
+    // PERHAPS ENCOUNTERS COULD HAVE DEITY PROPERTY AS WELL;
+    public enum UNIT_GROUP {
+ELEMENTALS(""),
+        RAVENGUARD("Traitor,Corrupted,Royal"),
+
+        HUMANS("Militia,Scum,Guards,Army,"),
+        GREENSKINS("goblins,orcs"),
+        BANDITS("Pirates,Thieves Guild,Robbers,"),
+        KNIGHTS("ravenguard,holy,"),
+        DWARVES("forsworn,clansmen,"),
+        NORTH("norse,woads,brutes,north"),
+        UNDEAD("Plague,Crimson,Wraith,Pale"),
+        DEMONS("chaos,abyss,demons,demon worshippers"),
+        ANIMALS("Animals,Wolves,Wargs,wild,"),
+        MAGI("constructs,apostates,magi,,"),
+        CRITTERS("critters,spiders,nocturnal"),
+        DUNGEON("chaos,demons,worshippers,"),
+        FOREST("greenies,creatures"),;
+        private String subgroups;
+
+        UNIT_GROUP(String groups) {
+            this.subgroups = groups;
+        }
+
+        public String getSubgroups() {
+            return subgroups;
+        }
+    }
 }

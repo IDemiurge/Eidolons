@@ -12,6 +12,8 @@ import main.content.enums.entity.DungeonObjEnums.CONTAINER_CONTENT_VALUE;
 import main.content.enums.entity.ItemEnums.ITEM_RARITY;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
+import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -64,21 +66,6 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public ObjType getItem(CONTAINER_CONTENTS c, int maxCost) {
-        if (test_mode)
-            switch (c) {
-                case AMMO:
-                    break;
-                case POTIONS:
-                    return DataManager.getType("Minor Healing Potion", DC_TYPE.ITEMS);
-                case WEAPONS:
-                    // use UnitShop's methods!
-                    break;
-                case FOOD:
-                    return DataManager.getType("Food", DC_TYPE.ITEMS);
-                case MISC:
-                    break;
-            }
-
 
         int random = RandomWizard.getRandomInt(100);
         ITEM_RARITY rarity = ITEM_RARITY.COMMON;
@@ -154,15 +141,15 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         return pool;
     }
 
-    private ObjType preselectBaseType(CONTAINER_CONTENTS c, ITEM_RARITY rarity) {
-        DC_TYPE TYPE = getRandomTYPE(c);
+    private ObjType preselectBaseType(CONTAINER_CONTENTS contents, ITEM_RARITY rarity) {
+        DC_TYPE TYPE = getRandomTYPE(contents);
         boolean iterate =
          isIterateAlways() ||
           TYPE == DC_TYPE.ITEMS || TYPE == DC_TYPE.JEWELRY;
 
         if (isFastSelect()) {
-            String group = getItemGroup(c, false, TYPE);
-            String subgroup = getItemGroup(c, true, TYPE);
+            String group = getItemGroup(contents, false, TYPE);
+            String subgroup = getItemGroup(contents, true, TYPE);
             ObjType type = null;
             List<ObjType> types = DataManager.getTypes(TYPE, iterate);
             main.system.auxiliary.log.LogMaster.log(1, " group= " + group + " subgroup= " + subgroup
@@ -184,8 +171,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                     if (n > types.size() / 5) {
                         if (!loop.continues())
                             return null;
-                        group = getItemGroup(c, false, TYPE);
-                        subgroup = getItemGroup(c, true, TYPE);
+                        group = getItemGroup(contents, false, TYPE);
+                        subgroup = getItemGroup(contents, true, TYPE);
                         n = 0;
                     }
                 }
@@ -193,7 +180,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                     break;
                 if (type.isGenerated())
                     continue;
-                if (isRemoveBase(c, type) && TYPE!=DC_TYPE.JEWELRY)
+                if (isRemoveBase(contents, type) && TYPE!=DC_TYPE.JEWELRY)
                     if (!type.checkProperty(PROPS.ITEM_RARITY, rarity.name()))
                         continue;
                 if (group != null)
@@ -207,17 +194,18 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             return type;
         }
         List<ObjType> list = new LinkedList<>();
-        String groups = getItemGroups(c, TYPE);
+        String groups = getItemGroups(contents, TYPE);
         if (groups == null) groups = " ;";
         for (String sub : groups.split(";")) {
             if (sub.trim().isEmpty())
                 sub = null;
             List<ObjType> group = new LinkedList<>(
-             isGroupsOrSubgroups(c, TYPE) ?
+             isGroupsOrSubgroups(contents, TYPE) ?
               DataManager.getTypesGroup(TYPE, sub) :
               DataManager.getTypesSubGroup(TYPE, sub));
             //TODO set rarity to common by default
             FilterMaster.filterByPropJ8(group, PROPS.ITEM_RARITY.getName(), rarity.name());
+            filter(contents, group, rarity , TYPE );
             if (group.isEmpty())
                 continue;
 //            group = generateTypes(c, rarity, group);
@@ -230,6 +218,13 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             return null;
         }
         return new RandomWizard<ObjType>().getRandomListItem(list);
+    }
+
+    private void filter(CONTAINER_CONTENTS contents, List<ObjType> group, ITEM_RARITY rarity, DC_TYPE TYPE) {
+        switch (TYPE) {
+            case WEAPONS:
+                group.removeIf(type -> type.getProperty(G_PROPS.WEAPON_GROUP).equalsIgnoreCase(WEAPON_GROUP.FORCE.name()));
+        }
     }
 
     private boolean isIterateAlways() {

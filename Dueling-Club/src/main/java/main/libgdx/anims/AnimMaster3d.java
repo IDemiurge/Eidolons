@@ -5,9 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
-import main.content.enums.entity.ItemEnums.WEAPON_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -101,9 +99,9 @@ public class AnimMaster3d {
 //        if (weapon.getWeaponType() == WEAPON_TYPE.POLE_ARM)
 //            return false;
 
-        if (weapon.getWeaponType() == WEAPON_TYPE.NATURAL)
-            if (weapon.getWeaponGroup() != WEAPON_GROUP.FISTS)
-                return false;
+//        if (weapon.getWeaponType() == WEAPON_TYPE.NATURAL)
+//            if (weapon.getWeaponGroup() != WEAPON_GROUP.FISTS)
+//                return false;
 
         return true;
     }

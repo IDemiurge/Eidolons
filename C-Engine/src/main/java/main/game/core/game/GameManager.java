@@ -27,7 +27,6 @@ import main.system.auxiliary.log.LogMaster;
 
 import java.util.Set;
 
-import static main.system.GuiEventType.INGAME_EVENT_TRIGGERED;
 import static main.system.GuiEventType.UPDATE_BUFFS;
 
 /**
@@ -225,8 +224,9 @@ public abstract class GameManager implements GenericGameManager {
                 return true;
             }
         }
-        if (GuiEventManager.checkEventIsGuiHandled(event))
-        GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
+        checkEventIsGuiHandled(event);
+
+
         if (!game.isStarted()) {
             return true;
         }
@@ -254,6 +254,8 @@ public abstract class GameManager implements GenericGameManager {
         return result;
 
     }
+
+    protected abstract void checkEventIsGuiHandled(Event event);
 
     public void setStatMaster(StatMaster statMaster) {
         this.statMaster = statMaster;

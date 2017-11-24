@@ -38,6 +38,7 @@ import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.bf.light.ShadowMap;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.bf.mouse.BattleClickListener;
+import main.libgdx.bf.overlays.HpBar;
 import main.libgdx.bf.overlays.WallMap;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
@@ -51,7 +52,6 @@ import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.graphics.MigMaster;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.text.HelpMaster;
@@ -59,7 +59,9 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 import static main.system.GuiEventType.*;
 
@@ -544,14 +546,14 @@ public class GridPanel extends Group {
             } else if (event.getType().name().startsWith("EFFECT_")) {
                 caught = true;
             } else if (event.getType().name().startsWith("PARAM_MODIFIED")) {
-                if (GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())){
-                        UnitView view = (UnitView) getUnitMap().get(
-                         event.getRef().getSourceObj());
+                if (GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
+                    UnitView view = (UnitView) getUnitMap().get(
+                     event.getRef().getSourceObj());
                     if (view != null)
                         if (view.isVisible())
-                            if (view.getHpBar( )!=null )
+                            if (view.getHpBar() != null)
 //                                if (view.getHpBar( ).getDataSource().canHpBarBeVisible())
-                    view.resetHpBar(new ResourceSourceImpl((BattleFieldObject) event.getRef().getSourceObj()));
+                                view.resetHpBar(new ResourceSourceImpl((BattleFieldObject) event.getRef().getSourceObj()));
                 }
 //                case "Illumination":
 //                        if (lightingManager != null) {
@@ -760,28 +762,47 @@ public class GridPanel extends Group {
         if (isHpBarsOnTop())
             for (BattleFieldObject obj : unitMap.keySet()) {
                 BaseView sub = unitMap.get(obj);
-                if (sub .isVisible())
+                if (sub.isVisible())
                     if (sub instanceof GridUnitView) {
-                    if (((GridUnitView) sub).getHpBar() != null)
-                            if (((UnitView) sub). isHpBarVisible())   {
+                        if (((GridUnitView) sub).getHpBar() != null)
+                            if (((UnitView) sub).isHpBarVisible()) {
                                 float x = sub.getX();
                                 float y = sub.getY();
 
 //                                if (x == 0 && y == 0  )
-                                    if (sub.getParent()!=this ) //detached and moving!
-                                    {
-                                    Vector2 v = GridMaster.getVectorForCoordinate(obj.getCoordinates(),
+                                float scale = 1f;
+                                if (sub.getParent() != this) //detached and moving!
+                                {
+                                    if (sub.getParent() instanceof GridCellContainer) {
+                                        GridCellContainer parent = (GridCellContainer) sub.getParent();
+                                        if (parent.
+                                         getUnitViewCount() > 1) {
+                                            if (parent.
+                                             getUnitViewCountEffective() == 1) {
+                                                scale = parent.getObjScale();
+                                            } else if (!sub.isHovered())
+                                                continue;
+                                            else {
+                                                //offset? scale?
+                                            }
+                                        }
+
+                                    }
+                                    Vector2 v = GridMaster.getVectorForCoordinate(obj.getBufferedCoordinates(),
                                      false, false, true, this);
+
                                     x = v.x;
                                     y = v.y;
                                 }
-                                ((UnitView) sub).getHpBar().act(Gdx.graphics.getDeltaTime());
-                                ((UnitView) sub).getHpBar().drawAt(batch, x, y);
+                                HpBar hpBar = ((UnitView) sub).getHpBar();
+                                hpBar.scaleBy(scale, (1 + scale) / 2);
+                                hpBar.act(Gdx.graphics.getDeltaTime());
+                                hpBar.drawAt(batch, x, y);
 
 
                             }
 
-                }
+                    }
             }
 //        int w = GdxMaster.getWidth();
 //        int h = GdxMaster.getHeight();
@@ -930,35 +951,15 @@ public class GridPanel extends Group {
     }
 
     public void addOverlay(OverlayView view) {
-        float w = GridConst.CELL_W;
-        float h = GridConst.CELL_H;
-        final int width = (int) (w * OverlayView.SCALE);
-        final int height = (int) (h * OverlayView.SCALE);
-        Coordinates.DIRECTION direction = view.getDirection();
+        int width = (int) (GridConst.CELL_W * OverlayView.SCALE);
+        int height = (int) (GridConst.CELL_H * OverlayView.SCALE);
+        Dimension dimension = GridMaster.getOffsetsForOverlaying(view.getDirection(), width, height);
         float calcXOffset = view.getX();
         float calcYOffset = view.getY();
-        if (direction == null) {
-            calcXOffset += (w - width) * OverlayView.SCALE;
-            calcYOffset += (h - height) * OverlayView.SCALE;
-        } else {
-            int size = width;
-            int x = MigMaster.getCenteredPosition((int) w, size);
-            if (direction != null) {
-                if (direction.isGrowX() != null)
-                    x = (direction.isGrowX()) ? (int) w - size : 0;
-            }
 
-            int y = MigMaster.getCenteredPosition((int) h, size);
-            if (direction != null) {
-                if (direction.isGrowY() != null)
-                    y = (!direction.isGrowY()) ? (int) h - size : 0;
-
-            }
-            calcXOffset += x;
-            calcYOffset += y;
-        }
-
-        view.setBounds(calcXOffset, calcYOffset, width, height);
+        view.setBounds((float) dimension.getWidth() + calcXOffset
+         , (float) dimension.getHeight() + calcYOffset
+         , width, height);
         addActor(view);
         overlays.add(view);
     }

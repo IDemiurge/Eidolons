@@ -1,4 +1,4 @@
-package main.system;
+package main.system.content;
 
 import main.content.CONTENT_CONSTS.DIMENSION;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;

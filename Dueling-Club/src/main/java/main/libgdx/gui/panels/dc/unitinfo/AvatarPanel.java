@@ -23,7 +23,7 @@ public class AvatarPanel extends TablePanel {
         setBackground(drawable);
 
         Image avatarImage = new Image();
-        avatarContainer = addElement(avatarImage).fill().pad(22, 60, 20, 55);
+        avatarContainer = addElement(avatarImage).pad(22, 60, 22, 55);
         row();
         nameLabel = new Label("name", StyleHolder.getDefaultLabelStyle());
         nameLabel.setAlignment(Align.center);

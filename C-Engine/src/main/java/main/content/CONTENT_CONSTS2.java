@@ -121,35 +121,6 @@ public class CONTENT_CONSTS2 {
 
     }
 
-    // PERHAPS ENCOUNTERS COULD HAVE DEITY PROPERTY AS WELL;
-    public enum UNIT_GROUP {
-ELEMENTALS(""),
-        RAVENGUARD(""),
-
-        HUMANS("Militia,Scum,Guards,Army,Melee"),
-        GREENSKINS("goblins,orcs"),
-        BANDITS("Pirates,Thieving Crew,Robbers,"),
-        KNIGHTS("ravenguard,holy,"),
-        DWARVES("woads,"),
-        NORTH("norse,woads,brutes,north"),
-        UNDEAD("Plague,"),
-        DEMONS("chaos,demons,demon worshippers"),
-        ANIMALS("Animals,Wolves,Wargs,wild,"),
-        MAGI("constructs,apostates,magi,,"),
-        CRITTERS("critters,spiders,"),
-        DUNGEON("chaos,demons,worshippers,"),
-        FOREST("greenies,creatures"),;
-        private String groups;
-
-        UNIT_GROUP(String groups) {
-            this.groups = groups;
-        }
-
-        public String getGroups() {
-            return groups;
-        }
-    }
-
     public enum FACTION {
         DWARVEN_CLANS("", "", ""),
         PIRATE_REPUBLIC,

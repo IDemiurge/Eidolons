@@ -230,6 +230,9 @@ public class TaskManager extends AiHandler {
                 list.add(new Task(forced, ai, goal, null));
                 break;
         }
+        if (targets.isEmpty()) {
+            return new LinkedList<>();
+        }
         if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
             DC_Obj target = targets.get(new RandomWizard<>().getRandomListIndex(targets));
             List<Task> tasks = new LinkedList<>();

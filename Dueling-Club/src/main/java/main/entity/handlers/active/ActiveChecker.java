@@ -19,6 +19,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
 import main.entity.handlers.EntityChecker;
 import main.entity.handlers.EntityMaster;
+import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 
 /**
@@ -57,6 +58,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
     public boolean isBlocked() {
         getEntity().setCustomTooltip(null);
+        if (!AI_Manager.isOff())
         if (getEntity().getOwnerObj().isAiControlled()) {
             getEntity().getCosts().setReason("This unit is AI controlled!");
             return true;
