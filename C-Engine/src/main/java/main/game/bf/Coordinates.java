@@ -492,6 +492,7 @@ public class Coordinates {
         private boolean diagonal;
         private int degrees;
 
+        public static final  DIRECTION[] values = values();
         DIRECTION(boolean diagonal, int degrees, boolean vertical) {
             setDiagonal(diagonal);
             this.setDegrees(degrees);
@@ -578,7 +579,7 @@ public class Coordinates {
         private DIRECTION direction;
         private boolean vertical;
         private boolean closerToZero;
-
+        public static final FACING_DIRECTION[] values = values();
         FACING_DIRECTION(DIRECTION direction, boolean vertical, boolean closerToZero) {
             this.setDirection(direction);
             this.vertical = (vertical);

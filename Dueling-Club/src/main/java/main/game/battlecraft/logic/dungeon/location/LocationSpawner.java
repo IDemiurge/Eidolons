@@ -73,7 +73,7 @@ public class LocationSpawner extends Spawner<Location> {
                 member.setOriginalOwner(player);
                 member.setOwner(player);
                 member.setFacing(
-                 getFacingAdjuster().getPartyMemberFacing(member.getCoordinates()));
+                 getFacingAdjuster().getPartyMemberFacing(member ));
 
                 applyStartBonuses(member);
                 //what else should be done to *spawn*?

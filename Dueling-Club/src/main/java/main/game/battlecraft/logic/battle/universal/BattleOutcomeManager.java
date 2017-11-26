@@ -8,8 +8,10 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.audio.MusicMaster;
 import main.system.audio.MusicMaster.MUSIC_MOMENT;
+import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.OptionsMaster;
+import main.system.text.SpecialLogger;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -65,6 +67,9 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
         // dishonorable ones :)
         outcome = false;
         // MusicMaster.playMoment(MUSIC_MOMENT.DEFEAT);
+        String message =  "Defeat!";
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
+
         if (end) {
             end();
         }
@@ -73,6 +78,8 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     public void victory() {
         outcome = true;
         MusicMaster.playMoment(MUSIC_MOMENT.VICTORY);
+        String message =  "Victory!";
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
         end();
         // final prize dialogue
         // stats screen - keep a log on everything party does!

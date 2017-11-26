@@ -149,6 +149,8 @@ public class ArmorMaster {
             name = attacker.getActiveWeapon(offhand).getName();
         }
         if (!simulation) {
+            action.getRef().setID(KEYS.BLOCK, armorObj.getId());
+
             String entry = armorObj.getName() + " takes " + blockedPercentage + "% of "
              + action.getName() + StringMaster.wrapInParenthesis(name) + " absorbing "
              + blocked + " " + dmg_type.getName() + " damage";
@@ -264,6 +266,7 @@ public class ArmorMaster {
 
         blockValue = Math.min(blockValue, damage);
         if (!simulation) {
+            action.getRef().setID(KEYS.BLOCK, shield.getId());
             int durabilityLost = reduceDurability(blockValue, shield, spell, damage_type, attacker
              .getActiveWeapon(offhand), damage);
             // shield.getIntParam(PARAMS.DAMAGE_BONUS); TODO so strength may

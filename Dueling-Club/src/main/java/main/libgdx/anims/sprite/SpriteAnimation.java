@@ -1,6 +1,7 @@
 package main.libgdx.anims.sprite;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -36,6 +37,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private PlayMode originalPlayMode;
     private boolean flipX;
     private boolean flipY;
+    private Color color;
 
 
     public SpriteAnimation(String path) {
@@ -136,8 +138,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
                 + offsetY
                 - currentFrame.getRegionHeight() / 2);
 
+        if (color!=null )
+            sprite.setColor(color);
         sprite.draw(batch);
-
         return true;
     }
 
@@ -280,6 +283,14 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public Sprite getSprite() {
         return sprite;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return color;
     }
 
 

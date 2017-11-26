@@ -26,6 +26,7 @@ import main.system.options.OptionsMaster;
 
 import static main.system.GuiEventType.CALL_BLUE_BORDER_ACTION;
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
+import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
 
 public class GridCell extends Group implements Borderable {
     protected Image backImage;
@@ -89,6 +90,7 @@ public class GridCell extends Group implements Borderable {
                         }
                     GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, GridCell.this);
 
+                    GuiEventManager.trigger( RADIAL_MENU_CLOSE );
                 }
             }
         });

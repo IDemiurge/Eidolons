@@ -31,7 +31,8 @@ public class ResistPanel extends TablePanel {
                 Arrays.stream(RESISTANCES)
                         .map(parameter -> {
                             DAMAGE_TYPE damageType = getFromParams((PARAMS) parameter);
-                            TextureRegion textureRegion = getOrCreateR(getDamageTypeImagePath(damageType.getName()));
+                            TextureRegion textureRegion = getOrCreateR(getDamageTypeImagePath(
+                             damageType.getName(), true));
                             return new ImmutablePair<>(textureRegion, damageType);
                         }).collect(Collectors.toList());
 
@@ -144,6 +145,7 @@ public class ResistPanel extends TablePanel {
 
     void addContainer(Pair<TextureRegion, DAMAGE_TYPE> pair) {
         ValueContainer valueContainer = new ValueContainer(pair.getLeft(), "n/a");
+        valueContainer.setSize(32, 32);
         map.put(pair.getRight(), valueContainer);
         addElement(valueContainer);
     }

@@ -99,7 +99,9 @@ public class Activator extends ActiveHandler {
         LogMaster.log(1, "Cannot Activate " +
                 getEntity().getName() +
                 ": " + getEntity().getCosts().getReasonsString());
-
+        if (!getEntity().getOwnerObj().isMine())
+            if (getEntity().getOwnerObj().isAiControlled())
+                 return ;
         FloatingText f = FloatingTextMaster.getInstance().getFloatingText(getEntity(),
          TEXT_CASES.REQUIREMENT,
          getEntity().getCosts().getReasonsString());

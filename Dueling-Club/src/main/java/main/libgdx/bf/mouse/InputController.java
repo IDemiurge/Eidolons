@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.bf.GridConst;
 import main.libgdx.bf.menu.GameMenu;
@@ -57,6 +58,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean keyDown(int i) {
+        keyInput();
         if (isBlocked())
             return true;
         if (i == ALT_LEFT) {
@@ -85,6 +87,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean keyUp(int i) {
+        keyInput();
         if (isBlocked())
             return true;
         switch (i) {
@@ -107,8 +110,16 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
         return false;
     }
 
+    public void keyInput() {
+        ExplorationMaster.setWaiting(false);
+    }
+
+    public void mouseInput() {
+
+    }
     @Override
     public boolean keyTyped(char c) {
+        keyInput();
         if (isBlocked())
             return true;
 //        if (keyMap.get(c))
@@ -126,7 +137,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
+        mouseInput();
         if (isBlocked())
             return true;
         if (button == LEFT) {
@@ -140,6 +151,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean touchUp(int i, int i1, int i2, int i3) {
+        mouseInput();
         if (isBlocked())
             return true;
         isLeftClick = false;
@@ -150,6 +162,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 
+        mouseInput();
         if (isBlocked())
             return true;
         if (mouseButtonPresed == LEFT || mouseButtonPresed== RIGHT) {

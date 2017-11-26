@@ -90,7 +90,7 @@ public class ShadowMap {
                         getCells(type)[x][y].setBaseAlpha(alpha);
                         getCells(type)[x][y].setColor(1, 1, 1, alpha);
                     }
-
+                if (type==SHADE_LIGHT.LIGHT_EMITTER)
                     getCells(type)[x][y].adjustPosition(x, y);
                 }
             }

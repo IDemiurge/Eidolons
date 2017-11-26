@@ -13,8 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import main.entity.Entity;
 import main.entity.obj.DC_Obj;
 import main.libgdx.anims.ActorMaster;
+import main.libgdx.anims.AnimMaster;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.ValueTooltip;
+import main.libgdx.stage.Closable;
+import main.libgdx.stage.StageWithClosable;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.audio.SoundController;
@@ -24,9 +27,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
+import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
 import static main.system.GuiEventType.UPDATE_GUI;
 
-public class RadialMenu extends Group {
+public class RadialMenu extends Group  implements Closable {
     private RadialValueContainer currentNode;
 
     private RadialValueContainer closeButton;
@@ -53,7 +57,10 @@ public class RadialMenu extends Group {
             RadialManager.clearCache();
         });
 
-        GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
+        GuiEventManager.bind(RADIAL_MENU_CLOSE, obj -> {
+            close();
+        });
+            GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
             DC_Obj dc_obj = (DC_Obj) obj.get();
             if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 init(DebugRadialManager.getDebugNodes(dc_obj));
@@ -64,12 +71,13 @@ public class RadialMenu extends Group {
     }
 
     public void close() {
+        if (currentNode==null )
+            return;
         if (isAnimated()) {
-            ActorMaster.addFadeOutAction(this, getAnimationDuration());
             currentNode.getChildNodes().forEach(child -> {
-                ActorMaster.addMoveToAction(child, currentNode.getX(), currentNode.getY(), 0.5f);
+                ActorMaster.addMoveToAction(child, currentNode.getX(), currentNode.getY(), getAnimationDuration());
             });
-            ActorMaster.addRotateByAction(closeButton, 90);
+            ActorMaster.addFadeOutAction(this, getAnimationDuration());
             ActorMaster.addHideAfter(this);
         } else
             setVisible(false);
@@ -79,9 +87,11 @@ public class RadialMenu extends Group {
     @Override
     public void act(float delta) {
         //TODO fix
-        if ( getColor().a==0)
-          setVisible(false);
-        else setVisible(true);
+        if ( getColor().a==0.0f )
+            setVisible(false);
+        else {
+            setVisible(true);
+        }
         super.act(delta);
     }
 
@@ -124,7 +134,15 @@ public class RadialMenu extends Group {
         open();
     }
 
-    private void open() {
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+    }
+
+    public void open() {
+        if (getStage() instanceof StageWithClosable) {
+            ((StageWithClosable) getStage()).setDisplayedClosable(this);
+        }
         currentNode.setChildVisible(true);
         setVisible(true);
         updatePosition();
@@ -173,7 +191,7 @@ public class RadialMenu extends Group {
     }
 
     private float getAnimationDuration() {
-        return 0.5f;
+        return 0.2f * AnimMaster.getInstance().getAnimationSpeedFactor();
     }
 
     private String getEmptyNodePath() {

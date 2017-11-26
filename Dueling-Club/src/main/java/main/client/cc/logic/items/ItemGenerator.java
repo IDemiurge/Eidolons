@@ -658,12 +658,12 @@ public class ItemGenerator implements GenericItemGenerator {
     }
 
     public void init() {
+//        if (!basicMode)
+            ContentGenerator.initMaterials();
         if (!isGenerationOn()) {
             return;
         }
 
-        if (!basicMode)
-            ContentGenerator.initMaterials();
 
         for (QUALITY_LEVEL q : ItemEnums.QUALITY_LEVEL.values()) {
             ConcurrentMap qMap = new ConcurrentMap<>();

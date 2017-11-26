@@ -74,9 +74,9 @@ public class Attack {
         if (!counter) {
             counter = action.isCounterMode();
         }
-        this.counter = counter;
-        instant = action.isInstantMode();
-        attackOfOpportunity = action.isAttackOfOpportunityMode();
+        setCounter(counter);
+        setInstant(action.isInstantMode());
+        setAttackOfOpportunity(action.isAttackOfOpportunityMode());
 
         if (this.canCounter) {
             if (instant || attackOfOpportunity || counter) {

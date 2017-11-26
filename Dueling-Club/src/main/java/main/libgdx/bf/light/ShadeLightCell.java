@@ -221,6 +221,7 @@ public class ShadeLightCell extends SuperContainer {
     public void adjustPosition(int x, int y) {
         float offsetX= 0;
         float offsetY= 0;
+        setScale(1f, 1f );
         for (Obj sub : IlluminationRule.getEffectCache().keySet()) {
             if (sub instanceof Unit)
                 continue; //TODO illuminate some other way for units...
@@ -229,24 +230,21 @@ public class ShadeLightCell extends SuperContainer {
                 if (sub.getCoordinates().x == x)
                     if (sub.getCoordinates().y == y)
                         if (((Structure) sub).isOverlaying()) {
+                    setScale(0.66f, 0.66f );
                             DIRECTION d = ((Structure) sub).getDirection();
                             if (d == null )
                                 continue;
                             Dimension dim = GridMaster.getOffsetsForOverlaying(d,
                              (int)getWidth(),
                              (int)getHeight());
-                            if (offsetX==0 && offsetY== 0  ){
-                                offsetX+= dim.width;
-                                offsetY+= dim.height;
-                            }
-                              offsetX+= dim.width;
-                              offsetY+= dim.height;
+                              offsetX-= dim.height;
+                              offsetY-= dim.width;
                             //so if 2+ overlays, will be centered between them...
                     }
             }
 
         }
 
-        setPosition(originalX+offsetX, originalY+offsetY);
+        setPosition(originalX+offsetX/3, originalY+offsetY/3);
     }
 }

@@ -739,7 +739,12 @@ public class ImageManager {
     }
 
     public static String getDamageTypeImagePath(String enumConstName) {
-        return (VALUE_ICONS_PATH + "damage types\\" + enumConstName + ".jpg");
+        return getDamageTypeImagePath(enumConstName, false);
+    }
+        public static String getDamageTypeImagePath(String enumConstName, boolean alpha) {
+        if (alpha)
+            return (VALUE_ICONS_PATH + "damage types\\" + enumConstName + " alpha.png");
+            return (VALUE_ICONS_PATH + "damage types\\" + enumConstName + ".png");
     }
 
     public static Image getModeImage(String mode, Boolean on_off, boolean blocked) {

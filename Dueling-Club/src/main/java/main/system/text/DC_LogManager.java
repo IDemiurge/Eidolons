@@ -14,6 +14,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -100,7 +101,10 @@ public class DC_LogManager extends LogManager {
             text.append(unit + ", ");
         });
         text.delete(text.length() - 2, text.length()  );
-        log(text.toString());
+        String message = text.toString();
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT,message);
+        log(message);
     }
 
     public void logBattleJoined(List<Unit> newUnits) {
@@ -110,7 +114,10 @@ public class DC_LogManager extends LogManager {
             text.append(unit.getNameIfKnown() + ", ");
         });
         text.delete(text.length() - 2, text.length()  );
-        log(text.toString());
+        String message = text.toString();
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT,message);
+        log(message);
     }
 
     @Override

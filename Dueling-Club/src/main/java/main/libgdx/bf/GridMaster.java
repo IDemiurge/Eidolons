@@ -90,8 +90,8 @@ public class GridMaster {
     }
 
     public static Dimension getOffsetsForOverlaying(DIRECTION direction, int width, int height ) {
-        int w = GridConst.CELL_W;
-        int h = GridConst.CELL_H;
+        int w = width*2;
+        int h = height*2;
         int calcXOffset = 0;
         int calcYOffset = 0;
         if (direction == null) {

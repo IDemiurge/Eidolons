@@ -24,7 +24,6 @@ import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.Producer;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.config.ConfigKeys;
@@ -76,7 +75,7 @@ public class FloatingTextMaster {
         switch (aCase) {
             case BONUS_DAMAGE:
                 return ImageManager.getDamageTypeImagePath(
-                 String.valueOf(((Damage) arg).getDmgType().getName()));
+                 String.valueOf(((Damage) arg).getDmgType().getName()), true);
             case ATTACK_CRITICAL:
                 break;
             case ATTACK_SNEAK:
@@ -123,18 +122,29 @@ public class FloatingTextMaster {
     }
 
     private TEXT_CASES getCase(Event e) {
-        TEXT_CASES CASE = new EnumMaster<TEXT_CASES>().retrieveEnumConst(TEXT_CASES.class, e.getType().toString());
-        if (CASE != null) {
-            return CASE;
-        }
+//        TEXT_CASES CASE =null ;
+//        new EnumMaster<TEXT_CASES>().retrieveEnumConst(TEXT_CASES.class, e.getType().toString());
+//        if (CASE != null) {
+//            return CASE;
+//        }
         if (e.getType() instanceof STANDARD_EVENT_TYPE) {
             switch ((STANDARD_EVENT_TYPE) e.getType()) {
+                case DURABILITY_LOST:
+                    return TEXT_CASES.DURABILITY_LOSS;
+                case UNIT_ACQUIRES_STATUS:
+                    return TEXT_CASES.STATUS;
+                case UNIT_CHANGES_MODE:
+                    return TEXT_CASES.MODE;
+
+
                 case COSTS_HAVE_BEEN_PAID:
                     return TEXT_CASES.COSTS;
                 case ATTACK_CRITICAL:
                     return TEXT_CASES.ATTACK_CRITICAL;
                 case ATTACK_DODGED:
                     return TEXT_CASES.ATTACK_DODGED;
+                case ATTACK_SNEAK:
+                    return TEXT_CASES.ATTACK_SNEAK;
                 case ATTACK_INSTANT:
                     return TEXT_CASES.ATTACK_INSTANT;
                 case ATTACK_COUNTER:
@@ -362,7 +372,7 @@ public class FloatingTextMaster {
                  e.getRef().getAmount()
                 };
             }
-        };
+        }, DURABILITY_LOSS;
         public boolean atOrigin;
         private Producer<Event, Object[]> argProducer;
         String name = StringMaster.getWellFormattedString(name());

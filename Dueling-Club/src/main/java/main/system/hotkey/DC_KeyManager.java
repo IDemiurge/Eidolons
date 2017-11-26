@@ -349,4 +349,8 @@ public class DC_KeyManager
         actionHotkey(n, action_group);
     }
 
+    public void handleKeyDown(int keyCode) {
+        controller.keyDown(keyCode);
+        globalController.keyDown(keyCode);
+    }
 }

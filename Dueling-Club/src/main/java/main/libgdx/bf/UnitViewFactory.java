@@ -24,6 +24,7 @@ import java.util.Map;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
+import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
 
 public class UnitViewFactory {
     public static BaseView create(BattleFieldObject bfObj) {
@@ -81,6 +82,8 @@ public class UnitViewFactory {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+
+                    GuiEventManager.trigger( RADIAL_MENU_CLOSE );
                 }
             }
         };

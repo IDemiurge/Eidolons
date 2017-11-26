@@ -24,6 +24,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.launch.CoreEngine;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
+import main.system.text.SpecialLogger;
 import org.dizitart.no2.Nitrite;
 
 import java.awt.*;
@@ -34,10 +35,10 @@ import static main.system.GuiEventType.SWITCH_SCREEN;
 
 public class DemoLauncher extends Game {
     public static final int FRAMERATE = 60;
+    protected static boolean fullscreen;
     private static Nitrite db;
     private static String quickTypes =
      "units;bf obj;terrain;missions;places;scenarios;party;";
-    protected static boolean fullscreen;
     private DC_Game coreGame;
     private EngineEmulator engine;
     private ScreenViewport viewport;
@@ -137,6 +138,16 @@ public class DemoLauncher extends Game {
         viewport = new ScreenViewport(camera);
 //if (!Showcase.isRunning())
         initEngine();
+    }
+
+    @Override
+    public void dispose() {
+        try {
+            SpecialLogger.getInstance().writeLogs();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        super.dispose();
     }
 
     protected void initEngine() {

@@ -7,6 +7,7 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.rules.action.StackingRule;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
@@ -14,10 +15,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.*;
 import java.util.function.Function;
 
 public class FacingMaster {
@@ -208,7 +206,7 @@ public class FacingMaster {
         }
 
         FACING_DIRECTION f = new EnumMaster<FACING_DIRECTION>()
-                .getRandomEnumConst(FACING_DIRECTION.class);
+         .getRandomEnumConst(FACING_DIRECTION.class);
 
         if (f == FACING_DIRECTION.NONE) {
             return getRandomFacing();
@@ -231,32 +229,66 @@ public class FacingMaster {
     }
 
     public static FACING_DIRECTION getOptimalFacingTowardsUnits(
-     Coordinates c,Collection<? extends Obj> units
+     Coordinates c, Collection<? extends Obj> units
 
     ) {
-        return getOptimalFacingTowardsUnits(c, units, t-> 1);
+        return getOptimalFacingTowardsUnits(c, units, t -> 1);
     }
+
     public static FACING_DIRECTION getOptimalFacingTowardsUnits(
-     Coordinates c,Collection<? extends Obj> units
-    ,  Function<Entity, Integer> function
+     Coordinates c, Collection<? extends Obj> units
+     , Function<Entity, Integer> function
     ) {
         HashMap<FACING_DIRECTION, Double> map = new LinkedHashMap<>();
-        for (Obj member : units) { // [QUICK
-            // FIX]
-            // getGame().getParty().getMembers()
-            FACING_DIRECTION facing = FacingMaster.getRelativeFacing(c, member.getCoordinates());
-            if (facing == null) { continue;
-//                facing = FacingMaster.getFacingFromDirection(DirectionMaster.getRelativeDirection(
-//                        c, member.getCoordinates()));
-            }
-            double x =((Unit) member).calculatePower() / PositionMaster.getExactDistance(member.getCoordinates(), c);
-            Double i = map.get(facing);
-            if (i == null) {
-                i = 0.0;
-            }
-            i+= function.apply(member)*x;
-            map.put(facing, i);
+        for (FACING_DIRECTION facing : FACING_DIRECTION.values())
+            for (Obj member : units) {
+                if (FacingMaster.getSingleFacing(facing, c, member.getCoordinates()) != FACING_SINGLE.IN_FRONT) {
+                    continue;
+                }
+                double x = ((Unit) member).calculatePower() / PositionMaster
+                 .getExactDistance(member.getCoordinates(), c);
+                Double i = map.get(facing);
+                if (i == null) {
+                    i = 0.0;
+                }
+                i += function.apply(member) * x;
+                map.put(facing, i);
 
+            }
+        FACING_DIRECTION pick = null;
+        Double max = 0.0;
+        for (FACING_DIRECTION fac : map.keySet()) {
+            if (map.get(fac) > max) {
+                max = map.get(fac);
+                pick = fac;
+            }
+        }
+        return pick;
+    }
+
+    public static FACING_DIRECTION getOptimalFacingTowardsEmptySpaces(Unit unit) {
+        List<Coordinates> coordinates = unit.getCoordinates().getAdjacentCoordinates();
+        return getOptimalFacing(unit, coordinates, (c) -> {
+            if (StackingRule.checkCanPlace(c, unit, null))
+                return 1;
+            return 0;
+        });
+
+    }
+
+    public static FACING_DIRECTION getOptimalFacing(Unit unit, List<Coordinates> coordinates,
+                                                    Function<Coordinates, Integer> function) {
+        HashMap<FACING_DIRECTION, Double> map = new LinkedHashMap<>();
+
+        for (FACING_DIRECTION facing : FACING_DIRECTION.values()) {
+            Double i =0.0;
+            for (Coordinates c : coordinates) {
+                if (FacingMaster.getSingleFacing(facing, unit.getCoordinates(), c) != FACING_SINGLE.IN_FRONT) {
+                    continue;
+                }
+                i += function.apply(c);
+            }
+            map.put(facing, i);
         }
         FACING_DIRECTION pick = null;
         Double max = 0.0;

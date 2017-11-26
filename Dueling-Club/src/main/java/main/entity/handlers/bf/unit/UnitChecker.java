@@ -47,7 +47,8 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean canUseArmor() {
-        return checkContainerProp(G_PROPS.CLASSIFICATIONS, UnitEnums.CLASSIFICATIONS.HUMANOID.toString());
+        return checkContainerProp(G_PROPS.CLASSIFICATIONS,
+         UnitEnums.CLASSIFICATIONS.HUMANOID.toString());
     }
 
 

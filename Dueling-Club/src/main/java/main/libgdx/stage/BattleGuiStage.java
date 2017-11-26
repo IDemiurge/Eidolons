@@ -38,14 +38,15 @@ import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
 /**
  * Created by JustMe on 3/31/2017.
  */
-public class BattleGuiStage extends Stage {
+public class BattleGuiStage extends Stage implements StageWithClosable {
 
     private final InitiativePanel initiativePanel;
     private final ActionPanelController bottomPanel;
     private final RadialMenu radial;
     private final ContainerPanel containerPanel;
-    private final GameMenu gameMenu;
     TextPanel textPanel;
+    Closable displayedClosable;
+    private GameMenu gameMenu;
     private OutcomePanel outcomePanel;
     private List<String> charsUp = new LinkedList<>();
     private char lastTyped;
@@ -98,9 +99,9 @@ public class BattleGuiStage extends Stage {
         addActor(textPanel);
         textPanel.setPosition(GdxMaster.centerWidth(textPanel),
          GdxMaster.centerHeight(textPanel));
-        textPanel.setVisible(false);
+        textPanel.close();
 
-         containerPanel = new ContainerPanel();
+        containerPanel = new ContainerPanel();
         addActor(containerPanel);
         containerPanel.setPosition(GdxMaster.centerWidth(containerPanel),
          GdxMaster.centerHeight(containerPanel));
@@ -110,6 +111,23 @@ public class BattleGuiStage extends Stage {
         gameMenu.setZIndex(Integer.MAX_VALUE);
 
         setDebugAll(false);
+    }
+
+    public boolean closeDisplayed() {
+        if (getDisplayedClosable() == null)
+            return false;
+        getDisplayedClosable().close();
+        displayedClosable = null;
+        return true;
+    }
+
+    public Closable getDisplayedClosable() {
+        return displayedClosable;
+    }
+
+    @Override
+    public void setDisplayedClosable(Closable displayedClosable) {
+        this.displayedClosable = displayedClosable;
     }
 
     private void bindEvents() {
@@ -135,11 +153,11 @@ public class BattleGuiStage extends Stage {
 
     private void showText(String s) {
         if (s == null) {
-            textPanel.setVisible(false);
+            textPanel.close();
             return;
         }
         textPanel.setText(s);
-        textPanel.setVisible(true);
+        textPanel.open();
     }
 
     @Override
@@ -162,6 +180,12 @@ public class BattleGuiStage extends Stage {
             charsUp.add(c);
         }
         return super.keyUp(keyCode);
+    }
+
+    @Override
+    public boolean keyDown(int keyCode) {
+        DC_Game.game.getKeyManager().handleKeyDown(keyCode);
+        return super.keyDown(keyCode);
     }
 
     @Override
@@ -219,12 +243,25 @@ public class BattleGuiStage extends Stage {
         return radial;
     }
 
+    public GameMenu getGameMenu() {
+        return gameMenu;
+    }
+
+    public TextPanel getTextPanel() {
+        return textPanel;
+    }
+
+    public OutcomePanel getOutcomePanel() {
+        return outcomePanel;
+    }
+
     public void outsideClick() {
-        if (textPanel.isVisible()){
-            textPanel.setVisible(false);
+        if (textPanel.isVisible()) {
+            textPanel.close();
         }
-        if (containerPanel.isVisible()){
+        if (containerPanel.isVisible()) {
             containerPanel.close();
         }
     }
+
 }

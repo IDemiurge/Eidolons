@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
+import main.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridMaster;
 import main.libgdx.bf.SuperActor;
@@ -28,9 +29,10 @@ import java.util.Set;
  */
 public class WallMap extends SuperActor {
     private static boolean on = true;
-    private Map<Coordinates, List<DIRECTION>> wallMap  ;
-    private Map<Coordinates, List<DIRECTION>> diagonalJoints  ;
+    private Map<Coordinates, List<DIRECTION>> wallMap;
+    private Map<Coordinates, List<DIRECTION>> diagonalJoints;
     private boolean updateRequired;
+    private Map<Coordinates, DOOR_STATE> doorMap;
 
     public WallMap() {
         //doors? probably as separate actors
@@ -95,13 +97,18 @@ public class WallMap extends SuperActor {
     }
 
     private void bindEvents() {
+        GuiEventManager.bind(GuiEventType.UPDATE_DOOR_MAP, p -> {
+            doorMap = new XLinkedMap<>(
+             (Map<Coordinates, DOOR_STATE>) p.get());
+            updateRequired = true;
+        });
         GuiEventManager.bind(GuiEventType.UPDATE_WALL_MAP, p -> {
-            wallMap =new XLinkedMap<>(
+            wallMap = new XLinkedMap<>(
              (Map<Coordinates, List<DIRECTION>>) p.get());
             updateRequired = true;
         });
         GuiEventManager.bind(GuiEventType.UPDATE_DIAGONAL_WALL_MAP, p -> {
-            diagonalJoints =new XLinkedMap<>(
+            diagonalJoints = new XLinkedMap<>(
              (Map<Coordinates, List<DIRECTION>>) p.get());
             updateRequired = true;
         });
@@ -115,12 +122,13 @@ public class WallMap extends SuperActor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(new Color(1, 1, 1, 1));
-        if (wallMap==null )
-            return ;
-        Set<Coordinates> set =  wallMap.keySet() ;
+        if (wallMap == null)
+            return;
+        Set<Coordinates> set = wallMap.keySet();
         for (Coordinates coordinates : set) {
             if (checkCoordinateIgnored(coordinates))
                 continue;
+
             List<DIRECTION> list = wallMap.get(coordinates);
             boolean hasVertical = false;
             boolean hasHorizontal = false;
@@ -134,7 +142,7 @@ public class WallMap extends SuperActor {
             Vector2 v = GridMaster.getVectorForCoordinate(coordinates, false, false);
             v.set(v.x, v.y - 128);
             boolean darken = false;// obj.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT;
-            String suffix = darken ? "dark" : null ;
+            String suffix = darken ? "dark" : null;
             if (list == null) {
                 diamond = true;
             } else {
@@ -173,8 +181,15 @@ public class WallMap extends SuperActor {
                         }
                     }
 
-
-                    batch.draw(image, v.x, v.y);
+                    DOOR_STATE doorState = doorMap.get(coordinates);
+                    if (doorState != null) {
+                        Color color = batch.getColor();
+                        batch.setColor(new Color(1, 1, 1, fluctuatingAlpha));
+                        batch.draw(image, v.x, v.y);
+                        batch.setColor(color);
+                    } else {
+                        batch.draw(image, v.x, v.y);
+                    }
                 }
             }
 
@@ -238,9 +253,29 @@ public class WallMap extends SuperActor {
         super.draw(batch, parentAlpha);
     }
 
+    @Override
+    public boolean isAlphaFluctuationOn() {
+        return super.isAlphaFluctuationOn();
+    }
+
+    @Override
+    protected float getAlphaFluctuationPerDelta() {
+        return super.getAlphaFluctuationPerDelta();
+    }
+
+    @Override
+    protected float getAlphaFluctuationMin() {
+        return super.getAlphaFluctuationMin();
+    }
+
+    @Override
+    protected float getAlphaFluctuationMax() {
+        return super.getAlphaFluctuationMax();
+    }
+
     private void drawDiagonalJoints(Batch batch, Set<Coordinates> set) {
-        if (diagonalJoints==null )
-            return ;
+        if (diagonalJoints == null)
+            return;
         for (Coordinates c : set) {
             List<Coordinates.DIRECTION> list = diagonalJoints.get(c);
             if (!ListMaster.isNotEmpty(list))

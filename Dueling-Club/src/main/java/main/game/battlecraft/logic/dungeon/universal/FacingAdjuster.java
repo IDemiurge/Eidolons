@@ -6,6 +6,7 @@ import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMapGenerator.MAP_ZONES;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.core.game.DC_Game.GAME_MODES;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Collection;
@@ -39,8 +40,8 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
 
 
     public void adjustFacing(Unit unit) {
-        unit.setFacing(unit.isMine()? getPartyMemberFacing(unit.getCoordinates())
-        :getFacingForEnemy(unit.getCoordinates()));
+        unit.setFacing(unit.isMine()? getPartyMemberFacing(unit )
+        :getFacingForEnemy(unit.getCoordinates() ));
     }
         public void adjustFacing(List<Unit> unitsList) {
             unitsList.forEach(unit -> adjustFacing(unit));
@@ -68,7 +69,11 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
         return getFacingOptimal(c, false);
     }
 
-    public FACING_DIRECTION getPartyMemberFacing(Coordinates c) {
+    public FACING_DIRECTION getPartyMemberFacing(Unit unit) {
+        if (getGame().getGameMode()== GAME_MODES.DUNGEON_CRAWL){
+            return FacingMaster.getOptimalFacingTowardsEmptySpaces(unit);
+        }
+        Coordinates c = unit.getCoordinates();
         if (isAutoOptimalFacing())
         return getFacingOptimal(c, true);
         if (facingMap.containsKey(c)) {

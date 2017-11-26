@@ -16,6 +16,8 @@ import main.libgdx.bf.GridConst;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import main.libgdx.stage.Closable;
+import main.libgdx.stage.StageWithClosable;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
@@ -28,7 +30,7 @@ import static main.system.GuiEventType.SHOW_LOOT_PANEL;
 /**
  * Created by JustMe on 11/16/2017.
  */
-public class ContainerPanel extends  TablePanel{
+public class ContainerPanel extends  TablePanel implements Closable{
 
     private  Cell<Actor> takeAllButton;
     private InventorySlotsPanel inventorySlotsPanel;
@@ -86,7 +88,7 @@ public class ContainerPanel extends  TablePanel{
             if (param == null) {
                 close();
             } else {
-                setVisible(true);
+                open();
                 inventorySlotsPanel. setUserObject(param.getKey());
                 containerSlotsPanel. setUserObject(param.getValue());
                 if (containerSlotsPanel.getListeners().size>0)
@@ -127,6 +129,14 @@ public class ContainerPanel extends  TablePanel{
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
         setVisible(false);
     }
+    public void open() {
+        if (getStage() instanceof StageWithClosable) {
+            ((StageWithClosable) getStage()).closeDisplayed();
+            ((StageWithClosable) getStage()).setDisplayedClosable(this);
+        }
+        setVisible(true);
+    }
+
 
     @Override
     public void updateAct(float delta) {

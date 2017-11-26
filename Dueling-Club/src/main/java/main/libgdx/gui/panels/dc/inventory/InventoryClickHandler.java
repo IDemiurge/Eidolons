@@ -15,6 +15,8 @@ public interface InventoryClickHandler {
 
     void doneClicked();
 
+    void cancel();
+
     void cancelClicked();
 
     boolean isUndoEnabled();

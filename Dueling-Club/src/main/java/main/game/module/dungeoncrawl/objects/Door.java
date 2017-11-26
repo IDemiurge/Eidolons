@@ -1,5 +1,6 @@
 package main.game.module.dungeoncrawl.objects;
 
+import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
@@ -45,6 +46,9 @@ public class Door extends DungeonObj {
     public boolean isObstructing() {
         if (getState() == DOOR_STATE.OPEN)
             return false;
+        if ( checkPassive(UnitEnums.STANDARD_PASSIVES.NON_OBSTRUCTING)) {
+            return false;
+        }
         return true;
     }
 }

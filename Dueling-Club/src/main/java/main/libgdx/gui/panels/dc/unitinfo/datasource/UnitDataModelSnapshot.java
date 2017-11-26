@@ -35,7 +35,7 @@ public class UnitDataModelSnapshot extends DataModel implements BfObj {
         y = obj.getY();
         this.playerDetected = obj.isPlayerDetected();
         this.activePlayerVisionStatus = obj.getActivePlayerVisionStatus();
-        this.unitVisionStatus = obj.getUnitVisionStatus();
+//        this.unitVisionStatus = obj.getUnitVisionStatus();
         this.coordinates = obj.getCoordinates();
          mine = obj.isMine();
         dead = obj.isDead();

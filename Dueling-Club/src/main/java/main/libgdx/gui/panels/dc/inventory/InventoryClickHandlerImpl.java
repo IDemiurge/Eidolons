@@ -1,6 +1,5 @@
 package main.libgdx.gui.panels.dc.inventory;
 
-import main.ability.InventoryTransactionManager;
 import main.client.cc.CharacterCreator;
 import main.client.cc.HeroManager;
 import main.client.cc.gui.lists.dc.DC_InventoryManager.OPERATIONS;
@@ -11,7 +10,6 @@ import main.game.core.Eidolons;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.threading.WaitMaster;
 
 /**
  * Created by JustMe on 3/30/2017.
@@ -160,21 +158,19 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             return;
         }
 //        InventoryTransactionManager.updateType(unit); ???
-        WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
-        CharacterCreator.getHeroManager().removeHero(unit);
-        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, null);
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, true);
     }
-
+    @Override
+    public void cancel() {
+        unit.applyType(buffer);
+    }
     @Override
     public void cancelClicked() {
         if (!isCancelEnabled()) {
             return;
         }
-        unit.applyType(buffer);
-//        cell.setProperty(PROPS.DROPPED_ITEMS, cachedValue);TODO
-        WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, false);
-        CharacterCreator.getHeroManager().removeHero(unit);
-        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, null);
+        cancel();
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, false);
 
     }
 

@@ -32,6 +32,7 @@ import main.libgdx.anims.AnimMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.text.SpecialLogger;
@@ -201,7 +202,7 @@ public class Executor extends ActiveHandler {
         super.log(string, gameLog);
         if (!gameLog)
         if (!ExplorationMaster.isExplorationOn())
-            SpecialLogger.getInstance().combatActionLog(string);
+            SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, string);
     }
 
     private void syncActionRefWithSource() {

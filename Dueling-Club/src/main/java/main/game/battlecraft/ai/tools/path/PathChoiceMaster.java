@@ -297,7 +297,7 @@ public class PathChoiceMaster {
     private List<Coordinates> getDefaultCoordinateTargets(ActionPath path, Coordinates c_coordinate) {
 
         List<Coordinates> list = new LinkedList<>();
-        for (DIRECTION d : DIRECTION.values()) {
+        for (DIRECTION d : DIRECTION.values ) {
             if (d.isDiagonal()) {
                 continue;
             }

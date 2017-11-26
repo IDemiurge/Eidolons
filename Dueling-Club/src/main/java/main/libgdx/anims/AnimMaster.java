@@ -249,17 +249,17 @@ public class AnimMaster extends Group {
         if (animation.isRunning())
             return;
         animation.reset();
-        if (leadAnimation == null && !attachToNext) {
-            leadAnimation = animation;
-            leadAnimation.start(context);
-        } else {
+//        if (leadAnimation == null && !attachToNext) {
+//            leadAnimation = animation;
+//            leadAnimation.start(context);
+//        } else {
             animation.setRef(context);
             add(animation);
             if (getParallelDrawing()) {
                 animation.start(context);
             }
-            controller.store(animation);
-        }
+//            controller.store(animation);
+//        }
     }
 
     private void initEventAnimation(Event event) {
@@ -306,7 +306,8 @@ public class AnimMaster extends Group {
 
         }
         if (parentAnim != leadAnimation)
-            if (!parentAnim.isRunning()) {// preCheck new TODO
+            if (!parentAnim.isFinished())
+                if (!parentAnim.isRunning()) {// preCheck new TODO
                 add(parentAnim);
             }
             parentAnim.setRef(event.getRef());
@@ -383,6 +384,13 @@ public class AnimMaster extends Group {
     }
 
     private void add(CompositeAnim anim) {
+        main.system.auxiliary.log.LogMaster.log(1,"ANIMATION ADDED   "+anim );
+        if (anim==leadAnimation){
+            return;
+        }
+        if (leadQueue.contains(anim)) {
+            return;
+        }
         leadQueue.add(anim);
     }
 
@@ -456,6 +464,11 @@ public class AnimMaster extends Group {
         //TODO Stack: counter atk will animated first - last in first out :(
 
         leadAnimation = leadQueue.removeFirst();
+
+        main.system.auxiliary.log.LogMaster.log(1,"next animation: " + leadAnimation+
+        "; " +
+         leadQueue.size() +
+         " in Queue= " + leadQueue);
 //        leadAnimation.resetRef();
         return leadAnimation;
     }

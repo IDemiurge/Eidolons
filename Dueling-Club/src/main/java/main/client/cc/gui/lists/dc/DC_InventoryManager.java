@@ -10,6 +10,7 @@ import main.entity.item.DC_HeroItemObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import main.system.audio.DC_SoundMaster;
@@ -24,8 +25,8 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
  */
 public class DC_InventoryManager {
 
-    protected Integer operationsLeft;
-    protected Integer operationsPool;
+    protected Integer operationsLeft =0;
+    protected Integer operationsPool=0;
     private DC_Game game;
     private Unit hero;
     private OBJ_TYPE TYPE;
@@ -92,7 +93,11 @@ public class DC_InventoryManager {
     }
 
     private boolean canDoOperation(OPERATIONS operation, Entity type) {
-        if (!hasOperations()) {
+        if (ExplorationMaster.isExplorationOn()) {
+            return true;
+        }
+
+            if (!hasOperations()) {
             return false;
         }
 

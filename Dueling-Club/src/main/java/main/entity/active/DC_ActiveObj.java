@@ -74,6 +74,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     private Damage damageDealt;
     private Obj targetObj;
     private GroupImpl targetGroup;
+    private boolean targetingCachingOff;
 
     public DC_ActiveObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -890,6 +891,16 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             }
         }
         super.putParameter(param, value);
+    }
+
+    public void setTargetingCachingOff(boolean targetingCachingOff) {
+        this.targetingCachingOff = targetingCachingOff;
+    }
+
+    public boolean isTargetingCached() {
+        if (targetingCachingOff)
+            return false;
+        return CoreEngine.isTargetingResultCachingOn();
     }
 }
 

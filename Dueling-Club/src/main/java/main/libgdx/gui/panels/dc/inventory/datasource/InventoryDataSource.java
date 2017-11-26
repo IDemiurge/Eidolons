@@ -121,4 +121,8 @@ public class InventoryDataSource implements QuickSlotDataSource,
         return unit.getGame().getInventoryManager().getOperationsLeft() + "/" +
          unit.getGame().getInventoryManager().getOperationsPool();
     }
+
+    public Unit getUnit() {
+        return unit;
+    }
 }

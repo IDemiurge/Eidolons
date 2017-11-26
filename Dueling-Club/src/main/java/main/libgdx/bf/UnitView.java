@@ -25,6 +25,7 @@ public class UnitView extends BaseView {
     protected static AtomicInteger lastId = new AtomicInteger(1);
     private static Boolean hpAlwaysVisible;
     protected final int curId;
+    private final String name;
     protected int initiativeIntVal;
     protected TextureRegion clockTexture;
     protected HpBar hpBar;
@@ -42,6 +43,7 @@ public class UnitView extends BaseView {
     protected boolean flickering;
     protected boolean initialized;
     protected boolean stealth;
+    private ToolTip tooltip;
 
     public UnitView(UnitViewOptions o) {
         this(o, lastId.getAndIncrement());
@@ -53,6 +55,7 @@ public class UnitView extends BaseView {
         this.curId = curId;
         setTeamColor(o.getTeamColor());
         init(o.getClockTexture(), o.getClockValue());
+        this.name = o.getName();
     }
 
     public static Boolean getHpAlwaysVisible() {
@@ -60,6 +63,11 @@ public class UnitView extends BaseView {
             hpAlwaysVisible = OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.HP_BARS_ALWAYS_VISIBLE);
         }
         return hpAlwaysVisible;
+    }
+
+    @Override
+    public String toString() {
+     return     getClass().getSimpleName() + " for " +name;
     }
 
     public HpBar getHpBar() {
@@ -89,6 +97,11 @@ public class UnitView extends BaseView {
 
     public void setToolTip(ToolTip toolTip) {
         addListener(toolTip.getController());
+        this.tooltip = toolTip;
+    }
+
+    public ToolTip getTooltip() {
+        return tooltip;
     }
 
     public void reset() {
@@ -176,8 +189,7 @@ public class UnitView extends BaseView {
 
     @Override
     public void act(float delta) {
-//        if (isIgnored())
-//            return;
+
         super.act(delta);
         updateVisible();
         if (mainHeroLabel != null) {

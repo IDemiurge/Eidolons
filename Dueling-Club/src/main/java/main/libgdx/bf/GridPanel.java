@@ -387,7 +387,7 @@ public class GridPanel extends Group {
             }
 
             if (view.getParent() instanceof GridCellContainer) {
-                ((GridCellContainer) view.getParent()).popupUnitView(view);
+                ((GridCellContainer) view.getParent()).popupUnitView((GridUnitView) view);
             }
 
             unitMap.values().stream().forEach(v -> v.setActive(false));
@@ -781,7 +781,10 @@ public class GridPanel extends Group {
                                              getUnitViewCountEffective() == 1) {
                                                 scale = parent.getObjScale();
                                             } else if (!sub.isHovered())
+                                            {
+                                                if (parent.getTopUnitView()!=sub)
                                                 continue;
+                                            }
                                             else {
                                                 //offset? scale?
                                             }
@@ -867,7 +870,7 @@ public class GridPanel extends Group {
 //            for (GridUnitView v : units.keySet())
 //                ((UnitView) view).setFlickering(units.get(v));
 
-
+//TODO if (sub.isVisible())
             if (view.getActions().size == 0) {
                 if (sub.isDead())
                     view.setVisible(false);
@@ -876,10 +879,10 @@ public class GridPanel extends Group {
                         GridCellContainer cellContainer =
                          cells[sub.getCoordinates().x][rows - sub.getCoordinates().y - 1];
                         {
-                            if (view.getParent() != cellContainer)
+                            if (view.getParent() != cellContainer) {
                                 view.remove();
-                            cellContainer.addActor(view);
-                        }
+                                cellContainer.addActor(view);
+                            } }
                     }
             }
         }
@@ -914,6 +917,10 @@ public class GridPanel extends Group {
         return !hoverObj.isHovered();
     }
 
+    public GridUnitView getHoverObj() {
+        return hoverObj;
+    }
+
     public void resetZIndices() {
         loop:
         for (int x = 0; x < cols; x++) {
@@ -926,6 +933,7 @@ public class GridPanel extends Group {
                     if (sub.isHovered()) {
                         hoverObj = sub;
                         cell.setZIndex(Integer.MAX_VALUE);
+                        cell.setTopUnitView(sub);
                         break;
                     }
 //                    else

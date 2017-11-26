@@ -8,28 +8,28 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.FileLogger;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.threading.WaitMaster;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by JustMe on 11/19/2017.
  */
-public class SpecialLogger {
+public class SpecialLogger implements FileLogger {
     private static final int WRITE_ALL_PERIOD = 5000;
     private static SpecialLogger instance;
     Map<LOG_CHANNEL, StringBuilder> channelMap = new HashMap<>();
-    private StringBuilder combatActionLogBuilder = new StringBuilder();
-    private StringBuilder aiLogBuilder = new StringBuilder();
-    private StringBuilder visibilityLogBuilder = new StringBuilder();
-    private StringBuilder inputLogBuilder = new StringBuilder();
+//    private StringBuilder combatActionLogBuilder = new StringBuilder();
+//    private StringBuilder aiLogBuilder = new StringBuilder();
+//    private StringBuilder visibilityLogBuilder = new StringBuilder();
+//    private StringBuilder inputLogBuilder = new StringBuilder();
     private String timeStamp;
     private Thread thread;
+    private Map<SPECIAL_LOG, StringBuilder> builderMap = new HashMap<>();
 
     private SpecialLogger() {
 
@@ -73,7 +73,7 @@ public class SpecialLogger {
         thread.start();
     }
 
-    private void writeLogs() {
+    public void writeLogs() {
         for (SPECIAL_LOG sub : SPECIAL_LOG.values()) {
             if (isOn(sub))
                 writeLog(sub);
@@ -113,6 +113,7 @@ public class SpecialLogger {
 
 
     public void appendSpecialLog(SPECIAL_LOG log, String string) {
+        string = TimeMaster.getFormattedTime(true) + ": " + string;
         getBuilder(log).append(string + "\n");
     }
 
@@ -143,71 +144,20 @@ public class SpecialLogger {
 
 
     private StringBuilder getBuilder(SPECIAL_LOG log) {
-        switch (log) {
-            case AI:
-                return getAiLogBuilder();
-            case VISIBILITY:
-                return getVisibilityLogBuilder();
-            case COMBAT:
-                return getCombatActionLogBuilder();
-            case INPUT:
-                return getInputLogBuilder();
-        }
-        return null;
-    }
+        StringBuilder builder = builderMap.get(log);
+       if (builder== null )
+       {
+           builder = new StringBuilder();
+           builderMap.put(log, builder);
+       }
 
-    public void combatEndLog(String string) {
-        getCombatActionLogBuilder().append(string + "\n");
-    }
-
-    public void combatStartLog(String string) {
-        getCombatActionLogBuilder().append("\n" + string);
-    }
-
-
-    public void combatActionLog(String string) {
-        getCombatActionLogBuilder().append(string + "\n");
-    }
-
-    public StringBuilder getAiLogBuilder() {
-        return aiLogBuilder;
-    }
-
-
-    public StringBuilder getVisibilityLogBuilder() {
-        return visibilityLogBuilder;
-    }
-
-    public StringBuilder getInputLogBuilder() {
-        return inputLogBuilder;
-    }
-
-    public StringBuilder getCombatActionLogBuilder() {
-        if (combatActionLogBuilder == null) {
-            combatActionLogBuilder = new StringBuilder();
-        }
-        return combatActionLogBuilder;
+        return builder;
     }
 
     public void logCombatLog() {
         writeLog(SPECIAL_LOG.COMBAT);
     }
 
-    public enum SPECIAL_LOG {
-        AI(LOG_CHANNEL.AI_DEBUG, LOG_CHANNEL.AI_DEBUG2),
-        VISIBILITY,
-        COMBAT(LOG_CHANNEL.GAME_INFO),
-        INPUT,;
 
-        private List<LOG_CHANNEL> channels;
-
-        SPECIAL_LOG(LOG_CHANNEL... channels) {
-            this.channels = Arrays.asList(channels);
-        }
-
-        private List<LOG_CHANNEL> getChannels() {
-            return channels;
-        }
-    }
 
 }

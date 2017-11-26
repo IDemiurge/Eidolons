@@ -17,6 +17,9 @@ public class ActorMaster {
     public static final Map<Class, ActionPool> poolMap = new HashMap<>();
 
     public static void addAfter(Actor actor, Action action) {
+        if (getActionsOfClass(actor, AfterAction.class).size()>0){
+            return;
+        }
         AfterAction aa = (AfterAction) getAction(AfterAction.class);
         aa.setAction(action);
         actor.addAction(aa);

@@ -7,6 +7,10 @@ public interface Controller {
 
     boolean charTyped(char c);
 
+    default void keyDown(int keyCode){
+
+    };
+
     public enum CONTROLLER {
         ACTION, ANIM, EMITTER,
         DEBUG,

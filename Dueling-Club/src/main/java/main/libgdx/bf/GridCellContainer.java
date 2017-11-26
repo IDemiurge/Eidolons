@@ -7,7 +7,7 @@ import main.game.core.Eidolons;
 import main.libgdx.bf.datasource.GridCellDataSource;
 import main.libgdx.screens.DungeonScreen;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GridCellContainer extends GridCell {
@@ -16,6 +16,8 @@ public class GridCellContainer extends GridCell {
 
     private GraveyardView graveyard;
     private boolean hasBackground;
+    private GridUnitView topUnitView;
+    private List<GridUnitView> unitViews=new ArrayList<>(); //for cache and cycling
 
 
     public GridCellContainer(TextureRegion backTexture, int gridX, int gridY) {
@@ -43,13 +45,17 @@ public class GridCellContainer extends GridCell {
     }
 
     public List<GridUnitView> getUnitViews() {
-        List<GridUnitView> list = new LinkedList<>();
-        for (Actor actor : getChildren()) {
-            if (actor.isVisible())
-                if (actor instanceof GridUnitView)
-                    list.add((GridUnitView) actor);
-        }
-        return list;
+//        if (unitViews==null ){
+//            unitViews = new ArrayList<>();
+//        }
+//        List<GridUnitView> list = new LinkedList<>();
+//        for (Actor actor : getChildren()) {
+//            if (actor.isVisible())
+//                if (actor instanceof GridUnitView)
+//                    list.add((GridUnitView) actor);
+//        }
+//        return list;
+        return unitViews;
     }
 
     public void recalcUnitViewBounds() {
@@ -66,9 +72,9 @@ public class GridCellContainer extends GridCell {
                 continue;
             }
             int perImageOffsetX = getSizeDiffX();
-            int perImageOffsetY = getSizeDiffY();
+            int perImageOffsetY =perImageOffsetX;// getSizeDiffY();
             int w = GridConst.CELL_W - perImageOffsetX * (getUnitViewCount() - 1);
-            int h = GridConst.CELL_H - perImageOffsetY * (getUnitViewCount() - 1);
+            int h =w;// GridConst.CELL_H - perImageOffsetY * (getUnitViewCount() - 1);
             float scaleX = new Float(w) / GridConst.CELL_W;
             float scaleY = new Float(h) / GridConst.CELL_H;
 
@@ -119,17 +125,22 @@ public class GridCellContainer extends GridCell {
             return;
         super.act(delta);
         List<GridUnitView> views = getUnitViews();
+        int n=0;
         for (GridUnitView actor : views) {
+            if (!actor.isVisible())
+                continue;
             if (actor.isCellBackground())
                 actor.setZIndex(1); //over cell at least
             else if (actor.isHovered())
                 actor.setZIndex(Integer.MAX_VALUE);
             else if (actor.isActive())
                 actor.setZIndex(Integer.MAX_VALUE);
+            n++;
         }
         graveyard.setZIndex(Integer.MAX_VALUE);
-        if (views.size() != unitViewCount) {
-            unitViewCount = views.size();
+        if (n != unitViewCount) {
+            main.system.auxiliary.log.LogMaster.log(1,  this + "*** unitviews reset to "+ n  );
+            unitViewCount = n;
             recalcImagesPos();
         }
     }
@@ -154,16 +165,27 @@ public class GridCellContainer extends GridCell {
     public void addActor(Actor actor) {
         super.addActor(actor);
         if (actor instanceof GridUnitView) {
-            unitViewCount = getUnitViews().size();
+            if (getUnitViews().contains(actor))
+                return ;
+            unitViews.add((GridUnitView) actor);
+            unitViewCount++;
+            main.system.auxiliary.log.LogMaster.log(1,actor + " added to "+ this  );
             recalcUnitViewBounds();
         }
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName()+ " with "+ unitViewCount;
     }
 
     public boolean removeActor(Actor actor) {
         boolean result = super.removeActor(actor);
 
         if (result && actor instanceof GridUnitView) {
-            unitViewCount = getUnitViews().size();
+            unitViews.remove(actor);
+            unitViewCount--;
+            main.system.auxiliary.log.LogMaster.log(1,actor + " removed from "+ this  );
             recalcUnitViewBounds();
             ((GridUnitView) actor).sizeChanged();
         }
@@ -192,10 +214,11 @@ public class GridCellContainer extends GridCell {
         return 1.25f;
     }
 
-    public void popupUnitView(BaseView uv) {
+    public void popupUnitView(GridUnitView uv) {
         uv.setZIndex(getChildren().size);
         recalcImagesPos();
         graveyard.setZIndex(Integer.MAX_VALUE);
+        setTopUnitView(uv);
     }
 
 
@@ -210,5 +233,15 @@ public class GridCellContainer extends GridCell {
 
     public int getUnitViewCountEffective() {
         return hasBackground?unitViewCount-1 : unitViewCount;//-graveyard.getGraveCount() ;
+    }
+
+    public GridUnitView getTopUnitView() {
+
+        return topUnitView;
+    }
+
+    public void setTopUnitView(GridUnitView topUnitView) {
+        this.topUnitView = topUnitView;
+
     }
 }

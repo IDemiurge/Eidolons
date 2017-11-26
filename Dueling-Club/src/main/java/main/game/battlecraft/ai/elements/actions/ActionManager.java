@@ -28,11 +28,13 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
+import main.system.text.SpecialLogger;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -156,8 +158,12 @@ public class ActionManager extends AiHandler {
             if (Launcher.DEV_MODE)
                 game.getLogManager().log(LOG.GAME_INFO, ai.getUnit().getName()
                  + " chooses task: " + chosenSequence.getTask().toShortString());
-            LogMaster.log(LOG_CHANNEL.AI_DEBUG, "Action chosenSequence chosen: "
-             + chosenSequence + StringMaster.wrapInParenthesis(chosenSequence.getPriority() + ""));
+
+            String message = getUnit() + " has chosen: "
+             + chosenSequence + " with priority of "
+             + StringMaster.wrapInParenthesis(chosenSequence.getPriority() + "");
+            LogMaster.log(LOG_CHANNEL.AI_DEBUG,message );
+            SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI,message);
         }
         //TODO for behaviors? ai-issued-orders?
         ai.checkSetOrders(chosenSequence);
@@ -182,6 +188,9 @@ public class ActionManager extends AiHandler {
             }
             action.setTaskDescription("Forced Behavior");
         }
+        action= getAtomicAi().getAtomicActionForced(ai);
+        if (action!=null )
+            return action;
         try {
             action = getAtomicAi().getAtomicActionPrepare(getUnit().getAI());
         } catch (Exception e) {

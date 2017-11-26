@@ -99,6 +99,7 @@ public class DC_StateManager extends StateManager {
             if (getGame().getDungeonMaster().getExplorationMaster().getResetter().isFirstResetDone())
             {
                 getGame().getBfObjects().forEach(obj-> obj.setBufferedCoordinates(obj.getCoordinates()));
+                triggerOnResetGuiEvents();
                 return;
             }
             else getGame().getDungeonMaster().getExplorationMaster().getResetter().setFirstResetDone(true);

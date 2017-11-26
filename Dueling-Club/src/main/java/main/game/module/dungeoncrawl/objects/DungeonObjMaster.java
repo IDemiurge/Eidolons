@@ -5,9 +5,9 @@ import main.ability.ActiveAbilityObj;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.data.DataManager;
-import main.elements.targeting.FixedTargeting;
+import main.elements.conditions.DistanceCondition;
+import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
-import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.ActiveObj;
@@ -25,7 +25,7 @@ import java.util.List;
  * > Do I need a class for each?
  */
 public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
-    DungeonMaster  dungeonMaster;
+    DungeonMaster dungeonMaster;
 
     public DungeonObjMaster(DungeonMaster dungeonMaster) {
         this.dungeonMaster = dungeonMaster;
@@ -46,18 +46,21 @@ public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
                                       DungeonObj obj) {
         return createAction(sub, unit, sub.toString(), obj);
     }
-        public DC_UnitAction createAction(T sub, Unit unit,  String typeName,
-         DungeonObj obj) {
+
+    public DC_UnitAction createAction(T sub, Unit unit, String typeName,
+                                      DungeonObj obj) {
         //TODO CACHE
         DC_UnitAction action =
          unit.getGame().getActionManager().getOrCreateAction(typeName, unit);
-        action.setTargeting(new FixedTargeting(KEYS.SOURCE));
+        action.setTargeting(new SelectiveTargeting(
+         new DistanceCondition("1", true)));
+        action.setTargetingCachingOff(true);
         action.setActionTypeGroup(ACTION_TYPE_GROUPS.STANDARD);
-        action.setAbilities(null );
-        List<ActiveObj> actives=    new LinkedList<>() ;
+        action.setAbilities(null);
+        List<ActiveObj> actives = new LinkedList<>();
         actives.add(new ActiveAbilityObj((AbilityType)
          DataManager.getType("Dummy Ability", DC_TYPE.ABILS),
-         unit.getRef() , unit.getOwner(), unit.getGame()) {
+         unit.getRef(), unit.getOwner(), unit.getGame()) {
             @Override
             public boolean activatedOn(Ref ref) {
                 if (!actionActivated(sub, unit, obj))

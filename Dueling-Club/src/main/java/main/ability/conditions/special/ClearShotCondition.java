@@ -168,7 +168,7 @@ if (!(obj instanceof DC_Obj)){
                 DIRECTION d1 = DirectionMaster.getRelativeDirection(target, source);
                 if (d != null) {
                     if (d1 != d) {
-                        if (d.getDegrees() % 360 - d1.getDegrees() % 360 > 45)
+                        if (Math.abs( d.getDegrees()   - d1.getDegrees())   > 90)
                             return false;
                     }
 

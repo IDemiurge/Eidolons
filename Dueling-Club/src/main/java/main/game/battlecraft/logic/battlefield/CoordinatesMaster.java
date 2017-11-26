@@ -356,7 +356,7 @@ if (!ListMaster.isNotEmpty(coordinates))
         FACING_DIRECTION y_dir = null;
         int min_x_diff = Integer.MAX_VALUE;
         int min_y_diff = Integer.MAX_VALUE;
-        for (FACING_DIRECTION d : FACING_DIRECTION.values()) {
+        for (FACING_DIRECTION d : FACING_DIRECTION.values ) {
             int x_diff = Integer.MAX_VALUE;
             int y_diff = Integer.MAX_VALUE;
             switch (d) {

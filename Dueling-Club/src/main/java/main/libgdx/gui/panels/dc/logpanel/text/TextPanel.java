@@ -8,31 +8,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.libgdx.GdxMaster;
 import main.libgdx.gui.panels.dc.logpanel.LogPanel;
+import main.libgdx.stage.Closable;
 import main.system.auxiliary.StringMaster;
 
 /**
  * Created by JustMe on 11/14/2017.
  */
-public class TextPanel extends LogPanel {
+public class TextPanel extends LogPanel implements Closable {
 
     public static final boolean TEST_MODE = false;
-    private   Actor outside;
 
     public TextPanel() {
-//        outside = new Actor();
-//        outside.setBounds(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
-//        outside.addListener(new InputListener() {
-//            @Override
-//            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//                TextPanel.this.setVisible(false);
-//                outside.setTouchable(Touchable.disabled);
-//                return false;
-//            }
-//
-//
-//        });
-//        addActor(outside);
-
         setTouchable(Touchable.enabled);
         initListeners();
     }
@@ -111,5 +97,18 @@ public class TextPanel extends LogPanel {
             }
         });
 
+    }
+//    public void open() {
+//        if (getStage() instanceof StageWithClosable) {
+//            ((StageWithClosable) getStage()).setDisplayedClosable(this);
+//        }
+//        setVisible(true);
+//    }
+
+
+
+    @Override
+    public void close() {
+        setVisible(false);
     }
 }

@@ -614,7 +614,10 @@ public class DC_GameManager extends GameManager {
             GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
         else {
             if (FloatingTextMaster.getInstance().isEventDisplayable(event)) {
+if (event.getType()!=STANDARD_EVENT_TYPE.COSTS_HAVE_BEEN_PAID)
                 GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
+else
+    GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
             }
             else if (EventAnimCreator.isEventAnimated(event))
                 GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);

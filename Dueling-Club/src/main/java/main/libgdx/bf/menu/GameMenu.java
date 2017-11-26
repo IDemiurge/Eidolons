@@ -12,6 +12,8 @@ import main.libgdx.GdxColorMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import main.libgdx.gui.panels.dc.TablePanel;
+import main.libgdx.stage.Closable;
+import main.libgdx.stage.StageWithClosable;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
@@ -20,7 +22,7 @@ import main.system.graphics.FontMaster.FONT;
 /**
  * Created by JustMe on 11/24/2017.
  */
-public class GameMenu extends TablePanel {
+public class GameMenu extends TablePanel implements Closable {
     public static boolean menuOpen;
     GameMenuHandler handler;
 
@@ -69,10 +71,15 @@ public class GameMenu extends TablePanel {
         DC_Game.game.getLoop().setPaused(true);
         menuOpen = true;
         setVisible(true);
+        if (getStage() instanceof StageWithClosable) {
+            ((StageWithClosable) getStage()).closeDisplayed();
+            ((StageWithClosable) getStage()).setDisplayedClosable(this);
+
+        }
 
     }
 
-    private void close() {
+    public void close() {
         DC_Game.game.getLoop().setPaused(false);
         menuOpen = false;
         setVisible(false);

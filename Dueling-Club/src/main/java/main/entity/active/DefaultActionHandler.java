@@ -1,6 +1,7 @@
 package main.entity.active;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import main.ability.conditions.special.ClearShotCondition;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
@@ -238,6 +239,7 @@ public class DefaultActionHandler {
     private static boolean doDebugStuffCell(Unit source, Coordinates c) {
         Ref ref = new Ref(source);
         ref.setMatch(source.getGame().getCellByCoordinate(c).getId());
+        ClearShotCondition.clearCache();
         source.getGame().getVisionMaster().getSightMaster().getClearShotCondition().preCheck(ref);
         DC_Obj target = (DC_Obj) source.getGame().getCellByCoordinate(c);
         target.getGame().getVisionMaster().getGammaMaster().clearCache();
@@ -257,6 +259,10 @@ public class DefaultActionHandler {
         int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(true, source, target);
         outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target, source);
         vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);
+        ClearShotCondition.clearCache();
+        Ref ref = new Ref(source);
+        ref.setMatch(target.getId());
+        source.getGame().getVisionMaster().getSightMaster().getClearShotCondition().preCheck(ref);
         return false;
     }
 

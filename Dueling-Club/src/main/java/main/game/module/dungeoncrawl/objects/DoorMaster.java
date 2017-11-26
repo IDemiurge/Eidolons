@@ -1,8 +1,9 @@
 package main.game.module.dungeoncrawl.objects;
 
+import main.content.PARAMS;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
+import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.values.properties.G_PROPS;
-import main.elements.conditions.DistanceCondition;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
@@ -83,11 +84,11 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         switch (sub) {
             case OPEN:
 //            case LOCK: //TODO
-                if (door.getGame().getUnitsForCoordinates(door.getCoordinates()).size() > 1) {
-                    return false;
-                }
                 return !isOpen(door);
             case CLOSE:
+                if (door.getGame().getObjectsAt(door.getCoordinates()).size() > 1) {
+                    return false;
+                }
                 return isOpen(door);
             case UNLOCK:
                 return door.getState() == DOOR_STATE.LOCKED;
@@ -119,6 +120,9 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     public List<DC_ActiveObj> getActions(DungeonObj door, Unit unit) {
         if (!(door instanceof Door))
             return new LinkedList<>();
+        if (!checkUnitCanHandleActions(unit)){
+            return      new LinkedList<>() ;
+        }
         //check intelligence, mastery
         List<DC_ActiveObj> list = new LinkedList<>();
         DC_UnitAction action = null;
@@ -126,7 +130,6 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
 
             if (checkAction(unit, (Door) door, sub)) {
                 action = createAction(sub, unit, door);
-                action.getTargeting().getConditions().add(new DistanceCondition("1", true));
 
                 if (action != null) {
                     list.add(action);
@@ -135,6 +138,19 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
             }
         }
         return list;
+    }
+
+    protected  boolean checkUnitCanHandleActions(Unit unit) {
+        if ( unit.canUseItems())
+            return true;
+        if (unit.getChecker().checkClassification(CLASSIFICATIONS.ANIMAL)||
+         unit.getChecker().checkClassification(CLASSIFICATIONS.INSECT))
+        {
+            if (unit.getIntParam(PARAMS.WEIGHT)<50)
+            return false;
+        }
+
+        return true;
     }
 
     @Override

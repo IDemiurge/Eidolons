@@ -7,17 +7,22 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import main.ability.InventoryTransactionManager;
+import main.client.cc.CharacterCreator;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.gui.panels.dc.ButtonStyled;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import main.libgdx.stage.Closable;
 import main.system.GuiEventManager;
+import main.system.threading.WaitMaster;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.SHOW_INVENTORY;
 
-public class InventoryWithAction extends TablePanel {
+public class InventoryWithAction extends TablePanel implements Closable{
     private InventoryPanel inventoryPanel;
 
     private Cell<Actor> actionPointsText;
@@ -74,15 +79,19 @@ public class InventoryWithAction extends TablePanel {
 
         GuiEventManager.bind(SHOW_INVENTORY, (obj) -> {
             final Object param = obj.get();
-            if (param == null) {
-                setVisible(false);
+            if (param instanceof Boolean) {
+                close((Boolean) param);
             } else {
-                setVisible(true);
+                if (isVisible())
+                    return ;
+                open();
                 setUserObject(param);
                 initButtonListeners();
             }
         });
     }
+
+
 
     private void initButtonListeners() {
         final InventoryDataSource source = (InventoryDataSource) getUserObject();
@@ -107,7 +116,7 @@ public class InventoryWithAction extends TablePanel {
         doneButton.getActor().clearListeners();
         cancelButton.getActor().clearListeners();
         undoButton.getActor().clearListeners();
-        setVisible(false);
+        close();
     }
 
     @Override
@@ -115,8 +124,39 @@ public class InventoryWithAction extends TablePanel {
         super.updateAct(delta);
 
         final InventoryDataSource source = (InventoryDataSource) getUserObject();
-
-        actionPointsText.setActor(new ValueContainer("Actions available:", source.getOperationsString()));
+        if (ExplorationMaster.isExplorationOn()) {
+            actionPointsText.setActor(new ValueContainer("Free Mode", ""));
+        } else {
+            actionPointsText.setActor(new ValueContainer("Actions available:",
+             source.getOperationsString()));
+        }
         initButtonListeners();
     }
+
+
+    public void close(Boolean result) {
+        if (result==null )
+            result = false;
+        InventoryDataSource source = (InventoryDataSource) getUserObject();
+        WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, result);
+        CharacterCreator.getHeroManager().removeHero(source.getUnit());
+        if (!ExplorationMaster.isExplorationOn()) {
+            source.getCancelHandler().cancel();
+        } else {
+
+        }
+        close();
+    }
+        public void close() {
+
+
+        setVisible(false);
+    }
+//    public void open() {
+//        if (getStage() instanceof StageWithClosable) {
+//            ((StageWithClosable) getStage()).closeDisplayed();
+//            ((StageWithClosable) getStage()).setDisplayedClosable(this);
+//        }
+//        setVisible(true);
+//    }
 }

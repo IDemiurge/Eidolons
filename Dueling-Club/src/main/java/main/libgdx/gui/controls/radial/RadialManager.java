@@ -3,7 +3,6 @@ package main.libgdx.gui.controls.radial;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
-import main.elements.Filter;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
@@ -11,7 +10,10 @@ import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_UnitAction;
 import main.entity.active.DefaultActionHandler;
 import main.entity.item.DC_QuickItemObj;
-import main.entity.obj.*;
+import main.entity.obj.ActiveObj;
+import main.entity.obj.BattleFieldObject;
+import main.entity.obj.DC_Cell;
+import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.game.core.ActionInput;
 import main.game.core.Eidolons;
@@ -331,16 +333,7 @@ public class RadialManager {
 
     }
 
-    private static Filter<Obj> getFilter(DC_ActiveObj active) {
-        active.getRef().setMatch(active.getOwnerObj().getId()); // for filter
-        if (active.getTargeting() == null)
-            active.setTargeting(active.getTargeter().getTargeting()); //initTargetingMode();
-        Filter<Obj> filter = active.getTargeting().getFilter();
 
-        filter.setRef(active.getRef());
-
-        return filter;
-    }
 
     protected static RadialValueContainer configureActionNode(DC_Obj target, DC_ActiveObj el) {
         if (el.getTargeting() instanceof SelectiveTargeting) {

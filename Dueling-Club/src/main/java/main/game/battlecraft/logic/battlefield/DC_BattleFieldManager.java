@@ -12,6 +12,8 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
 import main.game.core.game.DC_Game;
+import main.game.module.dungeoncrawl.objects.Door;
+import main.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
@@ -33,6 +35,8 @@ public class DC_BattleFieldManager extends BattleFieldManager {
     private Map<Coordinates, List<DIRECTION>> visibleWallMap;
     private Map<Coordinates, List<DIRECTION>> visibleDiagonalJoints;
     private boolean wallResetRequired=true;
+    private Map<Coordinates, DOOR_STATE> doorMap = new HashMap<>();
+
 
     public DC_BattleFieldManager(DC_Game game) {
         super(game);
@@ -78,10 +82,13 @@ public class DC_BattleFieldManager extends BattleFieldManager {
             resetWalls();
         }
         resetVisibleWallMap();
+        GuiEventManager.trigger(GuiEventType.UPDATE_DOOR_MAP, this.doorMap);
         GuiEventManager.trigger(GuiEventType.UPDATE_WALL_MAP, this.visibleWallMap);
         GuiEventManager.trigger(GuiEventType.UPDATE_DIAGONAL_WALL_MAP, this.visibleDiagonalJoints);
         wallResetRequired = true;
     }
+
+
 
     private void resetVisibleWallMap() {
         visibleWallMap= new MapMaster().cloneHashMap(wallMap);
@@ -104,12 +111,17 @@ public class DC_BattleFieldManager extends BattleFieldManager {
     }
 
     public void resetWalls() {
+        doorMap.clear();
         Map<Coordinates, BattleFieldObject> wallObjects = new HashMap<>();
         for (Obj obj : game.getObjects(DC_TYPE.BF_OBJ)) {
             BattleFieldObject bfObj = (BattleFieldObject) obj;
             if (bfObj.getZ() == game.getDungeon().getZ()) {
                 if (bfObj.isWall()) {
                     wallObjects.put(obj.getCoordinates(), bfObj);
+                }
+                if (bfObj instanceof Door) {
+                     doorMap.put(obj.getCoordinates(), ((Door) bfObj).getState());
+
                 }
             }
         }
@@ -212,6 +224,10 @@ public class DC_BattleFieldManager extends BattleFieldManager {
             resetWalls();
         }
         return wallMap;
+    }
+
+    public Map<Coordinates, DOOR_STATE> getDoorMap() {
+        return doorMap;
     }
 
     public Map<Coordinates, List<DIRECTION>> getDiagonalJoints() {

@@ -42,6 +42,7 @@ public class GridUnitView extends UnitView {
         }
     }
 
+
     public UnitView getInitiativeQueueUnitView() {
         return initiativeQueueUnitView;
     }
@@ -185,7 +186,7 @@ public class GridUnitView extends UnitView {
     public boolean isHpBarVisible() {
         if (!getHpBar().getDataSource().canHpBarBeVisible() )
             return false;
-        if (getHpAlwaysVisible())
+        if (!isCellBackground()&& getHpAlwaysVisible())
             return true;
         if (!getHpBar().getDataSource().isHpBarVisible() )
             return false;
@@ -195,6 +196,8 @@ public class GridUnitView extends UnitView {
     }
 
     protected void updateVisible() {
+        if (isIgnored())
+            return;
         if (outline != null) {
             if (emblemImage != null)
                 emblemImage.setVisible(false);

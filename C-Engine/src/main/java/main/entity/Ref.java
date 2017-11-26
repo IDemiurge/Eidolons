@@ -632,7 +632,7 @@ public class Ref implements Cloneable, Serializable {
         DAMAGE_DEALT,
 
         IMAGE,
-        OBJECTIVE,
+        OBJECTIVE, BLOCK,
     }
 
 }

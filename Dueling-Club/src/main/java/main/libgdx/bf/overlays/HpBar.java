@@ -16,6 +16,8 @@ import main.game.battlecraft.rules.round.UnconsciousRule;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.StyleHolder;
+import main.libgdx.anims.ActorMaster;
+import main.libgdx.anims.actions.FloatActionLimited;
 import main.libgdx.bf.GridConst;
 import main.libgdx.bf.SuperActor;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
@@ -46,21 +48,22 @@ import main.system.graphics.FontMaster.FONT;
  */
 public class HpBar extends SuperActor {
 
+    private static final Integer FONT_SIZE = 18;
     private final Image barImage;
     private final Label label;
     private final Label label_t;
     private final int innerWidth;
     ResourceSourceImpl dataSource;
-    Float toughnessPerc = 1f;
-    Float endurancePerc = 1f;
-    Float previousToughnessPerc;
     Float toughnessDeathBarrier;
-    Float previousEndurancePerc;
     float displayedToughnessPerc;
     float displayedEndurancePerc;
-    FloatAction toughnessAction = new FloatAction();
-    FloatAction enduranceAction = new FloatAction();
+    FloatActionLimited toughnessAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
+    FloatActionLimited enduranceAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
     boolean labelsDisplayed = true;
+    private Float toughnessPerc = 1f;
+    private Float endurancePerc = 1f;
+    private Float previousToughnessPerc = 1f;
+    private Float previousEndurancePerc = 1f;
     private float fullLengthPerc;
     private boolean toughnessDeath;
     private TextureRegion barRegion; //TODO can it be static?
@@ -72,6 +75,8 @@ public class HpBar extends SuperActor {
     private float offsetX;
     private boolean queue;
     private boolean dirty;
+    private Float lastOfferedToughness;
+    private Float lastOfferedEndurance;
 
     public HpBar(ResourceSourceImpl dataSource) {
         this.dataSource = dataSource;
@@ -87,9 +92,9 @@ public class HpBar extends SuperActor {
         barImage = new Image(barRegion);
         addActor(barImage);
         label = new Label("", StyleHolder.
-         getSizedLabelStyle(FONT.AVQ, 18));
+         getSizedLabelStyle(FONT.AVQ, FONT_SIZE));
         label_t = new Label("", StyleHolder.
-         getSizedLabelStyle(FONT.AVQ, 18));
+         getSizedLabelStyle(FONT.AVQ, FONT_SIZE));
         addActor(label_t);
         addActor(label);
         offsetX = barRegion.getRegionWidth() - toughnessBarRegion.getRegionWidth();
@@ -98,25 +103,31 @@ public class HpBar extends SuperActor {
     //make sure this isn't called all the time!
     public void reset(ResourceSourceImpl resourceSource) {
         //TODO queue animation?
-//        main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar tries to reset " +
-//         dataSource +" previousToughnessPerc=" + previousToughnessPerc +" previousEndurancePerc=" + previousEndurancePerc+ " toughnessPerc=" + toughnessPerc +" endurancePerc=" + endurancePerc);
+        main.system.auxiliary.log.LogMaster.log(1, this + ">>>  tries to reset " +
+         dataSource + " previousToughnessPerc=" + previousToughnessPerc + " previousEndurancePerc=" + previousEndurancePerc + " toughnessPerc=" + toughnessPerc + " endurancePerc=" + endurancePerc);
 
         dataSource = resourceSource;
-        toughnessPerc = new Float(dataSource.getIntParam(PARAMS.C_TOUGHNESS))
-         /  (dataSource.getIntParam(PARAMS.ENDURANCE));
-        toughnessPerc = ((int) (toughnessPerc / 0.01f) / new Float(100));//  toughnessPerc % 0.01f;
-        endurancePerc = new Float(dataSource.getIntParam(PARAMS.C_ENDURANCE)) /  (dataSource.getIntParam(PARAMS.ENDURANCE));
-        endurancePerc = ((int) (endurancePerc / 0.01f) / new Float(100));// endurancePerc % 0.01f;
-        if (toughnessPerc.equals(previousToughnessPerc) &&
-         endurancePerc.equals(previousEndurancePerc))
+        setToughnessPerc(new Float(dataSource.getIntParam(PARAMS.C_TOUGHNESS))
+         / (dataSource.getIntParam(PARAMS.ENDURANCE)));
+        setToughnessPerc(((int) (getToughnessPerc() / 0.01f) / new Float(100)));//  toughnessPerc % 0.01f;
+        setEndurancePerc(new Float(dataSource.getIntParam(PARAMS.C_ENDURANCE)) / (dataSource.getIntParam(PARAMS.ENDURANCE)));
+        setEndurancePerc(((int) (getEndurancePerc() / 0.01f) / new Float(100)));// endurancePerc % 0.01f;
+        if (getToughnessPerc().equals(lastOfferedToughness) &&
+         getEndurancePerc().equals(lastOfferedEndurance))
             return;
+
         dirty = true;
-//        main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar reset " +
-//         dataSource +" previousToughnessPerc=" + previousToughnessPerc +" previousEndurancePerc=" + previousEndurancePerc+ " toughnessPerc=" + toughnessPerc +" endurancePerc=" + endurancePerc);
-        if (!toughnessPerc.equals(previousToughnessPerc))
-            previousToughnessPerc = toughnessPerc;
-        if (!endurancePerc.equals(previousEndurancePerc))
-            previousEndurancePerc = endurancePerc;
+        main.system.auxiliary.log.LogMaster.log(1, this + ">>>   reset " +
+         dataSource + " previousToughnessPerc=" + previousToughnessPerc + " previousEndurancePerc=" + previousEndurancePerc + " toughnessPerc=" + toughnessPerc + " endurancePerc=" + endurancePerc);
+
+//        if (!getToughnessPerc().equals(lastOfferedToughness))
+        setPreviousToughnessPerc(lastOfferedToughness);
+//        if (!getEndurancePerc().equals(lastOfferedEndurance))
+        setPreviousEndurancePerc(lastOfferedEndurance);
+
+        lastOfferedToughness = getToughnessPerc();
+        lastOfferedEndurance = getEndurancePerc();
+
         toughnessDeathBarrier = new Float(UnconsciousRule.DEFAULT_DEATH_BARRIER) / 100;
         Integer mod = StringMaster.getInteger(dataSource.getParam(PARAMS.TOUGHNESS_DEATH_BARRIER_MOD));
         if (mod != 0) {
@@ -130,7 +141,8 @@ public class HpBar extends SuperActor {
     public void animateChange() {
         animateChange(isAnimated());
     }
-        public void animateChange(boolean smooth) {
+
+    public void animateChange(boolean smooth) {
         if (!dataSource.isHpBarVisible()) {
             main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar not visible " +
              dataSource);
@@ -145,14 +157,18 @@ public class HpBar extends SuperActor {
 //        }
         setVisible(true);
         if (!smooth) {
-            displayedEndurancePerc = endurancePerc;
-            displayedToughnessPerc = toughnessPerc;
+            displayedEndurancePerc = getEndurancePerc();
+            displayedToughnessPerc = getToughnessPerc();
             return;
         }
-        if (previousToughnessPerc != toughnessPerc)
-            initChangeActions(toughnessAction, previousToughnessPerc, toughnessPerc);
-        if (previousEndurancePerc != endurancePerc)
-            initChangeActions(enduranceAction, previousEndurancePerc, endurancePerc);
+        if (!getToughnessPerc().equals(getPreviousToughnessPerc())) {
+            initChangeActions(toughnessAction, getPreviousToughnessPerc(), getToughnessPerc());
+            setPreviousToughnessPerc(getToughnessPerc());
+        }
+        if (!getEndurancePerc().equals(getPreviousEndurancePerc())) {
+            initChangeActions(enduranceAction, getPreviousEndurancePerc(), getEndurancePerc());
+            setPreviousEndurancePerc(getEndurancePerc());
+        }
 
     }
 
@@ -170,7 +186,7 @@ public class HpBar extends SuperActor {
         floatAction.setEnd(perc);
         addAction(floatAction);
         floatAction.setTarget(this);
-        floatAction.setDuration(1.5f + (Math.abs(this.previousToughnessPerc - this.toughnessPerc)));
+        floatAction.setDuration(1.5f + (Math.abs(previousPerc - perc)));
     }
 
     @Override
@@ -197,11 +213,16 @@ public class HpBar extends SuperActor {
         ) + "/" + dataSource.getIntParam(PARAMS.TOUGHNESS);
         label_t.setText(text);
         fullLengthPerc = displayedEndurancePerc;
-        if (toughnessPerc <= 0) {
-            toughnessPerc = toughnessDeathBarrier;
+        if (getToughnessPerc() <= 0) {
+            setToughnessPerc(toughnessDeathBarrier);
             toughnessDeath = true; //diff color?
         }
+        resetLabel();
+        dirty = false;
 
+    }
+
+    private void resetLabel() {
 //        float offset = innerWidth * displayedToughnessPerc / 2;
         label_t.setPosition(0,
 //         offset - label_t.getWidth() / 2,
@@ -211,7 +232,12 @@ public class HpBar extends SuperActor {
         label.setPosition(offset,
 //         offset - label.getWidth() / 2,
          -height / 2);
-        dirty = false;
+        label.setWidth(innerWidth);
+        label_t.setWidth(innerWidth);
+
+
+        label.setHeight(18);
+        label_t.setHeight(18);
     }
 
     private void drawBar(TextureRegion region, Batch batch, float perc, Color color, boolean reverse) {
@@ -241,6 +267,7 @@ public class HpBar extends SuperActor {
 
     public void drawAt(Batch batch, float x, float y) {
         setPosition(x, y);
+        resetLabel();
         draw(batch, 1f);
     }
 
@@ -248,6 +275,9 @@ public class HpBar extends SuperActor {
     public void draw(Batch batch, float parentAlpha) {
         if (isIgnored())
             return;
+        if (label.isVisible()) {
+            label.getWidth();
+        }
         super.draw(batch, parentAlpha);
         batch.flush();
         if (fluctuatingAlpha != 1)
@@ -338,7 +368,50 @@ public class HpBar extends SuperActor {
     @Override
     public String toString() {
         return
-         (queue ? "queue hp bar" : label.getText()+" bar ") +
-         dataSource.getName();
+         (queue ? "queue hp bar" : label.getText() + " bar ") +
+          dataSource.getName();
+//        label.getText()+
+    }
+
+    public Float getToughnessPerc() {
+        return toughnessPerc;
+    }
+
+    public void setToughnessPerc(Float toughnessPerc) {
+        this.toughnessPerc = toughnessPerc;
+    }
+
+    public Float getEndurancePerc() {
+        return endurancePerc;
+    }
+
+    public void setEndurancePerc(Float endurancePerc) {
+        this.endurancePerc = endurancePerc;
+    }
+
+    public Float getPreviousToughnessPerc() {
+        return previousToughnessPerc;
+    }
+
+    public void setPreviousToughnessPerc(Float previousToughnessPerc) {
+
+        this.previousToughnessPerc = previousToughnessPerc;
+    }
+
+    public Float getPreviousEndurancePerc() {
+        return previousEndurancePerc;
+    }
+
+    public void setPreviousEndurancePerc(Float previousEndurancePerc) {
+//        if (previousEndurancePerc!=0 )
+//            if (previousEndurancePerc!=1 )
+        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>>" +
+         " " + this.previousEndurancePerc + " t0 " + previousEndurancePerc);
+        this.previousEndurancePerc = previousEndurancePerc;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
     }
 }

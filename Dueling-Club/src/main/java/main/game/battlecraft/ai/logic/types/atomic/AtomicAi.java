@@ -9,6 +9,7 @@ import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.entity.Ref;
 import main.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import main.entity.active.DC_ActionManager.STD_SPEC_ACTIONS;
+import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
@@ -27,11 +28,17 @@ import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.dungeon.universal.Positioner;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.module.dungeoncrawl.objects.Door;
+import main.game.module.dungeoncrawl.objects.DoorMaster.DOOR_ACTION;
+import main.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
+import main.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.FuncMaster;
 import main.system.math.PositionMaster;
+import main.system.text.SpecialLogger;
 
 import java.util.Collection;
 import java.util.List;
@@ -64,8 +71,52 @@ public class AtomicAi extends AiHandler {
             action = getAtomicActionApproach(ai);
         if (action != null)
             action.setTaskDescription("Approach");
+        else {
+            SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, getUnit() + " finds no atomic action!");
+            return null;
+        }
+        String message = getUnit() + " chooses atomic action: " + action;
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, message);
+        return action;
+    }
+
+    public Action getAtomicActionForced(UnitAI ai) {
+        Action action = null;
+        action = getAtomicActionDoor(ai);
+        if (action != null)
+            action.setTaskDescription("Door");
 
         return action;
+    }
+
+    public Action getAtomicActionDoor(UnitAI ai) {
+
+        Coordinates c = getDoorCoordinates(ai);
+        if (c == null)
+            return null;
+        Door door = (Door) game.getObjectByCoordinate(c);
+        DC_UnitAction action = game.getDungeonMaster().getDungeonObjMaster(DUNGEON_OBJ_TYPE.DOOR).createAction(DOOR_ACTION.OPEN,
+         ai.getUnit(), door);
+        return AiActionFactory.newAction(action, ai.getUnit().getRef().getTargetingRef(door));
+
+    }
+
+    public boolean checkAtomicActionDoor(UnitAI ai) {
+        return getDoorCoordinates(ai) != null;
+    }
+
+    private Coordinates getDoorCoordinates(UnitAI ai) {
+        Coordinates coordinates = ai.getUnit().getCoordinates();
+        for (Coordinates c : coordinates.getAdjacentCoordinates()) {
+            if (FacingMaster.getSingleFacing(ai.getUnit().getFacing(), coordinates, c) != FACING_SINGLE.IN_FRONT) {
+                continue;
+            }
+            DOOR_STATE state = game.getBattleFieldManager().getDoorMap().get(c);
+            if (state == DOOR_STATE.CLOSED) {
+                return c;
+            }
+        }
+        return null;
     }
 
     public Action getAtomicActionPrepare(UnitAI ai) {
@@ -87,8 +138,7 @@ public class AtomicAi extends AiHandler {
             if (ai.getUnit().getRangedWeapon() != null)
                 if (ai.getUnit().getRangedWeapon().getAmmo() == null) {
                     Action action = getReloadAction(ai);
-                    if (action != null)
-                    {
+                    if (action != null) {
                         action.setTaskDescription("Ammo Reload");
                         return action;
                     }
@@ -409,13 +459,13 @@ public class AtomicAi extends AiHandler {
         double maxDistance = getDistanceForAtomicApproach(ai);
         double minDistance = -1;
         for (Unit sub : Analyzer.getVisibleEnemies(ai)) {
-            if (game.getVisionMaster().getSightMaster().getClearShotCondition().check(getUnit(),sub)) {
+            if (game.getVisionMaster().getSightMaster().getClearShotCondition().check(getUnit(), sub)) {
                 double distance = PositionMaster.getExactDistance(getUnit(), sub);
                 if (distance < minDistance)
                     minDistance = distance;
             }
         }
-        if (minDistance <0) {
+        if (minDistance < 0) {
             return false;
         }
 
@@ -462,6 +512,16 @@ public class AtomicAi extends AiHandler {
     }
 
     public enum ATOMIC_LOGIC_CASE {
-        TURN, APPROACH, RETREAT, SEARCH, ATTACK, PREPARE
+        TURN, APPROACH, RETREAT, SEARCH, ATTACK, PREPARE, DOOR(true),;
+
+        boolean forced;
+
+        ATOMIC_LOGIC_CASE() {
+
+        }
+
+        ATOMIC_LOGIC_CASE(boolean forced) {
+            this.forced = forced;
+        }
     }
 }

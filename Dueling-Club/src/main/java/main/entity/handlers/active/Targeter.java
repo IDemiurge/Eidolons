@@ -20,7 +20,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -159,7 +158,7 @@ public class Targeter extends ActiveHandler {
     }
 
     public boolean canBeTargeted(Integer id) {
-        return canBeTargeted(id, CoreEngine.isTargetingResultCachingOn());
+        return canBeTargeted(id, getEntity().isTargetingCached());
     }
 
     public boolean canBeTargeted(Integer id, boolean caching) {

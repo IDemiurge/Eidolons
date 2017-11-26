@@ -20,8 +20,10 @@ import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
+import main.system.text.SpecialLogger;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -140,6 +142,8 @@ public class AI_Manager extends AiMaster {
                 e.printStackTrace();
             } finally {
                 running = false;
+                SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI,getUnit()+
+                 " opts for Forced Action: " + action);
             }
         } else {
             try {

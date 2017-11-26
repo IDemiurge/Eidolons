@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.libgdx.GdxColorMaster;
 import main.libgdx.screens.DungeonScreen;
 import main.system.math.MathMaster;
 
@@ -122,9 +123,11 @@ public abstract class SuperActor extends Group implements Borderable {
     protected void alphaFluctuation(Actor image, float delta) {
         if (!isAlphaFluctuationOn())
             return;
-        if (image == null)
-            return;
-        Color color = image.getColor();
+        Color color =null ;
+        if (image != null)
+            color = image.getColor();
+        else color = GdxColorMaster.WHITE;
+
         if (isTeamColorBorder())
             if (getTeamColor() != null) {
                 color = getTeamColor();

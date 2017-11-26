@@ -103,7 +103,7 @@ public class GuiEventManager {
             case "C Endurance":
             case "Toughness":
             case "C Toughness":
-            case "Illumination":
+//            case "Illumination":
         return true;
         }
         return false;

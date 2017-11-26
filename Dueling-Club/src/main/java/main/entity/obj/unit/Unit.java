@@ -33,13 +33,13 @@ import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_SpellObj;
+import main.entity.handlers.EntityMaster;
+import main.entity.handlers.bf.unit.*;
 import main.entity.item.*;
 import main.entity.obj.*;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.hero.DC_Attributes;
 import main.entity.obj.hero.DC_Masteries;
-import main.entity.handlers.EntityMaster;
-import main.entity.handlers.bf.unit.*;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.UnitAI;
@@ -60,8 +60,10 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.text.SpecialLogger;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -104,7 +106,10 @@ public class Unit extends DC_UnitModel {
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
         if (isHero()){
-            main.system.auxiliary.log.LogMaster.log(1,this + " hero created " +getId());
+//            main.system.auxiliary.log.LogMaster.log(1,this + " hero created " +getId());
+            String message = this + " hero created " +getId();
+            SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
+
         }
 
         // getGame().getTestMaster().getTestSpells(); TODO add!

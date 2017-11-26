@@ -1,7 +1,6 @@
 package main.libgdx.gui.panels.dc.unitinfo.datasource;
 
 import main.content.PARAMS;
-import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
 import main.content.values.parameters.PARAMETER;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.BfObj;
@@ -60,9 +59,6 @@ public class ResourceSourceImpl implements ResourceSource {
     }
 
 
-    public UNIT_TO_UNIT_VISION getUnitVisionStatus() {
-        return obj.getUnitVisionStatus();
-    }
 
 
     public boolean isDetectedByPlayer() {
@@ -86,7 +82,7 @@ public class ResourceSourceImpl implements ResourceSource {
     }
 
     public String getName() {
-        return  getName();
+        return  obj.getName();
     }
     @Override
     public String toString() {

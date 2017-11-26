@@ -12,6 +12,8 @@ import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.libgdx.anims.AnimMaster;
 import main.system.GuiEventManager;
+import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.text.SpecialLogger;
 
 /**
  * Created by JustMe on 5/7/2017.
@@ -155,6 +157,12 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public void next(Boolean outcome) {
+
+        String
+            message = (outcome != null) ? "next level!" : "game restarted!";
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
+
+
         gameExited();
         game.reinit(outcome==null );
         //or selective clear() - removeIf() ...

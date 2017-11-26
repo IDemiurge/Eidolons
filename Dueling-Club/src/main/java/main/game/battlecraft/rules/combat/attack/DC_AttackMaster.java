@@ -79,8 +79,11 @@ public class DC_AttackMaster {
     public boolean attack(Attack attack) {
         Boolean doubleAttack = attack.isDoubleStrike();
 
-        boolean result = attack(attack, attack.getRef(), attack.isFree(), attack.isCanCounter(), attack
+        Boolean result = attack(attack, attack.getRef(), attack.isFree(), attack.isCanCounter(), attack
          .getOnHit(), attack.getOnKill(), attack.isOffhand(), attack.isCounter());
+        if (result == null) {
+            return false;
+        }
         if (doubleAttack == null) {
             return result;
         }
@@ -94,7 +97,7 @@ public class DC_AttackMaster {
 
     }
 
-    private boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter,
+    private Boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter,
                            Effect onHit,
                            Effect onKill, boolean offhand, boolean counter) {
         ENTRY_TYPE type = ENTRY_TYPE.ATTACK;
@@ -247,11 +250,12 @@ public class DC_AttackMaster {
             if (!dodged) {
                 boolean parried = parryRule.tryParry(attack);
                 if (parried) {
-                    if (
-                     EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_DODGED, ref)) {
+                    attack.setParried(true);
+//                    if (
+//                     EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_DODGED, ref)) {
                         attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_PARRY, attacker, ref);
                         attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_PARRY_SELF, attacked, ref);
-                    }
+//                    }
                     return true;
                 }
                 dodged = DefenseVsAttackRule.checkDodgedOrCrit(attack);
@@ -276,6 +280,7 @@ public class DC_AttackMaster {
 //            }
         } else {
             if (dodged) {
+                attack.setDodged(true);
                 log(attacked.getName() + " has dodged an attack from " + attacker.getNameIfKnown());
                 DC_SoundMaster.playMissedSound(attacker, getAttackWeapon(ref, offhand));
                 StackingRule.actionMissed(action);
