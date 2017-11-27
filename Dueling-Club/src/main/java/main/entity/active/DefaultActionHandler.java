@@ -36,7 +36,7 @@ public class DefaultActionHandler {
         return false;
     }
 
-    public static boolean moveToMotion(Unit source, Coordinates coordinates) {
+    private static boolean moveToMotion(Unit source, Coordinates coordinates) {
 //        List<ActionPath> paths = source.getGame().getAiManager().getPathBuilder().getInstance(source)
 //         .build(new ListMaster<Coordinates>().getList(coordinates));
 
@@ -49,14 +49,20 @@ public class DefaultActionHandler {
 //       return      source.getGame().getMovementManager().getAutoPath(source)!=null ;
     }
 
-    public static boolean turnToMotion(Unit source, Coordinates coordinates) {
+    private static boolean turnToMotion(Unit source, Coordinates coordinates) {
+        DC_ActiveObj action = getTurnToAction(source, coordinates);
+        Context context = new Context(source, null);
+        return activate(context, action);
+    }
+
+    public static DC_ActiveObj getTurnToAction(Unit source, Coordinates coordinates) {
+
         List<Action> sequence =
          source.getGame().getAiManager().getTurnSequenceConstructor().
           getTurnSequence(FACING_SINGLE.IN_FRONT, source, coordinates);
-
-        DC_ActiveObj action = sequence.get(0).getActive();
-        Context context = new Context(source, null);
-        return activate(context, action);
+if (sequence.isEmpty())
+    return null;
+        return sequence.get(0).getActive();
     }
 
 
@@ -90,7 +96,7 @@ public class DefaultActionHandler {
             return false;
         }
 
-        DC_UnitAction action = getActionForCell(source, c);
+        DC_UnitAction action = getMoveToCellAction(source, c);
         if (action == null) {
             return false;
         }
@@ -115,7 +121,7 @@ public class DefaultActionHandler {
         return true;
     }
 
-    public static DC_UnitAction getActionForCell(Unit source, Coordinates c) {
+    public static DC_UnitAction getMoveToCellAction(Unit source, Coordinates c) {
         DIRECTION d = DirectionMaster.getRelativeDirection(source.getCoordinates(),
          c);
         FACING_SINGLE f = FacingMaster.getSingleFacing(source.getFacing(), source.getCoordinates(),
@@ -162,11 +168,11 @@ public class DefaultActionHandler {
 
 
     public static boolean leftClickUnit(boolean shift, boolean control, BattleFieldObject target) {
-       if (shift){
-           return leftClickCell(true, false, target.getX(), target.getY());
-       }
-        if (control){
-            return leftClickCell(false, true,  target.getX(), target.getY());
+        if (shift) {
+            return leftClickCell(true, false, target.getX(), target.getY());
+        }
+        if (control) {
+            return leftClickCell(false, true, target.getX(), target.getY());
         }
         if (!OptionsMaster.getGameplayOptions().getBooleanValue
          (GAMEPLAY_OPTION.DEFAULT_ACTIONS))
@@ -174,16 +180,16 @@ public class DefaultActionHandler {
         Unit source = Eidolons.getGame().getManager().getActiveObj();
 
         if (source.getGame().isDebugMode()) {
-            return doDebugStuff(source,target);
+            return doDebugStuff(source, target);
         }
 
         if (target.isMine())
             return false;
         DC_ActiveObj action = null;
         if (target instanceof DungeonObj)
-            action =getDungeonObjAction(source, (DungeonObj) target);
+            action = getDungeonObjAction(source, (DungeonObj) target);
         else
-            action =getPreferredAttackAction(source, target);
+            action = getPreferredAttackAction(source, target);
         if (action == null)
             return false;
         Context context = new Context(source, target);
@@ -195,7 +201,7 @@ public class DefaultActionHandler {
         return target.getDM().getDefaultAction(source, target);
     }
 
-    private static DC_ActiveObj getPreferredAttackAction(Unit source, BattleFieldObject target) {
+    public static DC_ActiveObj getPreferredAttackAction(Unit source, BattleFieldObject target) {
 // if (offhand)
         return pickAutomatically(source.getAttack().getSubActions(), target);
     }
@@ -207,7 +213,7 @@ public class DefaultActionHandler {
         int max = 0;
         for (DC_ActiveObj attack : subActions) {
             if (attack.getActiveWeapon().isNatural())
-                if (attack.getOwnerObj().getWeapon(attack.isOffhand())!=null )
+                if (attack.getOwnerObj().getWeapon(attack.isOffhand()) != null)
                     continue;
             if (!attack.canBeActivated(attack.getRef(), true))
                 continue;
@@ -247,6 +253,7 @@ public class DefaultActionHandler {
         int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(true, source, target);
         return false;
     }
+
     private static boolean doDebugStuff(Unit source, BattleFieldObject target) {
         OUTLINE_TYPE outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target, source);
         VISIBILITY_LEVEL vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);

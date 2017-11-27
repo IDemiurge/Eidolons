@@ -47,7 +47,7 @@ public class AnimMaster extends Group {
 
     static private boolean off;
     private static AnimMaster instance;
-//    private   SpriteCache spriteCache;
+    //    private   SpriteCache spriteCache;
     DequeImpl<CompositeAnim> leadQueue = new DequeImpl<>(); //if more Action Stacks have been created before leadAnimation is finished
     CompositeAnim leadAnimation; // wait for it to finish before popping more from the queue
 
@@ -88,10 +88,6 @@ public class AnimMaster extends Group {
         return !off;
     }
 
-    public void setOff(boolean off) {
-        this.off = off;
-    }
-
     public static AnimMaster getInstance() {
         if (instance == null)
             instance = new AnimMaster();
@@ -115,10 +111,18 @@ public class AnimMaster extends Group {
                 return true;
         if (sourceObj instanceof DC_Obj)
             if (!sourceObj.isMine())
-        if (!VisionManager.checkVisible((DC_Obj) sourceObj, false))
-            return true;
+                if (!VisionManager.checkVisible((DC_Obj) sourceObj, false))
+                    return true;
 
         return false;
+    }
+
+    public static boolean isPreconstructEventAnims() {
+        return false;
+    }
+
+    public void setOff(boolean off) {
+        this.off = off;
     }
 
     public Boolean getParallelDrawing() {
@@ -177,7 +181,7 @@ public class AnimMaster extends Group {
             if (!isOn()) {
                 return;
             }
-           ActionInput input = (ActionInput) p.get();
+            ActionInput input = (ActionInput) p.get();
             try {
                 initActionAnimation(input.getAction(), (AnimContext) input.getContext());
             } catch (Exception e) {
@@ -238,7 +242,7 @@ public class AnimMaster extends Group {
         if (isAnimationOffFor(activeObj.getOwnerObj(), null)) {
             return;
         }
-        boolean attachToNext =context.isAttachToNext();
+        boolean attachToNext = context.isAttachToNext();
         CompositeAnim animation = constructor.getOrCreate(activeObj);
         if (animation == null) {
             LogMaster.log(LogMaster.ANIM_DEBUG, "NULL ANIM FOR " + activeObj);
@@ -248,16 +252,18 @@ public class AnimMaster extends Group {
             return;
         if (animation.isRunning())
             return;
+
         animation.reset();
+        animation.setWaitingForNext(attachToNext);
 //        if (leadAnimation == null && !attachToNext) {
 //            leadAnimation = animation;
 //            leadAnimation.start(context);
 //        } else {
-            animation.setRef(context);
-            add(animation);
-            if (getParallelDrawing()) {
-                animation.start(context);
-            }
+        animation.setRef(context);
+        add(animation);
+        if (getParallelDrawing()) {
+            animation.start(context);
+        }
 //            controller.store(animation);
 //        }
     }
@@ -282,7 +288,6 @@ public class AnimMaster extends Group {
         if (floatingTextMaster.isEventDisplayable(event)) {
             parentAnim = getParentAnim(event.getRef());
             if (parentAnim != null) {
-                parentAnim.getTextEvents().clear();
                 parentAnim.addTextEvent(event);
             }
         }
@@ -291,16 +296,15 @@ public class AnimMaster extends Group {
             return;
         }
         parentAnim = getEventAttachAnim(event, anim);
-        if (parentAnim != null)
-           {
+        if (parentAnim != null) {
 
             LogMaster.log(LogMaster.ANIM_DEBUG, anim +
              " event anim created for: " + parentAnim);
 
-               if (parentAnim.getMap().isEmpty())
-                   parentAnim.add(ANIM_PART.AFTEREFFECT, anim);
-               else
-               parentAnim.addEventAnim(anim, event); //TODO}
+            if (parentAnim.getMap().isEmpty())
+                parentAnim.add(ANIM_PART.AFTEREFFECT, anim);
+            else
+                parentAnim.addEventAnim(anim, event); //TODO}
         }
         if (parentAnim.getMap().isEmpty()) {
 
@@ -308,20 +312,20 @@ public class AnimMaster extends Group {
         if (parentAnim != leadAnimation)
             if (!parentAnim.isFinished())
                 if (!parentAnim.isRunning()) {// preCheck new TODO
-                add(parentAnim);
-            }
-            parentAnim.setRef(event.getRef());
+                    add(parentAnim);
+                }
+        parentAnim.setRef(event.getRef());
     }
 
     private CompositeAnim getEventAttachAnim(Event event, Anim anim) {
         DC_ActiveObj active = (DC_ActiveObj) event.getRef().getActive();
-        if (active!= null) {
+        if (active != null) {
 //            if (event.getType() instanceof STANDARD_EVENT_TYPE) {
 ////                switch (((STANDARD_EVENT_TYPE) event.getType())) {
 //                if (event.getType() == DeathAnim.EVENT_TYPE) {
 //                    if (active.getRef().getTargetObj() != active.getOwnerObj())
 //                    if (active.getChecker().isPotentiallyHostile()) {
-                        return getParentAnim(active.getRef());
+            return getParentAnim(active.getRef());
 //                    }
 //                }
 //            }
@@ -384,14 +388,22 @@ public class AnimMaster extends Group {
     }
 
     private void add(CompositeAnim anim) {
-        main.system.auxiliary.log.LogMaster.log(1,"ANIMATION ADDED   "+anim );
-        if (anim==leadAnimation){
+        main.system.auxiliary.log.LogMaster.log(1, "ANIMATION ADDED   " + anim);
+        if (anim == leadAnimation) {
             return;
         }
         if (leadQueue.contains(anim)) {
             return;
         }
-        leadQueue.add(anim);
+        CompositeAnim firstAnim = leadQueue.peekFirst();
+        if (firstAnim==null )
+            leadQueue.add(anim);
+        else
+        if (firstAnim.isWaitingForNext()) {
+            firstAnim.setWaitingForNext(false);
+            leadQueue.addFirst(anim);
+        } else
+            leadQueue.add(anim);
     }
 
     public void addAttached(Animation anim) {
@@ -453,7 +465,7 @@ public class AnimMaster extends Group {
             leadAnimation = null;
             if (drawing) {
                 drawing = false;
-                main.system.auxiliary.log.LogMaster.log(1,"ANIMATION_QUEUE_FINISHED" );
+                main.system.auxiliary.log.LogMaster.log(1, "ANIMATION_QUEUE_FINISHED");
                 WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, true);
 //                GuiEventManager.trigger(GuiEventType.ANIMATION_QUEUE_FINISHED);
             }
@@ -462,11 +474,15 @@ public class AnimMaster extends Group {
         }
 
         //TODO Stack: counter atk will animated first - last in first out :(
-
+        CompositeAnim firstAnim = leadQueue.peekFirst();
+        if (firstAnim!=null )
+            if ( firstAnim.isWaitingForNext()) {
+            return null;
+        }
         leadAnimation = leadQueue.removeFirst();
 
-        main.system.auxiliary.log.LogMaster.log(1,"next animation: " + leadAnimation+
-        "; " +
+        main.system.auxiliary.log.LogMaster.log(1, "next animation: " + leadAnimation +
+         "; " +
          leadQueue.size() +
          " in Queue= " + leadQueue);
 //        leadAnimation.resetRef();
@@ -561,7 +577,7 @@ public class AnimMaster extends Group {
 
     public float getAnimationSpeedFactor() {
         if (animationSpeedFactor == null) {
-            animationSpeedFactor=new Float( OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED))/100;
+            animationSpeedFactor = new Float(OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)) / 100;
         }
         return animationSpeedFactor;
     }
@@ -572,15 +588,11 @@ public class AnimMaster extends Group {
 
     public void cleanUp() {
         if (leadAnimation != null)
-        leadAnimation.finished();
-        leadQueue.forEach(a->{
+            leadAnimation.finished();
+        leadQueue.forEach(a -> {
             a.finished();
         });
-        leadAnimation=null ;
+        leadAnimation = null;
         leadQueue.clear();
-    }
-
-    public static boolean isPreconstructEventAnims() {
-        return false;
     }
 }

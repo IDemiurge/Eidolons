@@ -39,7 +39,7 @@ public class SpecialLogger implements FileLogger {
         switch (log) {
 
         }
-        return false;
+        return true;
     }
 
     public static SpecialLogger getInstance() {

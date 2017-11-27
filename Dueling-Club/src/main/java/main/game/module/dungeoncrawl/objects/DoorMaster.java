@@ -15,6 +15,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.module.dungeoncrawl.objects.DoorMaster.DOOR_ACTION;
 import main.system.auxiliary.StringMaster;
+import main.system.math.PositionMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -81,6 +82,8 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     }
 
     protected boolean checkAction(Unit unit, Door door, DOOR_ACTION sub) {
+        if (PositionMaster.getDistance(unit, door)>1)
+            return false;
         switch (sub) {
             case OPEN:
 //            case LOCK: //TODO

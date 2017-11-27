@@ -7,7 +7,7 @@ import main.game.core.Eidolons;
 import main.libgdx.bf.datasource.GridCellDataSource;
 import main.libgdx.screens.DungeonScreen;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GridCellContainer extends GridCell {
@@ -17,7 +17,7 @@ public class GridCellContainer extends GridCell {
     private GraveyardView graveyard;
     private boolean hasBackground;
     private GridUnitView topUnitView;
-    private List<GridUnitView> unitViews=new ArrayList<>(); //for cache and cycling
+//    private List<GridUnitView> unitViews=new ArrayList<>(); //for cache and cycling
 
 
     public GridCellContainer(TextureRegion backTexture, int gridX, int gridY) {
@@ -48,14 +48,14 @@ public class GridCellContainer extends GridCell {
 //        if (unitViews==null ){
 //            unitViews = new ArrayList<>();
 //        }
-//        List<GridUnitView> list = new LinkedList<>();
-//        for (Actor actor : getChildren()) {
-//            if (actor.isVisible())
-//                if (actor instanceof GridUnitView)
-//                    list.add((GridUnitView) actor);
-//        }
-//        return list;
-        return unitViews;
+//        return unitViews;
+        List<GridUnitView> list = new LinkedList<>();
+        for (Actor actor : getChildren()) {
+            if (actor.isVisible())
+                if (actor instanceof GridUnitView)
+                    list.add((GridUnitView) actor);
+        }
+        return list;
     }
 
     public void recalcUnitViewBounds() {
@@ -165,10 +165,7 @@ public class GridCellContainer extends GridCell {
     public void addActor(Actor actor) {
         super.addActor(actor);
         if (actor instanceof GridUnitView) {
-            if (getUnitViews().contains(actor))
-                return ;
-            unitViews.add((GridUnitView) actor);
-            unitViewCount++;
+            unitViewCount=getUnitViews().size();
             main.system.auxiliary.log.LogMaster.log(1,actor + " added to "+ this  );
             recalcUnitViewBounds();
         }
@@ -176,15 +173,20 @@ public class GridCellContainer extends GridCell {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName()+ " with "+ unitViewCount;
+        return getClass().getSimpleName()+ " at " +getGridX()+
+         ":" +
+         getGridY() +
+         " with "+ unitViewCount;
     }
 
     public boolean removeActor(Actor actor) {
-        boolean result = super.removeActor(actor);
+       return  removeActor(actor, true);
+    }
+        public boolean removeActor(Actor actor, boolean unfocus) {
+        boolean result = super.removeActor(actor, unfocus);
 
         if (result && actor instanceof GridUnitView) {
-            unitViews.remove(actor);
-            unitViewCount--;
+            unitViewCount=getUnitViews().size();
             main.system.auxiliary.log.LogMaster.log(1,actor + " removed from "+ this  );
             recalcUnitViewBounds();
             ((GridUnitView) actor).sizeChanged();

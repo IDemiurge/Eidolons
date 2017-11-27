@@ -87,7 +87,8 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
 
     @Override
     public boolean keyUp(int i) {
-        keyInput();
+
+
         if (isBlocked())
             return true;
         switch (i) {

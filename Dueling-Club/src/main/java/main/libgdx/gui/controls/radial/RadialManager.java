@@ -5,10 +5,7 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
-import main.entity.active.DC_ActiveObj;
-import main.entity.active.DC_QuickItemAction;
-import main.entity.active.DC_UnitAction;
-import main.entity.active.DefaultActionHandler;
+import main.entity.active.*;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BattleFieldObject;
@@ -43,8 +40,9 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.GAME_FINISHED;
 
 public class RadialManager {
-
+    private static final ActiveObj SHORTCUT = new DummyAction();
     private static Map<DC_Obj, List<RadialValueContainer>> cache = new HashMap<>();
+    private static boolean processingShortcuts;
 
     public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
 //        Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
@@ -54,6 +52,8 @@ public class RadialManager {
     }
 
     private static boolean isActionShown(ActiveObj el, DC_Obj target) {
+        if (el == SHORTCUT)
+            return true;
         if (!(el instanceof DC_ActiveObj)) {
             return false;
         }
@@ -69,7 +69,7 @@ public class RadialManager {
                 return false;
             }
             if (action.getActionGroup() == ACTION_TYPE_GROUPS.TURN) {
-                return false;
+                return processingShortcuts;
             }
             if (action.getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
                 if (target.getX() - action.getOwnerObj().getX() > 2
@@ -78,7 +78,7 @@ public class RadialManager {
                     return false;
                 }
                 if (action !=
-                 DefaultActionHandler.getActionForCell(action.getOwnerObj(),
+                 DefaultActionHandler.getMoveToCellAction(action.getOwnerObj(),
                   target.getCoordinates()))
                     return false;
 //
@@ -109,7 +109,6 @@ public class RadialManager {
         tooltip.setUserObject(new ActionCostSourceImpl(el));
         valueContainer.addListener(tooltip.getController());
     }
-
 
     public static List<RadialValueContainer> getOrCreateRadialMenu(DC_Obj target) {
         List<RadialValueContainer> nodes = cache.get(target);
@@ -158,63 +157,74 @@ public class RadialManager {
         List<RadialValueContainer> orders = new ArrayList<>();
         List<RadialValueContainer> quickItems = new ArrayList<>();
         List<RadialValueContainer> dualAttacks = new ArrayList<>();
-        List<DC_ActiveObj> topActions = new LinkedList<>();
+        List<DC_ActiveObj> topActions = new ArrayList<>();
+        List<DC_ActiveObj> shortcuts = new ArrayList<>();
 //top actions = last? recommended?
         List<? extends ActiveObj> actives = getActions(sourceUnit, target);
-        actives.parallelStream()
-         .filter(el -> isActionShown(el, target))
-         .map(el -> (DC_ActiveObj) el)
-         .distinct()
-         .sequential()
-         .forEach(el -> {
-//if (el instanceof DoorAction){
-             if (el.getActionGroup() == ACTION_TYPE_GROUPS.DUNGEON) {
-                 topActions.add(el);
-             } else if (el.isMove()) {
-                 final RadialValueContainer valueContainer = configureMoveNode(target, el);
-                 addCostTooltip(el, valueContainer);
-                 moves.add(valueContainer);
-             } else if (el.isTurn()) {
-                 final RadialValueContainer valueContainer = configureActionNode(target, el);
-                 addCostTooltip(el, valueContainer);
-                 turns.add(valueContainer);
-             } else if (el.getChecker().isDualAttack()) {
-                 dualAttacks.add(getAttackActionNode(el, target));
-             } else if (el.isStandardAttack()
-              || (
-              el.getActionGroup() == ACTION_TYPE_GROUPS.SPECIAL &&
-               el.getActionType() == ACTION_TYPE.SPECIAL_ATTACK)) {
-                 if (el.isOffhand())
-                     offhandAttacks.add(getAttackActionNode(el, target));
-                 else
-                     attacks.add(getAttackActionNode(el, target));
-             }
+        processingShortcuts = false;
+        for (ActiveObj action : actives) {
+            if (!isActionShown(action, target))
+                continue;
+
+//        actives.parallelStream()
+//         .filter(action -> isActionShown(action, target))
+//         .distinct()
+//         .sequential()
+//         .forEach(action -> {
+            if (action == SHORTCUT) {
+                processingShortcuts = true;
+                continue;
+            }
+            DC_ActiveObj el = (DC_ActiveObj) action;
+            if (processingShortcuts)
+                shortcuts.add(el);
+            else if (el.getActionGroup() == ACTION_TYPE_GROUPS.DUNGEON) {
+                topActions.add(el);
+            } else if (el.isMove()) {
+                final RadialValueContainer valueContainer = configureMoveNode(target, el);
+                addCostTooltip(el, valueContainer);
+                moves.add(valueContainer);
+            } else if (el.isTurn()) {
+                final RadialValueContainer valueContainer = configureActionNode(target, el);
+                addCostTooltip(el, valueContainer);
+                turns.add(valueContainer);
+            } else if (el.getChecker().isDualAttack()) {
+                dualAttacks.add(getAttackActionNode(el, target));
+            } else if (el.isStandardAttack()
+             || (
+             el.getActionGroup() == ACTION_TYPE_GROUPS.SPECIAL &&
+              el.getActionType() == ACTION_TYPE.SPECIAL_ATTACK)) {
+                if (el.isOffhand())
+                    offhandAttacks.add(getAttackActionNode(el, target));
+                else
+                    attacks.add(getAttackActionNode(el, target));
+            }
 //             if (el.getActionType()==ACTION_TYPE.SPECIAL_ATTACK){
 //                 attacks.add(getAttackActionNode(el, target));
 //                 offhandAttacks.add(getAttackActionNode(el, target));
 //             }
-             else {
-                 final RadialValueContainer valueContainer = configureActionNode(target, el);
+            else {
+                final RadialValueContainer valueContainer = configureActionNode(target, el);
 //                 if (el.isSpell()) { DONE VIA SpellRadialManager
 //                     spells.add(valueContainer);
 //                 } else
-                 addCostTooltip(el, valueContainer);
-                 if (el instanceof DC_QuickItemAction) {
-                     quickItems.add(valueContainer);
-                 } else if (el.getActionGroup() == ACTION_TYPE_GROUPS.ORDER) {
-                     orders.add(valueContainer);
-                 } else if (el.getActionType() == ACTION_TYPE.MODE) {
-                     modes.add(valueContainer);
-                 } else {
-                     if (!el.isAttackAny()) {
-                         if (el.getActionType() != ACTION_TYPE.HIDDEN) {
-                             specialActions.add(valueContainer);
-                         }
-                     }
-                 }
+                addCostTooltip(el, valueContainer);
+                if (el instanceof DC_QuickItemAction) {
+                    quickItems.add(valueContainer);
+                } else if (el.getActionGroup() == ACTION_TYPE_GROUPS.ORDER) {
+                    orders.add(valueContainer);
+                } else if (el.getActionType() == ACTION_TYPE.MODE) {
+                    modes.add(valueContainer);
+                } else {
+                    if (!el.isAttackAny()) {
+                        if (el.getActionType() != ACTION_TYPE.HIDDEN) {
+                            specialActions.add(valueContainer);
+                        }
+                    }
+                }
 
-             }
-         });
+            }
+        }
 
 
         if (!attacks.isEmpty()) {
@@ -247,10 +257,24 @@ public class RadialManager {
         topActions.forEach(activeObj -> {
             list.add(configureActionNode(target, activeObj));
         });
+        shortcuts.forEach(activeObj -> {
+            list.add(configureShortcutActionNode(target, activeObj));
+        });
 
 
         list.removeIf(i -> i == null); // REMOVE IF NO NODES IN PARENT!
         return list;
+    }
+
+    private static RadialValueContainer configureShortcutActionNode(DC_Obj target, DC_ActiveObj activeObj) {
+        if (activeObj.isMove()) {
+            if (target instanceof BattleFieldObject) {
+                target = target.getGame().getCellByCoordinate(target.getCoordinates());
+            }
+        } else if (activeObj.isTurn()) {
+            target = activeObj.getOwnerObj();
+        }
+        return configureActionNode(target, activeObj);
     }
 
     private static List<? extends ActiveObj> getActions(Unit sourceUnit, DC_Obj target) {
@@ -272,7 +296,46 @@ public class RadialManager {
 //                actives.addAll(DoorMaster.getActions((BattleFieldObject) target, sourceUnit));
 //            }
         }
+        actives.add(SHORTCUT);
+        actives.addAll(getShortcuts(sourceUnit, target));
         return actives;
+    }
+
+    private static Collection<? extends ActiveObj> getShortcuts(Unit sourceUnit,
+                                                                DC_Obj target) {
+
+        List<ActiveObj> list = new LinkedList<>();
+        for (RADIAL_ACTION_SHORTCUT sub : RADIAL_ACTION_SHORTCUT.values()) {
+            if (!checkShortcut(sub, sourceUnit, target)) {
+                continue;
+            }
+            DC_ActiveObj action = getShortcut(sub, sourceUnit, target);
+            list.add(action);
+        }
+        list.removeIf(a -> a == null);
+        return list;
+    }
+
+    private static boolean checkShortcut(RADIAL_ACTION_SHORTCUT sub, Unit sourceUnit, DC_Obj target) {
+        switch (sub) {
+            case ATTACK:
+                return target instanceof BattleFieldObject;
+        }
+        return true;
+    }
+
+    private static DC_ActiveObj getShortcut(RADIAL_ACTION_SHORTCUT sub,
+                                            Unit sourceUnit, DC_Obj target) {
+        switch (sub) {
+            case TURN_TO:
+                return DefaultActionHandler.getTurnToAction(sourceUnit, target.getCoordinates());
+            case MOVE_TO:
+                return DefaultActionHandler.getMoveToCellAction(sourceUnit, target.getCoordinates());
+            case ATTACK:
+                return DefaultActionHandler.getPreferredAttackAction(
+                 sourceUnit, (BattleFieldObject) target);
+        }
+        return null;
     }
 
     private static boolean isQuickItemShown(DC_QuickItemObj item, DC_Obj target) {
@@ -332,8 +395,6 @@ public class RadialManager {
 
 
     }
-
-
 
     protected static RadialValueContainer configureActionNode(DC_Obj target, DC_ActiveObj el) {
         if (el.getTargeting() instanceof SelectiveTargeting) {
@@ -515,6 +576,13 @@ public class RadialManager {
     private List<RadialValueContainer> getChildNodes(RADIAL_PARENT_NODE type, DC_ActiveObj activeObj, DC_Obj target) {
         List<RadialValueContainer> list = new LinkedList<>();
         return list;
+    }
+
+    public enum RADIAL_ACTION_SHORTCUT {
+        TURN_TO,
+        MOVE_TO,
+        ATTACK,
+
     }
 
     public enum RADIAL_PARENT_NODE {

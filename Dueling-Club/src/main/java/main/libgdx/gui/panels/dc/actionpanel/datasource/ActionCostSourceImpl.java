@@ -4,6 +4,7 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.active.DC_ActiveObj;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.system.images.ImageManager;
+import main.system.text.TextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,8 @@ public class ActionCostSourceImpl implements ActionCostSource {
     }
         @Override
         public ValueContainer getDescription() {
-        return new ValueContainer(action.getDescription(), "");
+        return new ValueContainer(
+         TextWrapper.wrapWithNewLine(action.getDescription(), 60) , "");
     }
 
         @Override

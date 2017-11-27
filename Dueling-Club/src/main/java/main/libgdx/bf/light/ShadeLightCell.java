@@ -11,8 +11,10 @@ import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
+import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.Eidolons;
+import main.libgdx.GdxColorMaster;
 import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridMaster;
 import main.libgdx.bf.SuperActor;
@@ -125,48 +127,35 @@ public class ShadeLightCell extends SuperContainer {
         return teamColor;
     }
 
-    public Color initTeamColor() {
+
+        public Color initTeamColor() {
 //for each coordinate?
         //default per dungeon
 //        Eidolons.getGame().getMaster().getObjCache()
 //        IlluminationRule.
 
 
-        COLOR_THEME color = null;
+        COLOR_THEME colorTheme = null;
         if (type == SHADE_LIGHT.LIGHT_EMITTER) {
             for (Structure sub : Eidolons.game.getStructures()) {
                 if (sub.isLightEmitter()) {
-                    color = new EnumMaster<COLOR_THEME>().
+                    if (sub.getCoordinates().equals(new Coordinates(x,y)))
+                    colorTheme = new EnumMaster<COLOR_THEME>().
                      retrieveEnumConst(COLOR_THEME.class, sub.getProperty(PROPS.COLOR_THEME, true));
-                    if (color != null)
+                    if (colorTheme != null)
                         break;
                 }
             }
         }
-        if (color == null) {
+        if (colorTheme == null) {
             Dungeon obj = Eidolons.game.getDungeon();
-            color = new EnumMaster<COLOR_THEME>().
-             retrieveEnumConst(COLOR_THEME.class, obj.getProperty(PROPS.COLOR_THEME, true));
+            colorTheme =obj.getColorTheme();
         }
 
-        if (color != null)
-            switch (color) {
-                case BLUE:
-                    return new Color(0.7f, 0.8f, 1f, 1);
-                case GREEN:
-                    return new Color(0.7f, 0.9f, 0.7f, 1);
-                case RED:
-                    return new Color(1f, 0.7f, 0.7f, 1);
-                case DARK:
-                    return new Color(0.6f, 0.5f, 0.7f, 1);
-                case LIGHT:
-                    return new Color(1f, 1f, 1f, 1);
-                case YELLOW:
-                    return new Color(1, 0.9f, 0.7f, 1);
-                case PURPLE:
-                    return new Color(0.8f, 0.7f, 0.9f, 1);
-            }
-
+        Color c = null;
+        if (colorTheme != null)
+            c = GdxColorMaster.getColorForTheme(colorTheme);
+        if (c != null) return c;
         return DEFAULT_COLOR;
     }
 
@@ -211,17 +200,17 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     public void setPosition(float x, float y) {
-        if (originalX==null )
-            originalX=x;
-        if (originalY==null)
-            originalY=y;
+        if (originalX == null)
+            originalX = x;
+        if (originalY == null)
+            originalY = y;
         super.setPosition(x, y);
     }
 
     public void adjustPosition(int x, int y) {
-        float offsetX= 0;
-        float offsetY= 0;
-        setScale(1f, 1f );
+        float offsetX = 0;
+        float offsetY = 0;
+        setScale(1f, 1f);
         for (Obj sub : IlluminationRule.getEffectCache().keySet()) {
             if (sub instanceof Unit)
                 continue; //TODO illuminate some other way for units...
@@ -230,21 +219,24 @@ public class ShadeLightCell extends SuperContainer {
                 if (sub.getCoordinates().x == x)
                     if (sub.getCoordinates().y == y)
                         if (((Structure) sub).isOverlaying()) {
-                    setScale(0.66f, 0.66f );
                             DIRECTION d = ((Structure) sub).getDirection();
-                            if (d == null )
+                            if (d == null) {
+                                setScale(0.66f, 0.66f);
                                 continue;
+                            }
+
+                            setScale(d.isGrowX() == null ? 1 : 0.66f, d.isGrowY() == null ? 1 : 0.66f);
                             Dimension dim = GridMaster.getOffsetsForOverlaying(d,
-                             (int)getWidth(),
-                             (int)getHeight());
-                              offsetX-= dim.height;
-                              offsetY-= dim.width;
+                             (int) getWidth(),
+                             (int) getHeight());
+                            offsetX -= dim.height;
+                            offsetY -= dim.width;
                             //so if 2+ overlays, will be centered between them...
-                    }
+                        }
             }
 
         }
 
-        setPosition(originalX+offsetX/3, originalY+offsetY/3);
+        setPosition(originalX + offsetX / 3, originalY + offsetY / 3);
     }
 }

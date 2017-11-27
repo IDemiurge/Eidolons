@@ -139,6 +139,7 @@ public class DeathAnim extends ActionAnim {
     public void finished() {
         super.finished();
         getActor().setVisible(false);
+        dispose();
     }
 
     public enum DEATH_ANIM {

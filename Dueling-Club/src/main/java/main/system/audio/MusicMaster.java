@@ -337,6 +337,7 @@ public void scopeChanged(MUSIC_SCOPE scope){
             } else {
                 FileHandle file = Gdx.files.getFileHandle(path, FileType.Absolute);
                 playedMusic = Gdx.audio.newMusic(file);
+//                Gdx.audio.newAudioDevice()
             }
             musicCache.put(path, playedMusic);
         }

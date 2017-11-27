@@ -3,6 +3,7 @@ package main.libgdx.anims.particles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.StreamUtils;
 import main.data.filesys.PathFinder;
@@ -85,7 +86,8 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
             while (true) {
                 ParticleEmitter emitter = (checkSprite(effectFile)) ? new SpriteEmitter(reader
                 ) : new Emitter(reader);
-                getEmitters().add(emitter);
+
+                 getEmitters().add(emitter);
                 if (reader.readLine() == null) {
                     break;
                 }
@@ -101,8 +103,10 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
     }
 
     public void setImagePath(String imagePath) {
+        Array<String> array = new Array<>();
+        array.add(imagePath);
         for (int i = 0, n = getEmitters().size; i < n; i++) {
-            getEmitters().get(i).setImagePath(imagePath);
+            getEmitters().get(i).setImagePaths(array);
         }
     }
 

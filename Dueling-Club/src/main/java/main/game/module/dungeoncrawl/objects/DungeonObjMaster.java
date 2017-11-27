@@ -2,9 +2,12 @@ package main.game.module.dungeoncrawl.objects;
 
 import main.ability.AbilityType;
 import main.ability.ActiveAbilityObj;
+import main.ability.conditions.FacingCondition;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.data.DataManager;
+import main.elements.conditions.Conditions;
 import main.elements.conditions.DistanceCondition;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
@@ -53,7 +56,9 @@ public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
         DC_UnitAction action =
          unit.getGame().getActionManager().getOrCreateAction(typeName, unit);
         action.setTargeting(new SelectiveTargeting(
-         new DistanceCondition("1", true)));
+         new Conditions(new DistanceCondition("1", true)
+         , new FacingCondition(FACING_SINGLE.IN_FRONT))));
+
         action.setTargetingCachingOff(true);
         action.setActionTypeGroup(ACTION_TYPE_GROUPS.STANDARD);
         action.setAbilities(null);

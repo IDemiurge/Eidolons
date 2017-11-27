@@ -141,6 +141,8 @@ public class Event implements Referred {
         ATTACK_COUNTER,
         ATTACK_INSTANT,
         ACTION_MISSED,
+           UNIT_ACQUIRES_STATUS,
+           UNIT_CHANGES_MODE,
 
         UNIT_HAS_FALLEN_UNCONSCIOUS,
         UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS,
@@ -163,6 +165,8 @@ public class Event implements Referred {
 
         //        ITEM
         ITEM_MANIPULATED,
+        ITEM_BROKEN,
+        DURABILITY_LOST,
 
         //GENERIC
         NEW_ROUND,

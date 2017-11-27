@@ -66,6 +66,7 @@ public class DemoLauncher extends Game {
          ) {
             Eidolons.setFullscreen(true);
         }
+
     }
 
     public static LwjglApplicationConfiguration getConf() {
@@ -74,7 +75,7 @@ public class DemoLauncher extends Game {
         conf.title = "Eidolons: Battlecraft v" + Launcher.VERSION;
 //        if (Gdx.graphics.isGL30Available())
         conf.useGL30 = true;
-        conf.resizable = false;
+        conf.resizable = true;
         OptionsMaster.init();
 
         conf.fullscreen = false;

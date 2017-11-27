@@ -28,13 +28,24 @@ public class TextWrapper {
             LinkedList<String> list = new LinkedList<>();
             for (String subString : text.split(StringMaster.NEW_LINE)) {
                 list.addAll(Arrays.asList(WordUtils.wrap(subString, wrapLength,
-                        StringMaster.NEW_LINE, true).split(StringMaster.NEW_LINE)));
+                 StringMaster.NEW_LINE, true).split(StringMaster.NEW_LINE)));
             }
             return list;
         }
 
         return new LinkedList<>(Arrays.asList(WordUtils.wrap(text, wrapLength,
-                StringMaster.NEW_LINE, true).split(StringMaster.NEW_LINE)));
+         StringMaster.NEW_LINE, true).split(StringMaster.NEW_LINE)));
     }
 
+    public static String wrapWithNewLine(String text, int wrapLength) {
+        List<String> list = wrap(text, wrapLength);
+        String result = "";
+        for (int j = 0; j < list.size(); j++) {
+            String sub = list.get(j);
+            if (j != list.size() - 1)
+                result += sub + StringMaster.NEW_LINE;
+            else result += sub  ;
+        }
+        return result;
+    }
 }

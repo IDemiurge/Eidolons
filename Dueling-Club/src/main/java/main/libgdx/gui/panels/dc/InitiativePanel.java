@@ -268,6 +268,10 @@ public class InitiativePanel extends Group {
                 continue;
             if (!views.containsKey(sub.id)) {
                 ImageContainer view = getIfExists(sub.id);
+                if (view==null )
+                    continue;
+                if (view.getActor()==null )
+                    continue;
                 if (((UnitView) view.getActor()).getOutline() != null) {
                     view.setActor(new Image(((UnitView) view.getActor()).getOutline()));
                     //is active?
@@ -495,6 +499,9 @@ public class InitiativePanel extends Group {
 
         public ImageContainer(UnitView actor) {
             super(actor);
+            if (actor==null ){
+                return ;
+            }
 //            Image shadow = new Image(TextureCache.getOrCreateR(
 //             StrPathBuilder.build("UI",
 //              "components", "2017", "panels",
@@ -503,6 +510,11 @@ public class InitiativePanel extends Group {
 //            shadow.setY(-48);
 //            actor.addActor(shadow);
 
+        }
+
+        @Override
+        public void setActor(Actor actor) {
+            super.setActor(actor);
         }
 
         @Override

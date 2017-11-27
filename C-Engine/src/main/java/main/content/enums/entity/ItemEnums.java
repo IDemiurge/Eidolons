@@ -425,7 +425,7 @@ public class ItemEnums {
         FANGS,
         TAILS,
         HORNS,
-        NEEDLES,
+        INSECTOID,
         HOOVES,
         BEAKS,
         EYES,

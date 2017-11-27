@@ -120,8 +120,15 @@ public class OptionsMaster {
             }
         }
     }
+    public static void applySoundOptions(SoundOptions soundOptions) {
+        if (!GdxMaster.isLwjglThread()){
+            Gdx.app.postRunnable(()->
+             applySoundOptions_(soundOptions));
+        } else
+            applySoundOptions_(soundOptions) ;
+    }
 
-    private static void applySoundOptions(SoundOptions soundOptions) {
+    private static void applySoundOptions_(SoundOptions soundOptions) {
         for (Object sub : soundOptions.getValues().keySet()) {
             new EnumMaster<SOUND_OPTION>().
              retrieveEnumConst(SOUND_OPTION.class,
@@ -160,8 +167,16 @@ public class OptionsMaster {
         }
     }
 
-    //OR LET THOSE CLASSES GET() OPTIONS?
     public static void applyGraphicsOptions(GraphicsOptions graphicsOptions) {
+        if (!GdxMaster.isLwjglThread()){
+            Gdx.app.postRunnable(()->
+            applyGraphicsOptions_(graphicsOptions));
+        } else
+            applyGraphicsOptions_(graphicsOptions) ;
+    }
+    //OR LET THOSE CLASSES GET() OPTIONS?
+    private static void applyGraphicsOptions_(GraphicsOptions graphicsOptions) {
+
         for (Object sub : graphicsOptions.getValues().keySet()) {
             new EnumMaster<GRAPHIC_OPTION>().
              retrieveEnumConst(GRAPHIC_OPTION.class,

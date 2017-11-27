@@ -11,8 +11,13 @@ import main.libgdx.screens.DungeonScreen;
 import main.libgdx.stage.BattleGuiStage;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.SortMaster;
+import main.system.options.OptionsMaster;
 import main.system.text.SpecialLogger;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by JustMe on 3/2/2017.
@@ -44,11 +49,14 @@ public class GlobalController implements Controller {
     private void tab() {
         GridUnitView hovered = DungeonScreen.getInstance().getGridPanel().getHoverObj();
         GridCellContainer cell = (GridCellContainer) hovered.getParent();
-        if (cell.getUnitViews().size() == 1)
+
+         List<GridUnitView> list = new LinkedList<>(cell.getUnitViews());
+        if (list.size() == 1)
             return; // or do something else
-        int index = cell.getUnitViews().indexOf(hovered);
+        SortMaster.sortByExpression(list, view -> view.hashCode());
+        int index = list.indexOf(hovered);
         index++;
-        if (cell.getUnitViews().size() <= index  )
+        if (list.size() <= index  )
             index = 0;
 
         GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, hovered);
@@ -97,7 +105,11 @@ public class GlobalController implements Controller {
                 Eidolons.game.getDungeonMaster().getExplorationMaster().getTimeMaster()
                  .playerWaits();
                 return true;
-            case 'S': {
+            case 'O': {
+                OptionsMaster.openMenu();
+                break;
+            }
+                case 'S': {
 //                if (!Gdx.input.isKeyPressed(Keys.ALT_LEFT))
 //                    break;
                 SpecialLogger.getInstance().writeLogs();

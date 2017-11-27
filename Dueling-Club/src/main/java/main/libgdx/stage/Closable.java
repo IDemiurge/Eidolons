@@ -14,6 +14,7 @@ public interface Closable {
         default void open(){
             ((StageWithClosable)((Actor)this).getStage()).closeDisplayed();
             ((StageWithClosable)((Actor)this).getStage()).setDisplayedClosable(this);
+            ((Actor)this).setVisible(true);
     }
 
 }

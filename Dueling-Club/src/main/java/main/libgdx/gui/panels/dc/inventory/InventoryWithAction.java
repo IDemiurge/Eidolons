@@ -82,8 +82,7 @@ public class InventoryWithAction extends TablePanel implements Closable{
             if (param instanceof Boolean) {
                 close((Boolean) param);
             } else {
-                if (isVisible())
-                    return ;
+                if (!isVisible())
                 open();
                 setUserObject(param);
                 initButtonListeners();
@@ -145,12 +144,10 @@ public class InventoryWithAction extends TablePanel implements Closable{
         } else {
 
         }
-        close();
+        setVisible(false);
     }
         public void close() {
-
-
-        setVisible(false);
+       close(null );
     }
 //    public void open() {
 //        if (getStage() instanceof StageWithClosable) {

@@ -9,4 +9,8 @@ public class ModifyStatusEffect extends ModifyPropertyEffect {
         super(G_PROPS.STATUS, modtype, status.name());
     }
 
+    @Override
+    public boolean applyThis() {
+        return super.applyThis();
+    }
 }

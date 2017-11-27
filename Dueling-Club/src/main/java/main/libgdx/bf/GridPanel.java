@@ -465,8 +465,10 @@ public class GridPanel extends Group {
         if (o instanceof BattleFieldObject)
             view = (GridUnitView) unitMap.get(o);
         else
+        if (o instanceof GridUnitView)
             view = (GridUnitView) (o);
-        view.animateHpBarChange();
+      if (view!=null )
+          view.animateHpBarChange();
     }
 
     private void setVisible(BattleFieldObject sub, boolean b) {
@@ -598,7 +600,7 @@ public class GridPanel extends Group {
     }
 
     private void createUnitsViews(DequeImpl<BattleFieldObject> units) {
-        lightingManager = new LightingManager(units, rows, cols);
+//        lightingManager = new LightingManager(units, rows, cols);
 
         Map<Coordinates, List<BattleFieldObject>> map = new HashMap<>();
         for (BattleFieldObject object : units) {
@@ -873,7 +875,10 @@ public class GridPanel extends Group {
 //TODO if (sub.isVisible())
             if (view.getActions().size == 0) {
                 if (sub.isDead())
+                {
                     view.setVisible(false);
+                    view.remove();
+                }
                 if (!AI_Manager.isRunning())
                     if (!sub.isOverlaying()) {
                         GridCellContainer cellContainer =

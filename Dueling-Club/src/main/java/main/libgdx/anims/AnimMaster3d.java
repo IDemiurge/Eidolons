@@ -49,6 +49,7 @@ public class AnimMaster3d {
     private static final String[][] substitutesWeapons = {
 //     {"halbert", "axe"},
 
+     {"insect claws", "pincers"},
      {"broad sword", "long sword"},
      {"falchion", "scimitar"},
      {"orcish arrows", "arrows"},

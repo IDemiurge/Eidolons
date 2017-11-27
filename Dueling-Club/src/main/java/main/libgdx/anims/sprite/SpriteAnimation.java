@@ -18,10 +18,10 @@ import java.util.Arrays;
  */
 public class SpriteAnimation extends Animation<TextureRegion> {
     final static float defaultFrameDuration = 0.025f;
-    private   Array<AtlasRegion> regions;
     public float x;
     public float y;
     boolean backAndForth;
+    private Array<AtlasRegion> regions;
     private int loops;
     private boolean looping;
     private float stateTime;
@@ -45,13 +45,13 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public SpriteAnimation(String path
-            , boolean singleSprite) {
+     , boolean singleSprite) {
         this(defaultFrameDuration, false, 1, path, null, singleSprite);
     }
 
     public SpriteAnimation(float frameDuration, boolean looping, int loops, String path,
                            Texture texture
-            , boolean singleSprite) {
+     , boolean singleSprite) {
         super(frameDuration, TextureManager.getSpriteSheetFrames(path, singleSprite, texture));
         if (path != null) {
             frameNumber = TextureManager.getFrameNumber(path);
@@ -65,19 +65,19 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         this(defaultFrameDuration, false, 1, null, texture, false);
     }
 
-    public SpriteAnimation(float frameDuration, boolean  looping ,
+    public SpriteAnimation(float frameDuration, boolean looping,
                            Array<AtlasRegion> re
     ) {
-        super(frameDuration,re);
+        super(frameDuration, re);
         regions = re;
         this.looping = looping;
         this.frameNumber = re.size;
     }
 
 
-
     public void start() {
     }
+
     public void reset() {
         stateTime = 0;
         cycles = 0;
@@ -106,7 +106,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public boolean draw(Batch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
-        if (frameNumber==0)
+        if (frameNumber == 0)
             return false;
         updateSpeed();
         boolean looping = this.looping || loops > cycles || loops == 0;
@@ -126,19 +126,20 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
         if (sprite == null) {
             sprite = new Sprite(currentFrame);
-            sprite.flip(flipX, flipY);
         } else {
             sprite.setRegion(currentFrame);
         }
+        sprite.flip(flipX, flipY);
+
         sprite.setAlpha(alpha);
         sprite.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
 
         sprite.setRotation(rotation);
         sprite.setPosition(x + offsetX - currentFrame.getRegionWidth() / 2, y
-                + offsetY
-                - currentFrame.getRegionHeight() / 2);
+         + offsetY
+         - currentFrame.getRegionHeight() / 2);
 
-        if (color!=null )
+        if (color != null)
             sprite.setColor(color);
         sprite.draw(batch);
         return true;
@@ -236,7 +237,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public TextureRegion getOffset(TextureRegion texture, int offset) {
         int index =
-                Arrays.asList(getKeyFrames()).indexOf(texture);
+         Arrays.asList(getKeyFrames()).indexOf(texture);
         index += offset;
         while (index < 0) {
             index = getKeyFrames().length - offset;
@@ -285,12 +286,12 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         return sprite;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
     public Color getColor() {
         return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
 

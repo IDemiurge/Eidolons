@@ -1,6 +1,7 @@
 package main.libgdx;
 
 import com.badlogic.gdx.graphics.Color;
+import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.values.parameters.PARAMETER;
@@ -174,5 +175,26 @@ public class GdxColorMaster {
     }
     public static Color lighter(Color color) {
         return  new Color(color.r*1.2f,color.g*1.2f,color.b*1.2f,1);
+    }
+
+    public static Color getColorForTheme(COLOR_THEME color) {
+
+        switch (color) {
+            case BLUE:
+                return new Color(0.7f, 0.8f, 1f, 1);
+            case GREEN:
+                return new Color(0.7f, 0.9f, 0.7f, 1);
+            case RED:
+                return new Color(1f, 0.7f, 0.7f, 1);
+            case DARK:
+                return new Color(0.6f, 0.5f, 0.7f, 1);
+            case LIGHT:
+                return new Color(1f, 1f, 1f, 1);
+            case YELLOW:
+                return new Color(1, 0.9f, 0.7f, 1);
+            case PURPLE:
+                return new Color(0.8f, 0.7f, 0.9f, 1);
+        }
+        return null;
     }
 }

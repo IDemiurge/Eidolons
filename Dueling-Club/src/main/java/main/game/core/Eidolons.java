@@ -1,6 +1,7 @@
 package main.game.core;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import main.client.cc.CharacterCreator;
@@ -94,15 +95,21 @@ public class Eidolons {
         if (getApplication() == null)
             return;
         fullscreen = b;
+        Eidolons.getApplication().getGraphics().setResizable(true);
         if (fullscreen) {
-            GdxMaster.setWidth(LwjglApplicationConfiguration.getDesktopDisplayMode().width);
+            int width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
+            int height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
+            GdxMaster.setWidth(width);
             GdxMaster.setHeight(LwjglApplicationConfiguration.getDesktopDisplayMode().height);
+            getApplication().getGraphics().setUndecorated(true);
+            Gdx.graphics.setWindowedMode(width,
+             LwjglApplicationConfiguration.getDesktopDisplayMode().height);
+            getApplication().getApplicationListener().resize(width, height);
         } else {
             setResolution(OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
+            getApplication().getGraphics().setUndecorated(false);
         }
-
-        getApplication().getGraphics().setUndecorated(fullscreen);
-
+        Eidolons.getApplication().getGraphics().setResizable(false);
     }
 
     public static void setResolution(String value) {
@@ -113,6 +120,7 @@ public class Eidolons {
 
     public static void setResolution(RESOLUTION resolution) {
         if (resolution != null) {
+            Eidolons.getApplication().getGraphics().setResizable(true);
             Eidolons.resolution = resolution;
             Dimension dimension = Eidolons.getResolutionDimensions(resolution, fullscreen);
             Integer w = (int)
@@ -121,6 +129,10 @@ public class Eidolons {
              dimension.getHeight();
             GdxMaster.setWidth(w);
             GdxMaster.setHeight(h);
+            Gdx.graphics.setWindowedMode(w,
+            h);
+            getApplication().getApplicationListener().resize(w, h);
+            Eidolons.getApplication().getGraphics().setResizable(false);
         }
 
     }

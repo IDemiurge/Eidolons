@@ -59,7 +59,8 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         }
 
         if (result) {
-            GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, new InventoryDataSource(unit));
+            GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
+             new InventoryDataSource(unit));
         }
 
         return result;

@@ -12,6 +12,8 @@ import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.math.DC_MathManager;
 
@@ -118,6 +120,8 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
         }
         modifyParameter(PARAMS.C_DURABILITY, -amount, 0);
 
+        getRef().setAmount(amount);
+        getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.DURABILITY_LOST, getRef()));
         if (getIntParam(PARAMS.C_DURABILITY) <= 0) {
             broken();
             } else {
@@ -148,6 +152,9 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     }
 
     public void broken() {
+        if (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_BROKEN, getRef()))){
+            return ;
+        }
         setProperty(G_PROPS.STATUS, UnitEnums.STATUS.BROKEN.toString());
         getHero().unequip(this, false);
         kill();

@@ -77,7 +77,7 @@ public class Weapon3dAnim extends ActionAnim {
         if (getProjection() == PROJECTION.HOR) {
             flipHor =getActive().getOwnerObj().getFacing()== FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerObj(), targetObj);
         } else {
-            flipHor = offhand;
+            flipHor = getProjection()==PROJECTION.TO ? !offhand : offhand;
         }
         return flipHor;
     }

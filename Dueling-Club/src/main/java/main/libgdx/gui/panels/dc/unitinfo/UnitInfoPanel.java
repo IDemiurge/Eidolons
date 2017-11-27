@@ -11,11 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.GdxMaster;
 import main.libgdx.gui.panels.dc.TablePanel;
+import main.libgdx.stage.Closable;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
-public class UnitInfoPanel extends Container<TablePanel> {
+public class UnitInfoPanel extends Container<TablePanel> implements Closable {
     private Actor outside;
 
     public UnitInfoPanel() {
@@ -30,8 +31,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         outside.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                UnitInfoPanel.this.setVisible(false);
-                outside.setTouchable(Touchable.disabled);
+                UnitInfoPanel.this.close();
                 return false;
             }
         });
@@ -158,7 +158,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         //todo replace this with child.forEach
         getChildren().forEach(ch -> ch.setUserObject(userObject));
         if (userObject != null) {
-            setVisible(true);
+            open();
         }
     }
 
@@ -173,5 +173,11 @@ public class UnitInfoPanel extends Container<TablePanel> {
             actor = outside;
         }
         return actor;
+    }
+
+    @Override
+    public void close() {
+        setVisible(false);
+        outside.setTouchable(Touchable.disabled);
     }
 }
