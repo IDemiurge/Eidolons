@@ -13,7 +13,7 @@ import main.entity.obj.unit.Unit;
 import main.system.DC_Formulas;
 import main.system.SortMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +27,7 @@ public class DC_Masteries {
     }
 
     public List<PARAMETER> getHighest(int i) {
-        List<PARAMETER> list = new LinkedList<>(
+        List<PARAMETER> list = new ArrayList<>(
          DC_ContentManager.getMasteryParams());
 //        SortMaster.sortByParameter(hero, list, true);
         return list.subList(0, i);

@@ -48,7 +48,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActivesConstructor {
@@ -58,8 +58,8 @@ public class ActivesConstructor {
 
     public static void wrapInSaveRollEffect(Effects effects, String saveRoll) {
         // TODO
-        LinkedList<ROLL_TYPES> rolls = new LinkedList<>();
-        LinkedList<String> vars = new LinkedList<>();
+        ArrayList<ROLL_TYPES> rolls = new ArrayList<>();
+        ArrayList<String> vars = new ArrayList<>();
         for (String roll : StringMaster.open(saveRoll, StringMaster.AND_SEPARATOR)) {
             String varArgs = VariableManager.getVarPart(roll);
             roll = roll.replace(varArgs, "");
@@ -90,7 +90,7 @@ public class ActivesConstructor {
     }
 
     public static void setAnimForEffects(DC_ActiveObj entity) {
-        List<ActiveObj> list = new LinkedList<>(entity.getActives());
+        List<ActiveObj> list = new ArrayList<>(entity.getActives());
         for (Active active : list) {
             for (Ability abil : ((AbilityObj) active).getAbilities().getAbils()) {
                 for (Effect effect : ((Ability) abil).getEffects().getEffects()) {
@@ -115,7 +115,7 @@ public class ActivesConstructor {
             return;
         }
 
-        List<ActiveObj> list = new LinkedList<>(entity.getActives());
+        List<ActiveObj> list = new ArrayList<>(entity.getActives());
 
         Effects effects = new Effects();
 

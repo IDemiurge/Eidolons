@@ -32,7 +32,7 @@ import main.system.images.ImageManager;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -45,7 +45,7 @@ public class Anim extends Group implements Animation {
     protected Vector2 destination;
     protected Vector2 defaultPosition;
     protected List<EmitterActor> emitterList;
-    protected List<EmitterActor> emitterCache= new LinkedList<>(); //TODO not the best practice!
+    protected List<EmitterActor> emitterCache= new ArrayList<>(); //TODO not the best practice!
     protected List<SpriteAnimation> sprites;
     protected int lightEmission; // its own lightmap?
     protected Color color;
@@ -80,7 +80,7 @@ public class Anim extends Group implements Animation {
     EventCallback onDone;
     EventCallbackParam callbackParam;
     private boolean emittersWaitingDone;
-    private List<FloatingText> floatingText= new LinkedList<>();
+    private List<FloatingText> floatingText= new ArrayList<>();
     private AnimMaster master;
     private CompositeAnim composite;
     private boolean done;
@@ -307,9 +307,9 @@ public class Anim extends Group implements Animation {
              }
          }
         );
-        emitterList = new LinkedList<>(emitterCache);
+        emitterList = new ArrayList<>(emitterCache);
 //        emitterCache.clear();
-//        emitterCache.addAll(emitterList);//= new LinkedList<>(emitterList);
+//        emitterCache.addAll(emitterList);//= new ArrayList<>(emitterList);
         emitterList.forEach(e -> {
             if (!e.isGenerated()) {
                 if (e.isAttached()) {
@@ -637,14 +637,14 @@ public class Anim extends Group implements Animation {
 
     public List<EmitterActor> getEmitterList() {
         if (emitterList == null) {
-            setEmitterList(new LinkedList<>());
+            setEmitterList(new ArrayList<>());
         }
         return emitterList;
     }
 
     public void setEmitterList(List<EmitterActor> emitterList) {
         this.emitterList = emitterList;
-        emitterCache = new LinkedList<>(emitterList);
+        emitterCache = new ArrayList<>(emitterList);
     }
 
     public int getLightEmission() {
@@ -673,7 +673,7 @@ public class Anim extends Group implements Animation {
 
     public List<SpriteAnimation> getSprites() {
         if (sprites == null) {
-            setSprites(new LinkedList<>());
+            setSprites(new ArrayList<>());
         }
         return sprites;
     }
@@ -802,7 +802,7 @@ if (floatingText.getDelay()==0){
 
     public List<FloatingText> getFloatingText() {
         if (floatingText == null) {
-            floatingText = new LinkedList<>();
+            floatingText = new ArrayList<>();
         }
         return floatingText;
     }

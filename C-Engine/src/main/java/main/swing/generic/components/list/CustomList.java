@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -116,7 +116,7 @@ public class CustomList<E> extends G_List<E> {
         for (Rectangle rect : mouseMap.keySet()) {
             if (rect.contains(location)) {
                 // return ListMaster.get
-                return new LinkedList<>(getData()).indexOf(mouseMap.get(rect));
+                return new ArrayList<>(getData()).indexOf(mouseMap.get(rect));
             }
         }
         return super.locationToIndex(location);
@@ -126,7 +126,7 @@ public class CustomList<E> extends G_List<E> {
     public E getSelectedValue() {
         if (getSelectedIndex() != -1) {
             if (getData().size() > getSelectedIndex()) {
-                return new LinkedList<>(getData()).get(getSelectedIndex());
+                return new ArrayList<>(getData()).get(getSelectedIndex());
             }
         }
         return null;
@@ -247,7 +247,7 @@ public class CustomList<E> extends G_List<E> {
 
     public void update() {
         mouseMap = new XLinkedMap<>();
-        comps = new LinkedList<>();
+        comps = new ArrayList<>();
         int n = 0;
         for (E e : getData()) {
             Component comp = getCellRenderer().getListCellRendererComponent(this, e, n,

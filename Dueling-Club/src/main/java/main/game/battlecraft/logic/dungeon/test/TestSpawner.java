@@ -18,7 +18,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnitFactory;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,7 +64,7 @@ public class TestSpawner extends Spawner<TestDungeon> {
     @Override
     public List<Unit> spawn(UnitData data, DC_Player owner, SPAWN_MODE mode) {
         if (data.getValue(PARTY_VALUE.MEMBERS)==null )
-            return new LinkedList<>();
+            return new ArrayList<>();
         String units = data.getValue(PARTY_VALUE.MEMBERS).
          replace(DataUnitFactory.getContainerSeparator(UnitData.FORMAT), "");
         if (FileManager.isFile(units))

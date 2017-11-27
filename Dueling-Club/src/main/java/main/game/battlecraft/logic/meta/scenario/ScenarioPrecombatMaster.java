@@ -22,7 +22,7 @@ import main.game.module.dungeoncrawl.dungeon.Location;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScenarioPrecombatMaster {
@@ -64,7 +64,7 @@ public class ScenarioPrecombatMaster {
                     List<Unit> heroes;
                     if (!DataManager.isTypeName(prop, DC_TYPE.PARTY)) {
                         prop = scenario.getProperty(MACRO_PROPS.MISSION_CUSTOM_PARTY);
-                        heroes = new LinkedList<>();
+                        heroes = new ArrayList<>();
                         String leaderName = prop.split(";")[0];
                         Unit leader = Launcher.getMainManager().initSelectedHero(leaderName);
                         // prop = prop.replace(leaderName, "");
@@ -149,7 +149,7 @@ public class ScenarioPrecombatMaster {
     }
 
     public static List<Unit> getHeroesForHire() {
-        return     new LinkedList<>() ;
+        return     new ArrayList<>() ;
     }
 
     @Deprecated

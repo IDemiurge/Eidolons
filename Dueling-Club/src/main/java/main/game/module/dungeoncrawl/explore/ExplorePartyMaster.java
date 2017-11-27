@@ -16,7 +16,7 @@ import main.game.logic.action.context.Context;
 import main.system.datatypes.DequeImpl;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -78,7 +78,7 @@ public class ExplorePartyMaster extends ExplorationHandler {
             return;
 
         reset();
-        List<Unit> list = new LinkedList<>(companions);
+        List<Unit> list = new ArrayList<>(companions);
         for (Unit unit : list) {
             if (unit.getAI().getStandingOrders() == null) {
                 if (!tryFollow(unit)) {

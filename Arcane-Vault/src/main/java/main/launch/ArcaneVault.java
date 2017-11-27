@@ -41,7 +41,7 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.tree.TreeNode;
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArcaneVault {
@@ -428,7 +428,7 @@ public class ArcaneVault {
 
     public static List<TabBuilder> getAdditionalTrees() {
         if (additionalTrees == null) {
-            additionalTrees = new LinkedList<>();
+            additionalTrees = new ArrayList<>();
         }
         return additionalTrees;
     }

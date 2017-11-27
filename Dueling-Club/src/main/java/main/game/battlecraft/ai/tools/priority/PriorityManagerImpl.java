@@ -722,7 +722,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         Ref REF = action.getRef().getCopy();
         targeting.select(REF);
         List<Obj> objects = (REF.getGroup() != null) ? REF.getGroup().getObjects()
-         : new LinkedList<>(targeting.getFilter().getObjects(action.getRef()));
+         : new ArrayList<>(targeting.getFilter().getObjects(action.getRef()));
         for (Obj obj : objects) { // getZoneTargets(active)
             // TODO
             if (obj instanceof Unit) {
@@ -807,7 +807,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         List<Effect> effects = EffectFinder.getEffectsOfClass(spell.getAbilities(),
          (buff) ? AddBuffEffect.class : ModifyValueEffect.class);
         if (buff) {
-            List<Effect> list = new LinkedList<>();
+            List<Effect> list = new ArrayList<>();
             for (Effect e : effects) {
                 list.addAll(EffectFinder.getBuffEffects(e, ModifyValueEffect.class));
             }
@@ -1608,7 +1608,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             Action firstAction = as.get(0);
             List<ActionSequence> group = asGroups.get(firstAction);
             if (group == null) {
-                group = new LinkedList<>();
+                group = new ArrayList<>();
                 asGroups.put(firstAction, group);
             }
             group.add(as);

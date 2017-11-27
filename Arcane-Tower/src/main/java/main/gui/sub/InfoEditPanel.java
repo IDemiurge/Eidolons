@@ -16,7 +16,7 @@ import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InfoEditPanel extends EditViewPanel {
@@ -42,7 +42,7 @@ public class InfoEditPanel extends EditViewPanel {
     }
 
     public List<VALUE> filterValues(List<VALUE> values) {
-        List<VALUE> filtered = new LinkedList<>();
+        List<VALUE> filtered = new ArrayList<>();
         for (main.content.VALUE v : values) {
             if (v instanceof G_PROPS) {
                 // switch

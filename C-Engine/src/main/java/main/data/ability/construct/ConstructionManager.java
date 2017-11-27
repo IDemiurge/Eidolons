@@ -6,7 +6,7 @@ import main.data.xml.XML_Converter;
 import org.apache.commons.lang3.tuple.Pair;
 import org.w3c.dom.Node;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConstructionManager {
@@ -64,7 +64,7 @@ public class ConstructionManager {
     }
 
     private static List<Construct> getConstructs(Node node) {
-        List<Construct> list = new LinkedList<>();
+        List<Construct> list = new ArrayList<>();
         for (Node NODE : XML_Converter.getNodeList(node)) {
             Construct construct = getConstruct(NODE);
             list.add(construct);

@@ -19,7 +19,7 @@ import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -81,7 +81,7 @@ public class PanelActionsDataSource implements
     public List<ActionValueContainer> getQuickSlotActions() {
         final DequeImpl<DC_QuickItemObj> items = unit.getQuickItems();
         if (items == null)
-            return new LinkedList<>();
+            return new ArrayList<>();
         List<ActionValueContainer> list = items.stream()
          .map((DC_QuickItemObj key) -> {
              final ActionValueContainer valueContainer = new ActionValueContainer(
@@ -111,7 +111,7 @@ public class PanelActionsDataSource implements
 
     @Override
     public List<ActionValueContainer> getDisplayedActions() {
-        List<ActionValueContainer> list = new LinkedList<>();
+        List<ActionValueContainer> list = new ArrayList<>();
         list.addAll(getActions(ACTION_TYPE.MODE));
         list.addAll(getActions(ACTION_TYPE.SPECIAL_ACTION));
         return list;
@@ -119,7 +119,7 @@ public class PanelActionsDataSource implements
 
     public List<ActionValueContainer> getActions(ACTION_TYPE type) {
         if (unit.getActionMap().get(type) == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         return unit.getActionMap().get(type).stream()
          .map(getActiveObjValueContainerFunction())

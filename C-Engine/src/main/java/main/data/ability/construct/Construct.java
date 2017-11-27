@@ -14,7 +14,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
 import java.lang.reflect.Constructor;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Construct {
@@ -188,7 +188,7 @@ public class Construct {
         }
 
         Object result = null;
-        LinkedList<Object> args = new LinkedList<>();
+        ArrayList<Object> args = new ArrayList<>();
         for (Construct construct : constructs) {
             Object object = construct.construct();
             if (object instanceof Reconstructable) {
@@ -200,7 +200,7 @@ public class Construct {
             args.add(object);
         }
 
-        LinkedList<Argument> argList = new LinkedList<>();
+        ArrayList<Argument> argList = new ArrayList<>();
         for (Construct constr : constructs) {
             if (constr.getArg() == null) {
                 constr.setArg(Mapper.translateToArg(Mapper.getMappedClass(constr.getClassName())));
@@ -236,7 +236,7 @@ public class Construct {
         return result;
     }
 
-    private Object invokeConstructor(Constructor<?> constructor, LinkedList<Object> args) {
+    private Object invokeConstructor(Constructor<?> constructor, ArrayList<Object> args) {
         Object result = null;
         try {
             LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "=> constructing: " + className

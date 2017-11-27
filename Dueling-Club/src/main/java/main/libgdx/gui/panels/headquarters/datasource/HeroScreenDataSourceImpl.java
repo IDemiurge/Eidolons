@@ -8,7 +8,7 @@ import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.texture.TextureCache;
 import main.system.images.ImageManager;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +24,7 @@ public class HeroScreenDataSourceImpl implements HeroScreenDataSource
 
     @Override
     public List<ValueContainer> getUnlockedMasteries() {
-        List<ValueContainer> list = new LinkedList<>();
+        List<ValueContainer> list = new ArrayList<>();
         for (PARAMS params : DC_ContentManager.getMasteryParams()) {
             Integer v = hero.getIntParam(params);
             if (v > 0) {
@@ -39,7 +39,7 @@ public class HeroScreenDataSourceImpl implements HeroScreenDataSource
     @Override
     public List<ValueContainer> getLockedMasteries() {
         //unlockable?
-        return new LinkedList<>();
+        return new ArrayList<>();
     }
 
     @Override

@@ -48,7 +48,7 @@ import main.test.frontend.Showcase;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Set;
 
 import static main.system.GuiEventType.INGAME_EVENT_TRIGGERED;
@@ -369,7 +369,7 @@ public class DC_GameManager extends GameManager {
         });
         GuiEventManager.trigger(SELECT_MULTI_OBJECTS, p);
 
-        for (Obj obj : new LinkedList<>(selectingSet)) {
+        for (Obj obj : new ArrayList<>(selectingSet)) {
             if (obj instanceof DC_Obj) {
                 DC_Obj unit = (DC_Obj) obj;
                 if (getActiveObj() != null) {

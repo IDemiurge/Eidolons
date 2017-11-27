@@ -37,7 +37,7 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.text.SpecialLogger;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 //REVIEW 40 public methods and not a single one (or did I miss something?) has comments...
@@ -465,13 +465,13 @@ public class Executor extends ActiveHandler {
 
     private List<DC_ActiveObj> getPendingAttacksOpportunity() {
         if (pendingAttacksOpportunity == null) {
-            pendingAttacksOpportunity = new LinkedList<>();
+            pendingAttacksOpportunity = new ArrayList<>();
         }
         return pendingAttacksOpportunity;
     }
 
     private void checkPendingAttacksOfOpportunity() {
-        for (DC_ActiveObj attack : new LinkedList<>(getPendingAttacksOpportunity())) {
+        for (DC_ActiveObj attack : new ArrayList<>(getPendingAttacksOpportunity())) {
             if (!AttackOfOpportunityRule.checkPendingAttackProceeds(getAction().getOwnerObj(), attack)) {
                 continue;
             }

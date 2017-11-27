@@ -503,9 +503,9 @@ public class StringMaster {
         }
         if (!containerString.contains(delimiter)) {
             if (strict) {
-                LinkedList<String> linkedList = new LinkedList<>();
-                linkedList.add(containerString);
-                return linkedList;
+                ArrayList<String> ArrayList = new ArrayList<>();
+                ArrayList.add(containerString);
+                return ArrayList;
             } else {
                 delimiter = delimiter.toUpperCase();
                 if (!containerString.contains(delimiter)) {
@@ -516,7 +516,7 @@ public class StringMaster {
                 }
             }
         }
-        List<String> list = new LinkedList<>(Arrays
+        List<String> list = new ArrayList<>(Arrays
          .asList(containerString.split(Pattern.quote(delimiter))));
         list.removeIf(s -> isEmpty(s));
         return list;
@@ -907,7 +907,7 @@ public class StringMaster {
     }
 
     public static String join(String s, String... parts) {
-        return joinStringList(new LinkedList<>(Arrays.asList(parts)), s, true);
+        return joinStringList(new ArrayList<>(Arrays.asList(parts)), s, true);
     }
 
     public static String joinList(List list) {
@@ -956,7 +956,7 @@ public class StringMaster {
     }
 
     public static List<String> convertToStringList(Collection<?> values) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (Object object : values) {
             if (object != null) {
                 list.add(object.toString());
@@ -968,7 +968,7 @@ public class StringMaster {
 
     public static List<String> convertToIdList(Collection<?> list) {
 
-        List<String> idList = new LinkedList<>();
+        List<String> idList = new ArrayList<>();
         if (list != null) {
             for (Object object : list) {
                 if (object != null) {
@@ -985,7 +985,7 @@ public class StringMaster {
     }
 
     public static List<String> toNameList(boolean base, List<? extends Entity> list) {
-        List<String> nameList = new LinkedList<>();
+        List<String> nameList = new ArrayList<>();
         if (list != null) {
             for (Entity object : list) {
                 if (object != null) {
@@ -997,7 +997,7 @@ public class StringMaster {
     }
 
     public static Collection<Integer> convertToIdIntList(Collection<? extends Entity> list) {
-        List<Integer> idList = new LinkedList<>();
+        List<Integer> idList = new ArrayList<>();
         for (Entity object : list) {
             if (object != null) {
                 idList.add(object.getId());

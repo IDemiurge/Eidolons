@@ -54,9 +54,9 @@ public abstract class PhaseAnimation implements ANIM {
     protected ANIM_TYPE type;
     // protected int status;
     // protected int phase;
-    // protected List<Integer> statuses = new LinkedList<>();
-    protected List<AnimPhase> phases = new LinkedList<>();
-    protected List<AnimPhase> subPhases = new LinkedList<>();
+    // protected List<Integer> statuses = new ArrayList<>();
+    protected List<AnimPhase> phases = new ArrayList<>();
+    protected List<AnimPhase> subPhases = new ArrayList<>();
     protected AnimPhase phase;
     protected int index = 0;
     protected int baseTime;
@@ -1336,7 +1336,7 @@ public abstract class PhaseAnimation implements ANIM {
 
     public List<AnimPhase> getStaticPhases() {
         if (staticPhases == null) {
-            staticPhases = new LinkedList<>();
+            staticPhases = new ArrayList<>();
         }
         return staticPhases;
     }
@@ -1454,7 +1454,7 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     public void setPhaseFilter(PHASE_TYPE... animPhasesToPlay) {
-        phaseFilter = new LinkedList<>(Arrays.asList(animPhasesToPlay));
+        phaseFilter = new ArrayList<>(Arrays.asList(animPhasesToPlay));
     }
 
     public void setPhaseFilter(List<PHASE_TYPE> animPhasesToPlay) {

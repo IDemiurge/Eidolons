@@ -849,9 +849,9 @@ public class ImageManager {
         if (list != null) {
             return list;
         }
-        list = new LinkedList<>();
+        list = new ArrayList<>();
         File folder;
-        List<String> paths = new LinkedList<>();
+        List<String> paths = new ArrayList<>();
 
         switch (bg) {
             case DARK_ELF:
@@ -1044,7 +1044,7 @@ public class ImageManager {
 
             };
         }
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
 
         for (ASPECT a : aspects) {
 

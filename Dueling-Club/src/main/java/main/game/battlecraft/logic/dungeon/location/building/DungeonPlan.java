@@ -109,7 +109,7 @@ public class DungeonPlan {
 
     public List<MapBlock> getBlocks() {
         if (blocks == null) {
-            blocks = new LinkedList<>();
+            blocks = new ArrayList<>();
         }
         // else
         // Collections.sort(blocks, new Comparator<MapBlock>() {
@@ -168,7 +168,7 @@ public class DungeonPlan {
 
     public List<MapZone> getZones() {
         if (zones == null) {
-            zones = new LinkedList<>();
+            zones = new ArrayList<>();
         }
         return zones;
     }
@@ -367,7 +367,7 @@ public class DungeonPlan {
 
     public List<? extends MicroObj> getWallObjects() {
         if (wallObjects == null) {
-            wallObjects = new LinkedList<>();
+            wallObjects = new ArrayList<>();
         }
         return wallObjects;
     }

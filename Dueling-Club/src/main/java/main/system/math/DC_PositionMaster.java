@@ -8,7 +8,7 @@ import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.math.PositionMaster.SHAPES;
 
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -121,7 +121,7 @@ public class DC_PositionMaster {
     public static List<Coordinates> getLine(boolean allowInvalid,
                                             DIRECTION direction, Coordinates baseCoordinate, int length) {
         Coordinates c = baseCoordinate;
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         list.add(c);
         for (int i = 0; i < length; i++) {
 

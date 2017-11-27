@@ -39,7 +39,7 @@ public abstract class LogManager {
     Integer infoLevel;
     LogEntryNode currentNode;
     private List<String> displayedLines;
-    private List<LogEntryNode> topNodes = new LinkedList<>();
+    private List<LogEntryNode> topNodes = new ArrayList<>();
     private Map<Integer, List<LogEntryNode>> topNodeMap;
     private Map<ENTRY_TYPE, LogEntryNode> pendingEntries = new HashMap<>();
     private int layer;
@@ -49,11 +49,11 @@ public abstract class LogManager {
     public LogManager(Game game) {
         this.game = game;
         setEntryMap(new HashMap<>());
-        topDisplayedEntries = new LinkedList<>();
+        topDisplayedEntries = new ArrayList<>();
         if (!LogMaster.isOff())
         initDefaultEntries();
         for (LOG log : LOG.values()) {
-            entryMap.put(log, new LinkedList<>());
+            entryMap.put(log, new ArrayList<>());
         }
     }
 
@@ -568,7 +568,7 @@ public abstract class LogManager {
 
     public List<String> getDisplayedLines() {
         if (displayedLines == null) {
-            displayedLines = new LinkedList<>();
+            displayedLines = new ArrayList<>();
         }
         return displayedLines;
     }

@@ -33,7 +33,7 @@ import main.system.sound.SoundMaster.SOUNDS;
 import main.system.test.TestMasterContent;
 import main.system.util.Refactor;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static main.system.GuiEventType.SCREEN_LOADED;
@@ -77,7 +77,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     protected void spawnDone() {
 //       TODO selective??
 // getGame().getMetaMaster().getPartyManager().getParty().getMembers()
-        List<Unit> unitsList = new LinkedList<>();
+        List<Unit> unitsList = new ArrayList<>();
         unitsList.addAll(game.getUnits());
         getFacingAdjuster().adjustFacing(unitsList);
 
@@ -103,7 +103,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     }
 
     public List<Unit> spawn(UnitData data, DC_Player owner, SPAWN_MODE mode) {
-        List<Unit> units = new LinkedList<>();
+        List<Unit> units = new ArrayList<>();
         int i = 0;
         if (owner == null)
             owner = getPlayerManager().getPlayer(data.getContainerValue(PARTY_VALUE.PLAYER_NAME, i));
@@ -296,7 +296,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
          + " ;offset_coordinate=" + offset_coordinate + ";height=" + height + "; width="
          + width);
 
-        List<Unit> list = new LinkedList<>();
+        List<Unit> list = new ArrayList<>();
         units.stream().forEach(unit-> list.add((Unit) unit));
         return list;
     }

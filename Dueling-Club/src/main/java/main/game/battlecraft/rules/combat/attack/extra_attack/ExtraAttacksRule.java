@@ -11,7 +11,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExtraAttacksRule {
@@ -52,7 +52,7 @@ public class ExtraAttacksRule {
 
     public static List<DC_ActiveObj> getCounterAttacks(DC_ActiveObj triggeringAction,
                                                        Unit unit) {
-        List<DC_ActiveObj> list = new LinkedList<>();
+        List<DC_ActiveObj> list = new ArrayList<>();
         if (unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK) == null) {
             return list;
         }

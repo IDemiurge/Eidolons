@@ -21,7 +21,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -110,12 +110,12 @@ public class TaskManager extends AiHandler {
         List<Task> list = new XList<>();
         if (ai.getCurrentOrder() != null)
             if (ai.getCurrentOrder().getArg() != null)
-                return new LinkedList<>(
+                return new ArrayList<>(
                  Arrays.asList(new Task[]{new Task(ai, goal, ai.getCurrentOrder().getArg())}));
 
-        List<Integer> ids = new LinkedList<>();
-        List<? extends DC_Obj> targets = new LinkedList<>();
-        List<? extends DC_Obj> targets2 = new LinkedList<>();
+        List<Integer> ids = new ArrayList<>();
+        List<? extends DC_Obj> targets = new ArrayList<>();
+        List<? extends DC_Obj> targets2 = new ArrayList<>();
 
         BEHAVIOR_MODE behaviorMode = ai.getBehaviorMode();
         // ai.getGroup().getBehaviorPref();
@@ -231,11 +231,11 @@ public class TaskManager extends AiHandler {
                 break;
         }
         if (targets.isEmpty()) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
             DC_Obj target = targets.get(new RandomWizard<>().getRandomListIndex(targets));
-            List<Task> tasks = new LinkedList<>();
+            List<Task> tasks = new ArrayList<>();
             tasks.add(new Task(forced, ai, goal, target.getId()));
             return tasks;
         }

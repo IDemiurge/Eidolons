@@ -16,7 +16,7 @@ import main.system.images.ImageManager;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PrinciplePanel extends G_Panel implements MouseListener {
@@ -24,7 +24,7 @@ public class PrinciplePanel extends G_Panel implements MouseListener {
     private Unit hero;
     private PRINCIPLES principle;
     private PrincipleView view;
-    private List<PrinciplePointComp> pointComps = new LinkedList<>();
+    private List<PrinciplePointComp> pointComps = new ArrayList<>();
     private PrincipleTable table;
     private PoolComp pool;
     private GraphicComponent principlesIcon;

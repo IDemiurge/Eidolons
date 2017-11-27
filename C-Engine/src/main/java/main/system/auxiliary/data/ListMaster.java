@@ -25,7 +25,7 @@ public class ListMaster<E> {
     }
 
     public static List<String> toList(String string, boolean ENUM) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (String item : string.split(StringMaster.getSeparator())) {
             if ((!item.isEmpty() && ENUM) || DataManager.isTypeName(item)) {
                 list.add(item);
@@ -35,7 +35,7 @@ public class ListMaster<E> {
     }
 
     public   List<E> toList_(E... values) {
-        List<E> list = new LinkedList<>();
+        List<E> list = new ArrayList<>();
         for (E v : values) {
             if (v != null) {
                 list.add(v);
@@ -44,7 +44,7 @@ public class ListMaster<E> {
         return list;
     }
         public static List<Object> toList(Object... values) {
-        List<Object> list = new LinkedList<>();
+        List<Object> list = new ArrayList<>();
         for (Object v : values) {
             if (v != null) {
                 list.add(v);
@@ -67,7 +67,7 @@ public class ListMaster<E> {
 
     public static List<String> toStringList(boolean wellFormatted,
                                             Boolean preferEntityNameOrIfNameKnown, Object... values) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (Object v : values) {
             if (v != null) {
                 String string;
@@ -155,7 +155,7 @@ public class ListMaster<E> {
     }
 
     public static List<String> toNameList(Collection<? extends Entity> objList) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (Entity entity : objList) {
             list.add(entity.getName());
         }
@@ -163,7 +163,7 @@ public class ListMaster<E> {
     }
 
     public static List<Entity> getEntityList(List members) {
-        List<Entity> list = new LinkedList<>();
+        List<Entity> list = new ArrayList<>();
         for (Object o : members) {
             if (o instanceof Entity) {
                 Entity entity = (Entity) o;
@@ -174,7 +174,7 @@ public class ListMaster<E> {
     }
 
     public static List<Integer> getIntegerList(int i1) {
-        List<Integer> list = new LinkedList<>();
+        List<Integer> list = new ArrayList<>();
         for (int i = 0; i < i1; i++) {
             list.add(i);
         }
@@ -204,8 +204,8 @@ public class ListMaster<E> {
 
     public static List removeIndicesAllExcept(List list, Integer... indices) {
         int index = 0;
-        List<Integer> indexList = new LinkedList<>(Arrays.asList(indices));
-        for (Object e : new LinkedList<>(list)) {
+        List<Integer> indexList = new ArrayList<>(Arrays.asList(indices));
+        for (Object e : new ArrayList<>(list)) {
             if (!indexList.contains(index)) {
                 list.remove(e);
             }
@@ -216,8 +216,8 @@ public class ListMaster<E> {
 
     public static List removeIndices(List list, Integer... indices) {
         int index = 0;
-        List<Integer> indexList = new LinkedList<>(Arrays.asList(indices));
-        for (Object e : new LinkedList<>(list)) {
+        List<Integer> indexList = new ArrayList<>(Arrays.asList(indices));
+        for (Object e : new ArrayList<>(list)) {
             if (indexList.contains(index)) {
                 list.remove(e);
             }
@@ -228,7 +228,7 @@ public class ListMaster<E> {
 
     public static List<ObjAtCoordinate> toObjAtCoordinate(List<? extends Obj> units) {
 
-        List<ObjAtCoordinate> list = new LinkedList<>();
+        List<ObjAtCoordinate> list = new ArrayList<>();
         for (Obj e : units) {
             list.add(new ObjAtCoordinate(e.getType(), e.getCoordinates()));
         }
@@ -236,7 +236,7 @@ public class ListMaster<E> {
     }
 
     public static void removeNullElements(List<?> list) {
-        List<Object> elements = new LinkedList<>(list);
+        List<Object> elements = new ArrayList<>(list);
         for (Object o : elements) {
             if (o == null) {
                 list.remove(o);
@@ -245,7 +245,7 @@ public class ListMaster<E> {
     }
 
     public static void invert(List list) {
-        List inv_list = new LinkedList<>();
+        List inv_list = new ArrayList<>();
 
         for (int i = list.size() - 1; i >= 0; i--) {
             inv_list.add(list.get(i));
@@ -255,7 +255,7 @@ public class ListMaster<E> {
     }
 
     public List<E> toList(String string) {
-        List<E> list = new LinkedList<>();
+        List<E> list = new ArrayList<>();
         for (String item : string.split(StringMaster.getSeparator())) {
             E e = new EnumMaster<E>().retrieveEnumConst(clazz, item);
             if (e != null) {
@@ -266,7 +266,7 @@ public class ListMaster<E> {
     }
 
     public List<ObjType> convertToTypeList(Collection<E> data) {
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         for (E item : data) {
             if (item instanceof Obj) {
                 list.add(((Obj) item).getType());
@@ -276,7 +276,7 @@ public class ListMaster<E> {
     }
 
     public List<E> openSubLists(List<List<E>> nestedList) {
-        List<E> list = new LinkedList<>();
+        List<E> list = new ArrayList<>();
         if (nestedList == null) {
             return list;
         }
@@ -384,17 +384,17 @@ public class ListMaster<E> {
 
     public List<List<E>> splitList(boolean fillWithNulls, int size, Collection<E> list) {
         if (list == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
-        // if (f return new LinkedList<>(fillWithNullElements(new
-        // LinkedList<E>(), size));
-        List<List<E>> lists = new LinkedList<>();
+        // if (f return new ArrayList<>(fillWithNullElements(new
+        // ArrayList<E>(), size));
+        List<List<E>> lists = new ArrayList<>();
         if (size <= 0) {
-            lists.add(new LinkedList<>(list));
+            lists.add(new ArrayList<>(list));
             return lists;
         }
         for (Iterator<E> iterator = list.iterator(); iterator.hasNext(); ) {
-            List<E> newList = new LinkedList<>();
+            List<E> newList = new ArrayList<>();
             for (int i = 0; i < size; i++) {
                 if (!iterator.hasNext()) {
                     break;
@@ -413,7 +413,7 @@ public class ListMaster<E> {
 
     public List<E> cloneList(List<E> list) {
 
-        List<E> clone = new LinkedList<>();
+        List<E> clone = new ArrayList<>();
 
         for (E e : list) {
             clone.add(e);
@@ -431,11 +431,11 @@ public class ListMaster<E> {
     }
 
     public List<E> getList(E... e) {
-        return new LinkedList<>(Arrays.asList(e));
+        return new ArrayList<>(Arrays.asList(e));
     }
 
     public List<E> invertList(List<E> list) {
-        List<E> inv_list = new LinkedList<>();
+        List<E> inv_list = new ArrayList<>();
 
         for (int i = list.size() - 1; i >= 0; i--) {
             inv_list.add(list.get(i));
@@ -503,7 +503,7 @@ public class ListMaster<E> {
     }
 
     public List<E> join(boolean duplicates, List<E> list, List<E> list2) {
-        List<E> result = new LinkedList<>();
+        List<E> result = new ArrayList<>();
         addAll(list, result, duplicates);
         addAll(list2, result, duplicates);
         return result;
@@ -523,14 +523,14 @@ public class ListMaster<E> {
     }
 
     public List<E> interleave(List<E> list, int i) {
-        list = new LinkedList<>(list);
+        list = new ArrayList<>(list);
         for (int n = 0; n < list.size() - i; n++) {
             Collections.swap(list, n, n + i);
         }
         return list;
-        // List<E> result = new LinkedList<>();
+        // List<E> result = new ArrayList<>();
         //
-        // for (E generic : new LinkedList<>(list)) {
+        // for (E generic : new ArrayList<>(list)) {
         //
         //
         // // n++;
@@ -549,7 +549,7 @@ public class ListMaster<E> {
     }
 
     public List<E> mergeShuffle(List<E>... lists) {
-        List<E> result = new LinkedList<>();
+        List<E> result = new ArrayList<>();
         for (List<E> sub : lists) {
             result.addAll(sub);
         }
@@ -559,7 +559,7 @@ public class ListMaster<E> {
     }
 
     public List<E> toObjList(List<E> tasks, List<ObjType> list) {
-        List<E> filtered = new LinkedList<>();
+        List<E> filtered = new ArrayList<>();
         for (ObjType sub : list) {
             for (E task : tasks)
 //				if (task.getType() == generic) {
@@ -573,7 +573,7 @@ public class ListMaster<E> {
     }
 
     public List<E> getCommonElements(List<E> l, List<E> l2) {
-        List<E> result = new LinkedList<>();
+        List<E> result = new ArrayList<>();
 
         for (E sub : l) {
             if (l2.contains(sub)) {
@@ -584,18 +584,18 @@ public class ListMaster<E> {
     }
 
     public void removeDuplicates(List<E> list) {
-        LinkedList<E> linkedList = new LinkedList<>(new LinkedHashSet<>(list));
+        ArrayList<E> ArrayList = new ArrayList<>(new LinkedHashSet<>(list));
         list.clear();
-        list.addAll(linkedList);
+        list.addAll(ArrayList);
 
     }
 
     public List<E> getRemovedSequentialDuplicates(List<E> list, boolean onlyPairs) {
-        list = new LinkedList<>(list);
-        List<E> result = new LinkedList<>();
+        list = new ArrayList<>(list);
+        List<E> result = new ArrayList<>();
         int i = 0;
 
-        for (E sub : new LinkedList<>(list)) {
+        for (E sub : new ArrayList<>(list)) {
             if (list.get(i - 1).equals(sub)) {
                 if (!onlyPairs || i != 0) {
                     list.remove(i);
@@ -611,11 +611,11 @@ public class ListMaster<E> {
     }
 
     public List<E> getDifferingElements(List<E> list, List<E> list2) {
-        list = new LinkedList<>(list);
-        List<E> result = new LinkedList<>();
+        list = new ArrayList<>(list);
+        List<E> result = new ArrayList<>();
         int i = 0;
 
-        for (E sub : new LinkedList<>(list)) {
+        for (E sub : new ArrayList<>(list)) {
             if (list2.size() <= i) {
                 result.add(sub);
                 break;
@@ -632,11 +632,11 @@ public class ListMaster<E> {
     }
 
     public List<E> getRemovedDuplicates(List<E> list) {
-        return new LinkedList<>(new LinkedHashSet<>(list));
+        return new ArrayList<>(new LinkedHashSet<>(list));
     }
 
     public List<E> removeNulls(List<E> list) {
-        List<E> elements = new LinkedList<>(list);
+        List<E> elements = new ArrayList<>(list);
         for (Object o : elements) {
             if (o == null) {
                 list.remove(o);
@@ -646,7 +646,7 @@ public class ListMaster<E> {
     }
 
     public List<Obj> convertToObjList(List<Integer> list, Game game) {
-        List<Obj> objList = new LinkedList<>();
+        List<Obj> objList = new ArrayList<>();
         for (Integer id : list) {
             Obj obj = game.getObjectById(id);
             if (obj != null) {
@@ -657,7 +657,7 @@ public class ListMaster<E> {
     }
 
     public List<Integer> convertToIdList(List<Obj> objList) {
-        List<Integer> list = new LinkedList<>();
+        List<Integer> list = new ArrayList<>();
         for (Obj obj : objList) {
             list.add(obj.getId());
         }

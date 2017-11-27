@@ -20,7 +20,7 @@ import main.game.module.adventure.travel.AreaManager;
 import main.game.module.adventure.travel.TravelMaster;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WorldGenerator {
@@ -42,7 +42,7 @@ public class WorldGenerator {
     }
 
     public static List<Region> generateRegions(MacroRef ref) {
-        List<Region> regions = new LinkedList<>();
+        List<Region> regions = new ArrayList<>();
         for (String s : StringMaster.open(world
                 .getProperty(MACRO_PROPS.REGIONS))) {
             ObjType type = DataManager.getType(s, MACRO_OBJ_TYPES.REGION);

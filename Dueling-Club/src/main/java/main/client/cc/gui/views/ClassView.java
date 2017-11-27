@@ -21,7 +21,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -115,7 +115,7 @@ public class ClassView extends HeroItemView {
                 new StringComparison("{Match_}" + PROPS.BASE_CLASSES_ONE, types, false),
                 new StringComparison("{Match_}" + PROPS.BASE_CLASSES_TWO, types, false))),
                 DC_TYPE.CLASSES);
-        list = new LinkedList<>(filter.getTypes());
+        list = new ArrayList<>(filter.getTypes());
         getAdditionalTypesMap().put(vendorPanel.getSelectedTabName(), list);
         return list;
 

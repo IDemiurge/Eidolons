@@ -17,7 +17,7 @@ import main.system.auxiliary.TimeMaster;
 import main.time.ZeitMaster;
 import main.time.ZeitMaster.STATUS_MARK;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ArcaneEntity extends Entity {
@@ -118,7 +118,7 @@ public abstract class ArcaneEntity extends Entity {
     }
 
     public List<? extends ArcaneEntity> getChildren() {
-        return new LinkedList<>();
+        return new ArrayList<>();
     }
 
     public boolean isPending() {

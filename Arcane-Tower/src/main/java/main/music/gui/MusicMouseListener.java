@@ -23,7 +23,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MusicMouseListener extends MouseClickListener implements ActionListener {
@@ -31,8 +31,8 @@ public class MusicMouseListener extends MouseClickListener implements ActionList
     private static PLAY_MODE playMode;
     private static String arg;
     private static MusicList selectedList;
-    private static List<MusicList> selectedLists = new LinkedList<>();
-    private static List<Track> selected = new LinkedList<>();
+    private static List<MusicList> selectedLists = new ArrayList<>();
+    private static List<Track> selected = new ArrayList<>();
     private static Container activePanel;
     MusicList list;
     private String function;
@@ -231,8 +231,8 @@ public class MusicMouseListener extends MouseClickListener implements ActionList
     private String pick(boolean group) {
         List<String> defaults = MusicCore.getMusicConsts(group);
         // add custom
-        String selected = group ? ListChooser.chooseString(new LinkedList<>(defaults))
-                : ListChooser.chooseString(new LinkedList<>(defaults));
+        String selected = group ? ListChooser.chooseString(new ArrayList<>(defaults))
+                : ListChooser.chooseString(new ArrayList<>(defaults));
         if (selected == null) {
             return DialogMaster.inputText("Input custom...", "");
         }

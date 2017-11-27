@@ -4,7 +4,7 @@ import main.content.VALUE;
 import main.entity.obj.Obj;
 import main.swing.generic.components.G_Panel;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class InfoTable extends G_Panel {
@@ -15,7 +15,7 @@ public abstract class InfoTable extends G_Panel {
     protected VALUE[][] valueTable;
     protected Obj obj;
     protected float size;
-    private List<PropertyComponent> components = new LinkedList<>();
+    private List<PropertyComponent> components = new ArrayList<>();
 
     public InfoTable(Obj entity) {
         this.obj = entity;

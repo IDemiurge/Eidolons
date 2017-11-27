@@ -22,7 +22,7 @@ import main.system.text.TextWrapper;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ToolTipTextComp extends WrappedTextComp {
@@ -135,7 +135,7 @@ public class ToolTipTextComp extends WrappedTextComp {
 
     private String[] getFeatLines(Boolean req, ObjType item, Unit hero, boolean skill) {
 
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         PROPS p = skill ? PROPS.SKILLS : PROPS.CLASSES;
         if (!hero.checkProperty(p, item.getName())) {
             addReqLines(item, hero, list, RequirementsManager.NORMAL_MODE);

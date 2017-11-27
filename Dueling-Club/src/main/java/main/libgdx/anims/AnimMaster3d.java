@@ -69,7 +69,7 @@ public class AnimMaster3d {
      {"aimed shot", "quick shot"}
     };
     private static Map<String, TextureAtlas> atlasMap = new HashMap<>();
-    private static List<DC_WeaponObj> broken = new LinkedList<>();
+    private static List<DC_WeaponObj> broken = new ArrayList<>();
     private static Map<String, String> substituteMap;
 
     public static void init() {
@@ -329,7 +329,7 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
              filter(type -> type.getProperty(G_PROPS.WEAPON_GROUP).equals(
               activeObj.getActiveWeapon().getProperty(G_PROPS.WEAPON_GROUP))).collect(Collectors.toList());
         } else {
-            types = new LinkedList<>(
+            types = new ArrayList<>(
              activeObj.getParentAction().getSubActions());
         }
         Array<AtlasRegion> regions = null;

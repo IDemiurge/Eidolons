@@ -30,7 +30,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.text.HelpMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
@@ -48,7 +48,7 @@ public class BattleGuiStage extends Stage implements StageWithClosable {
     Closable displayedClosable;
     private GameMenu gameMenu;
     private OutcomePanel outcomePanel;
-    private List<String> charsUp = new LinkedList<>();
+    private List<String> charsUp = new ArrayList<>();
     private char lastTyped;
 
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {

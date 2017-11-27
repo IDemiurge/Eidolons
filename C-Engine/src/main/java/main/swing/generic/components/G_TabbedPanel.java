@@ -2,12 +2,12 @@ package main.swing.generic.components;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class G_TabbedPanel extends G_Panel {
     JTabbedPane tabs;
-    private List<Component> tabList = new LinkedList<>();
+    private List<Component> tabList = new ArrayList<>();
 
     public G_TabbedPanel() {
         super();

@@ -13,7 +13,7 @@ import main.system.auxiliary.StringMaster;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,11 +55,11 @@ public class MusicViewsPanel extends G_ScrolledPanel<String> {
 
     @Override
     public List<String> getData() {
-        return new LinkedList<>(viewMap.keySet());
+        return new ArrayList<>(viewMap.keySet());
     }
 
     public void cycleView() {
-        List<String> names = new LinkedList<>(viewMap.keySet());
+        List<String> names = new ArrayList<>(viewMap.keySet());
 
         if (viewIndexForCycle == null) {
             String name = panel.getView().getName();

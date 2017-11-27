@@ -139,7 +139,7 @@ public class AV_Tree extends G_Panel {
         }
 
         DefaultMutableTreeNode result = new DefaultMutableTreeNode(name);
-        List<String> upgrades = new LinkedList<>();
+        List<String> upgrades = new ArrayList<>();
         for (String node : typesDoc) {
             addNode(result, node, upgrades);
         }
@@ -152,7 +152,7 @@ public class AV_Tree extends G_Panel {
     private DefaultMutableTreeNode build(List<String> typesDoc, String group) {
         DefaultMutableTreeNode result = new DefaultMutableTreeNode(group);
 
-        List<String> subGroups = new LinkedList<>();
+        List<String> subGroups = new ArrayList<>();
         // if (workspace!=null) workspace.getGrouping() ;
         if (!StringMaster.isEmpty(group)) {
             try {
@@ -160,7 +160,7 @@ public class AV_Tree extends G_Panel {
                 if (groups == null) {
                     groups = XML_Reader.getTreeSubGroupMap(!XML_Reader.isMacro()).get(group);
                 }
-                subGroups = new LinkedList<>(groups);
+                subGroups = new ArrayList<>(groups);
                 Class<?> ENUM = EnumMaster.getEnumClass(type.getSubGroupingKey().getName());
                 if (ENUM != null) {
                     Collections.sort(subGroups, new EnumMaster<>().getEnumSorter(ENUM));
@@ -192,7 +192,7 @@ public class AV_Tree extends G_Panel {
         for (String subGroup : subGroups) {
             DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subGroup);
 
-            List<String> upgrades = new LinkedList<>();
+            List<String> upgrades = new ArrayList<>();
             List<String> list;
             if (workspace == null) {
 //                Set<String> c = XML_Reader.getTreeSubGroupedTypeMap(XML_Reader.isMacro()).get(
@@ -200,7 +200,7 @@ public class AV_Tree extends G_Panel {
 //                if (!ListMaster.isNotEmpty(c)) {
 //                    c = XML_Reader.getTreeSubGroupedTypeMap(!XML_Reader.isMacro()).get(subGroup);
 //                }
-//                list = new LinkedList<>(c);
+//                list = new ArrayList<>(c);
 //                list.removeIf(t-> t==null );
                 list =  StringMaster.toNameList(
                  main.system.entity.FilterMaster.
@@ -262,7 +262,7 @@ public class AV_Tree extends G_Panel {
                 }
             } else { // add upgrade nodes - works only for 3 levels
                 while (true) {
-                    List<String> upgrades2 = new LinkedList<>(upgrades);
+                    List<String> upgrades2 = new ArrayList<>(upgrades);
                     for (String typeName : upgrades2) { // subnode could be a
                         // Type
                         // Node!

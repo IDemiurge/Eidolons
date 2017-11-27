@@ -42,7 +42,7 @@ public class DivinationMaster {
     private static Map<SPELL_GROUP, Integer> spellGroups;
 
     public static void removeDivination(Unit hero) {
-        List<DC_SpellObj> spellsToRemove = new LinkedList<>();
+        List<DC_SpellObj> spellsToRemove = new ArrayList<>();
         for (DC_SpellObj spell : hero.getSpells()) {
             if (spell.getSpellPool() == SpellEnums.SPELL_POOL.DIVINED) {
                 spellsToRemove.add(spell);
@@ -58,7 +58,7 @@ public class DivinationMaster {
 
     public static List<DC_SpellObj> divine(Unit diviningHero) {
         hero = diviningHero;
-        List<DC_SpellObj> list = new LinkedList<>();
+        List<DC_SpellObj> list = new ArrayList<>();
         pool = DC_MathManager.getDivinationPool(hero);
         // divination cap limiting?
 
@@ -179,7 +179,7 @@ public class DivinationMaster {
     }
 
     private static void initSpellPool() {
-        spellPool = new LinkedList<>();
+        spellPool = new ArrayList<>();
 
         // add up all weights, roll, preCheck within which range. Should be fair,
         // right?

@@ -80,7 +80,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         main.system.auxiliary.log.LogMaster.log(1, "preselectBaseType " + type);
         if (type == null)
             return null;
-        List<ObjType> pool = new LinkedList<>(getItemPool(c, rarity, type)); //base types!
+        List<ObjType> pool = new ArrayList<>(getItemPool(c, rarity, type)); //base types!
         main.system.auxiliary.log.LogMaster.log(1, "pool= " + pool);
         if (pool.isEmpty())
             return null;
@@ -136,7 +136,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             rarityMap.put(rarity, pool);
         }
         if (pool == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         return pool;
     }
@@ -193,13 +193,13 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             }
             return type;
         }
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         String groups = getItemGroups(contents, TYPE);
         if (groups == null) groups = " ;";
         for (String sub : groups.split(";")) {
             if (sub.trim().isEmpty())
                 sub = null;
-            List<ObjType> group = new LinkedList<>(
+            List<ObjType> group = new ArrayList<>(
              isGroupsOrSubgroups(contents, TYPE) ?
               DataManager.getTypesGroup(TYPE, sub) :
               DataManager.getTypesSubGroup(TYPE, sub));
@@ -244,7 +244,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         ItemGenerator generator = ItemGenerator.getDefaultGenerator();
         JEWELRY_ITEM_TRAIT[] traits = getJewelryTraits(rarity);
         MAGICAL_ITEM_LEVEL[] levels = getJewelryLevels(rarity);
-        for (ObjType sub :     new LinkedList<>(group) )
+        for (ObjType sub :     new ArrayList<>(group) )
             for (MAGICAL_ITEM_LEVEL level : levels)
                 for (JEWELRY_ITEM_TRAIT trait : traits)
                     group.add(generator.getOrCreateJewelry(sub, trait, level));
@@ -283,7 +283,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
     private List<ObjType> generateTypes(CONTAINER_CONTENTS c, ITEM_RARITY rarity,
                                         ObjType type) {
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         list.add(type);
         return generateTypes(c, rarity, list
 //         new ListMaster<ObjType>().getList(type)
@@ -308,7 +308,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         MATERIAL[] materials = getMaterials(rarity);
         QUALITY_LEVEL[] qualityLevels = getQualityLevels(rarity);
 
-        for (ObjType type : new LinkedList<>(group)) {
+        for (ObjType type : new ArrayList<>(group)) {
             if (type.isGenerated()) {
                 continue;
             }
@@ -437,7 +437,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
     @Override
     public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
-        List<DC_ActiveObj> list = new LinkedList<>();
+        List<DC_ActiveObj> list = new ArrayList<>();
         list.add(
          createAction(CONTAINER_ACTION.OPEN, unit, obj));
         return list;
@@ -464,7 +464,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
          wizard_.constructWeightMap(prop, CONTAINER_CONTENT_VALUE.class);
 
         List<CONTAINER_CONTENT_VALUE> itemValueList
-         = new LinkedList<>();
+         = new ArrayList<>();
         Integer maxCost = obj.getIntParam(PARAMS.GOLD_TOTAL);
         int totalCost = 0;
         int maxGroups = 2; //size prop!

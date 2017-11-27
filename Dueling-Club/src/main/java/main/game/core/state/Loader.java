@@ -44,7 +44,7 @@ import main.system.launch.TypeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -145,7 +145,7 @@ public class Loader {
 
     private static List<Obj> createObjects(List<String> objectNodes) {
         DC_Game game = DC_Game.game;
-        List<Obj> objects = new LinkedList<>();
+        List<Obj> objects = new ArrayList<>();
         //TODO ID ORDER MUST BE PRESERVED! put in parameter?
         for (String typesNode : objectNodes) {
             Document node = XML_Converter.getDoc(typesNode);

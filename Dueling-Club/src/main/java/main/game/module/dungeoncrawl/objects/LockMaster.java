@@ -15,7 +15,7 @@ import main.game.module.dungeoncrawl.objects.LockMaster.LOCK_ACTIONS;
 import main.system.math.Formula;
 import main.system.math.roll.RollMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
@@ -61,7 +61,7 @@ public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
     }
 
     public   List<Obj> getObjectsToUnlock(Unit unit) {
-        List<Obj> list = new LinkedList<>();
+        List<Obj> list = new ArrayList<>();
         if (unit.getGame().getObjectByCoordinate(unit.getCoordinates(), false) != null) {
             list.add(unit.getGame().getObjectByCoordinate(unit.getCoordinates(), false));
         }

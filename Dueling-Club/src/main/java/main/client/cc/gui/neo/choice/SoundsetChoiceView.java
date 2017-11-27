@@ -15,7 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class SoundsetChoiceView extends ChoiceView<HERO_SOUNDSET> implements
         ListCellRenderer<HERO_SOUNDSET>, MouseListener {
@@ -55,7 +55,7 @@ public class SoundsetChoiceView extends ChoiceView<HERO_SOUNDSET> implements
 
     @Override
     protected void initData() {
-        data = new LinkedList<>();
+        data = new ArrayList<>();
         for (HERO_SOUNDSET s : HeroEnums.HERO_SOUNDSET.values()) {
             if ((s.isFemale() != HeroAnalyzer.isFemale(hero))) {
                 continue;

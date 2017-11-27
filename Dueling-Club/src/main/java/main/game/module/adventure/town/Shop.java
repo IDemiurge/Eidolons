@@ -36,7 +36,7 @@ import main.system.math.MathMaster;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Shop extends TownPlace implements ShopInterface{
@@ -82,7 +82,7 @@ public class Shop extends TownPlace implements ShopInterface{
             setParam(MACRO_PARAMS.SHOP_INCOME,
                     ShopMaster.getBaseGoldIncome(this), true);
         }
-        items = new LinkedList<>();
+        items = new ArrayList<>();
         // addStandardItems(); then randomize
         PROPERTY prop = getShopType().getFilterProp();
         int i = 0;
@@ -90,7 +90,7 @@ public class Shop extends TownPlace implements ShopInterface{
         String[] item_groups = getShopType().getItem_groups();
         // Up to 4 item groups!
         if (item_groups.length > MAX_ITEM_GROUPS) {
-            List<String> list = new LinkedList<>(Arrays.asList(item_groups));
+            List<String> list = new ArrayList<>(Arrays.asList(item_groups));
             item_groups = new String[MAX_ITEM_GROUPS];
             int j = 0;
             while (j < MAX_ITEM_GROUPS) {
@@ -134,7 +134,7 @@ public class Shop extends TownPlace implements ShopInterface{
     // generateCustomItems(); randomly based on the repertoire spectrum
 
     private Collection<? extends ObjType> getSpecialItems(String group) {
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         // getProperty(MACRO_PROPS.shop_special_items);
         // if (t.getp).equals(group) list.add(t);
         return list;
@@ -143,7 +143,7 @@ public class Shop extends TownPlace implements ShopInterface{
     private List<ObjType> constructPool(List<ObjType> pool) {
 
         // TODO AND WHAT ABOUT NON-SLOT ITEMS?
-        List<ObjType> filtered = new LinkedList<>();
+        List<ObjType> filtered = new ArrayList<>();
         for (MATERIAL material : ItemEnums.MATERIAL.values()) {
             if (ShopMaster.checkMaterialAllowed(this, material)) {
                 for (ObjType t : pool) {
@@ -227,7 +227,7 @@ public class Shop extends TownPlace implements ShopInterface{
         if (isFullRepertoire()){
             //filters!
         }
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (DC_TYPE TYPE : C_OBJ_TYPE.ITEMS.getTypes()) {
             List<ObjType> items = getItems(TYPE);
             items.removeIf(item -> item == null);

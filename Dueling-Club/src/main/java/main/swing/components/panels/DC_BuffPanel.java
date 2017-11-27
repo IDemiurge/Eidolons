@@ -12,7 +12,7 @@ import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class DC_BuffPanel extends G_ListPanel<DC_BuffObj> {
 
@@ -53,7 +53,7 @@ public class DC_BuffPanel extends G_ListPanel<DC_BuffObj> {
             return getEmptyData();
         }
 
-        data = new LinkedList<>();
+        data = new ArrayList<>();
         for (Attachment attachment : attachments) {
             if (attachment instanceof DC_BuffObj) {
                 data.add((DC_BuffObj) attachment);

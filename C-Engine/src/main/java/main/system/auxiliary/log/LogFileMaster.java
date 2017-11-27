@@ -12,7 +12,7 @@ import main.system.launch.CoreEngine;
 import main.system.threading.TimerTaskMaster;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -74,7 +74,7 @@ public class LogFileMaster {
         // another subfolder!
         List<String> entries = channelLogs.get(channel);
         if (entries == null) {
-            entries = new LinkedList<>();
+            entries = new ArrayList<>();
             channelLogs.put(channel, entries);
         }
         entries.add(text);
@@ -96,7 +96,7 @@ public class LogFileMaster {
         }
         List<String> entries = priorityLogs.get(priority);
         if (entries == null) {
-            entries = new LinkedList<>();
+            entries = new ArrayList<>();
             priorityLogs.put(priority, entries);
         }
         entries.add(text);

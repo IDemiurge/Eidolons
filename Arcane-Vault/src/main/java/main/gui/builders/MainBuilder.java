@@ -9,7 +9,7 @@ import main.swing.generic.components.G_Panel;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 //Use G-Engine? Caching 
@@ -89,7 +89,7 @@ public class MainBuilder extends Builder {
     }
 
     public List<DefaultMutableTreeNode> getSelectedNodes() {
-        List<DefaultMutableTreeNode> list = new LinkedList<>();
+        List<DefaultMutableTreeNode> list = new ArrayList<>();
         for (TreePath p : getTree().getSelectionPaths()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) p.getLastPathComponent();
             if (node != null) {

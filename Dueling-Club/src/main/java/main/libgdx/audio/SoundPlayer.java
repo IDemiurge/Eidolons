@@ -12,7 +12,7 @@ import java.util.Stack;
  */
 public class SoundPlayer extends Player {
     Stack<SoundFx> playQueue = new Stack();
-//    List<SoundFx> playing = new LinkedList<>();
+//    List<SoundFx> playing = new ArrayList<>();
 
     DungeonScreen dungeonScreen;
     private Vector2 position;

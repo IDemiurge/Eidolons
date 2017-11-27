@@ -24,7 +24,7 @@ import main.game.logic.battle.player.Player;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static main.system.GuiEventType.UPDATE_BUFFS;
@@ -70,7 +70,7 @@ public class BuffMaster extends Master {
     }
 
     public static List<ObjType> getBuffsFromSpell(DC_ActiveObj spell) {
-        List<ObjType> buffTypes = new LinkedList<>();
+        List<ObjType> buffTypes = new ArrayList<>();
         for (Effect e : EffectFinder.getEffectsOfClass(spell.getAbilities(),
                 AddBuffEffect.class)) {
             ObjType buffType = ((AddBuffEffect) e).getBuffTypeLazily();
@@ -93,7 +93,7 @@ public class BuffMaster extends Master {
     public void addAttachment(Attachment attachment, Obj basis) {
         List<Attachment> list = getState().getAttachmentsMap().get(basis);
         if (list == null) {
-            list = new LinkedList<>();
+            list = new ArrayList<>();
             getState().getAttachmentsMap().put(basis, list);
         }
         if (attachment instanceof BuffObj) {

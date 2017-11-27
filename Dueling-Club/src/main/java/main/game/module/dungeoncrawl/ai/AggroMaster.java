@@ -13,7 +13,7 @@ import main.game.logic.battle.player.Player;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.math.PositionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -28,7 +28,7 @@ public class AggroMaster {
 
     public static List<Unit> getAggroGroup() {
 //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
-        List<Unit> list = new LinkedList<>();
+        List<Unit> list = new ArrayList<>();
         for (Unit ally : DC_Game.game.getPlayer(true).getControlledUnits_()) {
 //            if (sightRequiredForAggro) {
 //                if (!VisionManager.checkDetected(ally, true)) {
@@ -58,7 +58,7 @@ public class AggroMaster {
 
     private static void logAggro(List<Unit> list) {
         if (!list.equals(lastAggroGroup)) {
-            List<Unit> newUnits = new LinkedList<>(list);
+            List<Unit> newUnits = new ArrayList<>(list);
             newUnits.removeIf(unit -> lastAggroGroup.contains(unit));
             if (!newUnits.isEmpty())
                 list.get(0).getGame().getLogManager().logBattleJoined(newUnits);
@@ -168,7 +168,7 @@ public class AggroMaster {
     }
 
     private static List<Unit> getRelevantEnemies(Unit unit) {
-        List<Unit> list = new LinkedList<>();
+        List<Unit> list = new ArrayList<>();
         for (Unit enemy : unit.getGame().getUnits()) {
             if (enemy.getOwner().equals(Player.NEUTRAL) || enemy.getOwner().equals(unit.getOwner())) {
                 continue;
@@ -183,7 +183,7 @@ public class AggroMaster {
     }
 
     private static List<Unit> getCreeps() {
-        List<Unit> list = new LinkedList<>();
+        List<Unit> list = new ArrayList<>();
         for (Unit unit : DC_Game.game.getUnits()) {
 
         }

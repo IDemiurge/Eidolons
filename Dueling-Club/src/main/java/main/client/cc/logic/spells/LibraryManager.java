@@ -16,7 +16,7 @@ import main.entity.type.ObjType;
 import main.system.DC_Formulas;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LibraryManager {
@@ -35,7 +35,7 @@ public class LibraryManager {
         if (hero.getGame().isSimulation()) {
             checkNewAutoVerbatim(hero);
         }
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             if (checkKnown(hero, type)) {
                 // if (!hero.checkProperty(PROPS.LEARNED_SPELLS,

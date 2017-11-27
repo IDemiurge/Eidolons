@@ -7,7 +7,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PagedOptionsComp<E> extends G_PagePanel<E> {
@@ -65,7 +65,7 @@ public class PagedOptionsComp<E> extends G_PagePanel<E> {
 
     public List<OptionListener<E>> getListeners() {
         if (listeners == null) {
-            listeners = new LinkedList<>();
+            listeners = new ArrayList<>();
         }
         return listeners;
     }

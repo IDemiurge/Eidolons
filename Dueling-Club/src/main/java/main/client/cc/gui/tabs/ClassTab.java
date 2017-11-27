@@ -15,7 +15,7 @@ import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class ClassTab extends HeroItemTab {
 
@@ -29,7 +29,7 @@ public class ClassTab extends HeroItemTab {
     }
 
     protected void initData() {
-        data = new LinkedList<>();
+        data = new ArrayList<>();
         String property = hero.getProperty(getPROP());
         for (String skill : StringMaster.open(property)) {
             skill = VariableManager.removeVarPart(skill);

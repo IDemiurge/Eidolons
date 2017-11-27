@@ -23,7 +23,7 @@ import main.system.auxiliary.data.MapMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,8 +52,8 @@ public class CompositeAnim implements Animation {
 
 
     public CompositeAnim(Anim... anims) {
-        this(new MapMaster<ANIM_PART, Anim>().constructMap(new LinkedList<>(Arrays.asList(ANIM_PART.values()).subList(0, anims.length)),
-         new LinkedList<>(Arrays.asList(anims))));
+        this(new MapMaster<ANIM_PART, Anim>().constructMap(new ArrayList<>(Arrays.asList(ANIM_PART.values()).subList(0, anims.length)),
+         new ArrayList<>(Arrays.asList(anims))));
 
     }
 
@@ -150,7 +150,7 @@ public class CompositeAnim implements Animation {
             if (map.containsKey(ANIM_PART.AFTEREFFECT)) {
                 index--;
             }
-            for (Animation sub : new LinkedList<>(attached.get(ANIM_PART.AFTEREFFECT))) {
+            for (Animation sub : new ArrayList<>(attached.get(ANIM_PART.AFTEREFFECT))) {
                 map.put(ANIM_PART.AFTEREFFECT, (Anim) sub);
 
             }
@@ -224,7 +224,7 @@ public class CompositeAnim implements Animation {
         onFinishEventMap = new XLinkedMap<>();
         attached = new XLinkedMap<>();
         timeAttachedAnims = new XLinkedMap<>();
-        textEvents = new LinkedList<>();
+        textEvents = new ArrayList<>();
     }
 
     private void triggerStartEvents() {
@@ -498,7 +498,7 @@ public class CompositeAnim implements Animation {
 
     public List<Event> getTextEvents() {
         if (textEvents == null) {
-            textEvents = new LinkedList<>();
+            textEvents = new ArrayList<>();
         }
         return textEvents;
     }

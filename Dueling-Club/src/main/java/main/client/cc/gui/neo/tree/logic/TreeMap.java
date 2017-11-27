@@ -12,7 +12,7 @@ import main.system.images.ImageManager.STD_IMAGES;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -171,7 +171,7 @@ public class TreeMap {
                                              int xRange, int yRange, Boolean left_right_both, Boolean up_down_both,
                                              Boolean and_or_xor) {
 
-        List<ObjType> typesOnRow = new LinkedList<>();
+        List<ObjType> typesOnRow = new ArrayList<>();
 
         ObjType parent = DataManager.getParent(type);
         for (Point p : getNodeMap().keySet()) {

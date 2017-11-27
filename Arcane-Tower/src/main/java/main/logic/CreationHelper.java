@@ -33,7 +33,7 @@ import main.time.ZeitMaster;
 
 import java.awt.event.MouseEvent;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreationHelper implements ValueEditor {
@@ -91,7 +91,7 @@ public class CreationHelper implements ValueEditor {
 
     public static List<VALUE> getRequiredValues(Entity t, boolean extended) {
         AT_OBJ_TYPE TYPE = (AT_OBJ_TYPE) t.getOBJ_TYPE_ENUM();
-        List<VALUE> list = new LinkedList<>();
+        List<VALUE> list = new ArrayList<>();
         for (VALUE l : ContentManager.getValuesForType(t.getOBJ_TYPE(), false)) {
             if (extended) {
                 if (l.isLowPriority()) {
@@ -146,7 +146,7 @@ public class CreationHelper implements ValueEditor {
         ObjType type = new ObjType(TASK_COMPILATION, AT_OBJ_TYPE.GOAL);
         List<String> tasks = DataManager
                 .convertObjToStringList((Collection<? extends Obj>) FilterMaster.filterByProp(
-                        new LinkedList<>(ArcaneTower.getTasks()), AT_PROPS.TASK_STATUS
+                        new ArrayList<>(ArcaneTower.getTasks()), AT_PROPS.TASK_STATUS
                                 .getName(), status.toString()));
         if (status == TASK_STATUS.PINNED) {
             String name = ArcaneTower.getSessionWindow().getSession().getName();

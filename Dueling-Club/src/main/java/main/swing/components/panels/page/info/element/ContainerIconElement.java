@@ -18,7 +18,7 @@ import main.system.graphics.GuiManager;
 
 import java.awt.*;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContainerIconElement extends G_PagePanel<SmallItem> implements EntityValueComponent {
@@ -51,7 +51,7 @@ public class ContainerIconElement extends G_PagePanel<SmallItem> implements Enti
 
     @Override
     protected G_Component createEmptyPageComponent() {
-        List<SmallItem> emptyList = new LinkedList<>();
+        List<SmallItem> emptyList = new ArrayList<>();
         ListMaster.fillWithNullElements(emptyList, pageSize);
         IconListPanel<SmallItem> iconListPanel = new IconListPanel<>(
                 // ListMaster.getEmptyList(pageSize)
@@ -103,7 +103,7 @@ public class ContainerIconElement extends G_PagePanel<SmallItem> implements Enti
         if (property == G_PROPS.STANDARD_PASSIVES || property == G_PROPS.PASSIVES) {
             iconSize = GuiManager.getSmallObjSize() / 2;
             pageSize = PAGE_SIZE_SMALL;
-            Collection<SmallItem> fullList = new LinkedList<>();
+            Collection<SmallItem> fullList = new ArrayList<>();
 
             for (String subString : StringMaster.open(entity
                     .getProperty(G_PROPS.CLASSIFICATIONS))) {

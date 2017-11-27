@@ -35,7 +35,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
     private int VERTICAL_MAX_UNIT_PER_ROW = 7;
     private int HORIZONTAL_MAX_UNIT_PER_ROW = 5;
     private Spawner spawner;
-    private List<FACING_DIRECTION> sides = new LinkedList<>();
+    private List<FACING_DIRECTION> sides = new ArrayList<>();
     private Map<FACING_DIRECTION, Map<Coordinates, ObjType>> unitGroups = new LinkedHashMap<>();
     private FACING_DIRECTION side;
     private FACING_DIRECTION forcedSide;
@@ -58,7 +58,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
     public List<Coordinates> getPartyCoordinates(Coordinates origin, Boolean me,
                                                  List<String> partyTypes) {
 
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         // TODO
         if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor()) {
             origin = new Coordinates(PositionMaster.getMiddleIndex(false), PositionMaster
@@ -110,7 +110,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
         List<Coordinates> list = getCoordinatesForUnits(presetGroupTypes, custom,
                 presetCenterCoordinate, maxUnitsPerRow);
 
-        List<ObjAtCoordinate> group = new LinkedList<>();
+        List<ObjAtCoordinate> group = new ArrayList<>();
         int i = 0;
         for (Coordinates c : list) {
             ObjType type = new ObjType(presetGroupTypes.get(i));
@@ -131,7 +131,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
     public List<Coordinates> getCoordinatesForUnits(List<ObjType> presetGroupTypes, boolean custom,
                                                     Coordinates presetCenterCoordinate, int maxUnitsPerRow) {
         unitCache = new HashMap<>();
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         for (ObjType type : presetGroupTypes) {
             // c = getNextSideCoordinate(getBaseCoordinate(side));
             Coordinates c;
@@ -143,7 +143,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
 
             List<ObjType> units = unitCache.get(c);
             if (units == null) {
-                units = new LinkedList<>();
+                units = new ArrayList<>();
             }
             // TODO [update] use facing with this map..
             units.add(type);
@@ -173,7 +173,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
             c = CoordinatesMaster.getCenterCoordinate(block.getCoordinates());
             // side/random?
         }
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         // block.getConnectedBlocks();
         // block.getCoordinates();
         for (ObjType type : presetGroupTypes) {
@@ -405,7 +405,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
     }
 
     // public List<Coordinates> getCoordinates(FACING_DIRECTION facing, int n) {
-    // List<Coordinates> coordinates = new LinkedList<>();
+    // List<Coordinates> coordinates = new ArrayList<>();
     //
     // if (facing == FACING_DIRECTION.NONE || facing == null) {
     // center = true;

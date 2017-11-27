@@ -156,7 +156,7 @@ public class DC_ContentManager extends ContentManager {
      PARAMS.C_INITIATIVE.name(), PARAMS.C_N_OF_ACTIONS.name(),
 
     };
-    private static List<VALUE> NO_SHOW_NAME_VALUES = new LinkedList<>();
+    private static List<VALUE> NO_SHOW_NAME_VALUES = new ArrayList<>();
 
     private static Map<String, Deity> deities;
     private static List<PARAMS> masteries;
@@ -169,7 +169,7 @@ public class DC_ContentManager extends ContentManager {
     private static Map<PRINCIPLES, PARAMETER> identityMap = new HashMap<>();
     private static String focusMasteries;
     private static String focusClassGroups;
-    private static LinkedList<PARAMETER> dynamicParams = new LinkedList<>();
+    private static ArrayList<PARAMETER> dynamicParams = new ArrayList<>();
 
     static {
         Arrays.stream(PARAMS.values()).forEach(param -> {
@@ -181,9 +181,9 @@ public class DC_ContentManager extends ContentManager {
         // ArrayMaster.join();
         // BG_PARAMS
 
-        LinkedList<PARAMETER> list = new LinkedList<>();
+        ArrayList<PARAMETER> list = new ArrayList<>();
 
-        ARMOR_MODIFYING_PARAMS_FULL = new LinkedList<>();
+        ARMOR_MODIFYING_PARAMS_FULL = new ArrayList<>();
 
         ARMOR_MODIFYING_PARAMS_FULL.addAll(Arrays.asList(ARMOR_MODIFYING_PARAMS));
         ARMOR_MODIFYING_PARAMS_FULL.addAll(Arrays.asList(ValuePages.RESISTANCES));
@@ -214,7 +214,7 @@ public class DC_ContentManager extends ContentManager {
     }
 
     private static Collection<PARAMETER> generateDerivedParams() {
-        Collection<PARAMETER> list = new LinkedList<>();
+        Collection<PARAMETER> list = new ArrayList<>();
         for (PARAMS p : PARAMS.values()) {
             if (p.isMastery()) {
                 Param scoreParam = new Param(p);
@@ -250,7 +250,7 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static Collection<PROPERTY> generateDerivedProperties() {
-        Collection<PROPERTY> list = new LinkedList<>();
+        Collection<PROPERTY> list = new ArrayList<>();
 
         for (PROPS p : PROPS.values()) {
 
@@ -324,7 +324,7 @@ public class DC_ContentManager extends ContentManager {
         if (masteries != null) {
             return masteries;
         }
-        masteries = new LinkedList<>();
+        masteries = new ArrayList<>();
         for (PARAMETER m : ContentManager.getMasteries()) {
             masteries.add((PARAMS) m);
         }
@@ -436,7 +436,7 @@ public class DC_ContentManager extends ContentManager {
         if (backgroundDynamicParams != null) {
             return backgroundDynamicParams;
         }
-        backgroundDynamicParams = new LinkedList<>();
+        backgroundDynamicParams = new ArrayList<>();
         for (PARAMETER v : ValuePages.PRINCIPLE_IDENTITIES) {
             backgroundDynamicParams.add(v);
         }
@@ -449,7 +449,7 @@ public class DC_ContentManager extends ContentManager {
         if (backgroundValues != null) {
             return backgroundValues;
         }
-        backgroundValues = new LinkedList<>();
+        backgroundValues = new ArrayList<>();
         for (VALUE[] list : ValuePages.BACKGROUND_VALUES) {
             for (VALUE v : list) {
                 backgroundValues.add(v);
@@ -521,7 +521,7 @@ public class DC_ContentManager extends ContentManager {
     }
 
     private static List<VALUE> getDefaultValuesToReset() {
-        return new LinkedList<>(Arrays
+        return new ArrayList<>(Arrays
          .asList(
           PARAMS.COUNTER_STAMINA_PENALTY,
           PARAMS.AOO_STAMINA_PENALTY,
@@ -603,7 +603,7 @@ public class DC_ContentManager extends ContentManager {
     // private static List<VALUE> getDefaultValues(OBJ_TYPE TYPE) {
     // List<VALUE> list = defaultValues.getOrCreate(TYPE);
     // if (list == null && TYPE != null) {
-    // list = new LinkedList<>();
+    // list = new ArrayList<>();
     // for (VALUE portrait : ContentManager.getValuesForType(TYPE.getName(), false)) {
     // if (StringMaster.isEmpty(portrait.getDefaultValue()))
     // if (!portrait.getDefaultValue().equals("0"))
@@ -775,7 +775,7 @@ public class DC_ContentManager extends ContentManager {
 
     public static List<String> getBonusParamList() {
         ContentManager.getParamsForType("chars", false);
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (PARAMETER p : ContentManager.getParamsForType("chars", false)) {
             if (p.isAttribute()) {
                 continue;
@@ -908,7 +908,7 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static List<VALUE> getArmorGradeMultiParams() {
-        List<VALUE> list = new LinkedList<>();
+        List<VALUE> list = new ArrayList<>();
         list.add(PARAMS.ARMOR);
         for (DAMAGE_TYPE dmg_type : GenericEnums.DAMAGE_TYPE.values()) {
             if (dmg_type != GenericEnums.DAMAGE_TYPE.POISON && dmg_type != GenericEnums.DAMAGE_TYPE.PHYSICAL) {
@@ -943,7 +943,7 @@ public class DC_ContentManager extends ContentManager {
         return ContentManager.getPARAM(dmg_type.name() + "_ARMOR");
     }
 
-    public static LinkedList<PARAMETER> getDynamicParams() {
+    public static ArrayList<PARAMETER> getDynamicParams() {
         return dynamicParams;
     }
 

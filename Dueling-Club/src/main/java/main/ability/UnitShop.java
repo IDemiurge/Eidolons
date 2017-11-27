@@ -34,7 +34,7 @@ import main.system.math.MathMaster;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UnitShop {
@@ -277,7 +277,7 @@ public class UnitShop {
           : new EnumMaster<MATERIAL>().getEnumList(MATERIAL.class, property);
         list.removeIf(material -> !ItemMaster.checkMaterial(baseType, material));
         Collections.shuffle(list);
-        List<MATERIAL> materials = new LinkedList<>();
+        List<MATERIAL> materials = new ArrayList<>();
         for (MATERIAL sub : list) {
             ObjType type = DataManager.getItem(qualityLevel, sub, baseType);// map .get(sub).get(baseType);
             if (type.getIntParam(PARAMS.GOLD_COST) <= costLimit)
@@ -333,7 +333,7 @@ public class UnitShop {
             minIndex = EnumMaster.getEnumConstIndex(QUALITY_LEVEL.class, allowed.split(";")[0]);
             maxIndex = EnumMaster.getEnumConstIndex(QUALITY_LEVEL.class, allowed.split(";")[1]);
         }
-        List<ObjType> types = new LinkedList<>();
+        List<ObjType> types = new ArrayList<>();
         for (QUALITY_LEVEL sub : DataManager.getItemMaps().keySet()) {
             int index = EnumMaster.getEnumConstIndex(QUALITY_LEVEL.class, sub);
             if (index > maxIndex) continue;
@@ -354,7 +354,7 @@ public class UnitShop {
     private static boolean buy(String repertoire, Unit unit, ITEM_SLOT slot,
                                OBJ_TYPE OBJ_TYPE_ENUM) {
         // Map<ObjType, Integer>
-        List<ObjType> itemPool = new LinkedList<>();
+        List<ObjType> itemPool = new ArrayList<>();
         // ++ add weight! choose from repertoire!
         WeightMap<ObjType> map = new WeightMap<>(new RandomWizard<ObjType>()
          .constructWeightMap(repertoire, ObjType.class, OBJ_TYPE_ENUM));

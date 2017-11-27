@@ -9,7 +9,7 @@ import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +28,7 @@ public class Choice {
     public Choice(Coordinates targetCoordinate, Coordinates prevCoordinates, Action... actions) {
         this.coordinates = targetCoordinate;
         this.prevCoordinates = prevCoordinates;
-        this.actions = new LinkedList<>(Arrays.asList(actions));
+        this.actions = new ArrayList<>(Arrays.asList(actions));
     }
 
     public boolean equals(Object obj) {
@@ -48,7 +48,7 @@ public class Choice {
             return turns;
         }
         try {
-            List<Boolean> list = new LinkedList<>();
+            List<Boolean> list = new ArrayList<>();
             for (Action a : actions) {
                 DC_ActiveObj active = a.getActive();
                 if (active.getName().contains("lockwise")) {

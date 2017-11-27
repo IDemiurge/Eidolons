@@ -28,7 +28,7 @@ import main.utilities.workspace.Workspace;
 import main.utilities.workspace.WorkspaceManager;
 
 import java.io.File;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LE_DataMaster {
@@ -64,7 +64,7 @@ public class LE_DataMaster {
     }
 
     public static List<Level> getLevelsWorkspace() {
-        List<Level> levels = new LinkedList<>();
+        List<Level> levels = new ArrayList<>();
         String path = getLevelsWorkspacePath() + MISSIONS_WORKSPACE_NAME + ".xml";
         File file = FileManager.getFile(path);
         String data = FileManager.readFile(file);

@@ -144,7 +144,7 @@ public class ClassFinder {
 
     private static Class[] getClassesFromJar(String packageName) {
         String pathToJar = PathFinder.getJarPath();
-        List<Class> classes = new LinkedList<>();
+        List<Class> classes = new ArrayList<>();
         try {
             JarFile jarFile = new JarFile(pathToJar);
             Enumeration<JarEntry> e = jarFile.entries();

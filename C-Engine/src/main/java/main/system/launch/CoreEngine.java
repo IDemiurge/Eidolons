@@ -18,7 +18,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CoreEngine {
@@ -256,7 +256,7 @@ public class CoreEngine {
         Chronos.mark("TYPES INIT");
 
         XML_Reader.readTypes(macro);
-        List<String> classFolders=    new LinkedList<>(Arrays.asList(classFolderPaths)) ;
+        List<String> classFolders=    new ArrayList<>(Arrays.asList(classFolderPaths)) ;
 //         if (dialogueDataRequired){
 //             classFolders.add( "main.data.dialogue" );
 //             classFolders.add(  "main.game.battlecraft.logic.meta.scenario.dialogue.speech" );

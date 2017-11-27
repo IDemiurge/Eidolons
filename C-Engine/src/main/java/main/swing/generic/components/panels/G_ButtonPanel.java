@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class G_ButtonPanel extends G_Panel implements ActionListener {
@@ -20,7 +20,7 @@ public abstract class G_ButtonPanel extends G_Panel implements ActionListener {
     protected boolean horizontal = true;
 
     public G_ButtonPanel(String[] commands) {
-        this(new LinkedList<>(Arrays.asList(commands)));
+        this(new ArrayList<>(Arrays.asList(commands)));
     }
 
     public G_ButtonPanel(List<String> commands) {

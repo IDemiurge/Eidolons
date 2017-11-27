@@ -27,7 +27,7 @@ import main.system.math.PositionMaster;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -137,7 +137,7 @@ public class SightMaster {
                                 FACING_DIRECTION facing) {
         // if (source.isFlying())
         // return;
-        Collection<Coordinates> removeList = new LinkedList<>();
+        Collection<Coordinates> removeList = new ArrayList<>();
         for (Coordinates c : list) {
 //            List<BattleFieldObject> objs = source.getGame().getMaster().
 //             getObjectsOnCoordinate(c, false);

@@ -7,13 +7,13 @@ import main.game.logic.dungeon.editor.LE_AiMaster.AI_GROUP_PARAM;
 import main.system.auxiliary.StringMaster;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class AiGroupData {
     ObjAtCoordinate leader;
-    List<ObjAtCoordinate> members = new LinkedList<>();
+    List<ObjAtCoordinate> members = new ArrayList<>();
     Map<AI_BEHAVIOR_MODE, String> behaviorsData;
     // patrol/wander coordinates, guard/idle prefs,
     Map<AI_GROUP_PARAM, String> paramData;

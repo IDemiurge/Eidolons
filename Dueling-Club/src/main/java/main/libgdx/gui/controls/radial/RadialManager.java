@@ -132,7 +132,7 @@ public class RadialManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        List<RadialValueContainer> list = new LinkedList<>();
+        List<RadialValueContainer> list = new ArrayList<>();
         if (target instanceof Unit) {
             list.add(getExamineNode(target));
         }
@@ -274,12 +274,16 @@ public class RadialManager {
         } else if (activeObj.isTurn()) {
             target = activeObj.getOwnerObj();
         }
-        return configureActionNode(target, activeObj);
+        RadialValueContainer node = configureActionNode(target, activeObj);
+        if (activeObj.isAttackAny()) {
+            addAttackTooltip(node, activeObj, target);
+        }
+        return node;
     }
 
     private static List<? extends ActiveObj> getActions(Unit sourceUnit, DC_Obj target) {
 
-        List<ActiveObj> actives = new LinkedList<>(sourceUnit.getActives());
+        List<ActiveObj> actives = new ArrayList<>(sourceUnit.getActives());
 //        actives.addAll(sourceUnit.getSpells());
         if (sourceUnit.getQuickItems() != null)
             sourceUnit.getQuickItems().forEach(item -> {
@@ -304,7 +308,7 @@ public class RadialManager {
     private static Collection<? extends ActiveObj> getShortcuts(Unit sourceUnit,
                                                                 DC_Obj target) {
 
-        List<ActiveObj> list = new LinkedList<>();
+        List<ActiveObj> list = new ArrayList<>();
         for (RADIAL_ACTION_SHORTCUT sub : RADIAL_ACTION_SHORTCUT.values()) {
             if (!checkShortcut(sub, sourceUnit, target)) {
                 continue;
@@ -384,6 +388,7 @@ public class RadialManager {
     public static void addSimpleTooltip(RadialValueContainer el, String name) {
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer(name, "")));
+        el.clearListeners();
         el.addListener(tooltip.getController());
     }
 
@@ -574,7 +579,7 @@ public class RadialManager {
     }
 
     private List<RadialValueContainer> getChildNodes(RADIAL_PARENT_NODE type, DC_ActiveObj activeObj, DC_Obj target) {
-        List<RadialValueContainer> list = new LinkedList<>();
+        List<RadialValueContainer> list = new ArrayList<>();
         return list;
     }
 

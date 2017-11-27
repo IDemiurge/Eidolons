@@ -20,7 +20,7 @@ import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.io.File;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,8 +50,8 @@ public class TextMaster {
 
     public static void generateMissingDescrTemplate(DC_TYPE TYPE, int circle, String groups,
                                                     boolean appendLogic) {
-        List<ObjType> list = new LinkedList<>();
-        List<ObjType> incomplete = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
+        List<ObjType> incomplete = new ArrayList<>();
         for (ObjType type : DataManager.getTypes(TYPE)) {
             if (type.getIntParam(PARAMS.CIRCLE) > circle) {
                 continue;

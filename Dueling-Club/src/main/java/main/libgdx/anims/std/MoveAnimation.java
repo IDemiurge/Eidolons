@@ -23,7 +23,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static main.system.GuiEventType.UNIT_MOVED;
@@ -93,12 +93,12 @@ public class MoveAnimation extends ActionAnim {
     }
     @Override
     public List<SpriteAnimation> getSprites() {
-        return new LinkedList<>();
+        return new ArrayList<>();
     }
 
     @Override
     public List<EmitterActor> getEmitterList() {
-        return new LinkedList<>();
+        return new ArrayList<>();
     }
 
 

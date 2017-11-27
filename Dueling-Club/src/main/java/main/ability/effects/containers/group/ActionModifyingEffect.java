@@ -7,7 +7,7 @@ import main.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActionModifyingEffect extends HeroObjectModifyingEffect {
@@ -24,7 +24,7 @@ public class ActionModifyingEffect extends HeroObjectModifyingEffect {
     protected List<Obj> getObjectsByName(String objName) {
         Unit hero = (Unit) ref.getSourceObj();
         if (objName.contains(StringMaster.AND_SEPARATOR)) {
-            List<Obj> list = new LinkedList<>();
+            List<Obj> list = new ArrayList<>();
             for (String sub : StringMaster.open(objName)) {
                 list.add(hero.getAction(sub));
             }

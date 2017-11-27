@@ -3,12 +3,12 @@ package main.swing.generic.components.panels;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PageKeyListener implements KeyListener {
 
-    List<Component> comps = new LinkedList<>();
+    List<Component> comps = new ArrayList<>();
     private G_PagePanel<?> pagedListPanel;
 
     public PageKeyListener(G_PagePanel<?> pagedListPanel) {

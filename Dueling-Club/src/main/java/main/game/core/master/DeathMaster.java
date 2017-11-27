@@ -31,7 +31,7 @@ import main.system.text.SpecialLogger;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -168,7 +168,7 @@ public class DeathMaster extends Master {
 
     public void killAllUnits(boolean removeBfObjects, boolean retainPlayerParty, boolean quiet) {
         DequeImpl<BattleFieldObject> list = new DequeImpl();
-        List<BattleFieldObject> toRemove = new LinkedList<>();
+        List<BattleFieldObject> toRemove = new ArrayList<>();
         list.addAll(getGame().getUnits());
         if (removeBfObjects) {
             list.addAll(getGame().getStructures());

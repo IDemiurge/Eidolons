@@ -12,7 +12,7 @@ import main.system.math.DC_MathManager;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MasteryIconColumn extends G_Panel implements MouseListener {
@@ -26,7 +26,7 @@ public class MasteryIconColumn extends G_Panel implements MouseListener {
     private Entity hero;
 
     public MasteryIconColumn(Unit hero, SKILL_DISPLAY_GROUPS group) {
-        masteries = new LinkedList<>();
+        masteries = new ArrayList<>();
         List<PARAMETER> unlockedList = DC_MathManager.getUnlockedMasteries(hero);
         for (PARAMETER p : group.getMasteries()) {
             if (unlockedList.contains(p)) {

@@ -25,7 +25,7 @@ import main.game.battlecraft.rules.round.UnconsciousRule;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -217,7 +217,7 @@ public class DamageCalculator {
     }
 
     public static List<Damage> getBonusDamageList(Ref ref, DAMAGE_CASE CASE) {
-        List<Damage> list = new LinkedList<>();
+        List<Damage> list = new ArrayList<>();
         //TODO make BonusDamage all add to source?
         DC_Obj obj = (DC_Obj) ref.getSourceObj();
         for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
@@ -253,10 +253,10 @@ public class DamageCalculator {
      */
     public static List<Damage> precalculateRawDamageForDisplay(Attack attack) {
 
-        List<Damage> list = new LinkedList<>();
+        List<Damage> list = new ArrayList<>();
         list.add(DamageFactory.getDamageFromAttack(attack));
 
-        List<Effect> effects = new LinkedList<>();
+        List<Effect> effects = new ArrayList<>();
         if (attack.getWeapon().getSpecialEffects() != null) {
             if (attack.getWeapon().getSpecialEffects().get(SPECIAL_EFFECTS_CASE.ON_ATTACK) != null) {
                 effects.add(attack.getWeapon().getSpecialEffects().get(

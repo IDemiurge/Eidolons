@@ -19,7 +19,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AV_TreeSelectionListener implements TreeSelectionListener {
@@ -105,7 +105,7 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
             return;
         }
         selectType(type, tab);
-        List<ObjType> types = new LinkedList<>();
+        List<ObjType> types = new ArrayList<>();
         int length = 1;
         try {
             length = e1.getPaths().length;

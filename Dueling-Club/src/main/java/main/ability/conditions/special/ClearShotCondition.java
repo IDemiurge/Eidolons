@@ -18,7 +18,7 @@ import main.system.math.DC_PositionMaster;
 import main.system.math.PositionMaster;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -204,7 +204,7 @@ if (!(obj instanceof DC_Obj)){
                 if (!result)
                     return cacheResult(map, target, result);
 
-                List<Coordinates> list = new LinkedList<>();
+                List<Coordinates> list = new ArrayList<>();
                 if (!c2.isAdjacent(source.getCoordinates())) {
                     DIRECTION direction = DirectionMaster.getRelativeDirection(source, target);
                     list = (DC_PositionMaster.getLine(false, direction, source.getCoordinates(),

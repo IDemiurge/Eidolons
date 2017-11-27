@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +38,7 @@ public class NewsParser {
     }
 
     public static List<NewsArticle> parse(String content, String website) {
-        List<NewsArticle> articles = new LinkedList<>();
+        List<NewsArticle> articles = new ArrayList<>();
         Elements links = getLinks(content); // a with href
 
         for (Element linkObject : links) {

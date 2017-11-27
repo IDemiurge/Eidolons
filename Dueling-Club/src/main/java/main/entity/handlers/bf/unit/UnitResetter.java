@@ -40,7 +40,7 @@ import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.test.TestMasterContent;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -307,7 +307,7 @@ public class UnitResetter extends EntityResetter<Unit> {
     }
 
     public void resetRanks(DequeImpl<DC_FeatObj> container, PROPERTY property) {
-        List<DC_FeatObj> list = new LinkedList<>(container);
+        List<DC_FeatObj> list = new ArrayList<>(container);
         for (String feat : StringMaster.open(getProperty(property))) {
             Integer rank = StringMaster.getInteger(VariableManager.getVarPart(feat));
             if (rank == 0) {

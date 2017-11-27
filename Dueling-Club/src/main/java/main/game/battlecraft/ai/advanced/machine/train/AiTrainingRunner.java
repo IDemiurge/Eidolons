@@ -13,7 +13,7 @@ import main.system.math.FuncMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -25,7 +25,7 @@ public class AiTrainingRunner implements Runnable {
     public static boolean running;
     public static boolean evolutionTestMode = false;
     static int instances = 1;
-    static List<AiTrainingRunner> runners = new LinkedList<>();
+    static List<AiTrainingRunner> runners = new ArrayList<>();
     private final String[] args;
     AiTrainingParameters parameters;
     private PriorityProfile winner;

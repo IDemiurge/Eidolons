@@ -13,7 +13,7 @@ import main.system.data.PlayerData.PLAYER_VALUE;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerManager<E extends Battle> extends BattleHandler<E> {
@@ -24,7 +24,7 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
     public final FLAG_COLOR[] allyColors = {FLAG_COLOR.BLUE,
      FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};
     public List<FLAG_COLOR> unusedPlayerColorsList;
-    List<DC_Player> players = new LinkedList<>();
+    List<DC_Player> players = new ArrayList<>();
     private String data;
 
     public PlayerManager(BattleMaster<E> master) {
@@ -40,7 +40,7 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
     }
 
     public void initializePlayers() {
-        players = new LinkedList<>();
+        players = new ArrayList<>();
         if (getMaster().getGame().getDataKeeper().getPlayerData() != null) {
             // TODO init data from preset
         }
@@ -127,7 +127,7 @@ initUnitData(player, i);
     }
 
     private FLAG_COLOR getRandomColorFlag(boolean enemy) {
-        List<FLAG_COLOR> list = new LinkedList<>(Arrays.asList(enemy ? enemyColors : allyColors));
+        List<FLAG_COLOR> list = new ArrayList<>(Arrays.asList(enemy ? enemyColors : allyColors));
         int index = RandomWizard.getRandomListIndex(list);
         return list.get(index);
     }

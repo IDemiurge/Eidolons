@@ -33,7 +33,7 @@ import main.system.math.PositionMaster;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -94,7 +94,7 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
     }
 
     public boolean construct() {
-        usedSpawnCoordinates = new LinkedList<>();
+        usedSpawnCoordinates = new ArrayList<>();
         setIndex(0);
         if (isEncounter()) {
             return false;
@@ -185,14 +185,14 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
             alt = checkAltEncounter();
         }
         List<ObjType> waves = getWaveTypes(getDungeon().getType(), alt);
-        List<ObjType> waveBuffer = new LinkedList<>(waves);
+        List<ObjType> waveBuffer = new ArrayList<>(waves);
 
         for (ENCOUNTER_TYPE type : encounter_sequence) {
             if (waveBuffer.isEmpty()) {
                 waveBuffer = DataManager.getTypesGroup(DC_TYPE.ENCOUNTERS, StringMaster
                         .getWellFormattedString(type.toString()));
             }
-            waves = new LinkedList<>(waveBuffer);
+            waves = new ArrayList<>(waveBuffer);
 
             Conditions conditions = new Conditions(getEncounterTypeCondition(type)
 //         TODO     ,getPlayableCondition()

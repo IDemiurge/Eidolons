@@ -9,7 +9,7 @@ import main.game.battlecraft.rules.rpg.IntegrityRule;
 import main.game.battlecraft.rules.rpg.IntegrityRule.ALIGNMENT_LEVEL;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class PrincipleInfoPanel extends HC_InfoTextPanel {
 
@@ -32,7 +32,7 @@ public class PrincipleInfoPanel extends HC_InfoTextPanel {
 
     @Override
     public void refresh() {
-        textLines = new LinkedList<>();
+        textLines = new ArrayList<>();
         if (principle == null) {
             for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
                 addStatusLines(p);

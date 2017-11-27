@@ -4,7 +4,7 @@ import main.system.datatypes.DequeImpl;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResourceManager {
@@ -22,7 +22,7 @@ public class ResourceManager {
         // list.remove(s);
         // }
         // }
-        return new LinkedList<>(list);
+        return new ArrayList<>(list);
     }
 
     public static String[] getResourcesInFolder(String path) {

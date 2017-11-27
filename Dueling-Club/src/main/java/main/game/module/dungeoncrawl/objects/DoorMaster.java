@@ -17,7 +17,7 @@ import main.game.module.dungeoncrawl.objects.DoorMaster.DOOR_ACTION;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -122,12 +122,12 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
 
     public List<DC_ActiveObj> getActions(DungeonObj door, Unit unit) {
         if (!(door instanceof Door))
-            return new LinkedList<>();
+            return new ArrayList<>();
         if (!checkUnitCanHandleActions(unit)){
-            return      new LinkedList<>() ;
+            return      new ArrayList<>() ;
         }
         //check intelligence, mastery
-        List<DC_ActiveObj> list = new LinkedList<>();
+        List<DC_ActiveObj> list = new ArrayList<>();
         DC_UnitAction action = null;
         for (DOOR_ACTION sub : DOOR_ACTION.values()) {
 

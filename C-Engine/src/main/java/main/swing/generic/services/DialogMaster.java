@@ -11,7 +11,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import javax.swing.*;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DialogMaster {
@@ -99,7 +99,7 @@ public class DialogMaster {
     }
 
     public static Obj objChoice(String string, Obj[] array) {
-        List<Obj> list = new LinkedList<>(Arrays.asList(array));
+        List<Obj> list = new ArrayList<>(Arrays.asList(array));
         ObjType type = (ObjType) entityChoice(DataManager.toTypeList(list));
         for (Obj obj : list) {
             if (obj.getType() == type) {

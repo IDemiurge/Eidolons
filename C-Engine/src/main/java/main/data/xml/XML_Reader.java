@@ -209,7 +209,7 @@ public class XML_Reader {
 
     public static List<ObjType> createCustomTypeList(String xml, OBJ_TYPE TYPE, Game game,
                                                      boolean overwrite, boolean incompleteTypes, boolean wrap) {
-        List<ObjType> types = new LinkedList<>();
+        List<ObjType> types = new ArrayList<>();
         if (wrap) {
             xml = XML_Converter.wrap("wrapped", xml);
         }
@@ -398,13 +398,13 @@ public class XML_Reader {
     public static void checkHeroesAdded() {
         String key = DC_TYPE.CHARS.getName();
         if (originalCharTypeMap == null) {
-            originalCharTypeMap = new MapMaster<String, ObjType>().constructMap(new LinkedList<>(
-                    getTypeMaps().get(key).keySet()), new LinkedList<>(getTypeMaps()
+            originalCharTypeMap = new MapMaster<String, ObjType>().constructMap(new ArrayList<>(
+                    getTypeMaps().get(key).keySet()), new ArrayList<>(getTypeMaps()
                     .get(key).values()));
         }
 
-        bufferCharTypeMap = new MapMaster<String, ObjType>().constructMap(new LinkedList<>(
-                getTypeMaps().get(key).keySet()), new LinkedList<>(getTypeMaps().get(key)
+        bufferCharTypeMap = new MapMaster<String, ObjType>().constructMap(new ArrayList<>(
+                getTypeMaps().get(key).keySet()), new ArrayList<>(getTypeMaps().get(key)
                 .values()));
 
         try {

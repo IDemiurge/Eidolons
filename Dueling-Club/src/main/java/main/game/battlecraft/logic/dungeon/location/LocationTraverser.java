@@ -23,7 +23,7 @@ public class LocationTraverser {
 //            coordinates = newDungeon.getMainEntrance().getCoordinates();
 //        }
 //        // exit?
-//        List<Unit> units = new LinkedList<>();
+//        List<Unit> units = new ArrayList<>();
 //        if (game.getParty() != null) {
 //            units.addAll(game.getParty().getMembers());
 //        } else {

@@ -9,7 +9,7 @@ import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.swing.generic.components.G_Panel;
 
 import javax.swing.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MacroInfoPanel extends G_Panel {
@@ -22,7 +22,7 @@ public class MacroInfoPanel extends G_Panel {
         pages = new DC_PagedInfoPanel() {
             protected List<List<VALUE>> getPageData() {
                 if (getObj() == null) {
-                    return new LinkedList<>();
+                    return new ArrayList<>();
                 }
                 if (getObj().getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
                     return HC_ValuePages.getPageLists((DC_TYPE) getObj()

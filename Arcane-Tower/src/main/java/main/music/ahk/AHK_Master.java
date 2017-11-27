@@ -20,7 +20,7 @@ import main.system.launch.CoreEngine;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -117,7 +117,7 @@ public class AHK_Master {
         }
         Map<String, List<String>> map = new XLinkedMap<>();
         for (String chars : StringMaster.open(AHK_Master.qwerty, " ")) {
-            map.put(chars, new LinkedList<>());
+            map.put(chars, new ArrayList<>());
         }
         for (String line : FileManager.readFileLines(script)) {
             if (!line.contains("Run C:\\playlists")) {
@@ -278,7 +278,7 @@ public class AHK_Master {
     // i = comment.indexOf(GROUP);
     // if (i != -1) {
     // if (list == null) {
-    // list = new LinkedList<>();
+    // list = new ArrayList<>();
     // groupMap.put(getKeyPart(line), list);
     // }
     // }
@@ -287,7 +287,7 @@ public class AHK_Master {
     // tags = comment.substring(arg0, arg1)
     // list = tagMap.getOrCreate(key);
     // if (list == null) {
-    // list = new LinkedList<>();
+    // list = new ArrayList<>();
     // groupMap.put(getKeyPart(line), list);
     // }
     // for(String substring: StringMaster.open( tags )){
@@ -310,7 +310,7 @@ public class AHK_Master {
     // // setComment
     // List<String> tags = tagMap.getOrCreate(lineIdentifier);
     // if (tags == null) {
-    // tags = new LinkedList<>();
+    // tags = new ArrayList<>();
     // tagMap.put(lineIdentifier, tags);
     // }
     // if (tags.contains(tag))
@@ -330,7 +330,7 @@ public class AHK_Master {
 
     public static List<JButton> getButtonsAll() {
 //		return new ListMaster<JButton>().join(false, getButtonsAll());
-        return new LinkedList<>();
+        return new ArrayList<>();
     }
 
     public static List<JButton> getButtonsFromActiveSubPanel() {
@@ -348,9 +348,9 @@ public class AHK_Master {
     }
 
     public static List<List<JButton>> getButtonLists() {
-        List<List<JButton>> lists = new LinkedList<>();
+        List<List<JButton>> lists = new ArrayList<>();
         for (Component sub : AHK_Master.getPanel().getView().getComponents()) {
-            List<JButton> list = new LinkedList<>();
+            List<JButton> list = new ArrayList<>();
             if (sub instanceof Container) {
                 Container container = (Container) sub;
                 for (Component btn : container.getComponents()) {

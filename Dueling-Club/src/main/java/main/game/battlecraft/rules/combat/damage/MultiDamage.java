@@ -1,6 +1,6 @@
 package main.game.battlecraft.rules.combat.damage;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MultiDamage extends Damage {
@@ -14,7 +14,7 @@ public class MultiDamage extends Damage {
 
     public List<Damage> getAdditionalDamage() {
         if (additionalDamage == null) {
-            additionalDamage = new LinkedList<>();
+            additionalDamage = new ArrayList<>();
         }
         return additionalDamage;
     }

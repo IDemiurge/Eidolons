@@ -13,7 +13,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DroppedItemManager {
@@ -91,12 +91,12 @@ public class DroppedItemManager {
     public DC_HeroItemObj findDroppedItem(String typeName, Coordinates coordinates) {
         Obj cell = game.getCellByCoordinate(coordinates);
         Obj item = new ListMaster<Obj>()
-                .findType(typeName, new LinkedList<>(getDroppedItems(cell)));
+                .findType(typeName, new ArrayList<>(getDroppedItems(cell)));
         return (DC_HeroItemObj) item;
     }
 
     public Collection<? extends Obj> getDroppedItems(Obj cell) {
-        Collection<Obj> list = new LinkedList<>();
+        Collection<Obj> list = new ArrayList<>();
         for (String id : StringMaster.open(cell.getProperty(PROPS.DROPPED_ITEMS))) {
             Obj item = game.getObjectById(StringMaster.getInteger(id));
             if (item != null) {
@@ -117,7 +117,7 @@ public class DroppedItemManager {
     }
 
     public Collection<? extends Obj> getAllDroppedItems() {
-        List<Obj> list = new LinkedList<>();
+        List<Obj> list = new ArrayList<>();
         for (Obj cell : game.getCells()) {
             list.addAll(getDroppedItems(cell));
         }

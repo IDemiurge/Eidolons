@@ -48,7 +48,7 @@ public class LE_ObjMaster {
         getObjCache().put(unit.getType(), unit);
         List<Unit> objects = LevelEditor.getSimulation().getUnitMap().get(coordinates);
         if (objects == null) {
-            objects = new LinkedList<>();
+            objects = new ArrayList<>();
             LevelEditor.getSimulation().getUnitMap().put(coordinates, objects);
         }
         objects.add(unit);
@@ -174,7 +174,7 @@ public class LE_ObjMaster {
             // LevelEditor.getGrid().getCells()[coordinate.x][coordinate.y]
             // .getObjects();
             if (objects != null) {
-                for (Unit obj : new LinkedList<>(objects)) {
+                for (Unit obj : new ArrayList<>(objects)) {
                     if (obj.getType().equals(type)) {
                         objects.remove(obj);
                         objects.add(getObject(type2, coordinate));
@@ -233,7 +233,7 @@ public class LE_ObjMaster {
         if (cachingOff) {
             return;
         }
-        List<List<Unit>> list = new LinkedList<>(LevelEditor.getSimulation().getUnitMap()
+        List<List<Unit>> list = new ArrayList<>(LevelEditor.getSimulation().getUnitMap()
                 .values());
         Stack<Map<Coordinates, List<Unit>>> cache = getCache();
         cache.push(new MapMaster<Coordinates, List<Unit>>().constructMap(LevelEditor
@@ -278,7 +278,7 @@ public class LE_ObjMaster {
         }
         // if (!noRemove)
         // LevelEditor.getSimulation().getUnitMap().put(c, new
-        // LinkedList<DC_HeroObj>());
+        // ArrayList<DC_HeroObj>());
         Coordinates newCoordinates = new Coordinates(c.x + offsetX, c.y + offsetY);
         if (mirror) {
             newCoordinates = new Coordinates(c.x + offsetY, c.y + offsetX);
@@ -297,7 +297,7 @@ public class LE_ObjMaster {
 
     public static List<ObjAtCoordinate> newUnitGroup(Coordinates baseCoordinate, int width,
                                                      int height, boolean alt) {
-        List<ObjAtCoordinate> list = new LinkedList<>();
+        List<ObjAtCoordinate> list = new ArrayList<>();
         // TODO make sure base is actually top-left!
         for (int x = 0; x <= width; x++) {
             for (int y = 0; y <= height; y++) {
@@ -339,7 +339,7 @@ public class LE_ObjMaster {
     }
 
     public static void setDirection(Unit obj, Coordinates c) {
-        List list = new LinkedList<>(Arrays.asList(DIRECTION.values()));
+        List list = new ArrayList<>(Arrays.asList(DIRECTION.values()));
         list.add(0, "Center");
         int i = DialogMaster.optionChoice("Set direction (none==center)", list.toArray());
         DIRECTION d = null;
@@ -389,7 +389,7 @@ public class LE_ObjMaster {
             obj = getObject(type, c);
             List<Unit> objects = LevelEditor.getSimulation().getUnitMap().get(c);
             if (objects == null) {
-                objects = new LinkedList<>();
+                objects = new ArrayList<>();
                 LevelEditor.getSimulation().getUnitMap().put(c, objects);
             }
             objects.add(obj);

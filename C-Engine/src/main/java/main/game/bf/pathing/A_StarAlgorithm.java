@@ -5,7 +5,7 @@ import main.game.bf.Coordinates;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class A_StarAlgorithm {
@@ -63,8 +63,8 @@ public class A_StarAlgorithm {
     }
 
     private void refresh() {
-        openList = new LinkedList<>();
-        closedList = new LinkedList<>();
+        openList = new ArrayList<>();
+        closedList = new ArrayList<>();
         for (PathNode node : nodeList) {
             node.reset();
         }
@@ -294,8 +294,8 @@ public class A_StarAlgorithm {
 // this.prev = orig;
 // this.agile = agile;
 // this.result = Integer.MAX_VALUE;
-// prevList = new LinkedList<Coordinates>();
-// paths = new LinkedList<Integer>();
+// prevList = new ArrayList<Coordinates>();
+// paths = new ArrayList<Integer>();
 //
 // List<Obj> adjacentCells = manager.getAdjacentObjs(c1, true);
 // if (adjacentCells.isEmpty())

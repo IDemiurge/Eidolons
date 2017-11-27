@@ -9,7 +9,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.system.entity.FilterMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PartyEffect extends GroupObjModifyEffect {
@@ -42,7 +42,7 @@ public class PartyEffect extends GroupObjModifyEffect {
         initFilterConditions();
         FilterMaster.filter(list, conditions);
 
-        List<Obj> objList = new LinkedList<>();
+        List<Obj> objList = new ArrayList<>();
         for (Unit j : list) {
             objList.add(j);
         }

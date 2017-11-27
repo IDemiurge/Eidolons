@@ -20,7 +20,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,7 +55,7 @@ public class DemoManager {
 
     private static void initHero() {
         //TODO JUST USE 'CHOOSE CENTER HERO' ?
-        List<ObjType> demoHeroes = new LinkedList<>();
+        List<ObjType> demoHeroes = new ArrayList<>();
         DataManager.getTypesSubGroup(DC_TYPE.CHARS, "Demo");
         Unit entity = null;
         

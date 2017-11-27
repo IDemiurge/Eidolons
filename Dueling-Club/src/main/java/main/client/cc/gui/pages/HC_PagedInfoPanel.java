@@ -42,7 +42,7 @@ public class HC_PagedInfoPanel extends DC_PagedInfoPanel {
     // List<String> descrPages = TextWrapper.wrap(descr, wrapLength);
     //
     // List<String> lorePages = TextWrapper.wrap(lore, wrapLength);
-    // List<List<String>> list = new LinkedList<>();
+    // List<List<String>> list = new ArrayList<>();
     // list.addAll(new ListMaster<String>()
     // .splitList(rowCount, descrPages));
     // list.addAll(new ListMaster<String>().splitList(rowCount, lorePages));

@@ -9,7 +9,7 @@ import main.entity.Entity;
 import main.swing.components.panels.page.info.element.*;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PropertyPage extends ValueInfoPage {
@@ -39,7 +39,7 @@ public class PropertyPage extends ValueInfoPage {
     }
 
     private void resetDisplayedValues() {
-        displayedValues = new LinkedList<>();
+        displayedValues = new ArrayList<>();
         if (getEntity() == null) {
             return;
         }

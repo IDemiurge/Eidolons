@@ -6,7 +6,7 @@ import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListObjChooser<T> {
@@ -32,7 +32,7 @@ public class ListObjChooser<T> {
             result = ListChooser.chooseStrings(ListMaster.toStringList(list));
         }
 
-        List<T> selection = new LinkedList<>();
+        List<T> selection = new ArrayList<>();
         // for (T item : list) {
         // if (StringMaster.contains(result, item.toString())) {
         // selection.add(item);
@@ -41,9 +41,9 @@ public class ListObjChooser<T> {
         // "");
         // }
         // }
-        LinkedList<T> items = new LinkedList<>(list);
+        ArrayList<T> items = new ArrayList<>(list);
         for (String substring : StringMaster.open(result)) {
-            for (T item : new LinkedList<>(items)) {
+            for (T item : new ArrayList<>(items)) {
                 if (StringMaster.compare(substring, item.toString(), true)) {
                     selection.add(item);
                     items.remove(item);

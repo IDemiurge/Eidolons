@@ -39,7 +39,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DC_ConditionMaster extends ConditionMaster {
@@ -334,7 +334,7 @@ public class DC_ConditionMaster extends ConditionMaster {
             case ATTACK:
                 c.add(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_SIGHT));
 
-                List<FACING_SINGLE> list = new LinkedList<>();
+                List<FACING_SINGLE> list = new ArrayList<>();
                 list.add(UnitEnums.FACING_SINGLE.IN_FRONT);
 
                 c.add(new OrConditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT),

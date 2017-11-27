@@ -17,7 +17,7 @@ import main.system.auxiliary.TimeMaster;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ZeitMaster {
@@ -164,7 +164,7 @@ public class ZeitMaster {
     }
 
     public static Entity getLatest(List<? extends Entity> list, final PARAMETER customParam) {
-        list = new LinkedList<>(list);
+        list = new ArrayList<>(list);
         Collections.sort(list, new Comparator<Entity>() {
             @Override
             public int compare(Entity o1, Entity o2) {

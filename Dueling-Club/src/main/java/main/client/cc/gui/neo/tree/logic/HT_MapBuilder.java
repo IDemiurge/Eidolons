@@ -19,7 +19,7 @@ import main.system.math.MathMaster;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class HT_MapBuilder {
     protected boolean personal;
     protected boolean skill;
     protected TreeMap map;
-    protected LinkedList<ObjType> data;
+    protected ArrayList<ObjType> data;
     protected OBJ_TYPE TYPE;
     protected int maxRows = 5;
     protected int[] columns = {1, 3, 2, 0, 4}; // equal split? or specify x?
@@ -214,7 +214,7 @@ public class HT_MapBuilder {
     }
 
     private List<ObjType> getCustomPosTypes(List<ObjType> rootTypes) {
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         for (ObjType t : rootTypes) {
             if (t.checkParam(PARAMS.HT_CUSTOM_POS_X) || t.checkParam(PARAMS.HT_CUSTOM_POS_Y)) {
                 list.add(t);
@@ -247,7 +247,7 @@ public class HT_MapBuilder {
 
     private int getSublingCount(List<ObjType> children) {
         int c = 0;
-        List<Object> groups = new LinkedList<>();
+        List<Object> groups = new ArrayList<>();
         for (ObjType child : children) {
             if (isRowPosIgnored(child)) {
                 continue;
@@ -770,13 +770,13 @@ public class HT_MapBuilder {
             }
             List<ObjType> types = groupsMap.get(group);
             if (types == null) {
-                types = new LinkedList<>();
+                types = new ArrayList<>();
                 groupsMap.put(group, types);
             }
             types.add(c);
         }
 
-        // List<ObjType> workList = new LinkedList<>(children);
+        // List<ObjType> workList = new ArrayList<>(children);
         for (String group : groupsMap.keySet()) {
             initGroupNodePos(groupsMap.get(group));
             // sort within each group
@@ -821,7 +821,7 @@ public class HT_MapBuilder {
         } else {
             // TODO
         }
-        data = new LinkedList<>(list);
+        data = new ArrayList<>(list);
 
         // HT_DataManager.getTypeGroups(data);
         // column per BASE_TYPE? TODO

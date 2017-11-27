@@ -17,7 +17,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NameMaster {
@@ -145,7 +145,7 @@ public class NameMaster {
     static String kingNameGroups = "king Common Eagle Griff Ulduin Wolf Pirate";
     private static final String DEFAULT_NAME_GROUP = kingNameGroups;
     static String genericNameGroups = "Common Griff Pirate king Eagle Wolf";
-    private static List<String> usedNames = new LinkedList<>();
+    private static List<String> usedNames = new ArrayList<>();
     private static String pirateNamesSecond;
     private static String demonNamesSecond;
     String orcNames = "Ormog;Nuglog;Usbrol;Buvlud;Xlirg;Xlard;Xmun;Yach-Yach;Guchruk;Durbul;Mubruk;Zurdun;Drufsin;";
@@ -385,7 +385,7 @@ public class NameMaster {
 
     public static String pickName(Entity hero) {
         List<String> nameGroups = StringMaster.openContainer(getNamesGroups(getBg(hero)), " ");
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (String nameGroup : nameGroups) {
             list.addAll(StringMaster.openContainer(getNamesForGroup(nameGroup, EntityCheckMaster
                     .getGender(hero) == HeroEnums.GENDER.FEMALE), " "));

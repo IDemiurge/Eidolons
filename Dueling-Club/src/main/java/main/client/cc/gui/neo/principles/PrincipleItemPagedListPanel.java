@@ -8,7 +8,7 @@ import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.graphics.GuiManager;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PrincipleItemPagedListPanel extends G_PagePanel<Entity> {
@@ -34,7 +34,7 @@ public class PrincipleItemPagedListPanel extends G_PagePanel<Entity> {
 
     @Override
     protected List<List<Entity>> getPageData() {
-        List<Entity> items = new LinkedList<>();
+        List<Entity> items = new ArrayList<>();
 
         if (checkItemDisplayed(hero.getDeity())) {
             items.add(hero.getDeity());

@@ -214,7 +214,7 @@ public class MusicListPanel extends G_Panel {
     }
 
     protected void initCustomViews() {
-        List<File> topList = new LinkedList<>();
+        List<File> topList = new ArrayList<>();
         Map<String, List<String>> customMap = new XLinkedMap<>();
         for (File file : FileManager.getFilesFromDirectory(AHK_Master.CUSTOM_LISTS_FOLDER, true)) {
             if (file.isDirectory()) {
@@ -246,7 +246,7 @@ public class MusicListPanel extends G_Panel {
         } else {
 
         }
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (File sub : filesFromDirectory) {
             String letter = getCustomListLetter(map, list, sub);
             String listString = letter + "::" + sub.getPath();
@@ -306,7 +306,7 @@ public class MusicListPanel extends G_Panel {
     }
 
     protected void restoreLineFormat(List<String> lines) {
-        LinkedList<String> list = new LinkedList<>(lines);
+        ArrayList<String> list = new ArrayList<>(lines);
         lines.clear();
         for (String sub : list) {
             sub = DataManager.getType(sub, AT_OBJ_TYPE.MUSIC_LIST).getName();// StringMaster.getWellFormattedString(generic);
@@ -318,7 +318,7 @@ public class MusicListPanel extends G_Panel {
     }
 
     protected void removeLineFormat(List<String> lines) {
-        LinkedList<String> list = new LinkedList<>(lines);
+        ArrayList<String> list = new ArrayList<>(lines);
         lines.clear();
         for (String sub : list) {
 

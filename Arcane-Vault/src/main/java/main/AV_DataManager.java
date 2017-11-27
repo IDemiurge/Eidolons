@@ -28,7 +28,7 @@ public class AV_DataManager {
     public static void init() {
         Map<String, List<VALUE>> IGNORE_MAP = new HashMap<>();
         for (int code = 0; code < IGNORED_VALUES.length; code++) {
-            List<VALUE> list = new LinkedList<>();
+            List<VALUE> list = new ArrayList<>();
             list.addAll(Arrays.asList(IGNORED_FROM_ALL_VALUES));
             list.addAll(Arrays.asList(IGNORED_VALUES[code]));
             IGNORE_MAP.put(DC_TYPE.getTypeByCode(code).getName(), list);

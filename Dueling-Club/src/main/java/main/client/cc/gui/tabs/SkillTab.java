@@ -17,7 +17,7 @@ public class SkillTab extends HeroItemTab {
     }
 
     // protected void initData() {
-    // data = new LinkedList<>();
+    // data = new ArrayList<>();
     // for (DC_SkillObj skill : hero.getSkills()) {
     // data.add(skill.getType());
     // }

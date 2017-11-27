@@ -9,7 +9,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -44,7 +44,7 @@ public class PriorityProfile implements Evolvable {
     @Override
     public Evolvable shuffleParents(Set<Evolvable> parents, boolean b) {
         PriorityProfile parent = (PriorityProfile) RandomWizard.getRandomListObject(
-         new LinkedList<>(parents));
+         new ArrayList<>(parents));
         return (Evolvable) parent.mutate();
     }
 

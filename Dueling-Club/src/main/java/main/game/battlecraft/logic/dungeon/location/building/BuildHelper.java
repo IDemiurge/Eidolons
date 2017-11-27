@@ -19,7 +19,7 @@ import main.system.data.DataUnit;
 import main.system.math.DC_PositionMaster;
 import main.system.math.MathMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +44,7 @@ public class BuildHelper {
         this.location = location.getDungeon();
         this.plan = location.getPlan();
 
-        this.usedCoordinates = new LinkedList<>();
+        this.usedCoordinates = new ArrayList<>();
         this.id = 0;
         params = buildParameters;
         if (params == null) {
@@ -144,7 +144,7 @@ public class BuildHelper {
                                     boolean culdesac) {
         Coordinates c = base;
         FACING_DIRECTION originalDirection = direction;
-        List<Coordinates> coordinates = new LinkedList<>();
+        List<Coordinates> coordinates = new ArrayList<>();
         int max_bents = 2;
         int length = 1;
         int bents = 0;
@@ -341,7 +341,7 @@ public class BuildHelper {
     }
 
     private boolean checkHasAdjacentIntersections(Coordinates c) {
-        return getAdjacentPassage(c, new LinkedList<>(), true) != null;
+        return getAdjacentPassage(c, new ArrayList<>(), true) != null;
     }
 
     private List<Coordinates> getCoordinates(Coordinates baseCoordinate, int width, int height,

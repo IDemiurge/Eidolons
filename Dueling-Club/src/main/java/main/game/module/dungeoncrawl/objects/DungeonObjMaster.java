@@ -17,7 +17,7 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,7 +62,7 @@ public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
         action.setTargetingCachingOff(true);
         action.setActionTypeGroup(ACTION_TYPE_GROUPS.STANDARD);
         action.setAbilities(null);
-        List<ActiveObj> actives = new LinkedList<>();
+        List<ActiveObj> actives = new ArrayList<>();
         actives.add(new ActiveAbilityObj((AbilityType)
          DataManager.getType("Dummy Ability", DC_TYPE.ABILS),
          unit.getRef(), unit.getOwner(), unit.getGame()) {

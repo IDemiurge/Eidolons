@@ -24,7 +24,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -258,7 +258,7 @@ public class Obj extends Entity {
 
     public List<String> getPassiveAbils() {
         if (passiveAbils == null) {
-            passiveAbils = new LinkedList<>();
+            passiveAbils = new ArrayList<>();
         }
         return passiveAbils;
     }

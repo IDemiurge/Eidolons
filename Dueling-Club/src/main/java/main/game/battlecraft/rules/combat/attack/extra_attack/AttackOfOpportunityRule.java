@@ -31,7 +31,7 @@ import main.system.math.PositionMaster;
 import main.system.math.roll.RollMaster;
 
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -52,7 +52,7 @@ public class AttackOfOpportunityRule {
         }
         sim = simulation;
         if (simulation) {
-            setAttacks(new LinkedList<>());
+            setAttacks(new ArrayList<>());
         }
 
         checkAttacks(active);
@@ -240,7 +240,7 @@ public class AttackOfOpportunityRule {
 
     public static List<DC_ActiveObj> getMoveAoOs(Coordinates prevCoordinates,
                                                  Coordinates coordinates, DC_ActiveObj action) {
-        List<DC_ActiveObj> list = new LinkedList<>();
+        List<DC_ActiveObj> list = new ArrayList<>();
         // TODO
         // if (!getConditions().preCheck(unit)) return;
 
@@ -339,7 +339,7 @@ public class AttackOfOpportunityRule {
         return attacks;
     }
 
-    public static void setAttacks(LinkedList<DC_ActiveObj> attacks) {
+    public static void setAttacks(ArrayList<DC_ActiveObj> attacks) {
         AttackOfOpportunityRule.attacks = attacks;
     }
 
@@ -423,7 +423,7 @@ public class AttackOfOpportunityRule {
     }
 
     private static List<DC_ActiveObj> getAttacksOfOpportunity(Unit unit) {
-        List<DC_ActiveObj> list = new LinkedList<>();
+        List<DC_ActiveObj> list = new ArrayList<>();
         DequeImpl<DC_UnitAction> attacks = unit.getActionMap()
          .get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK);
         if (attacks == null) {
@@ -459,7 +459,7 @@ public class AttackOfOpportunityRule {
     private static List<Unit> getPotentialAttackersOfOpportunity(DC_ActiveObj action) {
         // TODO all? anyone could have *some* action to make against certain
         // cases...
-        List<Unit> list = new LinkedList<>();
+        List<Unit> list = new ArrayList<>();
         for (Unit unit : action.getGame().getUnits()) {
             if (unit.isOwnedBy(action.getGame().getPlayer(!action.getOwner().isMe())))
             // if (!VisionManager.checkVisibileForUnit(unit,

@@ -37,7 +37,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnitFactory;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
  */
 public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SCRIPT_FUNCTION> {
 
-    List<Trigger> scriptTriggers = new LinkedList<>();
+    List<Trigger> scriptTriggers = new ArrayList<>();
 
     public CombatScriptExecutor(BattleMaster master) {
         super(master);
@@ -247,7 +247,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
             player = getPlayerManager().getPlayer(false);
         else
             i++;
-        List<String> units = new LinkedList<>();
+        List<String> units = new ArrayList<>();
 //        if (args[i].contains(ScriptSyntax.SPAWN_ARG_UNITS_WAVE))
         String unitString = args[i];
         int level = StringMaster.getInteger(VariableManager.getVars(unitString));
@@ -307,7 +307,7 @@ getSpawner().getFacingAdjuster().adjustFacing(unitsList);
     }
 
     private List<Coordinates> getCoordinatesListForUnits(String arg, DC_Player player, List<String> units, Ref ref) {
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         Coordinates origin = getCoordinates(arg, ref);
         // formation as arg? ;)
         list = getPositioner().getPartyCoordinates(origin, player.isMe(), units);

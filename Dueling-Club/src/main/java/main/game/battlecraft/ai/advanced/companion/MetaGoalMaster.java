@@ -9,7 +9,7 @@ import main.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import main.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.battlecraft.ai.elements.generic.AiMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +24,7 @@ public class MetaGoalMaster extends AiHandler {
     }
 
     public List<MetaGoal> initMetaGoalsForUnit(UnitAI ai) {
-        List<MetaGoal> goals = new LinkedList<>();
+        List<MetaGoal> goals = new ArrayList<>();
         if (ai.getCurrentOrder() != null) {
             goals.addAll(getGoalsFromOrder(ai.getCurrentOrder()));
         }
@@ -37,7 +37,7 @@ public class MetaGoalMaster extends AiHandler {
     }
 
     private List<MetaGoal> getGoalsFromCharacter(UnitAI ai) {
-        List<MetaGoal> list = new LinkedList<>();
+        List<MetaGoal> list = new ArrayList<>();
 //
         switch (ai.getType()) {
             case TANK:
@@ -47,7 +47,7 @@ public class MetaGoalMaster extends AiHandler {
     }
 
     private List<MetaGoal> createGoals(META_GOAL_TYPE protect, UnitAI ai) {
-        List<MetaGoal> goals = new LinkedList<>();
+        List<MetaGoal> goals = new ArrayList<>();
         switch (protect) {
             case PROTECT:
                 getAnalyzer().getAllies(ai).forEach(ally -> goals.add(new MetaGoal(META_GOAL_TYPE.PROTECT, ally.getId())));
@@ -57,7 +57,7 @@ public class MetaGoalMaster extends AiHandler {
     }
 
     private List<MetaGoal> getGoalsFromOrder(Order currentOrder) {
-        List<MetaGoal> list = new LinkedList<>();
+        List<MetaGoal> list = new ArrayList<>();
         META_GOAL_TYPE type = getGoalTypeFromOrderType(currentOrder.getType());
 
         list.add(new MetaGoal(type, currentOrder.getArg()));

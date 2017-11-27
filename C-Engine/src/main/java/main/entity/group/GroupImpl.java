@@ -6,7 +6,7 @@ import main.system.auxiliary.StringMaster;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupImpl implements GROUP<Obj> {
@@ -24,7 +24,7 @@ public class GroupImpl implements GROUP<Obj> {
         this.setIgnoreGroupTargeting(ignoreGroupTargeting);
         this.idList = Arrays.asList(idList
                 .toArray(new Integer[idList.size()]));
-        objList = new LinkedList<>();
+        objList = new ArrayList<>();
         for (Integer id : idList) {
             objList.add(game.getObjectById(id));
         }
@@ -38,7 +38,7 @@ public class GroupImpl implements GROUP<Obj> {
         this.setIgnoreGroupTargeting(ignoreGroupTargeting);
         objList = Arrays.asList(objects.toArray(new Obj[objects
                 .size()]));
-        idList = new LinkedList<>();
+        idList = new ArrayList<>();
         for (Obj obj : objList) {
             idList.add(obj.getId());
         }

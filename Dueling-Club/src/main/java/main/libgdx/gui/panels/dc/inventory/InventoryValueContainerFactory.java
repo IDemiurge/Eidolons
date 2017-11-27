@@ -6,7 +6,7 @@ import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import main.libgdx.texture.TextureCache;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +36,7 @@ public class InventoryValueContainerFactory {
 
     public List<InventoryValueContainer> getList(Collection<? extends Entity> items,
                                                  CELL_TYPE type) {
-        List<InventoryValueContainer> list = new LinkedList<>();
+        List<InventoryValueContainer> list = new ArrayList<>();
        items.forEach(item -> list.add(
           get(item, type)));
         return list;

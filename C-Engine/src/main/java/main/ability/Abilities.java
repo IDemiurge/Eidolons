@@ -13,7 +13,7 @@ public class Abilities implements Ability, Iterable<Ability> {
     private List<Ability> abils;
 
      public Abilities() {
-        abils = new LinkedList<>();
+        abils = new ArrayList<>();
 
     }
 

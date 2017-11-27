@@ -16,7 +16,7 @@ import main.system.hotkey.GlobalKeys;
 import main.system.launch.CoreEngine;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FAST_DC {
@@ -73,7 +73,7 @@ public class FAST_DC {
         boolean skipChoice = false;
 
 
-        List<String> arglist = new LinkedList<>(Arrays.asList(args));
+        List<String> arglist = new ArrayList<>(Arrays.asList(args));
         if (args != null) {
             if (args[0].contains(PRESET_OPTION_ARG) ||args == SKIP_CHOICE_ARGS || (arglist.contains(PRESET_OPTION_ARG) ||
              (arglist.contains(PRESET_ARG)))) {

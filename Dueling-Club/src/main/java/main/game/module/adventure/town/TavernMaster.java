@@ -12,7 +12,7 @@ import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TavernMaster {
@@ -23,7 +23,7 @@ public class TavernMaster {
     public static final String DEFAULT_TAVERN = "Raven's Eye";
 
     public static String generateTavernName(Tavern tavern) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         list.add("Joe's");
         // switch(tavern.getTavernType()){
         // }

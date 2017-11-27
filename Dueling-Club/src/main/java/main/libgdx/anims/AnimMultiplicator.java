@@ -122,7 +122,7 @@ public class AnimMultiplicator implements Runnable {
     }
 
     public void applyMultiplicationForCoordinates(Set<Coordinates> coordinates) {
-        List<EmitterActor> list = new LinkedList<>();
+        List<EmitterActor> list = new ArrayList<>();
 
         filterCoordinates(template, coordinates).forEach(c ->
                 {
@@ -144,10 +144,10 @@ public class AnimMultiplicator implements Runnable {
 
         if (template != null) {
             FACING_DIRECTION facing = getActive().getOwnerObj().getFacing();
-            List<Coordinates> filtered = new LinkedList<>(coordinates);
+            List<Coordinates> filtered = new ArrayList<>(coordinates);
             Coordinates farthest = CoordinatesMaster.getFarmostCoordinateInDirection
                     (facing.getDirection(),
-                            new LinkedList<>(coordinates), null);
+                            new ArrayList<>(coordinates), null);
             switch (template) {
 //                template.getNumberOfEmitters(getActive())
                 case RAY:
@@ -167,7 +167,7 @@ public class AnimMultiplicator implements Runnable {
                     );
                     while (filtered.size() <
                             template.getNumberOfEmitters(getActive())) {
-                        List<Coordinates> list = new LinkedList<>(coordinates);
+                        List<Coordinates> list = new ArrayList<>(coordinates);
                         list.removeAll(filtered);
                         list.removeIf(c ->
                                 farthest.getXorY(!xOrY) == c.getXorY(!xOrY)
@@ -213,7 +213,7 @@ public class AnimMultiplicator implements Runnable {
     private void applyTemplateAngles(Set<Coordinates> coordinates) {
         int max = template.getNumberOfEmitters(getActive());
         // 1 for ray, but we know coordinates precisely
-        List<EmitterActor> list = new LinkedList<>();
+        List<EmitterActor> list = new ArrayList<>();
 
         for (EmitterActor e : emitterList) {
             int angle = 0;

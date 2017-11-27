@@ -12,7 +12,7 @@ import main.swing.generic.components.editors.lists.ListObjChooser;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MusicList extends MusicEntity {
@@ -46,7 +46,7 @@ public class MusicList extends MusicEntity {
     @Override
     public void toBase() {
         super.toBase();
-        tracks = new LinkedList<>();
+        tracks = new ArrayList<>();
         String property = getProperty(AT_PROPS.TRACKS);
         for (ObjType t : DataManager.toTypeList(property, AT_OBJ_TYPE.TRACK)) {
             // duplicate preCheck

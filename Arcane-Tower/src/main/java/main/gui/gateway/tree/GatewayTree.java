@@ -37,7 +37,7 @@ public class GatewayTree {
     // }
     //
     // private List<ArcaneEntity> getTopEntities(List<ArcaneEntity> data) {
-    // List<ArcaneEntity> list = new LinkedList<>();
+    // List<ArcaneEntity> list = new ArrayList<>();
     // for (ArcaneEntity generic : data) {
     // if (generic.getOBJ_TYPE_ENUM() == TOP_TYPE)
     // list.add(generic);

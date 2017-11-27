@@ -39,7 +39,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActionSequenceConstructor extends AiHandler {
@@ -82,7 +82,7 @@ public class ActionSequenceConstructor extends AiHandler {
 
 
     public List<ActionSequence> createActionSequencesForGoal(Goal goal, UnitAI ai) {
-        List<ActionSequence> actionSequences = new LinkedList<>();
+        List<ActionSequence> actionSequences = new ArrayList<>();
         List<DC_ActiveObj> actions = AiUnitActionMaster.getFullActionList(goal.getTYPE(), ai.getUnit());
         actions.addAll(addSubactions(actions));
         for (DC_ActiveObj action : actions) {
@@ -122,7 +122,7 @@ public class ActionSequenceConstructor extends AiHandler {
     }
 
     private List<ActionSequence> getSequences(Task task, DC_ActiveObj active) {
-        List<ActionSequence> sequences = new LinkedList<>();
+        List<ActionSequence> sequences = new ArrayList<>();
         Ref ref = task.getUnit().getRef().getCopy();
         Integer arg = TaskManager.checkTaskArgReplacement(task, active);
 //        if (arg == null) {
@@ -167,7 +167,7 @@ public class ActionSequenceConstructor extends AiHandler {
 
 
     private List<DC_ActiveObj> addSubactions(List<DC_ActiveObj> actions) {
-        List<DC_ActiveObj> subactions = new LinkedList<>();
+        List<DC_ActiveObj> subactions = new ArrayList<>();
         for (DC_ActiveObj a : actions) {
             subactions.addAll(a.getSubActions());
         }

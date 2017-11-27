@@ -23,7 +23,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.StringReader;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -72,7 +72,7 @@ public class XML_Converter {
         return getNodeList(node, true);
     }
         public static List<Node> getNodeList(Node node  , boolean ignoreTextNodes) {
-        List<Node> list = new LinkedList<>();
+        List<Node> list = new ArrayList<>();
         if (node == null) {
             return list;
         }
@@ -100,7 +100,7 @@ public class XML_Converter {
     }
 
     public static List getConvertedDoc(Node node) {
-        List list = new LinkedList();
+        List list = new ArrayList();
 
         if (!node.hasChildNodes()) {
             list.add(node.getNodeName());
@@ -339,7 +339,7 @@ public class XML_Converter {
             xml = layerDown(xml);
         }
         Document doc = getDoc(xml);
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         List<Node> typeGroupsList = null;
         for (Node n : getNodeList(doc)) {
             if (n.getNodeName().equalsIgnoreCase(TYPES_NODE)) {
@@ -347,7 +347,7 @@ public class XML_Converter {
             }
         }
         if (typeGroupsList == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         for (Node groupNode : typeGroupsList) {
             DC_TYPE obj_type = DC_TYPE.getType(groupNode.getNodeName());

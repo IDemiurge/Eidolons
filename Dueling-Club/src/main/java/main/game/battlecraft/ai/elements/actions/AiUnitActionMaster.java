@@ -18,7 +18,7 @@ import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -158,7 +158,7 @@ public class AiUnitActionMaster {
     }
 
     public static List<DC_ActiveObj> getMoveActions(Unit unit) {
-        List<DC_ActiveObj> list = new LinkedList<>();
+        List<DC_ActiveObj> list = new ArrayList<>();
         list.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
         DequeImpl<DC_UnitAction> actionList = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
         if (ListMaster.isNotEmpty(actionList)) {
@@ -170,7 +170,7 @@ public class AiUnitActionMaster {
     }
 
     public static List<DC_ActiveObj> getActionObjectList(List<Action> actions) {
-        List<DC_ActiveObj> activeList = new LinkedList<>();
+        List<DC_ActiveObj> activeList = new ArrayList<>();
         if (actions != null) {
             for (Action object : actions) {
                 if (object != null) {
@@ -182,7 +182,7 @@ public class AiUnitActionMaster {
     }
 
     public static Collection<DC_ActiveObj> getSpells(AI_LOGIC logic, Unit unit) {
-        List<DC_ActiveObj> list = new LinkedList<>();
+        List<DC_ActiveObj> list = new ArrayList<>();
         for (DC_ActiveObj spell : unit.getSpells()) {
             if (spell.getProperty(PROPS.AI_LOGIC).equalsIgnoreCase(logic.toString())) {
                 list.add(spell);

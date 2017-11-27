@@ -39,7 +39,7 @@ import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +53,7 @@ public class Level extends DungeonWrapper<Location> {
     private String path;
     private Map<ObjType, Unit> objCache = new HashMap<>();
     private List<AiGroupData> aiGroups;
-    private List<DC_Obj> wallObjects = new LinkedList<>();
+    private List<DC_Obj> wallObjects = new ArrayList<>();
 
     public Level(String baseDungeonType, Mission mission, String data) {
         this(baseDungeonType, mission, null, false);
@@ -113,9 +113,9 @@ public class Level extends DungeonWrapper<Location> {
             // obj.setZ(dungeon.getZ());
             // }
 
-            List<Unit> fullObjectList = new LinkedList<>();
+            List<Unit> fullObjectList = new ArrayList<>();
             for (MapBlock b : plan.getBlocks()) {
-                LinkedList<Obj> objects = new LinkedList<>(b.getObjects());
+                ArrayList<Obj> objects = new ArrayList<>(b.getObjects());
                 for (Obj obj : objects) {
                     fullObjectList.add((Unit) obj);
                     // TODO of course - the issue was that I added an object to
@@ -215,7 +215,7 @@ public class Level extends DungeonWrapper<Location> {
         // prev.getMapObjects()
         LE_Simulation c_game = (LE_Simulation) location.getGame();
         LogMaster.log(1, c_game.toString());
-        LinkedList<Unit> unitsCache = c_game.getUnitsCache();
+        ArrayList<Unit> unitsCache = c_game.getUnitsCache();
         location.setPlan(prev.getLocation().getPlan().getCopy());
         LE_Simulation game = (LE_Simulation) prev.getLocation().getGame();
         location.getDungeon(). setGame(game);
@@ -292,7 +292,7 @@ public class Level extends DungeonWrapper<Location> {
 
                         List<Unit> list = multiMap.get(c);
                         if (list == null) {
-                            list = new LinkedList<>();
+                            list = new ArrayList<>();
                             multiMap.put(c, list);
                         }
 
@@ -351,7 +351,7 @@ public class Level extends DungeonWrapper<Location> {
 
     private List<DC_Obj> getObjects(String objNameFilter, Coordinates... c) {
 
-        List<DC_Obj> list = new LinkedList<>();
+        List<DC_Obj> list = new ArrayList<>();
         for (Coordinates coordinates : c) {
             for (DC_Obj obj : getObjects(coordinates)) {
                 if (objNameFilter != null) {
@@ -579,7 +579,7 @@ public class Level extends DungeonWrapper<Location> {
     }
 
     public List<AiGroupData> getAiGroups() {
-        aiGroups = new LinkedList<>();
+        aiGroups = new ArrayList<>();
         return aiGroups;
     }
 

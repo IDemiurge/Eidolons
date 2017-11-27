@@ -98,7 +98,7 @@ public class GridPanel extends Group {
     private boolean fpsDebug = false;
     private TextureRegion cornerRegion;
     private WallMap wallMap;
-    private List<OverlayView> overlays = new LinkedList<>();
+    private List<OverlayView> overlays = new ArrayList<>();
     private GridUnitView hoverObj;
     private boolean resetVisibleRequired;
     private boolean updateRequired;

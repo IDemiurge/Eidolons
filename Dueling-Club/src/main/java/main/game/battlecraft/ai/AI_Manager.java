@@ -25,7 +25,7 @@ import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 import main.system.text.SpecialLogger;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AI_Manager extends AiMaster {
@@ -35,7 +35,7 @@ public class AI_Manager extends AiMaster {
     private GroupAI enemyGroup;
     private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
     private List<GroupAI> groups;
-    private static List<DC_ActiveObj> brokenActions=    new LinkedList<>() ;
+    private static List<DC_ActiveObj> brokenActions=    new ArrayList<>() ;
 
     public AI_Manager(DC_Game game) {
         super(game);
@@ -217,7 +217,7 @@ public class AI_Manager extends AiMaster {
     private void updateGroups() {
         double join_distance = 1;
         double leave_distance = 5;
-        for (GroupAI group :     new LinkedList<>(groups))
+        for (GroupAI group :     new ArrayList<>(groups))
             for (Unit unit: group.getMembers()) {
                 double distance = PositionMaster.getExactDistance(
                  group.getLeader().getCoordinates(),
@@ -250,7 +250,7 @@ public class AI_Manager extends AiMaster {
 //            }
 //        }
         if (groups==null  )
-        groups = new LinkedList<>();
+        groups = new ArrayList<>();
 
         for (Object sub : game.getBattleMaster().getPlayerManager().getPlayers()) {
             DC_Player player = (DC_Player) sub;

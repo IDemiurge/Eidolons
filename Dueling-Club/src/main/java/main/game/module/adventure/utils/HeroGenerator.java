@@ -16,7 +16,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.text.NameMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HeroGenerator {
@@ -39,7 +39,7 @@ public class HeroGenerator {
     }
 
     private static void applyBackgroundChanges(ObjType type, int max) {
-        List<BACKGROUND_CHANGE_TEMPLATES> applied = new LinkedList<>();
+        List<BACKGROUND_CHANGE_TEMPLATES> applied = new ArrayList<>();
         while (true) {
             int i = RandomWizard.getRandomInt(BACKGROUND_CHANGE_TEMPLATES
                     .values().length);
@@ -67,7 +67,7 @@ public class HeroGenerator {
 
         applyPresetChanges(hero, hero.getIntParam(PARAMS.LEVEL));
 
-        List<String> heroNamesInGame = new LinkedList<>();
+        List<String> heroNamesInGame = new ArrayList<>();
         Loop.startLoop(heroNamesInGame.size());
         String name = hero.getName();
         while (Loop.loopEnded()) {
@@ -139,7 +139,7 @@ public class HeroGenerator {
     }
 
     private static void applyPresetChanges(Unit type, int max) {
-        List<PRESET_CHANGE_TEMPLATES> applied = new LinkedList<>();
+        List<PRESET_CHANGE_TEMPLATES> applied = new ArrayList<>();
         int n = 0;
         while (true) {
             if (n > RandomWizard.getRandomInt(max)) {

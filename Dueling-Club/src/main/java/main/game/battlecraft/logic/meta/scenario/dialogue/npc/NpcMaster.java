@@ -3,7 +3,7 @@ package main.game.battlecraft.logic.meta.scenario.dialogue.npc;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +24,7 @@ public class NpcMaster {
 
 
         public void getDisplayedUnitComments(){
-         List<BattleComment> list = new LinkedList<>();
+         List<BattleComment> list = new ArrayList<>();
     }
 
 }

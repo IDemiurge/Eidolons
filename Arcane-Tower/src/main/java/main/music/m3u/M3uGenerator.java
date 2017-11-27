@@ -14,7 +14,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 
 import java.io.File;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class M3uGenerator {
@@ -110,10 +110,10 @@ public class M3uGenerator {
     }
 
     public static List<String> getTracks(File dir) {
-        List<String> filePaths = new LinkedList<>();
+        List<String> filePaths = new ArrayList<>();
         addMusicTracks(dir, filePaths);
         if (filePaths.isEmpty()) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         return filePaths;
     }

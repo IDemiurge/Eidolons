@@ -13,7 +13,7 @@ import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 // The idea is to make rounds imitate real-time combat as accurately as possible
@@ -130,7 +130,7 @@ public class TimeRule {
     }
 
     public boolean checkEndTurn() {
-        List<Unit> lateUnits = new LinkedList<>();
+        List<Unit> lateUnits = new ArrayList<>();
         // TODO just remove all laters and see if it's over
         // boolean result =true;
         for (Unit unit : game.getUnits()) {

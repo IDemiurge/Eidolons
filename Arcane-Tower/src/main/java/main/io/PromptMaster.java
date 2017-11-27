@@ -14,7 +14,7 @@ import main.swing.generic.components.editors.lists.ListObjChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PromptMaster {
@@ -107,9 +107,9 @@ public class PromptMaster {
     }
 
     public static List<Task> taskPrompt(boolean filterOut, TASK_STATUS... filteredStatuses) {
-        List<Task> list = new LinkedList<>(ArcaneTower.getTasks());
+        List<Task> list = new ArrayList<>(ArcaneTower.getTasks());
         for (TASK_STATUS f : filteredStatuses) {
-            for (Task task : new LinkedList<>(list)) {
+            for (Task task : new ArrayList<>(list)) {
                 boolean result = task.getStatusEnum() == f;
                 if (filterOut) {
                     if (result) {

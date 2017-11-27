@@ -11,7 +11,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WatchActionEffect extends DC_Effect  implements OneshotEffect {
@@ -30,7 +30,7 @@ public class WatchActionEffect extends DC_Effect  implements OneshotEffect {
         Obj sourceObj = ref.getSourceObj();
         List<DC_Obj> list = WatchRule.getWatchersMap().get(sourceObj);
         if (list == null) {
-            list = new LinkedList<>();
+            list = new ArrayList<>();
             WatchRule.getWatchersMap().put((Unit) sourceObj, list);
         } else if (!alert) {
             if (list.contains(ref.getTargetObj())) {

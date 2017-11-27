@@ -12,11 +12,11 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
     int size = 0;
 
     public DequeImpl(E... array) {
-        this(new LinkedList<>(Arrays.asList(array)));
+        this(new ArrayList<>(Arrays.asList(array)));
     }
 
     public DequeImpl(Collection<? extends E> asList) {
-        super(asList == null ? new LinkedList<>() : asList);
+        super(asList == null ? new ArrayList<>() : asList);
     }
 
     public DequeImpl() {

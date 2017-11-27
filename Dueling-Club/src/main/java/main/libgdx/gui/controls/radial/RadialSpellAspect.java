@@ -5,7 +5,7 @@ import main.entity.active.DC_SpellObj;
 import main.entity.obj.unit.Unit;
 import main.libgdx.gui.controls.radial.SpellRadialManager.SPELL_ASPECT;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,8 +21,8 @@ public class RadialSpellAspect implements RADIAL_ITEM {
 
     @Override
     public List<RADIAL_ITEM> getItems(Unit source) {
-        LinkedList<RADIAL_ITEM> list = new LinkedList<>();
-        List<DC_SpellObj> spells = new LinkedList<>(source.getSpells());
+        ArrayList<RADIAL_ITEM> list = new ArrayList<>();
+        List<DC_SpellObj> spells = new ArrayList<>(source.getSpells());
         if (spells.size() < maxPlainSize) {
             spells.forEach(spell -> list.add(new EntityNode(spell)));
             return list;
@@ -30,7 +30,7 @@ public class RadialSpellAspect implements RADIAL_ITEM {
 
         spells.removeIf(spell -> !spell.getAspect().toString().equalsIgnoreCase(aspect.toString()));
         for (SPELL_GROUP g : aspect.groups) {
-            List<DC_SpellObj> group = new LinkedList<>(spells);
+            List<DC_SpellObj> group = new ArrayList<>(spells);
             group.removeIf(spell -> !spell.getSpellGroup().equals(g));
             if (group.size() > 0) {
                 list.add(new RadialSpellGroup(g));

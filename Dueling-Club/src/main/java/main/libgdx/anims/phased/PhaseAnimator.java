@@ -22,7 +22,7 @@ import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.AttackAnimation;
 import main.system.graphics.PhaseAnimation;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static main.system.GuiEventType.*;
@@ -32,7 +32,7 @@ import static main.system.GuiEventType.*;
  */
 public class PhaseAnimator extends Group {
     private static PhaseAnimator instance;
-    List<PhaseAnim> anims = new LinkedList<>();
+    List<PhaseAnim> anims = new ArrayList<>();
     private boolean on;
 
     public PhaseAnimator(Stage stage) {

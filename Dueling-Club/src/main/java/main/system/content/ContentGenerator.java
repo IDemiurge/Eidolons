@@ -29,7 +29,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +59,7 @@ public class ContentGenerator {
     }
 
     public static void generateWaveUnitTypes(ObjType t) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (String u : StringMaster.open(t.getProperty(PROPS.SHRUNK_PRESET_GROUP))) {
             if (!list.contains(u)) {
                 list.add(u);
@@ -68,8 +68,8 @@ public class ContentGenerator {
     }
 
     public static void setAbilBaseTypes() {
-        List<List<ObjType>> groups = new LinkedList<>();
-        List<ObjType> group = new LinkedList<>();
+        List<List<ObjType>> groups = new ArrayList<>();
+        List<ObjType> group = new ArrayList<>();
 
     }
 
@@ -446,7 +446,7 @@ public class ContentGenerator {
             case HORNS:
                 return StringMaster.constructStringContainer(ListMaster.toList(
                         WEAPON_ATTACKS.Pierce, WEAPON_ATTACKS.Tear));
-            case NEEDLES:
+            case INSECTOID:
                 return StringMaster.constructStringContainer(ListMaster.toList(
                         WEAPON_ATTACKS.Pierce, WEAPON_ATTACKS.Slice, WEAPON_ATTACKS.Stab));
             case HOOVES:
@@ -666,7 +666,7 @@ public class ContentGenerator {
     //
     // private static List<String> getResistancesForArmorType(OBJECT_ARMOR_TYPE
     // armorType) {
-    // List<String> list = new LinkedList<>();
+    // List<String> list = new ArrayList<>();
     // for (PARAMETER portrait : ValuePages.RESISTANCES) {
     // switch ((PARAMS) portrait) {
     // case PIERCING_RESISTANCE:
@@ -725,7 +725,7 @@ public class ContentGenerator {
     // }
     //
     // private static List<String> getParamsFor(OBJECT_ARMOR_TYPE armorType) {
-    // List<String> list = new LinkedList<>();
+    // List<String> list = new ArrayList<>();
     // for (PARAMS portrait : params) {
     // list.add(getParams(armorType, portrait));
     // }

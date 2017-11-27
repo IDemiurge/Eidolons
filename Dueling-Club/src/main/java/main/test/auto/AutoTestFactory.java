@@ -23,7 +23,7 @@ import main.system.entity.FilterMaster;
 import main.test.auto.AutoTest.TEST_ARGS;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AutoTestFactory {
@@ -97,7 +97,7 @@ public class AutoTestFactory {
     }
 
     public List<AutoTest> initTests() {
-        List<AutoTest> tests = new LinkedList<>();
+        List<AutoTest> tests = new ArrayList<>();
         testTypes = DataManager.toTypeList(Arrays.asList(config()), getTYPE());
         for (ObjType type : testTypes) {
             AutoTest test = createTest(type);
@@ -107,7 +107,7 @@ public class AutoTestFactory {
     }
 
     public AutoTest createTest(ObjType type) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         list.add(TEST_ARGS.NAME + ":" + type.getName());
         initArgList(list, type);
         String args = new StringMaster().constructContainer(list);

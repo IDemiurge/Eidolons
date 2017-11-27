@@ -28,7 +28,7 @@ import main.system.auxiliary.secondary.BooleanMaster;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -70,7 +70,7 @@ public class Location {
         if (bossLevel != null) {
             up = bossLevel.checkBool(GenericEnums.STD_BOOLS.UPWARD_Z);
         }
-        // List<Dungeon> list = new LinkedList<>();
+        // List<Dungeon> list = new ArrayList<>();
         // constructSublevels();
         return root;
     }
@@ -130,7 +130,7 @@ public class Location {
             // strings!
             // new RandomWizard<>().constructStringWeightMapInversed(scenario
             // .getProperty(MACRO_PROPS.RANDOM_SUBLEVELS), SUBDUNGEON_TYPE)
-            List<String> list = new LinkedList<>();
+            List<String> list = new ArrayList<>();
             for (String stretch : StringMaster.open(scenario
                     .getProperty(MACRO_PROPS.RANDOM_SUBLEVELS))) {
                 int i = 0;
@@ -367,7 +367,7 @@ public class Location {
     // entranceSide = FacingMaster.getRandomFacing();
     // Coordinates enterCoordinate = DungeonLevelMaster
     // .getEntranceCoordinates(entranceSide, template, root);
-    // List<Dungeon> subLevels = new LinkedList<>();
+    // List<Dungeon> subLevels = new ArrayList<>();
     // Entrance mainExit = root.getEntrances().getOrCreate(0);
     //
     // distributeDungeonDepth(root, i); // this creates dungeons, now adjust -

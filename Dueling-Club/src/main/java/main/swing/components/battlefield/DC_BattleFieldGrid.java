@@ -144,14 +144,14 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 Coordinates c = new Coordinates(x, y);
                 List<BattleFieldObject> objects = game.getObjectsOnCoordinate(getZ(), c, false, true,
                         false);
-                List<Unit> overlayingObjects = new LinkedList<>(new DequeImpl(game
+                List<Unit> overlayingObjects = new ArrayList<>(new DequeImpl(game
                         .getObjectsOnCoordinate(getZ(), c, true, true, false))
                         .getRemoveAll(objects));
 
                 // visibility preCheck!
 
                 CellComp comp = gridComp.getCells()[x][y];
-                List<BattleFieldObject> list = new LinkedList<>();
+                List<BattleFieldObject> list = new ArrayList<>();
                 for (BattleFieldObject obj : objects) {
                     if (VisionManager.checkVisible(obj)) {
                         list.add(obj);
@@ -519,7 +519,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     @Override
     public List<Coordinates> getCoordinatesList() {
         if (coordinates == null) {
-            coordinates = new LinkedList<>();
+            coordinates = new ArrayList<>();
             for (Coordinates c : gridComp.getMap().keySet()) {
                 coordinates.add(c);
             }

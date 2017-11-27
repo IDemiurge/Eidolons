@@ -2,14 +2,14 @@ package main.system.math;
 
 import main.entity.Ref;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by JustMe on 3/21/2017.
  */
 public class FormulaMaster {
-    private static List<String> failedFormulas = new LinkedList<>();
+    private static List<String> failedFormulas = new ArrayList<>();
 
     public static List<String> getFailedFormulas() {
         return failedFormulas;

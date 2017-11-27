@@ -31,7 +31,7 @@ import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -347,7 +347,7 @@ public class DC_RequirementsManager implements RequirementsManager {
         List<PARAMETER> params;
         String str1 = "";
         if (valRef.contains(StringMaster.VAR_SEPARATOR)) {
-            params = new LinkedList<>();
+            params = new ArrayList<>();
             for (String s : StringMaster.open(valRef, StringMaster.VAR_SEPARATOR)) {
 
                 PARAMETER p = ContentManager.getPARAM(s);

@@ -6,11 +6,11 @@ import main.system.images.ImageManager.STD_IMAGES;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GuiMaster {
-    List<DynamicButton> dynamicButtons = new LinkedList<>();
+    List<DynamicButton> dynamicButtons = new ArrayList<>();
     private Object mouseMap;
 
     public GuiMaster(DC_Game game) {

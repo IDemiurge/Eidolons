@@ -9,7 +9,7 @@ import main.system.math.Formula;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class MultiTargeting extends TargetingImpl {
     private Targeting[] targetings;
@@ -102,7 +102,7 @@ public class MultiTargeting extends TargetingImpl {
             return false;
         }
 
-        Collection<Integer> ids = new LinkedList<>();
+        Collection<Integer> ids = new ArrayList<>();
         for (Ref REF : refs) {
             ids.add(REF.getTarget());
         }

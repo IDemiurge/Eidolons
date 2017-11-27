@@ -8,7 +8,7 @@ import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapZone {
@@ -53,7 +53,7 @@ public class MapZone {
     }
 
     public List<Coordinates> getCoordinates() {
-        return new LinkedList<>(CoordinatesMaster.getCoordinatesWithin(x1, x2 - 1, y1, y2 - 1));
+        return new ArrayList<>(CoordinatesMaster.getCoordinatesWithin(x1, x2 - 1, y1, y2 - 1));
     }
 
     @Override
@@ -147,7 +147,7 @@ public class MapZone {
 
     public List<Coordinates> getExceptions() {
         if (exceptions == null) {
-            exceptions = new LinkedList<>();
+            exceptions = new ArrayList<>();
         }
         return exceptions;
     }

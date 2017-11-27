@@ -5,7 +5,7 @@ import main.game.module.adventure.map.Region;
 import main.system.auxiliary.RandomWizard;
 
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BoundaryMaster {
@@ -20,7 +20,7 @@ public class BoundaryMaster {
 	 * ++ re-use points - 
 	 */
 
-    static List<AreaLine> lines = new LinkedList<>();
+    static List<AreaLine> lines = new ArrayList<>();
 
     public static Area getAreaForPoint(Point p) {
         float vectorSlope = (RandomWizard.getRandomInt(10) + 1) / 10;
@@ -28,14 +28,14 @@ public class BoundaryMaster {
         AreaLine vectorLine = new AreaLine(new BoundaryPoint(p.x, p.y),
                 new BoundaryPoint((int) (p.x * vectorSlope),
                         (int) (p.y * (1 - vectorSlope))), null);
-        List<AreaLine> relevantLines = new LinkedList<>();
+        List<AreaLine> relevantLines = new ArrayList<>();
         for (AreaLine line : lines) {
             boolean side = isToTheLeft(vectorLine, line.p1);
             if (side == isToTheLeft(vectorLine, line.p2)) {
                 relevantLines.add(line);
             }
         }
-        List<AreaLine> crossed = new LinkedList<>();
+        List<AreaLine> crossed = new ArrayList<>();
         while (crossed.size() != 1) {
             crossed = getCrossedLines(relevantLines, vectorSlope, length);
             length--;

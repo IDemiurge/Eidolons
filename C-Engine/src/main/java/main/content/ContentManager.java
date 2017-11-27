@@ -355,7 +355,7 @@ public class ContentManager {
                 }
             }
         }
-        List<VALUE> valuesFound = new LinkedList<>();
+        List<VALUE> valuesFound = new ArrayList<>();
         if (value == null) {
             for (VALUE p : param ? params : props) {
                 if (StringMaster.compare(valueName, p.toString().replace(" ", ""), false)) {
@@ -519,7 +519,7 @@ public class ContentManager {
 
     public static List<VALUE> getValueList() {
         if (values == null) {
-            values = new LinkedList<>();
+            values = new ArrayList<>();
             for (PROPERTY p : getPropList()) {
                 values.add(p);
             }
@@ -557,7 +557,7 @@ public class ContentManager {
     }
 
     public static List<PARAMETER> getHeroStatsTabValueList() {
-        List<PARAMETER> list = new LinkedList<>();
+        List<PARAMETER> list = new ArrayList<>();
         for (PARAMETER p : getParamsForType(DC_TYPE.CHARS.getName(), false)) {
             if (!(p.isAttribute() || p.isMastery())) {
                 list.add(p);
@@ -572,7 +572,7 @@ public class ContentManager {
         if (paramList != null) {
             return paramList;
         }
-        paramList = new LinkedList<>();
+        paramList = new ArrayList<>();
         for (PARAMETER param : params) {
             if (!dynamic) {
                 if (param.isDynamic() && !param.isWriteToType()) {
@@ -597,7 +597,7 @@ public class ContentManager {
         if (paramList != null) {
             return paramList;
         }
-        paramList = new LinkedList<>();
+        paramList = new ArrayList<>();
         for (PARAMETER param : getParamsForType(entity, dynamic)) {
 
             paramList.add(param.getName());
@@ -615,7 +615,7 @@ public class ContentManager {
         if (propList != null) {
             return propList;
         }
-        propList = new LinkedList<>();
+        propList = new ArrayList<>();
 
         propList.addAll(getPropsForType(TYPE, dynamic));
         propList.addAll(getParamsForType(TYPE, dynamic));
@@ -632,7 +632,7 @@ public class ContentManager {
         if (propList != null) {
             return propList;
         }
-        propList = new LinkedList<>();
+        propList = new ArrayList<>();
         for (PROPERTY prop : props) {
             if (!dynamic) {
                 if (prop.isDynamic() && !prop.isWriteToType()) {
@@ -661,7 +661,7 @@ public class ContentManager {
         if (propList != null) {
             return propList;
         }
-        propList = new LinkedList<>();
+        propList = new ArrayList<>();
         for (PROPERTY prop : getPropsForType(entity, dynamic)) {
 
             propList.add(prop.getName());
@@ -695,7 +695,7 @@ public class ContentManager {
         if (valueNames != null) {
             return valueNames;
         }
-        valueNames = new LinkedList<>();
+        valueNames = new ArrayList<>();
         appendLast(valueNames, getParamNames(objType, !av));
         // appendLast(valueNames, masteries);
         // appendFirst(valueNames, attributes);
@@ -737,7 +737,7 @@ public class ContentManager {
     }
 
     static void appendLast(List<String> valueNames, List<VALUE> values, String objType) {
-        List<String> names = new LinkedList<>();
+        List<String> names = new ArrayList<>();
         for (VALUE val : values) {
             if (isValueForOBJ_TYPE(objType, val)) {
                 names.add(val.getName());
@@ -869,7 +869,7 @@ public class ContentManager {
     }
 
     public static List<OBJ_TYPE> getOBJ_TYPEsForValue(VALUE value) {
-        List<OBJ_TYPE> list = new LinkedList<>();
+        List<OBJ_TYPE> list = new ArrayList<>();
         if (value.getEntityTypes() == null) {
             list.add(getOBJ_TYPE(value.getEntityType()));
         } else {
@@ -906,7 +906,7 @@ public class ContentManager {
 
     public static List<PARAMETER> getFinalAttributes() {
         if (finalAttributes == null) {
-            finalAttributes = new LinkedList<>();
+            finalAttributes = new ArrayList<>();
             for (PARAMETER attr : attributes) {
                 if (StringMaster.compare(attr.getName(), "Base")) {
                     continue;

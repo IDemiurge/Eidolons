@@ -30,7 +30,7 @@ import main.system.entity.ConditionMaster;
 import main.system.entity.FilterMaster;
 import main.system.math.Formula;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -232,10 +232,10 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                 } catch (Exception e) {
                     LogMaster.log(1,
                             "Group obj effect failed to getOrCreate targets: " + this);
-                    return new LinkedList<>();
+                    return new ArrayList<>();
                 }
 
-                List<Obj> objList = new LinkedList<>();
+                List<Obj> objList = new ArrayList<>();
                 for (Integer id : list) {
                     objList.add(game.getObjectById(id));
                 }
@@ -257,7 +257,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
     }
 
     protected List<Integer> getIdList(Unit hero) {
-        List<Integer> list = new LinkedList<>();
+        List<Integer> list = new ArrayList<>();
         if (hero == null) {
             return list;
         }
@@ -272,7 +272,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                 }
                 break;
             case ARMOR:
-                list = new LinkedList<>(new ListMaster<Integer>().getList(hero.getArmor().getId()));
+                list = new ArrayList<>(new ListMaster<Integer>().getList(hero.getArmor().getId()));
                 break;
             case ITEMS:
                 for (Obj i : hero.getQuickItems())
@@ -296,8 +296,8 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                 if (hero.getActiveWeapon(false) != null) {
                     id2 = hero.getActiveWeapon(false).getId();
                 }
-                list = new LinkedList<>(new ListMaster<Integer>().getList(id2, id));
-                List<? extends Obj> l = new LinkedList<>(hero.getQuickItems());
+                list = new ArrayList<>(new ListMaster<Integer>().getList(id2, id));
+                List<? extends Obj> l = new ArrayList<>(hero.getQuickItems());
 
                 for (Obj i : l) {
                     if (i.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) {

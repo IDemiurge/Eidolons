@@ -221,7 +221,7 @@ public class HeroManager {
 
             List<Attachment> attachments = hero.getAttachments();
 
-            List<Effect> secondLayerEffects = new LinkedList<>();
+            List<Effect> secondLayerEffects = new ArrayList<>();
             if (attachments != null) {
                 for (Attachment a : attachments) {
                     try {

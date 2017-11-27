@@ -168,9 +168,9 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 break;
             case "Add Tab": {
                 // boolean micro = true;
-                // List<OBJ_TYPE> types = new LinkedList<>();
+                // List<OBJ_TYPE> types = new ArrayList<>();
                 // if (micro){
-                // types = new LinkedList<>(Arrays.asList( OBJ_TYPES.values()));
+                // types = new ArrayList<>(Arrays.asList( OBJ_TYPES.values()));
                 // }
                 // types.removeAll( XML_Reader.getXmlMap().keySet());
                 Class<?> ENUM_CLASS = DC_TYPE.class;

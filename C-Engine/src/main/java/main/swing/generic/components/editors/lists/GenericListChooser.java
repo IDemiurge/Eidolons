@@ -15,12 +15,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class GenericListChooser<E> implements ListSelectionListener {
-    static List<LC_MODS> mods = new LinkedList<>();
+    static List<LC_MODS> mods = new ArrayList<>();
     private static Map<String, String> map;
     private static Decorator panelDecorator;
     private static String tooltip;
@@ -56,7 +56,7 @@ public class GenericListChooser<E> implements ListSelectionListener {
 
     public GenericListChooser(Collection<E> objList, OBJ_TYPE TYPE) {
         mode = SELECTION_MODE.SINGLE;
-        this.listData = new LinkedList<>(objList);
+        this.listData = new ArrayList<>(objList);
         this.TYPE = TYPE;
     }
 

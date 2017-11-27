@@ -551,7 +551,7 @@ public class ItemGenerator implements GenericItemGenerator {
     }
 
     public static List<ObjType> getBaseTypes(OBJ_TYPE type) {
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         if (type instanceof C_OBJ_TYPE) {
             if (type.equals(DC_TYPE.WEAPONS)) {
                 list.addAll(baseWeaponTypes);
@@ -783,7 +783,7 @@ public class ItemGenerator implements GenericItemGenerator {
     }
 
     private void generateCloaks() {
-        List<MATERIAL> materials = new LinkedList<>();
+        List<MATERIAL> materials = new ArrayList<>();
         materials.addAll(Arrays.asList(DEFAULT_MATERIALS_CLOTH));
         materials.addAll(Arrays.asList(DEFAULT_MATERIALS_SKINS));
         for (ObjType type : DataManager

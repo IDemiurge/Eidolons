@@ -8,7 +8,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +47,7 @@ switch (action.getName()){
     }
 
     public List<DC_ActiveObj> getExplorationActions(Unit unit) {
-        List<DC_ActiveObj> list = new LinkedList<>();
+        List<DC_ActiveObj> list = new ArrayList<>();
         return list;
     }
     private static void adjustCosts(Costs costs) {

@@ -20,7 +20,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EngagedRule implements ActionRule {
@@ -62,7 +62,7 @@ public class EngagedRule implements ActionRule {
         return true;
         // List<DC_HeroObj> units = obj.getGame().getObjectsOnCoordinate(new
         // Coordinates(x, y));
-        // List<DC_HeroObj> list = new LinkedList<>();
+        // List<DC_HeroObj> list = new ArrayList<>();
         // for (DC_HeroObj unit : units) {
         // if (unit.isBfObj())
         // continue;
@@ -110,7 +110,7 @@ public class EngagedRule implements ActionRule {
     }
 
     public List<Unit> getEngagers(Unit engaged) {
-        List<Unit> list = new LinkedList<>();
+        List<Unit> list = new ArrayList<>();
         for (Unit u : engaged.getGame().getUnits()) {
             if (u.getEngagementTarget() == engaged) {
                 list.add(u);

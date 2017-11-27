@@ -8,7 +8,7 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +19,7 @@ import java.util.List;
 public class CostImpl extends ReferredElement implements Cost, Serializable {
 
     protected CostRequirements requirements;
-    protected List<Payment> toPay = new LinkedList<>();
+    protected List<Payment> toPay = new ArrayList<>();
     protected boolean variable = false;
     protected String key = KEYS.SOURCE.toString();
     protected ActiveObj activeObj;
@@ -189,7 +189,7 @@ public class CostImpl extends ReferredElement implements Cost, Serializable {
 
     public void addAltCost(Cost cost) {
         if (altCosts == null) {
-            altCosts = new Costs(new LinkedList<>());
+            altCosts = new Costs(new ArrayList<>());
         }
         altCosts.addCost(cost);
 

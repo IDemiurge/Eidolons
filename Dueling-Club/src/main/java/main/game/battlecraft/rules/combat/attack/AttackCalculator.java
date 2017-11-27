@@ -37,7 +37,7 @@ import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +61,7 @@ public class AttackCalculator {
     Map<MOD_IDENTIFIER, Integer> extraModMap = new XLinkedMap<>();
 
     Map<PARAMETER, Integer> subMap = new XLinkedMap<>();
-    List<Integer> dieList = new LinkedList<>();
+    List<Integer> dieList = new ArrayList<>();
 
     // Map<PARAMETER, String> calcMap;
     AttackAnimation animation;

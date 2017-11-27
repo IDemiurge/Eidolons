@@ -10,7 +10,7 @@ import main.system.math.MathMaster;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +22,8 @@ public class BarPanel {
     private Entity obj;
 
     public BarPanel(PARAMETER[] params, Color[] colors) {
-        vals = new LinkedList<>(Arrays.asList(params));
-        this.colors = new LinkedList<>(Arrays.asList(colors));
+        vals = new ArrayList<>(Arrays.asList(params));
+        this.colors = new ArrayList<>(Arrays.asList(colors));
         // TODO GradientPaint
         initBars();
     }

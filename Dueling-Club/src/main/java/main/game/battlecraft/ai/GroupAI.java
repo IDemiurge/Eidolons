@@ -71,7 +71,7 @@ public class GroupAI {
 
     @Override
     public String toString() {
-        return "AI_Group: " + ListMaster.toNameList(new LinkedList<>(getMembers())) + "; leader: "
+        return "AI_Group: " + ListMaster.toNameList(new ArrayList<>(getMembers())) + "; leader: "
          + leader;
     }
 

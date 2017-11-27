@@ -80,10 +80,10 @@ public class DC_ActionManager implements ActionManager {
      .getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.toString());
     private static final String DIVINATION = "Divination";
     private static final String PICK_UP = "Pick Up Items";
-    private static LinkedList<ActionType> stdActionTypes;
-    private static LinkedList<ActionType> hiddenActions;
-    private static LinkedList<ActionType> modeActionTypes;
-    private static LinkedList<ActionType> orderActionTypes;
+    private static ArrayList<ActionType> stdActionTypes;
+    private static ArrayList<ActionType> hiddenActions;
+    private static ArrayList<ActionType> modeActionTypes;
+    private static ArrayList<ActionType> orderActionTypes;
     private MicroGame game;
     private HashMap<Entity, Map<String, ActiveObj>> actionsCache = new HashMap<>();
     private boolean offhandInit;
@@ -93,7 +93,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public static void init() {
-        stdActionTypes = new LinkedList<>();
+        stdActionTypes = new ArrayList<>();
         for (STD_ACTIONS name : STD_ACTIONS.values()) {
             ActionType type = (ActionType) DataManager.getType(StringMaster
              .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
@@ -101,7 +101,7 @@ public class DC_ActionManager implements ActionManager {
             stdActionTypes.add(type);
         }
 
-        modeActionTypes = new LinkedList<>();
+        modeActionTypes = new ArrayList<>();
         for (STD_MODE_ACTIONS name : STD_MODE_ACTIONS.values()) {
             ActionType type = (ActionType) DataManager.getType(StringMaster
              .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
@@ -109,14 +109,14 @@ public class DC_ActionManager implements ActionManager {
             modeActionTypes.add(type);
         }
 
-        orderActionTypes = new LinkedList<>();
+        orderActionTypes = new ArrayList<>();
         for (STD_ORDER_ACTIONS type : STD_ORDER_ACTIONS.values()) {
             ActionType actionType = (ActionType) DataManager.getType(StringMaster
              .getWellFormattedString(type.toString()), DC_TYPE.ACTIONS);
             orderActionTypes.add(actionType);
         }
 
-        hiddenActions = new LinkedList<>();
+        hiddenActions = new ArrayList<>();
         for (HIDDEN_ACTIONS name : HIDDEN_ACTIONS.values()) {
             ActionType type = (ActionType) DataManager.getType(StringMaster
              .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
@@ -325,7 +325,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public List<DC_ActiveObj> generateStandardSubactionsForUnit(Unit unit) {
-        List<DC_ActiveObj> actions = new LinkedList<>();
+        List<DC_ActiveObj> actions = new ArrayList<>();
         // actions.addAll(generateModesForUnit(unit,
         // ACTION_TYPE_GROUPS.ATTACK));
         actions.addAll(generateModesForUnit(unit, ActionEnums.ACTION_TYPE_GROUPS.MOVE));
@@ -337,7 +337,7 @@ public class DC_ActionManager implements ActionManager {
 
 
     private List<DC_ActiveObj> getSpecialModesFromUnit(Unit unit) {
-        List<DC_ActiveObj> subActions = new LinkedList<>();
+        List<DC_ActiveObj> subActions = new ArrayList<>();
         for (String mode : StringMaster.open(unit.getProperty(PROPS.SPECIAL_ACTION_MODES))) {
             DC_UnitAction baseAction = unit.getAction(VariableManager.getVar(mode));
             DC_UnitAction subAction;
@@ -374,7 +374,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public List<DC_ActiveObj> generateModesForUnit(Unit unit, ACTION_TYPE_GROUPS group) {
-        List<DC_ActiveObj> actions = new LinkedList<>();
+        List<DC_ActiveObj> actions = new ArrayList<>();
         for (ActiveObj active : unit.getActives()) {
             DC_ActiveObj action = (DC_ActiveObj) active;
             if (action.getActionGroup() != group) {
@@ -386,7 +386,7 @@ public class DC_ActionManager implements ActionManager {
             if (action.isAttackGeneric()) {
                 continue;
             }
-            List<DC_ActiveObj> subActions = new LinkedList<>();
+            List<DC_ActiveObj> subActions = new ArrayList<>();
 
             for (STD_ACTION_MODES mode : STD_ACTION_MODES.values()) {
                 if (checkModeForAction(action, unit, mode)) {
@@ -549,7 +549,7 @@ public class DC_ActionManager implements ActionManager {
                 e.printStackTrace();
             }
 
-        unit.setActives(new LinkedList<>(actives));
+        unit.setActives(new ArrayList<>(actives));
         if (!unit.isBfObj()) {
             addHiddenActions(unit, unit.getActives());
         }
@@ -572,17 +572,17 @@ public class DC_ActionManager implements ActionManager {
 
     public List<DC_UnitAction> getOrCreateWeaponActions(DC_WeaponObj weapon) {
         if (weapon == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         Unit obj = weapon.getOwnerObj();
         if (obj == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         List<DC_UnitAction> list = weapon.getAttackActions();
         if (list != null) {
-            return new LinkedList<>(list);
+            return new ArrayList<>(list);
         }
-        list = new LinkedList<>();
+        list = new ArrayList<>();
         for (String typeName : StringMaster.open(weapon.getProperty(PROPS.WEAPON_ATTACKS))) {
             if (!weapon.isMainHand()) {
                 typeName = ActionGenerator.getOffhandActionName(typeName);
@@ -602,7 +602,7 @@ public class DC_ActionManager implements ActionManager {
             throwAction.setName("Throw " + weapon.getName());
             list.add((DC_UnitAction) throwAction);
         }
-        weapon.setAttackActions(new LinkedList<>(list));
+        weapon.setAttackActions(new ArrayList<>(list));
         return list;
     }
 
@@ -759,6 +759,9 @@ public class DC_ActionManager implements ActionManager {
         if (weapon.isRanged()) {
             return false;
         }
+        if (weapon.isNatural()) {
+            return false;
+        }
         Integer bonus = unit.getIntParam(PARAMS.THROW_SIZE_BONUS);
 
         if (bonus > -2) {
@@ -812,7 +815,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     private Collection<ActiveObj> getStandardActions(Unit unit) {
-        Collection<ActiveObj> actives = new LinkedList<>();
+        Collection<ActiveObj> actives = new ArrayList<>();
         // TODO also add to Actives container!
         for (ACTION_TYPE type : ActionEnums.ACTION_TYPE.values()) {
             // I could actually centralize all action-adding to HERE! Dual, INV
@@ -864,9 +867,9 @@ public class DC_ActionManager implements ActionManager {
         }
         List<DC_UnitAction> subActions = getOrCreateWeaponActions(unit.getWeapon(offhand));
         subActions.addAll(getOrCreateWeaponActions(unit.getNaturalWeapon(offhand)));
-        action.setSubActions(new LinkedList<>(subActions));
+        action.setSubActions(new ArrayList<>(subActions));
 //      ???  if (action.getSubActions().isEmpty()) {
-//            action.setSubActions(new LinkedList<>(subActions));
+//            action.setSubActions(new ArrayList<>(subActions));
 //        }
         return subActions;
     }
@@ -907,7 +910,7 @@ public class DC_ActionManager implements ActionManager {
 
     private List<DC_UnitAction> getActionTypes(List<ActionType> actionTypes,
                                                Unit unit) {
-        List<DC_UnitAction> list = new LinkedList<>();
+        List<DC_UnitAction> list = new ArrayList<>();
         for (ActionType type : actionTypes) {
             if (type == null)
                 continue;

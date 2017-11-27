@@ -17,7 +17,7 @@ import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_POINT_T
 import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,17 +56,17 @@ public class Location extends DungeonWrapper {
     }
     public List<Entrance> getEntrances() {
         if (entrances == null) {
-            entrances = new LinkedList<>();
+            entrances = new ArrayList<>();
         }
         return entrances;
     }
 
     public void generateSublevels() {
-        entrances = new LinkedList<>();
+        entrances = new ArrayList<>();
         if (DungeonLevelMaster.isSublevelTestOn() && !sublevel) {
             setProperty(PROPS.SUBLEVELS, DungeonLevelMaster.TEST_ENTRANCE_DATA, true);
         }
-        subLevels = new LinkedList<>();
+        subLevels = new ArrayList<>();
         for (String sublevel : StringMaster.open(getProperty(PROPS.SUBLEVELS))) {
             Dungeon dungeon = new Dungeon(VariableManager.removeVarPart(sublevel), true);
 //            getMaster().getDungeons().add(dungeon);
@@ -212,7 +212,7 @@ public class Location extends DungeonWrapper {
 
     public List<Dungeon> getSubLevels() {
         if (subLevels == null) {
-            subLevels = new LinkedList<>();
+            subLevels = new ArrayList<>();
         }
         return subLevels;
     }

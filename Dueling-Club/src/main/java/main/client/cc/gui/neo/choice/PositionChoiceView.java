@@ -17,7 +17,7 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class PositionChoiceView extends ChoiceView<Unit> implements MouseListener {
@@ -173,7 +173,7 @@ public class PositionChoiceView extends ChoiceView<Unit> implements MouseListene
     protected void initData() {
         // Positioner()
         // default positions?
-        data = new LinkedList<>();
+        data = new ArrayList<>();
         ListMaster.fillWithNullElements(data, size);
         if (partyCoordinates != null) {
             for (Unit hero : partyCoordinates.keySet()) {

@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GenericConnection implements Runnable {
@@ -142,7 +142,7 @@ public abstract class GenericConnection implements Runnable {
     }
 
     public void setCODES() {
-        setTHIS_CODES(new LinkedList<>((List<NetCode>) Arrays.asList(codestype
+        setTHIS_CODES(new ArrayList<>((List<NetCode>) Arrays.asList(codestype
                 .getEnumConstants())));
     }
 
@@ -336,14 +336,14 @@ public abstract class GenericConnection implements Runnable {
         THIS_CODES = tHIS_CODES;
     }
 
-    // setTHIS_CODES(new LinkedList<NetCode>(
+    // setTHIS_CODES(new ArrayList<NetCode>(
     // (Collection<? extends NetCode>) EnumMaster
     // .getEnumConstants(NetCode.class)
     //
     // ));
     public void addCodes(List<? extends NetCode> newCodes) {
 
-        List<NetCode> list = new LinkedList<>();
+        List<NetCode> list = new ArrayList<>();
         for (NetCode code : getTHIS_CODES()) {
             list.add(code);
         }

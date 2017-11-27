@@ -17,8 +17,8 @@ public class EvolutionMaster<T extends Evolvable> {
     public int generation;
     public int avgFitness;
     public int maxFitness;
-    private List<T> population = new LinkedList<>();
-    private List<T> control = new LinkedList<>();
+    private List<T> population = new ArrayList<>();
+    private List<T> control = new ArrayList<>();
     private T fittest;
     private int controlSince;
 
@@ -99,7 +99,7 @@ public class EvolutionMaster<T extends Evolvable> {
     }
 
     public void run() {
-        List<T> children = new LinkedList<>();
+        List<T> children = new ArrayList<>();
         for (int i = 0; i < nChildren; i++) {
             children.add(getChild(chooseParent()));
         }

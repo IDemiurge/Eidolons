@@ -31,7 +31,7 @@ import main.system.text.LogManager;
 import javax.swing.*;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -265,9 +265,9 @@ public abstract class Game  implements Serializable {
 
     public Collection<Obj> getObjects(OBJ_TYPE TYPE) {
         if (TYPE instanceof DC_TYPE) {
-            return new LinkedList<>(getState().getObjMaps().get(TYPE).values());
+            return new ArrayList<>(getState().getObjMaps().get(TYPE).values());
         }
-        Collection<Obj> list = new LinkedList<>();
+        Collection<Obj> list = new ArrayList<>();
         if (TYPE instanceof C_OBJ_TYPE) {
             for (DC_TYPE type : ((C_OBJ_TYPE) TYPE).getTypes()) {
                 list.addAll(getState().getObjMaps().get(type).values());

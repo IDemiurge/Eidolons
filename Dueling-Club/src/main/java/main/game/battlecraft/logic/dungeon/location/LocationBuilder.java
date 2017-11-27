@@ -78,7 +78,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     }
 
     public static List<ROOM_TYPE> getDefaultMainRooms(DUNGEON_TEMPLATES template) {
-        List<ROOM_TYPE> list = new LinkedList<>();
+        List<ROOM_TYPE> list = new ArrayList<>();
         switch (template) {
             case PRISON_CELLS:
                 return new ListMaster<ROOM_TYPE>().getList(ROOM_TYPE.DEATH_ROOM,
@@ -100,7 +100,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     //TODO the way it's done, we can't have Structures in non-Location dungeons!!!
     public static MapBlock constructBlock(Node node, int id, MapZone zone, DungeonPlan map,
                                           Dungeon dungeon) {
-        List<Coordinates> coordinates = new LinkedList<>();
+        List<Coordinates> coordinates = new ArrayList<>();
         Map<Coordinates, ? extends Obj> objectMap = new HashMap<>();
         MapBlock b = new MapBlock(id, null, zone, map, coordinates);
         // TODO b-data, coordinates, objects
@@ -308,7 +308,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     }
 
     private List<MapZone> createMapZones() {
-        List<MapZone> list = new LinkedList<>();
+        List<MapZone> list = new ArrayList<>();
         int i = 0;
         MapZone zone = new MapZone(getDungeon().getDungeon(), i, 0, getDungeon().getCellsX(), 0, getDungeon()
                 .getCellsY());
@@ -419,7 +419,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
     private void linkWithCorridors() {
         // TODO link each room, some more than once...
-        List<MapBlock> blocksToLink = new LinkedList<>(plan.getBlocks()); // TODO
+        List<MapBlock> blocksToLink = new ArrayList<>(plan.getBlocks()); // TODO
         for (MapBlock b : plan.getBlocks()) {
             if (b.getType() == BLOCK_TYPE.CULDESAC) {
                 blocksToLink.remove(b);
@@ -428,7 +428,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
         Loop.startLoop(10000); // TODO fail condition? u
         while (!blocksToLink.isEmpty()) {
-            List<MapBlock> blocksToRemove = new LinkedList<>();
+            List<MapBlock> blocksToRemove = new ArrayList<>();
             for (MapBlock block : blocksToLink) {
                 if (block.getConnectedBlocks().size() > 1) {
                     blocksToRemove.add(block);
@@ -512,7 +512,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     private void initZones(Node zonesNode, DungeonPlan plan) {
         int id = 0;
         int zoneId = 0;
-        List<MapZone> zones = new LinkedList<>();
+        List<MapZone> zones = new ArrayList<>();
 //        Node zonesNode = XML_Converter.getChildAt(planNode, (1));
 
         for (Node zoneNode : XML_Converter.getNodeList(zonesNode)) {
@@ -718,7 +718,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     // prefLessMoreMiddle);
     // return array;
     // }
-    // List<Coordinates> list = new LinkedList<>();
+    // List<Coordinates> list = new ArrayList<>();
     // if (linkNumber >= 3)
     // for (Boolean b : BooleanMaster.NULL_TRUE_FALSE) {
     // list.add(CoordinatesMaster.getFarmostCoordinateInDirection(d,

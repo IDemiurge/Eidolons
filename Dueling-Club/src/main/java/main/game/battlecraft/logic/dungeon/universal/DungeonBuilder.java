@@ -27,7 +27,7 @@ import main.system.text.NameMaster;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -133,7 +133,7 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
     protected void initDynamicObjData(Location location, DungeonPlan plan) {
         int z = location.getIntParam(G_PARAMS.Z_LEVEL);
         for (MapBlock b : plan.getBlocks()) {
-            LinkedList<Obj> objects = new LinkedList<>(b.getObjects());
+            ArrayList<Obj> objects = new ArrayList<>(b.getObjects());
             for (Obj obj : objects) {
                 // TODO of course - the issue was that I added an object to
                 // block too! ... init?

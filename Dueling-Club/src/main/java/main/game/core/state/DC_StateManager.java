@@ -30,7 +30,7 @@ import main.system.config.ConfigMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -124,7 +124,7 @@ public class DC_StateManager extends StateManager {
 
 
     private void triggerOnResetGuiEvents() {
-        List<BattleFieldObject> list = new LinkedList<>(getGame().getBfObjects());
+        List<BattleFieldObject> list = new ArrayList<>(getGame().getBfObjects());
         list.removeIf(obj->{
             if (!VisionManager.checkVisible(obj))
                 return true;

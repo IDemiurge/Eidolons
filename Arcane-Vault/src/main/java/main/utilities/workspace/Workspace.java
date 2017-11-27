@@ -8,7 +8,7 @@ import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -61,7 +61,7 @@ public class Workspace {
 
     public List<ObjType> getTypeList() {
         if (typeList == null) {
-            typeList = new LinkedList<>();
+            typeList = new ArrayList<>();
         } else {
             ListMaster.removeNullElements(typeList);
         }

@@ -36,7 +36,7 @@ import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
 import main.system.text.SpecialLogger;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActionManager extends AiHandler {
@@ -122,7 +122,7 @@ public class ActionManager extends AiHandler {
             }
             if (action==null )
         {
-            List<ActionSequence> actions = new LinkedList<>();
+            List<ActionSequence> actions = new ArrayList<>();
             try {
                 List<ActionSequence> sequences = getActionSequenceConstructor().createActionSequences(ai);
                 for (ActionSequence a : sequences) {

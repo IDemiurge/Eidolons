@@ -59,7 +59,7 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
     public static final String commands = "Visual;New;Dialog;Filter;Prioritize;@Filters;Save;Repair;Edit;Mass Edit;Random;Find;";
     private static List<ObjType> dialogListTypes;
     private static boolean dialogChooseOrRandom;
-    private static LinkedList<ObjType> cachedDialogListTypes;
+    private static ArrayList<ObjType> cachedDialogListTypes;
     private JComboBox<CLICK_MODE> clickModeBox;
 
     private JComboBox<VALUE> sortBox;
@@ -148,9 +148,9 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
             dialogChooseOrRandom = alt || DialogMaster.confirm("Choose or random?");
         }
         if (!last) {
-            dialogListTypes = new LinkedList<>(DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST));
+            dialogListTypes = new ArrayList<>(DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST));
             dialogListTypes = filterViaDialog(dialogListTypes, ctrl, shift);
-            cachedDialogListTypes = new LinkedList<>(dialogListTypes);
+            cachedDialogListTypes = new ArrayList<>(dialogListTypes);
         }
         String result;
         if (dialogChooseOrRandom) {
@@ -159,7 +159,7 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
             ObjType item = new RandomWizard<ObjType>().getRandomListItem(dialogListTypes);
             dialogListTypes.remove(item);
             if (dialogListTypes.isEmpty()) {
-                dialogListTypes = new LinkedList<>(cachedDialogListTypes);
+                dialogListTypes = new ArrayList<>(cachedDialogListTypes);
             }
 
             result = item.getProperty(AT_PROPS.PATH);
@@ -178,7 +178,7 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
     public static void prioritize(boolean ctrl, boolean shift) {
         List<ObjType> types = filterViaDialog(DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST), ctrl,
                 shift);
-        types = ListChooser.chooseTypes_(AT_OBJ_TYPE.MUSIC_LIST, new LinkedList<>(),
+        types = ListChooser.chooseTypes_(AT_OBJ_TYPE.MUSIC_LIST, new ArrayList<>(),
                 DataManager.toStringList(types));
         ArcaneMaster.setPriorityTopToBottom(types);
     }
@@ -313,7 +313,7 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
         VALUE prop = getMassFilterValue();
         if (prop != null) {
             String filterValue = inputMassValue(prop);
-            for (ObjType sub : new LinkedList<>(types))
+            for (ObjType sub : new ArrayList<>(types))
             // if (emptyOnly) {
             {
                 if (!sub.checkContainerProp((PROPERTY) prop, filterValue, true)) {
@@ -329,7 +329,7 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
             return;
         }
         if (emptyOnly) {
-            for (ObjType sub : new LinkedList<>(types)) {
+            for (ObjType sub : new ArrayList<>(types)) {
                 if (sub.checkValue(prop)) {
                     types.remove(sub);
                 }

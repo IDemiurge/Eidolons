@@ -14,7 +14,7 @@ import main.test.debug.DebugMaster.HIDDEN_DEBUG_FUNCTIONS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +34,7 @@ public class DebugRadialManager {
 
 
     public static List<RadialValueContainer> getDebugNodes(DC_Obj obj) {
-        List<RadialValueContainer> list = new LinkedList<>();
+        List<RadialValueContainer> list = new ArrayList<>();
 
         for (int i = 0; i < DEBUG_CONTROL.values().length; i++) {
             final DEBUG_CONTROL debug_control = DEBUG_CONTROL.values()[i];

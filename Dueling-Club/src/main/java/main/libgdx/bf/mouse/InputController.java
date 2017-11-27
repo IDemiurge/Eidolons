@@ -16,7 +16,7 @@ import main.libgdx.screens.DungeonScreen;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.badlogic.gdx.Input.Buttons.LEFT;
@@ -34,7 +34,7 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     private boolean alt = false;
     private boolean ctrl = false;
     private char lastTyped;
-    private List<String> charsUp = new LinkedList<>();
+    private List<String> charsUp = new ArrayList<>();
     private float width;
     private float height;
     float halfWidth;

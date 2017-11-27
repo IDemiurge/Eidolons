@@ -25,7 +25,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.math.MathMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +34,7 @@ import java.util.List;
 public class DualAttackMaster {
 
     public static List<DC_UnitAction> getDualAttacks(Unit unit) {
-        List<DC_UnitAction> list = new LinkedList<>();
+        List<DC_UnitAction> list = new ArrayList<>();
 
         unit.getMainWeapon().getAttackActions().forEach(main -> {
             unit.getSecondWeapon().getAttackActions().forEach(offhand -> {
@@ -94,7 +94,7 @@ public class DualAttackMaster {
     }
 
     private static Costs getDualCosts(DC_UnitAction main, DC_UnitAction offhand) {
-        List<Cost> list = new LinkedList<>();
+        List<Cost> list = new ArrayList<>();
 
         Costs costsMain = main.getCosts();
 //        if (costsMain == null)

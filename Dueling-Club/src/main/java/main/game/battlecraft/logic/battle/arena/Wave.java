@@ -20,7 +20,7 @@ import main.game.module.adventure.travel.EncounterMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Wave extends DC_Obj {
@@ -28,7 +28,7 @@ public class Wave extends DC_Obj {
     private List<ObjAtCoordinate> unitMap;
     private ENCOUNTER_TYPE waveType;
     private Integer power;
-    private List<Unit> units = new LinkedList<>();
+    private List<Unit> units = new ArrayList<>();
     private Unit leader;
     private PartyObj party;
     private MapBlock block;

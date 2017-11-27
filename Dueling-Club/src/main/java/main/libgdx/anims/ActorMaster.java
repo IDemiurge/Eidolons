@@ -161,7 +161,7 @@ public class ActorMaster {
 
     public static List<Object> getActionsOfClass(Actor actor, Class<? extends Action> c) {
         return ClassMaster.getInstances(
-         new LinkedList<>(Arrays.asList(actor.getActions().toArray())),
+         new ArrayList<>(Arrays.asList(actor.getActions().toArray())),
          c);
     }
 
@@ -169,7 +169,7 @@ public class ActorMaster {
                                                  float scaleY, float v) {
         if (actor.getActions().size > 0) {
             if (ClassMaster.getInstances(
-             new LinkedList<>(Arrays.asList(actor.getActions().toArray())),
+             new ArrayList<>(Arrays.asList(actor.getActions().toArray())),
              ScaleToAction.class).size() > 0) {
                 return;
             }

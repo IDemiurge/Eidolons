@@ -22,7 +22,7 @@ import main.system.launch.CoreEngine;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClassTreeView extends HT_View {
@@ -46,8 +46,8 @@ public class ClassTreeView extends HT_View {
 
     @Override
     protected List<HC_Tab> initTabList() {
-        List<HC_Tab> tabList = new LinkedList<>();
-        List<CLASS_GROUP> classes = new LinkedList<>(Arrays.asList(HeroEnums.CLASS_GROUP.values()));
+        List<HC_Tab> tabList = new ArrayList<>();
+        List<CLASS_GROUP> classes = new ArrayList<>(Arrays.asList(HeroEnums.CLASS_GROUP.values()));
         // if (mineOnly) {
         // }
         // for (CLASS_GROUP group : CLASS_GROUP.values())

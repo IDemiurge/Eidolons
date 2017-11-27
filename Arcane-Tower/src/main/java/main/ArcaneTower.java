@@ -36,7 +36,7 @@ import main.time.ZeitMaster;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArcaneTower {
@@ -181,7 +181,7 @@ public class ArcaneTower {
     }
 
     public static void initTasks() {
-        tasks = new LinkedList<>();
+        tasks = new ArrayList<>();
         for (ObjType type : DataManager.getTypes(AT_OBJ_TYPE.TASK)) {
             // if (isTestMode()
             // || type.checkProperty(AT_PROPS.TASK_STATUS,
@@ -192,7 +192,7 @@ public class ArcaneTower {
     }
 
     public static void initDirections() {
-        directions = new LinkedList<>();
+        directions = new ArrayList<>();
         for (ObjType type : DataManager.getTypes(AT_OBJ_TYPE.DIRECTION)) {
             // if (checkDirection)
             directions.add((Direction) getEntity(type));
@@ -200,7 +200,7 @@ public class ArcaneTower {
     }
 
     public static void initGoals() {
-        goals = new LinkedList<>();
+        goals = new ArrayList<>();
         for (ObjType type : DataManager.getTypes(AT_OBJ_TYPE.GOAL)) {
             goals.add((Goal) getEntity(type));
         }
@@ -336,7 +336,7 @@ public class ArcaneTower {
 
     public static List<Goal> getGoals(List<ObjType> list) {
         // return new ListMaster<Task>().toObjList(tasks, list);
-        List<Goal> filtered = new LinkedList<>();
+        List<Goal> filtered = new ArrayList<>();
         for (ObjType sub : list) {
             for (Goal g : getGoals()) {
                 if (g.getType() == sub) {
@@ -350,7 +350,7 @@ public class ArcaneTower {
 
     public static List<Task> getTasks(List<ObjType> list) {
         // return new ListMaster<Task>().toObjList(tasks, list);
-        List<Task> filtered = new LinkedList<>();
+        List<Task> filtered = new ArrayList<>();
         for (ObjType sub : list) {
             for (Task task : tasks) {
                 if (task.getType() == sub) {

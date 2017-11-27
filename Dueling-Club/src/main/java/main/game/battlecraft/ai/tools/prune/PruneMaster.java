@@ -22,7 +22,7 @@ import main.system.SortMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.math.PositionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -82,7 +82,7 @@ public class PruneMaster extends AiHandler {
         // continue;
         // prunedList.add(c);
         // }
-        return new LinkedList<>(map.values());
+        return new ArrayList<>(map.values());
     }
 
     public void pruneTargetsForAction(List<? extends DC_Obj> targets, GOAL_TYPE goal, UnitAI ai,
@@ -133,9 +133,9 @@ public class PruneMaster extends AiHandler {
         int minDistance =
                 //TODO for ALLIES?
                 getAnalyzer().getClosestEnemyDistance(ai.getUnit());
-        List<DC_Obj> pruneList = new LinkedList<>();
+        List<DC_Obj> pruneList = new ArrayList<>();
         // TODO sort() first? to be sure to cut off the tail...
-        int maxPower = ParamAnalyzer.getMaxParam(PARAMS.POWER, new LinkedList<>(targets));
+        int maxPower = ParamAnalyzer.getMaxParam(PARAMS.POWER, new ArrayList<>(targets));
         int limit = 0;
         boolean first = true;
         pruneLoop:

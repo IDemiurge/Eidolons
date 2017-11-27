@@ -58,9 +58,9 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
     }
 //        battleLevel = 0;
 //
-//        List<? extends Obj> units = new LinkedList<>(game.getPlayer(true).getControlledUnits());
+//        List<? extends Obj> units = new ArrayList<>(game.getPlayer(true).getControlledUnits());
 //        if (units.isEmpty() && game.getParty() != null) {
-//            units = new LinkedList<>(game.getParty().getMembers());
+//            units = new ArrayList<>(game.getParty().getMembers());
 //        }
 //        for (Obj unit : units) {
 //            battleLevel += unit.getIntParam(PARAMS.POWER);

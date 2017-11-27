@@ -5,14 +5,14 @@ import main.system.images.ImageManager;
 
 import java.awt.*;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InfoIconsManager {
 
     public static Collection<? extends Image> getInfoIconsForObj(Obj obj) {
 
-        List<Image> list = new LinkedList<>();
+        List<Image> list = new ArrayList<>();
 
         for (INFO_ICONS icon : INFO_ICONS.values()) {
             if (checkIconConditions(icon, obj)) {

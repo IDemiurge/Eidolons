@@ -17,8 +17,8 @@ import java.util.*;
  */
 public class AiTrainingCriteria {
 
-    List<Triple<CRITERIA_TYPE_BOOLEAN, Object, Float>> booleanCriteria = new LinkedList<>(); //type, arg, reward
-    List<Pair<CRITERIA_TYPE_NUMERIC, Float>> numericCriteria = new LinkedList<>(); //type, factor
+    List<Triple<CRITERIA_TYPE_BOOLEAN, Object, Float>> booleanCriteria = new ArrayList<>(); //type, arg, reward
+    List<Pair<CRITERIA_TYPE_NUMERIC, Float>> numericCriteria = new ArrayList<>(); //type, factor
 
     //define with string syntax?
 

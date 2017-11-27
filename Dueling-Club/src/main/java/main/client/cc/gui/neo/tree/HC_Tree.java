@@ -57,7 +57,7 @@ public class HC_Tree {
     Image bufferImage;
     // private ObjType selectedType;
     Image backgroundImage;
-    List<HT_Node> selectionPathNodes = new LinkedList<>();
+    List<HT_Node> selectionPathNodes = new ArrayList<>();
     TREE_VIEW_MODE mode;
     private Object arg;
     private ObjType lastSelected;
@@ -66,7 +66,7 @@ public class HC_Tree {
     private Map<Rectangle, HT_Node> rankBoostMouseMap = new HashMap<>();
     private Map<Point, SmartText> textMap = new HashMap<>();
     private boolean viewMode;
-    private LinkedList<StaticTreeLink> linksToHighlight;
+    private ArrayList<StaticTreeLink> linksToHighlight;
     private boolean displayRequirements;
     private Point textBgPoint1;
     private Point textBgPoint2;
@@ -164,7 +164,7 @@ public class HC_Tree {
     }
 
     private void sortLinksForZ(Map<StaticTreeLink, Point> staticLinkMap) {
-        List<StaticTreeLink> list = new LinkedList<>(staticLinkMap.keySet());
+        List<StaticTreeLink> list = new ArrayList<>(staticLinkMap.keySet());
         Collections.sort(list, new Comparator<StaticTreeLink>() {
 
             @Override
@@ -180,7 +180,7 @@ public class HC_Tree {
                 return 0;
             }
         });
-        List<Point> values = new LinkedList<>();
+        List<Point> values = new ArrayList<>();
         for (StaticTreeLink l : list) {
             values.add(staticLinkMap.get(l));
         }
@@ -599,7 +599,7 @@ public class HC_Tree {
                     ref.setMatch((reqTextType).getId());
                     reqs.preCheck(ref);
                     list = reqs.getReasons();
-                    reasons = new LinkedList<>();
+                    reasons = new ArrayList<>();
                 }
                 for (String text : list) {
                     if (text.equals(InfoMaster.NOT_ENOUGH_MASTERY)) {
@@ -771,7 +771,7 @@ public class HC_Tree {
         }
 
         HT_Node node = HC_Master.getSelectedTreeNode();
-        linksToHighlight = new LinkedList<>();
+        linksToHighlight = new ArrayList<>();
         selectionPathNodes.clear();
         if (node != null) {
             ObjType type = node.getType();
@@ -794,7 +794,7 @@ public class HC_Tree {
             linksToHighlight.add(map.getLinkForChildType(type));
         }
 
-        dynamicLinks = new LinkedList<>();
+        dynamicLinks = new ArrayList<>();
         // add req links
         for (ObjType t : HC_Master.getRequiredSkills(getSelectedType(), false)) {
             XLine line = getLine(getSelectedType(), t);

@@ -26,7 +26,7 @@ import main.system.text.TextParser;
 import org.w3c.dom.Node;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -187,8 +187,8 @@ public class AbilityConstructor {
         G_PROPS property = PASSIVES ? G_PROPS.PASSIVES : G_PROPS.ACTIVES;
         String prop = entity.getProperty(property);
         List<String> list = StringMaster.openContainer(prop);
-        List<String> addList = new LinkedList<>();
-        List<String> removeList = new LinkedList<>();
+        List<String> addList = new ArrayList<>();
+        List<String> removeList = new ArrayList<>();
         for (String s : list) {
             String varPart = VariableManager.getVarPart(s);
             if (varPart.isEmpty()) {
@@ -247,7 +247,7 @@ public class AbilityConstructor {
 
     public static void constructPassives(Entity entity) {
         Chronos.mark("construct passives for " + entity.getName());
-        List<AbilityObj> passives = new LinkedList<>();
+        List<AbilityObj> passives = new ArrayList<>();
 
         for (String passive : StringMaster.open(entity.getProperty(G_PROPS.PASSIVES))) {
             AbilityObj abil = getPassive(passive, entity);
@@ -297,7 +297,7 @@ public class AbilityConstructor {
         if (entity.getProperty(prop) == "") {
             return null;
         }
-        List<ActiveObj> list = new LinkedList<>();
+        List<ActiveObj> list = new ArrayList<>();
 
         for (String abilTypeName : StringMaster.open(entity.getProperty(prop))) {
             if (abilTypeName.isEmpty()) continue;

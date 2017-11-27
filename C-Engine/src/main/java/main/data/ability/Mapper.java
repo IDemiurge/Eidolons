@@ -187,7 +187,7 @@ public class Mapper {
         for (Class<?> c : classes) { // this does not cover *everything*
             // though...
             Argument a = new ArgumentImpl(c, c.getSimpleName()); // format?
-            List<AE_Item> list = new LinkedList<>();
+            List<AE_Item> list = new ArrayList<>();
             if (!map.containsKey(a)) {
                 map.put(a, list);
             }
@@ -206,7 +206,7 @@ public class Mapper {
         args = args1;
         classFolders = classFolders1;
         for (Argument arg : args) {
-            List<AE_Item> list = new LinkedList<>();
+            List<AE_Item> list = new ArrayList<>();
             map.put(arg, list);
         }
         compilePrimitives();
@@ -271,7 +271,7 @@ public class Mapper {
                         continue;
                     }
                 }
-                List<Argument> argList = new LinkedList<>();
+                List<Argument> argList = new ArrayList<>();
 
                 for (Class<?> argType : constr.getParameterTypes()) {
                     argList.add(translateToArg(argType));

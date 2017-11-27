@@ -374,7 +374,7 @@ public class AnimationConstructor {
     private boolean initAnim(AnimData data,
                              DC_ActiveObj active, ANIM_PART part, Anim anim) {
         boolean exists = false;
-        List<SpriteAnimation> sprites = new LinkedList<>();
+        List<SpriteAnimation> sprites = new ArrayList<>();
         for (String path :
          StringMaster.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
             if (path.isEmpty()) {
@@ -385,7 +385,7 @@ public class AnimationConstructor {
 //            Chronos.logTimeElapsedForMark("sprite " + path);
             exists = true;
         }
-        List<EmitterActor> list = new LinkedList<>();
+        List<EmitterActor> list = new ArrayList<>();
 //     if (!Thread.currentThread().getName().contains("LWJGL")){
 //
 //     }

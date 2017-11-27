@@ -26,7 +26,7 @@ import main.system.entity.FilterMaster;
 import main.system.math.MathMaster;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -66,7 +66,7 @@ public class HqShop extends LightweightEntity implements ShopInterface {
         if (isFullRepertoire()) {
             //filters!
         }
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (DC_TYPE TYPE : C_OBJ_TYPE.ITEMS.getTypes()) {
             List<ObjType> items = getItems(TYPE);
             items.removeIf(item -> item == null);
@@ -150,7 +150,7 @@ public class HqShop extends LightweightEntity implements ShopInterface {
 
     private void initItems() {
 
-        items = new LinkedList<>();
+        items = new ArrayList<>();
         if (isPreset()) {
             items = DataManager.toTypeList(StringMaster
               .openContainer(getProperty(PROPS.SHOP_ITEMS)),
@@ -211,14 +211,14 @@ public class HqShop extends LightweightEntity implements ShopInterface {
     // generateCustomItems(); randomly based on the repertoire spectrum
 
     private Collection<? extends ObjType> getSpecialItems(String group) {
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         // getProperty(PROPS.shop_special_items);
         // if (t.getp).equals(group) list.add(t);
         return list;
     }
 
     private List<ObjType> getItemsFromTemplates(List<ObjType> templates) {
-        List<ObjType> generated = new LinkedList<>();
+        List<ObjType> generated = new ArrayList<>();
         for (ObjType t : templates) {
             for (MATERIAL material : ItemEnums.MATERIAL.values()) {
                 for (QUALITY_LEVEL q : ShopMaster.getQualityLevels(this)) {
@@ -236,7 +236,7 @@ public class HqShop extends LightweightEntity implements ShopInterface {
     private List<ObjType> constructPool(List<ObjType> pool) {
 
         // TODO AND WHAT ABOUT NON-SLOT ITEMS?
-        List<ObjType> filtered = new LinkedList<>();
+        List<ObjType> filtered = new ArrayList<>();
         for (MATERIAL material : ItemEnums.MATERIAL.values()) {
             if (ShopMaster.checkMaterialAllowed(this, material)) {
                 for (ObjType t : pool) {

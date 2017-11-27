@@ -5,7 +5,7 @@ import main.game.core.game.DC_Game;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static main.content.PARAMS.*;
@@ -64,7 +64,7 @@ public class DC_ValueManager implements ValueManager {
     @Override
     public PARAMETER[] getParamsFromContainer(String sparam) {
         List<String> container = StringMaster.openContainer(sparam, StringMaster.AND_SEPARATOR);
-        LinkedList<PARAMETER> params = new LinkedList<>();
+        ArrayList<PARAMETER> params = new ArrayList<>();
         for (String s : container) {
             PARAMETER param = ContentManager.getPARAM(s);
             if (param != null) {
@@ -195,7 +195,7 @@ public class DC_ValueManager implements ValueManager {
 
         public PARAMETER[] getParams() {
             if (score) {
-                List<PARAMETER> list = new LinkedList<>();
+                List<PARAMETER> list = new ArrayList<>();
                 for (PARAMETER p : params) {
                     list.add(ContentManager.getMasteryScore(p));
                 }

@@ -23,7 +23,7 @@ import main.system.entity.FilterMaster;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MacroManager {
@@ -283,7 +283,7 @@ public class MacroManager {
     }
 
     public static List<ObjType> getCustomTypes(MACRO_OBJ_TYPES TYPE) {
-        LinkedList<ObjType> list = new LinkedList<>(customTypes);
+        ArrayList<ObjType> list = new ArrayList<>(customTypes);
         FilterMaster.filterByProp(list, "Type", TYPE.getName());
         return list;
     }
@@ -313,7 +313,7 @@ public class MacroManager {
     // for (ObjType t : copyTypes) {
     // List<ObjType> list = map.getOrCreate(t.getType());
     // if (list == null) {
-    // list = new LinkedList<>();
+    // list = new ArrayList<>();
     // map.put(t.getType(), list);
     // }
     // list.add(t);

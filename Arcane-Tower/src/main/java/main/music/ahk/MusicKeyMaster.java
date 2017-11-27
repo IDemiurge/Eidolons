@@ -20,7 +20,7 @@ import main.system.auxiliary.RandomWizard;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MusicKeyMaster implements HotkeyListener {
@@ -245,10 +245,10 @@ public class MusicKeyMaster implements HotkeyListener {
         List<ObjType> types;
 
         if (random) {
-            types = new LinkedList<>(DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST));
+            types = new ArrayList<>(DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST));
             Collections.shuffle(types);
         } else {
-            types = new LinkedList<>();
+            types = new ArrayList<>();
         }
 
         for (ObjType type : random ? types : DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST)) {

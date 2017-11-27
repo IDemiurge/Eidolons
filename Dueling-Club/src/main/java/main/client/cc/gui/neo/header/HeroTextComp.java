@@ -10,7 +10,7 @@ import main.swing.components.panels.page.log.WrappedTextComp;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HeroTextComp extends WrappedTextComp implements MouseListener {
@@ -39,7 +39,7 @@ public class HeroTextComp extends WrappedTextComp implements MouseListener {
         if (hero == null) {
             return;
         }
-        List<String> lines = new LinkedList<>();
+        List<String> lines = new ArrayList<>();
         for (VALUE V : VALUES) {
             String value = hero.getValue(V);
             if (V instanceof PARAMETER) {

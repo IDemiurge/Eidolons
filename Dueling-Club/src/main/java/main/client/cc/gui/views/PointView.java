@@ -22,7 +22,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -210,7 +210,7 @@ public class PointView extends HeroView implements ChangeListener,
         if (params) {
             return;
         }
-        this.values = new LinkedList<>();
+        this.values = new ArrayList<>();
         List<PARAMETER> list = (attributes) ? ContentManager.getAttributes()
                 : ContentManager.getMasteries();
         for (PARAMETER p : list) {

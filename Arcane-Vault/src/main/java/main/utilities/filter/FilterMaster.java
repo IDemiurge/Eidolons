@@ -11,7 +11,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FilterMaster {
@@ -20,7 +20,7 @@ public class FilterMaster {
 	 */
 
     public final static char HOTKEY_CHAR = 't';
-    static List<TypeFilter> filters = new LinkedList<>();
+    static List<TypeFilter> filters = new ArrayList<>();
 
     public static void save() {
         for (TypeFilter f : filters) {

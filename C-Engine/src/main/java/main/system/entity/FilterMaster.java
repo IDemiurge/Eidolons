@@ -27,7 +27,7 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.Formula;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -35,7 +35,7 @@ import java.util.function.Predicate;
 public class FilterMaster {
 
     public static List<? extends Entity> getFilteredList(Condition c, List<? extends Entity> list) {
-        return filterOut(new LinkedList(list), c);
+        return filterOut(new ArrayList(list), c);
 
     }
 
@@ -58,7 +58,7 @@ public class FilterMaster {
         };
     }
     public static List<ObjType> getFilteredTypeList(OBJ_TYPE TYPE, PROPERTY prop, String value) {
-         List<ObjType> list = new LinkedList<>(DataManager.getTypes(TYPE));
+         List<ObjType> list = new ArrayList<>(DataManager.getTypes(TYPE));
 
         list.removeIf(getPredicateProperty(prop, value, true));
         return list;
@@ -90,7 +90,7 @@ public class FilterMaster {
 
     public static Collection<?> filter(Collection<?> list, String valueName, String value,
                                        OBJ_TYPE TYPE, boolean prop, boolean filterOut, Boolean strict_or_greater_less_equal) {
-        List<Object> filteredList = new LinkedList<>();
+        List<Object> filteredList = new ArrayList<>();
         for (Object l : list) {
 
             Entity entity;
@@ -167,7 +167,7 @@ public class FilterMaster {
         if (list == null) {
             return list;
         }
-        Collection<Entity> removeList = new LinkedList<>();
+        Collection<Entity> removeList = new ArrayList<>();
         for (Entity e : list) {
             if (e == null) {
                 continue;
@@ -187,7 +187,7 @@ public class FilterMaster {
     }
 
     public static void applyFilter(Collection<? extends  Obj> objects, FILTERS filter, Ref ref, boolean out) {
-        List<Obj> objectsToRemove = new LinkedList<>();
+        List<Obj> objectsToRemove = new ArrayList<>();
         for (Obj obj : objects) {
             if ((out) == checkFilter(obj, filter, ref)) {
                 objectsToRemove.add(obj);
@@ -223,7 +223,7 @@ public class FilterMaster {
                 ConditionMaster.getDistanceFilterCondition("SOURCE", radius, true));
         Set<Obj> set = new Filter<Obj>(unit.getRef(), conditions, C_OBJ_TYPE.UNITS_CHARS)
                 .getObjects();
-        return new LinkedList<>(set);
+        return new ArrayList<>(set);
     }
 
     public static Collection<?> filterByProp(List<?> list, PROPERTY prop, Object value) {

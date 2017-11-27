@@ -149,7 +149,7 @@ public class CellPrioritizer extends AiHandler {
     public List<Coordinates> getMeleePriorityCellsForUnit(UnitAI ai) {
 //        DC_PriorityManager.setUnitAi(ai);
 
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         List<Obj> cells = new ArrayList<>(50);
         int max_priority = Integer.MIN_VALUE;
         DC_Cell priority_cell = null;

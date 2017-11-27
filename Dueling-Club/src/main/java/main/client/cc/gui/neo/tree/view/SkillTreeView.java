@@ -20,7 +20,7 @@ import main.system.math.DC_MathManager;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SkillTreeView extends HT_View {
@@ -85,7 +85,7 @@ public class SkillTreeView extends HT_View {
     }
 
     protected List<HC_Tab> initTabList() {
-        List<HC_Tab> tabList = new LinkedList<>();
+        List<HC_Tab> tabList = new ArrayList<>();
         // 'mine only' mode
         // for (SKILL_DISPLAY_GROUPS group : SKILL_DISPLAY_GROUPS.values())
         PARAMETER[] array = getParamsFromMasteryWorkspaceArray();
@@ -93,7 +93,7 @@ public class SkillTreeView extends HT_View {
             array = ValuePages.MASTERIES;
         }
 
-        List<PARAMETER> masteries = new LinkedList<>(Arrays.asList(array));
+        List<PARAMETER> masteries = new ArrayList<>(Arrays.asList(array));
 
         if (mineOnly) {
             masteries = DC_MathManager.getUnlockedMasteries(hero);
@@ -139,7 +139,7 @@ public class SkillTreeView extends HT_View {
         if (workspace == null) {
             return null;
         }
-        List<PARAMETER> list = new LinkedList<>();
+        List<PARAMETER> list = new ArrayList<>();
         for (MASTERY m : workspace) {
             list.add(ContentManager.getPARAM(m.toString()));
         }
@@ -170,7 +170,7 @@ public class SkillTreeView extends HT_View {
     @Override
     public List<MASTERY[]> getWorkspaces() {
         if (workspaces == null) {
-            workspaces = new LinkedList<>();
+            workspaces = new ArrayList<>();
             for (MASTERY[] stdWorkspace : STD_WORKSPACES) {
                 workspaces.add(stdWorkspace);
             }

@@ -31,7 +31,7 @@ import net.miginfocom.swing.MigLayout;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +65,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         paletteTabs = new HC_TabPanel();
         paletteTabs.setPageSize(PAGE_SIZE);
         initPalettes();
-        List<DC_TYPE> mergedTypes = new LinkedList<>();
+        List<DC_TYPE> mergedTypes = new ArrayList<>();
         // for (OBJ_TYPES type : default_palette) {
         // // G_Panel panel = new G_Panel();
         // // panel.add(new JScrollPane(new PaletteList(DataManager
@@ -217,7 +217,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         // palettes.toArray());
         // PaletteWorkspace ws = palettes.getOrCreate(index);
         List<String> listData = DataManager.toStringList(typeList);
-        List<String> secondListData = (TYPE instanceof C_OBJ_TYPE) ? new LinkedList<>()
+        List<String> secondListData = (TYPE instanceof C_OBJ_TYPE) ? new ArrayList<>()
                 : DataManager.toStringList(typeList);
         // if (ws != null) {
         // secondListData = DataManager.convertToStringList(ws.getTypeList());
@@ -235,7 +235,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
     }
 
     public void loadWorkspaces() {
-        workspaces = new LinkedList<>();
+        workspaces = new ArrayList<>();
         List<File> files = FileManager.findFiles(FileManager.getFile(getWorkspaceFolder()), ".xml",
                 false, false);
         for (File file : files) {
@@ -252,8 +252,8 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
     }
 
     public List<PaletteWorkspace> chooseWorkspaces() {
-        List<String> list = new LinkedList<>();
-        List<PaletteWorkspace> chosenPalettes = new LinkedList<>();
+        List<String> list = new ArrayList<>();
+        List<PaletteWorkspace> chosenPalettes = new ArrayList<>();
         for (PaletteWorkspace ws : workspaces) {
             ObjType type = new ObjType(ws.getName());
             type.setOBJ_TYPE_ENUM(DC_TYPE.META);
@@ -261,7 +261,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
             list.add(type.getName());
         }
         List<String> chosen = StringMaster.openContainer(new ListChooser(list,
-                new LinkedList<>(), false, DC_TYPE.META).choose());
+                new ArrayList<>(), false, DC_TYPE.META).choose());
         for (String name : chosen) {
             for (PaletteWorkspace p : palettes) {
                 if (p.getName().equals(name)) {
@@ -358,7 +358,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         // int i = DialogMaster.optionChoice(paletteTabs.getTabs().toArray(),
         // "choose palette to remove");
         // paletteTabs.removeTab(i);
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (HC_Tab tab : paletteTabs.getTabs()) {
             list.add(tab.getName());
         }

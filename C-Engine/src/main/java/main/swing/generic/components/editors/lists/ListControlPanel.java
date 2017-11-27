@@ -18,7 +18,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListControlPanel<E> extends JPanel implements ActionListener {
@@ -277,10 +277,10 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
             Object e = EnumMaster.getEnumConst(varClass, element.toString());
             if (e instanceof VarHolder) {
                 this.varHolder = (VarHolder) e;
-                varTypes = new LinkedList<>(Arrays.asList(varHolder.getVarClasses()));
+                varTypes = new ArrayList<>(Arrays.asList(varHolder.getVarClasses()));
             }
         } else if (varClass == VariableManager.STRING_VAR_CLASS) {
-            varTypes = new LinkedList<>(Arrays.asList(String.class));
+            varTypes = new ArrayList<>(Arrays.asList(String.class));
         }
     }
 

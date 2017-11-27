@@ -10,14 +10,14 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RandomEffect extends MicroEffect {
 
     private Ability[] abilities;
     private List<String> abilityNames;
-    private LinkedList<Ability> abilityList;
+    private ArrayList<Ability> abilityList;
     private Effects effects;
 
     @OmittedConstructor
@@ -65,7 +65,7 @@ public class RandomEffect extends MicroEffect {
         return new AbilityEffect(abilName).apply(ref);
 
         // if (abilityList == null) {
-        // abilityList = new LinkedList<>(Arrays.asList(abilities));
+        // abilityList = new ArrayList<>(Arrays.asList(abilities));
         // if (abilities == null) {
         // if (abilityNames == null)
         // return false;

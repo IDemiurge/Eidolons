@@ -15,7 +15,7 @@ import main.system.images.ImageManager.STD_IMAGES;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -463,7 +463,7 @@ public class CONTENT_CONSTS2 {
                          String setProps, String setPropValues, String modParamValues, String modParams,
                          String bonusParams, String bonusParamVals, ACTION_TYPE_GROUPS... groups) {
             if (groups == null) {
-                defaultActionGroups = new LinkedList<>();
+                defaultActionGroups = new ArrayList<>();
             } else {
                 defaultActionGroups = Arrays.asList(groups);
             }

@@ -21,7 +21,7 @@ import main.system.graphics.FontMaster.FONT;
 import main.system.text.TipMaster;
 import main.test.frontend.ScenarioLauncher;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
@@ -33,7 +33,7 @@ public class LoadingStage extends Stage {
     private boolean fullscreen = true;
     private boolean loaderWheel;
     private Image fullscreenImage;
-    private List<Ambience> fogList = new LinkedList<>();
+    private List<Ambience> fogList = new ArrayList<>();
     private Image loadingImage;
     private SuperContainer logoImage;
     private Label missionName;

@@ -239,7 +239,7 @@ public class CellComp {
 
     public List<Unit> getObjects() {
         if (objects == null) {
-            objects = new LinkedList<>();
+            objects = new ArrayList<>();
         }
         return objects;
     }

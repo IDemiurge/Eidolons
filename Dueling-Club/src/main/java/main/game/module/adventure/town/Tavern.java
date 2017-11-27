@@ -30,12 +30,12 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.entity.FilterMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tavern extends TownPlace {
     private TOWN_PLACE_TYPE TYPE;
-    private List<Unit> heroes = new LinkedList<>();
+    private List<Unit> heroes = new ArrayList<>();
     // buy drinks...
     private List<Unit> mercs;
     private List<PartyObj> stayingParties;
@@ -215,7 +215,7 @@ public class Tavern extends TownPlace {
 
         Loop.startLoop(25);
         while (!Loop.loopEnded()) {
-            LinkedList<ObjType> bufferList = new LinkedList<>(list);
+            ArrayList<ObjType> bufferList = new ArrayList<>(list);
             String prop = new RandomWizard<BACKGROUND>().getObjectByWeight(
                     getHeroBackgrounds(), BACKGROUND.class).toString();
             FilterMaster.filter(bufferList, G_PROPS.BACKGROUND.getName(),

@@ -788,7 +788,7 @@ public class DC_Game extends MicroGame {
     }
         public void reinit(boolean restart) {
         master = new DC_GameMaster(this);
-        List<Obj> cachedObjects = new LinkedList<>();
+        List<Obj> cachedObjects = new ArrayList<>();
         if (!restart)
         for (Obj sub : getState().getObjects().values()) {
             if (sub == null)

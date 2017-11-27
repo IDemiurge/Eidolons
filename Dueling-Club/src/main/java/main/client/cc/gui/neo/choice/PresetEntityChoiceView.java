@@ -4,7 +4,7 @@ import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
@@ -48,7 +48,7 @@ public class PresetEntityChoiceView extends ChoiceView<Entity> {
         if (entities != null) {
             data = new ListMaster<Entity>().getList(entities);
         } else {
-            data = new LinkedList<>();
+            data = new ArrayList<>();
         }
     }
 

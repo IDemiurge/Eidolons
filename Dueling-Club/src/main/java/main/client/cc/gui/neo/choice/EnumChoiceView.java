@@ -9,7 +9,7 @@ import main.system.auxiliary.StringMaster;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class EnumChoiceView<T extends Enum<?>> extends ChoiceView<T> implements
         ListCellRenderer<T> {
@@ -52,7 +52,7 @@ public class EnumChoiceView<T extends Enum<?>> extends ChoiceView<T> implements
 
     @Override
     protected void initData() {
-        data = new LinkedList<>(Arrays.asList(CLASS.getEnumConstants()));
+        data = new ArrayList<>(Arrays.asList(CLASS.getEnumConstants()));
     }
 
     @Override

@@ -30,7 +30,7 @@ import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,7 +60,7 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
     public Dungeon dungeon;
     List<GROWTH_PRIORITIES> growthPriorities;
     // public Map<ObjType, Coordinates> typeMap;
-    List<ObjAtCoordinate> typeMap = new LinkedList<>();
+    List<ObjAtCoordinate> typeMap = new ArrayList<>();
     Integer forcedPower;
 
     public WaveAssembler(BattleMaster<ArenaBattle> master) {
@@ -94,8 +94,8 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
         groups = 0;
         positioner = positioner;
         this.wave = wave;
-        typeMap = new LinkedList<>();
-        unitGroups = new LinkedList<>();
+        typeMap = new ArrayList<>();
+        unitGroups = new ArrayList<>();
         // map?
         initPower();
         applyAddGroup();

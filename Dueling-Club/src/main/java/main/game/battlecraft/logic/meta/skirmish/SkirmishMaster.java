@@ -36,7 +36,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +67,7 @@ public class SkirmishMaster {
     }
 
     public static List<ObjType> getWaveTypes() {
-        List<ObjType> waves = new LinkedList<>();
+        List<ObjType> waves = new ArrayList<>();
         for (NEMESIS_GROUP g : skirmish.getNemesisGroups()) {
             // skirmish.getSpeed();
             // skirmish.getDifficulty();
@@ -103,7 +103,7 @@ public class SkirmishMaster {
 
         };
         // filter!
-        final LinkedList<OBJECTIVE_TYPE> allowed = new LinkedList<>();
+        final ArrayList<OBJECTIVE_TYPE> allowed = new ArrayList<>();
         EnumChoiceView<OBJECTIVE_TYPE> objectiveChoiceView = new EnumChoiceView<OBJECTIVE_TYPE>(cs,
                 null, OBJECTIVE_TYPE.class) {
             @Override

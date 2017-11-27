@@ -17,7 +17,7 @@ import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -136,7 +136,7 @@ public class HC_PointView extends HeroView {
             return;
         }
 
-        this.params = new LinkedList<>();
+        this.params = new ArrayList<>();
         List<PARAMETER> list = (attributes) ? ContentManager.getAttributes() : ContentManager.getMasteries();
 
         for (PARAMETER p : list) {
@@ -145,7 +145,7 @@ public class HC_PointView extends HeroView {
         }
 
         if (attributes) {
-            LinkedList<PARAMETER> newList = new LinkedList<>();
+            ArrayList<PARAMETER> newList = new ArrayList<>();
 
             for (int i = 0; i < list.size() / 2; i++) {
                 newList.add(i * 2, list.get(i));
@@ -172,7 +172,7 @@ public class HC_PointView extends HeroView {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         if (attr != null) {
             list = AttributeMaster.getAttributeBonusInfoStrings(attr, hero);
         }

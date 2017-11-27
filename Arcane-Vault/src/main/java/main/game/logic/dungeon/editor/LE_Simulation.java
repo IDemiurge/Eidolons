@@ -25,7 +25,7 @@ public class LE_Simulation extends DC_Game {
 
     private Entity selectedEntity;
 
-    private LinkedList<Unit> unitsCache;
+    private ArrayList<Unit> unitsCache;
 
     private Set<Obj> cells;
 
@@ -158,7 +158,7 @@ public class LE_Simulation extends DC_Game {
     }
 
     private void unitAdded(Unit obj) {
-        unitsCache = new LinkedList<>(getUnits());
+        unitsCache = new ArrayList<>(getUnits());
         // new Thread(new Runnable() { public void run() { } },
         // " thread").start();
         if (LevelEditor.DEBUG_ON) {
@@ -169,7 +169,7 @@ public class LE_Simulation extends DC_Game {
 
     public void removeUnit(Unit obj) {
         getUnits().remove(obj);
-        unitsCache = new LinkedList<>(getUnits());
+        unitsCache = new ArrayList<>(getUnits());
         if (LevelEditor.DEBUG_ON) {
             LogMaster.log(1, toString() + " removed "
                     + obj.getNameAndCoordinate() + ", units= " + getUnits());
@@ -188,16 +188,16 @@ public class LE_Simulation extends DC_Game {
         // state.addObject(obj)
     }
 
-    public LinkedList<Unit> getUnitsCache() {
+    public ArrayList<Unit> getUnitsCache() {
         return unitsCache;
     }
 
-    public void setUnitsCache(LinkedList<Unit> unitsCache) {
+    public void setUnitsCache(ArrayList<Unit> unitsCache) {
         this.unitsCache = unitsCache;
     }
 
     public Collection<Obj> getUnitsForCoordinates(Set<Coordinates> coordinates) {
-        Collection<Obj> list = new LinkedList<>();
+        Collection<Obj> list = new ArrayList<>();
         for (Coordinates c : coordinates) {
             list.addAll(getObjectsOnCoordinate(c));
         }
@@ -208,9 +208,9 @@ public class LE_Simulation extends DC_Game {
     public List<Unit> getObjectsOnCoordinate(Coordinates c) {
         List<Unit> list = getUnitMap().get(c);
         if (list == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
-        List<Unit> objects = new LinkedList<>();
+        List<Unit> objects = new ArrayList<>();
         for (Unit obj : list) {
             if (!obj.isOverlaying()) {
                 objects.add(obj);

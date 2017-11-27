@@ -11,7 +11,7 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +36,7 @@ public class TestPositioner<E extends DungeonWrapper> extends Positioner<E> {
 
         if (PartyHelper.getParty() != null) {
             if (MapMaster.isNotEmpty(PartyHelper.getParty().getPartyCoordinates())) {
-                coordinates = new LinkedList<>(PartyHelper.getParty().getPartyCoordinates()
+                coordinates = new ArrayList<>(PartyHelper.getParty().getPartyCoordinates()
                  .values());
                 partyTypes = ListMaster.toNameList(PartyHelper.getParty().getPartyCoordinates()
                  .keySet());

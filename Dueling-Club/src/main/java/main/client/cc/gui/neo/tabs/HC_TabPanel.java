@@ -17,7 +17,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HC_TabPanel extends G_Panel implements MouseListener {
@@ -36,7 +36,7 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
     private G_Component currentComp;
 
     public HC_TabPanel(HC_Tab... tabs) {
-        this(new LinkedList<>(Arrays.asList(tabs)));
+        this(new ArrayList<>(Arrays.asList(tabs)));
     }
 
     public HC_TabPanel(List<HC_Tab> tabs) {
@@ -54,7 +54,7 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
     }
 
     public HC_TabPanel() {
-        this(new LinkedList<>());
+        this(new ArrayList<>());
     }
 
     public ComponentVisuals getTAB() {

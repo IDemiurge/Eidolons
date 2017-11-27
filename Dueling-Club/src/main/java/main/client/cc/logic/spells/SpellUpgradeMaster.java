@@ -20,7 +20,7 @@ import main.system.images.ImageManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpellUpgradeMaster {
@@ -105,7 +105,7 @@ public class SpellUpgradeMaster {
     }
 
     public static List<SPELL_UPGRADE> getUpgradesFromSpell(Entity spell, boolean active) {
-        List<SPELL_UPGRADE> list = new LinkedList<>();
+        List<SPELL_UPGRADE> list = new ArrayList<>();
         for (String s : StringMaster.open(spell
                 .getProperty(((active ? PROPS.SPELL_UPGRADES : PROPS.SPELL_UPGRADE_GROUPS))))) {
 

@@ -8,7 +8,7 @@ import main.system.auxiliary.log.Chronos;
 import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -91,7 +91,7 @@ public class EmitterPools {
     }
 
     public static List<EmitterActor> getEmitters(String data) {
-        List<EmitterActor> list = new LinkedList<>();
+        List<EmitterActor> list = new ArrayList<>();
         for (String path :
          StringMaster.openContainer(data)) {
 

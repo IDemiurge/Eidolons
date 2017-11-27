@@ -12,12 +12,12 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class G_ScrolledPanel<E> extends G_Panel implements MouseWheelListener {
     protected List<E> data;
-    protected List<G_Panel> comps = new LinkedList<>();
+    protected List<G_Panel> comps = new ArrayList<>();
     protected int offset;
     protected boolean vertical;
     protected int spaceTaken;

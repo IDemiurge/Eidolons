@@ -22,7 +22,7 @@ public class DC_GraveyardManager implements GraveyardManager {
 
     public static final String RIP = "Here lie: ";
     protected Map<ZCoordinates, Stack<Obj>> graveMap = new ConcurrentHashMap<>();
-    protected List<Obj> removed = new LinkedList<>();
+    protected List<Obj> removed = new ArrayList<>();
     private DC_Game game;
     private Map<Obj, Integer> indexMap = new HashMap<>();
 
@@ -119,7 +119,7 @@ public class DC_GraveyardManager implements GraveyardManager {
 
     @Override
     public List<Coordinates> getCorpseCells() {
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         for (Coordinates l : graveMap.keySet()) {
             if (!graveMap.get(l).isEmpty()) {
                 list.add(l);

@@ -9,7 +9,7 @@ import main.logic.AT_PROPS;
 import main.logic.ArcaneEntity;
 import main.logic.Task;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReportView {
@@ -41,8 +41,8 @@ public class ReportView {
         PROPERTY prop = AT_PROPS.COMPLETED_TASKS;
         OBJ_TYPE TYPE = AT_OBJ_TYPE.TASK;
         List<ObjType> workedTasks = getTypeList(prop, TYPE);
-        List<Task> completedTasks = new LinkedList<>();
-        List<Task> failedTasks = new LinkedList<>();
+        List<Task> completedTasks = new ArrayList<>();
+        List<Task> failedTasks = new ArrayList<>();
 
         // new ListMaster<>().toList(string)
 

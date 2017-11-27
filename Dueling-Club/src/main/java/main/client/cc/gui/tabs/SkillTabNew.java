@@ -18,7 +18,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SkillTabNew extends HeroItemTab {
@@ -33,10 +33,10 @@ public class SkillTabNew extends HeroItemTab {
     }
 
     protected void initComps() {
-        listPages = new LinkedList<>();
+        listPages = new ArrayList<>();
         for (SKILL_DISPLAY_GROUPS group : SKILL_DISPLAY_GROUPS.values()) {
-            LinkedList<PARAMETER> list = new LinkedList<>(Arrays.asList(group.getMasteries()));
-            LinkedList<ObjType> data = new LinkedList<>();
+            ArrayList<PARAMETER> list = new ArrayList<>(Arrays.asList(group.getMasteries()));
+            ArrayList<ObjType> data = new ArrayList<>();
             for (ObjType type : this.data) {
                 PARAMETER mastery = ContentManager.getPARAM(type.getProperty(G_PROPS.MASTERY));
                 if (list.contains(mastery)) {
@@ -56,7 +56,7 @@ public class SkillTabNew extends HeroItemTab {
     }
 
     protected void initData() {
-        data = new LinkedList<>();
+        data = new ArrayList<>();
         String property = hero.getProperty(getPROP());
         for (String skill : StringMaster.open(property)) {
             skill = VariableManager.removeVarPart(skill);
@@ -70,7 +70,7 @@ public class SkillTabNew extends HeroItemTab {
         }
         int i = 0;
         for (HC_PagedListPanel pagedListPanel : listPages) {
-            LinkedList<ObjType> data = getData(SKILL_DISPLAY_GROUPS.values()[i]);
+            ArrayList<ObjType> data = getData(SKILL_DISPLAY_GROUPS.values()[i]);
             i++;
             pagedListPanel.setData(data);
             pagedListPanel.initPages();
@@ -82,9 +82,9 @@ public class SkillTabNew extends HeroItemTab {
         }
     }
 
-    private LinkedList<ObjType> getData(SKILL_DISPLAY_GROUPS g) {
-        LinkedList<PARAMETER> list = new LinkedList<>(Arrays.asList(g.getMasteries()));
-        LinkedList<ObjType> data = new LinkedList<>();
+    private ArrayList<ObjType> getData(SKILL_DISPLAY_GROUPS g) {
+        ArrayList<PARAMETER> list = new ArrayList<>(Arrays.asList(g.getMasteries()));
+        ArrayList<ObjType> data = new ArrayList<>();
         for (ObjType type : this.data) {
             PARAMETER mastery = ContentManager.getPARAM(type.getProperty(G_PROPS.MASTERY));
             if (list.contains(mastery)) {
@@ -95,7 +95,7 @@ public class SkillTabNew extends HeroItemTab {
     }
 
     protected void addComps() {
-        iconColumns = new LinkedList<>();
+        iconColumns = new ArrayList<>();
         int i = 0;
         int w = getTemplate().getTemplate().getVisuals().getWidth();
         int h = getTemplate().getTemplate().getVisuals().getHeight();

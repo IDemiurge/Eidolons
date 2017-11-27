@@ -19,12 +19,12 @@ import main.swing.generic.components.G_Panel;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ToolTipMaster {
 
-    private List<TextItem> toolTipTextItems = new LinkedList<>();
+    private List<TextItem> toolTipTextItems = new ArrayList<>();
     private DC_Game game;
     private TextItem actionRequirementText;
     private TextItem unitToolTip;
@@ -168,7 +168,7 @@ public class ToolTipMaster {
 //        // to TextMaster !
 //        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 //         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-//        LinkedList<TextItem> list = new LinkedList<>(toolTipTextItems);
+//        ArrayList<TextItem> list = new ArrayList<>(toolTipTextItems);
 //
 //        for (TextItem textItem : list) {
 //
@@ -243,13 +243,13 @@ public class ToolTipMaster {
 //        switch (pos) {
 //
 //        }
-//        List<Object> lines = new LinkedList<>();
+//        List<Object> lines = new ArrayList<>();
 //        new TextItem(lines, TEXT_TYPE.INFO);
 //    }
 //
 //    // attack tooltip, targeting tooltip,
 //    public void initUnitTooltip(Unit unit, boolean targeting) {
-//        List<Object> lines = new LinkedList<>();
+//        List<Object> lines = new ArrayList<>();
 //        toolTipTextItems.remove(unitToolTip);
 //        String prefix = "";
 //        if (unit.getOutlineTypeForPlayer() == null) {
@@ -329,7 +329,7 @@ public class ToolTipMaster {
 //
 //    public void initBuffTooltip(SmallItem item, boolean info_active_panel) {
 //        DC_BuffObj buffObj = (DC_BuffObj) item.getEntity();
-//        List<Object> lines = new LinkedList<>();
+//        List<Object> lines = new ArrayList<>();
 //        if (buffObj.isPermanent()) {
 //            lines.add(buffObj.getName() + ", Permanent");
 //        } else {
@@ -358,7 +358,7 @@ public class ToolTipMaster {
 //
 //    public void initTargetingTooltip(DC_ActiveObj activeObj) {
 //
-//        List<Object> lines = new LinkedList<>();
+//        List<Object> lines = new ArrayList<>();
 //        for (Condition c : activeObj.getTargeting().getConditions()) {
 //            lines.add(c.getTooltip()); // preCheck can concatenate
 //        }
@@ -548,7 +548,7 @@ public class ToolTipMaster {
 //        portrait = new Point(x, y);
 //        textItem.setPoint(portrait);
 //        toolTipTextItems.remove(textItem);
-//        for (TextItem text : new LinkedList<>(toolTipTextItems)) {
+//        for (TextItem text : new ArrayList<>(toolTipTextItems)) {
 //            Rectangle rectangle = text.getRectangle();
 //            if (rect.intersects(rectangle)) {
 //                panel.repaint(rectangle);
@@ -579,7 +579,7 @@ public class ToolTipMaster {
 //    private List<Object> replaceValueNamesWithIcons(List<String> lines, boolean wrap, int offsetX,
 //                                                    int offsetY) {
 //
-//        List<Object> list = new LinkedList<>();
+//        List<Object> list = new ArrayList<>();
 //        for (String line : lines) {
 //            String[] array = line.split(getValueNameSeparatorForImageLine());
 //            if (array.length <= 1) {

@@ -18,7 +18,7 @@ import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,7 +50,7 @@ public class ChannelingRule {
     }
 
     public static Costs getChannelingCosts(DC_SpellObj action, boolean activateOrResolve) {
-        List<Cost> list = new LinkedList<>();
+        List<Cost> list = new ArrayList<>();
         for (PARAMS costParam :activateOrResolve? costParamsActivate : costParamsResolve) {
             PARAMS payParam = DC_ContentManager.getPayParameterForCost(costParam);
             Cost cost = DC_CostsFactory.getCost(action, costParam, payParam);
@@ -173,7 +173,7 @@ public class ChannelingRule {
     // abilities.add(cost_ability);
     // public static Costs getChannelingCosts(DC_SpellObj spell) {
     // // TODO
-    // List<Cost> list = new LinkedList<>();
+    // List<Cost> list = new ArrayList<>();
     // Cost apCost = DC_CostsFactory
     // .getCost(spell, PARAMS.CHANNELING, PARAMS.C_N_OF_ACTIONS);
     // list.add(apCost);

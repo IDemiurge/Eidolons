@@ -33,7 +33,7 @@ public class IlluminationRule {
     }
 
     public static void initLightEmission(DC_Game game) {
-//        List<Effect> effects = new LinkedList<>();
+//        List<Effect> effects = new ArrayList<>();
         for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
             LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
             if (effect != null) {

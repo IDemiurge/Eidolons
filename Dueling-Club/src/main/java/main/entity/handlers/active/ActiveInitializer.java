@@ -18,7 +18,7 @@ import main.entity.handlers.EntityMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  * Created by JustMe on 2/23/2017.
@@ -53,7 +53,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
     public void initCosts(boolean anim) {
         Costs costs = null;
         if (getEntity().isFree()) {
-            costs = new Costs(new LinkedList<>());
+            costs = new Costs(new ArrayList<>());
         } else {
             try {
                 costs = DC_CostsFactory.getCostsForSpell(getEntity(),

@@ -14,7 +14,7 @@ import main.system.graphics.FontMaster.FONT;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AE_EditPanel extends G_Panel {
@@ -22,7 +22,7 @@ public class AE_EditPanel extends G_Panel {
     private AE_MainPanel mainPanel;
     private NodeMaster nodeMaster;
     private AE_Item item;
-    private List<AE_Element> elements = new LinkedList<>();
+    private List<AE_Element> elements = new ArrayList<>();
     private int pos = 0;
     private Argument expandArg;
     // private G_Panel scrollable;

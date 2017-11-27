@@ -9,7 +9,7 @@ import main.system.graphics.GuiManager;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DC_PagedBuffPanel extends G_PagePanel<BuffObj> {
@@ -28,7 +28,7 @@ public class DC_PagedBuffPanel extends G_PagePanel<BuffObj> {
 
     @Override
     protected G_Component createPageComponent(List<BuffObj> list) {
-        List<SmallItem> compList = new LinkedList<>();
+        List<SmallItem> compList = new ArrayList<>();
         for (BuffObj buff : list) {
             if (buff == null) {
                 compList.add(new SmallItem());
@@ -59,13 +59,13 @@ public class DC_PagedBuffPanel extends G_PagePanel<BuffObj> {
     @Override
     protected List<List<BuffObj>> getPageData() {
         if (obj == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         DequeImpl<BuffObj> buffs = obj.getBuffs();
         if (buffs == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
-        List<BuffObj> list = new LinkedList<>();
+        List<BuffObj> list = new ArrayList<>();
         for (BuffObj buff : buffs) {
             if (buff.isVisible()) {
                 list.add(buff);

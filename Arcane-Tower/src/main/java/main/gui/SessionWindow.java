@@ -21,7 +21,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SessionWindow implements ActionListener {
@@ -154,7 +154,7 @@ public class SessionWindow implements ActionListener {
     }
 
     private Direction[] getDirections() {
-        List<Direction> directions = new LinkedList<>(ArcaneTower.getDirections());
+        List<Direction> directions = new ArrayList<>(ArcaneTower.getDirections());
         directions.remove(session.getDirection());
         directions.add(0, session.getDirection());
         Direction[] array = directions.toArray(new Direction[directions.size()]);

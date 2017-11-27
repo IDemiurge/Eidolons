@@ -64,7 +64,7 @@ if (!ListMaster.isNotEmpty(coordinates))
         }
         coordinates = getSortedByProximityToEdge(direction.getDirection(), coordinates, null);
         int edge = coordinates.get(0).getXorY(!direction.isVertical());
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         for (Coordinates c : coordinates) {
             if (direction.isCloserToZero()) {
                 if (c.getXorY(!direction.isVertical()) > edge) {
@@ -163,7 +163,7 @@ if (!ListMaster.isNotEmpty(coordinates))
         int x2 = getMaxX(coordinates);
         int y1 = getMinY(coordinates);
         int y2 = getMaxY(coordinates);
-        List<Coordinates> exceptions = new LinkedList<>();
+        List<Coordinates> exceptions = new ArrayList<>();
         for (Coordinates c : getCoordinatesWithin(x1, x2, y1, y2)) {
             exceptions.add(c);
         }
@@ -184,7 +184,7 @@ if (!ListMaster.isNotEmpty(coordinates))
 
     public static List<Coordinates> getCornerCoordinates(Collection<Coordinates> list) {
         int[] array = getMinMaxCoordinates(list);
-        List<Coordinates> corners = new LinkedList<>();
+        List<Coordinates> corners = new ArrayList<>();
         corners.add(new Coordinates(array[0], array[2]));
         corners.add(new Coordinates(array[0], array[3]));
         corners.add(new Coordinates(array[1], array[3]));
@@ -252,7 +252,7 @@ if (!ListMaster.isNotEmpty(coordinates))
     }
 
     public static List<Coordinates> getAdjacentToSquare(List<Coordinates> coordinates) {
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         int x1 = getMinX(coordinates);
         int x2 = getMaxX(coordinates);
         int y1 = getMinY(coordinates);
@@ -282,7 +282,7 @@ if (!ListMaster.isNotEmpty(coordinates))
 
     public static List<Coordinates> getAdjacentToBothGroups(Collection<Coordinates> coordinates,
                                                             Collection<Coordinates> coordinates2) {
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         list.addAll(coordinates);
         list.addAll(coordinates2);
         int x = getMinX(list);
@@ -294,7 +294,7 @@ if (!ListMaster.isNotEmpty(coordinates))
     }
 
     public static List<Coordinates> getCoordinatesWithin(int x, int x1, int y, int y1) {
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         for (; x1 > x; x1--) {
             for (int y_ = y1; y_ > y; y_--) {
                 list.add(new Coordinates(x1, y_));
@@ -306,7 +306,7 @@ if (!ListMaster.isNotEmpty(coordinates))
     public static List<Coordinates> getAdjacentToBothGroups(
             Collection<Coordinates> coordinatesPool, Collection<Coordinates> coordinates,
             Collection<Coordinates> coordinates2) {
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         Set<Coordinates> adjacent1 = new HashSet<>();
         for (Coordinates c : coordinatesPool) {
             for (Coordinates c1 : coordinates) {
@@ -457,7 +457,7 @@ if (!ListMaster.isNotEmpty(coordinates))
     }
 
     public static List<Coordinates> getCoordinatesFromString(String textContent) {
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         for (String s : StringMaster.open(textContent)) {
             list.add(new Coordinates(true, s));
         }
@@ -479,7 +479,7 @@ if (!ListMaster.isNotEmpty(coordinates))
 
     public static List<Coordinates> getCoordinatesWithOffset(List<Coordinates> coordinates,
                                                              int offsetX, int offsetY) {
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         for (Coordinates c : coordinates) {
             Coordinates e = new Coordinates(c.x + offsetX, c.y + offsetY);
             if (e.isInvalid()) {

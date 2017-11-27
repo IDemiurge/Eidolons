@@ -25,7 +25,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.PositionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -34,7 +34,7 @@ public class WanderAi extends AiBehavior{
     public static List<? extends DC_Obj> getWanderCells(UnitAI ai) {
         DIRECTION d = ai.getGroup().getWanderDirection();
         // permittedCells = ai.getGroup().getWanderBlocks();
-        List<DC_Obj> list = new LinkedList<>();
+        List<DC_Obj> list = new ArrayList<>();
         for (DC_Cell cell : Analyzer.getCells(ai, false, false, true)) {
             if (d != null) {
                 if (DirectionMaster.getRelativeDirection(cell, ai.getUnit()) != d) {
@@ -152,7 +152,7 @@ public class WanderAi extends AiBehavior{
         if (checkUnitArrived(group.getLeader().getUnitAI(), type)) {
             change = true;
         } else {
-            List<UnitAI> forwards = new LinkedList<>();
+            List<UnitAI> forwards = new ArrayList<>();
             for (Unit unit : group.getMembers()) {
                 UnitAI ai = unit.getUnitAI();
                 boolean done = checkUnitArrived(ai, type);
@@ -309,12 +309,12 @@ public class WanderAi extends AiBehavior{
             return new ActionSequence(turnSequence, task, ai);
         }
 
-        List<Coordinates> c = new LinkedList<>();
+        List<Coordinates> c = new ArrayList<>();
         c.add(c1);
        getMaster(ai).setUnit(ai.getUnit());
 //        getMaster(ai).getPathBuilder().init(null, null);
 //        TimeLimitMaster.markTimeForAI(ai);
-        List<ActionPath> paths = new LinkedList<>();
+        List<ActionPath> paths = new ArrayList<>();
 //         getMaster(ai).getPathBuilder().build(c);
 
         Action action = null;

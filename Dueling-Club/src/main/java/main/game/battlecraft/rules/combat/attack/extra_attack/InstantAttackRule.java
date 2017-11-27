@@ -24,7 +24,7 @@ import main.system.math.PositionMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -239,8 +239,8 @@ public class InstantAttackRule {
 
     // could be a spell?..
     public static List<DC_ActiveObj> getInstantAttacks(Unit unit) {
-        List<DC_ActiveObj> list = new LinkedList<>();
-        List<DC_UnitAction> attacks = new LinkedList<>(unit.getActionMap().get(
+        List<DC_ActiveObj> list = new ArrayList<>();
+        List<DC_UnitAction> attacks = new ArrayList<>(unit.getActionMap().get(
                 ActionEnums.ACTION_TYPE.STANDARD_ATTACK));
 
         if (unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK) != null) {

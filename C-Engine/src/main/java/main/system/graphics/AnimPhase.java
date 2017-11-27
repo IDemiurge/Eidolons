@@ -5,7 +5,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnimPhase {
@@ -35,7 +35,7 @@ public class AnimPhase {
     }
 
     public void addArg(Object o) {
-        List<Object> list = new LinkedList<>(Arrays.asList(args));
+        List<Object> list = new ArrayList<>(Arrays.asList(args));
         list.add(o);
         args = list.toArray();
     }

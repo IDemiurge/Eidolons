@@ -34,8 +34,8 @@ public class PathChoiceMaster {
     protected PathBuilder pathBuilder;
     protected List<DC_ActiveObj> moveActions; // only special here?
     private DC_UnitAction stdMove;
-    private LinkedList<Object> sneakCells;
-    private LinkedList<Object> nonSneakCells;
+    private ArrayList<Object> sneakCells;
+    private ArrayList<Object> nonSneakCells;
     private Unit unit;
     private Action targetAction;
     private Coordinates targetCoordinate;
@@ -44,8 +44,8 @@ public class PathChoiceMaster {
 
     public PathChoiceMaster(PathBuilder pathBuilder) {
         this.pathBuilder = pathBuilder;
-        sneakCells = new LinkedList<>();
-        nonSneakCells = new LinkedList<>();
+        sneakCells = new ArrayList<>();
+        nonSneakCells = new ArrayList<>();
     }
 
     public PathChoiceMaster init(Unit unit, Action targetAction, Coordinates targetCoordinate,
@@ -63,7 +63,7 @@ public class PathChoiceMaster {
         Chronos.mark("Finding choices for " + path);
         pathBuilder.adjustUnit();
 
-        List<Choice> choices = new LinkedList<>();
+        List<Choice> choices = new ArrayList<>();
         for (Coordinates c : getDefaultCoordinateTargets(path, c_coordinate)) {
             Choice stdMoveChoice = constructStdMoveChoice(c, c_coordinate, c_facing);
             if (stdMoveChoice != null) {
@@ -72,7 +72,7 @@ public class PathChoiceMaster {
         }
         Chronos.mark("Finding custom choices for " + path);
 
-        List<Choice> specialChoices = new LinkedList<>();
+        List<Choice> specialChoices = new ArrayList<>();
         if (ListMaster.isNotEmpty(moveActions)) {
             // add special
             // will need to remove actions from list when used? preCheck CD
@@ -106,7 +106,7 @@ public class PathChoiceMaster {
                         try {
                             Coordinates coordinates = ((SelfMoveEffect) e).getCoordinates();
                             if (coordinates != null) {
-                                objects = new LinkedList<>(Arrays.asList(unit
+                                objects = new ArrayList<>(Arrays.asList(unit
                                         .getGame().getCellByCoordinate(coordinates)));
                             }
                         } catch (Exception ex) {
@@ -119,7 +119,7 @@ public class PathChoiceMaster {
                 }
                 if (objects != null) {
 
-                    List<Choice> choicesForAction = new LinkedList<>();
+                    List<Choice> choicesForAction = new ArrayList<>();
                     for (Object obj : objects) {
                         if (obj instanceof DC_Cell) {
                             Coordinates coordinates = ((DC_Cell) obj).getCoordinates();
@@ -244,7 +244,7 @@ public class PathChoiceMaster {
             }
         }
 
-        List<Choice> filteredList = new LinkedList<>();
+        List<Choice> filteredList = new ArrayList<>();
         for (Choice choice : choices) {
             Coordinates c = choice.getCoordinates();
             if (c.equals(c_coordinate)) {
@@ -296,7 +296,7 @@ public class PathChoiceMaster {
 
     private List<Coordinates> getDefaultCoordinateTargets(ActionPath path, Coordinates c_coordinate) {
 
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         for (DIRECTION d : DIRECTION.values ) {
             if (d.isDiagonal()) {
                 continue;

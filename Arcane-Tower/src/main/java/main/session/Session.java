@@ -15,7 +15,7 @@ import main.logic.util.AT_SortMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.time.ZeitMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Session extends ArcaneEntity {
@@ -119,7 +119,7 @@ public class Session extends ArcaneEntity {
 
     public List<Goal> getDisplayedGoals() {
         if (goals == null) {
-            goals = new LinkedList<>();
+            goals = new ArrayList<>();
         }
         if (isLocked()) {
             return goals;
@@ -173,7 +173,7 @@ public class Session extends ArcaneEntity {
     }
 
     public void removeCustomGoals() {
-        for (Goal sub : new LinkedList<>(goals)) {
+        for (Goal sub : new ArrayList<>(goals)) {
             if (sub.getDirection() == null) {
                 goals.remove(sub);
             }
@@ -182,7 +182,7 @@ public class Session extends ArcaneEntity {
 
     public List<Task> getTasks() {
         if (tasks == null) {
-            tasks = new LinkedList<>();
+            tasks = new ArrayList<>();
         }
         return tasks;
     }
@@ -203,14 +203,14 @@ public class Session extends ArcaneEntity {
 
     public List<Goal> getPinnedGoals() {
         if (pinnedGoals == null) {
-            pinnedGoals = new LinkedList<>();
+            pinnedGoals = new ArrayList<>();
         }
         return pinnedGoals;
     }
 
     public List<Task> getPinnedTasks() {
         if (pinnedTasks == null) {
-            pinnedTasks = new LinkedList<>();
+            pinnedTasks = new ArrayList<>();
         }
         return pinnedTasks;
     }

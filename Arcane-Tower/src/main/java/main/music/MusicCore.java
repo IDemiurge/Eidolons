@@ -62,7 +62,7 @@ public class MusicCore {
     public static boolean initMusicListTypes = false;
     static Map<String, Track> trackTypeMap = new HashMap<>();
     static Map<String, MusicList> listTypeMap = new HashMap<>();
-    static List<MusicList> lastPlayed = new LinkedList<>();
+    static List<MusicList> lastPlayed = new ArrayList<>();
     private static Map<String, MusicMouseListener> listenerMap = new HashMap<>();
     private static VALUE[] FILTER_VALUES = {
             AT_PROPS.MUSIC_TYPE,
@@ -148,7 +148,7 @@ public class MusicCore {
     }
 
     public static List<Track> getTracksFromLists(MusicList... selectedLists) {
-        List<Track> tracks = new LinkedList<>();
+        List<Track> tracks = new ArrayList<>();
         for (MusicList sub : selectedLists) {
             tracks.addAll(getTracks(sub.getProperty(AT_PROPS.PATH)));
         }
@@ -254,7 +254,7 @@ public class MusicCore {
         int maxSize = 0;
         int i = 0;
         for (String substring : StringMaster.open(filterVal)) {
-            List<String> list = new LinkedList<>();
+            List<String> list = new ArrayList<>();
             for (ObjType type : DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST)) {
                 if (type.checkProperty(filterProp, substring)) {
                     list.add(type.getProperty(G_PROPS.HOTKEY) + "::"
@@ -322,7 +322,7 @@ public class MusicCore {
         loop:
         for (String g : musicConsts) {
             // map.
-            List<String> list = new LinkedList<>();
+            List<String> list = new ArrayList<>();
             // for (MusicList musList : listTypeMap.values()) {
             typeLoop:
             for (ObjType type : DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST)) {
@@ -358,7 +358,7 @@ public class MusicCore {
             }
         }
         for (String sub : map.keySet()) {
-            map.put(sub, new LinkedList<>(new LinkedHashSet<>(map.get(sub))));
+            map.put(sub, new ArrayList<>(new LinkedHashSet<>(map.get(sub))));
         }
         // TODO adapt to max list size also
         int wrap = 5 - map.size() / 2;
@@ -449,7 +449,7 @@ public class MusicCore {
     }
 
     public static List<MusicList> getMusicLists(List<ObjType> list) {
-        List<MusicList> filtered = new LinkedList<>();
+        List<MusicList> filtered = new ArrayList<>();
         for (ObjType sub : list) {
             filtered.add(getList(sub));
         }

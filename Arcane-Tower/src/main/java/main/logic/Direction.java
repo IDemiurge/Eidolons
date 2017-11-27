@@ -5,7 +5,7 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.logic.ArcaneRef.AT_KEYS;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Direction extends ArcaneEntity {
@@ -18,7 +18,7 @@ public class Direction extends ArcaneEntity {
     }
 
     public void initGoals() {
-        goals = new LinkedList<>();
+        goals = new ArrayList<>();
         for (Goal g : ArcaneTower.getGoals()) {
             if (g.checkProperty(AT_PROPS.DIRECTION, getName())) {
                 g.setDirection(this);

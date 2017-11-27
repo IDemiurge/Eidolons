@@ -5,7 +5,7 @@ import main.data.DataManager;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContentSyncMaster {
@@ -32,7 +32,7 @@ public class ContentSyncMaster {
 
     public static void generateTypesForDC_Content() {
         XML_Reader.readTypes(false); // TODO selective?
-        List<DC_TYPE> syncedTypes = new LinkedList<>();
+        List<DC_TYPE> syncedTypes = new ArrayList<>();
         for (DC_TYPE TYPE : syncedTypes) {
             for (String sub : XML_Reader.getSubGroups(TYPE)) {
                 if (!checkGroupInWorkspace(sub)) {

@@ -52,7 +52,7 @@ public class PathSequenceConstructor extends AiHandler {
         List<DC_ActiveObj> moves =
          AiUnitActionMaster.getMoveActions(ai.getUnit());
         Action action = AiActionFactory.newAction("Move", ai);
-        List<Coordinates> coordinates = new LinkedList<>();
+        List<Coordinates> coordinates = new ArrayList<>();
         coordinates.add(targetCell);
         List<ActionPath> paths = getPathSequences(moves, action, coordinates);
 //      paths.forEach(path->{

@@ -305,7 +305,7 @@ public class FunctionManager {
 
         public Object evaluate(Ref ref, String[] args) {
             int i = 0;
-            List<Object> values = new LinkedList<>();
+            List<Object> values = new ArrayList<>();
             for (String s_arg : args) {
                 FUNC_ARGS arg = this.args[i];
                 Object value = arg.evaluate(s_arg, ref);

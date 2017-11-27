@@ -27,7 +27,7 @@ import main.game.battlecraft.ai.tools.prune.PruneMaster;
 import main.game.battlecraft.ai.tools.target.TargetingMaster;
 import main.game.core.game.DC_Game;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,7 +57,7 @@ public class AiMaster {
     private ThreatAnalyzer threatAnalyzer;
     private BehaviorMaster behaviorMaster;
     private AtomicAi atomicAi;
-    private List<AiHandler> handlers = new LinkedList<>();
+    private List<AiHandler> handlers = new ArrayList<>();
     private AiScriptExecutor scriptExecutor;
     private MetaGoalMaster metaGoalMaster;
     private AiPriorityConstantMaster priorityConstantMaster;

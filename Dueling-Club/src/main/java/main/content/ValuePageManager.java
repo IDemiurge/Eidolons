@@ -102,13 +102,13 @@ public class ValuePageManager {
     }
 
     public static List<List<VALUE>> getGenericValuesForInfoPages() {
-        List<List<VALUE>> list = new LinkedList<>();
+        List<List<VALUE>> list = new ArrayList<>();
         list.add(Arrays.asList(ValuePages.GENERIC_DC_HEADER));
         return list;
     }
 
     public static List<VALUE> getOutlineValues() {
-        return new LinkedList<>(Arrays.asList(ValuePages.OUTLINE_VALUES));
+        return new ArrayList<>(Arrays.asList(ValuePages.OUTLINE_VALUES));
     }
 
     public static List<List<VALUE>> getValuesForHCInfoPages(OBJ_TYPE TYPE) {
@@ -152,9 +152,9 @@ public class ValuePageManager {
         if (pages == null) {
             return null;
         }
-        List<List<VALUE>> lists = new LinkedList<>();
+        List<List<VALUE>> lists = new ArrayList<>();
         for (VALUE[] page : pages) {
-            LinkedList<VALUE> list = new LinkedList<>(Arrays.asList(page));
+            ArrayList<VALUE> list = new ArrayList<>(Arrays.asList(page));
             lists.add(list);
         }
         addDynamicPagesHC(lists, TYPE);
@@ -193,7 +193,7 @@ public class ValuePageManager {
 
     private static List<VALUE> getMergedPageList(boolean filter, boolean av, OBJ_TYPE TYPE,
                                                  List<String> pageNames) {
-        List<VALUE> list = new LinkedList<>();
+        List<VALUE> list = new ArrayList<>();
         List<List<VALUE>> pages = getPageLists(filter, av, TYPE, pageNames);
         pages.add(getAdditionalPage(av, pages, TYPE, true));
         pages.add(getAdditionalPage(av, pages, TYPE, false));
@@ -215,7 +215,7 @@ public class ValuePageManager {
 
     private static List<List<VALUE>> getPageLists(boolean filter, boolean av, OBJ_TYPE TYPE,
                                                   List<String> pageNames) {
-        List<List<VALUE>> list = new LinkedList<>();
+        List<List<VALUE>> list = new ArrayList<>();
         Map<String, List<VALUE>> map = (av) ? pageMaps.get(TYPE) : altPageMaps.get(TYPE);
         if (pageNames == null) {
             return null;
@@ -236,7 +236,7 @@ public class ValuePageManager {
                                                  boolean prop) {
         List<VALUE> page = getAdditionalPages(av, prop).get(TYPE);
         if (page == null) {
-            page = new LinkedList<>();
+            page = new ArrayList<>();
             for (VALUE p : (!prop) ? ContentManager.getParamsForType(TYPE.getName(), !av)
                     : ContentManager.getPropsForType(TYPE.getName(), !av)) {
                 if (!ContentManager.isValueForOBJ_TYPE(TYPE, p)) {
@@ -290,7 +290,7 @@ public class ValuePageManager {
     }
 
     private static List<VALUE> getFilteredValueList(List<VALUE> page, OBJ_TYPE TYPE, boolean av) {
-        List<VALUE> list = new LinkedList<>();
+        List<VALUE> list = new ArrayList<>();
         for (VALUE v : page) {
             if (av) {
                 if (v.isDynamic() && !v.isWriteToType()) {
@@ -329,11 +329,11 @@ public class ValuePageManager {
     }
 
     public static List<VALUE> getValuePage(String key, OBJ_TYPE TYPE) {
-        return new LinkedList<>(pageMaps.get(TYPE).get(key));
+        return new ArrayList<>(pageMaps.get(TYPE).get(key));
     }
 
     public static List<VALUE> getValuePage(int index, OBJ_TYPE TYPE) {
-        return new LinkedList<>(Arrays
+        return new ArrayList<>(Arrays
                 .asList((VALUE[]) pageMaps.get(TYPE).keySet().toArray()[index]));
     }
 
@@ -342,7 +342,7 @@ public class ValuePageManager {
     }
 
     public static List<List<VALUE>> getValueLists(VALUE[][] pages) {
-        List<List<VALUE>> list = new LinkedList<>();
+        List<List<VALUE>> list = new ArrayList<>();
         for (VALUE[] p : pages) {
             list.add(Arrays.asList(p));
         }

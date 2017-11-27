@@ -13,7 +13,7 @@ import main.system.hotkey.HC_KeyManager;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -30,7 +30,7 @@ public class ChoiceSequence {
     // better
 
     public ChoiceSequence(ChoiceView... views) {
-        this(new LinkedList<>(Arrays.asList(views)));
+        this(new ArrayList<>(Arrays.asList(views)));
     }
 
     public ChoiceSequence(List<ChoiceView> views) {
@@ -43,7 +43,7 @@ public class ChoiceSequence {
     }
 
     public ChoiceSequence() {
-        this(new LinkedList<>());
+        this(new ArrayList<>());
     }
 
     public void start() {

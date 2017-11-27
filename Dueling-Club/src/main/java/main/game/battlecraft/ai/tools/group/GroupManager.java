@@ -5,7 +5,7 @@ import main.entity.type.ObjAtCoordinate;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupManager {
@@ -22,7 +22,7 @@ public class GroupManager {
         // go thru them, but make groups via adjacency
         int blockWidth = dungeon.getCellsX() / factor;
         int blockHeight = dungeon.getCellsY() / factor;
-        List<Unit> units = new LinkedList<>();
+        List<Unit> units = new ArrayList<>();
 //        GroupAI group = new GroupAI(null);
         // minimum group area...
         for (int n = 0; n < factor; n++) {

@@ -60,7 +60,7 @@ public class DataManager {
     }
 
     public static List<List<String>> getTabTreeData(PROPERTY filterValue, String type) {
-        List<List<String>> lists = new LinkedList<>();
+        List<List<String>> lists = new ArrayList<>();
 
         for (String criterion : XML_Reader.getSubGroups(type)) {
             if (criterion == null) {
@@ -112,7 +112,7 @@ public class DataManager {
     }
 
     public static List<ObjType> findTypes(String typeName, boolean strict) {
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         for (DC_TYPE TYPE : DC_TYPE.values()) {
             list.addAll(findTypes(typeName, strict, TYPE));
         }
@@ -121,7 +121,7 @@ public class DataManager {
 
     public static List<ObjType> findTypes(String typeName, boolean strict, OBJ_TYPE... TYPES) {
 
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
 
         for (OBJ_TYPE TYPE : TYPES) {
             if (TYPE instanceof C_OBJ_TYPE) {
@@ -432,7 +432,7 @@ public class DataManager {
     }
 
     public static List<ObjType> getTypes() {
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         for (DC_TYPE type : DC_TYPE.values()) {
             list.addAll(getTypes(type));
         }
@@ -448,7 +448,7 @@ public class DataManager {
 
             List<ObjType> group = getCustomObjTypeCache().get(key);
             if (group == null) {
-                group = new LinkedList<>();
+                group = new ArrayList<>();
             }
             for (DC_TYPE type : ((C_OBJ_TYPE) key).getTypes()) {
                 group.addAll(getTypes(type));
@@ -459,9 +459,9 @@ public class DataManager {
 
         Map<String, ObjType> map = getTypeMap(key);
         if (map == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
-        List<ObjType> list = new LinkedList<>(map.values());
+        List<ObjType> list = new ArrayList<>(map.values());
         if (shuffled)
             Collections.shuffle(list);
         return list;
@@ -469,13 +469,13 @@ public class DataManager {
 
     public static List<String> getTypeNames(OBJ_TYPE TYPE) {
         if (TYPE instanceof C_OBJ_TYPE) {
-            List<String> group = new LinkedList<>();
+            List<String> group = new ArrayList<>();
             for (DC_TYPE type : ((C_OBJ_TYPE) TYPE).getTypes()) {
                 group.addAll(getTypeNames(type));
             }
             return group;
         }
-        return new LinkedList<>(getTypeMap(TYPE).keySet());
+        return new ArrayList<>(getTypeMap(TYPE).keySet());
     }
 
     public static List<ObjType> getTypesSubGroup(OBJ_TYPE TYPE, String subgroup) {
@@ -524,7 +524,7 @@ public class DataManager {
         }
         // if (ListMaster.contains(groupsList, subgroup, true)
         // || isCustomGroup(subgroup)) {
-        list = new LinkedList<>();
+        list = new ArrayList<>();
 
         Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
         Collection<ObjType> set = map.get(TYPE.toString()).values();
@@ -552,7 +552,7 @@ public class DataManager {
             chars[0] = Character.toUpperCase(chars[0]);
             map = XML_Reader.getTypeMaps().get(new String(chars));
         }
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (String objName : map.keySet()) {
             if (StringMaster.compare(map.get(objName).getValue(filterValue), filter)) {
                 list.add(objName);
@@ -564,7 +564,7 @@ public class DataManager {
     public static List<ObjType> getFilteredTypes(String filter, OBJ_TYPE OBJ_TYPE, VALUE filterValue) {
         Map<String, ObjType> map = XML_Reader.getTypeMaps().get(OBJ_TYPE.toString());
 
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         boolean or = false;
         if (filter.contains(StringMaster.OR)) {
             or = true;
@@ -597,7 +597,7 @@ public class DataManager {
         if (group == null) {
             return getTypes(TYPE);
         }
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         if (TYPE instanceof C_OBJ_TYPE) {
             for (DC_TYPE T : ((C_OBJ_TYPE) TYPE).getTypes())
                 list.addAll(getTypesGroup(T, group));
@@ -625,7 +625,7 @@ public class DataManager {
         if (group == null) {
             return getTypeNames(TYPE);
         }
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
         Collection<ObjType> set = new HashSet<>();
         if (TYPE instanceof C_OBJ_TYPE) {
@@ -659,7 +659,7 @@ public class DataManager {
     }
 
     public static List<String> getHeroList(String res_level) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
 
         for (String name : getTypeNames(DC_TYPE.CHARS)) {
             ObjType type = getType(name, DC_TYPE.CHARS);
@@ -683,7 +683,7 @@ public class DataManager {
         if (strings == null) {
             return null;
         }
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         for (String string : strings) {
             ObjType type = getType(string, TYPE);
             if (type == null) {
@@ -705,7 +705,7 @@ public class DataManager {
     }
 
     public static Collection<? extends Obj> toObjList(Collection<Integer> values, Game game) {
-        List<Obj> list = new LinkedList<>();
+        List<Obj> list = new ArrayList<>();
         for (Integer id : values) {
             list.add(game.getObjectById(id));
         }
@@ -717,7 +717,7 @@ public class DataManager {
     }
 
     public static List<String> toStringList(Collection<? extends Entity> listTypeData) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (Entity type : listTypeData) {
             if (type == null) {
                 continue;
@@ -728,7 +728,7 @@ public class DataManager {
     }
 
     public static List<String> convertObjToStringList(Collection<? extends Obj> listTypeData) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (Entity type : listTypeData) {
             list.add(type.getName());
         }
@@ -755,14 +755,14 @@ public class DataManager {
     public static List<String> getTabsGroup(OBJ_TYPE TYPE) {
 
         if (TYPE instanceof C_OBJ_TYPE) {
-            List<String> group = new LinkedList<>();
+            List<String> group = new ArrayList<>();
             for (DC_TYPE type : ((C_OBJ_TYPE) TYPE).getTypes()) {
                 group.addAll(XML_Reader.getTabGroupMap().get(type.getName()));
             }
             return group;
         }
 
-        return new LinkedList<>(XML_Reader.getTabGroupMap().get(TYPE.getName()));
+        return new ArrayList<>(XML_Reader.getTabGroupMap().get(TYPE.getName()));
     }
 
     public static void addType(ObjType type) {
@@ -779,7 +779,7 @@ public class DataManager {
         ObjType oldType = getType(type.getName(), type.getOBJ_TYPE_ENUM());
         if (oldType != null) {
             if (overwrittenTypes == null) {
-                overwrittenTypes = new LinkedList<>();
+                overwrittenTypes = new ArrayList<>();
             }
             overwrittenTypes.add(oldType);
         }
@@ -803,7 +803,7 @@ public class DataManager {
     }
 
     public static List<ObjType> toTypeList(Collection<? extends Entity> data) {
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         for (Entity e : data) {
             list.add(e.getType());
         }
@@ -826,7 +826,7 @@ public class DataManager {
         Set<String> fullList = (XML_Reader.getTreeSubGroupMap().get(group));
         Set<String> allGroupsForType = XML_Reader.getTreeSubGroupMap().get(group); // TODO
 
-        List<String> filteredSubGroups = new LinkedList<>();
+        List<String> filteredSubGroups = new ArrayList<>();
 
         for (String subgroup : fullList) {
             if (allGroupsForType.contains(subgroup)) {
@@ -867,7 +867,7 @@ public class DataManager {
     }
 
     public static List<ObjType> getRootTypes(List<ObjType> data) {
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         for (ObjType type : data) {
             if (type.isUpgrade()) {
                 continue;
@@ -878,7 +878,7 @@ public class DataManager {
     }
 
     public static List<ObjType> toTypeList(List<ObjAtCoordinate> types) {
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         for (ObjAtCoordinate type : types) {
             list.add(type.getType());
         }
@@ -922,7 +922,7 @@ public class DataManager {
 
     public static List<ObjType> getChildren(ObjType type, List<ObjType> data, PROPERTY prop,
                                             PROPERTY prop2) {
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         for (ObjType child : data) {
             // if (!type.isUpgrade())
             // continue;
@@ -940,7 +940,7 @@ public class DataManager {
     }
 
     public static List<ObjType> getUpgradedTypes(ObjType baseType) {
-        List<ObjType> list = new LinkedList<>(
+        List<ObjType> list = new ArrayList<>(
          getTypesSubGroup(baseType.getOBJ_TYPE_ENUM(), baseType.getSubGroupingKey()));
         list.removeIf(type -> type.getProperty(G_PROPS.BASE_TYPE).equalsIgnoreCase(baseType.getName()));
         return list;

@@ -189,7 +189,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private void processCustomRules() {
-// List<RoundRule> list = new LinkedList<>();
+// List<RoundRule> list = new ArrayList<>();
 
         master.getGame().getUnits().forEach(unit -> {
             unit.getResetter().regenerateToughness();

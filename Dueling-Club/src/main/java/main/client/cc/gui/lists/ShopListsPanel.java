@@ -42,14 +42,14 @@ public class ShopListsPanel extends VendorListsPanel {
             return new HashMap<>();
         }
         Map<String, HC_PagedListPanel> map = new XLinkedMap<>();
-        List<ObjType> items = new LinkedList<>();
+        List<ObjType> items = new ArrayList<>();
         Shop shop = getShop(tabName);
         shop.setVendorPanel(this);
         for (ObjType t : shop.getItems()) {
             items.add(t);
         }
         for (String group : getListGroup(tabName)) {
-            List<ObjType> data = new LinkedList<>();
+            List<ObjType> data = new ArrayList<>();
             for (ObjType t : items) {
                 if (checkType(t, group, shop)) {
                     data.add(t);
@@ -101,7 +101,7 @@ public class ShopListsPanel extends VendorListsPanel {
             return super.getTabGroups();
         }
         if (getTown() == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         return DataManager.toStringList(getTown().getShops());
     }
@@ -112,7 +112,7 @@ public class ShopListsPanel extends VendorListsPanel {
         }
         Shop shop = getTown().getShop(tabName);
         if (shop.getProperty(MACRO_PROPS.SHOP_ITEM_GROUPS).isEmpty()) {
-            List<String> list = new LinkedList<>();
+            List<String> list = new ArrayList<>();
             for (String s : Arrays.asList(shop.getShopType().getItem_groups())) {
                 list.add(StringMaster.getWellFormattedString(s));
             }

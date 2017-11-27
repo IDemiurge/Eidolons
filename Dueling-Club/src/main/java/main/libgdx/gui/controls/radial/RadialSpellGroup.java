@@ -6,7 +6,7 @@ import main.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +23,7 @@ public class RadialSpellGroup implements RADIAL_ITEM {
 
     @Override
     public List<RADIAL_ITEM> getItems(Unit source) {
-        LinkedList<RADIAL_ITEM> nodes = new LinkedList<>();
+        ArrayList<RADIAL_ITEM> nodes = new ArrayList<>();
         List<DC_SpellObj> spells = source.getSpells()
                 .stream()
                 .filter(spell -> spell.getSpellGroup()== (group))

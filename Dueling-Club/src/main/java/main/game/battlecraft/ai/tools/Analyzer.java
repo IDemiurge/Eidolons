@@ -36,7 +36,7 @@ import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -203,7 +203,7 @@ public class Analyzer extends AiHandler {
     }
 
     public static List<DC_Cell> getLastSeenEnemyCells(UnitAI ai) {
-        List<DC_Cell> list = new LinkedList<>();
+        List<DC_Cell> list = new ArrayList<>();
         for (DC_Obj obj : ai.getUnit().getOwner().getLastSeenCache().keySet()) {
             if (isEnemy(obj, ai.getUnit())) {
                 Coordinates coordinates = ai.getUnit().getOwner()
@@ -253,7 +253,7 @@ public class Analyzer extends AiHandler {
                                        boolean checkAct, boolean checkAttack,
                                        Collection<Coordinates> coordinatesToCheck) {
 
-        List<Unit> list = new LinkedList<>();
+        List<Unit> list = new ArrayList<>();
         for (Unit sub : unit.getGame().getMaster().getUnitsArray()) {
             if (coordinatesToCheck == null) {
                 list.add(sub);
@@ -375,7 +375,7 @@ public class Analyzer extends AiHandler {
         // list.add(c);
         // }
         // }
-        // List<DC_Cell> remove = new LinkedList<>();
+        // List<DC_Cell> remove = new ArrayList<>();
         // for (DC_Cell c : list) {
         // int distance = PositionMaster.getDistance(ai.getUnit()
         // .getCoordinates(), c.getCoordinates());
@@ -417,7 +417,7 @@ public class Analyzer extends AiHandler {
 
     public static List<DC_Cell> getCells(Unit targetUnit,
                                          boolean adjacent, boolean detected, boolean free) {
-        List<DC_Cell> list = new LinkedList<>();
+        List<DC_Cell> list = new ArrayList<>();
         for (Obj obj : targetUnit.getGame().getCells()) {
             DC_Cell cell = (DC_Cell) obj;
 
@@ -455,7 +455,7 @@ public class Analyzer extends AiHandler {
     public static List<? extends DC_Obj> getStalkCells(UnitAI ai) {
         // getOrCreate closest enemy?
 //        DC_HeroObj enemy = getClosestEnemy(ai);
-//        List<DC_Obj> list = new LinkedList<>();
+//        List<DC_Obj> list = new ArrayList<>();
 //        for (DC_Cell cell : getCells(ai, false, false, true)) {
 //            if (PositionMaster.getDistance(cell, enemy) <= HearingRule
 //                    .getSafeDistance(ai.getUnit(), enemy))
@@ -468,7 +468,7 @@ public class Analyzer extends AiHandler {
     public static List<? extends DC_Obj> getWanderCells(UnitAI ai) {
         DIRECTION d = ai.getGroup().getWanderDirection();
         // permittedCells = ai.getGroup().getWanderBlocks();
-        List<DC_Obj> list = new LinkedList<>();
+        List<DC_Obj> list = new ArrayList<>();
         for (DC_Cell cell : getCells(ai, false, false, true)) {
             if (d != null) {
                 if (DirectionMaster.getRelativeDirection(cell, ai.getUnit()) != d) {
@@ -523,7 +523,7 @@ public class Analyzer extends AiHandler {
 
     public static List<? extends DC_Obj> getZoneDamageCells(Unit unit) {
         List<DC_Cell> cells = getCells(unit.getUnitAI(), false, false, true);
-        List<DC_Cell> remove_cells = new LinkedList<>();
+        List<DC_Cell> remove_cells = new ArrayList<>();
         loop:
         for (DC_Cell c : cells) {
             for (Coordinates c1 : c.getCoordinates().getAdjacentCoordinates()) {
@@ -555,7 +555,7 @@ public class Analyzer extends AiHandler {
           new RandomWizard<Coordinates>().getRandomListItem(ai
            .getUnit().getCoordinates()
            .getAdjacentCoordinates())));
-        // List<DC_Cell> list = new LinkedList<>();
+        // List<DC_Cell> list = new ArrayList<>();
         //
         // DC_HeroObj unit = ai.getUnit();
         // Coordinates originalCoordinates = unit.getCoordinates();

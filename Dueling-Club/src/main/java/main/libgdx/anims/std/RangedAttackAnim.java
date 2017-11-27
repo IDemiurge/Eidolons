@@ -13,7 +13,7 @@ import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.sprite.SpriteAnimationFactory;
 import main.libgdx.texture.TextureCache;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,7 +42,7 @@ public class RangedAttackAnim extends AttackAnim {
     }
 
     private ATK_ANIMS[] getAnimTemplates() {
-        List<ATK_ANIMS> list = new LinkedList<>();
+        List<ATK_ANIMS> list = new ArrayList<>();
         switch (weapon.getWeaponGroup()) {
             case CROSSBOWS:
             case BOWS:

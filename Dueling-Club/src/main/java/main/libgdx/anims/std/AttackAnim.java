@@ -27,7 +27,7 @@ import main.system.test.TestMasterContent;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -226,7 +226,7 @@ size - elongate
         float totalDuration = 0;
         for (ATK_ANIMS anim : anims) {
             for (float angle : anim.targetAngles) {
-                List<Pair<MoveByAction, RotateByAction>> swings = new LinkedList<>();
+                List<Pair<MoveByAction, RotateByAction>> swings = new ArrayList<>();
                 float duration =
                  this.duration;
                 if (duration <= 0) {

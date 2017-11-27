@@ -163,7 +163,7 @@ public class UnitAI {
     public List<Action> getForcedActions() {
 
         if (forcedActions == null) {
-            forcedActions = new LinkedList<>();
+            forcedActions = new ArrayList<>();
         }
         return forcedActions;
     }
@@ -224,7 +224,7 @@ public class UnitAI {
     }
 
     public List<AI_BEHAVIOR_MODE> getBehaviors() {
-        List<AI_BEHAVIOR_MODE> list = new LinkedList<>();
+        List<AI_BEHAVIOR_MODE> list = new ArrayList<>();
         if (checkAmbush()) {
             list.add(AI_BEHAVIOR_MODE.AMBUSH);
         }

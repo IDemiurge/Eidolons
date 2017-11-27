@@ -12,7 +12,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.*;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +23,7 @@ public class ImageTransformer {
 
     public static List<Image> getImages(Image img, IMAGE_ANIMATION anim) {
         // sequence of borders to apply could produce nice effect
-        List<Image> images = new LinkedList<>();
+        List<Image> images = new ArrayList<>();
         switch (anim) {
             case FADE_IN:
                 // from 100% transparent to default

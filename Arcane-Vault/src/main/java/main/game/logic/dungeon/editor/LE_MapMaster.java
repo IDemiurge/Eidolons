@@ -42,7 +42,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.w3c.dom.Document;
 
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -167,7 +167,7 @@ public class LE_MapMaster {
             }
         }
 
-        return new LinkedList<>(CoordinatesMaster.getCoordinatesWithin(x1, x2, y1, y2));
+        return new ArrayList<>(CoordinatesMaster.getCoordinatesWithin(x1, x2, y1, y2));
 
     }
 
@@ -208,7 +208,7 @@ public class LE_MapMaster {
         for (Obj obj : block.getObjects()) {
             // moveObj(obj, offsetX, offsetY);
         }
-        List<Coordinates> coordinates = new LinkedList<>();
+        List<Coordinates> coordinates = new ArrayList<>();
         for (Coordinates c : block.getCoordinates()) {
             coordinates.add(new Coordinates(c.x + offsetX, c.y + offsetY));
         }
@@ -279,7 +279,7 @@ public class LE_MapMaster {
 
     public void clearArea(List<Coordinates> coordinates, boolean ignoreBlockChoice) {
         if (!ignoreBlockChoice) {
-            LinkedList<MapBlock> blocks = new LinkedList<>();
+            ArrayList<MapBlock> blocks = new ArrayList<>();
             for (Coordinates c : CoordinatesMaster.getCornerCoordinates(coordinates)) {
                 MapBlock b = getLevel().getBlockForCoordinate(c, true, blocks);
                 if (b != null) {

@@ -6,7 +6,7 @@ import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.launch.CoreEngine;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LogEntryNode {
@@ -14,7 +14,7 @@ public class LogEntryNode {
     LogEntryNode parent;
     List<LogEntryNode> children;
     String header;
-    List<String> entries = new LinkedList<>();
+    List<String> entries = new ArrayList<>();
     List<PHASE_TYPE> animPhasesToPlay;
     private ENTRY_TYPE type;
     private int lineIndex;
@@ -148,7 +148,7 @@ public class LogEntryNode {
 
     public List<ANIM> getLinkedAnimations() {
         if (linkedAnimations == null) {
-            linkedAnimations = new LinkedList<>();
+            linkedAnimations = new ArrayList<>();
             if (linkedAnimation != null) {
                 linkedAnimations.add(linkedAnimation);
             }

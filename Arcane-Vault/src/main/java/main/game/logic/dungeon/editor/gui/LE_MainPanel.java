@@ -16,7 +16,7 @@ import main.system.images.ImageManager;
 import main.system.util.Refactor;
 
 import javax.swing.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LE_MainPanel extends G_Panel implements TabChangeListener {
@@ -30,8 +30,8 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
 
     private Mission currentMission;
     private Level currentLevel;
-    private List<Mission> missions = new LinkedList<>();
-    private List<Level> levels = new LinkedList<>(); // w/o mission
+    private List<Mission> missions = new ArrayList<>();
+    private List<Level> levels = new ArrayList<>(); // w/o mission
     private boolean hasLevelsTab = true;
     private LE_PlanPanel planPanel;
     private LE_KeyMaster keyMaster;

@@ -7,7 +7,7 @@ import main.system.net.socket.ServerConnector;
 import main.system.net.socket.ServerConnector.NetCode;
 
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -16,7 +16,7 @@ public class WaitingThread implements Runnable {
     private static final long MAX_WAITING_TIME = 30000;
     private static final long WAITING_PERIOD = 1500;
     static int i = 0;
-    private static List<WaitingThread> threads = new LinkedList<>();
+    private static List<WaitingThread> threads = new ArrayList<>();
     private static Viewer VIEWER;
     private static Set<NetCode> registeredCodes = new HashSet<>();
     private static XLinkedMap<NetCode, String> inputMap = new XLinkedMap<>();

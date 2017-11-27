@@ -13,7 +13,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClassBottomPanel extends HT_BottomPanel {
@@ -21,7 +21,7 @@ public class ClassBottomPanel extends HT_BottomPanel {
     ObjType lastSelectedType;
     G_Panel masteryCompsPanel;
     private CLASS_GROUP group;
-    private List<PARAMETER> displayedMasteries = new LinkedList<>();
+    private List<PARAMETER> displayedMasteries = new ArrayList<>();
 
     public ClassBottomPanel(CLASS_GROUP group, Unit hero, HC_Tree tree) {
         super(group, hero, tree);

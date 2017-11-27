@@ -23,7 +23,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.auto.AutoTest.TEST_ARGS;
 import main.test.frontend.FAST_DC;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AutoTestMaster {
@@ -125,7 +125,7 @@ public class AutoTestMaster {
 
     public static List<String> getLogStrings() {
         if (logStrings == null) {
-            logStrings = new LinkedList<>();
+            logStrings = new ArrayList<>();
         }
         return logStrings;
     }

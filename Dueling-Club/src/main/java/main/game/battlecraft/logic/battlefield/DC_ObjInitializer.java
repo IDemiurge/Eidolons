@@ -141,19 +141,19 @@ public class DC_ObjInitializer {
 
     public static List<MicroObj> processUnitDataString(Player owner, String objData, DC_Game game) {
         if (StringMaster.isEmpty(objData)) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         Map<Coordinates, MicroObj> processUnitDataStringToMap = processUnitDataStringToMap(owner,
          objData, game);
         if (processUnitDataStringToMap == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
-        return new LinkedList<>(processUnitDataStringToMap.values());
+        return new ArrayList<>(processUnitDataStringToMap.values());
     }
 
     public static List<Coordinates> getUnitDataStringCoordinateList(Player owner, String objData,
                                                                     DC_Game game) {
-        return new LinkedList<>(processUnitDataStringToMap(owner, objData, game).keySet());
+        return new ArrayList<>(processUnitDataStringToMap(owner, objData, game).keySet());
     }
 
     public static Map<Coordinates, MicroObj> processUnitDataStringToMap(Player owner,
@@ -172,7 +172,7 @@ public class DC_ObjInitializer {
         int i = 0;
         boolean first = true;
         boolean creeps = false;
-        List<Coordinates> excludedCoordinates = new LinkedList<>();
+        List<Coordinates> excludedCoordinates = new ArrayList<>();
         Boolean last = null;
 
         for (int indx = 0; indx < items.length; indx++) {

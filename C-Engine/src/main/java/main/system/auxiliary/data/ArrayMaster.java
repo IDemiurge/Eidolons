@@ -34,7 +34,7 @@ public class ArrayMaster<T> {
     }
 
     public List<List<T>> get2dList(T[][] array) {
-        List<List<T>> list = new LinkedList<>();
+        List<List<T>> list = new ArrayList<>();
         for (T[] t : array) {
             list.add(Arrays.asList(t));
         }
@@ -42,7 +42,7 @@ public class ArrayMaster<T> {
     }
 
     public Collection<Collection<T>> get2dListFrom3dArray(T[][][] array) {
-        Collection<Collection<T>> list = new LinkedList<>();
+        Collection<Collection<T>> list = new ArrayList<>();
         for (T[][] t : array) {
             for (T[] t1 : t) {
                 list.add(Arrays.asList(t1));
@@ -67,7 +67,7 @@ public class ArrayMaster<T> {
 
     public static String[] getFilledStringArray(int instances, String defaultData) {
         String[] array = new String[instances];
-         List<String> list = new LinkedList<>();
+         List<String> list = new ArrayList<>();
         while (instances>0){
             list.add(defaultData);
             instances--;
@@ -76,7 +76,7 @@ public class ArrayMaster<T> {
     }
 //java generics are broken shit
 //    public T[] addToArray(T[] strings, T dataString) {
-//        List<T> list =    new LinkedList<>( Arrays.asList(strings));
+//        List<T> list =    new ArrayList<>( Arrays.asList(strings));
 //        list.add(dataString);
 //        return (T[]) list.toArray();
 //    }

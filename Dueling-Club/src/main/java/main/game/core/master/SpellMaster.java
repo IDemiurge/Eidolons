@@ -19,7 +19,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.test.TestMasterContent;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +43,7 @@ public class SpellMaster extends Master {
 
 
     private List<DC_SpellObj> initSpellpool(MicroObj obj, PROPERTY PROP) {
-        List<DC_SpellObj> spells = new LinkedList<>();
+        List<DC_SpellObj> spells = new ArrayList<>();
         String spellList = obj.getProperty(PROP);
         List<String> spellpool;
 
@@ -82,7 +82,7 @@ public class SpellMaster extends Master {
 
     public List<DC_SpellObj> getSpells(Unit obj, boolean reset) {
         if (obj == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         List<DC_SpellObj> spells = obj.getSpells();
       if (!TestMasterContent.addAllSpells)
@@ -92,7 +92,7 @@ public class SpellMaster extends Master {
             }
         }
 
-        spells = new LinkedList<>(initSpellpool(obj, VERBATIM));
+        spells = new ArrayList<>(initSpellpool(obj, VERBATIM));
         spells.addAll(initSpellpool(obj, MEMORIZED));
         return spells;
     }

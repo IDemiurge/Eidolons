@@ -15,7 +15,7 @@ import main.utilities.workspace.Workspace;
 
 import java.awt.*;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PaletteTabPanel extends HC_TabPanel {
@@ -35,7 +35,7 @@ public class PaletteTabPanel extends HC_TabPanel {
             if (p.filterProp == null) {
                 deque.addAll(types);
             } else {
-                deque.addAllCast(FilterMaster.filterByProp(new LinkedList<>(types), p.filterProp
+                deque.addAllCast(FilterMaster.filterByProp(new ArrayList<>(types), p.filterProp
                         .getName(), p.filterValue));
             }
 
@@ -47,9 +47,9 @@ public class PaletteTabPanel extends HC_TabPanel {
                     DequeImpl<ObjType> subdeque = new DequeImpl<>();
                     String name = p.groupProp.getName();
                     Collection<?> list = FilterMaster
-                            .filterByProp(new LinkedList<>(deque), name, s);
+                            .filterByProp(new ArrayList<>(deque), name, s);
                     subdeque.addAllCast(list);
-                    typeList = new LinkedList<>(subdeque);
+                    typeList = new ArrayList<>(subdeque);
                 }
 
                 PagedPaletteTab sub = new PagedPaletteTab(new Workspace(s, typeList));

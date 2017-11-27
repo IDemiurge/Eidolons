@@ -77,7 +77,7 @@ public class ListChooser extends GenericListChooser<String> {
     }
 
     public static void sortData(SORT_TEMPLATE t) {
-        List<String> data = new LinkedList<>(instance.getListData());
+        List<String> data = new ArrayList<>(instance.getListData());
         Collections.sort(data, SortMaster.getSorter(t));
         instance.getList().setData(data);
 
@@ -99,7 +99,7 @@ public class ListChooser extends GenericListChooser<String> {
     }
 
     public static String chooseEnum(Class<?>... ENUM_CLASSES) {
-        List<String> data = new LinkedList<>();
+        List<String> data = new ArrayList<>();
         for (Class<?> ENUM_CLASS : ENUM_CLASSES) {
             data.addAll(EnumMaster.getEnumConstantNames(ENUM_CLASS));
         }
@@ -163,7 +163,7 @@ public class ListChooser extends GenericListChooser<String> {
             List<String> data = FileManager
                 .getFileNames(FileManager.getFilesFromDirectory(path, dirs));
         if (filter != null) {
-            for (String str : new LinkedList<>(data)) {
+            for (String str : new ArrayList<>(data)) {
                 if (!str.contains(filter)) {
                     data.remove(str);
                 }
@@ -249,7 +249,7 @@ public class ListChooser extends GenericListChooser<String> {
 
     public static String chooseTypes(List<ObjType> types) {
         return chooseTypes(types.get(0).getOBJ_TYPE_ENUM(), DataManager.toStringList(types),
-                new LinkedList<>());
+                new ArrayList<>());
     }
 
     public static List<ObjType> chooseTypes_(List<ObjType> types) {
@@ -257,7 +257,7 @@ public class ListChooser extends GenericListChooser<String> {
     }
 
     public static String chooseTypes(OBJ_TYPE TYPE, String property, String group) {
-        List<String> listData = new LinkedList<>();
+        List<String> listData = new ArrayList<>();
         if (group != "no pool") {
             listData = DataManager.toStringList(DataManager.getTypesGroup(TYPE, group));
         }
@@ -337,7 +337,7 @@ public class ListChooser extends GenericListChooser<String> {
                 // new EnumMaster<>().getEnumTypesSorter(false, TYPE));
                 // new ListMaster<String>().inverseList(listData);
                 // if (WorkspaceMaster.FILTER_UNITS_LIST) {
-                // List<String> removeList = new LinkedList<>();
+                // List<String> removeList = new ArrayList<>();
                 // for (String s : listData) {
                 // ObjType type = DataManager.getType(s,
                 // OBJ_TYPES.UNITS);
@@ -476,7 +476,7 @@ public class ListChooser extends GenericListChooser<String> {
                 return StringMaster.constructContainer(list.getSelectedValuesList());
             }
         }
-        List<String> values = new LinkedList<>();
+        List<String> values = new ArrayList<>();
         while (elements.hasMoreElements()) {
             values.add(elements.nextElement());
             // string += elements.nextElement() + StringMaster.getSeparator();

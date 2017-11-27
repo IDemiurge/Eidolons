@@ -6,7 +6,7 @@ import main.system.graphics.GuiManager;
 import main.system.math.PositionMaster;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -273,7 +273,7 @@ public class Coordinates {
     }
 
     public List<Coordinates> getAdjacent(boolean diagonal) {
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         Coordinates c = this;
         Coordinates e;
         if (!diagonal) {
@@ -330,7 +330,7 @@ public class Coordinates {
         List<Coordinates> list = getAdjacenctMap(diagonals_included_not_only).get(this);
         if (list != null)
             return list;
-        list = new LinkedList<>();
+        list = new ArrayList<>();
 
         if (diagonals_included_not_only != null) {
             if (diagonals_included_not_only) {

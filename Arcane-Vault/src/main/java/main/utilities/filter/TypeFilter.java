@@ -11,7 +11,7 @@ import main.gui.builders.TreeViewBuilder;
 import main.launch.ArcaneVault;
 
 import javax.swing.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +38,7 @@ public class TypeFilter {
     public static void filter(Filter<ObjType> filter, VALUE groupingValue) {
 
         List<String> typeList = DataManager
-                .toStringList(new LinkedList<>(filter.getTypes()));
+                .toStringList(new ArrayList<>(filter.getTypes()));
         treeBuilder = new TreeViewBuilder(typeList, sub, filter.getTYPE()
                 .getName());
         tree = treeBuilder.build();

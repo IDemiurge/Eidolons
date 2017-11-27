@@ -3,7 +3,7 @@ package main.system.auxiliary;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClassMaster {
@@ -24,7 +24,7 @@ public class ClassMaster {
     }
 
     public static List<Object> getInstances(Object object, Class<?> CLASS) {
-        List<Object> list = new LinkedList<>();
+        List<Object> list = new ArrayList<>();
 
         if (isInstanceOf(object, CLASS)) {
             return ListMaster.toList(object);

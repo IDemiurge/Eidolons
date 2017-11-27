@@ -24,7 +24,7 @@ import org.w3c.dom.Node;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class VariableManager {
@@ -40,7 +40,7 @@ public class VariableManager {
 
     public static final String VARIABLE = StringMaster.VAR_STRING;
     private static boolean variableInputRequesting = false;
-    private static List<ObjType> varCache = new LinkedList<>();
+    private static List<ObjType> varCache = new ArrayList<>();
     private static String prevValue;
 
     public static AbilityType getVarType(String abilTypeName, boolean passive, Ref ref) {

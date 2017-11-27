@@ -129,7 +129,7 @@ public class ActionAnimation extends PhaseAnimation {
     }
 
     protected boolean drawDamageDealt(AnimPhase phase) {
-        List<Object> list = new LinkedList<>(Arrays.asList(phase.getArgs()));
+        List<Object> list = new ArrayList<>(Arrays.asList(phase.getArgs()));
         int i = 0;
         while (list.size() >= 3) {
             int t_damage = (int) list.get(0);
@@ -561,7 +561,7 @@ public class ActionAnimation extends PhaseAnimation {
             }
             String string = "" + (-s.getPayment().getLastPaid());
             map.put(image, string);
-            List<String> list = new LinkedList<>();
+            List<String> list = new ArrayList<>();
             list.add(string);
             getSubPhaseTooltipMap().put(image, list);
         }

@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -262,7 +262,7 @@ public class EmitterPresetMaster {
     }
 
     private List<Pair<String, String>> getGroupEntries(String text) {
-        List<Pair<String, String>> list = new LinkedList<>();
+        List<Pair<String, String>> list = new ArrayList<>();
         for (String substring : StringMaster.open(text, "\n")) {
             String[] parts = substring.split(value_separator);
             list.add(new ImmutablePair<>(parts[0], parts[1]));

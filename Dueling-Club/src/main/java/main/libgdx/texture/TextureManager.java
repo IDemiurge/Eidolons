@@ -9,7 +9,7 @@ import main.system.auxiliary.StringMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -162,8 +162,8 @@ public class TextureManager {
     public static Pair<Integer, Integer> getXY(String origPath) {
         int x = 1;
         int y = 1;
-        List<Integer> xs = new LinkedList<>();
-        List<Integer> ys = new LinkedList<>();
+        List<Integer> xs = new ArrayList<>();
+        List<Integer> ys = new ArrayList<>();
         Texture texture = TextureCache.getOrCreate(origPath);
         for (int i = 7; i >= 1; i--) {
             if (texture.getWidth() % i == 0) {

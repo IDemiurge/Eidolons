@@ -14,7 +14,7 @@ import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatrolMaster {
@@ -52,7 +52,7 @@ public class PatrolMaster {
             DIRECTION direction = DirectionMaster.getRelativeDirection(patrol.getDestination(),
                     leaderCoordinates);
 
-            List<Object> list = new LinkedList<>();
+            List<Object> list = new ArrayList<>();
 
             list.add(leaderCoordinates.getAdjacentCoordinate(direction));
             list.add(leaderCoordinates.getAdjacentCoordinate(DirectionMaster.rotate45(direction,

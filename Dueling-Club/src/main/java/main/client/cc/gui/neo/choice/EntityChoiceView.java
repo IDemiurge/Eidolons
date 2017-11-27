@@ -68,7 +68,7 @@ public abstract class EntityChoiceView extends ChoiceView<ObjType> {
     protected void initData() {
         if (list != null) { // empty?
             if (list.get(0) instanceof ObjType) {
-                data = new LinkedList<>(new DequeImpl<ObjType>().getAddAllCast(list));
+                data = new ArrayList<>(new DequeImpl<ObjType>().getAddAllCast(list));
             } else {
                 // TODO
             }

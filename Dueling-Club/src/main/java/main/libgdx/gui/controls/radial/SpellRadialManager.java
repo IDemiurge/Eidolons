@@ -47,7 +47,7 @@ public class SpellRadialManager {
     private static List<RadialValueContainer> constructNestedSpellNodes(List<DC_SpellObj> spells, Unit source, DC_Obj target) {
 
         Set<SPELL_GROUP> spell_groups = new HashSet<>();
-        List<SPELL_ASPECT> aspects = new LinkedList<>();
+        List<SPELL_ASPECT> aspects = new ArrayList<>();
 
         for (DC_SpellObj spell : spells) {
             SPELL_GROUP group = spell.getSpellGroup();
@@ -55,7 +55,7 @@ public class SpellRadialManager {
 
             for (SPELL_ASPECT g : SPELL_ASPECT.values()) {
                 if (!aspects.contains(g)) {
-                    if (new LinkedList<>(Arrays.asList(g.groups))
+                    if (new ArrayList<>(Arrays.asList(g.groups))
                             .contains(spell.getSpellGroup())) {
                         aspects.add(g);
                     }

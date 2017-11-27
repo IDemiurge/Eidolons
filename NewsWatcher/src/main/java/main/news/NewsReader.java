@@ -8,7 +8,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +31,7 @@ public class NewsReader {
     }
 
     public static void watchMultiThreaded() {
-        for (final String website :     new LinkedList<>(websites) )
+        for (final String website :     new ArrayList<>(websites) )
             new Thread(new Runnable() {
             public void run() {
                 watch(website);

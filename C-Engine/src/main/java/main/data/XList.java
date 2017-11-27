@@ -2,9 +2,9 @@ package main.data;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
-public class XList<E> extends LinkedList<E> {
+public class XList<E> extends ArrayList<E> {
     public XList() {
         super();
     }

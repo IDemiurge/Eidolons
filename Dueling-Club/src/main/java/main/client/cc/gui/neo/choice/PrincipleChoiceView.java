@@ -14,7 +14,7 @@ import main.system.auxiliary.secondary.InfoMaster;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class PrincipleChoiceView extends ChoiceView<PRINCIPLES> implements
         ListCellRenderer<PRINCIPLES> {
@@ -97,7 +97,7 @@ public class PrincipleChoiceView extends ChoiceView<PRINCIPLES> implements
 
     @Override
     protected void initData() {
-        data = new LinkedList<>(Arrays.asList(HeroEnums.PRINCIPLES.values()));
+        data = new ArrayList<>(Arrays.asList(HeroEnums.PRINCIPLES.values()));
     }
 
     protected boolean isSaveHero() {

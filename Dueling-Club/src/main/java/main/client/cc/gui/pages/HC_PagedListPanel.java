@@ -21,7 +21,7 @@ import main.system.images.ImageManager;
 import java.awt.*;
 import java.beans.Transient;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HC_PagedListPanel extends G_PagePanel<ObjType> {
@@ -282,9 +282,9 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
     }
 
     public List<HeroListPanel> getLists() {
-        LinkedList<HeroListPanel> linkedList = new LinkedList<>();
-        linkedList.addAll(Arrays.asList(pages.toArray(new HeroListPanel[pages.size()])));
-        return linkedList;
+        ArrayList<HeroListPanel> ArrayList = new ArrayList<>();
+        ArrayList.addAll(Arrays.asList(pages.toArray(new HeroListPanel[pages.size()])));
+        return ArrayList;
     }
 
     public HeroListPanel getCurrentList() {

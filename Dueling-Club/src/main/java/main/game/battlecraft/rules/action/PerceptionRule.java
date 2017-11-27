@@ -12,7 +12,7 @@ import main.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
 import main.system.math.PositionMaster;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PerceptionRule extends TurnRule implements ActionRule {
@@ -167,7 +167,7 @@ public class PerceptionRule extends TurnRule implements ActionRule {
 
     private Collection<Unit> getUnits(ActiveObj activeObj) {
         // TODO max distance?
-        List<Unit> list = new LinkedList<>();
+        List<Unit> list = new ArrayList<>();
         for (Obj unit : DC_Game.game
                 .getPlayer(activeObj.getOwnerObj().isMine())
                 .getControlledUnits()) {

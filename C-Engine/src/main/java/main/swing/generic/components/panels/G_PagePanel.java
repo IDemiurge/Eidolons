@@ -18,7 +18,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.Transient;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,7 +97,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
         if (!isDirty() && (ListMaster.isNotEmpty(pages))) {
             return;
         }
-        pages = new LinkedList<>();
+        pages = new ArrayList<>();
         empty = false;
         if (!ListMaster.isNotEmpty(pageData)) {
             empty = true;
@@ -150,7 +150,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
         List<List<E>> lists = new ListMaster<E>().splitList(pageSize, list);
 
         if (lists.isEmpty()) {
-            List<E> lastList = new LinkedList<>();
+            List<E> lastList = new ArrayList<>();
             ListMaster.fillWithNullElements(lastList, pageSize);
             lists.add(lastList);
             return lists;
@@ -169,7 +169,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
 
     @SuppressWarnings("unchecked")
     protected G_Component createEmptyPageComponent() {
-        return createPageComponent((List<E>) ListMaster.fillWithNullElements((new LinkedList<E>()),
+        return createPageComponent((List<E>) ListMaster.fillWithNullElements((new ArrayList<E>()),
                 pageSize));
     }
 
@@ -538,7 +538,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
         if (data instanceof List) {
             this.data = (List<E>) data;
         } else {
-            this.data = new LinkedList<>(data);
+            this.data = new ArrayList<>(data);
         }
     }
 

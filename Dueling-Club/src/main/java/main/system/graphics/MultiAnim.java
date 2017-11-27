@@ -4,7 +4,7 @@ import main.entity.obj.Obj;
 import main.system.graphics.AnimationManager.ANIM_TYPE;
 
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MultiAnim extends PhaseAnimation {
@@ -13,7 +13,7 @@ public abstract class MultiAnim extends PhaseAnimation {
 
     public MultiAnim(ANIM_TYPE type, Object mainArg, Obj... targets) {
         super(type);
-        this.animations = new LinkedList<>();
+        this.animations = new ArrayList<>();
         for (Obj targetArg : targets) {
             animations.add(createAnimation(mainArg, targetArg));
         }

@@ -19,7 +19,7 @@ import main.system.auxiliary.secondary.BooleanMaster;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +43,7 @@ public class XML_Writer {
     private static String customPath;
     private static boolean dirtyOnly;
     private static Boolean writingBlocked;
-    private static List<OBJ_TYPE> blocked = new LinkedList<>();
+    private static List<OBJ_TYPE> blocked = new ArrayList<>();
 
 
 

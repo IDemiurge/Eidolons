@@ -5,14 +5,14 @@ import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class AttributeMaster {
 
     public static List<String> getAttributeBonusInfoStrings(ATTRIBUTE attr, Unit hero) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         Object key;
         key = StringMaster.getWellFormattedString(attr.name());
         for (PARAMS p : attr.getParams()) {

@@ -31,7 +31,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.math.MathMaster;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +42,7 @@ public class PartyObj extends Obj {
     // used in dc dynamically and in hc as well; to be save into xml and loaded
     // back
 
-    public List<Unit> members = new LinkedList<>();
+    public List<Unit> members = new ArrayList<>();
     public Unit leader;
     private Unit middleHero;
     private Map<Unit, Coordinates> partyCoordinates;

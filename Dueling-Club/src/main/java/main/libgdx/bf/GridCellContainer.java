@@ -7,7 +7,7 @@ import main.game.core.Eidolons;
 import main.libgdx.bf.datasource.GridCellDataSource;
 import main.libgdx.screens.DungeonScreen;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GridCellContainer extends GridCell {
@@ -49,7 +49,7 @@ public class GridCellContainer extends GridCell {
 //            unitViews = new ArrayList<>();
 //        }
 //        return unitViews;
-        List<GridUnitView> list = new LinkedList<>();
+        List<GridUnitView> list = new ArrayList<>();
         for (Actor actor : getChildren()) {
             if (actor.isVisible())
                 if (actor instanceof GridUnitView)

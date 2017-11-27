@@ -24,7 +24,7 @@ import main.time.ZeitMaster;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SessionMaster {
@@ -32,7 +32,7 @@ public class SessionMaster {
     public static final String TEMPLATE = "Template";
     public static final String PENDING = "Pending";
     static SessionWindow sessionWindow;
-    private static List<Session> sessions = new LinkedList<>();
+    private static List<Session> sessions = new ArrayList<>();
     private static VALUE[] copiedVals = {
             // AT_PARAMS.
     };
@@ -234,7 +234,7 @@ public class SessionMaster {
 
     private static void addTasks(Session session) {
         List<ObjType> list = DataManager.toTypeList(getAllTasks(session));
-        new LinkedList<>(DataManager.getTypes(AT_OBJ_TYPE.TASK));
+        new ArrayList<>(DataManager.getTypes(AT_OBJ_TYPE.TASK));
         // list = (List<ObjType>) FilterMaster.filterByProp(list,
         // AT_PROPS.TASK_STATUS,
         // TASK_STATUS.PENDING);
@@ -248,7 +248,7 @@ public class SessionMaster {
 
     private static void addGoals(Session session) {
         List<ObjType> list =
-                // LinkedList<>(DataManager.getTypes(AT_OBJ_TYPE.GOAL));
+                // ArrayList<>(DataManager.getTypes(AT_OBJ_TYPE.GOAL));
                 DataManager.toTypeList(session.getDirection().getGoals());
         // list = (List<ObjType>) FilterMaster.filterByProp(list,
         // AT_PROPS.GOAL_STATUS,
@@ -263,7 +263,7 @@ public class SessionMaster {
     }
 
     public static List<Task> getAllTasks(Session session) {
-        List<Task> list = new LinkedList<>();
+        List<Task> list = new ArrayList<>();
         for (Goal sub : session.getDisplayedGoals()) {
             list.addAll((sub.getTasks()));
         }
@@ -297,7 +297,7 @@ public class SessionMaster {
         }
         ArcaneTower.saveEntity(session, true);
         List<Task> tasks = session.getTasks();
-        for (Task sub : new LinkedList<>(tasks)) {
+        for (Task sub : new ArrayList<>(tasks)) {
             if (sub.isDone()) {
                 tasks.remove(sub);
             }

@@ -13,7 +13,7 @@ import main.game.battlecraft.ai.elements.actions.Action;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReasonMaster {
@@ -74,7 +74,7 @@ public class ReasonMaster {
     }
 
     public static List<String> getReasonsCannotActivate(DC_ActiveObj active, Ref REF) {
-        List<String> reasons = new LinkedList<>();
+        List<String> reasons = new ArrayList<>();
         REF.setID(KEYS.PAYEE, REF.getSource());
         if (active.getCosts().canBePaid(REF)) {
             return reasons;
@@ -114,7 +114,7 @@ public class ReasonMaster {
         }
         Conditions conditions = targeting.getFilter().getConditions();
         // conditions.preCheck(REF);
-        List<FILTER_REASON> reasons = new LinkedList<>();
+        List<FILTER_REASON> reasons = new ArrayList<>();
         for (Condition c : conditions) {
             FILTER_REASON reason = getReason(c);
             if (searchedReason != null) {

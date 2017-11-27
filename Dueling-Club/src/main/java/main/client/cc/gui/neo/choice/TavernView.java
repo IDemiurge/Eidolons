@@ -15,7 +15,7 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.system.threading.Weaver;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TavernView extends HeroChoiceView<Unit> {
@@ -142,7 +142,7 @@ public class TavernView extends HeroChoiceView<Unit> {
 
                 return ScenarioPrecombatMaster.getHeroesForHire();
             }
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         return tavern.getHeroesForHire();
     }

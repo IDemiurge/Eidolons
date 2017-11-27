@@ -9,11 +9,11 @@ import main.game.module.adventure.travel.MacroCoordinates;
 import main.game.module.adventure.travel.MacroGroup;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Area extends MacroObj {
-    private List<MacroGroup> groups = new LinkedList<>();
+    private List<MacroGroup> groups = new ArrayList<>();
     private List<MacroCoordinates> boundaries;
 
     public Area(MacroGame game, ObjType type, Ref ref) {
@@ -39,7 +39,7 @@ public class Area extends MacroObj {
 
     public List<MacroCoordinates> getBoundaries() {
         if (boundaries == null) {
-            boundaries = new LinkedList<>();
+            boundaries = new ArrayList<>();
             for (String boundary : StringMaster
                     .openContainer(getProperty(MACRO_PROPS.AREA_BOUNDARIES))) {
                 boundaries.add(new MacroCoordinates(boundary));

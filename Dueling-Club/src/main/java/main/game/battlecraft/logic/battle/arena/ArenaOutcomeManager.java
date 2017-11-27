@@ -70,8 +70,8 @@ public class ArenaOutcomeManager<E extends Battle> extends BattleOutcomeManager<
 //        if (CharacterCreator.isArcadeMode()) {
 //            PartyManager.getParty().addGlory(glory);
 
-//            PartyManager.getParty().addUnitsSlain(new LinkedList<>(slainUnits));
-//            PartyManager.getParty().addFallenHeroes(new LinkedList<>(fallenHeroes));
+//            PartyManager.getParty().addUnitsSlain(new ArrayList<>(slainUnits));
+//            PartyManager.getParty().addFallenHeroes(new ArrayList<>(fallenHeroes));
 //            CharacterCreator.getHeroManager(true).prebattleCleanSave();
 //            if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
 //                game.getArenaArcadeMaster().levelWon();

@@ -17,7 +17,7 @@ import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.system.entity.FilterMaster;
 import main.test.frontend.FAST_DC;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestMasterContent {
@@ -96,7 +96,7 @@ public class TestMasterContent {
      // + "Soul Web;Rapid Growth;"
      ;
     private static String AI_SPELL_TEST_LIST = "Summon Lesser Demon;";
-    private static List<ObjType> addedSpells = new LinkedList<>();
+    private static List<ObjType> addedSpells = new ArrayList<>();
     private static String FOCUS_SKILL_LIST = "";
     private static String FIX_SKILL_LIST = "";
     private static String POLISH_SKILL_LIST = "";
@@ -511,7 +511,7 @@ public class TestMasterContent {
 
     private String constructTestList(OBJ_TYPE TYPE, WORKSPACE_GROUP group) {
         List<String> list; // could use some optimization :) TODO
-        list = new LinkedList<>();
+        list = new ArrayList<>();
         for (ObjType t : DataManager.getTypes(TYPE)) {
             if (t.getProperty(G_PROPS.WORKSPACE_GROUP).equalsIgnoreCase(group.name())) {
                 list.add(t.getName());

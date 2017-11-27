@@ -19,7 +19,7 @@ import main.game.module.adventure.travel.RestMaster;
 import main.game.module.adventure.travel.TravelMaster;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -133,7 +133,7 @@ public class MacroActionManager {
     }
 
     private static List<MacroAction> getPartyActions(MacroParty playerParty) {
-        List<MacroAction> list = new LinkedList<>();
+        List<MacroAction> list = new ArrayList<>();
         list.add(getAction(MACRO_PARTY_ACTIONS.TRAVEL.toString(), playerParty));
         list.add(getAction(MACRO_PARTY_ACTIONS.EXPLORE.toString(), playerParty));
         // TODO perhaps just block them
@@ -147,7 +147,7 @@ public class MacroActionManager {
     }
 
     private static List<MacroAction> getModeActions(Unit hero) {
-        List<MacroAction> modeActions = new LinkedList<>();
+        List<MacroAction> modeActions = new ArrayList<>();
         // String actions = hero.getProp("macro actions");
         for (MACRO_MODES m : MACRO_MODES.values()) {
             // m.getRequirements() if (m.isSpecial())
@@ -161,7 +161,7 @@ public class MacroActionManager {
 
         // init per hero
 
-        return new LinkedList<>();
+        return new ArrayList<>();
     }
 
     private static MacroAction getAction(String actionName, Obj obj) {

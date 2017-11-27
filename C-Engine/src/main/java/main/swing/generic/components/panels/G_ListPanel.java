@@ -17,7 +17,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class G_ListPanel<E> extends G_Panel {
@@ -225,7 +225,7 @@ public abstract class G_ListPanel<E> extends G_Panel {
     }
 
     public Collection<E> getEmptyData() {
-        Collection<E> emptyData = new LinkedList<>();
+        Collection<E> emptyData = new ArrayList<>();
         int n = minItems;
         for (int i = 0; i < n; i++) {
             emptyData.add(null);

@@ -34,7 +34,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.io.File;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,7 +48,7 @@ public class PartyHelper {
     private static final int MAX_PARTY_MEMBERS_DEFAULT = 4;
     static PartyObj party;
     private static PartyObj enemyParty;
-    private static List<PartyObj> parties = new LinkedList<>();
+    private static List<PartyObj> parties = new ArrayList<>();
 
     private static File getPartyFile(String typeName) {
         return FileManager.getFile(getPartyFolderPath() + "\\" + typeName + ".xml");

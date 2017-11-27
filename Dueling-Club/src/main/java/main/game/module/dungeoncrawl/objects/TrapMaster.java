@@ -57,7 +57,7 @@ public class TrapMaster {
     }
 
     public static List<Trap> getTrapsToDisarm(Unit unit) {
-        List<Trap> list = new LinkedList<>();
+        List<Trap> list = new ArrayList<>();
         Set<Trap> set = trapMap.get(new ZCoordinates(unit.getCoordinates().x,
                 unit.getCoordinates().y, unit.getZ()));
         if (set == null) {

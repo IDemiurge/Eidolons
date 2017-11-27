@@ -11,7 +11,7 @@ public class SearchMaster<T> {
     public void bfs()
     {
         // BFS uses Queue data structure
-//        Queue queue = new LinkedList();
+//        Queue queue = new ArrayList();
 //        queue.add(this.rootNode);
 //        printNode(this.rootNode);
 //        rootNode.visited = true;

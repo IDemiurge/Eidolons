@@ -19,7 +19,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -81,8 +81,8 @@ public class CaptureParser {
     }
 
     private static void init() {
-        goals = new LinkedList<>();
-        tasks = new LinkedList<>();
+        goals = new ArrayList<>();
+        tasks = new ArrayList<>();
     }
 
     private static void cleanUp() {

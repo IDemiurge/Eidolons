@@ -15,7 +15,7 @@ import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GoalPages extends G_TabbedPagePanel<Goal> {
@@ -141,7 +141,7 @@ public class GoalPages extends G_TabbedPagePanel<Goal> {
 
     @Override
     protected List<List<Goal>> getPageData() {
-        List<Goal> goals = new LinkedList<>(session.getDisplayedGoals());
+        List<Goal> goals = new ArrayList<>(session.getDisplayedGoals());
         goals = (List<Goal>) SortMaster.sortByValue(goals, AT_PARAMS.DYNAMIC_PRIORITY);
 
         return splitList(goals);

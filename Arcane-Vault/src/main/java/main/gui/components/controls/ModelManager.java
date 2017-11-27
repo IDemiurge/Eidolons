@@ -50,7 +50,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ModelManager {
@@ -64,7 +64,7 @@ public class ModelManager {
     private static boolean saving;
     private static boolean autoSaveOff;
     private static int classId;
-    private static List<ObjType> idSet = new LinkedList<>();
+    private static List<ObjType> idSet = new ArrayList<>();
     private static boolean backupOnLaunch;
     private static List<String> masteriesToCleanUp = Arrays.asList("Spellcraft",
             "Spellcraft", "Spellcraft", "Affliction");
@@ -110,7 +110,7 @@ public class ModelManager {
     public static void adjustTreeTabSelection(ObjType type, boolean select) {
         int code =
                 // type.getOBJ_TYPE_ENUM().getCode();
-                ListMaster.getIndexString(new LinkedList<>(ArcaneVault.getMainBuilder().getTabBuilder()
+                ListMaster.getIndexString(new ArrayList<>(ArcaneVault.getMainBuilder().getTabBuilder()
                         .getTabNames()), type.getOBJ_TYPE(), true);
 
         ArcaneVault.getMainBuilder().getTabBuilder().getTabbedPane().setSelectedIndex(code);

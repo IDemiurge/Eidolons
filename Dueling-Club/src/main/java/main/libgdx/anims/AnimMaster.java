@@ -36,7 +36,7 @@ import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -356,7 +356,7 @@ public class AnimMaster extends Group {
         if (!continuousAnimsOn) {
             return;
         }
-        final List<BuffObj> toRemove = new LinkedList<>();
+        final List<BuffObj> toRemove = new ArrayList<>();
         continuousAnims.keySet().forEach(buff -> {
             if (buff.isDead()) {
                 continuousAnims.get(buff).finished();
@@ -434,7 +434,7 @@ public class AnimMaster extends Group {
             return null;
         }
         ANIM_PART part = EventAnimCreator.getPartToAttachTo(event);
-        List<Animation> list = new LinkedList<>();
+        List<Animation> list = new ArrayList<>();
         if (root.getAttached().get(part) != null) {
             list.addAll(root.getAttached().get(part));
         }

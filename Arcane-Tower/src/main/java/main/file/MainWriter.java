@@ -11,7 +11,7 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.data.FileManager;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainWriter {
@@ -34,7 +34,7 @@ public class MainWriter {
 
     public static void cleanUp(boolean selective, OBJ_TYPE... types) {
         VersionMaster.saveVersionFolder();
-        List<ObjType> toRemove = new LinkedList<>();
+        List<ObjType> toRemove = new ArrayList<>();
         cleanup:
         for (OBJ_TYPE T : types) {
             int option = DialogMaster.optionChoice("What to do with " + T.getName(),
@@ -83,7 +83,7 @@ public class MainWriter {
             for (ObjType t : toRemove) {
                 DataManager.removeType(t);
             }
-            toRemove = new LinkedList<>();
+            toRemove = new ArrayList<>();
             ArcaneTower.saveAll();
         }
     }

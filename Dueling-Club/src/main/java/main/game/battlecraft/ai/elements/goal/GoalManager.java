@@ -18,7 +18,7 @@ import main.system.auxiliary.data.ListMaster;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GoalManager extends AiHandler {
@@ -41,10 +41,10 @@ public class GoalManager extends AiHandler {
         }
         if (ai.getCurrentOrder() != null)
             if (ai.getCurrentOrder().getStrictPriority() != null)
-                return new LinkedList<>(
+                return new ArrayList<>(
                  Arrays.asList(ai.getCurrentOrder().getStrictPriority().getGoalTypes()));
 
-        list = new LinkedList<>();
+        list = new ArrayList<>();
         if (unit.getAiType() == AiEnums.AI_TYPE.SNEAK) {
             list.add(AiEnums.GOAL_TYPE.STEALTH);
         }
@@ -91,7 +91,7 @@ public class GoalManager extends AiHandler {
     }
 
     public static List<GOAL_TYPE> getDefaultGoals() {
-        return new LinkedList<>(Arrays.asList(new GOAL_TYPE[]{AiEnums.GOAL_TYPE.PREPARE,
+        return new ArrayList<>(Arrays.asList(new GOAL_TYPE[]{AiEnums.GOAL_TYPE.PREPARE,
          AiEnums.GOAL_TYPE.ATTACK,  AiEnums.GOAL_TYPE.DEFEND,
          GOAL_TYPE.PROTECT, AiEnums.GOAL_TYPE.WAIT,}));
     }

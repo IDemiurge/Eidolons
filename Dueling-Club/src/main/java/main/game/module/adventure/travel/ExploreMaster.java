@@ -11,7 +11,7 @@ import main.game.module.adventure.map.Route;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExploreMaster {
@@ -62,7 +62,7 @@ public class ExploreMaster {
 
     private static List<Place> getPotentialFindsForLocationExplore(Place place,
                                                                    Boolean north_or_south, Boolean west_or_east, MacroParty party) {
-        List<Place> list = new LinkedList<>();
+        List<Place> list = new ArrayList<>();
         for (Route route : place.getRoutes()) {
             if (place.isLinkedToRoute(route)) {
                 // either direction -
@@ -153,7 +153,7 @@ public class ExploreMaster {
 
     private static List<Place> getPotentialFindsForRouteExplore(Route route,
                                                                 int maxProgress) {
-        List<Place> potentialFinds = new LinkedList<>();
+        List<Place> potentialFinds = new ArrayList<>();
         for (Route p : route.getLinkedRoutes()) {
             if (p.getVisibilityStatus() == PLACE_VISIBILITY_STATUS.UNKNOWN) {
                 if (p.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE) < maxProgress) {

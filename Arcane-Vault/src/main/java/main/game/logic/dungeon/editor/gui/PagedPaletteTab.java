@@ -12,7 +12,7 @@ import main.utilities.workspace.Workspace;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PagedPaletteTab extends G_PagedListPanel<ObjType> {
@@ -37,7 +37,7 @@ public class PagedPaletteTab extends G_PagedListPanel<ObjType> {
     public List<String> getGroups(PALETTE p) {
         switch (p) {
             case DARK:
-                return new LinkedList<>(Arrays.asList(new String[]{}));
+                return new ArrayList<>(Arrays.asList(new String[]{}));
         }
         return null;
 
@@ -67,7 +67,7 @@ public class PagedPaletteTab extends G_PagedListPanel<ObjType> {
         Collections.sort(types, new EnumMaster<>().getEnumTypesSorter(isSubGroupSorting(),
                 getType()));
         return splitList(DataManager.toTypeList(types, getType()));
-        // List<List<ObjType>> lists = new LinkedList<>();
+        // List<List<ObjType>> lists = new ArrayList<>();
         // List<ObjType> types = DataManager.getTypes(type);
         // lists.add(DataManager.getTypes(type));
         // for (String group : groups) {

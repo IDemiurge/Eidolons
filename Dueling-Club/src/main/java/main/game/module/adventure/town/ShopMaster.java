@@ -9,7 +9,7 @@ import main.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShopMaster {
@@ -64,7 +64,7 @@ public class ShopMaster {
     }
 
     public static List<QUALITY_LEVEL> getQualityLevels(ShopInterface shop) {
-        List<QUALITY_LEVEL> list = new LinkedList<>();
+        List<QUALITY_LEVEL> list = new ArrayList<>();
         switch (shop.getShopLevel()) {
             case COMMON:
                 list.add(ItemEnums.QUALITY_LEVEL.INFERIOR);
@@ -110,14 +110,14 @@ public class ShopMaster {
     }
 
     private static List<MATERIAL> getSpecialMaterials(ShopInterface shop) {
-        List<MATERIAL> list = new LinkedList<>();
+        List<MATERIAL> list = new ArrayList<>();
         return list;
     }
 
     public static List<MATERIAL> getMaterialsForShopModifier(
             SHOP_MODIFIER shopModifier) {
         MATERIAL[] array = new MATERIAL[0];
-        List<MATERIAL> list = new LinkedList<>();
+        List<MATERIAL> list = new ArrayList<>();
         switch (shopModifier) {
             case DARK:
                 list.add(ItemEnums.MATERIAL.WRAITH_STEEL);
@@ -185,7 +185,7 @@ public class ShopMaster {
                 break;
 
         }
-        List<MATERIAL> list = new LinkedList<>();
+        List<MATERIAL> list = new ArrayList<>();
         for (MATERIAL m : ItemEnums.MATERIAL.values()) {
             int material_level = 1;
             switch (m) {

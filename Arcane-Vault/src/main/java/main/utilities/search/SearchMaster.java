@@ -36,7 +36,7 @@ public class SearchMaster {
         // getOrCreate search text, perhaps with some basic regex syntax like "not",
         // "or"...
 
-        // List<OBJ_TYPE> types = new LinkedList<>();
+        // List<OBJ_TYPE> types = new ArrayList<>();
         // int i = DialogMaster.optionChoice(OBJ_TYPES.values(),
         // "include object type... (at least one)");
         // // C_TYPES?

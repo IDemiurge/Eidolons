@@ -5,7 +5,7 @@ import main.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DialogueWizard {
@@ -18,7 +18,7 @@ public class DialogueWizard {
     }
 
     public void next(int optionIndex) {
-        displayedOptions = new LinkedList<>();
+        displayedOptions = new ArrayList<>();
         displayedSpeech = displayedSpeech.getChildren().get(optionIndex);
         if (dialogue instanceof LinearDialogue) {
             displayedOptions.add("Continue");

@@ -26,7 +26,7 @@ import java.util.*;
 public class ItemListManager implements MouseListener, ListSelectionListener {
 
     protected Map<HC_PagedListPanel, List<HeroListPanel>> listMap = new HashMap<>();
-    protected List<HC_PagedListPanel> removeLists = new LinkedList<>();
+    protected List<HC_PagedListPanel> removeLists = new ArrayList<>();
     protected HC_PagedListPanel heroList;
     protected OBJ_TYPE TYPE;
     protected PROPERTY PROP;

@@ -16,7 +16,7 @@ import main.system.options.OptionsMaster;
 import main.system.text.SpecialLogger;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,7 +50,7 @@ public class GlobalController implements Controller {
         GridUnitView hovered = DungeonScreen.getInstance().getGridPanel().getHoverObj();
         GridCellContainer cell = (GridCellContainer) hovered.getParent();
 
-         List<GridUnitView> list = new LinkedList<>(cell.getUnitViews());
+         List<GridUnitView> list = new ArrayList<>(cell.getUnitViews());
         if (list.size() == 1)
             return; // or do something else
         SortMaster.sortByExpression(list, view -> view.hashCode());

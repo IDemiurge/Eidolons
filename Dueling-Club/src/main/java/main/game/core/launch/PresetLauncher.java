@@ -38,7 +38,7 @@ import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 import main.test.frontend.FAST_DC;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
@@ -237,7 +237,7 @@ public class PresetLauncher {
     }
 
     public static Preset choosePreset(List<Preset> presets) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (Preset s : presets) {
             list.add(s.toString());
         }

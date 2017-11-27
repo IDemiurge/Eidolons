@@ -37,7 +37,7 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.Chronos;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -213,7 +213,7 @@ public class StateCloner {
 
     private void copyDynamicValues(Obj e, Obj clone) {
 //        DC_ContentManager.getBackgroundDynamicParams()
-        LinkedList<PARAMETER> dynamicParams = DC_ContentManager.getDynamicParams();
+        ArrayList<PARAMETER> dynamicParams = DC_ContentManager.getDynamicParams();
         for (PARAMETER p : dynamicParams) {
             clone.setParam(p, e.getParam(p));
         }

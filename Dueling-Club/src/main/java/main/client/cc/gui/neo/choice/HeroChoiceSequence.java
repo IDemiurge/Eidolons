@@ -12,7 +12,7 @@ import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.logic.meta.scenario.ScenarioPrecombatMaster;
 import main.game.core.game.DC_Game.GAME_TYPE;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class HeroChoiceSequence extends ChoiceSequence {
 
@@ -28,7 +28,7 @@ public class HeroChoiceSequence extends ChoiceSequence {
     }
 
     public void initDefaultHeroSequence() {
-        views = new LinkedList<>();
+        views = new ArrayList<>();
         if (hero.getGame().getGameType() == GAME_TYPE.SCENARIO) {
             if (ScenarioPrecombatMaster.getScenario() != null) {
 

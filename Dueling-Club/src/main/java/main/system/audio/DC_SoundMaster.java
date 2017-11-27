@@ -41,7 +41,7 @@ import main.system.sound.Player;
 import main.system.sound.SoundMaster;
 
 import java.io.File;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -220,7 +220,7 @@ public class DC_SoundMaster extends SoundMaster {
             defaultSounds = FileManager.findFiles(folder, armor_type, true, true);
         }
         List<File> specialSounds = FileManager.findFiles(folder, damage_type, true, false);
-        List<File> files = new LinkedList<>(defaultSounds);
+        List<File> files = new ArrayList<>(defaultSounds);
         files.addAll(specialSounds);
         // double chance
         files.addAll(specialSounds);

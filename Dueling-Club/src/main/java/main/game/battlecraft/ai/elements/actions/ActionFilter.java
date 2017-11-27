@@ -7,7 +7,7 @@ import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.tools.target.AI_SpellMaster;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +16,7 @@ import java.util.List;
 public class ActionFilter {
     static List<DC_ActiveObj> filterByCanActivate(Unit unit,
                                                   List<DC_ActiveObj> actionsList) {
-        List<DC_ActiveObj> list = new LinkedList<>();
+        List<DC_ActiveObj> list = new ArrayList<>();
         for (DC_ActiveObj a : actionsList) {
             if (a.canBeActivated(unit.getRef(), true) || checkException(a)) {
                 list.add(a);
@@ -38,7 +38,7 @@ public class ActionFilter {
 
     static Collection<? extends DC_ActiveObj> filterActives(GOAL_TYPE type,
                                                             List<? extends DC_ActiveObj> spells) {
-        List<DC_ActiveObj> list = new LinkedList<>();
+        List<DC_ActiveObj> list = new ArrayList<>();
         for (DC_ActiveObj spell : spells) {
             GOAL_TYPE goal = null;
             try {

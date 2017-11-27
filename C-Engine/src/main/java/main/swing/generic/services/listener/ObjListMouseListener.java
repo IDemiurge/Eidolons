@@ -7,7 +7,7 @@ import main.swing.generic.components.list.G_List;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class ObjListMouseListener<E> implements MouseListener { // ? extends
     // Entity
@@ -24,7 +24,7 @@ public class ObjListMouseListener<E> implements MouseListener { // ? extends
     public void mouseClicked(MouseEvent e) {
         E selectedValue = list.getSelectedValue();
         if (selectedValue == null) {
-            selectedValue = new LinkedList<>(list.getData())
+            selectedValue = new ArrayList<>(list.getData())
                     .get(list.locationToIndex(e.getPoint()));
         }
         if (!(selectedValue instanceof Entity)) {

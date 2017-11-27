@@ -13,7 +13,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.time.ZeitMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Goal extends WorkItem {
@@ -38,7 +38,7 @@ public class Goal extends WorkItem {
     }
 
     private void initTasks() {
-        tasks = new LinkedList<>();
+        tasks = new ArrayList<>();
         if (type.checkProperty(AT_PROPS.TASKS)) {
             for (ObjType t : DataManager.toTypeList(type.getProperty(AT_PROPS.TASKS),
                     AT_OBJ_TYPE.TASK)) {

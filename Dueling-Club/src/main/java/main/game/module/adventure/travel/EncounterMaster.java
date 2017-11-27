@@ -22,7 +22,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -195,7 +195,7 @@ public class EncounterMaster {
 
         Integer c_progress = party.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE);
         int collisionPoint = -1; // TODO ??? for each group... getCoordinates()?
-        List<MacroGroup> waves = new LinkedList<>();
+        List<MacroGroup> waves = new ArrayList<>();
         for (MacroGroup e : encounters) {
             // if (e.getCoordinates() )closest point... find shortest tangent
 

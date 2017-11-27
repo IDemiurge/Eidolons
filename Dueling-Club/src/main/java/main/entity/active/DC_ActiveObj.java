@@ -47,7 +47,7 @@ import main.system.launch.CoreEngine;
 import main.system.math.ModMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interruptable,
@@ -56,7 +56,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     protected Unit ownerObj;
     protected Targeting targeting;
     protected Abilities abilities;
-    protected Costs costs = new Costs(new LinkedList<>());
+    protected Costs costs = new Costs(new ArrayList<>());
     protected boolean interrupted;
     protected boolean free = false;
     protected boolean quietMode = false;
@@ -451,7 +451,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public List<DC_ActiveObj> getSubActions() {
         if (subActions == null) {
-            subActions = new LinkedList<>();
+            subActions = new ArrayList<>();
         }
         return subActions;
     }

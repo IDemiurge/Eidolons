@@ -28,7 +28,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.FilterMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LootMaster {
@@ -43,7 +43,7 @@ public class LootMaster {
         // additional choice for leader - share more, share equal, claim all
 //        int lootValue = calculateLootValue(dungeon, enemiesSlain);
 //        List<Entity> loot = generateLoot(lootValue, dungeon);
-//        for (Entity item : new LinkedList<>(loot)) {
+//        for (Entity item : new ArrayList<>(loot)) {
 //            for (Unit h : party.getMembers()) {
 ////				if (checkAwardLootItem(h, item, loot))
 //                break;
@@ -52,7 +52,7 @@ public class LootMaster {
 //
 //        for (Unit h : party.getMembers()) {
 //            int xpAwarded = awardXp(enemiesSlain, h, party);
-//            for (Entity item : new LinkedList<>(loot)) {
+//            for (Entity item : new ArrayList<>(loot)) {
 //                checkAwardLootItem(h, item, loot);
 //            }
 //            int goldAwarded = awardGold(lootValue, h);
@@ -136,7 +136,7 @@ public class LootMaster {
             min = DEFAULT_ITEM_MINIMUM;
         }
         int max = min * 3 / 2;
-        List<Entity> loot = new LinkedList<>();
+        List<Entity> loot = new ArrayList<>();
         Loop.startLoop(max);
         int total = 0;
         while (!Loop.loopEnded()) {

@@ -81,7 +81,7 @@ public class HC_Master {
     }
 
     public static List<ObjType> getRequiredSkills(ObjType selectedType, boolean or) {
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         for (String s : StringMaster.open(selectedType
                 .getProperty(PROPS.SKILL_REQUIREMENTS))) {
             if (s.contains(StringMaster.OR)) {
@@ -136,7 +136,7 @@ public class HC_Master {
         if (hero == null) {
             hero = CharacterCreator.getHero();
         }
-        for (DC_FeatObj c : new ListMaster<DC_FeatObj>().invertList(new LinkedList<>(hero
+        for (DC_FeatObj c : new ListMaster<DC_FeatObj>().invertList(new ArrayList<>(hero
                 .getClasses()))) {
 
             if (StringMaster

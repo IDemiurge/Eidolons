@@ -17,7 +17,7 @@ import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpectrumEffect extends DC_Effect {
@@ -93,7 +93,7 @@ public class SpectrumEffect extends DC_Effect {
         }else {
             sidePenalty=1;
         }
-        List<Coordinates> coordinates = new LinkedList<>(getGame().getVisionMaster().getSightMaster()
+        List<Coordinates> coordinates = new ArrayList<>(getGame().getVisionMaster().getSightMaster()
          .getSpectrumCoordinates(
           range, sidePenalty, backwardRange, bfObj,
           vision, facing));

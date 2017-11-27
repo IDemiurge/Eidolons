@@ -7,14 +7,14 @@ import main.entity.Ref.KEYS;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Err;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Requirements implements Condition {
 
     protected Map<String, Condition> reqMap = new XLinkedMap<>();
-    List<String> reasons = new LinkedList<>();
+    List<String> reasons = new ArrayList<>();
     private String reason;
     private boolean fullCheck = true;
 

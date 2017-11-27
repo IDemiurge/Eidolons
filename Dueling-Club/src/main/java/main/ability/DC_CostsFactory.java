@@ -12,7 +12,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.math.Formula;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DC_CostsFactory {
@@ -22,7 +22,7 @@ public class DC_CostsFactory {
     }
 
     public static Costs getCostsForSpell(DC_ActiveObj spell, boolean isSpell) {
-        List<Cost> costs = new LinkedList<>();
+        List<Cost> costs = new ArrayList<>();
         Cost cost = getCost(spell, PARAMS.AP_COST, PARAMS.C_N_OF_ACTIONS);
         if (cost != null) {
             costs.add(cost);

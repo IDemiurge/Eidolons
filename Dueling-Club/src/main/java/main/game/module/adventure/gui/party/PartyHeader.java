@@ -12,7 +12,7 @@ import main.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.G_Panel;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PartyHeader extends G_Panel {
@@ -24,8 +24,8 @@ public class PartyHeader extends G_Panel {
             MACRO_PARAMS.CONSUMPTION,};
     PropertyPage propPage;
     Header header;
-    List<ValueBox> boxes = new LinkedList<>();
-    List<ValueTextComp> propComps = new LinkedList<>();
+    List<ValueBox> boxes = new ArrayList<>();
+    List<ValueTextComp> propComps = new ArrayList<>();
     private MacroParty party;
     private WrappedTextComp locationComp;
 
@@ -42,7 +42,7 @@ public class PartyHeader extends G_Panel {
     public void createComponents() {
         locationComp = new WrappedTextComp(VISUALS.VALUE_BOX_BIG, true);
 
-        header = new Header(new LinkedList<>(Arrays.asList(party_params)),
+        header = new Header(new ArrayList<>(Arrays.asList(party_params)),
                 party);
 
         add(locationComp, "@pos center_x 20, id lc");

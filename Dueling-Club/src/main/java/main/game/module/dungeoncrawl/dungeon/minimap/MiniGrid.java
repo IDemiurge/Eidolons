@@ -34,7 +34,7 @@ public class MiniGrid implements Refreshable {
     private Map<Coordinates, MiniObjComp> compMap = new HashMap<>();
     private boolean editMode;
     private MouseListener customMouseListener;
-    private List<MiniObjComp> overlayingObjComps = new LinkedList<>();
+    private List<MiniObjComp> overlayingObjComps = new ArrayList<>();
     private int overlayingObjWidth;
     private int overlayingObjHeight;
     private int originalCellHeight;
@@ -380,7 +380,7 @@ public class MiniGrid implements Refreshable {
             c = obj.getCoordinates();
         }
         List<? extends DC_Obj> objects = getGame().getObjectsOnCoordinate(c);
-        LinkedList<Unit> overlaying = new LinkedList<>();
+        ArrayList<Unit> overlaying = new ArrayList<>();
         for (Unit o : map.getDungeon().getGame().getObjectsOnCoordinate(c)) {
             if (o.isOverlaying()) {
                 overlaying.add(o);

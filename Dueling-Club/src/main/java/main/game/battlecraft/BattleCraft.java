@@ -9,7 +9,7 @@ import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BattleCraft {
@@ -58,7 +58,7 @@ public class BattleCraft {
             int amount = StringMaster.getInteger(VariableManager.getVarPart(item));
             PARAMETER[] masteries = VALUE_GROUP.valueOf(
                     StringMaster.toEnumFormat(VariableManager.removeVarPart(item))).getParams();
-            List<String> options = new LinkedList<>();
+            List<String> options = new ArrayList<>();
             for (PARAMETER m : masteries) {
                 options.add(m.toString().replace(" Mastery", ""));
             }

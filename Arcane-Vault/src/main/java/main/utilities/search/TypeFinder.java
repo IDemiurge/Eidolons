@@ -6,7 +6,7 @@ import main.entity.type.ObjType;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TypeFinder {
@@ -26,7 +26,7 @@ public class TypeFinder {
 
     public static List<ObjType> findTypes(String typeName, OBJ_TYPE... TYPES) {
         lastSearch = typeName;
-        List<ObjType> list = new LinkedList<>();
+        List<ObjType> list = new ArrayList<>();
         for (OBJ_TYPE TYPE : TYPES) {
             List<ObjType> foundTypes = DataManager.findTypes(typeName, false, TYPE);
             list.addAll(foundTypes);

@@ -14,7 +14,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.math.roll.RollMaster;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +27,7 @@ public class GuardRule {
 
         BattleFieldObject target = (BattleFieldObject) action.getTargetObj();
 //         attack.getAttackedUnit();
-        List<Unit> guards = new LinkedList<>();
+        List<Unit> guards = new ArrayList<>();
         Collection<Unit> units = target.getGame().getUnitsForCoordinates(target.getCoordinates());
         for (Unit unit : units) {
             if (unit.isAlliedTo(target.getOwner())) {

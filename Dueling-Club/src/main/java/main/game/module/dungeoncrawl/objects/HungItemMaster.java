@@ -24,7 +24,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -113,9 +113,9 @@ potions
 
     public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
         if (!(obj instanceof HungItem))
-            return new LinkedList<>();
+            return new ArrayList<>();
         //check intelligence, mastery
-        List<DC_ActiveObj> list = new LinkedList<>();
+        List<DC_ActiveObj> list = new ArrayList<>();
         DC_UnitAction action = null;
         for (HUNG_ITEM_ACTION sub : HUNG_ITEM_ACTION.values()) {
             if (checkAction(unit, (HungItem) obj, sub)) {

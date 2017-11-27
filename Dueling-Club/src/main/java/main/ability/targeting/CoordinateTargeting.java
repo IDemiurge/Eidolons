@@ -12,7 +12,7 @@ import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.UNIT_DIRECTION;
 import main.game.bf.DirectionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CoordinateTargeting extends TargetingImpl {
@@ -49,7 +49,7 @@ public class CoordinateTargeting extends TargetingImpl {
         } else if (objects.size() == 1) {
             ref.setTarget(objects.get(0).getId());
         } else {
-            ref.setGroup(new GroupImpl(new LinkedList<>(objects)));
+            ref.setGroup(new GroupImpl(new ArrayList<>(objects)));
         }
         return true;
     }

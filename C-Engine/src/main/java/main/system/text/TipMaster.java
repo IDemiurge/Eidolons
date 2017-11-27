@@ -9,7 +9,7 @@ import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.text.Tips.*;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -21,7 +21,7 @@ import java.util.List;
 public class TipMaster {
     static boolean no_repeat;
     static Boolean basicOrAdvanced = true;
-    private static List displayedTips = new LinkedList<>();
+    private static List displayedTips = new ArrayList<>();
 
     public static String getTip() {
         return getTip(0);

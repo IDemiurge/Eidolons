@@ -19,7 +19,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -129,14 +129,14 @@ public class DC_BattleFieldManager extends BattleFieldManager {
             wallMap = new HashMap<>();
         }
         wallMap.clear();
-        LinkedList<Coordinates> coordinates = new LinkedList<>(wallObjects.keySet());
+        ArrayList<Coordinates> coordinates = new ArrayList<>(wallObjects.keySet());
         for (Coordinates coordinate : coordinates) {
             BattleFieldObject wall = wallObjects.get(coordinate);
             if (wall.isDead()) {
                 continue;
             }
 
-            List<DIRECTION> list = new LinkedList<>();
+            List<DIRECTION> list = new ArrayList<>();
 
             for (Coordinates c : coordinate.getAdjacent(false)) {
                 BattleFieldObject adjWall = wallObjects.get(c);
@@ -195,7 +195,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
                     // }
                     List<DIRECTION> list = diagonalJoints.get(c);
                     if (list == null) {
-                        list = new LinkedList<>();
+                        list = new ArrayList<>();
                     }
                     diagonalJoints.put(c, list);
                     if (list.size() == 1) {

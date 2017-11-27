@@ -22,7 +22,7 @@ import main.system.auxiliary.log.Err;
 
 import javax.swing.*;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListEditor implements EDITOR {
@@ -154,7 +154,7 @@ public class ListEditor implements EDITOR {
 
         } else {
 
-            secondListData = new LinkedList<>();
+            secondListData = new ArrayList<>();
             if (value != null) {
                 if (!value.equals(ContentManager.getDefaultEmptyValue())) {
                     secondListData = ListMaster.toList(value.toString(), ENUM);

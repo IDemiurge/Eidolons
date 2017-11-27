@@ -8,7 +8,7 @@ import main.system.auxiliary.secondary.InfoMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmblemChoiceView extends PortraitChoiceView {
@@ -43,7 +43,7 @@ public class EmblemChoiceView extends PortraitChoiceView {
 
     @Override
     protected void initData() {
-        data = new LinkedList<>();
+        data = new ArrayList<>();
         String heroAspect = hero.getProperty(G_PROPS.ASPECT);
 
         List<String> list = ImageManager.getEmblems(heroAspect);

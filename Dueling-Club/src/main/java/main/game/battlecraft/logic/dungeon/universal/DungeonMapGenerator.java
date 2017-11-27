@@ -26,7 +26,7 @@ import main.system.math.MathMaster;
 import main.system.util.Refactor;
 
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +40,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
     // some objects may require special placements?
     private Map<Coordinates, ObjType> objMap;
     private Map<MAP_ZONES, Integer> zones;
-    private LinkedList<FACING_DIRECTION> usedSides;
+    private ArrayList<FACING_DIRECTION> usedSides;
     private DungeonPlan plan;
     private BuildParameters params;
 
@@ -505,7 +505,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
     }
 
     // private void generateSublevelEntrances() {
-    // usedSides = new LinkedList<FACING_DIRECTION>();
+    // usedSides = new ArrayList<FACING_DIRECTION>();
     //
     // for (Dungeon sublvl : dungeon.getSubLevels()) {
     // generateSublevelEntrance(sublvl);

@@ -11,7 +11,7 @@ import java.util.Map;
 public class WaitMaster {
     // Sync map?
     private static Map<WAIT_OPERATIONS, Waiter> waiters = new HashMap<>();
-    // private static List<Waiter> activeWaiters = new LinkedList<>() ;
+    // private static List<Waiter> activeWaiters = new ArrayList<>() ;
     private static DequeImpl<WAIT_OPERATIONS> completeOperations;
 
     public static void unmarkAsComplete(WAIT_OPERATIONS operation) {
@@ -156,7 +156,7 @@ public class WaitMaster {
 // // Sync map?
 // private static Map<WAIT_OPERATIONS, Waiter> waiters = new
 // HashMap<WAIT_OPERATIONS, Waiter>();
-// // private static List<Waiter> activeWaiters = new LinkedList<>() ;
+// // private static List<Waiter> activeWaiters = new ArrayList<>() ;
 // private static DequeImpl<WAIT_OPERATIONS> completeOperations;
 //
 // // additional identifying for batch operations?

@@ -25,7 +25,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -428,7 +428,7 @@ public class UnitDataSource implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new LinkedList<>();
+        return new ArrayList<>();
     }
 
     @Override

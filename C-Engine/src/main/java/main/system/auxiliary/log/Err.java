@@ -1,7 +1,7 @@
 package main.system.auxiliary.log;
 
 import javax.swing.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Err {
@@ -9,7 +9,7 @@ public class Err {
     public static int EXCLUSIVE = -1;
     // private static final Logger = Logger.getLogger(Err.class);
     private static boolean switcher = true;
-    private static List<String> errorsShown = new LinkedList<>();
+    private static List<String> errorsShown = new ArrayList<>();
 
     public static void NOTE(String s, int level) {
         if (EXCLUSIVE != -1) {

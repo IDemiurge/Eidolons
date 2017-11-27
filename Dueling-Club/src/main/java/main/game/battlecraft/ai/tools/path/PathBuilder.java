@@ -24,7 +24,7 @@ import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PathBuilder extends AiHandler {
@@ -70,7 +70,7 @@ public class PathBuilder extends AiHandler {
     public PathBuilder init(List<DC_ActiveObj> moveActions, Action targetAction) {
 
         if (moveActions == null) {
-            moveActions = new LinkedList<>(getUnit().getActionMap().get(ACTION_TYPE.STANDARD));
+            moveActions = new ArrayList<>(getUnit().getActionMap().get(ACTION_TYPE.STANDARD));
             moveActions.add(getUnit().getAction("Move"));
         }
         if (targetAction == null) {
@@ -154,7 +154,7 @@ public class PathBuilder extends AiHandler {
 
     private List<ActionPath> buildPaths(List<Coordinates> targetCoordinates) {
         Chronos.mark(getChronosPrefix() + targetAction);
-        paths = new LinkedList<>();
+        paths = new ArrayList<>();
         bestResult = null;
         targetCells = targetCoordinates;
 
@@ -379,7 +379,7 @@ public class PathBuilder extends AiHandler {
     }
 
     private void filterPaths() {
-        filteredPaths = new LinkedList<>();
+        filteredPaths = new ArrayList<>();
         main.system.auxiliary.log.LogMaster.log(1," Filtering against "
          + bestResult);
         for (ActionPath p : paths) {

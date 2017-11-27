@@ -5,7 +5,7 @@ import main.swing.generic.components.G_Panel;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +13,7 @@ public abstract class WrappedContainer<E> extends G_Panel {
 
     protected boolean vertical;
     protected List<E> data;
-    protected List<G_Panel> comps = new LinkedList<>();
+    protected List<G_Panel> comps = new ArrayList<>();
     protected Map<Integer, G_Panel> customComps = new XLinkedMap<>();
     protected int spaceTaken;
     protected int wrapped;
@@ -147,7 +147,7 @@ public abstract class WrappedContainer<E> extends G_Panel {
     }
 
     public List<E> getData() {
-        data = new LinkedList<>(initData());
+        data = new ArrayList<>(initData());
         return data;
     }
 

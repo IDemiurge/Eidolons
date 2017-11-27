@@ -742,7 +742,7 @@ public class DrawMaster {
                     cellComp.getCoordinates())) {
                 return;
             }
-            List<Unit> objects = new LinkedList<>(cellComp.getObjects());
+            List<Unit> objects = new ArrayList<>(cellComp.getObjects());
             int stackOffsetX = 0;
             int stackOffsetY = 0;
             if (!(cellComp.isWall() || cellComp.isLandscape())) {

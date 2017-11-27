@@ -13,7 +13,7 @@ import main.entity.obj.unit.Unit;
 import main.system.DC_Formulas;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class IntegrityRule {
@@ -57,7 +57,7 @@ public class IntegrityRule {
     }
 
     public static List<String> getIntegrityBonusInfo(Unit hero) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         int integrity = hero.getIntParam(PARAMS.INTEGRITY);
         int amount = getMasteryScoresBonus(integrity, hero);
         String string = " " + amount;
@@ -139,7 +139,7 @@ public class IntegrityRule {
     }
 
     public static List<PRINCIPLES> getAffectingPrinciples(Entity item, Entity hero) {
-        List<PRINCIPLES> list = new LinkedList<>();
+        List<PRINCIPLES> list = new ArrayList<>();
         for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
             for (Integer val : getValues(p, item, hero)) {
                 if (val != 0) {

@@ -36,7 +36,7 @@ public class EnumMaster<T> {
     private static Map<Class, Map<String, Integer>> enumIndexCache = new HashMap<>();
     private static List<Class> enumClasses;
     private static Map<String, Class> enumMap = new HashMap<>();
-    private static List<Class<?>> additionalEnumClasses = new LinkedList<>();
+    private static List<Class<?>> additionalEnumClasses = new ArrayList<>();
 
     // private static final Logger = Logger.getLogger(EnumMaster.class);
     public static Class<?> getEnumClass(String name) {
@@ -68,7 +68,7 @@ public class EnumMaster<T> {
         }
 
         if (enumClasses == null) {
-            enumClasses = new LinkedList<>();
+            enumClasses = new ArrayList<>();
             try {
                 enumClasses.addAll(
                  Arrays.asList(ClassFinder.getClasses(ENUM_FOLDER)));
@@ -157,7 +157,7 @@ public class EnumMaster<T> {
         if (!enumClass.isEnum()) {
             return null;
         }
-        List<Object> list = new LinkedList<>();
+        List<Object> list = new ArrayList<>();
         for (Object obj : enumClass.getEnumConstants()) {
             list.add(obj);
         }
@@ -174,7 +174,7 @@ public class EnumMaster<T> {
             }
             return null;
         }
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (Object obj : enumClass.getEnumConstants()) {
             list.add(obj.toString());
         }
@@ -275,12 +275,12 @@ public class EnumMaster<T> {
             names = EnumMaster.getEnumClass(subgroup, MACRO_CONTENT_CONSTS.class);
         }
         if (names == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         try {
             return getEnumConstantNames(names);
         } catch (Exception e) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
     }
 
@@ -312,7 +312,7 @@ public class EnumMaster<T> {
         List list;
 
         if (array == null) {
-            list = new LinkedList<>();
+            list = new ArrayList<>();
             if (clazz == VALUE.class) {
                 list = ContentManager.getPropList();
                 list.addAll(ContentManager.getParamList());
@@ -385,7 +385,7 @@ public class EnumMaster<T> {
     }
 
     public List<T> getEnumList(Class<T> CLASS) {
-        return new LinkedList<>(Arrays.asList(CLASS.getEnumConstants()));
+        return new ArrayList<>(Arrays.asList(CLASS.getEnumConstants()));
     }
 
     public List<T> getEnumList(Class<T> CLASS, String property) {
@@ -393,7 +393,7 @@ public class EnumMaster<T> {
     }
 
     public List<T> getEnumList(Class<T> CLASS, String property, String separator) {
-        List<T> list = new LinkedList<>();
+        List<T> list = new ArrayList<>();
         for (String subString : StringMaster.open(property, separator)) {
             T ENUM = retrieveEnumConst(CLASS, subString);
             if (ENUM != null) {

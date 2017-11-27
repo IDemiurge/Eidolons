@@ -4,7 +4,7 @@ import main.client.cc.gui.neo.tree.logic.TreeMap.LINK_VARIANT;
 import main.entity.type.ObjType;
 
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StaticTreeLink {
@@ -17,7 +17,7 @@ public class StaticTreeLink {
     private boolean manualSet;
 
     public StaticTreeLink(LINK_VARIANT variant, Point point, ObjType parent, ObjType type) {
-        children = new LinkedList<>();
+        children = new ArrayList<>();
         children.add(type);
         this.variant = variant;
         // auto-init position?

@@ -18,7 +18,7 @@ import main.system.images.ImageManager.BORDER;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class DC_ItemPanel extends G_ListPanel<DC_HeroAttachedObj> implements BORDER_CHECKER {
     private int width;
@@ -100,7 +100,7 @@ public class DC_ItemPanel extends G_ListPanel<DC_HeroAttachedObj> implements BOR
     public Collection<DC_HeroAttachedObj> getData() {
         if (obj instanceof Unit) {
             Unit hero = (Unit) obj;
-            LinkedList<DC_HeroAttachedObj> items = new LinkedList<>();
+            ArrayList<DC_HeroAttachedObj> items = new ArrayList<>();
             if (hero.getMainWeapon() == null && hero.getNaturalWeapon(false) != null) {
                 items.add(hero.getNaturalWeapon(false));
             } else {

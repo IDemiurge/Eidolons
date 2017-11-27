@@ -14,7 +14,7 @@ import main.entity.type.ObjType;
 import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JewelrySlots extends SecondaryItemList {
@@ -29,7 +29,7 @@ public class JewelrySlots extends SecondaryItemList {
 
     public static List<ObjType> getSortedJewelryData(List<ObjType> data) {
 
-        List<ObjType> sortedData = new LinkedList<>();
+        List<ObjType> sortedData = new ArrayList<>();
         ListMaster.fillWithNullElements(sortedData, LIST_SIZE);
         int rings = 0;
         boolean left = true;

@@ -11,13 +11,13 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.math.Formula;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class CostRequirements extends Requirements {
 
-    private List<Payment> paymentList = new LinkedList<>();
+    private List<Payment> paymentList = new ArrayList<>();
     private Map<String, Condition> additionalReqList = new XLinkedMap<>();
 
     public CostRequirements(Payment p) {

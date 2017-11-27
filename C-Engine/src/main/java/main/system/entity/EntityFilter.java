@@ -4,7 +4,7 @@ import main.content.OBJ_TYPE;
 import main.entity.Entity;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class EntityFilter<E extends Entity> {
     Collection<E> list;
@@ -37,7 +37,7 @@ public class EntityFilter<E extends Entity> {
     }
 
     public Collection<E> filter() {
-        filteredList = (Collection<E>) FilterMaster.filter(new LinkedList<>(list), valueName,
+        filteredList = (Collection<E>) FilterMaster.filter(new ArrayList<>(list), valueName,
                 value, TYPE, prop, filterOut, strict_or_greater_less_equal);
         return filteredList;
     }

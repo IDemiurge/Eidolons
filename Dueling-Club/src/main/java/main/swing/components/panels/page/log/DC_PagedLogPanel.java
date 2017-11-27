@@ -23,7 +23,7 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -37,7 +37,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
     boolean descriptionMode; // TODO for values/... selectable on any page!
     boolean nodeViewMode;
     LogEntryNode entryNode;
-    List<LogEntryNode> entryNodes = new LinkedList<>();
+    List<LogEntryNode> entryNodes = new ArrayList<>();
     private DC_Game game;
     private int descrWrapLength = 40;
     private int rowCount;
@@ -269,7 +269,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
             // correct??
             entryNodes = game.getLogManager().getTopEntryNodesMap().get(getCurrentIndex());
             if (entryNodes == null) {
-                entryNodes = new LinkedList<>();
+                entryNodes = new ArrayList<>();
                 for (LogEntryNode node : game.getLogManager().getTopNodes()) {
                     if (node.getLineIndex() > getRowCount() * getCurrentIndex()
                             && node.getLineIndex() <= (getCurrentIndex() + 1) * getRowCount())
@@ -310,7 +310,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
             List<String> descrPages = TextWrapper.wrap(descr, descrWrapLength);
 
             List<String> lorePages = TextWrapper.wrap(lore, descrWrapLength);
-            List<List<String>> list = new LinkedList<>();
+            List<List<String>> list = new ArrayList<>();
             list.addAll(new ListMaster<String>().splitList(rowCount, descrPages));
             list.addAll(new ListMaster<String>().splitList(rowCount, lorePages));
             return list;
@@ -323,7 +323,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
             return new ListMaster<String>().splitList(rowCount, lines);
         }
 
-        LinkedList<String> lines = new LinkedList<>();
+        ArrayList<String> lines = new ArrayList<>();
         List<String> entries = game.getLogManager().getTopDisplayedEntries();
         for (String entry : entries) {
             for (String subString : TextWrapper.wrapIntoArray(entry, EntryNodeMaster
@@ -342,7 +342,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
         // don't re-init old pages! make a cache to update
         List<List<String>> lists = new ListMaster<String>().splitList(pageSize, list);
         if (lists.isEmpty()) {
-            List<String> lastList = new LinkedList<>();
+            List<String> lastList = new ArrayList<>();
             ListMaster.fillWithNullElements(lastList, pageSize);
             lists.add(lastList);
             return lists;

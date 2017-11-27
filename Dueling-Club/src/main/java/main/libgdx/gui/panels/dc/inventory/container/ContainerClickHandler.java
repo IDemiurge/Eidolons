@@ -14,7 +14,7 @@ import main.system.GuiEventType;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  * Created by JustMe on 11/16/2017.
@@ -63,7 +63,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     }
 
     public void takeAllClicked() {
-    for (DC_HeroItemObj item:         new LinkedList<>(container.getItems()) ){
+    for (DC_HeroItemObj item:         new ArrayList<>(container.getItems()) ){
         if (unit.isInventoryFull())
         {
             FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,

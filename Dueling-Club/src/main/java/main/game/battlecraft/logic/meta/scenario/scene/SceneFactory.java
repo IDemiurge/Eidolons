@@ -12,7 +12,7 @@ import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 import main.system.util.Refactor;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -38,7 +38,7 @@ public class SceneFactory  implements Supplier<List<DialogScenario>> {
     //TODO Speech?
     public static List<DialogScenario> getScenes(GameDialogue dialogue ) {
         Speech speech = dialogue.getRoot();
-        List<SpeechData> fullData = new LinkedList<>();
+        List<SpeechData> fullData = new ArrayList<>();
         while (true) {
             fullData.add(speech.getData());
             if (speech.getChildren().isEmpty()) break;
@@ -58,7 +58,7 @@ public class SceneFactory  implements Supplier<List<DialogScenario>> {
     public static List<DialogScenario> getScenes(List<SpeechData> fullData) {
         Speech speech;
 //        speech.getFormattedText()
-        List<DialogScenario> list = new LinkedList<>();
+        List<DialogScenario> list = new ArrayList<>();
 //        for (String substring : StringMaster.open(data)) {
         TextureRegion backTexture = null;
         for (SpeechData data : fullData) {

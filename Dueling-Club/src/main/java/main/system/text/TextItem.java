@@ -6,7 +6,7 @@ import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TextItem {
@@ -27,7 +27,7 @@ public class TextItem {
     // }
 
     public TextItem(Point p, TEXT_TYPE type, Object... lines) {
-        this(new LinkedList<>(Arrays.asList(lines)), type);
+        this(new ArrayList<>(Arrays.asList(lines)), type);
         setPoint(p);
     }
 

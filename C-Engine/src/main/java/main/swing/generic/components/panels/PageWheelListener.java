@@ -3,12 +3,12 @@ package main.swing.generic.components.panels;
 import java.awt.*;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PageWheelListener implements MouseWheelListener {
 
-    List<Component> comps = new LinkedList<>();
+    List<Component> comps = new ArrayList<>();
     private G_PagePanel<?> pagedListPanel;
 
     public PageWheelListener(G_PagePanel<?> pagedListPanel) {

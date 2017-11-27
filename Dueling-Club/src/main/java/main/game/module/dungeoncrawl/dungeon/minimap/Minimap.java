@@ -8,7 +8,7 @@ import main.system.graphics.GuiManager;
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Minimap {
@@ -48,7 +48,7 @@ public class Minimap {
             borderX = 0;
             borderY = 0;
         }
-        List<MiniObjComp> overlayingToLoad = new LinkedList<>();
+        List<MiniObjComp> overlayingToLoad = new ArrayList<>();
         if (grid != null) {
             overlayingToLoad = grid.getOverlayingObjComps();
         }

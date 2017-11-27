@@ -16,7 +16,7 @@ import main.game.battlecraft.rules.buff.DC_BuffRule;
 import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParamAnalyzer extends AiHandler {
@@ -177,9 +177,9 @@ public class ParamAnalyzer extends AiHandler {
         return Integer.MIN_VALUE;
     }
 
-    public static int getMaxParam(PARAMS p, List<Entity> linkedList) {
+    public static int getMaxParam(PARAMS p, List<Entity> ArrayList) {
         int max = Integer.MIN_VALUE;
-        for (Entity e : linkedList) {
+        for (Entity e : ArrayList) {
             if (e.getIntParam(p) > max) {
                 max = e.getIntParam(p);
             }
@@ -189,10 +189,10 @@ public class ParamAnalyzer extends AiHandler {
 
     }
 
-    public static Entity getMaxParamUnit(PARAMS p, List<Entity> linkedList) {
+    public static Entity getMaxParamUnit(PARAMS p, List<Entity> ArrayList) {
         Entity unit = null;
         int max = Integer.MIN_VALUE;
-        for (Entity e : linkedList) {
+        for (Entity e : ArrayList) {
             if (e.getIntParam(p) > max) {
                 max = e.getIntParam(p);
                 unit = e;
@@ -280,7 +280,7 @@ public class ParamAnalyzer extends AiHandler {
     }
 
     public List<PARAMS> getRelevantParams(Unit unit) {
-        List<PARAMS> list = new LinkedList<>();
+        List<PARAMS> list = new ArrayList<>();
         for (PARAMS p : ValuePages.UNIT_DYNAMIC_PARAMETERS_RESTORABLE) {
             if (!isParamIgnored(unit, p)) {
                 list.add(p);

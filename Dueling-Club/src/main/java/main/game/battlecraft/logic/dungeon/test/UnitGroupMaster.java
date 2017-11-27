@@ -53,7 +53,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -195,7 +195,7 @@ public class UnitGroupMaster {
             factionType = DataManager.getType(faction.toString().replace(";", ""),
                     DC_TYPE.FACTIONS);
         } else {
-            List<String> list = new LinkedList<>();
+            List<String> list = new ArrayList<>();
 
             factionType = DataManager.getType(ListChooser.chooseType(list, DC_TYPE.FACTIONS),
                     DC_TYPE.FACTIONS);
@@ -212,7 +212,7 @@ public class UnitGroupMaster {
         min = 2;
         max = 5 + level / 2;
         power_limit = limit / 2;
-        unitList = (new LinkedList<>());
+        unitList = (new ArrayList<>());
         int i = 0;
         while (true) {
             ObjType unit = chooseUnit(factionType, limit - power, power_limit);
@@ -266,7 +266,7 @@ public class UnitGroupMaster {
         Unit unit = null;
 
         // posView.in
-        List<Unit> units = new LinkedList<>();
+        List<Unit> units = new ArrayList<>();
         if (hero != null) {
             if (hero instanceof Unit) {
                 unit = (Unit) hero;
@@ -341,7 +341,7 @@ public class UnitGroupMaster {
 
     private static ObjType chooseUnit(ObjType factionType, int power, int max_power) {
         Map<ObjType, Integer> pool = initPool(factionType);
-        List<ObjType> available = new LinkedList<>();
+        List<ObjType> available = new ArrayList<>();
         for (ObjType l : pool.keySet()) {
             if (getUnitCost(l, factionType) > power) {
                 continue;
@@ -391,7 +391,7 @@ public class UnitGroupMaster {
 
                     @Override
                     public synchronized List<String> getTextLines() {
-                        List<String> list = new LinkedList<>();
+                        List<String> list = new ArrayList<>();
                         list.add(UnitGroupMaster.getRemainingPower() + " points remaining");
                         list.add("Size contraints: between " + min + " and " + max);
                         return list;
@@ -500,7 +500,7 @@ public class UnitGroupMaster {
 
     public static String chooseGroup(boolean me) {
         if (factionMode) {
-            List<ObjType> available = new LinkedList<>(DataManager.getTypes(DC_TYPE.FACTIONS));
+            List<ObjType> available = new ArrayList<>(DataManager.getTypes(DC_TYPE.FACTIONS));
             // DC_HeroObj
             FilterMaster.filterByProp(available, G_PROPS.WORKSPACE_GROUP.getName(), ""
                     + MetaEnums.WORKSPACE_GROUP.COMPLETE);

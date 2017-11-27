@@ -10,7 +10,7 @@ import main.game.core.game.DC_Game;
 import main.system.auxiliary.StringMaster;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +29,7 @@ public class HintMaster {
     private List<OUTLINE_HINT> getHints(BattleFieldObject unit, OUTLINE_IMAGE image) {
 
 
-        List<OUTLINE_HINT> list = new LinkedList<>();
+        List<OUTLINE_HINT> list = new ArrayList<>();
         if (unit.isSmall()) {
             list.add(OUTLINE_HINT.SMALL);
         }

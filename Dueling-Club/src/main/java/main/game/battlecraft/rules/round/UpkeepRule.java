@@ -22,7 +22,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UpkeepRule extends RoundRule {
@@ -67,8 +67,8 @@ public class UpkeepRule extends RoundRule {
     @Override
     public void apply(Unit unit) {
         // TODO getOrCreate all buffs/units with this SOURCE /summoner
-        List<Obj> payObjects = new LinkedList<>();
-        List<Obj> destroyObjects = new LinkedList<>();
+        List<Obj> payObjects = new ArrayList<>();
+        List<Obj> destroyObjects = new ArrayList<>();
         boolean destroy = unit.isDead() || unit.isUnconscious();
         for (Unit u : game.getUnits()) {
             if (destroy || u.isDead() || u.isUnconscious()) {

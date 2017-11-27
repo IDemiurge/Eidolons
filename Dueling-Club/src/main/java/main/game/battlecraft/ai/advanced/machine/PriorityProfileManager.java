@@ -99,7 +99,7 @@ public class PriorityProfileManager extends AiHandler {
     public static List<PriorityProfile> initProfiles(int i) {
         PriorityProfileManager manager = new PriorityProfileManager(null);
         PriorityProfile original =manager. createNewProfile(null);
-        List<PriorityProfile> list = new LinkedList<>();
+        List<PriorityProfile> list = new ArrayList<>();
         while (i > 0) {
             i--;
             list.add((PriorityProfile) original.mutate());

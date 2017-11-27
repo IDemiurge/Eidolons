@@ -13,7 +13,7 @@ import main.system.math.PositionMaster;
 import org.junit.Test;
 import tests.FastDcTest;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -70,7 +70,7 @@ public class JUnitClearshotTest extends FastDcTest {
     protected DequeImpl<? extends DC_Obj> getObjects(boolean inside, boolean cellsOrObjects) {
         DequeImpl<? extends DC_Obj> list = new DequeImpl<>();
         List<Coordinates> coordinates = getCoordinatesList(inside);
-        coordinates = filterCoordinates(new LinkedList<>(coordinates));
+        coordinates = filterCoordinates(new ArrayList<>(coordinates));
         for (Coordinates c : coordinates) {
             if (cellsOrObjects)
                 list.addCast(game.getCellByCoordinate(c));
@@ -91,7 +91,7 @@ public class JUnitClearshotTest extends FastDcTest {
 
         if (!inside) {
             List<Coordinates> excluded = list;
-            list = new LinkedList<>(game.getCoordinates());
+            list = new ArrayList<>(game.getCoordinates());
             list.removeIf(c -> excluded.contains(c));
             outsideCoords = list;
         } else insideCoords = list;
@@ -102,7 +102,7 @@ public class JUnitClearshotTest extends FastDcTest {
     protected List<Coordinates> createCoordinatesList() {
         if (isDiagonal())
             return createDiagonalCoordinatesList();
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         int x1 = (game.getDungeon().getCellsX() - getInnerWidth()) / 2;
         int y1 = (game.getDungeon().getCellsY() - getInnerHeight()) / 2;
         int x2 = x1 + getInnerWidth();
@@ -128,7 +128,7 @@ public class JUnitClearshotTest extends FastDcTest {
     }
 
     protected List<Coordinates> createDiagonalCoordinatesList() {
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         int yGap = game.getBF_Height() / 2 - (getInnerHeight() - 1) / 2;
         int i = -1;
         for (int y = yGap;

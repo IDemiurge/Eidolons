@@ -316,9 +316,9 @@ if (ExplorationMaster.isExplorationOn())
 
     public List<DC_QuickItemAction> getQuickItemActives() {
         if (!ListMaster.isNotEmpty(getQuickItems())) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
-        List<DC_QuickItemAction> qia = new LinkedList<>();
+        List<DC_QuickItemAction> qia = new ArrayList<>();
         for (DC_QuickItemObj q : getQuickItems()) {
             if (!q.isConstructed()) {
                 q.construct();
@@ -409,7 +409,7 @@ if (ExplorationMaster.isExplorationOn())
     public List<DC_SpellObj> getSpells() {
 
         if (spells == null) {
-            spells = new LinkedList<>();
+            spells = new ArrayList<>();
         }
         return spells;
     }
@@ -531,7 +531,7 @@ if (ExplorationMaster.isExplorationOn())
 
     public Entity getItem(String name) {
         // for (String generic: getInventory())
-        List<Entity> list = new LinkedList<>();
+        List<Entity> list = new ArrayList<>();
         list.add(getWeapon(true));
         list.add(getWeapon(false));
         list.add(getNaturalWeapon(true));
@@ -1082,12 +1082,12 @@ if (ExplorationMaster.isExplorationOn())
 
     public DC_HeroItemObj findItem(String typeName, Boolean quick_inv_slot) {
         if (quick_inv_slot == null) {
-            return new ListMaster<DC_HeroSlotItem>().findType(typeName, new LinkedList<>(
+            return new ListMaster<DC_HeroSlotItem>().findType(typeName, new ArrayList<>(
              getSlotItems()));
         }
         DC_HeroItemObj item = !quick_inv_slot ? new ListMaster<DC_HeroItemObj>().findType(typeName,
-         new LinkedList<>(getInventory())) : new ListMaster<DC_QuickItemObj>().findType(
-         typeName, new LinkedList<>(getQuickItems()));
+         new ArrayList<>(getInventory())) : new ListMaster<DC_QuickItemObj>().findType(
+         typeName, new ArrayList<>(getQuickItems()));
         return item;
     }
 

@@ -24,7 +24,7 @@ import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -102,7 +102,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     }
 
     public Map<Unit, Coordinates> getPartyCoordinates(List<Unit> members) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (Unit h : members) {
             list.add(h.getName());
         }
@@ -124,7 +124,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public List<Coordinates> getPartyCoordinates(Coordinates origin, Boolean me,
                                                  List<String> partyTypes) {
 
-        List<Coordinates> list = new LinkedList<>();
+        List<Coordinates> list = new ArrayList<>();
         // TODO
         if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor() ) {
             origin = new Coordinates(PositionMaster.getMiddleIndex(false), PositionMaster
@@ -284,7 +284,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
             otherUnits = unitCache.get(c);
         }
         if (otherUnits == null) {
-            otherUnits = new LinkedList<>();
+            otherUnits = new ArrayList<>();
         }
 
         try {

@@ -29,7 +29,7 @@ import main.system.DC_Formulas;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CadenceRule {
@@ -101,7 +101,7 @@ public class CadenceRule {
         Ref ref = new Ref(unit.getGame(), unit.getId());
 
         DC_WeaponObj weapon = unit.getActiveWeapon(offhand);
-        List<Obj> targets = new LinkedList<>();
+        List<Obj> targets = new ArrayList<>();
         if (unit.getWeapon(!offhand) != null) {
             targets.add(unit.getWeapon(!offhand));
         }

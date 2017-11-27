@@ -7,7 +7,7 @@ import main.game.bf.Coordinates;
 import main.system.graphics.GuiManager;
 import main.system.math.PositionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +20,7 @@ public class PathingManager {
     A_StarAlgorithm alg;
     private BattleFieldGrid grid; // set on game init()
     private PathNode[][] nodeGrid;
-    private List<PathNode> nodeList = new LinkedList<>();
+    private List<PathNode> nodeList = new ArrayList<>();
 
     public PathingManager() {
     }
@@ -101,7 +101,7 @@ public class PathingManager {
 
     public List<Obj> getAdjacentObjs(Coordinates coordinates, boolean cell) {
 
-        List<Obj> list = new LinkedList<>();
+        List<Obj> list = new ArrayList<>();
         // for (xXx:MathMaster.permutations(bla!)){
         checkCoordinatesForObj(list, coordinates, 0, 1, cell);
         checkCoordinatesForObj(list, coordinates, 1, 0, cell);
@@ -168,7 +168,7 @@ public class PathingManager {
     }
 
     public List<PathNode> getAdjacentNodes(Coordinates c) {
-        List<PathNode> nodeList = new LinkedList<>();
+        List<PathNode> nodeList = new ArrayList<>();
 
         checkNode(nodeList, c.x + 1, c.y - 1);
         checkNode(nodeList, c.x, c.y - 1);

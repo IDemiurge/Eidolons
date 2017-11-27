@@ -26,7 +26,7 @@ import main.test.Preset.PRESET_TYPE;
 import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static main.test.Preset.PRESET_DATA.*;
@@ -359,7 +359,7 @@ public class PresetMaster {
         String autoFolderPath = getPresetFolderPath() + AUTO + "\\";
         File root = FileManager.getFile(autoFolderPath);
         List<File> list =
-                // new LinkedList<File>(Arrays.asList(root.listFiles()));
+                // new ArrayList<File>(Arrays.asList(root.listFiles()));
                 getPresetFiles(root, true);
 
         Collections.sort(list, new Comparator<File>() {
@@ -377,7 +377,7 @@ public class PresetMaster {
         List<File> recent = list.subList(0, maximum);
         // new ListMaster<>().
 
-        presets = new LinkedList<>();
+        presets = new ArrayList<>();
         // getPresets()
         int n = 0;
         for (File file : list) {
@@ -409,7 +409,7 @@ public class PresetMaster {
 
     public static List<Preset> getPresetsFromFolder(Boolean autoIncluded, String presetFolderPath) {
         if (presets == null) {
-            presets = new LinkedList<>();
+            presets = new ArrayList<>();
             File root = FileManager.getFile(presetFolderPath);
             // sort();
             for (File file : root.listFiles()) {
@@ -426,7 +426,7 @@ public class PresetMaster {
     }
 
     private static List<File> getPresetFiles(File file, Boolean auto) {
-        List<File> list = new LinkedList<>();
+        List<File> list = new ArrayList<>();
         if (file == null) {
             return list;
         }
@@ -444,7 +444,7 @@ public class PresetMaster {
     }
 
     private static List<Preset> loadPresets(File file, Boolean auto) {
-        List<Preset> list = new LinkedList<>();
+        List<Preset> list = new ArrayList<>();
         if (file == null) {
             return list;
         }

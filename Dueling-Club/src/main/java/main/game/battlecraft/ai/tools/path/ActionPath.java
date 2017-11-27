@@ -6,7 +6,7 @@ import main.game.bf.Coordinates;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActionPath {
@@ -24,7 +24,7 @@ public class ActionPath {
     }
 
     public ActionPath(Coordinates targetCoordinates, Choice... choices) {
-        this.choices = new LinkedList<>(Arrays.asList(choices));
+        this.choices = new ArrayList<>(Arrays.asList(choices));
         this.targetCoordinates = targetCoordinates;
     }
 
@@ -68,7 +68,7 @@ public class ActionPath {
     }
 
     private void initActions() {
-        actions = new LinkedList<>();
+        actions = new ArrayList<>();
         for (Choice choice : choices) {
             actions.addAll(choice.getActions());
         }
@@ -86,7 +86,7 @@ public class ActionPath {
 
     public List<Choice> getChoices() {
         if (choices == null) {
-            choices = new LinkedList<>();
+            choices = new ArrayList<>();
         }
         return choices;
     }

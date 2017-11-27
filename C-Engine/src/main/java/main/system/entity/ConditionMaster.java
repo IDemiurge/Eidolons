@@ -26,7 +26,7 @@ import main.system.math.Formula;
 import main.system.math.PositionMaster;
 import main.system.text.TextParser;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConditionMaster {
@@ -470,7 +470,7 @@ public class ConditionMaster {
         // String vars = VariableManager.getVarPart(string);
         // String className = string.replace(vars, "");
         // className = getMappedClassName(className);
-        // List<Construct> constructs = new LinkedList<>();
+        // List<Construct> constructs = new ArrayList<>();
         //
         // for (String var : vars.split(condition_arg_separator)) {
         // // primitives only! but for those, I gotta get the arg classes right
@@ -493,7 +493,7 @@ public class ConditionMaster {
     }
 
     public static List<Condition> removeConditionsOfClass(Conditions conditions, Class<?> clazz) {
-        List<Condition> list = new LinkedList<>();
+        List<Condition> list = new ArrayList<>();
         for (Condition c : new Conditions(conditions)) {
             if (c instanceof Conditions) {
                 removeConditionsOfClass((Conditions) c, clazz);

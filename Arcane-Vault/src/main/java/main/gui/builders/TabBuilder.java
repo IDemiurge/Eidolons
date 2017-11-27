@@ -39,7 +39,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.io.File;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TabBuilder extends Builder implements ChangeListener {
@@ -75,12 +75,12 @@ public class TabBuilder extends Builder implements ChangeListener {
     @Override
     public void init() {
 
-        List<Builder> list = new LinkedList<>();
+        List<Builder> list = new ArrayList<>();
 
         if (top) {
             // if (ArcaneVault.isTestMode())
             if (tabNames == null) {
-                tabNames = new LinkedList<>(XML_Reader.getTypeMaps().keySet());
+                tabNames = new ArrayList<>(XML_Reader.getTypeMaps().keySet());
                 ListMaster.removeNullElements(tabNames);
             }
             if (!isLevelEditor())
@@ -142,7 +142,7 @@ public class TabBuilder extends Builder implements ChangeListener {
         builderArray = new Builder[tabNames.size()];
         list.toArray(builderArray);
         builders = new MapMaster<Builder, LayoutInfo>().constructMap(list,
-                new LinkedList<>());
+                new ArrayList<>());
     }
 
     // override build()?
@@ -491,7 +491,7 @@ public class TabBuilder extends Builder implements ChangeListener {
 
     public List<Workspace> getActiveWorkspaces() {
         if (activeWorkspaces == null) {
-            activeWorkspaces = new LinkedList<>();
+            activeWorkspaces = new ArrayList<>();
         }
         return activeWorkspaces;
     }
@@ -544,7 +544,7 @@ public class TabBuilder extends Builder implements ChangeListener {
             path = PathFinder.getMACRO_TYPES_PATH();
         }
         File file = new File(path + name + ".xml");
-        List<File> files = new LinkedList<>();
+        List<File> files = new ArrayList<>();
         if (file.isFile()) {
             files.add(file);
         } else {

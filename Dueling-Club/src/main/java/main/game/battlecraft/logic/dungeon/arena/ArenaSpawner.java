@@ -21,7 +21,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.swing.generic.components.editors.lists.ListChooser;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class ArenaSpawner extends Spawner<ArenaDungeon> {
     private int roundsToWait = 0;
-    private LinkedList<ObjType> wavePool;
+    private ArrayList<ObjType> wavePool;
     private boolean wavesOverlap;
     private Map<Wave, Integer> scheduledWaves;
     private boolean autoSpawnOn;

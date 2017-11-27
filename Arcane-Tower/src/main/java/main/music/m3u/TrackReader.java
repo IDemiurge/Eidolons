@@ -6,7 +6,7 @@ import main.music.entity.Track;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TrackReader<E> {
@@ -17,7 +17,7 @@ public class TrackReader<E> {
     }
 
     public List<E> getTracksFromList(String path) {
-        List<E> tracks = new LinkedList<>();
+        List<E> tracks = new ArrayList<>();
         E track = null;
         E lastTrack = null;
         for (String line : FileManager.readFileLines(path)) {

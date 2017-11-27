@@ -38,7 +38,7 @@ public class WorkspaceManager {
     private static final boolean LAYER_DOWN = false;
     private static final String METADATA = "METADATA: ";
     public static boolean ADD_WORKSPACE_TAB_ON_INIT = true;
-    private static List<Workspace> workspaces = new LinkedList<>();
+    private static List<Workspace> workspaces = new ArrayList<>();
     private Workspace activeWorkspace;
 
     private boolean defaultTypeWorkspacesOn = true;
@@ -77,7 +77,7 @@ public class WorkspaceManager {
             // StringMaster.openContainer(type.getProperty(PROPS.SPELLBOOK)))
             // set.add(DataManager.getType(item, OBJ_TYPES. SPELLS));
         }
-        List<ObjType> typeList = new LinkedList<>(set);
+        List<ObjType> typeList = new ArrayList<>(set);
         Workspace ws = new Workspace(party.getName(), typeList);
         addWorkspace(ws);
         initWorkspace(ws);
@@ -170,7 +170,7 @@ public class WorkspaceManager {
     }
 
     public Workspace initAutoWorkspace() {
-        List<ObjType> typeList = new LinkedList<>();
+        List<ObjType> typeList = new ArrayList<>();
         for (ObjType type : DataManager.getTypes()) {
             if (checkTypeForAutoWs((DC_TYPE) type.getOBJ_TYPE_ENUM(), type)) {
                 typeList.add(type);
@@ -211,7 +211,7 @@ public class WorkspaceManager {
     public Workspace initDefaultWorkspace() {
         Workspace defaultWorkspace = loadWorkspace(DEFAULT_WORKSPACE_NAME);
         if (defaultWorkspace == null) {
-            defaultWorkspace = new Workspace(DEFAULT_WORKSPACE_NAME, new LinkedList<>());
+            defaultWorkspace = new Workspace(DEFAULT_WORKSPACE_NAME, new ArrayList<>());
             saveWorkspace(defaultWorkspace);
         }
         return defaultWorkspace;
@@ -298,7 +298,7 @@ public class WorkspaceManager {
                 .getOBJ_TYPE_ENUM()));
         if (typeWorkspace == null) {
             typeWorkspace = new Workspace(getTypeWorkspaceName(selectedType.getOBJ_TYPE_ENUM()),
-                    new LinkedList<>());
+                    new ArrayList<>());
             initWorkspace(typeWorkspace);
             saveWorkspace(typeWorkspace);
         }

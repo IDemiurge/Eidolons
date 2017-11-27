@@ -11,7 +11,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.launch.CoreEngine;
 import main.test.frontend.FAST_DC;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DungeonLevelMaster {
@@ -215,7 +215,7 @@ public class DungeonLevelMaster {
 
     // boolean trap, boolean door
     public static List<Dungeon> getAvailableDungeons(Unit unit) {
-        List<Dungeon> list = new LinkedList<>();
+        List<Dungeon> list = new ArrayList<>();
 //        for (Dungeon dungeon : DungeonMaster.getDungeons()) {
 //            for (Entrance e : dungeon.getEntrances()) {
 //                if (e.isOpen()) {
@@ -230,7 +230,7 @@ public class DungeonLevelMaster {
     }
 
     public static List<Entrance> getAvailableDungeonEntrances(Unit unit) {
-        List<Entrance> list = new LinkedList<>();
+        List<Entrance> list = new ArrayList<>();
 //        for (Dungeon dungeon : DungeonMaster.getDungeons()) {
 //            for (Entrance e : dungeon.getEntrances()) {
 //                if (e.isOpen()) {

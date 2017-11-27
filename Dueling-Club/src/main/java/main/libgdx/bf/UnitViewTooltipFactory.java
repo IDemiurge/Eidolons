@@ -27,7 +27,7 @@ import main.system.text.ToolTipMaster;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -56,7 +56,7 @@ public class UnitViewTooltipFactory {
             e.printStackTrace();
         }
         return () ->
-            new LinkedList<>(Arrays.asList(new ValueContainer("Error", "")));
+            new ArrayList<>(Arrays.asList(new ValueContainer("Error", "")));
     }
 
     public static Supplier<List<ValueContainer>> create_(BattleFieldObject hero) {

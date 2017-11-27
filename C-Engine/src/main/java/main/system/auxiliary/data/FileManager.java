@@ -13,7 +13,7 @@ import org.w3c.dom.Node;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.zip.Inflater;
@@ -262,7 +262,7 @@ public class FileManager {
 
     public static List<String> getFileNames(List<File> files) {
 
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
 
         for (File file : files) {
             list.add(file.getName());
@@ -272,7 +272,7 @@ public class FileManager {
     }
     public static List<String> getFilePaths(List<File> files) {
 
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
 
         for (File file : files) {
             list.add(file.getAbsolutePath());
@@ -316,7 +316,7 @@ public class FileManager {
     public static List<File> findFiles(String path, String regex) {
         File folder = getFile(path);
         if (!folder.isDirectory()) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
         return findFiles(folder, regex, false, true);
     }
@@ -337,7 +337,7 @@ public class FileManager {
     }
 
     public static List<File> findFiles(File folder, String regex, boolean cropFormat, boolean strict) {
-        List<File> files = new LinkedList<>();
+        List<File> files = new ArrayList<>();
         for (File file : folder.listFiles()) {
             if (file.isFile()) {
                 if (regex.isEmpty()) {
@@ -447,7 +447,7 @@ public class FileManager {
 
     public static List<File> getFilesFromDirectory(String path, boolean allowDirectories,
                                                    boolean subDirectories) {
-        List<File> list = new LinkedList<>();
+        List<File> list = new ArrayList<>();
         File folder = new File(path);
         if (!folder.isDirectory()) {
             return list;

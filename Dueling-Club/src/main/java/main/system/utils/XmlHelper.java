@@ -2,7 +2,7 @@ package main.system.utils;
 
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +31,7 @@ public static void replaceSpecEffectsWithBonusDamage(){
         }
         String objectsNode = content.substring(begin, finish);
         String cleanedObjectsNode = objectsNode;
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (String substring : StringMaster.open(cleanedObjectsNode, ",")) {
 
             if (list.contains(substring)) {

@@ -42,7 +42,7 @@ public class AnimationManager {
     DequeImpl<PhaseAnimation> animations = new DequeImpl<>();
     DequeImpl<PhaseAnimation> archivedAnimations = new DequeImpl<>();
     Map<Obj, List<Ref>> modifiedValues = new ConcurrentHashMap<>();
-    List<PhaseAnimation> pendingCameraAdjustmentAnims = new LinkedList<>();
+    List<PhaseAnimation> pendingCameraAdjustmentAnims = new ArrayList<>();
     private boolean waiting;
     private UIOptions options;
     private int damageDelay;
@@ -54,7 +54,7 @@ public class AnimationManager {
     private Coordinates offset;
     private Coordinates bufferedOffset;
     private PhaseAnimation lastThumbnail;
-    private List<PhaseAnimation> tempAnims = new LinkedList<>();
+    private List<PhaseAnimation> tempAnims = new ArrayList<>();
     private boolean changed;
 
     public AnimationManager(DC_Game game) {
@@ -91,7 +91,7 @@ public class AnimationManager {
 
     // TODO
     public void paintCalledOnBfGrid() {
-        for (PhaseAnimation anim : new LinkedList<>(animations)) {
+        for (PhaseAnimation anim : new ArrayList<>(animations)) {
             if (!anim.isAutoHandled()) {
                 continue;
             }
@@ -157,7 +157,7 @@ public class AnimationManager {
     public boolean cleanAnimations() {
 
         boolean changed = false;
-        for (PhaseAnimation anim : new LinkedList<>(animations)) {
+        for (PhaseAnimation anim : new ArrayList<>(animations)) {
             if (anim.isFinished()) {
                 if (!anim.isPaused()) {
                     if (!anim.isThumbnail()) {
@@ -232,7 +232,7 @@ public class AnimationManager {
 
     public Coordinates updatePoints() {
         bufferedOffset = game.getBattleField().getGrid().getOffsetCoordinate();
-        List<PhaseAnimation> anims = new LinkedList<>();
+        List<PhaseAnimation> anims = new ArrayList<>();
         for (PhaseAnimation anim : animations) {
             if (!anim.isDrawReady()) {
                 continue;
@@ -291,7 +291,7 @@ public class AnimationManager {
             Coordinates c_offset = new Coordinates(x, y);
 
             adjustOffset(c_offset);
-            LinkedList<PhaseAnimation> list = new LinkedList<>(pendingCameraAdjustmentAnims);
+            ArrayList<PhaseAnimation> list = new ArrayList<>(pendingCameraAdjustmentAnims);
             for (PhaseAnimation anim : pendingCameraAdjustmentAnims) {
                 boolean result = anim.updatePoints();
                 if (result) {
@@ -315,7 +315,7 @@ public class AnimationManager {
 
     public PhaseAnimation cloneWithPhases(PhaseAnimation anim, PHASE_TYPE... phaseTypes) {
         PhaseAnimation newAnim = (PhaseAnimation) anim.clone();
-        List<PHASE_TYPE> phaseList = new LinkedList<>(Arrays.asList(phaseTypes));
+        List<PHASE_TYPE> phaseList = new ArrayList<>(Arrays.asList(phaseTypes));
         for (AnimPhase phase : anim.getPhases()) {
             if (phaseList.contains(phase.getType())) {
                 newAnim.addPhase(new AnimPhase(phase.getType(), phase.getArgs()));
@@ -376,7 +376,7 @@ public class AnimationManager {
     public void valueModified(Ref ref) {
         List<Ref> list = modifiedValues.get(ref.getTargetObj());
         if (list == null) {
-            list = new LinkedList<>();
+            list = new ArrayList<>();
             modifiedValues.put(ref.getTargetObj(), list);
         }
         list.add(ref);

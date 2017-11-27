@@ -18,7 +18,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -78,8 +78,8 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
             setProperty(prop, StringMaster.constructContainer(StringMaster.convertToIdList(list)));
 
         } else {
-            List<String> idList = new LinkedList<>();
-            Collection<DC_HeroItemObj> items = new LinkedList<>();
+            List<String> idList = new ArrayList<>();
+            Collection<DC_HeroItemObj> items = new ArrayList<>();
             for (String subString : StringMaster.open(getProperty(prop))) {
                 ObjType type = DataManager.getType(subString, DC_ContentManager.getTypeForProperty(prop));
 //|| !StringMaster.isInteger(subString)

@@ -14,14 +14,14 @@ import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
 import javax.swing.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Deity extends Entity {
     private List<String> unitPool;
-    private LinkedList<Deity> alliedDeities;
-    private LinkedList<Deity> friendDeities;
-    private LinkedList<Deity> enemyDeities;
+    private ArrayList<Deity> alliedDeities;
+    private ArrayList<Deity> friendDeities;
+    private ArrayList<Deity> enemyDeities;
     private ImageIcon emblem;
 
     public Deity(ObjType type, Game game, Ref ref) {
@@ -61,7 +61,7 @@ public class Deity extends Entity {
     private void initEnemyDeities() {
 
         if (enemyDeities == null) {
-            enemyDeities = new LinkedList<>();
+            enemyDeities = new ArrayList<>();
         }
         for (String type : StringMaster.open(getProperty(PROPS.ENEMY_DEITIES))) {
             Deity deity = DC_ContentManager.getDeity(ref, type);
@@ -71,21 +71,21 @@ public class Deity extends Entity {
         }
     }
 
-    public LinkedList<Deity> getEnemyDeities() {
+    public ArrayList<Deity> getEnemyDeities() {
         if (enemyDeities == null) {
             initEnemyDeities();
         }
         return enemyDeities;
     }
 
-    public LinkedList<Deity> getAllyDeities() {
+    public ArrayList<Deity> getAllyDeities() {
         if (alliedDeities == null) {
             initAlliedDeities();
         }
         return alliedDeities;
     }
 
-    public LinkedList<Deity> getFriendDeities() {
+    public ArrayList<Deity> getFriendDeities() {
         if (friendDeities == null) {
             initFriendDeities();
         }
@@ -95,7 +95,7 @@ public class Deity extends Entity {
     private void initFriendDeities() {
 
         if (friendDeities == null) {
-            friendDeities = new LinkedList<>();
+            friendDeities = new ArrayList<>();
         }
         for (String type : StringMaster.open(getProperty(PROPS.FRIEND_DEITIES))) {
             Deity deity = DC_ContentManager.getDeity(ref, type);
@@ -108,7 +108,7 @@ public class Deity extends Entity {
     private void initAlliedDeities() {
 
         if (alliedDeities == null) {
-            alliedDeities = new LinkedList<>();
+            alliedDeities = new ArrayList<>();
         }
         for (String type : StringMaster.open(getProperty(PROPS.ALLIED_DEITIES))) {
             Deity deity = DC_ContentManager.getDeity(ref, type);

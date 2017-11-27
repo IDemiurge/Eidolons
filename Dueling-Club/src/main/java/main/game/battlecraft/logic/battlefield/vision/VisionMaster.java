@@ -20,7 +20,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.test.debug.DebugMaster;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -110,8 +110,8 @@ public class VisionMaster implements GenericVisionManager {
     }
 
     public void triggerGuiEvents() {
-        List<BattleFieldObject> visibleList = new LinkedList<>();
-        List<BattleFieldObject> invisibleList = new LinkedList<>();
+        List<BattleFieldObject> visibleList = new ArrayList<>();
+        List<BattleFieldObject> invisibleList = new ArrayList<>();
         for (BattleFieldObject sub : game.getBfObjects()) {
             if (sub.isDead())
                 continue;

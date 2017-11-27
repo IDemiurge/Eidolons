@@ -8,8 +8,8 @@ public class XMap<E, T> extends HashMap<E, T> {
 
     @Override
     public T get(Object key) {
-        // if (key instanceof LinkedList){
-        // LinkedList linkedList = (LinkedList) key;
+        // if (key instanceof ArrayList){
+        // ArrayList ArrayList = (ArrayList) key;
         // hiddenEntries
         // }
         return super.get(key);

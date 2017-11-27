@@ -9,17 +9,17 @@ import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Costs extends CostImpl {
 
     private List<Cost> costs;
-    private List<String> reasons = new LinkedList<>();
+    private List<String> reasons = new ArrayList<>();
 
     public Costs(CostRequirements requirements, Cost... costs) {
-        this(requirements, new LinkedList<>(Arrays.asList(costs)));
+        this(requirements, new ArrayList<>(Arrays.asList(costs)));
     }
 
     public Costs(CostRequirements requirements, List<Cost> costs) {
@@ -32,7 +32,7 @@ public class Costs extends CostImpl {
     }
 
     public Costs(Map<PARAMETER, Formula> map) {
-        costs = new LinkedList<>();
+        costs = new ArrayList<>();
         for (PARAMETER param : map.keySet()) {
             costs.add(new CostImpl(new Payment(param, map.get(param)), param));
         }
@@ -58,7 +58,7 @@ public class Costs extends CostImpl {
     }
 
     public List<String> toStrings(String separator) {
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         for (Cost c : getCosts()) {
             try {
                 Integer amount = c.getPayment().getAmountFormula().getInt(ref);

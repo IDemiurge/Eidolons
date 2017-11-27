@@ -22,7 +22,7 @@ import main.system.DC_Formulas;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DC_MathManager extends MathMaster {
@@ -132,7 +132,7 @@ public class DC_MathManager extends MathMaster {
     }
 
     public static List<PARAMETER> getUnlockedMasteries(Entity entity) {
-        List<PARAMETER> list = new LinkedList<>();
+        List<PARAMETER> list = new ArrayList<>();
         for (PARAMS p : DC_ContentManager.getMasteryParams()) {
             if (isMasteryUnlocked(entity, p)) {
                 list.add(p);

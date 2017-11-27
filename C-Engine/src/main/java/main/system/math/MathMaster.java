@@ -10,7 +10,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
 import java.awt.event.ActionEvent;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MathMaster {
@@ -295,7 +295,7 @@ public abstract class MathMaster {
     }
 
     public static List<Integer> getIntsInRange(int first , int last ) {
-        List<Integer> list = new LinkedList<>();
+        List<Integer> list = new ArrayList<>();
         for (int i = first; i < last; i++) {
             list.add(i);
         }

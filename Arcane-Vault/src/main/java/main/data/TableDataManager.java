@@ -36,7 +36,7 @@ public class TableDataManager {
     }
 
     public static List<String> getTreeTabGroups() {
-        List<String> set = new LinkedList<>();
+        List<String> set = new ArrayList<>();
         for (OBJ_TYPE type : (ArcaneVault.isMacroMode()) ? MACRO_OBJ_TYPES
                 .getTypeGroups() : DC_TYPE.getTypeGroups()) {
             if (type.getCode() != -1) {
@@ -47,7 +47,7 @@ public class TableDataManager {
     }
 
     public static List<String> getTreeTabSubGroups(String key) {
-        return new LinkedList<>(XML_Reader.getSubGroups(key));
+        return new ArrayList<>(XML_Reader.getSubGroups(key));
     }
 
     public static Vector<Vector<String>> getTypeData(Entity entity) {

@@ -3,7 +3,7 @@ package main.data;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class XLinkedMap<E, T> extends LinkedHashMap<E, T> {
@@ -37,7 +37,7 @@ public class XLinkedMap<E, T> extends LinkedHashMap<E, T> {
     // sort method
 
     public T getByIndex(int index) {
-        return get(new LinkedList<>(keySet()).get(index));
+        return get(new ArrayList<>(keySet()).get(index));
     }
 
     @Override

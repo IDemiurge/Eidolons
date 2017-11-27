@@ -29,7 +29,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.text.TextParser;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +69,7 @@ public class EffectFinder {
     }
 
     private static List<Effect> addEffectsFromAbility(Effects effects) {
-        List<Effect> list = new LinkedList<>();
+        List<Effect> list = new ArrayList<>();
         for (Effect e : effects) {
             if (e instanceof Effects) {
                 addEffectsFromAbility((Effects) e);
@@ -97,7 +97,7 @@ public class EffectFinder {
         }
         Abilities abils = type.getAbilities();
 
-        List<Effect> list = new LinkedList<>();
+        List<Effect> list = new ArrayList<>();
         for (Effect e : abils.getEffects()) {
             list.add(e);
         }
@@ -106,7 +106,7 @@ public class EffectFinder {
     }
 
     public static List<Effect> getEffectsOfClass(Abilities actives, Class<?> CLASS) {
-        List<Effect> list = new LinkedList<>();
+        List<Effect> list = new ArrayList<>();
         if (actives == null) {
             return list;
         }
@@ -133,7 +133,7 @@ public class EffectFinder {
             return new ListMaster<Effect>().getList(effect);
         }
 
-        List<Effect> list = new LinkedList<>();
+        List<Effect> list = new ArrayList<>();
 
         if (effect instanceof ContainerEffect) {
             ContainerEffect containerEffect = (ContainerEffect) effect;
@@ -190,7 +190,7 @@ public class EffectFinder {
     }
 
     public static List<RollEffect> getRollEffects(DC_ActiveObj active) {
-        List<RollEffect> list = new LinkedList<>();
+        List<RollEffect> list = new ArrayList<>();
         for (Effect e : getEffectsOfClass(active, RollEffect.class)) {
             ((RollEffect) e).getEffect(); // construct!
             list.add(((RollEffect) e));
@@ -199,7 +199,7 @@ public class EffectFinder {
     }
 
     public static List<Effect> getBuffEffects(Effect e, Class<?> CLASS) {
-        List<Effect> list = new LinkedList<>();
+        List<Effect> list = new ArrayList<>();
         if (e instanceof AddBuffEffect) {
             AddBuffEffect addBuffEffect = (AddBuffEffect) e;
             Effect effect = addBuffEffect.getEffect();

@@ -191,7 +191,7 @@ public class DC_GameMaster extends GameMaster {
     }
 
     public List<DC_Cell> getCellsForCoordinates(List<Coordinates> coordinates) {
-        List<DC_Cell> list = new LinkedList<>();
+        List<DC_Cell> list = new ArrayList<>();
         for (Coordinates c : coordinates) {
             list.add(getCellByCoordinate(c));
         }
@@ -213,7 +213,7 @@ public class DC_GameMaster extends GameMaster {
     }
 
     public Collection<Unit> getUnitsForCoordinates(Set<Coordinates> coordinates) {
-        Collection<Unit> list = new LinkedList<>();
+        Collection<Unit> list = new ArrayList<>();
         for (Coordinates c : coordinates) {
             for (Unit unit : getUnits()) {
                 if (unit.getCoordinates().equals(c)) {
@@ -225,7 +225,7 @@ public class DC_GameMaster extends GameMaster {
     }
 
     public Collection<? extends Obj> getCellsForCoordinates(Set<Coordinates> coordinates) {
-        Collection<Obj> list = new LinkedList<>();
+        Collection<Obj> list = new ArrayList<>();
         for (Coordinates c : coordinates) {
             for (Obj cell : getCells()) {
                 if (cell.getCoordinates().equals(c)) {
@@ -298,7 +298,7 @@ public class DC_GameMaster extends GameMaster {
     public Unit getUnitByName(String name, Ref ref
      , Boolean ally_or_enemy_only, Boolean distanceSort, Boolean powerSort
     ) {
-        List<Unit> matched = new LinkedList<>();
+        List<Unit> matched = new ArrayList<>();
         for (Unit unit : getUnits()) {
             if (ally_or_enemy_only != null) {
                 if (unit.getOwner() == ref.getSourceObj().getOwner())

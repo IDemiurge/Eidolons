@@ -51,7 +51,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -563,7 +563,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
     }
 
     private String selectAltBase(ObjType type) {
-        List<ObjType> types = new LinkedList<>(tree.getTypes());
+        List<ObjType> types = new ArrayList<>(tree.getTypes());
         for (ObjType t : tree.getTypes()) {
             if (t.getIntParam(PARAMS.CIRCLE) >= type.getIntParam(PARAMS.CIRCLE)) {
                 types.remove(t);

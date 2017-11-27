@@ -42,7 +42,7 @@ public class EntryNodeMaster {
     }
 
     public static List<String> getStringsFromSubNode(LogEntryNode node) {
-        // List<String> strings = new LinkedList<>();
+        // List<String> strings = new ArrayList<>();
         // return strings;
         return TextWrapper.wrap(node.getHeader(), getWrapLength(false));
     }

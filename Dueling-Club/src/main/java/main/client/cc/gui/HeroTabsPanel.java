@@ -19,7 +19,7 @@ import main.system.images.ImageManager.STD_IMAGES;
 
 import java.awt.*;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +28,12 @@ public class HeroTabsPanel extends G_Panel implements TabChangeListener {
     DC_TopPanel top;
     private Dimension iconSize = new Dimension(32, 32);
     private Map<Unit, MainPanel> panels = new LinkedHashMap<>();
-    private List<MainPanel> panelList = new LinkedList<>();
+    private List<MainPanel> panelList = new ArrayList<>();
     private PartyHeader header;
 
     public HeroTabsPanel(Unit... heroes) {
         super();
-        tabs = new HC_TabPanel(new LinkedList<>());
+        tabs = new HC_TabPanel(new ArrayList<>());
         tabs.setChangeListener(this);
         top = new DC_TopPanel(CharacterCreator.getGame());
 

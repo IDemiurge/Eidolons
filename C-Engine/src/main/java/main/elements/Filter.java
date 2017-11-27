@@ -26,7 +26,7 @@ public class Filter<T extends Entity> extends ReferredElement {
     Integer match;
     private OBJ_TYPE TYPE;
     private Collection<Obj> objPool;
-    private LinkedList<OBJ_TYPE> TYPES;
+    private ArrayList<OBJ_TYPE> TYPES;
     private Collection<Integer> dynamicExceptions;
     private HashSet<Obj> filteredSet;
     private Map<Integer, Condition> conditionDebugCache = new XLinkedMap<>();
@@ -126,7 +126,7 @@ public class Filter<T extends Entity> extends ReferredElement {
 
     public Set<T> getObjects() {
         if (isDebug()) {
-            LinkedList<Obj> list = new LinkedList<>(getFilteredObjectPool());
+            ArrayList<Obj> list = new ArrayList<>(getFilteredObjectPool());
             Set<Obj> set = new HashSet<>();
             loop:
             for (Obj obj : list) {
@@ -142,7 +142,7 @@ public class Filter<T extends Entity> extends ReferredElement {
         }
         Collection<Obj> pool = getFilteredObjectPool();
         Set<T> filteredSet = (Set<T>) new HashSet<>(pool);
-        LinkedList<Obj> list = new LinkedList<>(pool);
+        ArrayList<Obj> list = new ArrayList<>(pool);
         for (Condition c : getConditions()) {
             for (Obj obj : list) {
                 if (!match(c, obj.getId())) {
@@ -254,13 +254,13 @@ public class Filter<T extends Entity> extends ReferredElement {
         return group;
     }
 
-    public void setTYPES(LinkedList<OBJ_TYPE> types2) {
+    public void setTYPES(ArrayList<OBJ_TYPE> types2) {
         this.TYPES = types2;
 
     }
 
     public List<T> filter(Collection<T> objects) {
-        List<T> resultset = new LinkedList<>();
+        List<T> resultset = new ArrayList<>();
         for (T obj : objects) {
             if (match(obj)) {
                 resultset.add(obj);
@@ -291,7 +291,7 @@ public class Filter<T extends Entity> extends ReferredElement {
     }
 
     public List<T> filter(List<T> typeList, VALUE filterValue, String value) {
-        List<T> list = new LinkedList<>();
+        List<T> list = new ArrayList<>();
 
         for (T t : typeList) {
             if (t == null) {

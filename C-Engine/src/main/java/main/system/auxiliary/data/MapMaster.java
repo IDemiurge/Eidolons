@@ -44,10 +44,10 @@ public class MapMaster<E, T> {
         } else {
 
             if (value instanceof Collection) {
-                map.put(key, new LinkedList<>(((Collection) value)));
+                map.put(key, new ArrayList<>(((Collection) value)));
                 return;
             }
-            LinkedList<Object> list = new LinkedList<>();
+            ArrayList<Object> list = new ArrayList<>();
             list.add(value);
             map.put(key, list);
         }
@@ -97,7 +97,7 @@ public class MapMaster<E, T> {
     }
 
     public List<T> joinMap(Map<E, List<T>> map) {
-        List<T> list = new LinkedList<>();
+        List<T> list = new ArrayList<>();
         for (E e : map.keySet()) {
             list.addAll(map.get(e));
         }
@@ -113,15 +113,15 @@ public class MapMaster<E, T> {
     }
 
     public Map<E, T> invertMapOrder(Map<E, T> map, boolean keysetOnly) {
-        List<E> inv_list = new LinkedList<>();
-        List<T> inv_val_list = new LinkedList<>();
+        List<E> inv_list = new ArrayList<>();
+        List<T> inv_val_list = new ArrayList<>();
         for (E key : map.keySet()) {
             inv_list.add(0, key);
             if (!keysetOnly) {
                 inv_val_list.add(0, map.get(key));
             }
         }
-        return constructMap(inv_list, (keysetOnly ? new LinkedList<>(map.values()) : inv_val_list));
+        return constructMap(inv_list, (keysetOnly ? new ArrayList<>(map.values()) : inv_val_list));
 
     }
 
@@ -144,9 +144,9 @@ public class MapMaster<E, T> {
 
     public List<Map<E, T>> splitList(boolean fillWithNulls, int size, Map<E, T> map) {
         if (map == null) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
-        List<Map<E, T>> lists = new LinkedList<>();
+        List<Map<E, T>> lists = new ArrayList<>();
         for (Iterator<E> iterator = map.keySet().iterator(); iterator.hasNext(); ) {
             Map<E, T> newMap = new XLinkedMap<>();
             for (int i = 0; i < size; i++) {
@@ -172,7 +172,7 @@ public class MapMaster<E, T> {
     }
 
     public Map<E, T> crop(Map<E, T> map, int crop, boolean first) {
-        List<E> removeList = new LinkedList<>();
+        List<E> removeList = new ArrayList<>();
         Set<E> set = (!first) ? new MapMaster<E, T>().invertMapOrder(map, false).keySet() : map
          .keySet();
         for (E o : set) {

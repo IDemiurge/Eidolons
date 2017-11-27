@@ -15,7 +15,7 @@ import main.entity.obj.Obj;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Set;
 
 public class AutoTargeting extends TargetingImpl {
@@ -97,7 +97,7 @@ public class AutoTargeting extends TargetingImpl {
         filter = new Filter<>(ref, getConditions());
         filter.setTYPE(TYPE);
         if (TYPES != null) {
-            LinkedList<OBJ_TYPE> types = new LinkedList<>();
+            ArrayList<OBJ_TYPE> types = new ArrayList<>();
             for (String s : StringMaster.open(TYPES)) {
                 types.add(ContentManager.getOBJ_TYPE(s));
             }

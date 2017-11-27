@@ -188,14 +188,14 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
             return Arrays.asList(DataManager.CUSTOM_JEWELRY_GROUPS);
         }
 
-        List<String> group = new LinkedList<>(XML_Reader.getTreeSubGroupMap().get(key));
+        List<String> group = new ArrayList<>(XML_Reader.getTreeSubGroupMap().get(key));
 
         return group;
     }
 
     public Map<String, HC_PagedListPanel> initListMap(String tabName) {
         List<String> group = getListGroup(tabName);
-        LinkedList<String> specialLists = new LinkedList<>();
+        ArrayList<String> specialLists = new ArrayList<>();
         Map<String, HC_PagedListPanel> map = new XLinkedMap<>();
         for (String listName : group) {
             if (checkSpecial(listName)) {

@@ -18,7 +18,7 @@ import org.w3c.dom.Node;
 
 import javax.swing.*;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -229,7 +229,7 @@ public class XML_Transformer {
     public static void removeValue(VALUE val, XML_File file, boolean write, boolean ifEmpty) {
         String newContents = file.getContents();
         String divider = XML_Converter.openXmlFormatted(G_PROPS.NAME.getName());
-        List<String> list = new LinkedList<>();
+        List<String> list = new ArrayList<>();
         boolean changed = false;
         for (String subString : newContents.split(divider)) {
             try {
@@ -301,7 +301,7 @@ public class XML_Transformer {
     }
 
     private static List<XML_File> getXmlFiles(OBJ_TYPE key) {
-        List<XML_File> list = new LinkedList<>();
+        List<XML_File> list = new ArrayList<>();
         for (XML_File t : XML_Reader.getFiles()) {
             if (key.equals(t.getType())) {
                 list.add(t);

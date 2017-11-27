@@ -18,7 +18,7 @@ import main.system.graphics.FontMaster.FONT;
 import main.system.auxiliary.data.ListMaster;
 
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GoalPanel extends G_Panel {
@@ -96,7 +96,7 @@ public class GoalPanel extends G_Panel {
                 }
             }
         }
-        for (Task task : new LinkedList<>(tasks)) {
+        for (Task task : new ArrayList<>(tasks)) {
             if (!ArcaneMaster.checkDisplayed(task)) {
                 tasks.remove(task);
             }

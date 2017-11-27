@@ -6,7 +6,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AutoAttackEffect extends DC_Effect  implements OneshotEffect {
@@ -45,7 +45,7 @@ public class AutoAttackEffect extends DC_Effect  implements OneshotEffect {
     }
 
     private DC_ActiveObj pickAttack() {
-        List<DC_ActiveObj> subActions = new LinkedList<>();
+        List<DC_ActiveObj> subActions = new ArrayList<>();
         for (DC_ActiveObj attack : getActiveObj().getSubActions()) {
             if (attack.canBeActivated(ref, true)) {
                 if (attack.canBeTargeted(target)) {
