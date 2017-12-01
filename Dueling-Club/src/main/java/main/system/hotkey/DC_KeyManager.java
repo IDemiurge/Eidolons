@@ -71,13 +71,15 @@ public class DC_KeyManager
     }
 
     private void initStdModeHotkeys() {
-        int i = 0;
+        int i = 0; //TODO [quick fix] - due to "either camp or defend", one removed always
         for (STD_MODE_ACTIONS action : STD_MODE_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
                     G_PROPS.HOTKEY);
             stdModeKeyMap.put(key, i);
             LogMaster.log(LogMaster.CORE_DEBUG, ">> mode hotkey " + key);
+            if (action != STD_MODE_ACTIONS.Defend)
             i++;
+
         }
 
     }

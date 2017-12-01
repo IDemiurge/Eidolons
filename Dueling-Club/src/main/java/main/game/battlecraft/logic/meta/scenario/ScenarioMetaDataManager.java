@@ -3,7 +3,7 @@ package main.game.battlecraft.logic.meta.scenario;
 import main.content.PROPS;
 import main.game.battlecraft.logic.meta.universal.MetaDataManager;
 import main.system.auxiliary.StringMaster;
-import main.test.frontend.ScenarioLauncher;
+import main.libgdx.launch.ScenarioLauncher;
 
 /**
  * Created by JustMe on 5/14/2017.

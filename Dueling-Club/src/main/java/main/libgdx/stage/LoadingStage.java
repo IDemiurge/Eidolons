@@ -19,7 +19,7 @@ import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.screens.ScreenData;
 import main.system.graphics.FontMaster.FONT;
 import main.system.text.TipMaster;
-import main.test.frontend.ScenarioLauncher;
+import main.libgdx.launch.ScenarioLauncher;
 
 import java.util.ArrayList;
 import java.util.List;

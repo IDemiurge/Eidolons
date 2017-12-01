@@ -11,7 +11,7 @@ import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.test.frontend.ScenarioLauncher;
+import main.libgdx.launch.ScenarioLauncher;
 
 /**
  * Created by JustMe on 5/13/2017.

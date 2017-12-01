@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.client.cc.CharacterCreator;
 import main.entity.obj.unit.Unit;
 import main.game.EidolonsGame;
@@ -18,7 +19,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 import main.test.frontend.RESOLUTION;
-import main.test.frontend.ScenarioLauncher;
+import main.libgdx.launch.ScenarioLauncher;
 
 import java.awt.*;
 
@@ -39,6 +40,7 @@ public class Eidolons {
     private static Unit mainHero;
     private static boolean fullscreen;
     private static RESOLUTION resolution;
+    private static ScreenViewport mainViewport;
 
     public static void initScenario(ScenarioMetaMaster master) {
         mainGame = new EidolonsGame();
@@ -105,10 +107,12 @@ public class Eidolons {
             Gdx.graphics.setWindowedMode(width,
              LwjglApplicationConfiguration.getDesktopDisplayMode().height);
             getApplication().getApplicationListener().resize(width, height);
+            getMainViewport().setScreenSize(width, height);
         } else {
+            System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
             setResolution(OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
             getApplication().getGraphics().setUndecorated(false);
-        }
+            }
         Eidolons.getApplication().getGraphics().setResizable(false);
     }
 
@@ -130,9 +134,10 @@ public class Eidolons {
             GdxMaster.setWidth(w);
             GdxMaster.setHeight(h);
             Gdx.graphics.setWindowedMode(w,
-            h);
+             h);
             getApplication().getApplicationListener().resize(w, h);
-            Eidolons.getApplication().getGraphics().setResizable(false);
+            getApplication().getGraphics().setResizable(false);
+            getMainViewport().setScreenSize(w, h);
         }
 
     }
@@ -150,5 +155,13 @@ public class Eidolons {
             h = h * 90 / 100;
         }
         return new Dimension(w, h);
+    }
+
+    public static ScreenViewport getMainViewport() {
+        return mainViewport;
+    }
+
+    public static void setMainViewport(ScreenViewport mainViewport) {
+        Eidolons.mainViewport = mainViewport;
     }
 }

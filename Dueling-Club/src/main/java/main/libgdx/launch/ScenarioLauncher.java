@@ -1,4 +1,4 @@
-package main.test.frontend;
+package main.libgdx.launch;
 
 import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
@@ -14,7 +14,7 @@ import main.system.auxiliary.StringMaster;
  */
 public class ScenarioLauncher {
     public static final String DEFAULT = "Pride and Treachery";
-    public static final String CRAWL = "Mini Release Pack";
+    public static final String CRAWL = "Into Darkness";
     public static int missionIndex = 0;
     public static boolean running;
     private static ScenarioMetaMaster master;
@@ -41,7 +41,7 @@ public class ScenarioLauncher {
 
     public static void launch(String typeName) {
         DC_Engine.jarInit();
-        BattleSceneLauncher.main(null);
+        DemoLauncher.main(null);
         DC_Engine.mainMenuInit();
 //        Eidolons.mainGame.getMetaMaster().preStart();
         master = new ScenarioMetaMaster(typeName);
@@ -53,11 +53,8 @@ public class ScenarioLauncher {
         //new SceneFactory("Test")
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         DC_Engine.gameStartInit();
-
-//        Eidolons.mainGame.getMetaMaster().getGame().init( );
         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
-
         Eidolons.mainGame.getMetaMaster().getGame().start(true);
 
         //DungeonScreen.getInstance().hideLoader();

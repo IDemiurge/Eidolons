@@ -1,11 +1,11 @@
-package main.libgdx.gui.menu;
+package main.libgdx.gui.menu.old;
 
 import com.badlogic.gdx.InputMultiplexer;
-import main.libgdx.screens.ScreenWithLoader;
+import main.libgdx.screens.ScreenWithVideoLoader;
 import main.system.EngineEventManager;
 import main.system.EngineEventType;
 
-public class MainMenuScreen extends ScreenWithLoader {
+public class MainMenuScreen extends ScreenWithVideoLoader {
 
     private MainMenuStage menuStage;
 

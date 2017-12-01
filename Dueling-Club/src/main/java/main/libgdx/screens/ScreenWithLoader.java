@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,38 +13,28 @@ import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.stage.ChainedStage;
 import main.libgdx.stage.LoadingStage;
-import main.libgdx.video.VideoMaster;
 import main.system.EventCallbackParam;
 import main.system.audio.MusicMaster;
-import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import main.system.options.OptionsMaster;
 
+/**
+ * Created by JustMe on 11/28/2017.
+ */
 public abstract class ScreenWithLoader extends ScreenAdapter {
     protected LoadingStage loadingStage;
     protected boolean hideLoader = false;
     protected ScreenData data;
     protected ScreenViewport viewPort;
     protected ChainedStage introStage;
-    Batch batch;
-    VideoMaster video;
-    Label waitingLabel;
-    private boolean waitingForInput;
-    private EventCallbackParam param;
-    private float timeWaited;
-
+    protected Batch batch;
+    protected Label waitingLabel;
+    protected  boolean waitingForInput;
+    protected  EventCallbackParam param;
+    protected  float timeWaited;
 
     public ScreenWithLoader() {
-        //TODO loader here, but need data!
-        if (isVideoEnabled())
-            video = new VideoMaster();
         waitingLabel = new Label("Press any key to Continue...", StyleHolder.getDefaultLabelStyle());
         waitingLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
          50);
-
-    }
-
-    protected boolean isVideoEnabled() {
-        return OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VIDEO);
     }
 
     public Batch getBatch() {
@@ -70,6 +59,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
                 }
             });
         }
+
     }
 
     public void loadDone(EventCallbackParam param) {
@@ -80,11 +70,11 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         } else done(param);
     }
 
-    private boolean isWaitForInput() {
+    protected boolean isWaitForInput() {
         return true;
     }
 
-    private InputMultiplexer getWaitForInputController(EventCallbackParam param) {
+    protected InputMultiplexer getWaitForInputController(EventCallbackParam param) {
         return new InputMultiplexer() {
             @Override
             public boolean keyTyped(char character) {
@@ -102,7 +92,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         };
     }
 
-    private void done(EventCallbackParam param) {
+    protected void done(EventCallbackParam param) {
         data.setParam(param);
         this.hideLoader();
         afterLoad();
@@ -114,11 +104,11 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected void triggerInitialEvents() {
     }
 
-    private void initCursor() {
+    protected void initCursor() {
         Gdx.graphics.setSystemCursor(SystemCursor.Ibeam);
     }
 
-    private void initLoadingCursor() {
+    protected void initLoadingCursor() {
 
 //         cursor = Gdx.graphics.newCursor(myPixmap, 0, 0);
 //        Gdx.graphics.setCursor(cursor);
@@ -135,61 +125,45 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             if (introStage.isDone()) {
                 updateInputController();
             }
-        if (video != null) {
-            try {
-                video.stop();
-                video.getPlayer().dispose();
-                video = null;
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        }
+
     }
-
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-
-        if (video != null) {
-
-            if (video.getPlayer() == null)
-                video.playTestVideo();
-            else if (!video.getPlayer().isPlaying())
-                video.playTestVideo();
-            Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
-            try {
-                if (!video.getPlayer().render()) {
-                    video.playTestVideo();
-                }
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-
+        renderLoader(delta);
+        if (waitingForInput) {
+            waited(delta);
 
         }
-else {
+    }
+
+    protected void waited(float delta) {
+        timeWaited += delta;
+        batch.begin();
+        float alpha = (timeWaited / 3) % 1;
+        alpha = (alpha >= 0.5f) ? 1.5f - (alpha)
+         : alpha * 2 + 0.15f;
+        waitingLabel.draw(batch, alpha % 1);
+        batch.end();
+    }
+
+    protected void renderLoader(float delta) {
+
         if (introStage != null && !introStage.isDone()) {
             introStage.act(delta);
             introStage.draw();
         } else if (!hideLoader) {
             loadingStage.act(delta);
             loadingStage.draw();
-        }
-        }
-        if (waitingForInput) {
-            timeWaited += delta;
-            batch.begin();
-            float alpha = (timeWaited / 3) % 1;
-            alpha = (alpha >= 0.5f) ? 1.5f - (alpha)
-             : alpha * 2 + 0.15f;
-            waitingLabel.draw(batch, alpha % 1);
-            batch.end();
-        }
+        } else
+            renderMain(delta);
     }
+
+    protected void renderMain(float delta) {
+
+    }
+
 
     public boolean isWaitingForInput() {
         return waitingForInput;

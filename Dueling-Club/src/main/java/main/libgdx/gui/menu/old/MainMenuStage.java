@@ -1,4 +1,4 @@
-package main.libgdx.gui.menu;
+package main.libgdx.gui.menu.old;
 
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.mainmenu.GameLoadingPanel;

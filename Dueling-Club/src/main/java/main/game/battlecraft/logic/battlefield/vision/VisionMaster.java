@@ -17,10 +17,12 @@ import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.debug.DebugMaster;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -69,14 +71,13 @@ public class VisionMaster implements GenericVisionManager {
         getGammaMaster().clearCache();
         getIlluminationMaster().clearCache();
         getSightMaster().clearCaches();
-//        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
 //        setActiveUnit(
 //         ExplorationMaster.isExplorationOn()
 //          ? getSeeingUnit() :
 //          game.getTurnManager().getActiveUnit(true));
 
         if (getActiveUnit() == null) {
-            LogMaster.log(0, "null active activeUnit for visibility!");
+            LogMaster.log(1, "***********null active activeUnit for visibility!");
             return;
         }
         boolean mine = getActiveUnit().getOwner().isMe();
@@ -119,6 +120,9 @@ public class VisionMaster implements GenericVisionManager {
                 visibleList.add(sub);
             else invisibleList.add(sub);
         }
+        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
+        main.system.auxiliary.log.LogMaster.log(1,">>>>>> invisibleList  = " +invisibleList);
+        main.system.auxiliary.log.LogMaster.log(1,">>>>>> visibleList  = " +visibleList);
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_OFF, invisibleList);
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, visibleList);
     }

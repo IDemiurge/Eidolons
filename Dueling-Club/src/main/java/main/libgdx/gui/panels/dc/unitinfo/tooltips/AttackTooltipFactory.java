@@ -14,6 +14,7 @@ import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.images.ImageManager;
+import main.system.text.TextWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -79,12 +80,13 @@ public class AttackTooltipFactory {
         List/*<List<MultiValueContainer>>*/ textsList = new ArrayList<>();
         for (PARAMS[] params : ACTION_TOOLTIP_PARAMS_TEXT) {
             textsList.add(Arrays.stream(params).map(p -> {
-                 final String textForTableValue = ActionTooltipMaster.
-                  getTextForTableValue(p, el);
+                   String textForTableValue = ActionTooltipMaster.
+                  getTextForTableValue(p, el);textForTableValue =
+                TextWrapper.wrapWithNewLine(textForTableValue, 50);
                  if (StringUtils.isEmpty(textForTableValue)) {
                      return null;
                  } else {
-                     return new ValueContainer(textForTableValue, "");
+                     return new MultiValueContainer(textForTableValue, "");
                  }
              }
             ).filter(Objects::nonNull).collect(Collectors.toList()));

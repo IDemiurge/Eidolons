@@ -55,6 +55,9 @@ public class LocationSpawner extends Spawner<Location> {
         if (player.isMe() && PresetMaster.getPreset() == null && getGame().getMetaMaster() != null) {
             PartyObj party = getGame().getMetaMaster().getPartyManager()
              .getParty();
+            if (party==null ){
+                return new LinkedList<>();
+            }
             List<String> list = ListMaster.toNameList(
              party.getMembers());
             getPositioner().setMaxSpacePercentageTaken(50);
@@ -93,7 +96,8 @@ public class LocationSpawner extends Spawner<Location> {
     }
 
     private void applyStartBonuses(Unit member) {
-         member.addProperty(PROPS.INVENTORY, "Food");
+        member.addProperty(PROPS.INVENTORY, "Food");
+        member.addProperty(PROPS.INVENTORY, "Food");
     }
 
     //        if (respawn)

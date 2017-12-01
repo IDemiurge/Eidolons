@@ -183,8 +183,16 @@ public class StyleHolder {
         textButtonStyle = new TextButtonStyle();
         if (button != null) {
             textButtonStyle.up = button.getTexture();
+            if (button.isVersioned()) {
+                textButtonStyle.down = button.getTextureDown();
+                textButtonStyle.over = button.getTextureOver();
+                textButtonStyle.disabled = button.getTextureDisabled();
+                textButtonStyle.checked = button.getTextureChecked();
+            } else {
             textButtonStyle.down = button.getTexture();
             textButtonStyle.over = button.getTexture();
+                textButtonStyle.disabled = button.getTexture();
+            }
         }
 
         textButtonStyle.font = getFont(FONT, color, size);// new BitmapFont();

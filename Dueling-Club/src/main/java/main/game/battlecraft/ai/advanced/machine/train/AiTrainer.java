@@ -14,7 +14,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.test.frontend.ScenarioLauncher;
+import main.libgdx.launch.ScenarioLauncher;
 
 /**
  * Created by JustMe on 7/31/2017.

@@ -53,14 +53,15 @@ public class WaitMaster {
             remove = false;
             waiter = new Waiter(operation);
             waiters.put(operation, waiter);
-        }
+        } else
+            waiter.setInterrupted(false);
 
         Object result = waiter.startWaiting(maxTime == null ? null : (long) maxTime);
 
         LogMaster.log(LogMaster.WAIT_DEBUG, "INPUT RETURNED: " + result);
 
         if (remove) {
-            waiters.remove(waiter);
+            waiters.remove(operation);
         } else {
             LogMaster.log(LogMaster.WAIT_DEBUG, "WAITER RETAINED: "
                     + operation.toString());
@@ -126,7 +127,7 @@ public class WaitMaster {
         ACTION_COMPLETE,
         UNIT_OBJ_INIT,
         READING_DONE,
-        GUI_READY,
+        GUI_READY,GDX_READY,
         SELECTION,
         ANIMATION_FINISHED,
         OPTION_DIALOG,

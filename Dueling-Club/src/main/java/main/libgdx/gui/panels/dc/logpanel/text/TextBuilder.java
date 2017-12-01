@@ -14,8 +14,7 @@ public class TextBuilder   {
 
     protected StringBuilder sb;
 
-    protected TextBuilder() {
-        //to prevent direct instance creation
+    public TextBuilder() {
         sb = new StringBuilder();
     }
 
@@ -46,7 +45,14 @@ public class TextBuilder   {
 
     protected LabelStyle getDefaultLabelStyle() {
         return
-         StyleHolder.getSizedLabelStyle(FONT.RU, 20);
+         StyleHolder.getSizedLabelStyle(getFontStyle(), getFontSize());
+    }
+
+    protected int getFontSize() {
+        return 20;
+    }
+    protected FONT getFontStyle() {
+        return FONT.RU;
     }
 
     protected void addHoverObjects() {

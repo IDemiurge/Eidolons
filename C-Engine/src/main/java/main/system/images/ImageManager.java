@@ -207,9 +207,15 @@ public class ImageManager {
         }
         return new ImageIcon(getImageFolderPath() + "UI\\EMPTY_ITEM.jpg");
     }
+    public static String getEmptyUnitIconPath() {
+        return  "UI\\Empty.jpg";
+    }
 
-    public static ImageIcon getEmptyUnitIcon() {
-        return new ImageIcon(getImageFolderPath() + "UI\\Empty.jpg");
+    public static String getEmptyUnitIconFullSizePath() {
+        return  "UI\\Empty Full.jpg";
+    }
+        public static ImageIcon getEmptyUnitIcon() {
+        return new ImageIcon(getImageFolderPath() +getEmptyUnitIconPath());
     }
 
     public static String getDEFAULT() {
@@ -1223,6 +1229,15 @@ public class ImageManager {
 
     public static String getRadialSpellIconPath() {
         return "UI\\Spellbook.png";
+    }
+
+    public static String getFullSizeImage(Entity entity) {
+        String format = StringMaster.getFormat(entity.getImagePath());
+         String path=StringMaster.cropFormat(entity.getImagePath()) + " full" + format ;
+        if (isImage(path))
+            return path;
+        return entity.getImagePath() ;
+
     }
 
     public enum ALIGNMENT {

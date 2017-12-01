@@ -446,6 +446,7 @@ public class G_Panel extends G_Component implements VisualComponent {
         GEARS("UI\\components\\small\\gears.png"),
 
         FRAME("UI\\components\\Frame.png"),
+        FRAME_BIG_FILLED("UI\\components\\Frame big filled.png"),
         FRAME_MENU("UI\\components\\main\\Frame Menu.png"),
         TAB("UI\\components\\small\\tab.png"),
         TAB_SELECTED("UI\\components\\small\\tab_blocked.png"),

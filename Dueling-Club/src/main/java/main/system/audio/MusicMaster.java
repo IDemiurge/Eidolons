@@ -245,7 +245,7 @@ public void scopeChanged(MUSIC_SCOPE scope){
 
     private String getMusicFolder() {
         if (MASTER_MODE) {
-            if (Eidolons.game.isStarted())
+            if (Eidolons.game!=null && Eidolons.game.isStarted())
                 if (!ExplorationMaster.isExplorationOn())
 //        if (scope==MUSIC_SCOPE.BATTLE)
                 return MASTER_PATH + "battle";

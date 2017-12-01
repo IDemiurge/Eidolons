@@ -9,14 +9,15 @@ import main.game.core.launch.PresetLauncher;
 import main.game.core.launch.TestLauncher;
 import main.game.core.launch.TestLauncher.CODE;
 import main.game.core.state.Saver;
+import main.libgdx.launch.DemoLauncher;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.hotkey.GlobalKeys;
 import main.system.launch.CoreEngine;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FAST_DC {
@@ -151,7 +152,7 @@ public class FAST_DC {
         }
         if (!CoreEngine.isGraphicsOff()) {
             if (!CoreEngine.isSwingOn()) {
-                BattleSceneLauncher.main(null);
+                DemoLauncher.main(null);
 //                ScreenData data = new ScreenData(ScreenType.BATTLE, "DC", null );
 //                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
             }

@@ -1,4 +1,4 @@
-package main.test.frontend;
+package main.libgdx.launch;
 
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.Launcher;
@@ -12,6 +12,7 @@ import main.system.auxiliary.data.FileManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
+import main.test.frontend.FAST_DC;
 
 import java.util.List;
 

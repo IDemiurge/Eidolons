@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
+import main.system.auxiliary.StringMaster;
 
 public class ButtonStyled extends Image implements EventListener {
 
@@ -58,12 +59,8 @@ public class ButtonStyled extends Image implements EventListener {
         OK("UI/components/small/ok.png"),
         CANCEL("UI/components/small/no.png"),
         UNDO("UI/components/small/back2.png"),
-        GAME_MENU(VISUALS.CONTROL_PANEL_HORIZONTAL.getImgPath()){
-            @Override
-            public boolean isVersioned() {
-                return false;
-            }
-        },
+        NEXT("UI/components/small/forward.png"),
+        GAME_MENU("UI/components/2017/generic/button.png") ,
 
         HELP(VISUALS.QUESTION.getImgPath()){
             @Override
@@ -96,6 +93,23 @@ public class ButtonStyled extends Image implements EventListener {
             return texture;
         }
 
+        public Drawable getTextureDown() {
+            return TextureCache.getOrCreateTextureRegionDrawable( StringMaster.getAppendedImageFile(path, " down"));
+        }
 
+        public Drawable getTextureOver() {
+            return TextureCache.getOrCreateTextureRegionDrawable( StringMaster.getAppendedImageFile(path, " over"));
+        }
+
+        public Drawable getTextureDisabled() {
+            return TextureCache.getOrCreateTextureRegionDrawable( StringMaster.getAppendedImageFile(path,
+             " disabled"));
+
+        }
+
+        public Drawable getTextureChecked() {
+            return TextureCache.getOrCreateTextureRegionDrawable( StringMaster.getAppendedImageFile(path,
+             " checked"));
+        }
     }
 }

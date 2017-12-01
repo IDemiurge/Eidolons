@@ -87,9 +87,11 @@ public class AttackTooltip extends ActionTooltip {
             TablePanel panel = new TablePanel();
             textTables.add(panel);
             for (ValueContainer container : valueContainers) {
-                container.wrapNames();
-                panel.addElement(container);
-                panel.row();
+//                container.wrapNames();
+                panel.
+                 addElement(container);
+                panel.
+                 row();
             }
         }
 

@@ -1,4 +1,4 @@
-package main.libgdx.gui.menu;
+package main.libgdx.gui.menu.old;
 
 import main.client.dc.MainManager;
 

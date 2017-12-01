@@ -1,8 +1,8 @@
 package main.test.frontend;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import main.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import main.libgdx.DialogScenario;
+import main.libgdx.launch.DemoLauncher;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
 import main.system.EventCallbackParam;
@@ -24,11 +24,11 @@ public class IntroTestLauncher extends DemoLauncher {
 
     public static void main(String[] args) {
         running = true;
-        new LwjglApplication(new IntroTestLauncher(new SceneFactory(testData)), getConf());
+        new IntroTestLauncher(new SceneFactory(testData)).start();
     }
 
     @Override
-    protected void initEngine() {
+    protected void engineInit()   {
         ScreenData data = new ScreenData(ScreenType.BATTLE, "Loading...", factory);
         screenSwitcher(new EventCallbackParam(data));
     }

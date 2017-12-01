@@ -302,12 +302,6 @@ public class UnitChecker extends EntityChecker<Unit> {
         // if (checkStatus(STATUS.DISCOMBOBULATED))
         // return false;
 
-        if (checkStatus(UnitEnums.STATUS.ON_ALERT)) {
-            return false;
-        }
-        if (checkStatus(UnitEnums.STATUS.WAITING)) {
-            return false;
-        }
         // if (checkStatus(STATUS.LATE))
         // return false;
         if (getIntParam(PARAMS.C_N_OF_ACTIONS) <= 0) {

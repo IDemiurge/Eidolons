@@ -1,7 +1,7 @@
 <Level><Custom_Props><Workspace_Group>IMPLEMENT</Workspace_Group>
 <Name>Death Temple</Name>
 <Displayed_Name>Death Temple</Displayed_Name>
-<Dungeon_Subfolder>CRAWL</Dungeon_Subfolder>
+<Dungeon_Subfolder>crawl</Dungeon_Subfolder>
 </Custom_Props><Custom_Params><Bf_Width>32</Bf_Width>
 <Bf_Height>21</Bf_Height>
 </Custom_Params><Wall_Objects></Wall_Objects>

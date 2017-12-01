@@ -7,6 +7,7 @@ import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
 import main.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import main.content.ContentManager;
+import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.values.parameters.PARAMETER;
 import main.data.ability.OmittedConstructor;
@@ -106,6 +107,12 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
     @OmittedConstructor
     public ModifyValueEffect() {
+    }
+
+    public ModifyValueEffect(PARAMS p, MOD mod,
+                             String formula, boolean valueOverMax) {
+        this(p, mod, formula);
+        setValueOverMax(valueOverMax);
     }
 
     private static boolean checkPercentOrConst(String percOrConst) {
@@ -315,12 +322,14 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
         double final_amount = 0;
         switch (mod_type) {
-
+            case SET_TO_PERCENTAGE:
             case MODIFY_BY_PERCENT: {
                 double mod =
                         // = obj.getParams(param, ref.isBase()) + "*(" + amount
                  // + "/100)";
-                 MathMaster.getFractionValueCentimalDouble(obj.getParamDouble(param, base), amount);
+                 MathMaster.getFractionValueCentimalDouble(obj.getParamDouble(
+                  mod_type==MOD.SET_TO_PERCENTAGE? ContentManager.getBaseParameterFromCurrent(param)
+                   : param, base), amount);
                 ref.setAmount(mod + "");
 
                 if (param.isDynamic()) {
@@ -331,7 +340,12 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                 } else {
                     amount_modified = (int) mod;
                 }
-                final_amount = obj.getParamDouble(param) + mod;
+                if (mod_type == MOD.SET_TO_PERCENTAGE) {
+                    final_amount =  mod;
+                    amount_modified= (int) (final_amount- obj.getIntParam(param));
+                } else {
+                    final_amount = obj.getParamDouble(param) + mod;
+                }
                 // new Formula(obj.getParams(param) + "+" + mod)
                 // .getInt();
 

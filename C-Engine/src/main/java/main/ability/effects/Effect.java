@@ -132,7 +132,7 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
     }
 
     enum MOD {
-        MODIFY_BY_PERCENT(1), MODIFY_BY_CONST(2), SET(3);
+        MODIFY_BY_PERCENT(1), MODIFY_BY_CONST(2), SET(3), SET_TO_PERCENTAGE(3);
 
         MOD(int i) {
         }

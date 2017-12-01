@@ -21,7 +21,7 @@ import main.libgdx.gui.panels.dc.inventory.InventoryWithAction;
 import main.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
 import main.libgdx.gui.panels.dc.logpanel.FullLogPanel;
 import main.libgdx.gui.panels.dc.logpanel.SimpleLogPanel;
-import main.libgdx.gui.panels.dc.logpanel.text.TextPanel;
+import main.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
@@ -44,7 +44,7 @@ public class BattleGuiStage extends Stage implements StageWithClosable {
     private final ActionPanelController bottomPanel;
     private final RadialMenu radial;
     private final ContainerPanel containerPanel;
-    TextPanel textPanel;
+    OverlayTextPanel textPanel;
     Closable displayedClosable;
     private GameMenu gameMenu;
     private OutcomePanel outcomePanel;
@@ -95,7 +95,7 @@ public class BattleGuiStage extends Stage implements StageWithClosable {
         addActor(radial);
         addActor(new ToolTipManager(this));
 
-        textPanel = new TextPanel();
+        textPanel = new OverlayTextPanel();
         addActor(textPanel);
         textPanel.setPosition(GdxMaster.centerWidth(textPanel),
          GdxMaster.centerHeight(textPanel));
@@ -247,7 +247,7 @@ public class BattleGuiStage extends Stage implements StageWithClosable {
         return gameMenu;
     }
 
-    public TextPanel getTextPanel() {
+    public OverlayTextPanel getTextPanel() {
         return textPanel;
     }
 

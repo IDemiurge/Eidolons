@@ -4,21 +4,19 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import main.libgdx.GdxMaster;
 import main.libgdx.gui.panels.dc.logpanel.LogPanel;
 import main.libgdx.stage.Closable;
-import main.system.auxiliary.StringMaster;
+import main.system.graphics.FontMaster.FONT;
 
 /**
  * Created by JustMe on 11/14/2017.
  */
-public class TextPanel extends LogPanel implements Closable {
+public class OverlayTextPanel extends LogPanel implements Closable {
 
     public static final boolean TEST_MODE = false;
 
-    public TextPanel() {
+    public OverlayTextPanel() {
         setTouchable(Touchable.enabled);
         initListeners();
     }
@@ -29,25 +27,15 @@ public class TextPanel extends LogPanel implements Closable {
     }
 
     @Override
-    protected void setDefaultSize() {
-        setSize(550 * GdxMaster.getFontSizeMod(), 850 * GdxMaster.getFontSizeMod());
+    protected float getDefaultHeight() {
+        return 850;
     }
 
-    public void setText(String text) {
-
-        scrollPanel.getInnerScrollContainer().getActor().  clear();
-        //TODO split?!
-        for (String substring : StringMaster.openContainer(text, StringMaster.NEW_LINE)) {
-            Message message=TextBuilder.createNew().addString(substring).build(getWidth());
-            for (Actor sub : message.getChildren()) {
-                if (sub instanceof Label) {
-                    ((Label) sub).setStyle(TextBuilder.createNew().getDefaultLabelStyle());
-                }
-            }
-            scrollPanel.addElement(message);
-        }
-//        outside.setTouchable(Touchable.enabled);
+    @Override
+    protected float getDefaultWidth() {
+        return 550;
     }
+
 
     @Override
     public void act(float delta) {
@@ -64,7 +52,12 @@ public class TextPanel extends LogPanel implements Closable {
             }
         });
     }
-
+    protected int getFontSize() {
+        return 20;
+    }
+    protected FONT getFontStyle() {
+        return FONT.RU;
+    }
     private void initListeners() {
 
         addListener(new InputListener() {

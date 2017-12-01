@@ -159,4 +159,7 @@ public class Waiter {
          + operation.name());
     }
 
+    public void setInterrupted(boolean interrupted) {
+        this.interrupted = interrupted;
+    }
 }

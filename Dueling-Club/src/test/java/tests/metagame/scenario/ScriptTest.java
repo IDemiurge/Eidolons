@@ -2,7 +2,7 @@ package tests.metagame.scenario;
 
 import main.game.battlecraft.logic.battle.mission.MissionBattleMaster;
 import main.game.core.Eidolons;
-import main.test.frontend.ScenarioLauncher;
+import main.libgdx.launch.ScenarioLauncher;
 import org.junit.Before;
 
 /**

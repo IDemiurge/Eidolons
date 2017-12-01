@@ -1,4 +1,4 @@
-package main.test.frontend;
+package main.libgdx.launch;
 
 import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.logic.meta.tutorial.TutorialMetaMaster;
@@ -12,7 +12,7 @@ import main.system.GuiEventType;
  */
 public class TutorialLauncher {
     public static void main(String[] args) {
-        BattleSceneLauncher.main(null);
+        DemoLauncher.main(null);
         DC_Engine.mainMenuInit();
         TutorialMetaMaster master = new TutorialMetaMaster("");
         master.init();

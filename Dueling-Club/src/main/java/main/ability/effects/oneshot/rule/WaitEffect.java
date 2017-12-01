@@ -9,9 +9,10 @@ import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.attachment.AddTriggerEffect;
-import main.ability.effects.common.AddStatusEffect;
+import main.ability.effects.continuous.SetCustomModeEffect;
 import main.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.content.enums.entity.UnitEnums;
+import main.content.mode.STD_MODES;
 import main.elements.conditions.Condition;
 import main.elements.conditions.RefCondition;
 import main.elements.targeting.FixedTargeting;
@@ -55,7 +56,7 @@ public class WaitEffect extends MicroEffect implements OneshotEffect{
     }
 
     protected Effect getEffects(Ref ref) {
-        return new Effects(new AddStatusEffect(getStatus()), new AddTriggerEffect(
+        return new Effects(new SetCustomModeEffect(STD_MODES.WAITING), new AddTriggerEffect(
                 STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, getConditions(), getAbility(ref)));
     }
 

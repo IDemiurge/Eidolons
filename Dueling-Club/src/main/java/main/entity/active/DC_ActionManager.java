@@ -487,6 +487,29 @@ public class DC_ActionManager implements ActionManager {
         return subAction;
     }
 
+    public void resetActionsForGameMode(Unit  unit, boolean exploreMode) {
+        List<ActiveObj> actions = unit.getActives();
+        /*
+        in explore:
+        + Camp
+
+        - Defend
+
+         substitude wait?
+
+         */
+
+    }
+    public boolean isActionAvailable(ActiveObj activeObj, boolean exploreMode) {
+        switch (activeObj.getName()) {
+            case "Defend":
+                return !exploreMode;
+            case "Camp":
+                return exploreMode;
+
+        }
+        return true;
+    }
     @Override
     public void resetActions(Entity entity) {
         if (!(entity instanceof Unit)) {
@@ -529,6 +552,7 @@ public class DC_ActionManager implements ActionManager {
             actives.add(action);
         }
         // list = new DequeImpl<>(items);
+        actives.removeIf(activeObj -> !isActionAvailable(activeObj, ExplorationMaster.isExplorationOn()));
         try {
             addSpecialActions(unit, actives);
         } catch (Exception e) {
@@ -840,6 +864,9 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public void constructActionMaps(Unit unit) {
+        for (ACTION_TYPE sub : unit.getActionMap().keySet()) {
+            unit.getActionMap().put(sub, new DequeImpl<>());
+        }
         for (ActiveObj active : unit.getActives()) {
             DC_UnitAction action = (DC_UnitAction) active;
             ACTION_TYPE type = action.getActionType();
@@ -847,15 +874,10 @@ public class DC_ActionManager implements ActionManager {
                 type = action.getActionType();
             }
             DequeImpl<DC_UnitAction> list = unit.getActionMap().get(type);
-            if (list == null) {
-                list = new DequeImpl<>();
-                unit.getActionMap().put(type, list);
-            }
-            if (!list.contains(action)) {
-                if (!hiddenActions.contains(action.getType())) {
+
+            if (!hiddenActions.contains(action.getType())) {
                     list.add(action);
                 }
-            }
 
         }
     }
@@ -977,7 +999,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public enum STD_MODE_ACTIONS {
-        Defend, Concentrate, Rest, Meditate, On_Alert;
+        Defend, Camp, Concentrate, Rest, Meditate, On_Alert;
 
         public String toString() {
             return StringMaster.getWellFormattedString(name());

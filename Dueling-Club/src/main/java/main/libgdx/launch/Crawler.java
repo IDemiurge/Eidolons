@@ -1,4 +1,4 @@
-package main.test.frontend;
+package main.libgdx.launch;
 
 import main.content.DC_TYPE;
 import main.data.filesys.PathFinder;
@@ -24,6 +24,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
+import main.test.frontend.FAST_DC;
 
 import java.util.Arrays;
 import java.util.List;
@@ -75,7 +76,7 @@ if (index ==2){
     });
     return ;
 }
-        BattleSceneLauncher.main(null);
+        DemoLauncher.main(null);
         DC_Engine.mainMenuInit();
         String dungeon =parts==null ? "crawl"+new FileChooser(PathFinder.getDungeonLevelFolder() + "crawl").launch("", "")
          : parts.get(0);

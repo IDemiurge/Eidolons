@@ -51,7 +51,7 @@ import java.util.*;
  * Created by JustMe on 1/11/2017.
  */
 public class AnimationConstructor {
-    private final boolean preconstructOn = CoreEngine.isExe(); //TODO
+    private final boolean preconstructOn = CoreEngine.isExe() || CoreEngine.EXE_MODE; //TODO
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
     private boolean autoconstruct = false;
     private VALUE[] anim_vals = {
@@ -699,10 +699,10 @@ public class AnimationConstructor {
     }
 
     public static boolean isPreconstructAllOnGameInit() {
-        return CoreEngine.isExe();
+        return CoreEngine.isExe()  ;
     }
     public static boolean isPreconstructEnemiesOnCombatStart() {
-        return CoreEngine.isExe();
+        return CoreEngine.isExe()|| CoreEngine.EXE_MODE;
     }
 
     public enum ANIM_PART {

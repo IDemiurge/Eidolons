@@ -17,7 +17,13 @@ public class TablePanel<T extends Actor> extends Table {
     public TablePanel() {
     }
 
-    public Cell<T> addElement(T el) {
+    public Cell<T> addNormalSize(T el) {
+        return add(el).size(el.getWidth(), el.getHeight());
+    }
+    public Cell<T> addNoGrow(T el) {
+        return add(el);
+    }
+        public Cell<T> addElement(T el) {
         return add(el).grow();
     }
 

@@ -121,6 +121,8 @@ public class OptionsMaster {
         }
     }
     public static void applySoundOptions(SoundOptions soundOptions) {
+        if (Gdx.app==null )
+            return ;
         if (!GdxMaster.isLwjglThread()){
             Gdx.app.postRunnable(()->
              applySoundOptions_(soundOptions));
@@ -168,6 +170,8 @@ public class OptionsMaster {
     }
 
     public static void applyGraphicsOptions(GraphicsOptions graphicsOptions) {
+        if (Gdx.app==null )
+            return ;
         if (!GdxMaster.isLwjglThread()){
             Gdx.app.postRunnable(()->
             applyGraphicsOptions_(graphicsOptions));

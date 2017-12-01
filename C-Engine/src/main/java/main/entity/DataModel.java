@@ -628,7 +628,7 @@ public abstract class DataModel {
 
         LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
          + param.getName() + " by " + amount);
-        if (!quietly || GuiEventManager.isParamEventAlwaysFired(param.getName()) )
+        if (!quietly || GuiEventManager.isParamEventAlwaysFired(param.getName()))
             if (!fireParamEvent(param, String.valueOf(amount),
              CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
                 return true; // false?
@@ -912,19 +912,20 @@ public abstract class DataModel {
 //        if (param == null) {
 //            return false;
 //        }
-        if ( Game.game != null)         if (GuiEventManager.isParamEventAlwaysFired(param.getName())||!quiety) {
-            if (getGame() == null) {
-                return false;
-            }
-            if (getGame().isStarted()) {
-                if (!fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
+        if (Game.game != null)
+            if (GuiEventManager.isParamEventAlwaysFired(param.getName()) || !quiety)
+                if (getGame() == null)
                     return false;
-                }
-            }
-        }
+//            if (getGame().isStarted()) {
+//                if (!fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
+//                    return false;
+//                }
+//            }
+//        }
         // if (isParamSetLogged())
 //        LogMaster.log(0, "==========> " + getName() + "'s " + param + "  is set to" + value);
-
+        if (paramMap.get(param.getName()).equals(value))
+            return false;
         putParameter(param, value);
         getIntegerMap(false).remove(param);
         setDirty(true);

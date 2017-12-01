@@ -32,6 +32,7 @@ public class GridUnitView extends UnitView {
         init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getIconTexture(), o.getEmblem());
         cellBackground = o.cellBackground;
         initQueueView(o);
+        setVisible(false);
     }
 
     @Override
@@ -95,6 +96,8 @@ public class GridUnitView extends UnitView {
             arrow = new Image(arrowTexture);
             addActor(arrow);
             arrow.setOrigin(getWidth() / 2 + arrow.getWidth(), getHeight() / 2 + arrow.getHeight());
+main.system.auxiliary.log.LogMaster.log(1,
+ arrow.getOriginX()+" getOriginX " + arrow.getOriginY()+" getOriginY " );
             arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
             this.arrowRotation = arrowRotation + 90;
         }

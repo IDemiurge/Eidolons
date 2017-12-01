@@ -1,13 +1,22 @@
 package main.libgdx.gui.tooltips;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.libgdx.gui.NinePathFactory;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 
 public class ValueTooltip extends ToolTip {
 
+    public ValueTooltip(  String text) {
+        this(null, text);
+    }
+    public ValueTooltip(TextureRegion texture, String text) {
+        super();
+        setUserObject(new ListMaster<ValueContainer>().getList(new ValueContainer(texture, text)));
+    }
     public ValueTooltip() {
         super();
     }

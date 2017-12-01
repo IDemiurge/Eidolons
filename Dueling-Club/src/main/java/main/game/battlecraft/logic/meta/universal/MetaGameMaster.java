@@ -176,7 +176,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     }
 
-    private void gameExited() {
+    public void gameExited() {
 //        try {
 //            DungeonScreen.getInstance().dispose();
 //        } catch (Exception e) {

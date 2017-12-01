@@ -11,7 +11,6 @@ import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
-import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.Eidolons;
 import main.libgdx.GdxColorMaster;
@@ -139,7 +138,7 @@ public class ShadeLightCell extends SuperContainer {
         if (type == SHADE_LIGHT.LIGHT_EMITTER) {
             for (Structure sub : Eidolons.game.getStructures()) {
                 if (sub.isLightEmitter()) {
-                    if (sub.getCoordinates().equals(new Coordinates(x,y)))
+//                    if (sub.getCoordinates().equals(new Coordinates(x,y)))
                     colorTheme = new EnumMaster<COLOR_THEME>().
                      retrieveEnumConst(COLOR_THEME.class, sub.getProperty(PROPS.COLOR_THEME, true));
                     if (colorTheme != null)

@@ -22,11 +22,18 @@ public class GuiEventManager {
     }
 
     public static void bind(GuiEventType type, final EventCallback event) {
+bind(false, type, event);
+    }
+        public static void bind( boolean removePreviousBind, GuiEventType type, final EventCallback event) {
         if (CoreEngine.isGraphicsOff())
             return;
         if (!vertx) {
+            if (removePreviousBind)
+                GuiEventManagerOld.removeBind(type );
             GuiEventManagerOld.bind(type, event);
         } else {
+//            if (removePreviousBind)
+//                GuiEventManagerVertx.removeBind(type );
             GuiEventManagerVertx.bind(type, event);
         }
     }

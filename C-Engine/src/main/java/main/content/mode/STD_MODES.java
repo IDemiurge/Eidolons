@@ -14,6 +14,7 @@ public enum STD_MODES implements MODE {
     MEDITATION(true, true, true, "C_ESSENCE", "max(100, {SOURCE_MEDITATION_MOD})/100*("
             + Formulas.MEDITATION_BASE + "+{SOURCE_MEDITATION_BONUS})"), // {ACTIVE_something}
     DEFENDING(false, false, true),
+    WAITING(false ,false  , true,false),
     CHANNELING(true, true, false),
     DIVINATION(true, true, true),
     HIDE(true, false, true),
@@ -27,7 +28,7 @@ public enum STD_MODES implements MODE {
             + Formulas.PRAYER_CONST + "+{SOURCE_PRAYER_BONUS})"), // {ACTIVE_something}
 
     NORMAL(false, false, false),
-    COWER(true, true, true),;
+    COWER(true, true, true);
 
     static {
         COWER.setDefenseMod(Formulas.DEFAULT_MODE_DEF_MOD * 3 / 2);

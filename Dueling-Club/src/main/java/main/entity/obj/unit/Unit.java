@@ -529,7 +529,13 @@ if (ExplorationMaster.isExplorationOn())
         this.quickItems = quickItems;
     }
 
-    public Entity getItem(String name) {
+    public DC_HeroItemObj getItemFromInventory(String name) {
+        return new SearchMaster<DC_HeroItemObj>().find(name, getInventory());
+    }
+    public DC_QuickItemObj getQuickItem(String name) {
+        return new SearchMaster<DC_QuickItemObj>().find(name, getQuickItems());
+    }
+        public Entity getItem(String name) {
         // for (String generic: getInventory())
         List<Entity> list = new ArrayList<>();
         list.add(getWeapon(true));
@@ -701,11 +707,13 @@ if (ExplorationMaster.isExplorationOn())
         return true;
     }
 
-    public void removeFromInventory(DC_HeroItemObj item) {
-        getInventory().remove(item);
+    public boolean removeFromInventory(DC_HeroItemObj item) {
+        if (!getInventory().remove(item))
+            return false;
         if (getInventory().isEmpty()) {
             setInventory(null);
         }
+        return true;
     }
 
     public void fullReset(DC_Game newGame) {

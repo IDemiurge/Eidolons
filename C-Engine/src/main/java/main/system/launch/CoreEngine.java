@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CoreEngine {
+    public static   boolean EXE_MODE = true;
     private static CoreEngine engineObject;
 
     public final static String[] classFolderPaths = {"main.elements", "main.ability"};

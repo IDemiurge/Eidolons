@@ -53,7 +53,7 @@ public class MenuItem extends CustomButton {
 
     @Override
     protected Font getDefaultFont() {
-        return FontMaster.getFont(FONT.DARK, SIZE, Font.PLAIN);
+        return FontMaster.getFont(FONT.FERTIGO, SIZE, Font.PLAIN);
     }
 
 

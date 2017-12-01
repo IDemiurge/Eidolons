@@ -127,6 +127,8 @@ public class SpecialLogger implements FileLogger {
                              Object builder, String string,
                              boolean consoleLogged,
                              boolean gameLogged) {
+            if (string==null )
+                return;
         if (consoleLogged)
             if (gameLogged )
                 DC_Game.game.getLogManager().log(string);
@@ -137,11 +139,17 @@ public class SpecialLogger implements FileLogger {
          PathFinder.getLogPath() + logName + StringMaster.getPathSeparator() +
           logName +
           " log from" +
-          timeStamp +
+          getTimeStamp() +
           ".txt");
 
     }
 
+    public String getTimeStamp() {
+        if (timeStamp == null) {
+            timeStamp = TimeMaster.getTimeStamp();
+        }
+        return timeStamp;
+    }
 
     private StringBuilder getBuilder(SPECIAL_LOG log) {
         StringBuilder builder = builderMap.get(log);

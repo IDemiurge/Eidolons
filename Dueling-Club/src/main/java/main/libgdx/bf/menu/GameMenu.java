@@ -2,47 +2,67 @@ package main.libgdx.bf.menu;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import main.game.core.game.DC_Game;
-import main.libgdx.GdxColorMaster;
-import main.libgdx.StyleHolder;
+import main.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
-import main.libgdx.gui.panels.dc.TablePanel;
-import main.libgdx.stage.Closable;
-import main.libgdx.stage.StageWithClosable;
-import main.libgdx.texture.TextureCache;
-import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
+import main.libgdx.screens.menu.GenericMenu;
+import main.libgdx.screens.menu.MenuItem;
 import main.system.graphics.FontMaster.FONT;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by JustMe on 11/24/2017.
  */
-public class GameMenu extends TablePanel implements Closable {
+public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     public static boolean menuOpen;
     GameMenuHandler handler;
 
     public GameMenu() {
-        Drawable texture = TextureCache.getOrCreateTextureRegionDrawable(StrPathBuilder.build(
-         "UI", "components", "2017", "game menu", "background.png"));
-        setBackground(texture);
-        handler = new GameMenuHandler();
-        pad(280, 80, 200, 80);
-        for (GAME_MENU_ITEM sub : GAME_MENU_ITEM.values()) {
-            TextButton button = new TextButton(
-             StringMaster.getWellFormattedString(sub.name()),
-             StyleHolder.getTextButtonStyle(STD_BUTTON.GAME_MENU,
-              FONT.DARK, GdxColorMaster.GOLDEN_WHITE, 20));
-            addElement(button).top().pad(10, 10, 10, 10);
-            row();
-            button.addListener(getClickListener(sub));
-        }
-        pack();
+       super();
         setVisible(false);
+    }
+
+
+    @Override
+    protected void addButtons() {
+        super.addButtons();
+    }
+
+    protected GameMenuHandler initHandler() {
+       return  new GameMenuHandler();
+    }
+
+    @Override
+    public void open() {
+        DC_Game.game.getLoop().setPaused(true);
+        GameMenu.menuOpen = true;
+        super.open();
+    }
+
+    @Override
+    public void close() {
+        DC_Game.game.getLoop().setPaused(false);
+        GameMenu.menuOpen = false;
+        super.close();
+    }
+
+    @Override
+    protected Boolean clicked(MenuItem item) {
+        if (item.getItems().length > 0)
+            return true;
+        if (item instanceof GAME_MENU_ITEM)
+            return getHandler().clicked((GAME_MENU_ITEM) item);
+
+        return null;
+    }
+
+    public GameMenuHandler getHandler() {
+        if (handler==null )
+            handler= initHandler();
+        return handler;
     }
 
     @Override
@@ -55,44 +75,71 @@ public class GameMenu extends TablePanel implements Closable {
             batch.setShader(bufferedShader);
     }
 
-    private EventListener getClickListener(GAME_MENU_ITEM sub) {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                boolean result = handler.clicked(sub);
-                if (result)
-                    close();
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        };
+
+    @Override
+    protected List<MenuItem<GAME_MENU_ITEM>> getFullItemList() {
+        return  new ArrayList<>(Arrays.asList(GAME_MENU_ITEM.values()));
+    }
+    protected boolean isHidden(GAME_MENU_ITEM item) {
+        return item.hidden;
     }
 
-    public void open() {
-        DC_Game.game.getLoop().setPaused(true);
-        menuOpen = true;
-        setVisible(true);
-        if (getStage() instanceof StageWithClosable) {
-            ((StageWithClosable) getStage()).closeDisplayed();
-            ((StageWithClosable) getStage()).setDisplayedClosable(this);
-
-        }
-
+    @Override
+    protected float getBottonPadding(int size) {
+        return 200 ;
     }
 
-    public void close() {
-        DC_Game.game.getLoop().setPaused(false);
-        menuOpen = false;
-        setVisible(false);
-
+    @Override
+    protected float getTopPadding(int size) {
+        return 280;
     }
 
-    public enum GAME_MENU_ITEM {
-        HELP,
+
+    @Override
+    protected FONT getFontStyle() {
+        return FONT.MANORLY_;
+    }
+
+    @Override
+    protected STD_BUTTON getButtonStyle() {
+        return STD_BUTTON.GAME_MENU;
+    }
+
+
+    public enum GAME_MENU_ITEM implements MenuItem<GAME_MENU_ITEM> {
+        QUICK_HELP,
         HERO_INFO,
-        FEEDBACK,
+        MANUAL,
+        SEND_FEEDBACK,
+        SEND_LOG,
+        QUICK_RATE(), //WILL BE HIGHLIGHTED, OR SENT TO MY MAIN ADDRESS...
+        FEEDBACK(QUICK_RATE, SEND_FEEDBACK, SEND_LOG),
         OPTIONS,
         RESTART,
         PASS_TIME,
         RESUME,
+        INFO(QUICK_HELP, HERO_INFO, MANUAL),
+        WEBSITE(true),
+        ABOUT(true), LAUNCH_GAME(true ),
+        EXIT,
+        ;
+        boolean hidden;
+        private GAME_MENU_ITEM[] items;
+
+        GAME_MENU_ITEM(boolean hidden, GAME_MENU_ITEM... items) {
+            this(items);
+            this.hidden = hidden;
+        }
+            GAME_MENU_ITEM(GAME_MENU_ITEM... items) {
+            this.items = items;
+            for (GAME_MENU_ITEM sub : items) {
+                sub.hidden = true;
+            }
+        }
+
+        @Override
+        public GAME_MENU_ITEM[] getItems() {
+            return items;
+        }
     }
 }

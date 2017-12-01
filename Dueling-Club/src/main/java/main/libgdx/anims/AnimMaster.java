@@ -126,9 +126,10 @@ public class AnimMaster extends Group {
     }
 
     public Boolean getParallelDrawing() {
-        if (parallelDrawing == null)
-            parallelDrawing = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING);
-        return parallelDrawing;
+//        if (parallelDrawing == null)
+//            parallelDrawing = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING);
+//        return parallelDrawing;
+        return true;
     }
 
     public void setParallelDrawing(Boolean parallelDrawing) {

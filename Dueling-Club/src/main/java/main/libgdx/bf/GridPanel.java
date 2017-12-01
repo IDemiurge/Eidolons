@@ -16,7 +16,6 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.Coordinates;
@@ -464,11 +463,10 @@ public class GridPanel extends Group {
         GridUnitView view = null;
         if (o instanceof BattleFieldObject)
             view = (GridUnitView) unitMap.get(o);
-        else
-        if (o instanceof GridUnitView)
+        else if (o instanceof GridUnitView)
             view = (GridUnitView) (o);
-      if (view!=null )
-          view.animateHpBarChange();
+        if (view != null)
+            view.animateHpBarChange();
     }
 
     private void setVisible(BattleFieldObject sub, boolean b) {
@@ -698,7 +696,11 @@ public class GridPanel extends Group {
         Coordinates c = heroObj.getCoordinates();
 
 //        uv.setVisible(true);
-        cells[c.x][rows1 - c.y].addActor(uv);
+        try {
+            cells[c.x][rows1 - c.y].addActor(uv);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
 
         if (lightingManager != null) {
             lightingManager.updatePos(heroObj);
@@ -782,12 +784,10 @@ public class GridPanel extends Group {
                                             if (parent.
                                              getUnitViewCountEffective() == 1) {
                                                 scale = parent.getObjScale();
-                                            } else if (!sub.isHovered())
-                                            {
-                                                if (parent.getTopUnitView()!=sub)
-                                                continue;
-                                            }
-                                            else {
+                                            } else if (!sub.isHovered()) {
+                                                if (parent.getTopUnitView() != sub)
+                                                    continue;
+                                            } else {
                                                 //offset? scale?
                                             }
                                         }
@@ -874,21 +874,20 @@ public class GridPanel extends Group {
 
 //TODO if (sub.isVisible())
             if (view.getActions().size == 0) {
-                if (sub.isDead())
-                {
+                if (sub.isDead()) {
                     view.setVisible(false);
                     view.remove();
                 }
-                if (!AI_Manager.isRunning())
-                    if (!sub.isOverlaying()) {
-                        GridCellContainer cellContainer =
-                         cells[sub.getCoordinates().x][rows - sub.getCoordinates().y - 1];
-                        {
-                            if (view.getParent() != cellContainer) {
-                                view.remove();
-                                cellContainer.addActor(view);
-                            } }
-                    }
+//                if (!AI_Manager.isRunning())
+//                    if (!sub.isOverlaying()) {
+//                        GridCellContainer cellContainer =
+//                         cells[sub.getCoordinates().x][rows - sub.getCoordinates().y - 1];
+//                        {
+//                            if (view.getParent() != cellContainer) {
+//                                view.remove();
+//                                cellContainer.addActor(view);
+//                            } }
+//                    }
             }
         }
         resetVisibleRequired = false;

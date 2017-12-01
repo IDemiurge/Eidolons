@@ -2,7 +2,7 @@ package main.libgdx.screens;
 
 import main.libgdx.stage.HeadQuarterStage;
 
-public class HeadquarterScreen extends ScreenWithLoader {
+public class HeadquarterScreen extends ScreenWithVideoLoader {
     private HeadQuarterStage headQuarterStage;
 
     @Override

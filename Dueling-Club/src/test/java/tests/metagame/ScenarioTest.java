@@ -2,7 +2,7 @@ package tests.metagame;
 
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.test.frontend.ScenarioLauncher;
+import main.libgdx.launch.ScenarioLauncher;
 import org.junit.Test;
 import tests.GenericJUnitTest;
 

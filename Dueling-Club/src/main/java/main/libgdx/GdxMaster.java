@@ -39,7 +39,7 @@ public class GdxMaster {
     }
 
     public static float right(Actor actor) {
-        if (actor.getParent() != null)
+        if (actor.getParent() != null &&actor.getParent().getWidth()!=0 )
             return actor.getParent().getWidth() - actor.getWidth();
         return GdxMaster.getWidth() - actor.getWidth();
     }

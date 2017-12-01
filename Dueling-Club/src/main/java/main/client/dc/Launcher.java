@@ -1,6 +1,5 @@
 package main.client.dc;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
 import main.client.cc.CharacterCreator;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.MainPanel;
@@ -22,6 +21,9 @@ import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.core.game.Game;
 import main.game.module.adventure.MacroManager;
+import main.libgdx.launch.DemoLauncher;
+import main.libgdx.launch.ScenarioLauncher;
+import main.libgdx.launch.Showcase;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
 import main.swing.generic.components.G_Panel;
@@ -42,12 +44,6 @@ import main.system.hotkey.HC_KeyManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.test.frontend.BattleSceneLauncher;
-import main.test.frontend.DemoLauncher;
-import main.test.frontend.ScenarioLauncher;
-import main.test.frontend.Showcase;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -538,7 +534,7 @@ public class Launcher {
                 DC_Engine.gameInit();
             }
 
-            BattleSceneLauncher.main(new String[]{});
+            DemoLauncher.main(new String[]{});
             ScreenData data = new ScreenData(ScreenType.BATTLE, "Loading...");
             GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
             Eidolons.initScenario(new ScenarioMetaMaster(ScenarioLauncher.CRAWL));
@@ -585,11 +581,14 @@ public class Launcher {
     }
     public static void createGame( )
     {
-        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
-        LwjglCanvas canvas = new LwjglCanvas(Eidolons.getApplication().getApplicationListener(), DemoLauncher.getConf());
-        SwingUtilities.invokeLater(
-//        Gdx.app.postRunnable(
-         () -> frame.add(canvas.getCanvas()));
+//        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
+//        BattleSceneLauncher battleSceneLauncher = new BattleSceneLauncher();
+//        LwjglCanvas canvas = new LwjglCanvas(
+//         battleSceneLauncher,
+//         battleSceneLauncher.getConf());
+//        SwingUtilities.invokeLater(
+////        Gdx.app.postRunnable(
+//         () -> frame.add(canvas.getCanvas()));
     }
     public static boolean isInMenu() {
         return getView() == VIEWS.MENU;

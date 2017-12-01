@@ -68,7 +68,7 @@ public class GammaMaster {
 
 
         Integer gamma = illumination - concealment;
-//        cache.put(target, gamma);
+//        cache.put(target, gamma); TODO use or remove
         if (source == target.getGame().getManager().getActiveObj()) {
             target.setGamma(gamma);
         }
@@ -92,6 +92,13 @@ public class GammaMaster {
         Unit unit = Eidolons.game.getManager().getMainHero();
         if (unit == null) {
             unit = Eidolons.game.getManager().getActiveObj();
+        }
+        if (unit == null) {
+            switch (type) {
+                case GAMMA_SHADOW:
+                    return 1;
+            }
+            return 0;
         }
         float alpha = 0;
         float gamma = getGammaForCell(x, y);

@@ -1,6 +1,7 @@
 package main.libgdx.gui.controls.radial;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.elements.targeting.SelectiveTargeting;
@@ -23,7 +24,7 @@ import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
-import main.libgdx.gui.panels.dc.logpanel.text.TextPanel;
+import main.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
@@ -126,7 +127,7 @@ public class RadialManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        if (TextPanel.TEST_MODE)
+        if (OverlayTextPanel.TEST_MODE)
             try {
 //                GuiEventManager.trigger(SHOW_TEXT_CENTERED, "Hey\nyo\nman!");
             } catch (Exception e) {
@@ -388,7 +389,10 @@ public class RadialManager {
     public static void addSimpleTooltip(RadialValueContainer el, String name) {
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer(name, "")));
-        el.clearListeners();
+        for (com.badlogic.gdx.scenes.scene2d.EventListener sub : el.getListeners()) {
+            if (!(sub instanceof ClickListener))
+                el.removeListener(sub);
+        }
         el.addListener(tooltip.getController());
     }
 

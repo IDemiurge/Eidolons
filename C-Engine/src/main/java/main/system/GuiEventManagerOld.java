@@ -34,6 +34,13 @@ public class GuiEventManagerOld {
     public static void bind(GuiEventType type, final EventCallback event) {
         getInstance().bind_(type, event);
     }
+    public static void removeBind(GuiEventType type ) {
+        getInstance().removeBind_(type );
+    }
+
+    private void removeBind_(GuiEventType type) {
+        eventMap.remove(type);
+    }
 
     public static void trigger(final GuiEventType type, Object obj) {
         EventCallbackParam eventCallback;

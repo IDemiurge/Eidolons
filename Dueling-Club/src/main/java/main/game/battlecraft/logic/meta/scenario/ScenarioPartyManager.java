@@ -4,15 +4,20 @@ import main.client.cc.logic.party.PartyObj;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.battlecraft.logic.meta.universal.PartyManager;
 import main.swing.generic.components.editors.lists.ListChooser;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.text.NameMaster;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.List;
 
@@ -20,6 +25,8 @@ import java.util.List;
  * Created by JustMe on 5/14/2017.
  */
 public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
+
+    private String selectedHero;
 
     public ScenarioPartyManager(ScenarioMetaMaster master) {
         super(master);
@@ -57,6 +64,15 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     }
 
     @Override
+    public void gameStarted() {
+        Unit hero = getGame().getMaster().getUnitByName(
+         selectedHero,   true, null, null, getGame().getPlayer(true),
+        null );
+        //will find 1st if name==null
+        mainHeroSelected(party, hero);
+    }
+
+    @Override
     public PartyObj initPlayerParty() {
         if (!getMaster().getMetaGame().isPartyRespawn())
             return null ;
@@ -80,8 +96,8 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
                  members);
                 type.setProperty(PROPS.MEMBERS , hero);
             } else {
-                String hero = ListChooser.chooseType(
-                 members, DC_TYPE.CHARS);
+                String hero =chooseHero(members);
+
                 type.setProperty(PROPS.MEMBERS , hero);
             }
         }
@@ -104,6 +120,26 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
           getProperty(PROPS.SCENARIO_MISSIONS)).get(0), true);
         return party;
 
+    }
+
+    private String chooseHero(List<String> members) {
+        if (isSwingOn()) {
+           return  ListChooser.chooseType(
+             members, DC_TYPE.CHARS);
+        }
+        WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
+        GuiEventManager.trigger(
+         GuiEventType.SHOW_SELECTION_PANEL,DataManager.toTypeList(members, DC_TYPE.CHARS));
+        selectedHero = (String) WaitMaster.
+         waitForInput(WAIT_OPERATIONS.SELECTION);
+        main.system.auxiliary.log.LogMaster.log(1,"+++++++++selectedHero = " +selectedHero);
+        if (selectedHero==null )
+            return null ;
+        return selectedHero;
+    }
+
+    private boolean isSwingOn() {
+        return false;
     }
 
 }

@@ -287,7 +287,7 @@ public class UnitResetter extends EntityResetter<Unit> {
         }
         // Chronos.logTimeElapsedForMark(toString() + " OBJECTS APPLY");
 
-        Chronos.mark(toString() + " activate PASSIVES");
+//        Chronos.mark(toString() + " activate PASSIVES");
         getInitializer().initSpells(game.isSimulation());
         getEntity().activatePassives();
 
@@ -299,7 +299,7 @@ public class UnitResetter extends EntityResetter<Unit> {
             // initSpellbook(); //in afterEffect()
             return;
         }
-        Chronos.mark(toString() + " init ACTIVES");
+//        Chronos.mark(toString() + " init ACTIVES");
         getInitializer().initActives();
         // Chronos.logTimeElapsedForMark(toString() + " init ACTIVES");
 

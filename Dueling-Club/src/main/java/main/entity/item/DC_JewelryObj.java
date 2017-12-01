@@ -16,6 +16,11 @@ public class DC_JewelryObj extends DC_HeroItemObj {
         super(type, owner, game, ref, getJewelryParams());
     }
 
+    @Override
+    protected void applyDurability() {
+
+    }
+
     private static PARAMETER[] getJewelryParams() {
         String entity = DC_TYPE.CHARS.getName();
         return ContentManager.getParamsForType(entity, false).toArray(

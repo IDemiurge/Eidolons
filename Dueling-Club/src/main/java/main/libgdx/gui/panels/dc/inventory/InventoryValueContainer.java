@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.entity.Entity;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
+import main.libgdx.gui.tooltips.ValueTooltip;
 
 public class InventoryValueContainer extends ValueContainer {
     private CELL_TYPE cellType;
@@ -45,7 +46,7 @@ public class InventoryValueContainer extends ValueContainer {
     @Override
     protected void init(TextureRegion texture, String name, String value) {
         super.init(texture, name, value);
-
+        addListener(new ValueTooltip(name).getController());
         addListener(new ClickListener(-1) {
             @Override
             public void clicked(InputEvent event, float x, float y) {

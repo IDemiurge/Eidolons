@@ -16,10 +16,10 @@ public class FullLogPanel extends LogPanel {
         setVisible(false);
     }
 
-    @Override
-    protected void setDefaultSize() {
-        setSize(1280, 720);
-    }
+//    @Override
+//    protected void setDefaultSize() {
+//        setSize(1280, 720);
+//    }
 
     @Override
     protected GuiEventType getCallbackEvent() {

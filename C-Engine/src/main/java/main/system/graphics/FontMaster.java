@@ -242,6 +242,10 @@ public class FontMaster {
         NYALA( "/nyala.ttf"),
         RU( "/Philosopher-Regular.ttf"),
         MAIN( "/main.otf"),
+        METAMORPH( "/Metamorphous-Regular.ttf"),
+        MAGIC( "/MagicMedieval.ttf"),
+        MANORLY_( "/Manorly_.ttf"),
+        FERTIGO( "/Fertigo_PRO.otf"),
         ;
         public Font font;
         public   String path;

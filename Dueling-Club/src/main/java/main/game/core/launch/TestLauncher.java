@@ -39,7 +39,7 @@ import main.test.Preset;
 import main.test.PresetMaster;
 import main.test.debug.DebugMaster;
 import main.test.frontend.FAST_DC;
-import main.test.frontend.Showcase;
+import main.libgdx.launch.Showcase;
 
 import java.util.List;
 

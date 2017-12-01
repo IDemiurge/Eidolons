@@ -30,6 +30,7 @@ import main.libgdx.bf.GridMaster;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.menu.GameMenu;
 import main.libgdx.bf.mouse.InputController;
+import main.libgdx.launch.GenericLauncher;
 import main.libgdx.shaders.DarkShader;
 import main.libgdx.stage.BattleGuiStage;
 import main.libgdx.stage.ChainedStage;
@@ -41,7 +42,6 @@ import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.test.frontend.DemoLauncher;
 
 import java.util.List;
 
@@ -54,8 +54,8 @@ import static main.system.GuiEventType.*;
  * Time: 23:55
  * To change this template use File | Settings | File Templates.
  */
-public class DungeonScreen extends ScreenWithLoader {
-    private static final float FRAMERATE_DELTA_CONTROL = new Float(1) / DemoLauncher.FRAMERATE * 3;
+public class DungeonScreen extends ScreenWithVideoLoader {
+    private static final float FRAMERATE_DELTA_CONTROL = new Float(1) / GenericLauncher.FRAMERATE * 3;
     public static OrthographicCamera camera;
     private static DungeonScreen instance;
     private static boolean cameraAutoCenteringOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
@@ -73,6 +73,7 @@ public class DungeonScreen extends ScreenWithLoader {
     private ParticleManager particleManager;
     private ShaderProgram bufferedShader;
     private Float speed;
+
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -131,6 +132,15 @@ public class DungeonScreen extends ScreenWithLoader {
             }
             dialogsStage.setDialogueHandler(handler);
         });
+
+        WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
+        WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GDX_READY);
     }
 
     protected void checkGraphicsUpdates() {
@@ -153,9 +163,7 @@ public class DungeonScreen extends ScreenWithLoader {
 
     @Override
     protected void afterLoad() {
-        if (CoreEngine.isGraphicTestMode()) {
-            Gdx.app.log("DungeonScreen::afterLoad()", "-- Start!");
-        }
+
         cam = camera = (OrthographicCamera) viewPort.getCamera();
         controller = new InputController(cam);
 
@@ -165,17 +173,13 @@ public class DungeonScreen extends ScreenWithLoader {
         gridStage.addActor(gridPanel);
         particleManager = new ParticleManager();
         gridStage.addActor(particleManager.getEmitterMap());
-//        GuiEventManager.bind(GuiEventType.BF_CREATED, p -> {
         try {
             controller.setDefaultPos();
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        });
         bindEvents();
-        if (CoreEngine.isGraphicTestMode()) {
-            Gdx.app.log("DungeonScreen::afterLoad()", "-- End!");
-        }
+
         try {
 
             Unit unit = null;
@@ -237,18 +241,81 @@ public class DungeonScreen extends ScreenWithLoader {
             if (dialogsStage != null) {
                 current.addProcessor(dialogsStage);
             }
-            current.addProcessor(new GestureDetector(controller)); // TODO коряво:D пересикается с обычным контролером
+            current.addProcessor(new GestureDetector(controller));
         } else {
             current = super.getInputController();
         }
 
         return current;
     }
-
+    protected void selectionPanelClosed() {
+        getOverlayStage().setActive(false);
+    }
     protected void triggerInitialEvents() {
         DC_Game.game.getVisionMaster().triggerGuiEvents();
         GuiEventManager.trigger(UPDATE_GUI);
     }
+
+    public void renderMain(float delta) {
+
+        guiStage.act(delta);
+        gridStage.act(delta);
+
+
+        cameraShift();
+        //cam.update();
+        if (canShowScreen()) {
+            if (DC_Game.game != null)
+                if (DC_Game.game.getGameLoop() instanceof RealTimeGameLoop) {
+//              if (realTimeGameLoop != null)        realTimeGameLoop.act(delta);
+                    ((RealTimeGameLoop) Eidolons.game.getGameLoop()).act(delta);
+                }
+
+            if (backTexture != null) {
+                if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
+                    TextureManager.drawFromSpriteCache(TextureManager.getBackgroundId());
+                } else {
+                    guiStage.getBatch().begin();
+                    float colorBits = GdxColorMaster.WHITE.toFloatBits();
+                    if (guiStage.getBatch().getColor().toFloatBits() != colorBits)
+                        guiStage.getBatch().setColor(colorBits); //damned alpha...
+                    guiStage.getBatch().draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
+                    guiStage.getBatch().end();
+                }
+            }
+            gridStage.setDebugAll(false);
+            gridStage.draw();
+
+
+            guiStage.setDebugAll(false);
+            guiStage.draw();
+
+            if (dialogsStage != null) {
+                dialogsStage.setDebugAll(false);
+                dialogsStage.act(delta);
+                if (dialogsStage.isDone()) {
+                    final ChainedStage dialogsStage = this.dialogsStage;
+                    this.dialogsStage = null;
+                    dialogsStage.dispose();
+                    updateInputController();
+                } else {
+                    dialogsStage.draw();
+                }
+            }
+
+            if (gridPanel.getFpsLabel() != null)
+                if (gridPanel != null)
+                    gridPanel.getFpsLabel().setText(new Float(1 / delta) + "");
+
+            try {
+                soundMaster.doPlayback(delta);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        checkShaderReset();
+    }
+
 
     @Override
     public void render(float delta) {
@@ -276,66 +343,9 @@ public class DungeonScreen extends ScreenWithLoader {
             }
             checkShader();
             super.render(delta);
-            if (!hideLoader)
-                return;
-            guiStage.act(delta);
-            gridStage.act(delta);
 
-
-            cameraShift();
-            //cam.update();
-            if (canShowScreen()) {
-                if (DC_Game.game != null)
-                    if (DC_Game.game.getGameLoop() instanceof RealTimeGameLoop) {
-//              if (realTimeGameLoop != null)        realTimeGameLoop.act(delta);
-                        ((RealTimeGameLoop) Eidolons.game.getGameLoop()).act(delta);
-                    }
-
-                if (backTexture != null) {
-                    if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
-                        TextureManager.drawFromSpriteCache(TextureManager.getBackgroundId());
-                    } else {
-                        guiStage.getBatch().begin();
-                        float colorBits = GdxColorMaster.WHITE.toFloatBits();
-                        if (guiStage.getBatch().getColor().toFloatBits() != colorBits)
-                            guiStage.getBatch().setColor(colorBits); //damned alpha...
-                        guiStage.getBatch().draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
-                        guiStage.getBatch().end();
-                    }
-                }
-                gridStage.setDebugAll(false);
-                gridStage.draw();
-
-
-                guiStage.setDebugAll(false);
-                guiStage.draw();
-
-                if (dialogsStage != null) {
-                    dialogsStage.setDebugAll(false);
-                    dialogsStage.act(delta);
-                    if (dialogsStage.isDone()) {
-                        final ChainedStage dialogsStage = this.dialogsStage;
-                        this.dialogsStage = null;
-                        dialogsStage.dispose();
-                        updateInputController();
-                    } else {
-                        dialogsStage.draw();
-                    }
-                }
-
-                if (gridPanel.getFpsLabel() != null)
-                    if (gridPanel != null)
-                        gridPanel.getFpsLabel().setText(new Float(1 / delta) + "");
-
-                try {
-                    soundMaster.doPlayback(delta);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
         }
-        checkShaderReset();
-    }
+        }
 
     private void checkShaderReset() {
         if (batch.getShader() == DarkShader.getShader())

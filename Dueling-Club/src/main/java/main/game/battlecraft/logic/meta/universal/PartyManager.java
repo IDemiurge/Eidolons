@@ -5,7 +5,6 @@ import main.content.PROPS;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.core.Eidolons;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
@@ -29,7 +28,7 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
     protected PartyObj party;
     protected boolean chooseOneHero;
     protected boolean randomOneHero;
-    private int partyLevel;
+    protected int partyLevel;
 
     public PartyManager(MetaGameMaster master) {
         super(master);
@@ -42,7 +41,6 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
     }
 
     public void gameStarted() {
-        DC_Player player = getMaster().getBattleMaster().getPlayerManager().getPlayer(true);
         String name = getParty().getProperty(PROPS.PARTY_MAIN_HERO);
         if (Eidolons.getSelectedMainHero() != null)
             name = Eidolons.getSelectedMainHero();
@@ -62,7 +60,7 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         mainHeroSelected(party, hero);
     }
 
-    private String chooseMainHero() {
+    protected String chooseMainHero() {
         if (party.getMembers().size() == 1) {
             return party.getLeader().getName();
         }
@@ -99,7 +97,7 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         return unit.getName();
     }
 
-    private void mainHeroSelected(PartyObj party, Unit hero) {
+    protected void mainHeroSelected(PartyObj party, Unit hero) {
         party.getMembers().forEach(member -> {
             if (chooseOneHero)
             {
@@ -114,6 +112,7 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         party.setProperty(PROPS.PARTY_MAIN_HERO, hero.getName());
         Eidolons.setSelectedMainHero(hero.getName());
         Eidolons.setMainHero(hero);
+        party.addMember(hero);
     }
 
     public void preStart() {
