@@ -142,6 +142,7 @@ public class GenericLauncher extends Game {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
+        screen.resize(width, height);
     }
 
     @Override
@@ -172,7 +173,8 @@ public class GenericLauncher extends Game {
             case BATTLE:
                 new Thread(new Runnable() {
                     public void run() {
-                        Eidolons.initScenario(new ScenarioMetaMaster(meta.getName()));
+                       if (! Eidolons.initScenario(new ScenarioMetaMaster(meta.getName())))
+                           return;
                         DC_Engine.gameStartInit();
                         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
                         Eidolons.mainGame.getMetaMaster().getGame().battleInit();

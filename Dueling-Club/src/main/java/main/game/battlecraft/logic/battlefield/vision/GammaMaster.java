@@ -14,6 +14,7 @@ import main.game.core.Eidolons;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.system.math.MathMaster;
+import main.system.math.PositionMaster;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,12 +67,16 @@ public class GammaMaster {
         Integer illumination = master.getIlluminationMaster().getIllumination(source, target);
         Integer concealment = master.getIlluminationMaster().getConcealment(source, target);
 
-
         Integer gamma = illumination - concealment;
 //        cache.put(target, gamma); TODO use or remove
-        if (source == target.getGame().getManager().getActiveObj()) {
+        if (source == master.getSeeingUnit()) {
             target.setGamma(gamma);
         }
+        if (PositionMaster.getDistance(source, target) < 4) {
+            main.system.auxiliary.log.LogMaster.log(1,target + " has illumination= "+illumination
+             + " gamma= "+gamma );
+        }
+
         if (target.getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
 
         }
@@ -122,7 +127,7 @@ public class GammaMaster {
             case GAMMA_LIGHT:
 //                if (gamma < 2)
 //                    return 0;
-                alpha = gamma /2;
+                alpha = (float) Math.min(Math.sqrt(gamma*2), gamma/3);
                 break;
             case LIGHT_EMITTER:
                 for (Obj sub : IlluminationRule.getEffectCache().keySet()) {

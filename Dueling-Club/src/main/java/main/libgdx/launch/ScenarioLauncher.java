@@ -30,7 +30,7 @@ public class ScenarioLauncher {
             missionIndex = StringMaster.getInteger(args[1]);
         if (args.length > 0) {
             if (args[0] != null)
-                launch(args[0]);
+                launch(CRAWL);
             else
                 launch(DEFAULT);
         } else {
@@ -45,7 +45,9 @@ public class ScenarioLauncher {
         DC_Engine.mainMenuInit();
 //        Eidolons.mainGame.getMetaMaster().preStart();
         master = new ScenarioMetaMaster(typeName);
-        Eidolons.initScenario(master);
+        if (!Eidolons.initScenario(master)) {
+            return ;
+        }
 
         ScreenData data = new ScreenData(ScreenType.BATTLE,
          master.getMissionName()

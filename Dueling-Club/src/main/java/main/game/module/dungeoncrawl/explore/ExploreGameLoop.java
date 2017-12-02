@@ -57,7 +57,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             });
 
         while (true) {
+
             WaitMaster.WAIT(REAL_TIME_LOGIC_PERIOD);
+            if (Eidolons.getGame()==null  )
+                return;
             if (Eidolons.getGame().isPaused()) continue;
             if (!ExplorationMaster.isExplorationOn()) continue;
             if (ExplorationMaster.isRealTimePaused()) continue;

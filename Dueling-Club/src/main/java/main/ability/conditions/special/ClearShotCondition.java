@@ -307,7 +307,7 @@ if (!(obj instanceof DC_Obj)){
         // diagonal adjacent
         // difference from <?> no greater than... on both/either axis?
 
-        for (Coordinates c : coordinates.getAdjacentCoordinates()) { // c
+        for (Coordinates c : coordinates.getAdjacent()) { // c
 
 
             DIRECTION relativeDirection = c.isAdjacent(source.getCoordinates()) ? DirectionMaster

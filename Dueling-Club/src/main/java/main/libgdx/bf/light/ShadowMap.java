@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import main.game.core.game.DC_Game;
 import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridPanel;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 
 import java.util.LinkedHashMap;
@@ -65,9 +67,10 @@ public class ShadowMap {
     }
 
     private void bindEvents() {
-//        GuiEventManager.bind(GuiEventType.UPDATE_LIGHT, p -> {
-//            update();
-//        }); now part of gridPanel act()
+        GuiEventManager.bind(GuiEventType.UPDATE_LIGHT, p -> {
+            update();
+            main.system.auxiliary.log.LogMaster.log(1,"MANUAL SHADOW MAP UPDATE " );
+        });
 
     }
 
@@ -83,9 +86,6 @@ public class ShadowMap {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    if (type == SHADE_LIGHT.GAMMA_LIGHT) {
-                        alpha /= 2;
-                    }
                     if (getCells(type)[x][y].getColor().a != alpha) {
                         getCells(type)[x][y].setBaseAlpha(alpha);
                         getCells(type)[x][y].setColor(1, 1, 1, alpha);

@@ -43,6 +43,11 @@ public class HeroInfoPanel extends ItemInfoPanel {
     }
 
     @Override
+    protected boolean isRandomDefault() {
+        return true;
+    }
+
+    @Override
     protected void initHeader(TablePanel<Actor> header) {
         super.initHeader(header);
         emblem = new Image(getDefaultEmblem());

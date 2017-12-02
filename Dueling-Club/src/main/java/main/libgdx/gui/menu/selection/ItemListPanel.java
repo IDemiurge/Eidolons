@@ -112,8 +112,11 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     public void selectRandomItem() {
-        int i = RandomWizard.getRandomListIndex(buttons);
-        clicked(i);
+        List<SelectableItemData> available = new LinkedList<>(items);
+        available.removeIf(btn -> isBlocked(btn));
+        SelectableItemData item = new RandomWizard<SelectableItemData>().
+         getRandomListItem(available);
+        clicked(items.indexOf(item));
     }
 
     public void next() {

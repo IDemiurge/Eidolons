@@ -401,6 +401,7 @@ public class GridPanel extends Group {
             if (!firstUpdateDone) {
                 DC_Game.game.getVisionMaster().triggerGuiEvents();
                 GuiEventManager.trigger(UPDATE_GUI, null);
+                GuiEventManager.trigger(UPDATE_LIGHT);
 
             }
             if (HelpMaster.isDefaultTextOn())
@@ -470,6 +471,8 @@ public class GridPanel extends Group {
     }
 
     private void setVisible(BattleFieldObject sub, boolean b) {
+        if (!unitMap.containsKey(sub))
+            return;
         unitMap.get(sub).setVisible(b);
     }
 
@@ -930,7 +933,7 @@ public class GridPanel extends Group {
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
                 GridCellContainer cell = cells[x][y];
-                List<GridUnitView> views = cell.getUnitViews();
+                List<GridUnitView> views = cell.getUnitViewsVisible();
 //                if (views.size()>1)
 
                 for (GridUnitView sub : views) {

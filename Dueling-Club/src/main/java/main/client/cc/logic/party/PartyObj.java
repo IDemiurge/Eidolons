@@ -113,6 +113,8 @@ public class PartyObj extends Obj {
     public void addMember(Unit hero) {
         if (hero==null )
             return ;
+        if (members.contains(hero))
+            return;
         if (checkDuplicateHero(hero))
             return ;
         if (leader!=null )

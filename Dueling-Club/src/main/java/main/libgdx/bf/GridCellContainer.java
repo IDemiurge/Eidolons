@@ -17,6 +17,7 @@ public class GridCellContainer extends GridCell {
     private GraveyardView graveyard;
     private boolean hasBackground;
     private GridUnitView topUnitView;
+    private boolean dirty;
 //    private List<GridUnitView> unitViews=new ArrayList<>(); //for cache and cycling
 /*
 
@@ -46,37 +47,39 @@ public class GridCellContainer extends GridCell {
         return this;
     }
 
-    public List<GridUnitView> getUnitViews() {
-//        if (unitViews==null ){
-//            unitViews = new ArrayList<>();
-//        }
-//        return unitViews;
+    public List<GridUnitView> getUnitViewsVisible() {
+        return getUnitViews(true);
+    }
+
+    public List<GridUnitView> getUnitViews(boolean visibleOnly) {
         List<GridUnitView> list = new ArrayList<>();
         for (Actor actor : getChildren()) {
-            if (actor.isVisible())
-                if (actor instanceof GridUnitView)
-                    list.add((GridUnitView) actor);
+            if (visibleOnly)
+                if (!actor.isVisible())
+                    continue;
+            if (actor instanceof GridUnitView)
+                list.add((GridUnitView) actor);
         }
         return list;
     }
 
 
-        public void recalcUnitViewBounds() {
+    public void recalcUnitViewBounds() {
         if (getUnitViewCount() == 0) {
             return;
         }
-        hasBackground =false;
+        hasBackground = false;
         int i = 0;
 
-        for (GridUnitView actor : getUnitViews()) {
+        for (GridUnitView actor : getUnitViewsVisible()) {
             if (actor.isCellBackground()) {
                 i++;
-                hasBackground =true;
+                hasBackground = true;
                 continue;
             }
             int offset = getUnitViewOffset();
-            float scaleX =getObjScale();
-            float scaleY =getObjScale();
+            float scaleX = getObjScale();
+            float scaleY = getObjScale();
 
             actor.setPosition(offset * i,
              offset * ((getUnitViewCountEffective() - 1) - i));
@@ -91,28 +94,31 @@ public class GridCellContainer extends GridCell {
         if (graveyard != null) {
             graveyard.setZIndex(Integer.MAX_VALUE);
         }
+        dirty = false;
     }
 
     private void recalcImagesPos(GridUnitView actor,
-                                   float perImageOffsetX
-                                 ,  float perImageOffsetY, int i) {
-       perImageOffsetX = perImageOffsetX;// * getPosDiffFactorX();
-       perImageOffsetY = perImageOffsetY;// * getPosDiffFactorY();
+                                 float perImageOffsetX
+     , float perImageOffsetY, int i) {
+        perImageOffsetX = perImageOffsetX;// * getPosDiffFactorX();
+        perImageOffsetY = perImageOffsetY;// * getPosDiffFactorY();
         actor.setX(perImageOffsetX * i);
         actor.setY(perImageOffsetY * ((getUnitViewCountEffective() - 1) - i++));
     }
+
     private void recalcImagesPos() {
         int i = 0;
         int offset = getUnitViewOffset();
-        for (GridUnitView actor : getUnitViews()) {
-            if (actor.isCellBackground()){
+        for (GridUnitView actor : getUnitViewsVisible()) {
+            if (actor.isCellBackground()) {
                 continue;
             }
             recalcImagesPos(actor, offset, offset, i++);
 
         }
     }
-//    private void recalcImagesPos() {
+
+    //    private void recalcImagesPos() {
 //        int i = 0;
 //        final float perImageOffsetX = getUnitViewOffset() * getPosDiffFactorX();
 //        final float perImageOffsetY = getUnitViewOffset() * getPosDiffFactorY();
@@ -126,15 +132,16 @@ public class GridCellContainer extends GridCell {
 //        }
 //    }
     private float getUnitViewSize() {
-       return  GridConst.CELL_W - getUnitViewOffset() * (getUnitViewCount() - 1);
+        return GridConst.CELL_W - getUnitViewOffset() * (getUnitViewCount() - 1);
     }
 
-    public   float getObjScale() {
-        return  (getUnitViewSize()) / GridConst.CELL_W;
+    public float getObjScale() {
+        return (getUnitViewSize()) / GridConst.CELL_W;
     }
+
     @Override
     public boolean isEmpty() {
-        return getUnitViewCount()==0;
+        return getUnitViewCount() == 0;
     }
 
     protected boolean checkIgnored() {
@@ -161,10 +168,10 @@ public class GridCellContainer extends GridCell {
         if (checkIgnored())
             return;
         super.act(delta);
-        List<GridUnitView> views = getUnitViews();
-        int n=0;
-        float maxX=GridConst.CELL_W - getUnitViewSize()/2;
-        float maxY=GridConst.CELL_H - getUnitViewSize()/2;
+        List<GridUnitView> views = getUnitViewsVisible();
+        int n = 0;
+        float maxX = GridConst.CELL_W - getUnitViewSize() / 2;
+        float maxY = GridConst.CELL_H - getUnitViewSize() / 2;
         for (GridUnitView actor : views) {
             if (!actor.isVisible())
                 continue;
@@ -175,21 +182,26 @@ public class GridCellContainer extends GridCell {
             else if (actor.isActive())
                 actor.setZIndex(Integer.MAX_VALUE);
 
-            if (actor.getX() > maxX)
-                actor.setX(maxX);
-            if (actor.getY() >  maxX)
-                actor.setY(maxY);
+//            if (actor.getX() > maxX)
+//                actor.setX(maxX);
+//            if (actor.getY() >  maxX)
+//                actor.setY(maxY);
             n++;
         }
         graveyard.setZIndex(Integer.MAX_VALUE);
-        if (n != unitViewCount) {
-            main.system.auxiliary.log.LogMaster.log(1,  this + "*** unitviews reset to "+ n  );
-            unitViewCount = n;
-            recalcImagesPos();
+        if (dirty){
+            recalcUnitViewBounds();
         }
-    }
-
-    public void limitUnitPositions(GridUnitView actor) {
+        if (n != unitViewCount) {
+//            main.system.auxiliary.log.LogMaster.log(1, this + "*** unitviews reset to " + n);
+           dirty =true;
+//            recalcImagesPos();
+        }
+        if (dirty)
+        {
+            unitViewCount = n;
+            recalcUnitViewBounds();
+        }
     }
 
 
@@ -207,31 +219,34 @@ public class GridCellContainer extends GridCell {
     public void addActor(Actor actor) {
         super.addActor(actor);
         if (actor instanceof GridUnitView) {
-            unitViewCount=getUnitViews().size();
-            main.system.auxiliary.log.LogMaster.log(1,actor + " added to "+ this  );
-            recalcUnitViewBounds();
+            unitViewCount = getUnitViewsVisible().size();
+            main.system.auxiliary.log.LogMaster.log(1, actor + " added to " + this);
+            dirty = true;
+//            recalcUnitViewBounds();
         }
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName()+ " at " +getGridX()+
+        return getClass().getSimpleName() + " at " + getGridX() +
          ":" +
          getGridY() +
-         " with "+ unitViewCount;
+         " with " + unitViewCount;
     }
 
     public boolean removeActor(Actor actor) {
-       return  removeActor(actor, true);
+        return removeActor(actor, true);
     }
-        public boolean removeActor(Actor actor, boolean unfocus) {
+
+    public boolean removeActor(Actor actor, boolean unfocus) {
         boolean result = super.removeActor(actor, unfocus);
 
         if (result && actor instanceof GridUnitView) {
-            unitViewCount=getUnitViews().size();
-            main.system.auxiliary.log.LogMaster.log(1,actor + " removed from "+ this  );
-            recalcUnitViewBounds();
-            ((GridUnitView) actor).sizeChanged();
+            unitViewCount = getUnitViewsVisible().size();
+            main.system.auxiliary.log.LogMaster.log(1, actor + " removed from " + this);
+            dirty = true;
+//            recalcUnitViewBounds();
+//            ((GridUnitView) actor).sizeChanged();
         }
 
         return result;
@@ -264,7 +279,7 @@ public class GridCellContainer extends GridCell {
     }
 
     public int getUnitViewCountEffective() {
-        return hasBackground?unitViewCount-1 : unitViewCount;//-graveyard.getGraveCount() ;
+        return hasBackground ? unitViewCount - 1 : unitViewCount;//-graveyard.getGraveCount() ;
     }
 
     public GridUnitView getTopUnitView() {

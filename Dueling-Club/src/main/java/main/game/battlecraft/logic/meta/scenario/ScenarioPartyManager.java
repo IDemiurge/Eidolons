@@ -87,7 +87,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
             type = new ObjType("dummy", DC_TYPE.PARTY);
             type.setProperty(PROPS.MEMBERS, string);
             //new ? choice?
-        }
+        } else             type = new ObjType(type);
         if (getGame().getMetaMaster().getPartyManager().isRandomOneHero()||
          getGame().getMetaMaster().getPartyManager().isChooseOneHero()) {
             List<String> members =  StringMaster.openContainer(type.getProperty(PROPS.MEMBERS));
@@ -97,7 +97,9 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
                 type.setProperty(PROPS.MEMBERS , hero);
             } else {
                 String hero =chooseHero(members);
-
+if (hero==null ){
+    return null;
+}
                 type.setProperty(PROPS.MEMBERS , hero);
             }
         }
@@ -133,8 +135,6 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         selectedHero = (String) WaitMaster.
          waitForInput(WAIT_OPERATIONS.SELECTION);
         main.system.auxiliary.log.LogMaster.log(1,"+++++++++selectedHero = " +selectedHero);
-        if (selectedHero==null )
-            return null ;
         return selectedHero;
     }
 

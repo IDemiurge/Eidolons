@@ -7,11 +7,11 @@ import main.game.battlecraft.logic.meta.scenario.hq.HqShopManager;
 import main.game.battlecraft.logic.meta.universal.*;
 import main.game.core.Eidolons;
 import main.game.core.game.ScenarioGame;
+import main.libgdx.launch.ScenarioLauncher;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.libgdx.launch.ScenarioLauncher;
 
 /**
  * Created by JustMe on 5/13/2017.
@@ -44,21 +44,21 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
     @Override
     public void next(Boolean outcome) {
-        boolean restart=false;
+        boolean restart = false;
         if (outcome == null) {
-          restart = true;
+            restart = true;
         }
         super.next(outcome);
-        if (outcome!=null)
-        if (outcome) {
-            if (getMetaGame().isFinalLevel()) {
-                getBattleMaster().getOutcomeManager().victory();
-                return;
+        if (outcome != null)
+            if (outcome) {
+                if (getMetaGame().isFinalLevel()) {
+                    getBattleMaster().getOutcomeManager().victory();
+                    return;
+                }
+
+                ScenarioLauncher.missionIndex++;
+
             }
-
-            ScenarioLauncher.missionIndex++;
-
-        }
 //        if (ScenarioLauncher.missionIndex >= 6) {
 //            ScreenData data = new ScreenData(ScreenType.BATTLE, getMissionName(),
 //             new SceneFactory("Test"));
@@ -72,8 +72,10 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         if (restart)
             Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(true);
-        Eidolons.initScenario(
-         new ScenarioMetaMaster(getData()));
+        if (!Eidolons.initScenario(
+         new ScenarioMetaMaster(getData()))) {
+            return;
+        }
 
 //        if (restart){
 //            Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(true);

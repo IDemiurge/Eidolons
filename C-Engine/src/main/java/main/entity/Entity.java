@@ -476,11 +476,16 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public void resetRawValues() {
+        if (isRawValuesOn())
         for (PARAMETER param : ContentManager.getParamsForType(getOBJ_TYPE(), false)) {
             // get values from ValueIcons?
-            getRawValues().put(param, getIntParam(param) + "");
+            getRawValues().put(param, String.valueOf(getIntParam(param)));
         }
 
+    }
+
+    public boolean isRawValuesOn() {
+        return false;
     }
 
     public String getGroupingKey() {

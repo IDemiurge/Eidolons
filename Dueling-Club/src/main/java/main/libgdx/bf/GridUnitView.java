@@ -133,7 +133,13 @@ main.system.auxiliary.log.LogMaster.log(1,
     @Override
     public void setVisible(boolean visible) {
         if (this.isVisible()!=visible)
+        {
             super.setVisible(visible);
+            if (getParent() instanceof GridCellContainer) {
+                ((GridCellContainer) getParent()).recalcUnitViewBounds();
+
+            }
+        }
     }
 //    public void setVisibleVal(int val) {
 //        val = Math.max(0, val);

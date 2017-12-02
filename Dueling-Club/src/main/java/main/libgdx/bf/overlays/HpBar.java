@@ -26,6 +26,7 @@ import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
+import main.system.math.MathMaster;
 
 /**
  * Created by JustMe on 11/21/2017.
@@ -162,10 +163,16 @@ public class HpBar extends SuperActor {
             return;
         }
         if (!getToughnessPerc().equals(getPreviousToughnessPerc())) {
+            if (getPreviousToughnessPerc() == null) {
+                setPreviousToughnessPerc(1f);
+            }
             initChangeActions(toughnessAction, getPreviousToughnessPerc(), getToughnessPerc());
             setPreviousToughnessPerc(getToughnessPerc());
         }
         if (!getEndurancePerc().equals(getPreviousEndurancePerc())) {
+            if (getPreviousEndurancePerc() == null) {
+                setPreviousEndurancePerc(1f);
+            }
             initChangeActions(enduranceAction, getPreviousEndurancePerc(), getEndurancePerc());
             setPreviousEndurancePerc(getEndurancePerc());
         }
@@ -202,8 +209,11 @@ public class HpBar extends SuperActor {
         if (isAnimated()) {
             if (getActions().size == 0)
                 return;
-            displayedEndurancePerc = enduranceAction.getValue();
-            displayedToughnessPerc = toughnessAction.getValue();
+            displayedEndurancePerc = MathMaster.minMax(enduranceAction.getValue(),
+             Math.min(previousEndurancePerc, endurancePerc), Math.max(previousEndurancePerc, endurancePerc));
+            displayedToughnessPerc = MathMaster.minMax(toughnessAction.getValue(),
+             Math.min(previousToughnessPerc, toughnessPerc), Math.max(previousToughnessPerc, toughnessPerc));
+
         } else if (!dirty) return;
         String text = "" + Math.round(dataSource.getIntParam(PARAMS.ENDURANCE) * displayedEndurancePerc)
          + "/" + dataSource.getIntParam(PARAMS.ENDURANCE);

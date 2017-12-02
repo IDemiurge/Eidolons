@@ -11,6 +11,7 @@ public class EidolonsGame {
 
     DC_Engine engine;
     private ScenarioMetaMaster metaMaster;
+    private boolean aborted;
 
     public void setMetaMaster(ScenarioMetaMaster metaMaster) {
         this.metaMaster = metaMaster;
@@ -22,6 +23,14 @@ public class EidolonsGame {
 
     public void init() {
         metaMaster.init();
+    }
+
+    public boolean isAborted() {
+        return aborted;
+    }
+
+    public void setAborted(boolean aborted) {
+        this.aborted = aborted;
     }
     // config for engine
     // ++ audiosystem, maybe some gdx interface?

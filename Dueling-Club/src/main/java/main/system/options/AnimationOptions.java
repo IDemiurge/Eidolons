@@ -14,7 +14,7 @@ public class AnimationOptions extends Options<ANIMATION_OPTION,ANIMATION_OPTION>
         WAIT_FOR_ANIM(false ),
         MAX_ANIM_WAIT_TIME(1000, 0, 3000),
         PARALLEL_DRAWING (false) ,
-        SPEED(100, 1, 500),
+        SPEED(100, 1, 1500),
         TEXT_DURATION(100, 0, 300),
 //        INFO_LEVEL(1, 0, 1),
 //        PHASE_TIME(500, 0, 1000),

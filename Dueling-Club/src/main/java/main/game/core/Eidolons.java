@@ -12,14 +12,19 @@ import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_GameManager;
 import main.game.core.game.DC_GameMaster;
+import main.game.core.game.Game;
 import main.game.core.state.DC_StateManager;
 import main.libgdx.GdxMaster;
+import main.libgdx.launch.ScenarioLauncher;
+import main.libgdx.screens.ScreenData;
+import main.libgdx.screens.ScreenType;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 import main.test.frontend.RESOLUTION;
-import main.libgdx.launch.ScenarioLauncher;
 
 import java.awt.*;
 
@@ -42,10 +47,24 @@ public class Eidolons {
     private static RESOLUTION resolution;
     private static ScreenViewport mainViewport;
 
-    public static void initScenario(ScenarioMetaMaster master) {
+    public static boolean initScenario(ScenarioMetaMaster master) {
         mainGame = new EidolonsGame();
         mainGame.setMetaMaster(master);
         mainGame.init();
+        if (mainGame.isAborted())
+        {
+            master.gameExited();
+            toMainMenu();
+            return false;
+        }
+
+        return true;
+    }
+
+    private static void toMainMenu() {
+        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
+         new ScreenData(ScreenType.MAIN_MENU, "Back to the Void..."));
+
     }
 
     public static EidolonsGame getMainGame() {
@@ -108,6 +127,7 @@ public class Eidolons {
              LwjglApplicationConfiguration.getDesktopDisplayMode().height);
             getApplication().getApplicationListener().resize(width, height);
             getMainViewport().setScreenSize(width, height);
+
         } else {
             System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
             setResolution(OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
@@ -163,5 +183,14 @@ public class Eidolons {
 
     public static void setMainViewport(ScreenViewport mainViewport) {
         Eidolons.mainViewport = mainViewport;
+    }
+
+    public static void gameExited() {
+//        DC_Game toFinilize = game;
+        game = null;
+        mainHero=null;
+        DC_Game.game = null;
+        Game.game = null;
+//        try{toFinilize.finilize();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
     }
 }

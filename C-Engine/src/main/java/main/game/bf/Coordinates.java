@@ -26,6 +26,11 @@ public class Coordinates {
     protected int z = 0;
     private boolean invalid = false;
 
+   static Coordinates[][] coordinates;
+    Coordinates[] adjacent;
+    Coordinates[] adjacenctNoDiags;
+    Coordinates[] adjacenctDiagsOnly;
+
     public Coordinates() {
         this.x = 0;
         this.y = x;
@@ -326,7 +331,32 @@ public class Coordinates {
         return getAdjacentCoordinates(true);
     }
 
+    public Coordinates[] getAdjacent() {
+        if (adjacent==null ){
+            adjacent = getAdjacentCoordinates().toArray(new Coordinates[
+             getAdjacentCoordinates().size()]);
+        }
+        return adjacent;
+    }
+
+    public Coordinates[] getAdjacenctNoDiags() {
+        if (adjacenctNoDiags==null ){
+            adjacenctNoDiags = getAdjacentCoordinates(false).toArray(new Coordinates[
+             getAdjacentCoordinates(false).size()]);
+        }
+        return adjacenctNoDiags;
+    }
+
+    public Coordinates[] getAdjacenctDiagsOnly() {
+        if (adjacenctDiagsOnly==null ){
+            adjacenctDiagsOnly = getAdjacentCoordinates(null ).toArray(new Coordinates[
+             getAdjacentCoordinates(null ).size()]);
+        }
+        return adjacenctDiagsOnly;
+    }
+
     public List<Coordinates> getAdjacentCoordinates(Boolean diagonals_included_not_only) {
+
         List<Coordinates> list = getAdjacenctMap(diagonals_included_not_only).get(this);
         if (list != null)
             return list;

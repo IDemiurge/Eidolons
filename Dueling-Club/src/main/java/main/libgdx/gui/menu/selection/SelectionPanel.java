@@ -45,14 +45,15 @@ Label title;
         addNormalSize(listPanel).left();
         addNormalSize(infoPanel).right();
 
+        row();
         TablePanel buttonPanel= new TablePanel<>();
-        buttonPanel.padRight(300).setWidth(getWidth());
-
+        buttonPanel
+//         .padRight(300)
+         .setWidth(getWidth());
+        addElement(buttonPanel).bottom().size(getWidth(), 70);
         if (isBackSupported())
             buttonPanel.addNormalSize(backButton).left() ;
         buttonPanel.addNormalSize(startButton).right() ;
-        row();
-        addElement(buttonPanel).bottom();
         if (isReadyToBeInitialized())
             init();
 
@@ -122,15 +123,15 @@ Label title;
     }
 
     public void tryDone() {
-        if (listPanel.isBlocked(listPanel.getCurrentItem())){
-            return ;
-        }
         if (listPanel.getCurrentItem() == null) {
             if (isRandom()){
                 listPanel.selectRandomItem();
                 WaitMaster.WAIT(400);
             } else
                 return;
+        }
+        if (listPanel.isBlocked(listPanel.getCurrentItem())){
+            return ;
         }
         done();
     }
@@ -156,7 +157,7 @@ Label title;
         if (listPanel.getCurrentItem() != null)
             WaitMaster.receiveInput(getWaitOperation(), selection);
         else
-            WaitMaster.receiveInput(getWaitOperation(), selection);
+            WaitMaster.interrupt(getWaitOperation() );
         setVisible(false);
     }
 

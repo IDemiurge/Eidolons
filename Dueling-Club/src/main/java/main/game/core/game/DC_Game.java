@@ -30,7 +30,6 @@ import main.game.battlecraft.logic.battlefield.DC_BattleField;
 import main.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
 import main.game.battlecraft.logic.battlefield.DC_MovementManager;
 import main.game.battlecraft.logic.battlefield.DroppedItemManager;
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import main.game.battlecraft.logic.dungeon.location.LocationMaster;
 import main.game.battlecraft.logic.dungeon.test.TestDungeonMaster;
@@ -158,7 +157,7 @@ public class DC_Game extends MicroGame {
 
         requirementsManager = new DC_RequirementsManager(this);
         valueManager = new DC_ValueManager(this);
-        visionMaster = VisionManager.getMaster();
+        visionMaster = new VisionMaster(this);
         mathManager = new DC_MathManager(this);
         effectManager = new DC_EffectManager(this);
         animationManager = new AnimationManager(this);

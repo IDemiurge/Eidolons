@@ -24,17 +24,13 @@ import java.util.function.Supplier;
 
 public class RadialValueContainer extends ActionValueContainer {
     Runnable lazyChildInitializer;
+    Label infoLabel;
+    Supplier<String> infoTextSupplier;
     private List<RadialValueContainer> childNodes = new ArrayList<>();
     private RadialValueContainer parent;
     private Supplier<ToolTip> tooltipSupplier;
     private ToolTip tooltip;
-    private boolean valid=true;
-    Label infoLabel;
-    Supplier<String> infoTextSupplier;
-
-    public void setInfoTextSupplier(Supplier<String> infoTextSupplier) {
-        this.infoTextSupplier = infoTextSupplier;
-    }
+    private boolean valid = true;
 
     public RadialValueContainer(TextureRegion texture, String name, String value, Runnable action) {
         super(texture, name, value, action);
@@ -52,14 +48,15 @@ public class RadialValueContainer extends ActionValueContainer {
         super(texture, value, action);
         this.lazyChildInitializer = lazyChildInitializer;
 //if (isAddListener())
-        addListener(new BattleClickListener(){
+        addListener(new BattleClickListener() {
             boolean hover;
+
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 if (hover)
                     return false;
-                hover =true;
-                ActorMaster.addScaleAction(RadialValueContainer.this, 1.2f,1.2f, 0.7f);
+                hover = true;
+                ActorMaster.addScaleAction(RadialValueContainer.this, 1.2f, 1.2f, 0.7f);
                 return super.mouseMoved(event, x, y);
             }
 
@@ -67,15 +64,15 @@ public class RadialValueContainer extends ActionValueContainer {
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (!hover) {
                     hover = true;
-                    ActorMaster.addScaleAction(RadialValueContainer.this, 1.2f,1.2f, 0.7f);
+                    ActorMaster.addScaleAction(RadialValueContainer.this, 1.2f, 1.2f, 0.7f);
                 }
                 super.enter(event, x, y, pointer, fromActor);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                hover =false;
-                ActorMaster.addScaleAction(RadialValueContainer.this, 1  ,1 , 0.7f);
+                hover = false;
+                ActorMaster.addScaleAction(RadialValueContainer.this, 1, 1, 0.7f);
                 super.exit(event, x, y, pointer, toActor);
             }
         });
@@ -84,16 +81,25 @@ public class RadialValueContainer extends ActionValueContainer {
     public RadialValueContainer(TextureRegion textureRegion, Runnable runnable, boolean valid, DC_ActiveObj activeObj, DC_Obj target) {
         this(textureRegion, runnable);
         this.valid = valid;
-        infoTextSupplier=RadialManager.getInfoTextSupplier(valid, activeObj, target);
+        try {
+            infoTextSupplier = RadialManager.getInfoTextSupplier(valid, activeObj, target);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+
+    }
+
+    public void setInfoTextSupplier(Supplier<String> infoTextSupplier) {
+        this.infoTextSupplier = infoTextSupplier;
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         ShaderProgram shader = null;
-            if (!valid) {
-                shader = batch.getShader();
-                batch.setShader(GrayscaleShader.getGrayscaleShader());
-            }
+        if (!valid) {
+            shader = batch.getShader();
+            batch.setShader(GrayscaleShader.getGrayscaleShader());
+        }
         super.draw(batch, parentAlpha);
         if (batch.getShader() == GrayscaleShader.getGrayscaleShader())
             batch.setShader(shader);
@@ -128,19 +134,16 @@ public class RadialValueContainer extends ActionValueContainer {
         super.setVisible(visible);
         if (visible) {
             if (infoTextSupplier != null) {
-                if (infoLabel == null)
-                {
+                if (infoLabel == null) {
                     infoLabel = new Label(infoTextSupplier.get(), StyleHolder.getSizedLabelStyle(FONT.RU, 18));
                     addActor(infoLabel);
-                }
-                else
-                {
+                } else {
                     infoLabel.setText(infoTextSupplier.get());
                 }
-                infoLabel.setColor(valid ? new Color (1,1,1,1): new Color(1,0.2f,0.3f, 1));
+                infoLabel.setColor(valid ? new Color(1, 1, 1, 1) : new Color(1, 0.2f, 0.3f, 1));
 
-                infoLabel.setPosition((64-infoLabel.getWidth())/2,
-                 (imageContainer.getActor().getImageHeight()+infoLabel.getHeight())/2);
+                infoLabel.setPosition((64 - infoLabel.getWidth()) / 2,
+                 (imageContainer.getActor().getImageHeight() + infoLabel.getHeight()) / 2);
             }
 
             if (tooltip == null)

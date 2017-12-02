@@ -60,7 +60,7 @@ public class ArcaneVault {
     public static final int TABLE_WIDTH = (WIDTH - TREE_WIDTH) / 2;
     public static final int TABLE_HEIGHT = TREE_HEIGHT * 19 / 20;
     public final static boolean defaultTypesGenerateOn = false;
-    public final static String presetTypes = "units;chars;party;missions;scenarios;" +
+    public final static String presetTypes = "units;bf obj;chars;party;missions;scenarios;" +
 //     "abils;spells;skills;"+
              "weapons;armor;" +
      "actions;" + "";

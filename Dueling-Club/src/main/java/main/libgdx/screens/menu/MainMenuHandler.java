@@ -7,6 +7,7 @@ import main.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
+import main.system.options.OptionsMaster;
 
 /**
  * Created by JustMe on 11/30/2017.
@@ -24,7 +25,9 @@ public class MainMenuHandler {
 
                 return true;
             case OPTIONS:
-                break;
+                OptionsMaster.init( );
+                OptionsMaster.openMenu();
+            return true;
             case MANUAL:
                 break;
             case ABOUT:

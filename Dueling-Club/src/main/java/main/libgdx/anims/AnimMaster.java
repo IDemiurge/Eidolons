@@ -254,7 +254,7 @@ public class AnimMaster extends Group {
         if (animation.isRunning())
             return;
 
-        animation.reset();
+//        animation.reset();
         animation.setWaitingForNext(attachToNext);
 //        if (leadAnimation == null && !attachToNext) {
 //            leadAnimation = animation;

@@ -17,8 +17,6 @@ import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.debug.DebugMaster;
 
 import java.util.ArrayList;
@@ -120,9 +118,23 @@ public class VisionMaster implements GenericVisionManager {
                 visibleList.add(sub);
             else invisibleList.add(sub);
         }
-        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
+//        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
         main.system.auxiliary.log.LogMaster.log(1,">>>>>> invisibleList  = " +invisibleList);
         main.system.auxiliary.log.LogMaster.log(1,">>>>>> visibleList  = " +visibleList);
+
+        String string="";
+        for (BattleFieldObject sub : visibleList) {
+            string +=sub+": \n";
+            string +="getVisibilityLevelForPlayer= "+ sub.getVisibilityLevelForPlayer()+"\n";
+            string +="getVisibilityLevel= "+ sub.getVisibilityLevel()+"\n";
+            string +="getPlayerVisionStatus= "+ sub.getPlayerVisionStatus(true)+"\n";
+            string +="getGamma= "+ sub.getGamma()+"\n";
+        }
+
+        LogMaster.log(1, "***********" +
+         "" + string);
+
+
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_OFF, invisibleList);
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, visibleList);
     }
@@ -136,9 +148,11 @@ public class VisionMaster implements GenericVisionManager {
 
         if (sub.isMine())
             return true;
-        if (sub.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.UNKNOWN)
+        if (sub.getVisibilityLevel()==VISIBILITY_LEVEL.UNSEEN)
             return false;
-        else if (sub.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.INVISIBLE) {
+        if (sub.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.UNKNOWN)
+            return false;
+        else if (sub.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.INVISIBLE) {
 //            if (ExplorationMaster.isExplorationOn())
 
             return false;

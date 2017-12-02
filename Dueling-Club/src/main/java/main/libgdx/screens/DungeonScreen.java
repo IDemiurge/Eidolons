@@ -252,8 +252,8 @@ public class DungeonScreen extends ScreenWithVideoLoader {
         getOverlayStage().setActive(false);
     }
     protected void triggerInitialEvents() {
-        DC_Game.game.getVisionMaster().triggerGuiEvents();
-        GuiEventManager.trigger(UPDATE_GUI);
+//        DC_Game.game.getVisionMaster().triggerGuiEvents();
+        GuiEventManager.trigger(UPDATE_LIGHT);
     }
 
     public void renderMain(float delta) {
@@ -354,7 +354,8 @@ public class DungeonScreen extends ScreenWithVideoLoader {
 
     private void checkShader() {
 
-        if (isBlocked() || ExplorationMaster.isWaiting()) {
+        if (batch.getShader() !=DarkShader.getShader())
+            if (isBlocked() || ExplorationMaster.isWaiting()) {
             bufferedShader = batch.getShader();
             batch.setShader(DarkShader.getShader());
         }
@@ -403,9 +404,12 @@ public class DungeonScreen extends ScreenWithVideoLoader {
 
     @Override
     public void resize(int width, int height) {
-/*        animationEffectStage.getViewport().update(width, height);
+//     animationEffectStage.getViewport().update(width, height);
+
+        gridStage.getRoot().setSize(width, height);
+        guiStage.getRoot().setSize(width, height);
         gridStage.getViewport().update(width, height);
-        guiStage.getViewport().update(width, height);*/
+        guiStage.getViewport().update(width, height);
     }
 
     public GridPanel getGridPanel() {

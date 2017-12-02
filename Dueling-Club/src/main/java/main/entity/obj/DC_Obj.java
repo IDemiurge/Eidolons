@@ -307,12 +307,16 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public void setVisibilityLevel(VISIBILITY_LEVEL visibilityLevel) {
-        if (getGame().getManager().getActiveObj() != null) {
-            if (getGame().getManager().getActiveObj().isMine())
-                if (getGame().getManager().getActiveObj().isMainHero()) {
+        Unit seeingUnit = getGame().getVisionMaster().getSeeingUnit();
+        if (seeingUnit != null) {
+            if (seeingUnit.isMine())
+                if (seeingUnit.isMainHero()) {
                     setVisibilityLevelForPlayer(visibilityLevel);
                 }
         }
+
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
+         this + " setVisibilityLevel " + visibilityLevel  );
         this.visibilityLevel = visibilityLevel;
     }
 
@@ -340,7 +344,7 @@ public abstract class DC_Obj extends MicroObj {
         return visibilityLevelForPlayer;
     }
 
-    public void setVisibilityLevelForPlayer(VISIBILITY_LEVEL visibilityLevelForPlayer) {
+    private void setVisibilityLevelForPlayer(VISIBILITY_LEVEL visibilityLevelForPlayer) {
         this.visibilityLevelForPlayer = visibilityLevelForPlayer;
     }
 
@@ -403,6 +407,8 @@ public abstract class DC_Obj extends MicroObj {
                 setOutlineTypeForPlayer(outlineType);
             }
         }
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
+         this + "   setOutlineType " + outlineType  );
         this.outlineType = outlineType;
     }
 
@@ -424,6 +430,9 @@ public abstract class DC_Obj extends MicroObj {
                 }
             }
         }
+
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
+         this + "   setOutlineTypeForPlayer " + outlineTypeForPlayer  );
         // main.system.auxiliary.getGame().getLogManager().appendSpecialLog(SPECIAL_LOG.VISIBILITY, "outlineTypeForPlayer set to "
         // + outlineTypeForPlayer);
     }
@@ -481,19 +490,21 @@ public abstract class DC_Obj extends MicroObj {
     public void setPlayerVisionStatus(UNIT_TO_PLAYER_VISION playerVisionStatus) {
         if (getGame().getManager().getActiveObj() != null) {
             if (getGame().getManager().getActiveObj().isMine()) {
-              main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "set PlayerVisionStatus " + getNameAndCoordinate()   +
-                 " from " +
-                 this.playerVisionStatus +
-                 " to "
-                 + playerVisionStatus.toString());
+//                if (this instanceof Unit)
+//              main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "set PlayerVisionStatus " + getNameAndCoordinate()   +
+//                 " from " +
+//                 this.playerVisionStatus +
+//                 " to "
+//                 + playerVisionStatus.toString());
                 this.playerVisionStatus = playerVisionStatus;
             }
         }
-      main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "set activeVisionStatus " + getNameAndCoordinate()   +
-         " from " +
-         this.activeVisionStatus +
-         " to "
-         + playerVisionStatus.toString());
+//        if (this instanceof Unit)
+//      main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "set activeVisionStatus " + getNameAndCoordinate()   +
+//         " from " +
+//         this.activeVisionStatus +
+//         " to "
+//         + playerVisionStatus.toString());
                 this.activeVisionStatus = playerVisionStatus;
         if (playerVisionStatus != null) {
             setProperty(PROPS.DETECTION_STATUS, playerVisionStatus.toString());

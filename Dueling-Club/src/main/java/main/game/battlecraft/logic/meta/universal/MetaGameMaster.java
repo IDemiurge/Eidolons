@@ -87,7 +87,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         else game.setMetaMaster(this);
         metaGame = initializer.initMetaGame(data);
         preStart();
-        partyManager.initPlayerParty();
+        if (partyManager.initPlayerParty()==null )
+            Eidolons.getMainGame().setAborted(true);
     }
 
     public void preStart() {
@@ -193,5 +194,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         }
         AnimMaster.getInstance().cleanUp();
         Coordinates.clearCaches();
+
     }
 }

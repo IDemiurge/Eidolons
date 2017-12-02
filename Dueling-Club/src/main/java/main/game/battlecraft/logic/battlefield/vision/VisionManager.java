@@ -6,8 +6,6 @@ import main.game.core.Eidolons;
 public class VisionManager {
 
     private static boolean visionHacked;
-    private static VisionMaster master;
-
 
     public static boolean isVisionHacked() {
 
@@ -20,23 +18,20 @@ public class VisionManager {
     }
 
     public static boolean checkVisible(DC_Obj obj) {
-        return master.checkVisible(obj, true);
+        return getMaster().checkVisible(obj, true);
     }
 
     public static boolean checkVisible(DC_Obj obj, boolean active) {
-        return master.checkVisible(obj, active);
+        return getMaster().checkVisible(obj, active);
     }
 
     public static void refresh() {
-        master.refresh();
+        getMaster().refresh();
     }
 
 
     public static VisionMaster getMaster() {
-        if (master == null) {
-            master = new VisionMaster(Eidolons.game);
-        }
-        return master;
+        return Eidolons.game.getVisionMaster();
     }
 
     public static boolean checkDetected(DC_Obj dc_obj) {
@@ -44,12 +39,12 @@ public class VisionManager {
     }
 
     public static boolean checkDetected(DC_Obj dc_obj, boolean enemy) {
-        return master.getDetectionMaster().checkDetected(dc_obj, enemy);
+        return getMaster().getDetectionMaster().checkDetected(dc_obj, enemy);
     }
     public static boolean checkKnown(DC_Obj dc_obj ) {
-        return master.getDetectionMaster().checkKnown(dc_obj );
+        return getMaster().getDetectionMaster().checkKnown(dc_obj );
     }
     public static boolean checkKnownForPlayer(DC_Obj dc_obj ) {
-        return master.getDetectionMaster().checkKnownForPlayer(dc_obj );
+        return getMaster().getDetectionMaster().checkKnownForPlayer(dc_obj );
     }
 }

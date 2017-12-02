@@ -75,9 +75,6 @@ public class Waiter {
 
         n++;
         await();
-        if (interrupted) {
-            input = null;
-        }
         return input;
     }
 
@@ -151,7 +148,6 @@ public class Waiter {
     public void interrupt() {
         lock.lock();
         interrupted = true;
-        input = null;
         waiting.signal();
         lock.unlock();
 

@@ -216,6 +216,7 @@ public abstract class Game  implements Serializable {
                 LogMaster.log(0, type + " already initialized for " + type.getGame() + " with id: "
                         + type.getId());
             }
+            type.setGame(this);
             return;
         }
         type.setId(idManager.getNewTypeId());

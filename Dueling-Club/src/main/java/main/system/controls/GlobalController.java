@@ -50,7 +50,7 @@ public class GlobalController implements Controller {
         GridUnitView hovered = DungeonScreen.getInstance().getGridPanel().getHoverObj();
         GridCellContainer cell = (GridCellContainer) hovered.getParent();
 
-         List<GridUnitView> list = new ArrayList<>(cell.getUnitViews());
+         List<GridUnitView> list = new ArrayList<>(cell.getUnitViewsVisible());
         if (list.size() == 1)
             return; // or do something else
         SortMaster.sortByExpression(list, view -> view.hashCode());
@@ -60,7 +60,7 @@ public class GlobalController implements Controller {
             index = 0;
 
         GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, hovered);
-        GridUnitView newFocus = cell.getUnitViews().get(index);
+        GridUnitView newFocus = cell.getUnitViewsVisible().get(index);
         cell.popupUnitView(newFocus);
         GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, newFocus);
         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, newFocus.getTooltip()  );

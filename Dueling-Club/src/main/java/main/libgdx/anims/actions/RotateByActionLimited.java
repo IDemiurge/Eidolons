@@ -45,7 +45,8 @@ public class RotateByActionLimited extends RotateByAction {
          + " current= " + target.getRotation());
         boolean result = super.act(delta);
         if (result) {
-            applyLeftover();
+//            applyLeftover();
+//            return true;
         }
         return result;
     }
