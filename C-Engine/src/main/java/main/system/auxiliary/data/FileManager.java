@@ -181,7 +181,13 @@ public class FileManager {
         if (file == null) {
             return false;
         }
-        return file.isFile();
+        if (!file.exists()) {
+            return false;
+        }
+        if (!file.isFile()) {
+            return false;
+        }
+        return true;
     }
 
     public static boolean isDirectory(String file) {
@@ -224,9 +230,16 @@ public class FileManager {
                                                   String format, boolean underslash ) {
         return getRandomFilePathVariant(corePath, format, underslash, false);
     }
-        public static String getRandomFilePathVariant(String corePath,
+    public static String getRandomFilePathVariant(String corePath,
+                                                  String format,
+                                                  boolean underslash,
+                                                  boolean recursion) {
+        return getRandomFilePathVariant("", corePath, format, underslash, recursion);
+    }
+        public static String getRandomFilePathVariant(String prefixPath,String corePath,
          String format, boolean underslash, boolean recursion) {
-        File file = new File(corePath + format);
+            corePath = StringMaster.cropFormat(corePath);
+        File file = new File(prefixPath + corePath + format);
         if (!file.isFile()) {
             LogMaster.log(1, "no  file available for " + corePath + " - " + format);
             return null;
@@ -234,7 +247,7 @@ public class FileManager {
         int i = 2;
         while (file.isFile()) {
 
-            String newPath = corePath + ((underslash) ? "_" : "") + i + format;
+            String newPath = prefixPath +corePath + ((underslash) ? "_" : "") + i + format;
             file = new File(newPath);
             if (!file.isFile()) {
 
@@ -244,7 +257,7 @@ public class FileManager {
         }
         if (i == 2) {
             if (!recursion){
-                return getRandomFilePathVariant(corePath, format, underslash, true);
+                return getRandomFilePathVariant(prefixPath ,corePath, format, underslash, true);
             }
             return corePath + format;
         }

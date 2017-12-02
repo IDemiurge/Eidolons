@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Align;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.PROPS;
 import main.entity.obj.Obj;
@@ -14,6 +15,8 @@ import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.Eidolons;
 import main.libgdx.GdxColorMaster;
+import main.libgdx.anims.ActorMaster;
+import main.libgdx.anims.actions.FloatActionLimited;
 import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridMaster;
 import main.libgdx.bf.SuperActor;
@@ -25,6 +28,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 
 import java.awt.*;
+import java.util.Random;
 
 /**
  * Created by JustMe on 8/28/2017.
@@ -36,13 +40,14 @@ public class ShadeLightCell extends SuperContainer {
     private int x;
     private int y;
     private SHADE_LIGHT type;
-    private float baseAlpha;
+    private float baseAlpha=0;
     private Float originalX;
     private Float originalY;
 
     public ShadeLightCell(SHADE_LIGHT type, int x, int y) {
-        super(new Image(TextureCache.getOrCreateR(type.getTexturePath())));
+        super(new Image(TextureCache.getOrCreateR(getTexturePath(type))));
         this.type = type;
+        transform();
         if (isColored()) {
             teamColor = initTeamColor();
             if (getTeamColor() != null)
@@ -50,6 +55,25 @@ public class ShadeLightCell extends SuperContainer {
         }
         this.x = x;
         this.y = y;
+    }
+
+    private void transform() {
+        if (type == SHADE_LIGHT.GAMMA_SHADOW) {
+            int rotation = 90 * RandomWizard.getRandomInt(4);
+            getContent().setOrigin(Align.center);
+            getContent().setRotation(rotation);
+            getContent().setScale(new Random().nextFloat()/5 + 1f, new Random().nextFloat()/5 + 1f );
+        }
+        }
+
+    private static String getTexturePath(SHADE_LIGHT type) {
+        switch (type) {
+//            case GAMMA_SHADOW:
+//               return  FileManager.getRandomFilePathVariant(
+//                PathFinder.getImagePath() ,
+//                type.getTexturePath(), ".png", false, false) ;
+        }
+        return type.getTexturePath();
     }
 
     public static void setAlphaFluctuation(boolean alphaFluctuation) {
@@ -70,6 +94,8 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     public float getWidth() {
+        if (type == SHADE_LIGHT.GAMMA_SHADOW)
+            return super.getWidth();
         if (type == SHADE_LIGHT.HIGLIGHT)
             return super.getWidth();
         return GridConst.CELL_W;
@@ -77,6 +103,8 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     public float getHeight() {
+        if (type == SHADE_LIGHT.GAMMA_SHADOW)
+            return super.getHeight();
         if (type == SHADE_LIGHT.HIGLIGHT)
             return super.getHeight();
         return GridConst.CELL_H;
@@ -86,11 +114,6 @@ public class ShadeLightCell extends SuperContainer {
         return baseAlpha;
     }
 
-    public void setBaseAlpha(float baseAlpha) {
-        this.baseAlpha = baseAlpha;
-        if (isColored())
-            teamColor = initTeamColor();
-    }
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
@@ -193,8 +216,29 @@ public class ShadeLightCell extends SuperContainer {
              )) {
                 return;
             }
-
+            if (isAnimated())
+        baseAlpha= alphaAction.getValue();
         super.act(delta);
+    }
+    FloatActionLimited alphaAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
+
+    public void setBaseAlpha(float baseAlpha) {
+        if (isAnimated()) {
+        alphaAction.reset();
+        alphaAction.setStart(this.baseAlpha);
+        alphaAction.setEnd(baseAlpha);
+        addAction(alphaAction);
+        alphaAction.setTarget(this);
+            alphaAction.setDuration(0.25f + (Math.abs( this.baseAlpha - baseAlpha))/2);
+        } else
+        this.baseAlpha = baseAlpha;
+
+        if (isColored())
+            teamColor = initTeamColor();
+    }
+
+    private boolean isAnimated() {
+        return true;
     }
 
     @Override

@@ -121,7 +121,7 @@ public class ActorMaster {
             action.setAmount((action.getAmount() + 360) % 360);
 
         main.system.auxiliary.log.LogMaster.log(1,from+ "from; to: " +to + "; amount = " + action.getAmount());
-        float speed = 360*AnimMaster.getInstance().getAnimationSpeedFactor(); //* options
+        float speed = 180*AnimMaster.getInstance().getAnimationSpeedFactor(); //* options
         float duration = Math.abs(from - to) / speed;
         action.setDuration(duration);
         actor.addAction(action);

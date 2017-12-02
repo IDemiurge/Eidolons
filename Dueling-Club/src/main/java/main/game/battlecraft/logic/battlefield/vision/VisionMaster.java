@@ -17,6 +17,7 @@ import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.test.debug.DebugMaster;
 
 import java.util.ArrayList;
@@ -122,6 +123,7 @@ public class VisionMaster implements GenericVisionManager {
         main.system.auxiliary.log.LogMaster.log(1,">>>>>> invisibleList  = " +invisibleList);
         main.system.auxiliary.log.LogMaster.log(1,">>>>>> visibleList  = " +visibleList);
 
+        if (LOG_CHANNEL.VISIBILITY_DEBUG.isOn()) {
         String string="";
         for (BattleFieldObject sub : visibleList) {
             string +=sub+": \n";
@@ -134,6 +136,7 @@ public class VisionMaster implements GenericVisionManager {
         LogMaster.log(1, "***********" +
          "" + string);
 
+        }
 
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_OFF, invisibleList);
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, visibleList);

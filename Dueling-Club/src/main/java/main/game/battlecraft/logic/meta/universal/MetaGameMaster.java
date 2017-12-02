@@ -3,6 +3,7 @@ package main.game.battlecraft.logic.meta.universal;
 import main.entity.DataModel;
 import main.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import main.game.battlecraft.logic.meta.scenario.ScenarioPartyManager;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
@@ -178,6 +179,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public void gameExited() {
+
 //        try {
 //            DungeonScreen.getInstance().dispose();
 //        } catch (Exception e) {

@@ -25,7 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextureCache {
-    private static final boolean uiAtlasOn = true;
+    private static final boolean uiAtlasOn = false;
     private static TextureCache textureCache;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);

@@ -43,6 +43,12 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
     }
 
     @Override
+    public void gameExited() {
+        ScenarioPartyManager.setSelectedHero(null);
+        super.gameExited();
+    }
+
+    @Override
     public void next(Boolean outcome) {
         boolean restart = false;
         if (outcome == null) {

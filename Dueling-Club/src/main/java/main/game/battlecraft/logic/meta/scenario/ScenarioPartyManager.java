@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
-    private String selectedHero;
+    private static String selectedHero;
 
     public ScenarioPartyManager(ScenarioMetaMaster master) {
         super(master);
@@ -38,6 +38,10 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     }
 
+    public static void setSelectedHero(String selectedHero) {
+        ScenarioPartyManager.selectedHero = selectedHero;
+    }
+
     @Override
     public int getPartyLevel() {
         return getMetaGame().getMissionIndex();
@@ -46,10 +50,10 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     @Override
     public String checkLeveledHeroVersionNeeded(String heroName) {
 
-       int i = getMetaGame().getMissionIndex();
+        int i = getMetaGame().getMissionIndex();
 //        getMetaDataManager().getMissionName()
-        while (i>0){
-            heroName =   NameMaster.appendVersionToName(heroName, i+1);
+        while (i > 0) {
+            heroName = NameMaster.appendVersionToName(heroName, i + 1);
             if (DataManager.isTypeName(heroName, DC_TYPE.CHARS))
                 break;
             i--;
@@ -66,8 +70,8 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     @Override
     public void gameStarted() {
         Unit hero = getGame().getMaster().getUnitByName(
-         selectedHero,   true, null, null, getGame().getPlayer(true),
-        null );
+         selectedHero, true, null, null, getGame().getPlayer(true),
+         null);
         //will find 1st if name==null
         mainHeroSelected(party, hero);
     }
@@ -75,32 +79,35 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     @Override
     public PartyObj initPlayerParty() {
         if (!getMaster().getMetaGame().isPartyRespawn())
-            return null ;
+            return null;
         //preset
         //choice
         //already as Unit?
         ObjType type = getMetaGame().getScenario().getPartyType();
-        randomOneHero= OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.RANDOM_HERO);
-        chooseOneHero= !randomOneHero;
+        randomOneHero = OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.RANDOM_HERO);
+        chooseOneHero = !randomOneHero;
         if (type == null) {
             String string = getMetaGame().getScenario().getProperty(PROPS.SCENARIO_PARTY);
             type = new ObjType("dummy", DC_TYPE.PARTY);
             type.setProperty(PROPS.MEMBERS, string);
-            //new ? choice?
-        } else             type = new ObjType(type);
-        if (getGame().getMetaMaster().getPartyManager().isRandomOneHero()||
+
+        } else type = new ObjType(type);
+        if (getGame().getMetaMaster().getPartyManager().isRandomOneHero() ||
          getGame().getMetaMaster().getPartyManager().isChooseOneHero()) {
-            List<String> members =  StringMaster.openContainer(type.getProperty(PROPS.MEMBERS));
-            if (getGame().getMetaMaster().getPartyManager().isRandomOneHero() || members.size()==1) {
+            List<String> members = StringMaster.openContainer(type.getProperty(PROPS.MEMBERS));
+            if (getGame().getMetaMaster().getPartyManager().isRandomOneHero()
+             || members.size() == 1) {
                 String hero = new RandomWizard<String>().getRandomListItem(
                  members);
-                type.setProperty(PROPS.MEMBERS , hero);
+                type.setProperty(PROPS.MEMBERS, hero);
             } else {
-                String hero =chooseHero(members);
-if (hero==null ){
-    return null;
-}
-                type.setProperty(PROPS.MEMBERS , hero);
+                String hero =selectedHero; //for restart
+                if (hero == null )
+                    hero = chooseHero(members);
+                if (hero == null) {
+                    return null; //aborted
+                }
+                type.setProperty(PROPS.MEMBERS, hero);
             }
         }
         party = new PartyObj(type);
@@ -126,15 +133,15 @@ if (hero==null ){
 
     private String chooseHero(List<String> members) {
         if (isSwingOn()) {
-           return  ListChooser.chooseType(
+            return ListChooser.chooseType(
              members, DC_TYPE.CHARS);
         }
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
         GuiEventManager.trigger(
-         GuiEventType.SHOW_SELECTION_PANEL,DataManager.toTypeList(members, DC_TYPE.CHARS));
+         GuiEventType.SHOW_SELECTION_PANEL, DataManager.toTypeList(members, DC_TYPE.CHARS));
         selectedHero = (String) WaitMaster.
          waitForInput(WAIT_OPERATIONS.SELECTION);
-        main.system.auxiliary.log.LogMaster.log(1,"+++++++++selectedHero = " +selectedHero);
+        main.system.auxiliary.log.LogMaster.log(1, "+++++++++selectedHero = " + selectedHero);
         return selectedHero;
     }
 

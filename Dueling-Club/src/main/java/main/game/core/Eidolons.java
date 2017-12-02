@@ -187,6 +187,7 @@ public class Eidolons {
 
     public static void gameExited() {
 //        DC_Game toFinilize = game;
+        game.getMetaMaster().gameExited();
         game = null;
         mainHero=null;
         DC_Game.game = null;

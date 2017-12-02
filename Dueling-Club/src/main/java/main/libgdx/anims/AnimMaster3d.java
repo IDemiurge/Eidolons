@@ -88,7 +88,13 @@ public class AnimMaster3d {
         if (!is3dSupported(weapon))
             return false;
         if (getOrCreateAtlas(weapon) == null)
-            return false;
+        {
+            if (!Assets.isOn()) {
+                return false;
+            }
+            preloadAtlas(weapon);
+            return true;
+        }
         if (weapon.getAmmo() != null) {
             if (getOrCreateAtlas(weapon.getAmmo().getWrappedWeapon()) == null)
                 return false;
@@ -359,21 +365,39 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
 
     public static void preloadAtlas(DC_WeaponObj weapon) {
         if (GdxMaster.isLwjglThread())
-            getOrCreateAtlas(weapon);
+            loadAtlasForWeapon(weapon);
         else
             Gdx.app.postRunnable(() -> {
-                if (is3dSupported(weapon))
-                    getOrCreateAtlas(weapon);
+                    loadAtlasForWeapon(weapon);
             });
+    }
+
+    private static void loadAtlasForWeapon(DC_WeaponObj weapon) {
+        if (!Assets.isOn()) {
+            getOrCreateAtlas(weapon);
+            return;
+        }
+        String path =
+         getFullAtlasPath(weapon);
+        Assets.get().getManager().load(path, TextureAtlas.class);
     }
 
     public static TextureAtlas getOrCreateAtlas(DC_WeaponObj weapon) {
         if (broken.contains(weapon))
             return null;
         try {
-            String path =PathFinder.getImagePath()+ getAtlasPath(weapon, getWeaponAtlasKey(weapon));
+            String path =
+             getFullAtlasPath(weapon);
+
             if (!FileManager.isFile(path))
                 return null;
+
+            if ( Assets.isOn()) {
+                Assets.get().getManager().update();
+                Assets.get().getManager().finishLoadingAsset(path);
+               return Assets.get().getManager().get(path, TextureAtlas.class);
+//
+            }
             TextureAtlas atlas = atlasMap.get(path);
             if (atlas == null) {
                 atlas = new SmartTextureAtlas(path);
@@ -386,6 +410,10 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
             return null;
         }
 
+    }
+
+    private static String getFullAtlasPath(DC_WeaponObj weapon) {
+        return PathFinder.getImagePath()+ getAtlasPath(weapon, getWeaponAtlasKey(weapon));
     }
 
 
