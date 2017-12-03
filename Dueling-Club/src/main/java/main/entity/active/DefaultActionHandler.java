@@ -203,7 +203,12 @@ if (sequence.isEmpty())
 
     public static DC_ActiveObj getPreferredAttackAction(Unit source, BattleFieldObject target) {
 // if (offhand)
-        return pickAutomatically(source.getAttack().getSubActions(), target);
+        DC_ActiveObj action = pickAutomatically(
+         source.getAttack().getSubActions(), target);
+        if (action==null )
+            if (source.getOffhandAttack()!=null )
+                action = pickAutomatically(source.getOffhandAttack().getSubActions(), target);
+        return action;
     }
 
     //

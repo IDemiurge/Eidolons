@@ -240,12 +240,15 @@ public class PathFinder {
 
     public static String getSpritesPath() {
         init();
-        main.system.auxiliary.log.LogMaster.log(1,"SPRITE PATH= "+getImagePath() +  StringMaster.getPathSeparator()+
-         "mini"+StringMaster.getPathSeparator()+"sprites"+StringMaster.getPathSeparator() );
         return getImagePath() +  StringMaster.getPathSeparator()+
          "mini"+StringMaster.getPathSeparator()+"sprites"+StringMaster.getPathSeparator() ;
     }
 
+    public static String getSpritesPathNew() {
+        init();
+        return getImagePath() +  StringMaster.getPathSeparator()+
+         "main"+StringMaster.getPathSeparator()+"sprites"+StringMaster.getPathSeparator() ;
+    }
     public static String getParticlePresetPath() {
         init();
         return getImagePath() + StringMaster.getPathSeparator()+"mini"+StringMaster.getPathSeparator()+"sfx"+StringMaster.getPathSeparator();

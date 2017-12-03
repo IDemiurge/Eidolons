@@ -1,4 +1,4 @@
-package main.libgdx.anims.weapons;
+package main.libgdx.anims.anim3d;
 
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;

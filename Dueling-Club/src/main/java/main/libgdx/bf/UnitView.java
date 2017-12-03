@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
@@ -123,11 +124,7 @@ public class UnitView extends BaseView {
                 this.clockTexture = clockTexture;
                 initiativeLabel = new Label(
                  String.valueOf(clockVal),
-                 StyleHolder.getSizedColoredLabelStyle(StyleHolder.ALT_FONT, 16,
-                  getTeamColor()
-//                  GdxColorMaster.CYAN
-//              GdxColorMaster.getColor(SmartTextManager.getValueCase())
-                 ));
+                 getInitiativeFontStyle());
                 clockImage = new Image(clockTexture);
                 addActor(clockImage);
                 addActor(initiativeLabel);
@@ -177,14 +174,21 @@ public class UnitView extends BaseView {
         if (clockTexture != null) {
             initiativeIntVal = val;
             initiativeLabel.setText(String.valueOf(val));
-            initiativeLabel.setStyle(StyleHolder.getSizedColoredLabelStyle(StyleHolder.ALT_FONT, 16,
-             getTeamColor()));
+            initiativeLabel.setStyle(
+             getInitiativeFontStyle());
             initiativeLabel.setPosition(
              clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth() / 2),
              clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
         } else {
             LogMaster.error("Initiative set to wrong object type != OBJ_TYPES.UNITS");
         }
+    }
+
+    public LabelStyle getInitiativeFontStyle() {
+        return StyleHolder.getSizedColoredLabelStyle(
+         0.3f,
+         StyleHolder.ALT_FONT, 16,
+        getTeamColor());
     }
 
     @Override

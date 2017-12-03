@@ -45,18 +45,26 @@ public class ScrollTextPanel extends Group {
             bg = new Image(TextureCache.getOrCreateR(getBgPath()));
 
             if (defaultWidth == 0)
-                defaultWidth = bg.getImageWidth() * GdxMaster.getFontSizeMod();
+                defaultWidth = bg.getImageWidth()  ;
             if (defaultHeight == 0)
-                defaultHeight = bg.getHeight() * GdxMaster.getFontSizeMod();
+                defaultHeight = bg.getHeight()  ;
             bg.setFillParent(true);
             addActor(bg);
         }
 
-        setSize(getDefaultWidth() * GdxMaster.getFontSizeMod(), getDefaultHeight() * GdxMaster.getFontSizeMod());
+        setSize(getDefaultWidth()
+          + getDefaultWidth()
+          * (GdxMaster.getFontSizeMod()-1)*  getFontSizeAdjustCoef(),
+         getDefaultHeight() + getDefaultHeight()
+          * (GdxMaster.getFontSizeMod()-1)*  getFontSizeAdjustCoef());
 
         initScrollPanel();
 
         updatePos = true;
+    }
+
+    protected float getFontSizeAdjustCoef() {
+        return 0.3f;
     }
 
     protected int getFontSize() {
@@ -114,6 +122,11 @@ public class ScrollTextPanel extends Group {
             @Override
             protected int getFontSize() {
                 return ScrollTextPanel.this.getFontSize();
+            }
+
+            @Override
+            protected float getAdjustCoef() {
+               return  getFontSizeAdjustCoef();
             }
         };
     }

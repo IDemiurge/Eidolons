@@ -26,16 +26,13 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
+import main.libgdx.anims.anim3d.*;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.sprite.SpriteAnimationFactory;
 import main.libgdx.anims.std.*;
 import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
-import main.libgdx.anims.weapons.Missile3dAnim;
-import main.libgdx.anims.weapons.Ranged3dAnim;
-import main.libgdx.anims.weapons.Reload3dAnim;
-import main.libgdx.anims.weapons.Weapon3dAnim;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -51,7 +48,7 @@ import java.util.*;
  * Created by JustMe on 1/11/2017.
  */
 public class AnimationConstructor {
-    private final boolean preconstructOn = CoreEngine.isExe() || CoreEngine.EXE_MODE; //TODO
+    private final boolean preconstructOn = CoreEngine.isJar() || CoreEngine.EXE_MODE; //TODO
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
     private boolean autoconstruct = false;
     private VALUE[] anim_vals = {
@@ -312,7 +309,11 @@ public class AnimationConstructor {
             if (((DC_QuickItemAction) active).getItem().isAmmo()) {
                 return new Reload3dAnim(active);
             } else
+            {
+                if (((DC_QuickItemAction) active).getItem().isPotion())
+                return new Potion3dAnim(active);
                 return new QuickItemAnim(((DC_QuickItemAction) active).getItem());
+            }
 
         }
 
@@ -702,7 +703,7 @@ public class AnimationConstructor {
         return CoreEngine.isExe()  ;
     }
     public static boolean isPreconstructEnemiesOnCombatStart() {
-        return CoreEngine.isExe()|| CoreEngine.EXE_MODE;
+        return CoreEngine.isJar()|| CoreEngine.EXE_MODE;
     }
 
     public enum ANIM_PART {

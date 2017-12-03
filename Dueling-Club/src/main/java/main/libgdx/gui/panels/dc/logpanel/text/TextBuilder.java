@@ -1,8 +1,10 @@
 package main.libgdx.gui.panels.dc.logpanel.text;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Align;
+import main.libgdx.GdxColorMaster;
 import main.libgdx.StyleHolder;
 import main.system.graphics.FontMaster.FONT;
 
@@ -45,7 +47,16 @@ public class TextBuilder   {
 
     protected LabelStyle getDefaultLabelStyle() {
         return
-         StyleHolder.getSizedLabelStyle(getFontStyle(), getFontSize());
+         StyleHolder.getSizedColoredLabelStyle(getAdjustCoef(), getFontStyle(), getFontSize(), 
+          getColor());
+    }
+
+    protected Color getColor() {
+        return GdxColorMaster.GOLDEN_WHITE;
+    }
+
+    protected float getAdjustCoef() {
+        return 0.0f;
     }
 
     protected int getFontSize() {

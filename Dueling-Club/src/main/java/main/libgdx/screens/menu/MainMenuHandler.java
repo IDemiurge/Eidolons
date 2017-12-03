@@ -14,7 +14,7 @@ import main.system.options.OptionsMaster;
  */
 public class MainMenuHandler {
 
-    public boolean handle(MAIN_MENU_ITEM item) {
+    public Boolean handle(MAIN_MENU_ITEM item) {
         switch (item) {
             case CRAWL:
             case STANDOFF:
@@ -23,7 +23,7 @@ public class MainMenuHandler {
                  DataManager.getTypesGroup(DC_TYPE.SCENARIOS,
                   StringMaster.getWellFormattedString(item.toString())));
 
-                return true;
+                return false ;
             case OPTIONS:
                 OptionsMaster.init( );
                 OptionsMaster.openMenu();

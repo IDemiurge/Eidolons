@@ -35,6 +35,8 @@ public class FloatingText extends Group {
     private float delay;
     private boolean initialized;
     private LabelStyle fontStyle;
+    private Image image;
+    private Label label;
 
     public FloatingText(String text, Color c) {
         this.text = text;
@@ -109,20 +111,20 @@ public class FloatingText extends Group {
         }
 
         clear();
-        if (imageSupplier != null) {
+        if (image == null)        if (imageSupplier != null) {
             if (!StringMaster.isEmpty(imageSupplier.get())) {
-                Image image = new Image(TextureCache.getOrCreateR(imageSupplier.get()));
+                  image = new Image(TextureCache.getOrCreateR(imageSupplier.get()));
                 addActor(image);
 //            image.setPosition(origin.x, origin.y);
             }
         }
-
-        Label label =
-         new Label(getText(), getFontStyle());
-        label.setColor(c);
-        label.setPosition(0, -20);
-        addActor(label);
-
+        if (label == null) {
+            label =
+             new Label(getText(), getFontStyle());
+            label.setColor(c);
+            label.setPosition(0, -20);
+            addActor(label);
+        }
         setPosition(origin.x, origin.y);
 
         getActions().clear();

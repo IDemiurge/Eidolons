@@ -33,6 +33,7 @@ public class GenericLauncher extends Game {
     public static final int FRAMERATE = 60;
     protected boolean fullscreen;
     protected ScreenViewport viewport;
+    private LwjglApplicationConfiguration conf;
 
     @Override
     public void create() {
@@ -49,6 +50,7 @@ public class GenericLauncher extends Game {
         engineInit();
         Eidolons.setApplication(new LwjglApplication(this,
          getConf()));
+        Eidolons.setLauncher(this);
         if (fullscreen
          ) {
             Eidolons.setFullscreen(true);
@@ -68,7 +70,7 @@ public class GenericLauncher extends Game {
 
     public LwjglApplicationConfiguration getConf() {
 //        Eidolons. getApplication().getGraphics().setFullscreenMode();
-        LwjglApplicationConfiguration conf = new LwjglApplicationConfiguration();
+         conf = new LwjglApplicationConfiguration();
         conf.title = getTitle();
 //        if (Gdx.graphics.isGL30Available())
         conf.useGL30 = true;
@@ -84,7 +86,10 @@ public class GenericLauncher extends Game {
 
         return conf;
     }
-
+//        @Override
+        public void setForegroundFPS(int value) {
+            conf.foregroundFPS = value;
+    }
     protected void initIcon(LwjglApplicationConfiguration conf) {
         try {
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo32.png", FileType.Absolute);
@@ -141,7 +146,7 @@ public class GenericLauncher extends Game {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+//        viewport.update(width, height);
         screen.resize(width, height);
     }
 

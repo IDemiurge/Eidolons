@@ -59,8 +59,15 @@ public class StyleHolder {
 
     public static Label.LabelStyle getSizedColoredLabelStyle(FONT fontStyle,
                                                              Integer size, Color color) {
+        return getSizedColoredLabelStyle(0, fontStyle, size, color);
+    }
+        public static Label.LabelStyle getSizedColoredLabelStyle(float adjustSizeCoef,
+                                                                 FONT fontStyle,
+         Integer size, Color color) {
+        if (adjustSizeCoef>0)
         if (GdxMaster.getFontSizeMod() != 1) {
-            size = Math.round(size * GdxMaster.getFontSizeMod());
+            int mod = Math.round(size * (GdxMaster.getFontSizeMod() - 1) * adjustSizeCoef);
+            size +=mod;
         }
         Map<Pair<Integer, Color>, LabelStyle> map = getSizedColoredLabelStyleMap(fontStyle, size, color);
 

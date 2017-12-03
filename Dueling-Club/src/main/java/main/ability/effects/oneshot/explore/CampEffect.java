@@ -23,8 +23,9 @@ public class CampEffect extends DC_Effect {
         restore fully, dispel all timed buffs, apply bonus
          */
         List<Unit> allies = getGame().getMetaMaster().getPartyManager().getParty().getMembers();
-
-
+if (allies.isEmpty())
+    getGame().getMetaMaster().getPartyManager().getParty().addMember(getGame().getMetaMaster().getPartyManager().getParty().getLeader());
+// mystery fix
         for (Unit sub :    new LinkedList<>( allies)) {
             DC_HeroItemObj item = sub.getItemFromInventory("Food");
             if (item != null) {

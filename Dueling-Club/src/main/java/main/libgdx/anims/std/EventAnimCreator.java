@@ -1,9 +1,12 @@
 package main.libgdx.anims.std;
 
+import main.entity.active.DC_ActiveObj;
+import main.entity.active.DC_QuickItemAction;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
+import main.libgdx.anims.anim3d.Potion3dAnim;
 
 /**
  * Created by JustMe on 2/3/2017.
@@ -19,9 +22,10 @@ public class EventAnimCreator {
                 case DOOR_OPENS:
                     return true;
             }
-    }
+        }
         return false;
     }
+
     public static Anim getAnim(Event e) {
 
 
@@ -30,6 +34,12 @@ public class EventAnimCreator {
                 case UNIT_HAS_BEEN_KILLED:
                     return new DeathAnim(e);
                 case UNIT_HAS_USED_QUICK_ITEM:
+                    try {
+                        if (((DC_QuickItemAction) e.getRef().getActive()).getItem().isPotion())
+                            return new Potion3dAnim((DC_ActiveObj) e.getRef().getActive());
+                    } catch (Exception ex) {
+                        main.system.ExceptionMaster.printStackTrace(ex);
+                    }
                     return new QuickItemAnim(e);
                 case DOOR_CLOSES:
                 case DOOR_OPENS:

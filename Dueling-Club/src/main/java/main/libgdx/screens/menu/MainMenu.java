@@ -54,13 +54,17 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
     }
 
     public enum MAIN_MENU_ITEM implements MenuItem<MAIN_MENU_ITEM> {
-        CRAWL(), STANDOFF(), SKIRMISH(),  NEW_GAME(CRAWL, STANDOFF, SKIRMISH),
+        CRAWL(), STANDOFF(true), SKIRMISH(true),  NEW_GAME(CRAWL, STANDOFF, SKIRMISH),
         OPTIONS,//(GAMEPLAY, AUDIO, ),
-        MANUAL,
-        ABOUT,
+        MANUAL(true),
+        ABOUT(true),
         EXIT, ;
         boolean secondary;
         private MAIN_MENU_ITEM[] items;
+
+        MAIN_MENU_ITEM(boolean secondary) {
+            this.secondary = secondary;
+        }
 
         MAIN_MENU_ITEM(MAIN_MENU_ITEM... items) {
             this.items = items;

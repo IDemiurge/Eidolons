@@ -31,6 +31,7 @@ static {
         OUTLINES(false),
 
         AUTO_CAMERA(true),
+        FRAMERATE(20, 60, 80),
         RESOLUTION(main.test.frontend.RESOLUTION.values()), 
         ZOOM_STEP(5, 1, 20), SPRITE_CACHE_ON(true), VSYNC(true);
         private Boolean exclusive;

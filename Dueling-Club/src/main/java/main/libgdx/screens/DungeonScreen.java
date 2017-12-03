@@ -55,7 +55,8 @@ import static main.system.GuiEventType.*;
  * To change this template use File | Settings | File Templates.
  */
 public class DungeonScreen extends ScreenWithVideoLoader {
-    private static final float FRAMERATE_DELTA_CONTROL = new Float(1) / GenericLauncher.FRAMERATE * 3;
+    private static  float FRAMERATE_DELTA_CONTROL =
+     new Float(1) / GenericLauncher.FRAMERATE * 3;
     public static OrthographicCamera camera;
     private static DungeonScreen instance;
     private static boolean cameraAutoCenteringOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
@@ -74,6 +75,9 @@ public class DungeonScreen extends ScreenWithVideoLoader {
     private ShaderProgram bufferedShader;
     private Float speed;
 
+    public static void setFramerateDeltaControl(float framerateDeltaControl) {
+        FRAMERATE_DELTA_CONTROL = framerateDeltaControl;
+    }
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -408,8 +412,8 @@ public class DungeonScreen extends ScreenWithVideoLoader {
 
         gridStage.getRoot().setSize(width, height);
         guiStage.getRoot().setSize(width, height);
-        gridStage.getViewport().update(width, height);
-        guiStage.getViewport().update(width, height);
+//        gridStage.getViewport().update(width, height);
+//        guiStage.getViewport().update(width, height);
     }
 
     public GridPanel getGridPanel() {

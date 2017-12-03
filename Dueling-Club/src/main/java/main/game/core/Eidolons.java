@@ -9,12 +9,14 @@ import main.client.cc.CharacterCreator;
 import main.entity.obj.unit.Unit;
 import main.game.EidolonsGame;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import main.game.battlecraft.logic.meta.scenario.ScenarioPartyManager;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_GameManager;
 import main.game.core.game.DC_GameMaster;
 import main.game.core.game.Game;
 import main.game.core.state.DC_StateManager;
 import main.libgdx.GdxMaster;
+import main.libgdx.launch.GenericLauncher;
 import main.libgdx.launch.ScenarioLauncher;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
@@ -46,6 +48,7 @@ public class Eidolons {
     private static boolean fullscreen;
     private static RESOLUTION resolution;
     private static ScreenViewport mainViewport;
+    private static GenericLauncher launcher;
 
     public static boolean initScenario(ScenarioMetaMaster master) {
         mainGame = new EidolonsGame();
@@ -187,11 +190,20 @@ public class Eidolons {
 
     public static void gameExited() {
 //        DC_Game toFinilize = game;
+        ScenarioPartyManager.setSelectedHero(null);
         game.getMetaMaster().gameExited();
         game = null;
         mainHero=null;
         DC_Game.game = null;
         Game.game = null;
 //        try{toFinilize.finilize();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
+    }
+
+    public static void setLauncher(GenericLauncher launcher) {
+        Eidolons.launcher = launcher;
+    }
+
+    public static GenericLauncher getLauncher() {
+        return launcher;
     }
 }

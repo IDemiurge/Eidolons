@@ -12,6 +12,7 @@ import main.libgdx.GdxMaster;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.bf.mouse.InputController;
+import main.libgdx.launch.GenericLauncher;
 import main.libgdx.screens.DungeonScreen;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -191,6 +192,10 @@ public class OptionsMaster {
             String value = graphicsOptions.getValue(key);
             boolean bool = Boolean.valueOf(value.toLowerCase());
             switch (key) {
+                case FRAMERATE:
+                    GenericLauncher launcher = Eidolons.getLauncher();
+                    launcher.setForegroundFPS(Integer.valueOf(value));
+                    break;
                 case AUTO_CAMERA:
                     DungeonScreen.setCameraAutoCenteringOn(bool);
                     break;

@@ -1,4 +1,4 @@
-package main.libgdx.anims.weapons;
+package main.libgdx.anims.anim3d;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
