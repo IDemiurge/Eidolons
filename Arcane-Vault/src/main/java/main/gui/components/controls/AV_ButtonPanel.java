@@ -474,7 +474,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                         }
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 } finally {
                     WaitMaster.receiveInput(operation, null, true);
                     if (skill) {

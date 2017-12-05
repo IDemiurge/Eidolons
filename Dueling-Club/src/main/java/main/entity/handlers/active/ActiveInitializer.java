@@ -40,7 +40,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             try {
                 super.construct();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         getMaster().getHandler().getTargeter().initTargetingMode();
@@ -59,7 +59,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
                 costs = DC_CostsFactory.getCostsForSpell(getEntity(),
                  getChecker().isSpell());
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
             Cost cp_cost = costs.getCost(PARAMS.C_N_OF_COUNTERS);

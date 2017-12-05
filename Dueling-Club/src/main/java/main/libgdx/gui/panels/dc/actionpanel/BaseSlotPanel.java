@@ -1,6 +1,7 @@
 package main.libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.system.audio.DC_SoundMaster;
@@ -15,9 +16,9 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class BaseSlotPanel extends TablePanel {
     protected final int imageSize;
-    private Map<PagesMod, TablePanel> modTableMap = new HashMap<>();
+    protected Map<PagesMod, TablePanel> modTableMap = new HashMap<>();
 
-    private PagesMod activePage = PagesMod.NONE;
+    protected PagesMod activePage = PagesMod.NONE;
 
     public BaseSlotPanel(int imageSize) {
         this.imageSize = imageSize;
@@ -41,6 +42,7 @@ public class BaseSlotPanel extends TablePanel {
             PagesMod pagesMod = pagesMods[i];
             if (Gdx.input.isKeyPressed(pagesMod.getKeyCode())) {
                 mod = pagesMod;
+                break;
             }
         }
         if (mod != activePage) {
@@ -75,38 +77,45 @@ public class BaseSlotPanel extends TablePanel {
         setActivePage(PagesMod.NONE);
     }
 
-    private void addPage(List<ActionValueContainer> list, String emptyImagePath) {
+    protected void addValueContainer(TablePanel page, ValueContainer valueContainer,
+                                     TextureRegion emptySlotTexture) {
+        if (valueContainer == null) {
+            valueContainer = new ValueContainer(emptySlotTexture);
+        }
+        if (imageSize > 0) {
+            valueContainer.overrideImageSize(imageSize, imageSize);
+            float scale = imageSize / valueContainer.getImageContainer().getActor().getWidth();
+            valueContainer.setScale(scale, scale);
+        }
+      page.  add(valueContainer).left().bottom().size(imageSize);
+
+    }
+
+    protected void addPage(List<ActionValueContainer> list, String emptyImagePath) {
         final TablePanel page = initPage(list, emptyImagePath);
         modTableMap.put(PagesMod.values()[modTableMap.size()], page);
         addElement(page).left().bottom();
+
         page.setVisible(false);
     }
 
-    private void setActivePage(PagesMod page) {
+    protected void setActivePage(PagesMod page) {
         TablePanel view = modTableMap.get(activePage);
         if (view == null) {
-            return ;
+            return;
         }
         view.setVisible(false);
         activePage = page;
         modTableMap.get(activePage).setVisible(true);
     }
 
-    private TablePanel initPage(List<ActionValueContainer> sources, String emptyImagePath) {
+    protected TablePanel initPage(List<ActionValueContainer> sources, String emptyImagePath) {
         TablePanel page = new TablePanel();
-        int valuesSize = Math.min(getPageSize(), sources.size());
-        for (int i = 0; i < valuesSize; i++) {
-            final ActionValueContainer valueContainer = sources.get(i);
-            if (imageSize > 0) {
-                valueContainer.overrideImageSize(imageSize, imageSize);
-            }
-            page.add(valueContainer).left().bottom();
-        }
-
-        for (int i = sources.size(); i < getPageSize(); i++) {
-            final ValueContainer container = new ValueContainer(getOrCreateR(emptyImagePath));
-            container.overrideImageSize(imageSize, imageSize);
-            page.add(container).left().bottom();
+        for (int i = 0; i < getPageSize(); i++) {
+            ActionValueContainer valueContainer = null;
+            if (sources.size() >  i )
+                valueContainer = sources.get(i);
+            addValueContainer(page, valueContainer, getOrCreateR(emptyImagePath));
         }
 
         return page;

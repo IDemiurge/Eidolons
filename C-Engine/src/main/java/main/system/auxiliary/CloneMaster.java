@@ -18,7 +18,7 @@ public class CloneMaster<T> {
             out.writeObject(object);
             out.close();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(ex);
         }
 
         FileInputStream fis;
@@ -30,9 +30,9 @@ public class CloneMaster<T> {
             in.close();
             return deepCopy;
         } catch (IOException ex) {
-            ex.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(ex);
         } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(ex);
         }
         return null;
     }

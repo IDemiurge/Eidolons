@@ -337,7 +337,7 @@ public class BfGridComp {
         try {
             refresh();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 

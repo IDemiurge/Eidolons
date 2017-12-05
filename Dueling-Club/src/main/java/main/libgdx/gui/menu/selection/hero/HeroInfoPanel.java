@@ -43,11 +43,6 @@ public class HeroInfoPanel extends ItemInfoPanel {
     }
 
     @Override
-    protected boolean isRandomDefault() {
-        return true;
-    }
-
-    @Override
     protected void initHeader(TablePanel<Actor> header) {
         super.initHeader(header);
         emblem = new Image(getDefaultEmblem());
@@ -56,6 +51,11 @@ public class HeroInfoPanel extends ItemInfoPanel {
         mainInfo = new Label("", StyleHolder.getSizedLabelStyle(FONT.MAGIC, 18));
         mainInfo.setText("A touch of Fate...");
         header.addNormalSize(mainInfo);
+    }
+
+    @Override
+    protected boolean isRandomDefault() {
+        return true;
     }
 
     private Texture getDefaultEmblem() {

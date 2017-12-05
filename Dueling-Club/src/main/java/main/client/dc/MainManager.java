@@ -378,7 +378,7 @@ public class MainManager implements SequenceManager {
             globalKeys.disable();
             globalKeys.initMenuGlobalKeys();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         Launcher.resetView(VIEWS.MENU);
         currentItem = MAIN_MENU_ITEMS.MAIN;

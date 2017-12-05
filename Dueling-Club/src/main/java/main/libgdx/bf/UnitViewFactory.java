@@ -80,7 +80,7 @@ public class UnitViewFactory {
                             try {
                                 DefaultActionHandler.leftClickUnit(isShift(), isControl(),  bfObj);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                main.system.ExceptionMaster.printStackTrace(e);
                             }
 
                     GuiEventManager.trigger( RADIAL_MENU_CLOSE );

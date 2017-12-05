@@ -162,7 +162,7 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
             try {
                 getMapViewComp().getTabs().select(0);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         // if (mission == null)

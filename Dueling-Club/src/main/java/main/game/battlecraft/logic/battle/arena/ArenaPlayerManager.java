@@ -18,7 +18,7 @@ public class ArenaPlayerManager extends PlayerManager<ArenaBattle> {
 //        try {
 //            player.setHero_type(getPlayerHeroName());
 //        } catch (Exception e) {
-//            e.printStackTrace();
+//            main.system.ExceptionMaster.printStackTrace(e);
 //        }
 //        enemyPlayer = new DC_Player(ENEMY_NAME, Color.BLACK, false); // emblem?
 //        Player.ENEMY = enemyPlayer;

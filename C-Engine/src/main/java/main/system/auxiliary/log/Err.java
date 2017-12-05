@@ -64,7 +64,7 @@ public class Err {
         try {
             throw new Exception();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(ex);
         }
     }
 

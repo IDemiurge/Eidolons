@@ -45,4 +45,14 @@ public class HelpMaster {
         return false;
     }
 
+    public static String getScenarioInfoText(String name, String suffix) {
+        String text = FileManager.readFile(
+         StrPathBuilder.build(PathFinder.getTextPath(),
+          TextMaster.getLocale(), "info","scenarios",
+          name+ (suffix!=null ? suffix : "") +".txt"));
+        if (text.isEmpty()) {
+            text = "Sorry, no info on this scenario!..";
+        }
+        return text;
+    }
 }

@@ -70,7 +70,7 @@ public class TextEditor implements EDITOR {
         try {
             launch(table, row, column, value);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             forced = false;
         }
@@ -83,7 +83,7 @@ public class TextEditor implements EDITOR {
         try {
             newVal = launch(prevValue);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             forced = false;
         }

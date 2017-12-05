@@ -30,7 +30,7 @@ public class ListInfoPanel extends G_InfoPanel implements ListSelectionListener 
             // displayedValues = StringMaster.convertToStringList(values);
             // } catch (Exception e) {
             //
-            // e.printStackTrace();
+            // main.system.ExceptionMaster.printStackTrace(e);
             // }
             // if (displayedValues == null)
             // this.displayedValues = ContentManager.getFullValueList(infoObj

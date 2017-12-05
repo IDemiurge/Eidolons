@@ -77,7 +77,7 @@ public class LE_TreePlanPanel extends BasicTreeUI implements TreeCellRenderer,
         } catch (Exception e) {
             // new Thread (
             // getTree().setUI(this); ).start()
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         getTree().getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         getTree().setCellRenderer(this);

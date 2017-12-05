@@ -306,7 +306,7 @@ public class ExpressionTree {
                                     } catch (Exception e1) {
                                         e1.printStackTrace();
                                     }
-                                    e.printStackTrace();
+                                    main.system.ExceptionMaster.printStackTrace(e);
                                 }
 
                             }

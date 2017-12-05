@@ -37,7 +37,7 @@ public class HeroCreator {
         try {
             ROOT_TYPE = DataManager.getType(BASE_HERO, DC_TYPE.CHARS);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             ROOT_TYPE = DataManager.getTypes().get(0);
         }
     }

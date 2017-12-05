@@ -72,7 +72,7 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
                 try {
                     tab = workspace.getOBJ_TYPE(name, tab).getName();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }
@@ -85,7 +85,7 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
             try {
                 SimulationManager.initUnitObj(name);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -126,7 +126,7 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         } else {
             types.add(type);

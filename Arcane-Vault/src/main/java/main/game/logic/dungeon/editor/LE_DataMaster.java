@@ -85,7 +85,7 @@ public class LE_DataMaster {
         try {
             missionsWorkspace = workspaceManager.loadWorkspace(path);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 
@@ -375,7 +375,7 @@ public class LE_DataMaster {
             try {
                 file.delete();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
     }

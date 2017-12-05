@@ -21,13 +21,11 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.CounterMaster;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
-import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.text.ToolTipMaster;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -53,7 +51,7 @@ public class UnitViewTooltipFactory {
         try {
             return create_(hero);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return () ->
             new ArrayList<>(Arrays.asList(new ValueContainer("Error", "")));
@@ -69,7 +67,7 @@ public class UnitViewTooltipFactory {
                     actionTargetingTooltip = ToolTipMaster.getActionTargetingTooltip(hero, action);
                 } catch (Exception e) {
                     if (!action.isBroken()) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     } else {
                         action.setBroken(true);
                     }
@@ -84,7 +82,6 @@ public class UnitViewTooltipFactory {
 
            if (!hero.isMine())
                 if (!hero.getGame().isDebugMode())
-                    if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OUTLINES))
                     if (hero.getVisibilityLevelForPlayer() !=
                      VISIBILITY_LEVEL.CLEAR_SIGHT) {
                         final ValueContainer nameContainer = new ValueContainer(hero.getToolTip(), "");

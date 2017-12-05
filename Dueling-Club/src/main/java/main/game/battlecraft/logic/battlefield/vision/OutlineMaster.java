@@ -24,7 +24,7 @@ public class OutlineMaster {
 
 
     protected VisionMaster master;
-    private static boolean outlinesOn;
+    private static boolean outlinesOn=true;
 
     public OutlineMaster(VisionMaster visionMaster) {
         master = visionMaster;
@@ -35,6 +35,8 @@ public class OutlineMaster {
     }
 
     public static boolean isOutlinesOn() {
+//        if (outlinesOn==null )
+//            outlinesOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OUTLINES);
         return outlinesOn;
     }
 

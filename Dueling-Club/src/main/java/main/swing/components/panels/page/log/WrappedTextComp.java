@@ -57,7 +57,7 @@ public class WrappedTextComp extends TextCompDC {
         try {
             text = getText();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         textLines = TextWrapper.wrap(text, getWrapLength(), getRef());

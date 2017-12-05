@@ -110,7 +110,7 @@ public class PathChoiceMaster {
                                         .getGame().getCellByCoordinate(coordinates)));
                             }
                         } catch (Exception ex) {
-                            ex.printStackTrace();
+                            main.system.ExceptionMaster.printStackTrace(ex);
                         }
                     }
                 } else {

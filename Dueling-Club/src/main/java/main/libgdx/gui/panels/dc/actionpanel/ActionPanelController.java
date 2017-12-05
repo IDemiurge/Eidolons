@@ -10,10 +10,10 @@ import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.auxiliary.StrPathBuilder;
 
-import static main.system.GuiEventType.UPDATE_QUICK_SLOT_PANEL;
+import static main.system.GuiEventType.BOTTOM_PANEL_UPDATE;
 
 public class ActionPanelController extends Group {
-    protected final static int IMAGE_SIZE = 60;
+    public final static int IMAGE_SIZE = 60;
     private static final String BACKGROUND = StrPathBuilder.build(
      "ui", "custom", "bottomPanelBackground.png");
     protected OrbsPanel leftOrbPanel;
@@ -67,10 +67,12 @@ public class ActionPanelController extends Group {
     }
 
     protected void initListeners() {
-        GuiEventManager.bind(UPDATE_QUICK_SLOT_PANEL, obj -> {
+        GuiEventManager.bind(BOTTOM_PANEL_UPDATE, obj -> {
             final ActiveQuickSlotsDataSource source = (ActiveQuickSlotsDataSource) obj.get();
             if (source != null) {
+                ActionValueContainer.setDarkened(false);
                 if (getY() < 0) {
+                    if (isMovedDownOnEnemyTurn())
                     ActorMaster.addMoveToAction(this, getX(), 0, 1);
                     //  ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
                     //    ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
@@ -83,11 +85,18 @@ public class ActionPanelController extends Group {
                 rigthOrbPanel.setUserObject(source);
             } else {
 //                setY(-IMAGE_SIZE);
+                if (isMovedDownOnEnemyTurn())
                 ActorMaster.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
+
+                ActionValueContainer.setDarkened(true);
                 // ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
                 // ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
             }
         });
+    }
+
+    private boolean isMovedDownOnEnemyTurn() {
+        return false;
     }
 
     @Override

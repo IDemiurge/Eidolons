@@ -75,7 +75,7 @@ public class DebugRadialManager {
                         handleDebugControl(object);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             });
         } else {

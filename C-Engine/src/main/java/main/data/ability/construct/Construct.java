@@ -246,7 +246,7 @@ public class Construct {
                     "==> instantiation successful!  ");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
                     "*** construction failed *** " + className + "'s constructor " + constructor
                             + " with args: " + args);

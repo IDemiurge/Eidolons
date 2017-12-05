@@ -36,7 +36,7 @@ public class Parameter extends DynamicValue {
             try {
                 result = ref.getInteger(value_string);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             if (result == null) {
                 obj_string = KEYS.SOURCE.toString();

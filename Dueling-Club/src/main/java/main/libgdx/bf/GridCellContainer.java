@@ -220,7 +220,7 @@ public class GridCellContainer extends GridCell {
         super.addActor(actor);
         if (actor instanceof GridUnitView) {
             unitViewCount = getUnitViewsVisible().size();
-            main.system.auxiliary.log.LogMaster.log(1, actor + " added to " + this);
+//            main.system.auxiliary.log.LogMaster.log(1, actor + " added to " + this);
             dirty = true;
 //            recalcUnitViewBounds();
         }

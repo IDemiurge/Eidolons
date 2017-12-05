@@ -549,7 +549,7 @@ public class LE_PlanPanel extends G_Panel {
             // try {
             // LevelEditor.getCurrentLevel().getDungeon().getMinimap().getGrid().highlightsOff();
             // } catch (Exception e) {
-            // e.printStackTrace();
+            // main.system.ExceptionMaster.printStackTrace(e);
             // }
             if (block != null) {
                 highlight(block.getCoordinates());
@@ -568,7 +568,7 @@ public class LE_PlanPanel extends G_Panel {
         // LevelEditor.getCurrentLevel().getDungeon().getMinimap().getGrid().highlightsOff();
         // } catch (NullPointerException e) {
         // } catch (Exception e) {
-        // e.printStackTrace();
+        // main.system.ExceptionMaster.printStackTrace(e);
         // }
         {
             if (mapZone != null) {
@@ -582,7 +582,7 @@ public class LE_PlanPanel extends G_Panel {
         try {
             LevelEditor.highlight(list);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         LevelEditor.setMouseInfoMode(false);
         LevelEditor.setMouseAddMode(false);

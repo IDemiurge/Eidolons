@@ -365,7 +365,7 @@ public class ActivesConstructor {
                     } catch (Exception e) {
                         main.system.auxiliary.log.LogMaster.log(1,
                          tst.getConditions().get(0)+ " in "+obj );
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
             }

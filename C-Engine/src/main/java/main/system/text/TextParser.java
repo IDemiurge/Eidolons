@@ -65,7 +65,7 @@ public class TextParser {
         try {
             result = parse(text, ref);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return result;
     }
@@ -139,7 +139,7 @@ public class TextParser {
                         try {
                             result = parseRef(ref_substring, ref);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            main.system.ExceptionMaster.printStackTrace(e);
                             LogMaster.log(LogMaster.MATH_DEBUG, ref_substring
                                     + " failed to parse ref for text: " + text);
                             return buffer;
@@ -158,7 +158,7 @@ public class TextParser {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             resetSwitches();
         }
@@ -309,7 +309,7 @@ public class TextParser {
                             replacement = new Formula(replacement).getInt(ref) + "";
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
 
                 } else {

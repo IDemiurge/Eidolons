@@ -95,7 +95,7 @@ public class ActionExecutor extends Executor {
         try {
             getAction().getOwnerObj().removeBuff(getAction().getModeBuffName());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             getGame().getManager().setActivatingAction(null);
             game.getManager().reset();
@@ -116,7 +116,7 @@ public class ActionExecutor extends Executor {
         try {
             CadenceRule.checkDualAttackCadence(getAction(), getAction().getOwnerObj());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 

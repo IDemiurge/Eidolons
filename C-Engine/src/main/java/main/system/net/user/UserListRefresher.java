@@ -18,7 +18,7 @@ public class UserListRefresher implements Runnable {
             try {
                 Thread.sleep(1250);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             //ul.requestData();
 

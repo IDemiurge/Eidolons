@@ -203,7 +203,7 @@ public class UnitShop {
                         return;
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     return;
                 }
             }
@@ -388,7 +388,7 @@ public class UnitShop {
             try {
                 itemPool = (List<ObjType>) SortMaster.sortByValue(itemPool, PARAMS.GOLD_COST, true);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             DC_HeroItemObj item = null;
             for (ObjType type : itemPool) {

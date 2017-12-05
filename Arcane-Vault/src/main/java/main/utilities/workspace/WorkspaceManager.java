@@ -90,7 +90,7 @@ public class WorkspaceManager {
                 try {
                     saveWorkspace(a);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }
@@ -155,7 +155,7 @@ public class WorkspaceManager {
         try {
             typeList = XML_Converter.getTypeListFromXML(xml, LAYER_DOWN);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         path = StringMaster.getLastPathSegment(path);
         String name = StringMaster.cropFormat(path);

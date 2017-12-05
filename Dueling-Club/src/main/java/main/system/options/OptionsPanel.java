@@ -31,7 +31,12 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
                 OPTION option = options.getKey(v.toString());
                 if (option == null)
                     continue;
-                Component comp = getOptionComp(options, option);
+                Component comp = null;
+                try {
+                     comp =     getOptionComp(options, option);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
                 if (comp == null)
                     continue;
                 subpanel.add(comp, "sg comps");
@@ -76,7 +81,7 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
 //            case "Long":
                 JSlider s = new JSlider(option.getMin(), option.getMax(),
                  (Integer) options.getIntValue(option.toString()));
-            map.put(option, s);
+                map.put(option, s);
                 return new G_Panel(
                  new JLabel(option.getName()), s
                 );
@@ -146,7 +151,11 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
 //            }
         });
 
-       try{ OptionsMaster.applyOptions();             }catch(Exception e){                e.printStackTrace();            }
+        try {
+            OptionsMaster.applyOptions();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     public void save() {
@@ -173,11 +182,10 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
     private void close() {
         setVisible(false);
 
-        if (getFrame() !=null ) {
+        if (getFrame() != null) {
             (getFrame()).dispose();
         }
     }
-
 
 
 }

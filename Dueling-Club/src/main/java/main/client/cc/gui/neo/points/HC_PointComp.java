@@ -190,7 +190,7 @@ public class HC_PointComp extends G_Panel implements MouseListener {
                 try {
                     result = UnlockMaster.promptUnlock(param, textComp.getEntity());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
 
                 }
                 if (!result) {

@@ -55,7 +55,7 @@ public class DialogMaster {
         try {
             return Integer.valueOf(input);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             if (nullIfCancelled) {
                 return null;
             }

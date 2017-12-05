@@ -194,12 +194,12 @@ public abstract class Game  implements Serializable {
 
                 } catch (Exception e) {
                     LogMaster.log(1, "type init failed: " + type);
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     continue;
                 }
             }
         } catch (Exception e) {
-            // e.printStackTrace();
+            // main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 

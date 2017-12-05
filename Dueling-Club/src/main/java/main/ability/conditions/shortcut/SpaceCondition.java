@@ -14,7 +14,7 @@ public class SpaceCondition extends MicroCondition {
             result = DC_Game.game.getRules().getStackingRule().canBeMovedOnto(
                     (Unit) ref.getSourceObj(), ref.getMatchObj().getCoordinates());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return result;
     }

@@ -14,7 +14,6 @@ import main.game.core.Eidolons;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.system.math.MathMaster;
-import main.system.math.PositionMaster;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,10 +71,10 @@ public class GammaMaster {
         if (source == master.getSeeingUnit()) {
             target.setGamma(gamma);
         }
-        if (PositionMaster.getDistance(source, target) < 4) {
-            main.system.auxiliary.log.LogMaster.log(1,target + " has illumination= "+illumination
-             + " gamma= "+gamma );
-        }
+//        if (PositionMaster.getDistance(source, target) < 4) {
+//            main.system.auxiliary.log.LogMaster.log(1,target + " has illumination= "+illumination
+//             + " gamma= "+gamma );
+//        }
 
         if (target.getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
 

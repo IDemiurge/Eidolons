@@ -134,7 +134,7 @@ public enum G_PROPS implements PROPERTY {
     GARMENT_TYPE("garment"),
     TOOLTIP("all"),
     FACTION_GROUP("factions"),
-    UNIQUE_ID("all"),;
+    UNIQUE_ID("all"), FULLSIZE_IMAGE("scenarios" );
 
     static {
         NAME.setInputReq(INPUT_REQ.STRING);

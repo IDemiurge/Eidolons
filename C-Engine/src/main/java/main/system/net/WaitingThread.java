@@ -130,10 +130,10 @@ public class WaitingThread implements Runnable {
         try {
             return WAIT();
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return false;
-        } catch (Throwable e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
     }
@@ -169,7 +169,7 @@ public class WaitingThread implements Runnable {
                     }
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 return false;
             }
         }
@@ -182,15 +182,15 @@ public class WaitingThread implements Runnable {
 
 		/*
          * while (true) { try { Thread.sleep(100); } catch (InterruptedException
-		 * e) { e.printStackTrace(); } if (result != null) { boolean b = result;
+		 * e) { main.system.ExceptionMaster.printStackTrace(e); } if (result != null) { boolean b = result;
 		 * result = null; return b; } }
 		 */
 
 		/*
          * Waiter waiter = new Waiter(); boolean b = false; waiter.execute();
 		 * try { b = waiter.get(); } catch (InterruptedException e) {
-		 * e.printStackTrace(); } catch (ExecutionException e) {
-		 * e.printStackTrace(); } Err.warn("WAITING: " + b); return b;
+		 * main.system.ExceptionMaster.printStackTrace(e); } catch (ExecutionException e) {
+		 * main.system.ExceptionMaster.printStackTrace(e); } Err.warn("WAITING: " + b); return b;
 		 */
     }
 
@@ -213,7 +213,7 @@ public class WaitingThread implements Runnable {
             try {
                 Thread.sleep(5);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 System.out.println("WAITING INTERRUPTED");
                 return;
             }
@@ -314,7 +314,7 @@ public class WaitingThread implements Runnable {
 	 * 0; if(VIEWER!=null) VIEWER.info( "WAITING THREAD STARTED; input:" +
 	 * input); Chronos.mark("WAITING"); while (true) { try { Thread.sleep(5); }
 	 * catch (InterruptedException e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); } System.out.println(i); i++; if (input) { if (INPUT
+	 * main.system.ExceptionMaster.printStackTrace(e); } System.out.println(i); i++; if (input) { if (INPUT
 	 * != null) { result = true; break; } continue; } if
 	 * (ServerConnector.isFailure()) { ServerConnector.setFailure(false); result
 	 * = false; break; } if (ServerConnector.isSuccess()) {

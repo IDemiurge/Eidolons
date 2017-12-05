@@ -180,7 +180,7 @@ public class DungeonScreen extends ScreenWithVideoLoader {
         try {
             controller.setDefaultPos();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         bindEvents();
 
@@ -198,7 +198,7 @@ public class DungeonScreen extends ScreenWithVideoLoader {
 
             cameraPan(unitPosition);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
 
@@ -314,7 +314,7 @@ public class DungeonScreen extends ScreenWithVideoLoader {
             try {
                 soundMaster.doPlayback(delta);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         checkShaderReset();
@@ -329,7 +329,7 @@ public class DungeonScreen extends ScreenWithVideoLoader {
             try {
                 Thread.sleep((long) (delta - FRAMERATE_DELTA_CONTROL));
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             delta = FRAMERATE_DELTA_CONTROL;
         }

@@ -103,7 +103,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
 
                 ToolTipManager.sharedInstance().mouseMoved(event);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
             WaitMaster.WAIT(delay);

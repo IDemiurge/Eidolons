@@ -56,7 +56,7 @@ public class DynamicValueParser {
                     try {
                         result = getIntFromDynamicValue(ref_substring);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                         LogMaster.log(LogMaster.MATH_DEBUG, ref_substring
                          + " failed to parse ref for formula: " + formula);
                     }
@@ -107,7 +107,7 @@ public class DynamicValueParser {
             int val = new Parameter(obj_ref, param).getInt(ref);
             return val;
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             int val = new Parameter(KEYS.SOURCE.toString(),
              obj_ref + " " + param)
              .getInt(ref);

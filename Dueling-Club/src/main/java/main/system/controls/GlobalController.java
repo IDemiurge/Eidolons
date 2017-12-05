@@ -13,7 +13,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.options.OptionsMaster;
-import main.system.text.SpecialLogger;
+import main.system.auxiliary.log.SpecialLogger;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class GlobalController implements Controller {
             index = 0;
 
         GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, hovered);
-        GridUnitView newFocus = cell.getUnitViewsVisible().get(index);
+        GridUnitView newFocus =list.get(index);
         cell.popupUnitView(newFocus);
         GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, newFocus);
         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, newFocus.getTooltip()  );

@@ -17,7 +17,7 @@ public abstract class MultiEffect extends DC_Effect implements AttachmentEffect 
                 try {
                     effect = ((Effect) ConstructionManager.construct(effect.getConstruct()));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }

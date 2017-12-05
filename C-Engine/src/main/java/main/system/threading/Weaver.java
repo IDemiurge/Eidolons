@@ -25,9 +25,9 @@ public class Weaver {
         try {
             m = object.getClass().getMethod(methodname, param);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } catch (SecurityException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (m == null) {
             LogMaster.log(4, "failed to find method: "
@@ -44,10 +44,10 @@ public class Weaver {
             m = object.getClass().getMethod(methodname, null);
         } catch (NoSuchMethodException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } catch (SecurityException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (m == null) {
             LogMaster.log(4, "failed to find method: "
@@ -70,7 +70,7 @@ public class Weaver {
                 try {
                     obj = m.invoke(object, args);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     LogMaster.log(4,
                             "METHOD INVOCATION FAILED: " + m.getName()
                                     + " FOR ARGS "
@@ -92,7 +92,7 @@ public class Weaver {
         // t.sleep(delay);
         // delay = 0;
         // } catch (InterruptedException e) {
-        // e.printStackTrace();
+        // main.system.ExceptionMaster.printStackTrace(e);
         // }
         try {
             t.start();
@@ -113,7 +113,7 @@ public class Weaver {
                 thread.setPriority(priorityMinMax ? Thread.MIN_PRIORITY
                         : Thread.MAX_PRIORITY);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         thread.start();

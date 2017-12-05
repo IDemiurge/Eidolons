@@ -114,7 +114,7 @@ public class Requirements implements Condition {
         try {
             result = preCheck(ref);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             setFullCheck(buffer);
 

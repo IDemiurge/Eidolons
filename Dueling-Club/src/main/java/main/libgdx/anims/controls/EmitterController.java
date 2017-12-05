@@ -129,7 +129,7 @@ public class EmitterController implements Controller {
 
                     };
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return;
         }
 

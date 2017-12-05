@@ -69,7 +69,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
                 if (tryMoveAi(ai))
                     isAiActs = true;
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
         }

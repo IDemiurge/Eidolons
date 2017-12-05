@@ -96,6 +96,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
     };
     public static final String[] SINGLE_ENUM_LIST_IDS = {
 
+     PROPS.DIFFICULTY.name(),
      PROPS.ITEM_RARITY.name(),
      PROPS.WEAPON_ATTACKS.name(),
             G_PROPS.UNIT_GROUP.name(), G_PROPS.CUSTOM_HERO_GROUP.name(),
@@ -255,6 +256,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
         DC_ContentManager.setEditorMap(editorMap);
 
         editorMap.put(soundsetIdentifier, soundChooser);
+        editorMap.put(G_PROPS.FULLSIZE_IMAGE.getName(), imageChooser);
         editorMap.put(imgIdentifier, imageChooser);
         editorMap.put(PROPS.MAP_BACKGROUND.getName(), new AV_ImgChooser(null));
         editorMap.put(emblemIdentifier, imageChooser);
@@ -520,10 +522,10 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             try {
                 editor.launch(table, row, column, value);
             } catch (NullPointerException ex) {
-                ex.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(ex);
                 handleMouseClick(e, true);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(ex);
             }
         } else {
             // decorators
@@ -546,7 +548,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
         try {
             handleMouseClick(e);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(ex);
         } finally {
             ArcaneVault.setAltPressed(false);
         }

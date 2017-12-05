@@ -43,7 +43,7 @@ public class PriorityModifier extends AiHandler {
         try {
             return getConstInt(getPriorityConstantMaster().getConst(GOAL_PREFIX + type.toString()));
         } catch (Exception e) {
-//            e.printStackTrace();
+//            main.system.ExceptionMaster.printStackTrace(e);
         }
         return 0;
     }
@@ -60,7 +60,7 @@ public class PriorityModifier extends AiHandler {
                 string = "channeling cost";
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return (cost_penalty);
 

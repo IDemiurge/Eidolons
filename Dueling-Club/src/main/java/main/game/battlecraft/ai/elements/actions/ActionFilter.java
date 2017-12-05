@@ -44,7 +44,7 @@ public class ActionFilter {
             try {
                 goal = AI_SpellMaster.getGoal(spell);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             if (goal != null) {
                 if (goal.equals(type)) {

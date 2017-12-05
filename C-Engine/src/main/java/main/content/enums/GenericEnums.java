@@ -158,6 +158,63 @@ public class GenericEnums {
 
     }
 
+    public enum DIFFICULTY {
+        NEOPHYTE(100, 175, 75, 300, 350),
+        NOVICE(125, 150, 85, 200, 250),
+        DISCIPLE(150, 125, 100, 150, 175),
+        ADEPT(200, 100, 100, 100, 100),
+        CHAMPION(300, 75, 150, 75, 80),
+        AVATAR(450, 50, 200, 60, 65);
+        private int powerPercentage;
+        private int roundsToFightMod;
+        private int healthPercentageEnemy;
+        private int healthPercentageAlly;
+        private int healthPercentageMainHero;
+
+        DIFFICULTY(int powerPercentage, int roundsToFightMod, int healthPercentageEnemy, int healthPercentageAlly, int healthPercentageMainHero) {
+            this.powerPercentage = powerPercentage;
+            this.roundsToFightMod = roundsToFightMod;
+            this.healthPercentageEnemy = healthPercentageEnemy;
+            this.healthPercentageAlly = healthPercentageAlly;
+            this.healthPercentageMainHero = healthPercentageMainHero;
+        }
+
+        DIFFICULTY(int power, int roundsToFightMod) {
+            this.roundsToFightMod = roundsToFightMod;
+            this.setPowerPercentage(power);
+        }
+
+        public int getPowerPercentage() {
+            return powerPercentage;
+        }
+
+        public void setPowerPercentage(int powerPercentage) {
+            this.powerPercentage = powerPercentage;
+        }
+
+        public int getRoundsToFightMod() {
+            return roundsToFightMod;
+        }
+
+        public int getHealthPercentageEnemy() {
+            return healthPercentageEnemy;
+        }
+
+
+
+        public int getHealthPercentageAlly() {
+            return healthPercentageAlly;
+        }
+
+
+
+        public int getHealthPercentageMainHero() {
+            return healthPercentageMainHero;
+        }
+
+
+    }
+
     public enum RESIST_GRADE {
         Impregnable(200), Resistant(150), Normal(100), Vulnerable(50), Ineffective(0);
         private int percent;

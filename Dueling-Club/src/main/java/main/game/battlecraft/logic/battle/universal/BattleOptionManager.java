@@ -1,9 +1,10 @@
 package main.game.battlecraft.logic.battle.universal;
 
 import main.content.PARAMS;
+import main.content.enums.GenericEnums;
 import main.entity.obj.BattleFieldObject;
 import main.game.battlecraft.logic.battle.universal.BattleOptions.ARENA_GAME_OPTIONS;
-import main.game.battlecraft.logic.battle.universal.BattleOptions.DIFFICULTY;
+import main.content.enums.GenericEnums.DIFFICULTY;
 import main.game.battlecraft.rules.combat.damage.Damage;
 import main.system.auxiliary.EnumMaster;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -15,7 +16,7 @@ import main.system.options.OptionsMaster;
 public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
 
     BattleOptions options;
-    DIFFICULTY defaultDifficulty = DIFFICULTY.NOVICE;
+    DIFFICULTY defaultDifficulty = GenericEnums.DIFFICULTY.NOVICE;
     DIFFICULTY difficulty;
 
     public BattleOptionManager(BattleMaster<E> master) {
@@ -26,7 +27,7 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
               DIFFICULTY.class, OptionsMaster.getGameplayOptions().
                getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         options = new BattleOptions();
         options.setValue(ARENA_GAME_OPTIONS.DIFFICULTY, defaultDifficulty.name());
@@ -116,7 +117,9 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
         unit.multiplyParamByPercent(PARAMS.OFFHAND_ATTACK_MOD, mod/2, false);
         if (unit.isMine())
             unit.multiplyParamByPercent(PARAMS.STAMINA, mod/2, false);
-
+else {
+            unit.multiplyParamByPercent(PARAMS.STEALTH, mod/2, false);
+        }
         unit.modifyParamByPercent(PARAMS.N_OF_ACTIONS, mod / 4);
     }
 

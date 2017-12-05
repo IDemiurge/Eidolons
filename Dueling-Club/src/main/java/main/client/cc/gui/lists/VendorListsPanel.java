@@ -272,8 +272,8 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
                 try {
                     Collections.sort(data, getSorter());
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    // e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
+                    // main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
 
@@ -333,7 +333,7 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
             try {
                 map.values().iterator().next().getCurrentList().getList().setSelectedIndex(0);
             } catch (Exception e) {
-                // e.printStackTrace();
+                // main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

@@ -16,7 +16,7 @@ public class SwapSelfEffect extends SelfMoveEffect {
                     ref.getSourceObj().getCoordinates(), free,
                     MOVE_MODIFIER.DISPLACEMENT, ref);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
         boolean result = game.getMovementManager().move(ref.getSourceObj(), c,

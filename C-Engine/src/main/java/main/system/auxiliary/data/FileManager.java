@@ -47,7 +47,7 @@ public class FileManager {
                 try {
                     throw new RuntimeException();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
                 return "";
             }
@@ -65,7 +65,7 @@ public class FileManager {
         try {
             result = new String(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         return result;
@@ -105,13 +105,13 @@ public class FileManager {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             try {
                 if (fr != null)
                     fr.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -165,7 +165,7 @@ public class FileManager {
                     return string;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 break;
             }
 
@@ -416,7 +416,7 @@ public class FileManager {
             writer.flush();
             writer.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
 

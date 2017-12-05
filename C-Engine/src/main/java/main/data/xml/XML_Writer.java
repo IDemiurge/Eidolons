@@ -64,7 +64,7 @@ public class XML_Writer {
         try {
             saveAll();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             setBackUpMode(false);
         }
@@ -244,7 +244,7 @@ public class XML_Writer {
             try {
                 subString.append(getTypeXML(objType, new StringBuilder(STR_CAPACITY)));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
         }
@@ -392,7 +392,7 @@ public class XML_Writer {
                 try {
                     dir.mkdirs();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     return false;
                 }
             }
@@ -410,7 +410,7 @@ public class XML_Writer {
         try {
             saveAll();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             backUp = false;
             reserve = false;

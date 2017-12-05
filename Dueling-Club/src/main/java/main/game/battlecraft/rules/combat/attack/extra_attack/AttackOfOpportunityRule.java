@@ -123,7 +123,7 @@ public class AttackOfOpportunityRule {
             try {
                 checkAttack(unit, active);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             // if (unit.getMode().equals(STD_MODES.ALERT)) {
             // if (active.getActionGroup() != ACTION_TYPE_GROUPS.MOVE)

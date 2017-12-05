@@ -116,7 +116,7 @@ public class SkillTreeView extends HT_View {
                                     image = HC_Master.generateValueIcon(mastery, isSelected(),
                                             locked, true);
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                    main.system.ExceptionMaster.printStackTrace(e);
                                     image = ImageManager.getNewBufferedImage(getTabCompWidth(),
                                             getTabCompWidth());
                                 }

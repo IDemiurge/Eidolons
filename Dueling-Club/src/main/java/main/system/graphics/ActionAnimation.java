@@ -408,7 +408,7 @@ public class ActionAnimation extends PhaseAnimation {
         try {
             drawIconMap(valMap, true, 3, mouseMap, getFontNeutral(), base, 2, !source, inverse, null);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             drawTextBackground = isDrawTextBackgroundAutomatically();
         }

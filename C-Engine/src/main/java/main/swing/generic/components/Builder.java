@@ -99,7 +99,7 @@ public abstract class Builder implements GameGUI {
             try {
                 newComp = builder.build();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 continue;
             }
             add(newComp, info);
@@ -108,7 +108,7 @@ public abstract class Builder implements GameGUI {
                 getComp().setComponentZOrder(newComp, N);
                 N++;
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
         }
@@ -189,14 +189,14 @@ public abstract class Builder implements GameGUI {
 //            try {
 //                r.refresh();
 //            } catch (Exception e) {
-//                e.printStackTrace();
+//                main.system.ExceptionMaster.printStackTrace(e);
 //            }
 //        }
 //        for (Refreshable r : builderArray) {
 //            try {
 //                r.refresh();
 //            } catch (Exception e) {
-//                e.printStackTrace();
+//                main.system.ExceptionMaster.printStackTrace(e);
 //            }
 //        }
 

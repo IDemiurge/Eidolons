@@ -35,7 +35,7 @@ public   class EntityInitializer<E extends Entity> extends EntityHandler<E> {
                     getEntity(). setConstructed(true);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 LogMaster.log(1
                  , "Error on construction: " + getName());
             }

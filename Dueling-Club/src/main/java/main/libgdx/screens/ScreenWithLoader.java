@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
+import main.libgdx.anims.Assets;
 import main.libgdx.stage.ChainedStage;
 import main.libgdx.stage.LoadingStage;
 import main.system.EventCallbackParam;
@@ -63,6 +64,11 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     public void loadDone(EventCallbackParam param) {
+        if (Assets.isOn()) {
+            while (!Assets.get().getManager().update()) {
+                //loading...
+            }
+        }
         if (isWaitForInput()) {
             waitingForInput = true;
             this.param = param;

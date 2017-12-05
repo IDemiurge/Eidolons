@@ -300,6 +300,9 @@ public abstract class DataModel {
         return getIntParam(p);
     }
 
+    public String getStrParam(String param) {
+        return String.valueOf(getIntParam(param));
+    }
     public String getStrParam(PARAMETER param) {
         return String.valueOf(getIntParam(param));
     }
@@ -695,7 +698,7 @@ public abstract class DataModel {
                 result = false;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return result;
     }

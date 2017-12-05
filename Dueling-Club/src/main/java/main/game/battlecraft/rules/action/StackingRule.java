@@ -72,7 +72,7 @@ public class StackingRule implements ActionRule {
         try {
             return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c, 0, otherUnits);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return false;
     }

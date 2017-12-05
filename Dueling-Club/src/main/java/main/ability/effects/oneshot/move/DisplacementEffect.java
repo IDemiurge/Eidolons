@@ -18,7 +18,7 @@ public class DisplacementEffect extends SelfMoveEffect {
                 return false;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
         return super.applyThis();
@@ -59,7 +59,7 @@ public class DisplacementEffect extends SelfMoveEffect {
                 result = game.getMovementManager().move(obj, coordinate, free,
                         MOVE_MODIFIER.DISPLACEMENT, ref);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 result = null;
             }
         }

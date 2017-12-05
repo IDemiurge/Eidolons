@@ -28,10 +28,9 @@ static {
         VIDEO(false),
         AMBIENCE_MOVE_SUPPORTED(false),
 //        SPRITE_CACHE_ON(true),
-        OUTLINES(false),
 
         AUTO_CAMERA(true),
-        FRAMERATE(20, 60, 80),
+        FRAMERATE(60, 20, 80),
         RESOLUTION(main.test.frontend.RESOLUTION.values()), 
         ZOOM_STEP(5, 1, 20), SPRITE_CACHE_ON(true), VSYNC(true);
         private Boolean exclusive;

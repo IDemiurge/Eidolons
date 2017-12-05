@@ -155,7 +155,7 @@ public class ValueHelper {
                 value = ContentManager.getValue(valueName, true);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             ContentManager.setExcludedValueSet(null);
         }

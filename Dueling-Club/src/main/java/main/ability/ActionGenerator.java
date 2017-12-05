@@ -54,7 +54,7 @@ public class ActionGenerator {
             try {
                 generateOffhandActions();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

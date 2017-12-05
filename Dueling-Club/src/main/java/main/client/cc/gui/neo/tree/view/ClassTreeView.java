@@ -81,7 +81,7 @@ public class ClassTreeView extends HT_View {
                                     image = HC_Master.generateClassIcon(classGroup, isSelected(),
                                             locked, hero);
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                    main.system.ExceptionMaster.printStackTrace(e);
                                     image = ImageManager.getNewBufferedImage(getTabCompWidth(),
                                             getTabCompWidth());
                                 }

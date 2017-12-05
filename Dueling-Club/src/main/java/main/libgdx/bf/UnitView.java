@@ -205,9 +205,9 @@ public class UnitView extends BaseView {
                 mainHeroLabel.setVisible(false);
                 return;
             }
-            if (!OptionsMaster.getGameplayOptions().
-             getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL))
-                return;
+//            if (!OptionsMaster.getGameplayOptions().
+//             getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL))
+//                return;
             mainHeroLabel.setVisible(true);
             alphaFluctuation(mainHeroLabel, delta);
         }

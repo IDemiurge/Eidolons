@@ -71,7 +71,7 @@ public class DC_MovementManager implements MovementManager {
             }
             return effect.getRef().getTargetObj().getCoordinates();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return active.getOwnerObj().getCoordinates();
     }

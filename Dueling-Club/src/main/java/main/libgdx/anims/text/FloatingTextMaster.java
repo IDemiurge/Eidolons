@@ -301,7 +301,7 @@ public class FloatingTextMaster {
         try {
             text = getFloatingText(entity, CASE, arg);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return;
         }
         if (entity instanceof BattleFieldObject) {

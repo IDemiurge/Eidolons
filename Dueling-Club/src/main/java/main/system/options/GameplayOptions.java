@@ -1,7 +1,7 @@
 package main.system.options;
 
+import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.INFO_LEVEL;
-import main.game.battlecraft.logic.battle.universal.BattleOptions.DIFFICULTY;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -15,12 +15,12 @@ public class GameplayOptions extends  Options<GAMEPLAY_OPTION,GAMEPLAY_OPTION>{
 
     static{
         GAMEPLAY_OPTION.RULES_SCOPE.setDefaultValue(RULE_SCOPE.BASIC);
-        GAMEPLAY_OPTION.GAME_DIFFICULTY.setDefaultValue(DIFFICULTY.NOVICE);
+        GAMEPLAY_OPTION.GAME_DIFFICULTY.setDefaultValue(GenericEnums.DIFFICULTY.NOVICE);
         GAMEPLAY_OPTION.INFO_DETAIL_LEVEL.setDefaultValue(INFO_LEVEL.NORMAL);
     }
     public enum GAMEPLAY_OPTION implements Options.OPTION {
         RULES_SCOPE(RuleMaster.RULE_SCOPE.values()),
-        GAME_DIFFICULTY(DIFFICULTY.values()),
+        GAME_DIFFICULTY(GenericEnums.DIFFICULTY.values()),
 
 //        AI_SPEED,
         DEFAULT_ACTIONS(true),

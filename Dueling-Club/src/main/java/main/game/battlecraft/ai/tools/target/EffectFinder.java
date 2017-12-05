@@ -237,7 +237,7 @@ public class EffectFinder {
                         e.apply(Ref.getSelfTargetingRefCopy(obj));
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }

@@ -281,7 +281,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             processing = false;
 
@@ -387,7 +387,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                     // } else
                     PartyHelper.addMember(newHero);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 } finally {
                     Launcher.resetView(VIEWS.HC);
                 }

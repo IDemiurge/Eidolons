@@ -152,7 +152,7 @@ public class AE_Manager {
             }
             newXml = XML_Converter.getXMLfromTree(tree);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(2, type.getName()
              + " is not ready to be saved!");
             return;

@@ -42,6 +42,7 @@ public class VisionMaster implements GenericVisionManager {
 
     private DC_Game game;
     private boolean fastMode;
+    private boolean firstResetDone;
 
     public VisionMaster(DC_Game game) {
         this.game = game;
@@ -106,6 +107,7 @@ public class VisionMaster implements GenericVisionManager {
         getActiveUnit().setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
 //        resetLastKnownCoordinates();
         triggerGuiEvents();
+        firstResetDone = true;
         //Chronos.logTimeElapsedForMark("PLAYER VISIBILITY REFRESH");
     }
 
@@ -154,6 +156,9 @@ public class VisionMaster implements GenericVisionManager {
         if (sub.getVisibilityLevel()==VISIBILITY_LEVEL.UNSEEN)
             return false;
         if (sub.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.UNKNOWN)
+            if (sub.getOutlineTypeForPlayer()==null ||
+             sub.getOutlineTypeForPlayer()==OUTLINE_TYPE.THICK_DARKNESS
+             || !firstResetDone)
             return false;
         else if (sub.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.INVISIBLE) {
 //            if (ExplorationMaster.isExplorationOn())

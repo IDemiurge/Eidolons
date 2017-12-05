@@ -593,7 +593,7 @@ public class CharacterCreator {
             getHeroPanel().getMiddlePanel().getArc().getUpperIcon().setIcon(
                     new ImageIcon(type.getImage()));
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         DC_PagedInfoPanel secondPanel = getHeroPanel().getMiddlePanel().getLowerPanel();
         if (secondPanel != null) {
@@ -603,7 +603,7 @@ public class CharacterCreator {
                 getHeroPanel().getMiddlePanel().getArc().getLowerIcon().setIcon(
                         new ImageIcon(entity.getImage()));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

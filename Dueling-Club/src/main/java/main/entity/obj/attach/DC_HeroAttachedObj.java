@@ -158,7 +158,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
                     abil.activatedOn(ref);
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }

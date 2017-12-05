@@ -68,7 +68,7 @@ public class ResourceMaster {
                 try {
                     writeAndUpdateImage(type, setProperty, prop, map);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
                 }
             }
@@ -83,14 +83,14 @@ public class ResourceMaster {
                 continue;
             }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 continue;
             }
             if (map.get(f.getPath().replace(ImageManager.getImageFolderPath(), "")) == null) {
                 try {
                     writeToUnused(f, getImage(f));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }
@@ -115,7 +115,7 @@ public class ResourceMaster {
             }
             ImageIO.write(bufferedImage, getNewImageFormat(), outputfile);
         } catch (IOException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "Unused image failed to write: " + f.getPath());
         }
 
@@ -146,7 +146,7 @@ public class ResourceMaster {
                     writeImage(oldPath, path);
                     map.put(oldPath, type);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     return ;
                 }
             }
@@ -188,7 +188,7 @@ public class ResourceMaster {
                 ImageIO.write(bufferedImage, getNewImageFormat(), outputfile);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 

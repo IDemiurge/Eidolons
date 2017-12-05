@@ -50,6 +50,7 @@ Label title;
         buttonPanel
 //         .padRight(300)
          .setWidth(getWidth());
+        if (isDoneSupported())
         addElement(buttonPanel).bottom().size(getWidth(), 70);
         if (isBackSupported())
             buttonPanel.addNormalSize(backButton).left() ;
@@ -62,7 +63,11 @@ Label title;
 
     }
 
-    private String getTitle() {
+    protected boolean isDoneSupported() {
+        return true;
+    }
+
+    protected String getTitle() {
         return "Make your Choice";
     }
 

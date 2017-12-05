@@ -138,7 +138,7 @@ public class TestMasterContent {
             return tryCheckHeroForTestSpell(type, typeName, last);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return false;
     }
@@ -175,7 +175,7 @@ public class TestMasterContent {
                 result = true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (type.getAspect() == spellType.getAspect()) {
             result = true;
@@ -315,7 +315,7 @@ public class TestMasterContent {
                       (List<? extends Entity>) FilterMaster.filterByPropJ8(DataManager.getTypes(DC_TYPE.SPELLS),
                        prop, substring));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
                 addSpells(type, spells);
 

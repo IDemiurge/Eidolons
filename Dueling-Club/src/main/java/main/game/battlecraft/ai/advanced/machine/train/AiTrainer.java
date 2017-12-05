@@ -60,7 +60,7 @@ public class AiTrainer {
             try {
             return runAiScenario(parameters.getDungeonData());
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 i++;
             }
         }
@@ -115,7 +115,7 @@ public class AiTrainer {
         try {
             result.construct();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         main.system.auxiliary.log.LogMaster.log(1,
          "unit Stats= " + result.getUnitStats().getStatMap()

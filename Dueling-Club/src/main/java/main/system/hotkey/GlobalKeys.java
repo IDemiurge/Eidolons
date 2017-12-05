@@ -60,7 +60,7 @@ public class GlobalKeys implements HotkeyListener {
                 JIntellitype.getInstance().registerHotKey(6, JIntellitype.MOD_ALT, KeyEvent.VK_D);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 

@@ -172,7 +172,7 @@ public class AE_Element extends G_Panel implements MouseListener {
                 return (((DefaultMutableTreeNode) node).getUserObject()
                         .toString().replace(arg.name(), ""));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

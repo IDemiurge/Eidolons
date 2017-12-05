@@ -120,7 +120,7 @@ public class AI_SpellMaster {
             } catch (Exception e) {
                 LogMaster.log(1, spell.getName()
                         + " logic from targeting failed!");
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         if (logic == null) {
@@ -131,7 +131,7 @@ public class AI_SpellMaster {
             try {
                 logic = getZoneLogic(spell);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 LogMaster.log(1, spell.getName()
                         + " no Z Logic");
             }
@@ -145,7 +145,7 @@ public class AI_SpellMaster {
             try {
                 logic = getBuffLogic(spell);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 LogMaster.log(1, spell.getName()
                         + " no Buff Logic");
             }
@@ -155,7 +155,7 @@ public class AI_SpellMaster {
             try {
                 logic = getModValueLogic(spell);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 LogMaster.log(1, spell.getName()
                         + " no Mod Logic");
             }
@@ -425,7 +425,7 @@ public class AI_SpellMaster {
             effect = (SummonEffect) EffectFinder.getEffectsOfClass(
                     active.getAbilities(), SummonEffect.class).get(0);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         if (effect instanceof RaiseEffect) {

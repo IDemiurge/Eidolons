@@ -171,7 +171,7 @@ public class AV_T3View extends ThreeTreeView {
         // try {
         // window.setUndecorated(true);
         // } catch (Exception e) {
-        // e.printStackTrace();
+        // main.system.ExceptionMaster.printStackTrace(e);
         // }
 
         return window;

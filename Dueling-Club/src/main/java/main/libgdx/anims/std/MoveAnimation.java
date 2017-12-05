@@ -111,7 +111,7 @@ public class MoveAnimation extends ActionAnim {
         try {
             super.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         Unit unit = (Unit) getRef().getSourceObj();
         if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
@@ -119,7 +119,9 @@ public class MoveAnimation extends ActionAnim {
             unit = (Unit) getRef().getTargetObj();
         BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
          .get(unit);
-        DungeonScreen.getInstance().getGridPanel().detachUnitView(unit);
+        if (!DungeonScreen.getInstance().getGridPanel().detachUnitView(unit)) {
+            return ;
+        }
 
 //        DungeonScreen.getInstance().getGridStage().addActor(actor);
 //        actor.setPosition(getX(), getY());

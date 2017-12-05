@@ -42,7 +42,7 @@ public class EmitterPools {
                     try {
                         return new EmitterActor(finalPath);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
                     return null;
                 }

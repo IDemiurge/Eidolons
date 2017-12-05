@@ -71,7 +71,7 @@ public class MainViewPanel extends G_Panel {
             // view = new ViewWorker(VIEW, hero).getOrCreate();
             view = createView(VIEW);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         viewsMap.put(VIEW, view);
 

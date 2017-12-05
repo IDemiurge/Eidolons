@@ -236,7 +236,7 @@ public class DC_ActionManager implements ActionManager {
         try {
             result = activateAction(target, source, counter);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             counter.setCounterMode(false);
         }
@@ -556,7 +556,7 @@ public class DC_ActionManager implements ActionManager {
         try {
             addSpecialActions(unit, actives);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (ExplorationMaster.isExplorationOn())
             try {
@@ -570,7 +570,7 @@ public class DC_ActionManager implements ActionManager {
                 actives.addAll(actions);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
         unit.setActives(new ArrayList<>(actives));
@@ -580,7 +580,7 @@ public class DC_ActionManager implements ActionManager {
         try {
             constructActionMaps(unit);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         // entity.setProperty(ACTIVES, StringMaster
         // .constructContainer(StringMaster.convertToIdList(actives)));
@@ -685,7 +685,7 @@ public class DC_ActionManager implements ActionManager {
                     actives.add(getOrCreateAction(PICK_UP, unit));
                 }
             } catch (Exception e) {
-                // e.printStackTrace();
+                // main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         if (RuleMaster.checkFeature(FEATURE.DIVINATION)) {

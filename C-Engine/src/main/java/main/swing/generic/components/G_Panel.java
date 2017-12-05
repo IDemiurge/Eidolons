@@ -154,7 +154,7 @@ public class G_Panel extends G_Component implements VisualComponent {
             try {
                 return super.getMinimumSize();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         panelSize = super.getMinimumSize();
@@ -178,7 +178,7 @@ public class G_Panel extends G_Component implements VisualComponent {
                     panelSize = new Dimension(getPanelWidth(), getPanelHeight());
                     return panelSize;
                 } catch (Exception e2) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
 
             }
@@ -233,7 +233,7 @@ public class G_Panel extends G_Component implements VisualComponent {
         } catch (java.lang.ClassCastException e) {
 
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
 
         }
         if (!isBackgroundVisuals()) {
@@ -246,7 +246,7 @@ public class G_Panel extends G_Component implements VisualComponent {
             try {
                 drawRect(g, i);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 break;
             }
             i--;

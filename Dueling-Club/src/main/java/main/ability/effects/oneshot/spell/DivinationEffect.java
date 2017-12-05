@@ -13,7 +13,7 @@ public class DivinationEffect extends MicroEffect  implements OneshotEffect {
         try {
             DivinationMaster.divine(hero);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
 

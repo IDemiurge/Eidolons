@@ -129,7 +129,7 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
         try {
             doDialog(false, false, false, null, true);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
     }
@@ -138,7 +138,7 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
         try {
             doDialog(false, false, false, null, false);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 

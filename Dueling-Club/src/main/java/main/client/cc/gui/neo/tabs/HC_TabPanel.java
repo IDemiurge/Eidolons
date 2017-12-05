@@ -187,7 +187,7 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
         try {
             select(i);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             listener = buffer;
         }
@@ -218,7 +218,7 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
         try {
             adjustPageIndexToSelectTab(tabs.get(getIndex()));
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (listener != null) {
             notifyListener();

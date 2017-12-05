@@ -166,7 +166,7 @@ public class AV_Tree extends G_Panel {
                     Collections.sort(subGroups, new EnumMaster<>().getEnumSorter(ENUM));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         } else if (workspace != null) {
             subGroups = workspace.getSubgroups();
@@ -210,7 +210,7 @@ public class AV_Tree extends G_Panel {
                 try {
                     Collections.sort(list, getComparator());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             } else {
                 if (workspace.isSearch()) {
@@ -225,7 +225,7 @@ public class AV_Tree extends G_Panel {
                         } catch (Exception e1) {
                             e1.printStackTrace();
                         }
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
 
 
@@ -241,7 +241,7 @@ public class AV_Tree extends G_Panel {
                         Collections.sort(list, new EnumMaster<>()
                          .getEnumSorter(WORKSPACE_GROUP.class));
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
             }

@@ -72,7 +72,7 @@ public class SelfMoveEffect extends MoveEffect {
                 try {
                     return ref.getActive().getTargetObj().getCoordinates();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
             Conditions conditions = new Conditions();

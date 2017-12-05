@@ -86,7 +86,7 @@ public class GridCell extends Group implements Borderable {
                              leftClickCell(isShift(), isControl(), getGridX(), getGridY()))
                                 return;
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            main.system.ExceptionMaster.printStackTrace(e);
                         }
                     GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, GridCell.this);
 

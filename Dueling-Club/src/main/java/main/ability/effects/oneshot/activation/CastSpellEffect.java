@@ -32,7 +32,7 @@ public class CastSpellEffect extends MicroEffect  implements OneshotEffect {
             try {
                 active = (DC_ActiveObj) ref.getObj(key);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         List<String> reasons = ReasonMaster.getReasonsCannotActivate(active,

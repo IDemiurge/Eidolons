@@ -46,20 +46,20 @@ public class SpeechBuilder {
             Condition reqs = DialogueSyntax.getConditions(text);
             speech.setConditions(reqs);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
             Abilities abils = DialogueSyntax.getAbilities(text);
             speech.setAbilities(abils);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
             String script = DialogueSyntax.getScript(text);
 
             speech.setScript(script);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
        return  DialogueSyntax.getRawText(text);

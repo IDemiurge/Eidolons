@@ -76,7 +76,7 @@ public class StateCloner {
             clone.setCloned(true);
 //  triggerRules ??
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return state;
         } finally {
             game.setCloningMode(false);

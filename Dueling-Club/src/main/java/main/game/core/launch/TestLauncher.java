@@ -180,7 +180,7 @@ public class TestLauncher //extends MetaGameMaster
             }
             savePresetAsLast();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return game;
     }
@@ -310,7 +310,7 @@ public class TestLauncher //extends MetaGameMaster
         try {
             party = getRandomizedParty(2, 2, null, null);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return party;
     }

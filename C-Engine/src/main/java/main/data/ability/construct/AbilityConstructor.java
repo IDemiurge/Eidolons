@@ -159,7 +159,7 @@ public class AbilityConstructor {
                 doc = XML_Converter.getDoc(xml);
             } catch (Exception e) {
                 // XML_Master.printOutXml(xml); //in a readable form...
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             type.setDoc(doc);
 
@@ -269,7 +269,7 @@ public class AbilityConstructor {
             try {
                 ability = getAbilCache().get(entity.getId()).get(passive);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             // if (entity.getGame().isSimulation())
             if (ability == null || TextParser.checkHasRefs(passive)) {
@@ -279,7 +279,7 @@ public class AbilityConstructor {
                     passive = TextParser.parse(passive, entity.getRef());
                     ability = getAbilCache().get(entity.getId()).get(passive);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 } finally {
                     TextParser.setAbilityParsing(false);
                 }
@@ -347,7 +347,7 @@ public class AbilityConstructor {
                  TextParser.VARIABLE_PARSING_CODE, TextParser.ABILITY_PARSING_CODE);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             TextParser.setAbilityParsing(false);
             TextParser.setActiveParsing(false);
@@ -357,7 +357,7 @@ public class AbilityConstructor {
 
             type = getNewAbilityType(abilTypeName);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "Failed to create new ability: " + abilTypeName);
 
         }

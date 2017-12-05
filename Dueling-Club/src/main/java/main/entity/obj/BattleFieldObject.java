@@ -278,7 +278,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
             try {
                 getGame().getBattleMaster().getOptionManager().applyDifficultyMods(this);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p -> resetCurrentValue(p));

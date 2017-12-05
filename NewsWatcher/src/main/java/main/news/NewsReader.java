@@ -22,7 +22,7 @@ public class NewsReader {
             try {
                 watch(website);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -78,7 +78,7 @@ public class NewsReader {
 //            System.out.println(content);
 //            NewsLogger.logRaw(body);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return content;
     }

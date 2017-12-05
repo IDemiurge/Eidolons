@@ -128,7 +128,7 @@ public class XML_Reader {
                     } catch (Exception e) {
                         brokenXml = true;
                         main.system.auxiliary.log.LogMaster.log(1,file+" is broken!" );
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
             }
@@ -410,13 +410,13 @@ public class XML_Reader {
         try {
             reloadHeroFiles();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             getTypeMaps().put(key, bufferCharTypeMap);
         }
         try {
             checkNewHeroes();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             getTypeMaps().put(key, bufferCharTypeMap);
         }
@@ -431,7 +431,7 @@ public class XML_Reader {
             } catch (Exception e) {
                 LogMaster.setOff(false);
                 LogMaster.log(1, "Hero File failed to load:" + heroFile);
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } finally {
                 LogMaster.setOff(false);
             }

@@ -773,7 +773,7 @@ public class StringMaster {
                 // if (index != -1)
                 // if (StringMaster.isInteger(value))
                 // return Integer.valueOf(value.substring(0, index));
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -1520,7 +1520,7 @@ public class StringMaster {
         try {
             return Double.valueOf(doubleParam);
         } catch (Exception e) {
-            // e.printStackTrace();
+            // main.system.ExceptionMaster.printStackTrace(e);
         }
         return 0.0;
     }
@@ -1530,7 +1530,7 @@ public class StringMaster {
         try {
             return Float.valueOf(floatParam);
         } catch (Exception e) {
-            // e.printStackTrace();
+            // main.system.ExceptionMaster.printStackTrace(e);
         }
         return 0.0f;
     }

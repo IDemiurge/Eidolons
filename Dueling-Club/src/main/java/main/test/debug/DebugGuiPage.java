@@ -60,7 +60,7 @@ public class DebugGuiPage extends G_Panel {
                 try {
                     DC_Game.game.getDebugMaster().executeDebugFunctionNewThread(func);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 } finally {
 
                 }

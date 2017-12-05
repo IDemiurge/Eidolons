@@ -30,7 +30,7 @@ public class DescriptionPanel extends ScrollTextPanel {
 
     @Override
     protected FONT getFontStyle() {
-        return super.getFontStyle();
+        return FONT.RU;
     }
 
     @Override

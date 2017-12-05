@@ -58,7 +58,7 @@ public class MultiTargeting extends TargetingImpl {
                 return targetings[0].getFilter();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         return super.getFilter();

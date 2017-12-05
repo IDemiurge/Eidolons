@@ -112,7 +112,7 @@ public class NewsAlerter {
                 Err.info("Mail sent! Addresses: " + emails);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 Err.warn("Failed to send alert email!");
             }
         alertMessageMap = new XLinkedMap<>();

@@ -15,16 +15,9 @@ public class InventoryValueContainer extends ValueContainer {
     private InventoryClickHandler handler;
     private Entity entity;
 
-    public InventoryValueContainer(TextureRegion texture, String name, String value) {
-        super(texture, name, value);
-    }
 
-    public InventoryValueContainer(TextureRegion texture) {
-        super(texture);
-    }
-
-    public InventoryValueContainer(TextureRegion texture, String value) {
-        super(texture, value);
+    public InventoryValueContainer(TextureRegion texture, String name) {
+        super(texture, name,"");
     }
 
     public InventoryValueContainer(String name, String value) {

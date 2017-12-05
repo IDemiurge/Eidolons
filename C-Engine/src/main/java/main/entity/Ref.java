@@ -149,7 +149,7 @@ public class Ref implements Cloneable, Serializable {
 //        try {
         return game.getObjectById(getId(string));
 //        } catch (Exception e) {
-//            e.printStackTrace();
+//            main.system.ExceptionMaster.printStackTrace(e);
 //            return null;
 //        }
     }
@@ -439,7 +439,7 @@ public class Ref implements Cloneable, Serializable {
             return game.getObjectById(StringMaster.getInteger(getRemovedValues()
              .get(key)));
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return null;
         }
     }

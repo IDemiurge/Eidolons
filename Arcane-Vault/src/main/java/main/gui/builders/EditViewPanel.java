@@ -364,7 +364,7 @@ public class EditViewPanel implements TableModelListener {
             try {
                 ModelManager.save(type, valName);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(ex);
             }
             String grpName = (secondTableMode) ? ArcaneVault.getPreviousSelectedType()
                     .getOBJ_TYPE() : ArcaneVault.getMainBuilder().getSelectedTabName();
@@ -540,7 +540,7 @@ public class EditViewPanel implements TableModelListener {
             try {
                 ModelManager.adjustTreeTabSelection(type, false);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         } else {
             if (isTreeView()) {
@@ -549,7 +549,7 @@ public class EditViewPanel implements TableModelListener {
                     try {
                         node = getTreeViewComp().getTree().getMap().getNodeForType(type);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                         setTreeView(false);
                         selectType(fromHT, type);
                     }
@@ -573,7 +573,7 @@ public class EditViewPanel implements TableModelListener {
                             viewComp.repaint();
                             setDirty(true);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            main.system.ExceptionMaster.printStackTrace(e);
                         }
                     }
                 }
@@ -584,7 +584,7 @@ public class EditViewPanel implements TableModelListener {
         try {
             resetData(type);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (type.getOBJ_TYPE_ENUM().isTreeEditType()) {
             setAE_View(type.getName());

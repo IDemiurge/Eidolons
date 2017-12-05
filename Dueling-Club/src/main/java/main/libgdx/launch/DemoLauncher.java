@@ -9,7 +9,7 @@ import main.system.EventCallbackParam;
 import main.system.launch.CoreEngine;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
-import main.system.text.SpecialLogger;
+import main.system.auxiliary.log.SpecialLogger;
 import org.dizitart.no2.Nitrite;
 
 public class DemoLauncher extends GenericLauncher {

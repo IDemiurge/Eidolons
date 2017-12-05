@@ -142,7 +142,7 @@ public class OrbElement extends SuperActor {
             ScissorStack.popScissors();
         } catch (Exception e) {
 //            if (!logged) {
-//                e.printStackTrace(); //TODO spams into console!
+//                main.system.ExceptionMaster.printStackTrace(e); //TODO spams into console!
 //                logged = true;
 //            }
 

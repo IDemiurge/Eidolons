@@ -104,8 +104,8 @@ public class HpBar extends SuperActor {
     //make sure this isn't called all the time!
     public void reset(ResourceSourceImpl resourceSource) {
         //TODO queue animation?
-        main.system.auxiliary.log.LogMaster.log(1, this + ">>>  tries to reset " +
-         dataSource + " previousToughnessPerc=" + previousToughnessPerc + " previousEndurancePerc=" + previousEndurancePerc + " toughnessPerc=" + toughnessPerc + " endurancePerc=" + endurancePerc);
+//        main.system.auxiliary.log.LogMaster.log(1, this + ">>>  tries to reset " +
+//         dataSource + " previousToughnessPerc=" + previousToughnessPerc + " previousEndurancePerc=" + previousEndurancePerc + " toughnessPerc=" + toughnessPerc + " endurancePerc=" + endurancePerc);
 
         dataSource = resourceSource;
         setToughnessPerc(new Float(dataSource.getIntParam(PARAMS.C_TOUGHNESS))
@@ -118,8 +118,8 @@ public class HpBar extends SuperActor {
             return;
 
         dirty = true;
-        main.system.auxiliary.log.LogMaster.log(1, this + ">>>   reset " +
-         dataSource + " previousToughnessPerc=" + previousToughnessPerc + " previousEndurancePerc=" + previousEndurancePerc + " toughnessPerc=" + toughnessPerc + " endurancePerc=" + endurancePerc);
+//        main.system.auxiliary.log.LogMaster.log(1, this + ">>>   reset " +
+//         dataSource + " previousToughnessPerc=" + previousToughnessPerc + " previousEndurancePerc=" + previousEndurancePerc + " toughnessPerc=" + toughnessPerc + " endurancePerc=" + endurancePerc);
 
 //        if (!getToughnessPerc().equals(lastOfferedToughness))
         setPreviousToughnessPerc(lastOfferedToughness);
@@ -145,8 +145,8 @@ public class HpBar extends SuperActor {
 
     public void animateChange(boolean smooth) {
         if (!dataSource.isHpBarVisible()) {
-            main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar not visible " +
-             dataSource);
+//            main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar not visible " +
+//             dataSource);
             return;
         }
         getActions().clear();

@@ -43,7 +43,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         try {
             new DialogueWizard(dialogue).start();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         finally {
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE, true);

@@ -178,7 +178,7 @@ public class XlsMaster {
             workbook.write(fileOut);
             fileOut.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         System.out.println("Content excel file has been generated!");
     }

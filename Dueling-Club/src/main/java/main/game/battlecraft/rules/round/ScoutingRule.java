@@ -49,7 +49,7 @@ public class ScoutingRule extends RoundRule {
 //                        break;
 //                    }
 //                } catch (Exception e) {
-//                    // e.printStackTrace();
+//                    // main.system.ExceptionMaster.printStackTrace(e);
 //
 //                }
 //            }

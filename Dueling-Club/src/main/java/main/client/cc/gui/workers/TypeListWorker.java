@@ -70,10 +70,10 @@ public class TypeListWorker extends SwingWorker<List<ObjType>, String> {
             panel.initMap(getOrCreate(), listName);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } catch (ExecutionException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }*/
     }
 

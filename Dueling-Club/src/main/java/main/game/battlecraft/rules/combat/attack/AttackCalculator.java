@@ -800,7 +800,7 @@ for (Integer sub: posMap.values())
                 try {
                     return DC_ImageMaster.getImageDynamic(this, values);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     return ImageManager.getImage(ImageManager.getEmptyListIconSmall());
                 }
             }

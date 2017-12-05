@@ -16,10 +16,10 @@ import main.system.images.ImageManager;
  */
 public class ItemInfoPanel extends TablePanel{
 
-    DescriptionPanel description;
-    Image preview;
-    Image fullsizePortrait;
-    Label title;
+    protected  DescriptionPanel description;
+    protected  Image preview;
+    protected  Image fullsizePortrait;
+    protected Label title;
     protected SelectableItemData item;
 
     public ItemInfoPanel(SelectableItemData item) {
@@ -30,7 +30,8 @@ public class ItemInfoPanel extends TablePanel{
         description.setText(getDefaultText());
         title = new Label(getDefaultTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 30));
         preview = new Image(TextureCache.getOrCreateR(getEmptyImagePath()));
-        fullsizePortrait = new Image(TextureCache.getOrCreateR(getEmptyImagePathFullSize()));
+        fullsizePortrait =
+         new Image(TextureCache.getOrCreateR(getEmptyImagePathFullSize()));
 
         TablePanel<Actor> header = new TablePanel<>();
         initHeader(header);
@@ -44,7 +45,7 @@ public class ItemInfoPanel extends TablePanel{
        
 
         addElement(description).left().padLeft(30) ;
-        addNormalSize(fullsizePortrait).right().padBottom(30).padRight(25) ;
+        addNormalSize(fullsizePortrait).right().padBottom(70).padRight(25) ;
 
         if (item!=null )
         setItem(item);
@@ -93,8 +94,17 @@ public class ItemInfoPanel extends TablePanel{
     public void updateAct(float delta) {
         super.updateAct(delta);
         description.setText(item.description);
+        if (item.imagePath==null )
+            preview.setDrawable(null);
+        else
         preview.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(item.imagePath));
-        fullsizePortrait.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(item.previewImagePath));
+
+        if (item.previewImagePath==null )
+            fullsizePortrait.setDrawable(null);
+        else
+            fullsizePortrait.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(
+         item.previewImagePath));
+
         title.setText(getTitle());
         pack();
     }

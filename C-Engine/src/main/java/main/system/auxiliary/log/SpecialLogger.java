@@ -1,15 +1,13 @@
-package main.system.text;
+package main.system.auxiliary.log;
 
 import com.badlogic.gdx.utils.StringBuilder;
 import main.data.filesys.PathFinder;
-import main.game.core.game.DC_Game;
-import main.swing.generic.services.dialog.DialogMaster;
+import main.game.core.game.Game;
+import main.swing.generic.services.DialogMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
-import main.system.auxiliary.log.FileLogger;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.threading.WaitMaster;
 
@@ -51,6 +49,10 @@ public class SpecialLogger implements FileLogger {
 
     public static void setInstance(SpecialLogger instance) {
         SpecialLogger.instance = instance;
+    }
+
+    public  void appendExceptionToFileLog(String message) {
+        appendSpecialLog(SPECIAL_LOG.EXCEPTIONS, message);
     }
 
     public void dialog() {
@@ -131,7 +133,7 @@ public class SpecialLogger implements FileLogger {
                 return;
         if (consoleLogged)
             if (gameLogged )
-                DC_Game.game.getLogManager().log(string);
+                Game.game.getLogManager().log(string);
             else
                 LogMaster.log(string);
 

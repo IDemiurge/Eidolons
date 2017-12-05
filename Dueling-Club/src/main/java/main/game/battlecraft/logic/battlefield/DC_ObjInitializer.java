@@ -71,7 +71,7 @@ public class DC_ObjInitializer {
         try {
             map = processUnitDataStringToMap(Player.NEUTRAL, textContent, DC_Game.game);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             mapBlockMode = false;
         }
@@ -311,7 +311,7 @@ public class DC_ObjInitializer {
                     try {
                         TestMasterContent.addTestItems(type, last);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
             }
@@ -334,7 +334,7 @@ public class DC_ObjInitializer {
                             PartyHelper.addMember(hero);
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
 
@@ -377,7 +377,7 @@ public class DC_ObjInitializer {
         try {
             list = processUnitDataString(player, data, DC_Game.game);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             offset = null;
         }

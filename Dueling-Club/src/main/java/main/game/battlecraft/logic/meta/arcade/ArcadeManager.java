@@ -285,7 +285,7 @@ public class ArcadeManager {
         try {
             lootManager.awardLoot(party, dungeon);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (dungeon != null) {
             if (dungeon.getProperty(G_PROPS.DUNGEON_TYPE).equalsIgnoreCase(

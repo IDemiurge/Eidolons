@@ -98,7 +98,7 @@ public class Level extends DungeonWrapper<Location> {
 //                LevelEditor.getSimulation().getDungeonMaster().setDungeon(dungeon);
                 master.getDungeonWrapper().setPlan(plan);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             // initObjects();
             // for (MapBlock b : plan.getBlocks())
@@ -148,7 +148,7 @@ public class Level extends DungeonWrapper<Location> {
                 try {
                     DC_ObjInitializer.initDirectionMap(location.getZ(), plan.getDirectionMap());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
 

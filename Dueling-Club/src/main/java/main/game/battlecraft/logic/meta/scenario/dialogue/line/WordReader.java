@@ -21,7 +21,7 @@ public class WordReader {
 //                System.out.println(extract.getText());
 //            } catch (IOException e) {
 //
-//                e.printStackTrace();
+//                main.system.ExceptionMaster.printStackTrace(e);
 //            }
 //        } else { //is not a docx
 //            try {
@@ -30,7 +30,7 @@ public class WordReader {
 //                WordExtractor extractor = new WordExtractor(doc);
 //                System.out.println(extractor.getText());
 //            } catch (IOException e) {
-//                e.printStackTrace();
+//                main.system.ExceptionMaster.printStackTrace(e);
 //            }
 //        }
 //    }

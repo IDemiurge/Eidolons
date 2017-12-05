@@ -75,7 +75,7 @@ public class ListItem<E> extends JLabel {
                         setIcon(new ImageIcon(ImageManager.applyBorder(ImageManager
                                 .getImage((String) getValue()), BORDER.HIGHLIGHTED)));
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
             } else {
@@ -99,7 +99,7 @@ public class ListItem<E> extends JLabel {
         try {
             initBorder();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
 
         }
         if (!ImageManager.isValidIcon(getIcon()) || isTextShownAlways()) {
@@ -141,7 +141,7 @@ public class ListItem<E> extends JLabel {
                 img = (entity.getCustomIcon() != null ? entity.getCustomIcon().getImage()
                         : ImageManager.getImage(entity.getProperty(G_PROPS.IMAGE, false)));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         if (img == null) {
@@ -188,7 +188,7 @@ public class ListItem<E> extends JLabel {
             try {
                 initBorderConcurrently(this);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             return;
         }

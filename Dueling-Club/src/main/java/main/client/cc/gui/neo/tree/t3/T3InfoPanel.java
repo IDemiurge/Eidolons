@@ -30,7 +30,7 @@ public class T3InfoPanel extends G_Panel {
         try {
             skill = CharacterCreator.getHero().getSkills().get(flipped ? 1 : 0);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         infoPanel = new DC_PagedInfoPanel(skill);
         ImageIcon icon = ImageManager.getEmptyItemIcon(flipped);

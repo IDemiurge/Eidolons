@@ -17,6 +17,7 @@ import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.*;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
@@ -40,7 +41,9 @@ public class PanelActionsDataSource implements
     }
 
     public static ActionValueContainer getActionValueContainer(DC_ActiveObj el) {
+        boolean valid = el.canBeManuallyActivated();
         final ActionValueContainer container = new ActionValueContainer(
+         valid,
          getOrCreateR(getImage(el)),
          el::invokeClicked
         );
@@ -81,10 +84,13 @@ public class PanelActionsDataSource implements
     public List<ActionValueContainer> getQuickSlotActions() {
         final DequeImpl<DC_QuickItemObj> items = unit.getQuickItems();
         if (items == null)
-            return new ArrayList<>();
+            return (List<ActionValueContainer>)
+             ListMaster.fillWithNullElements(new ArrayList<ActionValueContainer>(), unit.getRemainingQuickSlots());
         List<ActionValueContainer> list = items.stream()
          .map((DC_QuickItemObj key) -> {
+            boolean valid = key.getActive().canBeManuallyActivated();
              final ActionValueContainer valueContainer = new ActionValueContainer(
+              valid,
               getOrCreateR(key.getImagePath()),
               key::invokeClicked
              );
@@ -96,9 +102,12 @@ public class PanelActionsDataSource implements
          .collect(Collectors.toList());
         ObjType type = DataManager.getType(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()), DC_TYPE.ACTIONS);
         TextureRegion invTexture = TextureCache.getOrCreateR(type.getImagePath());
-        ActionValueContainer invButton = new ActionValueContainer(invTexture, () -> {
-            DC_UnitAction action = unit.getAction(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()));
-            if (action != null)
+
+        DC_UnitAction action = unit.getAction(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()));
+        if (action == null)
+            return list;
+        boolean valid = action.canBeManuallyActivated();
+        ActionValueContainer invButton = new ActionValueContainer(valid, invTexture, () -> {
                 action.clicked();
         });
         list.add(invButton);

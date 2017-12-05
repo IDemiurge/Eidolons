@@ -8,6 +8,7 @@ import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_ArmorObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.unit.Unit;
+import main.libgdx.gui.UiAnimator;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.VerticalValueContainer;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
@@ -25,7 +26,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,6 +96,11 @@ public class UnitDataSource implements
     }
 
     @Override
+    public String getAttribute(String name) {
+        return unit.getStrParam(name );
+    }
+
+    @Override
     public String getToughness() {
         int c = unit.getIntParam(PARAMS.C_TOUGHNESS);
         int m = unit.getIntParam(PARAMS.TOUGHNESS);
@@ -139,14 +144,14 @@ public class UnitDataSource implements
 
     @Override
     public String getParam(PARAMS param) {
-        switch (param){
+        switch (param) {
             case STAMINA:
                 return getStamina();
             case FOCUS:
                 return getFocus();
             case TOUGHNESS:
                 return getToughness();
-            case  ENDURANCE :
+            case ENDURANCE:
                 return getEndurance();
             case ESSENCE:
                 return getEssence();
@@ -188,10 +193,11 @@ public class UnitDataSource implements
         final String value = c + "/" + m;
 
         VerticalValueContainer container = new VerticalValueContainer(
-         getOrCreateR("UI/value icons/n_of_counters_s.png"), value);
+         getOrCreateR(ImageManager.getValueIconPath(PARAMS.N_OF_COUNTERS)), value);
 
         ValueTooltip toolTip = new ValueTooltip();
-        toolTip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.INITIATIVE.getName(), value)));
+        toolTip.setUserObject(Arrays.asList(
+         new ValueContainer(PARAMS.N_OF_COUNTERS.getName(), value)));
         container.addListener(toolTip.getController());
 
         return container;
@@ -202,20 +208,71 @@ public class UnitDataSource implements
         int c = unit.getIntParam(PARAMS.C_N_OF_ACTIONS);
         int m = unit.getIntParam(PARAMS.N_OF_ACTIONS);
         final String value = c + "/" + m;
-
-        VerticalValueContainer container = new VerticalValueContainer(getOrCreateR("UI/value icons/n_of_actions_s.png"), value);
+        VerticalValueContainer  container= getValueContainer(PARAMS.N_OF_ACTIONS, value);
 
         ValueTooltip toolTip = new ValueTooltip();
-        toolTip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.N_OF_ACTIONS.getName(), value)));
+        toolTip.setUserObject(Arrays.asList(
+         new ValueContainer(PARAMS.N_OF_ACTIONS.getName(), value)));
         container.addListener(toolTip.getController());
-
         return container;
+    }
+
+    public VerticalValueContainer getParamContainer(PARAMETER parameter) {
+        final String string = unit.getStrParam(parameter);
+        return getValueContainer(
+         ImageManager.getValueIconPath(parameter),
+         string, parameter.getName());
+    }
+
+    @Override
+    public VerticalValueContainer getResistance() {
+        return getParamContainer(PARAMS.RESISTANCE);
+    }
+
+    @Override
+    public VerticalValueContainer getDefense() {
+        return getParamContainer(PARAMS.DEFENSE);
+    }
+
+    public VerticalValueContainer getValueContainer(PARAMETER param, String string) {
+        return getValueContainer(
+         ImageManager.getValueIconPath(param),
+         string, param.getName());
+
+    }
+
+    private VerticalValueContainer getValueContainer(String valueIconPath, String param,
+                                                     String paramName) {
+        final VerticalValueContainer container =
+         new VerticalValueContainer(
+          getOrCreateR(valueIconPath),
+          param);
+        container.overrideImageSize(UiAnimator.getSmallIconSize(), UiAnimator.getSmallIconSize());
+        ValueTooltip tooltip = new ValueTooltip();
+        tooltip.setUserObject(Arrays.asList(new ValueContainer(paramName , param)));
+        container.addListener(tooltip.getController());
+        return container;
+    }
+
+    @Override
+    public VerticalValueContainer getFortitude() {
+        return getParamContainer(PARAMS.FORTITUDE);
+    }
+
+    @Override
+    public VerticalValueContainer getSpirit() {
+        return getParamContainer(PARAMS.SPIRIT);
+    }
+
+    @Override
+    public VerticalValueContainer getArmor() {
+        return getParamContainer(PARAMS.ARMOR);
     }
 
     @Override
     public List<ValueContainer> getBuffs() {
         return unit.getBuffs().stream()
-         .filter(obj ->obj.isDisplayed())
+         .filter(obj -> obj.isDisplayed())
          .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
          .map(AttackTooltipFactory.getObjValueContainerMapper())
          .collect(Collectors.toList());
@@ -224,85 +281,10 @@ public class UnitDataSource implements
     @Override
     public List<ValueContainer> getAbilities() {
         return unit.getPassives().stream()
-         .filter(obj ->obj.isDisplayed())
-          .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
+         .filter(obj -> obj.isDisplayed())
+         .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
          .map(AttackTooltipFactory.getObjValueContainerMapper())
          .collect(Collectors.toList());
-    }
-
-    public VerticalValueContainer getParamContainer(PARAMETER parameter) {
-        final String param = unit.getStrParam(parameter);
-        final VerticalValueContainer container =
-         new VerticalValueContainer(
-          getOrCreateR(ImageManager.getValueIconPath(parameter)),
-          param);
-        ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer(parameter.getName(), param)));
-        container.addListener(tooltip.getController());
-        return container;
-    }
-    @Override
-    public VerticalValueContainer getResistance() {
-        return getParamContainer(PARAMS.RESISTANCE);
-    }
-
-    @Override
-    public VerticalValueContainer getDefense() {
-        final String param = unit.getStrParam(PARAMS.DEFENSE);
-        final VerticalValueContainer container =
-         new VerticalValueContainer(
-          getOrCreateR("UI/value icons/Defense.jpg"),
-          param);
-
-        ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.DEFENSE.getName(), param)));
-        container.addListener(tooltip.getController());
-
-        return container;
-    }
-
-    @Override
-    public VerticalValueContainer getFortitude() {
-        final String param = unit.getStrParam(PARAMS.FORTITUDE);
-        final VerticalValueContainer container =
-         new VerticalValueContainer(
-          getOrCreateR("UI/value icons/Fortitude.jpg"),
-          param);
-        ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.FORTITUDE.getName(), param)));
-        container.addListener(tooltip.getController());
-
-        return container;
-    }
-
-    @Override
-    public VerticalValueContainer getSpirit() {
-        final String param = unit.getStrParam(PARAMS.SPIRIT);
-        final VerticalValueContainer container =
-         new VerticalValueContainer(
-          getOrCreateR("UI/value icons/spirit.jpg"),
-          param);
-
-        ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.SPIRIT.getName(), param)));
-        container.addListener(tooltip.getController());
-        return container;
-    }
-
-    @Override
-    public VerticalValueContainer getArmor() {
-        final String param = unit.getStrParam(PARAMS.ARMOR);
-        final VerticalValueContainer container =
-         new VerticalValueContainer(
-          getOrCreateR("UI/value icons/armor.jpg"),
-          param);
-
-        ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer(PARAMS.ARMOR.getName(), param)));
-        container.addListener(tooltip.getController());
-
-        container.addListener(tooltip.getController());
-        return container;
     }
 
     @Override
@@ -426,7 +408,7 @@ public class UnitDataSource implements
         try {
             return getWeaponDetail(mainWeapon);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return new ArrayList<>();
     }

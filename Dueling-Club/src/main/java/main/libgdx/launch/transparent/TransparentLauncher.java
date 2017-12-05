@@ -41,7 +41,7 @@ prestart();
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         System.out.println(hwnd);

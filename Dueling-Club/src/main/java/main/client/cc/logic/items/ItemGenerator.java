@@ -690,7 +690,7 @@ public class ItemGenerator implements GenericItemGenerator {
 //            (isBasicMode() ? basicGenerator : defaultGenerator).
             generateItemObjTypes();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         DataManager.setItemMaps(itemMaps);
@@ -758,17 +758,17 @@ public class ItemGenerator implements GenericItemGenerator {
             try {
                 generateJewelry();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         // try {
         // generateGarments();
         // } catch (Exception e) {
-        // e.printStackTrace();
+        // main.system.ExceptionMaster.printStackTrace(e);
         // }
         try {
             generateUsableItems();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         Chronos.logTimeElapsedForMark("ITEM_GENERATION");

@@ -47,12 +47,12 @@ public abstract class SwingBattleField implements BattleField {
                         try {
                             builder.refresh();
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            main.system.ExceptionMaster.printStackTrace(e);
                         }
                     }
                 });
-            } catch (Error | InvocationTargetException | InterruptedException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

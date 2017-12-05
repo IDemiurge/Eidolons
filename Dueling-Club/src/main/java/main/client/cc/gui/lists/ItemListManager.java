@@ -167,7 +167,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
         try {
             updateToolTip(selected, false);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         for (List<HeroListPanel> pages : listMap.values()) {
             for (HeroListPanel page : pages) {

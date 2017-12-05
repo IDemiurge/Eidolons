@@ -208,7 +208,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
             try {
                 bottom = initBottomPanel();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         } else {
             if (bottomPanel == null) {

@@ -91,7 +91,7 @@ public void init(){
                     return false;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 return false;
             } finally {
                 ref.getGame().getManager().setTriggerBeingChecked(false);

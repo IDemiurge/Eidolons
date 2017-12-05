@@ -8,6 +8,7 @@ import main.entity.Entity;
 import main.libgdx.GdxMaster;
 import main.libgdx.gui.menu.selection.SelectionPanel;
 import main.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
+import main.libgdx.gui.menu.selection.manual.ManualPanel;
 import main.libgdx.stage.UiStage;
 import main.libgdx.video.VideoMaster;
 import main.system.EventCallbackParam;
@@ -23,16 +24,17 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     protected VideoMaster video;
     protected boolean looped;
     protected SelectionPanel selectionPanel;
+    protected ManualPanel manualPanel;
 
 
     public ScreenWithVideoLoader() {
         //TODO loader here, but need data!
         super();
         if (isVideoLoader())
-        if (isVideoEnabled())
-          initVideo();
-        looped =true;
-        overlayStage= new UiStage();
+            if (isVideoEnabled())
+                initVideo();
+        looped = true;
+        overlayStage = new UiStage();
 
     }
 
@@ -43,45 +45,64 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     @Override
     protected void preLoad() {
         super.preLoad();
-        GuiEventManager.bind(true, GuiEventType.SHOW_SELECTION_PANEL , p->{
-            if (selectionPanel!=null )
+        GuiEventManager.bind(true, GuiEventType.SHOW_SELECTION_PANEL, p -> {
+            if (selectionPanel != null)
                 selectionPanel.closed(null);
-            if (p.get()==null )
-            {
+            if (p.get() == null) {
                 selectionPanelClosed();
                 updateInputController();
-                return ;
+                return;
             }
-            selectionPanel=
+            selectionPanel =
              createSelectionPanel(p);
+            addSelectionPanel(selectionPanel);
 
-            boolean displayOnLoader = hideLoader!=isVideoLoader();
-            if (displayOnLoader) {
-                getOverlayStage().addActor(selectionPanel);
-            } else {
-                if (getMainStage()!= null )
-                getMainStage().addActor(selectionPanel);
-            }
-            getOverlayStage().setActive(true);
-            updateInputController();
-
-            selectionPanel.setPosition(
-             GdxMaster.right(selectionPanel),
-//               GdxMaster.centerWidth(selectionPanel),
-             GdxMaster.centerHeight(selectionPanel));
         });
+        GuiEventManager.bind(true, GuiEventType.SHOW_MANUAL_PANEL, p -> {
+            if (manualPanel != null)
+                manualPanel.closed(null);
+            else
+                try {
+                    manualPanel = new ManualPanel();
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                    return;
+                }
+            if (p.get() == null) {
+                selectionPanelClosed();
+                updateInputController();
+                return;
+            }
+            addSelectionPanel(manualPanel);
+        });
+    }
+
+    private void addSelectionPanel(SelectionPanel selectionPanel) {
+        boolean displayOnLoader = hideLoader != isVideoLoader();
+        if (displayOnLoader) {
+            getOverlayStage().addActor(selectionPanel);
+        } else {
+            if (getMainStage() != null)
+                getMainStage().addActor(selectionPanel);
+        }
+        getOverlayStage().setActive(true);
+        updateInputController();
+        selectionPanel.setVisible(true);
+        selectionPanel.setPosition(
+         GdxMaster.right(selectionPanel),
+         GdxMaster.centerHeight(selectionPanel));
     }
 
     protected void selectionPanelClosed() {
     }
 
     protected SelectionPanel createSelectionPanel(EventCallbackParam p) {
-        return new HeroSelectionPanel(()-> (List<? extends Entity>) p.get());
+        return new HeroSelectionPanel(() -> (List<? extends Entity>) p.get());
 
     }
 
-    protected   Stage getMainStage(){
-        return null ;
+    protected Stage getMainStage() {
+        return null;
     }
 
     @Override
@@ -111,13 +132,13 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
 
     protected void renderLoader(float delta) {
 
-            if (video != null) {
-                renderVideo(delta);
-                overlayStage.act(delta);
-                overlayStage.draw();
-                return;
-            }
-       super.renderLoader(delta);
+        if (video != null) {
+            renderVideo(delta);
+            overlayStage.act(delta);
+            overlayStage.draw();
+            return;
+        }
+        super.renderLoader(delta);
 
     }
 

@@ -104,7 +104,7 @@ public class Java2DTest implements ApplicationListener {
 //             ImageManager.getBufferedImage8bit(      ImageManager.getBufferedImage(
 //             ImageManager.getEmitterPath(ImageManager.DEFAULT_BACKGROUND)))), 0, 0);
 //        } catch (IOException e) {
-//            e.printStackTrace();
+//            main.system.ExceptionMaster.printStackTrace(e);
 //        }
         batch.end();
     }

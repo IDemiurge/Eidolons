@@ -75,7 +75,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         try {
             scripts +=  readScriptsFile();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         parseScripts((scripts));
@@ -332,7 +332,7 @@ getSpawner().getFacingAdjuster().adjustFacing(unitsList);
             try {
                 origin = new Coordinates(arg);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         return origin;

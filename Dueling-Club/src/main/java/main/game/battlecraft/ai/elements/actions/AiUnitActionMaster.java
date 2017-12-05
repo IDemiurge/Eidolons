@@ -192,7 +192,7 @@ public class AiUnitActionMaster {
                         list.add(spell);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }

@@ -52,15 +52,15 @@ public class RefresherImpl implements Refresher {
             try {
                 Thread.sleep(1250);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             if (enabled) {
 
                 if (switcherCheck()) {
                     try {
                         rc.refresh();
-                    } catch (Throwable e) {
-                        e.printStackTrace();
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
                         return;
                     }
                 }

@@ -109,7 +109,7 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
             return comp;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return getDefaultComp(tree, value, selected, expanded, leaf, row, hasFocus);
 
         }

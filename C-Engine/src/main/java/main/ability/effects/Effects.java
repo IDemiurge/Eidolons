@@ -114,7 +114,7 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
                                 .apply(ref);
                         continue;
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
             }

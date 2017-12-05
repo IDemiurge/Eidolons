@@ -89,7 +89,7 @@ public class ActionTooltipMaster {
             try {
                 return getStringForTableValue(value, action);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         if (DC_ValueManager.isCentimalModParam(value)) {
@@ -127,7 +127,7 @@ public class ActionTooltipMaster {
         try {
             return tryGetStringForTableValue(value, action);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return "ERROR";
     }

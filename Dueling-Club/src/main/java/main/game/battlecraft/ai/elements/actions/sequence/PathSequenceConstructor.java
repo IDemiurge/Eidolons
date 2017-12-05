@@ -97,7 +97,7 @@ public class PathSequenceConstructor extends AiHandler {
             targetCells = getTargetCells(action); // TODO replace with
             // PRIORITY_CELLS
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "***Action failed to getOrCreate target cells: "
              + action);
         }
@@ -169,7 +169,7 @@ public class PathSequenceConstructor extends AiHandler {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             getUnit().setCoordinates(originalCoordinate);
         }

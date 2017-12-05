@@ -65,7 +65,7 @@ public class SpriteEmitter extends Emitter {
                 p.setRegion(texture);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         super.draw(batch, delta);
     }

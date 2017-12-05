@@ -230,7 +230,7 @@ public class MusicCore {
                         BasicFileAttributes.class);
                 type.setParam(AT_PARAMS.TIME_CREATED, attr.creationTime().toMillis() + "");
             } catch (IOException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             long time = file.lastModified();
             type.setParam(AT_PARAMS.TIME_LAST_MODIFIED, time + "");

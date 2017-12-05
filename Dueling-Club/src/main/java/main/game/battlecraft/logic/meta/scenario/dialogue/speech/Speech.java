@@ -87,7 +87,7 @@ public class Speech implements SpeechInterface {
         try {
             actor = master.getDialogueActorMaster().getActor(actorName);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (actorNames == null)
             actors = parent.getActors();

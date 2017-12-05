@@ -64,7 +64,7 @@ public class Attack {
             action = (DC_ActiveObj) ref.getActive();
             // sneak = DC_AttackMaster.checkSneak(ref); elsewhere
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (!offhand) {
             if (action != null) {

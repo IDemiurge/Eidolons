@@ -14,6 +14,8 @@ public class ValueContainer extends TablePanel {
     protected Cell<Image> imageContainer;
     protected Cell<Label> nameContainer;
     protected Cell<Label> valueContainer;
+    private float imageScaleX;
+    private float imageScaleY;
 
     protected ValueContainer() {
 
@@ -51,7 +53,7 @@ public class ValueContainer extends TablePanel {
 
     protected void init(TextureRegion texture, String name, String value) {
         imageContainer = addElement(null);
-
+        setName(name);
         if (texture != null) {
             imageContainer.setActor(new Image(texture))
                     .height(texture.getRegionHeight())
@@ -180,19 +182,63 @@ public class ValueContainer extends TablePanel {
         }
     }
 
-    public void overrideImageSize(int w, int h) {
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+    }
+
+
+
+    public float getImageScaleX() {
+        return imageScaleX;
+    }
+
+    public float getImageScaleY() {
+        return imageScaleY;
+    }
+
+    public void overrideImageSize(float w, float h) {
         if (imageContainer.getActor() != null) {
             w = Math.max(0, w);
             h = Math.max(0, h);
-
+            if (isScaledOnHover()) {
+                imageScaleX =w/imageContainer.getActor().getWidth();
+                imageScaleY=h/imageContainer.getActor().getHeight();
+                if (isScaledOnHover())
+                    imageContainer.getActor().setScale(getImageScaleX(), getImageScaleY());
+                imageContainer.setActorX(w-imageContainer.getActor().getWidth() );
+            }else
             imageContainer.size(w, h);
         }
+    }
+
+    @Override
+    public float getWidth() {
+        if (imageScaleX!=0)
+            return super.getWidth()*imageScaleX;
+        return super.getWidth();
+    }
+
+    @Override
+    public float getHeight() {
+        if (imageScaleY!=0)
+            return super.getHeight()*imageScaleY;
+        return super.getHeight();
+    }
+
+    protected boolean isScaledOnHover() {
+        return false;
     }
 
     public void setImageAlign(int imageAlign) {
         if (imageContainer.getActor() != null) {
             imageContainer.getActor().setAlign(imageAlign);
         }
+    }
+
+    public Cell<Image> getImageContainer() {
+        return imageContainer;
     }
 }
 

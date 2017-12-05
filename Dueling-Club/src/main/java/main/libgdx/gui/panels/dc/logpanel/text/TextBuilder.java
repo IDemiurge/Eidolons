@@ -35,6 +35,8 @@ public class TextBuilder   {
         Message.add(l).fill().width(w);
         Message.setLayoutEnabled(true);
         Message.pack();
+        Message.padTop(5);
+        Message.padBottom(5);
         addHoverObjects();
 
 

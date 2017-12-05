@@ -233,7 +233,7 @@ public class DC_KeyManager
                     return true;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 return false;
             }
 

@@ -85,7 +85,7 @@ public class MacroManager {
             game.getManager().newTurn();
             TimeMaster.turnEnded();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         turnProcessing = false;
     }

@@ -152,7 +152,7 @@ public class DrawMaster {
                 try {
                     drawCellFrame(compGraphics);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }
@@ -162,14 +162,14 @@ public class DrawMaster {
                 drawObjComps(compGraphics);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         } else {
             try {
                 drawTerrainObj(compGraphics);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         if (!cellComp.isTerrain()) {
@@ -192,7 +192,7 @@ public class DrawMaster {
                 try {
                     drawAnimations(cellComp, compGraphics);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }
@@ -291,7 +291,7 @@ public class DrawMaster {
                             .getActiveObj().getCoordinates(), cellComp.getCoordinates());
                     percentage = (int) Math.round(percentage / Math.sqrt(distance));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
                 image = ImageManager.getSizedVersion(image, percentage);
                 drawImage(g, image, getCompWidth() - image.getWidth(null), 0);
@@ -1380,7 +1380,7 @@ public class DrawMaster {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         drawHeight(obj, g);

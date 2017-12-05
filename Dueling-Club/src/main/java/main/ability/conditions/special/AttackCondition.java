@@ -24,7 +24,7 @@ public class AttackCondition extends MicroCondition {
                         ref.getActive().getAbilities(), AttackEffect.class)
                         .get(0);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         if (attackEffect == null) {

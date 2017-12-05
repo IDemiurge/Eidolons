@@ -26,7 +26,9 @@ public class Assets {
         ){
             @Override
             public TextureAtlas load (AssetManager assetManager, String fileName, FileHandle file, TextureAtlasParameter parameter) {
+//               super.load()
                 TextureAtlas atlas = new SmartTextureAtlas(fileName);
+                main.system.auxiliary.log.LogMaster.log(1,fileName +" loaded...");
                 return atlas;
             }
         });
@@ -44,11 +46,10 @@ public class Assets {
     }
 
     public AssetManager getManager() {
-        manager.update();
         return manager;
     }
 
     public static boolean isOn() {
-        return false;
+        return true;
     }
 }

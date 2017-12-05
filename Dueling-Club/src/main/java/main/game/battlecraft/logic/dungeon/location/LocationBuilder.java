@@ -178,7 +178,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             try {
                 initZones(n, plan);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
         } else
@@ -193,7 +193,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         try {
             plan = loadDungeonMap(plan.getXml());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             Coordinates.setFlipX(false);
             Coordinates.setFlipY(false);
@@ -249,7 +249,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
                 try {
                     plan = loadDungeonMap(data);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
                 return plan;
             }
@@ -520,7 +520,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             try {
                 zone = createZone(plan, zoneId, zoneNode);
             } catch (Exception e) {
-//                e.printStackTrace();
+//                main.system.ExceptionMaster.printStackTrace(e);
                 zone = new MapZone(plan.getDungeon(), zoneId, 0, plan.getDungeon().getWidth(), 0,
                         plan.getDungeon().getHeight());
             } // ++ add coord exceptions

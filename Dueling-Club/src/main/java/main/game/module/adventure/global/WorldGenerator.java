@@ -101,7 +101,7 @@ public class WorldGenerator {
             try {
                 r = createRoute(routeType);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 continue;
             }
             region.addRoute(r);

@@ -213,7 +213,7 @@ public class SessionWindow implements ActionListener {
                 return;
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(ex);
         }
     }
 

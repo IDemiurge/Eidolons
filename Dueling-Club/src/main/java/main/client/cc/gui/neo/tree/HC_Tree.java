@@ -423,7 +423,7 @@ public class HC_Tree {
             try {
                 n.refresh();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
         }
@@ -434,27 +434,27 @@ public class HC_Tree {
         try {
             updateLinks();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
             updateInfoIcons();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
             updateRankComponents();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
             updateOverlayFrames();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
             updateText();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         // addSizedIcons();
@@ -621,7 +621,7 @@ public class HC_Tree {
                                     parsedVarPart = ""
                                             + new Formula(varPart).getInt(new Ref(getHero()));
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                    main.system.ExceptionMaster.printStackTrace(e);
                                 }
                                 if (!parsedVarPart.isEmpty())
                                 // TextParser.parse(varPart, new

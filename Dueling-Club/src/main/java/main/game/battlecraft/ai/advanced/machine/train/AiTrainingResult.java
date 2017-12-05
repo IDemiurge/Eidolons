@@ -57,13 +57,13 @@ public class AiTrainingResult implements Comparator<AiTrainingResult>, Comparabl
                 try {
                     stat = AiTrainingCriteria.getStatForCriteria(key);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
         }
         try {
             return unitStats.getStatMap().get(stat) * value;
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return 0;
     }

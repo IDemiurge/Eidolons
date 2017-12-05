@@ -162,7 +162,7 @@ public class AnimMaster extends Group {
             try {
                 mouseHover((Unit) p.get());
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         });
 
@@ -186,7 +186,7 @@ public class AnimMaster extends Group {
             try {
                 initActionAnimation(input.getAction(), (AnimContext) input.getContext());
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
         });
@@ -208,7 +208,7 @@ public class AnimMaster extends Group {
             try {
                 initEventAnimation((Event) p.get());
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
         });
@@ -219,7 +219,7 @@ public class AnimMaster extends Group {
              try {
                  initEffectAnimation((Effect) p.get());
              } catch (Exception e) {
-                 e.printStackTrace();
+                 main.system.ExceptionMaster.printStackTrace(e);
              }
 
          }
@@ -379,7 +379,7 @@ public class AnimMaster extends Group {
                             try {
                                 anim.start();
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                main.system.ExceptionMaster.printStackTrace(e);
                             }
                         }
                     }
@@ -548,7 +548,7 @@ public class AnimMaster extends Group {
         try {
             result = anim.tryDraw(batch);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         if (ExplorationMaster.isExplorationOn())

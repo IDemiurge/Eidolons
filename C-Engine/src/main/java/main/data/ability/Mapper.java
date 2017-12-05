@@ -107,7 +107,7 @@ public class Mapper {
         try {
             return itemMap.get(itemName);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return null;
         }
     }
@@ -305,7 +305,7 @@ public class Mapper {
         } catch (Exception e) {
             LogMaster.log(1, CLASS.toString()
              + " failed to construct into item map");
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
         return true;

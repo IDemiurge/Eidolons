@@ -22,7 +22,7 @@ public class SoundController {
                 if (sound != null)
                     DC_SoundMaster.play(sound);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         });
 //        GuiEventManager.bind(CREATE_RADIAL_MENU, p-> playGuiSound(p,CREATE_RADIAL_MENU));

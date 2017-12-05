@@ -85,7 +85,7 @@ public class MacroGame extends Game {
             try {
                 PartyHelper.loadParty(partyName);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

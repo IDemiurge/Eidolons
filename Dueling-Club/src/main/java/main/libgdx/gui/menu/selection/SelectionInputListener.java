@@ -34,7 +34,7 @@ public class SelectionInputListener extends InputListener {
                 break;
             case Keys.DOWN:
             case Keys.S:
-            case Keys.R:
+            case Keys.RIGHT:
             case Keys.D:
                 next();
                 break;

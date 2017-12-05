@@ -25,7 +25,10 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         mainMenu = new MainMenu();
 //        stage.addActor(background);
         getOverlayStage().addActor(mainMenu);
-        mainMenu.setPosition(GdxMaster.getWidth()-mainMenu.getWidth(), GdxMaster.centerHeight(mainMenu) );
+        mainMenu.setPosition(
+         GdxMaster.centerWidth(mainMenu)
+//         GdxMaster.getWidth()-mainMenu.getWidth()
+         , GdxMaster.centerHeight(mainMenu) );
     bindEvents();
     }
 

@@ -96,7 +96,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 //                }
 //                dungeon.setPlan(plan);
 //            } catch (Exception e) {
-//                e.printStackTrace();
+//                main.system.ExceptionMaster.printStackTrace(e);
 //            }
 //        } else {
 //            plan = dungeon.getPlan();
@@ -113,7 +113,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 //        try {
 ////            initBfObjMap(dungeon);
 //        } catch (Exception e) {
-//            e.printStackTrace();
+//            main.system.ExceptionMaster.printStackTrace(e);
 //            map = new DC_Map();
 //        }
 //        String background = dungeon.getProperty(PROPS.MAP_BACKGROUND);
@@ -151,7 +151,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 //                    objMap.put(coordinates, objType);
 //                }
 //            } catch (Exception e) {
-//                e.printStackTrace();
+//                main.system.ExceptionMaster.printStackTrace(e);
 //            }
 //        }
 //

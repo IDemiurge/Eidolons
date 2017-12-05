@@ -60,7 +60,7 @@ public class Activator extends ActiveHandler {
             broken = false;
         } catch (Exception e) {
             if (!broken) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             broken = true;
         } finally {
@@ -132,7 +132,7 @@ public class Activator extends ActiveHandler {
         try {
             res = canBeActivated(getRef(), true);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             getHandler().setExtraAttackMode(instant_counter_opportunity, false);
         }
@@ -188,7 +188,7 @@ public class Activator extends ActiveHandler {
           return true;  }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             getHandler().setExtraAttackMode(instant_counter_opportunity, false);
         }

@@ -58,7 +58,7 @@ public abstract class CustomButton extends TextCompDC implements MouseListener {
         try {
             handleClick();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 

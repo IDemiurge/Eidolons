@@ -393,10 +393,10 @@ public class GridPanel extends Group {
             view.setActive(true);
             if (hero.isMine()) {
                 GuiEventManager.trigger(SHOW_TEAM_COLOR_BORDER, view);
-                GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL, new PanelActionsDataSource((Unit) hero));
+                GuiEventManager.trigger(BOTTOM_PANEL_UPDATE, new PanelActionsDataSource((Unit) hero));
             } else {
                 GuiEventManager.trigger(SHOW_TEAM_COLOR_BORDER, view);
-                GuiEventManager.trigger(UPDATE_QUICK_SLOT_PANEL, null);
+                GuiEventManager.trigger(BOTTOM_PANEL_UPDATE, null);
             }
             if (!firstUpdateDone) {
                 DC_Game.game.getVisionMaster().triggerGuiEvents();
@@ -727,16 +727,17 @@ public class GridPanel extends Group {
             uv.setVisible(false);
     }
 
-    public void detachUnitView(BattleFieldObject heroObj) {
+    public boolean detachUnitView(BattleFieldObject heroObj) {
         BaseView uv = unitMap.get(heroObj);
         if (!(uv.getParent() instanceof GridCellContainer))
-            return;
+            return false;
         GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
         float x = uv.getX() + gridCellContainer.getX();
         float y = uv.getY() + gridCellContainer.getY();
         gridCellContainer.removeActor(uv);
         addActor(uv);
         uv.setPosition(x, y);
+        return true;
     }
 
     private BaseView removeUnitView(BattleFieldObject obj) {

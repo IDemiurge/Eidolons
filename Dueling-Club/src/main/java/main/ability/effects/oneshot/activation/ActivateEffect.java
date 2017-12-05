@@ -47,7 +47,7 @@ public class ActivateEffect extends DC_Effect implements OneshotEffect {
         try {
             active.activatedOn(Ref.getSelfTargetingRefCopy(target));
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             active.setFree(false);
 

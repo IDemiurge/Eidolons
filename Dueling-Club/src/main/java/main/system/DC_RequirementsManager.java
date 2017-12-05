@@ -164,7 +164,7 @@ public class DC_RequirementsManager implements RequirementsManager {
             } catch (Exception e) {
                 LogMaster.log(1, type + "'s req failed! - "
                         + additionalRequirements);
-                // e.printStackTrace();
+                // main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         if (type.isUpgrade() && TYPE != null) {

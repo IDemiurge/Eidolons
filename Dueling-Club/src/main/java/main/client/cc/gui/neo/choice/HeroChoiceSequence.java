@@ -76,7 +76,7 @@ public class HeroChoiceSequence extends ChoiceSequence {
         try {
             CharacterCreator.getHeroManager().stepBack(hero);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         super.back();
     }

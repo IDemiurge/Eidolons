@@ -17,6 +17,11 @@ public class Missile3dAnim extends Weapon3dAnim {
         //apply offsets?
     }
 
+    @Override
+    protected float getSpriteScale() {
+        return super.getSpriteScale();
+    }
+
     protected WEAPON_ANIM_CASE getCase() {
         if (getActive().isFailedLast())
             return WEAPON_ANIM_CASE.MISSILE_MISS;

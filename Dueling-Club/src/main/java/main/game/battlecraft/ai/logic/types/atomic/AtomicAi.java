@@ -38,7 +38,7 @@ import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.FuncMaster;
 import main.system.math.PositionMaster;
-import main.system.text.SpecialLogger;
+import main.system.auxiliary.log.SpecialLogger;
 
 import java.util.Collection;
 import java.util.List;
@@ -270,7 +270,7 @@ public class AtomicAi extends AiHandler {
                 main.system.auxiliary.log.LogMaster.log(1, " ATOMIC ACTION " + action +
                  "  CHOSEN TO GET TO " + pick);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 //TODO what to return???
             }
         }
@@ -336,7 +336,7 @@ public class AtomicAi extends AiHandler {
                     return true;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         return false;

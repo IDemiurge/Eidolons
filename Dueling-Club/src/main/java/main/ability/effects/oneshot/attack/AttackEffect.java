@@ -125,7 +125,7 @@ public class AttackEffect extends MicroEffect  implements OneshotEffect {
             return ((DC_Game) getGame()).getAttackMaster()
              .attack(getAttack()); // UNIT_TAKES_DAMAGE
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
         // there

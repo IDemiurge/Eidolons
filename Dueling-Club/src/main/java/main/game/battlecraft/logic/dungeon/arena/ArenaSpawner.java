@@ -95,7 +95,7 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
         try {
             getBattleMaster().getWaveAssembler().resetPositions(wave);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         for (ObjAtCoordinate oac : unitMap) {
             Coordinates c = oac.getCoordinates();
@@ -124,7 +124,7 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
             try {
                 PartyHelper.addCreepParty(wave);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
     }
@@ -169,7 +169,7 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
                     try {
                         spawnWave(wave);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     } finally {
                         scheduledWaves.remove(wave);
                     }

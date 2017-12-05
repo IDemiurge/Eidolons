@@ -51,7 +51,7 @@ public class Formula {
         try {
             expression = ExpressionTree.parse(buffer);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return 0;
         }
 
@@ -60,7 +60,7 @@ public class Formula {
             result = expression.eval(vm, getFunctionMap());
         } catch (Exception e) {
             if (!FormulaMaster.getFailedFormulas().contains(toString())) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 FormulaMaster.getFailedFormulas().add(toString());
             }
         }
@@ -77,7 +77,7 @@ public class Formula {
             number = evaluate(ref);
         } catch (Exception e) {
             LogMaster.log(1, "Formula failed to evaluate: " + formula);
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             throw e;
         }
         if (number instanceof Double) {

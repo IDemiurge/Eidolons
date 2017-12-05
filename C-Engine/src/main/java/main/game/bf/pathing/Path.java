@@ -88,7 +88,7 @@ public class Path {
 //				node.clearGraphics();
             } catch (Exception e) {
                 // main.system.auxiliary.LogMaster.log(LogMaster
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
     }

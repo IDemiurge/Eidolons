@@ -96,7 +96,7 @@ public void scopeChanged(MUSIC_SCOPE scope){
                 try {
                     checkNewMusicToPlay();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
                 return;
             }
@@ -287,7 +287,7 @@ public void scopeChanged(MUSIC_SCOPE scope){
                  try {
                      WaitMaster.WAIT(PERIOD);
                  } catch (Exception e) {
-                     e.printStackTrace();
+                     main.system.ExceptionMaster.printStackTrace(e);
                  }
                  checkAmbience();
                  if (stopped)
@@ -402,7 +402,7 @@ public void scopeChanged(MUSIC_SCOPE scope){
             robot.keyRelease(KeyEvent.VK_A);
 
         } catch (AWTException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
     }

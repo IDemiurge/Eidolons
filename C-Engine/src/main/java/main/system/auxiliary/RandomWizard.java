@@ -251,7 +251,7 @@ public class RandomWizard<E> {
             try {
                 value = StringMaster.cropParenthesises(VariableManager.getVarPartLast(string));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             E object = new EnumMaster<E>().retrieveEnumConst(CLASS, value);
             string = (string).replace(StringMaster.wrapInParenthesis(value), "");
@@ -271,7 +271,7 @@ public class RandomWizard<E> {
             try {
                 value = VariableManager.removeVarPart(string);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             E object = new EnumMaster<E>().retrieveEnumConst(CLASS, value);
             string = StringMaster.cropParenthesises(VariableManager.getVarPartLast(string));
@@ -298,7 +298,7 @@ public class RandomWizard<E> {
             try {
                 value = StringMaster.getWeight(string, inverse);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             if (value <= 0) {
                 value = 1;

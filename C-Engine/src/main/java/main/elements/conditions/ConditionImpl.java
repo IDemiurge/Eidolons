@@ -73,7 +73,7 @@ public abstract class ConditionImpl  implements Condition {
 
         } catch (Exception e) {
 //            LogMaster.log(1, "*" + toString() + " failed on " + ref);
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
         if (isTrue) {

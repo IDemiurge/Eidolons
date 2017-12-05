@@ -310,7 +310,7 @@ public class LE_MapMaster {
         try {
             LevelEditor.getObjMaster().removeObjects(coordinates);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             setBlock(null);
         }
@@ -455,7 +455,7 @@ public class LE_MapMaster {
                 obj.setCoordinates(newCoordinates);
                 LevelEditor.getObjMaster().addObj(obj.getType(), obj.getCoordinates());
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } finally {
                 LevelEditor.getCurrentLevel().setInitialized(true);
             }

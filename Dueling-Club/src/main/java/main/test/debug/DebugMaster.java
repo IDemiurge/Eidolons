@@ -72,7 +72,7 @@ import main.system.math.MathMaster;
 import main.system.options.OptionsMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.test.TestMasterContent;
-import main.system.text.SpecialLogger;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.PresetMaster;
@@ -269,7 +269,7 @@ public class DebugMaster {
                     return;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -472,7 +472,7 @@ public class DebugMaster {
                     try {
                         DC_ObjInitializer.createUnits(game.getPlayer(isAltMode()), data, coordinate);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     } finally {
                         UnitGroupMaster.setMirror(false);
                     }
@@ -785,7 +785,7 @@ public class DebugMaster {
                         game.getBattleMaster().getSpawner().spawnWave(typeName,
                          game.getPlayer(ALT_AI_PLAYER), coordinate);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     } finally {
 //                        game.getBattleMaster().getSpawner().getPositioner().setForcedSide(null);
                     }
@@ -879,7 +879,7 @@ public class DebugMaster {
                     break;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             debugFunctionRunning = false;
         }
@@ -1056,7 +1056,7 @@ public class DebugMaster {
                 try {
                     executeHiddenDebugFunction(func);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 } finally {
                     cleanUp();
                 }
@@ -1078,7 +1078,7 @@ public class DebugMaster {
                 try {
                     executeDebugFunction(func);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 } finally {
                     cleanUp(); // TODO refactor alt click!!!
                 }

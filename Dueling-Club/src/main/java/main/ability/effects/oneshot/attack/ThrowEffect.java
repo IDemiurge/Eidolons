@@ -60,7 +60,7 @@ public class ThrowEffect extends AttackEffect {
             }
             // offhand mods?
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         // set mods briefly? or should the action itself have those?

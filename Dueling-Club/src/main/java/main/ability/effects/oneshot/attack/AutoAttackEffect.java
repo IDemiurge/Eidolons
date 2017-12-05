@@ -70,7 +70,7 @@ public class AutoAttackEffect extends DC_Effect  implements OneshotEffect {
         try {
             pick = pickManually(subActions);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (pick == null)
         pick = pickAutomatically(subActions);

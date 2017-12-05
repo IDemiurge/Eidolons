@@ -71,7 +71,7 @@ public class ActionSequenceConstructor extends AiHandler {
                 list.addAll(sequences);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             if (!TimeLimitMaster.checkTimeLimitForAi(ai)) {
                 break;
@@ -113,7 +113,7 @@ public class ActionSequenceConstructor extends AiHandler {
                     actionSequences.addAll(getSequences(task, action));
 //                    Chronos.logTimeElapsedForMark(getChronosPrefix() + string);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
             Chronos.logTimeElapsedForMark(getChronosPrefix() + action);
@@ -135,7 +135,7 @@ public class ActionSequenceConstructor extends AiHandler {
         try {
             newSequences = getSequencesWithPathsForAction(action, task.getArg(), task);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (ListMaster.isNotEmpty(newSequences)) {
             sequences.addAll(newSequences);

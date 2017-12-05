@@ -290,13 +290,13 @@ public class WanderAi extends AiBehavior{
         try {
             WanderAi.checkWanderDirectionChange(ai.getGroup(), GOAL_TYPE.WANDER);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
             c1 = (getWanderTargetCoordinatesCell(ai, GOAL_TYPE.WANDER));
         } catch (Exception e) {
             c1 = (CoordinatesMaster.getRandomAdjacentCoordinate(ai.getUnit().getCoordinates()));
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         c1 = Positioner.adjustCoordinate(ai.getUnit(), c1, ai.getUnit().getFacing()
         , getWanderPredicate(ai.getUnit(),ai.getUnit().getFacing(), c1 ));

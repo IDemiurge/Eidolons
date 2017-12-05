@@ -240,7 +240,7 @@ size - elongate
                 try {
                     mainMove = getMoveAction(x, y, duration);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
                 if (mainMove == null) {
                     return null;

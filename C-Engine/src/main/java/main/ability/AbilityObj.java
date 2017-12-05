@@ -83,7 +83,7 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
                 return TextParser.parse(property, ref);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return super.getToolTip();
     }

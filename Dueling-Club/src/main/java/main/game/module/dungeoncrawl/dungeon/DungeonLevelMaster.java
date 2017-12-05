@@ -362,7 +362,7 @@ public class DungeonLevelMaster {
                     fileName.indexOf(DungeonLevelMaster.ENTRANCE_PREFIX),
                     fileName.indexOf(DungeonLevelMaster.ENTRANCE_SUFFIX)).split("-")[1];
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         ENTRANCE_LAYOUT entranceLayout = new EnumMaster<ENTRANCE_LAYOUT>().retrieveEnumConst(
                 ENTRANCE_LAYOUT.class, entranceString);
@@ -375,7 +375,7 @@ public class DungeonLevelMaster {
             exitString = fileName.substring(fileName.indexOf(DungeonLevelMaster.EXIT_PREFIX),
                     fileName.indexOf(DungeonLevelMaster.EXIT_SUFFIX)).split("-")[1];
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         ENTRANCE_LAYOUT exitLayout = new EnumMaster<ENTRANCE_LAYOUT>().retrieveEnumConst(
                 ENTRANCE_LAYOUT.class, exitString);

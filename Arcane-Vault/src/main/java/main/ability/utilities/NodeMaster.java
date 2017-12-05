@@ -253,7 +253,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
                 try {
                     comboboxAction(source);
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(ex);
                     //TODO I dunno why, but exception seem to remove it!
                     ((JComboBox) source).addActionListener(this);
                 }
@@ -335,7 +335,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
         try {
             createEmptyNodes(parent, (AE_Item) parent.getUserObject());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         if (parent.getChildCount() > index) {
@@ -411,7 +411,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
         try {
             return (DefaultMutableTreeNode) getTree().getSelectionPath().getLastPathComponent();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return null;
         }
 
@@ -490,7 +490,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
             }
             parent.remove(node);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         SoundMaster.playStandardSound(STD_SOUNDS.ERASE);
@@ -533,7 +533,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
              .getChildCount() - 1);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         SoundMaster.playStandardSound(STD_SOUNDS.DONE);

@@ -28,7 +28,6 @@ import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
 import main.libgdx.gui.tooltips.ToolTipManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.text.HelpMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,11 +73,11 @@ public class BattleGuiStage extends Stage implements StageWithClosable {
         menuButton.setPosition(GdxMaster.getWidth() - menuButton.getWidth(),
          GdxMaster.getHeight() - menuButton.getHeight());
         addActor(menuButton);
-        ButtonStyled helpButton = new ButtonStyled(STD_BUTTON.HELP, () ->
-         GuiEventManager.trigger(SHOW_TEXT_CENTERED, HelpMaster.getHelpText()));
-        helpButton.setPosition(menuButton.getX() - helpButton.getWidth(),
-         GdxMaster.getHeight() - helpButton.getHeight());
-        addActor(helpButton);
+//        ButtonStyled helpButton = new ButtonStyled(STD_BUTTON.HELP, () ->
+//         GuiEventManager.trigger(SHOW_TEXT_CENTERED, HelpMaster.getHelpText()));
+//        helpButton.setPosition(menuButton.getX() - helpButton.getWidth(),
+//         GdxMaster.getHeight() - helpButton.getHeight());
+//        addActor(helpButton);
 
 
         InventoryWithAction inventoryForm = new InventoryWithAction();
@@ -206,7 +205,7 @@ public class BattleGuiStage extends Stage implements StageWithClosable {
         try {
             result = DC_Game.game.getKeyManager().handleKeyTyped(0, character);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (result)
             return true;

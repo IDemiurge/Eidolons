@@ -1,7 +1,5 @@
 package main.libgdx.bf.menu;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
@@ -34,7 +32,7 @@ public class GameMenuHandler {
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
-                Gdx.input.setInputProcessor(new InputAdapter());
+//                Gdx.input.setInputProcessor(new InputAdapter());
                 GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
                  new ScreenData(ScreenType.MAIN_MENU, "Loading..."));
                 Eidolons.gameExited();

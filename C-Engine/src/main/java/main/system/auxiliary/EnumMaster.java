@@ -73,7 +73,7 @@ public class EnumMaster<T> {
                 enumClasses.addAll(
                  Arrays.asList(ClassFinder.getClasses(ENUM_FOLDER)));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             if (!additionalEnumClasses.isEmpty()) {
                 enumClasses.addAll(additionalEnumClasses
@@ -332,7 +332,7 @@ public class EnumMaster<T> {
             t = (T) new SearchMaster<T>().find(name, list, strict);
             getCache(clazz, strict).put(name, t);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         if (t != null) {
@@ -343,7 +343,7 @@ public class EnumMaster<T> {
                 t = (T) new SearchMaster<T>().findClosest(name, list);
                 getCache(clazz, strict).put(name, t);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         if (t == null) {

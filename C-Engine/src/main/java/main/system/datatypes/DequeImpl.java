@@ -63,7 +63,7 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
         try {
             result = super.addAll(c);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
 //        size = size();

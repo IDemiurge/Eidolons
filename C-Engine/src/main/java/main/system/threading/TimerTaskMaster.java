@@ -36,7 +36,7 @@ public class TimerTaskMaster {
 
                     } catch (IllegalAccessException | IllegalArgumentException
                             | InvocationTargetException e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
 
                 }
@@ -45,7 +45,7 @@ public class TimerTaskMaster {
             timer.schedule(task, period, period);
 
         } catch (NoSuchMethodException | SecurityException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return timer;
         }
         return timer;

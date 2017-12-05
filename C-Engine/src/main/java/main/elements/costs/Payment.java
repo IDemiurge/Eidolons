@@ -50,7 +50,7 @@ public class Payment implements Serializable {
                             ref.getGame().getLogManager()
                                     .logFastAction(payee, ref);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            main.system.ExceptionMaster.printStackTrace(e);
                         }
                         lastPaid--;
                     }

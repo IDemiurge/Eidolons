@@ -75,7 +75,7 @@ public abstract class MicroEffect extends EffectImpl {
                                 }
                             }
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            main.system.ExceptionMaster.printStackTrace(e);
                         }
                     }
                 }
@@ -118,7 +118,7 @@ public abstract class MicroEffect extends EffectImpl {
                 // getAnimation().getPhases().size() - 1).getType())
                 newAnim.addPhase(lastPhase);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         newAnim.start();

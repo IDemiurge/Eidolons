@@ -283,7 +283,7 @@ public class WatchRule implements ActionRule {
                     watcher.getBuff(STD_MODES.ALERT.getBuffName(), false).setOnDispelEffects(
                             new RemoveBuffEffect("Watching ", false));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }

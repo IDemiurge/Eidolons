@@ -113,7 +113,7 @@ public class TextureManager {
              sheet.getWidth() / FRAME_COLS,
              sheet.getHeight() / FRAME_ROWS);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return new Array<>();
         }
 

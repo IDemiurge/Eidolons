@@ -100,7 +100,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
             try {
                 activate();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } finally {
                 MacroActionManager.setActionsBlocked(false);
             }

@@ -189,7 +189,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             LogMaster.log(1, "failed to parse for initQuickItems "
              + e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "failed to initInventory");
         }
         if (ItemGenerator.isJewelryOn())
@@ -199,7 +199,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             LogMaster.log(1, "failed to parse for initQuickItems "
              + e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "failed to initJewelry");
         }
         try {
@@ -208,7 +208,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             LogMaster.log(1, "failed to parse for initQuickItems "
              + e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "failed to initQuickItems");
         }
 
@@ -276,7 +276,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
                 try {
                     featObj = new DC_FeatObj(featType, getEntity().getOriginalOwner(), getGame(), getRef());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     continue;
                 }
                 if (game.isSimulation()) {

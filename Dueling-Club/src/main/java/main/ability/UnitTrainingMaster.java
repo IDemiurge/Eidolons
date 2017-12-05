@@ -58,14 +58,14 @@ public class UnitTrainingMaster {
                 //// TODO: 17.11.2016 improve train func execution speed
                 UnitTrainer.train(unit);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         if (isShopOn()) {
             try {
                 UnitShop.buyItemsForUnit(unit);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -75,7 +75,7 @@ public class UnitTrainingMaster {
             try {
                 UnitLibrary.learnSpellsForUnit(unit);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -90,7 +90,7 @@ public class UnitTrainingMaster {
             // will xp/gold be "spent"? WriteToType, nota bene...
             unit.toBase();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 

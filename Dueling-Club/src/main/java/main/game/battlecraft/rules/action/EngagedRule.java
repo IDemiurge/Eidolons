@@ -265,7 +265,7 @@ public class EngagedRule implements ActionRule {
         try {
             AttackOfOpportunityRule.triggerAttack(unit, action.getOwnerObj(), true);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
 
         }

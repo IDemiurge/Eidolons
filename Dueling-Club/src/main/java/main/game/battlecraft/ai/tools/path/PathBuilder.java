@@ -129,7 +129,7 @@ public class PathBuilder extends AiHandler {
         try {
             paths = buildPaths(targetCoordinates);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             resetUnit();
         }
@@ -140,7 +140,7 @@ public class PathBuilder extends AiHandler {
         try {
             filterPaths();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (filteredPaths.isEmpty()) {
             filteredPaths = paths;
@@ -353,7 +353,7 @@ public class PathBuilder extends AiHandler {
 //        try {
             // result += getAoOPenalty(); TODO instant atks preCheck !
 //        } catch (Exception e) {
-//            e.printStackTrace();
+//            main.system.ExceptionMaster.printStackTrace(e);
 //        }
          int size = path.getActions().size();
          result = result

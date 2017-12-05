@@ -123,7 +123,7 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
         // try {
         // r = hero.getGame().getRequirementsManager().preCheck(hero, value);
         // } catch (Exception e) {
-        // e.printStackTrace();
+        // main.system.ExceptionMaster.printStackTrace(e);
         // main.system.auxiliary.LogMaster
         // .log(1, "Failed to parse requirements for " + value);
         // }
@@ -142,7 +142,7 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
         // + new Formula(formula).getInt(hero.getRef())
         // .toString();
         // } catch (Exception e) {
-        // e.printStackTrace();
+        // main.system.ExceptionMaster.printStackTrace(e);
         // }
         // }
         // comp.setToolTipText(tooltip);
@@ -164,7 +164,7 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
         try {
             return borderChecker.getBorder(value);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "Failed to parse requirements for " + value);
             return DEFAULT_BORDER;
         }

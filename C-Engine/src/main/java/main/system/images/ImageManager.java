@@ -329,7 +329,7 @@ public class ImageManager {
             IMG.getGraphics().drawImage(applied, x, y, observer);
             return IMG;
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, " failed " + target.getWidth(observer) + " and "
                     + applied.getWidth(observer));
             // if (retry)
@@ -843,7 +843,7 @@ public class ImageManager {
                 String image = portraitsForBackground.get(index);
                 return image;
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         return DEFAULT;
@@ -1086,7 +1086,7 @@ public class ImageManager {
         try {
             image.getGraphics().drawImage(image2, 0, 0, null);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return image;
     }

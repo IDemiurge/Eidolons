@@ -329,7 +329,7 @@ public class ArmorMaster {
                     }
                     weapon = ammo.getWrappedWeapon();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     area = 15;
                 }
             }

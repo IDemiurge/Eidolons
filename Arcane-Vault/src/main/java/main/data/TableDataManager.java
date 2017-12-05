@@ -69,13 +69,13 @@ public class TableDataManager {
                         data);
                 return data;
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         try {
             fillData(entity, names, data);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         return data;
@@ -105,7 +105,7 @@ public class TableDataManager {
                         value = "" + entity.getIntParam((PARAMETER) val);
                     } catch (Exception e) {
 
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                         value = "(error)"
                         // + entity.getParams((PARAMETER) val)
                         ;

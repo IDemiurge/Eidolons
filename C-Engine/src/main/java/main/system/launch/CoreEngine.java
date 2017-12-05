@@ -26,7 +26,7 @@ public class CoreEngine {
     private static CoreEngine engineObject;
 
     public final static String[] classFolderPaths = {"main.elements", "main.ability"};
-    public static final String VERSION = "0.321";
+    public static final String VERSION = "0.333";
     public static boolean swingOn = false;
     public static boolean animationTestMode;
     private static boolean TEST_MODE = true;
@@ -271,7 +271,7 @@ public class CoreEngine {
             classFolders);
             Chronos.logTimeElapsedForMark("MAPPER INIT");
         } catch (ClassNotFoundException | SecurityException | IOException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
     }

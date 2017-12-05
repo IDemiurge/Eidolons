@@ -1,9 +1,9 @@
 package main.game.battlecraft.logic.battle.arena;
 
+import main.content.enums.GenericEnums;
 import main.game.battlecraft.logic.battle.universal.BattleOptionManager;
 import main.game.battlecraft.logic.battle.universal.BattleOptions;
 import main.game.battlecraft.logic.battle.universal.BattleOptions.ARENA_GAME_OPTIONS;
-import main.game.battlecraft.logic.battle.universal.BattleOptions.DIFFICULTY;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
 
 /**
@@ -15,7 +15,7 @@ public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle> {
     private static final String DEFAULT_LIVES = "2";
     private static final String DEFAULT_TURNS_BETWEEN_WAVES = "2";
     private static final String DEFAULT_TURNS_TO_PREPARE = "2";
-    private static String DEFAULT_DIFFICULTY = DIFFICULTY.DISCIPLE.toString();
+    private static String DEFAULT_DIFFICULTY = GenericEnums.DIFFICULTY.DISCIPLE.toString();
     private BattleOptions arenaOptions;
 
     public ArenaOptionsMaster(ArenaBattleMaster master) {

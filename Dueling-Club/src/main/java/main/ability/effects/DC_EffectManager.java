@@ -64,7 +64,7 @@ public class DC_EffectManager implements EffectManager {
             }
             return ResistanceRule.checkNotResisted(ref);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return true;
         }
 

@@ -156,7 +156,7 @@ public class SummonEffect extends MicroEffect  implements OneshotEffect {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
             LogMaster.log(1, "Awarding xp to " + type.getName() + ": " + xp);
@@ -164,7 +164,7 @@ public class SummonEffect extends MicroEffect  implements OneshotEffect {
             LogMaster.log(1, "Unit level: "
                     + type.getParam(PARAMS.UNIT_LEVEL));
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         return type;

@@ -87,7 +87,7 @@ public class DC_InventoryManager {
         try {
             return checkExecuted(operation, type);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
     }

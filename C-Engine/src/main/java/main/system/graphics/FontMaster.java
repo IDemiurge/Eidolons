@@ -36,7 +36,7 @@ public class FontMaster {
         try {
             UIManager.getLookAndFeelDefaults().put("defaultFont", f);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 
@@ -73,10 +73,10 @@ public class FontMaster {
                 F.font=Font.createFont(Font.TRUETYPE_FONT, new File(path +F.path));
             } catch (FontFormatException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
         }
@@ -127,7 +127,7 @@ public class FontMaster {
         try {
             return getFontMetrics(font).stringWidth(string);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return 0;
         }
     }

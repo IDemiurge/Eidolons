@@ -104,7 +104,7 @@ public class DataManager {
                 try {
                     return Game.game.getItemGenerator().generateItemType(typeName, obj_type);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     return null;
                 }
         }
@@ -490,7 +490,7 @@ public class DataManager {
                 try {
                     data = getTypesSubGroupNames(type, subgroup);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     continue;
                 }
                 if (data != null) {

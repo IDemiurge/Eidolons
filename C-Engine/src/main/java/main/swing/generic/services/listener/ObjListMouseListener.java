@@ -47,7 +47,7 @@ public class ObjListMouseListener<E> implements MouseListener { // ? extends
         try {
             selected.invokeClicked();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(ex);
             return;
         }
         selected.getGame().getManager().refresh(false);

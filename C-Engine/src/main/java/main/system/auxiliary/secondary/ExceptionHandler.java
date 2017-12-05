@@ -8,7 +8,7 @@ import main.system.launch.CoreEngine;
 public class ExceptionHandler {
     public static void handle(Exception e) {
         if (CoreEngine.isExceptionTraceLogged())
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
 
     }
 }

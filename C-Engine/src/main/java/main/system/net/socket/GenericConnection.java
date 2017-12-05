@@ -76,7 +76,7 @@ public abstract class GenericConnection implements Runnable {
         try {
             Thread.sleep(10);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
             if (in == null) {
@@ -103,12 +103,12 @@ public abstract class GenericConnection implements Runnable {
                         }
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return true;
     }
@@ -123,7 +123,7 @@ public abstract class GenericConnection implements Runnable {
         try {
             kill();
         } catch (IOException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
     }
@@ -204,7 +204,7 @@ public abstract class GenericConnection implements Runnable {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             i++;
         }

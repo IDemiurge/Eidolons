@@ -139,7 +139,7 @@ public class AnimationConstructor {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
     }
@@ -201,7 +201,7 @@ public class AnimationConstructor {
         try {
             anim = construct((DC_ActiveObj) active);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return anim;
     }
@@ -397,7 +397,7 @@ public class AnimationConstructor {
         try {
             list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             if (CoreEngine.isJar())
                 System.out.println("getEffect failed" + data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
 

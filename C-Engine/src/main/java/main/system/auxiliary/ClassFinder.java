@@ -175,9 +175,9 @@ public class ClassFinder {
                 classes.add(c);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
 //        System.out.println(classes.size()+ " classes found: " +classes);

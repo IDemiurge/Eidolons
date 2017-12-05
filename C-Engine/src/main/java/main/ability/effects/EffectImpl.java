@@ -303,7 +303,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 //        try {
 //            animateSprite();
 //        } catch (Exception e) {
-//            e.printStackTrace();
+//            main.system.ExceptionMaster.printStackTrace(e);
 //        }
         if (ref.getObj(KEYS.ABILITY) instanceof ActiveAbilityObj) {
             if (ref.getActive() != null) {
@@ -321,7 +321,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
                 game.fireEvent(new Event(STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED, ref));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         return result;

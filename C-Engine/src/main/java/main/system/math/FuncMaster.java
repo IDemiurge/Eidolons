@@ -45,7 +45,7 @@ public class FuncMaster<T> {
             try {
                 return function.applyAsInt(t);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             return 0;
         };

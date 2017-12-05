@@ -58,7 +58,7 @@ public class GameLoop {
                             break;
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     break;
                 }
         }
@@ -177,7 +177,7 @@ public class GameLoop {
                     aiFailNotified = true;
                     action = (waitForPlayerInput());
                 }
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         } else {
             action = (waitForPlayerInput());
@@ -226,7 +226,7 @@ public class GameLoop {
             activatingAction.setTargetGroup(input.getContext().getGroup());
             result = input.getAction().getHandler().activateOn(input.getContext());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return null;
         } finally {
             activatingAction = null;

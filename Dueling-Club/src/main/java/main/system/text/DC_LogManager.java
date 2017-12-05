@@ -17,6 +17,7 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.LinkedHashMap;

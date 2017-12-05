@@ -83,7 +83,7 @@ public class GuiEventManagerOld {
 //        try {
 //            condition.await();
 //        } catch (InterruptedException e) {
-//            e.printStackTrace();
+//            main.system.ExceptionMaster.printStackTrace(e);
 //        }
         Map<GuiEventType, EventCallback> cache = new HashMap<>();
         for (GuiEventType eventType : savedBindings) {
@@ -107,7 +107,7 @@ public class GuiEventManagerOld {
                 try {
                     eventQueue.add(() -> r.call(event));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 } finally {
                     lock.unlock();
                 }
@@ -135,7 +135,7 @@ public class GuiEventManagerOld {
             try {
                 eventQueue.add(() -> event.call(obj));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } finally {
                 lock.unlock();
 

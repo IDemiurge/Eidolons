@@ -35,7 +35,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
-import main.system.text.SpecialLogger;
+import main.system.auxiliary.log.SpecialLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -308,7 +308,7 @@ public class Executor extends ActiveHandler {
 //                 getTargeter(). TODO would this be ok?
                  getRef()));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         } else
         // for Multi-targeting when single-wrapped Abilities cannot be used
@@ -317,7 +317,7 @@ public class Executor extends ActiveHandler {
                 try {
                     setResult(isResult() & active.activatedOn(getRef()));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
                 if (!isResult()) {
                     break;// TODO if cancelled!
@@ -374,7 +374,7 @@ public class Executor extends ActiveHandler {
         try {
             getAction().getCosts().pay(getRef());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 
@@ -416,7 +416,7 @@ public class Executor extends ActiveHandler {
         try {
             checkPendingAttacksOfOpportunity();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         if (result) {
@@ -487,7 +487,7 @@ public class Executor extends ActiveHandler {
             try {
                 return !ExtraAttacksRule.checkInterrupted(getAction(), entryType);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         return true;

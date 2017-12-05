@@ -152,7 +152,7 @@ public class DC_AttackMaster {
             }
         } catch (Exception e) {
             result = false;
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             if (!extraAttack) {
                 game.getLogManager().doneLogEntryNode(ENTRY_TYPE.ACTION);
@@ -429,7 +429,7 @@ public class DC_AttackMaster {
             // map=
             CoatingRule.unitIsHit(attacked, attacker, offhand, action, attack, attack.getWeapon());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         if (attackedUnit != null) {

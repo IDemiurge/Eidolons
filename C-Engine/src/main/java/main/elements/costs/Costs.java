@@ -201,7 +201,7 @@ public class Costs extends CostImpl {
             try {
                 result &= cost.canBePaid(ref);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 return false;
             }
             if (cost.getReason() != null) {

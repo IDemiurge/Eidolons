@@ -127,7 +127,7 @@ public class ThreatAnalyzer extends AiHandler {
         try {
             threat = DC_PriorityManager.getAttackPriority(subAttack, getUnit()) * factor;
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }   finally {
             DC_PriorityManager.toggleImplementation(null);
         }
@@ -158,7 +158,7 @@ public class ThreatAnalyzer extends AiHandler {
 //            // getTimesActivate()
 //            // TODO
 //        } catch (Exception e) {
-//            // e.printStackTrace();
+//            // main.system.ExceptionMaster.printStackTrace(e);
 //        }
 //    }
 

@@ -86,14 +86,14 @@ public class CompositeAnim implements Animation {
 ////                main.system.auxiliary.LogMaster.log(1,"drawing " +a + " at " + currentAnim.getPosition());
 //                phaseAnim.setPosition(currentAnim.getX(),currentAnim.getY() );
 //                phaseAnim.draw(batch, 1f);
-//            });        }catch(Exception e){                e.printStackTrace();            }
+//            });        }catch(Exception e){                main.system.ExceptionMaster.printStackTrace(e);            }
         time += Gdx.graphics.getDeltaTime();
         boolean result = false;
         if (currentAnim != null) {
             try {
                 result = currentAnim.draw(batch);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         checkTimeAttachedAnims();
@@ -297,7 +297,7 @@ public class CompositeAnim implements Animation {
         try {
             currentAnim.start(getRef());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return;
         }
 

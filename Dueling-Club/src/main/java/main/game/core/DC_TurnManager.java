@@ -158,7 +158,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         try {
             WaitRule.checkMap();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         for (Unit unit : getUnits()) {
@@ -222,7 +222,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
              + "Active unit: " + getActiveUnit());
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return true;
     }

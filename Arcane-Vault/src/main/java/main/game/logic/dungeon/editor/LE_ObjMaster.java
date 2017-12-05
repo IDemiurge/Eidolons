@@ -64,7 +64,7 @@ public class LE_ObjMaster {
             try {
                 LevelEditor.getObjMaster().addObj(type, c);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } finally {
                 cachingOff = false;
             }
@@ -84,7 +84,7 @@ public class LE_ObjMaster {
                 removeObj(coordinate);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             cachingOff = false;
         }
@@ -412,7 +412,7 @@ public class LE_ObjMaster {
                 }
                 // LevelEditor.getGrid().repaintComp(c);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

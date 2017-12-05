@@ -70,7 +70,7 @@ public class AddTriggerEffect extends MultiEffect implements
                 if (xml != null)
                     conditions.setXml(XML_Converter.getStringFromXML(xml));
             } catch (Exception e) {
-//                e.printStackTrace();
+//                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         trigger.setRetainCondition(retainCondition);

@@ -92,7 +92,7 @@ public class MacroControlPanel extends G_Panel implements ButtonHandler {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             processing = false;
         }

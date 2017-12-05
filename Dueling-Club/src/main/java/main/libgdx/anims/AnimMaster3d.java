@@ -19,10 +19,11 @@ import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.libgdx.GdxMaster;
+import main.libgdx.anims.anim3d.Ready3dAnim;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.sprite.SpriteAnimationFactory;
-import main.libgdx.anims.anim3d.Ready3dAnim;
 import main.libgdx.texture.SmartTextureAtlas;
+import main.libgdx.texture.TextureCache;
 import main.libgdx.texture.TexturePackerLaunch;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
@@ -64,7 +65,6 @@ public class AnimMaster3d {
      {"kriss", "stiletto"},
 
 
-
     };
     private static final String[][] substitutesActions = {
      {"fist swing", "punch"},
@@ -89,12 +89,13 @@ public class AnimMaster3d {
         DC_WeaponObj weapon = active.getActiveWeapon();
         if (!is3dSupported(weapon))
             return false;
-        if (getOrCreateAtlas(weapon) == null)
-        {
-            if (!Assets.isOn()) {
-                return false;
+        if (Assets.isOn()) {
+            {
+                preloadAtlas(weapon);
+                return true;
             }
-            preloadAtlas(weapon);
+        }
+        if (getOrCreateAtlas(weapon) == null) {
             return true;
         }
         if (weapon.getAmmo() != null) {
@@ -132,9 +133,16 @@ public class AnimMaster3d {
         for (DC_QuickItemObj sub : unit.getQuickItems()) {
             if (sub.isAmmo()) {
                 preloadAtlas(sub.getWrappedWeapon());
+            } else {
+                if (sub.getWrappedWeapon() == null) {
+                    String path =
+                     getPotionAtlasPath(sub.getActive());
+                    preloadAtlas(path);
+                }
             }
         }
     }
+
 
     public static Vector2 getOffset(DC_ActiveObj activeObj) {
         return null;
@@ -161,15 +169,15 @@ public class AnimMaster3d {
 
     public static String getAtlasFileKeyForAction(Boolean projection,
                                                   DC_ActiveObj activeObj, WEAPON_ANIM_CASE aCase) {
-       if (aCase==WEAPON_ANIM_CASE.POTION)
-           return getPotionKey(activeObj);
+        if (aCase == WEAPON_ANIM_CASE.POTION)
+            return getPotionKey(activeObj);
         DC_WeaponObj weapon = activeObj.getActiveWeapon();
         String actionName = null;
         String projectionString = "to";
 
 //        if (aCase != WEAPON_ANIM_CASE.RELOAD) {
-            projectionString = (projection == null ? "hor" :
-             (projection ? "from" : "to"));
+        projectionString = (projection == null ? "hor" :
+         (projection ? "from" : "to"));
 //        }
         if (aCase.isMissile()) {
             if (weapon.getLastAmmo() == null)
@@ -201,9 +209,9 @@ public class AnimMaster3d {
                     actionName = getActionAtlasKey(activeObj);
             }
         Boolean offhand = null;
-        if (projection!=null )
+        if (projection != null)
             if (isAssymetric(weapon.getProperty(G_PROPS.BASE_TYPE)))
-            offhand = (activeObj.isOffhand());
+                offhand = (activeObj.isOffhand());
 
         return getAtlasFileKeyForAction(projectionString,
          getWeaponAtlasKey(weapon),
@@ -234,7 +242,7 @@ public class AnimMaster3d {
     }
 
     public static String getAtlasPath(DC_WeaponObj weapon, String name) {
-String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
+        String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
 
         StrPathBuilder s = new StrPathBuilder(
          PathFinder.getWeaponAnimPath(), "atlas",
@@ -266,16 +274,18 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
 
     private static String getPotionKey(DC_ActiveObj activeObj) {
         DC_QuickItemAction action = (DC_QuickItemAction) activeObj;
-        boolean full = action.getItem().isFull(PARAMS.CHARGES);
+        boolean full = action.getItem().getIntParam(PARAMS.CHARGES) != 0;
         String suffix = full ? "_full" : "_half";
 
-        return action.getItem().getName().replace(" ", "_")+suffix ;
+        return action.getItem().getName().replace(" ", "_") + suffix;
     }
-        private static String getPotionAtlasPath(DC_ActiveObj activeObj) {
-            DC_QuickItemAction action = (DC_QuickItemAction) activeObj;
-            String base = action.getItem().getProperty(G_PROPS.BASE_TYPE);
-            return StrPathBuilder.build(PathFinder.getSpritesPathNew(),
-             "potions", "atlas", base+".txt").replace(" ", "_");
+
+    private static String getPotionAtlasPath(DC_ActiveObj activeObj) {
+        DC_QuickItemAction action = (DC_QuickItemAction) activeObj;
+        String name = action.getItem().getName();
+        String level = name.split(" ")[0];
+        return StrPathBuilder.build(PathFinder.getSpritesPathNew(),
+         "potions", "atlas", level, name + ".txt").replace(" ", "_");
 
     }
 
@@ -291,8 +301,8 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
 //        float rotation = angle * 2 / 3;
         String name = getAtlasFileKeyForAction(projection, activeObj, aCase);
 
-        TextureAtlas atlas = getAtlas(activeObj, aCase );
-        Array<AtlasRegion> regions = atlas.findRegions(name);
+        TextureAtlas atlas = getAtlas(activeObj, aCase);
+        Array<AtlasRegion> regions = atlas.findRegions(name.toLowerCase());
         if (regions.size == 0) {
             if (isSearchAtlasRegions(activeObj))
                 regions = findAtlasRegions(atlas, projection, activeObj, true);
@@ -300,7 +310,7 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
         if (regions.size == 0) {
             if (activeObj.getParentAction() != null)
                 if (isSearchAtlasRegions(activeObj))
-                regions = findAtlasRegions(atlas, projection, activeObj, false);
+                    regions = findAtlasRegions(atlas, projection, activeObj, false);
         }
         if (regions.size == 0)
             main.system.auxiliary.log.LogMaster.log(
@@ -350,7 +360,7 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
         String name = getAtlasFileKeyForAction(projection, activeObj, WEAPON_ANIM_CASE.NORMAL);
         List<Entity> types = null;
         if (searchOtherWeaponOrAction) {
-            types = Arrays.stream(DataManager.getBaseWeaponTypes()) .
+            types = Arrays.stream(DataManager.getBaseWeaponTypes()).
              filter(type -> type.getProperty(G_PROPS.WEAPON_GROUP).equals(
               activeObj.getActiveWeapon().getProperty(G_PROPS.WEAPON_GROUP))).collect(Collectors.toList());
         } else {
@@ -372,7 +382,7 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
     }
 
     private static TextureAtlas getAtlas(DC_ActiveObj activeObj, WEAPON_ANIM_CASE aCase
-      ) {
+    ) {
         if (aCase == WEAPON_ANIM_CASE.POTION) {
             return getOrCreateAtlas(getPotionAtlasPath(activeObj));
         }
@@ -382,7 +392,7 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
                 return null;
             weapon = weapon.getLastAmmo().getWrappedWeapon();
         }
-        return getOrCreateAtlas(weapon );
+        return getOrCreateAtlas(weapon);
     }
 
     public static void preloadAtlas(DC_WeaponObj weapon) {
@@ -390,7 +400,7 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
             loadAtlasForWeapon(weapon);
         else
             Gdx.app.postRunnable(() -> {
-                    loadAtlasForWeapon(weapon);
+                loadAtlasForWeapon(weapon);
             });
     }
 
@@ -401,6 +411,16 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
         }
         String path =
          getFullAtlasPath(weapon);
+        preloadAtlas(path);
+    }
+
+    private static void preloadAtlas(String path) {
+        main.system.auxiliary.log.LogMaster.log(1,path +"   to preload...");
+        if (!FileManager.isFile(path))
+            return;
+        if (atlasMap.containsKey(path) )
+            return;
+        main.system.auxiliary.log.LogMaster.log(1,path +" loading...");
         Assets.get().getManager().load(path, TextureAtlas.class);
     }
 
@@ -417,28 +437,34 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
             return null;
         }
     }
-        public static TextureAtlas getOrCreateAtlas(String path) {
-            if (!FileManager.isFile(path))
-                return null;
 
-            if ( Assets.isOn()) {
-                Assets.get().getManager().update();
-                Assets.get().getManager().finishLoadingAsset(path);
-               return Assets.get().getManager().get(path, TextureAtlas.class);
-//
-            }
-            TextureAtlas atlas = atlasMap.get(path);
-            if (atlas == null) {
+    public static TextureAtlas getOrCreateAtlas(String path) {
+        if (!FileManager.isFile(path))
+            return null;
+        path = TextureCache.formatTexturePath(path);
+        TextureAtlas atlas = atlasMap.get(path);
+        if (atlas == null) {
+            if (Assets.isOn()) {
+                Assets.get().getManager().load(path, TextureAtlas.class);
+                try {
+                    Assets.get().getManager().finishLoadingAsset(path);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+                atlas = Assets.get().getManager().get(path, TextureAtlas.class);
+            } else {
                 atlas = new SmartTextureAtlas(path);
             }
-            atlasMap.put(path, atlas);
-            return atlas;
+        }
+        atlasMap.put(path, atlas);
+        return atlas;
 
 
     }
 
     private static String getFullAtlasPath(DC_WeaponObj weapon) {
-        return PathFinder.getImagePath()+ getAtlasPath(weapon, getWeaponAtlasKey(weapon));
+        return
+         TextureCache.formatTexturePath(PathFinder.getImagePath() + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));
     }
 
 
@@ -504,9 +530,7 @@ String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
         PARRY,
         BLOCKED,
         RELOAD,
-        POTION,
-
-        ;
+        POTION,;
 
         public boolean isMissile() {
             return this == WEAPON_ANIM_CASE.MISSILE || this == WEAPON_ANIM_CASE.MISSILE_MISS;

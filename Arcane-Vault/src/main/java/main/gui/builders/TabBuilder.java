@@ -104,7 +104,7 @@ public class TabBuilder extends Builder implements ChangeListener {
                     tabNames = TableDataManager.getTreeTabSubGroups(type);
                 } catch (Exception e) {
                     LogMaster.log(1, "Tab Sub Groups failed for " + type);
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     // throw new RuntimeException();
                     return;
                 }
@@ -121,7 +121,7 @@ public class TabBuilder extends Builder implements ChangeListener {
                     LogMaster.log(1, "sortBySubgroupEnum SUCCESS on "
                             + tabNames + " by " + groupingKey.getName());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     LogMaster.log(1, "sortBySubgroupEnum FAILED on "
                             + tabNames + " by " + groupingKey.getName());
                 }
@@ -248,7 +248,7 @@ public class TabBuilder extends Builder implements ChangeListener {
 
                     searchTab, "Searches", getTabbedPane().getTabCount());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 
@@ -404,7 +404,7 @@ public class TabBuilder extends Builder implements ChangeListener {
             }
             return name;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(ex);
             return "";
         }
     }

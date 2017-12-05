@@ -22,25 +22,6 @@ public class ToolTipManager extends TablePanel {
     private final BattleGuiStage guiStage;
     private Cell actorCell;
 
-    public   void entityHover(Entity entity) {
-        if (entity instanceof DC_UnitAction) {
-            if (((DC_UnitAction) entity).isAttackAny())
-            AnimMaster3d.initHover((DC_UnitAction) entity);
-            return;
-        }
-
-        guiStage.getRadial().hover(entity);
-        //differentiate radial from bottom panel? no matter really ... sync :)
-
-//        guiStage.getBottomPanel().getSpellPanel().getCells();
-
-    }
-    public   void entityHoverOff(Entity entity) {
-        if (entity instanceof DC_UnitAction) {
-            AnimMaster3d.hoverOff((DC_UnitAction) entity);
-        }
-        guiStage.getRadial().hoverOff(entity);
-    }
     public ToolTipManager(BattleGuiStage battleGuiStage) {
         guiStage = battleGuiStage;
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
@@ -60,18 +41,18 @@ public class ToolTipManager extends TablePanel {
 //                if (object.getScaleX()==getDefaultScale(object))
 
             float scaleX = getDefaultScale(object);
-            if (object.getScaleX() ==getDefaultScale(object))
+            if (object.getScaleX() == getDefaultScale(object))
                 scaleX = getZoomScale(object);
-            float scaleY =getDefaultScale(object);
-            if (object.getScaleY() ==getDefaultScale(object))
-                scaleY =getZoomScale(object);
+            float scaleY = getDefaultScale(object);
+            if (object.getScaleY() == getDefaultScale(object))
+                scaleY = getZoomScale(object);
 
             ActorMaster.
              addScaleActionIfNoActions(object, scaleX, scaleY, 0.35f);
             if (object instanceof GridUnitView) {
-                if (scaleX ==getDefaultScale(object))
+                if (scaleX == getDefaultScale(object))
                     scaleX = getZoomScale(object);
-                if (scaleY ==getDefaultScale(object))
+                if (scaleY == getDefaultScale(object))
                     scaleY = getZoomScale(object);
                 ActorMaster.
                  addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
@@ -111,6 +92,27 @@ public class ToolTipManager extends TablePanel {
         actorCell = addElement(null);
     }
 
+    public void entityHover(Entity entity) {
+        if (entity instanceof DC_UnitAction) {
+            if (((DC_UnitAction) entity).isAttackAny())
+                AnimMaster3d.initHover((DC_UnitAction) entity);
+            return;
+        }
+
+        guiStage.getRadial().hover(entity);
+        //differentiate radial from bottom panel? no matter really ... sync :)
+
+//        guiStage.getBottomPanel().getSpellPanel().getCells();
+
+    }
+
+    public void entityHoverOff(Entity entity) {
+        if (entity instanceof DC_UnitAction) {
+            AnimMaster3d.hoverOff((DC_UnitAction) entity);
+        }
+        guiStage.getRadial().hoverOff(entity);
+    }
+
     private float getZoomScale(BaseView object) {
 //        if (object instanceof OverlayView){
 //            return 0.61f;
@@ -136,7 +138,7 @@ public class ToolTipManager extends TablePanel {
         v2 = getStage().screenToStageCoordinates(v2);
         setPosition(v2.x + 10, v2.y);
 
-        if (toolTip.getEntity()!=null )
+        if (toolTip.getEntity() != null)
             entityHover(toolTip.getEntity());
     }
 
@@ -149,23 +151,36 @@ public class ToolTipManager extends TablePanel {
             v2 = getStage().screenToStageCoordinates(v2);
 
             actorCell.left().top();
-
-            if ((v2.y - toolTip.getPrefHeight()) < 0) {
+            float y = (v2.y - toolTip.getPrefHeight() - getPreferredPadding());
+            if (y < 0) {
                 actorCell.bottom();
+                actorCell.padBottom(
+                 Math.max(-y / 2 - getPreferredPadding(), 64));
+
             }
-            if (v2.y + toolTip.getPrefHeight() > GdxMaster.getHeight()) {
+
+            y = v2.y + toolTip.getPrefHeight() + getPreferredPadding();
+            if (y > GdxMaster.getHeight()) {
                 actorCell.top();
+                actorCell.padTop((y - GdxMaster.getHeight()) / 2 - getPreferredPadding());
             }
 
-            if (v2.x - toolTip.getPrefWidth() < 0) {
+            float x = v2.x - toolTip.getPrefWidth() - getPreferredPadding();
+            if (x < 0) {
                 actorCell.left();
+                actorCell.padLeft((x) / 2 - getPreferredPadding());
             }
-
-            if (v2.x + toolTip.getPrefWidth() > GdxMaster.getWidth()) {
+            x = v2.x + toolTip.getPrefWidth() + getPreferredPadding();
+            if (x > GdxMaster.getWidth()) {
                 actorCell.right();
+                actorCell.padRight((x - GdxMaster.getWidth()) / 2 - getPreferredPadding());
             }
 
         }
+    }
+
+    private float getPreferredPadding() {
+        return 65;
     }
 
     @Override

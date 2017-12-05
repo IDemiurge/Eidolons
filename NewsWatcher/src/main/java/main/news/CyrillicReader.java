@@ -24,7 +24,7 @@ public class CyrillicReader {
             String result = new String(Files.readAllBytes(path), charset);
             return result;
         } catch (IOException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
             return null;

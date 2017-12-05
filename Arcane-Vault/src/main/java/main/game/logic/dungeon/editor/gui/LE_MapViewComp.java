@@ -112,7 +112,7 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
             tabs.selectLast();
             // tabSelected(tabs.getTabs().size() - 1);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 

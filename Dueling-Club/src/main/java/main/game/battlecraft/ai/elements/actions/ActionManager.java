@@ -34,7 +34,7 @@ import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
-import main.system.text.SpecialLogger;
+import main.system.auxiliary.log.SpecialLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +110,7 @@ public class ActionManager extends AiHandler {
             try {
                 atomic = getAtomicAi().checkAtomicActionRequired(ai);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         if (atomic)
         if (isAtomicAiOn())
@@ -135,7 +135,7 @@ public class ActionManager extends AiHandler {
                     chosenSequence = DC_PriorityManager.chooseByPriority(actions);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } finally {
                 getUnit().setCoordinates(originalCoordinates);
                 getUnit().setFacing(originalFacing);
@@ -194,7 +194,7 @@ public class ActionManager extends AiHandler {
         try {
             action = getAtomicAi().getAtomicActionPrepare(getUnit().getAI());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (action != null) {
             return action;

@@ -259,7 +259,7 @@ public abstract class G_ListPanel<E> extends G_Panel {
         try {
             data = getData();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (data == null) {
             data = getEmptyData();

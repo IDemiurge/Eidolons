@@ -84,7 +84,7 @@ public class ShadowMap {
                             alpha = DC_Game.game.getVisionMaster().
                              getGammaMaster().getAlphaForShadowMapCell(x, y, type);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            main.system.ExceptionMaster.printStackTrace(e);
                         }
                     if (getCells(type)[x][y].getColor().a != alpha) {
                         getCells(type)[x][y].setBaseAlpha(alpha);

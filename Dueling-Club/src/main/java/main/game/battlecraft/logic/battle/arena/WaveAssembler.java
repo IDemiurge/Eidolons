@@ -14,7 +14,7 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.BattleHandler;
 import main.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.battlecraft.logic.battle.universal.BattleOptions;
-import main.game.battlecraft.logic.battle.universal.BattleOptions.DIFFICULTY;
+import main.content.enums.GenericEnums.DIFFICULTY;
 import main.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.Spawner;
@@ -73,7 +73,7 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
         try {
             assembleWave(wave, true, false);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
     }
@@ -107,7 +107,7 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
                 try {
                     adjustPower();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }
@@ -142,7 +142,7 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
             try {
                 applyGrowth(priority);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -252,7 +252,7 @@ public class WaveAssembler extends BattleHandler<ArenaBattle> {
             try {
                 c = positioner.getCoordinatesForNewUnitInGroup(side, objType);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             if (c == null) {
                 return false;

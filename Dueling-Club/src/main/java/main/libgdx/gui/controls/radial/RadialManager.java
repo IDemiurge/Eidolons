@@ -125,13 +125,13 @@ public class RadialManager {
             try {
                 GuiEventManager.trigger(GAME_FINISHED, DC_Game.game);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         if (OverlayTextPanel.TEST_MODE)
             try {
 //                GuiEventManager.trigger(SHOW_TEXT_CENTERED, "Hey\nyo\nman!");
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         List<RadialValueContainer> list = new ArrayList<>();
         if (target instanceof Unit) {

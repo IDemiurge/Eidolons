@@ -55,7 +55,7 @@ public class ChoiceSequence {
             ((HC_KeyManager) Launcher.getKeyListener(VIEWS.HC)).setSequence(this);
             ((HC_KeyManager) Launcher.getKeyListener(VIEWS.HC)).setSequenceManager(manager);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         active = true;
         results = new Stack<>();
@@ -97,7 +97,7 @@ public class ChoiceSequence {
                 }
                 refresh();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 try {
                     next();
                 } catch (Exception e1) {
@@ -148,7 +148,7 @@ public class ChoiceSequence {
             try {
                 view.activate();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 back();
             }
             refresh();

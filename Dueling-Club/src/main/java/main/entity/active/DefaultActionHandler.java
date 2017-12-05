@@ -72,7 +72,7 @@ if (sequence.isEmpty())
         try {
             source = Eidolons.getGame().getManager().getActiveObj();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (source == null)
             return false;
@@ -235,7 +235,7 @@ if (sequence.isEmpty())
                 priority = DC_PriorityManager.getAttackPriority(
                  attack, target);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } finally {
                 DC_PriorityManager.toggleImplementation(null);
             }

@@ -20,4 +20,6 @@ public interface AttributesDataSource {
     String getWisdom();
 
     String getCharisma();
+
+    String getAttribute(String name);
 }

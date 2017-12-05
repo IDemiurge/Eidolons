@@ -27,7 +27,7 @@ import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.text.LogEntryNode;
-import main.system.text.SpecialLogger;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -101,13 +101,13 @@ public class DeathMaster extends Master {
                 try {
                     getGame().getDroppedItemManager().dropDead((Unit) killed);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
             try {
                 getGame().getGraveyardManager().unitDies(killed);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

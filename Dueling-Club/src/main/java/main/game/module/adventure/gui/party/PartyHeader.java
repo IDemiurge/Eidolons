@@ -57,7 +57,7 @@ public class PartyHeader extends G_Panel {
         try {
             locationComp.setText(getLocationString(enRoute));
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         header.refresh();
         locationComp.refresh();

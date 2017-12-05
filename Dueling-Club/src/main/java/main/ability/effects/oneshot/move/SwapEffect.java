@@ -15,7 +15,7 @@ public class SwapEffect extends MoveEffect {
                     ref.getSourceObj().getCoordinates(), free,
                     MOVE_MODIFIER.DISPLACEMENT, ref);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
         return game.getMovementManager().move(ref.getObj(KEYS.TARGET2), c,

@@ -130,7 +130,7 @@ public class DC_GameManager extends GameManager {
             try {
                 result &= ar.unitBecomesActive((Unit) obj);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 result = true;
             }
         }
@@ -143,7 +143,7 @@ public class DC_GameManager extends GameManager {
         try {
             getGame().getBattleField().selectActiveObj(obj, true);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         // if (VisionManager.c)
         // DC_SoundMaster.playEffectSound(SOUNDS.WHAT, obj);
@@ -245,14 +245,14 @@ public class DC_GameManager extends GameManager {
                 try {
                     getGame().getVisionMaster().refresh();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
 
             getGame().getBattleField().refresh();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         // checkForChanges();
@@ -283,7 +283,7 @@ public class DC_GameManager extends GameManager {
         try {
             selectingStopped(false);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, obj.getId());
         }
@@ -442,7 +442,7 @@ public class DC_GameManager extends GameManager {
                 WaitMaster.interrupt(WAIT_OPERATIONS.SELECT_BF_OBJ);
                 LogMaster.log(1, "SELECTING CANCELLED!");
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 return;
             }
         }
@@ -484,7 +484,7 @@ public class DC_GameManager extends GameManager {
         try {
             getActiveObj().getActionMap().get(group).get(index).invokeClicked();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return;
         }
 
@@ -582,7 +582,7 @@ public class DC_GameManager extends GameManager {
           if (a.isAppliedOnExploreAction(action))      try {
                     a.actionComplete(action);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }

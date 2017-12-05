@@ -23,7 +23,7 @@ import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
-import main.system.text.SpecialLogger;
+import main.system.auxiliary.log.SpecialLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +130,7 @@ public class AI_Manager extends AiMaster {
         try {
             action = actionManager.chooseAction();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             running = false;
         }
@@ -139,7 +139,7 @@ public class AI_Manager extends AiMaster {
             try {
                 action = actionManager.getForcedAction(getAI(unit));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } finally {
                 running = false;
                 SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI,getUnit()+
@@ -155,7 +155,7 @@ public class AI_Manager extends AiMaster {
                       getMessageBuilder().toString(), getUnit());
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         if (!bufferedCoordinates.equals(unit.getCoordinates())) {

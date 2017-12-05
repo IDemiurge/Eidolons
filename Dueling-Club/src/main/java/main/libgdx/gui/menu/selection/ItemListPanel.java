@@ -90,7 +90,7 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     protected FONT getFontStyle() {
-        return FONT.RU;
+        return FONT.MAGIC;
     }
 
     protected STD_BUTTON getButtonStyle() {
@@ -213,6 +213,14 @@ public abstract class ItemListPanel extends TablePanel {
         String borderSelected;
         String borderDisabled;
         Entity entity;
+
+        public SelectableItemData( String name,
+                                   String description,String previewImagePath,String imagePath) {
+            this.previewImagePath = previewImagePath;
+            this.description = description;
+            this.name = name;
+            this.imagePath = imagePath;
+        }
 
         public SelectableItemData(Entity entity) {
             name = entity.getName();

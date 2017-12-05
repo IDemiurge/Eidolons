@@ -164,7 +164,7 @@ public class PhaseAnimator extends Group {
                     getAnims().remove(anim);
                     LogMaster.shout("Removed anim : " + anim);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
 
@@ -182,7 +182,7 @@ public class PhaseAnimator extends Group {
                     return true;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
         }

@@ -125,7 +125,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
                     actionTargetingTooltip = ToolTipMaster.getActionTargetingTooltip(this, action);
                 } catch (Exception e) {
                     if (!action.isBroken()) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     } else {
                         action.setBroken(true);
                     }

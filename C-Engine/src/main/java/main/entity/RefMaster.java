@@ -67,7 +67,7 @@ public class RefMaster {
 //                    return game.getObjectById(Integer.valueOf(getValue(key.name()))).getRef();
 //                } catch (Exception e) {
 //                    LogMaster.log(1, prefix + " + " + getStr());
-//                    e.printStackTrace();
+//                    main.system.ExceptionMaster.printStackTrace(e);
 //                }
 //            }
 //        }

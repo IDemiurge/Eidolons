@@ -54,7 +54,7 @@ public class AiTrainingParameters {
                 }
                 i++;
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

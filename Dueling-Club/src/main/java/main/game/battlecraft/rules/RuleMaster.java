@@ -29,7 +29,7 @@ public class RuleMaster implements Controller {
             scope = new EnumMaster<RULE_SCOPE>().retrieveEnumConst(RULE_SCOPE.class,
              OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.RULES_SCOPE));
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         for (RULE r : RULE.values()) {
             Boolean on = checkStatus(getScopeForRule(r));

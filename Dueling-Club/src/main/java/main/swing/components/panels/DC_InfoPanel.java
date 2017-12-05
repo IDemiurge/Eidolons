@@ -79,7 +79,7 @@ public class DC_InfoPanel extends G_InfoPanel implements TableModelListener {
                         .getType(obj_type));
                 displayedValues = StringMaster.convertToStringList(values);
             } catch (Exception e) {
-                // e.printStackTrace();
+                // main.system.ExceptionMaster.printStackTrace(e);
             }
             if (displayedValues == null) {
                 this.displayedValues = DC_ContentManager

@@ -52,7 +52,7 @@ public class Waiter {
                         try {
                             monitor.wait(PING_PERIOD);
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            main.system.ExceptionMaster.printStackTrace(e);
                         }
                     }
                 }
@@ -98,7 +98,7 @@ public class Waiter {
                 try {
                     wait(500);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             else {
                 lock.lock();

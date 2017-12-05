@@ -66,10 +66,10 @@ public class SwingMaster {
                 SwingUtilities.invokeAndWait(runnable);
             } catch (InvocationTargetException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

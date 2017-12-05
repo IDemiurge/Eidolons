@@ -45,7 +45,7 @@ public class EmitterMap extends Group {
             try {
                 update();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
         });

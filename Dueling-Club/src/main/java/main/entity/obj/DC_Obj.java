@@ -450,7 +450,7 @@ public abstract class DC_Obj extends MicroObj {
                 activeUnitVisionStatus = getGame().getVisionMaster()
                  .getUnitVisibilityStatus(this);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         return activeUnitVisionStatus;

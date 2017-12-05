@@ -17,7 +17,7 @@ import main.data.xml.XML_Converter;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.arena.Wave;
-import main.game.battlecraft.logic.battle.universal.BattleOptions.DIFFICULTY;
+import main.content.enums.GenericEnums.DIFFICULTY;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import main.game.battlecraft.logic.meta.scenario.ObjectiveMaster.OBJECTIVE_TYPE;

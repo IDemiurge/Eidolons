@@ -40,7 +40,7 @@ public class AiExecutor {
 //            WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_COMPLETE);
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }finally {
             action.getActive().setFree(false);
         }

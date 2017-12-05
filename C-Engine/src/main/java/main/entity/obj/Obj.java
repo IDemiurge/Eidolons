@@ -111,7 +111,7 @@ public class Obj extends Entity {
             } catch (Exception e) {
                 // setPassivesReady(true);
                 // if (game.isSimulation())
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         game.getManager().setActivatingPassives(false);

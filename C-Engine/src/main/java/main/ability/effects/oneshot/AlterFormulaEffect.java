@@ -33,7 +33,7 @@ public class AlterFormulaEffect extends MicroEffect {
         try {
             ref.getEffect().setFormula(formula);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
 

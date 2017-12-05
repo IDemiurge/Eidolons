@@ -311,7 +311,7 @@ public class ListChooser extends GenericListChooser<String> {
         try {
             result = super.choose();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         mods.clear();
         return result;

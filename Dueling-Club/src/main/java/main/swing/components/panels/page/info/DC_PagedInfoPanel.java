@@ -110,7 +110,7 @@ public class DC_PagedInfoPanel extends G_PagePanel<VALUE> {
         try {
             header = getPageHeader();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (property) {
             return new PropertyPage(header, list, entity);

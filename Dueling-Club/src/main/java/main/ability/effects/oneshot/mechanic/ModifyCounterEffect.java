@@ -59,7 +59,7 @@ public class ModifyCounterEffect extends MicroEffect  implements OneshotEffect, 
                         DC_ContentManager.getCoatingAppliedModParam(CounterMaster
                                 .findCounterConst(counterName)));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         Integer modValue = MathMaster.addFactor(amount, mod);
@@ -86,7 +86,7 @@ public class ModifyCounterEffect extends MicroEffect  implements OneshotEffect, 
             try {
                 getAnimation().addPhaseArgs(PHASE_TYPE.COUNTER, counterName, modtype, modValue);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         } else {
             return false;

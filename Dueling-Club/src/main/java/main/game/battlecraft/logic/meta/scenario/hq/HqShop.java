@@ -125,7 +125,7 @@ public class HqShop extends LightweightEntity implements ShopInterface {
             try {
                 initItems();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         return items;

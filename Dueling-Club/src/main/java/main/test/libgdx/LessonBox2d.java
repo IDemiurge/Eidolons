@@ -53,9 +53,9 @@ public class LessonBox2d implements Screen {
             world.createJoint(revoluteJointDef1);
             createEntity();
         } catch (GdxRuntimeException e) {
-            e.printStackTrace();
-        } catch (ExceptionInInitializerError e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
 

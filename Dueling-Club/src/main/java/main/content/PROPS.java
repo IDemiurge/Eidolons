@@ -24,6 +24,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     SCENARIO_INTRO_DATA(null,false, "scenarios"),
     SCENARIO_PARTY(null,false, "scenarios"),
     SCENARIO_MAIN_HERO(null,false, "scenarios"),
+    DIFFICULTY(null,false, "scenarios","missions","chars","dungeons" ),
 
     SHOP_ITEMS("shops", null), // true,
     SHOP_LEVEL("shops", null),

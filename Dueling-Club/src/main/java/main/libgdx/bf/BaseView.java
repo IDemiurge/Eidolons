@@ -44,7 +44,7 @@ public class BaseView extends SuperActor {
                             if (DefaultActionHandler.leftClickActor(event, getX(), getY()))
                                 return;
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            main.system.ExceptionMaster.printStackTrace(e);
                         }
                     GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, BaseView.this);
                 }

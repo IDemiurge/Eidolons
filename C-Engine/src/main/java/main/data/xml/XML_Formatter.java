@@ -128,7 +128,7 @@ public class XML_Formatter {
                 s = s.replace(ASCII_OPEN + code + ASCII_CLOSE, StringMaster
                  .getStringFromCode(code));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 return s;
             }
         }

@@ -30,7 +30,7 @@ public class AT_Keys implements HotkeyListener {
                     KeyEvent.VK_G);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 

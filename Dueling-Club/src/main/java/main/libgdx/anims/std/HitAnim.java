@@ -241,7 +241,11 @@ if (  getRef().getTargetObj() instanceof Unit)
 
 
         floatingText = FloatingTextMaster.getInstance().getFloatingText(
-         active, TEXT_CASES.HIT, text == null ? getActive().getDamageDealt().getAmount() : text);
+         active, TEXT_CASES.HIT, text == null ?
+          getActive().getDamageDealt()==null ?
+        "0"
+           : getActive().getDamageDealt().getAmount()
+          : text);
         floatingText.setImageSupplier(() -> imagePath);
         floatingText.setColor(c);
         floatingText.init(destination, 0, 128, getDuration() * 0.3f *

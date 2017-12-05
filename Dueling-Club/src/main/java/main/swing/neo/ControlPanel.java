@@ -64,7 +64,7 @@ public abstract class ControlPanel extends G_Panel implements ButtonHandler {
         try {
             handleCommand(command);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             processing = false;
 

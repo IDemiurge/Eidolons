@@ -344,9 +344,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             REF.setTriggered(false);
             setRef(REF);
             activate();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             getGame().getManager().setActivatingAction(null);
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "Action failed: " + toString());
             // actionComplete();
         }

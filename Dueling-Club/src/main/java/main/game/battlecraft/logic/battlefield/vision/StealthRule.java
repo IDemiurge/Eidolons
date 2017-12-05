@@ -211,7 +211,7 @@ public class StealthRule implements ActionRule {
         try {
             result = RollMaster.roll(GenericEnums.ROLL_TYPES.STEALTH, ref);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             activeUnit.setParam(PARAMS.DETECTION, base_detection);
         }

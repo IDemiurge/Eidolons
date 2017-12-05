@@ -23,7 +23,7 @@ public class ActionPool extends Pool<Action> {
         try {
             return (Action) aClass.getConstructors()[0].newInstance(null);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return null;
     }

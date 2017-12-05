@@ -56,7 +56,7 @@ public class VideoMaster {
         try {
             player.play(file);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 //            Gdx.input.setInputProcessor(new InputMultiplexer(
 //             inputController = new CameraInputController(cam)));

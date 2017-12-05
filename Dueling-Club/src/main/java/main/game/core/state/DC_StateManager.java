@@ -110,7 +110,7 @@ public class DC_StateManager extends StateManager {
             try {
                 checkCellBuffs();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -178,7 +178,7 @@ public class DC_StateManager extends StateManager {
                     rule.check((unit));
                 } catch (Exception e) {
 
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }
@@ -249,7 +249,7 @@ public class DC_StateManager extends StateManager {
             try {
                 rule.newTurn();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -257,7 +257,7 @@ public class DC_StateManager extends StateManager {
             try {
                 rule.newTurn();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
     }
@@ -349,12 +349,12 @@ public class DC_StateManager extends StateManager {
                 applyEndOfTurnDamage();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
             new Event(STANDARD_EVENT_TYPE.ROUND_ENDS, new Ref(getGame())).fire();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
     }

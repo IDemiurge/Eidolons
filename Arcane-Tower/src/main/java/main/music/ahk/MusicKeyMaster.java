@@ -56,7 +56,7 @@ public class MusicKeyMaster implements HotkeyListener {
                         playRandomFromGroupHotkey(aIdentifier);
                         return;
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                         playFromGroupHotkey(aIdentifier, false);
                         return;
                     }
@@ -108,7 +108,7 @@ public class MusicKeyMaster implements HotkeyListener {
         try {
             lists.get(topIndex).get(i - 1).doClick();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
     }
@@ -258,7 +258,7 @@ public class MusicKeyMaster implements HotkeyListener {
                         new MusicList(type).play();
                         return;
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
                 } else {
                     types.add(type);
@@ -398,7 +398,7 @@ public class MusicKeyMaster implements HotkeyListener {
 
             keysOn = true;
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 

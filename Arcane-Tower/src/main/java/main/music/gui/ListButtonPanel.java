@@ -82,7 +82,7 @@ public class ListButtonPanel extends G_Panel {
                     letterAdded = n == 0;
                 } catch (Exception e) {
                     LogMaster.log(1, "failed: " + line);
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
 

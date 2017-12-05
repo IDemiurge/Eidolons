@@ -295,7 +295,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                     staticAmount = formula.getDouble(ref);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
         }

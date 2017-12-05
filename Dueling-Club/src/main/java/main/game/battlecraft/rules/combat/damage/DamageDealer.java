@@ -153,7 +153,7 @@ public class DamageDealer {
             try {
                 active.getRef().setValue(KEYS.DAMAGE_DEALT, damageDealt + "");
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         addDamageDealt(active, damage_type, damageDealt, !bonus);
@@ -289,7 +289,7 @@ public class DamageDealer {
                     ref.getActive().setParam(statsParam, amount);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -394,7 +394,7 @@ public class DamageDealer {
 
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             ref.setAmount(damageDealt);
             // if (DC_GameManager.checkInterrupted(ref))

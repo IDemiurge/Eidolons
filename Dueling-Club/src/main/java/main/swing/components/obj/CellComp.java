@@ -113,7 +113,7 @@ public class CellComp {
                     g.dispose();
                     setPaintImage(bufferImage);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     LogMaster.log(1, toString() + " failed to draw!");
                 }
             }
@@ -125,7 +125,7 @@ public class CellComp {
             try {
                 SwingUtilities.invokeAndWait(drawJob);
             } catch (InvocationTargetException | InterruptedException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

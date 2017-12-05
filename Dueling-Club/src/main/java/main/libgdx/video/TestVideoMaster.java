@@ -92,7 +92,7 @@ public class TestVideoMaster extends ApplicationAdapter implements InputProcesso
             videoPlayer.play(new FileHandle(new File
              ("C:\\Eidolons\\art materials\\video\\moneda.ogg")));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         Gdx.input.setInputProcessor(new InputMultiplexer(
@@ -120,7 +120,7 @@ public class TestVideoMaster extends ApplicationAdapter implements InputProcesso
                 videoPlayer.play(new FileHandle(new File
                  ("C:\\Eidolons\\art materials\\video\\moneda.ogg")));
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
     }

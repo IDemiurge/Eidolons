@@ -245,7 +245,7 @@ public class Launcher {
                 // getMainManager().doneSelection();
                 break;
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
     }
@@ -436,7 +436,7 @@ public class Launcher {
                 }
                 CharacterCreator.refreshGUI();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
     }
@@ -448,7 +448,7 @@ public class Launcher {
         try {
             Eidolons.game.exit(mainMenu);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             Eidolons.game.getGameLoopThread().interrupt();
         }
         //
@@ -543,7 +543,7 @@ public class Launcher {
             try {
                 Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
 //            GdxLauncher.main(new String[]{});
@@ -569,7 +569,7 @@ public class Launcher {
             game.start(first);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             game.setSimulation(true);
         }
 

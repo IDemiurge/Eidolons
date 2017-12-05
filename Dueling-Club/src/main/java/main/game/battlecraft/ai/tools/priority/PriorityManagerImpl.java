@@ -111,7 +111,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             action.getActive().getGame().getEffectManager().setEffectRefs(
              action.getActive().getAbilities(), action.getRef());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (!action.getActive().getProperty(PROPS.AI_PRIORITY_FORMULA).isEmpty()) {
             setBasePriority(evaluatePriorityFormula(action, action.getActive().getProperty(
@@ -121,7 +121,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                     applyRollPriorityMod((RollEffect) EffectFinder.getEffectsOfClass(
                      action.getActive(), RollEffect.class).get(0));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
 
@@ -566,7 +566,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         int power = summoned.getIntParam(PARAMS.POWER) + unitXp / DC_Formulas.POWER_XP_FACTOR;
         setBasePriority(power);
@@ -641,7 +641,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         try {
             currentMeleeDangerFactor = getSituationAnalyzer().getMeleeDangerFactor(getUnit(), false, false);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         if (currentMeleeDangerFactor == 0 && getUnitAi().getBehaviorMode() != AiEnums.BEHAVIOR_MODE.PANIC) {
             priority = 0;
@@ -655,7 +655,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             // meleeDangerFactor =getDangerFactorByMemory(unit); TODO for panic!
 
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             getUnit().setCoordinates(c);
         }
@@ -1104,7 +1104,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 applyThrowPenalty(active);
             priority= this.priority;
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 addMultiplier(-50, "throw");
             }
 
@@ -1561,7 +1561,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                     getUnitAi().setMetaGoals(getMetaGoalMaster().initMetaGoalsForUnit(getUnitAi()));
                     mod += getMetaGoalMaster().getPriorityMultiplier(as);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             as.setPriorityMultiplier(mod);
 
@@ -1579,7 +1579,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             try {
                 priority = getPriority(action);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
 
             // Chronos.logTimeElapsedForMark("Calculating priority for " +

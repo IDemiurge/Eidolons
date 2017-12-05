@@ -1,10 +1,15 @@
 package main.libgdx.anims.anim3d;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimMaster3d;
 import main.libgdx.anims.AnimMaster3d.PROJECTION;
@@ -42,13 +47,24 @@ public class Weapon3dAnim extends ActionAnim {
         return new AnimData();
     }
 
+    @Override
+    protected Action getAction() {
+        setColor(new Color(1,1,1,1));
+        AlphaAction alphaAction= (AlphaAction) ActorMaster.getAction(AlphaAction.class);
+        alphaAction.setDuration(getDuration() / 2);
+        alphaAction.setAlpha(0);
+        DelayAction delayed = new DelayAction(getDuration() / 2);
+        delayed.setAction(alphaAction);
+        return delayed;
+    }
+
+
 
     @Override
     public float getDefaultSpeed() {
         return AnimMaster3d.getWeaponActionSpeed(getActive());
 
     }
-
 
 
     @Override
@@ -58,7 +74,7 @@ public class Weapon3dAnim extends ActionAnim {
         sprite = get3dSprite();
         if (sprite==null )
             return ;
-
+sprite.setScale(getSpriteScale());
         sprite.setFlipX(checkFlipHorizontally());
         getSprites().clear();
         getSprites().add(sprite);
@@ -69,6 +85,18 @@ public class Weapon3dAnim extends ActionAnim {
 //        int h = new FuncMaster<AtlasRegion>().getGreatest_((Arrays.asList(sprite.getRegions().toArray())),
 //         r -> r.getRegionHeight()).getRegionHeight();
 //        setSize(w, h);
+    }
+
+    protected float getSpriteScale() {
+         if (getActive().getActiveWeapon().isNatural()){
+             float code = getActive().getActiveWeapon().getMaterial().getCode();
+             if (code==-1 )
+                 code = 3.5f;
+             code+=4;
+             return  code/10;
+         }
+
+        return 1f;
     }
 
     protected boolean checkFlipHorizontally() {

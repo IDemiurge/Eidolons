@@ -1084,7 +1084,7 @@ public abstract class PhaseAnimation implements ANIM {
 
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -1218,7 +1218,7 @@ public abstract class PhaseAnimation implements ANIM {
                 offsetX += x;
                 drawPhase(phase);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } finally {
                 offsetY -= y;
                 offsetX -= x;

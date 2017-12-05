@@ -198,7 +198,7 @@ public class VersionMaster {
             try {
                 XML_Writer.writeXML_ForTypeGroup(T);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } finally {
                 XML_Writer.setCustomPath(null);
                 XML_Writer.setDirtyOnly(false);
@@ -212,7 +212,7 @@ public class VersionMaster {
         try {
             XML_Writer.writeXML_ForType(entity.getType());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             XML_Writer.setCustomPath(null);
         }

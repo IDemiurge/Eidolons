@@ -75,7 +75,7 @@ public class MusicMouseListener extends MouseClickListener implements ActionList
             AHK_Master.getPanel().getControlPanel().refresh();
             // Runtime.getRuntime().exec(function.replaceFirst("Run ", ""));
         } catch (IOException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 

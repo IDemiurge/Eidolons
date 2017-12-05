@@ -60,7 +60,7 @@ public class EntryNodeMaster {
             return FontMaster.getStringLengthForWidth(top ? getTopFont() : getSubNodeFont(),
              INNER_WIDTH);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return Integer.MAX_VALUE;
     }

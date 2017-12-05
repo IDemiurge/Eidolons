@@ -48,7 +48,7 @@ public class EmitterActor extends Actor implements ParticleInterface {
 
     public void act(float delta) {
         super.act(delta);
-//        effect.setPosition(x, y);
+        effect.setPosition(getX(), getY());
 //        effect.update(delta); TODO now drawing with alpha!
 
     }
@@ -73,7 +73,6 @@ public class EmitterActor extends Actor implements ParticleInterface {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-
         super.draw(batch, parentAlpha);
 
         effect.setPosition(getX(), getY());

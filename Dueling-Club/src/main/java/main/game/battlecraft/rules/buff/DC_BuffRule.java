@@ -150,7 +150,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
             // if (effectCache.getOrCreate(obj)[level] != null)
             // logged = false;
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         return logged;
@@ -353,7 +353,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         try {
             return getConditionFormulas()[level];
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return null;
     }
@@ -362,7 +362,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         try {
             return getBuffNames()[level];
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return null;
     }

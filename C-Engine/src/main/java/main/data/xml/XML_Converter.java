@@ -57,7 +57,7 @@ public class XML_Converter {
                 i++;
                 check = i;
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 Err.info(sub + type + nl.getLength());
             }
         }
@@ -126,7 +126,7 @@ public class XML_Converter {
         try {
             builder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         Document newDocument = builder.newDocument();
@@ -163,7 +163,7 @@ public class XML_Converter {
         } catch (Exception e) {
             LogMaster.log(LogMaster.DATA_DEBUG,
                     "failed to parse xml: " + myString);
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         return document;

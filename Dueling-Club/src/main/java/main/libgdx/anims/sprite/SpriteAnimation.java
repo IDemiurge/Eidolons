@@ -38,6 +38,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private boolean flipX;
     private boolean flipY;
     private Color color;
+    private Float scale;
 
 
     public SpriteAnimation(String path) {
@@ -133,7 +134,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
         sprite.setAlpha(alpha);
         sprite.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
-
+        if (getScale() != null)
+            sprite.setScale(getScale());
         sprite.setRotation(rotation);
         sprite.setPosition(x + offsetX - currentFrame.getRegionWidth() / 2, y
          + offsetY
@@ -292,6 +294,14 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public Float getScale() {
+        return scale;
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
     }
 
 

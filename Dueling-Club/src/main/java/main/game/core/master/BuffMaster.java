@@ -124,7 +124,7 @@ public class BuffMaster extends Master {
                 type.setProperty(G_PROPS.NAME, name);
                 type.setProperty(G_PROPS.IMAGE, img);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         Obj basis = game.getObjectById(ref.getBasis());

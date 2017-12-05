@@ -19,9 +19,17 @@ import java.util.List;
  */
 public class TexturePackerLaunch {
     public static final String ATLAS_EXTENSION = ".txt";
+    public static final String WORKSPACE_PATH_POTIONS = PathFinder.getImagePath()+
+     PathFinder.getPotionsAnimPath() + "processing//";
+
     public static final String WORKSPACE_PATH = PathFinder.getImagePath()+PathFinder.getWeaponAnimPath() + "workspace//";
     public static final boolean TRIM = true;
-    private static final String OUTPUT_DIR = PathFinder.getImagePath()+ PathFinder.getWeaponAnimPath() + "atlas//";
+    public static final boolean POTIONS = true;
+    private static final String OUTPUT_DIR = PathFinder.getImagePath()+
+     PathFinder.getWeaponAnimPath() + "atlas//";
+    private static final String OUTPUT_DIR_POTION = PathFinder.getImagePath()+
+     PathFinder.getPotionsAnimPath() + "atlas//";
+
     static String packs[] = {
 //     "long swords",
      "hammers",
@@ -55,11 +63,11 @@ public class TexturePackerLaunch {
         GuiManager.init();
         if (CoreEngine.isExe() || CoreEngine.isJar() )
         chosen =
-         ListChooser.chooseFile(WORKSPACE_PATH, null, SELECTION_MODE.MULTIPLE, true )
+         ListChooser.chooseFile(POTIONS? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH, null, SELECTION_MODE.MULTIPLE, true )
           .split(";");
         else if (DialogMaster.confirm("Choose?")) {
             chosen =
-             ListChooser.chooseFile(WORKSPACE_PATH, null, SELECTION_MODE.MULTIPLE, true )
+             ListChooser.chooseFile(POTIONS? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH, null, SELECTION_MODE.MULTIPLE, true )
               .split(";");
         }
         packWeaponSprites(chosen);
@@ -96,8 +104,10 @@ public class TexturePackerLaunch {
 
     public static void packWeaponSprites(String[] args) {
         Settings settings = getSetting();
+        String outputDir =POTIONS? OUTPUT_DIR_POTION: OUTPUT_DIR;
         for (String sub : args) {
-            String dir =PathFinder.getImagePath()+ PathFinder.getWeaponAnimPath() + "workspace//" + sub;
+            String dir =POTIONS? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH
+             + sub;
             List<File> subFolders = FileManager.getFilesFromDirectory(dir, true);
             boolean processed=false;
             for (File subFolder : subFolders) {
@@ -107,17 +117,16 @@ public class TexturePackerLaunch {
 //                 PathFinder.getWeaponAnimPath() + "workspace//"
 //                 + sub + "//" +
                  subFolder.getPath();
-                String outputDir = OUTPUT_DIR;
                 String packFileName = subFolder.getName();
 
                 TexturePacker.process(settings, inputDir, outputDir, packFileName);
                 processed = true;
             }
             if (!processed){
-
-                TexturePacker.process(settings, dir, OUTPUT_DIR, sub);
+                TexturePacker.process(settings, dir, outputDir, sub);
             }
         }
+        return ;
 //            TexturePacker.process(inputDir, outputDir, packFileName);
     }
 

@@ -159,9 +159,9 @@ public class Anim extends Group implements Animation {
 
     @Override
     public boolean draw(Batch batch) {
-        if (getX() == 0 && getY() == 0) {
-            getX();
-        }
+//        if (getX() == 0 && getY() == 0) {
+//            getX();
+//        }
 //switch(template){
 //}
         float delta = Gdx.graphics.getDeltaTime();
@@ -218,6 +218,9 @@ public class Anim extends Group implements Animation {
         });
         emitterList.forEach(e -> {
             e.draw(batch, 1f);
+            main.system.auxiliary.log.LogMaster.log(1,
+             e.getName()+
+             " drawn at x " +e. getX() + " y " + e.getY());
         });
         return true;
     }
@@ -854,6 +857,9 @@ if (floatingText.getDelay()==0){
     }
 
     public void setOffsetX(float offsetX) {
+        main.system.auxiliary.log.LogMaster.log(1,this+ " setOffsetX " +
+         " from " +this.offsetX+
+         " to "+ offsetX );
         this.offsetX = offsetX;
     }
 

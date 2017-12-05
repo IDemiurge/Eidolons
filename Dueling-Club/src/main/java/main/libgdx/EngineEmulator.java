@@ -44,7 +44,7 @@ public class EngineEmulator {
         try {
             Thread.sleep(0);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         executorService.submit(this::loop);
     }

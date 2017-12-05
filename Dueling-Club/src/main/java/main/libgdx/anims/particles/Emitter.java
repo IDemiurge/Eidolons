@@ -124,7 +124,7 @@ public class Emitter extends ParticleEmitter {
             return (Particle[]) new ReflectionMaster<>().getFieldValue("particles",
                     this, ParticleEmitter.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return new Particle[0];
     }

@@ -28,7 +28,7 @@ public class SpellGenerator {
         try {
             // generateSpellUpgrades();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "*** Failed to generate spell upgrades!");
         }
     }
@@ -49,7 +49,7 @@ public class SpellGenerator {
                 try {
                     generateUpgradedVersion(t, ug);
                 } catch (Exception e) {
-                    // e.printStackTrace();
+                    // main.system.ExceptionMaster.printStackTrace(e);
                     LogMaster.log(0, t.getName()
                             + " - failed to generate spell upgrade: " + ug.toString());
                 }

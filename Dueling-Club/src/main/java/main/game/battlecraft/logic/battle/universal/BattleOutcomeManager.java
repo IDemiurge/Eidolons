@@ -11,7 +11,7 @@ import main.system.audio.MusicMaster.MUSIC_MOMENT;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.OptionsMaster;
-import main.system.text.SpecialLogger;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 

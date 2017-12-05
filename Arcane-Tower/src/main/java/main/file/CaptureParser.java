@@ -158,7 +158,7 @@ public class CaptureParser {
                 try {
                     parse(part, AT_OBJ_TYPE.GOAL);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
             ObjType type = DataManager.getType(directionHeader, AT_OBJ_TYPE.DIRECTION);
@@ -195,7 +195,7 @@ public class CaptureParser {
             try {
                 parseBlock(block, scope, header, enclosingType);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         // XML_Writer.backUp();
@@ -243,7 +243,7 @@ public class CaptureParser {
             LogMaster.log(1, "Capture type added " + type + " from text"
                     + data);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "*********Broken Capture type from text: "
                     + data);
         }

@@ -49,7 +49,7 @@ public class PathFinder {
                 uri =
                 new CoreEngine().getClass().getProtectionDomain().getCodeSource().getLocation().toURI();
             } catch (URISyntaxException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             if (jarName==null )
                 jarName = StringMaster.getLastPathSegment((uri.toString()));
@@ -280,6 +280,9 @@ public class PathFinder {
         return StrPathBuilder.build(getSpritesPathMain(), "weapons3d")+StringMaster.getPathSeparator();
     }
 
+    public static String getPotionsAnimPath() {
+        return StrPathBuilder.build(getSpritesPathMain(), "potions")+StringMaster.getPathSeparator();
+    }
     private static String getSpritesPathMain() {
         init();
         return

@@ -242,7 +242,7 @@ public class DC_SoundMaster extends SoundMaster {
             try { //TODO ON SEPARATE THREAD!!!!
                 playAnimStartSound(activeObj, anim.getPart());
             } catch (Exception e) {
-//                e.printStackTrace();
+//                main.system.ExceptionMaster.printStackTrace(e);
             }
         });
         GuiEventManager.bind(GuiEventType.COMPOSITE_ANIMATION_STARTED, p -> {
@@ -251,7 +251,7 @@ public class DC_SoundMaster extends SoundMaster {
             try {
                 playActionStartSound(activeObj);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         });
     }
@@ -358,7 +358,7 @@ public class DC_SoundMaster extends SoundMaster {
                 try {
                     file = FileManager.getRandomFilePathVariant(corePath, StringMaster.getFormat(file), false);
                 } catch (Exception e) {
-//            e.printStackTrace();
+//            main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
             if (file != null) {

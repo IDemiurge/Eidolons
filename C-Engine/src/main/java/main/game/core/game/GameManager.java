@@ -238,7 +238,7 @@ public abstract class GameManager implements GenericGameManager {
             try {
                 statMaster.eventBeingHandled(event);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         getState().checkTriggers(event);
         getState().checkRules(event);

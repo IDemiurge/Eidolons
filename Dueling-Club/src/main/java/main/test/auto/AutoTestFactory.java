@@ -64,7 +64,7 @@ public class AutoTestFactory {
         try {
             testTypes = XML_Converter.getTypeListFromXML(xml, false);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         testTypes = (List<ObjType>) FilterMaster.filterByProp(testTypes, G_PROPS.WORKSPACE_GROUP
                 .getName(), MetaEnums.WORKSPACE_GROUP.TEST.name());

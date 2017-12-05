@@ -62,7 +62,7 @@ public class DialogueSyntax {
             try {
                 return text.substring(0, text.indexOf(PARAM_MOD));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

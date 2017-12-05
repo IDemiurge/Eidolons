@@ -199,7 +199,7 @@ public class Player {
             lastplayed.push(sound.getSound());
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(ex);
         }
     }
 
@@ -238,7 +238,7 @@ public class Player {
         try {
             playSoundOnCurrentThread(sound_type, obj);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 //        new Thread(() -> playSoundOnCurrentThread(sound_type, obj), "playing " + sound_type + " sound for " + obj).start();
     }
@@ -334,7 +334,7 @@ public class Player {
         try {
             play(file.getAbsolutePath());
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
         return true;
@@ -578,11 +578,11 @@ public class Player {
     // try {
     // clip = createSoundClip(sound);
     // } catch (UnsupportedAudioFileException e) {
-    // e.printStackTrace();
+    // main.system.ExceptionMaster.printStackTrace(e);
     // } catch (IOException e) {
-    // e.printStackTrace();
+    // main.system.ExceptionMaster.printStackTrace(e);
     // } catch (LineUnavailableException e) {
-    // e.printStackTrace();
+    // main.system.ExceptionMaster.printStackTrace(e);
     // }
     // if (clip != null) {
     // FloatControl gainControl = (FloatControl) clip

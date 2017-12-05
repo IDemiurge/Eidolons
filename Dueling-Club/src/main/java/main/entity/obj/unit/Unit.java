@@ -63,7 +63,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
-import main.system.text.SpecialLogger;
+import main.system.auxiliary.log.SpecialLogger;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -141,17 +141,17 @@ public class Unit extends DC_UnitModel {
         try {
             initDeity();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
             initEmblem();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
             initIntegrityAlignments();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
 //        WaitMaster.receiveInput(WAIT_OPERATIONS.UNIT_OBJ_INIT, true);
@@ -513,6 +513,9 @@ if (ExplorationMaster.isExplorationOn())
     }
 
     public int getRemainingQuickSlots() {
+        if (quickItems == null) {
+         return getIntParam(PARAMS.QUICK_SLOTS);
+        }
         return getIntParam(PARAMS.QUICK_SLOTS) - quickItems.size();
     }
 

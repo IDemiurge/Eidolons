@@ -32,9 +32,9 @@ public class PreLauncher extends Game{
         try {
             int res = JavaProcess.exec(Showcase.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 
@@ -86,7 +86,7 @@ super.render();
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo32.png", FileType.Absolute);
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo64.png", FileType.Absolute);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return conf;
     }

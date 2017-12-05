@@ -233,7 +233,7 @@ public class HeroManager {
                             }
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
             }
@@ -255,7 +255,7 @@ public class HeroManager {
                 hero.resetQuickSlotsNumber();
                 refreshInvWindow();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             return;
         }

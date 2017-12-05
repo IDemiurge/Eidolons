@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
-import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.game.core.Eidolons;
@@ -109,26 +108,19 @@ public class OptionsMaster {
                             if (Eidolons.game.getBattleMaster() != null)
                                 Eidolons.game.getBattleMaster().getOptionManager().difficultySet(value);
                         break;
-                    case DEFAULT_ACTIONS:
-                        break;
-                    case MANUAL_CONTROL:
-                        break;
-                    case DEBUG_MODE:
-                        break;
-                    case INFO_DETAIL_LEVEL:
-                        break;
                 }
             }
         }
     }
+
     public static void applySoundOptions(SoundOptions soundOptions) {
-        if (Gdx.app==null )
-            return ;
-        if (!GdxMaster.isLwjglThread()){
-            Gdx.app.postRunnable(()->
+        if (Gdx.app == null)
+            return;
+        if (!GdxMaster.isLwjglThread()) {
+            Gdx.app.postRunnable(() ->
              applySoundOptions_(soundOptions));
         } else
-            applySoundOptions_(soundOptions) ;
+            applySoundOptions_(soundOptions);
     }
 
     private static void applySoundOptions_(SoundOptions soundOptions) {
@@ -171,14 +163,15 @@ public class OptionsMaster {
     }
 
     public static void applyGraphicsOptions(GraphicsOptions graphicsOptions) {
-        if (Gdx.app==null )
-            return ;
-        if (!GdxMaster.isLwjglThread()){
-            Gdx.app.postRunnable(()->
-            applyGraphicsOptions_(graphicsOptions));
+        if (Gdx.app == null)
+            return;
+        if (!GdxMaster.isLwjglThread()) {
+            Gdx.app.postRunnable(() ->
+             applyGraphicsOptions_(graphicsOptions));
         } else
-            applyGraphicsOptions_(graphicsOptions) ;
+            applyGraphicsOptions_(graphicsOptions);
     }
+
     //OR LET THOSE CLASSES GET() OPTIONS?
     private static void applyGraphicsOptions_(GraphicsOptions graphicsOptions) {
 
@@ -191,34 +184,42 @@ public class OptionsMaster {
                 continue;
             String value = graphicsOptions.getValue(key);
             boolean bool = Boolean.valueOf(value.toLowerCase());
-            switch (key) {
-                case FRAMERATE:
-                    GenericLauncher launcher = Eidolons.getLauncher();
-                    launcher.setForegroundFPS(Integer.valueOf(value));
-                    break;
-                case AUTO_CAMERA:
-                    DungeonScreen.setCameraAutoCenteringOn(bool);
-                    break;
-                case AMBIENCE:
-                    ParticleManager.setAmbienceOn(bool);
-                    break;
-                case FULLSCREEN:
-                    Eidolons.setFullscreen(bool);
-                    break;
-                case AMBIENCE_MOVE_SUPPORTED:
-                    ParticleManager.setAmbienceMoveOn(
-                     bool);
-                    break;
-                case OUTLINES:
-                    OutlineMaster.setOutlinesOn(bool);
-                    break;
-                case RESOLUTION:
-                     Eidolons.setResolution(value);
-                    break;
-                case ZOOM_STEP:
-                    InputController.setZoomStep(Integer.valueOf(value)/new Float(100));
-                    break;
+//            Eidolons.getApplication().getGraphics(). setCursor();
+
+            try {
+                applyOption(key, value, bool  );
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
             }
+
+        }
+    }
+
+    private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool ) {
+        switch (key) {
+            case FRAMERATE:
+                GenericLauncher launcher = Eidolons.getLauncher();
+                launcher.setForegroundFPS(Integer.valueOf(value));
+                break;
+            case AUTO_CAMERA:
+                DungeonScreen.setCameraAutoCenteringOn(bool);
+                break;
+            case AMBIENCE:
+                ParticleManager.setAmbienceOn(bool);
+                break;
+            case FULLSCREEN:
+                Eidolons.setFullscreen(bool);
+                break;
+            case AMBIENCE_MOVE_SUPPORTED:
+                ParticleManager.setAmbienceMoveOn(
+                 bool);
+                break;
+            case RESOLUTION:
+                Eidolons.setResolution(value);
+                break;
+            case ZOOM_STEP:
+                InputController.setZoomStep(Integer.valueOf(value) / new Float(100));
+                break;
         }
     }
 
@@ -385,7 +386,7 @@ public class OptionsMaster {
             applyOptions();
             initialized = true;
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
     }

@@ -71,7 +71,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
             try {
                 parseParamBonusString();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -88,13 +88,13 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
         try {
             addParamBonuses();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         try {
             applyParamMods();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         activatePassives();
@@ -227,7 +227,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
                         ef.resetOriginalFormula();
                         ef.appendFormulaByMod(100 + mod);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
                     // some exceptions?
                     /*

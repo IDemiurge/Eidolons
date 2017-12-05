@@ -132,7 +132,7 @@ public class PartyHelper {
                         propValue = StringMaster.replaceFirst(propValue, item, type.getGame()
                                 .getObjectById(StringMaster.getInteger(item)).getType().getName());
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
             }
@@ -353,7 +353,7 @@ public class PartyHelper {
                 HeroLevelManager.levelUp(hero, true);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             getParty().getGame().setSimulation(false);
         }

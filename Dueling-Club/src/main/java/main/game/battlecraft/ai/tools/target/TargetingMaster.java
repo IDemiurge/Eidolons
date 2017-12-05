@@ -159,7 +159,7 @@ public class TargetingMaster extends AiHandler {
         try {
             objects = a.getTargeting().getFilter().getObjects();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         for (Obj obj : objects) {

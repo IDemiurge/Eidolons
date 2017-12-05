@@ -1,7 +1,6 @@
 package main.libgdx.gui.panels.dc.actionpanel;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
 
 import java.util.List;
@@ -14,37 +13,29 @@ public class QuickSlotPanel extends BaseSlotPanel {
         super(imageSize);
     }
 
-    public QuickSlotPanel() {
-        super(0);
-    }
 
     @Override
     public void updateAct(float delta) {
         clear();
-
         final ActiveQuickSlotsDataSource source = (ActiveQuickSlotsDataSource) getUserObject();
-
         final List<ActionValueContainer> sources = source.getQuickSlotActions();
-        final int tempLimit = Math.min(sources.size(), 6);
-        for (int i = 0; i < tempLimit; i++) {
-            addValueContainer(sources.get(i), getOrCreateR("UI/empty_pack.jpg"));
-        }
-
-        for (int i = tempLimit; i < 6; i++) {
-            final ValueContainer container = new ValueContainer(getOrCreateR("UI/EMPTY_LIST_ITEM.jpg"));
-            container.overrideImageSize(imageSize, imageSize);
-            add(container).left().bottom();
-        }
+        initContainer(sources, "UI/EMPTY_LIST_ITEM.jpg");
     }
 
-    protected void addValueContainer(ValueContainer valueContainer, TextureRegion emptySlotTexture) {
-        if (valueContainer == null) {
-            valueContainer = new ValueContainer(emptySlotTexture);
+    @Override
+    protected TablePanel initPage(List<ActionValueContainer> sources, String emptyImagePath) {
+        TablePanel page = new TablePanel();
+        for (int i = 0; i < getPageSize(); i++) {
+            ActionValueContainer valueContainer = null;
+            if (sources.size() >  i )
+            {
+                valueContainer = sources.get(i);
+                if (page ==null )
+                    emptyImagePath= ("UI/empty_pack.jpg");
+            }
+            addValueContainer(page, valueContainer, getOrCreateR(emptyImagePath));
         }
-        if (imageSize > 0) {
-            valueContainer.overrideImageSize(imageSize, imageSize);
-        }
-        add(valueContainer).left().bottom();
-    }
 
+        return page;
+    }
 }

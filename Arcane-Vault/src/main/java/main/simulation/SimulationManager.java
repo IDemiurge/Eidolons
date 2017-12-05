@@ -38,7 +38,7 @@ public class SimulationManager {
         try {
             resetUnit(unit);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         unitMap.put(type, unit);
 
@@ -82,7 +82,7 @@ public class SimulationManager {
         try {
             resetUnit(unit);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         // resetPassives();
         // resetMasteries();

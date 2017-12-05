@@ -30,7 +30,7 @@ public class M3uMaster {
                 try {
                     content = M3uGenerator.getM3uForList(new MusicList(type));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                     continue;
                 }
             }

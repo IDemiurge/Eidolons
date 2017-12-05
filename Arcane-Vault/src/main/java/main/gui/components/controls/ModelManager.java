@@ -144,7 +144,7 @@ public class ModelManager {
                 }
                 tb.getTree().setSelectionPath(new TreePath(node.getPath()));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } finally {
                 tb.getTree().addTreeSelectionListener(listener);
             }
@@ -224,7 +224,7 @@ public class ModelManager {
         try {
             saveAll();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             XML_Writer.setBackUpMode(false);
         }
@@ -245,7 +245,7 @@ public class ModelManager {
         try {
             XML_Writer.writeXML_ForTypeGroup(obj_type);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
             SoundMaster.playStandardSound(STD_SOUNDS.FAIL);
             return;
         }
@@ -750,7 +750,7 @@ public class ModelManager {
                 try {
                     saveAll();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 } finally {
                     auto = false;
                 }
@@ -802,7 +802,7 @@ public class ModelManager {
             SoundMaster.playStandardSound(STD_SOUNDS.CHECK);
             ArcaneVault.setDirty(false);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             saving = false;
         }

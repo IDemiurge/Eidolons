@@ -3,7 +3,6 @@ package main.game.battlecraft.logic.meta.universal;
 import main.entity.DataModel;
 import main.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import main.game.battlecraft.logic.meta.scenario.ScenarioPartyManager;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
@@ -14,7 +13,7 @@ import main.game.core.game.DC_Game;
 import main.libgdx.anims.AnimMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
-import main.system.text.SpecialLogger;
+import main.system.auxiliary.log.SpecialLogger;
 
 /**
  * Created by JustMe on 5/7/2017.
@@ -183,7 +182,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 //        try {
 //            DungeonScreen.getInstance().dispose();
 //        } catch (Exception e) {
-//            e.printStackTrace();
+//            main.system.ExceptionMaster.printStackTrace(e);
 //        }
         //TODO !!!
 
@@ -192,7 +191,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         try {
             GuiEventManager.cleanUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         AnimMaster.getInstance().cleanUp();
         Coordinates.clearCaches();

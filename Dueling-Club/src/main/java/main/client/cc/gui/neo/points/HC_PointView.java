@@ -170,7 +170,7 @@ public class HC_PointView extends HeroView {
         try {
             attr = HC_Master.getSelectedAttribute();
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         List<String> list = new ArrayList<>();
         if (attr != null) {

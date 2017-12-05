@@ -27,7 +27,7 @@ public class ResourcePanel extends TablePanel {
 
         pad(16, 20, 16, 20);
 
-        toughness = new VerticalValueContainer(getOrCreateR("UI/value icons/toughness.png"), "Toughness", "");
+        toughness = new VerticalValueContainer(getOrCreateR("UI/value icons/toughness.jpg"), "Toughness", "");
         addElement(toughness).grow();
 
         endurance = new VerticalValueContainer(getOrCreateR("UI/value icons/endurance.png"), "Endurance", "");

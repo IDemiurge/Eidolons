@@ -297,7 +297,7 @@ public class MusicListPanel extends G_Panel {
             try {
                 Collections.sort(lines, getComparator(chars));
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
                 main.system.auxiliary.log.LogMaster.log(1,"sorting failed: " +chars );
             }
         }

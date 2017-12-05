@@ -21,8 +21,11 @@ public class InventoryValueContainerFactory {
 
     public InventoryValueContainer get(Entity entity, CELL_TYPE cellType) {
         InventoryValueContainer container = new InventoryValueContainer(
+
         entity==null ? getEmptyImageForCell(cellType) :
-         TextureCache.getOrCreateR(  entity.getImagePath()));
+         TextureCache.getOrCreateR(  entity.getImagePath())
+        , entity==null ? "Empty" : entity.getName()
+        );
         container.setEntity(entity);
         container.setCellType(cellType);
         container.setHandler(handler);

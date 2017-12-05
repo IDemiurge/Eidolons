@@ -42,14 +42,14 @@ public class ReflectionMaster<T> {
                 setValue(fieldName, value, obj, clazz.getSuperclass());
                 return ;
             } else {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         field.setAccessible(true);
         try {
             field.set(obj, value);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 }

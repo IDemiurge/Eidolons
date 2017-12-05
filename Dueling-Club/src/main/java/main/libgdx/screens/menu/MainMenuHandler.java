@@ -29,7 +29,9 @@ public class MainMenuHandler {
                 OptionsMaster.openMenu();
             return true;
             case MANUAL:
-                break;
+                GuiEventManager.trigger(GuiEventType.SHOW_MANUAL_PANEL , ""); //null closes!
+
+                return false ;
             case ABOUT:
                 break;
             case EXIT:

@@ -57,7 +57,7 @@ public class TextureCache {
                 textureCache = new TextureCache();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             creationLock.unlock();
         }
@@ -152,6 +152,28 @@ public class TextureCache {
         return textureCache._createTexture(path, putIntoCache);
     }
 
+    public static Drawable getOrCreateTextureRegionDrawable(TextureRegion originalTexture) {
+        Drawable drawable = drawableMap.get(originalTexture);
+        if (drawable == null) {
+            drawable = new TextureRegionDrawable(originalTexture);
+            drawableMap.put(originalTexture, drawable);
+        }
+
+        return drawable;
+    }
+
+    public static Drawable getOrCreateTextureRegionDrawable(String imagePath) {
+        return getOrCreateTextureRegionDrawable(getOrCreateR(imagePath));
+    }
+
+    public static String formatTexturePath(String path) {
+        path = path.toLowerCase().replace("\\\\", "\\")
+         .replace("\\", "/"  );
+        if (path.endsWith("/"))
+            return path.substring(0, path.length() - 1);
+        return path;
+    }
+
     private String getAltTexturePath(String filePath) {
         return filePath.replace(StrPathBuilder.build("gen", "entity"), StrPathBuilder.build("main"));
     }
@@ -184,8 +206,8 @@ public class TextureCache {
 
     private Texture _getOrCreate(String path) {
 
-            path = path
-             .toLowerCase();
+        path = path
+         .toLowerCase();
         if (!path.startsWith("/")) {
             path = "/" + path;
         }
@@ -223,7 +245,7 @@ public class TextureCache {
                     cache.put(path, t);
                 }
             } catch (Exception e) {
-//                e.printStackTrace();
+//                main.system.ExceptionMaster.printStackTrace(e);
                 if (!cache.containsKey(getEmptyPath())) {
                     if (putIntoCache)
                         cache.put(getEmptyPath(), getEmptyTexture());
@@ -233,21 +255,6 @@ public class TextureCache {
 
             }
         return t;
-    }
-
-    public static Drawable getOrCreateTextureRegionDrawable(TextureRegion originalTexture) {
-        Drawable  drawable = drawableMap.get(originalTexture);
-        if (drawable == null)
-        {
-            drawable= new TextureRegionDrawable(originalTexture) ;
-            drawableMap.put(originalTexture,drawable);
-        }
-
-        return drawable;
-    }
-
-    public static Drawable getOrCreateTextureRegionDrawable(String imagePath) {
-        return getOrCreateTextureRegionDrawable(getOrCreateR(imagePath));
     }
 }
 

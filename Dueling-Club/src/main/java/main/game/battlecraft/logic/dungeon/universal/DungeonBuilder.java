@@ -168,14 +168,14 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
             try {
                 DC_ObjInitializer.initDirectionMap(z, plan.getDirectionMap());
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         if (plan.getFlipMap() != null) {
             try {
                 DC_ObjInitializer.initFlipMap(z, plan.getFlipMap());
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
     }

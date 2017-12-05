@@ -12,10 +12,12 @@ import main.data.filesys.PathFinder;
 import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.core.Eidolons;
+import main.libgdx.anims.Assets;
 import main.libgdx.screens.*;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 import main.test.frontend.RESOLUTION;
@@ -64,13 +66,23 @@ public class GenericLauncher extends Game {
 
     }
 
+    @Override
+    public void dispose() {
+        try {
+            SpecialLogger.getInstance().writeLogs();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        super.dispose();
+    }
+
     protected boolean isStopOnInactive() {
         return true;
     }
 
     public LwjglApplicationConfiguration getConf() {
 //        Eidolons. getApplication().getGraphics().setFullscreenMode();
-         conf = new LwjglApplicationConfiguration();
+        conf = new LwjglApplicationConfiguration();
         conf.title = getTitle();
 //        if (Gdx.graphics.isGL30Available())
         conf.useGL30 = true;
@@ -86,16 +98,18 @@ public class GenericLauncher extends Game {
 
         return conf;
     }
-//        @Override
-        public void setForegroundFPS(int value) {
-            conf.foregroundFPS = value;
+
+    //        @Override
+    public void setForegroundFPS(int value) {
+        conf.foregroundFPS = value;
     }
+
     protected void initIcon(LwjglApplicationConfiguration conf) {
         try {
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo32.png", FileType.Absolute);
             conf.addIcon(PathFinder.getImagePath() + "mini/new/logo64.png", FileType.Absolute);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
     }
 
@@ -129,7 +143,7 @@ public class GenericLauncher extends Game {
                     System.out.println("resolution height " + h);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
     }
@@ -155,6 +169,7 @@ public class GenericLauncher extends Game {
         GuiEventManager.processEvents();
 
         super.render();
+        Assets.get().getManager().update();
     }
 
     protected void switchScreen(Supplier<ScreenWithVideoLoader> factory, ScreenData meta) {
@@ -178,8 +193,8 @@ public class GenericLauncher extends Game {
             case BATTLE:
                 new Thread(new Runnable() {
                     public void run() {
-                       if (! Eidolons.initScenario(new ScenarioMetaMaster(meta.getName())))
-                           return;
+                        if (!Eidolons.initScenario(new ScenarioMetaMaster(meta.getName())))
+                            return;
                         DC_Engine.gameStartInit();
                         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
                         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
