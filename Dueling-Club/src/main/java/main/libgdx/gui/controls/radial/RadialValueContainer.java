@@ -10,10 +10,8 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.libgdx.StyleHolder;
 import main.libgdx.bf.mouse.BattleClickListener;
-import main.libgdx.gui.UiAnimator;
 import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import main.libgdx.gui.tooltips.ToolTip;
-import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.ListMaster;
@@ -35,10 +33,10 @@ public class RadialValueContainer extends ActionValueContainer {
 
     public RadialValueContainer(TextureRegion texture, Runnable action) {
         super(texture, action);
-        if (texture.getRegionHeight()>64)
-            if (texture.getRegionWidth()>64){
-                overrideImageSize(UiAnimator.getIconSize(), UiAnimator.getIconSize());
-            }
+//        if (texture.getRegionHeight()>70)
+//            if (texture.getRegionWidth()>70){
+//                overrideImageSize(UiAnimator.getIconSize(), UiAnimator.getIconSize());
+//            }
 //        initUnderlay();
         setUnderlay(
          valid?
@@ -139,6 +137,11 @@ public class RadialValueContainer extends ActionValueContainer {
 
     public void setInfoTextSupplier(Supplier<String> infoTextSupplier) {
         this.infoTextSupplier = infoTextSupplier;
+    }
+
+    @Override
+    protected void drawLightUnderlay(Batch batch) {
+        return ;
     }
 
     @Override

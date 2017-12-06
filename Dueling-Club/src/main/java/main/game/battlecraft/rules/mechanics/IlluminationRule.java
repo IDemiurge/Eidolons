@@ -17,9 +17,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IlluminationRule {
+    private static final boolean BASE_ILLUMINATION =true ;
     static Map<Obj, LightEmittingEffect> effectCache = new HashMap<>();
+    private final DC_Game game;
 
-    public static void resetIllumination(DC_Game game) {
+
+    public IlluminationRule(DC_Game game) {
+        this.game = game;
+    }
+
+    public   void resetIllumination( ) {
         game.getCells().forEach(cell -> {
             cell.setParam(PARAMS.ILLUMINATION, 0);
         });
@@ -28,11 +35,11 @@ public class IlluminationRule {
         });
     }
 
-    public static Map<Obj, LightEmittingEffect> getEffectCache() {
+    public   Map<Obj, LightEmittingEffect> getEffectCache() {
         return effectCache;
     }
 
-    public static void initLightEmission(DC_Game game) {
+    public   void initLightEmission( ) {
 //        List<Effect> effects = new ArrayList<>();
         for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
             LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
@@ -93,7 +100,7 @@ public class IlluminationRule {
         int value =
 //         source.getGame().getVisionMaster().
 //          getIlluminationMaster().getIllumination(source);
-         source.getIntParam(PARAMS.LIGHT_EMISSION);
+         source.getIntParam(PARAMS.LIGHT_EMISSION,  BASE_ILLUMINATION );
         if (source instanceof Unit) {
             if (((Unit) source).isHero())
 //                if (source.getGame().getVisionMaster().
@@ -108,4 +115,7 @@ public class IlluminationRule {
         return value;
     }
 
+    public void clearCache() {
+        effectCache.clear();
+    }
 }

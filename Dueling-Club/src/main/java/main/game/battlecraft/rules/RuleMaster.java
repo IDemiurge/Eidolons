@@ -172,6 +172,7 @@ public class RuleMaster implements Controller {
 
                     case ORDERS:
                     case WATCH:
+                    case GUARD_MODE:
 //                    case USE_INVENTORY:
 //                    case DUAL_ATTACKS:
 //                    case VISIBILITY:
@@ -356,7 +357,7 @@ BLEEDING, BLAZE, FREEZE, POISON, DISEASE,
     public enum FEATURE {
         USE_INVENTORY, WATCH, FLEE, DIVINATION, TOSS_ITEM, PICK_UP,
         ENTER, DUAL_ATTACKS,
-        VISIBILITY, ORDERS;
+        VISIBILITY, ORDERS, GUARD_MODE;
         int featureLevel;
     }
 

@@ -17,6 +17,7 @@ import main.libgdx.StyleHolder;
 import main.libgdx.bf.SuperActor;
 import main.libgdx.texture.TextureCache;
 import main.system.graphics.FontMaster.FONT;
+import main.system.images.ImageManager;
 import main.system.math.MathMaster;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
@@ -50,9 +51,7 @@ public class OrbElement extends SuperActor {
     }
 
     public OrbElement(PARAMS param, String value) {
-        this(getOrCreateR("/UI/value icons/" +
-          param.getName() +
-          ".png"),
+        this(getOrCreateR(ImageManager.getValueIconPath(param)),
          getOrCreateR("/UI/components/new/orb " +
           param.getName() +
           ".png"), value);

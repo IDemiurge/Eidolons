@@ -18,7 +18,12 @@ public class SmartTextureAtlas extends TextureAtlas {
     public SmartTextureAtlas(String s) {
         super(s);
     }
-        @Override
+
+    public SmartTextureAtlas(TextureAtlasData data) {
+        super(data);
+    }
+
+    @Override
         public AtlasRegion addRegion(String name, TextureRegion textureRegion) {
 
         return super.addRegion(name.toLowerCase(), textureRegion);

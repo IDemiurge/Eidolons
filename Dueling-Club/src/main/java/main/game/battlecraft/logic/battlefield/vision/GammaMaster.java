@@ -11,6 +11,7 @@ import main.game.battlecraft.logic.dungeon.location.Location;
 import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
+import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.system.math.MathMaster;
@@ -127,9 +128,10 @@ public class GammaMaster {
 //                if (gamma < 2)
 //                    return 0;
                 alpha = (float) Math.min(Math.sqrt(gamma*2), gamma/3);
+                alpha = Math.min(alpha, 0.5f);
                 break;
             case LIGHT_EMITTER:
-                for (Obj sub : IlluminationRule.getEffectCache().keySet()) {
+                for (Obj sub : DC_Game.game.getRules().getIlluminationRule().getEffectCache().keySet()) {
                     if (sub instanceof Unit)
                         continue; //TODO illuminate some other way for units...
                     if (sub.getCoordinates().x == x)

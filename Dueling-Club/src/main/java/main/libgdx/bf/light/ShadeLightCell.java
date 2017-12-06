@@ -11,9 +11,9 @@ import main.entity.obj.Obj;
 import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
-import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.Eidolons;
+import main.game.core.game.DC_Game;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.actions.FloatActionLimited;
@@ -188,11 +188,15 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     protected float getAlphaFluctuationMin() {
+        if (type== SHADE_LIGHT.GAMMA_SHADOW)
+            return baseAlpha/2;
         return baseAlpha * 3 / 5;
     }
 
     @Override
     protected float getAlphaFluctuationMax() {
+        if (type== SHADE_LIGHT.GAMMA_SHADOW)
+            return baseAlpha*5/6;
         return baseAlpha;
     }
 
@@ -254,7 +258,7 @@ public class ShadeLightCell extends SuperContainer {
         float offsetX = 0;
         float offsetY = 0;
         setScale(1f, 1f);
-        for (Obj sub : IlluminationRule.getEffectCache().keySet()) {
+        for (Obj sub : DC_Game.game.getRules().getIlluminationRule().getEffectCache().keySet()) {
             if (sub instanceof Unit)
                 continue; //TODO illuminate some other way for units...
 
@@ -264,11 +268,11 @@ public class ShadeLightCell extends SuperContainer {
                         if (((Structure) sub).isOverlaying()) {
                             DIRECTION d = ((Structure) sub).getDirection();
                             if (d == null) {
-                                setScale(0.66f, 0.66f);
+                                setScale(0.7f, 0.7f);
                                 continue;
                             }
 
-                            setScale(d.isGrowX() == null ? 1 : 0.66f, d.isGrowY() == null ? 1 : 0.66f);
+                            setScale(d.isGrowX() == null ? 1 : 0.8f, d.isGrowY() == null ? 1 : 0.8f);
                             Dimension dim = GridMaster.getOffsetsForOverlaying(d,
                              (int) getWidth(),
                              (int) getHeight());

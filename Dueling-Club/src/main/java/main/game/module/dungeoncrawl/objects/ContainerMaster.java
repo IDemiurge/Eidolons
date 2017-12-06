@@ -32,6 +32,7 @@ import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.FilterMaster;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -604,7 +605,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public static boolean isPregenerateItems() {
-        return false;
+        return CoreEngine.isIDE();
     }
 
     public static boolean isGenerateItemsForUnits() {

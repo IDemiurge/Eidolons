@@ -20,6 +20,10 @@ public class GameMenuHandler {
                 GuiEventManager.trigger(GuiEventType.SHOW_TEXT_CENTERED,
                  HelpMaster.getHelpText());
                 break;
+            case MANUAL:
+                GuiEventManager.trigger(GuiEventType.SHOW_MANUAL_PANEL,
+                 HelpMaster.getHelpText());
+                break;
             case HERO_INFO:
                 GuiEventManager.trigger(GuiEventType.SHOW_TEXT_CENTERED,
                  HelpMaster.getWelcomeText());

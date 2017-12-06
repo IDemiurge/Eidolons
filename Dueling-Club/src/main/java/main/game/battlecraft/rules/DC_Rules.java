@@ -12,6 +12,7 @@ import main.game.battlecraft.rules.combat.misc.TrampleRule;
 import main.game.battlecraft.rules.counter.*;
 import main.game.battlecraft.rules.mechanics.AshAnnihilationRule;
 import main.game.battlecraft.rules.mechanics.DurabilityRule;
+import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.battlecraft.rules.mechanics.WaitRule;
 import main.game.battlecraft.rules.round.*;
 import main.game.core.game.DC_Game;
@@ -66,6 +67,7 @@ public class DC_Rules implements GameRules {
     private LavaRule lavaRule;
     private SuffocationRule suffocationRule;
     private AshAnnihilationRule ashAnnihilationRule;
+    private IlluminationRule illuminationRule;
 
 
     public DC_Rules(DC_Game game) {
@@ -80,7 +82,7 @@ public class DC_Rules implements GameRules {
     private void init() {
         RuleMaster.init();
         WaitRule.reset();
-
+        illuminationRule = new IlluminationRule(game);
         unconsciousRule = new UnconsciousRule(game);
         watchRule = new WatchRule();
         engagedRule = new EngagedRule(getGame());
@@ -355,5 +357,13 @@ public class DC_Rules implements GameRules {
 
     public DequeImpl<DC_RuleImpl> getTriggerRules() {
         return triggerRules;
+    }
+
+    public IlluminationRule getIlluminationRule() {
+        return illuminationRule;
+    }
+
+    public void setIlluminationRule(IlluminationRule illuminationRule) {
+        this.illuminationRule = illuminationRule;
     }
 }

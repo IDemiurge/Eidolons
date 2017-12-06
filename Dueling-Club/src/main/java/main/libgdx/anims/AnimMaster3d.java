@@ -52,7 +52,14 @@ public class AnimMaster3d {
     private static final String[][] substitutesWeapons = {
 //     {"halbert", "axe"},
 
-     {"insect claws", "pincers"},
+     {"lance", "spear"},
+     {"pike", "spear"},
+     {"staff", "spear"},
+     {"battle staff", "spear"},
+     {"scythe", "spear"},
+     {"sickle", "hand axe"},
+
+
      {"broad sword", "long sword"},
      {"falchion", "scimitar"},
      {"orcish arrows", "arrows"},
@@ -422,6 +429,7 @@ public class AnimMaster3d {
             return;
         main.system.auxiliary.log.LogMaster.log(1,path +" loading...");
         Assets.get().getManager().load(path, TextureAtlas.class);
+        atlasMap.put(path, null );
     }
 
     public static TextureAtlas getOrCreateAtlas(DC_WeaponObj weapon) {

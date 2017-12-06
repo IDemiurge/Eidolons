@@ -97,7 +97,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
 
     @Override
     protected FONT getFontStyle() {
-        return FONT.MANORLY_;
+        return FONT.MAGIC;
     }
 
     @Override
@@ -110,10 +110,10 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         QUICK_HELP,
         HERO_INFO,
         MANUAL,
-        SEND_FEEDBACK,
-        SEND_LOG,
-        QUICK_RATE(), //WILL BE HIGHLIGHTED, OR SENT TO MY MAIN ADDRESS...
-        FEEDBACK(QUICK_RATE, SEND_FEEDBACK, SEND_LOG),
+//        SEND_FEEDBACK,
+//        SEND_LOG,
+//        QUICK_RATE(), //WILL BE HIGHLIGHTED, OR SENT TO MY MAIN ADDRESS...
+//        FEEDBACK(QUICK_RATE, SEND_FEEDBACK, SEND_LOG),
         OPTIONS,
         RESTART,
         PASS_TIME,

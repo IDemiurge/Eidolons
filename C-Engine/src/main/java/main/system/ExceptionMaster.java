@@ -10,13 +10,14 @@ public class ExceptionMaster {
     public static void printStackTrace(Exception e) {
         if (!CoreEngine.isExe())
             e.printStackTrace();
-     else    SpecialLogger.getInstance().appendExceptionToFileLog(
-//         e.getStackTrace()[0]
-//         Thread.currentThread().con
-         e.toString()+ " from " +  e.getStackTrace()[0]);
-          {
-//             e.getMessage()
+        else
+            try {
+                SpecialLogger.getInstance().appendExceptionToFileLog(
+                 e.toString() + " from " + e.getStackTrace()[0]);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        {
         }
-//        try{}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
     }
 }

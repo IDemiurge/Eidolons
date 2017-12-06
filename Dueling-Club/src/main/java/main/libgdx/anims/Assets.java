@@ -4,8 +4,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
 import main.libgdx.texture.SmartTextureAtlas;
+import main.system.auxiliary.secondary.ReflectionMaster;
 
 /**
  * Created by JustMe on 12/1/2017.
@@ -27,7 +31,16 @@ public class Assets {
             @Override
             public TextureAtlas load (AssetManager assetManager, String fileName, FileHandle file, TextureAtlasParameter parameter) {
 //               super.load()
-                TextureAtlas atlas = new SmartTextureAtlas(fileName);
+//                return atlas;
+                TextureAtlasData data = new ReflectionMaster<TextureAtlasData>()
+                 .getFieldValue("data", this, TextureAtlasLoader.class);
+                for (Page page : data.getPages()) {
+                    Texture texture = assetManager.get(page.textureFile.path().replaceAll("\\\\", "/"), Texture.class);
+                    page.texture = texture;
+                }
+                TextureAtlas atlas = new SmartTextureAtlas(data);
+                new ReflectionMaster<TextureAtlasData>()
+                 .setValue("data", null , this);
                 main.system.auxiliary.log.LogMaster.log(1,fileName +" loaded...");
                 return atlas;
             }

@@ -221,6 +221,14 @@ public class Anim extends Group implements Animation {
             main.system.auxiliary.log.LogMaster.log(1,
              e.getName()+
              " drawn at x " +e. getX() + " y " + e.getY());
+            e.getEffect().getEmitters().forEach(em->{
+
+                main.system.auxiliary.log.LogMaster.log(1,
+                 em.getName()+
+                  " emitter at at x " +em.getX() + " y " + em.getY()
+
+                );
+            });
         });
         return true;
     }

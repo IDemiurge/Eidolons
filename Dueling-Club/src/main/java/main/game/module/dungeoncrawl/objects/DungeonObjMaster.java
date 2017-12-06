@@ -58,7 +58,8 @@ public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
         action.setTargeting(new SelectiveTargeting(
          new Conditions(new DistanceCondition("1", true)
          , new FacingCondition(FACING_SINGLE.IN_FRONT))));
-
+        action.setConstructed(true);
+        action.getTargeter().setTargetingInitialized(true);
         action.setTargetingCachingOff(true);
         action.setActionTypeGroup(ACTION_TYPE_GROUPS.STANDARD);
         action.setAbilities(null);
@@ -73,8 +74,8 @@ public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
                 return true;
             }
         });
+
         action.setActives(actives);
-        action.setConstructed(true);
         action.setActionTypeGroup(ACTION_TYPE_GROUPS.DUNGEON);
         return action;
     }

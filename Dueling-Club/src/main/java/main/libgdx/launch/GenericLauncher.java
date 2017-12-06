@@ -36,6 +36,7 @@ public class GenericLauncher extends Game {
     protected boolean fullscreen;
     protected ScreenViewport viewport;
     private LwjglApplicationConfiguration conf;
+    private boolean firstInitDone;
 
     @Override
     public void create() {
@@ -191,6 +192,8 @@ public class GenericLauncher extends Game {
             case HEADQUARTERS:
                 break;
             case BATTLE:
+                if (firstInitDone)
+                    return ;
                 new Thread(new Runnable() {
                     public void run() {
                         if (!Eidolons.initScenario(new ScenarioMetaMaster(meta.getName())))
@@ -199,6 +202,7 @@ public class GenericLauncher extends Game {
                         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
                         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
                         Eidolons.mainGame.getMetaMaster().getGame().start(true);
+                        firstInitDone= true;
                     }
                 }, " thread").start();
                 break;

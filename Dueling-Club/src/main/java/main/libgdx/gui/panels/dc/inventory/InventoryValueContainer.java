@@ -38,7 +38,7 @@ public class InventoryValueContainer extends ValueContainer {
 
     @Override
     protected void init(TextureRegion texture, String name, String value) {
-        super.init(texture, name, value);
+        super.init(texture, "", "");
         addListener(new ValueTooltip(name).getController());
         addListener(new ClickListener(-1) {
             @Override

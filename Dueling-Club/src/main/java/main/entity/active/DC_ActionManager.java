@@ -707,6 +707,8 @@ public class DC_ActionManager implements ActionManager {
 
         actives.add(getOrCreateAction(SEARCH_MODE, unit));
 //  TODO condition?      if (unit.isHero())
+
+        if (RuleMaster.checkFeature(FEATURE.GUARD_MODE))
         actives.add(getOrCreateAction(StringMaster.getWellFormattedString(
          STD_SPEC_ACTIONS.Guard_Mode.name()), unit));
 

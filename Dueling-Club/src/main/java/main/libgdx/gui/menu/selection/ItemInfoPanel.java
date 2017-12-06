@@ -42,10 +42,11 @@ public class ItemInfoPanel extends TablePanel{
         addElement(header).  left().padTop(30). maxWidth(700).maxHeight(700);
         row();
 
-       
+
 
         addElement(description).left().padLeft(30) ;
-        addNormalSize(fullsizePortrait).right().padBottom(70).padRight(25) ;
+          addNormalSize(fullsizePortrait).right().padBottom(70).padRight(25);;
+        fullsizePortrait.setZIndex(0);
 
         if (item!=null )
         setItem(item);

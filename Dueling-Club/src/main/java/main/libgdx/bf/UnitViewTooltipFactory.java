@@ -20,6 +20,7 @@ import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.CounterMaster;
+import main.system.images.ImageManager;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.text.ToolTipMaster;
@@ -40,7 +41,13 @@ public class UnitViewTooltipFactory {
         final Integer cv =StringMaster.getInteger(hero.getCachedValue(max));
         final Integer v = hero.getIntParam(cur);
         final String name = max.getName();
-        final TextureRegion iconTexture = getOrCreateR("UI\\value icons\\" + name.replaceAll("_", " ") + ".png");
+        final TextureRegion iconTexture =
+
+         getOrCreateR(
+          ImageManager.getValueIconPath(max)
+//          "UI\\value icons\\" +
+//         name.replaceAll("_", " ") + ".png"
+         );
         final ValueContainer valueContainer = new ValueContainer(iconTexture, name, v + "/" + cv);
         valueContainer.setNameAlignment(Align.left);
         valueContainer.setValueAlignment(Align.right);

@@ -8,6 +8,8 @@ import main.entity.Ref;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.unit.Unit;
+import main.libgdx.anims.text.FloatingTextMaster;
+import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -23,10 +25,10 @@ public class CampEffect extends DC_Effect {
         restore fully, dispel all timed buffs, apply bonus
          */
         List<Unit> allies = getGame().getMetaMaster().getPartyManager().getParty().getMembers();
-if (allies.isEmpty())
-    getGame().getMetaMaster().getPartyManager().getParty().addMember(getGame().getMetaMaster().getPartyManager().getParty().getLeader());
+        if (allies.isEmpty())
+            getGame().getMetaMaster().getPartyManager().getParty().addMember(getGame().getMetaMaster().getPartyManager().getParty().getLeader());
 // mystery fix
-        for (Unit sub :    new LinkedList<>( allies)) {
+        for (Unit sub : new LinkedList<>(allies)) {
             DC_HeroItemObj item = sub.getItemFromInventory("Food");
             if (item != null) {
                 sub.removeFromInventory(item);
@@ -37,12 +39,15 @@ if (allies.isEmpty())
                 sub.removeQuickItem(qitem);
                 continue;
             }
-//            allies.remove(sub);
+            allies.remove(sub);
             continue;
             //remove
         }
-
-       Effects restorationEffects = new Effects();
+        if (allies.isEmpty()) {
+            FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.REQUIREMENT, "You need food supplies to camp!", ref.getSourceObj());
+            return false;
+        }
+        Effects restorationEffects = new Effects();
         restorationEffects.add(new ModifyValueEffect(PARAMS.C_ENDURANCE, MOD.SET_TO_PERCENTAGE,
          "125", true));
         restorationEffects.add(new ModifyValueEffect(PARAMS.C_FOCUS, MOD.SET_TO_PERCENTAGE,
@@ -58,14 +63,14 @@ if (allies.isEmpty())
             restorationEffects.apply(REF);
         }
         float time = 20;
-       getGame().getDungeonMaster().
+        getGame().getDungeonMaster().
          getExplorationMaster().getTimeMaster().playerRests(time);
 //       getGame().getDungeonMaster().
 //         getExplorationMaster().getTimeMaster().timePassed(time);
 
 //            applyRested();
-            for (Unit sub : allies) {
-            }
+        for (Unit sub : allies) {
+        }
 
         return true;
     }

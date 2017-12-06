@@ -3,12 +3,14 @@ package main.game.module.dungeoncrawl.objects;
 import main.content.PARAMS;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import main.game.logic.event.Event;
@@ -83,6 +85,8 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
 
     protected boolean checkAction(Unit unit, Door door, DOOR_ACTION sub) {
         if (PositionMaster.getDistance(unit, door)>1)
+            return false;
+        if (FacingMaster.getSingleFacing(unit.getFacing(), unit, door)!= FACING_SINGLE.IN_FRONT)
             return false;
         switch (sub) {
             case OPEN:

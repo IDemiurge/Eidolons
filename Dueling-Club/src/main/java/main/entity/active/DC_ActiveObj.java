@@ -898,7 +898,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isTargetingCached() {
-        if (targetingCachingOff)
+        if ( targetingCachingOff)
             return false;
         return CoreEngine.isTargetingResultCachingOn();
     }

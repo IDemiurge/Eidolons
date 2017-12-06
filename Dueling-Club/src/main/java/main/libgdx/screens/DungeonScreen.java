@@ -411,9 +411,9 @@ public class DungeonScreen extends ScreenWithVideoLoader {
 //     animationEffectStage.getViewport().update(width, height);
 
         gridStage.getRoot().setSize(width, height);
-        guiStage.getRoot().setSize(width, height);
-//        gridStage.getViewport().update(width, height);
-//        guiStage.getViewport().update(width, height);
+//        guiStage.getRoot().setSize(width, height);
+        gridStage.getViewport().update(width, height);
+        guiStage.getViewport().update(width, height);
     }
 
     public GridPanel getGridPanel() {

@@ -2,7 +2,6 @@ package main.game.module.dungeoncrawl.explore;
 
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.core.ActionInput;
 import main.system.math.PositionMaster;
 
@@ -31,7 +30,7 @@ public class ExplorationResetHandler extends ExplorationHandler {
 //        master.getGame().getStateManager().checkTriggers();
 
         //position-based effects?
-        IlluminationRule.resetIllumination(master.game);
+        master.getGame().getRules().getIlluminationRule().resetIllumination( );
 //        IlluminationRule.initLightEmission(master.game);
 
 //        checkCounterRules();

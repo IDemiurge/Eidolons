@@ -12,7 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import main.libgdx.StyleHolder;
 import main.libgdx.texture.TextureCache;
+import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.StringMaster;
+import main.system.images.ImageManager;
 
 import java.util.function.Supplier;
 
@@ -111,13 +113,22 @@ public class FloatingText extends Group {
         }
 
         clear();
-        if (image == null)        if (imageSupplier != null) {
-            if (!StringMaster.isEmpty(imageSupplier.get())) {
-                  image = new Image(TextureCache.getOrCreateR(imageSupplier.get()));
-                addActor(image);
+        if (image == null)
+            if (imageSupplier != null) {
+                if (!StringMaster.isEmpty(imageSupplier.get())) {
+                    if (!ImageManager.isImage(imageSupplier.get())
+                     ||
+                     ImageManager.getImage(imageSupplier.get()).getWidth(null )>=64 )
+                        image = new Image
+                         (TextureCache.getOrCreateR(VISUALS.QUESTION.getImgPath()));
+
+                    image = new Image(TextureCache.getOrCreateR(imageSupplier.get()));
+
 //            image.setPosition(origin.x, origin.y);
+                }
             }
-        }
+        if (image != null)
+            addActor(image);
         if (label == null) {
             label =
              new Label(getText(), getFontStyle());
@@ -125,6 +136,9 @@ public class FloatingText extends Group {
             label.setPosition(0, -20);
             addActor(label);
         }
+        if (label != null)
+            addActor(label);
+
         setPosition(origin.x, origin.y);
 
         getActions().clear();
@@ -135,7 +149,7 @@ public class FloatingText extends Group {
 //        if (!ActorMaster.getActionsOfClass(this, AfterAction.class).isEmpty()) {
 //            remove();
 //        } else
-            afterAction.setTarget(this);
+        afterAction.setTarget(this);
         setInitialized(true);
         return this;
     }

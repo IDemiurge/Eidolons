@@ -230,7 +230,7 @@ public class DC_Game extends MicroGame {
         setSimulation(false);
         ActionGenerator.init();
 
-
+        getRules().getIlluminationRule().clearCache();
         inventoryTransactionManager = new InventoryTransactionManager(this);
         inventoryManager = new DC_InventoryManager(this);
 

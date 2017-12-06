@@ -209,6 +209,8 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     protected void drawLightUnderlay(Batch batch) {
+        if (getParent()==null )
+            return ;
         float regionHeight = lightUnderlay.getRegionHeight() * getUnderlayScale() * getImageContainer().getActor().getScaleY()
          * getImageContainer().getActor().getScaleY();
         float regionWidth = lightUnderlay.getRegionWidth() * getUnderlayScale() *

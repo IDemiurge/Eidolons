@@ -6,6 +6,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.client.cc.CharacterCreator;
+import main.client.cc.logic.party.PartyObj;
 import main.entity.obj.unit.Unit;
 import main.game.EidolonsGame;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
@@ -49,6 +50,7 @@ public class Eidolons {
     private static RESOLUTION resolution;
     private static ScreenViewport mainViewport;
     private static GenericLauncher launcher;
+    private static PartyObj party;
 
     public static boolean initScenario(ScenarioMetaMaster master) {
         mainGame = new EidolonsGame();
@@ -68,6 +70,7 @@ public class Eidolons {
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
          new ScreenData(ScreenType.MAIN_MENU, "Back to the Void..."));
 
+        ScenarioLauncher.missionIndex=0;
     }
 
     public static EidolonsGame getMainGame() {
@@ -205,5 +208,13 @@ public class Eidolons {
 
     public static GenericLauncher getLauncher() {
         return launcher;
+    }
+
+    public static void setParty(PartyObj party) {
+        Eidolons.party = party;
+    }
+
+    public static PartyObj getParty() {
+        return party;
     }
 }

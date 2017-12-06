@@ -12,6 +12,7 @@ import main.libgdx.anims.AnimMaster3d;
 import main.libgdx.bf.BaseView;
 import main.libgdx.bf.GridUnitView;
 import main.libgdx.gui.panels.dc.TablePanel;
+import main.libgdx.screens.DungeonScreen;
 import main.libgdx.stage.BattleGuiStage;
 import main.system.GuiEventManager;
 
@@ -36,6 +37,8 @@ public class ToolTipManager extends TablePanel {
         });
 
         GuiEventManager.bind(GRID_OBJ_HOVER_ON, (event) -> {
+            if (DungeonScreen.getInstance().isBlocked())
+                return ;
             BaseView object = (BaseView) event.get();
 //            if (object.getScaleX()==getDefaultScale(object))
 //                if (object.getScaleX()==getDefaultScale(object))
@@ -168,7 +171,7 @@ public class ToolTipManager extends TablePanel {
             float x = v2.x - toolTip.getPrefWidth() - getPreferredPadding();
             if (x < 0) {
                 actorCell.left();
-                actorCell.padLeft((x) / 2 - getPreferredPadding());
+                actorCell.padLeft((-x) / 2 - getPreferredPadding());
             }
             x = v2.x + toolTip.getPrefWidth() + getPreferredPadding();
             if (x > GdxMaster.getWidth()) {

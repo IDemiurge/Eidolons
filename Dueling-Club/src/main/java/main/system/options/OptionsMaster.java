@@ -324,6 +324,9 @@ public class OptionsMaster {
 
     public static void tryOpenMenu() {
         try {
+            if (Eidolons.isFullscreen()) {
+                Eidolons.setFullscreen(false);
+            }
             openMenu();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);

@@ -1,6 +1,6 @@
 <Level><Custom_Props><Workspace_Group>IMPLEMENT</Workspace_Group>
 <Dungeon_Subfolder>crawl</Dungeon_Subfolder>
-<Dungeon_Main_Entrances>Dark Winding Upward Stairs(3-18);Wide Downward Stairs(17-11)</Dungeon_Main_Entrances>
+<Dungeon_Main_Entrances>Dark Winding Upward Stairs(3-18);Wide Downward Stairs(17-11);</Dungeon_Main_Entrances>
 </Custom_Props><Custom_Params><Bf_Width>25</Bf_Width>
 <Bf_Height>21</Bf_Height>
 </Custom_Params><Wall_Objects></Wall_Objects>

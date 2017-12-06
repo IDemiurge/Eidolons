@@ -8,6 +8,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.battlecraft.logic.meta.universal.PartyManager;
+import main.game.core.Eidolons;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -79,7 +80,10 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     @Override
     public PartyObj initPlayerParty() {
         if (!getMaster().getMetaGame().isPartyRespawn())
-            return null;
+        {
+            party = Eidolons.getParty();
+            return party;
+        }
         //preset
         //choice
         //already as Unit?

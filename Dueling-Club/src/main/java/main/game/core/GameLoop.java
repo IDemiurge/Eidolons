@@ -5,6 +5,7 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import main.game.battlecraft.ai.elements.actions.Action;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.rules.combat.misc.ChargeRule;
 import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.game.core.game.DC_Game;
@@ -38,6 +39,7 @@ public class GameLoop {
     protected boolean exited;
     protected DequeImpl<ActionInput> actionQueue = new DequeImpl<>();
     private Thread thread;
+    private boolean started;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -119,6 +121,12 @@ public class GameLoop {
             if (activeUnit == null) {
                 break;
             }
+            if (!started)
+            {
+                VisionManager.refresh();
+                started=true;
+            }
+
             result = makeAction();
             if (exited || ExplorationMaster.isExplorationOn())
                 return false;

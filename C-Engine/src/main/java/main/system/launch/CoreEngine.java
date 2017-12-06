@@ -309,6 +309,9 @@ public class CoreEngine {
         return !isArcaneTower() && !isArcaneVault() && !isLevelEditor();
     }
 
+    public static boolean isIDE() {
+        return !exe&& !jar;
+    }
     public static boolean isExe() {
         return exe;
     }

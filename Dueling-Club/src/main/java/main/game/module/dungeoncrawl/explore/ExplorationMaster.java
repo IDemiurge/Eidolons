@@ -123,6 +123,7 @@ public class ExplorationMaster {
         }
         getResetter().setFirstResetDone(false);
         game.startGameLoop();
+
 //        game.getManager().reset();
         //exceptions: triggers, scripts,
 

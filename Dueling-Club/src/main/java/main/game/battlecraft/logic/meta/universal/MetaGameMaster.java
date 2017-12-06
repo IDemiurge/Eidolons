@@ -84,7 +84,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         game = Eidolons.game;
         if (game == null)
             game = createGame();
-        else game.setMetaMaster(this);
+        else
+            game.setMetaMaster(this);
         metaGame = initializer.initMetaGame(data);
         preStart();
         if (partyManager.initPlayerParty()==null )

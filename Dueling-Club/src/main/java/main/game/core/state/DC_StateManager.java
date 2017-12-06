@@ -16,7 +16,6 @@ import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.battlecraft.rules.DC_RuleImpl;
 import main.game.battlecraft.rules.counter.DC_CounterRule;
 import main.game.battlecraft.rules.counter.DamageCounterRule;
-import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.battlecraft.rules.round.RoundRule;
 import main.game.core.game.DC_Game;
 import main.game.core.game.GameManager;
@@ -29,8 +28,8 @@ import main.system.GuiEventType;
 import main.system.config.ConfigMaster;
 import main.system.datatypes.DequeImpl;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -381,8 +380,8 @@ public class DC_StateManager extends StateManager {
 
             resetAllSynchronized();
             game.setStarted(true);
-            IlluminationRule.resetIllumination(getGame());
-            IlluminationRule.initLightEmission(getGame());
+            getGame().getRules().getIlluminationRule().resetIllumination( );
+            getGame().getRules().getIlluminationRule().  initLightEmission( );
 
             game.getTurnManager().newRound();
 //            getGameManager().refreshAll();

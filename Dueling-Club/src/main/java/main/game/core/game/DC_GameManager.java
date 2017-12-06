@@ -19,7 +19,6 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.ai.tools.future.FutureBuilder;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.rules.action.ActionRule;
-import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.core.master.*;
@@ -32,6 +31,7 @@ import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.std.EventAnimCreator;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.bf.TargetRunnable;
+import main.libgdx.launch.Showcase;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -44,7 +44,6 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.libgdx.launch.Showcase;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -200,8 +199,8 @@ public class DC_GameManager extends GameManager {
         resetWallMap();
 
 //TODO shouldn't be necessary!
-        IlluminationRule.resetIllumination(getGame());
-        IlluminationRule.initLightEmission(getGame());
+        getGame().getRules().getIlluminationRule().resetIllumination( );
+        getGame().getRules().getIlluminationRule().initLightEmission( );
 
 //        DrawMasterStatic.getObjImageCache().clear();
         for (Unit u : getGame().getUnits()) {
