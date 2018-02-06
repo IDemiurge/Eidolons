@@ -20,6 +20,12 @@ public class GdxMaster {
     private static int width;
     private static int height;
     private static Float fontSizeMod;
+    public static final float fontSizeAdjustCoef=0.3f;
+    public static float adjustSize(float size) {
+return         size
+         + size
+         * (GdxMaster.getFontSizeMod()-1)*  fontSizeAdjustCoef;
+    }
 
     public static float centerWidth(Actor actor) {
         if (actor.getParent() != null)

@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import main.libgdx.GdxColorMaster;
-import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -41,7 +40,7 @@ public class TrueLight {
     public void render(){
 
         world.step(1 / 60, 4, 4);
-        rayHandler.setCombinedMatrix(DungeonScreen.camera);
+//        rayHandler.setCombinedMatrix(DungeonScreen.camera);
         rayHandler.updateAndRender();
     }
 

@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.libgdx.StyleHolder;
 import main.libgdx.bf.datasource.GraveyardDataSource;
 import main.libgdx.bf.mouse.BattleClickListener;
-import main.libgdx.gui.NinePathFactory;
+import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.ValueTooltip;
@@ -39,7 +39,7 @@ public class GraveyardView extends TablePanel {
         add(graveyardButton).left().bottom();
         row();
         graveTables = new TablePanel<>();
-        graveTables.setBackground(new NinePatchDrawable(NinePathFactory.get3pxBorder()));
+        graveTables.setBackground(new NinePatchDrawable(NinePatchFactory.get3pxBorder()));
         graves = new Cell[SIZE];
         for (int i = 0; i < SIZE; i++) {
             if (i % ROW_SIZE == 0)

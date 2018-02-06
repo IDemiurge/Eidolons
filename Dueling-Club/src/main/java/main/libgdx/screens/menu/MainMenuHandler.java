@@ -18,20 +18,21 @@ public class MainMenuHandler {
         switch (item) {
             case CRAWL:
             case STANDOFF:
+            case ADVENTURE:
             case SKIRMISH:
                 GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL,
                  DataManager.getTypesGroup(DC_TYPE.SCENARIOS,
                   StringMaster.getWellFormattedString(item.toString())));
 
-                return false ;
+                return null  ;
             case OPTIONS:
                 OptionsMaster.init( );
                 OptionsMaster.openMenu();
-            return true;
+            return false;
             case MANUAL:
                 GuiEventManager.trigger(GuiEventType.SHOW_MANUAL_PANEL , ""); //null closes!
 
-                return false ;
+                return null  ;
             case ABOUT:
                 break;
             case EXIT:

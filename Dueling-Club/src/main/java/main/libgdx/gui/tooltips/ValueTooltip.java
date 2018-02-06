@@ -2,7 +2,7 @@ package main.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import main.libgdx.gui.NinePathFactory;
+import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.system.auxiliary.data.ListMaster;
 
@@ -35,6 +35,6 @@ public class ValueTooltip extends ToolTip {
     @Override
     public void afterUpdateAct(float delta) {
         super.afterUpdateAct(delta);
-        setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
+        setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
     }
 }

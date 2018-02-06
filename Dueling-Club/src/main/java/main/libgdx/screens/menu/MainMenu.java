@@ -50,11 +50,14 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
     protected Boolean clicked(MenuItem sub) {
         if (sub instanceof MAIN_MENU_ITEM)
             return handler.handle((MAIN_MENU_ITEM) sub);
-        return null;
+        setVisible(true);
+        return false;
     }
 
     public enum MAIN_MENU_ITEM implements MenuItem<MAIN_MENU_ITEM> {
-        CRAWL(), STANDOFF(true), SKIRMISH(true),  NEW_GAME(CRAWL, STANDOFF, SKIRMISH),
+        CRAWL(), STANDOFF(true), SKIRMISH(true),
+        ADVENTURE,
+        NEW_GAME(CRAWL, ADVENTURE,STANDOFF, SKIRMISH),
         OPTIONS,//(GAMEPLAY, AUDIO, ),
         MANUAL(false),
         ABOUT(true),

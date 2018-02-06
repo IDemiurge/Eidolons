@@ -18,6 +18,7 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.SpecialLogger;
+import main.system.launch.CoreEngine;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 import main.test.frontend.RESOLUTION;
@@ -75,6 +76,8 @@ public class GenericLauncher extends Game {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         super.dispose();
+        System.exit(0);
+
     }
 
     protected boolean isStopOnInactive() {
@@ -167,10 +170,22 @@ public class GenericLauncher extends Game {
 
     @Override
     public void render() {
-        GuiEventManager.processEvents();
+        if (CoreEngine.isIDE()) {
+            try {
+                render_();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
+        else
+            render_();
+    }
 
+    public void render_() {
+        GuiEventManager.processEvents();
         super.render();
         Assets.get().getManager().update();
+
     }
 
     protected void switchScreen(Supplier<ScreenWithVideoLoader> factory, ScreenData meta) {
@@ -193,7 +208,7 @@ public class GenericLauncher extends Game {
                 break;
             case BATTLE:
                 if (firstInitDone)
-                    return ;
+                    return;
                 new Thread(new Runnable() {
                     public void run() {
                         if (!Eidolons.initScenario(new ScenarioMetaMaster(meta.getName())))
@@ -202,7 +217,7 @@ public class GenericLauncher extends Game {
                         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
                         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
                         Eidolons.mainGame.getMetaMaster().getGame().start(true);
-                        firstInitDone= true;
+                        firstInitDone = true;
                     }
                 }, " thread").start();
                 break;

@@ -52,20 +52,14 @@ public class ScrollTextPanel extends Group {
             addActor(bg);
         }
 
-        setSize(getDefaultWidth()
-          + getDefaultWidth()
-          * (GdxMaster.getFontSizeMod()-1)*  getFontSizeAdjustCoef(),
-         getDefaultHeight() + getDefaultHeight()
-          * (GdxMaster.getFontSizeMod()-1)*  getFontSizeAdjustCoef());
+        setSize(GdxMaster.adjustSize(getDefaultWidth()),
+         GdxMaster.adjustSize(getDefaultHeight()));
 
         initScrollPanel();
 
         updatePos = true;
     }
 
-    protected float getFontSizeAdjustCoef() {
-        return 0.3f;
-    }
 
     protected int getFontSize() {
         if (fontSize != 0) {
@@ -116,7 +110,8 @@ public class ScrollTextPanel extends Group {
         return new TextBuilder() {
             @Override
             protected FONT getFontStyle() {
-                return ScrollTextPanel.this.getFontStyle();
+                return
+                 ScrollTextPanel.this.getFontStyle();
             }
 
             @Override
@@ -126,7 +121,7 @@ public class ScrollTextPanel extends Group {
 
             @Override
             protected float getAdjustCoef() {
-               return  getFontSizeAdjustCoef();
+               return  GdxMaster.fontSizeAdjustCoef;
             }
         };
     }

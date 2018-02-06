@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.entity.active.DC_ActiveObj;
-import main.libgdx.gui.NinePathFactory;
+import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
@@ -25,7 +25,7 @@ public class ActionCostTooltip extends ActionTooltip {
         row();
          addElement(new CostTableTooltip());
 
-        setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
+        setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
     }
 
 

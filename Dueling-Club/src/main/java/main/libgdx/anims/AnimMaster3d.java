@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import main.content.PARAMS;
+import main.content.enums.entity.ItemEnums.ARMOR_TYPE;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -52,6 +53,7 @@ public class AnimMaster3d {
     private static final String[][] substitutesWeapons = {
 //     {"halbert", "axe"},
 
+     {"golem fist", "armored fist"},
      {"lance", "spear"},
      {"pike", "spear"},
      {"staff", "spear"},
@@ -244,6 +246,15 @@ public class AnimMaster3d {
         String substitute = substituteMap.get(name.toLowerCase());
         if (substitute != null) {
             return substitute;
+        }
+        if (name.equalsIgnoreCase("fist")) {
+            if (weapon.getOwnerObj().getArmor() != null) {
+                if (weapon.getOwnerObj().getArmor().getArmorType()==
+                 ARMOR_TYPE.HEAVY)
+                name = "Armored Fist";
+                else
+                    name = "Gloved Fist";
+            }
         }
         return name;
     }
@@ -472,7 +483,8 @@ public class AnimMaster3d {
 
     private static String getFullAtlasPath(DC_WeaponObj weapon) {
         return
-         TextureCache.formatTexturePath(PathFinder.getImagePath() + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));
+         TextureCache.formatTexturePath(PathFinder.getImagePath()
+          + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));
     }
 
 

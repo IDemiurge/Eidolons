@@ -295,8 +295,8 @@ public class DC_Game extends MicroGame {
         loop = createGameLoop();
         if (ExplorationMaster.isExplorationOn()) {
             getStateManager().newRound(); //newRound?
-         if (!first)
-             getVisionMaster().refresh();
+            if (!first)
+                getVisionMaster().refresh();
         }
         setGameLoopThread(loop.startInNewThread());
         setRunning(true);
@@ -398,10 +398,10 @@ public class DC_Game extends MicroGame {
             if ((!CoreEngine.isArcaneVault()
              || !XML_Reader.isMacro())
              && !CoreEngine.isItemGenerationOff()
-             )
-//
+             ) {
                 itemGenerator = new ItemGenerator(true);
-        itemGenerator.init();
+                itemGenerator.init();
+            }
 
     }
 
@@ -500,14 +500,14 @@ public class DC_Game extends MicroGame {
 
     @Override
     public void setDebugMode(boolean debugMode) {
-        if (getDebugMaster() != null )
+        if (getDebugMaster() != null)
             if (debugMode != this.debugMode) {
-            try {
-                getDebugMaster().debugModeToggled(debugMode);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                try {
+                    getDebugMaster().debugModeToggled(debugMode);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
             }
-        }
         super.setDebugMode(debugMode);
     }
 
@@ -721,6 +721,10 @@ public class DC_Game extends MicroGame {
         return metaMaster;
     }
 
+    public <E extends MetaGame> void setMetaMaster(MetaGameMaster<E> metaMaster) {
+        this.metaMaster = metaMaster;
+    }
+
     public LaunchDataKeeper getDataKeeper() {
         if (dataKeeper == null)
             dataKeeper = new LaunchDataKeeper();
@@ -785,33 +789,30 @@ public class DC_Game extends MicroGame {
     public void reinit() {
         reinit(false);
     }
-        public void reinit(boolean restart) {
+
+    public void reinit(boolean restart) {
         master = new DC_GameMaster(this);
         List<Obj> cachedObjects = new ArrayList<>();
         if (!restart)
-        for (Obj sub : getState().getObjects().values()) {
-            if (sub == null)
-                continue;
-            if (sub instanceof Unit)
-                continue;
-            if (sub.getRef() == null)
-                continue;
-            if (sub.getRef().getSourceObj() == null)
-                continue;
-            if (sub.getRef().getSourceObj().isMine()) {
-                cachedObjects.add(sub);
+            for (Obj sub : getState().getObjects().values()) {
+                if (sub == null)
+                    continue;
+                if (sub instanceof Unit)
+                    continue;
+                if (sub.getRef() == null)
+                    continue;
+                if (sub.getRef().getSourceObj() == null)
+                    continue;
+                if (sub.getRef().getSourceObj().isMine()) {
+                    cachedObjects.add(sub);
+                }
             }
-        }
         this.setState(new DC_GameState(this));
         this.setManager(new DC_GameManager(this.getState(), this));
         this.getManager().init();
         for (Obj sub : cachedObjects) {
             getState().addObject(sub);
         }
-    }
-
-    public <E extends MetaGame> void setMetaMaster(MetaGameMaster<E> metaMaster) {
-        this.metaMaster = metaMaster;
     }
 
     public enum GAME_MODES {

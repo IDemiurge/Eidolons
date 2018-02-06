@@ -54,26 +54,19 @@ import static main.system.GuiEventType.*;
  * Time: 23:55
  * To change this template use File | Settings | File Templates.
  */
-public class DungeonScreen extends ScreenWithVideoLoader {
+public class DungeonScreen extends GameScreen {
     private static  float FRAMERATE_DELTA_CONTROL =
      new Float(1) / GenericLauncher.FRAMERATE * 3;
-    public static OrthographicCamera camera;
     private static DungeonScreen instance;
     private static boolean cameraAutoCenteringOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
+
+
+    private RealTimeGameLoop realTimeGameLoop;
+    private ParticleManager particleManager;
+    private TextureRegion backTexture;
     private Stage gridStage;
     private BattleGuiStage guiStage;
     private GridPanel gridPanel;
-    private ChainedStage dialogsStage = null;
-    private OrthographicCamera cam;
-    private InputController controller;
-    private TextureRegion backTexture;
-    private Vector2 velocity;
-    private DC_SoundMaster soundMaster;
-    private Vector2 cameraDestination;
-    private RealTimeGameLoop realTimeGameLoop;
-    private ParticleManager particleManager;
-    private ShaderProgram bufferedShader;
-    private Float speed;
 
     public static void setFramerateDeltaControl(float framerateDeltaControl) {
         FRAMERATE_DELTA_CONTROL = framerateDeltaControl;
@@ -168,7 +161,7 @@ public class DungeonScreen extends ScreenWithVideoLoader {
     @Override
     protected void afterLoad() {
 
-        cam = camera = (OrthographicCamera) viewPort.getCamera();
+        cam =   (OrthographicCamera) viewPort.getCamera();
         controller = new InputController(cam);
 
         soundMaster = new DC_SoundMaster(this);

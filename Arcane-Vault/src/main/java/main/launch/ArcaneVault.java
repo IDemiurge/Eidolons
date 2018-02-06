@@ -47,8 +47,8 @@ import java.util.List;
 public class ArcaneVault {
 
     public static final String ICON_PATH = "UI\\" + "Forge4" +
-            // "spellbook" +
-            ".png";
+     // "spellbook" +
+     ".png";
     public final static boolean SINGLE_TAB_MODE = true;
     public final static boolean PRESENTATION_MODE = false;
     public static final int AE_WIDTH = 500;
@@ -62,11 +62,11 @@ public class ArcaneVault {
     public final static boolean defaultTypesGenerateOn = false;
     public final static String presetTypes = "units;bf obj;chars;party;missions;scenarios;" +
 //     "abils;spells;skills;"+
-             "weapons;armor;" +
+     "weapons;armor;" +
      "actions;" + "";
     private static final boolean ENABLE_ITEM_GENERATION = true;
     private static final String[] LAUNCH_OPTIONS = {"Last", "Selective", "Selective Custom",
-            "Full", "Battlecraft", "Arcane Tower",};
+     "Full", "Battlecraft", "Arcane Tower",};
     private static final String actions = "actions;spells;buffs;abils;";
     private static final String skills = "skills;classes;buffs;abils;";
     private static final String units = "chars;units;deities;dungeons;factions;";
@@ -81,7 +81,7 @@ public class ArcaneVault {
     private static JFrame window;
     private static Dimension size = new Dimension(WIDTH, HEIGHT);
     private static boolean dirty = false;
-    private static boolean macroMode = false;
+    private static boolean macroMode  ;
     private static DC_Game microGame;
     private static boolean showTime = true;
     private static ObjType previousSelectedType;
@@ -98,7 +98,7 @@ public class ArcaneVault {
     private static ContentManager contentManager;
     private static boolean artGen = false;
     private static boolean workspaceLaunch = false;
-    private static boolean imgPathUpdate= false;
+    private static boolean imgPathUpdate = false;
     private static boolean dialogueMode = true;
 
     static {
@@ -132,7 +132,7 @@ public class ArcaneVault {
                 switch (LAUNCH_OPTIONS[init]) {
                     case "Battlecraft":
                         List<DC_TYPE> enumList = new EnumMaster<DC_TYPE>()
-                                .getEnumList(DC_TYPE.class);
+                         .getEnumList(DC_TYPE.class);
                         for (DC_TYPE sub : DC_TYPE.values()) {
                             if (sub.isNonBattlecraft()) {
                                 enumList.remove(sub);
@@ -152,11 +152,16 @@ public class ArcaneVault {
                         break;
                     case "Selective Custom":
                         types = ListChooser.chooseEnum(DC_TYPE.class, SELECTION_MODE.MULTIPLE);
-                        FileManager.write(types, getLastTypesFilePath());
+                        try {
+                            FileManager.write(types, getLastTypesFilePath());
+                        } catch (Exception e) {
+                            main.system.ExceptionMaster.printStackTrace(e);
+                        }
+
                         break;
                     case "Selective":
                         init = DialogMaster.optionChoice("Selective Templates", WORKSPACE_TEMPLATE
-                                .values());
+                         .values());
                         if (init == -1) {
                             return;
                         }
@@ -183,18 +188,18 @@ public class ArcaneVault {
         }
 
         LogMaster
-                .log(3,
-                        "Welcome to Arcane Vault! \nBrace yourself to face the darkest mysteries of Edalar...");
+         .log(3,
+          "Welcome to Arcane Vault! \nBrace yourself to face the darkest mysteries of Edalar...");
         initialize();
 
         if (artGen) {
             // ResourceMaster.createArtFolders(types);
-            ResourceMaster.   createUpdatedArtDirectory();
+            ResourceMaster.createUpdatedArtDirectory();
             // ModelManager.saveAll();
-             // return;
+            // return;
         }
         if (imgPathUpdate) {
-            ResourceMaster. updateImagePaths();
+            ResourceMaster.updateImagePaths();
 
         }
         mainBuilder = new MainBuilder();

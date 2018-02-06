@@ -46,7 +46,16 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     }
     @Override
     protected SelectionPanel createSelectionPanel(EventCallbackParam p) {
-        return new ScenarioSelectionPanel(()-> (List<? extends Entity>) p.get());
+        return new ScenarioSelectionPanel(()-> (List<? extends Entity>) p.get()){
+            @Override
+            public void closed(Object selection) {
+                if (selection == null) {
+                    if (mainMenu != null)
+                      mainMenu.setVisible(true);
+                }
+                super.closed(selection);
+            }
+        };
     }
 
     @Override

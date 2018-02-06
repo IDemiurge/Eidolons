@@ -2,7 +2,7 @@ package main.libgdx.gui.panels.dc.unitinfo.tooltips;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import main.libgdx.gui.NinePathFactory;
+import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 
@@ -17,7 +17,7 @@ public class CostsPanel extends TablePanel {
                 .fill(1, 0).expand(1, 0).top();
         row();
         final CostTableTooltip tooltip = new CostTableTooltip();
-        tooltip.setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
+        tooltip.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
         costsPanel = addElement(tooltip)
                 .fill(1, 0).expand(1, 0).top();
 

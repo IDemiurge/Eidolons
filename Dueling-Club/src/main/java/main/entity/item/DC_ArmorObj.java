@@ -4,14 +4,19 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
+import main.content.enums.entity.ItemEnums.ARMOR_TYPE;
 import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
+import main.system.auxiliary.EnumMaster;
 
 public class DC_ArmorObj extends DC_HeroSlotItem {
+
+    private ARMOR_TYPE armorType;
 
     public DC_ArmorObj(ObjType armor_type, Player originalOwner, MicroGame game, Ref ref) {
         super(armor_type, originalOwner, game, ref, DC_ContentManager.getArmorModifyingParams());
@@ -105,6 +110,14 @@ public class DC_ArmorObj extends DC_HeroSlotItem {
     public void newRound() {
         // TODO Auto-generated method stub
 
+    }
+
+    public ARMOR_TYPE getArmorType() {
+        if (armorType == null) {
+            armorType = new EnumMaster<ARMOR_TYPE>().
+             retrieveEnumConst(ARMOR_TYPE.class, getProperty(G_PROPS.ARMOR_TYPE));
+        }
+        return armorType;
     }
 
 }

@@ -24,7 +24,7 @@ public class TexturePackerLaunch {
 
     public static final String WORKSPACE_PATH = PathFinder.getImagePath()+PathFinder.getWeaponAnimPath() + "workspace//";
     public static final boolean TRIM = true;
-    public static final boolean POTIONS = true;
+    public static final boolean POTIONS = false;
     private static final String OUTPUT_DIR = PathFinder.getImagePath()+
      PathFinder.getWeaponAnimPath() + "atlas//";
     private static final String OUTPUT_DIR_POTION = PathFinder.getImagePath()+
@@ -98,7 +98,7 @@ public class TexturePackerLaunch {
         settings.square = false;
         settings.format = Format.RGBA4444;
         settings.limitMemory = false;
-
+//        settings.jpegQuality = 0.7f;
         return settings;
     }
 

@@ -65,20 +65,6 @@ public class MusicMaster {
 // TODO AMBIENT SOUNDS -
 
 
-public void scopeChanged(MUSIC_SCOPE scope){
-    trackCache.put(this.scope, playedMusic);
-    playList.clear();
-    setScope(scope);
-    pause();
-    playedMusic = trackCache.get(scope);
-    if (playedMusic==null ){
-        checkNewMusicToPlay();
-    }
-    resume();
-    //fade? :)
-    //
-}
-
     private MusicMaster() {
         init();
         GuiEventManager.bind(GuiEventType.MUSIC_STOP, p -> {
@@ -147,6 +133,20 @@ public void scopeChanged(MUSIC_SCOPE scope){
     public static void resetVolume() {
         if (getInstance().getPlayedMusic() != null)
             getInstance().getPlayedMusic().setVolume(getInstance().getVolume());
+    }
+
+    public void scopeChanged(MUSIC_SCOPE scope) {
+        trackCache.put(this.scope, playedMusic);
+        playList.clear();
+        setScope(scope);
+        pause();
+        playedMusic = trackCache.get(scope);
+        if (playedMusic == null) {
+            checkNewMusicToPlay();
+        }
+        resume();
+        //fade? :)
+        //
     }
 
     public Stack<String> getPlayList() {
@@ -245,10 +245,10 @@ public void scopeChanged(MUSIC_SCOPE scope){
 
     private String getMusicFolder() {
         if (MASTER_MODE) {
-            if (Eidolons.game!=null && Eidolons.game.isStarted())
+            if (Eidolons.game != null && Eidolons.game.isStarted())
                 if (!ExplorationMaster.isExplorationOn())
 //        if (scope==MUSIC_SCOPE.BATTLE)
-                return MASTER_PATH + "battle";
+                    return MASTER_PATH + "battle";
             if (!mainThemePlayed || scope == MUSIC_SCOPE.MENU) {
                 mainThemePlayed = true;
                 return MASTER_PATH + "menu";
@@ -344,7 +344,11 @@ public void scopeChanged(MUSIC_SCOPE scope){
         Float volume =
          getVolume();
         playedMusic.setVolume(volume);
-        playedMusic.play();
+        try {
+            playedMusic.play();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     private boolean isMusicPreloadOn() {

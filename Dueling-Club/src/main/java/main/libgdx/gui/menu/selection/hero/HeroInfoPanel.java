@@ -46,11 +46,14 @@ public class HeroInfoPanel extends ItemInfoPanel {
     protected void initHeader(TablePanel<Actor> header) {
         super.initHeader(header);
         emblem = new Image(getDefaultEmblem());
-        header.addNormalSize(emblem);
+//        header.addNormalSize(preview).left();
+        header.addElement(title).left();
+//        header.addNormalSize(emblem).colspan(2). right().padRight(20);
+//        header.pack();
         header.row();
         mainInfo = new Label("", StyleHolder.getSizedLabelStyle(FONT.MAGIC, 18));
         mainInfo.setText("A touch of Fate...");
-        header.addNormalSize(mainInfo);
+        header.addNormalSize(mainInfo).padTop(50);
     }
 
     @Override

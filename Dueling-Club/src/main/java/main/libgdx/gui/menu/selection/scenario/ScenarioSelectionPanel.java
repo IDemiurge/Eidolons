@@ -31,7 +31,9 @@ public class ScenarioSelectionPanel extends SelectionPanel {
     public void closed(Object selection) {
         setVisible(false);
         if (selection == null)
+        {
             return;
+        }
 //        new Thread(new Runnable() {
 //            public void run() {
 //                Eidolons.initScenario(new ScenarioMetaMaster(selection.toString()));

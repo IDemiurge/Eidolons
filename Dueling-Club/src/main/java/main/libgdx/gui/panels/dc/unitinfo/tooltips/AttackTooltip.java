@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.entity.active.DC_ActiveObj;
 import main.libgdx.StyleHolder;
-import main.libgdx.gui.NinePathFactory;
+import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
@@ -115,12 +115,12 @@ public class AttackTooltip extends ActionTooltip {
     @Override
     public void afterUpdateAct(float delta) {
 //        super.afterUpdateAct(delta);
-        baseTable.setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
+        baseTable.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
 
-        rangeTable.setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
+        rangeTable.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
 
         textTables.forEach(tablePanel -> {
-            tablePanel.setBackground(new NinePatchDrawable(NinePathFactory.getTooltip()));
+            tablePanel.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
         });
     }
 

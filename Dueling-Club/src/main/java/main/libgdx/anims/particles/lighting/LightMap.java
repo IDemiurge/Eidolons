@@ -15,7 +15,6 @@ import main.game.core.game.DC_Game;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.bf.GridConst;
-import main.libgdx.screens.DungeonScreen;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -225,11 +224,11 @@ public class LightMap {
 //            entry.getValue().update();
         }
 //        world.step(1 / 60, 4, 4);
-        rayHandler.setCombinedMatrix(DungeonScreen.camera);
-        rayHandler.updateAndRender();
-        if (LightingManager.debug) {
-            debugRenderer.render(world, DungeonScreen.camera.combined);
-        }
+//        rayHandler.setCombinedMatrix(DungeonScreen.camera);
+//        rayHandler.updateAndRender();
+//        if (LightingManager.debug) {
+//            debugRenderer.render(world, DungeonScreen.camera.combined);
+//        }
     }
 
     public void updateObject(BattleFieldObject heroObj) {

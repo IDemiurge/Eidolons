@@ -188,6 +188,8 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
     protected abstract Boolean clicked(MenuItem sub);
 
     public void open() {
+        setCurrentItem(null);
+        setPreviousItem(null);
         if (getStage() instanceof StageWithClosable) {
             ((StageWithClosable) getStage()).closeDisplayed();
             ((StageWithClosable) getStage()).setDisplayedClosable(this);
@@ -196,8 +198,6 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
     }
 
     public void close() {
-        setCurrentItem(null);
-        setPreviousItem(null);
         setVisible(false);
 
     }
